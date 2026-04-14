@@ -8,13 +8,15 @@
 
 **全面生态化，让流计算知识触手可及**
 
-[城市], [日期] — AnalysisDataFlow 项目团队今日正式宣布 **AnalysisDataFlow v5.0** 版本全面上线。这一里程碑式的发布标志着项目从传统的技术文档库成功转型为综合性的流计算知识生态系统，为全球开发者、架构师和研究人员提供了前所未有的学习与实践平台。
+[城市], [日期] — AnalysisDataFlow 项目团队今日正式宣布 **AnalysisDataFlow v5.0** 版本全面上线。
+这一里程碑式的发布标志着项目从传统的技术文档库成功转型为综合性的流计算知识生态系统，为全球开发者、架构师和研究人员提供了前所未有的学习与实践平台。
 
 ---
 
 ## 关于 AnalysisDataFlow
 
-AnalysisDataFlow 是一个专注于流计算领域的开源技术知识库，以 Apache Flink 为核心，涵盖流处理理论、设计模式、最佳实践和前沿探索。与官方文档侧重"怎么做"不同，AnalysisDataFlow 专注于"为什么"——帮助用户深度理解流计算的底层原理、架构决策和工程实践。
+AnalysisDataFlow 是一个专注于流计算领域的开源技术知识库，以 Apache Flink 为核心，涵盖流处理理论、设计模式、最佳实践和前沿探索。
+与官方文档侧重"怎么做"不同，AnalysisDataFlow 专注于"为什么"——帮助用户深度理解流计算的底层原理、架构决策和工程实践。
 
 自2025年首次发布以来，AnalysisDataFlow 已发展成为流计算领域最全面的中文技术资源库，累计服务超过 100,000 名开发者。
 
@@ -98,15 +100,15 @@ v5.0 新增了大量前沿技术文档：
 ## 用户评价
 
 > "AnalysisDataFlow 是我们团队学习 Flink 的首选资源。v5.0的在线学习平台让新员工培训效率提升了50%。"
-> 
+>
 > —— 某头部电商平台技术负责人
 
 > "作为一个研究流计算理论的博士生，AnalysisDataFlow 的形式化推导链对我的研究帮助巨大。"
-> 
+>
 > —— 清华大学计算机系研究生
 
 > "中英文双语支持让我们国际团队的学习成本大大降低，这是其他资源无法比拟的优势。"
-> 
+>
 > —— 某跨国科技公司架构师
 
 ---
@@ -147,13 +149,13 @@ AnalysisDataFlow 是一个由社区驱动的开源项目，核心团队包括：
 
 ### 官方网站
 
-- 主站: https://analysisdataflow.org
-- 学习平台: https://learn.analysisdataflow.org
-- 知识图谱: https://graph.analysisdataflow.org
+- 主站: <https://analysisdataflow.org>
+- 学习平台: <https://learn.analysisdataflow.org>
+- 知识图谱: <https://graph.analysisdataflow.org>
 
 ### 代码仓库
 
-- GitHub: https://github.com/luyanfeng/AnalysisDataFlow
+- GitHub: <https://github.com/luyanfeng/AnalysisDataFlow>
 
 ### 社交媒体
 
@@ -162,8 +164,8 @@ AnalysisDataFlow 是一个由社区驱动的开源项目，核心团队包括：
 
 ### 联系方式
 
-- 邮件: contact@analysisdataflow.org
-- 论坛: https://discuss.analysisdataflow.org
+- 邮件: <contact@analysisdataflow.org>
+- 论坛: <https://discuss.analysisdataflow.org>
 
 ---
 
@@ -172,16 +174,19 @@ AnalysisDataFlow 是一个由社区驱动的开源项目，核心团队包括：
 AnalysisDataFlow 团队已规划了清晰的路线图：
 
 **v5.1 (2027年Q2)**:
+
 - 更多交互式教程
 - 视频课程上线
 - 移动端App
 
 **v5.2 (2027年Q3)**:
+
 - AI辅助问答
 - 个性化推荐增强
 - 企业版功能
 
 **v6.0 愿景 (2028年)**:
+
 - 全球流计算知识中心
 - 认证考试体系
 - 企业培训服务
@@ -198,9 +203,9 @@ AnalysisDataFlow 团队已规划了清晰的路线图：
 
 **媒体联系人:**
 
-[联系人姓名]  
-[职位]  
-[邮箱]  
+[联系人姓名]
+[职位]
+[邮箱]
 [电话]
 
 ---
@@ -209,9 +214,9 @@ AnalysisDataFlow 团队已规划了清晰的路线图：
 
 ### 媒体素材
 
-- 品牌素材包: https://analysisdataflow.org/media-kit
-- 产品截图: https://analysisdataflow.org/screenshots
-- Logo下载: https://analysisdataflow.org/logo
+- 品牌素材包: <https://analysisdataflow.org/media-kit>
+- 产品截图: <https://analysisdataflow.org/screenshots>
+- Logo下载: <https://analysisdataflow.org/logo>
 
 ### 新闻稿PDF下载
 
@@ -219,7 +224,7 @@ AnalysisDataFlow 团队已规划了清晰的路线图：
 
 ---
 
-**###** 
+**###**
 
 ---
 

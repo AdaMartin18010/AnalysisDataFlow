@@ -125,16 +125,16 @@ gantt
     title v5.0 发布时间表
     dateFormat  YYYY-MM-DD
     axisFormat  %m/%d
-    
+
     section 准备阶段
     RC1发布               :rc1, 2026-12-18, 7d
     社区测试              :test, after rc1, 7d
     问题修复              :fix, after test, 7d
     最终准备              :prep, after fix, 7d
-    
+
     section 发布
     v5.0正式发布          :milestone, release, 2027-01-15, 0d
-    
+
     section 推广
     社区活动              :promo, after release, 14d
 ```
@@ -144,6 +144,7 @@ gantt
 ## ✅ 发布检查清单摘要
 
 ### 技术准备
+
 - [x] 发布计划文档
 - [x] 发布说明文档
 - [x] 发布检查清单
@@ -152,6 +153,7 @@ gantt
 - [ ] 部署验证
 
 ### 营销准备
+
 - [x] 新闻稿
 - [x] 社交媒体素材
 - [x] 博客文章
@@ -160,6 +162,7 @@ gantt
 - [ ] 预热活动执行
 
 ### 社区准备
+
 - [x] 社区活动计划
 - [x] 用户案例整理
 - [ ] 论坛活跃化

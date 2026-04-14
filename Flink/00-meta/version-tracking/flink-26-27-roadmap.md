@@ -59,7 +59,7 @@ gantt
 | 数据源 | URL | 检查频率 | 优先级 |
 |--------|-----|----------|--------|
 | Apache JIRA | <https://issues.apache.org/jira/browse/FLINK> | 每日 | 🔴 高 |
-| FLIP 提案 | <https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals> | 每周 | 🔴 高 |
+| FLIP 提案 | <https://github.com/apache/flink/tree/main/flink-docs/docs/flips/> | 每周 | 🔴 高 |
 | GitHub Releases | <https://github.com/apache/flink/releases> | 每日 | 🔴 高 |
 | 官方路线图 | <https://flink.apache.org/roadmap/> | 每周 | 🟡 中 |
 | 开发者邮件列表 | <dev@flink.apache.org> | 每周 | 🟡 中 |
@@ -325,7 +325,7 @@ graph TB
 ## 10. 参考链接
 
 - [Apache Flink 官方路线图](https://flink.apache.org/roadmap/)
-- [FLIP 提案索引](https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals)
+- [FLIP 提案索引](https://github.com/apache/flink/tree/main/flink-docs/docs/flips/)
 - [Flink JIRA 看板](https://issues.apache.org/jira/browse/FLINK)
 - [Flink GitHub 仓库](https://github.com/apache/flink)
 - [Flink 2.4 跟踪文档](../../08-roadmap/08.01-flink-24/flink-2.4-tracking.md)

@@ -734,7 +734,7 @@ echo "=== Flink Quickstart Verification ==="
 
 # 下载并解压
 cd /tmp
-wget "https://downloads.apache.org/flink/flink-${VERSION}/apache-flink-${VERSION}-bin-scala_2.12.tgz"
+wget "https://downloads.apache.org/flink/flink-${VERSION}/apache-flink-${VERSION}-bin-scala_2.12.tgz"  # 404 as of 2026-04: use actual substituted version
 tar -xzf "apache-flink-${VERSION}-bin-scala_2.12.tgz"
 cd "flink-${VERSION}"
 
@@ -1014,7 +1014,7 @@ docker run --rm -it flink:X.Y.0 flink --version
 ### 9.5 参考资源
 
 - [Apache发布政策](https://www.apache.org/legal/release-policy.html)
-- [Flink发布指南](https://github.com/apache/flink/blob/master/flink-docs/docs/flips/README.md)
+- [Flink发布指南](https://github.com/apache/flink/blob/main/flink-docs/docs/flips/README.md)
 - [Maven发布插件文档](https://maven.apache.org/maven-release/maven-release-plugin/)
 - [GPG密钥管理](https://www.apache.org/dev/openpgp.html)
 

@@ -8,7 +8,7 @@ This document describes the design and implementation of a personalized learning
 
 ---
 
-## 1. Concept Definitions
+## 1. 概念定义 (Definitions)
 
 ### Def-K-PLE-01: Personalized Learning Engine
 
@@ -56,7 +56,7 @@ LP = ⟨(d₁, t₁), (d₂, t₂), ..., (dₙ, tₙ)⟩, where tᵢ ≤ tᵢ₊
 
 ---
 
-## 2. Property Derivation
+## 2. 属性推导 (Properties)
 
 ### Prop-K-PLE-01: Path Completeness
 
@@ -86,7 +86,7 @@ lim_{t→∞} distance(KS_t, KS_target) = 0
 
 ---
 
-## 3. Relationship Establishment
+## 3. 关系建立 (Relations)
 
 ### 3.1 Connection to Existing Systems
 
@@ -116,7 +116,7 @@ graph TB
 
 ---
 
-## 4. Argumentation Process
+## 4. 论证过程 (Argumentation)
 
 ### 4.1 Recommendation Algorithm Selection
 
@@ -146,7 +146,7 @@ Learning paths must satisfy:
 
 ---
 
-## 5. Engineering Design
+## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
 
 ### 5.1 System Architecture
 
@@ -398,9 +398,9 @@ def optimize_path(
 
 ---
 
-## 6. Implementation Details
+### 6. Implementation Details
 
-### 6.1 Database Schema
+#### 6.1 Database Schema
 
 ```sql
 -- User profiles
@@ -451,7 +451,7 @@ CREATE TABLE document_concepts (
 );
 ```
 
-### 6.2 API Endpoints
+#### 6.2 API Endpoints
 
 ```yaml
 openapi: 3.0.0
@@ -537,7 +537,7 @@ paths:
           description: Path adaptation suggestions
 ```
 
-### 6.3 Configuration
+#### 6.3 Configuration
 
 ```yaml
 # personalized-learning-config.yaml
@@ -575,7 +575,7 @@ learning_engine:
 
 ---
 
-## 7. Use Cases
+## 6. 实例验证 (Examples)
 
 ### 7.1 New Learner Onboarding
 
@@ -634,9 +634,9 @@ if quiz_score < 0.5 and time_spent > estimated_time * 1.5:
 
 ---
 
-## 8. Evaluation
+### 8. Evaluation
 
-### 8.1 Success Metrics
+#### 8.1 Success Metrics
 
 | Metric | Description | Target |
 |--------|-------------|--------|
@@ -646,7 +646,7 @@ if quiz_score < 0.5 and time_spent > estimated_time * 1.5:
 | **User Satisfaction** | Post-path rating | > 4.2/5 |
 | **Path Diversity** | Unique paths generated per objective | > 5 |
 
-### 8.2 A/B Testing Framework
+#### 8.2 A/B Testing Framework
 
 ```python
 class ABTestFramework:
@@ -677,15 +677,7 @@ class ABTestFramework:
 
 ---
 
-## 9. References
-
-- [LEARNING-PATHS-DYNAMIC.md](../LEARNING-PATHS/00-INDEX.md) - Dynamic learning paths
-- [LEARNING-PATH-GUIDE.md](../LEARNING-PATH-GUIDE.md) - Learning path guide
-- [QUICK-START.md](../QUICK-START.md) - Quick start guide
-
----
-
-## 10. Visualization
+## 7. 可视化 (Visualizations)
 
 ### 10.1 System Flow
 
@@ -739,3 +731,11 @@ radarChart
 | Version | Date | Changes |
 |---------|------|---------|
 | v1.0 | 2026-04-04 | Initial version |
+## 8. 引用参考 (References)
+
+- [LEARNING-PATHS-DYNAMIC.md](../LEARNING-PATHS/00-INDEX.md) - Dynamic learning paths
+- [LEARNING-PATH-GUIDE.md](../LEARNING-PATH-GUIDE.md) - Learning path guide
+- [QUICK-START.md](../QUICK-START.md) - Quick start guide
+
+---
+

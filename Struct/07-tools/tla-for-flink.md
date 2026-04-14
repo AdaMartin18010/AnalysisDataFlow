@@ -2060,4 +2060,4 @@ java pcal.trans MyAlgorithm.tla
 
 [^9]: Hillel Wayne, "Practical TLA+: Planning Driven Development", 2018. https://learntla.com/
 
-[^10]: Flink Generic WAL Sink FLIP, https://github.com/apache/flink/tree/master/flink-docs/docs/flips
+[^10]: Flink Generic WAL Sink FLIP, https://github.com/apache/flink/tree/main/flink-docs/docs/flips

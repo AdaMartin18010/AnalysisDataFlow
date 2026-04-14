@@ -1129,7 +1129,7 @@ TypeInformation<T> (抽象类型信息)
    - 对比不同版本的源码差异
 
 4. 关注FLIP提案
-   - https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals
+   - https://github.com/apache/flink/tree/main/flink-docs/docs/flips/
 ```
 
 ---

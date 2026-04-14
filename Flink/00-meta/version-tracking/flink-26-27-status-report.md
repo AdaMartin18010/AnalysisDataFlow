@@ -91,7 +91,7 @@
 
 - [Flink 2.6/2.7 路线图](../version-tracking/flink-26-27-roadmap.md)
 - [Apache Flink 官方路线图](https://flink.apache.org/roadmap/)
-- [FLIP 提案索引](https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals)
+- [FLIP 提案索引](https://github.com/apache/flink/tree/main/flink-docs/docs/flips/)
 - [Flink JIRA](https://issues.apache.org/jira/browse/FLINK)
 - [GitHub Releases](https://github.com/apache/flink/releases)
 

@@ -251,7 +251,7 @@ jobs:
 
 1. **查看官方源**
    - [Apache Flink JIRA](https://issues.apache.org/jira/browse/FLINK)
-   - [FLIP Wiki](https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals)
+   - [FLIP Wiki](https://github.com/apache/flink/tree/main/flink-docs/docs/flips/)
    - [GitHub Releases](https://github.com/apache/flink/releases)
 
 2. **更新路线图文档**
@@ -340,7 +340,7 @@ def check_new_source(self) -> Dict[str, FlinkVersion]:
 
 - [Apache Flink 官网](https://flink.apache.org/)
 - [Flink 路线图](https://flink.apache.org/roadmap/)
-- [FLIP 索引](https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals)
+- [FLIP 索引](https://github.com/apache/flink/tree/main/flink-docs/docs/flips/)
 - [Flink JIRA](https://issues.apache.org/jira/browse/FLINK)
 - [GitHub 仓库](https://github.com/apache/flink)
 

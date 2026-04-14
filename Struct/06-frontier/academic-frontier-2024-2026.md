@@ -479,7 +479,7 @@
 
 ## 参考文献
 
-[^1]: S. Zhang, J. Soto, and V. Markl, "A Survey on Transactional Stream Processing," *The VLDB Journal*, vol. 33, pp. 451-479, 2024. <https://doi.org/10.1007/s00778-023-00823-4>
+[^1]: S. Zhang, J. Soto, and V. Markl, "A Survey on Transactional Stream Processing," *The VLDB Journal*, vol. 33, pp. 451-479, 2024. <https://archive.org/web/*/https://doi.org/10.1007/s00778-023-00823-4> <!-- 404 as of 2026-04 -->
 
 
 

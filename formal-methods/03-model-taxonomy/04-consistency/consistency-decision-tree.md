@@ -488,4 +488,3 @@ flowchart TD
 [^1]: S. Gilbert and N. Lynch, "Brewer's Conjecture and the Feasibility of Consistent, Available, Partition-Tolerant Web Services", ACM SIGACT News, 2002.
 [^2]: D. J. Abadi, "Consistency Tradeoffs in Modern Distributed Database System Design", IEEE Computer, 2012.
 [^3]: K. Kingsbury, "Jepsen: Distributed Systems Safety Analysis", <https://jepsen.io>, 2013-2025.
-

@@ -813,7 +813,7 @@ metrics.reporter.prom.port: 9249
 
 ```bash
 # 使用 Helm 安装 Operator
-helm repo add flink-operator-repo https://downloads.apache.org/flink/flink-kubernetes-operator-1.10.0/
+helm repo add flink-operator-repo https://downloads.apache.org/flink/flink-kubernetes-operator-1.14.0/
 helm repo update
 
 helm install flink-kubernetes-operator flink-operator-repo/flink-kubernetes-operator \

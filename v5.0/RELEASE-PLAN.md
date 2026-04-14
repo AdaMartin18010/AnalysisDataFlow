@@ -39,20 +39,20 @@ gantt
     title AnalysisDataFlow v5.0 发布时间表
     dateFormat  YYYY-MM-DD
     axisFormat  %m/%d
-    
+
     section 规划阶段
     发布计划制定           :plan, 2026-11-01, 14d
     团队分工确认           :team, after plan, 7d
-    
+
     section 准备阶段
     RC1发布               :rc1, 2026-12-18, 7d
     社区测试与反馈         :test, after rc1, 7d
     问题修复与优化         :fix, after test, 7d
     最终准备与预热         :prep, after fix, 7d
-    
+
     section 发布阶段
     正式发布 (T-Day)       :milestone, release, 2027-01-15, 0d
-    
+
     section 推广阶段
     社区活动与推广         :promo, after release, 14d
     反馈收集与分析         :feedback, after release, 21d
@@ -227,6 +227,7 @@ gantt
 **触发条件**: 发布前24小时无法完成部署
 
 **响应措施**:
+
 1. 立即启动备用服务器
 2. 简化功能发布（核心文档优先）
 3. 延迟非关键功能上线
@@ -237,6 +238,7 @@ gantt
 **触发条件**: 服务器负载>90%或响应时间>5s
 
 **响应措施**:
+
 1. 自动扩容（预设规则）
 2. 启用CDN静态缓存
 3. 临时关闭非核心功能
@@ -247,6 +249,7 @@ gantt
 **触发条件**: 发布后发现影响核心功能的Bug
 
 **响应措施**:
+
 1. 评估影响范围
 2. 如有必要，回滚到上一版本
 3. 紧急修复并发布热补丁
@@ -336,6 +339,7 @@ gantt
 最终发布决策将在 **T-1日 18:00 UTC** 的发布准备会议上做出。
 
 **决策标准**:
+
 - 所有P0问题已解决
 - 核心功能通过测试
 - 监控系统就绪

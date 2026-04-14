@@ -1471,13 +1471,13 @@ gantt
 
 [^10]: Apache Flink JIRA, "FLINK-38547: Upgrade protobuf-java to 4.32.1", 2025. https://issues.apache.org/jira/browse/FLINK-38547
 
-[^11]: Apache Flink FLIP-540, "Support VECTOR_SEARCH in Flink SQL", 2025. https://github.com/apache/flink/blob/master/flink-docs/docs/flips/FLIP-540.md
+[^11]: Apache Flink FLIP-540, "Support VECTOR_SEARCH in Flink SQL", 2025. https://github.com/apache/flink/blob/main/flink-docs/docs/flips/FLIP-540.md
 
-[^12]: Apache Flink FLIP-542, "Make materialized table DDL consistent with regular tables", 2025. https://github.com/apache/flink/blob/master/flink-docs/docs/flips/FLIP-542.md
+[^12]: Apache Flink FLIP-542, "Make materialized table DDL consistent with regular tables", 2025. https://github.com/apache/flink/blob/main/flink-docs/docs/flips/FLIP-542.md
 
-[^13]: Apache Flink FLIP-544, "SinkUpsertMaterializer V2", 2025. https://github.com/apache/flink/blob/master/flink-docs/docs/flips/FLIP-544.md
+[^13]: Apache Flink FLIP-544, "SinkUpsertMaterializer V2", 2025. https://github.com/apache/flink/blob/main/flink-docs/docs/flips/FLIP-544.md
 
-[^14]: Apache Flink FLIP-370, "Support Balanced Tasks Scheduling", 2023. https://github.com/apache/flink/blob/master/flink-docs/docs/flips/FLIP-370.md
+[^14]: Apache Flink FLIP-370, "Support Balanced Tasks Scheduling", 2023. https://github.com/apache/flink/blob/main/flink-docs/docs/flips/FLIP-370.md
 
 [^15]: Apache Flink Documentation, "Balanced Tasks Scheduling", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/deployment/tasks-scheduling/balanced_tasks_scheduling/
 

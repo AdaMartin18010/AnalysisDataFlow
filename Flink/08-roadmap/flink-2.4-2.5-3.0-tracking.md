@@ -373,7 +373,7 @@
 - Apache Flink 官方下载: <https://flink.apache.org/downloads/>
 - Flink 2.0.0 发布说明: <https://flink.apache.org/2025/03/24/apache-flink-2.0.0-a-new-era-of-real-time-data-processing/>
 - Flink 官方路线图: <https://flink.apache.org/what-is-flink/roadmap/>
-- FLIP 提案列表: <https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals>
+- FLIP 提案列表: <https://github.com/apache/flink/tree/main/flink-docs/docs/flips/>
 
 ### 社区资源
 

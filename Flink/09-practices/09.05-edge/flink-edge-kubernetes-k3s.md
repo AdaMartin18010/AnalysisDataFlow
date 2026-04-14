@@ -519,7 +519,7 @@ kubectl wait --for=condition=ready pod -l app=cert-manager -n cert-manager --tim
 
 ```bash
 # 添加Flink Helm仓库
-helm repo add flink-operator-repo https://downloads.apache.org/flink/flink-kubernetes-operator-1.7.0/
+helm repo add flink-operator-repo https://downloads.apache.org/flink/flink-kubernetes-operator-1.14.0/
 helm repo update
 
 # 创建命名空间

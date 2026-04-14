@@ -1,14 +1,15 @@
-# 🎉 欢迎来到 AnalysisDataFlow 社区！
+# 🎉 欢迎来到 AnalysisDataFlow 社区
 
 > **新用户指南** | 阅读时间: 5分钟 | 最后更新: 2026-04-12
 
 ---
 
-## 👋 你好，新朋友！
+## 👋 你好，新朋友
 
 欢迎加入 **AnalysisDataFlow** —— 流计算领域最全面的开源知识库！
 
 无论你是：
+
 - 🎓 **初学者** —— 刚开始学习流计算
 - 💼 **开发者** —— 正在使用Flink或其他流计算框架
 - 🏗️ **架构师** —— 设计流计算系统
@@ -33,6 +34,7 @@
 | 🌍 **en/** | 英文核心文档 | 4篇文档 |
 
 **核心价值**：
+
 - ✅ **系统性** —— 从理论到实践的完整知识体系
 - ✅ **严谨性** —— 形式化方法确保准确性
 - ✅ **实用性** —— 结合实际案例，可直接应用
@@ -48,7 +50,7 @@ graph TD
     B -->|开发者| D[实践路径]
     B -->|架构师| E[架构路径]
     B -->|研究者| F[理论路径]
-    
+
     C --> C1[快速入门 → 基础概念 → 动手实践]
     D --> D1[Flink指南 → 高级特性 → 性能优化]
     E --> E1[架构概览 → 设计模式 → 案例研究]
@@ -209,6 +211,7 @@ A: 加入我们的 [GitHub Discussion](https://github.com/luyanruyr/AnalysisData
 **Q: 遇到问题可以在哪里求助？**
 
 A: 推荐顺序：
+
 1. 搜索文档和已有Discussion
 2. 在 Q&A 分类下提问
 3. 在相关文档下评论
@@ -302,8 +305,8 @@ graph LR
 
 ### 紧急联系
 
-- **安全问题**: security@analysisdataflow.org
-- **社区事务**: community@analysisdataflow.org
+- **安全问题**: <security@analysisdataflow.org>
+- **社区事务**: <community@analysisdataflow.org>
 
 ---
 
@@ -340,7 +343,7 @@ graph LR
 
 ---
 
-**再次欢迎来到 AnalysisDataFlow 社区！** 
+**再次欢迎来到 AnalysisDataFlow 社区！**
 
 我们期待着你的参与和贡献。让我们一起构建最好的流计算知识库！ 🚀
 

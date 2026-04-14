@@ -174,7 +174,7 @@ kubeVersion: ">= 1.25.0-0"
 dependencies:
   - name: flink-kubernetes-operator
     version: "1.12.x"
-    repository: https://downloads.apache.org/flink/flink-kubernetes-operator-1.12.0/
+    repository: https://downloads.apache.org/flink/flink-kubernetes-operator-1.14.0/
     condition: operator.enabled
     tags:
       - operator
@@ -1334,7 +1334,7 @@ flinkCluster:
 
 ```bash
 # 添加Helm仓库
-helm repo add flink-operator https://downloads.apache.org/flink/flink-kubernetes-operator-1.12.0/
+helm repo add flink-operator https://downloads.apache.org/flink/flink-kubernetes-operator-1.14.0/
 helm repo update
 
 # 安装Operator

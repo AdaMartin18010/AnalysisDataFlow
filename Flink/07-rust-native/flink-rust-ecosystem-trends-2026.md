@@ -608,7 +608,7 @@ xychart-beta
 
 - [Rust 官方 Book](https://doc.rust-lang.org/book/)
 - [Rust 流处理模式](https://github.com/rust-lang-nursery/wg-async)
-- [Flink Rust UDF 示例库](https://github.com/apache/flink/tree/master/flink-wasm-udf)
+- [Flink Rust UDF 示例库](https://github.com/apache/flink/tree/main/flink-wasm-udf)
 
 ---
 

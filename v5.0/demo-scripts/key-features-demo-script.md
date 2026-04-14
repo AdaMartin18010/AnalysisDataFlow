@@ -100,7 +100,7 @@ make serve-local
 
 ```
 操作: 点击"为我推荐"按钮
-输入: 
+输入:
   - 背景: "后端工程师"
   - 目标: "Flink专家"
   - 可用时间: "每周10小时"
@@ -334,7 +334,7 @@ Checkpoint → 一致性保证 → Exactly-Once
 
 示例代码:
 ```java
-StreamExecutionEnvironment env = 
+StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
 env.enableCheckpointing(60000);
@@ -353,10 +353,12 @@ env.execute("Checkpoint Demo");
 ```
 
 展示:
+
 - 代码在云端执行
 - 实时输出结果
 - 执行时间统计
 - 错误提示（如有）
+
 ```
 
 ---
@@ -366,15 +368,19 @@ env.execute("Checkpoint Demo");
 ### 总结要点
 
 ```
+
 v5.0 三大核心新特性:
+
 1. 🎓 在线学习平台 - 结构化课程 + 交互式实验
 2. 🕸️ 知识图谱 v3.0 - 可视化概念关系探索
 3. 🌍 完整双语支持 - 中英文专业翻译
 
 立即体验:
-- 官网: https://analysisdataflow.org
-- 学习平台: https://learn.analysisdataflow.org
-- 知识图谱: https://graph.analysisdataflow.org
+
+- 官网: <https://analysisdataflow.org>
+- 学习平台: <https://learn.analysisdataflow.org>
+- 知识图谱: <https://graph.analysisdataflow.org>
+
 ```
 
 ### Q&A 常见问题准备

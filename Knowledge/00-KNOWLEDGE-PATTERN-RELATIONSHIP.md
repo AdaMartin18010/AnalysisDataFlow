@@ -32,7 +32,7 @@
 
 ---
 
-## 1. 关系链概述
+## 1. 概念定义 (Definitions)
 
 **Def-K-R-01 (知识层级关系链)**
 
@@ -54,7 +54,51 @@ Knowledge/ 目录构建了从抽象概念到具体实践的六层递进关系链
 
 ---
 
-## 2. 概念 → 设计模式 (Concept to Pattern)
+## 2. 属性推导 (Properties)
+
+**表1: 模式到业务映射 (Pattern-to-Business Mapping)**
+
+| 设计模式 | 适用业务场景 | 关键配置 | 关系编号 |
+|----------|-------------|----------|----------|
+| pattern-checkpoint-recovery | 金融风控、支付处理 | checkpoint间隔5s | Def-K-R-04 |
+| pattern-stateful-computation | 游戏分析、推荐系统 | RocksDB状态后端 | Def-K-R-05 |
+| pattern-event-time-processing | IoT处理、出行平台 | Watermark策略 | Def-K-R-06 |
+| pattern-windowed-aggregation | 实时看板、指标聚合 | 窗口大小配置 | Def-K-R-03 |
+| pattern-cep-complex-event | 反欺诈、风控规则 | 模式定义语法 | Def-K-R-03 |
+| pattern-async-io-enrichment | 维表关联、数据增强 | 异步超时配置 | Def-K-R-02 |
+| pattern-side-output | 异常分流、数据清洗 | 旁路输出标签 | Def-K-R-03 |
+| pattern-log-analysis | 日志监控、ELK增强 | 解析规则配置 | - |
+| pattern-realtime-feature-engineering | 特征平台、ML管道 | 特征TTL设置 | - |
+
+**表2: 业务到技术映射 (Business-to-Technology Mapping)**
+
+| 业务场景 | 推荐引擎 | 存储选型 | 关键指标 | 关系编号 |
+|----------|---------|----------|----------|----------|
+| fintech-realtime-risk-control | Flink | RocksDB | 延迟<100ms | Def-K-R-07/08 |
+| stripe-payment-processing | Flink | RocksDB | 零丢失 | Def-K-R-04 |
+| gaming-analytics | Flink | Redis/HBase | 吞吐>100K/s | Def-K-R-05 |
+| spotify-music-recommendation | Flink | RocksDB | 状态大 | Def-K-R-05 |
+| iot-stream-processing | Flink | InfluxDB | 吞吐>1M/s | Def-K-R-06/08 |
+| uber-realtime-platform | Flink | Redis | 地理计算 | Def-K-R-06 |
+| alibaba-double11-flink | Flink | Hologres | 高并发 | - |
+| netflix-streaming-pipeline | Flink | S3/Cassandra | 大规模 | - |
+| airbnb-marketplace-dynamics | Flink | Druid | 分析型 | - |
+
+---
+
+## 4. 论证过程 (Argumentation)
+
+本文档侧重于知识库各层级之间的映射关系梳理，论证过程内容已融入各关系链的具体分析之中。
+
+---
+
+## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
+
+本文档为模式关系全景图，侧重于工程实践中的映射关系展示，形式化证明请参阅 Struct/ 目录下的相关证明文档。
+
+---
+
+## 3. 关系建立 (Relations)
 
 ### 2.1 并发范式到设计模式映射
 
@@ -96,7 +140,7 @@ Knowledge/ 目录构建了从抽象概念到具体实践的六层递进关系链
 
 ---
 
-## 3. 设计模式 → 业务场景 (Pattern to Business)
+### 3. 设计模式 → 业务场景 (Pattern to Business)
 
 ### 3.1 容错模式到业务映射
 
@@ -145,7 +189,7 @@ Knowledge/ 目录构建了从抽象概念到具体实践的六层递进关系链
 
 ---
 
-## 4. 业务场景 → 技术选型 (Business to Selection)
+### 4. 业务场景 → 技术选型 (Business to Selection)
 
 ### 4.1 业务场景到引擎选型
 
@@ -180,7 +224,7 @@ Knowledge/ 目录构建了从抽象概念到具体实践的六层递进关系链
 
 ---
 
-## 5. 技术选型 → 迁移指南 (Selection to Migration)
+### 5. 技术选型 → 迁移指南 (Selection to Migration)
 
 **Def-K-R-09 (迁移指导关系)**
 
@@ -199,7 +243,7 @@ Knowledge/ 目录构建了从抽象概念到具体实践的六层递进关系链
 
 ---
 
-## 6. 迁移指南 → 最佳实践 (Migration to Practice)
+### 6. 迁移指南 → 最佳实践 (Migration to Practice)
 
 **Def-K-R-10 (实践落地关系)**
 
@@ -220,39 +264,33 @@ Knowledge/ 目录构建了从抽象概念到具体实践的六层递进关系链
 
 ---
 
-## 7. 关系定义汇总
+## 6. 实例验证 (Examples)
 
-**表1: 模式到业务映射 (Pattern-to-Business Mapping)**
+**关系统计汇总表**
 
-| 设计模式 | 适用业务场景 | 关键配置 | 关系编号 |
-|----------|-------------|----------|----------|
-| pattern-checkpoint-recovery | 金融风控、支付处理 | checkpoint间隔5s | Def-K-R-04 |
-| pattern-stateful-computation | 游戏分析、推荐系统 | RocksDB状态后端 | Def-K-R-05 |
-| pattern-event-time-processing | IoT处理、出行平台 | Watermark策略 | Def-K-R-06 |
-| pattern-windowed-aggregation | 实时看板、指标聚合 | 窗口大小配置 | Def-K-R-03 |
-| pattern-cep-complex-event | 反欺诈、风控规则 | 模式定义语法 | Def-K-R-03 |
-| pattern-async-io-enrichment | 维表关联、数据增强 | 异步超时配置 | Def-K-R-02 |
-| pattern-side-output | 异常分流、数据清洗 | 旁路输出标签 | Def-K-R-03 |
-| pattern-log-analysis | 日志监控、ELK增强 | 解析规则配置 | - |
-| pattern-realtime-feature-engineering | 特征平台、ML管道 | 特征TTL设置 | - |
+| 层级关系 | 关系边数 | 定义编号范围 |
+|----------|----------|--------------|
+| 概念 → 设计模式 | 6 | Def-K-R-02, Def-K-R-03 |
+| 设计模式 → 业务场景 | 9 | Def-K-R-04, Def-K-R-05, Def-K-R-06 |
+| 业务场景 → 技术选型 | 10 | Def-K-R-07, Def-K-R-08 |
+| 技术选型 → 迁移指南 | 3 | Def-K-R-09 |
+| 迁移指南 → 最佳实践 | 3 | Def-K-R-10 |
+| **总计** | **31** | Def-K-R-01 ~ Def-K-R-10 |
 
-**表2: 业务到技术映射 (Business-to-Technology Mapping)**
+**模式覆盖率统计**
 
-| 业务场景 | 推荐引擎 | 存储选型 | 关键指标 | 关系编号 |
-|----------|---------|----------|----------|----------|
-| fintech-realtime-risk-control | Flink | RocksDB | 延迟<100ms | Def-K-R-07/08 |
-| stripe-payment-processing | Flink | RocksDB | 零丢失 | Def-K-R-04 |
-| gaming-analytics | Flink | Redis/HBase | 吞吐>100K/s | Def-K-R-05 |
-| spotify-music-recommendation | Flink | RocksDB | 状态大 | Def-K-R-05 |
-| iot-stream-processing | Flink | InfluxDB | 吞吐>1M/s | Def-K-R-06/08 |
-| uber-realtime-platform | Flink | Redis | 地理计算 | Def-K-R-06 |
-| alibaba-double11-flink | Flink | Hologres | 高并发 | - |
-| netflix-streaming-pipeline | Flink | S3/Cassandra | 大规模 | - |
-| airbnb-marketplace-dynamics | Flink | Druid | 分析型 | - |
+| 层级 | 文档总数 | 已映射文档 | 覆盖率 |
+|------|----------|-----------|--------|
+| 01-concept-atlas/ | 3 | 2 | 66.7% |
+| 02-design-patterns/ | 9 | 7 | 77.8% |
+| 03-business-patterns/ | 13 | 9 | 69.2% |
+| 04-technology-selection/ | 5 | 4 | 80.0% |
+| 05-mapping-guides/migration-guides/ | 5 | 3 | 60.0% |
+| 07-best-practices/ | 7 | 3 | 42.9% |
 
 ---
 
-## 8. 可视化
+## 7. 可视化 (Visualizations)
 
 ### 8.1 概念到实践完整链
 
@@ -384,30 +422,4 @@ graph LR
 
 ---
 
-## 9. 数据汇总
-
-**关系统计汇总表**
-
-| 层级关系 | 关系边数 | 定义编号范围 |
-|----------|----------|--------------|
-| 概念 → 设计模式 | 6 | Def-K-R-02, Def-K-R-03 |
-| 设计模式 → 业务场景 | 9 | Def-K-R-04, Def-K-R-05, Def-K-R-06 |
-| 业务场景 → 技术选型 | 10 | Def-K-R-07, Def-K-R-08 |
-| 技术选型 → 迁移指南 | 3 | Def-K-R-09 |
-| 迁移指南 → 最佳实践 | 3 | Def-K-R-10 |
-| **总计** | **31** | Def-K-R-01 ~ Def-K-R-10 |
-
-**模式覆盖率统计**
-
-| 层级 | 文档总数 | 已映射文档 | 覆盖率 |
-|------|----------|-----------|--------|
-| 01-concept-atlas/ | 3 | 2 | 66.7% |
-| 02-design-patterns/ | 9 | 7 | 77.8% |
-| 03-business-patterns/ | 13 | 9 | 69.2% |
-| 04-technology-selection/ | 5 | 4 | 80.0% |
-| 05-mapping-guides/migration-guides/ | 5 | 3 | 60.0% |
-| 07-best-practices/ | 7 | 3 | 42.9% |
-
----
-
-## 10. 引用参考
+## 8. 引用参考 (References)

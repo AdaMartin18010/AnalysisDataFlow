@@ -524,4 +524,3 @@ graph LR
 ## 8. 引用参考 (References)
 
 [^1]: P. Carbone et al., "Apache Flink: Stream and Batch Processing in a Single Engine", IEEE Data Engineering Bulletin, 2015.
-

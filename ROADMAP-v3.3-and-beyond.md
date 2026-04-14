@@ -166,7 +166,7 @@ python .scripts/validate-cross-refs.py --report > cross-ref-report.md
 
 | 任务ID | 任务名称 | 负责人 | 优先级 | 开始日期 | 截止日期 | 工时估算 |
 |--------|----------|--------|--------|----------|----------|----------|
-| P1-1 | K8s Operator 1.14 更新 | 核心团队 | P0 | 2026-04-15 | 2026-05-05 | 40h |
+| P1-1 | K8s Operator 1.14 更新 | 核心团队 | P0 | 2026-04-15 | 2026-05-05 | 40h | ✅ 已完成 |
 | P1-2 | CI/CD质量门禁上线 | DevOps团队 | P0 | 2026-04-20 | 2026-05-03 | 32h |
 | P1-3 | 性能基准测试更新 | 性能团队 | P1 | 2026-05-01 | 2026-05-31 | 56h |
 
@@ -187,10 +187,10 @@ python .scripts/validate-cross-refs.py --report > cross-ref-report.md
 
 **关键新特性覆盖**:
 
-- [ ] Declarative Resource Management (声明式资源管理)
-- [ ] Improved Autoscaling Algorithm (改进的自动缩放算法)
-- [ ] Session Cluster Mode Enhancements (Session模式增强)
-- [ ] Helm Chart Improvements (Helm Chart改进)
+- [x] Declarative Resource Management (声明式资源管理)
+- [x] Improved Autoscaling Algorithm (改进的自动缩放算法)
+- [x] Session Cluster Mode Enhancements (Session模式增强)
+- [x] Helm Chart Improvements (Helm Chart改进)
 
 **里程碑**:
 
@@ -200,14 +200,14 @@ gantt
     dateFormat  YYYY-MM-DD
 
     section 文档编写
-    特性研究        :a1, 2026-04-15, 5d
-    新特性文档      :a2, after a1, 7d
-    迁移指南        :a3, after a2, 5d
-    现有文档更新    :a4, after a3, 4d
+    特性研究        :done, a1, 2026-04-15, 5d
+    新特性文档      :done, a2, after a1, 7d
+    迁移指南        :done, a3, after a2, 5d
+    现有文档更新    :done, a4, after a3, 4d
 
     section 质量保障
-    技术审校        :b1, after a4, 3d
-    示例验证        :b2, after b1, 3d
+    技术审校        :done, b1, after a4, 3d
+    示例验证        :done, b2, after b1, 3d
     最终发布        :milestone, m1, after b2, 0d
 ```
 

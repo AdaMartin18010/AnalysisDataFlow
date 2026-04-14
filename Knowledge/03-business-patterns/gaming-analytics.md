@@ -1132,7 +1132,7 @@ sequenceDiagram
 
 [^2]: Apache Flink Documentation, "Windowing," 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/operators/windows/>
 
-[^3]: Apache Flink Documentation, "Side Outputs," 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/operators/side_output/>
+[^3]: Apache Flink Documentation, "Side Outputs," 2025. <https://nightlies.apache.org/flink/flink-docs-release-1.20/docs/dev/datastream/operators/side_output/> <!-- 404 as of 2026-04 on stable -->
 
 
 

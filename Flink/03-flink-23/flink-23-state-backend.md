@@ -554,7 +554,7 @@ def analyze_access_pattern(checkpoint_meta, top_n=10000):
 [^2]: Apache Flink Documentation, "ForSt State Backend", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/forst/
 [^3]: Facebook Engineering, "RocksDB: A Persistent Key-Value Store for Flash and RAM Storage", 2013. https://github.com/facebook/rocksdb
 [^4]: S. Chen et al., "Cold Storage Data Archives: More Than Just a Bunch of Tapes", SIGMOD, 2017.
-[^5]: Apache Flink FLIP-451, "ForSt State Backend", 2024. https://cwiki.apache.org/confluence/display/FLINK/FLIP-451:+Introduce+timeout+configuration+to+AsyncSink+API
+[^5]: Apache Flink FLIP-451, "ForSt State Backend", 2024. https://github.com/apache/flink/blob/main/flink-docs/docs/flips/FLIP-451.md
 [^6]: Amazon S3 Documentation, "Performance Guidelines", 2025. https://docs.aws.amazon.com/AmazonS3/latest/userguide/optimizing-performance.html
 [^7]: Apache Flink Documentation, "Checkpointing Under Backpressure", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/checkpointing_under_backpressure/
 

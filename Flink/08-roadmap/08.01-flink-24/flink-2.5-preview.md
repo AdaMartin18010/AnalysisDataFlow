@@ -63,7 +63,7 @@
 ### Def-F-08-51: Unified Stream-Batch Execution (FLIP-435)
 
 <!-- FLIP状态: Draft -->
-<!-- 官方提案: https://github.com/apache/flink/blob/master/flink-docs/docs/flips/FLIP-435.md -->
+<!-- 官方提案: https://github.com/apache/flink/blob/main/flink-docs/docs/flips/FLIP-435.md -->
 **流批一体执行引擎** (FLIP-435 - Draft，2026年4月更新)：
 
 ```yaml

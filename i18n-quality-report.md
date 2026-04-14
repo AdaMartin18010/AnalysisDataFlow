@@ -29,16 +29,19 @@
 **Terminology**: ✅ Passed
 
 Stats:
+
 - total_terms_in_glossary: 48
 - terms_found_in_doc: 3
 - chinese_sequences: 2
 
 Warnings:
+
 - ⚠️ Found 2 Chinese character sequences
 
 **Links**: ✅ Passed
 
 Stats:
+
 - total_links: 14
 - valid_links: 13
 - broken_links: 0
@@ -47,6 +50,7 @@ Stats:
 **Format**: ✅ Passed
 
 Stats:
+
 - sections_found: 0
 - mermaid_diagrams: 1
 - code_blocks: 4
@@ -59,34 +63,40 @@ Stats:
 **Terminology**: ✅ Passed
 
 Stats:
+
 - total_terms_in_glossary: 48
 - terms_found_in_doc: 22
 - chinese_sequences: 9
 
 Warnings:
+
 - ⚠️ Found 9 Chinese character sequences
 
 **Links**: ❌ Failed
 
 Stats:
+
 - total_links: 32
 - valid_links: 30
 - broken_links: 2
 - external_links: 0
 
 Issues:
+
 - ❌ Broken link: [Deployment Guide](../Flink/10-deployment/)
 - ❌ Broken link: [Flink Architecture Comparison](../Flink/01-architecture/)
 
 **Format**: ✅ Passed
 
 Stats:
+
 - sections_found: 1
 - mermaid_diagrams: 4
 - code_blocks: 32
 - is_index: False
 
 Warnings:
+
 - ⚠️ Missing language badges
 - ⚠️ Only 1/8 standard sections found
 
@@ -97,6 +107,7 @@ Warnings:
 **Terminology**: ✅ Passed
 
 Stats:
+
 - total_terms_in_glossary: 48
 - terms_found_in_doc: 18
 - chinese_sequences: 0
@@ -104,12 +115,14 @@ Stats:
 **Links**: ❌ Failed
 
 Stats:
+
 - total_links: 50
 - valid_links: 8
 - broken_links: 42
 - external_links: 0
 
 Issues:
+
 - ❌ Broken link: [01-architecture/flink-architecture-evolution.md](../Flink/01-architecture/flink-architecture-evolution.md)
 - ❌ Broken link: [01-architecture/flink-storage-compute-separation.md](../Flink/01-architecture/flink-storage-compute-separation.md)
 - ❌ Broken link: [01-architecture/flink-cloud-native-deep-dive.md](../Flink/01-architecture/flink-cloud-native-deep-dive.md)
@@ -156,12 +169,14 @@ Issues:
 **Format**: ✅ Passed
 
 Stats:
+
 - sections_found: 0
 - mermaid_diagrams: 0
 - code_blocks: 2
 - is_index: True
 
 Warnings:
+
 - ⚠️ Missing language badges
 
 ---
@@ -171,16 +186,19 @@ Warnings:
 **Terminology**: ✅ Passed
 
 Stats:
+
 - total_terms_in_glossary: 48
 - terms_found_in_doc: 30
 - chinese_sequences: 292
 
 Warnings:
+
 - ⚠️ Found 292 Chinese character sequences
 
 **Links**: ✅ Passed
 
 Stats:
+
 - total_links: 30
 - valid_links: 30
 - broken_links: 0
@@ -189,12 +207,14 @@ Stats:
 **Format**: ✅ Passed
 
 Stats:
+
 - sections_found: 1
 - mermaid_diagrams: 0
 - code_blocks: 42
 - is_index: False
 
 Warnings:
+
 - ⚠️ Missing language badges
 - ⚠️ Only 1/8 standard sections found
 
@@ -205,16 +225,19 @@ Warnings:
 **Terminology**: ✅ Passed
 
 Stats:
+
 - total_terms_in_glossary: 48
 - terms_found_in_doc: 10
 - chinese_sequences: 10
 
 Warnings:
+
 - ⚠️ Found 10 Chinese character sequences
 
 **Links**: ✅ Passed
 
 Stats:
+
 - total_links: 46
 - valid_links: 46
 - broken_links: 0
@@ -223,12 +246,14 @@ Stats:
 **Format**: ✅ Passed
 
 Stats:
+
 - sections_found: 0
 - mermaid_diagrams: 0
 - code_blocks: 0
 - is_index: True
 
 Warnings:
+
 - ⚠️ Missing language badges
 
 ---
@@ -238,6 +263,7 @@ Warnings:
 **Terminology**: ✅ Passed
 
 Stats:
+
 - total_terms_in_glossary: 48
 - terms_found_in_doc: 21
 - chinese_sequences: 0
@@ -245,24 +271,28 @@ Stats:
 **Links**: ❌ Failed
 
 Stats:
+
 - total_links: 5
 - valid_links: 3
 - broken_links: 2
 - external_links: 0
 
 Issues:
+
 - ❌ Broken link: [case studies](../Flink/07-case-studies/)
 - ❌ Broken link: [production deployment guide](../Flink/10-deployment/)
 
 **Format**: ✅ Passed
 
 Stats:
+
 - sections_found: 1
 - mermaid_diagrams: 1
 - code_blocks: 36
 - is_index: False
 
 Warnings:
+
 - ⚠️ Missing language badges
 - ⚠️ Only 1/8 standard sections found
 
@@ -273,22 +303,26 @@ Warnings:
 **Terminology**: ✅ Passed
 
 Stats:
+
 - total_terms_in_glossary: 48
 - terms_found_in_doc: 19
 - chinese_sequences: 12
 
 Warnings:
+
 - ⚠️ Found 12 Chinese character sequences
 
 **Links**: ❌ Failed
 
 Stats:
+
 - total_links: 45
 - valid_links: 30
 - broken_links: 3
 - external_links: 12
 
 Issues:
+
 - ❌ Broken link: [FLINK-24-25-30-COMPLETION-REPORT.md](../FLINK-24-25-30-COMPLETION-REPORT.md)
 - ❌ Broken link: [Flink/06-engineering/](../Flink/06-engineering/)
 - ❌ Broken link: [Flink/12-ai-ml/](../Flink/12-ai-ml/)
@@ -296,12 +330,14 @@ Issues:
 **Format**: ✅ Passed
 
 Stats:
+
 - sections_found: 0
 - mermaid_diagrams: 1
 - code_blocks: 10
 - is_index: False
 
 Warnings:
+
 - ⚠️ Only 0/8 standard sections found
 
 ---
@@ -311,16 +347,19 @@ Warnings:
 **Terminology**: ✅ Passed
 
 Stats:
+
 - total_terms_in_glossary: 48
 - terms_found_in_doc: 16
 - chinese_sequences: 9
 
 Warnings:
+
 - ⚠️ Found 9 Chinese character sequences
 
 **Links**: ✅ Passed
 
 Stats:
+
 - total_links: 20
 - valid_links: 20
 - broken_links: 0
@@ -329,12 +368,14 @@ Stats:
 **Format**: ✅ Passed
 
 Stats:
+
 - sections_found: 0
 - mermaid_diagrams: 0
 - code_blocks: 0
 - is_index: True
 
 Warnings:
+
 - ⚠️ Missing language badges
 
 ---
@@ -344,22 +385,26 @@ Warnings:
 **Terminology**: ✅ Passed
 
 Stats:
+
 - total_terms_in_glossary: 48
 - terms_found_in_doc: 5
 - chinese_sequences: 2
 
 Warnings:
+
 - ⚠️ Found 2 Chinese character sequences
 
 **Links**: ❌ Failed
 
 Stats:
+
 - total_links: 18
 - valid_links: 8
 - broken_links: 5
 - external_links: 5
 
 Issues:
+
 - ❌ Broken link: [Link to related doc](../../path)
 - ❌ Broken link: [Link to prerequisite document](../../path)
 - ❌ Broken link: [Link to follow-up document](../../path)
@@ -369,10 +414,10 @@ Issues:
 **Format**: ✅ Passed
 
 Stats:
+
 - sections_found: 8
 - mermaid_diagrams: 2
 - code_blocks: 10
 - is_index: False
 
 ---
-

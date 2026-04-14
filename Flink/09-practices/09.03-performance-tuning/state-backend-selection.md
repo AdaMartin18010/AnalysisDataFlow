@@ -533,7 +533,7 @@ flowchart TD
 
 [^3]: P. Carbone et al., "Apache Flink: Stream and Batch Processing in a Single Engine," *IEEE Data Engineering Bulletin*, 38(4), 2015.
 
-[^4]: Apache Flink Documentation, "Incremental Checkpoints", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/incremental-checkpoints/>
+[^4]: Apache Flink Documentation, "Incremental Checkpoints", 2025. <https://nightlies.apache.org/flink/flink-docs-release-1.20/docs/ops/state/incremental-checkpoints/> <!-- 404 as of 2026-04 on stable -->
 
 [^5]: RocksDB Wiki, "RocksDB Basics", Meta Open Source, 2025. <https://github.com/facebook/rocksdb/wiki/RocksDB-Basics>
 

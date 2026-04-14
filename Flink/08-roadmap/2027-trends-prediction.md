@@ -539,9 +539,9 @@ graph TB
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink Community, "FLIP-188: Paimon Integration", 2024. https://cwiki.apache.org/confluence/display/FLINK/FLIP-188:+Introduce+Built-in+Dynamic+Table+Storage
+[^1]: Apache Flink Community, "FLIP-188: Paimon Integration", 2024. https://github.com/apache/flink/blob/main/flink-docs/docs/flips/FLIP-188.md
 [^2]: Apache Flink Community, "FLIP-320: ForSt State Backend", 2024. https://issues.apache.org/jira/browse/FLINK-320
-[^3]: Apache Flink Community, "FLIP-531: Flink Agents", 2025. https://cwiki.apache.org/confluence/display/FLINK/FLIP-531:+Initiate+Flink+Agents+as+a+new+Sub-Project
+[^3]: Apache Flink Community, "FLIP-531: Flink Agents", 2025. https://github.com/apache/flink/blob/main/flink-docs/docs/flips/FLIP-531.md
 [^4]: Confluent, "2024 Kafka Summit: The Rise of SQL in Stream Processing", 2024.
 [^5]: Databricks, "Delta Streaming Tables GA Announcement", 2024.
 [^6]: J. Li et al., "Incremental View Maintenance over Lakehouse", VLDB 2025.

@@ -570,7 +570,7 @@ Operator2.0 = (Transform, StateReference, ProcessingLogic)
 
 [^20]: Apache Flink, "Async I/O," <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/operators/asyncio/>
 
-[^21]: Apache Flink, "Queryable State," <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/queryable_state//>
+[^21]: Apache Flink, "Queryable State," <https://archive.org/web/*/https://nightlies.apache.org/flink/flink-docs-release-1.16/docs/dev/datastream/fault-tolerance/queryable_state/> <!-- 404 as of 2026-04: deprecated in Flink 1.17+ -->
 
 [^22]: Apache Flink, "Process Function," <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/operators/process_function/>
 

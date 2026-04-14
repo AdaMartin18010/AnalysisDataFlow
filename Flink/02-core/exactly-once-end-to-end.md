@@ -8,61 +8,19 @@
 
 ## 目录
 
-- [Flink 端到端 Exactly-Once 保障 (End-to-End Exactly-Once Guarantees)](#flink-端到端-exactly-once-保障-end-to-end-exactly-once-guarantees)
-  - [目录](#目录)
-  - [1. 核心概念与定义](#1-核心概念与定义)
-    - [1.1 Exactly-Once 语义定义](#11-exactly-once-语义定义)
-    - [1.2 端到端 Exactly-Once 的三要素](#12-端到端-exactly-once-的三要素)
-    - [1.3 一致性级别对比](#13-一致性级别对比)
-  - [2. Source 可重放机制](#2-source-可重放机制)
-    - [2.1 可重放 Source 的定义](#21-可重放-source-的定义)
-    - [2.2 Kafka Source 的偏移量管理](#22-kafka-source-的偏移量管理)
-    - [2.3 其他 Source 系统的实现](#23-其他-source-系统的实现)
-  - [3. Flink Checkpoint 一致性机制](#3-flink-checkpoint-一致性机制)
-    - [3.1 Chandy-Lamport 分布式快照](#31-chandy-lamport-分布式快照)
-    - [3.2 Barrier 对齐与非对齐](#32-barrier-对齐与非对齐)
-    - [3.3 状态后端与快照机制](#33-状态后端与快照机制)
-  - [4. Sink 事务性保证](#4-sink-事务性保证)
-    - [4.1 两阶段提交协议 (2PC)](#41-两阶段提交协议-2pc)
-    - [4.2 Kafka 事务性 Sink](#42-kafka-事务性-sink)
-      - [4.2.1 旧版 Kafka Producer (Flink 1.14 之前)](#421-旧版-kafka-producer-flink-114-之前)
-      - [4.2.2 新版 Kafka Sink (Flink 1.15+ 推荐)](#422-新版-kafka-sink-flink-115-推荐)
-      - [4.2.3 Kafka Exactly-Once 完整配置模板](#423-kafka-exactly-once-完整配置模板)
-      - [4.2.4 Kafka Exactly-Once 关键行为说明](#424-kafka-exactly-once-关键行为说明)
-    - [4.3 JDBC XA 事务 Sink](#43-jdbc-xa-事务-sink)
-  - [5. 幂等性 Sink 实现](#5-幂等性-sink-实现)
-    - [5.1 幂等性定义与原理](#51-幂等性定义与原理)
-    - [5.2 文件系统幂等写入](#52-文件系统幂等写入)
-    - [5.3 数据库 UPSERT 模式](#53-数据库-upsert-模式)
-  - [6. Exactly-Once 策略矩阵](#6-exactly-once-策略矩阵)
-  - [7. 故障场景与恢复分析](#7-故障场景与恢复分析)
-    - [7.1 Source 提交失败](#71-source-提交失败)
-    - [7.2 Checkpoint 失败](#72-checkpoint-失败)
-    - [7.3 Sink Pre-commit/Commit 失败](#73-sink-pre-commitcommit-失败)
-    - [7.4 网络分区与事务悬停](#74-网络分区与事务悬停)
-  - [8. 生产环境配置指南](#8-生产环境配置指南)
-    - [8.1 Flink 核心配置 (flink-conf.yaml)](#81-flink-核心配置-flink-confyaml)
-    - [8.2 Kafka Exactly-Once 完整配置示例](#82-kafka-exactly-once-完整配置示例)
-    - [8.3 端到端 Exactly-Once 作业完整示例](#83-端到端-exactly-once-作业完整示例)
-  - [9. 形式化正确性说明](#9-形式化正确性说明)
-  - [10. 参考文献](#10-参考文献)
-  - [11. 源码深度分析 (Source Code Analysis)](#11-源码深度分析-source-code-analysis)
-    - [11.1 TwoPhaseCommitSinkFunction 源码分析](#111-twophasecommitsinkfunction-源码分析)
-      - [11.1.1 核心类架构](#1111-核心类架构)
-      - [11.1.2 事务生命周期方法](#1112-事务生命周期方法)
-      - [11.1.3 与 Checkpoint 协调的核心逻辑](#1113-与-checkpoint-协调的核心逻辑)
-      - [11.1.4 snapshotState 方法详解](#1114-snapshotstate-方法详解)
-      - [11.1.5 notifyCheckpointComplete 方法详解](#1115-notifycheckpointcomplete-方法详解)
-    - [11.2 FlinkKafkaProducer 事务实现](#112-flinkkafkaproducer-事务实现)
-    - [11.3 CheckpointCoordinator 协调机制](#113-checkpointcoordinator-协调机制)
-    - [11.4 故障恢复时的 2PC 状态恢复](#114-故障恢复时的-2pc-状态恢复)
-      - [11.4.1 恢复时的事务处理源码](#1141-恢复时的事务处理源码)
-    - [11.5 2PC 状态机实现](#115-2pc-状态机实现)
-    - [11.6 关键配置参数](#116-关键配置参数)
+- [Flink 端到端 Exactly-Once 保障](#flink-端到端-exactly-once-保障)
+  - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
+  - [2. 属性推导 (Properties)](#2-属性推导-properties)
+  - [3. 关系建立 (Relations)](#3-关系建立-relations)
+  - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [6. 实例验证 (Examples)](#6-实例验证-examples)
+  - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
+  - [8. 引用参考 (References)](#8-引用参考-references)
 
 ---
 
-## 1. 核心概念与定义
+## 1. 概念定义 (Definitions)
 
 ### 1.1 Exactly-Once 语义定义
 
@@ -121,7 +79,7 @@ $$
 
 ---
 
-## 2. Source 可重放机制
+## 2. 属性推导 (Properties)
 
 ### 2.1 可重放 Source 的定义
 
@@ -198,7 +156,7 @@ sequenceDiagram
 
 ---
 
-## 3. Flink Checkpoint 一致性机制
+### 3. Flink Checkpoint 一致性机制
 
 ### 3.1 Chandy-Lamport 分布式快照
 
@@ -250,7 +208,7 @@ flowchart LR
 
 ---
 
-## 4. Sink 事务性保证
+## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
 
 ### 4.1 两阶段提交协议 (2PC)
 
@@ -412,7 +370,7 @@ JdbcXaSinkFunction<Row> xaSink = new JdbcXaSinkFunction<>(
 
 ---
 
-## 5. 幂等性 Sink 实现
+### 5. 幂等性 Sink 实现
 
 ### 5.1 幂等性定义与原理
 
@@ -469,7 +427,7 @@ ON DUPLICATE KEY UPDATE
 
 ---
 
-## 6. Exactly-Once 策略矩阵
+## 3. 关系建立 (Relations)
 
 | Connector 类型 | Exactly-Once 支持 | 实现策略 | 配置要点 | 适用场景 |
 |:--------------|:----------------:|:---------|:---------|:---------|
@@ -511,7 +469,7 @@ graph TD
 
 ---
 
-## 7. 故障场景与恢复分析
+## 4. 论证过程 (Argumentation)
 
 ### 7.1 Source 提交失败
 
@@ -566,7 +524,7 @@ sequenceDiagram
 
 ---
 
-## 8. 生产环境配置指南
+## 6. 实例验证 (Examples)
 
 ### 8.1 Flink 核心配置 (flink-conf.yaml)
 
@@ -707,7 +665,7 @@ echo "验证完成!"
 
 ---
 
-## 9. 形式化正确性说明
+## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
 
 本文档描述的 Exactly-Once 机制的形式化正确性证明详见：
 
@@ -732,7 +690,7 @@ echo "验证完成!"
 
 ---
 
-## 10. 参考文献
+## 8. 引用参考 (References)
 
 [^1]: Apache Flink Documentation. "Exactly-once Semantics". <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/exactly_once/>
 
@@ -761,7 +719,7 @@ echo "验证完成!"
 
 ---
 
-## 11. 源码深度分析 (Source Code Analysis)
+## 7. 可视化 (Visualizations)
 
 ### 11.1 TwoPhaseCommitSinkFunction 源码分析
 

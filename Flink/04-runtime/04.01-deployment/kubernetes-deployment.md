@@ -619,7 +619,7 @@ metrics:
 
 ```bash
 # 添加 Helm 仓库
-helm repo add flink-operator-repo https://downloads.apache.org/flink/flink-kubernetes-operator-
+helm repo add flink-operator-repo https://downloads.apache.org/flink/flink-kubernetes-operator-1.14.0/
 helm repo update
 
 # 安装 Operator

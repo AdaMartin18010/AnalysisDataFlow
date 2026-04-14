@@ -1175,13 +1175,13 @@ graph TB
 
 [^1]: Apache Flink Documentation, "Scheduler", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/internals/job_scheduling/
 
-[^2]: Apache Flink Source Code, `org.apache.flink.runtime.scheduler` package, GitHub, 2025. https://github.com/apache/flink/tree/master/flink-runtime/src/main/java/org/apache/flink/runtime/scheduler
+[^2]: Apache Flink Source Code, `org.apache.flink.runtime.scheduler` package, GitHub, 2025. https://github.com/apache/flink/tree/main/flink-runtime/src/main/java/org/apache/flink/runtime/scheduler
 
-[^3]: Apache Flink FLIP-160, "Adaptive Batch Scheduler", 2022. https://cwiki.apache.org/confluence/display/FLINK/FLIP-160%3A+Adaptive+Batch+Scheduler
+[^3]: Apache Flink FLIP-160, "Adaptive Batch Scheduler", 2022. https://github.com/apache/flink/blob/main/flink-docs/docs/flips/FLIP-160.md
 
-[^4]: Apache Flink FLIP-168, "Speculative Execution for Batch Jobs", 2022. https://cwiki.apache.org/confluence/display/FLINK/FLIP-168%3A+Speculative+Execution+for+Batch+Jobs
+[^4]: Apache Flink FLIP-168, "Speculative Execution for Batch Jobs", 2022. https://github.com/apache/flink/blob/main/flink-docs/docs/flips/FLIP-168.md
 
-[^5]: Apache Flink FLIP-138, "Declarative Resource Management", 2020. https://cwiki.apache.org/confluence/display/FLINK/FLIP-138%3A+Declarative+Resource+Managements
+[^5]: Apache Flink FLIP-138, "Declarative Resource Management", 2020. https://github.com/apache/flink/blob/main/flink-docs/docs/flips/FLIP-138.md
 
 [^6]: Zaharia, M., et al. "Delay Scheduling: A Simple Technique for Achieving Locality and Fairness in Cluster Scheduling." EuroSys 2010.
 

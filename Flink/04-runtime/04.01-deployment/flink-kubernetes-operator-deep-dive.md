@@ -1464,11 +1464,6 @@ kubectl logs -n flink-operator -l app.kubernetes.io/name=flink-kubernetes-operat
 ## 10. 引用参考 (References)
 
 
-
-
-
-
-
 ---
 
-*文档版本: 1.1 | 最后更新: 2026-04-08 | 状态: 生产就绪 | 新增 1.14 特性章节*
+*文档版本: 1.1 | 最后更新: 2026-04-14 | 状态: 生产就绪 | 新增 1.14 特性章节*

@@ -503,7 +503,7 @@ spec:
 
 ```bash
 # 安装 Flink Kubernetes Operator
-helm repo add flink-operator https://downloads.apache.org/flink/flink-kubernetes-operator-1.8.0/
+helm repo add flink-operator https://downloads.apache.org/flink/flink-kubernetes-operator-1.14.0/
 helm install flink-operator flink-operator/flink-kubernetes-operator
 
 # 部署 Serverless 作业

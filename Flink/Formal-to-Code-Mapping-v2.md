@@ -10,30 +10,32 @@
 
 - [Flink 形式化定义到源码映射 v2](#flink-形式化定义到源码映射-v2)
   - [目录](#目录)
-  - [1. Struct形式 → 源码映射](#1-struct形式--源码映射)
+  - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [1.1 核心理论定义映射](#11-核心理论定义映射)
     - [1.2 详细映射说明](#12-详细映射说明)
-  - [2. Knowledge概念 → 源码映射](#2-knowledge概念--源码映射)
+  - [2. 属性推导 (Properties)](#2-属性推导-properties)
     - [2.1 设计模式映射](#21-设计模式映射)
     - [2.2 详细映射说明](#22-详细映射说明)
-  - [3. Flink形式 → 源码映射](#3-flink形式--源码映射)
+  - [3. 关系建立 (Relations)](#3-关系建立-relations)
     - [3.1 Checkpoint 与状态后端映射](#31-checkpoint-与状态后端映射)
     - [3.2 网络栈与流控映射](#32-网络栈与流控映射)
     - [3.3 SQL优化器映射](#33-sql优化器映射)
     - [3.4 详细映射说明](#34-详细映射说明)
-  - [4. 形式→源码依赖链](#4-形式源码依赖链)
+  - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [4.1 核心依赖链](#41-核心依赖链)
     - [4.2 显式依赖链说明](#42-显式依赖链说明)
     - [4.3 依赖链语义解释](#43-依赖链语义解释)
-  - [5. 验证状态汇总](#5-验证状态汇总)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [5.1 映射统计](#51-映射统计)
     - [5.2 验证覆盖率](#52-验证覆盖率)
     - [5.3 源码模块覆盖](#53-源码模块覆盖)
-  - [6. 引用参考 (References)](#6-引用参考-references)
+  - [6. 实例验证 (Examples)](#6-实例验证-examples)
+  - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
+  - [8. 引用参考 (References)](#8-引用参考-references)
 
 ---
 
-## 1. Struct形式 → 源码映射
+## 1. 概念定义 (Definitions)
 
 ### 1.1 核心理论定义映射
 
@@ -76,7 +78,7 @@
 
 ---
 
-## 2. Knowledge概念 → 源码映射
+## 2. 属性推导 (Properties)
 
 ### 2.1 设计模式映射
 
@@ -113,7 +115,7 @@
 
 ---
 
-## 3. Flink形式 → 源码映射
+## 3. 关系建立 (Relations)
 
 ### 3.1 Checkpoint 与状态后端映射
 
@@ -174,7 +176,7 @@
 
 ---
 
-## 4. 形式→源码依赖链
+## 4. 论证过程 (Argumentation)
 
 ### 4.1 核心依赖链
 
@@ -263,7 +265,7 @@ Def-F-02-01 → CheckpointCoordinator
 
 ---
 
-## 5. 验证状态汇总
+## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
 
 ### 5.1 映射统计
 
@@ -296,7 +298,19 @@ Def-F-02-01 → CheckpointCoordinator
 
 ---
 
-## 6. 引用参考 (References)
+## 6. 实例验证 (Examples)
+
+本文档侧重于形式化定义到源码实现的映射关系梳理，实例验证内容分散于各映射条目之中。具体源码验证示例请参阅 [FORMAL-TO-CODE-MAPPING.md](./FORMAL-TO-CODE-MAPPING.md) 中的模块级对应说明。
+
+---
+
+## 7. 可视化 (Visualizations)
+
+第 4 节中的依赖链图（Mermaid）展示了从 Struct 理论层到 Flink 抽象层再到源码实现层的完整映射关系可视化。该图清晰地呈现了形式化定义与工程实现之间的层级依赖结构。
+
+---
+
+## 8. 引用参考 (References)
 
 
 

@@ -1401,7 +1401,7 @@ quadrantChart
 
 <!-- FLIP状态: Draft/Under Discussion -->
 <!-- 预计正式编号: FLIP-463 (GPU Acceleration for Flink ML) -->
-<!-- 跟踪: https://github.com/apache/flink/blob/master/flink-docs/docs/flips/FLIP-463.md -->
+<!-- 跟踪: https://github.com/apache/flink/blob/main/flink-docs/docs/flips/FLIP-463.md -->
 <!-- 相关实现: NVIDIA RAPIDS Accelerator, CUDA Operator Library -->
 [^8]: Apache Flink FLIP-463 (Draft), "GPU Acceleration for Flink Operators", Apache Flink Community, 2026.
 

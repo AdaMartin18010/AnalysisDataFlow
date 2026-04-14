@@ -994,13 +994,13 @@ graph TB
 
 ## 8. 引用参考 (References)
 
-[^1]: Stripe Engineering Blog, "Designing Payment Systems for Scale", 2023. <https://stripe.com/blog/payment-system-scale>
+[^1]: Stripe Engineering Blog, "Designing Payment Systems for Scale", 2023. <https://archive.org/web/*/https://stripe.com/blog/payment-system-scale> <!-- 404 as of 2026-04 -->
 
 [^2]: Stripe Documentation, "Architecture Overview", 2024. <https://stripe.com/docs/architecture>
 
 [^3]: Stripe Press, "Scaling to Billions: A Technical History", 2022.
 
-[^4]: Stripe Engineering, "Machine Learning for Fraud Detection at Scale", 2023. <https://stripe.com/blog/machine-learning-fraud>
+[^4]: Stripe Engineering, "Machine Learning for Fraud Detection at Scale", 2023. <https://archive.org/web/*/https://stripe.com/blog/machine-learning-fraud> <!-- 404 as of 2026-04 -->
 
 [^5]: ACM Queue, "Real-time Risk Scoring in Financial Systems", Vol. 21, No. 3, 2023.
 

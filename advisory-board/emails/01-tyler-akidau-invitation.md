@@ -1,7 +1,7 @@
 # Tyler Akidau 个性化邀请邮件
 
-> **状态**: 已准备待发送  
-> **优先级**: ⭐⭐⭐⭐⭐  
+> **状态**: 已准备待发送
+> **优先级**: ⭐⭐⭐⭐⭐
 > **发送日期**: 2026-04-12
 
 ---
@@ -26,8 +26,9 @@ AnalysisDataFlow is an open, rigorous, and navigable knowledge repository that b
 - **Explore** the frontier of AI-driven streaming, real-time ML, and emerging paradigms
 
 **Key Statistics:**
+
 - 📚 **1,000+** documentation pages
-- 📐 **10,000+** formalized theorems and definitions  
+- 📐 **10,000+** formalized theorems and definitions
 - 🔗 **Comprehensive** cross-references and dependency graphs
 - 🌐 **Bilingual** support (Chinese and English)
 
@@ -36,6 +37,7 @@ We have been following your groundbreaking work since the seminal **"The Dataflo
 ### Why We Reach Out to You Specifically
 
 The Dataflow Model introduced concepts like:
+
 - **Event-time processing** vs. processing-time semantics
 - **Windowing strategies** as first-class citizens
 - **Exactly-once guarantees** in the context of unbounded data
@@ -43,6 +45,7 @@ The Dataflow Model introduced concepts like:
 These concepts are now at the **core of our theoretical framework** in AnalysisDataFlow. We have dedicated entire sections to formalizing and extending these ideas, with proper attribution and references to your work.
 
 Your guidance would be invaluable in:
+
 - Ensuring our formalization of the Dataflow Model is accurate and complete
 - Shaping how we document the evolution from research to production systems
 - Bridging the gap between academic theory (your VLDB paper) and industrial practice (Beam, Flink, etc.)
@@ -80,6 +83,7 @@ Most engagement is asynchronous through email and collaborative documents.
 ### Next Steps
 
 If you are interested, I would be delighted to:
+
 1. Schedule a brief 30-minute call to discuss the role in more detail
 2. Share our **Advisory Board Charter** for your review
 3. Answer any questions you may have
@@ -90,10 +94,10 @@ Thank you for considering this invitation. Your expertise would be invaluable to
 
 Warm regards,
 
-[Your Full Name]  
-[Your Title]  
-AnalysisDataFlow Project Team  
-📧 [email@analysisdataflow.org](mailto:email@analysisdataflow.org)  
+[Your Full Name]
+[Your Title]
+AnalysisDataFlow Project Team
+📧 [email@analysisdataflow.org](mailto:email@analysisdataflow.org)
 🌐 [https://github.com/luyanfeng/AnalysisDataFlow](https://github.com/luyanfeng/AnalysisDataFlow)
 
 ---

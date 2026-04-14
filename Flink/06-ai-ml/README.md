@@ -559,14 +559,14 @@ mindmap
 ### 11.1 官方资源
 
 - 🔗 [Flink ML 文档](https://nightlies.apache.org/flink/flink-ml-docs-stable/)
-- 🔗 [FLIP-531 提案](https://cwiki.apache.org/confluence/display/FLINK/Flink+Improvement+Proposals)
+- 🔗 [FLIP-531 提案](https://github.com/apache/flink/tree/main/flink-docs/docs/flips/)
 - 🔗 [Google A2A 协议](https://github.com/google/a2a)
 - 🔗 [Anthropic MCP](https://modelcontextprotocol.io/)
 
 ### 11.2 社区资源
 
 - 🔗 [Flink AI 扩展仓库](https://github.com/apache/flink-ml)
-- 🔗 [Ververica ML 解决方案](https://www.ververica.com/solutions/machine-learning)
+- 🔗 [Ververica ML 解决方案](https://archive.org/web/*/https://www.ververica.com/solutions/machine-learning)
 
 ---
 

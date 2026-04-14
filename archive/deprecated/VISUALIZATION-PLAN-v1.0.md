@@ -16,15 +16,15 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                        数据流计算知识体系                          │
+│                        数据流计算知识体系                         │
 ├─────────────────────────────────────────────────────────────────┤
-│  Layer 3: Flink/ 技术实现层                                       │
-│  ├── 架构设计 (1.x→2.0演进、分离状态)                               │
-│  ├── 核心机制 (Checkpoint、Exactly-Once、Watermark、Backpressure)   │
-│  ├── SQL/Table API (查询优化、物化表、向量搜索)                      │
-│  ├── AI/ML集成 (Model DDL、在线学习、RAG)                          │
-│  ├── Lakehouse集成 (Paimon、Iceberg、Delta)                        │
-│  └── 部署运维 (K8s、Serverless、成本优化)                          │
+│  Layer 3: Flink/ 技术实现层                                      │
+│  ├── 架构设计 (1.x→2.0演进、分离状态)                             │
+│  ├── 核心机制 (Checkpoint、Exactly-Once、Watermark、Backpressure)│
+│  ├── SQL/Table API (查询优化、物化表、向量搜索)                   │
+│  ├── AI/ML集成 (Model DDL、在线学习、RAG)                        │
+│  ├── Lakehouse集成 (Paimon、Iceberg、Delta)                     │
+│  └── 部署运维 (K8s、Serverless、成本优化)                        │
 ├─────────────────────────────────────────────────────────────────┤
 │  Layer 2: Knowledge/ 工程实践层                                   │
 │  ├── 概念图谱 (并发范式矩阵、流模型心智图)                          │
@@ -34,13 +34,13 @@
 │  ├── 前沿技术 (流数据库、AI Agent、Temporal、边缘计算)              │
 │  └── 标准规范 (数据治理、安全合规)                                 │
 ├─────────────────────────────────────────────────────────────────┤
-│  Layer 1: Struct/ 形式化理论层                                    │
-│  ├── 基础理论 (USTM、进程演算、Actor、Dataflow、CSP、Petri网)        │
-│  ├── 性质推导 (确定性、一致性、Watermark单调性、活性/安全性)         │
-│  ├── 关系建立 (模型编码、表达能力层次L1-L6)                         │
-│  ├── 形式证明 (Checkpoint正确性、Exactly-Once正确性)               │
-│  ├── 前沿研究 (Choreographic、AI Agent会话类型、pDOT)              │
-│  └── 形式化工具 (TLA+、Coq、Iris、模型检查)                         │
+│  Layer 1: Struct/ 形式化理论层                                   │
+│  ├── 基础理论 (USTM、进程演算、Actor、Dataflow、CSP、Petri网)      │
+│  ├── 性质推导 (确定性、一致性、Watermark单调性、活性/安全性)        │
+│  ├── 关系建立 (模型编码、表达能力层次L1-L6)                        │
+│  ├── 形式证明 (Checkpoint正确性、Exactly-Once正确性)              │
+│  ├── 前沿研究 (Choreographic、AI Agent会话类型、pDOT)             │
+│  └── 形式化工具 (TLA+、Coq、Iris、模型检查)                       │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
