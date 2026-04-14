@@ -22,7 +22,7 @@ Traditional Data Architecture    vs.    Data Mesh Architecture
 ┌──────────────────┐          ┌────────────────────────────────┐
 │  Central Data    │          │  Domain A   Domain B  Domain C │
 │  Lake/Warehouse  │          │  Product    Product   Product  │
-│  (Centralized    │   →→→   │    ↓          ↓         ↓      │
+│  (Centralized    │   →→→    │    ↓          ↓         ↓      │
 │   ETL Pipelines) │          │  Self-Serve Platform +         │
 │  Single Team     │          │  Federated Governance Layer    │
 │   Bottleneck     │          └────────────────────────────────┘
