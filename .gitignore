@@ -370,6 +370,40 @@ archive/
 # Legacy directory (to be removed)
 AcotorCSPWorkflow/
 
+# Generated reports - do not commit large auto-generated JSONs
+link-check-report.json
+_validation-results.json
+cross-ref-validation-report.json
+cross-ref-validation-report-v2.json
+cross-ref-validation-report-v3.json
+cross-ref-report-v2.json
+cross-ref-report.json
+formal-element-check-result.json
+formal-element-advanced-result.json
+formal-element-check-summary.json
+mermaid-syntax-report.json
+java-code-validation-result.json
+python-validation-report.json
+code-validation-python-result.json
+broken_links_full.json
+broken_links_real.json
+six-section-validation-report.json
+_validation-stats.json
+index-data.json
+knowledge-graph-data-enhanced.json
+knowledge-graph-frontier.json
+knowledge-graph-theorems.json
+structured-data.json
+temp_entries.json
+temp_entries*.json
+validation-stats.json
+
+# Generated report directories
+validation-output/
+formal-methods/concept-lineage-output/
+formal-methods/link-check-report.json
+formal-methods/zenodo.json
+
 # -----------------------------------------------------------------------------
 # 14. Security and Secrets
 # -----------------------------------------------------------------------------
