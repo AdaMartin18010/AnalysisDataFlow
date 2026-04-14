@@ -1,15 +1,15 @@
 # SEO优化报告
 >
-> 生成时间: 2026-04-08 07:16:21 UTC
+> 生成时间: 2026-04-14 16:04:08 UTC
 > 工具: seo-optimizer.py (零成本方案)
 
 ## 📈 执行摘要
 
 | 指标 | 数值 |
 |------|------|
-| 总文档数 | 910 |
-| Markdown文件 | 2022 |
-| HTML文件 | 21 |
+| 总文档数 | 3321 |
+| Markdown文件 | 3501 |
+| HTML文件 | 62 |
 | 生成Sitemap | ✅ 已完成 |
 | 生成robots.txt | ✅ 已完成 |
 | 结构化数据 | ✅ 已添加 |
@@ -18,29 +18,30 @@
 
 | 类别 | 数量 | 占比 |
 |------|------|------|
-| Flink专题 | 440 | 48.4% |
-| 知识体系 | 214 | 23.5% |
-| 其他 | 103 | 11.3% |
-| 理论结构 | 58 | 6.4% |
-| 文档 | 47 | 5.2% |
-| 教程 | 22 | 2.4% |
-| 报告 | 10 | 1.1% |
-| 国际化 | 9 | 1.0% |
-| 知识图谱 | 7 | 0.8% |
+| Flink专题 | 930 | 28.0% |
+| 其他 | 770 | 23.2% |
+| 文档 | 582 | 17.5% |
+| 知识体系 | 560 | 16.9% |
+| 理论结构 | 300 | 9.0% |
+| 知识图谱 | 53 | 1.6% |
+| 教程 | 52 | 1.6% |
+| 报告 | 32 | 1.0% |
+| 国际化 | 26 | 0.8% |
+| 示例 | 16 | 0.5% |
 
 ## 🎯 优先级分布
 
 | 优先级范围 | 数量 | 占比 |
 |------------|------|------|
-| 高(0.8-1.0) | 109 | 12.0% |
-| 中(0.5-0.7) | 801 | 88.0% |
+| 高(0.8-1.0) | 266 | 8.0% |
+| 中(0.5-0.7) | 3055 | 92.0% |
 | 低(<0.5) | 0 | 0.0% |
 
 ## 🔧 已实施优化
 
 ### 1. Sitemap.xml
 
-- ✅ 包含 910 个URL
+- ✅ 包含 3321 个URL
 - ✅ 每个URL包含优先级和更新频率
 - ✅ 符合 sitemaps.org 标准
 
@@ -74,21 +75,21 @@
 | 0.9 | [Knowledge Graph V3...](knowledge-graph-v3.html) | 知识图谱 |
 | 0.9 | [Knowledge Graph V4...](knowledge-graph-v4.html) | 知识图谱 |
 | 0.9 | [Knowledge Graph...](knowledge-graph.html) | 知识图谱 |
+| 0.9 | [404...](knowledge-graph-site/404.html) | 知识图谱 |
+| 0.9 | [Index...](knowledge-graph-site/index.html) | 知识图谱 |
+| 0.9 | [Knowledge Graph Theorem...](release/v3.0.0/website/knowledge-graph-theorem.html) | 知识图谱 |
+| 0.9 | [Knowledge Graph V2...](release/v3.0.0/website/knowledge-graph-v2.html) | 知识图谱 |
+| 0.9 | [Knowledge Graph V3...](release/v3.0.0/website/knowledge-graph-v3.html) | 知识图谱 |
+| 0.9 | [Knowledge Graph V4...](release/v3.0.0/website/knowledge-graph-v4.html) | 知识图谱 |
+| 0.9 | [Knowledge Graph...](release/v3.0.0/website/knowledge-graph.html) | 知识图谱 |
 | 0.8 | [Flink/ 技术栈依赖全景...](Flink/00-FLINK-TECH-STACK-DEPENDENCY.md) | Flink专题 |
+| 0.8 | [Flink/ 专项文档索引...](Flink/00-INDEX.md) | Flink专题 |
 | 0.8 | [Flink State Backends 深度对比与选型指南...](Flink/3.9-state-backends-deep-comparison.md) | Flink专题 |
 | 0.8 | [Flink Built-in Functions 完整参考...](Flink/built-in-functions-reference.md) | Flink专题 |
 | 0.8 | [Flink Data Types 完整参考...](Flink/data-types-complete-reference.md) | Flink专题 |
 | 0.8 | [Elasticsearch Connector 详细指南...](Flink/elasticsearch-connector-guide.md) | Flink专题 |
 | 0.8 | [Flink Built-in Functions 完整参考...](Flink/flink-built-in-functions-reference.md) | Flink专题 |
 | 0.8 | [Flink CEP 完整教程 (Complete Tutorial)...](Flink/flink-cep-complete-tutorial.md) | Flink专题 |
-| 0.8 | [Flink Data Types 完整参考...](Flink/flink-data-types-reference.md) | Flink专题 |
-| 0.8 | [Flink Nexmark 基准测试指南...](Flink/flink-nexmark-benchmark-guide.md) | Flink专题 |
-| 0.8 | [Flink 性能基准测试套件指南...](Flink/flink-performance-benchmark-suite.md) | Flink专题 |
-| 0.8 | [PyFlink 深度指南：架构原理与工程实践...](Flink/flink-pyflink-deep-dive.md) | Flink专题 |
-| 0.8 | [Flink State Backends 深度对比与选型指南...](Flink/flink-state-backends-comparison.md) | Flink专题 |
-| 0.8 | [Flink YCSB 基准测试指南...](Flink/flink-ycsb-benchmark-guide.md) | Flink专题 |
-| 0.8 | [Flink 形式化定义到源码映射 v2...](Flink/Formal-to-Code-Mapping-v2.md) | Flink专题 |
-| 0.8 | [Flink 形式化定义与源码实现对照表...](Flink/FORMAL-TO-CODE-MAPPING.md) | Flink专题 |
 
 ## 🚀 后续建议
 

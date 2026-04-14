@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AnalysisDataFlow 知识图谱 v4.0 - React + 3D可视化 | Stream Computing Knowledge Graph</title>
+    <title>AnalysisDataFlow 知识图谱 v4.2 - React + 3D可视化 | Stream Computing Knowledge Graph</title>
     
     <!-- SEO Meta Tags -->
     <meta name="description" content="AnalysisDataFlow 知识图谱 — 流计算、Flink 与分布式系统的交互式 3D 知识图谱。涵盖 10,000+ 形式化元素、定理、定义与工程实践。 | Interactive 3D knowledge graph for stream computing, Apache Flink, and distributed systems.">
@@ -11,22 +11,22 @@
     <meta name="author" content="AnalysisDataFlow Project">
     <meta name="robots" content="index, follow">
     <meta name="googlebot" content="index, follow">
-    <link rel="canonical" href="https://analysisdataflow.github.io/AnalysisDataFlow/">
+    <link rel="canonical" href="https://knowledge-graph.analysisdataflow.github.io/">
     
     <!-- Open Graph / Facebook -->
-    <meta property="og:title" content="AnalysisDataFlow 知识图谱 v4.0 - React + 3D可视化 | Stream Computing Knowledge Graph">
+    <meta property="og:title" content="AnalysisDataFlow 知识图谱 v4.2 - React + 3D可视化 | Stream Computing Knowledge Graph">
     <meta property="og:description" content="流计算、Flink 与分布式系统的交互式 3D 知识图谱。涵盖 10,000+ 形式化元素、定理、定义与工程实践。 | Interactive knowledge graph covering stream computing theory and practice.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://analysisdataflow.github.io/AnalysisDataFlow/">
-    <meta property="og:image" content="https://analysisdataflow.github.io/AnalysisDataFlow/og-image-knowledge-graph.png">
+    <meta property="og:url" content="https://knowledge-graph.analysisdataflow.github.io/">
+    <meta property="og:image" content="https://knowledge-graph.analysisdataflow.github.io/og-image-knowledge-graph.png">
     <meta property="og:site_name" content="AnalysisDataFlow">
     <meta property="og:locale" content="zh_CN">
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="AnalysisDataFlow 知识图谱 v4.0 - React + 3D可视化 | Stream Computing Knowledge Graph">
+    <meta name="twitter:title" content="AnalysisDataFlow 知识图谱 v4.2 - React + 3D可视化 | Stream Computing Knowledge Graph">
     <meta name="twitter:description" content="流计算、Flink 与分布式系统的交互式 3D 知识图谱。涵盖 10,000+ 形式化元素、定理、定义与工程实践。 | Interactive knowledge graph covering stream computing theory and practice.">
-    <meta name="twitter:image" content="https://analysisdataflow.github.io/AnalysisDataFlow/og-image-knowledge-graph.png">
+    <meta name="twitter:image" content="https://knowledge-graph.analysisdataflow.github.io/og-image-knowledge-graph.png">
     <meta name="twitter:creator" content="@AnalysisDataFlow">
     
     <!-- CDN 预连接优化 -->
@@ -445,7 +445,7 @@
   "@type": "WebSite",
   "name": "AnalysisDataFlow 知识图谱",
   "alternateName": "AnalysisDataFlow Knowledge Graph",
-  "url": "https://analysisdataflow.github.io/AnalysisDataFlow/",
+  "url": "https://knowledge-graph.analysisdataflow.github.io/",
   "description": "流计算、Flink 与分布式系统的交互式 3D 知识图谱，涵盖 10,000+ 形式化元素、定理、定义与工程实践。",
   "inLanguage": ["zh-CN", "en"],
   "publisher": {
@@ -457,7 +457,7 @@
     "@type": "SearchAction",
     "target": {
       "@type": "EntryPoint",
-      "urlTemplate": "https://analysisdataflow.github.io/AnalysisDataFlow/?q={search_term_string}"
+      "urlTemplate": "https://knowledge-graph.analysisdataflow.github.io/?q={search_term_string}"
     },
     "query-input": "required name=search_term_string"
   }
@@ -535,6 +535,17 @@
             return components;
         };
         
+        // ============================================
+        // Algolia DocSearch Integration (TODO)
+        // ============================================
+        // 如需接入 Algolia DocSearch，请在获得凭证后填入以下配置：
+        // const docSearchConfig = {
+        //   appId: 'YOUR_APP_ID',
+        //   apiKey: 'YOUR_SEARCH_API_KEY',
+        //   indexName: 'analysisdataflow',
+        // };
+        // 然后将 DocSearch 组件集成到 SearchPanel 中。
+        // 现有的 SemanticSearchEngine 会继续作为本地回退搜索运行。
         // ============================================
         // Semantic Search Engine
         // ============================================

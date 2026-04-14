@@ -1,4 +1,65 @@
+# robots.txt for AnalysisDataFlow Project
+# 分析数据流项目 - 搜索引擎爬虫配置
+# Generated: 2026-04-14 16:04:08 UTC
+# Project: AnalysisDataFlow
+
 User-agent: *
 Allow: /
 
-Sitemap: https://analysisdataflow.github.io/AnalysisDataFlow/sitemap.xml
+# Sitemap location
+Sitemap: https://knowledge-graph.analysisdataflow.github.io/sitemap.xml
+
+# Allow search engines to index all public content
+Allow: /Struct/
+Allow: /Knowledge/
+Allow: /Flink/
+Allow: /docs/
+Allow: /tutorials/
+Allow: /examples/
+Allow: /i18n/
+
+# Exclude paths that should not be indexed
+Disallow: /.git/
+Disallow: /.github/
+Disallow: /.scripts/
+Disallow: /.vscode/
+Disallow: /.tasks/
+Disallow: /.templates/
+Disallow: /.improvement-tracking/
+Disallow: /archive/
+Disallow: /benchmark-data/
+Disallow: /CONFIG-TEMPLATES/
+Disallow: /docker/
+Disallow: /reports/
+
+# Exclude specific file patterns
+Disallow: /*.json$
+Disallow: /*.yml$
+Disallow: /*.yaml$
+Disallow: /Makefile
+Disallow: /Dockerfile
+Disallow: /docker-compose.yml
+
+# Crawl-delay to be respectful to servers
+Crawl-delay: 1
+
+# Special rules for major search engines
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0.5
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1
+
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 1

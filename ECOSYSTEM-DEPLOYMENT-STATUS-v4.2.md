@@ -33,8 +33,8 @@
 |--------|------|--------|----------|----------|
 | P0 | 在仓库 Settings > Pages 中启用 GitHub Pages（Source = GitHub Actions） | 项目维护者 | 5 min | 🔴 **高** — 不启用则站点无法上线 |
 | P0 | 触发并确认首次 Actions 部署成功 | 项目维护者 | 10 min | 🔴 **高** — 工作流未运行则内容未发布 |
-| P0 | 验证 `https://analysisdataflow.github.io/AnalysisDataFlow/` 可访问 | 项目维护者 | 5 min | 🔴 **高** |
-| P1 | （可选）取消注释 `KNOWLEDGE-GRAPH/CNAME` 并配置自定义域名 DNS | 域名管理员 | 15 min | 🟡 中 — 可用默认 github.io 域名替代 |
+| P0 | 验证 `https://knowledge-graph.analysisdataflow.github.io/` 可访问 | 项目维护者 | 5 min | 🔴 **高** |
+| P1 | 配置 `knowledge-graph.analysisdataflow.github.io` DNS CNAME | 域名管理员 | 15 min | 🟡 中 — 可用默认 github.io 域名替代 |
 | P1 | （可选）配置 Cloudflare CDN 加速 | 域名管理员 | 20 min | 🟢 低 — GitHub Pages 自带 CDN |
 | P1 | 提交 Algolia DocSearch 申请 | 项目维护者 | 10 min | 🟡 中 — 本地搜索已作为回退方案 |
 | P2 | 向 Google Search Console / Bing Webmaster 提交 sitemap | 项目维护者 | 10 min | 🟢 低 — 不提交仍可被发现 |
@@ -83,7 +83,7 @@
 |------|------|
 | `KNOWLEDGE-GRAPH/index.html` | 知识图谱主应用（React + 3D） |
 | `.github/workflows/deploy-knowledge-graph.yml` | GitHub Pages 自动部署工作流 |
-| `KNOWLEDGE-GRAPH/sitemap-full.xml` | 完整站点地图（≥200 URL） |
+| `KNOWLEDGE-GRAPH/sitemap.xml` | 完整站点地图（3,321 URL） |
 | `KNOWLEDGE-GRAPH/robots.txt` | 搜索引擎爬虫指引 |
 | `KNOWLEDGE-GRAPH/CNAME` | 自定义域名配置（当前注释） |
 | `GO-LIVE-CHECKLIST-v4.2.md` | 上线操作清单 |
@@ -97,6 +97,7 @@
 | 日期 | 版本 | 变更说明 |
 |------|------|----------|
 | 2026-04-13 | v4.2 | 初始版本：完成所有离线准备工作，发布上线检查清单与状态报告 |
+| 2026-04-14 | v4.2.1 | 完成 Q2-1/Q2-2/Q2-3：KG 部署、社区基础设施、SEO 路径修正全部落地 |
 
 ---
 

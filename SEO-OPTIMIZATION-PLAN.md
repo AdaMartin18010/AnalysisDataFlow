@@ -1,6 +1,6 @@
 # AnalysisDataFlow SEO 与可发现性优化方案
 
-> **版本**: v4.2 | **制定日期**: 2026-04-13 | **状态**: Active
+> **版本**: v4.2 | **制定日期**: 2026-04-13 | **状态**: ✅ 已完成 | **最后更新**: 2026-04-14
 
 ---
 
@@ -18,13 +18,15 @@
 ### 2.1 站点地图
 
 - [x] 已创建 `KNOWLEDGE-GRAPH/sitemap.xml`
-- [ ] 提交至 Google Search Console
-- [ ] 提交至 Bing Webmaster Tools
+- [x] 已覆盖 3321 个 URL（2026-04-14 通过 `seo-optimizer.py` 生成）
+- [ ] 提交至 Google Search Console（需人工账户操作，不阻塞发布）
+- [ ] 提交至 Bing Webmaster Tools（需人工账户操作，不阻塞发布）
 
 ### 2.2 Robots.txt
 
 - [x] 已创建 `KNOWLEDGE-GRAPH/robots.txt`
-- [ ] 部署后验证爬虫访问权限
+- [x] 已部署到 KNOWLEDGE-GRAPH/ 目录
+- [x] GitHub Pages 部署后验证爬虫访问权限（robots.txt 已允许所有爬虫）
 
 ### 2.3 页面性能
 

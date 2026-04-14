@@ -1,11 +1,11 @@
 # AnalysisDataFlow 知识图谱 v2.0
 
-> 🌐 **在线访问**: https://adamartin18010.github.io/AnalysisDataFlow/knowledge-graph/
+> 🌐 **在线访问**: https://knowledge-graph.analysisdataflow.github.io/
 
 ## 功能特性
 
 - ✅ **交互式 3D 可视化** - 基于 Three.js 的沉浸式图探索
-- ✅ **智能搜索** - 基于 Lunr.js 的全文检索
+- ✅ **智能搜索** - 基于 SemanticSearchEngine 的语义搜索（预留 Algolia DocSearch 扩展接口）
 - ✅ **学习路径** - 个性化知识导航
 - ✅ **响应式设计** - 支持桌面和移动设备
 - ✅ **SEO 优化** - 完整的元数据和结构化数据
@@ -30,7 +30,7 @@
 
 ## 部署状态
 
-![Deploy Status](https://github.com/AdaMartin18010/AnalysisDataFlow/workflows/Deploy%20Knowledge%20Graph%20v2.0%20to%20GitHub%20Pages/badge.svg)
+![Deploy Status](https://github.com/AdaMartin18010/AnalysisDataFlow/workflows/Deploy%20Knowledge%20Graph%20to%20GitHub%20Pages/badge.svg)
 
 ---
 
