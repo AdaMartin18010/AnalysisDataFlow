@@ -9,7 +9,7 @@ last_sync: "2026-04-15"
 
 > **Pattern ID**: 05/7 | **Series**: Knowledge/02-design-patterns | **Formalization Level**: L4-L5
 >
-> This pattern resolves the core tension between **state consistency**, **fault-tolerance recovery**, and **large-scale state management** in distributed stream processing.
+> This pattern addresses the core tension among **state consistency**, **fault-tolerant recovery**, and **large-scale state management** in distributed stream processing.
 
 ---
 
@@ -17,71 +17,71 @@ last_sync: "2026-04-15"
 
 - [Design Pattern: Stateful Computation](#design-pattern-stateful-computation)
   - [Table of Contents](#table-of-contents)
-  - [1. Concept Definitions (Definitions)](#1-concept-definitions-definitions)
+  - [1. Definitions](#1-definitions)
     - [Def-K-02-04 (Operator State)](#def-k-02-04-operator-state)
     - [Def-K-02-05 (Keyed State)](#def-k-02-05-keyed-state)
     - [Def-K-02-06 (State Backend)](#def-k-02-06-state-backend)
     - [Def-K-02-07 (State TTL)](#def-k-02-07-state-ttl)
     - [Def-K-02-08 (Queryable State)](#def-k-02-08-queryable-state)
-  - [2. Property Derivation (Properties)](#2-property-derivation-properties)
-    - [Prop-K-02-03 (State Partition Determinism)](#prop-k-02-03-state-partition-determinism)
+  - [2. Properties](#2-properties)
+    - [Prop-K-02-03 (State Partitioning Determinism)](#prop-k-02-03-state-partitioning-determinism)
     - [Prop-K-02-04 (TTL Validity Boundary)](#prop-k-02-04-ttl-validity-boundary)
     - [Prop-K-02-05 (State Backend Access Latency)](#prop-k-02-05-state-backend-access-latency)
-  - [3. Relation Establishment (Relations)](#3-relation-establishment-relations)
+  - [3. Relations](#3-relations)
     - [Relation to Event Time Processing](#relation-to-event-time-processing)
     - [Relation to Windowed Aggregation](#relation-to-windowed-aggregation)
     - [Relation to Checkpoint Mechanism](#relation-to-checkpoint-mechanism)
-  - [4. Argumentation Process (Argumentation)](#4-argumentation-process-argumentation)
+  - [4. Argumentation](#4-argumentation)
     - [4.1 Challenges of Distributed Stateful Computation](#41-challenges-of-distributed-stateful-computation)
     - [4.2 State Backend Selection Argument](#42-state-backend-selection-argument)
     - [4.3 Applicability Analysis](#43-applicability-analysis)
-  - [8. Formal Guarantees (Formal Guarantees)](#8-formal-guarantees-formal-guarantees)
+  - [8. Formal Guarantees](#8-formal-guarantees)
     - [8.1 Dependent Formal Definitions](#81-dependent-formal-definitions)
     - [8.2 Satisfied Formal Properties](#82-satisfied-formal-properties)
-    - [8.3 Property Preservation under Pattern Composition](#83-property-preservation-under-pattern-composition)
+    - [8.3 Property Preservation Under Composition](#83-property-preservation-under-composition)
     - [8.4 Boundary Conditions and Constraints](#84-boundary-conditions-and-constraints)
     - [8.5 Formal Characteristics of State Backends](#85-formal-characteristics-of-state-backends)
-  - [5. Formal Proof / Engineering Argument (Proof / Engineering Argument)](#5-formal-proof--engineering-argument-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
     - [5.1 Keyed State Local Determinism Argument](#51-keyed-state-local-determinism-argument)
     - [5.2 Incremental Checkpoint Consistency Argument](#52-incremental-checkpoint-consistency-argument)
     - [5.3 State Backend Selection Engineering Trade-offs](#53-state-backend-selection-engineering-trade-offs)
-  - [6. Example Validation (Examples)](#6-example-validation-examples)
+  - [6. Examples](#6-examples)
     - [6.1 Keyed State Basic Usage](#61-keyed-state-basic-usage)
     - [6.2 State TTL Configuration](#62-state-ttl-configuration)
     - [6.3 State Backend Configuration](#63-state-backend-configuration)
     - [6.4 Queryable State Implementation](#64-queryable-state-implementation)
-  - [7. Visualizations (Visualizations)](#7-visualizations-visualizations)
+  - [7. Visualizations](#7-visualizations)
     - [7.1 State Management Architecture Diagram](#71-state-management-architecture-diagram)
     - [7.2 State Backend Selection Decision Tree](#72-state-backend-selection-decision-tree)
-  - [9. References (References)](#9-references-references)
+  - [9. References](#9-references)
 
 ---
 
-## 1. Concept Definitions (Definitions)
+## 1. Definitions
 
 ### Def-K-02-04 (Operator State)
 
-**Definition**: Operator State is global state bound to an operator instance; all records in the stream share the same state copy [^1].
+**Definition**: Operator State is global state bound to an operator instance; all records in the stream share the same state副本 [^1].
 
-Formally, let the operator instance be $o_i$:
+Formally, let the operator instance be $o_i$, then:
 
 $$
 S_{\text{operator}}(o_i) \in \mathcal{V}
 $$
 
-Where $\mathcal{V}$ is the state value space. Typical uses of Operator State include: Kafka Source offset recording, Broadcast State global configuration table.
+where $\mathcal{V}$ is the state value space. Typical uses of Operator State include: offset tracking in Kafka Source, global configuration tables in Broadcast State.
 
 ---
 
 ### Def-K-02-05 (Keyed State)
 
-**Definition**: Keyed State is key-partitioned local state; each key has an independent state copy [^1].
+**Definition**: Keyed State is key-partitioned local state; each key maintains an independent state副本 [^1].
 
 $$
 S_{\text{keyed}}: (\text{TaskInstance} \times \text{Key}) \to \text{StateValue}
 $$
 
-Access to Keyed State is strictly restricted to operators after `keyBy()`. Flink guarantees that all records with the same key are routed to the same parallel subtask, ensuring serialized state updates (**Thm-S-03-01**).
+Keyed State access is strictly limited to operators after `keyBy()`. Flink guarantees that all records with the same key are routed to the same parallel sub-task, ensuring serialized state updates (**Thm-S-03-01**).
 
 **State Types** [^1]:
 
@@ -96,28 +96,28 @@ Access to Keyed State is strictly restricted to operators after `keyBy()`. Flink
 
 ### Def-K-02-06 (State Backend)
 
-**Definition**: State Backend is a pluggable abstraction layer in Flink responsible for state storage, access, and Checkpoint snapshot persistence [^2].
+**Definition**: State Backend is the pluggable abstraction layer in Flink responsible for state storage, access, and Checkpoint snapshot persistence [^2].
 
 $$
 \mathcal{B} = (S_{\text{storage}}, \Phi_{\text{access}}, \Psi_{\text{snapshot}}, \Omega_{\text{recovery}})
 $$
 
-Where:
+where:
 
-- $S_{\text{storage}}$: Physical storage medium (JVM Heap or local disk)
-- $\Phi_{\text{access}}$: State read/write interface
-- $\Psi_{\text{snapshot}}$: Asynchronous snapshot mechanism
-- $\Omega_{\text{recovery}}$: Fault recovery process
+- $S_{\text{storage}}$: physical storage medium (JVM Heap or local disk)
+- $\Phi_{\text{access}}$: state read/write interface
+- $\Psi_{\text{snapshot}}$: asynchronous snapshot mechanism
+- $\Omega_{\text{recovery}}$: fault-recovery workflow
 
 **Major Implementation Comparison**:
 
 | Feature | HashMapStateBackend | RocksDBStateBackend |
 |---------|---------------------|---------------------|
-| Storage location | JVM Heap memory | Local disk (RocksDB) |
-| State size limit | Limited by TaskManager memory | Limited by local disk capacity |
-| Access latency | Extremely low (direct memory access) | Low (memory + disk cache) |
-| Incremental Checkpoint | Supported (requires configuration) | Native support (based on SST) |
-| Large state support | Not suitable (> 100MB) | Suitable (TB level) |
+| Storage Location | JVM Heap memory | Local disk (RocksDB) |
+| State Size Limit | Limited by TaskManager memory | Limited by local disk capacity |
+| Access Latency | Extremely low (in-memory direct access) | Low (memory + disk cache) |
+| Incremental Checkpoint | Supported (requires config) | Native support (SST-based) |
+| Large State Support | Not suitable (> 100MB) | Suitable (TB-level) |
 
 ---
 
@@ -131,17 +131,17 @@ $$
 
 **Cleanup Strategies**:
 
-| Strategy | Trigger Timing | Applicable Backend |
-|----------|----------------|--------------------|
+| Strategy | Trigger Timing | Applicable Backends |
+|----------|----------------|---------------------|
 | Full Snapshot | During Checkpoint | Universal |
-| Incremental | During state access | Universal |
-| RocksDB Compaction | During compaction | RocksDB-specific |
+| Incremental | On state access | Universal |
+| RocksDB Compaction | During compaction | RocksDB only |
 
 ---
 
 ### Def-K-02-08 (Queryable State)
 
-**Definition**: Queryable State allows external clients to read-only access operator-internal Keyed State via RPC [^8].
+**Definition**: Queryable State allows external clients to read-only access Keyed State inside an operator via RPC [^8].
 
 ```
 Client ──RPC──► Queryable State Server ◄──Local── Task Manager
@@ -150,15 +150,15 @@ Client ──RPC──► Queryable State Server ◄──Local── Task Manag
                                           Keyed State
 ```
 
-**Limitations**: Read-only access, Keyed State only, relatively high network overhead. Queryable State has been marked as deprecated in Flink 1.17+; REST API or external storage are recommended as alternatives [^8].
+**Limitations**: read-only access, Keyed State only, relatively high network overhead. Queryable State has been marked as deprecated in Flink 1.17+; REST API or external storage are recommended alternatives [^8].
 
 ---
 
-## 2. Property Derivation (Properties)
+## 2. Properties
 
-### Prop-K-02-03 (State Partition Determinism)
+### Prop-K-02-03 (State Partitioning Determinism)
 
-**Proposition**: Keyed State is distributed across parallel subtasks by key hash; all records with the same key are necessarily routed to the same subtask.
+**Proposition**: Keyed State is distributed across parallel sub-tasks by the hash of the key; all records with the same key are necessarily routed to the same sub-task.
 
 $$
 \text{Partition}(key) = \text{hash}(key) \mod \text{parallelism}
@@ -175,7 +175,7 @@ $$
 
 ### Prop-K-02-04 (TTL Validity Boundary)
 
-**Proposition**: Let the last access time of state be $t_{\text{last}}$ and TTL be $T$; then the necessary and sufficient condition for state $S_k$ to be valid at time $t$ is:
+**Proposition**: Let the last access time of state be $t_{\text{last}}$ and TTL be $T$; then state $S_k$ is valid at time $t$ if and only if:
 
 $$
 t - t_{\text{last}} < T
@@ -184,8 +184,8 @@ $$
 **Engineering Constraints**:
 
 - TTL cleanup is asynchronous/lazy; expired state may still be briefly accessed before cleanup
-- `StateVisibility.NeverReturnExpired` configuration ensures expired state is not returned
-- TTL setting should be less than the Checkpoint retention period to avoid state bloat causing recovery time growth
+- `StateVisibility.NeverReturnExpired` configuration ensures expired state is never returned
+- TTL should be set shorter than the Checkpoint retention period to avoid state bloat increasing recovery time
 
 ---
 
@@ -204,35 +204,35 @@ $$
 
 ---
 
-## 3. Relation Establishment (Relations)
+## 3. Relations
 
 ### Relation to Event Time Processing
 
 Stateful computation is deeply coupled with Event Time [^10]:
 
-- State access can combine with event timestamps to implement time-windowed state (e.g., session windows)
+- State access can be combined with event timestamps to implement time-windowed state (e.g., session windows)
 - Watermark advancement can drive state expiration cleanup (TTL)
-- The monotonicity of event time guarantees that state is updated in the correct temporal order
+- The monotonicity of event time guarantees states are updated in the correct temporal order
 
 ### Relation to Windowed Aggregation
 
-Windowed aggregation internally depends on Keyed State for implementation [^11]:
+Windowed aggregation internally relies on Keyed State [^11]:
 
-- Tumbling/Sliding/Session Window aggregation results are stored in ValueState or ListState
+- Aggregation results for Tumbling/Sliding/Session Windows are stored in ValueState or ListState
 - Window trigger state and computation state are stored separately
-- The Allowed Lateness mechanism of windows depends on persistent state retention
+- The Allowed Lateness mechanism of windows relies on persistent state retention
 
 ### Relation to Checkpoint Mechanism
 
 Checkpoint is the foundation of fault tolerance for stateful computation [^2][^9]:
 
 - The State Backend implements the snapshot requirements of **Thm-S-17-01**, capturing a consistent global state
-- Incremental Checkpoint only persists changed portions of state, optimizing storage efficiency without altering consistency guarantees
-- During failure recovery, state is rebuilt from Checkpoint, combined with Source replay to achieve Exactly-Once (**Thm-S-18-01**)
+- Incremental Checkpoint persists only the changed portion of state, optimizing storage efficiency without altering consistency guarantees
+- During fault recovery, state is rebuilt from Checkpoint, and combined with Source replay to achieve Exactly-Once (**Thm-S-18-01**)
 
 ---
 
-## 4. Argumentation Process (Argumentation)
+## 4. Argumentation
 
 ### 4.1 Challenges of Distributed Stateful Computation
 
@@ -240,10 +240,10 @@ In distributed stream processing, stateful computation needs to maintain context
 
 | Challenge Dimension | Problem Description | Typical Impact |
 |---------------------|---------------------|----------------|
-| **Fault-tolerance consistency** | How to recover state when a node fails | Exactly-Once semantics broken |
-| **State scale** | Storage and access of massive key-value pairs | OOM, GC pauses |
-| **State expiration** | Cleanup of invalid state | State bloat |
-| **External querying** | External access to runtime state | Insufficient observability |
+| **Fault-tolerant Consistency** | How to recover state upon node failure | Exactly-Once semantics violation |
+| **State Scale** | Storage and access of massive key-value pairs | OOM, GC pauses |
+| **State Expiration** | Cleanup of invalid state | State bloat |
+| **External Query** | External access to runtime state | Insufficient observability |
 
 **Formal Description**: Let the state of operator $o_i$ at time $t$ be $S_t(o_i)$; stateful computation satisfies:
 
@@ -251,9 +251,9 @@ $$
 \text{Output}(o_i, r_j, t) = f(r_j, S_{t-1}(o_i))
 $$
 
-That is, output depends on historically accumulated state, making fault recovery require precise restoration of historical state.
+That is, the output depends on historically accumulated state, making fault recovery require precise restoration of historical state.
 
-**Core Conflict Triangle**:
+**Core Tension Triangle**:
 
 ```
          Consistency
@@ -267,7 +267,7 @@ Low Latency ◄──────────────► Large Scale
 
 - Strong consistency requires Barrier alignment, increasing latency
 - Large-scale state requires disk storage, with higher access latency
-- Low latency requires in-memory computation, limiting state scale
+- Low latency demands in-memory computation, limiting state scale
 
 ---
 
@@ -283,9 +283,9 @@ Low Latency ◄──────────────► Large Scale
 **RocksDBStateBackend Applicable Scenarios** [^9]:
 
 - State size > 100MB or unknown
-- Long-window aggregation (hour/day level)
-- Large keyspace (millions of keys)
-- Incremental Checkpoint optimizes storage cost
+- Long-window aggregation (hour/day-level)
+- Large Keyspace (millions of keys)
+- Incremental Checkpoint to optimize storage cost
 
 **Selection Decision Tree** [^9]:
 
@@ -299,59 +299,59 @@ State size < 30% of TM heap memory ?
 
 ### 4.3 Applicability Analysis
 
-**Recommended Usage** [^1][^9]:
+**Recommended** [^1][^9]:
 
 | Scenario | Rationale | Configuration |
 |----------|-----------|---------------|
-| Session window | Maintain sessions across events | ValueState + TTL |
-| Cumulative metrics | Daily/monthly cumulative statistics | ReducingState + Incremental Checkpoint |
-| CEP pattern matching | NFA state machine | MapState + Short TTL |
-| Deduplication filtering | Precise deduplication | ValueState + Expiration cleanup |
+| Session Window | Maintain sessions across events | ValueState + TTL |
+| Cumulative Metrics | Daily/monthly cumulative statistics | ReducingState + Incremental Checkpoint |
+| CEP Pattern Matching | NFA state machine | MapState + Short TTL |
+| Deduplication Filter | Exact deduplication | ValueState + Expiration cleanup |
 
 **Not Recommended** [^1]:
 
 | Scenario | Rationale | Alternative |
 |----------|-----------|-------------|
 | Pure stateless transformation | No state needed | map/filter |
-| Large object caching | Not suitable for caching | Redis |
+| Large object cache | Not suitable for caching | Redis |
 | Cross-job sharing | Job isolation | External database |
 
 ---
 
-## 8. Formal Guarantees (Formal Guarantees)
+## 8. Formal Guarantees
 
-This section establishes the formal connection between the Stateful Computation pattern and the Struct/ theory layer.
+This section establishes the formal connection between the stateful computation pattern and the Struct/ theoretical layer.
 
 ### 8.1 Dependent Formal Definitions
 
 | Definition ID | Name | Source | Role in This Pattern |
 |---------------|------|--------|----------------------|
-| **Def-S-03-01** | Classic Actor quadruple | Struct/01.03 | Concurrency model foundation of Keyed State: $\langle \alpha, b, m, \sigma \rangle$ |
-| **Def-S-04-01** | Dataflow graph (DAG) | Struct/01.04 | Stateful operators as stateful vertices $\langle V, E, P, \Sigma, \mathbb{T} \rangle$ |
-| **Def-S-17-02** | Consistent global state | Struct/04.01 | Checkpoint-captured state must form a consistent cut |
-| **Def-S-18-05** | Idempotence | Struct/04.02 | State update replay must satisfy idempotence |
+| **Def-S-03-01** | Classic Actor Quadruple | Struct/01.03 | Concurrency model foundation for Keyed State: $\langle \alpha, b, m, \sigma \rangle$ |
+| **Def-S-04-01** | Dataflow Graph (DAG) | Struct/01.04 | Stateful operator as stateful vertex $\langle V, E, P, \Sigma, \mathbb{T} \rangle$ |
+| **Def-S-17-02** | Consistent Global State | Struct/04.01 | Checkpoint-captured state must form a consistent cut |
+| **Def-S-18-05** | Idempotency | Struct/04.02 | State update replay must satisfy idempotency |
 
 ### 8.2 Satisfied Formal Properties
 
 | Theorem/Lemma ID | Name | Source | Guarantee |
 |------------------|------|--------|-----------|
-| **Thm-S-03-01** | Actor local determinism theorem | Struct/01.03 | Single-key state update serialization guarantees local determinism |
-| **Lemma-S-03-01** | Actor mailbox serial processing lemma | Struct/01.03 | Messages with the same key are processed FIFO |
-| **Thm-S-17-01** | Checkpoint consistency theorem | Struct/04.01 | State snapshot forms a consistent global state |
-| **Thm-S-18-01** | Exactly-Once correctness theorem | Struct/04.02 | State recovery + Source replay = Exactly-Once |
-| **Lemma-S-18-03** | State recovery consistency lemma | Struct/04.02 | Recovered state is consistent with some pre-failure moment |
+| **Thm-S-03-01** | Actor Local Determinism Theorem | Struct/01.03 | Single-key state updates are serialized, guaranteeing local determinism |
+| **Lemma-S-03-01** | Actor Mailbox Serial Processing Lemma | Struct/01.03 | Messages with the same key are processed FIFO |
+| **Thm-S-17-01** | Checkpoint Consistency Theorem | Struct/04.01 | State snapshots form a consistent global state |
+| **Thm-S-18-01** | Exactly-Once Correctness Theorem | Struct/04.02 | State recovery + Source replay = Exactly-Once |
+| **Lemma-S-18-03** | State Recovery Consistency Lemma | Struct/04.02 | Recovered state is consistent with some pre-failure moment |
 
-### 8.3 Property Preservation under Pattern Composition
+### 8.3 Property Preservation Under Composition
 
 **Stateful Computation + Event Time Composition**:
 
-- State access can combine with event timestamps to implement time-windowed state
+- State access can be combined with event timestamps to implement time-windowed state
 - Watermark drives state expiration cleanup (TTL)
 
 **Stateful Computation + Checkpoint Composition**:
 
 - State Backend implements the snapshot requirements of **Thm-S-17-01**
-- Incremental Checkpoint optimization does not alter consistency guarantees
+- Incremental Checkpoint optimization does not change consistency guarantees
 
 **Stateful Computation + Windowed Aggregation Composition**:
 
@@ -362,36 +362,36 @@ This section establishes the formal connection between the Stateful Computation 
 
 | Constraint | Formal Description | Violation Consequence |
 |------------|--------------------|-----------------------|
-| Fixed key partitioning | $\text{hash}(k) \mod \text{parallelism}$ unchanged | Key skew, state loss |
-| Finite state size | $\|S\| < \infty$ | OOM, job crash |
-| Reasonable TTL configuration | TTL < Checkpoint interval $\times N$ | State bloat, recovery time growth |
-| Concurrent access isolation | Single key, single-thread access | Data races, state corruption |
+| Fixed Key Partitioning | $\text{hash}(k) \mod \text{parallelism}$ unchanged | Key drift, state loss |
+| Finite State Size | $\|S\| < \infty$ | OOM, job crash |
+| Reasonable TTL Config | TTL < Checkpoint interval $\times N$ | State bloat, increased recovery time |
+| Isolated Concurrent Access | Single key, single-thread access | Data races, state corruption |
 
 ### 8.5 Formal Characteristics of State Backends
 
 | Backend Type | Storage Model | Consistency Guarantee | Applicable Scenario |
 |--------------|---------------|-----------------------|---------------------|
 | HashMapStateBackend | In-memory KV | **Thm-S-17-01** | Small state (<100MB) |
-| RocksDBStateBackend | LSM-Tree | **Thm-S-17-01** | Large state (TB level) |
+| RocksDBStateBackend | LSM-Tree | **Thm-S-17-01** | Large state (TB-level) |
 
 ---
 
-## 5. Formal Proof / Engineering Argument (Proof / Engineering Argument)
+## 5. Proof / Engineering Argument
 
 ### 5.1 Keyed State Local Determinism Argument
 
 **Theorem Statement** (citing **Thm-S-03-01**) [^12]:
 
-> In the Actor model, the local execution of a single Actor is deterministic; that is, for the same initial state and the same message sequence, the output state sequence is unique.
+> In the Actor model, the local execution of a single Actor is deterministic: for the same initial state and the same message sequence, the output state sequence is unique.
 
 **Mapping to Flink Keyed State**:
 
 1. Flink's `keyBy()` partitions the stream by key, equivalent to creating a logical Actor for each key
 2. All records with the same key are delivered to the same Task thread in FIFO order (**Lemma-S-03-01**)
-3. Keyed State `update()` operations are executed serially within a single thread, with no data races
+3. Keyed State `update()` operations are executed serially within a single thread, free of data races
 4. Therefore, the evolution of Keyed State satisfies local determinism
 
-**Engineering Significance**: Local determinism is the foundation for guaranteeing reproducibility after failure recovery. Even though parallel processing across different keys may have scheduling non-determinism, the state evolution path of a single key is deterministic.
+**Engineering Significance**: Local determinism is the foundation for reproducibility after fault recovery. Even though parallel processing across different keys may have scheduling non-determinism, the state evolution path for a single key is deterministic.
 
 ---
 
@@ -401,12 +401,12 @@ This section establishes the formal connection between the Stateful Computation 
 
 **Argument Structure**:
 
-1. **Completeness of state snapshot**: Each Checkpoint captures incremental changes plus a baseline full state, which can completely reconstruct the global state at that moment
-2. **SST immutability**: Once RocksDB SST files are generated they are never modified; incremental snapshots only need to reference new SSTs, naturally satisfying the consistent cut requirement
-3. **Recovery correctness**: During recovery Flink automatically merges baseline and incremental files; the reconstructed state is semantically equivalent to a full snapshot
-4. **No orphan messages**: Incremental Checkpoint does not alter Barrier alignment semantics, so in-flight message processing is consistent with full snapshots (**Lemma-S-17-04**)
+1. **Completeness of State Snapshot**: Each Checkpoint captures incremental changes plus a baseline full state, which can fully reconstruct the global state at that moment
+2. **SST Immutability**: Once generated, RocksDB SST files are never modified; incremental snapshots only need to reference new SSTs, naturally satisfying the consistent-cut requirement
+3. **Recovery Correctness**: During recovery, Flink automatically merges baseline and incremental files; the reconstructed state is semantically equivalent to a full snapshot
+4. **No Orphan Messages**: Incremental Checkpoint does not alter Barrier alignment semantics, so in-flight message processing is consistent with full snapshots (**Lemma-S-17-04**)
 
-**Conclusion**: Incremental Checkpoint is an optimized implementation of **Thm-S-17-01**, not a weakened implementation.
+**Conclusion**: Incremental Checkpoint is an optimized implementation of **Thm-S-17-01**, not a weakened one.
 
 ---
 
@@ -416,11 +416,11 @@ This section establishes the formal connection between the Stateful Computation 
 
 | Dimension | HashMapStateBackend | RocksDBStateBackend |
 |-----------|---------------------|---------------------|
-| Access latency | ~10-100 ns | 1-100 μs |
-| State capacity | Several MB - several GB | TB level |
-| GC impact | Large state causes frequent Full GC | Minimal impact on JVM Heap |
-| Incremental Checkpoint | Not supported (object-level comparison overhead is high) | Native support (SST-level) |
-| Recovery speed | Fast (memory load) | Medium (requires LSM-Tree rebuild) |
+| Access Latency | ~10-100 ns | 1-100 μs |
+| State Capacity | Several MB - Several GB | TB-level |
+| GC Impact | Large state causes frequent Full GC | Minimal impact on JVM Heap |
+| Incremental Checkpoint | Not supported (high object-level comparison overhead) | Native support (SST-level) |
+| Recovery Speed | Fast (memory load) | Medium (requires LSM-Tree rebuild) |
 
 **Decision Rule**:
 
@@ -431,11 +431,11 @@ $$
 \end{cases}
 $$
 
-Where $|S|$ is the estimated state size and TM_Heap is the TaskManager heap memory.
+where $|S|$ is the estimated state size and TM_Heap is the TaskManager heap memory.
 
 ---
 
-## 6. Example Validation (Examples)
+## 6. Examples
 
 ### 6.1 Keyed State Basic Usage
 
@@ -495,7 +495,7 @@ env.getCheckpointConfig.setCheckpointStorage("hdfs:///checkpoints")
 **RocksDBStateBackend** (large state + incremental) [^9]:
 
 ```scala
-val rocksDbBackend = new EmbeddedRocksDBStateBackend(true) // true=incremental
+val rocksDbBackend = new EmbeddedRocksDBStateBackend(true) // true = incremental
 env.setStateBackend(rocksDbBackend)
 env.getCheckpointConfig.setCheckpointStorage("hdfs:///checkpoints")
 ```
@@ -523,11 +523,11 @@ val future = client.getKvState(
 
 ---
 
-## 7. Visualizations (Visualizations)
+## 7. Visualizations
 
 ### 7.1 State Management Architecture Diagram
 
-The following Mermaid diagram shows the core components and hierarchical relationships of the stateful computation pattern:
+The following Mermaid diagram shows the core components and layer relationships of the stateful computation pattern:
 
 ```mermaid
 graph TB
@@ -574,18 +574,18 @@ graph TB
 
 ### 7.2 State Backend Selection Decision Tree
 
-The following decision tree helps select the appropriate state backend in different scenarios:
+The following decision tree helps select the appropriate state backend under different scenarios:
 
 ```mermaid
 flowchart TD
-    A[State Backend Selection] --> B{State size <br/>< 30% of TM heap ?}
+    A[State Backend Selection] --> B{State size <br/>< 30% of TM heap memory ?}
     B -->|Yes| C{Latency requirement < 1ms ?}
-    B -->|No| D[RocksDBStateBackend<br/>Large state / Incremental Checkpoint]
+    B -->|No|  D[RocksDBStateBackend<br/>Large state / Incremental Checkpoint]
 
-    C -->|Yes| E[HashMapStateBackend<br/>Low latency / Memory access]
-    C -->|No| F{Need incremental Checkpoint ?}
+    C -->|Yes| E[HashMapStateBackend<br/>Low latency / In-memory access]
+    C -->|No|  F{Need incremental Checkpoint ?}
     F -->|Yes| D
-    F -->|No| G[HashMapStateBackend<br/>Medium state]
+    F -->|No|  G[HashMapStateBackend<br/>Medium state]
 
     style A fill:#e3f2fd,stroke:#1565c0
     style E fill:#c8e6c9,stroke:#2e7d32
@@ -595,7 +595,7 @@ flowchart TD
 
 ---
 
-## 9. References (References)
+## 9. References
 
 [^1]: Flink State Documentation. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/state/>
 
@@ -615,4 +615,4 @@ flowchart TD
 
 ---
 
-*Document Version: v1.0 | Update Date: 2026-04-02*
+*Document Version: v1.0 | Last Updated: 2026-04-02*

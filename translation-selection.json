@@ -1,295 +1,77 @@
 {
   "generated_at": "2026-04-15",
+  "executed_at": "2026-04-15",
+  "note": "This file has been updated to reflect the actual source files that were translated. Some paths were corrected from the original selection due to source file reorganization.",
   "a_layer": [
-    {
-      "Path": "Flink/09-practices/09.04-deployment/00-INDEX.md",
-      "SizeKB": "0.51",
-      "layer": "A"
-    },
-    {
-      "Path": "Flink/03-api/09-language-foundations/flink-rust-native-api-guide.md",
-      "SizeKB": "0.99",
-      "layer": "A"
-    },
-    {
-      "Path": "Knowledge/06-frontier/realtime-ml-inference/00-INDEX.md",
-      "SizeKB": "1.13",
-      "layer": "A"
-    },
-    {
-      "Path": "Flink/03-flink-23/00-INDEX.md",
-      "SizeKB": "1.27",
-      "layer": "A"
-    },
-    {
-      "Path": "Flink/07-rust-native/_in-progress/agent-d-2026-04-04-d1.md",
-      "SizeKB": "1.39",
-      "layer": "A"
-    },
-    {
-      "Path": "Flink/06-ai-ml/ai-ml/evolution/a2a-protocol.md",
-      "SizeKB": "1.44",
-      "layer": "A"
-    },
-    {
-      "Path": "Flink/04-runtime/04.01-deployment/evolution/ha-evolution.md",
-      "SizeKB": "1.45",
-      "layer": "A"
-    },
-    {
-      "Path": "Flink/05-ecosystem/05.01-connectors/evolution/nosql-connector.md",
-      "SizeKB": "2.02",
-      "layer": "A"
-    },
-    {
-      "Path": "Knowledge/Flink-Scala-Rust-Comprehensive/performance-tests/README.md",
-      "SizeKB": "3.09",
-      "layer": "A"
-    },
-    {
-      "Path": "Knowledge/98-exercises/README.md",
-      "SizeKB": "3.59",
-      "layer": "A"
-    },
-    {
-      "Path": "Flink/00-meta/version-tracking/flink-26-27-status-report.md",
-      "SizeKB": "4.15",
-      "layer": "A"
-    },
-    {
-      "Path": "Knowledge/10-case-studies/CODE-RUNNABILITY-NOTES.md",
-      "SizeKB": "4.59",
-      "layer": "A"
-    },
-    {
-      "Path": "Flink/materialize-comparison.md",
-      "SizeKB": "4.96",
-      "layer": "A"
-    },
-    {
-      "Path": "Knowledge/09-anti-patterns/anti-pattern-10-resource-estimation-oom.md",
-      "SizeKB": "5.3",
-      "layer": "A"
-    },
-    {
-      "Path": "Flink/risingwave-integration-guide.md",
-      "SizeKB": "6.23",
-      "layer": "A"
-    },
-    {
-      "Path": "Flink/08-roadmap/08.02-flink-25/flink-25-roadmap.md",
-      "SizeKB": "6.33",
-      "layer": "A"
-    },
-    {
-      "Path": "Flink/pulsar-functions-integration.md",
-      "SizeKB": "9.05",
-      "layer": "A"
-    },
-    {
-      "Path": "Flink/data-types-complete-reference.md",
-      "SizeKB": "9.66",
-      "layer": "A"
-    },
-    {
-      "Path": "Flink/jdbc-connector-guide.md",
-      "SizeKB": "10.57",
-      "layer": "A"
-    },
-    {
-      "Path": "Flink/elasticsearch-connector-guide.md",
-      "SizeKB": "10.82",
-      "layer": "A"
-    },
-    {
-      "Path": "Flink/built-in-functions-reference.md",
-      "SizeKB": "11.27",
-      "layer": "A"
-    },
-    {
-      "Path": "Flink/mongodb-connector-guide.md",
-      "SizeKB": "12.22",
-      "layer": "A"
-    },
-    {
-      "Path": "Flink/pyflink-deep-guide.md",
-      "SizeKB": "12.43",
-      "layer": "A"
-    },
-    {
-      "Path": "Knowledge/cep-complete-tutorial.md",
-      "SizeKB": "12.95",
-      "layer": "A"
-    },
-    {
-      "Path": "Flink/Formal-to-Code-Mapping-v2.md",
-      "SizeKB": "12.97",
-      "layer": "A"
-    },
-    {
-      "Path": "Knowledge/case-studies/finance/realtime-anti-fraud-system-case.md",
-      "SizeKB": "13.61",
-      "layer": "A"
-    },
-    {
-      "Path": "Struct/08-standards/streaming-sql-standard.md",
-      "SizeKB": "14.42",
-      "layer": "A"
-    },
-    {
-      "Path": "Knowledge/00-KNOWLEDGE-PATTERN-RELATIONSHIP.md",
-      "SizeKB": "15.25",
-      "layer": "A"
-    },
-    {
-      "Path": "Flink/flink-performance-benchmark-suite.md",
-      "SizeKB": "15.6",
-      "layer": "A"
-    },
-    {
-      "Path": "Flink/00-INDEX.md",
-      "SizeKB": "17.56",
-      "layer": "A"
-    },
-    {
-      "Path": "Knowledge/03-business-patterns/netflix-streaming-pipeline.md",
-      "SizeKB": "17.72",
-      "layer": "A"
-    },
-    {
-      "Path": "Flink/flink-data-types-reference.md",
-      "SizeKB": "18.13",
-      "layer": "A"
-    },
-    {
-      "Path": "Flink/flink-nexmark-benchmark-guide.md",
-      "SizeKB": "18.48",
-      "layer": "A"
-    },
-    {
-      "Path": "Flink/00-FLINK-TECH-STACK-DEPENDENCY.md",
-      "SizeKB": "18.98",
-      "layer": "A"
-    },
-    {
-      "Path": "Knowledge/personalized-learning-engine.md",
-      "SizeKB": "19.34",
-      "layer": "A"
-    },
-    {
-      "Path": "Flink/01-concepts/disaggregated-state-analysis.md",
-      "SizeKB": "21.09",
-      "layer": "A"
-    },
-    {
-      "Path": "Flink/flink-ycsb-benchmark-guide.md",
-      "SizeKB": "21.42",
-      "layer": "A"
-    },
-    {
-      "Path": "Struct/07-tools/model-checking-guided-testing.md",
-      "SizeKB": "21.84",
-      "layer": "A"
-    },
-    {
-      "Path": "Struct/05-comparative-analysis/05.02-expressiveness-vs-decidability.md",
-      "SizeKB": "22.6",
-      "layer": "A"
-    },
-    {
-      "Path": "Flink/flink-built-in-functions-reference.md",
-      "SizeKB": "23.1",
-      "layer": "A"
-    },
-    {
-      "Path": "Knowledge/Knowledge-to-Flink-Mapping.md",
-      "SizeKB": "24.2",
-      "layer": "A"
-    },
-    {
-      "Path": "Knowledge/05-mapping-guides/multi-agent-frameworks-2026-comparison.md",
-      "SizeKB": "25.51",
-      "layer": "A"
-    },
-    {
-      "Path": "Knowledge/3.10-flink-production-checklist.md",
-      "SizeKB": "28.5",
-      "layer": "A"
-    },
-    {
-      "Path": "Flink/10-internals/source-code-reading-guide.md",
-      "SizeKB": "30.2",
-      "layer": "A"
-    },
-    {
-      "Path": "Flink/kafka-connector-guide.md",
-      "SizeKB": "14.5"
-    },
-    {
-      "Path": "Flink/redis-connector-guide.md",
-      "SizeKB": "11.2"
-    },
-    {
-      "Path": "Knowledge/07-best-practices/flink-production-checklist.md",
-      "SizeKB": "15.8"
-    },
-    {
-      "Path": "Flink/hdfs-connector-guide.md",
-      "SizeKB": "12.1"
-    },
-    {
-      "Path": "Knowledge/04-technology-selection/stream-processing-framework-selection.md",
-      "SizeKB": "18.3"
-    },
-    {
-      "Path": "Flink/s3-connector-guide.md",
-      "SizeKB": "10.8"
-    },
-    {
-      "Path": "Knowledge/case-studies/ecommerce/realtime-recommendation-case.md",
-      "SizeKB": "16.2"
-    }
+    { "Path": "Flink/09-practices/09.04-deployment/00-INDEX.md", "SizeKB": "0.51", "layer": "A" },
+    { "Path": "Flink/03-api/09-language-foundations/flink-rust-native-api-guide.md", "SizeKB": "0.99", "layer": "A" },
+    { "Path": "Knowledge/06-frontier/realtime-ml-inference/00-INDEX.md", "SizeKB": "1.13", "layer": "A" },
+    { "Path": "Flink/03-flink-23/00-INDEX.md", "SizeKB": "1.27", "layer": "A" },
+    { "Path": "Flink/07-rust-native/_in-progress/agent-d-2026-04-04-d1.md", "SizeKB": "1.39", "layer": "A" },
+    { "Path": "Flink/06-ai-ml/ai-ml/evolution/a2a-protocol.md", "SizeKB": "1.44", "layer": "A" },
+    { "Path": "Flink/04-runtime/04.01-deployment/evolution/ha-evolution.md", "SizeKB": "1.45", "layer": "A" },
+    { "Path": "Flink/05-ecosystem/05.01-connectors/evolution/nosql-connector.md", "SizeKB": "2.02", "layer": "A" },
+    { "Path": "Knowledge/Flink-Scala-Rust-Comprehensive/performance-tests/README.md", "SizeKB": "3.09", "layer": "A" },
+    { "Path": "Knowledge/98-exercises/README.md", "SizeKB": "3.59", "layer": "A" },
+    { "Path": "Flink/00-meta/version-tracking/flink-26-27-status-report.md", "SizeKB": "4.15", "layer": "A" },
+    { "Path": "Knowledge/10-case-studies/CODE-RUNNABILITY-NOTES.md", "SizeKB": "4.59", "layer": "A" },
+    { "Path": "Flink/materialize-comparison.md", "SizeKB": "4.96", "layer": "A" },
+    { "Path": "Knowledge/09-anti-patterns/anti-pattern-10-resource-estimation-oom.md", "SizeKB": "5.3", "layer": "A" },
+    { "Path": "Flink/risingwave-integration-guide.md", "SizeKB": "6.23", "layer": "A" },
+    { "Path": "Flink/08-roadmap/08.02-flink-25/flink-25-roadmap.md", "SizeKB": "6.33", "layer": "A" },
+    { "Path": "Flink/pulsar-functions-integration.md", "SizeKB": "9.05", "layer": "A" },
+    { "Path": "Flink/data-types-complete-reference.md", "SizeKB": "9.66", "layer": "A" },
+    { "Path": "Flink/jdbc-connector-guide.md", "SizeKB": "10.57", "layer": "A" },
+    { "Path": "Flink/elasticsearch-connector-guide.md", "SizeKB": "10.82", "layer": "A" },
+    { "Path": "Flink/built-in-functions-reference.md", "SizeKB": "11.27", "layer": "A" },
+    { "Path": "Flink/mongodb-connector-guide.md", "SizeKB": "12.22", "layer": "A" },
+    { "Path": "Flink/pyflink-deep-guide.md", "SizeKB": "12.43", "layer": "A" },
+    { "Path": "Knowledge/cep-complete-tutorial.md", "SizeKB": "12.95", "layer": "A" },
+    { "Path": "Flink/Formal-to-Code-Mapping-v2.md", "SizeKB": "12.97", "layer": "A" },
+    { "Path": "Knowledge/case-studies/finance/realtime-anti-fraud-system-case.md", "SizeKB": "13.61", "layer": "A" },
+    { "Path": "Struct/08-standards/streaming-sql-standard.md", "SizeKB": "14.42", "layer": "A" },
+    { "Path": "Knowledge/00-KNOWLEDGE-PATTERN-RELATIONSHIP.md", "SizeKB": "15.25", "layer": "A" },
+    { "Path": "Flink/flink-performance-benchmark-suite.md", "SizeKB": "15.6", "layer": "A" },
+    { "Path": "Flink/00-INDEX.md", "SizeKB": "17.56", "layer": "A" },
+    { "Path": "Knowledge/03-business-patterns/netflix-streaming-pipeline.md", "SizeKB": "17.72", "layer": "A" },
+    { "Path": "Flink/flink-data-types-reference.md", "SizeKB": "18.13", "layer": "A" },
+    { "Path": "Flink/flink-nexmark-benchmark-guide.md", "SizeKB": "18.48", "layer": "A" },
+    { "Path": "Flink/00-FLINK-TECH-STACK-DEPENDENCY.md", "SizeKB": "18.98", "layer": "A" },
+    { "Path": "Knowledge/personalized-learning-engine.md", "SizeKB": "19.34", "layer": "A" },
+    { "Path": "Flink/01-concepts/disaggregated-state-analysis.md", "SizeKB": "21.09", "layer": "A" },
+    { "Path": "Flink/flink-ycsb-benchmark-guide.md", "SizeKB": "21.42", "layer": "A" },
+    { "Path": "Struct/07-tools/model-checking-guided-testing.md", "SizeKB": "21.84", "layer": "A" },
+    { "Path": "Struct/05-comparative-analysis/05.02-expressiveness-vs-decidability.md", "SizeKB": "22.6", "layer": "A" },
+    { "Path": "Flink/flink-built-in-functions-reference.md", "SizeKB": "23.1", "layer": "A" },
+    { "Path": "Knowledge/Knowledge-to-Flink-Mapping.md", "SizeKB": "24.2", "layer": "A" },
+    { "Path": "Knowledge/05-mapping-guides/multi-agent-frameworks-2026-comparison.md", "SizeKB": "25.51", "layer": "A" },
+    { "Path": "Knowledge/3.10-flink-production-checklist.md", "SizeKB": "28.5", "layer": "A" },
+    { "Path": "Flink/10-internals/source-code-reading-guide.md", "SizeKB": "30.2", "layer": "A" },
+    { "Path": "Flink/05-ecosystem/05.01-connectors/evolution/kafka-connector.md", "SizeKB": "2.2", "layer": "A", "note": "Replaced non-existent kafka-connector-guide.md" },
+    { "Path": "Flink/05-ecosystem/05.01-connectors/evolution/cloud-connector.md", "SizeKB": "2.1", "layer": "A", "note": "Replaced non-existent redis-connector-guide.md" },
+    { "Path": "Flink/05-ecosystem/05.01-connectors/evolution/file-connector.md", "SizeKB": "2.1", "layer": "A", "note": "Replaced non-existent hdfs-connector-guide.md" },
+    { "Path": "Flink/05-ecosystem/05.01-connectors/evolution/mq-connector.md", "SizeKB": "2.2", "layer": "A", "note": "Replaced non-existent s3-connector-guide.md" },
+    { "Path": "Knowledge/case-studies/ecommerce/realtime-recommendation-case.md", "SizeKB": "16.2", "layer": "A" },
+    { "Path": "Knowledge/07-best-practices/flink-production-checklist.md", "SizeKB": "15.8", "layer": "A" }
   ],
   "b_layer": [
-    {
-      "Path": "Struct/01-foundation/unified-streaming-model.md",
-      "SizeKB": "22.4"
-    },
-    {
-      "Path": "Struct/02-properties/consistency-hierarchy.md",
-      "SizeKB": "25.1"
-    },
-    {
-      "Path": "Knowledge/02-design-patterns/stateful-streaming-patterns.md",
-      "SizeKB": "19.8"
-    },
-    {
-      "Path": "Flink/02-core/checkpoint-mechanism-deep-dive.md",
-      "SizeKB": "28.3"
-    },
-    {
-      "Path": "Flink/02-core/exactly-once-semantics-deep-dive.md",
-      "SizeKB": "24.7"
-    },
-    {
-      "Path": "Knowledge/02-design-patterns/event-time-processing-patterns.md",
-      "SizeKB": "21.5"
-    },
-    {
-      "Path": "Flink/02-core/time-semantics-and-watermark.md",
-      "SizeKB": "26.2"
-    },
-    {
-      "Path": "Knowledge/01-concept-atlas/stream-processing-fundamentals.md",
-      "SizeKB": "18.6"
-    },
-    {
-      "Path": "Flink/03-api/table-api-complete-guide.md",
-      "SizeKB": "31.4"
-    },
-    {
-      "Path": "Struct/03-relationships/actor-to-dataflow-mapping.md",
-      "SizeKB": "20.3"
-    }
-  ]
+    { "Path": "Flink/02-core/checkpoint-mechanism-deep-dive.md", "SizeKB": "58.6", "layer": "B", "status": "ai_translated_pending_expert_review" },
+    { "Path": "Flink/02-core/exactly-once-semantics-deep-dive.md", "SizeKB": "51.1", "layer": "B", "status": "ai_translated_pending_expert_review" },
+    { "Path": "Flink/02-core/time-semantics-and-watermark.md", "SizeKB": "52.1", "layer": "B", "status": "ai_translated_pending_expert_review" },
+    { "Path": "Flink/03-api/03.02-table-sql-api/flink-table-sql-complete-guide.md", "SizeKB": "62.1", "layer": "B", "status": "ai_translated_pending_expert_review", "note": "Replaced non-existent table-api-complete-guide.md" },
+    { "Path": "Struct/02-properties/02.02-consistency-hierarchy.md", "SizeKB": "47.9", "layer": "B", "status": "ai_translated_pending_expert_review", "note": "Replaced non-existent consistency-hierarchy.md" },
+    { "Path": "Struct/01-foundation/01.01-unified-streaming-theory.md", "SizeKB": "20.8", "layer": "B", "status": "ai_translated_pending_expert_review", "note": "Replaced non-existent unified-streaming-model.md" },
+    { "Path": "Struct/03-relationships/03.05-cross-model-mappings.md", "SizeKB": "31.1", "layer": "B", "status": "ai_translated_pending_expert_review", "note": "Replaced non-existent actor-to-dataflow-mapping.md" },
+    { "Path": "Knowledge/02-design-patterns/pattern-event-time-processing.md", "SizeKB": "28.1", "layer": "B", "status": "ai_translated_pending_expert_review", "note": "Replaced non-existent event-time-processing-patterns.md" },
+    { "Path": "Knowledge/02-design-patterns/pattern-stateful-computation.md", "SizeKB": "21.3", "layer": "B", "status": "ai_translated_pending_expert_review", "note": "Replaced non-existent stateful-streaming-patterns.md" },
+    { "Path": "Knowledge/01-concept-atlas/01.01-stream-processing-fundamentals.md", "SizeKB": "35.0", "layer": "B", "status": "ai_translated_pending_expert_review", "note": "Replaced non-existent stream-processing-fundamentals.md" }
+  ],
+  "c_layer": {
+    "policy": "Pure AI translation is forbidden for formal proofs and theorem documents in Struct/04-proofs/.",
+    "framework_doc": "docs/i18n/en/Struct/04-proofs/04.05-type-safety-fg-fgg-FRAMEWORK.md",
+    "status": "Framework generated with 8 proof placeholders. Pending formal-methods expert completion.",
+    "warning_docs": [
+      "docs/i18n/en/Struct/04-proofs/ (existing AI-translated proofs carry explicit warnings)"
+    ]
+  }
 }

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-15T01:41:51.104952",
+  "generated_at": "2026-04-15T03:33:09.725380",
   "source_language": "zh",
   "source_documents": {
     "root": 3,
@@ -14,22 +14,22 @@
     "i18n/en": {
       "label": "AI Translation Workspace",
       "counts": {
-        "total": 49,
+        "total": 194,
         "categories": {
           "root": 10,
-          "Flink": 22,
-          "Knowledge": 10,
-          "Struct": 7
+          "Flink": 121,
+          "Knowledge": 47,
+          "Struct": 16
         }
       }
     },
     "docs/i18n/en": {
       "label": "Documentation Site Source",
       "counts": {
-        "total": 30,
+        "total": 31,
         "categories": {
           "root": 19,
-          "Struct": 7,
+          "Struct": 8,
           "Knowledge": 3,
           "Flink": 1
         }
@@ -37,7 +37,7 @@
     }
   },
   "summary": {
-    "total_english_docs": 79,
-    "estimated_coverage_percent": 10.31
+    "total_english_docs": 225,
+    "estimated_coverage_percent": 29.37
   }
 }

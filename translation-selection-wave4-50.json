@@ -1,0 +1,256 @@
+{
+  "generated_at": "2026-04-15",
+  "wave": 4,
+  "a_layer": [
+    {
+      "Path": "Flink/07-rust-native/arroyo-update/cloudflare-pipelines-analysis.md",
+      "SizeKB": 11.36,
+      "layer": "A"
+    },
+    {
+      "Path": "Knowledge/98-exercises/quick-ref-flink-vs-risingwave.md",
+      "SizeKB": 11.6,
+      "layer": "A"
+    },
+    {
+      "Path": "Struct/06-frontier/probabilistic-streaming/probabilistic-stream-semantics.md",
+      "SizeKB": 11.72,
+      "layer": "A"
+    },
+    {
+      "Path": "Knowledge/98-exercises/exercise-06-tla-practice.md",
+      "SizeKB": 11.9,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/05-ecosystem/ecosystem/risingwave-integration-guide.md",
+      "SizeKB": 12.04,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/08-roadmap/flink-2.4-2.5-3.0-tracking.md",
+      "SizeKB": 12.1,
+      "layer": "A"
+    },
+    {
+      "Path": "Knowledge/06-frontier/00-INDEX.md",
+      "SizeKB": 12.18,
+      "layer": "A"
+    },
+    {
+      "Path": "Knowledge/01-concept-atlas/01.05-consistency-models.md",
+      "SizeKB": 12.21,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/08-roadmap/08.01-flink-24/flink-2.3-2.4-roadmap.md",
+      "SizeKB": 12.64,
+      "layer": "A"
+    },
+    {
+      "Path": "Knowledge/06-frontier/streaming-databases-market-analysis-supplement.md",
+      "SizeKB": 12.66,
+      "layer": "A"
+    },
+    {
+      "Path": "Knowledge/10-case-studies/finance/10.1.2-transaction-monitoring-compliance.md",
+      "SizeKB": 13.33,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/04-runtime/04.03-observability/metrics-and-monitoring.md",
+      "SizeKB": 13.34,
+      "layer": "A"
+    },
+    {
+      "Path": "Knowledge/98-exercises/quick-ref-streaming-anti-patterns.md",
+      "SizeKB": 13.39,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-risingwave-deep-dive.md",
+      "SizeKB": 13.41,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/05-ecosystem/ecosystem/kafka-streams-migration.md",
+      "SizeKB": 13.55,
+      "layer": "A"
+    },
+    {
+      "Path": "Knowledge/01-concept-atlas/01.04-state-management-concepts.md",
+      "SizeKB": 13.59,
+      "layer": "A"
+    },
+    {
+      "Path": "Knowledge/10-case-studies/00-INDEX.md",
+      "SizeKB": 13.6,
+      "layer": "A"
+    },
+    {
+      "Path": "Knowledge/06-frontier/streaming-databases-deep/streaming-database-comprehensive-matrix.md",
+      "SizeKB": 13.72,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/05-ecosystem/05.01-connectors/fluss-integration.md",
+      "SizeKB": 13.83,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/06-ai-ml/realtime-feature-engineering-guide.md",
+      "SizeKB": 14.04,
+      "layer": "A"
+    },
+    {
+      "Path": "Knowledge/10-case-studies/ecommerce/10.2.1-realtime-recommendation.md",
+      "SizeKB": 14.13,
+      "layer": "A"
+    },
+    {
+      "Path": "Knowledge/Flink-Scala-Rust-Comprehensive/performance-tests/simd-vectorization-benchmark.md",
+      "SizeKB": 14.37,
+      "layer": "A"
+    },
+    {
+      "Path": "Struct/07-tools/ai-formal-verification/ai-formal-verification-integration.md",
+      "SizeKB": 14.38,
+      "layer": "A"
+    },
+    {
+      "Path": "Knowledge/09-anti-patterns/README.md",
+      "SizeKB": 14.42,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/01-concepts/flink-architecture-evolution-1x-to-2x.md",
+      "SizeKB": 14.45,
+      "layer": "A"
+    },
+    {
+      "Path": "Struct/01-foundation/network-calculus/network-calculus-streaming.md",
+      "SizeKB": 14.51,
+      "layer": "A"
+    },
+    {
+      "Path": "Knowledge/10-case-studies/iot/10.3.1-smart-manufacturing.md",
+      "SizeKB": 14.54,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/03-api/README.md",
+      "SizeKB": 14.81,
+      "layer": "A"
+    },
+    {
+      "Path": "Knowledge/case-studies/gaming/realtime-game-analytics-case.md",
+      "SizeKB": 14.83,
+      "layer": "A"
+    },
+    {
+      "Path": "Knowledge/06-frontier/edge-streaming-architecture.md",
+      "SizeKB": 14.95,
+      "layer": "A"
+    },
+    {
+      "Path": "Struct/06-frontier/first-person-choreographies.md",
+      "SizeKB": 14.97,
+      "layer": "A"
+    },
+    {
+      "Path": "Knowledge/10-case-studies/finance/10.1.3-realtime-risk-decision.md",
+      "SizeKB": 15.16,
+      "layer": "A"
+    },
+    {
+      "Path": "Knowledge/06-frontier/audio-stream-processing.md",
+      "SizeKB": 15.31,
+      "layer": "A"
+    },
+    {
+      "Path": "Knowledge/10-case-studies/gaming/10.5.1-realtime-battle-analytics.md",
+      "SizeKB": 15.42,
+      "layer": "A"
+    },
+    {
+      "Path": "Knowledge/02-design-patterns/pattern-realtime-feature-engineering.md",
+      "SizeKB": 15.72,
+      "layer": "A"
+    },
+    {
+      "Path": "Struct/07-tools/proof-automation-guide.md",
+      "SizeKB": 15.78,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/09-practices/09.02-benchmarking/streaming-benchmarks.md",
+      "SizeKB": 15.85,
+      "layer": "A"
+    },
+    {
+      "Path": "Knowledge/98-exercises/quick-ref-temporal-flink.md",
+      "SizeKB": 16.28,
+      "layer": "A"
+    },
+    {
+      "Path": "Knowledge/06-frontier/streaming-slo-definition.md",
+      "SizeKB": 16.51,
+      "layer": "A"
+    },
+    {
+      "Path": "Knowledge/06-frontier/streaming-databases-market-report-2026-Q2.md",
+      "SizeKB": 16.62,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/04-runtime/README.md",
+      "SizeKB": 16.71,
+      "layer": "A"
+    },
+    {
+      "Path": "Knowledge/Flink-Scala-Rust-Comprehensive/performance-tests/wasm-udf-overhead-analysis.md",
+      "SizeKB": 16.79,
+      "layer": "A"
+    },
+    {
+      "Path": "Knowledge/98-exercises/exercise-02-flink-basics.md",
+      "SizeKB": 16.81,
+      "layer": "A"
+    },
+    {
+      "Path": "Knowledge/06-frontier/streaming-data-mesh-architecture.md",
+      "SizeKB": 16.96,
+      "layer": "A"
+    },
+    {
+      "Path": "Struct/Proof-Chains-Master-Graph.md",
+      "SizeKB": 16.96,
+      "layer": "A"
+    },
+    {
+      "Path": "Knowledge/05-mapping-guides/migration-guides/05.1-spark-streaming-to-flink-migration.md",
+      "SizeKB": 17.1,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/03-api/03.02-table-sql-api/flink-sql-hints-optimization.md",
+      "SizeKB": 17.25,
+      "layer": "A"
+    },
+    {
+      "Path": "Struct/Proof-Chains-Exactly-Once-Correctness.md",
+      "SizeKB": 17.29,
+      "layer": "A"
+    },
+    {
+      "Path": "Knowledge/09-anti-patterns/anti-pattern-checklist.md",
+      "SizeKB": 17.4,
+      "layer": "A"
+    },
+    {
+      "Path": "Knowledge/01-concept-atlas/01.03-window-concepts.md",
+      "SizeKB": 17.45,
+      "layer": "A"
+    }
+  ]
+}

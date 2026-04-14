@@ -1,0 +1,256 @@
+{
+  "generated_at": "2026-04-15",
+  "wave": 2,
+  "a_layer": [
+    {
+      "Path": "Flink/09-practices/09.07-performance/00-INDEX.md",
+      "SizeKB": 0.51,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/04-runtime/04.03-observability/evolution/webui-evolution.md",
+      "SizeKB": 1.45,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/04-runtime/04.03-observability/evolution/metrics-evolution.md",
+      "SizeKB": 1.45,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/06-ai-ml/ai-ml/evolution/feature-store.md",
+      "SizeKB": 1.46,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/04-runtime/04.03-observability/evolution/profiling-evolution.md",
+      "SizeKB": 1.46,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/04-runtime/04.01-deployment/evolution/yarn-deploy.md",
+      "SizeKB": 1.47,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/06-ai-ml/ai-ml/evolution/model-serving.md",
+      "SizeKB": 1.48,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/04-runtime/04.03-observability/evolution/logging-evolution.md",
+      "SizeKB": 1.49,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/04-runtime/04.03-observability/evolution/slo-evolution.md",
+      "SizeKB": 1.51,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/06-ai-ml/ai-ml/evolution/llm-integration.md",
+      "SizeKB": 1.53,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/04-runtime/04.01-deployment/evolution/cloud-deploy.md",
+      "SizeKB": 1.54,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/09-practices/09.04-security/security/evolution/lineage-evolution.md",
+      "SizeKB": 1.55,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/04-runtime/04.01-deployment/evolution/upgrade-strategy.md",
+      "SizeKB": 1.55,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/07-rust-native/arroyo-update/QUARTERLY-REVIEWS/README.md",
+      "SizeKB": 1.55,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/04-runtime/04.01-deployment/evolution/standalone-deploy.md",
+      "SizeKB": 1.56,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/04-runtime/04.01-deployment/evolution/config-management.md",
+      "SizeKB": 1.57,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/06-ai-ml/ai-ml/evolution/ml-inference.md",
+      "SizeKB": 1.57,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/04-runtime/04.03-observability/evolution/alerting-evolution.md",
+      "SizeKB": 1.59,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/04-runtime/04.03-observability/evolution/debugging-evolution.md",
+      "SizeKB": 1.59,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/09-practices/09.04-security/security/evolution/key-management-evolution.md",
+      "SizeKB": 1.61,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/09-practices/09.04-security/security/evolution/encryption-evolution.md",
+      "SizeKB": 1.61,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/09-practices/09.04-security/security/evolution/auth-evolution.md",
+      "SizeKB": 1.61,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/04-runtime/04.03-observability/evolution/tracing-evolution.md",
+      "SizeKB": 1.62,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/04-runtime/04.01-deployment/evolution/autoscaling-evolution.md",
+      "SizeKB": 1.62,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/06-ai-ml/ai-ml/evolution/vector-search.md",
+      "SizeKB": 1.62,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/09-practices/09.04-security/security/evolution/audit-evolution.md",
+      "SizeKB": 1.62,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/09-practices/09.04-security/security/evolution/authorization-evolution.md",
+      "SizeKB": 1.63,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/04-runtime/04.01-deployment/evolution/k8s-deploy.md",
+      "SizeKB": 1.66,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/04-runtime/04.03-observability/evolution/obs-integration.md",
+      "SizeKB": 1.67,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/06-ai-ml/ai-ml/evolution/ai-agent-24.md",
+      "SizeKB": 1.67,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/09-practices/09.04-security/security/evolution/compliance-evolution.md",
+      "SizeKB": 1.69,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/09-practices/09.04-security/security/evolution/data-governance-evolution.md",
+      "SizeKB": 1.69,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/09-practices/09.04-security/security/evolution/security-policy-evolution.md",
+      "SizeKB": 1.71,
+      "layer": "A"
+    },
+    {
+      "Path": "Struct/06-frontier/first-person-choreographies/first-person-cp-advanced.md",
+      "SizeKB": 1.72,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/06-ai-ml/ai-ml/evolution/ai-agent-30.md",
+      "SizeKB": 1.75,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/09-practices/09.04-security/security/evolution/tee-evolution.md",
+      "SizeKB": 1.84,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/06-ai-ml/ai-ml/evolution/ai-agent-25.md",
+      "SizeKB": 1.85,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/04-runtime/04.01-deployment/evolution/serverless-deploy.md",
+      "SizeKB": 1.92,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/04-runtime/04.03-observability/evolution/testing-evolution.md",
+      "SizeKB": 1.97,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/07-rust-native/iron-functions/VERSION-TRACKING.md",
+      "SizeKB": 2.01,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/05-ecosystem/05.01-connectors/evolution/lakehouse-connector.md",
+      "SizeKB": 2.2,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/05-ecosystem/05.01-connectors/evolution/jdbc-connector.md",
+      "SizeKB": 2.21,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/05-ecosystem/05.01-connectors/evolution/custom-connector.md",
+      "SizeKB": 2.36,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/07-rust-native/risingwave-comparison/AGENT-D-COMPLETION-REPORT.md",
+      "SizeKB": 2.82,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/07-rust-native/arroyo-update/README.md",
+      "SizeKB": 2.84,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/05-ecosystem/05.01-connectors/evolution/cdc-connector.md",
+      "SizeKB": 2.95,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/07-rust-native/simd-optimization/COMPLETION-REPORT.md",
+      "SizeKB": 3.0,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/07-rust-native/iron-functions/verify-examples/README.md",
+      "SizeKB": 3.24,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/05-ecosystem/05.02-lakehouse/README.md",
+      "SizeKB": 3.44,
+      "layer": "A"
+    },
+    {
+      "Path": "Flink/09-practices/09.04-deployment/flink-gitops-deployment.md",
+      "SizeKB": 4.91,
+      "layer": "A"
+    }
+  ]
+}
