@@ -46,12 +46,12 @@ jobs:
           # 注入 Google Analytics 代码
           GA_SCRIPT='
           <!-- Google tag (gtag.js) -->
-          <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+          <script async src="https://www.googletagmanager.com/gtag/js?id=G-KY5GWZ33K1"></script>
           <script>
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag("js", new Date());
-            gtag("config", "G-XXXXXXXXXX");
+            gtag("config", "G-KY5GWZ33K1");
           </script>'
           
           # 将 GA 代码注入到 </head> 之前
