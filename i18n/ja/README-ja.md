@@ -7,7 +7,7 @@
 [![日本語](https://img.shields.io/badge/日本語-🇯🇵-red)](./README-ja.md) [![English](https://img.shields.io/badge/English-🇬🇧-blue)](../../docs/i18n/en/00-OVERVIEW.md) [![中文](https://img.shields.io/badge/中文-🇨🇳-green)](../../README.md)
 
 [![Version](https://img.shields.io/badge/Version-v5.0.0-brightgreen)](../../v5.0/RELEASE-NOTES-v5.0.md)
-[![PR Quality Gate](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml/badge.svg)](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml)
+[![PR Quality Gate](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml/badge.svg) ⚠️ **[已失效: HTTP 404]** [Archive备份](https://web.archive.org/web/*/https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml/badge.svg)](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml)
 [![Docs](https://img.shields.io/badge/Docs-1010%2B-blue)](../../)
 [![Theorems](https://img.shields.io/badge/Theorems-10000%2B-green)](../../THEOREM-REGISTRY.md)
 

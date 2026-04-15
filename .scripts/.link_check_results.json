@@ -1,853 +1,546 @@
 {
-  "check_time": "2026-04-15T23:31:34.723946",
-  "total": 50,
-  "accessible": 9,
-  "failed": 41,
+  "check_time": "2026-04-16T00:03:38.728906",
+  "total": 20,
+  "accessible": 15,
+  "failed": 5,
   "results": [
     {
-      "url": "https://doi.org/10.1145/1094811.1094815",
-      "status_code": 403,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "HTTP 403",
-      "response_time_ms": 1319.3306922912598,
-      "source_files": [
-        "Struct\\04-proofs\\04.06-dot-subtyping-completeness.md",
-        "reports\\link-health-report.md",
-        "release\\v3.0.0\\docs\\Struct\\04-proofs\\04.06-dot-subtyping-completeness.md",
-        "USTM-F-Reconstruction\\archive\\original-struct\\04-proofs\\04.06-dot-subtyping-completeness.md"
-      ],
-      "check_time": "2026-04-15T23:30:31.718640",
-      "archive_url": null,
-      "priority": 3
-    },
-    {
-      "url": "https://doi.org/10.1145/2976022.2976025",
-      "status_code": 403,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "HTTP 403",
-      "response_time_ms": 796.654462814331,
-      "source_files": [
-        "Struct\\04-proofs\\04.06-dot-subtyping-completeness.md",
-        "reports\\link-health-report.md",
-        "release\\v3.0.0\\docs\\Struct\\04-proofs\\04.06-dot-subtyping-completeness.md",
-        "USTM-F-Reconstruction\\archive\\original-struct\\04-proofs\\04.06-dot-subtyping-completeness.md"
-      ],
-      "check_time": "2026-04-15T23:30:31.720316",
-      "archive_url": null,
-      "priority": 3
-    },
-    {
-      "url": "https://nightlies.apache.org/flink/flink-docs-stable/api/java/org/apache/flink/connector/jdbc/xa/JdbcXaSinkFunction.html",
-      "status_code": 404,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "HTTP 404",
-      "response_time_ms": 2137.5513076782227,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "release\\v3.0.0\\docs\\EXTERNAL-LINK-HEALTH-REPORT.md",
-        "release\\v3.0.0\\docs\\Flink\\02-core\\exactly-once-end-to-end.md",
-        "EXTERNAL-LINK-HEALTH-REPORT.md",
-        "reports\\link-validation-report.md",
-        "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md",
-        "Flink\\02-core\\exactly-once-end-to-end.md"
-      ],
-      "check_time": "2026-04-15T23:30:31.720422",
-      "archive_url": null,
-      "priority": 3
-    },
-    {
-      "url": "https://doi.org/10.1145/3627703.3650083",
-      "status_code": 403,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "HTTP 403",
-      "response_time_ms": 2023.9982604980469,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "Struct\\06-frontier\\06.01-open-problems-streaming-verification.md",
-        "release\\v3.0.0\\docs\\Struct\\06-frontier\\06.01-open-problems-streaming-verification.md",
-        "USTM-F-Reconstruction\\archive\\original-struct\\06-frontier\\06.01-open-problems-streaming-verification.md"
-      ],
-      "check_time": "2026-04-15T23:30:31.720647",
-      "archive_url": null,
-      "priority": 3
-    },
-    {
-      "url": "https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/state/state/",
-      "status_code": 404,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "HTTP 404",
-      "response_time_ms": 2101.1312007904053,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "release\\v3.0.0\\docs\\EXTERNAL-LINK-HEALTH-REPORT.md",
-        "EXTERNAL-LINK-HEALTH-REPORT.md",
-        "reports\\link-validation-report.md",
-        "reports\\fictional-content-audit-20260405_143730.md"
-      ],
-      "check_time": "2026-04-15T23:30:31.720693",
-      "archive_url": null,
-      "priority": 3
-    },
-    {
-      "url": "https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/debugging/common_issues/",
-      "status_code": 404,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "HTTP 404",
-      "response_time_ms": 943.8803195953369,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "i18n\\en\\Knowledge\\07-best-practices\\07.03-troubleshooting-guide.md",
-        "Knowledge\\07-best-practices\\07.03-troubleshooting-guide.md",
-        "release\\v3.0.0\\docs\\Knowledge\\07-best-practices\\07.03-troubleshooting-guide.md"
-      ],
-      "check_time": "2026-04-15T23:30:31.720728",
-      "archive_url": null,
-      "priority": 3
-    },
-    {
-      "url": "https://web.archive.org/web/20260405/https%3A%2F%2Fnightlies.apache.org%2Fflink%2Fflink-docs-stable%2Fdocs%2Fdev%2Fdatastream%2Ffault-tolerance%2Fexactly-once%2F",
-      "status_code": null,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "连接超时",
-      "response_time_ms": 10496.268033981323,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "reports\\link-fix-report.md",
-        "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md"
-      ],
-      "check_time": "2026-04-15T23:30:31.720758",
-      "archive_url": null,
-      "priority": 3
-    },
-    {
-      "url": "https://doi.org/10.1109/MIC.2003.1167344",
+      "url": "https://nightlies.apache.org/flink/flink-docs-stable/docs/concepts/flink-architecture/",
       "status_code": 200,
       "is_accessible": true,
       "redirect_url": null,
       "error_message": null,
-      "response_time_ms": 1668.8508987426758,
+      "response_time_ms": 1263.709545135498,
       "source_files": [
-        "reports\\link-health-report.md",
-        "Knowledge\\03-business-patterns\\real-time-recommendation.md",
-        "release\\v3.0.0\\docs\\Knowledge\\03-business-patterns\\real-time-recommendation.md"
-      ],
-      "check_time": "2026-04-15T23:30:31.720962",
-      "archive_url": null,
-      "priority": 3
-    },
-    {
-      "url": "https://arrow.apache.org/",
-      "status_code": 200,
-      "is_accessible": true,
-      "redirect_url": null,
-      "error_message": null,
-      "response_time_ms": 209.03992652893066,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "release\\v3.0.0\\docs\\Flink\\07-rust-native\\trends\\01-flink-rust-ecosystem-trends-2026.md",
-        "Flink\\07-rust-native\\trends\\01-flink-rust-ecosystem-trends-2026.md",
-        "reports\\link-validation-report.md"
-      ],
-      "check_time": "2026-04-15T23:30:31.721007",
-      "archive_url": null,
-      "priority": 3
-    },
-    {
-      "url": "https://nightlies.apache.org/flink/flink-docs-stable/docs/flinkDev/ide_setup/",
-      "status_code": 404,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "HTTP 404",
-      "response_time_ms": 1552.2148609161377,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "CONFIG-TEMPLATES\\development\\ide-config-guide.md"
-      ],
-      "check_time": "2026-04-15T23:30:31.721154",
-      "archive_url": null,
-      "priority": 3
-    },
-    {
-      "url": "https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms",
-      "status_code": 200,
-      "is_accessible": true,
-      "redirect_url": null,
-      "error_message": null,
-      "response_time_ms": 1268.4180736541748,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "archive\\deprecated\\P2-12-COMMUNITY-FEEDBACK-SYSTEM.md"
-      ],
-      "check_time": "2026-04-15T23:30:44.721057",
-      "archive_url": null,
-      "priority": 2
-    },
-    {
-      "url": "https://web.archive.org/web/20260405/https%3A%2F%2Fgithub.com%2Firontools%2Firon-functions%2Freleases",
-      "status_code": null,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "连接超时",
-      "response_time_ms": 10509.257555007935,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "reports\\link-fix-report.md",
-        "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md"
-      ],
-      "check_time": "2026-04-15T23:30:44.721267",
-      "archive_url": null,
-      "priority": 2
-    },
-    {
-      "url": "https://web.archive.org/web/20260405/https%3A%2F%2Fgithub.com%2FAbsInt%2FCompCert",
-      "status_code": null,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "连接超时",
-      "response_time_ms": 10509.121179580688,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "reports\\link-fix-report.md",
-        "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md"
-      ],
-      "check_time": "2026-04-15T23:30:44.721356",
-      "archive_url": null,
-      "priority": 2
-    },
-    {
-      "url": "https://web.archive.org/web/20260405/https%3A%2F%2Fgithub.com%2Fgrafana%2Fgrafana",
-      "status_code": null,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "连接超时",
-      "response_time_ms": 10509.151697158813,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "reports\\link-fix-report.md",
-        "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md"
-      ],
-      "check_time": "2026-04-15T23:30:44.721412",
-      "archive_url": null,
-      "priority": 2
-    },
-    {
-      "url": "https://web.archive.org/web/20260405/https%3A%2F%2Fdocs.microsoft.com%2Fazure%2Fhdinsight%2Fflink%2F",
-      "status_code": null,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "连接超时",
-      "response_time_ms": 10509.081602096558,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "reports\\link-fix-report.md",
-        "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md"
-      ],
-      "check_time": "2026-04-15T23:30:44.721464",
-      "archive_url": null,
-      "priority": 2
-    },
-    {
-      "url": "https://web.archive.org/web/20260405/https%3A%2F%2Fgithub.com%2Fasynkron%2Fprotoactor-dotnet",
-      "status_code": null,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "连接超时",
-      "response_time_ms": 10508.991241455078,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "reports\\link-fix-report.md",
-        "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md"
-      ],
-      "check_time": "2026-04-15T23:30:44.721512",
-      "archive_url": null,
-      "priority": 2
-    },
-    {
-      "url": "https://web.archive.org/web/20260405/https%3A%2F%2Fgithub.com%2FZ3Prover%2Fz3",
-      "status_code": null,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "连接超时",
-      "response_time_ms": 10508.870124816895,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "reports\\link-fix-report.md",
-        "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md"
-      ],
-      "check_time": "2026-04-15T23:30:44.721556",
-      "archive_url": null,
-      "priority": 2
-    },
-    {
-      "url": "https://docs.scala-lang.org/tour/abstract-type-members.html",
-      "status_code": 200,
-      "is_accessible": true,
-      "redirect_url": null,
-      "error_message": null,
-      "response_time_ms": 2820.830821990967,
-      "source_files": [
-        "Struct\\04-proofs\\04.06-dot-subtyping-completeness.md",
-        "reports\\link-health-report.md",
-        "release\\v3.0.0\\docs\\Struct\\04-proofs\\04.06-dot-subtyping-completeness.md",
-        "USTM-F-Reconstruction\\archive\\original-struct\\04-proofs\\04.06-dot-subtyping-completeness.md"
-      ],
-      "check_time": "2026-04-15T23:30:44.721617",
-      "archive_url": null,
-      "priority": 1
-    },
-    {
-      "url": "https://web.archive.org/web/20260405/100",
-      "status_code": null,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "连接超时",
-      "response_time_ms": 10508.901596069336,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "reports\\link-fix-report.md",
-        "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md"
-      ],
-      "check_time": "2026-04-15T23:30:44.721681",
-      "archive_url": null,
-      "priority": 1
-    },
-    {
-      "url": "https://analysisdataflow.readthedocs.io",
-      "status_code": 403,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "HTTP 403",
-      "response_time_ms": 575.037956237793,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "archive\\deprecated\\RELEASE-NOTES-v3.0.md",
-        "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md"
-      ],
-      "check_time": "2026-04-15T23:30:44.721723",
-      "archive_url": null,
-      "priority": 1
-    },
-    {
-      "url": "https://opentelemetry.io/docs/concepts/signals/traces/",
-      "status_code": 200,
-      "is_accessible": true,
-      "redirect_url": null,
-      "error_message": null,
-      "response_time_ms": 432.4076175689697,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "release\\v3.0.0\\docs\\Knowledge\\02-design-patterns\\pattern-log-analysis.md",
-        "Knowledge\\02-design-patterns\\pattern-log-analysis.md"
-      ],
-      "check_time": "2026-04-15T23:30:57.743455",
-      "archive_url": null,
-      "priority": 1
-    },
-    {
-      "url": "https://apache-flink.slack.com",
-      "status_code": 200,
-      "is_accessible": true,
-      "redirect_url": null,
-      "error_message": null,
-      "response_time_ms": 612.2817993164062,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "LEARNING-PATHS\\expert-contributor-path.md",
-        "tutorials\\00-5-MINUTE-QUICK-START.md",
-        "release\\v3.0.0\\docs\\tutorials\\00-5-MINUTE-QUICK-START.md",
-        "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md"
-      ],
-      "check_time": "2026-04-15T23:30:57.743639",
-      "archive_url": null,
-      "priority": 1
-    },
-    {
-      "url": "https://web.archive.org/web/20260405/.%2FTHIRD-PARTY-NOTICES.md",
-      "status_code": null,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "连接超时",
-      "response_time_ms": 10484.209060668945,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "reports\\link-fix-report.md",
-        "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md"
-      ],
-      "check_time": "2026-04-15T23:30:57.743717",
-      "archive_url": null,
-      "priority": 1
-    },
-    {
-      "url": "https://web.archive.org/web/20260405/value%3A",
-      "status_code": null,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "连接超时",
-      "response_time_ms": 10484.146356582642,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "reports\\link-fix-report.md",
-        "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md"
-      ],
-      "check_time": "2026-04-15T23:30:57.743791",
-      "archive_url": null,
-      "priority": 1
-    },
-    {
-      "url": "https://www.usenix.org/conference/nsdi25/presentation/howard",
-      "status_code": 200,
-      "is_accessible": true,
-      "redirect_url": null,
-      "error_message": null,
-      "response_time_ms": 1889.7960186004639,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "Struct\\07-tools\\smart-casual-verification.md",
-        "USTM-F-Reconstruction\\archive\\original-struct\\07-tools\\smart-casual-verification.md",
-        "release\\v3.0.0\\docs\\Struct\\07-tools\\smart-casual-verification.md",
-        "visuals\\selection-tree-formal.md"
-      ],
-      "check_time": "2026-04-15T23:30:57.743919",
-      "archive_url": null,
-      "priority": 1
-    },
-    {
-      "url": "https://www.w3.org/standards/webdesign/i18n",
-      "status_code": 200,
-      "is_accessible": true,
-      "redirect_url": null,
-      "error_message": null,
-      "response_time_ms": 1599.0779399871826,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "release\\v3.0.0\\docs\\docs\\i18n\\ARCHITECTURE.md",
-        "i18n\\ARCHITECTURE.md",
-        "docs\\i18n\\ARCHITECTURE.md",
-        "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md",
-        "release\\v3.0.0\\docs\\i18n\\ARCHITECTURE.md"
-      ],
-      "check_time": "2026-04-15T23:30:57.744008",
-      "archive_url": null,
-      "priority": 1
-    },
-    {
-      "url": "https://web.archive.org/web/20260405/name%3A",
-      "status_code": null,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "连接超时",
-      "response_time_ms": 10483.39319229126,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "reports\\link-fix-report.md",
-        "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md"
-      ],
-      "check_time": "2026-04-15T23:30:57.744468",
-      "archive_url": null,
-      "priority": 1
-    },
-    {
-      "url": "https://web.archive.org/web/20260405/https%3A%2F%2Fwww.infoq.com%2Fbigdata%2F",
-      "status_code": null,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "连接超时",
-      "response_time_ms": 10483.333587646484,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "reports\\link-fix-report.md",
-        "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md"
-      ],
-      "check_time": "2026-04-15T23:30:57.744571",
-      "archive_url": null,
-      "priority": 1
-    },
-    {
-      "url": "https://web.archive.org/web/20260405/https%3A%2F%2Fcloud.google.com%2Fdataproc%2Fdocs%2Fconcepts%2Fcomponents%2Fflink",
-      "status_code": null,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "连接超时",
-      "response_time_ms": 10483.338594436646,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "reports\\link-fix-report.md",
-        "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md"
-      ],
-      "check_time": "2026-04-15T23:30:57.744639",
-      "archive_url": null,
-      "priority": 1
-    },
-    {
-      "url": "https://web.archive.org/web/20260405/%5Cbar%7Be%7D",
-      "status_code": null,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "连接超时",
-      "response_time_ms": 10483.245611190796,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "reports\\link-fix-report.md",
-        "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md"
-      ],
-      "check_time": "2026-04-15T23:30:57.744699",
-      "archive_url": null,
-      "priority": 1
-    },
-    {
-      "url": "https://www.sciencedirect.com/science/article/pii/S0304397506009245",
-      "status_code": 403,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "HTTP 403",
-      "response_time_ms": 869.9691295623779,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "REFERENCES.md",
-        "release\\v3.0.0\\docs\\EXTERNAL-LINK-HEALTH-REPORT.md",
+        "Flink\\10-internals\\jobmanager-source-analysis.md",
         "release\\v3.0.0\\docs\\REFERENCES.md",
-        "EXTERNAL-LINK-HEALTH-REPORT.md",
-        "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md"
+        "release\\v3.0.0\\docs\\Struct\\01-foundation\\01.04-dataflow-model-formalization.md",
+        "Struct\\01-foundation\\01.04-dataflow-model-formalization.md",
+        "release\\v3.0.0\\docs\\Flink\\01-concepts\\flink-1.x-vs-2.0-comparison.md",
+        "REFERENCES.md",
+        "Struct\\03-relationships\\03.06-flink-distributed-architecture.md",
+        "release\\v3.0.0\\docs\\docs\\i18n\\en\\Struct\\01-foundation\\01.04-dataflow-model-formalization.md",
+        "release\\v3.0.0\\docs\\EXTERNAL-LINK-HEALTH-REPORT.md",
+        "USTM-F-Reconstruction\\archive\\original-struct\\01-foundation\\01.04-dataflow-model-formalization.md",
+        "Flink\\01-concepts\\flink-1.x-vs-2.0-comparison.md",
+        "docs\\i18n\\en\\Struct\\01-foundation\\01.04-dataflow-model-formalization.md",
+        "i18n\\en\\Flink\\01-concepts\\flink-1.x-vs-2.0-comparison.md"
       ],
-      "check_time": "2026-04-15T23:31:10.749158",
+      "check_time": "2026-04-16T00:03:14.448088",
       "archive_url": null,
-      "priority": 1
+      "priority": 3
     },
     {
-      "url": "https://developers.google.com/agent-to-agent",
-      "status_code": null,
-      "is_accessible": false,
+      "url": "https://nightlies.apache.org/flink/flink-docs-stable/",
+      "status_code": 200,
+      "is_accessible": true,
       "redirect_url": null,
-      "error_message": "连接超时",
-      "response_time_ms": 10480.011940002441,
+      "error_message": null,
+      "response_time_ms": 3353.604555130005,
       "source_files": [
-        "reports\\link-health-report.md",
-        "Knowledge\\06-frontier\\a2a-protocol-formal-analysis.md",
+        "release\\v3.0.0\\docs\\i18n\\ja\\README-ja.md",
+        "release\\v3.0.0\\docs\\REFERENCES.md",
         "archive\\completion-reports\\FINAL-COMPLETION-REPORT-v6.0.md",
-        "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md"
-      ],
-      "check_time": "2026-04-15T23:31:10.749349",
-      "archive_url": null,
-      "priority": 1
-    },
-    {
-      "url": "https://web.archive.org/web/20260405/fa%3A",
-      "status_code": null,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "连接超时",
-      "response_time_ms": 10479.89535331726,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "reports\\link-fix-report.md",
-        "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md"
-      ],
-      "check_time": "2026-04-15T23:31:10.749430",
-      "archive_url": null,
-      "priority": 1
-    },
-    {
-      "url": "https://opentelemetry.io/blog/2026/annual-survey-results/",
-      "status_code": 404,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "HTTP 404",
-      "response_time_ms": 526.486873626709,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "Flink\\04-runtime\\04.03-observability\\opentelemetry-streaming-observability.md",
-        "release\\v3.0.0\\docs\\Flink\\04-runtime\\04.03-observability\\opentelemetry-streaming-observability.md",
-        "reports\\link-validation-report.md"
-      ],
-      "check_time": "2026-04-15T23:31:10.749497",
-      "archive_url": null,
-      "priority": 1
-    },
-    {
-      "url": "https://stripe.com/docs/api/reporting",
-      "status_code": 404,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "HTTP 404",
-      "response_time_ms": 1064.1791820526123,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "release\\v3.0.0\\docs\\EXTERNAL-LINK-HEALTH-REPORT.md",
-        "Knowledge\\03-business-patterns\\stripe-payment-processing.md",
-        "EXTERNAL-LINK-HEALTH-REPORT.md",
-        "release\\v3.0.0\\docs\\Knowledge\\03-business-patterns\\stripe-payment-processing.md",
-        "reports\\link-validation-report.md"
-      ],
-      "check_time": "2026-04-15T23:31:10.749655",
-      "archive_url": null,
-      "priority": 1
-    },
-    {
-      "url": "https://web.archive.org/web/20260405/%22reserved%22%2C",
-      "status_code": null,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "连接超时",
-      "response_time_ms": 10479.526996612549,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "reports\\link-fix-report.md",
-        "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md"
-      ],
-      "check_time": "2026-04-15T23:31:10.749733",
-      "archive_url": null,
-      "priority": 1
-    },
-    {
-      "url": "https://blog.twitter.com/engineering/en_us/topics/infrastructure/2015/flying-faster-with-twitter-heron",
-      "status_code": null,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "连接超时",
-      "response_time_ms": 10479.517936706543,
-      "source_files": [
-        "reports\\link-health-report.md",
+        "i18n\\en\\Flink\\03-api\\README.md",
+        ".improvement-tracking\\A3-report.md",
+        "tutorials\\00-5-MINUTE-QUICK-START.md",
+        "Knowledge\\01-concept-atlas\\README.md",
+        "docs\\i18n\\en\\00-OVERVIEW.md",
+        "archive\\completion-reports\\FLINK-DOCUMENTATION-GAP-ANALYSIS.md",
+        "release\\v3.0.0\\docs\\Knowledge\\Flink-Scala-Rust-Comprehensive\\99-appendix\\99.02-references.md",
+        "release\\v3.0.0\\docs\\Knowledge\\98-exercises\\README.md",
+        "Flink\\03-api\\README.md",
+        "docs\\i18n\\de\\README-de.md",
+        "phase2-case-studies\\ecommerce\\11.11.2-realtime-recommendation-system.md",
+        "i18n\\en\\QUICK-START.md",
+        "Knowledge\\98-exercises\\README.md",
+        "release\\v3.0.0\\docs\\docs\\i18n\\fr\\README-fr.md",
+        "release\\v3.0.0\\docs\\docs\\i18n\\ja\\README-ja.md",
+        "PROJECT-TRACKING.md",
+        "i18n\\de\\README-de.md",
+        "release\\v3.0.0\\docs\\CHANGELOG.md",
+        "i18n\\en\\Knowledge\\98-exercises\\README.md",
         "REFERENCES.md",
+        "release\\v3.0.0\\docs\\README.md",
+        "release\\v3.0.0\\docs\\docs\\i18n\\en\\00-OVERVIEW.md",
+        "i18n\\en\\Knowledge\\01-concept-atlas\\README.md",
+        "Knowledge\\04-technology-selection\\multidimensional-comparison-matrices.md",
+        "USTM-F-Reconstruction\\02-model-instantiation\\02.07-flink-in-ustm.md",
+        "README.md",
+        "release\\v3.0.0\\docs\\VALUE-PROPOSITION.md",
+        "release\\v3.0.0\\docs\\Flink\\05-ecosystem\\ecosystem\\materialize-comparison.md",
+        "docs\\i18n\\ja\\README-ja.md",
+        "release\\v3.0.0\\docs\\docs\\i18n\\de\\README-de.md",
+        "i18n\\en\\Flink\\05-ecosystem\\ecosystem\\materialize-comparison.md",
+        "release\\v3.0.0\\docs\\PROJECT-TRACKING.md",
+        "release\\v3.0.0\\docs\\tutorials\\00-5-MINUTE-QUICK-START.md",
         "release\\v3.0.0\\docs\\EXTERNAL-LINK-HEALTH-REPORT.md",
-        "release\\v3.0.0\\docs\\REFERENCES.md",
-        "EXTERNAL-LINK-HEALTH-REPORT.md",
-        "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md"
+        "release\\v3.0.0\\docs\\i18n\\de\\README-de.md",
+        "Flink-IoT-Authority-Alignment\\Phase-1-Architecture\\project-skeleton\\README.md",
+        "CHANGELOG.md",
+        "CONFIG-TEMPLATES\\README.md",
+        "release\\v3.0.0\\docs\\tutorials\\interactive\\README.md",
+        "Flink\\05-ecosystem\\ecosystem\\materialize-comparison.md",
+        "Knowledge\\Flink-Scala-Rust-Comprehensive\\99-appendix\\99.02-references.md",
+        "release\\v3.0.0\\docs\\i18n\\fr\\README-fr.md",
+        "docs\\i18n\\fr\\README-fr.md",
+        "i18n\\ja\\README-ja.md",
+        "release\\v3.0.0\\docs\\i18n\\en\\README.md",
+        "archive\\off-topic-candidates\\learning-platform\\courses\\index.md",
+        "VALUE-PROPOSITION.md",
+        "archive\\off-topic-candidates\\Flink-IoT-Authority-Alignment\\Phase-1-Architecture\\project-skeleton\\README.md",
+        "release\\v3.0.0\\docs\\i18n\\en\\QUICK-START.md",
+        "i18n\\fr\\README-fr.md",
+        "docs\\i18n\\en\\README.md",
+        "i18n\\en\\README.md",
+        "tutorials\\interactive\\README.md",
+        "learning-platform\\courses\\index.md",
+        "release\\v3.0.0\\docs\\docs\\i18n\\en\\README.md"
       ],
-      "check_time": "2026-04-15T23:31:10.749786",
+      "check_time": "2026-04-16T00:03:14.449869",
       "archive_url": null,
-      "priority": 1
+      "priority": 3
     },
     {
-      "url": "https://web.archive.org/web/20260405/Flink%2F01-architecture%2Fflink-architecture-overview.md",
-      "status_code": null,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "连接超时",
-      "response_time_ms": 10479.016304016113,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "reports\\link-fix-report.md",
-        "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md"
-      ],
-      "check_time": "2026-04-15T23:31:10.750325",
-      "archive_url": null,
-      "priority": 1
-    },
-    {
-      "url": "https://web.archive.org/web/20260405/%22high-confidence%22",
-      "status_code": null,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "连接超时",
-      "response_time_ms": 10478.956937789917,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "reports\\link-fix-report.md",
-        "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md"
-      ],
-      "check_time": "2026-04-15T23:31:10.750422",
-      "archive_url": null,
-      "priority": 1
-    },
-    {
-      "url": "https://www.confluent.io/blog/exactly-once-semantics-are-possible-heres-how-apache-kafka-does-it/",
+      "url": "https://nightlies.apache.org/flink/flink-docs-stable/docs/deployment/security/",
       "status_code": 200,
       "is_accessible": true,
       "redirect_url": null,
       "error_message": null,
-      "response_time_ms": 1856.7538261413574,
+      "response_time_ms": 2047.4896430969238,
       "source_files": [
-        "reports\\link-health-report.md",
-        "REFERENCES.md",
-        "release\\v3.0.0\\docs\\REFERENCES.md"
+        "formal-methods\\Knowledge\\en\\16-security.md",
+        "i18n\\en\\Knowledge\\07-best-practices\\flink-production-checklist.md",
+        "release\\v3.0.0\\docs\\Knowledge\\07-best-practices\\07.01-flink-production-checklist.md",
+        "CONFIG-TEMPLATES\\production\\ha-security-guide.md",
+        "Knowledge\\07-best-practices\\07.05-security-hardening-guide.md",
+        "release\\v3.0.0\\docs\\Knowledge\\07-best-practices\\07.05-security-hardening-guide.md",
+        "i18n\\en\\Knowledge\\07-best-practices\\07.05-security-hardening-guide.md",
+        "release\\v3.0.0\\docs\\EXTERNAL-LINK-HEALTH-REPORT.md",
+        "release\\v3.0.0\\docs\\docs\\i18n\\en\\Knowledge\\07-best-practices\\07.01-flink-production-checklist.md",
+        "release\\v3.0.0\\docs\\formal-methods\\Knowledge\\en\\16-security.md",
+        "docs\\i18n\\en\\Knowledge\\07-best-practices\\07.01-flink-production-checklist.md",
+        "Knowledge\\07-best-practices\\07.01-flink-production-checklist.md"
       ],
-      "check_time": "2026-04-15T23:31:10.750484",
+      "check_time": "2026-04-16T00:03:14.449976",
       "archive_url": null,
-      "priority": 1
+      "priority": 3
     },
     {
-      "url": "https://modelcontextprotocol.io/specificationification",
+      "url": "https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1068.2926177978516,
+      "source_files": [
+        "Flink\\02-core\\flink-state-management-complete-guide.md",
+        "Knowledge\\03-business-patterns\\iot-stream-processing.md",
+        "release\\v3.0.0\\docs\\REFERENCES.md",
+        "release\\v3.0.0\\docs\\Flink\\02-core\\forst-state-backend.md",
+        "Flink\\02-core\\flink-2.0-forst-state-backend.md",
+        "release\\v3.0.0\\docs\\Flink\\02-core\\flink-2.0-forst-state-backend.md",
+        "Flink\\02-core\\smart-checkpointing-strategies.md",
+        "release\\v3.0.0\\docs\\docs\\i18n\\en\\Flink\\02-core\\checkpoint-mechanism-deep-dive.md",
+        "Flink\\09-practices\\09.03-performance-tuning\\state-backend-selection.md",
+        "i18n\\en\\Flink\\09-practices\\09.03-performance-tuning\\state-backend-selection.md",
+        "reports\\theorem-uniqueness-report.md",
+        "release\\v3.0.0\\docs\\Flink\\09-practices\\09.03-performance-tuning\\production-config-templates.md",
+        "release\\v3.0.0\\docs\\Knowledge\\03-business-patterns\\uber-realtime-platform.md",
+        "release\\v3.0.0\\docs\\Flink\\02-core\\smart-checkpointing-strategies.md",
+        "i18n\\en\\Flink\\02-core\\checkpoint-mechanism-deep-dive.md",
+        "release\\v3.0.0\\docs\\Knowledge\\09-anti-patterns\\anti-pattern-03-checkpoint-interval-misconfig.md",
+        "FLINK-AUTHORITY-ALIGNMENT-COMPLETION-REPORT.md",
+        "release\\v3.0.0\\docs\\Flink\\01-concepts\\flink-1.x-vs-2.0-comparison.md",
+        "release\\v3.0.0\\docs\\Flink\\02-core\\checkpoint-mechanism-deep-dive.md",
+        "Knowledge\\03-business-patterns\\uber-realtime-platform.md",
+        "release\\v3.0.0\\docs\\Knowledge\\09-anti-patterns\\anti-pattern-01-global-state-abuse.md",
+        "REFERENCES.md",
+        "release\\v3.0.0\\docs\\Flink\\03-api\\03.02-table-sql-api\\sql-vs-datastream-comparison.md",
+        "Flink\\09-practices\\09.03-performance-tuning\\production-config-templates.md",
+        "release\\v3.0.0\\docs\\Knowledge\\03-business-patterns\\iot-stream-processing.md",
+        "release\\v3.0.0\\docs\\formal-methods\\Flink\\en\\03-checkpoint.md",
+        "release\\v3.0.0\\docs\\FLINK-AUTHORITY-ALIGNMENT-COMPLETION-REPORT.md",
+        "formal-methods\\Flink\\en\\03-checkpoint.md",
+        "release\\v3.0.0\\docs\\EXTERNAL-LINK-HEALTH-REPORT.md",
+        "Flink\\03-api\\03.02-table-sql-api\\sql-vs-datastream-comparison.md",
+        "Flink\\01-concepts\\flink-1.x-vs-2.0-comparison.md",
+        "Knowledge\\09-anti-patterns\\anti-pattern-03-checkpoint-interval-misconfig.md",
+        "release\\v3.0.0\\docs\\Flink\\02-core\\flink-state-management-complete-guide.md",
+        "Knowledge\\09-anti-patterns\\anti-pattern-01-global-state-abuse.md",
+        "Flink\\02-core\\checkpoint-mechanism-deep-dive.md",
+        "release\\v3.0.0\\docs\\Flink\\09-practices\\09.03-performance-tuning\\state-backend-selection.md",
+        "i18n\\en\\Flink\\01-concepts\\flink-1.x-vs-2.0-comparison.md",
+        "i18n\\en\\Flink\\03-api\\03.02-table-sql-api\\sql-vs-datastream-comparison.md",
+        "Flink\\02-core\\forst-state-backend.md",
+        "docs\\i18n\\en\\Flink\\02-core\\checkpoint-mechanism-deep-dive.md"
+      ],
+      "check_time": "2026-04-16T00:03:14.450023",
+      "archive_url": null,
+      "priority": 3
+    },
+    {
+      "url": "https://archive.org/web/*/https://nightlies.apache.org/flink/flink-docs-release-1.16/docs/dev/datastream/fault-tolerance/queryable_state/",
+      "status_code": null,
+      "is_accessible": false,
+      "redirect_url": null,
+      "error_message": "连接超时",
+      "response_time_ms": 10775.57921409607,
+      "source_files": [
+        "Flink\\02-core\\flink-state-management-complete-guide.md",
+        "Knowledge\\02-design-patterns\\pattern-stateful-computation.md",
+        "Flink\\01-concepts\\flink-1.x-vs-2.0-comparison.md",
+        "i18n\\en\\Flink\\01-concepts\\flink-1.x-vs-2.0-comparison.md",
+        "i18n\\en\\Knowledge\\02-design-patterns\\pattern-stateful-computation.md"
+      ],
+      "check_time": "2026-04-16T00:03:14.450058",
+      "archive_url": null,
+      "priority": 3
+    },
+    {
+      "url": "https://github.com/apache/flink",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 3404.170513153076,
+      "source_files": [
+        "Flink\\00-meta\\version-tracking.md",
+        "release\\v3.0.0\\docs\\REFERENCES.md",
+        "LEARNING-PATHS\\expert-contributor-path.md",
+        "release\\v3.0.0\\docs\\Knowledge\\Flink-Scala-Rust-Comprehensive\\99-appendix\\99.02-references.md",
+        "Flink\\00-meta\\version-tracking\\README.md",
+        "release\\v3.0.0\\docs\\Flink\\00-meta\\version-tracking\\flink-26-27-roadmap.md",
+        "i18n\\en\\Flink\\00-meta\\version-tracking\\flink-26-27-roadmap.md",
+        "Flink\\00-meta\\version-tracking\\flink-26-27-roadmap.md",
+        "REFERENCES.md",
+        "release\\v3.0.0\\docs\\Flink\\00-meta\\version-tracking.md",
+        "i18n\\en\\Flink\\00-meta\\version-tracking\\README.md",
+        "release\\v3.0.0\\docs\\EXTERNAL-LINK-HEALTH-REPORT.md",
+        "i18n\\en\\Flink\\00-meta\\version-tracking.md",
+        "Knowledge\\Flink-Scala-Rust-Comprehensive\\99-appendix\\99.02-references.md",
+        "release\\v3.0.0\\docs\\Flink\\00-meta\\version-tracking\\README.md"
+      ],
+      "check_time": "2026-04-16T00:03:14.450298",
+      "archive_url": null,
+      "priority": 3
+    },
+    {
+      "url": "https://github.com/apache/flink/releases",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1148.7236022949219,
+      "source_files": [
+        "Flink\\00-meta\\version-tracking.md",
+        "Flink\\00-meta\\version-tracking\\README.md",
+        "release\\v3.0.0\\docs\\Flink\\00-meta\\version-tracking\\flink-26-27-roadmap.md",
+        "i18n\\en\\Flink\\00-meta\\version-tracking\\flink-26-27-roadmap.md",
+        "Flink\\00-meta\\version-tracking\\flink-26-27-status-report.md",
+        "Flink\\00-meta\\version-tracking\\flink-26-27-roadmap.md",
+        ".improvement-tracking\\outdated-tech-report.md",
+        "VERSION-TRACKING.md",
+        "release\\v3.0.0\\docs\\Flink\\00-meta\\version-tracking.md",
+        "i18n\\en\\Flink\\00-meta\\version-tracking\\README.md",
+        "release\\v3.0.0\\docs\\EXTERNAL-LINK-HEALTH-REPORT.md",
+        "i18n\\en\\Flink\\00-meta\\version-tracking.md",
+        "release\\v3.0.0\\docs\\Flink\\00-meta\\version-tracking\\flink-26-27-status-report.md",
+        "i18n\\en\\Flink\\00-meta\\version-tracking\\flink-26-27-status-report.md",
+        "release\\v3.0.0\\docs\\Flink\\00-meta\\version-tracking\\README.md"
+      ],
+      "check_time": "2026-04-16T00:03:14.450491",
+      "archive_url": null,
+      "priority": 3
+    },
+    {
+      "url": "https://github.com/your-org/AnalysisDataFlow",
       "status_code": 404,
       "is_accessible": false,
       "redirect_url": null,
       "error_message": "HTTP 404",
-      "response_time_ms": 4543.409824371338,
+      "response_time_ms": 651.7035961151123,
       "source_files": [
-        "reports\\link-health-report.md",
-        "release\\v3.0.0\\docs\\EXTERNAL-LINK-HEALTH-REPORT.md",
-        "EXTERNAL-LINK-HEALTH-REPORT.md",
+        "RELEASE-NOTES-v5.0.0-DRAFT.md",
+        "archive\\deprecated\\RELEASE-NOTES-v3.0.md",
         "reports\\link-validation-report.md",
-        "reports\\fictional-content-audit-20260405_143730.md"
+        "docs\\contributing\\getting-started.md",
+        "release\\v3.0.0\\docs\\docs\\contributing\\getting-started.md",
+        "reports\\link-health-report.md",
+        "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md"
       ],
-      "check_time": "2026-04-15T23:31:23.749232",
+      "check_time": "2026-04-16T00:03:14.450566",
       "archive_url": null,
-      "priority": 1
+      "priority": 2
     },
     {
-      "url": "https://www.uber.com/en-US/blog/flink/",
+      "url": "https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml/badge.svg",
       "status_code": 404,
       "is_accessible": false,
       "redirect_url": null,
       "error_message": "HTTP 404",
-      "response_time_ms": 3501.556634902954,
+      "response_time_ms": 544.5809364318848,
       "source_files": [
-        "reports\\link-health-report.md",
-        "REFERENCES.md",
+        "release\\v3.0.0\\docs\\i18n\\ja\\README-ja.md",
+        "i18n\\de\\README-de.md",
+        "release\\v3.0.0\\docs\\README.md",
+        "reports\\link-validation-report.md",
+        "README.md",
         "release\\v3.0.0\\docs\\EXTERNAL-LINK-HEALTH-REPORT.md",
-        "release\\v3.0.0\\docs\\REFERENCES.md",
-        "EXTERNAL-LINK-HEALTH-REPORT.md",
-        "reports\\link-validation-report.md"
-      ],
-      "check_time": "2026-04-15T23:31:23.749418",
-      "archive_url": null,
-      "priority": 1
-    },
-    {
-      "url": "https://web.archive.org/web/20260405/https%3A%2F%2Fdzone.com%2Fbig-data-analytics",
-      "status_code": null,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "连接超时",
-      "response_time_ms": 10472.91350364685,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "reports\\link-fix-report.md",
-        "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md"
-      ],
-      "check_time": "2026-04-15T23:31:23.749494",
-      "archive_url": null,
-      "priority": 1
-    },
-    {
-      "url": "https://web.archive.org/web/20260405/Duration.ofSeconds%2830",
-      "status_code": null,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "连接超时",
-      "response_time_ms": 10472.95069694519,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "reports\\link-fix-report.md",
-        "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md"
-      ],
-      "check_time": "2026-04-15T23:31:23.749570",
-      "archive_url": null,
-      "priority": 1
-    },
-    {
-      "url": "https://web.archive.org/web/20260405/https%3A%2F%2Fdl.acm.org%2Fdoi%2F10.1145%2F568522.568525",
-      "status_code": null,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "连接超时",
-      "response_time_ms": 10472.82862663269,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "reports\\link-fix-report.md",
-        "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md"
-      ],
-      "check_time": "2026-04-15T23:31:23.749619",
-      "archive_url": null,
-      "priority": 1
-    },
-    {
-      "url": "https://www.oreilly.com/library/view/streaming-systems/9781491983874/",
-      "status_code": 403,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "HTTP 403",
-      "response_time_ms": 342.1180248260498,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "release\\v3.0.0\\docs\\i18n\\en\\QUICK-START.md",
-        "REFERENCES.md",
-        "release\\v3.0.0\\docs\\EXTERNAL-LINK-HEALTH-REPORT.md",
-        "release\\v3.0.0\\docs\\tutorials\\interactive\\README.md",
-        "i18n\\en\\QUICK-START.md",
-        "release\\v3.0.0\\docs\\REFERENCES.md",
-        "tutorials\\interactive\\README.md",
-        "EXTERNAL-LINK-HEALTH-REPORT.md",
-        "reports\\link-validation-report.md"
-      ],
-      "check_time": "2026-04-15T23:31:23.749667",
-      "archive_url": null,
-      "priority": 1
-    },
-    {
-      "url": "https://dl.acm.org/doi/book/10.5555/573304",
-      "status_code": 403,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "HTTP 403",
-      "response_time_ms": 70.56140899658203,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "REFERENCES.md",
-        "release\\v3.0.0\\docs\\EXTERNAL-LINK-HEALTH-REPORT.md",
-        "release\\v3.0.0\\docs\\REFERENCES.md",
-        "EXTERNAL-LINK-HEALTH-REPORT.md",
-        "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md"
-      ],
-      "check_time": "2026-04-15T23:31:23.749725",
-      "archive_url": null,
-      "priority": 1
-    },
-    {
-      "url": "https://golang.org/ref/spec",
-      "status_code": null,
-      "is_accessible": false,
-      "redirect_url": null,
-      "error_message": "连接超时",
-      "response_time_ms": 10472.688674926758,
-      "source_files": [
-        "reports\\link-health-report.md",
-        "release\\v3.0.0\\docs\\Struct\\02-properties\\02.05-type-safety-derivation.md",
-        "USTM-F-Reconstruction\\archive\\original-struct\\02-properties\\02.05-type-safety-derivation.md",
-        "release\\v3.0.0\\docs\\EXTERNAL-LINK-HEALTH-REPORT.md",
-        "EXTERNAL-LINK-HEALTH-REPORT.md",
+        "release\\v3.0.0\\docs\\i18n\\de\\README-de.md",
         "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md",
-        "Struct\\02-properties\\02.05-type-safety-derivation.md"
+        "release\\v3.0.0\\docs\\i18n\\fr\\README-fr.md",
+        "i18n\\ja\\README-ja.md",
+        "release\\v3.0.0\\docs\\i18n\\en\\README.md",
+        "i18n\\fr\\README-fr.md",
+        "docs\\i18n\\en\\README.md",
+        "i18n\\en\\README.md"
       ],
-      "check_time": "2026-04-15T23:31:23.749801",
+      "check_time": "2026-04-16T00:03:14.450609",
+      "archive_url": null,
+      "priority": 2
+    },
+    {
+      "url": "https://img.shields.io/badge/Docs-1010%2B-blue",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 935.2962970733643,
+      "source_files": [
+        "release\\v3.0.0\\docs\\i18n\\ja\\README-ja.md",
+        "archive\\off-topic-candidates\\v5.0\\RELEASE-STATUS-REPORT.md",
+        "i18n\\de\\README-de.md",
+        "release\\v3.0.0\\docs\\README.md",
+        "v5.0\\RELEASE-STATUS-REPORT.md",
+        "release\\v3.0.0\\docs\\i18n\\de\\README-de.md",
+        "release\\v3.0.0\\docs\\i18n\\fr\\README-fr.md",
+        "i18n\\ja\\README-ja.md",
+        "i18n\\fr\\README-fr.md",
+        "docs\\i18n\\en\\README.md",
+        "release\\v3.0.0\\docs\\docs\\i18n\\en\\README.md"
+      ],
+      "check_time": "2026-04-16T00:03:14.450649",
       "archive_url": null,
       "priority": 1
     },
     {
-      "url": "https://web.archive.org/web/20260405/https%3A%2F%2Fwww.cs.ucl.ac.uk%2Fstaff%2Fp.ohearn%2Fseplogic%2FSeparation_Logic_Lecture_Notes.pdf",
-      "status_code": null,
-      "is_accessible": false,
+      "url": "https://img.shields.io/badge/Version-v5.0.0-brightgreen",
+      "status_code": 200,
+      "is_accessible": true,
       "redirect_url": null,
-      "error_message": "连接超时",
-      "response_time_ms": 10472.64552116394,
+      "error_message": null,
+      "response_time_ms": 925.6007671356201,
       "source_files": [
-        "reports\\link-health-report.md",
-        "reports\\link-fix-report.md",
-        "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md"
+        "release\\v3.0.0\\docs\\i18n\\ja\\README-ja.md",
+        "archive\\off-topic-candidates\\v5.0\\RELEASE-STATUS-REPORT.md",
+        "docs\\i18n\\de\\README-de.md",
+        "release\\v3.0.0\\docs\\docs\\i18n\\fr\\README-fr.md",
+        "release\\v3.0.0\\docs\\docs\\i18n\\ja\\README-ja.md",
+        "i18n\\de\\README-de.md",
+        "release\\v3.0.0\\docs\\README.md",
+        "README.md",
+        "docs\\i18n\\ja\\README-ja.md",
+        "release\\v3.0.0\\docs\\docs\\i18n\\de\\README-de.md",
+        "v5.0\\RELEASE-STATUS-REPORT.md",
+        "release\\v3.0.0\\docs\\i18n\\de\\README-de.md",
+        "release\\v3.0.0\\docs\\i18n\\fr\\README-fr.md",
+        "docs\\i18n\\fr\\README-fr.md",
+        "i18n\\ja\\README-ja.md",
+        "i18n\\fr\\README-fr.md",
+        "docs\\i18n\\en\\README.md",
+        "release\\v3.0.0\\docs\\docs\\i18n\\en\\README.md"
       ],
-      "check_time": "2026-04-15T23:31:23.749860",
+      "check_time": "2026-04-16T00:03:27.745018",
       "archive_url": null,
       "priority": 1
     },
     {
-      "url": "https://web.archive.org/web/20260405/..%2F..%2FAGENTS.md",
+      "url": "https://img.shields.io/badge/Theorems-10000%2B-green",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 540.1999950408936,
+      "source_files": [
+        "release\\v3.0.0\\docs\\i18n\\ja\\README-ja.md",
+        "archive\\off-topic-candidates\\v5.0\\RELEASE-STATUS-REPORT.md",
+        "i18n\\de\\README-de.md",
+        "release\\v3.0.0\\docs\\README.md",
+        "v5.0\\RELEASE-STATUS-REPORT.md",
+        "release\\v3.0.0\\docs\\i18n\\de\\README-de.md",
+        "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md",
+        "release\\v3.0.0\\docs\\i18n\\fr\\README-fr.md",
+        "i18n\\ja\\README-ja.md",
+        "i18n\\fr\\README-fr.md",
+        "docs\\i18n\\en\\README.md",
+        "release\\v3.0.0\\docs\\docs\\i18n\\en\\README.md"
+      ],
+      "check_time": "2026-04-16T00:03:27.745243",
+      "archive_url": null,
+      "priority": 1
+    },
+    {
+      "url": "https://img.shields.io/badge/中文-🇨🇳-green",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1225.7716655731201,
+      "source_files": [
+        "release\\v3.0.0\\docs\\i18n\\ja\\README-ja.md",
+        "docs\\i18n\\de\\README-de.md",
+        "release\\v3.0.0\\docs\\docs\\i18n\\fr\\README-fr.md",
+        "release\\v3.0.0\\docs\\docs\\i18n\\ja\\README-ja.md",
+        "i18n\\de\\README-de.md",
+        "docs\\i18n\\ja\\README-ja.md",
+        "release\\v3.0.0\\docs\\docs\\i18n\\de\\README-de.md",
+        "release\\v3.0.0\\docs\\i18n\\de\\README-de.md",
+        "release\\v3.0.0\\docs\\i18n\\fr\\README-fr.md",
+        "docs\\i18n\\fr\\README-fr.md",
+        "i18n\\ja\\README-ja.md",
+        "i18n\\fr\\README-fr.md"
+      ],
+      "check_time": "2026-04-16T00:03:27.745313",
+      "archive_url": null,
+      "priority": 1
+    },
+    {
+      "url": "https://img.shields.io/badge/日本語-🇯🇵-red",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1383.4116458892822,
+      "source_files": [
+        "release\\v3.0.0\\docs\\i18n\\ja\\README-ja.md",
+        "release\\v3.0.0\\docs\\docs\\i18n\\ja\\README-ja.md",
+        "docs\\i18n\\ja\\README-ja.md",
+        "i18n\\ja\\README-ja.md"
+      ],
+      "check_time": "2026-04-16T00:03:27.745365",
+      "archive_url": null,
+      "priority": 1
+    },
+    {
+      "url": "https://img.shields.io/badge/English-🇬🇧-blue",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 859.2605590820312,
+      "source_files": [
+        "release\\v3.0.0\\docs\\i18n\\ja\\README-ja.md",
+        "formal-methods\\README.md",
+        "docs\\i18n\\de\\README-de.md",
+        "release\\v3.0.0\\docs\\docs\\i18n\\fr\\README-fr.md",
+        "release\\v3.0.0\\docs\\docs\\i18n\\ja\\README-ja.md",
+        "i18n\\de\\README-de.md",
+        "release\\v3.0.0\\docs\\formal-methods\\README.md",
+        "release\\v3.0.0\\docs\\README-EN.md",
+        "release\\v3.0.0\\docs\\README.md",
+        "README.md",
+        "docs\\i18n\\ja\\README-ja.md",
+        "release\\v3.0.0\\docs\\docs\\i18n\\de\\README-de.md",
+        "release\\v3.0.0\\docs\\i18n\\de\\README-de.md",
+        "release\\v3.0.0\\docs\\i18n\\fr\\README-fr.md",
+        "README-EN.md",
+        "docs\\i18n\\fr\\README-fr.md",
+        "i18n\\ja\\README-ja.md",
+        "release\\v3.0.0\\docs\\i18n\\en\\README.md",
+        "i18n\\fr\\README-fr.md",
+        "docs\\i18n\\en\\TEMPLATE.md",
+        "docs\\i18n\\en\\README.md",
+        "i18n\\en\\README.md",
+        "release\\v3.0.0\\docs\\docs\\i18n\\en\\README.md"
+      ],
+      "check_time": "2026-04-16T00:03:27.745445",
+      "archive_url": null,
+      "priority": 1
+    },
+    {
+      "url": "https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Security_Cheat_Sheet.html",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 8960.900783538818,
+      "source_files": [
+        "formal-methods\\Knowledge\\en\\16-security.md",
+        "Knowledge\\07-best-practices\\07.05-security-hardening-guide.md",
+        "release\\v3.0.0\\docs\\Knowledge\\07-best-practices\\07.05-security-hardening-guide.md",
+        "i18n\\en\\Knowledge\\07-best-practices\\07.05-security-hardening-guide.md",
+        "reports\\link-health-report.md",
+        "release\\v3.0.0\\docs\\formal-methods\\Knowledge\\en\\16-security.md",
+        "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md"
+      ],
+      "check_time": "2026-04-16T00:03:27.745532",
+      "archive_url": null,
+      "priority": 1
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Category_theory",
       "status_code": null,
       "is_accessible": false,
       "redirect_url": null,
       "error_message": "连接超时",
-      "response_time_ms": 10472.556591033936,
+      "response_time_ms": 10476.896047592163,
       "source_files": [
-        "reports\\link-health-report.md",
-        "reports\\link-fix-report.md",
+        "formal-methods\\98-appendices\\wikipedia-concepts\\en\\25-category-theory.md",
+        "archive\\off-topic-candidates\\formal-methods\\wikipedia-concepts\\25-category-theory.md",
+        "formal-methods\\98-appendices\\wikipedia-concepts\\25-category-theory.md",
+        "release\\v3.0.0\\docs\\formal-methods\\98-appendices\\wikipedia-concepts\\25-category-theory.md",
+        "archive\\off-topic-candidates\\formal-methods\\wikipedia-concepts\\en\\25-category-theory.md",
+        "release\\v3.0.0\\docs\\formal-methods\\98-appendices\\wikipedia-concepts\\en\\25-category-theory.md",
         "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md"
       ],
-      "check_time": "2026-04-15T23:31:23.749911",
+      "check_time": "2026-04-16T00:03:27.745612",
+      "archive_url": null,
+      "priority": 1
+    },
+    {
+      "url": "https://rocksdb.org/",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 487.1230125427246,
+      "source_files": [
+        "Flink\\02-core\\flink-state-management-complete-guide.md",
+        "release\\v3.0.0\\docs\\Flink\\02-core\\flink-state-management-complete-guide.md"
+      ],
+      "check_time": "2026-04-16T00:03:27.745697",
+      "archive_url": null,
+      "priority": 1
+    },
+    {
+      "url": "https://conduktor.io/glossary/flink-state-management-and-checkpointing",
+      "status_code": 200,
+      "is_accessible": true,
+      "redirect_url": null,
+      "error_message": null,
+      "response_time_ms": 1271.3813781738281,
+      "source_files": [
+        "Flink\\02-core\\flink-state-management-complete-guide.md",
+        "release\\v3.0.0\\docs\\Flink\\02-core\\flink-state-management-complete-guide.md"
+      ],
+      "check_time": "2026-04-16T00:03:27.745761",
+      "archive_url": null,
+      "priority": 1
+    },
+    {
+      "url": "https://cert.analysisdataflow.org/verify",
+      "status_code": null,
+      "is_accessible": false,
+      "redirect_url": null,
+      "error_message": "客户端错误: Cannot connect to host cert.analysisdataflow.org:4",
+      "response_time_ms": 174.79991912841797,
+      "source_files": [
+        "docs\\certification\\csa\\exam-guide-csa.md",
+        "release\\v3.0.0\\docs\\docs\\certification\\csa\\exam-guide-csa.md",
+        "EXTERNAL-LINK-HEALTH-REPORT-v4.1.md"
+      ],
+      "check_time": "2026-04-16T00:03:27.746171",
       "archive_url": null,
       "priority": 1
     }

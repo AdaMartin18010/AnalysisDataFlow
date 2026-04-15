@@ -147,7 +147,7 @@ AnalysisDataFlow/
 
 ### 3.1 Fork 项目
 
-1. 访问 [GitHub 仓库](https://github.com/your-org/AnalysisDataFlow)
+1. 访问 [GitHub 仓库](https://github.com/your-org/AnalysisDataFlow) ⚠️ **[已失效: HTTP 404]** [Archive备份](https://web.archive.org/web/*/https://github.com/your-org/AnalysisDataFlow)
 2. 点击右上角的 **Fork** 按钮
 3. 等待 Fork 完成
 

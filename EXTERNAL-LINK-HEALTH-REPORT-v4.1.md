@@ -368,7 +368,7 @@
 | [https://en.wikipedia.org/wiki/Automated_theorem_proving](https://en.wikipedia.org/wiki/Automated_theorem_proving) | release/v3.0.0/docs/formal-methods/ | 临时性问题，稍后重试或使用替代链接 |
 | [https://en.wikipedia.org/wiki/Byzantine_fault_tolerance](https://en.wikipedia.org/wiki/Byzantine_fault_tolerance) | formal-methods/98-appendices/wikipe | 临时性问题，稍后重试或使用替代链接 |
 | [https://en.wikipedia.org/wiki/CAP_theorem](https://en.wikipedia.org/wiki/CAP_theorem) | release/v3.0.0/docs/formal-methods/ | 临时性问题，稍后重试或使用替代链接 |
-| [https://en.wikipedia.org/wiki/Category_theory](https://en.wikipedia.org/wiki/Category_theory) | release/v3.0.0/docs/formal-methods/ | 临时性问题，稍后重试或使用替代链接 |
+| [https://en.wikipedia.org/wiki/Category_theory](https://en.wikipedia.org/wiki/Category_theory) ⚠️ **[已失效: 连接超时]** [Archive备份](https://web.archive.org/web/*/https://en.wikipedia.org/wiki/Category_theory) | release/v3.0.0/docs/formal-methods/ | 临时性问题，稍后重试或使用替代链接 |
 | [https://en.wikipedia.org/wiki/Church%27s_theorem_(mathematic...](https://en.wikipedia.org/wiki/Church%27s_theorem_(mathematical_logic)) | release/v3.0.0/docs/reports/link-va | 临时性问题，稍后重试或使用替代链接 |
 | [https://en.wikipedia.org/wiki/Compactness_theorem](https://en.wikipedia.org/wiki/Compactness_theorem) | release/v3.0.0/docs/formal-methods/ | 临时性问题，稍后重试或使用替代链接 |
 | [https://en.wikipedia.org/wiki/Consensus_(computer_science)](https://en.wikipedia.org/wiki/Consensus_(computer_science)) | release/v3.0.0/docs/formal-methods/ | 临时性问题，稍后重试或使用替代链接 |
@@ -481,7 +481,7 @@
 | [https://github.com/luyanfeng/AnalysisDataFlow/actions/workfl...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/doc-update-sync.yml) | release/v3.0.0/docs/reports/link-va | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |
 | [https://github.com/luyanfeng/AnalysisDataFlow/actions/workfl...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/doc-update-sync.yml/badge.svg) | release/v3.0.0/docs/EXTERNAL-LINK-H | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |
 | [https://github.com/luyanfeng/AnalysisDataFlow/actions/workfl...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/link-health-check.yml) | archive/deprecated/LINK-HEALTH-AUTO | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |
-| [https://github.com/luyanfeng/AnalysisDataFlow/actions/workfl...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml/badge.svg) | release/v3.0.0/docs/EXTERNAL-LINK-H | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |
+| [https://github.com/luyanfeng/AnalysisDataFlow/actions/workfl...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml/badge.svg) ⚠️ **[已失效: HTTP 404]** [Archive备份](https://web.archive.org/web/*/https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml/badge.svg) | release/v3.0.0/docs/EXTERNAL-LINK-H | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |
 | [https://github.com/luyanfeng/AnalysisDataFlow/blob/main/v5.0...](https://github.com/luyanfeng/AnalysisDataFlow/blob/main/v5.0/ANNOUNCEMENT.md) | v5.0/PUBLISH-COMPLETION-REPORT.md | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |
 | [https://github.com/luyanfeng/AnalysisDataFlow/blob/main/v5.0...](https://github.com/luyanfeng/AnalysisDataFlow/blob/main/v5.0/COMMUNITY-EVENT-PLAN.md) | v5.0/PUBLISH-COMPLETION-REPORT.md | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |
 | [https://github.com/luyanfeng/AnalysisDataFlow/blob/main/v5.0...](https://github.com/luyanfeng/AnalysisDataFlow/blob/main/v5.0/RELEASE-NOTES-v5.0.md) | v5.0/PUBLISH-COMPLETION-REPORT.md | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |
@@ -518,7 +518,7 @@
 | [https://github.com/tlaplus/awslabs](https://github.com/tlaplus/awslabs) | formal-methods/README-EN.md, releas | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |
 | [https://github.com/uber-archive/AthenaX](https://github.com/uber-archive/AthenaX) | EXTERNAL-LINK-HEALTH-REPORT-v4.1.md | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |
 | [https://github.com/vectordotdev/vector](https://github.com/vectordotdev/vector) | release/v3.0.0/docs/EXTERNAL-LINK-H | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |
-| [https://github.com/your-org/AnalysisDataFlow](https://github.com/your-org/AnalysisDataFlow) | release/v3.0.0/docs/reports/link-va | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |
+| [https://github.com/your-org/AnalysisDataFlow](https://github.com/your-org/AnalysisDataFlow) ⚠️ **[已失效: HTTP 404]** [Archive备份](https://web.archive.org/web/*/https://github.com/your-org/AnalysisDataFlow) | release/v3.0.0/docs/reports/link-va | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |
 | [https://github.com/your-org/AnalysisDataFlow/compare/v3.0.0....](https://github.com/your-org/AnalysisDataFlow/compare/v3.0.0...HEAD) | release/v3.0.0/docs/EXTERNAL-LINK-H | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |
 | [https://github.com/your-org/AnalysisDataFlow/compare/v3.6.0....](https://github.com/your-org/AnalysisDataFlow/compare/v3.6.0...HEAD) | release/v3.0.0/docs/reports/link-va | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |
 | [https://github.com/your-org/AnalysisDataFlow/discussions](https://github.com/your-org/AnalysisDataFlow/discussions) | archive/deprecated/RELEASE-NOTES-v3 | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |
@@ -1181,7 +1181,7 @@
 | [https://blog.retail-tech.cn](https://blog.retail-tech.cn) | Connection Error: Cannot conne | Flink-IoT-Authority-Align | 手动检查链接有效性 |
 | [https://blog.twitter.com/engineering/en_us/topics/...](https://blog.twitter.com/engineering/en_us/topics/infrastructure/2015/flying-faster-with-twitter-heron) | Timeout | release/v3.0.0/docs/EXTER | 临时性问题，稍后重试或使用替代链接 |
 | [https://cert.analysisdataflow.org](https://cert.analysisdataflow.org) | Connection Error: Cannot conne | docs/certification/CERTIF | 手动检查链接有效性 |
-| [https://cert.analysisdataflow.org/verify](https://cert.analysisdataflow.org/verify) | Connection Error: Cannot conne | release/v3.0.0/docs/EXTER | 手动检查链接有效性 |
+| [https://cert.analysisdataflow.org/verify](https://cert.analysisdataflow.org/verify) ⚠️ **[已失效: 客户端错误: Cannot connect to host cert.analysisdataflow.org:4]** [Archive备份](https://web.archive.org/web/*/https://cert.analysisdataflow.org/verify) | Connection Error: Cannot conne | release/v3.0.0/docs/EXTER | 手动检查链接有效性 |
 | [https://cloud.google.com/architecture/framework/co...](https://cloud.google.com/architecture/framework/cost-optimization) | Timeout | formal-methods/Knowledge/ | 临时性问题，稍后重试或使用替代链接 |
 | [https://cloud.google.com/blog/products/data-analyt...](https://cloud.google.com/blog/products/data-analytics) | Timeout | release/v3.0.0/docs/Knowl | 临时性问题，稍后重试或使用替代链接 |
 | [https://cloud.google.com/blog/products/data-analyt...](https://cloud.google.com/blog/products/data-analytics/stream-processing-cloud-pubsub-cloud-dataflow) | Timeout | release/v3.0.0/docs/EXTER | 临时性问题，稍后重试或使用替代链接 |
@@ -1240,7 +1240,7 @@
 | [https://en.wikipedia.org/wiki/Automated_theorem_pr...](https://en.wikipedia.org/wiki/Automated_theorem_proving) | Timeout | release/v3.0.0/docs/forma | 临时性问题，稍后重试或使用替代链接 |
 | [https://en.wikipedia.org/wiki/Byzantine_fault_tole...](https://en.wikipedia.org/wiki/Byzantine_fault_tolerance) | Timeout | formal-methods/98-appendi | 临时性问题，稍后重试或使用替代链接 |
 | [https://en.wikipedia.org/wiki/CAP_theorem](https://en.wikipedia.org/wiki/CAP_theorem) | Timeout | release/v3.0.0/docs/forma | 临时性问题，稍后重试或使用替代链接 |
-| [https://en.wikipedia.org/wiki/Category_theory](https://en.wikipedia.org/wiki/Category_theory) | Timeout | release/v3.0.0/docs/forma | 临时性问题，稍后重试或使用替代链接 |
+| [https://en.wikipedia.org/wiki/Category_theory](https://en.wikipedia.org/wiki/Category_theory) ⚠️ **[已失效: 连接超时]** [Archive备份](https://web.archive.org/web/*/https://en.wikipedia.org/wiki/Category_theory) | Timeout | release/v3.0.0/docs/forma | 临时性问题，稍后重试或使用替代链接 |
 | [https://en.wikipedia.org/wiki/Church%27s_theorem_(...](https://en.wikipedia.org/wiki/Church%27s_theorem_(mathematical_logic)) | Timeout | release/v3.0.0/docs/repor | 临时性问题，稍后重试或使用替代链接 |
 | [https://en.wikipedia.org/wiki/Compactness_theorem](https://en.wikipedia.org/wiki/Compactness_theorem) | Timeout | release/v3.0.0/docs/forma | 临时性问题，稍后重试或使用替代链接 |
 | [https://en.wikipedia.org/wiki/Consensus_(computer_...](https://en.wikipedia.org/wiki/Consensus_(computer_science)) | Timeout | release/v3.0.0/docs/forma | 临时性问题，稍后重试或使用替代链接 |
@@ -1358,7 +1358,7 @@
 | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/doc-update-sync.yml) | Timeout | release/v3.0.0/docs/repor | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |
 | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/doc-update-sync.yml/badge.svg) | Timeout | release/v3.0.0/docs/EXTER | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |
 | [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/link-health-check.yml) | Timeout | archive/deprecated/LINK-H | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |
-| [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml/badge.svg) | Timeout | release/v3.0.0/docs/EXTER | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |
+| [https://github.com/luyanfeng/AnalysisDataFlow/acti...](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml/badge.svg) ⚠️ **[已失效: HTTP 404]** [Archive备份](https://web.archive.org/web/*/https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml/badge.svg) | Timeout | release/v3.0.0/docs/EXTER | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |
 | [https://github.com/luyanfeng/AnalysisDataFlow/blob...](https://github.com/luyanfeng/AnalysisDataFlow/blob/main/v5.0/ANNOUNCEMENT.md) | Timeout | v5.0/PUBLISH-COMPLETION-R | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |
 | [https://github.com/luyanfeng/AnalysisDataFlow/blob...](https://github.com/luyanfeng/AnalysisDataFlow/blob/main/v5.0/COMMUNITY-EVENT-PLAN.md) | Timeout | v5.0/PUBLISH-COMPLETION-R | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |
 | [https://github.com/luyanfeng/AnalysisDataFlow/blob...](https://github.com/luyanfeng/AnalysisDataFlow/blob/main/v5.0/RELEASE-NOTES-v5.0.md) | Timeout | v5.0/PUBLISH-COMPLETION-R | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |
@@ -1395,7 +1395,7 @@
 | [https://github.com/tlaplus/awslabs](https://github.com/tlaplus/awslabs) | Timeout | formal-methods/README-EN. | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |
 | [https://github.com/uber-archive/AthenaX](https://github.com/uber-archive/AthenaX) | Timeout | EXTERNAL-LINK-HEALTH-REPO | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |
 | [https://github.com/vectordotdev/vector](https://github.com/vectordotdev/vector) | Timeout | release/v3.0.0/docs/EXTER | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |
-| [https://github.com/your-org/AnalysisDataFlow](https://github.com/your-org/AnalysisDataFlow) | Timeout | release/v3.0.0/docs/repor | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |
+| [https://github.com/your-org/AnalysisDataFlow](https://github.com/your-org/AnalysisDataFlow) ⚠️ **[已失效: HTTP 404]** [Archive备份](https://web.archive.org/web/*/https://github.com/your-org/AnalysisDataFlow) | Timeout | release/v3.0.0/docs/repor | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |
 | [https://github.com/your-org/AnalysisDataFlow/compa...](https://github.com/your-org/AnalysisDataFlow/compare/v3.0.0...HEAD) | Timeout | release/v3.0.0/docs/EXTER | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |
 | [https://github.com/your-org/AnalysisDataFlow/compa...](https://github.com/your-org/AnalysisDataFlow/compare/v3.6.0...HEAD) | Timeout | release/v3.0.0/docs/repor | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |
 | [https://github.com/your-org/AnalysisDataFlow/discu...](https://github.com/your-org/AnalysisDataFlow/discussions) | Timeout | archive/deprecated/RELEAS | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |

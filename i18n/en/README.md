@@ -15,7 +15,7 @@ terminology_verified: true
 
 [![中文](https://img.shields.io/badge/中文-🇨🇳-red)](./) [![English](https://img.shields.io/badge/English-🇬🇧-blue)](./docs/i18n/en/00-OVERVIEW.md)
 
-[![PR Quality Gate](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml/badge.svg)](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml)
+[![PR Quality Gate](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml/badge.svg) ⚠️ **[已失效: HTTP 404]** [Archive备份](https://web.archive.org/web/*/https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml/badge.svg)](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml)
 [![Scheduled Maintenance](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/scheduled-maintenance.yml/badge.svg)](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/scheduled-maintenance.yml)
 [![Doc Update Sync](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/doc-update-sync.yml/badge.svg)](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/doc-update-sync.yml)
 [![Docs](https://img.shields.io/badge/Docs-420%2B-blue)](./)
