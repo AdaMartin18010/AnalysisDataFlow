@@ -8,16 +8,20 @@
 
 ## 📋 目录
 
-- [1. 金融行业 (Finance)](#1-金融行业-finance)
-- [2. 电商零售 (E-commerce)](#2-电商零售-e-commerce)
-- [3. 物联网与工业 (IoT)](#3-物联网与工业-iot)
-- [4. 游戏娱乐 (Gaming)](#4-游戏娱乐-gaming)
-- [5. 社交媒体 (Social Media)](#5-社交媒体-social-media)
-- [6. 医疗健康 (Healthcare)](#6-医疗健康-healthcare)
-- [7. 物流供应链 (Logistics)](#7-物流供应链-logistics)
-- [8. 能源电力 (Energy)](#8-能源电力-energy)
-- [9. 跨行业与其他 (Cross-Industry)](#9-跨行业与其他-cross-industry)
-- [10. 统计汇总](#10-统计汇总)
+- [AnalysisDataFlow — 案例研究统一导航索引](#analysisdataflow--案例研究统一导航索引)
+  - [📋 目录](#-目录)
+  - [1. 金融行业 (Finance)](#1-金融行业-finance)
+  - [2. 电商零售 (E-commerce)](#2-电商零售-e-commerce)
+  - [3. 物联网与工业 (IoT)](#3-物联网与工业-iot)
+  - [4. 游戏娱乐 (Gaming)](#4-游戏娱乐-gaming)
+  - [5. 社交媒体 (Social Media)](#5-社交媒体-social-media)
+  - [6. 医疗健康 (Healthcare)](#6-医疗健康-healthcare)
+  - [7. 物流供应链 (Logistics)](#7-物流供应链-logistics)
+  - [8. 能源电力 (Energy)](#8-能源电力-energy)
+  - [9. 跨行业与其他 (Cross-Industry)](#9-跨行业与其他-cross-industry)
+  - [10. 统计汇总](#10-统计汇总)
+    - [按行业分布](#按行业分布)
+    - [来源分布](#来源分布)
 
 ---
 

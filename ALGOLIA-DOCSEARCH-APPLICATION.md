@@ -1,8 +1,8 @@
 # Algolia DocSearch 申请模板
 
-> **项目**: AnalysisDataFlow  
-> **仓库**: https://github.com/AdaMartin18010/AnalysisDataFlow  
-> **网站**: https://adamartin18010.github.io/AnalysisDataFlow/  
+> **项目**: AnalysisDataFlow
+> **仓库**: <https://github.com/AdaMartin18010/AnalysisDataFlow>
+> **网站**: <https://adamartin18010.github.io/AnalysisDataFlow/>
 > **生成时间**: 2026-04-15
 
 ---
@@ -57,6 +57,7 @@ AnalysisDataFlow Team
 ## 收到 API Key 后的操作
 
 Algolia 批复后会邮件发送以下信息：
+
 - `appId`
 - `apiKey` (Search-Only API Key)
 - `indexName`
@@ -96,6 +97,7 @@ const ALGOLIA_CONFIG = {
 ### 触发重新部署
 
 提交更改后，GitHub Actions 会自动部署。部署完成后：
+
 1. 清除浏览器缓存
 2. 访问站点首页
 3. 在搜索框输入 "Flink" 测试是否返回 Algolia 结果

@@ -1,7 +1,7 @@
 # v4.2 管理员 5 分钟快速激活指南
 
-> **目标**: 完成最后 3 项 GitHub 平台手动配置，让项目从"自动化就绪"变为"完全上线"  
-> **预计耗时**: 5 分钟（不含 Algolia 审核等待时间）  
+> **目标**: 完成最后 3 项 GitHub 平台手动配置，让项目从"自动化就绪"变为"完全上线"
+> **预计耗时**: 5 分钟（不含 Algolia 审核等待时间）
 > **最后更新**: 2026-04-15 23:45
 
 ---
@@ -64,6 +64,7 @@ Invoke-RestMethod -Uri 'https://adamartin18010.github.io/AnalysisDataFlow/robots
 ## 遇到问题？
 
 详见完整手册：
+
 - [`v4.2-ADMIN-OPERATION-GUIDE.md`](./v4.2-ADMIN-OPERATION-GUIDE.md) — 详细操作步骤与 FAQ
 - [`GO-LIVE-CHECKLIST-v4.2.md`](./GO-LIVE-CHECKLIST-v4.2.md) — 上线后验证清单
 - [`ALGOLIA-DOCSEARCH-APPLICATION.md`](./ALGOLIA-DOCSEARCH-APPLICATION.md) — 预填充申请模板
