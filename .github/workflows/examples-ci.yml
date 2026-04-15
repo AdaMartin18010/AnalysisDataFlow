@@ -62,7 +62,7 @@ jobs:
           ls -lh target/*.jar
           java -jar target/flink-${{ matrix.project }}-1.0.0.jar &
           sleep 5
-          pkill -f "flink-${{ matrix.project }}"
+          pkill -f "flink-${{ matrix.project }}" || true
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4

@@ -87,8 +87,7 @@ jobs:
           
           # 注入 Google Analytics（如果配置了）
           if [ -n "$GA_ID" ]; then
-            GA_SCRIPT="<!-- Google tag (gtag.js) --><script async src='https://www.googletagmanager.com/gtag/js?id=$GA_ID'></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','$GA_ID');</script>"
-            sed -i "s|</head>|${GA_SCRIPT}</head>|g" knowledge-graph-site/index.html
+            python3 .scripts/inject-ga.py "$GA_ID" knowledge-graph-site/index.html
             echo "✅ Google Analytics 已注入"
           else
             echo "⚠️  未配置 GA_TRACKING_ID，跳过分析代码注入"

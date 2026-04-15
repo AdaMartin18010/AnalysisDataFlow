@@ -738,20 +738,22 @@ jobs:
             }
 
             const title = `🔧 [Maintenance] ${brokenLinks} broken external links detected`;
-            const body = `## 🔗 Maintenance Report
-
-          **Type**: ${{ needs.schedule-decision.outputs.maintenance_type }}
-          **Date**: ${new Date().toISOString()}
-          **Broken Links**: ${brokenLinks}
-
-          ### 🛠️ Recommended Actions
-
-          1. Download the detailed report from workflow artifacts
-          2. Run the auto-fix script
-          3. Verify fixes
-
-          ---
-          *This issue was automatically created by the Scheduled Maintenance workflow.*`;
+            const body = [
+              '## 🔗 Maintenance Report',
+              '',
+              '**Type**: ${{ needs.schedule-decision.outputs.maintenance_type }}',
+              '**Date**: ' + new Date().toISOString(),
+              '**Broken Links**: ' + brokenLinks,
+              '',
+              '### 🛠️ Recommended Actions',
+              '',
+              '1. Download the detailed report from workflow artifacts',
+              '2. Run the auto-fix script',
+              '3. Verify fixes',
+              '',
+              '---',
+              '*This issue was automatically created by the Scheduled Maintenance workflow.*'
+            ].join('\n');
 
             // Check for existing issue
             const issues = await github.rest.issues.listForRepo({

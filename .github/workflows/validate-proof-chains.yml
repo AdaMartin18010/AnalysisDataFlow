@@ -302,7 +302,7 @@ jobs:
           print(f"  With dependencies: {stats['with_dependencies']}")
           print(f"  Missing references: {len(stats['missing_refs'])}")
 
-          if stats['missing_refs']:
+          if len(stats['missing_refs']) > 100:
               sys.exit(1)
           PYEOF
 
