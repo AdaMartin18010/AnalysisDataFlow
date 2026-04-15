@@ -234,10 +234,10 @@ graph TB
 │                     攻击者能力层级                          │
 ├─────────────────────────────────────────────────────────────┤
 │ L1: 网络攻击者      → 被动监听/主动篡改流量                    │
-│ L2: 系统用户        → 普通系统权限，无 root                   │
-│ L3: 系统管理员      → root 权限，可访问所有内存               │
-│ L4: 云管理员        → Hypervisor 控制，可暂停/迁移 VM         │
-│ L5: 硬件攻击者      → 物理访问，侧信道分析                    │
+│ L2: 系统用户        → 普通系统权限,无 root                   │
+│ L3: 系统管理员      → root 权限,可访问所有内存               │
+│ L4: 云管理员        → Hypervisor 控制,可暂停/迁移 VM         │
+│ L5: 硬件攻击者      → 物理访问,侧信道分析                    │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -284,7 +284,7 @@ graph TB
 1. **代码度量绑定**
 
    ```text
-   Enclave 启动时：
+   Enclave 启动时:
    MRENCLAVE = SHA256(CODE_INIT || DATA_INIT || HEAP_INIT)
 
 ```
@@ -392,7 +392,7 @@ flowchart TD
 **关键代码模式**:
 
 ```java
-// 飞地内解密算子（概念示意）
+// 飞地内解密算子(概念示意)
 public class SecureDecryptOperator extends RichMapFunction<byte[], Transaction> {
 
     private EnclaveContext enclave;
@@ -410,7 +410,7 @@ public class SecureDecryptOperator extends RichMapFunction<byte[], Transaction> 
             throw new SecurityException("Enclave attestation failed");
         }
 
-        // 3. 解封密钥（仅对该飞地配置有效）
+        // 3. 解封密钥(仅对该飞地配置有效)
         sealedKey = loadSealedKey();
         byte[] keyMaterial = enclave.unseal(sealedKey);
         enclave.initCipher(keyMaterial);
@@ -505,12 +505,12 @@ def process_patient_record(encrypted_record):
 2. **差分隐私噪声添加**
 
    ```python
-   def add_differential_privacy_noise(result, epsilon):
-       # 在飞地内添加拉普拉斯噪声
-       # 确保原始统计值不泄露
-       sensitivity = compute_sensitivity()
-       noise = laplace_noise(sensitivity / epsilon)
-       return result + noise
+def add_differential_privacy_noise(result, epsilon):
+    # 在飞地内添加拉普拉斯噪声
+    # 确保原始统计值不泄露
+    sensitivity = compute_sensitivity()
+    noise = laplace_noise(sensitivity / epsilon)
+    return result + noise
 ```
 
 1. **审计日志（飞地签名）**

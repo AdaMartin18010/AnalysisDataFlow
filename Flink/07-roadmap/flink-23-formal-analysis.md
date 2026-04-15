@@ -190,7 +190,7 @@ $$
 │  Rebalance()     ──→  重新平衡任务分布                          │
 │    ├── 触发条件: 负载方差 > threshold                           │
 │    ├── 算法: 最小化 makespan 的贪心算法                          │
-│    └── 影响: 不停机，逐步迁移                                    │
+│    └── 影响: 不停机,逐步迁移                                    │
 │                                                                 │
 │  Resize(tm, cfg) ──→  调整单个 TM 资源配置                       │
 │    ├── 适用场景: K8s 环境                                       │
@@ -627,14 +627,14 @@ SBA-v2 接口规范要求：
 ```java
 // 核心接口契约
 interface StateBackend {
-    // 创建 ValueState，返回的 state 对象必须满足:
+    // 创建 ValueState,返回的 state 对象必须满足:
     // 1. update(value) 原子性写入
     // 2. value() 返回最近一次 update 的值或 null
     <T> ValueState<T> getState(ValueStateDescriptor<T> descriptor);
 
-    // 创建 ListState，返回的 state 必须满足:
+    // 创建 ListState,返回的 state 必须满足:
     // 1. add(value) 追加到列表末尾
-    // 2. get() 返回所有已添加的元素，按添加顺序
+    // 2. get() 返回所有已添加的元素,按添加顺序
     <T> ListState<T> getListState(ListStateDescriptor<T> descriptor);
 
     // 状态快照必须满足一致性:
@@ -1040,7 +1040,7 @@ $$U_{static} = \frac{avg\_load}{peak\_load} \approx 20\% \sim 40\%$$
 │             ▽────────────┴────────────▽                          │
 │       响应延迟                      稳定性                        │
 │                                                                 │
-│  优化目标：                                                      │
+│  优化目标:                                                      │
 │  • 最小化资源成本                                               │
 │  • 最小化扩缩容响应延迟                                         │
 │  • 最大化系统稳定性 (避免震荡)                                   │
@@ -1069,24 +1069,24 @@ $$\nexists x': Utility(x') > Utility(x^*) \land \forall i: f_i(x') \geq f_i(x^*)
 **实际调优建议**:
 
 ```yaml
-# 成本敏感场景（批处理/离线）
+# 成本敏感场景(批处理/离线)
 scheduler:
   target-utilization: 0.85      # 高利用率目标
-  scaling-cooldown: 180s        # 较长冷却期，避免频繁调整
+  scaling-cooldown: 180s        # 较长冷却期,避免频繁调整
   over-provisioning: 0.05       # 最小预留
 
-# 延迟敏感场景（实时流处理）
+# 延迟敏感场景(实时流处理)
 scheduler:
   target-utilization: 0.60      # 保留缓冲应对突发
   scaling-cooldown: 30s         # 快速响应
   over-provisioning: 0.20       # 预留 20% 余量
 
-# 稳定优先场景（关键业务）
+# 稳定优先场景(关键业务)
 scheduler:
   target-utilization: 0.70      # 适中利用率
   scaling-cooldown: 300s        # 非常保守
   over-provisioning: 0.15
-  hysteresis: 0.15              # 滞后阈值，防止震荡
+  hysteresis: 0.15              # 滞后阈值,防止震荡
 ```
 
 ---
@@ -1123,7 +1123,7 @@ $$Cost_{migration} = \alpha \cdot |State| + \beta \cdot |State| \cdot \Delta p$$
 │                                                                 │
 │  3. 异步状态迁移                                                │
 │     - 后台线程执行状态复制                                      │
-│     - 前端继续处理（需处理重复/乱序）                            │
+│     - 前端继续处理(需处理重复/乱序)                            │
 │                                                                 │
 │  4. 状态预分片                                                  │
 │     - 提前将大状态拆分为多个小分片                              │
@@ -1183,16 +1183,16 @@ $$Accuracy = 1 - \frac{|\hat{L}_{t+1} - L_{t+1}|}{L_{t+1}}$$
 │  ┌───────────────────────────────────────────────────────┐     │
 │  │ 资源池: 10 Slots                                        │     │
 │  │                                                        │     │
-│  │ Job-A (高优先级): 需要 6 slots，已分配 5 slots          │     │
-│  │ Job-B (中优先级): 需要 4 slots，已分配 4 slots          │     │
-│  │ Job-C (低优先级): 需要 3 slots，已分配 1 slot           │     │
+│  │ Job-A (高优先级): 需要 6 slots,已分配 5 slots          │     │
+│  │ Job-B (中优先级): 需要 4 slots,已分配 4 slots          │     │
+│  │ Job-C (低优先级): 需要 3 slots,已分配 1 slot           │     │
 │  │                                                        │     │
 │  │ 剩余: 0 slots                                           │     │
 │  └───────────────────────────────────────────────────────┘     │
 │                                                                 │
 │  触发事件:                                                      │
-│  • Job-A 触发扩容，需要 +1 slot (共 6)                         │
-│  • Job-C 触发扩容，需要 +2 slots (共 3)                        │
+│  • Job-A 触发扩容,需要 +1 slot (共 6)                         │
+│  • Job-C 触发扩容,需要 +2 slots (共 3)                        │
 │                                                                 │
 │  死锁条件 (循环等待):                                           │
 │  • Job-A 等待 Job-B 释放资源 (优先级抢占)                       │
@@ -1229,7 +1229,7 @@ $$Accuracy = 1 - \frac{|\hat{L}_{t+1} - L_{t+1}|}{L_{t+1}}$$
 public class DeadlockAvoidanceAllocator {
 
     /**
-     * 检查分配是否安全（银行家算法变体）
+     * 检查分配是否安全(银行家算法变体)
      */
     public boolean isSafeAllocation(
             Map<JobID, ResourceDemand> demands,
@@ -1515,31 +1515,31 @@ jobmanager.scheduler: Adaptive
 adaptive-scheduler.min-parallelism: 1
 adaptive-scheduler.max-parallelism: 128
 
-# 默认并行度（初始值）
+# 默认并行度(初始值)
 parallelism.default: 4
 
 # ---------- 3. 资源利用率目标 ----------
-# 目标 CPU 利用率（触发扩缩容的阈值）
+# 目标 CPU 利用率(触发扩缩容的阈值)
 adaptive-scheduler.target-utilization: 0.70
 
-# 滞后阈值（防止震荡）
+# 滞后阈值(防止震荡)
 adaptive-scheduler.utilization-boundary: 0.10
 
 # ---------- 4. 调整冷却期 ----------
-# 最小调整间隔（毫秒）
+# 最小调整间隔(毫秒)
 adaptive-scheduler.scaling-interval.min: 60000
 
-# 最大调整间隔（毫秒）
+# 最大调整间隔(毫秒)
 adaptive-scheduler.scaling-interval.max: 600000
 
-# 冷却期自适应（根据负载变化速度动态调整）
+# 冷却期自适应(根据负载变化速度动态调整)
 adaptive-scheduler.adaptive-cooldown.enabled: true
 
 # ---------- 5. 预测配置 ----------
 # 启用预测性扩缩容
 adaptive-scheduler.prediction.enabled: true
 
-# 预测窗口大小（分钟）
+# 预测窗口大小(分钟)
 adaptive-scheduler.prediction.window: 5
 
 # 预测模型类型: EXPONENTIAL_SMOOTHING | ARIMA | ENSEMBLE
@@ -1552,14 +1552,14 @@ adaptive-scheduler.incremental-rescaling.enabled: true
 # 状态迁移并发度
 adaptive-scheduler.rescaling.parallelism: 4
 
-# 状态迁移超时（毫秒）
+# 状态迁移超时(毫秒)
 adaptive-scheduler.rescaling.timeout: 300000
 
 # ---------- 7. 资源分配策略 ----------
 # 分配策略: FAIR | DOMINANT_RESOURCE | PRIORITY
 scheduler.policy: FAIR
 
-# 优先级权重（当策略为 PRIORITY 时）
+# 优先级权重(当策略为 PRIORITY 时)
 scheduler.priority.default: 5
 scheduler.priority.range: [1, 10]
 
@@ -1567,7 +1567,7 @@ scheduler.priority.range: [1, 10]
 # 启用银行家算法进行安全检测
 scheduler.deadlock-avoidance.enabled: true
 
-# 资源申请超时（毫秒）
+# 资源申请超时(毫秒)
 scheduler.resource-request.timeout: 30000
 ```
 
@@ -1575,7 +1575,7 @@ scheduler.resource-request.timeout: 30000
 
 ```yaml
 # ============================================================
-# 场景 A: 电商实时推荐（流量波动大）
+# 场景 A: 电商实时推荐(流量波动大)
 # ============================================================
 jobmanager.scheduler: Adaptive
 
@@ -1583,7 +1583,7 @@ jobmanager.scheduler: Adaptive
 adaptive-scheduler.min-parallelism: 2
 adaptive-scheduler.max-parallelism: 100
 
-# 较低的利用率目标，保留缓冲应对突发
+# 较低的利用率目标,保留缓冲应对突发
 adaptive-scheduler.target-utilization: 0.60
 
 # 快速响应
@@ -1595,27 +1595,27 @@ adaptive-scheduler.prediction.enabled: true
 adaptive-scheduler.prediction.model: ENSEMBLE
 
 # ============================================================
-# 场景 B: 金融风控（稳定优先）
+# 场景 B: 金融风控(稳定优先)
 # ============================================================
 jobmanager.scheduler: Adaptive
 
-# 较窄的范围，稳定运行
+# 较窄的范围,稳定运行
 adaptive-scheduler.min-parallelism: 10
 adaptive-scheduler.max-parallelism: 20
 
-# 较高的利用率，但保守调整
+# 较高的利用率,但保守调整
 adaptive-scheduler.target-utilization: 0.75
 adaptive-scheduler.utilization-boundary: 0.15
 
-# 长冷却期，避免震荡
+# 长冷却期,避免震荡
 adaptive-scheduler.scaling-interval.min: 300000
 adaptive-scheduler.scaling-interval.max: 600000
 
-# 关闭预测，基于实际负载
+# 关闭预测,基于实际负载
 adaptive-scheduler.prediction.enabled: false
 
 # ============================================================
-# 场景 C: IoT 数据处理（潮汐模式）
+# 场景 C: IoT 数据处理(潮汐模式)
 # ============================================================
 jobmanager.scheduler: Adaptive
 
@@ -1626,7 +1626,7 @@ adaptive-scheduler.max-parallelism: 50
 # 中等利用率
 adaptive-scheduler.target-utilization: 0.70
 
-# 启用水印对齐优化（IoT 场景常有乱序）
+# 启用水印对齐优化(IoT 场景常有乱序)
 adaptive-scheduler.watermark-alignment.enabled: true
 
 # 针对 IoT 场景优化预测窗口
@@ -1676,7 +1676,7 @@ public class AdaptiveResourceDemo {
         StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
 
-        // 启用 Adaptive Scheduler（通过配置文件或代码）
+        // 启用 Adaptive Scheduler(通过配置文件或代码)
         env.getConfig().setSchedulerType(SchedulerType.ADAPTIVE);
 
         // 配置自适应参数
@@ -1701,7 +1701,7 @@ public class AdaptiveResourceDemo {
         // 处理流 - 并行度将自适应调整
         DataStream<AggregatedResult> processed = source
             .map(new EnrichmentFunction())
-            .setParallelism(8)  // 初始值，将被自适应调整
+            .setParallelism(8)  // 初始值,将被自适应调整
             .keyBy(event -> event.getUserId())
             .window(TumblingEventTimeWindows.of(Time.minutes(1)))
             .aggregate(new CountAggregate())
@@ -1825,7 +1825,7 @@ public class AdaptiveResourceDemo {
 # 案例: 某电商大促场景调优过程
 
 # ===== 初始配置 (存在问题) =====
-# 问题: 并行度调整频繁，系统震荡
+# 问题: 并行度调整频繁,系统震荡
 initial_config:
   target-utilization: 0.85      # 过高
   scaling-interval.min: 10000   # 过短 (10秒)
@@ -1839,7 +1839,7 @@ initial_config:
 
 # ===== 调优后配置 =====
 optimized_config:
-  target-utilization: 0.70      # 降低，预留缓冲
+  target-utilization: 0.70      # 降低,预留缓冲
   scaling-interval.min: 60000   # 延长到 60秒
   scaling-interval.max: 300000  # 增加最大间隔
   utilization-boundary: 0.15    # 增加滞后阈值

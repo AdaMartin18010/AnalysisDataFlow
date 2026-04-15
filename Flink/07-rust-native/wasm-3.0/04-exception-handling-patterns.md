@@ -303,7 +303,7 @@ sequenceDiagram
 │   │   └── 记录警告日志
 │   └── 否
 │       ├── 是否是确定性错误？
-│       │   ├── 是 → 立即失败，触发 Checkpoint 恢复
+│       │   ├── 是 → 立即失败,触发 Checkpoint 恢复
 │       │   └── 否 → 记录并忽略 (数据质量问题)
 │       └── 记录错误日志
 └── 更新指标监控
@@ -431,7 +431,7 @@ $unknown_error           ──▶   RuntimeException
   ;; ============ try_table 示例 ============
 
   ;; 受保护的除法运算
-  ;; 如果除数为零，抛出错误
+  ;; 如果除数为零,抛出错误
   (func $safe_divide (param $a i32) (param $b i32) (result i32)
     (local $result i32)
 
@@ -442,7 +442,7 @@ $unknown_error           ──▶   RuntimeException
           local.get $b
           i32.eqz
           if
-            i32.const 1  ;; 错误码：除零错误
+            i32.const 1  ;; 错误码:除零错误
             throw $error
           end
 
@@ -534,7 +534,7 @@ $unknown_error           ──▶   RuntimeException
       return
     )
 
-    ;; 捕获到异常，记录日志
+    ;; 捕获到异常,记录日志
     ;; (此处可添加日志记录逻辑)
 
     ;; 重新抛出
@@ -542,7 +542,7 @@ $unknown_error           ──▶   RuntimeException
   )
   (export "log_and_rethrow" (func $log_and_rethrow))
 
-  ;; 辅助函数：可能抛出异常
+  ;; 辅助函数:可能抛出异常
   (func $may_throw (param $input i32) (result i32)
     local.get $input
     i32.const 0
@@ -621,7 +621,7 @@ impl ExceptionAwareUdf {
         }
     }
 
-    /// 安全处理输入，返回 Result 风格错误
+    /// 安全处理输入,返回 Result 风格错误
     pub fn safe_process(&mut self, input: i32) -> Result<i32, JsValue> {
         // 重置重试计数
         self.current_retry = 0;
@@ -635,18 +635,18 @@ impl ExceptionAwareUdf {
                     // 检查是否可重试
                     if self.should_retry(&e) && self.current_retry < self.max_retries {
                         self.current_retry += 1;
-                        // 延迟重试 (简化，实际应使用 setTimeout)
+                        // 延迟重试 (简化,实际应使用 setTimeout)
                         continue;
                     }
 
-                    // 无法恢复，返回错误
+                    // 无法恢复,返回错误
                     return Err(JsValue::from_str(&e.to_string()));
                 }
             }
         }
     }
 
-    /// 尝试处理，可能失败
+    /// 尝试处理,可能失败
     fn try_process(&self, input: i32) -> Result<i32, UdfError> {
         // 验证输入
         if input < 0 {
@@ -719,7 +719,7 @@ impl FlinkCompatibleUdf {
     }
 
     /// Flink 调用的主入口
-    /// 返回 i32，异常时抛出 WebAssembly 异常
+    /// 返回 i32,异常时抛出 WebAssembly 异常
     pub fn process(&mut self, input: i32) -> i32 {
         match self.inner.safe_process(input) {
             Ok(result) => result,
@@ -731,7 +731,7 @@ impl FlinkCompatibleUdf {
         }
     }
 
-    /// 批量处理，收集所有错误
+    /// 批量处理,收集所有错误
     pub fn process_batch(&mut self, inputs: &[i32]) -> ProcessBatchResult {
         let mut outputs = Vec::with_capacity(inputs.len());
         let mut errors = Vec::new();
@@ -854,7 +854,7 @@ class FlinkWasmExceptionHandler {
 
         // 检查是否是 WebAssembly.Exception
         if (!(exception instanceof WebAssembly.Exception)) {
-            // 非 WASM 异常，直接传播
+            // 非 WASM 异常,直接传播
             throw exception;
         }
 
@@ -864,7 +864,7 @@ class FlinkWasmExceptionHandler {
                 const args = exception.getArg(tag, 0);
                 return this.classifyError(name, args);
             } catch (e) {
-                // 标签不匹配，继续尝试
+                // 标签不匹配,继续尝试
                 continue;
             }
         }
@@ -895,7 +895,7 @@ class FlinkWasmExceptionHandler {
                     errorType,
                     errorCode: args,
                     message: `Input validation failed: code ${args}`,
-                    shouldCheckpoint: false,  // 确定性错误，不回滚
+                    shouldCheckpoint: false,  // 确定性错误,不回滚
                     skipRecord: true          // 跳过错误记录
                 };
 
@@ -1169,7 +1169,7 @@ sequenceDiagram
         TM->>User: 从断点重播
     end
 
-    Note right of CK: Exactly-Once 保证：<br/>异常前已确认的记录不会重复处理
+    Note right of CK: Exactly-Once 保证:<br/>异常前已确认的记录不会重复处理
 ```
 
 ---

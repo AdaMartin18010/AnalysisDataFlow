@@ -160,7 +160,7 @@ public class InterestUpdater extends
 
         UserBehavior behavior = enriched.behavior;
 
-        // 更新兴趣权重（基于行为类型）
+        // 更新兴趣权重(基于行为类型)
         double weight = getBehaviorWeight(behavior.behavior);
 
         // 假设能从商品ID获取类别
@@ -181,7 +181,7 @@ public class InterestUpdater extends
         }
         profile.recentItems = recent;
 
-        // 更新用户向量（简化示例）
+        // 更新用户向量(简化示例)
         updateUserEmbedding(profile);
 
         profileState.update(profile);
@@ -223,7 +223,7 @@ public class CollaborativeFiltering extends
 
         List<ScoredItem> recommendations = new ArrayList<>();
 
-        // 遍历所有商品，计算相似度
+        // 遍历所有商品,计算相似度
         for (Map.Entry<String, ItemFeature> entry :
                 ctx.getBroadcastState(...).immutableEntries()) {
 
@@ -329,7 +329,7 @@ public class HybridRecommender extends CoProcessFunction<
             return;  // 等待两者都到达
         }
 
-        // 融合排序（加权）
+        // 融合排序(加权)
         Map<String, Double> mergedScores = new HashMap<>();
         Map<String, String> mergedReasons = new HashMap<>();
 
@@ -390,7 +390,7 @@ public class RealtimeRecommendationJob {
             .addSource(new UserBehaviorSource())
             .assignTimestampsAndWatermarks(...);
 
-        // 商品特征流（广播）
+        // 商品特征流(广播)
         BroadcastStream<ItemFeature> itemFeatures = env
             .addSource(new ItemFeatureSource())
             .broadcast(ITEM_STATE_DESCRIPTOR);

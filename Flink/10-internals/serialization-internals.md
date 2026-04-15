@@ -11,7 +11,7 @@
 **Def-F-10-01: TypeInformation (类型信息)**
 
 ```
-TypeInformation<T> 是Flink类型系统的核心抽象，承载以下元数据：
+TypeInformation<T> 是Flink类型系统的核心抽象,承载以下元数据:
 • 序列化器获取: TypeSerializer<T> getSerializer()
 • 类型类信息: Class<T> getTypeClass()
 • 比较器获取: TypeComparator<T> getTypeComparator()
@@ -35,8 +35,8 @@ public abstract class TypeSerializer<T> implements Serializable {
 **Def-F-10-03: TypeExtractor (类型提取器)**
 
 ```
-TypeExtractor 通过反射与TypeHint机制，在编译时/运行时提取泛型类型信息，
-解决Java类型擦除(Type Erasure)问题，构建完整的TypeInformation层次结构。
+TypeExtractor 通过反射与TypeHint机制,在编译时/运行时提取泛型类型信息,
+解决Java类型擦除(Type Erasure)问题,构建完整的TypeInformation层次结构。
 ```
 
 **Def-F-10-04: TypeComparator (类型比较器)**
@@ -200,13 +200,13 @@ graph LR
 **Flink解决方案对比**:
 
 ```java
-// 方案1: 显式TypeInformation（显式但冗长）
+// 方案1: 显式TypeInformation(显式但冗长)
 DataStream<Tuple2<String, Integer>> stream = env.fromElements(
     TypeInformation.of(new TypeHint<Tuple2<String, Integer>>() {}),
     Tuple2.of("a", 1)
 );
 
-// 方案2: Returns注解（推荐）
+// 方案2: Returns注解(推荐)
 
 import org.apache.flink.streaming.api.datastream.DataStream;
 
@@ -218,8 +218,8 @@ public class MyMap implements MapFunction<String, Tuple2<String, Integer>>,
     }
 }
 
-// 方案3: 类型推导（自动但有限制）
-// Flink从输入类型自动推导，适用于简单场景
+// 方案3: 类型推导(自动但有限制)
+// Flink从输入类型自动推导,适用于简单场景
 ```
 
 **形式化论证**:
@@ -278,7 +278,7 @@ public class PojoSerializer<T> extends TypeSerializer<T> {
 public class TypeExtractor {
 
     /**
-     * 主入口：从任意对象提取类型信息
+     * 主入口:从任意对象提取类型信息
      * Thm-F-10-01: TypeExtractor对所有Flink支持类型终止并返回有效TypeInformation
      */
     @PublicEvolving
@@ -288,7 +288,7 @@ public class TypeExtractor {
 
     /**
      * 核心递归提取逻辑
-     * 处理以下类型层次：
+     * 处理以下类型层次:
      * 1. 基本类型 (BasicTypeInfo)
      * 2. 数组类型 (BasicArrayTypeInfo, ObjectArrayTypeInfo)
      * 3. Tuple类型 (TupleTypeInfo)
@@ -306,7 +306,7 @@ public class TypeExtractor {
             return (TypeInformation<OUT>) t;
         }
 
-        // 情况2: 类类型（最常见）
+        // 情况2: 类类型(最常见)
         if (t instanceof Class) {
             return createTypeInfoFromClass(
                 (Class<OUT>) t,
@@ -316,7 +316,7 @@ public class TypeExtractor {
             );
         }
 
-        // 情况3: 参数化类型（泛型）
+        // 情况3: 参数化类型(泛型)
         if (t instanceof ParameterizedType) {
             return createTypeInfoFromParameterizedType(
                 (ParameterizedType) t,
@@ -325,7 +325,7 @@ public class TypeExtractor {
             );
         }
 
-        // 情况4: 类型变量（泛型参数T, K, V等）
+        // 情况4: 类型变量(泛型参数T, K, V等)
         if (t instanceof TypeVariable) {
             return createTypeInfoFromTypeVariable(
                 (TypeVariable<?>) t,
@@ -358,7 +358,7 @@ public class TypeExtractor {
 
 ```java
 /**
- * POJO识别条件（必须同时满足）：
+ * POJO识别条件(必须同时满足):
  * Def-F-10-05: POJO严格定义
  */
 private static <T> boolean isValidPojoClass(Class<T> clazz) {
@@ -420,15 +420,15 @@ private static <T> boolean isValidPojoClass(Class<T> clazz) {
 
 ```java
 /**
- * 关键算法：从函数签名提取类型参数
- * 示例：将 List<T> 中的 T 映射到实际类型
+ * 关键算法:从函数签名提取类型参数
+ * 示例:将 List<T> 中的 T 映射到实际类型
  */
 private static <X> TypeInformation<X> createTypeInfoFromInputs(
         Class<?> functionClass,
-        int paramIndex,  // 第几个输入参数（0-based）
+        int paramIndex,  // 第几个输入参数(0-based)
         TypeInformation<?>[] inputTypeInfos) {
 
-    // 获取函数基类（如RichMapFunction）的泛型参数
+    // 获取函数基类(如RichMapFunction)的泛型参数
     TypeVariable<?>[] typeParams = functionClass.getSuperclass().getTypeParameters();
 
     // 建立类型变量到实际类型的映射
@@ -453,13 +453,13 @@ private static <X> TypeInformation<X> createTypeInfoFromInputs(
 ```java
 public class PojoSerializer<T> extends TypeSerializer<T> {
 
-    // 字段序列化器数组，按字段声明顺序
+    // 字段序列化器数组,按字段声明顺序
     private final TypeSerializer<Object>[] fieldSerializers;
 
-    // 通过反射访问的字段句柄（或MethodHandle）
+    // 通过反射访问的字段句柄(或MethodHandle)
     private final Field[] fields;
 
-    // 用于处理未知类型（多态字段）的备用Kryo序列化器
+    // 用于处理未知类型(多态字段)的备用Kryo序列化器
     private final LinkedHashMap<Class<?>, TypeSerializer<?>> registeredSerializers;
 
     /**
@@ -469,7 +469,7 @@ public class PojoSerializer<T> extends TypeSerializer<T> {
      */
     @Override
     public void serialize(T value, DataOutputView target) throws IOException {
-        // 写入版本头（用于schema演化）
+        // 写入版本头(用于schema演化)
         target.writeInt(CURRENT_VERSION);
 
         // 序列化每个字段
@@ -491,9 +491,9 @@ public class PojoSerializer<T> extends TypeSerializer<T> {
                 // 获取该字段的序列化器
                 TypeSerializer<Object> serializer = fieldSerializers[i];
 
-                // 处理多态类型（实际类型!=声明类型）
+                // 处理多态类型(实际类型!=声明类型)
                 if (field.getType() != fieldValue.getClass()) {
-                    // 写入实际类名，使用注册的序列化器
+                    // 写入实际类名,使用注册的序列化器
                     Class<?> actualClass = fieldValue.getClass();
                     TypeSerializer<Object> actualSerializer =
                         (TypeSerializer<Object>) registeredSerializers.get(actualClass);
@@ -551,15 +551,15 @@ public class PojoSerializer<T> extends TypeSerializer<T> {
 ```java
 /**
  * KryoSerializer作为通用回退方案
- * 优势: 支持任意类型，无需注解
- * 劣势: 序列化结果非标准，性能低于专用序列化器
+ * 优势: 支持任意类型,无需注解
+ * 劣势: 序列化结果非标准,性能低于专用序列化器
  */
 public class KryoSerializer<T> extends TypeSerializer<T> {
 
-    // Kryo实例通过ThreadLocal管理（非线程安全）
+    // Kryo实例通过ThreadLocal管理(非线程安全)
     private static final ThreadLocal<Kryo> KRYO_INSTANCE = new ThreadLocal<>();
 
-    // 预注册类型映射（减少类名写入开销）
+    // 预注册类型映射(减少类名写入开销)
     private final LinkedHashMap<String, KryoRegistration> registrations;
 
     @Override
@@ -580,13 +580,13 @@ public class KryoSerializer<T> extends TypeSerializer<T> {
         kryo.register(BigDecimal.class, new BigDecimalSerializer());
         kryo.register(LocalDateTime.class, new LocalDateTimeSerializer());
 
-        // 2. 配置引用追踪（处理循环引用）
+        // 2. 配置引用追踪(处理循环引用)
         kryo.setReferences(true);
 
         // 3. 设置类加载器隔离
         kryo.setClassLoader(Thread.currentThread().getContextClassLoader());
 
-        // 4. 启用InstantiatorStrategy（支持无参构造器）
+        // 4. 启用InstantiatorStrategy(支持无参构造器)
         kryo.setInstantiatorStrategy(new DefaultInstantiatorStrategy(
             new StdInstantiatorStrategy()
         ));
@@ -603,7 +603,7 @@ public class KryoSerializer<T> extends TypeSerializer<T> {
 ```java
 /**
  * AvroSerializer基于Schema的序列化
- * 特点: Schema外部化管理，支持向后兼容演化
+ * 特点: Schema外部化管理,支持向后兼容演化
  */
 public class AvroSerializer<T extends SpecificRecordBase> extends TypeSerializer<T> {
 
@@ -613,7 +613,7 @@ public class AvroSerializer<T extends SpecificRecordBase> extends TypeSerializer
 
     @Override
     public void serialize(T record, DataOutputView target) throws IOException {
-        // Avro使用二进制编码器，无额外header
+        // Avro使用二进制编码器,无额外header
         BinaryEncoder encoder = EncoderFactory.get().directBinaryEncoder(
             new DataOutputViewOutputStream(target), null
         );
@@ -652,8 +652,8 @@ public class AvroSerializer<T extends SpecificRecordBase> extends TypeSerializer
 ```java
 /**
  * ProtobufTypeSerializer
- * 优势: 极致性能，紧凑编码，代码生成
- * 限制: 需要.proto定义，不支持动态类型
+ * 优势: 极致性能,紧凑编码,代码生成
+ * 限制: 需要.proto定义,不支持动态类型
  */
 public class ProtobufSerializer<T extends GeneratedMessageV3> extends TypeSerializer<T> {
 
@@ -661,7 +661,7 @@ public class ProtobufSerializer<T extends GeneratedMessageV3> extends TypeSerial
 
     @Override
     public void serialize(T record, DataOutputView target) throws IOException {
-        // Protobuf使用变长整数编码，无元数据开销
+        // Protobuf使用变长整数编码,无元数据开销
         byte[] bytes = record.toByteArray();
         target.writeInt(bytes.length);  // 写入长度前缀
         target.write(bytes);
@@ -739,8 +739,8 @@ DataStream<UserEvent> events = env.fromCollection(
 
 ```java
 /**
- * 高性能自定义序列化器：紧凑编码地理位置数据
- * 优化点: 使用固定长度编码，避免对象分配
+ * 高性能自定义序列化器:紧凑编码地理位置数据
+ * 优化点: 使用固定长度编码,避免对象分配
  */
 public class GeoPointSerializer extends TypeSerializer<GeoPoint> {
 
@@ -763,7 +763,7 @@ public class GeoPointSerializer extends TypeSerializer<GeoPoint> {
     }
 
     /**
-     * 关键优化：对象重用
+     * 关键优化:对象重用
      */
     @Override
     public GeoPoint deserialize(GeoPoint reuse, DataInputView source) throws IOException {
@@ -794,7 +794,7 @@ public class GeoPointSerializer extends TypeSerializer<GeoPoint> {
 
 ```java
 /**
- * 复合键比较器：支持(userId, timestamp)多字段排序
+ * 复合键比较器:支持(userId, timestamp)多字段排序
  */
 public class UserEventComparator extends TypeComparator<UserEvent> {
 
@@ -812,7 +812,7 @@ public class UserEventComparator extends TypeComparator<UserEvent> {
     }
 
     /**
-     * 归一化键：将对象转换为字节数组用于排序
+     * 归一化键:将对象转换为字节数组用于排序
      * 这是内存排序和外排序的关键优化
      */
     @Override
@@ -852,7 +852,7 @@ public class UserEventComparator extends TypeComparator<UserEvent> {
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 
 /**
- * 处理嵌套泛型类型：List<Tuple2<String, Map<Integer, Double>>>
+ * 处理嵌套泛型类型:List<Tuple2<String, Map<Integer, Double>>>
  */
 public class ComplexTypeHandling {
 

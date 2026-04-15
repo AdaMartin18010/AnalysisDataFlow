@@ -142,7 +142,7 @@ Flink SQL基于Apache Calcite实现：
 **风险案例**: 过短TTL导致数据不一致
 
 ```sql
--- 问题案例：TTL < 业务时间窗口
+-- 问题案例:TTL < 业务时间窗口
 SELECT /*+ STATE_TTL('orders'='5min', 'shipments'='5min') */ *
 FROM orders JOIN shipments
 ON orders.id = shipments.order_id
@@ -157,11 +157,11 @@ WHERE orders.event_time BETWEEN shipments.event_time - INTERVAL '10' MINUTE
 **反模式**: JSON字段在WHERE条件中使用
 
 ```sql
--- 低效：每行都解析JSON
+-- 低效:每行都解析JSON
 SELECT * FROM events
 WHERE JSON_VALUE(payload, '$.status') = 'completed'
 
--- 高效：预提取到结构化字段
+-- 高效:预提取到结构化字段
 SELECT * FROM events
 WHERE status = 'completed'  -- 使用预计算字段或投影下推
 ```
@@ -237,7 +237,7 @@ JOIN users u ON o.user_id = u.user_id
 #### 示例2: Lookup Join with Retry
 
 ```sql
--- 维表JOIN，网络抖动容错
+-- 维表JOIN,网络抖动容错
 SELECT /*+ LOOKUP('RETRY'='FIXED_DELAY',
                    'FIXED_DELAY'='100ms',
                    'MAX_RETRY'='3') */
@@ -250,7 +250,7 @@ ON o.dept_id = d.dept_id
 #### 示例3: Multi-Way Join Hints
 
 ```sql
--- 多表JOIN，每个JOIN独立指定策略
+-- 多表JOIN,每个JOIN独立指定策略
 SELECT /*+ BROADCAST_HASH(c), SHUFFLE_HASH(o) */
     c.city, p.product_name, SUM(o.amount) as total
 FROM customers c
@@ -264,7 +264,7 @@ GROUP BY c.city, p.product_name
 #### 示例: 双流JOIN状态管理
 
 ```sql
--- 订单流JOIN支付流，状态保留24小时
+-- 订单流JOIN支付流,状态保留24小时
 SELECT /*+ STATE_TTL('o'='24h', 'p'='24h') */
     o.order_id, o.order_time, p.pay_time, p.amount
 FROM orders o
@@ -342,7 +342,7 @@ EXPLAIN PLAN FOR
 SELECT /*+ BROADCAST_HASH(c) */ *
 FROM orders o JOIN customers c ON o.cust_id = c.id;
 
--- 详细执行计划（含优化器决策）
+-- 详细执行计划(含优化器决策)
 EXPLAIN ESTIMATED_COST, CHANGELOG_MODE, EXECUTION_PLAN, JSON_EXECUTION_PLAN
 SELECT /*+ SHUFFLE_HASH(o) */ *
 FROM orders o JOIN shipments s ON o.id = s.order_id;

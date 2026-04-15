@@ -449,14 +449,14 @@ public class FlinkTracingConfig {
             .setTimeout(30, TimeUnit.SECONDS)
             .build();
 
-        // 配置Span处理器（批量导出，提升性能）
+        // 配置Span处理器(批量导出,提升性能)
         BatchSpanProcessor spanProcessor = BatchSpanProcessor.builder(spanExporter)
             .setMaxQueueSize(2048)
             .setMaxExportBatchSize(512)
             .setScheduleDelay(1000, TimeUnit.MILLISECONDS)
             .build();
 
-        // 配置采样策略：基于父Span + 10%概率采样
+        // 配置采样策略:基于父Span + 10%概率采样
         Sampler sampler = Sampler.parentBased(Sampler.traceIdRatioBased(0.1));
 
         // 构建TracerProvider
@@ -608,7 +608,7 @@ services:
 ```
 Span Details: RedisSink.write
 ├─ Span ID: 00f067aa0ba902b7
-├─ Duration: 150ms (异常高，正常<20ms)
+├─ Duration: 150ms (异常高,正常<20ms)
 ├─ Status: ERROR
 ├─ Events:
 │  ├─ [15:32:01.234] redis.connect.start

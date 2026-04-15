@@ -334,7 +334,7 @@ pipeline:
   local-time-zone: Asia/Shanghai
 
 source:
-  # 源端并行度（通常与MySQL实例数或库数相关）
+  # 源端并行度(通常与MySQL实例数或库数相关)
   parallelism: 2
 ```
 
@@ -379,7 +379,7 @@ pipeline:
   parallelism: 4
   local-time-zone: Asia/Shanghai
 
-  # Checkpoint配置（断点续传）
+  # Checkpoint配置(断点续传)
   execution.checkpointing.interval: 60000
   execution.checkpointing.mode: EXACTLY_ONCE
   execution.checkpointing.timeout: 600000
@@ -387,7 +387,7 @@ pipeline:
   # 错误处理策略
   error-handle.mode: CONTINUE
 
-# Source配置：MySQL
+# Source配置:MySQL
 source:
   type: mysql
   name: mysql-source
@@ -399,7 +399,7 @@ source:
   # 数据库选择
   database-list: inventory,orders
 
-  # 表名匹配（支持正则）
+  # 表名匹配(支持正则)
   table-list: inventory\..*,orders\..*
 
   # 无锁读取配置
@@ -417,7 +417,7 @@ source:
   # Schema变更捕获
   include.schema.changes: true
 
-# Sink配置：Doris
+# Sink配置:Doris
 sink:
   type: doris
   name: doris-sink
@@ -428,7 +428,7 @@ sink:
   # 目标数据库
   database: ods
 
-  # 表前缀（可选）
+  # 表前缀(可选)
   table.prefix: cdc_
 
   # Doris特定配置
@@ -442,7 +442,7 @@ sink:
   table.create.properties.replication_num: 3
   table.create.properties.storage_format: MOR  # Merge-on-Read
 
-# 数据转换规则（可选）
+# 数据转换规则(可选)
 transform:
   # 规则1: 过滤敏感字段
   - source-table: inventory\.customers
@@ -461,19 +461,19 @@ transform:
       created_at
     description: "Mask credit card numbers"
 
-# 路由规则（表映射与合并）
+# 路由规则(表映射与合并)
 route:
-  # 规则1: 单表映射（默认行为，显式声明）
+  # 规则1: 单表映射(默认行为,显式声明)
   - source-table: inventory\.products
     sink-table: ods.cdc_products
     description: "Direct mapping for products"
 
-  # 规则2: 多表合并（分库分表场景）
+  # 规则2: 多表合并(分库分表场景)
   - source-table: orders\.order_\d+
     sink-table: ods.cdc_orders_all
     description: "Merge all order shards"
 
-  # 规则3: 正则替换（动态表名映射）
+  # 规则3: 正则替换(动态表名映射)
   - source-table: inventory\.(.*)
     sink-table: ods.cdc_$1
     description: "Dynamic table naming"

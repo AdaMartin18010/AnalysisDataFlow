@@ -86,7 +86,7 @@ services:
     volumes:
       - flink-checkpoints:/opt/flink/checkpoints
 
-  # 可选：Kafka 用于测试流处理
+  # 可选:Kafka 用于测试流处理
   kafka:
     image: confluentinc/cp-kafka:7.5.0
     depends_on:
@@ -125,10 +125,10 @@ docker-compose logs -f jobmanager
 
 **步骤 3：访问 Web UI**
 
-打开浏览器访问：<http://localhost:8081>
+打开浏览器访问：`http://localhost:8081`
 
 ```
-默认端口映射：
+默认端口映射:
 - Web UI:      8081
 - JobManager:  6123
 - TaskManager: 6121-6122
@@ -146,7 +146,7 @@ docker-compose exec jobmanager ./bin/sql-client.sh
 ```
 
 ```sql
--- 创建源表（Datagen 生成测试数据）
+-- 创建源表(Datagen 生成测试数据)
 CREATE TABLE user_events (
     user_id STRING,
     event_type STRING,
@@ -162,7 +162,7 @@ CREATE TABLE user_events (
     'fields.amount.max' = '1000.00'
 );
 
--- 创建结果表（Print 输出到控制台）
+-- 创建结果表(Print 输出到控制台)
 CREATE TABLE event_stats (
     event_type STRING PRIMARY KEY NOT ENFORCED,
     total_amount DECIMAL(15, 2),
@@ -208,7 +208,7 @@ public class FirstFlinkJob {
         // 设置并行度
         env.setParallelism(2);
 
-        // 启用检查点（生产必需）
+        // 启用检查点(生产必需)
         env.enableCheckpointing(60000);  // 每60秒
 
         // 创建测试数据源
@@ -325,9 +325,9 @@ docker-compose exec jobmanager ./bin/flink cancel <job-id>
 **快速开始：**
 
 ```sql
--- 步骤 1：注册 MCP 工具
--- 注: 以下为未来可能的语法（概念设计），尚未正式实现
-<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+-- 步骤 1:注册 MCP 工具
+-- 注: 以下为未来可能的语法(概念设计),尚未正式实现
+<!-- 以下语法为概念设计,实际 Flink 版本尚未支持 -->
 ~~CREATE TOOL search_products~~ (未来可能的语法)
 WITH (
     'protocol' = 'mcp',
@@ -336,8 +336,8 @@ WITH (
     'timeout' = '5s'
 );
 
--- 步骤 2：创建 AI Agent（未来可能的语法，概念设计阶段）
-<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+-- 步骤 2:创建 AI Agent(未来可能的语法,概念设计阶段)
+<!-- 以下语法为概念设计,实际 Flink 版本尚未支持 -->
 ~~CREATE AGENT sales_assistant~~ (未来可能的语法)
 WITH (
     'model.provider' = 'openai',
@@ -352,7 +352,7 @@ INPUT (query STRING, customer_id STRING)
 OUTPUT (response STRING, action STRING)
 TOOLS (search_products, query_inventory, create_order);
 
--- 步骤 3：实时处理客户查询
+-- 步骤 3:实时处理客户查询
 CREATE TABLE customer_queries (
     query_id STRING,
     query_text STRING,
@@ -365,7 +365,7 @@ CREATE TABLE customer_queries (
     'format' = 'json'
 );
 
--- 步骤 4：Agent 处理流
+-- 步骤 4:Agent 处理流
 INSERT INTO agent_responses
 SELECT
     query_id,
@@ -411,8 +411,8 @@ agent.execute();
 
 ```yaml
 # flink-conf.yaml - AI Agent 配置
-# 注: 以下为未来配置参数（概念），尚未正式实现
-# 注意: 以下配置为预测/规划，实际版本可能不同
+# 注: 以下为未来配置参数(概念),尚未正式实现
+# 注意: 以下配置为预测/规划,实际版本可能不同
 # ai.agent.enabled: true  (尚未确定)
 ai.agent.state.backend: rocksdb
 ai.agent.checkpoint.interval: 30s
@@ -450,7 +450,7 @@ spec:
     resource:
       memory: "4Gi"
       cpu: 2
-    replicas: 0  # 初始为 0，由 KEDA 触发
+    replicas: 0  # 初始为 0,由 KEDA 触发
 
   job:
     jarURI: local:///opt/flink/job.jar
@@ -640,7 +640,7 @@ env.getConfig().setOptimizationGoal(goal);
 SET execution.runtime-mode = ADAPTIVE;
 SET execution.adaptive.batch-threshold = '10000 rows';
 
--- 流数据源（实时摄入）
+-- 流数据源(实时摄入)
 CREATE TABLE events (
     user_id STRING,
     event_type STRING,
@@ -653,7 +653,7 @@ CREATE TABLE events (
     'format' = 'json'
 );
 
--- 批数据源（历史数据）
+-- 批数据源(历史数据)
 CREATE TABLE historical_orders (
     user_id STRING,
     order_date DATE,
@@ -665,7 +665,7 @@ CREATE TABLE historical_orders (
     'table' = 'orders'
 );
 
--- 混合查询：实时流 JOIN 历史批数据
+-- 混合查询:实时流 JOIN 历史批数据
 SELECT
     e.user_id,
     e.event_type,
@@ -704,7 +704,7 @@ cuda.arch: "80;86;89"  # Ampere + Ada
 -- 注册 GPU 向量检索函数
 CREATE FUNCTION vector_search_gpu AS
     'org.apache.flink.gpu.ml.GPUVectorSearchFunction'
--- 注: GPU模块（实验性），尚未正式发布
+-- 注: GPU模块(实验性),尚未正式发布
 -- USING JAR 'flink-gpu-ml.jar';
 
 -- GPU 加速向量检索

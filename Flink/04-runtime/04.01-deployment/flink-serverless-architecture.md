@@ -67,16 +67,16 @@ $$
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│ BaaS (Backend-as-a-Service)    最高抽象，最少控制          │
+│ BaaS (Backend-as-a-Service)    最高抽象,最少控制          │
 │ - Confluent Cloud Flink        - Ververica Platform        │
 ├─────────────────────────────────────────────────────────────┤
-│ FaaS (Function-as-a-Service)   中等抽象，事件驱动          │
+│ FaaS (Function-as-a-Service)   中等抽象,事件驱动          │
 │ - AWS Lambda + Flink Bridge    - Azure Functions + Flink   │
 ├─────────────────────────────────────────────────────────────┤
-│ Serverless-enabled CaaS        较高控制，容器抽象          │
+│ Serverless-enabled CaaS        较高控制,容器抽象          │
 │ - Google Cloud Run + Flink     - AWS Fargate + Flink       │
 ├─────────────────────────────────────────────────────────────┤
-│ Managed K8s                    较低抽象，更多控制          │
+│ Managed K8s                    较低抽象,更多控制          │
 │ - EKS + Flink Operator         - GKE + Flink               │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -243,33 +243,33 @@ $$
 **反模式1: 长运行作业用Serverless**
 
 ```yaml
-# ❌ 错误：Flink SQL连续查询超过15分钟
+# ❌ 错误:Flink SQL连续查询超过15分钟
 execution.timeout: 30min  # 超过AWS Lambda限制！
 
-# ✅ 正确：使用托管Flink
+# ✅ 正确:使用托管Flink
 platform: confluent-cloud-flink  # 无时间限制
 ```
 
 **反模式2: 忽视冷启动**
 
 ```java
-// ❌ 错误：用户-facing API无预置并发
+// ❌ 错误:用户-facing API无预置并发
 @Function
 public Response handle(Request req) {
     // 每次冷启动2秒延迟！
 }
 
-// ✅ 正确：预置并发
+// ✅ 正确:预置并发
 provisionedConcurrency: 100  // 消除冷启动
 ```
 
 **反模式3: 错误估算成本**
 
 ```
-❌ 假设：Serverless总是更便宜
-实际：持续高负载时预留实例更优
+❌ 假设:Serverless总是更便宜
+实际:持续高负载时预留实例更优
 
-✅ 正确策略：
+✅ 正确策略:
 - 利用率<30% → Serverless
 - 利用率>70% → 预留实例
 - 之间 → 混合架构
@@ -450,7 +450,7 @@ class ServerlessCostOptimizer:
         self.cloudwatch = boto3.client('cloudwatch')
 
     def analyze_usage_patterns(self, function_name, days=7):
-        """分析使用模式，推荐最优配置"""
+        """分析使用模式,推荐最优配置"""
 
         # 获取调用统计
         metrics = self.cloudwatch.get_metric_statistics(

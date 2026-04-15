@@ -221,7 +221,7 @@ Phase 1 (Pre-commit):
   - 记录 pending 文件列表到 State
 
 Phase 2 (Commit):
-  - Checkpoint 成功后，原子提交到 _delta_log
+  - Checkpoint 成功后,原子提交到 _delta_log
   - 生成 {version}.json 事务日志
   - 数据立即可见
 ```
@@ -270,7 +270,7 @@ Phase 2 (Commit):
 **边界分析**:
 
 ```
-设维度数为 d，查询过滤选择性为 s (0 < s <= 1)
+设维度数为 d,查询过滤选择性为 s (0 < s <= 1)
 
 I/O 减少因子:
   无排序: I/O_base = 全表扫描
@@ -399,13 +399,13 @@ Exactly-Once 条件:
 证明 1 (不丢失):
   - Flink Checkpoint 保证所有记录在 C_k 前被处理并持久化到 State
   - Delta Sink 在 notifyCheckpointComplete 时才提交事务
-  - 若提交失败，从上一个成功 Checkpoint 恢复，重放未提交记录
+  - 若提交失败,从上一个成功 Checkpoint 恢复,重放未提交记录
   - 因此所有记录最终都被提交
 
 证明 2 (不重复):
   - 每个 Checkpoint 对应唯一 Delta 版本 V_k
   - 事务提交是幂等的 (基于版本号)
-  - 即使重放，相同版本的事务会被检测为已存在
+  - 即使重放,相同版本的事务会被检测为已存在
   - 因此不会重复写入
 ```
 
@@ -440,14 +440,14 @@ public void notifyCheckpointComplete(long checkpointId) {
 
 ```
 最终一致性:
-  设 CDC 事件序列 E = [e_1, e_2, ..., e_n]，其中 e_i = (op, key, ts, data)
-  按 ts 排序后应用，最终状态等于源数据库在该时间点的状态
+  设 CDC 事件序列 E = [e_1, e_2, ..., e_n],其中 e_i = (op, key, ts, data)
+  按 ts 排序后应用,最终状态等于源数据库在该时间点的状态
 
 幂等性:
-  INSERT: 若 key 不存在则插入，存在则忽略 (或报错)
+  INSERT: 若 key 不存在则插入,存在则忽略 (或报错)
   UPDATE: 更新为相同值 (幂等)
   DELETE: 删除不存在的数据 (幂等)
-  通过 Merge 条件的精确匹配，多次应用结果相同
+  通过 Merge 条件的精确匹配,多次应用结果相同
 ```
 
 ---
@@ -459,11 +459,11 @@ public void notifyCheckpointComplete(long checkpointId) {
 **证明**:
 
 ```
-设事务 T 遇到冲突概率为 p，最大重试次数为 k:
+设事务 T 遇到冲突概率为 p,最大重试次数为 k:
   成功概率: P_success = 1 - p^(k+1)
   当 k -> ∞, P_success -> 1 (概率收敛)
 
-实际系统中，p 通常很小 (< 0.1)，期望重试次数:
+实际系统中,p 通常很小 (< 0.1),期望重试次数:
   E[retries] = p / (1-p) ≈ 0.11 (当 p=0.1)
 
 因此事务最终完成
@@ -490,7 +490,7 @@ public void notifyCheckpointComplete(long checkpointId) {
 优化比率: η = I/O_pruned / I/O_full = P_q / P
 
 当查询针对特定分区 (P_q = 1): η = 1/P
-例如按天分区 (P=365)，单日查询 I/O 减少 99.7%
+例如按天分区 (P=365),单日查询 I/O 减少 99.7%
 ```
 
 ---

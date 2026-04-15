@@ -13,6 +13,7 @@
 ## 目录结构导航
 
 ```
+# 伪代码示意，非完整可编译代码
 03-api/
 ├── README.md                          # 本文件 - API 生态概览
 ├── 03.02-table-sql-api/               # Table API & SQL 完整指南

@@ -812,11 +812,11 @@ sampling_params = SamplingParams(
 
 # 故障诊断Prompt模板
 DIAGNOSIS_PROMPT = """你是一位工业设备维护专家。
-根据以下传感器数据诊断设备状态：
+根据以下传感器数据诊断设备状态:
 {sensor_data}
 
-请分析：
-1. 当前设备状态（正常/警告/危险）
+请分析:
+1. 当前设备状态(正常/警告/危险)
 2. 可能的故障原因
 3. 建议的维护措施
 """
@@ -909,7 +909,7 @@ response = engine.chat.completions.create(
         "role": "user",
         "content": [
             {"type": "image", "image": camera_frame},
-            {"type": "text", "text": "分析前方路况，识别潜在危险"}
+            {"type": "text", "text": "分析前方路况,识别潜在危险"}
         ]
     }],
     max_tokens=128

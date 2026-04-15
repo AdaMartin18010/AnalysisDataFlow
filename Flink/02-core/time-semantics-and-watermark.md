@@ -302,7 +302,7 @@ $$
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 .window(TumblingEventTimeWindows.of(Time.minutes(1)))
-// allowedLateness 默认为 0，迟到数据直接丢弃
+// allowedLateness 默认为 0,迟到数据直接丢弃
 ```
 
 **策略 2: 允许延迟更新**
@@ -360,27 +360,27 @@ public class StatusWatermarkValve {
     private final Watermark[] watermarks;
     private final InputChannelStatus[] channelStatuses;
 
-    // 上次输出的 Watermark，确保单调性
+    // 上次输出的 Watermark,确保单调性
     private Watermark lastOutputWatermark = new Watermark(Long.MIN_VALUE);
 
     private final StatusWatermarkValveOutput output;
 
     /**
      * 处理输入的 Watermark
-     * 核心逻辑：确保输出 Watermark 单调不减
+     * 核心逻辑:确保输出 Watermark 单调不减
      */
     public void inputWatermark(Watermark watermark, int channelIndex) {
         // 获取并更新通道 Watermark
         Watermark previous = watermarks[channelIndex];
 
-        // 单调性检查：只接受大于等于当前值的 Watermark
+        // 单调性检查:只接受大于等于当前值的 Watermark
         if (watermark.getTimestamp() >= previous.getTimestamp()) {
             watermarks[channelIndex] = watermark;
 
             // 计算所有通道的最小 Watermark
             Watermark minWatermark = findMinimumWatermark();
 
-            // 输出最小 Watermark（保持单调）
+            // 输出最小 Watermark(保持单调)
             // 只有当最小 Watermark 推进时才输出
             if (minWatermark.getTimestamp() > lastOutputWatermark.getTimestamp()) {
                 output.emitWatermark(minWatermark);
@@ -391,8 +391,8 @@ public class StatusWatermarkValve {
                 }
             }
         } else {
-            // 忽略乱序 Watermark（保持单调性）
-            // 这是关键：不向后推进 Watermark，不破坏单调性
+            // 忽略乱序 Watermark(保持单调性)
+            // 这是关键:不向后推进 Watermark,不破坏单调性
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Out of order watermark ignored. Channel: {}, Previous: {}, New: {}",
                     channelIndex, previous.getTimestamp(), watermark.getTimestamp());
@@ -416,7 +416,7 @@ public class StatusWatermarkValve {
             }
         }
 
-        // 如果没有活跃通道，保持当前 Watermark
+        // 如果没有活跃通道,保持当前 Watermark
         if (!hasActiveChannel) {
             return lastOutputWatermark;
         }
@@ -426,12 +426,12 @@ public class StatusWatermarkValve {
 
     /**
      * 处理通道空闲状态
-     * 空闲通道不参与最小值计算，防止阻塞
+     * 空闲通道不参与最小值计算,防止阻塞
      */
     public void markInputChannelIdle(int channelIndex) {
         channelStatuses[channelIndex].setIdle(true);
 
-        // 通道变为空闲后，重新计算最小 Watermark
+        // 通道变为空闲后,重新计算最小 Watermark
         // 可能推进全局 Watermark
         Watermark minWatermark = findMinimumWatermark();
         if (minWatermark.getTimestamp() > lastOutputWatermark.getTimestamp()) {
@@ -460,7 +460,7 @@ public class BoundedOutOfOrdernessWatermarks<T> implements WatermarkGenerator<T>
     @Override
     public void onPeriodicEmit(WatermarkOutput output) {
         // 发出 Watermark = 最大事件时间 - 乱序容忍度
-        // 由于 maxTimestamp 单调递增，生成的 Watermark 也单调不减
+        // 由于 maxTimestamp 单调递增,生成的 Watermark 也单调不减
         long watermarkTimestamp = maxTimestamp - maxOutOfOrderness;
         output.emitWatermark(new Watermark(watermarkTimestamp));
     }
@@ -704,7 +704,7 @@ sequenceDiagram
     Note right of Op: 窗口累积: {r1, r2}
 
     S->>Op: r4 @ eventTime=2 (迟到)
-    Note right of Op: wm=5 < end=10，r4被接纳
+    Note right of Op: wm=5 < end=10,r4被接纳
 
     S->>W: update maxTs=12
     W->>Op: emit wm=10 (12-2)
@@ -776,7 +776,7 @@ graph TB
         ├── 是 → 选择 Sliding Window
         └── 否 → 是否需要动态会话划分?
                 ├── 是 → 选择 Session Window
-                └── 否 → 选择 Tumbling Window（默认）
+                └── 否 → 选择 Tumbling Window(默认)
 ```
 
 ---
@@ -792,14 +792,14 @@ graph TB
 ```java
 /**
  * Watermark 事件定义
- * 继承自 StreamElement，与 Record 同级
+ * 继承自 StreamElement,与 Record 同级
  */
 public final class Watermark extends StreamElement {
 
-    /** Watermark的时间戳（表示该时间戳之前的数据已到达） */
+    /** Watermark的时间戳(表示该时间戳之前的数据已到达) */
     private final long timestamp;
 
-    /** 特殊Watermark：表示无穷大，用于关闭窗口 */
+    /** 特殊Watermark:表示无穷大,用于关闭窗口 */
     public static final Watermark MAX_WATERMARK = new Watermark(Long.MAX_VALUE);
 
     public Watermark(long timestamp) {
@@ -824,9 +824,9 @@ public final class Watermark extends StreamElement {
 ```java
 /**
  * Watermark 生成器接口
- * 定义两种生成策略：
- * 1. onEvent：基于事件的标点Watermark
- * 2. onPeriodicEmit：周期性生成
+ * 定义两种生成策略:
+ * 1. onEvent:基于事件的标点Watermark
+ * 2. onPeriodicEmit:周期性生成
  */
 public interface WatermarkGenerator<T> {
 
@@ -839,7 +839,7 @@ public interface WatermarkGenerator<T> {
     void onEvent(T event, long eventTimestamp, WatermarkOutput output);
 
     /**
-     * 周期性调用（默认每200ms）
+     * 周期性调用(默认每200ms)
      * @param output Watermark输出器
      */
     void onPeriodicEmit(WatermarkOutput output);
@@ -876,7 +876,7 @@ public class BoundedOutOfOrdernessWatermarks<T> implements WatermarkGenerator<T>
 }
 
 /**
- * 单调递增 Watermark 生成器（无乱序）
+ * 单调递增 Watermark 生成器(无乱序)
  */
 public class AscendingTimestampsWatermarks<T> implements WatermarkGenerator<T> {
 
@@ -915,7 +915,7 @@ sequenceDiagram
         Source->>WG: onEvent(event, timestamp)
         WG->>WG: 更新maxTimestamp
 
-        Note over WG: 周期性触发（200ms）
+        Note over WG: 周期性触发(200ms)
         WG->>WG: onPeriodicEmit()
         WG->>Output: emitWatermark(watermark)
         Output->>Context: 发送Watermark到下游
@@ -943,7 +943,7 @@ public class WatermarkOutputImpl implements WatermarkOutput {
                 // 将Watermark作为特殊事件输出
                 output.emitWatermark(watermark);
             }
-            // 否则丢弃（防止Watermark回退）
+            // 否则丢弃(防止Watermark回退)
         }
     }
 
@@ -984,7 +984,7 @@ public abstract class AbstractStreamTaskNetworkInput<T> {
      * 处理输入的Watermark
      */
     protected void processWatermark(Watermark watermark) throws Exception {
-        // 更新当前Watermark（单调递增保证）
+        // 更新当前Watermark(单调递增保证)
         if (watermark.getTimestamp() > currentWatermark) {
             currentWatermark = watermark.getTimestamp();
 
@@ -1029,7 +1029,7 @@ public class WindowOperator<K, T, W extends Window> extends AbstractStreamTaskNe
 
 ```java
 /**
- * Watermark阀门：处理多输入通道的Watermark对齐
+ * Watermark阀门:处理多输入通道的Watermark对齐
  */
 public class StatusWatermarkValve {
 
@@ -1067,7 +1067,7 @@ public class StatusWatermarkValve {
             }
         }
 
-        // 输出最小Watermark（保证不会超前任何输入）
+        // 输出最小Watermark(保证不会超前任何输入)
         if (minWatermark > lastOutputWatermark) {
             lastOutputWatermark = minWatermark;
             output.emitWatermark(new Watermark(minWatermark));
@@ -1122,7 +1122,7 @@ graph TB
 
 ```java
 /**
- * Watermark状态标识（Active/Idle）
+ * Watermark状态标识(Active/Idle)
  */
 public class WatermarkStatus {
 
@@ -1149,7 +1149,7 @@ public class WatermarkStatus {
 
 ```java
 /**
- * Watermark策略配置（含Idle Source处理）
+ * Watermark策略配置(含Idle Source处理)
  */
 public interface WatermarkStrategy<T> extends TimestampAssignerSupplier<T>,
                                                WatermarkGeneratorSupplier<T> {
@@ -1261,7 +1261,7 @@ public class AlignedWatermarks<T> implements WatermarkGenerator<T> {
             // 获取全局对齐Watermark
             long alignedWatermark = aligner.getAlignedWatermark();
 
-            // 输出对齐后的Watermark（不超过全局值）
+            // 输出对齐后的Watermark(不超过全局值)
             if (alignedWatermark > lastEmittedWatermark) {
                 output.emitWatermark(new Watermark(alignedWatermark));
                 lastEmittedWatermark = alignedWatermark;
@@ -1286,13 +1286,13 @@ public class GlobalWatermarkAligner {
     public long calculateAlignedWatermark() {
         switch (strategy) {
             case MIN:
-                // 取所有Source的最小Watermark（最保守）
+                // 取所有Source的最小Watermark(最保守)
                 return subtaskWatermarks.values().stream()
                     .min(Long::compare)
                     .orElse(Long.MAX_VALUE);
 
             case MAX:
-                // 取所有Source的最大Watermark（最激进）
+                // 取所有Source的最大Watermark(最激进)
                 return subtaskWatermarks.values().stream()
                     .max(Long::compare)
                     .orElse(Long.MIN_VALUE);
@@ -1341,7 +1341,7 @@ sequenceDiagram
     WG->>MAP: emitWatermark(wm=800)
 
     MAP->>MAP: processWatermark(800)
-    Note right of MAP: 业务处理，直通Watermark
+    Note right of MAP: 业务处理,直通Watermark
     MAP->>KEY: emitWatermark(800)
 
     KEY->>KEY: processWatermark(800)

@@ -53,7 +53,7 @@ where "Timestamp" 定义为非负实数或离散时间戳。
 依赖类型是值可以依赖于其他值的类型系统特性。在Coq中，依赖类型通过依赖函数类型 (Pi-type) 实现：
 
 ```
-Π(x:A).B(x)   （记作 forall x:A, B x）
+Π(x:A).B(x)   (记作 forall x:A, B x)
 ```
 
 **规约的依赖类型表示：**
@@ -61,16 +61,16 @@ where "Timestamp" 定义为非负实数或离散时间戳。
 流计算性质的规约可以编码为类型：
 
 ```coq
-(* 单调性规约：Watermark 随处理递增 *)
+(* 单调性规约:Watermark 随处理递增 *)
 Definition MonotonicWatermarkSpec (w : Stream Timestamp) : Prop :=
   forall (n m : nat), n <= m -> w n <= w m.
 
-(* 依赖类型版本的单调性：证明作为类型的一部分 *)
+(* 依赖类型版本的单调性:证明作为类型的一部分 *)
 Definition MonotonicWatermark {w : Stream Timestamp}
   (proof : forall n m, n <= m -> w n <= w m) : Type :=
   { w : Stream Timestamp | forall n m, n <= m -> w n <= w m }.
 
-(* 一致性规约：Checkpoint 原子性 *)
+(* 一致性规约:Checkpoint 原子性 *)
 Definition CheckpointConsistencySpec
   (state : State) (cp : Checkpoint) : Prop :=
   cp.(status) = Completed ->
@@ -125,7 +125,7 @@ tac : (Γ ⊢ τ) → List[(Γ' ⊢ τ')]
 **流计算证明常用策略模式：**
 
 ```coq
-(* 模式1：单调性证明的结构归纳 *)
+(* 模式1:单调性证明的结构归纳 *)
 Lemma stream_mono_induction :
   forall (s : Stream A) (P : Stream A -> Prop),
   (forall x, P (Cons x ESNil)) ->
@@ -152,7 +152,7 @@ Coq中共归纳类型描述*潜在无限*的数据结构，通过观测(observat
 CoInductive Stream (A : Type) : Type :=
   | Cons : A -> Stream A -> Stream A.
 
-(* 流的观测：head 和 tail *)
+(* 流的观测:head 和 tail *)
 Definition head {A} (s : Stream A) : A :=
   match s with Cons x _ => x end.
 
@@ -192,7 +192,7 @@ Record Event (P : Type) := {
 Arguments event_payload {P}.
 Arguments event_timestamp {P}.
 
-(* 无限流：共归纳定义 *)
+(* 无限流:共归纳定义 *)
 CoInductive Stream (A : Type) : Type :=
   | Cons : A -> Stream A -> Stream A.
 
@@ -212,7 +212,7 @@ Fixpoint nth_stream {A} (n : nat) (s : Stream A) : A :=
   | S n' => nth_stream n' (tail s)
   end.
 
-(* 流的前缀（有限列表） *)
+(* 流的前缀(有限列表) *)
 Fixpoint take {A} (n : nat) (s : Stream A) : list A :=
   match n with
   | 0 => nil
@@ -225,21 +225,21 @@ Fixpoint take {A} (n : nat) (s : Stream A) : list A :=
 CoFixpoint map {A B} (f : A -> B) (s : Stream A) : Stream B :=
   Cons (f (head s)) (map f (tail s)).
 
-(* 流过滤（需要满足条件才能继续） *)
+(* 流过滤(需要满足条件才能继续) *)
 CoFixpoint filter {A} (f : A -> bool) (s : Stream A) : Stream A :=
   if f (head s) then
     Cons (head s) (filter f (tail s))
   else
     filter f (tail s).
 
-(* 流压缩：合并相邻元素 *)
+(* 流压缩:合并相邻元素 *)
 CoFixpoint zip_with {A B C} (f : A -> B -> C) 
   (sa : Stream A) (sb : Stream B) : Stream C :=
   Cons (f (head sa) (head sb)) (zip_with f (tail sa) (tail sb)).
 
 (* ========== 流的性质 ========== *)
 
-(* 流相等：Bisimulation *)
+(* 流相等:Bisimulation *)
 CoInductive stream_eq {A} : Stream A -> Stream A -> Prop :=
   | stream_eq_cons : forall x s1 s2,
       stream_eq s1 s2 -> stream_eq (Cons x s1) (Cons x s2).
@@ -346,7 +346,7 @@ t ↝ v   ⟹   extract(t) ↝* extract(v)
 ```coq
 (* 固定大小窗口的类型 *)
 Definition FixedWindow {A n} (s : Stream A) : Vector (Stream A) n.
-(* n 是窗口数量，类型保证不会越界 *)
+(* n 是窗口数量,类型保证不会越界 *)
 ```
 
 **论证2：代码验证的统一框架**
@@ -371,7 +371,8 @@ Coq允许在同一框架内完成：
 Coq要求所有函数都是全函数(total function)。部分函数需要通过额外的终止证明或包装类型处理：
 
 ```coq
-(* 可能不终止的流处理：使用选项类型 *)
+# 伪代码示意，非完整可编译代码
+(* 可能不终止的流处理:使用选项类型 *)
 Definition safeHead {A} (s : Stream A) : option A := ...
 ```
 
@@ -405,7 +406,7 @@ Module WatermarkMonotonicity.
 
 (* ========== 基本定义 ========== *)
 
-(* 时间戳：非负整数 *)
+(* 时间戳:非负整数 *)
 Definition Timestamp := nat.
 
 (* 事件类型 *)
@@ -420,7 +421,7 @@ Definition extract_time (e : Event) : Timestamp := e.(event_time).
 
 (* ========== Watermark计算 ========== *)
 
-(* Watermark计算：观察到的最大事件时间 *)
+(* Watermark计算:观察到的最大事件时间 *)
 Fixpoint compute_watermark (events : list Event) : Timestamp :=
   match events with
   | nil => 0
@@ -435,7 +436,7 @@ Definition compute_watermark_with_delay
 
 (* ========== 引理准备 ========== *)
 
-(* 辅助引理：max的单调性 *)
+(* 辅助引理:max的单调性 *)
 Lemma max_lemma : forall a b c, a <= b -> a <= max b c.
 Proof.
   intros a b c H.
@@ -444,7 +445,7 @@ Proof.
   - apply Nat.le_max_l.
 Qed.
 
-(* 辅助引理：max元素的单调性 *)
+(* 辅助引理:max元素的单调性 *)
 Lemma max_monotonic_r : forall a b c, b <= c -> max a b <= max a c.
 Proof.
   intros a b c H.
@@ -454,7 +455,7 @@ Qed.
 
 (* ========== 主要定理 ========== *)
 
-(* 定理：添加事件不会降低Watermark *)
+(* 定理:添加事件不会降低Watermark *)
 Theorem watermark_monotonicity :
   forall (events : list Event) (new_event : Event),
   compute_watermark events <= compute_watermark (new_event :: events).
@@ -465,13 +466,13 @@ Proof.
   (* 展开定义 *)
   simpl.
   
-  (* 应用max的基本性质：max a b >= a *)
+  (* 应用max的基本性质:max a b >= a *)
   apply Nat.le_max_r.
   
   (* 证明完成 *)
 Qed.
 
-(* 更强的单调性：序列扩展保持不等式 *)
+(* 更强的单调性:序列扩展保持不等式 *)
 Theorem watermark_monotonic_strong :
   forall (events1 events2 : list Event),
   (exists suffix, events2 = events1 ++ suffix) ->
@@ -480,7 +481,7 @@ Proof.
   intros events1 events2 [suffix Heq].
   subst events2.
   induction suffix as [|e suffix IH].
-  - (* 空后缀：相等 *)
+  - (* 空后缀:相等 *)
     rewrite app_nil_r.
     apply le_n.
   - (* 归纳步骤 *)
@@ -490,7 +491,7 @@ Proof.
     + apply Nat.le_max_r.
 Qed.
 
-(* 定理：带延迟的Watermark也是单调的 *)
+(* 定理:带延迟的Watermark也是单调的 *)
 Theorem watermark_with_delay_monotonic :
   forall (events : list Event) (new_event : Event) (delay : Timestamp),
   delay <= compute_watermark events ->
@@ -528,12 +529,12 @@ Module CheckpointConsistency.
 
 (* ========== 基础定义 ========== *)
 
-(* 算子状态：简化为键值存储 *)
+(* 算子状态:简化为键值存储 *)
 Definition Key := string.
 Definition Value := nat.
 Definition KVState := list (Key * Value).
 
-(* 状态不变式：键唯一 *)
+(* 状态不变式:键唯一 *)
 Definition NoDuplicateKeys (s : KVState) : Prop :=
   forall k v1 v2,
   In (k, v1) s -> In (k, v2) s -> v1 = v2.
@@ -592,7 +593,7 @@ Inductive CPTransition : Checkpoint -> Checkpoint -> Prop :=
 
 (* ========== 一致性定理 ========== *)
 
-(* 关键定理：状态转换保持一致性 *)
+(* 关键定理:状态转换保持一致性 *)
 Theorem cp_transition_preserves_consistency :
   forall cp1 cp2,
   CheckpointConsistent cp1 ->
@@ -621,7 +622,7 @@ Proof.
     discriminate Hstatus.  (* CP_Failed <> CP_Completed *)
 Qed.
 
-(* 更强性质：Completed状态的Checkpoint总是满足不变式 *)
+(* 更强性质:Completed状态的Checkpoint总是满足不变式 *)
 Theorem completed_cp_is_consistent :
   forall cp snapshot,
   cp.(cp_status) = CP_Completed ->
@@ -638,7 +639,7 @@ Proof.
   - exact Hnodup.
 Qed.
 
-(* 定理：Checkpoint要么完成要么失败（互斥） *)
+(* 定理:Checkpoint要么完成要么失败(互斥) *)
 Theorem cp_status_mutual_exclusive :
   forall cp,
   CheckpointConsistent cp ->
@@ -647,8 +648,8 @@ Proof.
   intros cp Hcons [Hcomp Hfail].
   unfold CheckpointConsistent in Hcons.
   rewrite Hcomp in Hcons.
-  (* Completed状态要求存在snapshot，而Failed状态snapshot=None *)
-  (* 这里可以扩展定义，加入更严格的约束 *)
+  (* Completed状态要求存在snapshot,而Failed状态snapshot=None *)
+  (* 这里可以扩展定义,加入更严格的约束 *)
   discriminate.
 Qed.
 
@@ -702,16 +703,16 @@ CoFixpoint stream_zip {A B C} (f : A -> B -> C)
 
 (* ========== 类型安全定理 ========== *)
 
-(* 定理：map保持类型 *)
+(* 定理:map保持类型 *)
 Theorem stream_map_type_safe :
   forall A B (f : A -> B) (s : Stream A),
   stream_map f s = stream_map f s.
 Proof.
-  (* 平凡相等，类型由定义保证 *)
+  (* 平凡相等,类型由定义保证 *)
   reflexivity.
 Qed.
 
-(* 定理：map和head交换律 *)
+(* 定理:map和head交换律 *)
 Theorem stream_map_head_commute :
   forall A B (f : A -> B) (s : Stream A),
   head (stream_map f s) = f (head s).
@@ -723,7 +724,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* 定理：map和tail交换律 *)
+(* 定理:map和tail交换律 *)
 Theorem stream_map_tail_commute :
   forall A B (f : A -> B) (s : Stream A),
   tail (stream_map f s) = stream_map f (tail s).
@@ -735,7 +736,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* 定理：zip保持类型 *)
+(* 定理:zip保持类型 *)
 Theorem stream_zip_type_safe :
   forall A B C (f : A -> B -> C) (sa : Stream A) (sb : Stream B),
   stream_zip f sa sb = stream_zip f sa sb.
@@ -743,7 +744,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* 定理：zip和head交换律 *)
+(* 定理:zip和head交换律 *)
 Theorem stream_zip_head_commute :
   forall A B C (f : A -> B -> C) (sa : Stream A) (sb : Stream B),
   head (stream_zip f sa sb) = f (head sa) (head sb).
@@ -851,17 +852,17 @@ Inductive SystemTransition : SystemState -> SystemState -> Prop :=
 
 (* ========== Exactly-Once定理 ========== *)
 
-(* 不变式：处理中的记录不会重复 *)
+(* 不变式:处理中的记录不会重复 *)
 Definition NoDuplicateProcessing (st : SystemState) : Prop :=
   NoDup st.(processing).
 
-(* 不变式：已完成的记录恰好被处理一次 *)
+(* 不变式:已完成的记录恰好被处理一次 *)
 Definition CompletedExactlyOnce (st : SystemState) : Prop :=
   forall rid, 
   In rid st.(completed) -> 
   count_occ eq_dec_dec st.(log) (rid, Processed) = 1.
 
-(* 关键定理：状态转换保持Exactly-Once语义 *)
+(* 关键定理:状态转换保持Exactly-Once语义 *)
 Theorem transition_preserves_exactly_once :
   forall st1 st2,
   NoDuplicateProcessing st1 ->
@@ -901,10 +902,10 @@ Module WatermarkExample.
 
 (* ========== 定义部分 ========== *)
 
-(* 时间戳：非负整数 *)
+(* 时间戳:非负整数 *)
 Definition Timestamp := nat.
 
-(* 事件类型：带时间戳的数据 *)
+(* 事件类型:带时间戳的数据 *)
 Record Event := {
   event_id : nat;
   event_time : Timestamp;
@@ -914,7 +915,7 @@ Record Event := {
 (* 提取函数 *)
 Definition extract_time (e : Event) : Timestamp := e.(event_time).
 
-(* Watermark计算：观察到的最大事件时间 *)
+(* Watermark计算:观察到的最大事件时间 *)
 Fixpoint compute_watermark (events : list Event) : Timestamp :=
   match events with
   | nil => 0
@@ -924,7 +925,7 @@ Fixpoint compute_watermark (events : list Event) : Timestamp :=
 
 (* ========== 引理准备 ========== *)
 
-(* 辅助引理：max的单调性 *)
+(* 辅助引理:max的单调性 *)
 Lemma max_lemma : forall a b c, a <= b -> a <= max b c.
 Proof.
   intros a b c H.
@@ -935,7 +936,7 @@ Qed.
 
 (* ========== 主要定理 ========== *)
 
-(* 定理：添加事件不会降低Watermark *)
+(* 定理:添加事件不会降低Watermark *)
 Theorem watermark_monotonicity :
   forall (events : list Event) (new_event : Event),
   compute_watermark events <= compute_watermark (new_event :: events).
@@ -952,7 +953,7 @@ Proof.
   (* 证明完成 *)
 Qed.
 
-(* 更强的单调性：序列扩展保持不等式 *)
+(* 更强的单调性:序列扩展保持不等式 *)
 Theorem watermark_monotonic_strong :
   forall (events1 events2 : list Event),
   (exists suffix, events2 = events1 ++ suffix) ->
@@ -961,7 +962,7 @@ Proof.
   intros events1 events2 [suffix Heq].
   subst events2.
   induction suffix as [|e suffix IH].
-  - (* 空后缀：相等 *)
+  - (* 空后缀:相等 *)
     rewrite app_nil_r.
     apply le_n.
   - (* 归纳步骤 *)
@@ -984,13 +985,13 @@ End WatermarkExample.
 **编译和运行：**
 
 ```bash
-# 安装Coq（使用opam）
+# 安装Coq(使用opam)
 opam install coq
 
 # 编译Coq文件
 coqc WatermarkProof.v
 
-# 交互式证明（使用CoqIDE或Proof General）
+# 交互式证明(使用CoqIDE或Proof General)
 coqide WatermarkProof.v
 ```
 
@@ -1006,12 +1007,12 @@ Module CheckpointExample.
 
 (* ========== 基础定义 ========== *)
 
-(* 算子状态：简化为键值存储 *)
+(* 算子状态:简化为键值存储 *)
 Definition Key := string.
 Definition Value := nat.
 Definition KVState := list (Key * Value).
 
-(* 状态不变式：键唯一 *)
+(* 状态不变式:键唯一 *)
 Definition NoDuplicateKeys (s : KVState) : Prop :=
   forall k v1 v2,
   In (k, v1) s -> In (k, v2) s -> v1 = v2.
@@ -1070,7 +1071,7 @@ Inductive CPTransition : Checkpoint -> Checkpoint -> Prop :=
 
 (* ========== 一致性定理 ========== *)
 
-(* 关键定理：状态转换保持一致性 *)
+(* 关键定理:状态转换保持一致性 *)
 Theorem cp_transition_preserves_consistency :
   forall cp1 cp2,
   CheckpointConsistent cp1 ->
@@ -1099,7 +1100,7 @@ Proof.
     discriminate Hstatus.  (* CP_Failed <> CP_Completed *)
 Qed.
 
-(* 更强性质：Completed状态的Checkpoint总是满足不变式 *)
+(* 更强性质:Completed状态的Checkpoint总是满足不变式 *)
 Theorem completed_cp_is_consistent :
   forall cp,
   cp.(cp_status) = CP_Completed ->
@@ -1111,7 +1112,7 @@ Proof.
   intros _.  (* 假设已满足 *)
   exists snapshot.
   split; [exact Heq|].
-  (* 这里需要额外的假设：系统保证存储的快照满足不变式 *)
+  (* 这里需要额外的假设:系统保证存储的快照满足不变式 *)
 Admitted.  (* 需要系统级不变式完成证明 *)
 
 End CheckpointExample.

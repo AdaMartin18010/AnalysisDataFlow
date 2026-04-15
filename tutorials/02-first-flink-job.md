@@ -64,12 +64,12 @@ Flink支持三种时间语义用于处理乱序事件：
 3. 可以通过 `disableChaining()` 或 `slotSharingGroup()` 手动控制
 
 ```java
-// 算子链示例：flatMap -> map -> filter 会被优化为一条链
+// 算子链示例:flatMap -> map -> filter 会被优化为一条链
 dataStream
     .flatMap(tokenizer)  // 链内
     .map(word -> word.toLowerCase())  // 链内
     .filter(word -> word.length() > 0)  // 链内
-    .keyBy(word -> word)  // 数据重分区，链断开
+    .keyBy(word -> word)  // 数据重分区,链断开
     .sum(1);
 ```
 
@@ -165,9 +165,9 @@ import org.apache.flink.util.Collector;
 /**
  * Socket Window WordCount
  *
- * 从Socket读取文本流，每5秒统计一次单词出现次数
+ * 从Socket读取文本流,每5秒统计一次单词出现次数
  *
- * 运行步骤：
+ * 运行步骤:
  * 1. 终端执行: nc -lk 9999
  * 2. 运行本程序
  * 3. 在nc终端输入文本
@@ -179,19 +179,19 @@ public class SocketWindowWordCount {
         final StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
 
-        // 设置并行度（本地开发建议设为1便于调试）
+        // 设置并行度(本地开发建议设为1便于调试)
         env.setParallelism(1);
 
         // ===== 步骤2: 创建数据源 =====
-        // 从localhost:9999的Socket读取数据，以换行符分隔
+        // 从localhost:9999的Socket读取数据,以换行符分隔
         DataStream<String> text = env.socketTextStream("localhost", 9999, "\n");
 
         // ===== 步骤3: 数据转换处理 =====
         DataStream<Tuple2<String, Integer>> wordCounts = text
-            // 3.1 flatMap: 将每行切分为单词，输出 (word, 1)
+            // 3.1 flatMap: 将每行切分为单词,输出 (word, 1)
             .flatMap(new Tokenizer())
 
-            // 3.2 keyBy: 按单词分组，相同单词进入同一分区
+            // 3.2 keyBy: 按单词分组,相同单词进入同一分区
             .keyBy(value -> value.f0)
 
             // 3.3 window: 定义5秒滚动窗口
@@ -204,7 +204,7 @@ public class SocketWindowWordCount {
         wordCounts.print();
 
         // ===== 步骤5: 启动作业 =====
-        // execute() 是阻塞调用，作业终止时才返回
+        // execute() 是阻塞调用,作业终止时才返回
         env.execute("Socket Window WordCount");
     }
 
@@ -251,7 +251,7 @@ from pyflink.datastream.functions import FlatMapFunction
 from pyflink.common.typeinfo import Types
 
 class Tokenizer(FlatMapFunction):
-    """自定义FlatMap函数：切分单词"""
+    """自定义FlatMap函数:切分单词"""
 
     def flat_map(self, value, collector):
         # 转小写并按非单词字符分割
@@ -387,7 +387,7 @@ public class RealTimeProcessingDemo {
             // 3. 按单词分组
             .keyBy(value -> value.f0)
 
-            // 4. 滑动窗口：每10秒计算过去30秒的统计
+            // 4. 滑动窗口:每10秒计算过去30秒的统计
             .window(SlidingProcessingTimeWindows.of(Time.seconds(30), Time.seconds(10)))
 
             // 5. 使用自定义聚合函数
@@ -455,7 +455,7 @@ public class ProductionKafkaWordCount {
 
         // ===== 生产级配置 =====
 
-        // 1. 开启Checkpoint（精确一次语义）
+        // 1. 开启Checkpoint(精确一次语义)
         env.enableCheckpointing(60000);  // 每60秒触发一次
         env.getCheckpointConfig().setCheckpointingMode(
             CheckpointingMode.EXACTLY_ONCE
@@ -467,7 +467,7 @@ public class ProductionKafkaWordCount {
             ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION
         );
 
-        // 2. 配置状态后端（生产建议使用RocksDB）
+        // 2. 配置状态后端(生产建议使用RocksDB)
         EmbeddedRocksDBStateBackend rocksDbBackend =
             new EmbeddedRocksDBStateBackend(true);
         env.setStateBackend(rocksDbBackend);
@@ -516,7 +516,7 @@ public class ProductionKafkaWordCount {
     }
 
     /**
-     * JDBC Sink示例：写入MySQL
+     * JDBC Sink示例:写入MySQL
      */
     public static class JdbcSinkFunction extends
         RichSinkFunction<Tuple2<String, Integer>> {
@@ -588,10 +588,10 @@ graph TB
 ### 完整运行步骤
 
 ```bash
-# 步骤1: 启动Socket服务器（终端1）
+# 步骤1: 启动Socket服务器(终端1)
 nc -lk 9999
 
-# 步骤2: 编译并运行Flink程序（终端2）
+# 步骤2: 编译并运行Flink程序(终端2)
 cd flink-quickstart
 mvn clean compile exec:java -Dexec.mainClass="com.example.SocketWindowWordCount"
 
@@ -602,7 +602,7 @@ flink is awesome
 real time processing
 hello world
 
-# 步骤4: 观察Flink输出（每5秒输出一次窗口结果）
+# 步骤4: 观察Flink输出(每5秒输出一次窗口结果)
 (hello, 2)
 (world, 1)
 (flink, 2)
@@ -743,7 +743,7 @@ graph LR
 
 ```mermaid
 gantt
-    title 滚动窗口数据切分示例（5秒窗口）
+    title 滚动窗口数据切分示例(5秒窗口)
     dateFormat X
     axisFormat %s
 

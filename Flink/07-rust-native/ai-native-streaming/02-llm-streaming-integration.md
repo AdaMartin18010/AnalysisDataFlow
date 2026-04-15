@@ -11,16 +11,16 @@ LLM 流式推理是指大型语言模型在生成响应时，以**增量方式**
 形式化定义：
 
 ```
-给定输入提示 P，LLM 生成响应 R = {t₁, t₂, ..., tₙ}
+给定输入提示 P,LLM 生成响应 R = {t₁, t₂, ..., tₙ}
 
-流式输出序列：
+流式输出序列:
 S₁ = t₁
 S₂ = t₁t₂
 S₃ = t₁t₂t₃
 ...
 Sₙ = t₁t₂...tₙ = R
 
-时间特性：
+时间特性:
 - TTFB (Time To First Byte): t(S₁) - t(P)
 - 增量延迟: Δtᵢ = t(Sᵢ) - t(Sᵢ₋₁)
 - 总生成时间: T_total = t(Sₙ) - t(P)
@@ -82,18 +82,18 @@ Raw Token Stream → [解析] → [过滤] → [转换] → [聚合] → Output 
 ```
 上下文状态: C = (SystemPrompt, History, Reserved)
 
-其中：
+其中:
 - SystemPrompt: 系统指令 (固定 tokens)
 - History: [(role₁, content₁), (role₂, content₂), ...] 历史消息
 - Reserved: 为响应预留的 token 数量
 
-约束条件：
+约束条件:
 token_count(SystemPrompt) + Σ token_count(contentᵢ) + Reserved ≤ ContextWindow
 
-管理策略：
+管理策略:
 1. 滑动窗口: 保留最近 k 轮对话
 2. 摘要压缩: 将早期对话压缩为摘要
-3. 关键提取: 保留关键信息，丢弃冗余
+3. 关键提取: 保留关键信息,丢弃冗余
 ```
 
 **上下文窗口模型对比**：
@@ -164,7 +164,7 @@ data: [DONE]
 ```
 TTFB = TTFT + T_network + T_framework
 
-其中：
+其中:
 - TTFT (Time To First Token): 模型处理输入到生成首个 token 的时间
   - 与输入长度成正比: TTFT ≈ α · token_count(input) + β
   - 典型值: 100-500ms (取决于模型和输入长度)
@@ -177,7 +177,7 @@ TTFB = TTFT + T_network + T_framework
 - T_framework: 框架处理开销
   - 通常 < 10ms
 
-结论：TTFT 占主导地位 (90%+)
+结论:TTFT 占主导地位 (90%+)
 ```
 
 **工程优化策略**：
@@ -194,18 +194,18 @@ TTFB = TTFT + T_network + T_framework
 **形式化表述**：
 
 ```
-设：
+设:
 - N: 并行度 (Parallelism)
 - T_seq: 串行处理延迟
 - T_par(N): 并行度为 N 时的处理延迟
 - O: 处理一个 token 的计算量
 
-理想加速比：
+理想加速比:
 Speedup(N) = T_seq / T_par(N) ≈ N / (1 + f·(N-1))
 
 其中 f 为串行比例 (Amdahl's Law)
 
-Token 流处理特性：
+Token 流处理特性:
 - 高度并行性: token 间无依赖
 - 状态局部性: 每个子流独立维护状态
 - 预期加速比: 接近线性 (f ≈ 0)
@@ -362,7 +362,7 @@ Checkpoint          对话断点恢复
 **正确性条件**：
 
 ```
-完整性: 若 LLM 生成完整响应 R，则 Flink 输出流包含所有 token tᵢ ∈ R
+完整性: 若 LLM 生成完整响应 R,则 Flink 输出流包含所有 token tᵢ ∈ R
 有序性: 输出的 token 顺序与 LLM 生成顺序一致
 恰好一次: 每个 token 恰好被输出一次
 ```
@@ -377,7 +377,7 @@ Checkpoint          对话断点恢复
 // 恰好一次的 Token 流处理
 impl SinkFunction<Token> for ExactlyOnceTokenSink {
     fn invoke(&mut self, value: Token, context: Context) {
-        // 幂等性保证：token index 作为去重键
+        // 幂等性保证:token index 作为去重键
         let dedup_key = format!("{}-{}", value.session_id, value.index);
 
         if !self.seen_keys.contains(&dedup_key) {
@@ -401,18 +401,18 @@ impl SinkFunction<Token> for ExactlyOnceTokenSink {
 **数学模型**：
 
 ```
-给定：
+给定:
 - 窗口容量 W
 - 消息集合 M = {m₁, m₂, ..., mₙ}
 - 消息重要性 I(mᵢ)
 - 消息大小 S(mᵢ)
 
-优化问题：
+优化问题:
 maximize Σ I(mᵢ) · xᵢ
 subject to Σ S(mᵢ) · xᵢ ≤ W
            xᵢ ∈ {0, 1}
 
-这是一个 0-1 背包问题，可用动态规划求解。
+这是一个 0-1 背包问题,可用动态规划求解。
 ```
 
 **启发式策略**：
@@ -452,7 +452,7 @@ impl SmartContextManager {
         let mut result = Vec::new();
         let mut token_count = 0;
 
-        // 从后向前遍历，优先保留近期消息
+        // 从后向前遍历,优先保留近期消息
         for msg in messages.iter().rev() {
             let tokens = token_count(&msg.content);
             if token_count + tokens > self.max_tokens * 4 / 10 {
@@ -568,7 +568,7 @@ impl OpenAIStreamingClient {
         }
     }
 
-    /// 发送流式请求，返回 token 流
+    /// 发送流式请求,返回 token 流
     pub async fn stream_chat_completion(
         &self,
         messages: Vec<Message>,
@@ -805,7 +805,7 @@ impl ProcessFunction<ChatResponse, ProcessedResponse> for TokenPostProcessor {
 
 /// 完整 Flink 流水线构建
 fn build_llm_pipeline(env: &mut StreamExecutionEnvironment) {
-    // 1. 输入：Kafka 对话请求流
+    // 1. 输入:Kafka 对话请求流
     let request_stream: DataStream<ChatRequest> = env
         .add_source(KafkaSource::new("chat-requests"))
         .assign_timestamps_and_watermarks(
@@ -889,7 +889,7 @@ impl ModelRouter {
             .collect();
 
         if candidates.is_empty() {
-            // 无满足约束的模型，使用默认
+            // 无满足约束的模型,使用默认
             return self.models.iter()
                 .find(|m| m.name == self.default_model)
                 .unwrap();
@@ -897,17 +897,17 @@ impl ModelRouter {
 
         // 根据查询复杂度选择
         if query.complexity > 0.8 {
-            // 复杂查询：优先质量
+            // 复杂查询:优先质量
             candidates.iter()
                 .max_by(|a, b| a.quality_score.partial_cmp(&b.quality_score).unwrap())
                 .unwrap()
         } else if query.latency_critical {
-            // 延迟敏感：优先 TTFT
+            // 延迟敏感:优先 TTFT
             candidates.iter()
                 .min_by(|a, b| a.latency_profile.ttft_ms.cmp(&b.latency_profile.ttft_ms))
                 .unwrap()
         } else {
-            // 默认：性价比最优
+            // 默认:性价比最优
             candidates.iter()
                 .max_by(|a, b| {
                     let score_a = a.quality_score / (a.cost_per_1k_input + a.cost_per_1k_output);
@@ -941,7 +941,7 @@ impl ModelRouter {
 struct QueryFeatures {
     estimated_input_tokens: usize,
     estimated_output_tokens: usize,
-    complexity: f64,           // 0-1，基于提示词分析
+    complexity: f64,           // 0-1,基于提示词分析
     latency_critical: bool,    // 是否延迟敏感
     domain: String,            // 领域 (code, chat, analysis, etc.)
 }

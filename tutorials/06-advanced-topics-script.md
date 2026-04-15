@@ -36,17 +36,17 @@
 
 ```
 【00:00-00:30】
-大家好！欢迎来到第六集，也是最后一集：Flink高级主题。
+大家好！欢迎来到第六集,也是最后一集:Flink高级主题。
 
-在前面的教程中，我们学习了Flink的基础知识、
-设计模式和部署运维。这一集，我们将深入Flink的内部，
+在前面的教程中,我们学习了Flink的基础知识、
+设计模式和部署运维。这一集,我们将深入Flink的内部,
 学习状态管理、Checkpoint调优和性能优化的核心技术。
 
 【00:30-01:00】
-本集内容包括：
+本集内容包括:
 1. 状态后端深度解析与RocksDB调优
 2. 状态TTL与增量清理策略
-3. Checkpoint调优：对齐、增量、超时
+3. Checkpoint调优:对齐、增量、超时
 4. 背压诊断与流控优化
 5. 数据倾斜处理方案
 6. SQL查询优化
@@ -96,52 +96,52 @@ graph TB
 
 ```
 【01:00-02:00】
-Flink支持三种状态后端：
+Flink支持三种状态后端:
 
-1. MemoryStateBackend：状态存储在JVM Heap
-   优点：速度快
-   缺点：大小受限于内存，不适合大状态
+1. MemoryStateBackend:状态存储在JVM Heap
+   优点:速度快
+   缺点:大小受限于内存,不适合大状态
 
-2. FsStateBackend：状态存储在内存，异步快照到文件系统
-   优点：状态大小不受限制
-   缺点：大状态时GC压力大
+2. FsStateBackend:状态存储在内存,异步快照到文件系统
+   优点:状态大小不受限制
+   缺点:大状态时GC压力大
 
-3. RocksDBStateBackend：状态存储在本地RocksDB
-   优点：状态大小只受磁盘限制，支持增量Checkpoint
-   缺点：序列化开销
+3. RocksDBStateBackend:状态存储在本地RocksDB
+   优点:状态大小只受磁盘限制,支持增量Checkpoint
+   缺点:序列化开销
 
 生产环境推荐RocksDB。
 
 【02:00-03:30】
-RocksDB调优的核心参数：
+RocksDB调优的核心参数:
 
-1. 内存分配：
-   - write-buffer-size：每个Column Family的写缓冲
-   - max-write-buffer-number：最大写缓冲数量
-   - block-cache-size：读缓存大小
+1. 内存分配:
+   - write-buffer-size:每个Column Family的写缓冲
+   - max-write-buffer-number:最大写缓冲数量
+   - block-cache-size:读缓存大小
 
-2. 压缩配置：
-   - compression-type：LZ4、Snappy、Zstd
-   - target-file-size-base：基础文件大小
-   - level0-file-num-compaction-trigger：L0触发压缩的阈值
+2. 压缩配置:
+   - compression-type:LZ4、Snappy、Zstd
+   - target-file-size-base:基础文件大小
+   - level0-file-num-compaction-trigger:L0触发压缩的阈值
 
-3. 线程配置：
-   - max-background-jobs：后台线程数
-   - max-subcompactions：子压缩线程数
+3. 线程配置:
+   - max-background-jobs:后台线程数
+   - max-subcompactions:子压缩线程数
 
 【03:30-05:00】
-Flink对RocksDB的封装提供了简化配置：
+Flink对RocksDB的封装提供了简化配置:
 
-预定义选项：
-- DEFAULT：默认配置
-- SPINNING_DISK_OPTIMIZED：机械硬盘优化
-- FLASH_SSD_OPTIMIZED：SSD优化
+预定义选项:
+- DEFAULT:默认配置
+- SPINNING_DISK_OPTIMIZED:机械硬盘优化
+- FLASH_SSD_OPTIMIZED:SSD优化
 
-Managed Memory是Flink 1.10+引入的特性，
-让Flink自动管理RocksDB内存，
+Managed Memory是Flink 1.10+引入的特性,
+让Flink自动管理RocksDB内存,
 无需手动配置Column Family选项。
 
-建议开启Managed Memory，
+建议开启Managed Memory,
 并根据状态大小设置合适的内存比例。
 ```
 
@@ -212,7 +212,7 @@ public class StateBackendTuning {
             512 * 1024 * 1024L  // 512MB per slot
         );
 
-        // 高优先级池比例（用于索引和过滤器）
+        // 高优先级池比例(用于索引和过滤器)
         config.setDouble(
             RocksDBOptions.HIGH_PRIORITY_POOL_RATIO,
             0.1
@@ -271,35 +271,35 @@ graph TB
 
 ```
 【05:00-06:00】
-状态会不断增长，最终耗尽资源。
+状态会不断增长,最终耗尽资源。
 TTL(Time To Live)是控制状态生命周期的机制。
 
-TTL策略：
-1. 创建时更新：每次创建或写入时重置过期时间
-2. 读写时更新：每次读取时也重置过期时间
-3. 只创建时更新：只在创建时设置，后续不更新
+TTL策略:
+1. 创建时更新:每次创建或写入时重置过期时间
+2. 读写时更新:每次读取时也重置过期时间
+3. 只创建时更新:只在创建时设置,后续不更新
 
-状态可见性：
-1. 不返回过期：读取时过滤掉过期数据
-2. 返回过期但不清除：用于延迟清理场景
+状态可见性:
+1. 不返回过期:读取时过滤掉过期数据
+2. 返回过期但不清除:用于延迟清理场景
 
 【06:00-07:00】
-过期状态的清理策略：
+过期状态的清理策略:
 
-1. 全量清理：查询时检查过期，适合小状态
-2. 增量清理：每次处理记录时清理部分过期数据
-3. RocksDB压缩清理：利用RocksDB的压缩过程清理
+1. 全量清理:查询时检查过期,适合小状态
+2. 增量清理:每次处理记录时清理部分过期数据
+3. RocksDB压缩清理:利用RocksDB的压缩过程清理
 
-RocksDB压缩清理是最高效的，
+RocksDB压缩清理是最高效的,
 但需要等待压缩触发。
 
 【07:00-08:00】
-清理参数调优：
+清理参数调优:
 
-- cleanupIncrementally：增量清理的步数和是否基于运行时间
-- cleanupInRocksdbCompactFilter：压缩过滤器配置
+- cleanupIncrementally:增量清理的步数和是否基于运行时间
+- cleanupInRocksdbCompactFilter:压缩过滤器配置
 
-建议：
+建议:
 - 大状态优先使用RocksDB压缩清理
 - 小状态可以使用增量清理
 - 根据过期数据比例调整清理频率
@@ -328,12 +328,12 @@ public class StateTTLConfiguration {
         StateTtlConfig ttlConfig = StateTtlConfig
             .newBuilder(Time.hours(24))  // 24小时过期
 
-            // 更新类型：创建或写入时更新
+            // 更新类型:创建或写入时更新
             .setUpdateType(
                 StateTtlConfig.UpdateType.OnCreateAndWrite
             )
 
-            // 状态可见性：不返回过期数据
+            // 状态可见性:不返回过期数据
             .setStateVisibility(
                 StateTtlConfig.StateVisibility.NeverReturnExpired
             )
@@ -342,14 +342,14 @@ public class StateTTLConfiguration {
 
             // 1. 增量清理策略
             .cleanupIncrementally(10, true)
-            // 参数1：每次清理时检查的状态条目数
-            // 参数2：是否在状态访问时触发清理
+            // 参数1:每次清理时检查的状态条目数
+            // 参数2:是否在状态访问时触发清理
 
             // 2. RocksDB压缩清理策略
             .cleanupInRocksdbCompactFilter(1000)
-            // 参数：每次处理的状态条目数后触发检查
+            // 参数:每次处理的状态条目数后触发检查
 
-            // 3. 全量快照清理（默认启用）
+            // 3. 全量快照清理(默认启用)
             .cleanupFullSnapshot()
 
             .build();
@@ -400,7 +400,7 @@ public class StateTTLConfiguration {
                     AggregatedData data = state.value();
                     if (data != null) {
                         out.collect(new Output(data));
-                        // 可选：清空状态
+                        // 可选:清空状态
                         // state.clear();
                     }
                 }
@@ -426,52 +426,52 @@ public class StateTTLConfiguration {
 ```
 【08:00-09:00】
 Checkpoint是Flink容错的核心。
-调优Checkpoint需要理解其生命周期：
+调优Checkpoint需要理解其生命周期:
 
-1. 触发：JM发起，发送Barrier
-2. 对齐：算子等待所有输入Barrier
-3. 快照：保存状态到存储
-4. 确认：JM确认所有任务完成
-5. 完成：通知任务清理
+1. 触发:JM发起,发送Barrier
+2. 对齐:算子等待所有输入Barrier
+3. 快照:保存状态到存储
+4. 确认:JM确认所有任务完成
+5. 完成:通知任务清理
 
 【09:00-10:30】
-Checkpoint常见问题及解决方案：
+Checkpoint常见问题及解决方案:
 
-问题1：Checkpoint超时
-原因：状态过大、网络慢、存储慢
-解决：增量Checkpoint、压缩、优化存储
+问题1:Checkpoint超时
+原因:状态过大、网络慢、存储慢
+解决:增量Checkpoint、压缩、优化存储
 
-问题2：对齐时间长
-原因：背压、数据倾斜
-解决：Unaligned Checkpoint、调整Buffer大小
+问题2:对齐时间长
+原因:背压、数据倾斜
+解决:Unaligned Checkpoint、调整Buffer大小
 
-问题3：频繁失败
-原因：资源不足、存储不可达
-解决：增加超时、检查网络/存储
+问题3:频繁失败
+原因:资源不足、存储不可达
+解决:增加超时、检查网络/存储
 
 【10:30-12:00】
-Unaligned Checkpoint是Flink 1.11引入的新特性，
+Unaligned Checkpoint是Flink 1.11引入的新特性,
 它可以在不等待Barrier对齐的情况下进行Checkpoint。
 
-适用场景：
+适用场景:
 - 存在持续背压
 - 对齐时间经常超过超时
 
-注意事项：
-- 会增加存储开销（存储Buffer中的数据）
+注意事项:
+- 会增加存储开销(存储Buffer中的数据)
 - 适合状态小的作业
 - 需要足够高的网络带宽
 
 【12:00-13:00】
-增量Checkpoint只保存状态变化，
+增量Checkpoint只保存状态变化,
 大幅减少Checkpoint时间和存储空间。
 
-对于RocksDB后端，
+对于RocksDB后端,
 增量Checkpoint基于SST文件级别。
 
-建议：
+建议:
 - 大状态作业必须启用增量Checkpoint
-- 定期进行全量Checkpoint（清理过期增量）
+- 定期进行全量Checkpoint(清理过期增量)
 ```
 
 ### 💻 代码演示
@@ -492,7 +492,7 @@ public class CheckpointTuning {
 
         // ========== 基础Checkpoint配置 ==========
 
-        // Checkpoint间隔：平衡容错和性能
+        // Checkpoint间隔:平衡容错和性能
         env.enableCheckpointing(
             TimeUnit.MINUTES.toMillis(1),  // 1分钟
             CheckpointingMode.EXACTLY_ONCE
@@ -500,12 +500,12 @@ public class CheckpointTuning {
 
         CheckpointConfig checkpointConfig = env.getCheckpointConfig();
 
-        // 超时时间：根据状态大小调整
+        // 超时时间:根据状态大小调整
         checkpointConfig.setCheckpointTimeout(
             TimeUnit.MINUTES.toMillis(10)
         );
 
-        // 并发Checkpoint数：一般设为1
+        // 并发Checkpoint数:一般设为1
         checkpointConfig.setMaxConcurrentCheckpoints(1);
 
         // 两次Checkpoint最小间隔
@@ -523,19 +523,19 @@ public class CheckpointTuning {
         // 启用Unaligned Checkpoint
         checkpointConfig.enableUnalignedCheckpoints();
 
-        // 对齐超时：超过此时间切换到Unaligned模式
+        // 对齐超时:超过此时间切换到Unaligned模式
         checkpointConfig.setAlignmentTimeout(
             Duration.ofSeconds(30)
         );
 
-        // 最大对齐数据量：超过此值切换到Unaligned
+        // 最大对齐数据量:超过此值切换到Unaligned
         checkpointConfig.setMaxAlignedCheckSize(
             SizeUnit.MEBIBYTES.toBytes(10)
         );
 
         // ========== 增量Checkpoint ==========
 
-        // 增量Checkpoint间隔（每N次全量Checkpoint后做一次全量）
+        // 增量Checkpoint间隔(每N次全量Checkpoint后做一次全量)
         checkpointConfig.setIncrementalCheckpointInterval(
             Duration.ofMinutes(30)
         );
@@ -557,7 +557,7 @@ public class CheckpointTuning {
         // 启用Checkpoint压缩
         env.getConfig().setUseSnapshotCompression(true);
 
-        // ========== 网络配置（影响对齐） ==========
+        // ========== 网络配置(影响对齐) ==========
 
         Configuration config = new Configuration();
 
@@ -622,19 +622,19 @@ public class CheckpointTuning {
 ```
 【13:00-14:00】
 背压(Backpressure)是流处理中的常见问题。
-当下游处理速度慢于上游时，
-压力会向上游传播，最终影响整个系统。
+当下游处理速度慢于上游时,
+压力会向上游传播,最终影响整个系统。
 
-Flink使用Credit-based流控机制，
+Flink使用Credit-based流控机制,
 下游通过反馈Credit控制上游发送速度。
 
 【14:00-15:00】
-背压诊断步骤：
+背压诊断步骤:
 
 1. Web UI查看Backpressure Tab
-   - OK：无背压
-   - LOW：轻度背压
-   - HIGH：严重背压
+   - OK:无背压
+   - LOW:轻度背压
+   - HIGH:严重背压
 
 2. 定位背压源头
    - 从Source开始向下检查
@@ -647,7 +647,7 @@ Flink使用Credit-based流控机制，
    - 数据倾斜？重新分区
 
 【15:00-16:30】
-背压优化方案：
+背压优化方案:
 
 1. 增加并行度
 2. 优化算子逻辑
@@ -656,8 +656,8 @@ Flink使用Credit-based流控机制，
 5. 调整网络Buffer
 6. 使用Broadcast State减少shuffle
 
-Buffer Debloating是Flink 1.14引入的特性，
-可以自动调整Buffer大小，
+Buffer Debloating是Flink 1.14引入的特性,
+可以自动调整Buffer大小,
 减少背压时的延迟。
 ```
 
@@ -680,10 +680,10 @@ public class BackpressureOptimization {
 
         // ========== 基础优化配置 ==========
 
-        // 启用对象复用，减少GC压力
+        // 启用对象复用,减少GC压力
         env.getConfig().enableObjectReuse();
 
-        // 禁用自动类型提取（如果不需要）
+        // 禁用自动类型提取(如果不需要)
         env.getConfig().disableAutoTypeRegistration();
 
         // ========== 优化后的作业 ==========
@@ -692,7 +692,7 @@ public class BackpressureOptimization {
             .addSource(new KafkaSource<>())
             .setParallelism(4);  // 根据Kafka分区数设置
 
-        // 优化1：异步I/O替代同步查询
+        // 优化1:异步I/O替代同步查询
         DataStream<EnrichedEvent> enriched = AsyncDataStream
             .unorderedWait(
                 source,
@@ -701,12 +701,12 @@ public class BackpressureOptimization {
                 100  // 并发数
             );
 
-        // 优化2：批量处理替代单条处理
+        // 优化2:批量处理替代单条处理
         DataStream<AggregatedResult> aggregated = enriched
             .keyBy(EnrichedEvent::getKey)
             .process(new BatchProcessFunction(100));  // 批量100条
 
-        // 优化3：优化Sink
+        // 优化3:优化Sink
         aggregated
             .addSink(new OptimizedSink())
             .setParallelism(4);
@@ -742,7 +742,7 @@ public class BackpressureOptimization {
 
             bufferState.add(value);
 
-            // 批量达到阈值，触发处理
+            // 批量达到阈值,触发处理
             Iterable<EnrichedEvent> buffer = bufferState.get();
             int count = 0;
             for (EnrichedEvent e : buffer) {
@@ -810,43 +810,43 @@ public class BackpressureOptimization {
 ```
 【16:30-17:30】
 数据倾斜是分布式计算的常见问题。
-当某个Key的数据量远大于其他Key时，
-会导致部分Subtask过载，
+当某个Key的数据量远大于其他Key时,
+会导致部分Subtask过载,
 影响整体吞吐和延迟。
 
-倾斜的表现：
+倾斜的表现:
 - Web UI中某些Subtask的Records Received远超其他
 - 某些Subtask的Backpressure严重
 - Checkpoint时间不一致
 
 【17:30-18:30】
-解决方案1：两阶段聚合
+解决方案1:两阶段聚合
 
-第一阶段：预聚合 + 随机前缀
-将热点Key加上随机前缀分散到多个分区，
+第一阶段:预聚合 + 随机前缀
+将热点Key加上随机前缀分散到多个分区,
 进行局部聚合。
 
-第二阶段：去掉前缀，全局聚合
-将局部聚合结果去掉前缀，
+第二阶段:去掉前缀,全局聚合
+将局部聚合结果去掉前缀,
 再进行最终的聚合。
 
 【18:30-19:30】
-解决方案2：自定义分区器
+解决方案2:自定义分区器
 
-实现Partitioner接口，
+实现Partitioner接口,
 根据Key的分布情况动态分配分区。
 
-解决方案3：Local-KeyBy
-在全局聚合前先进行本地聚合，
+解决方案3:Local-KeyBy
+在全局聚合前先进行本地聚合,
 减少网络传输和Shuffle。
 
 【19:30-20:00】
-解决方案4：动态调整并行度
+解决方案4:动态调整并行度
 
-对于Flink 2.0+，
+对于Flink 2.0+,
 可以使用Adaptive Scheduler动态调整。
 
-对于无法避免的倾斜，
+对于无法避免的倾斜,
 考虑使用广播状态或Side Input避免Shuffle。
 ```
 
@@ -870,7 +870,7 @@ public class SkewHandling {
 
         DataStream<Event> source = env.addSource(...);
 
-        // ========== 方案1：两阶段聚合 ==========
+        // ========== 方案1:两阶段聚合 ==========
 
         // 热点Key加随机前缀
         SingleOutputStreamOperator<Tuple2<String, Long>> prefixed = source
@@ -893,12 +893,12 @@ public class SkewHandling {
                 }
             });
 
-        // 第一阶段：局部聚合
+        // 第一阶段:局部聚合
         DataStream<Tuple2<String, Long>> localAgg = prefixed
             .keyBy(value -> value.f0)
             .sum(1);
 
-        // 去掉前缀，全局聚合
+        // 去掉前缀,全局聚合
         DataStream<Tuple2<String, Long>> globalAgg = localAgg
             .map(value -> {
                 String key = value.f0;
@@ -911,12 +911,12 @@ public class SkewHandling {
             .keyBy(value -> value.f0)
             .sum(1);
 
-        // ========== 方案2：自定义分区器 ==========
+        // ========== 方案2:自定义分区器 ==========
 
         DataStream<Event> repartitioned = source
             .partitionCustom(new SkewAwarePartitioner(), Event::getKey);
 
-        // ========== 方案3：Local-KeyBy ==========
+        // ========== 方案3:Local-KeyBy ==========
 
         DataStream<AggregatedResult> localKeyByResult = source
             .map(new LocalKeyByFunction(1000))  // 缓冲1000条
@@ -977,7 +977,7 @@ public class SkewHandling {
             AggregatedResult agg = localAgg.computeIfAbsent(key, k -> new AggregatedResult());
             agg.add(value);
 
-            // 缓冲区满，输出聚合结果
+            // 缓冲区满,输出聚合结果
             if (localBuffer.get(key).size() >= bufferSize) {
                 Event aggregatedEvent = new Event(key, agg.getCount());
                 localBuffer.get(key).clear();
@@ -1009,26 +1009,26 @@ Flink SQL是快速开发流处理应用的首选。
 但不当的SQL写法会导致性能问题。
 
 SQL优化的核心是理解执行计划。
-使用EXPLAIN查看查询计划，
-分析是否存在以下问题：
+使用EXPLAIN查看查询计划,
+分析是否存在以下问题:
 - 全表扫描
 - 不合理的Join顺序
 - 缺少分区裁剪
 - 过多的Shuffle
 
 【21:00-22:30】
-常见SQL优化技巧：
+常见SQL优化技巧:
 
 1. 谓词下推
-   将过滤条件下推到数据源，
+   将过滤条件下推到数据源,
    减少数据传输。
 
 2. 投影下推
-   只查询需要的列，
+   只查询需要的列,
    减少I/O开销。
 
 3. 分区裁剪
-   利用分区字段过滤，
+   利用分区字段过滤,
    减少扫描数据量。
 
 4. Join优化
@@ -1037,16 +1037,16 @@ SQL优化的核心是理解执行计划。
    - 避免笛卡尔积
 
 【22:30-23:30】
-MiniBatch是Flink SQL的重要优化手段，
-它将微批处理和流处理结合，
+MiniBatch是Flink SQL的重要优化手段,
+它将微批处理和流处理结合,
 在牺牲少量延迟的情况下大幅提升吞吐。
 
-适合场景：
+适合场景:
 - 聚合查询
 - Join操作
 - 窗口计算
 
-配置参数：
+配置参数:
 - table.exec.mini-batch.enabled
 - table.exec.mini-batch.allow-latency
 - table.exec.mini-batch.size
@@ -1147,7 +1147,7 @@ public class SQLOptimization {
             "  COUNT(*) as order_count,\n" +
             "  SUM(o.amount) as total_amount\n" +
             "FROM orders o\n" +
-            // 使用Lookup Join，小表广播
+            // 使用Lookup Join,小表广播
             "LEFT JOIN users FOR SYSTEM_TIME AS OF o.order_time u\n" +
             "  ON o.user_id = u.user_id\n" +
             "WHERE o.amount > 0\n" +  // 谓词下推
@@ -1184,45 +1184,45 @@ public class SQLOptimization {
 ```
 【23:30-24:30】
 大状态是生产环境的常见挑战。
-当状态超过单节点内存容量时，
+当状态超过单节点内存容量时,
 需要特殊的优化策略。
 
-问题表现：
+问题表现:
 - Checkpoint时间过长
 - 恢复时间过长
 - TaskManager OOM
 - GC时间过长
 
 【24:30-25:30】
-优化策略：
+优化策略:
 
 1. 状态分区
-   使用更细粒度的Key，
+   使用更细粒度的Key,
    让状态分散到更多Slot。
 
 2. 增量Checkpoint
-   只保存变化的部分，
+   只保存变化的部分,
    减少Checkpoint开销。
 
 3. 状态压缩
-   使用Snappy或LZ4压缩状态，
+   使用Snappy或LZ4压缩状态,
    减少存储和网络传输。
 
 4. 远程状态存储
-   将状态存储在远程分布式存储，
+   将状态存储在远程分布式存储,
    如RocksDB with S3。
 
 【25:30-26:30】
-Flink 2.0引入了Disaggregated State架构，
-将状态存储与计算分离，
+Flink 2.0引入了Disaggregated State架构,
+将状态存储与计算分离,
 这是大状态优化的终极解决方案。
 
-优势：
+优势:
 - 状态大小不受限于本地磁盘
-- 快速扩缩容（无需状态迁移）
+- 快速扩缩容(无需状态迁移)
 - 独立优化存储和计算资源
 
-但目前还是预览特性，
+但目前还是预览特性,
 生产环境使用需谨慎。
 ```
 
@@ -1369,16 +1369,16 @@ public class LargeStateOptimization {
 【26:30-27:30】
 性能调优是一个系统性的过程。
 
-调优方法论：
-1. 设定目标：吞吐、延迟、资源利用率
-2. 监控现状：收集基线指标
-3. 定位瓶颈：找到限制因素
-4. 针对性优化：应用优化策略
-5. 验证效果：对比调优前后
-6. 迭代优化：重复直到满足目标
+调优方法论:
+1. 设定目标:吞吐、延迟、资源利用率
+2. 监控现状:收集基线指标
+3. 定位瓶颈:找到限制因素
+4. 针对性优化:应用优化策略
+5. 验证效果:对比调优前后
+6. 迭代优化:重复直到满足目标
 
 【27:30-28:15】
-常用性能分析工具：
+常用性能分析工具:
 
 1. Flink Web UI
    查看吞吐量、延迟、背压
@@ -1396,20 +1396,20 @@ public class LargeStateOptimization {
    分析内存使用
 
 【28:15-29:00】
-调优检查清单：
+调优检查清单:
 
-资源层：
+资源层:
 ☑️ TaskManager内存配置合理
 ☑️ JVM GC配置优化
 ☑️ 网络Buffer配置合适
 
-应用层：
+应用层:
 ☑️ 序列化器选择合适
 ☑️ 对象复用已启用
 ☑️ 数据倾斜已处理
 ☑️ 状态后端调优完成
 
-运行时：
+运行时:
 ☑️ Checkpoint配置合理
 ☑️ 背压在可控范围
 ☑️ Watermark正常推进
@@ -1456,30 +1456,30 @@ flowchart TD
 
 ```
 【29:00-29:40】
-让我们回顾本集的要点：
+让我们回顾本集的要点:
 
-1. 状态后端：RocksDB调优 + Managed Memory
-2. 状态TTL：过期策略 + 增量清理
-3. Checkpoint：对齐优化 + 增量 + Unaligned
-4. 背压处理：诊断 + 异步化 + Batch处理
-5. 数据倾斜：两阶段聚合 + 自定义分区
-6. SQL优化：MiniBatch + 执行计划分析
-7. 大状态：分区 + 压缩 + 远程存储
-8. 调优方法：系统化流程 + 工具使用
+1. 状态后端:RocksDB调优 + Managed Memory
+2. 状态TTL:过期策略 + 增量清理
+3. Checkpoint:对齐优化 + 增量 + Unaligned
+4. 背压处理:诊断 + 异步化 + Batch处理
+5. 数据倾斜:两阶段聚合 + 自定义分区
+6. SQL优化:MiniBatch + 执行计划分析
+7. 大状态:分区 + 压缩 + 远程存储
+8. 调优方法:系统化流程 + 工具使用
 
 【29:40-30:00】
-至此，AnalysisDataFlow Flink视频教程系列全部完成。
+至此,AnalysisDataFlow Flink视频教程系列全部完成。
 
-我们从零开始，
+我们从零开始,
 学习了流计算基础、Flink快速上手、
 7大设计模式、生产部署、以及本集的高级主题。
 
-要深入学习，建议阅读：
+要深入学习,建议阅读:
 - AnalysisDataFlow项目文档
 - Flink官方文档
 - 参与社区讨论
 
-感谢观看，祝你在流计算领域取得成功！
+感谢观看,祝你在流计算领域取得成功！
 ```
 
 ### 📊 图表展示
@@ -1543,4 +1543,3 @@ mindmap
 *脚本版本: v1.0*
 *创建日期: 2026-04-03*
 *预计制作时长: 30分钟*
-

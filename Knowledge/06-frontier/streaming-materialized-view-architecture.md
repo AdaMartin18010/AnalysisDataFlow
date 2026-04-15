@@ -305,7 +305,7 @@ CREATE SOURCE transactions
 FROM KAFKA BROKER 'kafka:9092' TOPIC 'transactions'
 FORMAT JSON;
 
--- 创建派生视图（多流Join）
+-- 创建派生视图(多流Join)
 CREATE MATERIALIZED VIEW user_transaction_summary AS
 SELECT
     u.user_id,
@@ -340,7 +340,7 @@ CREATE TABLE orders (
     'format' = 'json'
 );
 
--- 创建物化表（Flink 1.18+）
+-- 创建物化表(Flink 1.18+)
 CREATE TABLE mv_order_stats (
     window_start TIMESTAMP(3),
     window_end TIMESTAMP(3),
@@ -391,7 +391,7 @@ FROM sales
 GROUP BY sale_date, product_id;
 
 -- 自动增量更新
--- 当sales表发生INSERT/UPDATE/DELETE时，物化视图自动增量维护
+-- 当sales表发生INSERT/UPDATE/DELETE时,物化视图自动增量维护
 ```
 
 ## 7. 可视化 (Visualizations)
@@ -654,10 +654,10 @@ graph TB
 **原则 1: 分层设计**
 
 ```
-L0: 原始数据层（Source）
-L1: 清洗标准化层（Clean）
-L2: 主题聚合层（Topic MV）
-L3: 应用服务层（App MV）
+L0: 原始数据层(Source)
+L1: 清洗标准化层(Clean)
+L2: 主题聚合层(Topic MV)
+L3: 应用服务层(App MV)
 ```
 
 **原则 2: 增量友好查询**
@@ -695,7 +695,7 @@ AS SELECT ...;
 **计算成本优化**:
 
 ```
-1. 视图复用: 复用上游物化视图，避免重复计算
+1. 视图复用: 复用上游物化视图,避免重复计算
 2. 延迟物化: 非关键视图采用延迟更新
 3. 增量裁剪: 仅维护必要的历史分区
 ```

@@ -23,14 +23,14 @@
 ### 1. 准备 Kubernetes 集群
 
 ```bash
-# 使用本地开发集群（选择一个）
+# 使用本地开发集群(选择一个)
 # 方案 1: minikube
 minikube start --driver=docker --memory=8192 --cpus=4
 
 # 方案 2: kind
 kind create cluster --name flink-cluster
 
-# 方案 3: Docker Desktop K8s（启用 Kubernetes）
+# 方案 3: Docker Desktop K8s(启用 Kubernetes)
 
 # 验证集群
 kubectl cluster-info
@@ -53,10 +53,10 @@ helm version
 ### 3. 安装必需工具
 
 ```bash
-# 安装 k9s（可选，用于交互式查看 K8s 资源）
+# 安装 k9s(可选,用于交互式查看 K8s 资源)
 brew install k9s
 
-# 安装 stern（日志查看）
+# 安装 stern(日志查看)
 brew install stern
 ```
 
@@ -83,7 +83,7 @@ helm search repo flink-operator
 # 创建命名空间
 kubectl create namespace flink-operator
 
-# 安装 Operator（默认配置）
+# 安装 Operator(默认配置)
 helm install flink-kubernetes-operator flink-operator-repo/flink-kubernetes-operator \
   --namespace flink-operator \
   --set image.repository=apache/flink-kubernetes-operator \
@@ -103,7 +103,7 @@ kubectl get pods -n flink-operator
 # 检查 CRD 是否已安装
 kubectl get crd | grep flink
 
-# 预期输出：
+# 预期输出:
 # flinkdeployments.flink.apache.org
 # flinksessionjobs.flink.apache.org
 # flinkstatebackends.flink.apache.org
@@ -177,7 +177,7 @@ spec:
       memory: "2048m"
       cpu: 1
     replicas: 1
-    # 高可用配置（单节点可不配置）
+    # 高可用配置(单节点可不配置)
     # replicas: 3
 
   # TaskManager 配置
@@ -208,10 +208,10 @@ spec:
   # 服务配置
   service:
     type: NodePort
-    # 或 LoadBalancer（云环境）
+    # 或 LoadBalancer(云环境)
     # type: LoadBalancer
 
-  # Pod 模板（可选，用于自定义 Pod 配置）
+  # Pod 模板(可选,用于自定义 Pod 配置)
   podTemplate:
     apiVersion: v1
     kind: Pod
@@ -254,7 +254,7 @@ kubectl wait --for=condition=ready flinkdeployment/session-cluster -n flink --ti
 # 查看所有 Pod
 kubectl get pods -n flink
 
-# 预期输出：
+# 预期输出:
 # NAME                                         READY   STATUS    RESTARTS   AGE
 # session-cluster-7d9f8b6c5-x9k2p             1/1     Running   0          2m
 # session-cluster-taskmanager-1-7d9f8b6c5-a1b2 1/1     Running   0          2m
@@ -332,7 +332,7 @@ FROM flink:1.18.0-scala_2.12-java11
 # 复制作业 JAR
 COPY target/my-flink-job-1.0.jar /opt/flink/usrlib/my-job.jar
 
-# 复制依赖（如需要）
+# 复制依赖(如需要)
 # COPY lib/ /opt/flink/lib/
 
 # 设置权限
@@ -347,10 +347,10 @@ USER flink
 # 构建镜像
 docker build -t my-registry/my-flink-job:1.0 .
 
-# 推送镜像（本地测试可跳过）
+# 推送镜像(本地测试可跳过)
 docker push my-registry/my-flink-job:1.0
 
-# 对于 minikube，加载镜像到集群
+# 对于 minikube,加载镜像到集群
 minikube image load my-registry/my-flink-job:1.0
 ```
 
@@ -438,7 +438,7 @@ spec:
 #### 3.3 部署 Application 集群
 
 ```bash
-# 先创建 ConfigMap 和 PVC（如需要）
+# 先创建 ConfigMap 和 PVC(如需要)
 kubectl create configmap flink-config \
   --from-file=application.conf \
   -n flink
@@ -510,7 +510,7 @@ spec:
     # JobManager 选举配置
     kubernetes.leader-election.enabled: "true"
 
-    # 检查点配置（HA 必需）
+    # 检查点配置(HA 必需)
     execution.checkpointing.interval: "10s"
     state.backend: rocksdb
     state.checkpoints.dir: file:///tmp/flink-checkpoints
@@ -678,7 +678,7 @@ kubectl port-forward svc/grafana 3000:3000 -n monitoring
 #### 5.5 导入 Flink Dashboard
 
 ```bash
-# 获取 Grafana 登录密码（如未设置）
+# 获取 Grafana 登录密码(如未设置)
 kubectl get secret grafana -n monitoring -o jsonpath="{.data.admin-password}" | base64 --decode
 
 # 登录 Grafana (admin/admin)

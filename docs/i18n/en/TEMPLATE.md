@@ -233,7 +233,7 @@ flowchart TD
 | Resource | Type | Description |
 |----------|------|-------------|
 | [Link to related doc](../../path) | Document | Brief description |
-| [External resource](https://example.com) | External | Brief description |
+| `https://example.com` | External | Brief description |
 
 ---
 

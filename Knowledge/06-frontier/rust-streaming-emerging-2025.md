@@ -135,13 +135,13 @@ $$
 前提:
 1. Rust端使用 ownership + borrowing 系统
 2. PyO3在FFI边界执行类型检查
-3. Python对象的GIL（Global Interpreter Lock）保护并发访问
+3. Python对象的GIL(Global Interpreter Lock)保护并发访问
 
 推导:
-- 任何Python对象传递给Rust时，PyO3会创建对应的Rust封装
+- 任何Python对象传递给Rust时,PyO3会创建对应的Rust封装
 - Rust编译器在编译期验证所有引用的生命周期
 - GIL确保Python对象不会在多线程中被并发修改
-- 当Python对象被垃圾回收时，Rust侧的Drop实现安全释放资源
+- 当Python对象被垃圾回收时,Rust侧的Drop实现安全释放资源
 
 结论: Python ↔ Rust 绑定满足内存安全性质
 ```
@@ -635,7 +635,7 @@ from bytewax.window import SlidingWindow, EventClockConfig
 import numpy as np
 from sentence_transformers import SentenceTransformer
 
-# 加载Embedding模型（在worker启动时加载一次）
+# 加载Embedding模型(在worker启动时加载一次)
 model = SentenceTransformer('all-MiniLM-L6-v2')
 
 flow = Dataflow()
@@ -672,7 +672,7 @@ def compute_embedding(user_id__data):
 
 flow.map(compute_embedding)
 
-# 滑动窗口特征聚合 (5分钟窗口，1分钟滑动)
+# 滑动窗口特征聚合 (5分钟窗口,1分钟滑动)
 def get_event_time(item):
     return item[1]["ts"]
 
@@ -772,7 +772,7 @@ services:
 **从Kafka迁移到Redpanda：**
 
 ```bash
-# Redpanda单节点启动（对比Kafka的多进程架构）
+# Redpanda单节点启动(对比Kafka的多进程架构)
 docker run -d \
   --name=redpanda \
   --hostname=redpanda \
@@ -787,7 +787,7 @@ docker run -d \
   --node-id 0 \
   --check=false
 
-# 使用Kafka客户端直接连接（100%协议兼容）
+# 使用Kafka客户端直接连接(100%协议兼容)
 kafka-console-producer.sh \
   --bootstrap-server localhost:9092 \
   --topic test-topic
@@ -846,7 +846,7 @@ impl DeserializeMessage for Event {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // 创建Pulsar客户端（原生Tokio异步）
+    // 创建Pulsar客户端(原生Tokio异步)
     let pulsar: Pulsar<TokioExecutor> = Pulsar::builder("pulsar://localhost:6650")
         .build()
         .await?;
@@ -867,7 +867,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         producer.send(event).await?;
     }
 
-    // 消费者（多租户）
+    // 消费者(多租户)
     let mut consumer: Consumer<Event, TokioExecutor> = pulsar
         .consumer()
         .with_topic("persistent://public/default/events")

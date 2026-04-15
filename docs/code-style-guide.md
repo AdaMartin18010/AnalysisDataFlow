@@ -77,16 +77,16 @@ import yaml
 # 本地模块导入
 from .utils import helper_function
 
-# 常量定义（UPPER_SNAKE_CASE）
+# 常量定义(UPPER_SNAKE_CASE)
 MAX_RETRY_COUNT = 3
 DEFAULT_TIMEOUT = 30
 
-# 类定义（PascalCase）
+# 类定义(PascalCase)
 class MyClass:
     """类文档字符串"""
     pass
 
-# 函数定义（snake_case）
+# 函数定义(snake_case)
 def process_data(input_data: Dict) -> List:
     """函数文档字符串"""
     pass
@@ -113,6 +113,7 @@ if __name__ == "__main__":
 所有函数必须添加类型提示：
 
 ```python
+# 伪代码示意，非完整可编译代码
 def calculate_metrics(
     data: List[Dict[str, Any]],
     threshold: float = 0.5,
@@ -120,15 +121,15 @@ def calculate_metrics(
 ) -> Tuple[float, float, float]:
     """
     计算数据指标
-    
+
     Args:
         data: 输入数据列表
-        threshold: 阈值，默认为0.5
+        threshold: 阈值,默认为0.5
         verbose: 是否打印详细信息
-        
+
     Returns:
         Tuple包含 (准确率, 召回率, F1分数)
-        
+
     Raises:
         ValueError: 当数据为空时
     """
@@ -146,7 +147,7 @@ import sys
 from pathlib import Path
 from typing import Dict, List
 
-# 2. 第三方库（按字母顺序）
+# 2. 第三方库(按字母顺序)
 import numpy as np
 import pandas as pd
 import requests
@@ -294,26 +295,26 @@ volumes:
 -- 描述: 计算每个用户的订单数量和总金额
 -- 参数: start_date, end_date
 
-SELECT 
+SELECT
     u.user_id,
     u.user_name,
     COUNT(o.order_id) AS order_count,
     SUM(o.total_amount) AS total_amount,
     AVG(o.total_amount) AS avg_amount,
     MAX(o.created_at) AS last_order_date
-FROM 
+FROM
     users u
-LEFT JOIN 
+LEFT JOIN
     orders o ON u.user_id = o.user_id
-WHERE 
+WHERE
     o.created_at >= :start_date
     AND o.created_at < :end_date
     AND o.status IN ('completed', 'shipped')
-GROUP BY 
+GROUP BY
     u.user_id, u.user_name
-HAVING 
+HAVING
     COUNT(o.order_id) > 0
-ORDER BY 
+ORDER BY
     total_amount DESC
 LIMIT 100;
 ```
@@ -336,8 +337,8 @@ LIMIT 100;
 
 ```sql
 -- ✅ 推荐
-SELECT user_id, user_name 
-FROM users 
+SELECT user_id, user_name
+FROM users
 WHERE created_at > '2024-01-01'
 LIMIT 100;
 
@@ -362,35 +363,35 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 类描述
- * 
+ *
  * 详细说明类的用途和功能
- * 
+ *
  * @author Author Name
  * @version 1.0
  * @since 2024-01-01
  */
 public class DataProcessor {
-    
+
     private static final Logger LOG = LoggerFactory.getLogger(DataProcessor.class);
-    
+
     // 常量
     private static final int MAX_BATCH_SIZE = 1000;
-    
+
     // 实例变量
     private final String configPath;
-    
+
     /**
      * 构造函数
-     * 
+     *
      * @param configPath 配置文件路径
      */
     public DataProcessor(String configPath) {
         this.configPath = configPath;
     }
-    
+
     /**
      * 处理方法
-     * 
+     *
      * @param data 输入数据
      * @return 处理结果
      * @throws IllegalArgumentException 当数据无效时
@@ -424,26 +425,26 @@ public class DataProcessor {
 def process_data(data, threshold=0.5):
     """
     处理数据并返回过滤后的结果
-    
-    这是一个更详细的描述，说明函数的具体行为、
+
+    这是一个更详细的描述,说明函数的具体行为、
     算法复杂度、副作用等。
-    
+
     Args:
-        data (List[Dict]): 输入数据列表，每个字典包含:
+        data (List[Dict]): 输入数据列表,每个字典包含:
             - id: 唯一标识符
             - value: 数值
             - timestamp: 时间戳
-        threshold (float, optional): 过滤阈值，默认为0.5
+        threshold (float, optional): 过滤阈值,默认为0.5
             小于此值的记录将被过滤掉
-    
+
     Returns:
         List[Dict]: 过滤后的数据列表
         返回的列表按 timestamp 降序排列
-    
+
     Raises:
         ValueError: 当数据格式不正确或 threshold 为负数
         TypeError: 当 data 不是列表类型
-    
+
     Examples:
         >>> data = [{"id": 1, "value": 0.8}]
         >>> result = process_data(data, threshold=0.5)
@@ -459,19 +460,19 @@ def process_data(data, threshold=0.5):
 class DataValidator:
     """
     数据验证器
-    
+
     提供数据格式验证、类型检查和值范围验证功能。
-    
+
     Attributes:
         schema (Dict): 验证模式定义
         strict_mode (bool): 是否启用严格模式
-    
+
     Example:
         >>> validator = DataValidator(schema={"name": str})
         >>> validator.validate({"name": "test"})
         True
     """
-    
+
     def __init__(self, schema, strict_mode=False):
         """初始化验证器"""
         self.schema = schema
@@ -496,16 +497,19 @@ class DataValidator:
 ### 7.2 审查关注点
 
 **可读性**
+
 - 变量名是否清晰描述用途？
 - 函数是否单一职责？
 - 是否有过多嵌套（建议不超过3层）？
 
 **健壮性**
+
 - 是否处理了边界情况？
 - 输入参数是否经过验证？
 - 是否有适当的错误处理？
 
 **性能**
+
 - 是否存在明显的性能问题？
 - 是否有不必要的循环或重复计算？
 - 大对象是否有及时释放？

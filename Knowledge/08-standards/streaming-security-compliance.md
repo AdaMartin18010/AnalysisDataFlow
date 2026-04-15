@@ -573,14 +573,14 @@ kafka-acls --bootstrap-server kafka:9093 \
   --add --allow-principal User:order-service \
   --producer --topic orders --topic order-events
 
-# 3. 数据消费者权限（带消费者组限制）
+# 3. 数据消费者权限(带消费者组限制)
 kafka-acls --bootstrap-server kafka:9093 \
   --command-config admin.properties \
   --add --allow-principal User:analytics-service \
   --consumer --topic orders --topic payments \
   --group analytics-group --group etl-group
 
-# 4. 只读分析用户（特定前缀 Topic）
+# 4. 只读分析用户(特定前缀 Topic)
 kafka-acls --bootstrap-server kafka:9093 \
   --command-config admin.properties \
   --add --allow-principal User:readonly-analyst \
@@ -615,13 +615,13 @@ props.put("ssl.keystore.location", "/path/to/client.keystore.jks");
 props.put("ssl.keystore.password", "${KEYSTORE_PASSWORD}");
 props.put("ssl.key.password", "${KEY_PASSWORD}");
 
-// 启用幂等性和事务（保证 Exactly-Once）
+// 启用幂等性和事务(保证 Exactly-Once)
 props.put("enable.idempotence", "true");
 props.put("acks", "all");
 props.put("retries", Integer.MAX_VALUE);
 props.put("max.in.flight.requests.per.connection", "5");
 
-// 压缩和批处理（性能优化）
+// 压缩和批处理(性能优化)
 props.put("compression.type", "lz4");
 props.put("batch.size", 16384);
 props.put("linger.ms", 5);
@@ -706,7 +706,7 @@ public class PiiMaskFunction extends ScalarFunction {
         if (level <= LEVEL_FULL) {
             return "****-****-****-****";
         }
-        // 显示前6位（BIN）和后4位
+        // 显示前6位(BIN)和后4位
         return digits.substring(0, 6) + "-****-****-" +
                digits.substring(digits.length() - 4);
     }
@@ -799,7 +799,7 @@ public class ImmutableAuditSink extends RichSinkFunction<AuditEvent> {
         String currentHash = calculateHash(entry);
         entry.setCurrentHash(currentHash);
 
-        // 发送到不可变存储（WORM 存储、区块链、或审计数据库）
+        // 发送到不可变存储(WORM 存储、区块链、或审计数据库)
         writeToImmutableStore(entry);
 
         // 更新哈希链

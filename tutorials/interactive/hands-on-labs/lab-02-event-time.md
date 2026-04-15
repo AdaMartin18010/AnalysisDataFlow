@@ -70,7 +70,7 @@ public class EventTimeExample {
                     .withTimestampAssigner((event, timestamp) -> event.timestamp)
             );
 
-        // 按传感器ID分组，使用Event Time窗口
+        // 按传感器ID分组,使用Event Time窗口
         DataStream<SensorResult> results = readings
             .keyBy(r -> r.sensorId)
             .window(TumblingEventTimeWindows.of(Time.minutes(1)))
@@ -95,7 +95,7 @@ public static class SensorSource implements SourceFunction<SensorReading> {
         while (isRunning && i < 20) {
             long eventTime = currentTime + (i * 5000);
 
-            // 模拟乱序：第5个数据延迟10秒
+            // 模拟乱序:第5个数据延迟10秒
             if (i == 5) {
                 eventTime -= 10000;
                 System.out.println(">>> 生成延迟数据: event_time - 10s");
@@ -138,7 +138,7 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 private static final OutputTag<SensorReading> lateDataTag =
     new OutputTag<SensorReading>("late-data"){};
 
-// 主输出：正常窗口计算
+// 主输出:正常窗口计算
 SingleOutputStreamOperator<SensorResult> mainResult = readings
     .keyBy(r -> r.sensorId)
     .window(TumblingEventTimeWindows.of(Time.seconds(10)))

@@ -211,11 +211,11 @@ graph TB
 **使用场景对比**：
 
 ```sql
--- 严格模式：失败即报错
-SELECT CAST('invalid' AS INT);  -- 抛出异常，查询中断
+-- 严格模式:失败即报错
+SELECT CAST('invalid' AS INT);  -- 抛出异常,查询中断
 
--- 容错模式：失败返回 NULL
-SELECT TRY_CAST('invalid' AS INT);  -- 返回 NULL，继续执行
+-- 容错模式:失败返回 NULL
+SELECT TRY_CAST('invalid' AS INT);  -- 返回 NULL,继续执行
 ```
 
 ### 4.2 窗口函数 vs 分组聚合对比
@@ -326,7 +326,7 @@ SELECT
     POSITION('@' IN email) AS at_position,
     STRPOS(email, '@') AS at_position_alt,
 
-    -- 子串提取（基于位置）
+    -- 子串提取(基于位置)
     SUBSTRING(email, 1, POSITION('@' IN email) - 1) AS username,
     SUBSTRING(email, POSITION('@' IN email) + 1) AS domain,
 
@@ -506,12 +506,12 @@ SELECT
     amount,
     category,
 
-    -- 排序函数（全局）
+    -- 排序函数(全局)
     ROW_NUMBER() OVER (ORDER BY amount DESC) AS overall_rank,
     RANK() OVER (ORDER BY amount DESC) AS overall_rank_with_ties,
     DENSE_RANK() OVER (ORDER BY amount DESC) AS overall_dense_rank,
 
-    -- 排序函数（分区）
+    -- 排序函数(分区)
     ROW_NUMBER() OVER (PARTITION BY category ORDER BY amount DESC) AS category_rank,
     RANK() OVER (PARTITION BY category ORDER BY amount DESC) AS category_rank_ties,
     DENSE_RANK() OVER (PARTITION BY category ORDER BY amount DESC) AS category_dense_rank,
@@ -577,7 +577,7 @@ SELECT
     phone,
     email,
 
-    -- CASE 表达式（完整形式）
+    -- CASE 表达式(完整形式)
     CASE
         WHEN amount < 100 THEN 'small'
         WHEN amount < 1000 THEN 'medium'
@@ -585,7 +585,7 @@ SELECT
         ELSE 'enterprise'
     END AS order_size,
 
-    -- CASE 表达式（简单形式）
+    -- CASE 表达式(简单形式)
     CASE status
         WHEN 'pending' THEN '待处理'
         WHEN 'processing' THEN '处理中'
@@ -613,7 +613,7 @@ SELECT
     email IS NOT NULL AS has_email,
     COALESCE(phone, email) IS NOT NULL AS has_contact,
 
-    -- 条件聚合（窗口函数内）
+    -- 条件聚合(窗口函数内)
     COUNT(*) FILTER (WHERE status = 'completed') OVER () AS total_completed,
 
     -- NULL 安全比较

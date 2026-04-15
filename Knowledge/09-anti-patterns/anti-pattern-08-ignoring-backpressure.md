@@ -122,7 +122,7 @@ spec:
 // 在 Source 处限流
 stream
   .map(event => {
-    // 监控处理延迟，超过阈值则丢弃低优先级数据
+    // 监控处理延迟,超过阈值则丢弃低优先级数据
     if (latency > THRESHOLD && event.priority == LOW) {
       metrics.counter("dropped_events").inc()
       null
@@ -150,7 +150,7 @@ while (true) {
 ### 5.2 正确做法
 
 ```scala
-// ✅ 正确: 监控 Kafka Lag，背压时减速
+// ✅ 正确: 监控 Kafka Lag,背压时减速
 val kafkaSource = KafkaSource.builder()
   .setProperty("max.poll.records", "100")
   .setProperty("fetch.max.wait.ms", "500")

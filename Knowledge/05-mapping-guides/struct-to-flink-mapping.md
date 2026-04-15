@@ -273,7 +273,7 @@ WatermarkStrategy<Event> strategy = WatermarkStrategy
     .<Event>forBoundedOutOfOrderness(Duration.ofSeconds(10))
     // 提取事件时间戳
     .withTimestampAssigner((event, timestamp) -> event.getEventTime())
-    // 空闲源处理：1分钟无数据视为空闲
+    // 空闲源处理:1分钟无数据视为空闲
     .withIdleness(Duration.ofMinutes(1));
 
 DataStream<Event> withWatermarks = stream
@@ -324,10 +324,10 @@ config.setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);
 // Barrier 对齐超时
 config.setAlignmentTimeout(Duration.ofSeconds(30));
 
-// Checkpoint 超时（总时间）
+// Checkpoint 超时(总时间)
 config.setCheckpointTimeout(600000);
 
-// 最小间隔（防止连续触发）
+// 最小间隔(防止连续触发)
 config.setMinPauseBetweenCheckpoints(500);
 ```
 
@@ -362,10 +362,10 @@ $$
 // 理论: s_v ∈ 𝒮, 状态快照原子性 Def-S-17-04
 // 实现: StateBackend 选择
 
-// HashMapStateBackend: 内存状态，快速同步快照
+// HashMapStateBackend: 内存状态,快速同步快照
 env.setStateBackend(new HashMapStateBackend());
 
-// RocksDBStateBackend: 大状态，增量异步快照
+// RocksDBStateBackend: 大状态,增量异步快照
 // 利用 SST 文件不可变性实现增量 Checkpoint (Thm-F-02-02)
 env.setStateBackend(new EmbeddedRocksDBStateBackend(true));
 
@@ -412,7 +412,7 @@ FlinkKafkaConsumer<Event> source = new FlinkKafkaConsumer<>(
     new EventSchema(),
     kafkaProps
 );
-// 偏移量与 Checkpoint 绑定（Lemma-S-18-01）
+// 偏移量与 Checkpoint 绑定(Lemma-S-18-01)
 source.setCommitOffsetsOnCheckpoints(true);
 
 // === Sink: 2PC 事务性 ===
@@ -514,25 +514,25 @@ $$
 // 理论: Def-S-11-02 FG 结构子类型 + Def-S-11-03 FGG 泛型
 // 实现: Flink TypeInformation
 
-// 自定义类型信息（对应 FG 结构体定义）
+// 自定义类型信息(对应 FG 结构体定义)
 
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 public class EventTypeInfo extends TypeInformation<Event> {
     @Override
     public TypeSerializer<Event> createSerializer(ExecutionConfig config) {
-        // 实现序列化逻辑（对应 Preservation）
+        // 实现序列化逻辑(对应 Preservation)
         return new EventSerializer();
     }
 
     @Override
     public boolean isSortKeyType() {
-        // 类型属性检查（对应 Progress）
+        // 类型属性检查(对应 Progress)
         return true;
     }
 }
 
-// 泛型类型参数（对应 FGG 类型参数 Φ）
+// 泛型类型参数(对应 FGG 类型参数 Φ)
 DataStream<Tuple2<String, Integer>> keyedStream = stream
     .map(event -> Tuple2.of(event.getKey(), 1))
     .returns(new TypeHint<Tuple2<String, Integer>>() {});
@@ -876,7 +876,7 @@ public class BrokenWatermarkGenerator implements WatermarkGenerator<Event> {
 
     @Override
     public void onPeriodicEmit(WatermarkOutput output) {
-        // 错误: 随机减去一个值，可能导致 Watermark 倒退!
+        // 错误: 随机减去一个值,可能导致 Watermark 倒退!
         long randomDelay = random.nextInt(10000);
         output.emitWatermark(new Watermark(maxTimestamp - randomDelay));
     }
@@ -908,7 +908,7 @@ public class FixedDelayGenerator implements WatermarkGenerator<Event> {
     @Override
     public void onPeriodicEmit(WatermarkOutput output) {
         // 固定延迟: w(t) = maxTimestamp - maxOutOfOrderness
-        // 由于 maxTimestamp 单调不减，w(t) 也单调不减
+        // 由于 maxTimestamp 单调不减,w(t) 也单调不减
         output.emitWatermark(new Watermark(maxTimestamp - maxOutOfOrderness));
     }
 }

@@ -129,8 +129,8 @@ $$
 │ 特性                │ EXACTLY_ONCE        │ AT_LEAST_ONCE               │
 ├─────────────────────┼─────────────────────┼─────────────────────────────┤
 │ 对齐要求            │ 必须等待所有Barrier │ 收到任一Barrier即快照       │
-│ 缓存行为            │ 缓存已对齐通道数据  │ 不缓存，继续处理            │
-│ 一致性保证          │ 强一致性            │ 最终一致性（可能重复）      │
+│ 缓存行为            │ 缓存已对齐通道数据  │ 不缓存,继续处理            │
+│ 一致性保证          │ 强一致性            │ 最终一致性(可能重复)      │
 │ 延迟影响            │ 存在对齐延迟        │ 无对齐延迟                  │
 │ 适用场景            │ 金融、交易、计费    │ 日志、监控、近似统计        │
 │ 吞吐量影响          │ 可能降低            │ 无影响                      │
@@ -170,12 +170,12 @@ $$
 │   ├── Exponential Delay Restart: 指数退避重启
 │   └── No Restart: 不自动重启
 ├── 故障转移策略 (Failover Strategies)
-│   ├── Region Failover: 区域级恢复（细粒度）
-│   └── Full Failover: 全局恢复（默认）
+│   ├── Region Failover: 区域级恢复(细粒度)
+│   └── Full Failover: 全局恢复(默认)
 └── 状态恢复 (State Recovery)
     ├── Latest Checkpoint: 从最新 Checkpoint 恢复
     ├── Specific Checkpoint: 从指定 Checkpoint 恢复
-    └── Savepoint: 从保存点恢复（支持跨版本）
+    └── Savepoint: 从保存点恢复(支持跨版本)
 ```
 
 **保存点 (Savepoint) 特性**:
@@ -492,7 +492,7 @@ At-Least-Once (无丢失)
 At-Most-Once (无重复)
 ├── 2PC 原子性引理 (Lemma-S-18-02)
 │   └── preCommit 数据在 Checkpoint 成功前对外不可见
-│   └── 故障恢复后，preCommitted 事务可安全 commit（幂等）
+│   └── 故障恢复后,preCommitted 事务可安全 commit(幂等)
 │   └── 或 abort 后重新处理进入新事务
 
 Exactly-Once = At-Least-Once ∧ At-Most-Once
@@ -524,7 +524,7 @@ Exactly-Once = At-Least-Once ∧ At-Most-Once
    ↓
 3. 选择恢复点 (最新成功 Checkpoint / 指定 Savepoint)
    ↓
-4. 重新部署任务 (分配 Slot，恢复状态)
+4. 重新部署任务 (分配 Slot,恢复状态)
    ↓
 5. Source 重放 (从 Checkpoint 偏移量开始)
    ↓
@@ -550,22 +550,22 @@ val env = StreamExecutionEnvironment.getExecutionEnvironment
 
 // ========== 基础 Checkpoint 配置 ==========
 
-// 启用 Checkpoint，间隔 60 秒
+// 启用 Checkpoint,间隔 60 秒
 env.enableCheckpointing(60000)
 
-// 设置 Checkpoint 模式：EXACTLY_ONCE 或 AT_LEAST_ONCE
+// 设置 Checkpoint 模式:EXACTLY_ONCE 或 AT_LEAST_ONCE
 env.getCheckpointConfig.setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE)
 
-// Checkpoint 超时时间：5 分钟
+// Checkpoint 超时时间:5 分钟
 env.getCheckpointConfig.setCheckpointTimeout(TimeUnit.MINUTES.toMillis(5))
 
-// 并发 Checkpoint 数：1（防止 Checkpoint 堆积）
+// 并发 Checkpoint 数:1(防止 Checkpoint 堆积)
 env.getCheckpointConfig.setMaxConcurrentCheckpoints(1)
 
-// 两次 Checkpoint 最小间隔：30 秒（用于 AT_LEAST_ONCE）
+// 两次 Checkpoint 最小间隔:30 秒(用于 AT_LEAST_ONCE)
 env.getCheckpointConfig.setMinPauseBetweenCheckpoints(30000)
 
-// 外部化 Checkpoint：作业取消后保留 Checkpoint
+// 外部化 Checkpoint:作业取消后保留 Checkpoint
 env.getCheckpointConfig.enableExternalizedCheckpoints(
   ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION
 )
@@ -583,7 +583,7 @@ import org.apache.flink.configuration.Configuration
 
 val config = new Configuration()
 
-// 1. Unaligned Checkpoint（低延迟场景）
+// 1. Unaligned Checkpoint(低延迟场景)
 // 适用于网络延迟大、对齐窗口长的场景
 config.setBoolean(CheckpointingOptions.ENABLE_UNALIGNED, true)
 config.setLong(
@@ -599,7 +599,7 @@ config.setBoolean(
 )
 
 // 3. 本地恢复配置
-// 优先从本地磁盘恢复，加速恢复过程
+// 优先从本地磁盘恢复,加速恢复过程
 config.setBoolean(
   CheckpointingOptions.LOCAL_RECOVERY,
   true
@@ -625,18 +625,18 @@ import org.apache.flink.runtime.state.rocksdb.RocksDBStateBackend
 import org.apache.flink.runtime.state.filesystem.FsStateBackend
 import org.apache.flink.streaming.api.scala._
 
-// ========== HashMapStateBackend（小状态、低延迟）==========
+// ========== HashMapStateBackend(小状态、低延迟)==========
 
 val hashMapBackend = new HashMapStateBackend()
 env.setStateBackend(hashMapBackend)
 env.getCheckpointConfig.setCheckpointStorage("hdfs:///checkpoints")
 
-// 适用场景：
+// 适用场景:
 // - 状态大小 < 100MB
 // - 需要亚毫秒级状态访问
 // - 短窗口聚合
 
-// ========== RocksDBStateBackend（大状态、增量 Checkpoint）==========
+// ========== RocksDBStateBackend(大状态、增量 Checkpoint)==========
 
 val rocksDBBackend = new EmbeddedRocksDBStateBackend(true) // true = 增量 Checkpoint
 env.setStateBackend(rocksDBBackend)
@@ -655,10 +655,10 @@ rocksDBConfig.setRocksDBOptions("""
   max_bytes_for_level_base=256MB
 """)
 
-// 适用场景：
+// 适用场景:
 // - 状态大小 > 100MB
-// - 长窗口（小时/天）
-// - 大 Keyspace（百万级 Key）
+// - 长窗口(小时/天)
+// - 大 Keyspace(百万级 Key)
 ```
 
 ---
@@ -672,13 +672,13 @@ import org.apache.flink.streaming.api.scala._
 
 // ========== 重启策略配置 ==========
 
-// 1. 固定延迟重启（推荐）
+// 1. 固定延迟重启(推荐)
 env.setRestartStrategy(RestartStrategies.fixedDelayRestart(
   3,                    // 最大重启次数
   Time.of(10, TimeUnit.SECONDS)  // 每次重启间隔
 ))
 
-// 2. 指数退避重启（应对瞬时故障）
+// 2. 指数退避重启(应对瞬时故障)
 env.setRestartStrategy(RestartStrategies.exponentialDelayRestart(
   Time.of(100, TimeUnit.MILLISECONDS),  // 初始延迟
   Time.of(10, TimeUnit.MINUTES),        // 最大延迟
@@ -687,16 +687,16 @@ env.setRestartStrategy(RestartStrategies.exponentialDelayRestart(
   0.1                                   // 抖动因子
 ))
 
-// 3. 无重启（开发调试）
+// 3. 无重启(开发调试)
 // env.setRestartStrategy(RestartStrategies.noRestart())
 
 // ========== 故障转移策略 ==========
 
-// 区域级故障转移（细粒度，仅恢复受影响任务）
+// 区域级故障转移(细粒度,仅恢复受影响任务)
 env.setRestartStrategy(RestartStrategies.fixedDelayRestart(3, Time.seconds(10)))
-// 配置：pipeline.fail-over-strategy: region
+// 配置:pipeline.fail-over-strategy: region
 
-// ========== 保存点操作（命令行/API）==========
+// ========== 保存点操作(命令行/API)==========
 
 /*
 # 触发保存点
@@ -731,7 +731,7 @@ import org.apache.flink.util.Collector
 // V1 状态定义
 case class UserStateV1(userId: String, count: Int)
 
-// V2 状态定义（新增字段）
+// V2 状态定义(新增字段)
 case class UserStateV2(userId: String, count: Int, lastUpdate: Long)
 
 class StateMigrationFunction extends ProcessFunction[Event, Result] {
@@ -769,7 +769,7 @@ class StateMigrationFunction extends ProcessFunction[Event, Result] {
   }
 }
 
-// ========== 算子 UID 配置（保存点兼容性）==========
+// ========== 算子 UID 配置(保存点兼容性)==========
 
 val stream = env
   .fromSource(kafkaSource, WatermarkStrategy.noWatermarks(), "kafka-source")

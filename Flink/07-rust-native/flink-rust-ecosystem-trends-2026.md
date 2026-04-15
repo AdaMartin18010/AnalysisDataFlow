@@ -376,15 +376,15 @@ $$
 use flink_udf_wasm::prelude::*;
 
 /// 高性能 JSON 解析 UDF
-/// 对比 Java Jackson：吞吐提升 2.3x，P99 延迟降低 60%
+/// 对比 Java Jackson:吞吐提升 2.3x,P99 延迟降低 60%
 #[udf(name = "parse_events", input = [DataType::VARCHAR], output = DataType::ARRAY)]
 pub fn parse_events(json_str: &str) -> Result<Vec<Event>, UdfError> {
-    // SIMD 加速 JSON 解析（借助 serde_json + simd-json）
+    // SIMD 加速 JSON 解析(借助 serde_json + simd-json)
     let events: Vec<Event> = simd_json::from_str(json_str)?;
     Ok(events)
 }
 
-/// 复杂事件处理：滑动窗口聚合
+/// 复杂事件处理:滑动窗口聚合
 #[udf(name = "session_analytics", stateful = true)]
 pub fn session_analytics(
     state: &mut SessionState,
@@ -475,7 +475,7 @@ format = "parquet"
 
 ```mermaid
 gantt
-    title Flink + Rust 生态演进时间线（2025-2026）
+    title Flink + Rust 生态演进时间线(2025-2026)
     dateFormat  YYYY-MM-DD
     section 2025 里程碑
     Flink 2.0 发布           :done, f20, 2025-03-24, 2025-03-24

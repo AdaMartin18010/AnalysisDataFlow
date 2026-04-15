@@ -15,13 +15,13 @@
 ```
 DataProduct := ⟨Domain, Schema, Interface, SLA, Metadata, Lineage⟩
 
-其中：
-- Domain ⊆ Organization: 领域边界，满足 Domain ≠ ∅
+其中:
+- Domain ⊆ Organization: 领域边界,满足 Domain ≠ ∅
 - Schema ∈ Avro|Protobuf|JSON-Schema: 结构化契约
 - Interface := {StreamingAPI, QueryAPI, FileAPI} 的幂等组合
 - SLA := ⟨Availability, Latency, Freshness, Accuracy⟩ ∈ ℝ⁴
 - Metadata ∈ DCAT|DataHub|OpenMetadata: 可发现性元数据
-- Lineage: 血缘图，表示为 DAG(Inputs → Transform → Output)
+- Lineage: 血缘图,表示为 DAG(Inputs → Transform → Output)
 ```
 
 ### Def-K-06-102: 流式数据产品接口 (Streaming Data Product Interface)
@@ -31,12 +31,12 @@ DataProduct := ⟨Domain, Schema, Interface, SLA, Metadata, Lineage⟩
 ```
 StreamingInterface := ⟨Topic, Schema, Retention, Policy, ACL⟩
 
-其中：
-- Topic: 逻辑流标识符，格式为 {domain}.{product}.{version}
-- Schema: 结构化数据契约，包含字段定义、类型约束、演进规则
+其中:
+- Topic: 逻辑流标识符,格式为 {domain}.{product}.{version}
+- Schema: 结构化数据契约,包含字段定义、类型约束、演进规则
 - Retention ∈ {TimeBased(t), SizeBased(s), Compact}: 数据保留策略
-- Policy: 消费策略，包含 Backpressure、RateLimit、OrderingGuarantee
-- ACL: 访问控制列表，基于RBAC/ABAC模型
+- Policy: 消费策略,包含 Backpressure、RateLimit、OrderingGuarantee
+- ACL: 访问控制列表,基于RBAC/ABAC模型
 ```
 
 ### Def-K-06-103: 领域数据所有权 (Domain Data Ownership)
@@ -46,10 +46,10 @@ StreamingInterface := ⟨Topic, Schema, Retention, Policy, ACL⟩
 ```
 Ownership := ⟨Domain, Team, Responsibilities, Accountability⟩
 
-其中 Responsibilities 包含：
+其中 Responsibilities 包含:
 - Schema定义与演进管理
 - 数据质量监控与SLA达成
-- 接口稳定性保证（兼容性承诺）
+- 接口稳定性保证(兼容性承诺)
 - 消费者支持与文档维护
 - 安全合规与隐私保护
 ```
@@ -61,11 +61,11 @@ Ownership := ⟨Domain, Team, Responsibilities, Accountability⟩
 ```
 FederatedGovernance := ⟨GlobalPolicies, DomainPolicies, Enforcement, Automation⟩
 
-其中：
-- GlobalPolicies: 组织级强制策略（命名规范、安全等级、合规要求）
-- DomainPolicies: 领域级自定义策略（业务规则、质量阈值）
+其中:
+- GlobalPolicies: 组织级强制策略(命名规范、安全等级、合规要求)
+- DomainPolicies: 领域级自定义策略(业务规则、质量阈值)
 - Enforcement ∈ {Preventive, Detective, Corrective}: 策略执行时机
-- Automation: 策略即代码（Policy-as-Code）自动化机制
+- Automation: 策略即代码(Policy-as-Code)自动化机制
 ```
 
 ---
@@ -275,7 +275,7 @@ $$\text{SelfConsistent}(DP) \iff \text{Schema}_{metadata} = \text{Schema}_{actua
   "type": "record",
   "name": "UserEvent",
   "namespace": "com.retail.user",
-  "doc": "用户行为事件，v1版本，向后兼容",
+  "doc": "用户行为事件,v1版本,向后兼容",
   "fields": [
     {"name": "eventId", "type": "string", "doc": "事件唯一标识"},
     {"name": "userId", "type": "string", "doc": "用户标识"},
@@ -412,8 +412,8 @@ metadata:
 
 spec:
   description: |
-    实时欺诈风险信号流，基于用户行为序列、设备指纹和关联图谱
-    生成风险评分，支持实时风控决策。
+    实时欺诈风险信号流,基于用户行为序列、设备指纹和关联图谱
+    生成风险评分,支持实时风控决策。
 
   interfaces:
     streaming:

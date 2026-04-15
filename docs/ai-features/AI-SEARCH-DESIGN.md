@@ -62,7 +62,7 @@ Final_Score = α × Semantic_Score + β × BM25_Score + γ × Metadata_Score
 其中:
 - α = 0.6 (语义权重)
 - β = 0.3 (关键词权重)
-- γ = 0.1 (元数据权重，如标题匹配、标签匹配)
+- γ = 0.1 (元数据权重,如标题匹配、标签匹配)
 ```
 
 **实现策略**:
@@ -149,7 +149,7 @@ def reciprocal_rank_fusion(vector_results, keyword_results, k=60):
 ```markdown
 ## TL;DR
 
-**一句话总结**: [文档核心观点，限50字]
+**一句话总结**: [文档核心观点,限50字]
 
 **关键点**:
 - 🔑 [关键发现/概念 1]
@@ -282,9 +282,9 @@ def build_context_window(query, retrieved_docs, chat_history, max_tokens=4000):
 
 ```
 用户: "Flink的Checkpoint机制是什么？"
-AI: "Checkpoint是Flink的容错机制，通过..."
+AI: "Checkpoint是Flink的容错机制,通过..."
 用户: "它的工作原理是什么？" ← "它"指代"Checkpoint"
-AI: "Checkpoint的工作原理包括三个阶段：触发、快照、确认..."
+AI: "Checkpoint的工作原理包括三个阶段:触发、快照、确认..."
 ```
 
 ### 4.4 引用来源标注
@@ -292,7 +292,7 @@ AI: "Checkpoint的工作原理包括三个阶段：触发、快照、确认..."
 **引用格式**:
 
 ```markdown
-根据[^1]和[^2]的描述，Flink的Checkpoint机制...
+根据[^1]和[^2]的描述,Flink的Checkpoint机制...
 
 [^1]: 4.1-stream-processing-fundamentals.md, 第3.2节 "Checkpoint机制"
 [^2]: flink-checkpoint-internals.md, 第2节 "Checkpoint流程"
@@ -326,6 +326,7 @@ AI: "Checkpoint的工作原理包括三个阶段：触发、快照、确认..."
 **Milvus架构选择**:
 
 ```yaml
+# 伪代码示意，非完整可执行配置
 # docker-compose.yml 单机版
 version: '3.5'
 services:
@@ -733,8 +734,8 @@ async def semantic_search(query: SearchQuery):
 ## 回答要求
 1. 仅基于提供的参考资料回答
 2. 引用来源使用 [^1] 格式标注
-3. 如果资料不足，明确告知用户
-4. 回答简洁准确，优先使用中文
+3. 如果资料不足,明确告知用户
+4. 回答简洁准确,优先使用中文
 
 ## 回答
 ```

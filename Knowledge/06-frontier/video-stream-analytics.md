@@ -101,11 +101,11 @@ DataStream<VideoFrame> videoStream = env
         WatermarkStrategy.<VideoFrame>forBoundedOutOfOrderness(Duration.ofSeconds(2))
     );
 
-// 自适应采样：根据场景变化度决定是否转发
+// 自适应采样:根据场景变化度决定是否转发
 DataStream<VideoFrame> sampledStream = videoStream
     .process(new AdaptiveSamplingFunction(5, 30));
 
-// 5 秒窗口聚合，触发批量推理
+// 5 秒窗口聚合,触发批量推理
 sampledStream
     .windowAll(TumblingEventTimeWindows.of(Time.seconds(5)))
     .process(new BatchInferenceWindowFunction())

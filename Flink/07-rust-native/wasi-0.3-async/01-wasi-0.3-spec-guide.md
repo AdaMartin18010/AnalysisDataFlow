@@ -275,14 +275,14 @@ use futures::stream::{self, Stream, StreamExt};
 struct AsyncUdfImpl;
 
 impl Guest for AsyncUdfImpl {
-    /// 异步批处理函数：处理数据流并返回结果
+    /// 异步批处理函数:处理数据流并返回结果
     async fn process_batch(
         input: impl Stream<Item = Record>,
     ) -> Result<BatchResult, String> {
         // WASI 0.3 原生 async/await 支持
         let processed = input
             .map(|record| async move {
-                // 异步 I/O 操作（如外部 API 调用）
+                // 异步 I/O 操作(如外部 API 调用)
                 let enriched = enrich_record(&record).await?;
 
                 // 异步数据库查询
@@ -449,9 +449,9 @@ interface async-processor {
     record stream-config {
         /// 最大并发数
         max-concurrency: u32,
-        /// 背压阈值（缓冲区大小）
+        /// 背压阈值(缓冲区大小)
         backpressure-threshold: u32,
-        /// 超时（微秒）
+        /// 超时(微秒)
         timeout-us: u64,
         /// 是否启用精确一次语义
         exactly-once: bool,

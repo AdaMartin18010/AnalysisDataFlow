@@ -706,7 +706,7 @@ stateDiagram-v2
 
     Waiting_B --> Waiting_C: 检测到B
     Waiting_B --> Waiting_B: 非B事件
-    Waiting_B --> Waiting_A: A重复（策略相关）
+    Waiting_B --> Waiting_A: A重复(策略相关)
 
     Waiting_C --> Match: 检测到C
     Waiting_C --> Waiting_C: 非C事件

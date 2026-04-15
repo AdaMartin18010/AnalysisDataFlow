@@ -336,14 +336,14 @@ Flink SQL窗口操作在流上产生**Changelog流**：
 **策略1: 增量聚合 (Incremental Aggregation)**
 
 ```sql
--- 优化前：存储完整数据
+-- 优化前:存储完整数据
 SELECT user_id, window_start, window_end,
        SUM(amount), AVG(amount), MAX(amount)
 FROM TABLE(TUMBLE(TABLE orders, DESCRIPTOR(order_time), INTERVAL '1' HOUR))
 GROUP BY user_id, window_start, window_end;
 
--- 优化后：仅存储中间状态
--- Flink自动优化为：
+-- 优化后:仅存储中间状态
+-- Flink自动优化为:
 -- ValueState<SumAccumulator, AvgAccumulator, MaxAccumulator>
 ```
 
@@ -438,7 +438,7 @@ CREATE TABLE orders (
     'format' = 'json'
 );
 
--- TUMBLE窗口聚合：小时级销售报表
+-- TUMBLE窗口聚合:小时级销售报表
 SELECT
     category,
     window_start,
@@ -474,7 +474,7 @@ CREATE TABLE access_logs (
     'format' = 'json'
 );
 
--- HOP窗口：移动平均响应时间
+-- HOP窗口:移动平均响应时间
 SELECT
     url,
     window_start,
@@ -490,7 +490,7 @@ GROUP BY url, window_start, window_end;
 -- 关键洞察:
 -- - 每个事件同时贡献给5个窗口
 -- - 状态开销是TUMBLE的5倍
--- - 结果平滑，适合趋势监控
+-- - 结果平滑,适合趋势监控
 ```
 
 ### 实例3: 用户会话分析 - SESSION窗口
@@ -510,7 +510,7 @@ CREATE TABLE user_events (
     'format' = 'json'
 );
 
--- SESSION窗口：用户会话统计
+-- SESSION窗口:用户会话统计
 SELECT
     user_id,
     SESSION_START(event_time, INTERVAL '10' MINUTE) AS session_start,
@@ -528,7 +528,7 @@ GROUP BY user_id, SESSION(event_time, INTERVAL '10' MINUTE);
 -- user_id | session_start       | session_end         | event_count | unique_pages | event_types
 -- user_001 | 2024-01-15 10:05:00 | 2024-01-15 10:23:00 | 15          | 5            | [click, view, add_cart]
 -- user_001 | 2024-01-15 14:30:00 | 2024-01-15 14:45:00 | 8           | 3            | [click, view]
--- 说明: 用户_001有两个独立会话（间隔>10分钟）
+-- 说明: 用户_001有两个独立会话(间隔>10分钟)
 ```
 
 ### 实例4: 实时大屏 - CUMULATE窗口
@@ -547,7 +547,7 @@ CREATE TABLE sales (
     'format' = 'json'
 );
 
--- CUMULATE窗口：累积统计
+-- CUMULATE窗口:累积统计
 SELECT
     window_start,
     window_end,
@@ -559,7 +559,7 @@ FROM TABLE(
 )
 GROUP BY window_start, window_end;
 
--- 输出示例（假设当前为11:00）:
+-- 输出示例(假设当前为11:00):
 -- window_start        | window_end          | cumulative_sales | order_count | avg_order_value
 -- 2024-01-15 00:00:00 | 2024-01-15 00:10:00 | 15000.00         | 150         | 100.00
 -- 2024-01-15 00:00:00 | 2024-01-15 00:20:00 | 32000.00         | 320         | 100.00
@@ -595,7 +595,7 @@ CREATE TABLE payments (
     PRIMARY KEY (payment_id) NOT ENFORCED
 ) WITH ('connector' = 'kafka', 'topic' = 'payments', 'format' = 'json');
 
--- 窗口Join：关联同窗口内的订单和支付
+-- 窗口Join:关联同窗口内的订单和支付
 SELECT
     o.order_id,
     o.user_id,
@@ -637,7 +637,7 @@ CREATE TABLE product_sales (
     WATERMARK FOR sale_time AS sale_time - INTERVAL '5' SECOND
 ) WITH ('connector' = 'kafka', 'topic' = 'product_sales', 'format' = 'json');
 
--- 窗口TopN：每小时品类Top3
+-- 窗口TopN:每小时品类Top3
 SELECT *
 FROM (
     SELECT
@@ -658,7 +658,7 @@ FROM (
 )
 WHERE rn <= 3;
 
--- 输出包含Changelog（排名变化时产生撤回更新）
+-- 输出包含Changelog(排名变化时产生撤回更新)
 -- +I: 新增排名
 -- -D: 旧排名撤回
 -- +I: 新排名
@@ -669,7 +669,7 @@ WHERE rn <= 3;
 **场景**: 幂等处理（确保同一订单只计算一次）
 
 ```sql
--- 方式1: ROW_NUMBER去重（保留第一条）
+-- 方式1: ROW_NUMBER去重(保留第一条)
 SELECT order_id, amount, order_time
 FROM (
     SELECT
@@ -682,7 +682,7 @@ FROM (
 )
 WHERE rn = 1;
 
--- 方式2: 窗口去重（每窗口内去重）
+-- 方式2: 窗口去重(每窗口内去重)
 SELECT order_id, amount, window_start, window_end
 FROM (
     SELECT
@@ -719,7 +719,7 @@ CREATE TABLE orders_with_lateness (
     'sink.delivery-guarantee' = 'exactly-once'
 );
 
--- 聚合查询（支持延迟数据更新）
+-- 聚合查询(支持延迟数据更新)
 SELECT
     window_start,
     window_end,
@@ -729,13 +729,13 @@ FROM TABLE(
         TABLE orders_with_lateness,
         DESCRIPTOR(order_time),
         INTERVAL '1' HOUR,
-        -- 可选: 使用窗口TVF的延迟参数（Flink 1.17+）
+        -- 可选: 使用窗口TVF的延迟参数(Flink 1.17+)
         INTERVAL '30' MINUTE  -- allowedLateness
     )
 )
 GROUP BY window_start, window_end;
 
--- 延迟数据侧输出（Flink SQL暂不支持，需DataStream API）
+-- 延迟数据侧输出(Flink SQL暂不支持,需DataStream API)
 -- 或使用Process Table Function捕获
 ```
 

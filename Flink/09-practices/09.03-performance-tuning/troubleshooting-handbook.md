@@ -399,7 +399,7 @@ taskmanager.network.memory.buffer-debloat.target: 500ms
 **步骤 4: 调整网络缓冲区**
 
 ```yaml
-# 如果禁用 Debloat，手动调整 {#如果禁用-debloat手动调整}
+# 如果禁用 Debloat,手动调整 {#如果禁用-debloat手动调整}
 taskmanager.memory.network.fraction: 0.15
 taskmanager.network.memory.buffer-size: 32kb
 ```
@@ -408,8 +408,8 @@ taskmanager.network.memory.buffer-size: 32kb
 
 ```bash
 # 检查 TaskManager CPU 使用率 {#检查-taskmanager-cpu-使用率}
-# 如果 CPU < 50%，可能是 I/O 或等待问题 {#如果-cpu-50可能是-io-或等待问题}
-# 如果 CPU > 90%，需要扩容 {#如果-cpu-90需要扩容}
+# 如果 CPU < 50%,可能是 I/O 或等待问题 {#如果-cpu-50可能是-io-或等待问题}
+# 如果 CPU > 90%,需要扩容 {#如果-cpu-90需要扩容}
 ```
 
 ---
@@ -538,7 +538,7 @@ int flinkParallelism = 16; // 应 <= 32
 
 ```bash
 # 查看各 Source Subtask 的消费速率 {#查看各-source-subtask-的消费速率}
-# 如果某几个 Subtask 速率远高于其他：数据倾斜 {#如果某几个-subtask-速率远高于其他数据倾斜}
+# 如果某几个 Subtask 速率远高于其他:数据倾斜 {#如果某几个-subtask-速率远高于其他数据倾斜}
 ```
 
 **解决**: 检查 Kafka Key 分区策略，必要时重新分区
@@ -567,7 +567,7 @@ properties.send.buffer.bytes: 65536
 **步骤 5: 扩容**
 
 ```yaml
-# 增加 Source 并行度（不超过 Kafka 分区数） {#增加-source-并行度不超过-kafka-分区数}
+# 增加 Source 并行度(不超过 Kafka 分区数) {#增加-source-并行度不超过-kafka-分区数}
 parallelism.default: 32
 
 # 或增加 TaskManager 资源 {#或增加-taskmanager-资源}
@@ -598,7 +598,7 @@ numRecordsInPerSecond: 0 (某些分区)
 
 ```bash
 # 查看各 Source Subtask 的输入速率 {#查看各-source-subtask-的输入速率}
-# 如果某些 Subtask recordsIn = 0：空闲分区 {#如果某些-subtask-recordsin-0空闲分区}
+# 如果某些 Subtask recordsIn = 0:空闲分区 {#如果某些-subtask-recordsin-0空闲分区}
 ```
 
 **解决**: 启用空闲检测
@@ -624,12 +624,12 @@ kafka-consumer-groups --bootstrap-server localhost:9092 --describe --group flink
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // 确保所有分支都生成 Watermark
-// 问题：Union 后 Watermark 取最小值，一个分支停滞则整体停滞
+// 问题:Union 后 Watermark 取最小值,一个分支停滞则整体停滞
 DataStream<Event> stream1 = ...
 DataStream<Event> stream2 = ...
 DataStream<Event> union = stream1.union(stream2); // Watermark 取最小
 
-// 解决：分别分配 Watermark 后再 Union
+// 解决:分别分配 Watermark 后再 Union
 stream1 = stream1.assignTimestampsAndWatermarks(strategy);
 stream2 = stream2.assignTimestampsAndWatermarks(strategy);
 union = stream1.union(stream2);
@@ -638,7 +638,7 @@ union = stream1.union(stream2);
 **步骤 4: 检查乱序时间设置**
 
 ```java
-// 如果允许乱序时间过长，Watermark 推进会延迟
+// 如果允许乱序时间过长,Watermark 推进会延迟
 WatermarkStrategy.<Event>forBoundedOutOfOrderness(
     Duration.ofHours(1) // 1小时的乱序容忍度
 );
@@ -706,8 +706,8 @@ new ValueStateDescriptor<>("newName", ...); // 名称变更会导致状态找不
 **步骤 4: 增量 Checkpoint 问题**
 
 ```yaml
-# 如果增量 Checkpoint 损坏，可能无法恢复 {#如果增量-checkpoint-损坏可能无法恢复}
-# 解决：切换到全量 Checkpoint 或从更早版本恢复 {#解决切换到全量-checkpoint-或从更早版本恢复}
+# 如果增量 Checkpoint 损坏,可能无法恢复 {#如果增量-checkpoint-损坏可能无法恢复}
+# 解决:切换到全量 Checkpoint 或从更早版本恢复 {#解决切换到全量-checkpoint-或从更早版本恢复}
 state.backend.incremental: false
 ```
 
@@ -725,7 +725,7 @@ state.backend.incremental: false
 
 ```
 numberOfRestarts: 持续增长
-lastCheckpointDuration: 可能为 N/A（来不及完成）
+lastCheckpointDuration: 可能为 N/A(来不及完成)
 lastCheckpointSize: 可能为 0
 ```
 
@@ -747,7 +747,7 @@ grep "Exception" flink-taskmanager-*.log | tail -100
 **步骤 2: 调整重启策略**
 
 ```yaml
-# 增加重启延迟，避免频繁重启 {#增加重启延迟避免频繁重启}
+# 增加重启延迟,避免频繁重启 {#增加重启延迟避免频繁重启}
 restart-strategy: fixed-delay
 restart-strategy.fixed-delay.attempts: 10
 restart-strategy.fixed-delay.delay: 30s
@@ -771,11 +771,11 @@ describe pod <taskmanager-pod>
 **步骤 4: 检查依赖服务健康**
 
 ```java
-// 如果依赖外部服务，确保有重试和降级逻辑
+// 如果依赖外部服务,确保有重试和降级逻辑
 try {
     externalService.call();
 } catch (Exception e) {
-    // 记录日志但不抛出，避免触发重启
+    // 记录日志但不抛出,避免触发重启
     log.error("External service error", e);
     // 使用默认值或缓存值
 }

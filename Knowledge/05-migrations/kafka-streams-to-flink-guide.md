@@ -413,7 +413,7 @@ public class FlinkWordCount {
             .returns(Types.TUPLE(Types.STRING, Types.LONG))
             // 按单词分组
             .keyBy(value -> value.f0)
-            // 窗口聚合（可选，无窗口则为全局聚合）
+            // 窗口聚合(可选,无窗口则为全局聚合)
             .window(TumblingEventTimeWindows.of(Time.minutes(1)))
             // 计数求和
             .aggregate(new CountAggregate());
@@ -433,7 +433,7 @@ public class FlinkWordCount {
         env.execute("Flink WordCount");
     }
 
-    // 自定义FlatMapFunction：分词
+    // 自定义FlatMapFunction:分词
     public static class Tokenizer implements FlatMapFunction<String, String> {
         @Override
         public void flatMap(String value, Collector<String> out) {
@@ -443,7 +443,7 @@ public class FlinkWordCount {
         }
     }
 
-    // 自定义聚合函数：计数
+    // 自定义聚合函数:计数
     public static class CountAggregate implements
             AggregateFunction<Tuple2<String, Long>, Long, Long> {
         @Override
@@ -639,7 +639,7 @@ DataStream<Tuple2<String, Long>> slidingCounts = clicks
 **Kafka Streams - 会话窗口聚合**:
 
 ```java
-// 会话窗口：活动间隔超过10分钟则开启新会话
+// 会话窗口:活动间隔超过10分钟则开启新会话
 KTable<Windowed<String>, Long> sessionCounts = clicks
     .groupByKey()
     .windowedBy(SessionWindows.withGap(Duration.ofMinutes(10)))
@@ -798,7 +798,7 @@ KafkaSource<String> source = KafkaSource.<String>builder()
     .setProperty("fetch.max.bytes", "52428800")
     .build();
 
-// 禁用自动提交，由Flink Checkpoint管理
+// 禁用自动提交,由Flink Checkpoint管理
 // Flink自动处理偏移量提交
 ```
 
@@ -1031,7 +1031,7 @@ KStream<String, Event> repartitioned = events
     .selectKey((key, value) -> value.getNewKey())
     .through("repartition-topic");
 
-// 或隐式重新分区（groupByKey会自动触发）
+// 或隐式重新分区(groupByKey会自动触发)
 KGroupedStream<String, Event> grouped = events
     .selectKey((key, value) -> value.getNewKey())
     .groupByKey();
@@ -1064,13 +1064,13 @@ DataStream<Event> customPartitioned = events
         Event::getPartitionKey
     );
 
-// 3. 广播（对应GlobalKTable）
+// 3. 广播(对应GlobalKTable)
 DataStream<Dimension> broadcastStream = dimensionStream.broadcast();
 
-// 4. 重平衡（负载均衡）
+// 4. 重平衡(负载均衡)
 DataStream<Event> rebalanced = events.rebalance();
 
-// 5.  rescale（本地优先）
+// 5.  rescale(本地优先)
 DataStream<Event> rescaled = events.rescale();
 ```
 
@@ -1119,7 +1119,7 @@ flowchart TD
 
 ```java
 /**
- * 双写验证模式：同时写入两套系统，对比输出一致性
+ * 双写验证模式:同时写入两套系统,对比输出一致性
  */
 
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -1145,7 +1145,7 @@ public class DualWriteValidation {
             .keyBy(Event::getKey)
             .process(new FlinkProcessingFunction());
 
-        // 旁路输出：同时发送到验证Topic
+        // 旁路输出:同时发送到验证Topic
         OutputTag<Result> validationTag = new OutputTag<Result>("validation"){};
 
         SingleOutputStreamOperator<Result> mainStream = flinkResult
@@ -1207,7 +1207,7 @@ public class DualWriteValidation {
 │   │ 生成差异报告 │                                              │
 │   └──────────────┘                                              │
 │                                                                 │
-│   验收标准：                                                     │
+│   验收标准:                                                     │
 │   - 延迟差异 < 1分钟                                            │
 │   - 数据一致性 100%                                             │
 │   - 字段值差异 0                                                │
@@ -1401,7 +1401,7 @@ env.getCheckpointConfig().enableUnalignedCheckpoints();  // 非对齐Checkpoint
 public class PunctuatedFunction extends KeyedProcessFunction<String, Event, Result> {
     @Override
     public void processElement(Event event, Context ctx, Collector<Result> out) {
-        // 注册处理时间定时器，模拟 punctuation
+        // 注册处理时间定时器,模拟 punctuation
         ctx.timerService().registerProcessingTimeTimer(
             ctx.timerService().currentProcessingTime() + 60000);
         // 处理元素
@@ -1409,7 +1409,7 @@ public class PunctuatedFunction extends KeyedProcessFunction<String, Event, Resu
 
     @Override
     public void onTimer(long timestamp, OnTimerContext ctx, Collector<Result> out) {
-        // 定时触发逻辑（类似punctuation）
+        // 定时触发逻辑(类似punctuation)
         // 执行周期性操作
     }
 }
@@ -1491,9 +1491,9 @@ stream.partitionCustom(
 
 ```java
 KafkaSource<String> source = KafkaSource.<String>builder()
-    // 从最早偏移量开始（全量迁移）
+    // 从最早偏移量开始(全量迁移)
     .setStartingOffsets(OffsetsInitializer.earliest())
-    // 或从最新偏移量开始（增量迁移）
+    // 或从最新偏移量开始(增量迁移)
     // .setStartingOffsets(OffsetsInitializer.latest())
     // 或从特定时间戳开始
     // .setStartingOffsets(OffsetsInitializer.timestamp(1699999999999L))

@@ -242,9 +242,9 @@ sequenceDiagram
 窗口大小的选择涉及**新鲜度-准确性权衡**：
 
 ```
-小窗口 (1分钟): 高新鲜度，高方差，易受异常值影响
+小窗口 (1分钟): 高新鲜度,高方差,易受异常值影响
 中窗口 (1小时): 平衡新鲜度和统计稳定性
-大窗口 (1天):  低新鲜度，高稳定性，趋势捕捉
+大窗口 (1天):  低新鲜度,高稳定性,趋势捕捉
 ```
 
 推荐策略：**多时间粒度特征组合**
@@ -398,7 +398,7 @@ public class FraudFeatureEngineering {
             .addSource(new FlinkKafkaConsumer<>("transactions",
                 new TransactionDeserializer(), kafkaProps));
 
-        // 定义1小时滑动窗口，5分钟步长
+        // 定义1小时滑动窗口,5分钟步长
         Time windowSize = Time.hours(1);
         Time slideSize = Time.minutes(5);
 
@@ -509,7 +509,7 @@ public class StreamFeatureJoin {
         DataStream<ClickEvent> clicks = env
             .addSource(new FlinkKafkaConsumer<>("clicks", ...));
 
-        // 商品信息流 (维度表，CDC)
+        // 商品信息流 (维度表,CDC)
         DataStream<ProductInfo> products = env
             .addSource(new FlinkKafkaConsumer<>("products_cdc", ...));
 
@@ -595,7 +595,7 @@ public class DerivedMetrics {
             .average()
             .orElse(0);
 
-        // 速度得分: 间隔越短，得分越高
+        // 速度得分: 间隔越短,得分越高
         return avgInterval > 0 ? 1000.0 / avgInterval : 0;
     }
 
@@ -684,7 +684,7 @@ class StatsProcessFunction extends KeyedProcessFunction<String, Transaction, Use
 # 实时用户画像特征定义
 from feast import FeatureService
 
-# 特征服务：推荐系统用用户画像
+# 特征服务:推荐系统用用户画像
 user_profile_service = FeatureService(
     name="user_profile_v1",
     features=[
@@ -728,14 +728,14 @@ public class RecommendationFeatureJob {
         DataStream<UserEvent> events = env
             .addSource(new FlinkKafkaConsumer<>("user_events", ...));
 
-        // 会话窗口：捕捉用户会话内的行为序列
+        // 会话窗口:捕捉用户会话内的行为序列
         DataStream<SessionFeatures> sessionFeatures = events
             .keyBy(UserEvent::getUserId)
             .window(EventTimeSessionWindows.withGap(Time.minutes(30)))
             .aggregate(new SessionFeatureAggregate())
             .addSink(new FeatureStoreSink());
 
-        // 滑动窗口：实时点击率特征
+        // 滑动窗口:实时点击率特征
         DataStream<ClickThroughRate> ctrFeatures = events
             .keyBy(UserEvent::getUserId)
             .window(SlidingEventTimeWindows.of(Time.minutes(10), Time.minutes(1)))

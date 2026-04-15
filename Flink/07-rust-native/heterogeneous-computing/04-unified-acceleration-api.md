@@ -562,7 +562,7 @@ public:
         }
     }
 
-    // 禁止拷贝，允许移动
+    // 禁止拷贝,允许移动
     Buffer(const Buffer&) = delete;
     Buffer& operator=(const Buffer&) = delete;
     Buffer(Buffer&&) = default;
@@ -587,7 +587,7 @@ public:
         device_->copy(data_, other.data_, std::min(bytes(), other.bytes()));
     }
 
-    // 映射到主机内存（如果支持）
+    // 映射到主机内存(如果支持)
     T* map() {
         // 返回可主机访问的指针
         return data();
@@ -688,14 +688,14 @@ struct WorkloadProfile {
 
 // ==================== 统一执行 API ====================
 
-// 简化版：类 std::transform
+// 简化版:类 std::transform
 template<typename T, typename UnaryOp>
 void transform(DevicePtr device,
                const T* first, const T* last,
                T* result,
                UnaryOp op);
 
-// 简化版：类 std::reduce
+// 简化版:类 std::reduce
 template<typename T, typename BinaryOp>
 T reduce(DevicePtr device,
          const T* first, const T* last,
@@ -708,7 +708,7 @@ void gemm(DevicePtr device,
           int M, int N, int K,
           float alpha = 1.0f, float beta = 0.0f);
 
-// 卷积（适用于 ML 推理）
+// 卷积(适用于 ML 推理)
 void conv2d(DevicePtr device,
             const float* input, const float* kernel, float* output,
             int batch, int inC, int outC, int H, int W, int K);
@@ -931,7 +931,7 @@ private:
             score += 30.0f;
         }
 
-        // 高计算强度扣分（CPU 劣势）
+        // 高计算强度扣分(CPU 劣势)
         if (profile.computeIntensity > 10.0f) {
             score -= 40.0f;
         }
@@ -957,7 +957,7 @@ private:
             score += 30.0f;
         }
 
-        // 低延迟要求扣分（GPU 启动开销）
+        // 低延迟要求扣分(GPU 启动开销)
         if (profile.latencyRequirement < 0.1f) {
             score -= 50.0f;
         }
@@ -978,7 +978,7 @@ private:
             score += 60.0f;
         }
 
-        // 固定模式加分（FPGA 优势）
+        // 固定模式加分(FPGA 优势)
         if (profile.computeIntensity > 1.0f && profile.computeIntensity < 10.0f) {
             score += 30.0f;
         }
@@ -1054,7 +1054,7 @@ public class UnifiedAccelUdf extends ScalarFunction {
             // 上传数据
             copyToDevice(inputHandle, input);
 
-            // 启动 Kernel（自动选择或指定设备）
+            // 启动 Kernel(自动选择或指定设备)
             launchTransform(
                 "vector_transform",
                 new long[]{inputHandle},
@@ -1076,7 +1076,7 @@ public class UnifiedAccelUdf extends ScalarFunction {
     }
 
     /**
-     * 矩阵乘法（使用最优 BLAS 实现）
+     * 矩阵乘法(使用最优 BLAS 实现)
      */
     public float[][] matmul(float[][] A, float[][] B) {
         int M = A.length;
@@ -1170,7 +1170,7 @@ public class UnifiedAccelExample {
             WHERE data_size > 10000
         """);
 
-        // 使用示例 3: 强制使用 FPGA（低延迟场景）
+        // 使用示例 3: 强制使用 FPGA(低延迟场景)
         UnifiedAccelUdf fpgaUdf = new UnifiedAccelUdf();
         fpgaUdf.setPreferredDevice(UnifiedAccelUdf.DEVICE_FPGA);
         tEnv.createTemporarySystemFunction("fpga_transform", fpgaUdf);

@@ -1,11 +1,12 @@
 > **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
-> 
+>
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # Flink 版本发布跟踪系统
 
-> **系统位置**: `.scripts/flink-release-tracker.py`  
-> **主文档**: [Flink/version-tracking.md](../Flink/version-tracking.md)  
-> **最后更新**: 2026-04-04
+> **系统位置**: `.scripts/flink-release-tracker.py`
+> **主文档**: [Flink/version-tracking.md](../Flink/version-tracking.md)
+> **最后更新**: 2026-04-15
 
 ---
 
@@ -38,11 +39,13 @@ python .scripts/flink-release-tracker.py --help
 ### 定时任务配置
 
 **Linux/macOS (crontab)**:
+
 ```bash
 0 9 * * * cd /path/to/AnalysisDataFlow && python .scripts/flink-release-tracker.py --report
 ```
 
 **Windows (Task Scheduler)**:
+
 ```powershell
 $action = New-ScheduledTaskAction -Execute "python" -Argument ".scripts\flink-release-tracker.py --report" -WorkingDirectory "E:\_src\AnalysisDataFlow"
 $trigger = New-ScheduledTaskTrigger -Daily -At 9am
@@ -63,7 +66,7 @@ Register-ScheduledTask -TaskName "FlinkReleaseTracker" -Action $action -Trigger 
 
 ### 最近变更
 
-暂无变更记录。系统将在检测到版本状态变更时自动更新。
+- **2026-04-15**: 更新 FLIP 状态 — FLIP-555 Accepted (正在实现)；FLIP-564/566 正在讨论；Flink 2.3 计划进行中。
 
 ---
 

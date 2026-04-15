@@ -163,7 +163,7 @@ security.kerberos.login.keytab: /etc/flink/conf/flink.keytab
 security.kerberos.login.principal: flink/_HOST@EXAMPLE.COM
 security.kerberos.krb5-conf.path: /etc/krb5.conf
 
-# Hadoop集成（如使用HDFS/RocksDB）
+# Hadoop集成(如使用HDFS/RocksDB)
 security.kerberos.login.contexts: Client,KafkaClient
 ```
 
@@ -323,7 +323,7 @@ security.ssl.rest.key-password: ${KEY_PASSWORD}
 security.ssl.rest.truststore: /etc/flink/ssl/rest.truststore
 security.ssl.rest.truststore-password: ${TRUSTSTORE_PASSWORD}
 
-# 客户端证书认证（可选）
+# 客户端证书认证(可选)
 security.ssl.rest.cert-fingerprint.enabled: true
 ```
 
@@ -393,7 +393,7 @@ keytool -import -v -trustcacerts \
     -keystore $FLINK_SSL_DIR/flink.truststore \
     -storepass ${TRUSTSTORE_PASSWORD} -noprompt
 
-echo "证书生成完成，有效期365天"
+echo "证书生成完成,有效期365天"
 ```
 
 ---
@@ -407,11 +407,11 @@ echo "证书生成完成，有效期365天"
 ```yaml
 # flink-conf.yaml
 
-# 强制使用TLS 1.2+（禁用SSLv3, TLS 1.0/1.1）
+# 强制使用TLS 1.2+(禁用SSLv3, TLS 1.0/1.1)
 security.ssl.protocol: TLSv1.2
 security.ssl.algorithms: TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 
-# 启用完美前向保密（PFS）
+# 启用完美前向保密(PFS)
 security.ssl.internal.session-timeout: 86400
 security.ssl.internal.session-cache-size: 1024
 ```
@@ -450,7 +450,7 @@ security.ssl.internal.session-cache-size: 1024
 **配置示例**:
 
 ```yaml
-# 内部通信SSL（TaskManager与JobManager之间）
+# 内部通信SSL(TaskManager与JobManager之间)
 security.ssl.internal.enabled: true
 security.ssl.internal.keystore: /etc/flink/ssl/internal.keystore
 security.ssl.internal.keystore-password: ${INTERNAL_KEYSTORE_PASS}
@@ -477,11 +477,11 @@ security.ssl.rest.keystore: /etc/flink/ssl/rest.keystore
 security.ssl.rest.keystore-password: ${REST_KEYSTORE_PASS}
 security.ssl.rest.key-password: ${REST_KEY_PASS}
 
-# HSTS头（强制HTTPS）
+# HSTS头(强制HTTPS)
 web-access-control-allow-origin: https://flink-ui.example.com
 web-content-security-policy: "default-src 'self'; script-src 'self' 'unsafe-inline'"
 
-# 禁用HTTP（强制跳转HTTPS）
+# 禁用HTTP(强制跳转HTTPS)
 rest.bind-address: 0.0.0.0
 rest.port: 8443
 rest.ssl.enabled: true
@@ -528,7 +528,7 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
 
-        # WebSocket支持（用于Flink Web UI实时更新）
+        # WebSocket支持(用于Flink Web UI实时更新)
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
     }
@@ -586,7 +586,7 @@ public class EncryptedRocksDBStateBackend extends RocksDBStateBackend {
 ```yaml
 # flink-conf.yaml
 
-# 使用HDFS透明加密（HDFS TDE）
+# 使用HDFS透明加密(HDFS TDE)
 state.backend: rocksdb
 state.checkpoints.dir: hdfs:///flink-checkpoints
 state.savepoints.dir: hdfs:///flink-savepoints
@@ -1198,7 +1198,7 @@ patch: {}
 **Trivy扫描配置**:
 
 ```dockerfile
-# Dockerfile - 多阶段构建，包含安全扫描
+# Dockerfile - 多阶段构建,包含安全扫描
 FROM flink:1.18-scala_2.12-java11 AS base
 
 # 构建阶段
@@ -1482,7 +1482,7 @@ if __name__ == '__main__':
     findings = scanner.scan()
     print(scanner.generate_report(findings))
 
-    # 如果有严重或高危问题，退出码非零
+    # 如果有严重或高危问题,退出码非零
     critical_high = [f for f in findings if f.severity in ['CRITICAL', 'HIGH']]
     sys.exit(1 if critical_high else 0)
 ```
@@ -1505,7 +1505,7 @@ if __name__ == '__main__':
 # 1. 身份认证配置
 # -----------------------------------------------------------------------------
 
-# Kerberos认证（如果使用Hadoop生态系统）
+# Kerberos认证(如果使用Hadoop生态系统)
 security.kerberos.login.use-ticket-cache: false
 security.kerberos.login.keytab: /etc/security/keytabs/flink.service.keytab
 security.kerberos.login.principal: flink/_HOST@PRODUCTION.EXAMPLE.COM
@@ -1519,7 +1519,7 @@ security.kerberos.krb5-conf.path: /etc/krb5.conf
 security.ssl.protocol: TLSv1.3
 security.ssl.algorithms: TLS_AES_256_GCM_SHA384,TLS_CHACHA20_POLY1305_SHA256
 
-# 内部通信SSL（TaskManager ↔ JobManager）
+# 内部通信SSL(TaskManager ↔ JobManager)
 security.ssl.internal.enabled: true
 security.ssl.internal.keystore: /etc/flink/ssl/internal.keystore
 security.ssl.internal.keystore-password: ${INTERNAL_KEYSTORE_PASSWORD}
@@ -1543,7 +1543,7 @@ security.ssl.rest.authentication.enabled: true
 # 3. 网络配置
 # -----------------------------------------------------------------------------
 
-# 绑定地址（生产环境建议指定具体IP）
+# 绑定地址(生产环境建议指定具体IP)
 rest.bind-address: 10.0.1.10
 rest.port: 8443
 rest.address: flink-jobmanager.production.svc.cluster.local
@@ -1606,7 +1606,7 @@ high-availability.zookeeper.path.root: /flink-production
 high-availability.cluster-id: production-cluster
 high-availability.storageDir: s3p://flink-production-ha/
 
-# ZooKeeper安全配置（如果启用SASL）
+# ZooKeeper安全配置(如果启用SASL)
 high-availability.zookeeper.client.acl: creator
 high-availability.zookeeper.sasl.service-name: zookeeper
 
@@ -1997,7 +1997,7 @@ graph LR
 ### 阶段2: 遏制 (15-60分钟)
 - [ ] 隔离受影响组件
 - [ ] 保留现场证据
-- [ ] 启用备用集群（如需要）
+- [ ] 启用备用集群(如需要)
 - [ ] 限制进一步访问
 
 ### 阶段3: 根除 (1-4小时)

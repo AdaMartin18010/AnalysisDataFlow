@@ -351,7 +351,7 @@ Flink 的 `withIdleness(Duration)` 机制在 Source 端引入空闲检测：
 import org.apache.flink.api.common.eventtime.{SerializableTimestampAssigner, WatermarkStrategy}
 import java.time.Duration
 
-// 有序流：无乱序，Watermark 等于当前最大事件时间
+// 有序流:无乱序,Watermark 等于当前最大事件时间
 val orderedWatermarkStrategy: WatermarkStrategy[SensorReading] =
   WatermarkStrategy
     .forMonotonousTimestamps[SensorReading]()
@@ -359,7 +359,7 @@ val orderedWatermarkStrategy: WatermarkStrategy[SensorReading] =
       override def extractTimestamp(element: SensorReading, recordTimestamp: Long): Long =
         element.timestamp
     })
-    // 空闲源处理：2分钟内无数据视为空闲
+    // 空闲源处理:2分钟内无数据视为空闲
     .withIdleness(Duration.ofMinutes(2))
 ```
 
@@ -368,7 +368,7 @@ val orderedWatermarkStrategy: WatermarkStrategy[SensorReading] =
 最常用策略，适用于网络传输导致的乱序场景：
 
 ```scala
-// 乱序交易流：容忍最大 10 秒乱序
+// 乱序交易流:容忍最大 10 秒乱序
 val boundedWatermarkStrategy: WatermarkStrategy[Transaction] =
   WatermarkStrategy
     .forBoundedOutOfOrderness[Transaction](Duration.ofSeconds(10))
@@ -405,7 +405,7 @@ class PunctuatedWatermarkGenerator extends WatermarkGenerator[SensorReading] {
   }
 
   override def onPeriodicEmit(output: WatermarkOutput): Unit = {
-    // 周期性发射，确保进度不被阻塞
+    // 周期性发射,确保进度不被阻塞
     if (maxTimestamp > Long.MinValue) {
       output.emitWatermark(new Watermark(maxTimestamp - 1))
     }
@@ -442,10 +442,10 @@ val sessionStream = sensorStream
   // 2. 按设备 ID 分区
   .keyBy(_.deviceId)
 
-  // 3. 定义会话窗口（10分钟无活动则关闭）
+  // 3. 定义会话窗口(10分钟无活动则关闭)
   .window(EventTimeSessionWindows.withGap(Time.minutes(10)))
 
-  // 4. 允许 30 秒延迟（Watermark 过后仍可更新）
+  // 4. 允许 30 秒延迟(Watermark 过后仍可更新)
   .allowedLateness(Time.seconds(30))
 
   // 5. 侧输出捕获完全迟到的数据
@@ -482,7 +482,7 @@ class DeviceSessionAggregateFunction
     readings: Iterable[SensorReading],
     out: Collector[DeviceSession]
   ): Unit = {
-    // 按事件时间排序处理（处理乱序到达）
+    // 按事件时间排序处理(处理乱序到达)
     val sortedReadings = readings.toVector.sortBy(_.timestamp)
 
     // 计算会话统计
@@ -513,7 +513,7 @@ class DeviceSessionAggregateFunction
 **Join 操作的 Watermark 处理** [^3][^4]：
 
 ```scala
-// 双流 Join：Watermark 取最小值
+// 双流 Join:Watermark 取最小值
 val joinedStream = transactionStream
   .join(userProfileStream)
   .where(_.userId)
@@ -541,7 +541,7 @@ val sourceA = env.fromSource(kafkaSourceA,
 
 val sourceB = env.fromSource(kafkaSourceB,
   WatermarkStrategy.forBoundedOutOfOrderness[Event](Duration.ofSeconds(10))
-    .withIdleness(Duration.ofMinutes(5)),  // 关键：空闲源处理
+    .withIdleness(Duration.ofMinutes(5)),  // 关键:空闲源处理
   "Source B"
 )
 
@@ -575,7 +575,7 @@ Source B wm=10 ──┘
 
 Source B 空闲后 (5分钟无数据):
 Source A wm=25 ──┐
-                 ├─► Source B 被标记为空闲，只考虑 Source A
+                 ├─► Source B 被标记为空闲,只考虑 Source A
 Source B wm=10 ──┘ (空闲)
 
 输出 wm=25 ──► Window 正常触发

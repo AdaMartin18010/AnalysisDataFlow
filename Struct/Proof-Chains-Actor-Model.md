@@ -714,7 +714,7 @@ val counter: Behavior[Command] = Behaviors.setup { ctx =>
 
 init([]) ->
     SupFlags = #{
-        strategy => one_for_one,      % 独立组件，故障隔离
+        strategy => one_for_one,      % 独立组件,故障隔离
         intensity => 5,               % 5次重启
         period => 60                  % 在60秒内
     },

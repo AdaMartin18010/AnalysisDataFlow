@@ -228,6 +228,7 @@ docker-compose exec jobmanager cat /data/output/wordcount-result.txt
 ### 预期输出示例
 
 ```
+# 伪代码示意，非完整可编译代码
 (apache,1)
 (flink,8)
 (streaming,3)
@@ -283,7 +284,7 @@ docker-compose exec jobmanager flink run \
   -c com.example.WordCount \
   /jobs/first-flink-job-1.0-SNAPSHOT.jar
 
-# 在终端 1 输入文本，观察输出
+# 在终端 1 输入文本,观察输出
 ```
 
 ### 练习 3: 自定义数据源

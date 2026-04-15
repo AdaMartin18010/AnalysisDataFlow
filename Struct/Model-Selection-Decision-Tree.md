@@ -242,7 +242,7 @@ Paxos/Raft    2PC       Vector Clocks
 
 ```
 ┌─────────────────────────────────────────┐
-│           系统架构（在线电商）            │
+│           系统架构(在线电商)            │
 ├─────────────────────────────────────────┤
 │  订单服务: Actor + 2PC (强一致性)        │
 │  库存服务: Actor + 2PC (强一致性)        │
@@ -372,7 +372,7 @@ class OrderActor extends Actor {
 
 ```
 流处理系统? → 是
-├── 复杂事件处理? → 是（用户行为模式匹配）
+├── 复杂事件处理? → 是(用户行为模式匹配)
 │   └── 推荐: Dataflow + CEP
 └── 一致性要求? → 最终一致
     └── 可结合: 窗口状态 + 增量更新
@@ -444,12 +444,12 @@ ReleaseLock(p) ==
   /\ lockHolder' = None
   /\ UNCHANGED <<requested>>
 
-(* 安全属性：互斥 *)
+(* 安全属性:互斥 *)
 MutualExclusion ==
   \A p1, p2 \in Processes :
     (lockHolder = p1 /\ lockHolder = p2) => p1 = p2
 
-(* 活性属性：无饥饿 *)
+(* 活性属性:无饥饿 *)
 NoStarvation ==
   \A p \in Processes :
     p \in requested ~> lockHolder = p

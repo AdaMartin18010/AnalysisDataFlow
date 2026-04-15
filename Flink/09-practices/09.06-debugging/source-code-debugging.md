@@ -498,7 +498,7 @@ import org.apache.flink.streaming.api.environment.LocalStreamEnvironment;
 
 public class LocalDebugJob {
     public static void main(String[] args) throws Exception {
-        // 创建本地环境，单线程执行便于调试
+        // 创建本地环境,单线程执行便于调试
         StreamExecutionEnvironment env =
             StreamExecutionEnvironment.createLocalEnvironment(1);
 
@@ -538,7 +538,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 Configuration conf = new Configuration();
 
-// 启用 Web UI（默认端口 8081）
+// 启用 Web UI(默认端口 8081)
 conf.setBoolean("local.start-webserver", true);
 
 // 状态后端配置
@@ -588,7 +588,7 @@ public class MiniClusterDebugTest {
            .map(new RichMapFunction<String, String>() {
                @Override
                public String map(String value) {
-                   // ← 断点：观察 subtask index
+                   // ← 断点:观察 subtask index
                    int index = getRuntimeContext().getIndexOfThisSubtask();
                    return value + "_" + index;
                }
@@ -724,7 +724,7 @@ Command line arguments: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,ad
 **YARN Session 模式调试**:
 
 ```bash
-# 启动 YARN Session，开启 JM 调试
+# 启动 YARN Session,开启 JM 调试
 ./bin/yarn-session.sh \
     -jm 1024 \
     -tm 2048 \
@@ -764,7 +764,7 @@ ssh <nodemanager-host>
 **YARN 调试隧道建立**:
 
 ```bash
-# 建立端口转发，将远程调试端口映射到本地
+# 建立端口转发,将远程调试端口映射到本地
 ssh -L 5005:<container-host>:5005 -L 5006:<container-host>:5006 <gateway-host>
 
 # IDEA 配置连接 localhost:5005
@@ -1060,7 +1060,7 @@ public void channelRead(ChannelHandlerContext ctx, Object msg) {
 // LocalInputChannel.java
 public void checkAndWaitForBuffers() throws IOException {
     // ← 断点: 检查 buffer 可用性
-    // 如果无可用 buffer，进入背压状态
+    // 如果无可用 buffer,进入背压状态
 }
 ```
 
@@ -1122,7 +1122,7 @@ tar -xzf async-profiler-3.0-linux-x64.tar.gz
 # 获取 Flink 进程 PID
 jps -lvm | grep flink
 
-# CPU 分析（生成火焰图）
+# CPU 分析(生成火焰图)
 ./profiler.sh -d 60 -f /tmp/flamegraph.html <flink_pid>
 
 # 内存分配分析
@@ -1268,10 +1268,10 @@ curl http://jobmanager:8081/jobs/<job_id>/vertices/<vertex_id>/metrics?get=backP
 **步骤 3: 优化验证**
 
 ```java
-// 优化前：火焰图显示 Kryo 序列化耗时 40%
+// 优化前:火焰图显示 Kryo 序列化耗时 40%
 DataStream<ComplexObject> stream = ...;
 
-// 优化：使用 Avro 序列化并开启 compression
+// 优化:使用 Avro 序列化并开启 compression
 env.getConfig().enableForceAvro();
 env.getConfig().setAutoWatermarkInterval(200);
 

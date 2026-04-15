@@ -99,7 +99,7 @@ $$\sim \subsetneq \approx_w \subsetneq \approx_o$$
 ```text
 Expressiveness Hierarchy (表达力层级):
 
-Turing Machine (最高，图灵完备)
+Turing Machine (最高,图灵完备)
     ↑ 可编码
 Process Calculus (π-calculus)
     ↑ 可编码

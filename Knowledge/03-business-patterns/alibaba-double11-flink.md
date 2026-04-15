@@ -456,7 +456,7 @@ env.setStateBackend(stateBackend)
 ```
 定义:
 • 设数据中心集合 DC = {dc₁, dc₂, ..., dcₙ}
-• 设写操作 W(k, v) 写入key k，值 v
+• 设写操作 W(k, v) 写入key k,值 v
 • 设读操作 R(k) 读取key k
 • 设复制延迟函数 R(dcᵢ, dcⱼ)
 
@@ -468,7 +468,7 @@ env.setStateBackend(stateBackend)
 ∀ dcᵢ: W(k, v) 完成时间 t ⟹
   ∀ dcⱼ: 收到 v 时间 t' ≤ t
 
-即写操作在所有副本确认后才返回成功，
+即写操作在所有副本确认后才返回成功,
 保证后续读操作一定能读到最新值。
 
 因此满足 Linearizability:
@@ -498,7 +498,7 @@ T₂₀ = T_schedule + T_connect
     ≈ 秒级
 
 其中关键改进:
-• T_migrate → 0 (状态无需迁移，已远程化)
+• T_migrate → 0 (状态无需迁移,已远程化)
 • T_restart 大幅降低 (无需加载本地状态)
 ```
 

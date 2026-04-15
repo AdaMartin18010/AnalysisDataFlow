@@ -206,8 +206,8 @@ ExactlyOnce ==
 (* Checkpoint触发 *)
 TriggerCheckpoint ==
     /\ checkpointId' = checkpointId + 1
-    /\ checkpointStates' = checkpointStates \union 
-        {[id |-> checkpointId', 
+    /\ checkpointStates' = checkpointStates \union
+        {[id |-> checkpointId',
           state |-> operatorStates,
           timestamp |-> Now]}
 
@@ -307,10 +307,11 @@ Qed.
 #### Checkpoint一致性证明
 
 ```tla
+# 伪代码示意，非完整可编译代码
 THEOREM CheckpointConsistency ==
     Spec => [](\A cid \in completedCheckpoints :
         \A w1, w2 \in Workers :
-            checkpointStates[cid][w1].timestamp = 
+            checkpointStates[cid][w1].timestamp =
             checkpointStates[cid][w2].timestamp)
 
 <1>1. Init => ...
@@ -433,19 +434,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Setup Coq
         uses: coq-community/setup-coq@v1
         with:
           coq-version: '8.17'
-      
+
       - name: Setup TLA+
         run: |
           wget https://github.com/tlaplus/tlaplus/releases/download/v1.7.1/tla2tools.jar
-      
+
       - name: Run Verification
         run: python .scripts/theorem-prover-automation.py --verbose
-      
+
       - name: Upload Results
         uses: actions/upload-artifact@v3
         with:
@@ -478,11 +479,3 @@ python .scripts/theorem-prover-automation.py --coverage
 ---
 
 ## 6. 引用参考
-
-[^1]: Y. Bertot and P. Castéran, "Interactive Theorem Proving and Program Development", Springer, 2004.
-[^2]: L. Lamport, "Specifying Systems", Addison-Wesley, 2002.
-[^3]: T. Akidau et al., "The Dataflow Model", PVLDB, 8(12), 2015.
-[^4]: P. Carbone et al., "Apache Flink: Stream and Batch Processing in a Single Engine", IEEE Data Engineering Bulletin, 2015.
-[^5]: M. Kleppmann, "Designing Data-Intensive Applications", O'Reilly, 2017.
-[^6]: Coq Reference Manual: https://coq.inria.fr/refman/
-[^7]: TLA+ Home Page: https://lamport.azurewebsites.net/tla/tla.html

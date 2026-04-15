@@ -309,7 +309,7 @@ kafka-acls --bootstrap-server kafka:9092 \
   --add --allow-principal User:analytics-service \
   --consumer --topic orders --group analytics-group
 
-# 3. 前缀匹配（多主题授权）
+# 3. 前缀匹配(多主题授权)
 kafka-acls --bootstrap-server kafka:9092 \
   --add --allow-principal User:etl-service \
   --operation Read --topic-prefix 'raw.'

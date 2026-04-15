@@ -28,11 +28,11 @@
 ```java
 // 第3.1节 Flink配置
 // 建议根据实际集群规模调整并行度
-env.setParallelism(100);  // 原为100，可根据TaskManager数量调整
+env.setParallelism(100);  // 原为100,可根据TaskManager数量调整
 
 // 第3.2节 Redis连接池
 // 建议根据实际Redis节点数调整
-jedisPoolConfig.setMaxTotal(1000);  // 原为1000，可根据并发量调整
+jedisPoolConfig.setMaxTotal(1000);  // 原为1000,可根据并发量调整
 ```
 
 ### 1.3 已知限制

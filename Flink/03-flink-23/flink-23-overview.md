@@ -389,7 +389,7 @@ CREATE TABLE user_events (
     'format' = 'json'
 );
 
--- 聚合查询，状态自动使用 ForSt 云原生后端
+-- 聚合查询,状态自动使用 ForSt 云原生后端
 CREATE TABLE event_counts (
     user_id STRING PRIMARY KEY NOT ENFORCED,
     cnt BIGINT,

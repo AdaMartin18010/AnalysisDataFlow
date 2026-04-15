@@ -98,17 +98,17 @@ $$\text{Wasm-DF} = \langle W, R, \Phi, \Sigma, \Lambda \rangle$$
 ```wat
 ;; Wasm-DF 算子模块结构示例
 (module
-  ;; 导入：输入流接口
+  ;; 导入:输入流接口
   (import "stream" "read" (func $stream_read (param i32) (result i32)))
 
-  ;; 导入：输出流接口
+  ;; 导入:输出流接口
   (import "stream" "write" (func $stream_write (param i32 i32)))
 
-  ;; 导入：状态存储接口
+  ;; 导入:状态存储接口
   (import "state" "get" (func $state_get (param i32) (result i64)))
   (import "state" "set" (func $state_set (param i32 i64)))
 
-  ;; 线性内存：窗口缓冲区
+  ;; 线性内存:窗口缓冲区
   (memory (export "window") 1 4)
 
   ;; 主处理函数
@@ -117,12 +117,12 @@ $$\text{Wasm-DF} = \langle W, R, \Phi, \Sigma, \Lambda \rangle$$
     ...
   )
 
-  ;; 快照函数：序列化状态
+  ;; 快照函数:序列化状态
   (func (export "snapshot") (result i32)
     ...
   )
 
-  ;; 恢复函数：反序列化状态
+  ;; 恢复函数:反序列化状态
   (func (export "restore") (param $snapshot i32)
     ...
   )
@@ -526,17 +526,17 @@ $$\forall k \in \text{Keys}(S_s): \quad \text{state.get}(k)_{R_s} = \text{state.
 │ 经典 Dataflow 概念        │ Wasm-DF 实现                              │
 ├──────────────────────────┼──────────────────────────────────────────┤
 │ Operator (算子)          │ Wasm 模块实例                             │
-│                          │ - 导入：输入流接口                         │
-│                          │ - 导出：处理函数                           │
-│                          │ - 线性内存：窗口状态                       │
+│                          │ - 导入:输入流接口                         │
+│                          │ - 导出:处理函数                           │
+│                          │ - 线性内存:窗口状态                       │
 ├──────────────────────────┼──────────────────────────────────────────┤
 │ Data Stream (数据流)     │ WASI 流接口 + 消息队列                     │
 │                          │ - stream.read/write                      │
 │                          │ - 零拷贝共享内存 (postMessage)            │
 ├──────────────────────────┼──────────────────────────────────────────┤
 │ State Backend (状态后端) │ Wasm 状态接口 + 外部存储                   │
-│                          │ - 本地：线性内存                          │
-│                          │ - 持久化：Redis/DynamoDB                  │
+│                          │ - 本地:线性内存                          │
+│                          │ - 持久化:Redis/DynamoDB                  │
 ├──────────────────────────┼──────────────────────────────────────────┤
 │ Checkpoint (检查点)      │ snapshot/restore 函数                     │
 │                          │ - 内存序列化                              │
@@ -952,7 +952,7 @@ impl CapabilitySandbox {
     }
 }
 
-// 使用示例：为数据流算子创建最小权限沙箱
+// 使用示例:为数据流算子创建最小权限沙箱
 let sandbox = CapabilitySandbox {
     capabilities: Capabilities {
         filesystem: FilesystemCapabilities {
@@ -1504,7 +1504,7 @@ pub extern "C" fn restore(state_ptr: i32, state_len: i32) {
 **WebAssembly 模块链接**允许将多个 Wasm 模块组合成复杂的数据流管道：
 
 ```wat
-;; main-pipeline.wat - 主模块，链接多个算子模块
+;; main-pipeline.wat - 主模块,链接多个算子模块
 (module
   ;; 导入外部算子模块的函数
   (import "filter" "should_pass" (func $filter_should_pass (param i32) (result i32)))
@@ -1969,7 +1969,7 @@ impl WindowAggregator {
         }
 
         if event.timestamp - self.window_start >= self.window_size_ms {
-            // 窗口触发，返回聚合结果
+            // 窗口触发,返回聚合结果
             let result = self.aggregate_and_reset();
             self.window_start = event.timestamp;
             self.events.push(event);
@@ -2034,7 +2034,7 @@ func process(inputPtr uint32, inputLen uint32) uint32 {
   return 0
  }
 
- // 业务逻辑：异常检测
+ // 业务逻辑:异常检测
  if event.Value > 10000 || event.Value < -10000 {
   alert := Event{
    Timestamp: event.Timestamp,
@@ -2343,7 +2343,7 @@ fn mask_email(email: &str) -> String {
 }
 
 fn anonymize_ip(ip: &str) -> String {
-    // 保留网段，隐藏主机位
+    // 保留网段,隐藏主机位
     ip.rsplitn(2, '.')
         .last()
         .map(|net| format!("{}.0", net))
@@ -2758,14 +2758,14 @@ stateDiagram-v2
     Standby --> [*]: 函数下线
 
     note right of Checkpointing
-        异步状态持久化：
+        异步状态持久化:
         - 内存状态序列化
         - 写入 State Backend
         - 确认 Checkpoint
     end note
 
     note right of Migrated
-        跨运行时迁移：
+        跨运行时迁移:
         - 暂停执行
         - 序列化状态
         - 网络传输

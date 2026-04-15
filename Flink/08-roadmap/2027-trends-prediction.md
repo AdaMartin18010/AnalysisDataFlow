@@ -364,7 +364,7 @@ spec:
     resource:
       memory: 16Gi
       cpu: 8
-    # 存算分离：State 写入远程对象存储
+    # 存算分离:State 写入远程对象存储
     stateBackend:
       type: forst
       remoteStorage: s3://flink-state-bucket/
@@ -392,10 +392,10 @@ spec:
 
 ```sql
 -- ============================================
--- 2027 年 Flink SQL：Agentic Streaming 场景
+-- 2027 年 Flink SQL:Agentic Streaming 场景
 -- ============================================
 
--- 1. 创建多模态输入流（文本 + 嵌入向量）
+-- 1. 创建多模态输入流(文本 + 嵌入向量)
 CREATE TABLE customer_inquiries (
     inquiry_id STRING,
     text STRING,
@@ -408,7 +408,7 @@ CREATE TABLE customer_inquiries (
     'format' = 'json'
 );
 
--- 2. 创建 Agent 知识库（向量搜索表）
+-- 2. 创建 Agent 知识库(向量搜索表)
 CREATE TABLE knowledge_base (
     doc_id STRING,
     content STRING,
@@ -463,13 +463,13 @@ GROUP BY inquiry_id, text, event_time;
 
 ```mermaid
 quadrantChart
-    title 2027 流计算趋势影响力矩阵（确定性 vs 颠覆性）
+    title 2027 流计算趋势影响力矩阵(确定性 vs 颠覆性)
     x-axis 低确定性 --> 高确定性
     y-axis 低颠覆性 --> 高颠覆性
-    quadrant-1 优先布局（高确定性+高颠覆性）
-    quadrant-2 观望创新（低确定性+高颠覆性）
-    quadrant-3 边缘关注（低确定性+低颠覆性）
-    quadrant-4 稳健推进（高确定性+低颠覆性）
+    quadrant-1 优先布局(高确定性+高颠覆性)
+    quadrant-2 观望创新(低确定性+高颠覆性)
+    quadrant-3 边缘关注(低确定性+低颠覆性)
+    quadrant-4 稳健推进(高确定性+低颠覆性)
     "统一批流湖仓": [0.90, 0.90]
     "SQL 第一入口": [0.90, 0.80]
     "自适应调度默认": [0.90, 0.70]

@@ -424,7 +424,7 @@ public class SyncBidProcessor extends ProcessFunction<Event, Result> {
     }
 }
 
-// 优化目标: Flink 2.0 异步模式，吞吐量提升 40%
+// 优化目标: Flink 2.0 异步模式,吞吐量提升 40%
 public class AsyncBidProcessor extends AsyncProcessFunction<Event, Result> {
     private AsyncValueState<BidState> state;
 
@@ -463,7 +463,7 @@ test_scenarios:
 **问题复现**:
 
 ```
-场景: 1TB 状态，100 个 Key Group
+场景: 1TB 状态,100 个 Key Group
 故障: 恢复过程中第 47 个 Key Group 加载超时
 影响: 作业恢复时间从预期的 60s 延长到 10 分钟
 ```
@@ -473,7 +473,7 @@ test_scenarios:
 ```java
 // 优化前: 串行加载
 for (KeyGroup kg : keyGroups) {
-    loadKeyGroup(kg);  // 串行，慢
+    loadKeyGroup(kg);  // 串行,慢
 }
 
 // 优化后: 并行加载 + 超时重试

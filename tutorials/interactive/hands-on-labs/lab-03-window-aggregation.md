@@ -164,7 +164,7 @@ public class SlidingWindowExample {
             .addSource(new PageViewSource())
             .assignTimestampsAndWatermarks(...);
 
-        // 滑动窗口：窗口大小5分钟，滑动间隔1分钟
+        // 滑动窗口:窗口大小5分钟,滑动间隔1分钟
         DataStream<PageViewStats> slidingStats = pageViews
             .keyBy(pv -> pv.pageUrl)
             .window(SlidingEventTimeWindows.of(
@@ -173,7 +173,7 @@ public class SlidingWindowExample {
             ))
             .aggregate(new PageViewCounter());
 
-        // 效果：每个事件被包含在5个窗口中
+        // 效果:每个事件被包含在5个窗口中
         slidingStats.print("Sliding");
 
         env.execute("Sliding Window Example");
@@ -223,7 +223,7 @@ public class SessionWindowExample {
             .addSource(new UserActivitySource())
             .assignTimestampsAndWatermarks(...);
 
-        // 会话窗口：间隔5分钟无活动则视为新会话
+        // 会话窗口:间隔5分钟无活动则视为新会话
         DataStream<SessionResult> sessions = activities
             .keyBy(activity -> activity.userId)
             .window(EventTimeSessionWindows.withGap(Time.minutes(5)))
@@ -381,7 +381,7 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.api.common.functions.AggregateFunction;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-// 最佳实践：AggregateFunction + ProcessWindowFunction
+// 最佳实践:AggregateFunction + ProcessWindowFunction
 DataStream<WindowStats> results = stream
     .keyBy(record -> record.category)
     .window(TumblingEventTimeWindows.of(Time.minutes(5)))
@@ -425,7 +425,7 @@ import org.apache.flink.streaming.api.windowing.triggers.TriggerResult;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 
-// 自定义触发器：每收到10条数据触发一次
+// 自定义触发器:每收到10条数据触发一次
 public class CountTrigger extends Trigger<Object, TimeWindow> {
 
     private final int maxCount;
@@ -501,19 +501,19 @@ import org.apache.flink.api.common.functions.AggregateFunction;
 
 public class WindowBenchmark {
 
-    // 方法1: 纯 AggregateFunction（推荐，内存友好）
+    // 方法1: 纯 AggregateFunction(推荐,内存友好)
     public void incrementalAggregation() {
         stream.window(...)
             .aggregate(new IncrementalAggregate());
     }
 
-    // 方法2: ProcessWindowFunction（功能强大但内存消耗大）
+    // 方法2: ProcessWindowFunction(功能强大但内存消耗大)
     public void fullWindowFunction() {
         stream.window(...)
             .process(new FullProcessFunction());
     }
 
-    // 方法3: 结合两者（最佳实践）
+    // 方法3: 结合两者(最佳实践)
     public void combinedApproach() {
         stream.window(...)
             .aggregate(new IncrementalAggregate(), new EnrichmentFunction());
@@ -567,7 +567,7 @@ public class DynamicWindowAssigner extends WindowAssigner<Object, TimeWindow> {
 
 import org.apache.flink.streaming.api.datastream.DataStream;
 
-// 使用 Side Output 处理迟到数据，并触发窗口重计算
+// 使用 Side Output 处理迟到数据,并触发窗口重计算
 DataStream<WindowResult> mainResults = ...;
 DataStream<Element> lateData = mainResults.getSideOutput(lateDataTag);
 
@@ -600,7 +600,7 @@ public static class OptimizedSessionWindow extends
             Collection<TimeWindow> windows,
             MergeCallback<TimeWindow> callback) {
 
-        // 优化合并算法，减少不必要的合并
+        // 优化合并算法,减少不必要的合并
         List<TimeWindow> sortedWindows = new ArrayList<>(windows);
         sortedWindows.sort(Comparator.comparingLong(TimeWindow::getStart));
 

@@ -131,13 +131,13 @@ $$\text{Speedup}_{recovery} \approx 1.4 \sim 1.6$$
 │                    Flink 状态后端演进                         │
 ├─────────────────────────────────────────────────────────────┤
 │  HashMapStateBackend                                        │
-│  └── 纯内存，低延迟，状态受限于单节点内存                      │
+│  └── 纯内存,低延迟,状态受限于单节点内存                      │
 ├─────────────────────────────────────────────────────────────┤
 │  EmbeddedRocksDBStateBackend                                │
-│  └── 本地磁盘 + 内存缓存，支持大状态，Checkpoint 到分布式存储   │
+│  └── 本地磁盘 + 内存缓存,支持大状态,Checkpoint 到分布式存储   │
 ├─────────────────────────────────────────────────────────────┤
 │  ForStStateBackend (Flink 2.0+)                             │
-│  └── 针对 Flink 优化的 RocksDB 变体，改进 SST 管理和内存效率    │
+│  └── 针对 Flink 优化的 RocksDB 变体,改进 SST 管理和内存效率    │
 ├─────────────────────────────────────────────────────────────┤
 │  Cloud-Native ForSt (Flink 2.3)                             │
 │  └── 内存 → 本地 SSD → 对象存储 自动分层                       │
@@ -285,7 +285,7 @@ state.backend.forst-cloud-native.cache.demotion.threshold: 0.2
 state.backend.forst-cloud-native.sync.mode: async
 state.backend.forst-cloud-native.sync.max-latency: 5min
 
-# 对特定状态启用同步上传（可选）
+# 对特定状态启用同步上传(可选)
 state.backend.forst-cloud-native.sync.keys: "payment_txn,account_balance"
 
 # --- 传输优化 ---
@@ -497,7 +497,7 @@ from collections import Counter
 
 def analyze_access_pattern(checkpoint_meta, top_n=10000):
     """
-    从 Checkpoint 元数据中提取最热的 Key，生成预取列表
+    从 Checkpoint 元数据中提取最热的 Key,生成预取列表
     """
     key_access_counts = Counter()
 
@@ -543,9 +543,9 @@ def analyze_access_pattern(checkpoint_meta, top_n=10000):
 □ 步骤 2: 配置对象存储访问权限 (IAM Role / AKSK)
 □ 步骤 3: 在测试环境使用 Savepoint 恢复验证
 □ 步骤 4: 调整本地缓存大小 (建议总状态的 15-25%)
-□ 步骤 5: 启用异步上传，监控首次 Checkpoint 耗时
+□ 步骤 5: 启用异步上传,监控首次 Checkpoint 耗时
 □ 步骤 6: 对比迁移前后的 P99 延迟和 Checkpoint 时间
-□ 步骤 7: 生产环境灰度切换，保留 72h 回滚窗口
+□ 步骤 7: 生产环境灰度切换,保留 72h 回滚窗口
 ```
 
 ## 8. 引用参考 (References)

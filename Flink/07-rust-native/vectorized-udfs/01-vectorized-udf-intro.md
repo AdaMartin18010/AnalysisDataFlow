@@ -701,7 +701,7 @@ mod tests {
 # benchmark_vectorized_udf.py
 """
 向量化 UDF 性能基准测试
-对比：标量 UDF vs 向量化 UDF vs 原生 SIMD UDF
+对比:标量 UDF vs 向量化 UDF vs 原生 SIMD UDF
 """
 
 import time
@@ -735,13 +735,13 @@ class VectorizedUDFBenchmark:
 
     @staticmethod
     def scalar_math_op(x: float) -> float:
-        """标量版本：复杂数学运算"""
+        """标量版本:复杂数学运算"""
         import math
         return (x ** 2 + 2 * x + 1) / math.log(x + 2) if x > -2 else 0
 
     @staticmethod
     def vectorized_math_op(x: pd.Series) -> pd.Series:
-        """向量化版本：复杂数学运算"""
+        """向量化版本:复杂数学运算"""
         return (x ** 2 + 2 * x + 1) / np.log(x + 2)
 
     def benchmark_math_op(self, df: pd.DataFrame, iterations: int = 5):
@@ -770,7 +770,7 @@ class VectorizedUDFBenchmark:
 
     @staticmethod
     def scalar_risk_grade(score: float) -> str:
-        """标量版本：风险等级评定"""
+        """标量版本:风险等级评定"""
         if score >= 90:
             return 'CRITICAL'
         elif score >= 70:
@@ -784,7 +784,7 @@ class VectorizedUDFBenchmark:
 
     @staticmethod
     def vectorized_risk_grade(scores: pd.Series) -> pd.Series:
-        """向量化版本：风险等级评定"""
+        """向量化版本:风险等级评定"""
         conditions = [
             scores >= 90,
             scores >= 70,
@@ -820,12 +820,12 @@ class VectorizedUDFBenchmark:
 
     @staticmethod
     def scalar_string_ops(s: str) -> str:
-        """标量版本：字符串处理"""
+        """标量版本:字符串处理"""
         return ' '.join(s.lower().strip().split())
 
     @staticmethod
     def vectorized_string_ops(s: pd.Series) -> pd.Series:
-        """向量化版本：字符串处理"""
+        """向量化版本:字符串处理"""
         return s.str.lower().str.strip().str.replace(r'\s+', ' ', regex=True)
 
     def benchmark_string_ops(self, df: pd.DataFrame, iterations: int = 5):
@@ -977,7 +977,7 @@ if __name__ == '__main__':
     try:
         benchmark.plot_results(results_df)
     except ImportError:
-        print("\n注意: matplotlib 未安装，跳过绘图")
+        print("\n注意: matplotlib 未安装,跳过绘图")
 ```
 
 ### 6.4 Flink SQL 完整配置示例
@@ -994,7 +994,7 @@ SET 'python.fn-execution.arrow.batch.size' = '10000';
 SET 'python.fn-execution.memory.managed' = 'true';
 SET 'python.fn-execution.parallelism' = '4';
 
--- 2. 创建源表（Kafka）
+-- 2. 创建源表(Kafka)
 CREATE TABLE user_events (
     user_id STRING,
     event_type STRING,
@@ -1011,7 +1011,7 @@ CREATE TABLE user_events (
     'json.ignore-parse-errors' = 'true'
 );
 
--- 3. 注册向量化 UDF（Python）
+-- 3. 注册向量化 UDF(Python)
 CREATE FUNCTION vec_normalize
 AS 'my_udfs.vectorized_normalize'
 LANGUAGE PYTHON
@@ -1028,7 +1028,7 @@ CREATE FUNCTION vec_parse_json
 AS 'my_udfs.vectorized_json_parser'
 LANGUAGE PYTHON;
 
--- 4. 创建目标表（Iceberg）
+-- 4. 创建目标表(Iceberg)
 CREATE TABLE processed_events (
     user_id STRING,
     normalized_value DOUBLE,

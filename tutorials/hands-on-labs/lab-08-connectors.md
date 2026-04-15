@@ -231,7 +231,7 @@ KafkaSink<Event> advancedSink = KafkaSink.<Event>builder()
     .setProperty(ProducerConfig.RETRIES_CONFIG, "3")
     .setProperty(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION, "5")
     .setProperty(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "true")
-    // 事务 ID 前缀（EXACTLY_ONCE 必需）
+    // 事务 ID 前缀(EXACTLY_ONCE 必需)
     .setProperty("transactional.id.prefix", "flink-kafka-sink-")
     .build();
 
@@ -325,8 +325,8 @@ import org.apache.flink.connector.jdbc.JdbcExecutionOptions;
 import org.apache.flink.connector.jdbc.JdbcSink;
 import org.apache.flink.connector.jdbc.JdbcStatementBuilder;
 
-// JDBC Source 主要用于 Lookup Join，而不是流式 Source
-// 维表 Lookup Join 示例（SQL）
+// JDBC Source 主要用于 Lookup Join,而不是流式 Source
+// 维表 Lookup Join 示例(SQL)
 tableEnv.executeSql("""
     CREATE TABLE users (
         user_id STRING,
@@ -476,7 +476,7 @@ public class ElasticsearchConnectorDemo {
         events.sinkTo(
             new Elasticsearch7SinkBuilder<Event>()
                 .setHosts(new HttpHost("localhost", 9200))
-                // 认证配置（如需要）
+                // 认证配置(如需要)
                 // .setBulkFlushMaxActions(1000)
                 // .setBulkFlushInterval(5000)
                 .setEmitter((element, context, indexer) -> {
@@ -674,7 +674,7 @@ tableEnv.executeSql("""
     )
 """);
 
-// 插入数据（自动分区）
+// 插入数据(自动分区)
 tableEnv.executeSql("""
     INSERT INTO partitioned_sink
     SELECT
@@ -775,7 +775,7 @@ public class EventKafkaSerializationSchema implements KafkaSerializationSchema<E
 
             return new ProducerRecord<>(
                 topic,
-                null,  // 分区（null 表示使用默认分区器）
+                null,  // 分区(null 表示使用默认分区器)
                 timestamp,
                 key,
                 value
@@ -994,7 +994,7 @@ new Elasticsearch7SinkBuilder<Event>()
         try {
             indexer.add(createIndexRequest(element));
         } catch (Exception e) {
-            // 记录失败元素，不抛出异常
+            // 记录失败元素,不抛出异常
             context.metricGroup().getCounter("es-errors").inc();
         }
     })

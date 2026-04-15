@@ -558,7 +558,7 @@ execution:
     max-concurrent-checkpoints: 1
     externalized-checkpoint-retention: RETAIN_ON_CANCELLATION
 
-# S3生命周期规则（配合上述配置）
+# S3生命周期规则(配合上述配置)
 # - 0-7天: Standard (快速恢复)
 # - 7-30天: Standard-IA (成本优化)
 # - 30天+: 删除或归档
@@ -602,7 +602,7 @@ def handle_spot_interruption():
         try:
             response = requests.get(metadata_url, timeout=2)
             if response.status_code == 200:
-                # 收到中断通知，触发紧急Checkpoint
+                # 收到中断通知,触发紧急Checkpoint
                 print(f"Spot interruption at {response.text}")
                 trigger_emergency_checkpoint()
                 graceful_shutdown()
@@ -613,7 +613,7 @@ def handle_spot_interruption():
 
 def trigger_emergency_checkpoint():
     """触发紧急Checkpoint"""
-    # 同步触发Checkpoint，确保状态持久化
+    # 同步触发Checkpoint,确保状态持久化
     flink_client.trigger_checkpoint(
         job_id=CURRENT_JOB_ID,
         cancel_job=False,
@@ -809,7 +809,7 @@ Month 1-2: 基础可见性 (Crawl)
   └── 识别最大成本项
 
 Month 3-4: 基础优化 (Walk)
-  ├── 购买预留实例（基线负载）
+  ├── 购买预留实例(基线负载)
   ├── 配置存储生命周期规则
   └── 实施开发环境自动关闭
 
@@ -900,7 +900,7 @@ spec:
 flink-conf.yaml:
   pipeline.compression: "LZ4"  # 减少网络传输
 
-# 同区域部署，消除跨区域流量
+# 同区域部署,消除跨区域流量
 spec:
   jobManager:
     affinity:
@@ -942,21 +942,21 @@ spec:
 ```yaml
 # 分层可用性策略
 architecture:
-  # 热路径 - 关键决策（预留实例）
+  # 热路径 - 关键决策(预留实例)
   hot_path:
     instance_type: on_demand
     availability_sla: 99.99%
     nodes: 8
     reservation: 3_year  # 节省60%
 
-  # 温路径 - 特征计算（Spot实例）
+  # 温路径 - 特征计算(Spot实例)
   warm_path:
     instance_type: spot
     availability_sla: 99%
     nodes: 4
     checkpoint_interval: 15s
 
-  # 冷路径 - 离线分析（定时扩容）
+  # 冷路径 - 离线分析(定时扩容)
   cold_path:
     instance_type: spot
     schedule: "0 2 * * *"  # 凌晨2点运行
@@ -1067,7 +1067,7 @@ metadata:
   name: dev-env-auto-start
 spec:
   schedule: "0 8 * * 1-5"  # 工作日早上8点
-  # ... 类似配置，执行 resume 操作
+  # ... 类似配置,执行 resume 操作
 ```
 
 **成本配额管理**：

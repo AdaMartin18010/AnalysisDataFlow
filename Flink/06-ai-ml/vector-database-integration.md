@@ -397,7 +397,7 @@ public class MilvusSyncPipeline {
         StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
 
-        // 源数据流：产品描述
+        // 源数据流:产品描述
         DataStream<ProductDocument> source = env
             .addSource(new KafkaSource<>())
             .map(new EmbeddingUDF("text-embedding-3-small"));
@@ -560,7 +560,7 @@ DataStream<Recommendation> recommendations =
             }
         })
 
-        // 3. 精排（实时特征拼接）
+        // 3. 精排(实时特征拼接)
         .keyBy(Candidate::getItemId)
         .connect(itemFeatureStream)
         .process(new RankingProcessFunction())

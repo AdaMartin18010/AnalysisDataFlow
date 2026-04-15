@@ -295,7 +295,7 @@ graph TB
 **Flink 实现片段**:
 
 ```sql
--- 滑动窗口特征：用户最近5分钟点击数
+-- 滑动窗口特征:用户最近5分钟点击数
 CREATE TABLE user_clicks (
     user_id STRING,
     item_id STRING,
@@ -344,7 +344,7 @@ GROUP BY
 **会话窗口实现**:
 
 ```java
-// Flink DataStream API：会话窗口统计用户行为
+// Flink DataStream API:会话窗口统计用户行为
 DataStream<Transaction> transactions = ...
 
 DataStream<UserSessionFeature> sessionFeatures = transactions

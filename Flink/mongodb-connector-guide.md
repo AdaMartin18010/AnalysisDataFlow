@@ -293,7 +293,7 @@ MongoSource<ChangeStreamDocument<Document>> changeStreamSource =
         .setChangeStream(true)
         // 全文档选项
         .setFullDocument(FullDocument.UPDATE_LOOKUP)
-        // 恢复令牌（从指定位置开始）
+        // 恢复令牌(从指定位置开始)
         .setResumeToken(resumeToken)
         .build();
 
@@ -334,7 +334,7 @@ MongoSink<Document> mongoSink = MongoSink.<Document>builder()
             .append("processed_time", new Date())
             .append("data", element.getData());
     })
-    // 写入模式：UPSERT
+    // 写入模式:UPSERT
     .setWriteMode(WriteMode.UPSERT)
     .build();
 

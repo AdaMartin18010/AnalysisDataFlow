@@ -349,8 +349,8 @@ python .scripts/mermaid-syntax-checker.py --file <file>
 
 - [ ] 通过
 - [ ] 有条件通过
-- [ ] 不通过，需修改
-- [ ] 不通过，建议废弃
+- [ ] 不通过,需修改
+- [ ] 不通过,建议废弃
 
 ### 后续行动
 

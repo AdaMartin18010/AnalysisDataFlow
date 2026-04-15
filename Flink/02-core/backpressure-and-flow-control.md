@@ -589,18 +589,18 @@ public class ResultSubPartition {
     private final Queue<BufferConsumer>[] pendingQueues;  // 待发送队列
 
     /**
-     * 添加Buffer到子分区，受credit控制
+     * 添加Buffer到子分区,受credit控制
      */
     public void addBufferConsumer(BufferConsumer buffer, int targetChannel) {
         // 获取目标通道的可用credit
         int availableCredit = credits[targetChannel];
 
         if (availableCredit > 0) {
-            // 有可用credit，直接写入
+            // 有可用credit,直接写入
             writeBufferToChannel(buffer, targetChannel);
             credits[targetChannel]--;
         } else {
-            // credit耗尽，加入等待队列
+            // credit耗尽,加入等待队列
             pendingQueues[targetChannel].add(buffer);
 
             // 触发背压信号
@@ -611,7 +611,7 @@ public class ResultSubPartition {
     }
 
     /**
-     * 处理Credit回传（由RemoteInputChannel触发）
+     * 处理Credit回传(由RemoteInputChannel触发)
      */
     public void onCreditAnnouncement(int channelIndex, int credit) {
         // 增加可用credit
@@ -657,7 +657,7 @@ public class RemoteInputChannel {
      */
     public void setup(BufferPool bufferPool) {
         this.bufferPool = bufferPool;
-        // 申请初始credit（默认为buffers-per-channel配置）
+        // 申请初始credit(默认为buffers-per-channel配置)
         this.numCredits = bufferPool.requestBuffers(initialCredit);
 
         // 向发送方发送初始credit公告
@@ -668,13 +668,13 @@ public class RemoteInputChannel {
      * 接收到Buffer后处理
      */
     public void onBuffer(Buffer buffer, int sequenceNumber) {
-        // 消费buffer（交给算子处理）
+        // 消费buffer(交给算子处理)
         processBuffer(buffer);
 
-        // 释放buffer，回收credit
+        // 释放buffer,回收credit
         buffer.recycle();
 
-        // 周期性回传credit（批处理优化）
+        // 周期性回传credit(批处理优化)
         if (shouldSendCredit()) {
             int creditsToAnnounce = calculateAvailableCredits();
             sendCreditAnnouncement(creditsToAnnounce);
@@ -692,7 +692,7 @@ public class RemoteInputChannel {
     }
 
     /**
-     * 发送Credit公告（通过Netty通道）
+     * 发送Credit公告(通过Netty通道)
      */
     private void sendCreditAnnouncement(int credit) {
         CreditAnnouncement announcement = new CreditAnnouncement(
@@ -730,7 +730,7 @@ graph TD
 
 ```java
 /**
- * 全局网络缓冲区池（TaskManager级别）
+ * 全局网络缓冲区池(TaskManager级别)
  */
 public class NetworkBufferPool {
     private final List<MemorySegment> availableMemorySegments;
@@ -759,7 +759,7 @@ public class NetworkBufferPool {
 }
 
 /**
- * 本地缓冲区池（InputGate级别）
+ * 本地缓冲区池(InputGate级别)
  */
 public class LocalBufferPool {
     private final NetworkBufferPool networkBufferPool;
@@ -768,7 +768,7 @@ public class LocalBufferPool {
     private final int maxNumberOfMemorySegments;
 
     /**
-     * 请求Buffer（用于接收数据）
+     * 请求Buffer(用于接收数据)
      */
     public Buffer requestBuffer() throws IOException {
         synchronized (availableBuffers) {
@@ -872,7 +872,7 @@ sequenceDiagram
 
 ```java
 /**
- * Buffer消胀器：动态调整缓冲区数量
+ * Buffer消胀器:动态调整缓冲区数量
  */
 public class BufferDebloating {
     private long lastEstimatedTime;
@@ -901,10 +901,10 @@ public class BufferDebloating {
     public void adjustCredits(int newBufferCount) {
         int delta = newBufferCount - currentNumberOfBuffers;
         if (delta > 0) {
-            // 增加credit（向上游请求更多buffer）
+            // 增加credit(向上游请求更多buffer)
             requestAdditionalCredits(delta);
         } else if (delta < 0) {
-            // 减少credit（释放多余buffer）
+            // 减少credit(释放多余buffer)
             releaseCredits(-delta);
         }
         currentNumberOfBuffers = newBufferCount;

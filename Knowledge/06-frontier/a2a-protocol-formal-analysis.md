@@ -756,7 +756,7 @@ class ReliableTaskManager:
             # 4. 发送任务委托
             result = await self._send_delegation(host, remote, task)
 
-            # 5. 等待终止状态（活性保证）
+            # 5. 等待终止状态(活性保证)
             final_state = await self._await_termination(task.id)
 
             # 6. 持久化最终状态
@@ -765,7 +765,7 @@ class ReliableTaskManager:
             return result
 
         except TimeoutError:
-            # 超时后强制转移到failed（活性保证）
+            # 超时后强制转移到failed(活性保证)
             await self.store.save(task.id, TaskState.FAILED)
             raise
         finally:
@@ -1030,7 +1030,7 @@ class A2AHostAgent:
         message: Dict[str, Any],
         task_id: str = None
     ) -> AsyncIterator[Dict[str, Any]]:
-        """流式任务委托（SSE）"""
+        """流式任务委托(SSE)"""
         # 1. 检查Agent支持流式
         agent_card = await self.discover_agent(agent_url)
         if not agent_card.capabilities.get("streaming", False):
@@ -1241,7 +1241,7 @@ def send_task():
 
 @app.route("/a2a/tasks/sendSubscribe", methods=["POST"])
 def send_subscribe():
-    """流式任务处理端点（SSE）"""
+    """流式任务处理端点(SSE)"""
     data = request.json
     task_id = data["id"]
 
@@ -1749,7 +1749,7 @@ sequenceDiagram
     RA-->>HA: 返回结果 + Artifacts
     HA-->>User: 展示结果
 
-    Note over User,TS: 3. 异步任务委托（流式）
+    Note over User,TS: 3. 异步任务委托(流式)
     User->>HA: 提交流式任务
     HA->>RA: POST /a2a/tasks/sendSubscribe
     RA->>TS: 保存任务状态

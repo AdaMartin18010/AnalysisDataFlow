@@ -190,7 +190,7 @@ $$
 
 ```
 1. 纯在线学习: 所有算法仅支持 learn_one() / predict_one()
-2. 无批处理依赖: 不依赖numpy矩阵运算，支持dict输入
+2. 无批处理依赖: 不依赖numpy矩阵运算,支持dict输入
 3. 增量预处理: StandardScaler, OneHotEncoder均为增量实现
 4. 统一API: 所有模型遵循相同接口契约
 ```
@@ -1344,7 +1344,7 @@ def create_model():
 
 # 更复杂的管道示例
 def create_advanced_model():
-    """高级模型：带特征工程和漂移检测"""
+    """高级模型:带特征工程和漂移检测"""
     from river import feature_extraction, tree
 
     model = compose.Pipeline(
@@ -1381,10 +1381,10 @@ def generate_stream(n_samples=10000, drift_point=5000):
 
         # 引入概念漂移
         if i < drift_point:
-            # 早期：年轻用户更爱点击tech广告
+            # 早期:年轻用户更爱点击tech广告
             y = (x['user_age'] < 30 and x['ad_category'] == 'tech')
         else:
-            # 后期：高频点击用户更爱点击fashion广告
+            # 后期:高频点击用户更爱点击fashion广告
             y = (x['previous_clicks'] > 5 and x['ad_category'] == 'fashion')
 
         yield x, y
@@ -1417,7 +1417,7 @@ def train_and_evaluate():
         # 计算概率
         y_proba = model.predict_proba_one(x)
 
-        # 更新指标（如果有预测）
+        # 更新指标(如果有预测)
         if y_pred is not None:
             metric.update(y, y_pred)
 
@@ -1496,9 +1496,9 @@ def generate_vw_cb_data(n_samples=10000, output_file='cb_train.vw'):
     生成VW上下文老虎机训练数据
 
     VW CB格式: action:cost:probability |features
-    - action: 选择的臂（广告ID）
+    - action: 选择的臂(广告ID)
     - cost: 1 - reward (点击=0, 未点击=1)
-    - probability: 探索概率（记录历史策略）
+    - probability: 探索概率(记录历史策略)
     """
 
     with open(output_file, 'w') as f:
@@ -1508,16 +1508,16 @@ def generate_vw_cb_data(n_samples=10000, output_file='cb_train.vw'):
             user_gender = random.choice(['male', 'female'])
             device = random.choice(['mobile', 'desktop'])
 
-            # 可用的广告（动作空间）
+            # 可用的广告(动作空间)
             available_ads = [1, 2, 3, 4]  # 4个广告位
 
-            # 模拟历史策略（epsilon-greedy）
+            # 模拟历史策略(epsilon-greedy)
             epsilon = 0.1
             if random.random() < epsilon:
                 chosen_ad = random.choice(available_ads)
                 prob = epsilon / len(available_ads)
             else:
-                # 假设我们已知最优策略（仅用于生成模拟数据）
+                # 假设我们已知最优策略(仅用于生成模拟数据)
                 # 年轻女性偏爱广告1和2
                 if user_gender == 'female' and user_age < 30:
                     chosen_ad = random.choice([1, 2])
@@ -1525,7 +1525,7 @@ def generate_vw_cb_data(n_samples=10000, output_file='cb_train.vw'):
                     chosen_ad = random.choice([3, 4])
                 prob = (1 - epsilon) + epsilon / len(available_ads)
 
-            # 模拟奖励（点击率）
+            # 模拟奖励(点击率)
             if user_gender == 'female' and user_age < 30 and chosen_ad in [1, 2]:
                 clicked = random.random() < 0.15  # 15% CTR
             elif user_age > 40 and chosen_ad in [3, 4]:
@@ -1570,7 +1570,7 @@ def train_vw_cb(train_file='cb_train.vw', model_file='cb_model.vw'):
     return model_file
 
 # ============================================
-# 3. VW预测（实时决策）
+# 3. VW预测(实时决策)
 # ============================================
 def predict_vw_cb(model_file, user_features):
     """
@@ -1586,7 +1586,7 @@ def predict_vw_cb(model_file, user_features):
     cmd = [
         'vw',
         '-i', model_file,
-        '-t',                    # 测试模式（不学习）
+        '-t',                    # 测试模式(不学习)
         '--cb_explore', '4',
         '--epsilon', '0.1',
         '-p', '/dev/stdout'
@@ -1614,17 +1614,17 @@ def predict_vw_cb(model_file, user_features):
     }
 
 # ============================================
-# 4. Python集成（用于Flink等系统）
+# 4. Python集成(用于Flink等系统)
 # ============================================
 class VWService:
-    """VW模型服务封装，适合生产环境部署"""
+    """VW模型服务封装,适合生产环境部署"""
 
     def __init__(self, model_path):
         self.model_path = model_path
         self._start_daemon()
 
     def _start_daemon(self):
-        """启动VW daemon模式（用于高性能服务）"""
+        """启动VW daemon模式(用于高性能服务)"""
         self.proc = subprocess.Popen(
             ['vw', '-i', self.model_path, '--cb_explore', '4',
              '--epsilon', '0.1', '--daemon', '--port', '26542'],
@@ -1739,7 +1739,7 @@ class RiverOnlineLearner(KeyedProcessFunction):
     Flink KeyedProcessFunction + River在线学习
 
     特点:
-    - 每Key独立模型（如每个用户/设备一个模型）
+    - 每Key独立模型(如每个用户/设备一个模型)
     - 状态持久化到Flink StateBackend
     - 支持Checkpoint容错
     """
@@ -1757,7 +1757,7 @@ class RiverOnlineLearner(KeyedProcessFunction):
             Types.PICKLED_BYTE_ARRAY()  # 使用pickle序列化
         )
 
-        # 配置状态TTL（可选）
+        # 配置状态TTL(可选)
         from pyflink.datastream.state import StateTtlConfig
         ttl_config = StateTtlConfig \
             .newBuilder(Time.hours(24)) \
@@ -1777,12 +1777,12 @@ class RiverOnlineLearner(KeyedProcessFunction):
 
     def process_element(self, value, ctx):
         """
-        处理每个元素：预测 → 输出 → 学习
+        处理每个元素:预测 → 输出 → 学习
 
         value格式: {
             'key': 'device_001',
             'features': {'temp': 25.0, 'humidity': 60.0},
-            'label': True,  # 可能为None（纯预测模式）
+            'label': True,  # 可能为None(纯预测模式)
             'timestamp': 1640000000
         }
         """
@@ -1804,12 +1804,12 @@ class RiverOnlineLearner(KeyedProcessFunction):
         features = value['features']
         prediction = model.predict_one(features)
 
-        # 计算概率（如果模型支持）
+        # 计算概率(如果模型支持)
         proba = None
         if hasattr(model, 'predict_proba_one'):
             proba = model.predict_proba_one(features)
 
-        # 如果有标签，进行在线学习
+        # 如果有标签,进行在线学习
         label = value.get('label')
         if label is not None:
             # 更新指标
@@ -1839,7 +1839,7 @@ class RiverOnlineLearner(KeyedProcessFunction):
         yield result
 
 # ============================================
-# 4. 广播状态模式（全局模型共享）
+# 4. 广播状态模式(全局模型共享)
 # ============================================
 from pyflink.datastream.functions import BroadcastProcessFunction
 
@@ -1891,7 +1891,7 @@ def main():
     env.set_parallelism(4)
 
     # ============================================
-    # 5.1 模拟输入流（Kafka/其他源）
+    # 5.1 模拟输入流(Kafka/其他源)
     # ============================================
     # 实际生产环境使用 Kafka 源
     # from pyflink.datastream.connectors.kafka import FlinkKafkaConsumer
@@ -2058,7 +2058,7 @@ class ProductionDriftManager:
 
     def process(self, x, y) -> dict:
         """
-        处理单个样本，返回包含漂移信息的结果
+        处理单个样本,返回包含漂移信息的结果
         """
         # 预测
         y_pred = self.model.predict_one(x)
@@ -2203,7 +2203,7 @@ def demo():
     print("=" * 60)
 
     for i in range(n_samples):
-        # 生成数据（带漂移）
+        # 生成数据(带漂移)
         x = {'feature_1': np.random.randn(), 'feature_2': np.random.randn()}
 
         if i < drift_point:
@@ -2277,7 +2277,7 @@ params = {
 train_data = lgb.Dataset(X_init, label=y_init)
 model = lgb.train(params, train_data, num_boost_round=100)
 
-# 增量更新（使用新数据继续训练）
+# 增量更新(使用新数据继续训练)
 new_data = lgb.Dataset(X_new, label=y_new, reference=train_data)
 model = lgb.train(params, new_data, num_boost_round=10, init_model=model)
 ```

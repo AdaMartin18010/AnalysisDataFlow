@@ -1201,7 +1201,7 @@ class ADWIN:
             epsilon = self._cut_expression(n0, n1, self.delta)
 
             if abs(mu0 - mu1) > epsilon:
-                # 检测到漂移，裁剪窗口
+                # 检测到漂移,裁剪窗口
                 self.window = deque(w1)
                 self.width = n1
                 return True
@@ -1232,7 +1232,7 @@ for t in range(1000):
 import numpy as np
 
 class StreamingLogisticRegression:
-    """流式逻辑回归（二分类）"""
+    """流式逻辑回归(二分类)"""
 
     def __init__(self, n_features: int, learning_rate: float = 0.1,
                  regularization: float = 0.01):
@@ -1301,7 +1301,7 @@ class StreamingFeatureTransformer:
         raise NotImplementedError
 
 class StreamingNormalizer(StreamingFeatureTransformer):
-    """流式归一化（在线均值和方差估计）"""
+    """流式归一化(在线均值和方差估计)"""
 
     def __init__(self, field: str):
         self.field = field
@@ -1346,7 +1346,7 @@ class StreamingOneHotEncoder(StreamingFeatureTransformer):
         # 更新类别计数
         self.category_counts[value] += 1
 
-        # 维护类别字典（保留高频类别）
+        # 维护类别字典(保留高频类别)
         if value not in self.category_to_idx:
             if len(self.category_to_idx) < self.max_categories:
                 self.category_to_idx[value] = len(self.category_to_idx)

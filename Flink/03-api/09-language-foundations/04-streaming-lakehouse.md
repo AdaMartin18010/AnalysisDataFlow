@@ -175,7 +175,7 @@ Lakehouse Architecture (2020+)
 
 其中:
 - Table.snapshots: 表的所有历史快照集合
-- s.state: 快照对应的数据状态（不可变文件集合）
+- s.state: 快照对应的数据状态(不可变文件集合)
 - q(timestamp): 指定时间戳的查询
 ```
 
@@ -216,8 +216,8 @@ SELECT * FROM paimon_catalog.db.table /*+ OPTIONS('scan.snapshot-id'='123') */;
 4. 下游应用处理变更 → 更新消费位点
 
 边界条件:
-- 若 Watermark 超前于快照提交时间，可能导致数据丢失
-- 若快照可见早于 Watermark 推进，可能导致重复处理
+- 若 Watermark 超前于快照提交时间,可能导致数据丢失
+- 若快照可见早于 Watermark 推进,可能导致重复处理
 ```
 
 ---
@@ -377,21 +377,21 @@ graph TB
 **选型建议**:
 
 ```
-场景 1: 通用数据湖，多引擎共享
+场景 1: 通用数据湖,多引擎共享
 → 推荐: Apache Iceberg
-→ 理由: 生态最广，Trino/Spark/Dremio 原生支持
+→ 理由: 生态最广,Trino/Spark/Dremio 原生支持
 
-场景 2: CDC 实时入湖，增量更新频繁
+场景 2: CDC 实时入湖,增量更新频繁
 → 推荐: Apache Hudi (MOR模式) 或 Apache Paimon
-→ 理由: Merge-on-Read 优化写放大，增量消费成熟
+→ 理由: Merge-on-Read 优化写放大,增量消费成熟
 
 场景 3: Flink 原生实时数仓
 → 推荐: Apache Paimon
-→ 理由: Flink PMC 主导，与 Flink SQL 深度集成
+→ 理由: Flink PMC 主导,与 Flink SQL 深度集成
 
 场景 4: Databricks 生态
 → 推荐: Delta Lake
-→ 理由: Photon 引擎优化，Liquid Clustering 先进
+→ 理由: Photon 引擎优化,Liquid Clustering 先进
 ```
 
 ### 4.3 物化表的自动刷新机制边界
@@ -423,8 +423,8 @@ graph TB
 │  MV1 依赖 Table A, MV2 依赖 MV1                            │
 │  Table A 变更 → MV1 刷新 → MV2 刷新                          │
 │                                                            │
-│  风险: 级联延迟累积，形成刷新风暴                            │
-│  策略: 使用 DAG 调度，控制并发刷新数                         │
+│  风险: 级联延迟累积,形成刷新风暴                            │
+│  策略: 使用 DAG 调度,控制并发刷新数                         │
 └────────────────────────────────────────────────────────────┘
 ```
 
@@ -447,24 +447,24 @@ graph TB
 推导:
 ┌────────────────────────────────────────────────────────────────────┐
 │ Step 1: Checkpoint 触发                                           │
-│   Flink Checkpoint Coordinator 发送 Barrier，冻结算子状态           │
+│   Flink Checkpoint Coordinator 发送 Barrier,冻结算子状态           │
 │                                                                    │
 │ Step 2: 预提交阶段 (Pre-commit)                                    │
 │   Sink 算子将缓冲数据写入临时文件/位置                              │
-│   Iceberg: 写入 data file，生成 pending snapshot                   │
-│   Paimon: 写入 LSM 内存表，准备 commit                              │
+│   Iceberg: 写入 data file,生成 pending snapshot                   │
+│   Paimon: 写入 LSM 内存表,准备 commit                              │
 │                                                                    │
 │ Step 3: Checkpoint 确认                                            │
-│   所有算子成功快照后，Coordinator 广播 Checkpoint ACK              │
+│   所有算子成功快照后,Coordinator 广播 Checkpoint ACK              │
 │                                                                    │
 │ Step 4: 正式提交 (Commit)                                          │
-│   Sink 收到 ACK 后，向元数据层发起事务提交                          │
+│   Sink 收到 ACK 后,向元数据层发起事务提交                          │
 │   Iceberg: commitSnapshot() → 元数据原子更新                        │
 │   Paimon: commit() → LSM 层状态固化                                │
 │                                                                    │
 │ Step 5: 容错恢复                                                   │
-│   若 Step 4 失败，Checkpoint 回滚，临时数据丢弃                     │
-│   恢复时从上一个成功 Checkpoint 重启，无重复数据                    │
+│   若 Step 4 失败,Checkpoint 回滚,临时数据丢弃                     │
+│   恢复时从上一个成功 Checkpoint 重启,无重复数据                    │
 └────────────────────────────────────────────────────────────────────┘
 
 结论: 端到端 Exactly-Once 得证 ∎
@@ -506,7 +506,7 @@ public class IcebergSinkFunction implements
 ```
 定义:
 - 设表 T 在时间 t 的快照为 S(t)
-- 设增量查询的起始位点为 S(t1)，结束位点为 S(t2)
+- 设增量查询的起始位点为 S(t1),结束位点为 S(t2)
 - 设变更集合 Δ = S(t2) - S(t1)
 
 完备性条件:
@@ -530,9 +530,9 @@ Iceberg 元数据结构:
 4. 读取 ΔFiles 中的数据记录
 
 性质保证:
-- Iceberg 的 manifest 文件不可变，保证 F1, F2 的确定性
+- Iceberg 的 manifest 文件不可变,保证 F1, F2 的确定性
 - 文件级别的差集计算避免记录级别的重复扫描
-- 若文件被修改 (如压缩)，新 snapshot 引用新文件，旧文件仍保留
+- 若文件被修改 (如压缩),新 snapshot 引用新文件,旧文件仍保留
 
 因此: 完备性得证 ∎
 ```
@@ -551,7 +551,7 @@ Total Cost = Storage Cost + Compute Cost + Engineering Cost
 
 Lakehouse 成本:
 ├── Storage Cost: 1x (共享对象存储)
-├── Compute Cost: 1.5x (弹性伸缩，按需使用)
+├── Compute Cost: 1.5x (弹性伸缩,按需使用)
 └── Engineering Cost: 低 (单一系统、统一治理)
 ```
 
@@ -634,7 +634,7 @@ CREATE TABLE IF NOT EXISTS dwd_order_detail (
     'changelog-producer' = 'lookup'
 );
 
--- 关联用户维度表， enrich 数据
+-- 关联用户维度表, enrich 数据
 INSERT INTO dwd_order_detail
 SELECT
     o.order_id,

@@ -219,9 +219,9 @@ Flink检测 → 风险评分 → 案件分级 → 调查队列 → 人工审核 
 **案例分析**: 某地下钱庄团伙的资金转移
 
 ```
-正常视角: 用户A → 用户B → 用户C → 用户D （看似独立的转账）
+正常视角: 用户A → 用户B → 用户C → 用户D (看似独立的转账)
 图分析视角: 发现A、B、C、D共享同一设备指纹和IP池
-           形成强连通子图，高度可疑
+           形成强连通子图,高度可疑
 ```
 
 | 检测方法 | 能否发现 | 延迟 |
@@ -482,7 +482,7 @@ public class RealtimeGraphConstructionJob {
             // 高度数节点风险
             if (metrics.getDegree() > 100) score += 0.2;
 
-            // 高聚类系数风险（团伙特征）
+            // 高聚类系数风险(团伙特征)
             if (metrics.getClusteringCoefficient() > 0.8) score += 0.3;
 
             // 社区异常风险

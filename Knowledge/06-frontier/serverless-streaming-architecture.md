@@ -179,7 +179,7 @@ $$\frac{\partial C_{total}}{\partial F_{resident}} = 0 \Rightarrow c_{provisione
   │            │          │           └─► 极致弹性
   │            │          └─► 环境一致性
   │            └─► 服务解耦
-  └─► 开发简单，扩展困难
+  └─► 开发简单,扩展困难
 ```
 
 ## 4. 论证过程 (Argumentation)
@@ -280,7 +280,7 @@ flowchart TD
 
 ```
 EC2费用 = 10 × $0.096/h × 720h = $691.20
-额外成本（运维、扩缩容）≈ 30%
+额外成本(运维、扩缩容)≈ 30%
 总费用 ≈ $898.56/月
 ```
 
@@ -431,7 +431,7 @@ public class EventProcessor
 ### 6.3 混合架构：API Gateway + Lambda + Flink
 
 ```yaml
-# 架构示意：Serverless处理边缘，Flink处理核心计算
+# 架构示意:Serverless处理边缘,Flink处理核心计算
 #
 # 用户请求 → API Gateway → Lambda (认证/限流/路由)
 #                              ↓

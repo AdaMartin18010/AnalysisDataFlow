@@ -506,7 +506,7 @@ $$0.78 \leq \frac{Perf_{AMD}}{Perf_{NVIDIA}} \leq 1.16$$
 # endif
 
 /**
- * Wavefront/Warp 级归约（跨平台）
+ * Wavefront/Warp 级归约(跨平台)
  */
 __inline__ __device__ float warpReduceSum(float val) {
     #pragma unroll
@@ -521,7 +521,7 @@ __inline__ __device__ float warpReduceSum(float val) {
 }
 
 /**
- * 向量点积 Kernel（HIP 版本）
+ * 向量点积 Kernel(HIP 版本)
  */
 __global__ void vectorDotKernel(
     const float* __restrict__ vecA,
@@ -552,7 +552,7 @@ __global__ void vectorDotKernel(
     }
     __syncthreads();
 
-    // 最终归约（仅第一个 Wavefront）
+    // 最终归约(仅第一个 Wavefront)
     if (warpId == 0) {
         dot = (lane < blockDim.x / WARP_SIZE) ? sharedMem[lane] : 0.0f;
         dot = warpReduceSum(dot);
@@ -564,7 +564,7 @@ __global__ void vectorDotKernel(
 }
 
 /**
- * 余弦相似度 Kernel（支持批处理）
+ * 余弦相似度 Kernel(支持批处理)
  */
 __global__ void batchCosineSimilarityKernel(
     const float* __restrict__ queries,
@@ -760,7 +760,7 @@ Java_com_flink_gpu_udf_GpuCosineSimilarity_cosineSimilarityGpu(
 
     const size_t bytes = dim * sizeof(float);
 
-    // 设备内存分配（使用 hipMalloc）
+    // 设备内存分配(使用 hipMalloc)
     float *d_vecA, *d_vecB, *d_result;
     HIP_CHECK(hipMalloc(&d_vecA, bytes));
     HIP_CHECK(hipMalloc(&d_vecB, bytes));
@@ -775,11 +775,11 @@ Java_com_flink_gpu_udf_GpuCosineSimilarity_cosineSimilarityGpu(
     HIP_CHECK(hipMemcpyAsync(d_vecA, h_vecA, bytes, hipMemcpyHostToDevice, stream));
     HIP_CHECK(hipMemcpyAsync(d_vecB, h_vecB, bytes, hipMemcpyHostToDevice, stream));
 
-    // 启动 Kernel（使用适配的 Block 大小）
+    // 启动 Kernel(使用适配的 Block 大小)
     const int blockSize = 256;  // 256 = 64 * 4 (Wavefront 倍数)
     const int gridSize = (dim + blockSize - 1) / blockSize;
 
-    // Kernel 声明（来自 vector_ops.hip）
+    // Kernel 声明(来自 vector_ops.hip)
     extern __global__ void vectorDotKernel(const float*, const float*, float*, int);
 
     hipLaunchKernelGGL(
@@ -796,7 +796,7 @@ Java_com_flink_gpu_udf_GpuCosineSimilarity_cosineSimilarityGpu(
     // 同步
     HIP_CHECK(hipStreamSynchronize(stream));
 
-    // 归一化（简化版本，实际需要计算 ||A|| 和 ||B||）
+    // 归一化(简化版本,实际需要计算 ||A|| 和 ||B||)
     float dot = h_result;
 
     // 清理
@@ -949,7 +949,7 @@ void launchSaxpy(int n, float a, float *d_x, float *d_y) {
 # 使用 hipify-perl 进行自动转换
 hipify-perl original_cuda.cu > converted_hip.hip
 
-# 或使用 hipify-clang（更精确）
+# 或使用 hipify-clang(更精确)
 hipify-clang original_cuda.cu \
     --cuda-path=/usr/local/cuda \
     -o converted_hip.hip \
@@ -959,9 +959,9 @@ hipify-clang original_cuda.cu \
 #### 6.2.3 转换后的 HIP 代码
 
 ```cpp
-// converted_hip.hip（hipify 输出）
+// converted_hip.hip(hipify 输出)
 # include <hip/hip_runtime.h>
-# include <rocblas.h>  // 注意：cublas → rocblas
+# include <rocblas.h>  // 注意:cublas → rocblas
 
 __global__ void saxpy(int n, float a, float *x, float *y) {
     int i = blockIdx.x * blockDim.x + threadIdx.x;

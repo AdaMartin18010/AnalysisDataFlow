@@ -189,13 +189,13 @@ $$
 │                    FLIP 与版本映射关系                           │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
-│  Flink 2.3（预计发布时间以官方为准）                                            │
+│  Flink 2.3(预计发布时间以官方为准)                                            │
 │  ├── FLIP-531: AI Agents (Released) ◄──────────────────────┐   │
 │  ├── FLIP-319: Kafka 2PC (Released)                        │   │
 │  ├── FLIP-39022: SSL Enhancement (Released)                │   │
 │  └── ...                                                   │   │
 │                                                            │   │
-│  Flink 2.4（预计发布时间以官方为准）                                   │   │
+│  Flink 2.4(预计发布时间以官方为准)                                   │   │
 │  ├── FLIP-531: AI Agents GA (依赖: 2.3基础) ────────────────┘   │
 │  ├── FLIP-325: Async Snapshot v2 (In Progress)              │   │
 │  ├── FLIP-333: Fine-grained Recovery (Accepted)             │   │
@@ -204,7 +204,7 @@ $$
 │      <!-- 预计正式编号: FLIP-440 -->                         │   │
 │      <!-- 跟踪: https://github.com/apache/flink/tree/main/flink-docs/docs/flips/FLIP-440 --> │
 │                                                            │   │
-│  Flink 2.5（预计发布时间以官方为准）                                       │   │
+│  Flink 2.5(预计发布时间以官方为准)                                       │   │
 │  ├── FLIP-441: Adaptive Execution (Draft)                   │   │
 │  │   <!-- FLIP状态: Draft/Under Discussion -->              │   │
 │  │   <!-- 预计正式编号: FLIP-441 -->                         │   │
@@ -606,7 +606,7 @@ class FLIPTracker:
         for source in sources:
             for flip in source:
                 if flip.id in merged:
-                    # 合并状态，优先选择最新的
+                    # 合并状态,优先选择最新的
                     if flip.last_updated > merged[flip.id].last_updated:
                         merged[flip.id] = flip
                 else:

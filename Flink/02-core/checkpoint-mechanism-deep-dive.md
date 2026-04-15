@@ -581,12 +581,12 @@ DefaultConfigurableStateBackend stateBackend = new EmbeddedRocksDBStateBackend(t
 [同步阶段]
     ↓
 获取 RocksDB SST 文件列表
-标记当前状态版本（创建 Checkpoint 标记）
+标记当前状态版本(创建 Checkpoint 标记)
     ↓
 [异步阶段 - 后台线程]
     ↓
-上传新增/修改的 SST 文件（增量模式）
-或上传所有 SST 文件（全量模式）
+上传新增/修改的 SST 文件(增量模式)
+或上传所有 SST 文件(全量模式)
     ↓
 上传 Manifest 文件
     ↓
@@ -813,7 +813,7 @@ public class EmbeddedRocksDBStateBackend extends AbstractManagedMemoryStateBacke
             @NonNull Collection<KeyedStateHandle> stateHandles,
             CloseableRegistry cancelStreamRegistry) throws Exception {
 
-        // 创建 RocksDB 状态后端，支持增量 Checkpoint
+        // 创建 RocksDB 状态后端,支持增量 Checkpoint
         RocksDBStateBackend backend = new RocksDBStateBackend(
             env.getTaskManagerInfo().getConfiguration(),
             env.getUserCodeClassLoader(),
@@ -885,10 +885,10 @@ import org.apache.flink.streaming.api.CheckpointingMode;
 
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-// 启用 Checkpoint，间隔 10 秒
+// 启用 Checkpoint,间隔 10 秒
 env.enableCheckpointing(10000);
 
-// 配置为 Aligned Checkpoint（默认）
+// 配置为 Aligned Checkpoint(默认)
 env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);
 
 // 超时时间 60 秒
@@ -923,13 +923,13 @@ env.enableCheckpointing(10000);
 // 启用 Unaligned Checkpoint
 env.getCheckpointConfig().enableUnalignedCheckpoints();
 
-// 配置 alignment 超时（超过此时间自动切换为 Unaligned）
+// 配置 alignment 超时(超过此时间自动切换为 Unaligned)
 env.getCheckpointConfig().setAlignmentTimeout(Duration.ofSeconds(30));
 
 // 配置 in-flight 数据大小阈值
 env.getCheckpointConfig().setMaxUnalignedCheckpoints(2);
 
-// 使用 RocksDB State Backend（推荐配合 Unaligned Checkpoint）
+// 使用 RocksDB State Backend(推荐配合 Unaligned Checkpoint)
 env.setStateBackend(new EmbeddedRocksDBStateBackend());
 
 env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
@@ -947,7 +947,7 @@ StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironm
 
 env.enableCheckpointing(60000); // 增量 Checkpoint 建议间隔稍长
 
-// 使用 RocksDB State Backend，启用增量 Checkpoint
+// 使用 RocksDB State Backend,启用增量 Checkpoint
 // 第二个参数 true 表示启用增量
 EmbeddedRocksDBStateBackend rocksDbBackend = new EmbeddedRocksDBStateBackend(true);
 env.setStateBackend(rocksDbBackend);
@@ -1016,9 +1016,9 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
 
 ---
 
-**场景**：电商实时交易分析作业，处理 Kafka 交易流水，状态大小约 50GB，使用 RocksDB + 增量 Checkpoint。
+**场景**:电商实时交易分析作业,处理 Kafka 交易流水,状态大小约 50GB,使用 RocksDB + 增量 Checkpoint。
 
-**恢复时间对比**（基于 50GB 状态）：
+**恢复时间对比**(基于 50GB 状态):
 
 | Checkpoint 类型 | 恢复时间 | 适用场景 |
 |----------------|---------|---------|
@@ -1026,15 +1026,15 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
 | 增量 Checkpoint | ~12 分钟 | 大状态、网络带宽受限 |
 | Changelog State Backend | ~30 秒 | 延迟敏感、秒级 SLA 要求 |
 
-**故障发生**：TaskManager 节点因磁盘故障宕机。
+**故障发生**:TaskManager 节点因磁盘故障宕机。
 
-**恢复过程**：
+**恢复过程**:
 
-1. **故障检测**：JobManager 在 `heartbeat.interval`（默认 10s）内未收到心跳，标记 TM 为失败。
+1. **故障检测**:JobManager 在 `heartbeat.interval`(默认 10s)内未收到心跳,标记 TM 为失败。
 
-2. **作业重启决策**：根据 `restart-strategy` 配置，触发固定延迟重启。
+2. **作业重启决策**:根据 `restart-strategy` 配置,触发固定延迟重启。
 
-3. **状态恢复**：
+3. **状态恢复**:
 ```
 
 - 查询最新成功 Checkpoint: CP_150
@@ -1044,13 +1044,13 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
 
    ```
 
-1. **任务重调度**：将故障任务调度到健康节点。
+1. **任务重调度**:将故障任务调度到健康节点。
 
-2. **Source 重放**：Kafka Consumer 从 CP_150 记录的 offset 开始消费。
+2. **Source 重放**:Kafka Consumer 从 CP_150 记录的 offset 开始消费。
 
-3. **状态验证**：检查点恢复后，校验状态大小、键数量与预期一致。
+3. **状态验证**:检查点恢复后,校验状态大小、键数量与预期一致。
 
-**恢复时间**：约 3 分钟（主要耗时在从 HDFS 拉取增量文件）
+**恢复时间**:约 3 分钟(主要耗时在从 HDFS 拉取增量文件)
 
 ---
 
@@ -1103,11 +1103,11 @@ sequenceDiagram
     deactivate SNK
 ```
 
-**图说明**：
+**图说明**:
 
 - 展示了从 JM 触发 Checkpoint 到 Sink 提交事务的完整生命周期
 - 每个 Task 在收到所有输入 Barrier 后触发快照
-- Sink 使用两阶段提交（预提交 + 确认后提交）保证端到端 Exactly-Once
+- Sink 使用两阶段提交(预提交 + 确认后提交)保证端到端 Exactly-Once
 
 ---
 
@@ -1145,10 +1145,10 @@ flowchart TD
     style C3 fill:#e1bee7,stroke:#6a1b9a
 ```
 
-**图说明**：
+**图说明**:
 
-- 同步阶段阻塞数据处理，需尽可能快
-- 异步阶段在后台执行，不影响数据处理延迟
+- 同步阶段阻塞数据处理,需尽可能快
+- 异步阶段在后台执行,不影响数据处理延迟
 - 增量模式显著减少异步阶段的数据传输量
 
 ---
@@ -1183,9 +1183,9 @@ flowchart TD
     style C1 fill:#e1bee7,stroke:#6a1b9a
 ```
 
-**图说明**：
+**图说明**:
 
-- 决策树从延迟要求出发，逐步确定 Checkpoint 类型
+- 决策树从延迟要求出发,逐步确定 Checkpoint 类型
 - 状态大小是选择增量 Checkpoint 的关键因素
 - RocksDB 配合增量 Checkpoint 是大状态场景的标准方案
 
@@ -1234,9 +1234,9 @@ graph TB
     style S2 fill:#e1bee7,stroke:#6a1b9a
 ```text
 
-**图说明**：
+**图说明**:
 
-- 控制层决定 Checkpoint 策略，约束执行层行为
+- 控制层决定 Checkpoint 策略,约束执行层行为
 - 执行层通过 Barrier 传播和 State Backend 实现快照机制
 - 数据层负责状态的持久化存储和恢复重建
 - 语义层通过上述机制实现 Exactly-Once 保证
@@ -1258,11 +1258,11 @@ graph TB
 
 #### 大状态作业调优 {#大状态作业调优}
 
-**问题**：状态 > 10GB 时，Checkpoint 容易超时。
+**问题**:状态 > 10GB 时,Checkpoint 容易超时。
 
-**解决方案**：
+**解决方案**:
 
-1. **启用增量 Checkpoint**（必需）
+1. **启用增量 Checkpoint**(必需)
 ```java
    new EmbeddedRocksDBStateBackend(true)  // true 启用增量
    ```text
@@ -1287,9 +1287,9 @@ graph TB
 
 #### 低延迟作业调优 {#低延迟作业调优}
 
-**问题**：Checkpoint 对齐等待增加延迟。
+**问题**:Checkpoint 对齐等待增加延迟。
 
-**解决方案**：
+**解决方案**:
 
 1. **启用 Unaligned Checkpoint**
 ```java
@@ -1309,7 +1309,7 @@ import org.apache.flink.streaming.api.CheckpointingMode;
    env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.AT_LEAST_ONCE);
    ```
 
-   （仅当可容忍 At-Least-Once 时）
+   (仅当可容忍 At-Least-Once 时)
 
 ---
 
@@ -1330,7 +1330,7 @@ import org.apache.flink.streaming.api.CheckpointingMode;
 
 | 指标名称 | 类型 | 健康阈值 | 说明 |
 |---------|------|---------|------|
-| `JVM.Heap.Used` | Gauge | < 70% 堆内存 | 堆内存使用（HashMapStateBackend） |
+| `JVM.Heap.Used` | Gauge | < 70% 堆内存 | 堆内存使用(HashMapStateBackend) |
 | `JVM.NonHeap.Used` | Gauge | 趋势监控 | 非堆内存使用 |
 | `RocksDB.BlockCacheUsage` | Gauge | < 80% BlockCache | RocksDB 缓存使用 |
 | `RocksDB.EstimatedTableReadersMem` | Gauge | 趋势监控 | SST 文件索引内存 |
@@ -1363,51 +1363,51 @@ import org.apache.flink.streaming.api.CheckpointingMode;
 
 ### 8.3 常见问题诊断 {#83-常见问题诊断}
 
-#### 问题 1：Checkpoint 频繁超时 {#问题-1checkpoint-频繁超时}
+#### 问题 1:Checkpoint 频繁超时 {#问题-1checkpoint-频繁超时}
 
-**症状**：`numberOfFailedCheckpoints` 持续增长，作业日志显示 `Checkpoint expired`。
+**症状**:`numberOfFailedCheckpoints` 持续增长,作业日志显示 `Checkpoint expired`。
 
-**诊断步骤**：
+**诊断步骤**:
 
-1. 检查 `checkpointedBytes`，确认状态大小
-2. 检查网络带宽（HDFS/S3 上传速度）
+1. 检查 `checkpointedBytes`,确认状态大小
+2. 检查网络带宽(HDFS/S3 上传速度)
 3. 检查 `RocksDB` 后台 compaction 活动
 
-**解决方案**：
+**解决方案**:
 
-- 状态 > 10GB：启用增量 Checkpoint
-- 网络瓶颈：增加 `checkpointTimeout` 或优化网络
-- Compaction 干扰：调整 RocksDB `maxBackgroundJobs`
+- 状态 > 10GB:启用增量 Checkpoint
+- 网络瓶颈:增加 `checkpointTimeout` 或优化网络
+- Compaction 干扰:调整 RocksDB `maxBackgroundJobs`
 
-#### 问题 2：Checkpoint 对齐时间过长 {#问题-2checkpoint-对齐时间过长}
+#### 问题 2:Checkpoint 对齐时间过长 {#问题-2checkpoint-对齐时间过长}
 
-**症状**：`checkpointAlignmentTime` 持续增加，作业出现反压。
+**症状**:`checkpointAlignmentTime` 持续增加,作业出现反压。
 
-**诊断步骤**：
+**诊断步骤**:
 
 1. 检查 Flink Web UI Backpressure 标签页
-2. 分析数据倾斜（某些 subtask 处理缓慢）
+2. 分析数据倾斜(某些 subtask 处理缓慢)
 
-**解决方案**：
+**解决方案**:
 
 - 启用 Unaligned Checkpoint
-- 解决数据倾斜（重新分区键）
+- 解决数据倾斜(重新分区键)
 - 增加算子并行度
 
-#### 问题 3：状态恢复缓慢 {#问题-3状态恢复缓慢}
+#### 问题 3:状态恢复缓慢 {#问题-3状态恢复缓慢}
 
-**症状**：故障恢复时间长，影响业务可用性。
+**症状**:故障恢复时间长,影响业务可用性。
 
-**诊断步骤**：
+**诊断步骤**:
 
 1. 检查 `latestRestoredCheckpointStateSize`
 2. 检查 HDFS/S3 到 TM 的网络带宽
 
-**解决方案**：
+**解决方案**:
 
 - 使用增量 Checkpoint 减少恢复数据量
-- 启用本地恢复（`setPreferCheckpointForRecovery`）
-- 考虑使用 `savepoint` 作为恢复点（全量，更快）
+- 启用本地恢复(`setPreferCheckpointForRecovery`)
+- 考虑使用 `savepoint` 作为恢复点(全量,更快)
 
 ---
 

@@ -163,7 +163,7 @@ $$\Delta_{scale} \approx \frac{\mathcal{K}_{target} - \mathcal{K}_{current}}{r_{
 │  ┌─────────────────────────────────────────────────┐         │
 │  │    Managed Service for Apache Flink              │         │
 │  │  • 复杂流处理 (窗口、聚合、CEP)                   │         │
-│  │  • 与Lambda互补（Lambda消费Flink输出）           │         │
+│  │  • 与Lambda互补(Lambda消费Flink输出)           │         │
 │  └─────────────────────────────────────────────────┘         │
 │                         │                                    │
 │  目标层                  ▼                                    │
@@ -245,7 +245,7 @@ $$A^* = \arg\min_{A \in \mathcal{A}} \left( w_1 \cdot Cost(A) + w_2 \cdot Latenc
         │否                │
         ▼                  │
 ┌─────────────────┐        │
-│ 是否需要复杂    │───是───▶ 混合架构：
+│ 是否需要复杂    │───是───▶ 混合架构:
 │ 状态ful处理     │        │ Flink(MS) + Lambda
 │ (窗口/聚合/CEP) │        │ 消费者
 └─────────────────┘        │
@@ -270,7 +270,7 @@ $$A^* = \arg\min_{A \in \mathcal{A}} \left( w_1 \cdot Cost(A) + w_2 \cdot Latenc
         │否                │
         ▼                  │
 ┌─────────────────┐        │
-│ 默认推荐：      │◀───────┘
+│ 默认推荐:      │◀───────┘
 │ Lambda + SQS/   │
 │ EventBridge     │
 └─────────────────┘
@@ -306,7 +306,7 @@ import boto3
 def lambda_handler(event, context):
     """
     Kinesis事件处理器
-    批量处理记录，支持部分批处理响应
+    批量处理记录,支持部分批处理响应
     """
     processed_items = []
     batch_item_failures = []
@@ -323,12 +323,12 @@ def lambda_handler(event, context):
             processed_items.append(result)
 
         except Exception as e:
-            # 记录失败项，用于部分批处理响应
+            # 记录失败项,用于部分批处理响应
             batch_item_failures.append({
                 "itemIdentifier": record['kinesis']['sequenceNumber']
             })
 
-    # 返回部分批处理响应（仅重试失败项）
+    # 返回部分批处理响应(仅重试失败项)
     return {"batchItemFailures": batch_item_failures}
 ```
 
@@ -463,7 +463,7 @@ dynamodb = boto3.resource('dynamodb')
 rules_table = dynamodb.Table('fraud-rules')
 redis_client = redis.Redis(host=os.environ['REDIS_HOST'])
 
-# 缓存规则（Lambda容器复用）
+# 缓存规则(Lambda容器复用)
 CACHED_RULES = None
 RULES_CACHE_TTL = 60  # 秒
 last_rules_fetch = 0
@@ -535,7 +535,7 @@ def lambda_handler(event, context):
 
             score, triggered = calculate_risk_score(payload, rules)
 
-            # 更新用户统计（异步）
+            # 更新用户统计(异步)
             update_user_stats(payload['user_id'], payload['amount'])
 
             results.append({
@@ -547,7 +547,7 @@ def lambda_handler(event, context):
 
         except Exception as e:
             logger.error(f"处理失败: {e}")
-            # 记录失败，触发重试
+            # 记录失败,触发重试
             raise
 
     # 批量写入决策结果

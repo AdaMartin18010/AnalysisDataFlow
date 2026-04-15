@@ -888,7 +888,7 @@ state.getAsync(key)
     .thenCompose(r -> sink.commitAsync(r))
     .whenComplete((result, error) -> {
         if (error != null) {
-            // 失败时状态不更新，可重试
+            // 失败时状态不更新,可重试
         } else {
             // 成功时更新offset
         }
@@ -955,7 +955,7 @@ $$
 **Table API DDL (概念设计)**:
 
 ```sql
--- 注意: 以下语法为前瞻性概念设计，实际Flink 2.4版本可能不同
+-- 注意: 以下语法为前瞻性概念设计,实际Flink 2.4版本可能不同
 -- Flink 2.4+ (预期)
 
 -- 定义Agent类型
@@ -1481,7 +1481,7 @@ sequenceDiagram
     Coroutine-->>AEE: 处理完成
     AEE-->>User: resultFuture.complete()
 
-    Note over User,LLM: 全程无阻塞，高并发
+    Note over User,LLM: 全程无阻塞,高并发
 ```
 
 **序列说明**:

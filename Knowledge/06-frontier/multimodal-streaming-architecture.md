@@ -306,12 +306,12 @@ $$
 **反模式1: 忽视模态同步**
 
 ```python
-# ❌ 错误：独立处理各模态
+# ❌ 错误:独立处理各模态
 audio_result = process_audio(audio_stream)
 video_result = process_video(video_stream)
 # 可能相差数秒！
 
-# ✅ 正确：时间窗口对齐
+# ✅ 正确:时间窗口对齐
 aligned = align_by_timestamp(audio_stream, video_stream, window=1.0)
 result = process_multimodal(aligned)
 ```
@@ -319,20 +319,20 @@ result = process_multimodal(aligned)
 **反模式2: 过高的视频帧率**
 
 ```python
-# ❌ 错误：30 FPS视频流
+# ❌ 错误:30 FPS视频流
 video_stream = capture_video(fps=30)  # 冗余！
 
-# ✅ 正确：1 FPS足够
+# ✅ 正确:1 FPS足够
 video_stream = capture_video(fps=1)   # 满足LLM需求
 ```
 
 **反模式3: 忽视带宽成本**
 
 ```python
-# ❌ 错误：原始音频流
+# ❌ 错误:原始音频流
 audio = pcm_16bit_48khz_stereo()  # 1.5 Mbps
 
-# ✅ 正确：压缩编码
+# ✅ 正确:压缩编码
 audio = opus_20kbps_mono()        # 20 Kbps
 ```
 
@@ -573,7 +573,7 @@ public class VideoAnalyticsAgent {
                 MultimodalRequest request = MultimodalRequest.builder()
                     .addImage(frame.getJpegData())
                     .addAudio(frame.getPcmData())
-                    .prompt("分析这个场景，描述：1)画面内容 2)声音类型 3)异常检测")
+                    .prompt("分析这个场景,描述:1)画面内容 2)声音类型 3)异常检测")
                     .build();
 
                 return client.generate(request);

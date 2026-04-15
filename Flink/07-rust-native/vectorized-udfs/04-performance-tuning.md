@@ -336,7 +336,7 @@ $$
 - [ ] 确保 64 字节对齐
 - [ ] 启用硬件预取
 - [ ] 监控 L1/L2/L3 命中率
-- [ ] 检查伪共享（使用 perf c2c）
+- [ ] 检查伪共享(使用 perf c2c)
 - [ ] 优化数据局部性
 
 ### I/O 优化
@@ -509,7 +509,7 @@ class BatchSizeTuner:
         test_data: List
     ) -> PerformanceMetrics:
         """线性搜索最优批大小"""
-        # 生成候选批大小（对数刻度）
+        # 生成候选批大小(对数刻度)
         candidates = []
         current = self.min_batch_size
         while current <= self.max_batch_size:
@@ -610,7 +610,7 @@ class BatchSizeTuner:
         if self.target_throughput and metrics.throughput >= self.target_throughput:
             return False  # 吞吐已达标
 
-        # 如果吞吐随批大小增加而增加，继续增大
+        # 如果吞吐随批大小增加而增加,继续增大
         if len(self.metrics_history) >= 2:
             prev = self.metrics_history[-2]
             if metrics.batch_size > prev.batch_size:
@@ -840,7 +840,7 @@ impl MemoryPool {
 
     /// 分配内存块
     pub fn allocate(&self, size: usize) -> Option<MemoryBlock> {
-        // 如果请求大小超过块大小，直接分配
+        // 如果请求大小超过块大小,直接分配
         if size > self.config.block_size {
             return MemoryBlock::new(size, self.config.alignment);
         }
@@ -854,7 +854,7 @@ impl MemoryPool {
             }
         }
 
-        // 空闲队列为空，尝试分配新块
+        // 空闲队列为空,尝试分配新块
         let total = self.total_blocks.load(Ordering::Relaxed);
         if total < self.config.max_blocks {
             if let Some(block) = MemoryBlock::new(self.config.block_size, self.config.alignment) {
@@ -865,7 +865,7 @@ impl MemoryPool {
             }
         }
 
-        // 池已满，直接分配
+        // 池已满,直接分配
         MemoryBlock::new(size, self.config.alignment)
     }
 
@@ -883,7 +883,7 @@ impl MemoryPool {
             }
         }
 
-        // 非标准大小或池已满，直接释放
+        // 非标准大小或池已满,直接释放
         self.used_blocks.fetch_sub(1, Ordering::Relaxed);
         drop(block);
     }
@@ -1155,10 +1155,10 @@ class VectorizedUDFProfiler:
             f"import time; time.sleep({duration})"  # 占位符
         ]
 
-        # 实际运行：先启动 perf，然后执行目标函数
+        # 实际运行:先启动 perf,然后执行目标函数
         start_time = time.time()
 
-        # 这里简化处理，实际应该使用 subprocess 启动 perf 并附加到进程
+        # 这里简化处理,实际应该使用 subprocess 启动 perf 并附加到进程
         target_fn(*args, **kwargs)
 
         elapsed = time.time() - start_time
@@ -1280,7 +1280,7 @@ class VectorizedUDFProfiler:
 
     def _parse_perf_stat(self) -> Dict:
         """解析 perf stat 输出"""
-        # 简化实现，实际应该解析 perf stat 的输出
+        # 简化实现,实际应该解析 perf stat 的输出
         return {
             "cpu_percent": 75.0,
             "memory_mb": 256.0,
@@ -1304,7 +1304,7 @@ class VectorizedUDFProfiler:
                 text=True
             )
 
-            # 这里简化处理，实际需要调用 stackcollapse-perf.pl 和 flamegraph.pl
+            # 这里简化处理,实际需要调用 stackcollapse-perf.pl 和 flamegraph.pl
             with open(output_path, 'w') as f:
                 f.write("<!-- FlameGraph placeholder -->")
 

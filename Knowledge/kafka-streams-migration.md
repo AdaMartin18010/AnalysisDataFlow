@@ -121,7 +121,7 @@ flowchart TD
 **双写迁移流程**:
 
 ```
-Phase 1: 部署Flink作业，双写Kafka
+Phase 1: 部署Flink作业,双写Kafka
     KS → Kafka → Flink → 新Topic
 
 Phase 2: 状态对齐验证

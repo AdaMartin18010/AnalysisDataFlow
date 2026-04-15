@@ -375,42 +375,42 @@ sequenceDiagram
 
 ```
 优势:
-✅ 真正的零拷贝：Java DirectByteBuffer 直接映射到 Rust 内存
-✅ 最高吞吐：无序列化开销
-✅ 成熟生态：成熟的 jni crate
+✅ 真正的零拷贝:Java DirectByteBuffer 直接映射到 Rust 内存
+✅ 最高吞吐:无序列化开销
+✅ 成熟生态:成熟的 jni crate
 
 劣势:
-❌ 平台依赖：需为每个目标平台编译原生库
-❌ 内存安全：unsafe 代码需要仔细审查
-❌ 调试复杂：混合栈追踪困难
+❌ 平台依赖:需为每个目标平台编译原生库
+❌ 内存安全:unsafe 代码需要仔细审查
+❌ 调试复杂:混合栈追踪困难
 ```
 
 **Arrow Flight 路径**（推荐用于分析场景）：
 
 ```
 优势:
-✅ 列式处理：天然适合分析型工作负载
-✅ 生态系统：与 DataFusion、Ballista 等集成
-✅ 跨语言：Java、Rust、Python 无缝互操作
+✅ 列式处理:天然适合分析型工作负载
+✅ 生态系统:与 DataFusion、Ballista 等集成
+✅ 跨语言:Java、Rust、Python 无缝互操作
 
 劣势:
-❌ 架构复杂：引入额外服务层
-❌ 延迟增加：网络栈开销
-❌ 依赖管理：Arrow 版本兼容性
+❌ 架构复杂:引入额外服务层
+❌ 延迟增加:网络栈开销
+❌ 依赖管理:Arrow 版本兼容性
 ```
 
 **WASM 路径**（推荐用于安全敏感场景）：
 
 ```
 优势:
-✅ 沙箱隔离：代码无法访问主机资源
-✅ 可移植性：wasm 文件跨平台运行
-✅ 热更新：动态加载新模块
+✅ 沙箱隔离:代码无法访问主机资源
+✅ 可移植性:wasm 文件跨平台运行
+✅ 热更新:动态加载新模块
 
 劣势:
-❌ 有限 I/O：无法直接进行网络/文件操作
-❌ 启动开销：JIT 编译延迟
-❌ 数据边界：仍需序列化穿越边界
+❌ 有限 I/O:无法直接进行网络/文件操作
+❌ 启动开销:JIT 编译延迟
+❌ 数据边界:仍需序列化穿越边界
 ```
 
 ### 4.3 内存管理跨边界策略
@@ -770,7 +770,7 @@ use std::sync::Mutex;
 
 use crate::kafka::reader::{KafkaConfig, KafkaReader, KafkaSplit};
 
-// 全局 Reader 实例存储（生产环境应使用更完善的并发管理）
+// 全局 Reader 实例存储(生产环境应使用更完善的并发管理)
 lazy_static::lazy_static! {
     static ref READERS: Mutex<Vec<Option<Box<KafkaReader>>>> = Mutex::new(Vec::new());
 }
@@ -1823,15 +1823,15 @@ JAVA_TARGET_DIR := java/target
 # 默认构建当前平台
 all: build-rust build-java
 
-# 构建 Rust 库（当前平台）
+# 构建 Rust 库(当前平台)
 build-rust:
  cd rust && cargo build --release
 
-# 构建 Rust 库（Linux x64）
+# 构建 Rust 库(Linux x64)
 build-rust-linux-x64:
  cd rust && cargo build --release --target x86_64-unknown-linux-gnu
 
-# 构建 Rust 库（Linux ARM64）
+# 构建 Rust 库(Linux ARM64)
 build-rust-linux-arm64:
  cd rust && cargo build --release --target aarch64-unknown-linux-gnu
 
@@ -1965,7 +1965,7 @@ spec:
             # 配置 native 库路径
             - name: LD_LIBRARY_PATH
               value: "/opt/flink/usrlib:/usr/lib/x86_64-linux-gnu"
-            # JNI 调试选项（开发阶段）
+            # JNI 调试选项(开发阶段)
             - name: JAVA_TOOL_OPTIONS
               value: "-Xcheck:jni -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
           volumeMounts:

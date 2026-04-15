@@ -340,7 +340,7 @@ IF transaction_amount > $10,000 AND location != home_country THEN alert
 LLM语义理解：
 
 ```
-"检测与持卡人历史行为模式显著偏离的交易，
+"检测与持卡人历史行为模式显著偏离的交易,
  考虑时间、地点、金额、商户类型的综合异常"
 ```
 
@@ -389,7 +389,7 @@ LLM语义理解：
 │   └──────────┘      └──────────────┘      └──────────┘             │
 │                                                                     │
 │   关键特性:                                                         │
-│   ✓ 持久化: 磁盘持久化，多副本复制                                  │
+│   ✓ 持久化: 磁盘持久化,多副本复制                                  │
 │   ✓ 顺序性: 分区级顺序保证                                          │
 │   ✓ 回溯性: 可重放历史事件                                          │
 │   ✓ 解耦: 生产者与消费者独立扩展                                    │
@@ -652,7 +652,7 @@ public class AsyncClassificationFunction
                            ResultFuture<EmergencyEvent> future) {
 
         String prompt = String.format(
-            "分析以下911呼叫转录，提取: 1)紧急类型 2)关键实体 " +
+            "分析以下911呼叫转录,提取: 1)紧急类型 2)关键实体 " +
             "3)严重程度评分 1-10 4)建议响应级别\n\n转录: %s",
             transcript.getText()
         );

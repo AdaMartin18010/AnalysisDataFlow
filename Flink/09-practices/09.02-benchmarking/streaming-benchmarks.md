@@ -320,7 +320,7 @@ config.nextEventRate = 100000; // 峰值100K
 
 ```java
 /**
- * 模拟传感器数据流，支持数据倾斜
+ * 模拟传感器数据流,支持数据倾斜
  */
 public class SensorDataGenerator implements SourceFunction<SensorEvent> {
 
@@ -404,11 +404,11 @@ flink_jobmanager_job_checkpoint_duration_time
 | 最大吞吐 | 85K events/sec | p99延迟 < 1s |
 | p50延迟 | 45ms | 稳定状态 |
 | p99延迟 | 320ms | 包含GC影响 |
-| Checkpoint时长 | 15-25s | 增量，2GB状态 |
+| Checkpoint时长 | 15-25s | 增量,2GB状态 |
 | CPU使用率 | 75% | 平均 |
 
 ### 瓶颈分析
-1. RocksDB压缩在高写入期触发，导致延迟尖峰
+1. RocksDB压缩在高写入期触发,导致延迟尖峰
 2. 建议: 调整`state.backend.rocksdb.threads.threads-number`从4到8
 ```
 

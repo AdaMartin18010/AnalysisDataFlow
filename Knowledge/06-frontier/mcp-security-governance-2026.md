@@ -1,6 +1,6 @@
 # MCP 安全治理现状与企业部署指南 (2026)
 
-> **状态**: 前瞻 | **预计发布时间**: 2026-06 | **最后更新**: 2026-04-14
+> **状态**: 已发布 (持续演进) | **预计发布时间**: 2026-06 | **最后更新**: 2026-04-15
 >
 > ⚠️ 本文档描述的安全态势基于2026年公开发布的安全研究报告，相关政策与标准仍在快速演进中。
 
@@ -62,6 +62,31 @@ $$
 | **数据泄露** | $\exists c \in \mathcal{C}: c(query) \rightarrow data\_leak$ | 严重 |
 | **权限提升** | $\exists c_i, c_j \in \mathcal{C}: c_i \circ c_j \rightarrow elevated\_privilege$ | 高 |
 | **间接提示注入** | $\exists input: LLM(input) \rightarrow invoke(c_{malicious})$ | 高 |
+
+---
+
+### Def-K-06-304: MCP 威胁分类 (arXiv 2026-04)
+
+基于 arXiv 2026-04 论文《A Formal Security Framework for MCP-Based AI Agents》，MCP 威胁模型扩展为四类核心威胁[^5]：
+
+$$
+\mathcal{T}_{mcp}^{2026} \triangleq \langle \mathcal{T}_{poison}, \mathcal{T}_{rug}, \mathcal{T}_{exfil}, \mathcal{T}_{escal} \rangle
+$$
+
+其中：
+
+| 威胁 | 符号 | 定义 | 典型场景 |
+|------|------|------|----------|
+| **Tool Poisoning** | $\mathcal{T}_{poison}$ | 恶意篡改 MCP Server 的工具实现或元数据 | 供应链攻击、恶意插件 |
+| **Rug Pulls** | $\mathcal{T}_{rug}$ | Server 在获得信任后突然变更行为或撤销能力 | 动态能力降级、服务劫持 |
+| **Cross-Server Data Exfiltration** | $\mathcal{T}_{exfil}$ | 利用多个 MCP Server 的组合调用窃取敏感数据 | 跨源信息聚合、隐私泄露 |
+| **Privilege Escalation** | $\mathcal{T}_{escal}$ | 通过工具链调用顺序绕过权限边界 | 横向移动、权限提升 |
+
+**与基础威胁模型的关系**：
+
+$$
+\mathcal{T}_{mcp}^{2026} \subseteq \mathcal{T}_{mcp} \land |\mathcal{T}_{mcp}^{2026}| = 4
+$$
 
 ---
 
@@ -259,7 +284,23 @@ graph TB
 
 ## 4. 论证过程 (Argumentation)
 
-### 4.1 Knostic 2026 扫描结果分析
+### 4.1 Anthropic Managed Agents 安全态势 (2026-04-09)
+
+Anthropic 于 2026-04-09 发布 **Claude Managed Agents** Public Beta，同步推出 **Claude Cowork** GA 与策略控制增强[^6]。Managed Agents 的定价与安全模型如下：
+
+| 组件 | 定价 | 安全影响 |
+|------|------|----------|
+| Sonnet 4.6 | $3/$15 per M token (输入/输出) | 高价值目标，需强化审计与配额控制 |
+| 活跃会话 | $0.08/hr | 长时会话增加状态泄露与权限悬浮风险 |
+
+**企业部署启示**：
+
+- Managed Agents 默认集成 MCP 工具调用，企业必须在前置网关实施 AIP 身份绑定与工具白名单
+- 策略控制（Policy Controls）支持基于角色的工具访问限制，建议映射到 L3+ 安全态势
+
+---
+
+### 4.2 Knostic 2026 扫描结果分析
 
 **事实陈述**: 2026 年，安全厂商 Knostic 对约 2,000 个公共 MCP 服务器进行了自动化安全扫描，结果显示：
 
@@ -277,7 +318,7 @@ graph TB
 | **远程代码执行** | 工具注入或参数污染导致 RCE | 中 | 严重 |
 | **供应链攻击** | 恶意 MCP 服务器被分发到终端用户 | 高 | 严重 |
 
-**论证**: 当前公共 MCP 生态的安全基线远低于企业生产的最低可接受阈值（L2）。企业在引入 MCP 工具时必须实施额外的安全控制层，而不能依赖 MCP 协议原生的安全机制。
+**论证**: 当前公共 MCP 生态的安全基线远低于企业生产的最低可接受阈值（L2）。企业在引入 MCP 工具时必须实施额外的安全控制层，而不能依赖 MCP 协议原生的安全机制。arXiv 2026-04 论文进一步证实，工具注入与跨服务器数据泄露的组合攻击在约 15% 的扫描样本中具有可利用路径[^5]。
 
 ---
 
@@ -318,15 +359,15 @@ AIP 从三个维度补强 MCP 的安全短板：
 │                                                             │
 │  1. Agent 向 AIP 身份注册中心申请 DID 和委托凭证              │
 │                                                             │
-│  2. 调用 MCP 工具前，Agent 生成调用意图签名：                 │
+│  2. 调用 MCP 工具前,Agent 生成调用意图签名:                 │
 │     Sign(pk_agent, tool_name, params_hash, timestamp)       │
 │                                                             │
-│  3. MCP 网关验证：                                            │
+│  3. MCP 网关验证:                                            │
 │     a) 签名有效性                                             │
 │     b) 委托凭证是否覆盖该工具                                  │
 │     c) 时间戳是否 replay-safe                                 │
 │                                                             │
-│  4. 验证通过后，网关代理调用 MCP 服务器                        │
+│  4. 验证通过后,网关代理调用 MCP 服务器                        │
 │                                                             │
 │  5. 返回结果与调用日志一同写入审计链                           │
 │                                                             │
@@ -536,7 +577,7 @@ async def scan_mcp_server(url: str) -> MCPSecurityPosture:
     # 实际实现应探测 /health、/.well-known/mcp.json 等端点
     return MCPSecurityPosture(
         server_url=url,
-        auth_mechanism="none",  # Knostic 2026 发现：公共服务器普遍无认证
+        auth_mechanism="none",  # Knostic 2026 发现:公共服务器普遍无认证
         authorization_enabled=False,
         audit_logging=False,
         isolation_level="process"
@@ -677,8 +718,10 @@ flowchart TD
 
 ## 8. 引用参考 (References)
 
+[^5]: arXiv, "A Formal Security Framework for MCP-Based AI Agents", 2026-04. <https://arxiv.org/html/2604.05969v1>
+[^6]: Pasquale Pillitteri, "Anthropic Managed Agents & Cowork GA - April 9, 2026", 2026-04-09. <https://pasqualepillitteri.it/en/news/755/anthropic-managed-agents-cowork-ga-april-9-2026>
 
 ---
 
-*文档版本: v1.0 | 创建日期: 2026-04-14 | 状态: Active*
-*更新内容: 基于 Knostic 2026 扫描数据，建立 MCP 安全态势框架、威胁模型与企业部署检查清单*
+*文档版本: v1.1 | 创建日期: 2026-04-14 | 状态: Active*
+*更新内容: 基于 Knostic 2026 扫描数据，建立 MCP 安全态势框架、威胁模型与企业部署检查清单；2026-04-15 补充 Anthropic Managed Agents、arXiv 安全论文引用与威胁分类*

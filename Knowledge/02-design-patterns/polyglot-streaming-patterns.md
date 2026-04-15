@@ -436,7 +436,7 @@ $$
 对于每个组件，使用以下框架评估语言选择：
 
 ```
-评估维度（权重）
+评估维度(权重)
 ├── 性能要求 (30%)
 │   ├── 延迟敏感度
 │   ├── 吞吐量需求
@@ -1035,7 +1035,7 @@ def warmup_model(model, input_shape, iterations=10):
     for _ in range(iterations):
         _ = model.predict(dummy_input, verbose=0)
 
-# 结果缓存（对于重复输入）
+# 结果缓存(对于重复输入)
 from functools import lru_cache
 
 @lru_cache(maxsize=10000)
@@ -1485,14 +1485,14 @@ impl HotReloadManager {
         // 1. 验证新配置
         new_config.validate()?;
 
-        // 2. 创建新组件（并行）
+        // 2. 创建新组件(并行)
         let new_ingestor = DataIngestor::new(&new_config.sources).await?;
         let new_processor = StreamProcessor::new(&new_config.transforms).await?;
 
-        // 3. 协调切换（原子操作）
+        // 3. 协调切换(原子操作)
         let mut pipeline = self.pipeline.write().await;
 
-        // 暂停输入（保持输出）
+        // 暂停输入(保持输出)
         pipeline.ingestor.pause().await;
 
         // 切换处理链

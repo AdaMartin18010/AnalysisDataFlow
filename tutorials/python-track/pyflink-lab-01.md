@@ -22,7 +22,7 @@
 ### 1. 安装 PyFlink
 
 ```bash
-# 创建虚拟环境（推荐）
+# 创建虚拟环境(推荐)
 python -m venv pyflink-env
 source pyflink-env/bin/activate  # Linux/Mac
 # pyflink-env\Scripts\activate  # Windows
@@ -49,7 +49,7 @@ pip install kafka-python confluent-kafka
 # 测试数据生成
 pip install faker
 
-# Jupyter（可选，用于交互式开发）
+# Jupyter(可选,用于交互式开发)
 pip install jupyter
 ```
 
@@ -112,7 +112,7 @@ def main():
     # 设置并行度
     env.set_parallelism(1)
 
-    # 2. 创建数据源（从文件读取）
+    # 2. 创建数据源(从文件读取)
     ds = env.read_text_file("input.txt")
 
     # 3. 数据处理
@@ -122,7 +122,7 @@ def main():
         .flat_map(Tokenizer(), output_type=Types.TUPLE([Types.STRING(), Types.INT()]))
         # 按单词分组
         .key_by(lambda x: x[0])
-        # 窗口聚合（这里用 reduce 模拟）
+        # 窗口聚合(这里用 reduce 模拟)
         .reduce(SumReducer())
     )
 
@@ -145,6 +145,7 @@ python wordcount.py
 预期输出：
 
 ```
+# 伪代码示意，非完整可编译代码
 ('apache', 1)
 ('flink', 3)
 ('is', 2)
@@ -173,7 +174,7 @@ ds = env.from_collection(data, type_info=Types.INT())
 # 2. 从文件创建
 ds = env.read_text_file("/path/to/file.txt")
 
-# 3. 从 Socket 创建（用于测试）
+# 3. 从 Socket 创建(用于测试)
 ds = env.socket_text_stream("localhost", 9999)
 
 # 4. Kafka Source
@@ -412,12 +413,12 @@ ds.add_sink(PrintSink("Output: "))
 from pyflink.table import StreamTableEnvironment, EnvironmentSettings
 from pyflink.datastream import StreamExecutionEnvironment
 
-# 创建 Table Environment（基于 DataStream）
+# 创建 Table Environment(基于 DataStream)
 env = StreamExecutionEnvironment.get_execution_environment()
 settings = EnvironmentSettings.new_instance().in_streaming_mode().build()
 table_env = StreamTableEnvironment.create(env, settings)
 
-# 纯 Table Environment（批处理模式）
+# 纯 Table Environment(批处理模式)
 # batch_settings = EnvironmentSettings.new_instance().in_batch_mode().build()
 # batch_table_env = TableEnvironment.create(batch_settings)
 ```
@@ -578,7 +579,7 @@ from pyflink.table.udf import udf
 # 方式 1: 装饰器
 @udf(result_type=DataTypes.STRING())
 def format_name(name: str) -> str:
-    """格式化名称：首字母大写"""
+    """格式化名称:首字母大写"""
     return name.title() if name else ""
 
 @udf(result_type=DataTypes.INT())
@@ -599,7 +600,7 @@ result = table_env.sql_query("""
     FROM users
 """)
 
-# 方式 2: 通用 UDF（支持复杂类型）
+# 方式 2: 通用 UDF(支持复杂类型)
 from pyflink.table.udf import TableFunction
 
 class ParseTags(TableFunction):
@@ -612,7 +613,7 @@ class ParseTags(TableFunction):
 parse_tags = udf(ParseTags(), result_type=DataTypes.STRING())
 table_env.create_temporary_function("parse_tags", parse_tags)
 
-# 使用（生成多行）
+# 使用(生成多行)
 table_env.sql_query("""
     SELECT user_id, tag
     FROM users,

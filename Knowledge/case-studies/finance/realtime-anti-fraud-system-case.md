@@ -200,7 +200,7 @@ $$
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-// 盗刷检测模式：短时间多笔异地交易
+// 盗刷检测模式:短时间多笔异地交易
 Pattern<Transaction, ?> fraudPattern = Pattern
     .<Transaction>begin("first")
     .where(new SimpleCondition<Transaction>() {

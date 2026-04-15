@@ -91,7 +91,7 @@ $$
 │                                                                │
 │  Layer 4: 业务语义提取    ──►  用户ID提取、业务线分类、错误码映射   │
 │       ↑                                                        │
-│  Layer 3: 结构化解析      ──►  JSON/XML/CSV 解析，字段类型推断     │
+│  Layer 3: 结构化解析      ──►  JSON/XML/CSV 解析,字段类型推断     │
 │       ↑                                                        │
 │  Layer 2: 格式识别        ──►  正则匹配、Grok 模式匹配             │
 │       ↑                                                        │
@@ -224,7 +224,7 @@ graph TB
 │  ┌─────────────────────────────────────────────────────────┐   │
 │  │ Level 1: 快速分类器 (Fast Classifier)                    │   │
 │  │ • 根据日志前缀/字段特征快速识别日志类型                      │   │
-│  │ • 时间复杂度: O(1)，使用 HashMap 查找                      │   │
+│  │ • 时间复杂度: O(1),使用 HashMap 查找                      │   │
 │  └─────────────────────────────────────────────────────────┘   │
 │       │                                                         │
 │       ├──► JSON 日志 ──► Jackson/JSON-B 解析                     │
@@ -267,7 +267,7 @@ T+5s     依赖该数据库的服务开始报错
          ├──► 服务C: [ERROR] Transaction rollback
          └──► 5秒内产生 500+ 相关告警 ⚠️ 告警风暴开始
 
-T+30s    告警数量超过阈值，通知渠道被淹没
+T+30s    告警数量超过阈值,通知渠道被淹没
          └──► 运维人员无法识别根因告警
 ```
 
@@ -315,7 +315,7 @@ $$
 │                                                                 │
 │  Kafka Source                                                    │
 │  ├──  consumer group offset 存储在 Kafka __consumer_offsets     │
-│  └──  与 Flink Checkpoint 绑定，故障时从保存的 offset 恢复        │
+│  └──  与 Flink Checkpoint 绑定,故障时从保存的 offset 恢复        │
 │       ↓                                                         │
 │  Flink Processing                                                │
 │  ├──  Operator State 定期 Checkpoint 到分布式存储                │
@@ -637,7 +637,7 @@ public class AlertSuppressionFunction extends KeyedProcessFunction<String, Alert
         Long lastSent = lastSentState.value();
 
         if (lastSent == null || (currentTime - lastSent) > cooldownMs) {
-            // 冷却期已过，发送告警
+            // 冷却期已过,发送告警
             Integer pendingCount = pendingCountState.value();
             if (pendingCount != null && pendingCount > 0) {
                 alert.setSuppressedCount(pendingCount);
@@ -652,7 +652,7 @@ public class AlertSuppressionFunction extends KeyedProcessFunction<String, Alert
             }
             out.collect(alert);
         } else {
-            // 冷却期内，计数抑制
+            // 冷却期内,计数抑制
             Integer current = pendingCountState.value();
             pendingCountState.update(current == null ? 1 : current + 1);
 
@@ -685,17 +685,17 @@ public class AlertSuppressionFunction extends KeyedProcessFunction<String, Alert
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
 │  1. 解析优化                                                     │
-│     • 预编译正则表达式，避免运行时编译                              │
+│     • 预编译正则表达式,避免运行时编译                              │
 │     • 使用 Jackson Afterburner 模块加速 JSON 解析                 │
-│     • 线程池并行解析，避免阻塞主线程                                │
+│     • 线程池并行解析,避免阻塞主线程                                │
 │                                                                 │
 │  2. 状态优化                                                     │
-│     • RocksDB State Backend，启用增量 Checkpoint                   │
-│     • 状态 TTL 24h，自动清理过期数据                                │
+│     • RocksDB State Backend,启用增量 Checkpoint                   │
+│     • 状态 TTL 24h,自动清理过期数据                                │
 │     • 使用 MapState 替代 ValueState<List> 优化聚合                  │
 │                                                                 │
 │  3. Sink 优化                                                    │
-│     • ES Bulk 批量写入，批量大小 1000-5000                         │
+│     • ES Bulk 批量写入,批量大小 1000-5000                         │
 │     • 使用 _bulk API 的 pipeline 预处理                            │
 │     • 指数退避重试策略                                            │
 │                                                                 │

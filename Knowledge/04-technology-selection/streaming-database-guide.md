@@ -935,24 +935,24 @@ $$
 ```
 阶段 1: 评估与规划
 ├── 1.1 现有 Flink SQL 清单梳理
-├── 1.2 复杂度评估（Join数、窗口类型、UDF）
-├── 1.3 目标系统选型（RisingWave/Materialize/Timeplus）
-└── 1.4 迁移优先级排序（低风险优先）
+├── 1.2 复杂度评估(Join数、窗口类型、UDF)
+├── 1.3 目标系统选型(RisingWave/Materialize/Timeplus)
+└── 1.4 迁移优先级排序(低风险优先)
 
 阶段 2: 语法转换
-├── 2.1 连接器配置转换（Kafka → Source）
-├── 2.2 DDL 语法调整（数据类型映射）
-├── 2.3 窗口函数改写（如需要）
-└── 2.4 UDF 重写（Java → SQL/Rust）
+├── 2.1 连接器配置转换(Kafka → Source)
+├── 2.2 DDL 语法调整(数据类型映射)
+├── 2.3 窗口函数改写(如需要)
+└── 2.4 UDF 重写(Java → SQL/Rust)
 
 阶段 3: 双跑验证
-├── 3.1 搭建双跑环境（Flink + 目标系统并行）
-├── 3.2 数据一致性校验（采样对比）
-├── 3.3 性能基准测试（延迟、吞吐）
+├── 3.1 搭建双跑环境(Flink + 目标系统并行)
+├── 3.2 数据一致性校验(采样对比)
+├── 3.3 性能基准测试(延迟、吞吐)
 └── 3.4 问题修复与优化
 
 阶段 4: 灰度切换
-├── 4.1 流量比例切换（1% → 10% → 50% → 100%）
+├── 4.1 流量比例切换(1% → 10% → 50% → 100%)
 ├── 4.2 监控与回滚预案
 └── 4.3 原系统下线
 ```
@@ -1122,7 +1122,7 @@ SELECT
 FROM trades
 GROUP BY account_id;
 
--- 递归查询：资金链路追踪
+-- 递归查询:资金链路追踪
 CREATE MATERIALIZED VIEW fund_chain AS
 WITH RECURSIVE chain AS (
     SELECT from_account, to_account, amount, 1 as depth
@@ -1227,7 +1227,7 @@ SELECT
 FROM TUMBLE(sensor_data, timestamp, INTERVAL '1' MINUTE)
 GROUP BY device_id, window_start, window_end;
 
--- 异常设备检测（多维度阈值）
+-- 异常设备检测(多维度阈值)
 CREATE MATERIALIZED VIEW anomaly_detection AS
 SELECT
     device_id,
@@ -1242,7 +1242,7 @@ SELECT
 FROM device_health
 WHERE window_end > NOW() - INTERVAL '5' MINUTE;
 
--- 产线效率统计（小时级）
+-- 产线效率统计(小时级)
 CREATE MATERIALIZED VIEW line_efficiency AS
 SELECT
     line_id,
@@ -1407,7 +1407,7 @@ graph TB
 **核心 SQL**:
 
 ```sql
--- MySQL CDC 源表（租户隔离通过 schema）
+-- MySQL CDC 源表(租户隔离通过 schema)
 CREATE SOURCE tenant_a_orders (
     order_id BIGINT,
     customer_id VARCHAR,
@@ -1433,7 +1433,7 @@ SELECT
 FROM tenant_a_orders
 GROUP BY DATE_TRUNC('hour', created_at), status;
 
--- 流批统一查询（实时+历史）
+-- 流批统一查询(实时+历史)
 CREATE MATERIALIZED VIEW tenant_a_unified_metrics AS
 SELECT
     DATE(created_at) as date,
@@ -1515,7 +1515,7 @@ CREATE STREAM sensor_readings (
     timestamp DATETIME64
 );
 
--- 本地物化视图：实时统计
+-- 本地物化视图:实时统计
 CREATE MATERIALIZED VIEW local_stats AS
 SELECT
     metric_type,
@@ -1541,7 +1541,7 @@ SELECT
 FROM sensor_readings
 WHERE timestamp > NOW() - INTERVAL '10' SECOND;
 
--- 聚合后同步到云端（减少带宽）
+-- 聚合后同步到云端(减少带宽)
 CREATE MATERIALIZED VIEW hourly_aggregation AS
 SELECT
     device_id,
@@ -1642,7 +1642,7 @@ GROUP BY device_id, metric_type, DATE_TRUNC('hour', timestamp);
 **关键发现**:
 
 ```
-q7 查询性能对比（复杂状态管理）:
+q7 查询性能对比(复杂状态管理):
 ┌─────────────────────────────────────────────────────────┐
 │ RisingWave:  219.1 kr/s  ████████████████████████████  │
 │ Timeplus:    245.3 kr/s  ██████████████████████████████│

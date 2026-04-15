@@ -104,9 +104,9 @@ Compatibility(Flash, Flink) :=
 ∀workload: Speedup(Flash, Flink, workload) = f(operator_type, data_characteristics, hardware)
 
 其中:
-- 纯计算密集型算子（字符串/时间处理）: Speedup ∈ [10x, 100x]
-- 状态密集型算子（聚合/Join）: Speedup ∈ [3x, 8x]
-- IO密集型算子（简单过滤）: Speedup ∈ [1.5x, 3x]
+- 纯计算密集型算子(字符串/时间处理): Speedup ∈ [10x, 100x]
+- 状态密集型算子(聚合/Join): Speedup ∈ [3x, 8x]
+- IO密集型算子(简单过滤): Speedup ∈ [1.5x, 3x]
 ```
 
 **证明概要**:
@@ -128,7 +128,7 @@ CompleteCompatibility(Flash) ↔
     ∀op ∈ Flink_Operators:
         HasNativeImpl(op) ∨ HasFallbackImpl(op)
 
-当前覆盖度（截至 v1.0）:
+当前覆盖度(截至 v1.0):
 |Operator Category|Coverage|
 |-----------------|--------|
 |Stateless Ops    | 95%    |
@@ -153,11 +153,11 @@ CompleteCompatibility(Flash) ↔
 ```
 CostReduction = (CUs_Flink - CUs_Flash) / CUs_Flink × 100%
 
-实际生产数据（阿里巴巴，2024年9月）:
+实际生产数据(阿里巴巴,2024年9月):
 - 覆盖流量: 100,000+ CUs
 - 业务场景: Tmall, Cainiao, Lazada, Fliggy, AMAP, Ele.me
 - 平均成本降低: ~50%
-- 性能提升范围: 5x-10x（Nexmark基准）
+- 性能提升范围: 5x-10x(Nexmark基准)
 ```
 
 ---
@@ -231,7 +231,7 @@ Flash 引擎实现性能突破的核心技术点：
 ```
 传统 Java 实现:
 for (int i = 0; i < n; i++) {
-    result[i] = stringFunction(input[i]);  // 逐条处理，JVM 边界开销
+    result[i] = stringFunction(input[i]);  // 逐条处理,JVM 边界开销
 }
 
 Flash C++ 向量化实现:
@@ -243,11 +243,11 @@ __m256i result = simd_string_op(batch);  // 单条 SIMD 指令
 **突破点 2: 列式内存布局**
 
 ```
-行式存储（Flink）:
+行式存储(Flink):
 [Row1: [id, name, timestamp], Row2: [id, name, timestamp], ...]  // 缓存不友好
 
-列式存储（Flash）:
-[id_column: [id1, id2, ...], name_column: [name1, name2, ...], ...]  // 缓存友好，SIMD友好
+列式存储(Flash):
+[id_column: [id1, id2, ...], name_column: [name1, name2, ...], ...]  // 缓存友好,SIMD友好
 ```
 
 **突破点 3: 零拷贝网络传输**
@@ -293,9 +293,9 @@ Flash 引擎特别适合以下场景：
 Throughput(batch_size) = batch_size / (T_fixed + T_per_row × batch_size / SIMD_width)
 
 其中:
-- T_fixed: 批处理固定开销（调度、边界检查）
+- T_fixed: 批处理固定开销(调度、边界检查)
 - T_per_row: 单条记录处理时间
-- SIMD_width: 向量宽度（AVX2=256bit, AVX-512=512bit）
+- SIMD_width: 向量宽度(AVX2=256bit, AVX-512=512bit)
 ```
 
 **步骤 2: 分析批大小影响**
@@ -305,10 +305,10 @@ Throughput(batch_size) = batch_size / (T_fixed + T_per_row × batch_size / SIMD_
 Throughput → SIMD_width / T_per_row  (理论上限)
 
 实际观察:
-- batch_size = 1:  无 SIMD 加速，JVM 开销主导
+- batch_size = 1:  无 SIMD 加速,JVM 开销主导
 - batch_size = 10: 开始体现 SIMD 优势
 - batch_size = 100: 接近最优效率
-- batch_size = 1000: 边际收益递减，内存压力增加
+- batch_size = 1000: 边际收益递减,内存压力增加
 ```
 
 **步骤 3: 验证与实测**
@@ -337,8 +337,8 @@ Throughput → SIMD_width / T_per_row  (理论上限)
    - Native Subplan → Falcon Runtime (C++)
    - Java Subplan → Flink TaskManager (JVM)
 4. 边界处理:
-   - 数据格式自动转换（Row ↔ Arrow）
-   - 状态共享机制（RocksDB ↔ ForStDB 桥接）
+   - 数据格式自动转换(Row ↔ Arrow)
+   - 状态共享机制(RocksDB ↔ ForStDB 桥接)
 ```
 
 ---
@@ -355,8 +355,8 @@ Throughput → SIMD_width / T_per_row  (理论上限)
   Flash版本: Flash 1.0
 
 数据集规模:
-  小规模: 100M 记录（测试 ForStDB Mini）
-  大规模: 200M 记录（测试 ForStDB Pro）
+  小规模: 100M 记录(测试 ForStDB Mini)
+  大规模: 200M 记录(测试 ForStDB Pro)
 
 评估指标:
   - 吞吐量 (Events/second)
@@ -368,7 +368,7 @@ Throughput → SIMD_width / T_per_row  (理论上限)
 ### 6.2 典型性能数据
 
 ```
-Nexmark 基准测试结果（Flash 1.0 vs Flink 1.19）:
+Nexmark 基准测试结果(Flash 1.0 vs Flink 1.19):
 
 Query | Flink (s) | Flash (s) | Speedup
 ------|-----------|-----------|----------
@@ -377,8 +377,8 @@ q1    | 115.2     | 14.4      | 8.0x
 q2    | 122.5     | 15.3      | 8.0x
 q5    | 245.0     | 35.0      | 7.0x
 q8    | 380.0     | 54.3      | 7.0x
-平均   | -         | -         | >5x（整体）
-       |           |           | >8x（小规模）
+平均   | -         | -         | >5x(整体)
+       |           |           | >8x(小规模)
 ```
 
 ### 6.3 TPC-DS 批处理结果
@@ -408,7 +408,7 @@ Flash 引擎       | 3.0x+   | 向量化执行优势
 │ Ele.me          │ 个性化实时推荐              │ 5-8x       │
 └─────────────────┴─────────────────────────────┴────────────┘
 
-总体成效（截至2024年9月）:
+总体成效(截至2024年9月):
 - 覆盖 CU: 100,000+
 - 平均成本降低: ~50%
 - 作业稳定性: 99.9%+

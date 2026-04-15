@@ -431,13 +431,13 @@ $$
 **优化方案**：
 
 ```python
-# 优化前：直接传出
+# 优化前:直接传出
 import requests
 def process_event(event):
     result = transform(event)
     requests.post(THIRD_PARTY_API, json=result)  # 产生传出费用
 
-# 优化后：批量聚合后传出
+# 优化后:批量聚合后传出
 def process_batch(events):
     results = [transform(e) for e in events]
     # 批量压缩上传
@@ -569,12 +569,12 @@ $$
 
 ```python
 # 优化1: 批处理大小调优
-# 优化前：单条处理
+# 优化前:单条处理
 lambda_event_batch_size = 1  # 触发次数 = 5亿/月
 
-# 优化后：批量处理 (最大10,000条)
+# 优化后:批量处理 (最大10,000条)
 lambda_event_batch_size = 1000  # 触发次数 = 50万/月
-# 节省：调用费用减少99.9%
+# 节省:调用费用减少99.9%
 ```
 
 | 优化项 | 原成本 | 新成本 | 节省 |
@@ -742,7 +742,7 @@ AWS Lambda:      计(7) 生(10) 免(7) 网(6) 存(9) 监(9) 预(8) 自(8)
 Azure Functions: 计(8) 生(7)  免(7) 网(7) 存(8) 监(8) 预(7) 自(8)
 GCP CloudFn:     计(9) 生(6)  免(10)网(5) 存(7) 监(7) 预(9) 自(7)
 
-评分说明：10分最优，0分最差
+评分说明:10分最优,0分最差
 ```
 
 ---

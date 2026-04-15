@@ -54,13 +54,13 @@ public class ProcessingTimeExample {
         StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
 
-        // 使用 Processing Time（默认）
+        // 使用 Processing Time(默认)
         // 处理时间语义 - 不需要显式设置WatermarkStrategy
-// Flink 1.12+ 默认使用事件时间，处理时间窗口使用ProcessingTimeWindow
+// Flink 1.12+ 默认使用事件时间,处理时间窗口使用ProcessingTimeWindow
         // 创建模拟数据流
         DataStream<String> stream = env.socketTextStream("localhost", 9999);
 
-        // 完整实现：数据处理逻辑
+        // 完整实现:数据处理逻辑
         DataStream<Tuple2<String, Integer>> wordCounts = stream
             // 1. 将输入转换为 (word, 1) 格式
             .map(new MapFunction<String, Tuple2<String, Integer>>() {
@@ -150,16 +150,16 @@ public class EventTimeExample {
 env.getConfig().setAutoWatermarkInterval(200);
         DataStream<String> stream = env.socketTextStream("localhost", 9999);
 
-        // 完整实现：Event Time 处理
+        // 完整实现:Event Time 处理
         DataStream<Tuple3<String, Long, Integer>> eventStream = stream
-            // 1. 解析输入，提取时间戳（格式: word,timestamp）
+            // 1. 解析输入,提取时间戳(格式: word,timestamp)
             .map(line -> {
                 String[] parts = line.split(",");
                 String word = parts[0].trim();
                 long timestamp = Long.parseLong(parts[1].trim());
                 return Tuple3.of(word, timestamp, 1);
             })
-            // 2. 分配 Watermark（允许 2 秒乱序）
+            // 2. 分配 Watermark(允许 2 秒乱序)
             .assignTimestampsAndWatermarks(
                 new BoundedOutOfOrdernessTimestampExtractor<
                     Tuple3<String, Long, Integer>>(Time.seconds(2)) {
@@ -254,7 +254,7 @@ stream
 准备以下测试数据（相同输入，三种时间语义）:
 
 ```
-输入序列（按输入顺序）:
+输入序列(按输入顺序):
 1. "hello" (业务时间: 00:00:01)
 2. "hello" (业务时间: 00:00:03)
 3. "world" (业务时间: 00:00:02)

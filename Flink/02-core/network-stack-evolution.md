@@ -325,7 +325,7 @@ taskmanager.network.memory.buffer-debloat.samples: 20
 - jemalloc 变体实现
 - 内存分为 heap-arenas 和 direct-arenas
 - 每个 arena 以 16MB chunks 分配内存
-- 懒分配：仅在需要时分配 chunks
+- 懒分配:仅在需要时分配 chunks
 
 **Flink 网络栈配置**:
 ```yaml
@@ -338,7 +338,7 @@ taskmanager.network.memory.max: 1gb
 
 - AddCredit 消息通知增量 credit
 - InputChannel unannounced credit 从 0 增加时入队
-- Channel 可写时发送 credit，发送后重置为 0
+- Channel 可写时发送 credit,发送后重置为 0
 
 ```
 
@@ -386,12 +386,12 @@ public class PartitionRequestClient {
      * 写入数据 - 依赖 TCP 流控
      */
     public void writeBuffer(Buffer buffer, int targetChannel) {
-        // 直接写入 Netty Channel，依赖 TCP 流控
-        // 当接收方缓冲区满时，TCP 会将 AdvertisedWindow 置 0
+        // 直接写入 Netty Channel,依赖 TCP 流控
+        // 当接收方缓冲区满时,TCP 会将 AdvertisedWindow 置 0
         // 导致写入阻塞
         tcpChannel.writeAndFlush(buffer);
 
-        // 问题：无法感知通道级背压
+        // 问题:无法感知通道级背压
         // 同一连接上的所有通道共享 TCP 窗口
     }
 }
@@ -408,10 +408,10 @@ public class ResultPartition {
      * 添加 Buffer 到子分区
      */
     public void addBufferConsumer(BufferConsumer buffer, int targetChannel) {
-        // 直接发送，无流控逻辑
+        // 直接发送,无流控逻辑
         client.writeBuffer(buffer.build(), targetChannel);
 
-        // 问题：当 targetChannel 对应的下游变慢时
+        // 问题:当 targetChannel 对应的下游变慢时
         // 整个 TCP 连接会被阻塞
     }
 }
@@ -432,17 +432,17 @@ public class CreditBasedPartitionRequestClientHandler {
     private final Queue<BufferConsumer>[] pendingQueues;
 
     /**
-     * 添加 Buffer 到子分区，受 credit 控制
+     * 添加 Buffer 到子分区,受 credit 控制
      */
     public void addBufferConsumer(BufferConsumer buffer, int targetChannel) {
         int availableCredit = credits[targetChannel];
 
         if (availableCredit > 0) {
-            // 有可用 credit，直接写入
+            // 有可用 credit,直接写入
             writeBufferToChannel(buffer, targetChannel);
             credits[targetChannel]--;
         } else {
-            // credit 耗尽，加入等待队列
+            // credit 耗尽,加入等待队列
             pendingQueues[targetChannel].add(buffer);
 
             // 触发背压信号
@@ -501,7 +501,7 @@ public class RemoteInputChannel {
         // 消费 buffer
         processBuffer(buffer);
 
-        // 释放 buffer，回收 credit
+        // 释放 buffer,回收 credit
         buffer.recycle();
 
         // 周期性回传 credit

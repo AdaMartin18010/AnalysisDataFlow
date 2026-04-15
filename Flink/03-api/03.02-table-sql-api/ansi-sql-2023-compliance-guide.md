@@ -104,7 +104,7 @@ $$
 ```sql
 MATCH_RECOGNIZE (
     PARTITION BY partition_key          -- 分区键
-    ORDER BY event_time                 -- 排序键（必须）
+    ORDER BY event_time                 -- 排序键(必须)
     MEASURES                            -- 定义输出列
         A.event_type AS start_event,
         LAST(B.event_type) AS end_event
@@ -316,7 +316,7 @@ Flink SQL 在标准 SQL 基础上扩展的流处理特性：
 标准 SQL 假设数据是静态的，以下查询在批处理中有确定结果：
 
 ```sql
--- 批处理：确定性结果
+-- 批处理:确定性结果
 SELECT COUNT(*) FROM orders WHERE order_date = CURRENT_DATE;
 ```
 
@@ -329,7 +329,7 @@ SELECT COUNT(*) FROM orders WHERE order_date = CURRENT_DATE;
 标准 SQL `ORDER BY` 要求完整排序，流数据无限无法完成：
 
 ```sql
--- 流处理中无法执行（无界排序）
+-- 流处理中无法执行(无界排序)
 SELECT * FROM events ORDER BY event_time;
 ```
 
@@ -603,7 +603,8 @@ WINDOW
 #### 示例 6.2.3: Flink TVF 窗口 (扩展)
 
 ```sql
--- Flink 特有的窗口 TVF 语法（SQL:2023 扩展）
+# 伪代码示意，非完整可执行配置
+-- Flink 特有的窗口 TVF 语法(SQL:2023 扩展)
 SELECT
     window_start,
     window_end,
@@ -620,7 +621,7 @@ FROM TABLE(
 )
 GROUP BY window_start, window_end, product_id;
 
--- 输出: 每5分钟累积一次，每小时重置
+-- 输出: 每5分钟累积一次,每小时重置
 -- [00:00, 00:05), [00:00, 00:10), ..., [00:00, 01:00)
 -- [01:00, 01:05), [01:00, 01:10), ...
 ```
@@ -648,11 +649,11 @@ MATCH_RECOGNIZE (
         TIMESTAMPDIFF(MINUTE, A.event_time, C.event_time) AS pattern_duration
     PATTERN (A B+ C)
     DEFINE
-        -- A: 价格下跌起点（前一日收盘较高）
+        -- A: 价格下跌起点(前一日收盘较高)
         A AS A.price > PREV(A.price, 1),
-        -- B: 持续下跌（价格连续下降）
+        -- B: 持续下跌(价格连续下降)
         B AS B.price < PREV(B.price, 1),
-        -- C: 反弹（价格回升超过B阶段最低点20%）
+        -- C: 反弹(价格回升超过B阶段最低点20%)
         C AS C.price > (SELECT MIN(price) FROM B) * 1.2
 ) AS pattern_matches;
 ```
@@ -707,9 +708,9 @@ MATCH_RECOGNIZE (
         CLASSIFIER() AS classifier
     PATTERN (A (B{3,}) C)
     DEFINE
-        -- A: 大额交易启动（超过10000）
+        -- A: 大额交易启动(超过10000)
         A AS A.amount > 10000,
-        -- B: 短时间内多笔小额交易（3笔以上，每笔<1000，不同地点）
+        -- B: 短时间内多笔小额交易(3笔以上,每笔<1000,不同地点)
         B AS B.amount < 1000
            AND B.transaction_time < FIRST(A.transaction_time) + INTERVAL '10' MINUTE,
         -- C: 再次大额交易或账户状态变化
@@ -739,12 +740,12 @@ MATCH_RECOGNIZE (
         TIMESTAMPDIFF(MINUTE, FIRST(event_time), LAST(event_time)) AS session_duration_minutes
     PATTERN (A B* C)
     DEFINE
-        -- A: 会话开始（登录或首次访问）
+        -- A: 会话开始(登录或首次访问)
         A AS A.event_type IN ('LOGIN', 'PAGE_VIEW'),
-        -- B: 持续活动（页面浏览或点击，间隔<30分钟）
+        -- B: 持续活动(页面浏览或点击,间隔<30分钟)
         B AS B.event_type IN ('PAGE_VIEW', 'CLICK')
            AND B.event_time < PREV(B.event_time) + INTERVAL '30' MINUTE,
-        -- C: 会话结束（登出或超时）
+        -- C: 会话结束(登出或超时)
         C AS C.event_type = 'LOGOUT'
            OR C.event_time > PREV(C.event_time, 1) + INTERVAL '30' MINUTE
     AFTER MATCH SKIP PAST LAST ROW
@@ -1135,7 +1136,7 @@ MATCH_RECOGNIZE (
 );
 
 -- ============================================
--- 验证结果：所有测试应正常执行无错误
+-- 验证结果:所有测试应正常执行无错误
 -- ============================================
 ```
 

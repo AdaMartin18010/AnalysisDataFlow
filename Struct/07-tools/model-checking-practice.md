@@ -363,7 +363,7 @@ System = A [| {a_to_b, b_to_a} |] B
 EXTENDS Naturals, Sequences, FiniteSets
 
 CONSTANTS Tasks,    \* 任务集合
-          MaxClock  \* 时钟上界（用于有限状态模型检查）
+          MaxClock  \* 时钟上界(用于有限状态模型检查)
 
 VARIABLES taskStates,     \* 每个任务的本地状态
           barriers,       \* 通道中的 barrier 位置
@@ -413,7 +413,7 @@ CompleteCp ==
     /\ globalClock' = globalClock + 1
     /\ UNCHANGED <<taskStates, barriers>>
 
-\* 时间推进（用于活性验证）
+\* 时间推进(用于活性验证)
 Tick ==
     /\ globalClock < MaxClock
     /\ globalClock' = globalClock + 1
@@ -437,7 +437,7 @@ Safety ==
     cpStatus = "COMPLETED" =>
         \A t \in Tasks : taskStates[t].phase = "SNAPSHOT_TAKEN"
 
-\* 活性: 若 Pending，则最终完成（在有限时钟内）
+\* 活性: 若 Pending,则最终完成(在有限时钟内)
 Liveness ==
     cpStatus = "PENDING" ~> cpStatus = "COMPLETED"
 
@@ -483,7 +483,7 @@ proctype Operator(int id) {
     od
 }
 
-// 源算子（持续产生数据）
+// 源算子(持续产生数据)
 proctype Source() {
     do
     :: ch[0]!1;
@@ -503,7 +503,7 @@ init {
     }
 }
 
-// LTL: 无全局死锁（至少一个进程可执行）
+// LTL: 无全局死锁(至少一个进程可执行)
 // ltl deadlock_free { [](<>(state[0] != DONE || state[1] != DONE || state[2] != DONE)) }
 ```
 

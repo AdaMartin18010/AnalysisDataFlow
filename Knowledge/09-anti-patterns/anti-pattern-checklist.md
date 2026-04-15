@@ -236,7 +236,7 @@ memory:
 | `stateSize` | 各 subtask 差值 > 10 倍 | Checkpoint 统计 |
 
 ```bash
-# 倾斜检测脚本（基于 Flink REST API）
+# 倾斜检测脚本(基于 Flink REST API)
 curl -s "http://flink:8081/jobs/${JOB_ID}/vertices/${VERTEX_ID}/subtasks/metrics?get=recordsInPerSecond" | \
   jq '.[].value' | \
   awk '{sum+=$1; max=$1>max?$1:max; min=$1<min||min==0?$1:min} END {print "Skew ratio:", max/min}'

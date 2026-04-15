@@ -350,10 +350,10 @@ Properties consumerProps = new Properties();
 consumerProps.put("bootstrap.servers", "localhost:9092");
 consumerProps.put("group.id", "my-consumer-group");
 
-// 关键配置：只读取已提交事务的消息
+// 关键配置:只读取已提交事务的消息
 consumerProps.put("isolation.level", "read_committed");
 
-// 可选：调整poll等待时间
+// 可选:调整poll等待时间
 consumerProps.put("max.poll.records", "500");
 ```
 
@@ -376,7 +376,7 @@ public abstract class TwoPhaseCommitSinkFunction<IN, TXN, CONTEXT>
     extends RichSinkFunction<IN>
     implements CheckpointedFunction, CheckpointListener {
 
-    // 默认事务超时时间：15分钟
+    // 默认事务超时时间:15分钟
     private static final long DEFAULT_TRANSACTION_TIMEOUT = 15 * 60 * 1000; // 15分钟
 
     private transient ListState<TransactionHolder<TXN>> pendingTransactionsState;
@@ -385,17 +385,17 @@ public abstract class TwoPhaseCommitSinkFunction<IN, TXN, CONTEXT>
 
     @Override
     public void snapshotState(FunctionSnapshotContext context) throws Exception {
-        // 事务围栏：防止旧事务干扰
+        // 事务围栏:防止旧事务干扰
         long currentCheckpointId = context.getCheckpointId();
 
         // 验证 Checkpoint ID 单调递增
         if (currentCheckpointId > lastCheckpointId) {
-            // 正常路径：开启新事务
+            // 正常路径:开启新事务
             TXN newTransaction = beginTransaction();
             pendingCommitTransactions.put(currentCheckpointId, newTransaction);
             lastCheckpointId = currentCheckpointId;
         } else {
-            // 异常：重复或乱序 Checkpoint
+            // 异常:重复或乱序 Checkpoint
             throw new IllegalStateException(
                 "Out of order checkpoint. Current: " + currentCheckpointId
                 + ", Last: " + lastCheckpointId
@@ -408,7 +408,7 @@ public abstract class TwoPhaseCommitSinkFunction<IN, TXN, CONTEXT>
 
     /**
      * 清理过期的事务
-     * 当事务超时后，需要回滚以避免资源泄漏
+     * 当事务超时后,需要回滚以避免资源泄漏
      */
     private void cleanupExpiredTransactions() {
         long now = System.currentTimeMillis();
@@ -420,7 +420,7 @@ public abstract class TwoPhaseCommitSinkFunction<IN, TXN, CONTEXT>
             TransactionHolder<TXN> holder = getTransactionHolder(entry.getValue());
 
             if (holder != null && now - holder.getCreationTime() > transactionTimeout) {
-                // 事务已超时，回滚
+                // 事务已超时,回滚
                 try {
                     abort(entry.getValue());
                     iterator.remove();
@@ -446,7 +446,7 @@ public abstract class TwoPhaseCommitSinkFunction<IN, TXN, CONTEXT>
                     iterator.remove();
                     LOG.info("Committed transaction for checkpoint: {}", entry.getKey());
                 } catch (Exception e) {
-                    // 提交失败，将在下次 Checkpoint 或作业恢复时重试
+                    // 提交失败,将在下次 Checkpoint 或作业恢复时重试
                     LOG.error("Failed to commit transaction", e);
                     throw new RuntimeException("Transaction commit failed", e);
                 }
@@ -465,7 +465,7 @@ public abstract class TwoPhaseCommitSinkFunction<IN, TXN, CONTEXT>
         pendingTransactionsState = context.getOperatorStateStore().getListState(descriptor);
 
         if (context.isRestored()) {
-            // 作业恢复：检查未完成的事务
+            // 作业恢复:检查未完成的事务
             for (TransactionHolder<TXN> holder : pendingTransactionsState.get()) {
                 TXN txn = holder.getTransaction();
                 long checkpointId = holder.getCheckpointId();
@@ -474,7 +474,7 @@ public abstract class TwoPhaseCommitSinkFunction<IN, TXN, CONTEXT>
                 TransactionStatus status = recoverAndGetStatus(txn);
                 switch (status) {
                     case COMMITTED:
-                        // 事务已提交，无需操作
+                        // 事务已提交,无需操作
                         LOG.info("Transaction already committed for checkpoint: {}", checkpointId);
                         break;
                     case PREPARED:
@@ -483,7 +483,7 @@ public abstract class TwoPhaseCommitSinkFunction<IN, TXN, CONTEXT>
                         LOG.info("Recovered prepared transaction for checkpoint: {}", checkpointId);
                         break;
                     case UNKNOWN:
-                        // 状态未知，保守回滚
+                        // 状态未知,保守回滚
                         abort(txn);
                         LOG.warn("Aborted unknown transaction for checkpoint: {}", checkpointId);
                         break;
@@ -520,7 +520,7 @@ public class FlinkKafkaProducer<IN> extends TwoPhaseCommitSinkFunction<IN, Flink
 
     @Override
     protected void preCommit(KafkaTransactionState transaction) throws Exception {
-        // 预提交：刷新缓冲区，确保所有记录已发送到 Kafka
+        // 预提交:刷新缓冲区,确保所有记录已发送到 Kafka
         if (transaction.producer != null) {
             // 阻塞直到所有发送完成
             transaction.producer.flush();
@@ -540,7 +540,7 @@ public class FlinkKafkaProducer<IN> extends TwoPhaseCommitSinkFunction<IN, Flink
                 transaction.producer.commitTransaction();
             } catch (ProducerFencedException e) {
                 // 事务已被其他生产者实例提交或中止
-                // 这是幂等的：如果事务已提交，忽略错误
+                // 这是幂等的:如果事务已提交,忽略错误
                 LOG.warn("Transaction already handled by another producer instance", e);
             } catch (Exception e) {
                 // 其他错误需要重试或恢复
@@ -566,7 +566,7 @@ public class FlinkKafkaProducer<IN> extends TwoPhaseCommitSinkFunction<IN, Flink
     }
 
     /**
-     * 生成唯一事务 ID，确保幂等性
+     * 生成唯一事务 ID,确保幂等性
      */
     private String generateTransactionalId(long checkpointId) {
         return String.format("%s-%d-%d-%d-%d",
@@ -776,7 +776,7 @@ public class ExactlyOnceExample {
         sourceProps.put("bootstrap.servers", "kafka:9092");
         sourceProps.put("group.id", "exactly-once-consumer");
         sourceProps.put("auto.offset.reset", "earliest");
-        // Flink管理偏移量，禁用自动提交
+        // Flink管理偏移量,禁用自动提交
         sourceProps.put("enable.auto.commit", "false");
 
         FlinkKafkaConsumer<String> source = new FlinkKafkaConsumer<>(
@@ -804,7 +804,7 @@ public class ExactlyOnceExample {
         sinkProps.put("bootstrap.servers", "kafka:9092");
         // 事务超时必须大于Checkpoint间隔
         sinkProps.put("transaction.timeout.ms", "900000"); // 15分钟
-        // 事务ID前缀，确保唯一性
+        // 事务ID前缀,确保唯一性
         sinkProps.put("transactional.id", "flink-producer-" + jobId);
 
         FlinkKafkaProducer<String> sink = new FlinkKafkaProducer<>(
@@ -839,7 +839,7 @@ import org.apache.flink.streaming.api.functions.sink.TwoPhaseCommitSinkFunction;
 /**
  * 自定义两阶段提交Sink实现
  *
- * 实现原理：
+ * 实现原理:
  * 1. invoke(): 预写入数据到临时存储
  * 2. snapshotState(): 准备事务
  * 3. notifyCheckpointComplete(): 提交事务
@@ -870,19 +870,19 @@ public class CustomTwoPhaseCommitSink
 
     @Override
     protected void preCommit(Transaction transaction) {
-        // 预提交：刷写到临时位置
+        // 预提交:刷写到临时位置
         transaction.flushToTemporary();
     }
 
     @Override
     protected void commit(Transaction transaction) {
-        // 正式提交：确认写入
+        // 正式提交:确认写入
         transaction.commitToPermanent();
     }
 
     @Override
     protected void abort(Transaction transaction) {
-        // 中止事务：清理临时数据
+        // 中止事务:清理临时数据
         transaction.rollback();
     }
 }
@@ -924,7 +924,7 @@ env.getCheckpointConfig().enableUnalignedCheckpoints(true);
 // 超过此时间后自动切换为非对齐模式
 env.getCheckpointConfig().setAlignmentTimeout(Duration.ofSeconds(30));
 
-// 或完全禁用对齐（Flink 1.13+）
+// 或完全禁用对齐(Flink 1.13+)
 env.getCheckpointConfig().enableUnalignedCheckpoints();
 ```
 
@@ -1103,7 +1103,7 @@ graph LR
 
 ```java
 /**
- * Checkpoint 协调器：协调分布式快照和 2PC 提交
+ * Checkpoint 协调器:协调分布式快照和 2PC 提交
  */
 public class CheckpointCoordinator {
 
@@ -1112,7 +1112,7 @@ public class CheckpointCoordinator {
     private final PendingCheckpointStats pendingCheckpointStats;
 
     /**
-     * 触发 Checkpoint（Phase 1: Prepare）
+     * 触发 Checkpoint(Phase 1: Prepare)
      */
     public CompletableFuture<CompletedCheckpoint> triggerCheckpoint(
             long timestamp,
@@ -1120,7 +1120,7 @@ public class CheckpointCoordinator {
 
         long checkpointID = checkpointIdCounter.getAndIncrement();
 
-        // 1. 计算 Checkpoint 计划（识别 Sink 任务）
+        // 1. 计算 Checkpoint 计划(识别 Sink 任务)
         CheckpointPlan plan = checkpointPlanCalculator.calculateCheckpointPlan();
 
         // 2. 创建 Pending Checkpoint
@@ -1137,7 +1137,7 @@ public class CheckpointCoordinator {
         for (ExecutionVertex vertex : plan.getTasksToTrigger()) {
             ExecutionAttemptID attemptID = vertex.getCurrentExecutionAttempt().getAttemptId();
 
-            // 构建 Checkpoint 选项（区分对齐/非对齐）
+            // 构建 Checkpoint 选项(区分对齐/非对齐)
             CheckpointOptions checkpointOptions = new CheckpointOptions(
                 props.getCheckpointType(),
                 checkpointStorageLocation
@@ -1158,7 +1158,7 @@ public class CheckpointCoordinator {
     }
 
     /**
-     * 处理 Task 的 Checkpoint 确认（来自 Sink 的 preCommit 确认）
+     * 处理 Task 的 Checkpoint 确认(来自 Sink 的 preCommit 确认)
      */
     public void receiveAcknowledgeMessage(
             JobID jobID,
@@ -1172,22 +1172,22 @@ public class CheckpointCoordinator {
             return;
         }
 
-        // 记录该 Task 的确认（包含 Sink 的事务状态）
+        // 记录该 Task 的确认(包含 Sink 的事务状态)
         boolean allAcknowledged = checkpoint.acknowledgeTask(
             acknowledgeMessage.getTaskExecutionId(),
             acknowledgeMessage.getSubtaskState(),
             acknowledgeMessage.getCheckpointMetrics()
         );
 
-        // 检查是否所有 Task（包括所有 Sink）都已确认
+        // 检查是否所有 Task(包括所有 Sink)都已确认
         if (allAcknowledged) {
-            // 所有参与者已 PREPARED，进入 Phase 2
+            // 所有参与者已 PREPARED,进入 Phase 2
             completeCheckpoint(checkpoint);
         }
     }
 
     /**
-     * 完成 Checkpoint 并通知提交（Phase 2: Commit）
+     * 完成 Checkpoint 并通知提交(Phase 2: Commit)
      */
     private void completeCheckpoint(PendingCheckpoint pendingCheckpoint) {
         try {
@@ -1201,7 +1201,7 @@ public class CheckpointCoordinator {
             // 3. 清理旧 Checkpoint
             dropSubsumedCheckpoints(completedCheckpoint.getCheckpointID());
 
-            // 4. 通知所有 Task Checkpoint 完成（触发 Sink commit）
+            // 4. 通知所有 Task Checkpoint 完成(触发 Sink commit)
             for (ExecutionVertex vertex : pendingCheckpoint
                     .getCheckpointPlan().getTasksToCommit()) {
 
@@ -1211,11 +1211,11 @@ public class CheckpointCoordinator {
                 );
             }
 
-            // 5. 回调通知（如 Savepoint 触发器）
+            // 5. 回调通知(如 Savepoint 触发器)
             pendingCheckpoint.getCompletionFuture().complete(completedCheckpoint);
 
         } catch (Exception e) {
-            // 完成失败，触发 abort
+            // 完成失败,触发 abort
             abortCheckpoint(pendingCheckpoint.getCheckpointID(), e);
         }
     }
@@ -1226,7 +1226,7 @@ public class CheckpointCoordinator {
 
 ```java
     /**
-     * Checkpoint 超时处理（触发 abort）
+     * Checkpoint 超时处理(触发 abort)
      */
     private void onCheckpointTimeout(long checkpointId) {
         PendingCheckpoint checkpoint = pendingCheckpoints.get(checkpointId);
@@ -1234,7 +1234,7 @@ public class CheckpointCoordinator {
         if (checkpoint != null && !checkpoint.isDisposed()) {
             LOG.info("Checkpoint {} timed out");
 
-            // 超时视为失败，触发 abort
+            // 超时视为失败,触发 abort
             abortCheckpoint(checkpointId, new CheckpointException(
                 CheckpointFailureReason.CHECKPOINT_EXPIRED
             ));
@@ -1242,7 +1242,7 @@ public class CheckpointCoordinator {
     }
 
     /**
-     * 中止 Checkpoint（触发所有 Sink abort）
+     * 中止 Checkpoint(触发所有 Sink abort)
      */
     private void abortCheckpoint(long checkpointId, Throwable cause) {
         PendingCheckpoint checkpoint = pendingCheckpoints.remove(checkpointId);
@@ -1251,7 +1251,7 @@ public class CheckpointCoordinator {
             // 标记为失败
             checkpoint.abort(cause);
 
-            // 通知所有 Task Checkpoint 失败（触发 Sink abort）
+            // 通知所有 Task Checkpoint 失败(触发 Sink abort)
             for (ExecutionVertex vertex : checkpoint.getCheckpointPlan().getTasksToTrigger()) {
                 vertex.getCurrentExecutionAttempt().notifyCheckpointAborted(
                     checkpointId
@@ -1301,21 +1301,21 @@ public class FlinkKafkaInternalProducer<K, V> {
     private final String transactionalId;
 
     /**
-     * 初始化事务（注册 transactional.id）
+     * 初始化事务(注册 transactional.id)
      */
     public void initTransactions() {
         try {
             producer.initTransactions();
         } catch (KafkaException e) {
             // 如果存在具有相同 transactional.id 的旧生产者
-            // Kafka 会自动围栏（fencing）旧实例
+            // Kafka 会自动围栏(fencing)旧实例
             throw new FlinkKafkaException(
                 "Failed to initialize Kafka producer", e);
         }
     }
 
     /**
-     * 开启新事务（生成新的 epoch）
+     * 开启新事务(生成新的 epoch)
      */
     public void beginTransaction() {
         producer.beginTransaction();
@@ -1329,7 +1329,7 @@ public class FlinkKafkaInternalProducer<K, V> {
     }
 
     /**
-     * 获取 Producer ID（用于恢复时识别事务）
+     * 获取 Producer ID(用于恢复时识别事务)
      */
     public long getProducerId() {
         // 通过反射获取 Kafka Producer 内部 producerId
@@ -1343,7 +1343,7 @@ public class FlinkKafkaInternalProducer<K, V> {
     }
 
     /**
-     * 获取 Epoch（用于围栏检查）
+     * 获取 Epoch(用于围栏检查)
      */
     public short getEpoch() {
         try {
@@ -1374,22 +1374,22 @@ public class TwoPhaseCommitRecoveryHandler {
 
         switch (status) {
             case PREPARED:
-                // 事务已准备但未提交，安全提交
+                // 事务已准备但未提交,安全提交
                 commitTransaction(txnContext);
                 break;
 
             case COMMITTED:
-                // 事务已提交，无需操作
+                // 事务已提交,无需操作
                 LOG.info("Transaction {} already committed", txnContext.getTxnId());
                 break;
 
             case ABORTED:
-                // 事务已中止，无需操作
+                // 事务已中止,无需操作
                 LOG.info("Transaction {} already aborted", txnContext.getTxnId());
                 break;
 
             case UNKNOWN:
-                // 状态未知，进行启发式决策
+                // 状态未知,进行启发式决策
                 handleUnknownTransaction(txnContext);
                 break;
 
@@ -1402,16 +1402,16 @@ public class TwoPhaseCommitRecoveryHandler {
      * 启发式处理未知状态事务
          */
     private void handleUnknownTransaction(TransactionContext txnContext) {
-        // 策略1：基于事务ID的时间戳判断
+        // 策略1:基于事务ID的时间戳判断
         long txnTimestamp = extractTimestampFromTxnId(txnContext.getTxnId());
         long currentTime = System.currentTimeMillis();
 
         if (currentTime - txnTimestamp > TRANSACTION_TIMEOUT) {
-            // 事务已超时，安全中止
+            // 事务已超时,安全中止
             LOG.warn("Transaction {} timed out, aborting", txnContext.getTxnId());
             abortTransaction(txnContext);
         } else {
-            // 事务可能仍在进行，尝试提交（假设commit更安全）
+            // 事务可能仍在进行,尝试提交(假设commit更安全)
             LOG.warn("Transaction {} status unknown, attempting commit",
                 txnContext.getTxnId());
             try {

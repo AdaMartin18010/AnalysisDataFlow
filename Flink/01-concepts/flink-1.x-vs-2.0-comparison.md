@@ -337,7 +337,7 @@ $$
 
 ```
 1. JM 发送 Checkpoint 屏障
-2. 各 Task 暂停处理，将本地状态同步写入 Checkpoint 后端
+2. 各 Task 暂停处理,将本地状态同步写入 Checkpoint 后端
 3. Task 确认快照完成给 JM
 4. Checkpoint 完成
 

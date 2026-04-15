@@ -246,13 +246,13 @@ $$
 │  Level 2: Allowed Lateness                                          │
 │  ─────────────────────────                                          │
 │  条件: window_end ≤ t_e(r) ≤ window_end + L                         │
-│  行为: 触发窗口更新，输出修正结果                                      │
+│  行为: 触发窗口更新,输出修正结果                                      │
 │  配置: .allowedLateness(Time.minutes(10))                           │
 │                                                                     │
 │  Level 3: Side Output (完全迟到)                                     │
 │  ─────────────────────────────                                      │
 │  条件: t_e(r) < current_watermark - L (侧输出捕获)                   │
-│  行为: 路由到迟到数据侧输出流，用于审计/离线补录                        │
+│  行为: 路由到迟到数据侧输出流,用于审计/离线补录                        │
 │  配置: .sideOutputLateData(lateDataOutputTag)                       │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
@@ -343,10 +343,10 @@ OutputTag 的定义为 `OutputTag<T>(String id)`，其中 `T` 是类型参数。
 val intTag = OutputTag[Int]("int-output")
 val stringTag = OutputTag[String]("string-output")
 
-// 正确：类型匹配
+// 正确:类型匹配
 ctx.output(intTag, 42)
 
-// 编译错误：类型不匹配 (String 不是 Int)
+// 编译错误:类型不匹配 (String 不是 Int)
 ctx.output(intTag, "hello")
 ```
 
@@ -361,7 +361,7 @@ ctx.output(intTag, "hello")
 **场景**：开发者使用 `filter().map()` 链式调用替代侧输出，试图实现数据分流。
 
 ```scala
-// 错误做法：复制算子链
+// 错误做法:复制算子链
 val mainStream = input
   .filter(_.isValid)
   .map(processValid)
@@ -519,7 +519,7 @@ case class SensorReading(
   timestamp: Long
 )
 
-// 定义侧输出标签（必须在类外定义，以支持类型擦除后的识别）
+// 定义侧输出标签(必须在类外定义,以支持类型擦除后的识别)
 val highTempTag = OutputTag[SensorReading]("high-temperature")
 val invalidDataTag = OutputTag[String]("invalid-data")
 
@@ -541,14 +541,14 @@ class SensorMonitorFunction
     out: Collector[SensorReading]
   ): Unit = {
 
-    // 1. 数据验证：异常数据进入侧输出
+    // 1. 数据验证:异常数据进入侧输出
     if (reading.temperature < -100 || reading.temperature > 200) {
       ctx.output(invalidDataTag,
         s"Invalid temperature: ${reading.temperature} from ${reading.deviceId}")
       return
     }
 
-    // 2. 阈值检测：高温告警进入侧输出
+    // 2. 阈值检测:高温告警进入侧输出
     if (reading.temperature > 80.0) {
       ctx.output(highTempTag, reading)
     }
@@ -595,10 +595,10 @@ import org.apache.flink.streaming.api.scala._
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows
 import org.apache.flink.streaming.api.windowing.time.Time
 
-// 定义侧输出标签（必须在类外）
+// 定义侧输出标签(必须在类外)
 val lateDataTag = OutputTag[SensorReading]("late-data")
 
-// 输入流（带 Watermark）
+// 输入流(带 Watermark)
 val sensorStream = env
   .fromSource(kafkaSource,
     WatermarkStrategy
@@ -607,7 +607,7 @@ val sensorStream = env
     "Sensor Source"
   )
 
-// 窗口聚合，带迟到数据侧输出
+// 窗口聚合,带迟到数据侧输出
 val windowedStream = sensorStream
   .keyBy(_.deviceId)
   .window(TumblingEventTimeWindows.of(Time.minutes(5)))
@@ -615,17 +615,17 @@ val windowedStream = sensorStream
   .sideOutputLateData(lateDataTag)            // 完全迟到数据进入侧输出
   .aggregate(new SensorAverageAggregate())
 
-// 主流：窗口聚合结果
+// 主流:窗口聚合结果
 windowedStream.addSink(new AggregationSink())
 
-// 侧输出：迟到数据处理
+// 侧输出:迟到数据处理
 val lateDataStream: DataStream[SensorReading] = windowedStream.getSideOutput(lateDataTag)
 
-// 迟到数据可以：
+// 迟到数据可以:
 // 1. 写入审计日志
 lateDataStream.addSink(new LateDataAuditSink())
 
-// 2. 或再次进入窗口进行补偿计算（延迟处理）
+// 2. 或再次进入窗口进行补偿计算(延迟处理)
 lateDataStream
   .keyBy(_.deviceId)
   .window(TumblingEventTimeWindows.of(Time.hours(1)))  // 更大窗口聚合
@@ -702,7 +702,7 @@ class EventProcessingFunction extends ProcessFunction[RawEvent, ProcessedEvent] 
         ))
     }
 
-    // 4. 外部服务调用（可能失败）
+    // 4. 外部服务调用(可能失败)
     callExternalService(parsed) match {
       case Success(result) =>
         out.collect(ProcessedEvent(parsed.orderId, result, "SUCCESS"))
@@ -764,7 +764,7 @@ class QualityAwareProcessFunction
 
   val schemaErrorTag = OutputTag[QualityEvent]("quality-metrics")
 
-  // 状态：窗口级质量统计
+  // 状态:窗口级质量统计
   private var qualityState: ValueState[QualityAccumulator] = _
 
   override def open(parameters: Configuration): Unit = {
@@ -772,7 +772,7 @@ class QualityAwareProcessFunction
       new ValueStateDescriptor("quality-state", classOf[QualityAccumulator])
     )
 
-    // 注册定时器：每分钟输出质量报告
+    // 注册定时器:每分钟输出质量报告
     val timerService = getRuntimeContext.getProcessingTimeService
     val now = timerService.getCurrentProcessingTime
     val nextMinute = ((now / 60000) + 1) * 60000

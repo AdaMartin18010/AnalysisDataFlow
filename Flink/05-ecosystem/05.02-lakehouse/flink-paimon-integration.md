@@ -81,7 +81,7 @@ $$
 │  ┌─────────────────────────────────────────────────────────┐   │
 │  │  Level 0 (增量文件层)                                     │   │
 │  │  ┌─────────┐ ┌─────────┐ ┌─────────┐                    │   │
-│  │  │DataFile1│ │DataFile2│ │DataFile3│ ... 无序，可重叠    │   │
+│  │  │DataFile1│ │DataFile2│ │DataFile3│ ... 无序,可重叠    │   │
 │  │  └─────────┘ └─────────┘ └─────────┘                    │   │
 │  └──────────────────────────┬──────────────────────────────┘   │
 │                             │ Compaction                        │
@@ -89,9 +89,9 @@ $$
 │  ┌─────────────────────────────────────────────────────────┐   │
 │  │  Level 1-N (合并排序层)                                   │   │
 │  │  ┌─────────────────────────────────────────────────┐    │   │
-│  │  │  文件按 Key 范围分区，无重叠                        │    │   │
-│  │  │  L1: 最近数据，高查询效率                           │    │   │
-│  │  │  L2+: 历史数据，高压缩比                            │    │   │
+│  │  │  文件按 Key 范围分区,无重叠                        │    │   │
+│  │  │  L1: 最近数据,高查询效率                           │    │   │
+│  │  │  L2+: 历史数据,高压缩比                            │    │   │
 │  │  └─────────────────────────────────────────────────┘    │   │
 │  └─────────────────────────────────────────────────────────┘   │
 └─────────────────────────────────────────────────────────────────┘
@@ -182,21 +182,21 @@ SELECT * FROM paimon_table /*+ OPTIONS('scan.snapshot-id'='123') */;
 │  │  MySQL   │ ───────────────────────▶│  Paimon  │                 │
 │  │  CDC源   │    直接透传变更类型      │  表存储   │                 │
 │  └──────────┘                         └──────────┘                 │
-│  特点: 延迟最低，要求上游提供完整变更类型                              │
+│  特点: 延迟最低,要求上游提供完整变更类型                              │
 │                                                                     │
 │  2. LOOKUP 模式                                                      │
 │  ┌──────────┐    +I/+U/-D            ┌──────────┐    完整Changelog │
 │  │  Source  │ ───────────────────────▶│  Paimon  │ ───────────────▶│
 │  │  (无-U)  │                         │  LSM查询  │  (+I/-U/+U/-D)  │
 │  └──────────┘                         └──────────┘                 │
-│  特点: 通过LSM点查补全UPDATE_BEFORE，适合Kafka等源                   │
+│  特点: 通过LSM点查补全UPDATE_BEFORE,适合Kafka等源                   │
 │                                                                     │
 │  3. FULL-COMPACTION 模式                                             │
 │  ┌──────────┐    Append Only          ┌──────────┐    对比生成       │
 │  │  Source  │ ───────────────────────▶│Compaction│ ───────────────▶│
 │  │          │                         │  前后对比 │    Changelog    │
 │  └──────────┘                         └──────────┘                 │
-│  特点: 延迟最高，适合无CDC场景的批量导入                               │
+│  特点: 延迟最高,适合无CDC场景的批量导入                               │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
 ```
@@ -228,7 +228,7 @@ SELECT * FROM paimon_table /*+ OPTIONS('scan.snapshot-id'='123') */;
 │                                                                     │
 │  策略2: Leveled                                                      │
 │  ├── 触发条件: 层级大小超过目标值                                     │
-│  ├── 合并方式: 与下层文件合并，保持层级有序                           │
+│  ├── 合并方式: 与下层文件合并,保持层级有序                           │
 │  └── 适用: 读取密集场景                                              │
 │                                                                     │
 │  策略3: Full-Compaction (全量合并)                                    │
@@ -340,7 +340,7 @@ $$
 │        │                                                      │
 │        ▼                                                      │
 │   ┌───────────┐                                               │
-│   │Compaction │───▶ 生成新快照，不影响现有读取                    │
+│   │Compaction │───▶ 生成新快照,不影响现有读取                    │
 │   │(异步合并)  │                                               │
 │   └───────────┘                                               │
 │                                                                 │
@@ -524,10 +524,10 @@ CREATE CATALOG paimon_jdbc WITH (
 问题 1: 实时写入性能瓶颈
 ├── Copy-on-Write 模式: 每次更新需重写整个文件
 ├── 小文件问题: 高频写入产生大量小文件
-└── 延迟: 分钟级可见性，无法满足实时需求
+└── 延迟: 分钟级可见性,无法满足实时需求
 
 问题 2: 流处理集成复杂
-├── 需要外部CDC系统（如Kafka）中转
+├── 需要外部CDC系统(如Kafka)中转
 ├── 增量消费需扫描全表对比
 └── 端到端延迟增加
 
@@ -637,7 +637,7 @@ $$
 Step 1: 正常流程
 ├── 事件 e_i 经 Flink 处理
 ├── Sink 算子将 e_i 写入 MemTable
-└── Checkpoint 触发，MemTable 刷盘
+└── Checkpoint 触发,MemTable 刷盘
 
 Step 2: 两阶段提交
 ├── Phase 1 (Pre-commit):
@@ -652,11 +652,11 @@ Step 2: 两阶段提交
 Step 3: 故障恢复场景
 ├── 场景 A: Checkpoint 前故障
 │   └── 恢复后从上一个 Checkpoint 重启
-│   └── e_i 被重新处理，结果一致
+│   └── e_i 被重新处理,结果一致
 ├── 场景 B: Pre-commit 后故障
 │   └── 恢复后查询 Snapshot
-│   └── 若 S_{new} 已存在，跳过重复提交
-│   └── 若 S_{new} 不存在，重新执行 Commit
+│   └── 若 S_{new} 已存在,跳过重复提交
+│   └── 若 S_{new} 不存在,重新执行 Commit
 └── 场景 C: Commit 后故障
     └── 恢复后 S_{new} 已可见
     └── 无重复处理
@@ -943,7 +943,7 @@ CREATE TABLE paimon_users (
     'bucket' = '16',
     'bucket-key' = 'id',
 
-    -- 变更日志生成 (使用 input 模式，上游 CDC 已包含完整变更类型)
+    -- 变更日志生成 (使用 input 模式,上游 CDC 已包含完整变更类型)
     'changelog-producer' = 'input',
 
     -- 文件格式与压缩
@@ -1235,7 +1235,7 @@ CREATE TABLE partitioned_table (
 -- 文件格式配置对比
 -- ============================================
 
--- Parquet 配置 (默认，适合复杂查询)
+-- Parquet 配置 (默认,适合复杂查询)
 CREATE TABLE parquet_table (...) WITH (
     'file.format' = 'parquet',
     'file.compression' = 'zstd',
@@ -1520,7 +1520,7 @@ import org.apache.flink.table.api.TableEnvironment;
 
 /**
  * 独立 Compaction 作业
- * 用于解耦写入与合并，避免影响写入延迟
+ * 用于解耦写入与合并,避免影响写入延迟
  */
 public class PaimonCompactionJob {
 
@@ -1545,7 +1545,7 @@ public class PaimonCompactionJob {
                 'compaction.max.file-num' = '50',
                 'compaction.target-file-size' = '128mb',
 
-                -- 仅执行 Compaction，不写入数据
+                -- 仅执行 Compaction,不写入数据
                 'write-mode' = 'compaction-only'
             )
         """);
@@ -1800,9 +1800,9 @@ graph TB
         direction TB
 
         subgraph "ODS 层 (原始数据)"
-            ODS1["ods_orders<br/>主键表，按天分区"]
-            ODS2["ods_users<br/>主键表，全局更新"]
-            ODS3["ods_events<br/>追加表，事件流"]
+            ODS1["ods_orders<br/>主键表,按天分区"]
+            ODS2["ods_users<br/>主键表,全局更新"]
+            ODS3["ods_events<br/>追加表,事件流"]
         end
 
         subgraph "DWD 层 (明细数据)"

@@ -124,14 +124,14 @@ public class TemporalWorkflowSink
                     alert
                 );
             } catch (WorkflowExecutionAlreadyStarted e) {
-                // 幂等处理：已存在的Workflow忽略
+                // 幂等处理:已存在的Workflow忽略
                 log.info("Workflow {} already exists, skipping", workflowId);
             }
         }
     }
 
     private String generateWorkflowId(AlertEvent alert) {
-        // 幂等性保证：相同设备+时间窗口生成相同ID
+        // 幂等性保证:相同设备+时间窗口生成相同ID
         return String.format("maintenance-%s-%d",
             alert.getDeviceId(),
             alert.getWindowStart() / 3600000); // 小时级窗口
@@ -177,7 +177,7 @@ func DeviceMaintenanceWorkflow(
     }
     ctx = workflow.WithActivityOptions(ctx, ao)
 
-    // Step 1: 创建维护工单（幂等操作）
+    // Step 1: 创建维护工单(幂等操作)
     var ticketID string
     err := workflow.ExecuteActivity(
         ctx, CreateMaintenanceTicket, alert
@@ -188,7 +188,7 @@ func DeviceMaintenanceWorkflow(
 
     // Step 2: 根据告警级别分支处理
     if alert.AlertLevel == "CRITICAL" {
-        // CRITICAL：立即通知，1小时等待确认
+        // CRITICAL:立即通知,1小时等待确认
         err = workflow.ExecuteActivity(
             ctx, SendUrgentNotification, alert, ticketID
         ).Get(ctx, nil)
@@ -213,7 +213,7 @@ func DeviceMaintenanceWorkflow(
 
         selector.Select(ctx)
     } else {
-        // WARNING：正常流程，24小时等待
+        // WARNING:正常流程,24小时等待
         // ...
     }
 
@@ -242,7 +242,7 @@ public class TemperatureMonitorJob {
         env.getCheckpointConfig().setCheckpointingMode(
             CheckpointingMode.EXACTLY_ONCE);
 
-        // 数据源：MQTT/Kafka
+        // 数据源:MQTT/Kafka
         DataStream<SensorReading> readings = env
             .addSource(new FlinkKafkaConsumer<>(
                 "sensor-readings",
@@ -254,7 +254,7 @@ public class TemperatureMonitorJob {
                 .withTimestampAssigner((event, ts) -> event.getTimestamp())
             );
 
-        // 窗口聚合：设备ID分组，1小时滚动窗口
+        // 窗口聚合:设备ID分组,1小时滚动窗口
         DataStream<DeviceAlert> alerts = readings
             .keyBy(SensorReading::getDeviceId)
             .window(TumblingEventTimeWindows.of(Time.hours(1)))

@@ -241,7 +241,7 @@ Monolithic ──► Microservices ──► FaaS ──► SFaaS
                │ (state) │   │ (cache) │   │  (ext)  │
                └─────────┘   └─────────┘   └─────────┘
 
-问题: 6 次网络调用，高延迟，分布式事务复杂
+问题: 6 次网络调用,高延迟,分布式事务复杂
 ```
 
 ### 4.2 SFaaS 的解决方案
@@ -258,7 +258,7 @@ SFaaS:
                │              Local State               │
                └──────────────────────────────────────┘
 
-优势: 单次调用，本地状态访问，平台管理持久化
+优势: 单次调用,本地状态访问,平台管理持久化
 ```
 
 ### 4.3 状态共置 vs 分离的决策矩阵
@@ -343,7 +343,7 @@ public static async Task<string> RunOrchestrator(
 
     await Task.WhenAll(tasks);
 
-    // 3. 支付（外部事件等待）
+    // 3. 支付(外部事件等待)
     var paymentResult = await context.WaitForExternalEvent<PaymentResult>(
         "PaymentComplete", timeout: TimeSpan.FromMinutes(30));
 
@@ -475,7 +475,7 @@ Flink Stateful Functions 架构:
 │  Log    │                   │   B     │
 └─────────┘                   └─────────┘
 
-特点: 补偿逻辑复杂，最终一致性，开发者责任重
+特点: 补偿逻辑复杂,最终一致性,开发者责任重
 
 SFaaS 容错:
 ┌─────────┐    ┌─────────┐    ┌─────────┐
@@ -489,7 +489,7 @@ SFaaS 容错:
 │  State  │                   │   A'    │
 └─────────┘                   └─────────┘
 
-特点: 自动状态恢复，恰好一次语义，平台托管
+特点: 自动状态恢复,恰好一次语义,平台托管
 ```
 
 ---
@@ -534,7 +534,7 @@ def order_workflow(context, order):
             timeout=payment_deadline
         )
     except TimeoutError:
-        # 超时未支付，释放库存
+        # 超时未支付,释放库存
         yield context.call_activity('release_inventory_reservation', order.items)
         return {'status': 'EXPIRED', 'reason': 'PAYMENT_TIMEOUT'}
 
@@ -584,7 +584,7 @@ class TemperatureMonitor:
             if self.can_alert():
                 self.send_alert(
                     f"高温告警: 设备 {reading.device_id} "
-                    f"温度 {reading.temperature}°C，"
+                    f"温度 {reading.temperature}°C,"
                     f"平均 {avg_temp:.1f}°C"
                 )
                 self.set_cooldown(minutes=5)
@@ -595,7 +595,7 @@ class TemperatureMonitor:
             self.sum_temperature = avg_temp * 50
 
     def can_alert(self):
-        """检查是否可以发送告警（防抖动）"""
+        """检查是否可以发送告警(防抖动)"""
         if self.alert_cooldown is None:
             return True
         return datetime.now() > self.alert_cooldown

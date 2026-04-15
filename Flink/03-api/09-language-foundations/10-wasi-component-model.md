@@ -391,7 +391,7 @@ graph TB
 WASI 0.1 方案:
   - 每种语言单独编译为 Wasm 模块
   - 手动处理内存布局和调用约定
-  - 高维护成本，易出错
+  - 高维护成本,易出错
 
 WASI 0.2 方案:
   - 统一 WIT 接口定义
@@ -427,7 +427,7 @@ world operator-external-state {
     export flink:operator/process@0.1.0;
 }
 
-// 方案 B: 状态内嵌（有限状态）
+// 方案 B: 状态内嵌(有限状态)
 world operator-embedded-state {
     export flink:operator/stateful-process@0.1.0;
 }
@@ -594,9 +594,9 @@ record sensor-reading {
 
 /// 处理结果变体
 variant process-result {
-    /// 成功，返回处理后的值
+    /// 成功,返回处理后的值
     success(sensor-reading),
-    /// 失败，返回错误信息
+    /// 失败,返回错误信息
     error(string),
     /// 数据被过滤
     filtered,
@@ -612,17 +612,17 @@ record threshold-config {
 
 /// 传感器处理器接口
 interface sensor-processor {
-    /// 初始化处理器，传入配置
+    /// 初始化处理器,传入配置
     init: func(config: threshold-config);
 
     /// 处理单条传感器数据
     process: func(reading: sensor-reading) -> process-result;
 
-    /// 批量处理（用于窗口操作）
+    /// 批量处理(用于窗口操作)
     process-batch: func(readings: list<sensor-reading>) -> list<process-result>;
 }
 
-/// 状态管理接口（由宿主提供）
+/// 状态管理接口(由宿主提供)
 interface state-store {
     /// 获取当前 key 的状态值
     get-state: func(key: string) -> option<list<u8>>;
@@ -634,7 +634,7 @@ interface state-store {
     delete-state: func(key: string);
 }
 
-/// 度量报告接口（由宿主提供）
+/// 度量报告接口(由宿主提供)
 interface metrics {
     /// 增加计数器
     increment-counter: func(name: string, value: u64);
@@ -735,7 +735,7 @@ impl Guest for SensorProcessor {
                     return ProcessResult::Filtered;
                 }
 
-                // 状态管理示例：维护每个 sensor 的处理计数
+                // 状态管理示例:维护每个 sensor 的处理计数
                 let state_key = format!("count:{}", reading.sensor_id);
                 let current_count = match state_store::get_state(&state_key) {
                     Some(bytes) => {
@@ -748,10 +748,10 @@ impl Guest for SensorProcessor {
                     &(current_count + 1).to_le_bytes()
                 );
 
-                // 记录处理延迟直方图（模拟）
+                // 记录处理延迟直方图(模拟)
                 metrics::record_histogram("sensor_processor.latency_ms", 5.0);
 
-                // 返回处理后的数据（这里简单返回原数据）
+                // 返回处理后的数据(这里简单返回原数据)
                 ProcessResult::Success(reading)
             }
             None => ProcessResult::Error("Processor not initialized".to_string()),
@@ -936,7 +936,7 @@ public class SensorProcessorOperator
 
     @Override
     protected void initializeComponent() {
-        // 调用组件的 init 函数，传入阈值配置
+        // 调用组件的 init 函数,传入阈值配置
         ThresholdConfig config = new ThresholdConfig(
             -40.0,   // min_temp
             85.0,    // max_temp

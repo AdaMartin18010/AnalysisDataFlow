@@ -152,7 +152,7 @@ $$
 ```wit
 // Stream 类型声明
 resource stream<t> {
-    // 获取下一个元素，返回 Future
+    // 获取下一个元素,返回 Future
     next: async func() -> option<t>;
 
     // 取消流消费
@@ -182,7 +182,7 @@ Stream 缓冲区满
     ↓
 生产者 await 在 write 操作
     ↓
-自动速率匹配（无需手动代码）
+自动速率匹配(无需手动代码)
 ```
 
 ---
@@ -210,7 +210,7 @@ $$
 
 ```wit
 resource future<t> {
-    // 阻塞等待结果（在 async 上下文中）
+    // 阻塞等待结果(在 async 上下文中)
     await: async func() -> result<t, error>;
 
     // 非阻塞轮询
@@ -291,12 +291,12 @@ package wasi:http@0.3.0;
 
 // 精简后的 HTTP 接口
 interface handler {
-    // 处理传入请求，返回流式响应
+    // 处理传入请求,返回流式响应
     handle: async func(request: request) -> result<response, error>;
 }
 
 interface types {
-    // 请求：头 + 体（Stream）
+    // 请求:头 + 体(Stream)
     record request {
         method: method,
         uri: string,
@@ -304,7 +304,7 @@ interface types {
         body: stream<u8>,  // 原生 Stream 类型
     }
 
-    // 响应：状态 + 头 + 体（Stream）
+    // 响应:状态 + 头 + 体(Stream)
     record response {
         status: u16,
         headers: headers,
@@ -345,7 +345,7 @@ $$
 ```
 同步函数 f(x) -> y
     ↓ 编译器
-async { f(x) }  // 零运行时开销，仅类型包装
+async { f(x) }  // 零运行时开销,仅类型包装
 ```
 
 ---
@@ -544,20 +544,20 @@ graph TB
 ```wit
 // WASI 0.2: 手动 Future 管理
 interface async-task {
-    // 返回一个 handle，需要手动轮询
+    // 返回一个 handle,需要手动轮询
     spawn-task: func(input: params) -> task-handle;
 
     // 检查任务状态
     check-task: func(handle: task-handle) -> task-status;
 
-    // 获取结果（可能阻塞）
+    // 获取结果(可能阻塞)
     get-result: func(handle: task-handle) -> option<result>;
 
     // 取消任务
     cancel-task: func(handle: task-handle);
 }
 
-// 对比：WASI 0.3 原生 async
+// 对比:WASI 0.3 原生 async
 interface async-task {
     // 声明式异步函数
     execute-task: async func(input: params) -> result<output, error>;
@@ -587,10 +587,10 @@ interface async-task {
 
 ```
 决策 1: 合并 incoming/outgoing request → 统一 request 类型
-理由: 内部处理流程相同，方向由上下文决定
+理由: 内部处理流程相同,方向由上下文决定
 
 决策 2: 用 Stream<u8> 替代手动 body 类型
-理由: 利用原生异步流能力，统一流处理语义
+理由: 利用原生异步流能力,统一流处理语义
 
 决策 3: 移除 response-outparam
 理由: 异步返回直接通过 Future/Stream 表达
@@ -611,9 +611,9 @@ interface async-task {
 **迁移路径**:
 
 ```
-阶段 1（规划中，以官方为准）: 运行时不变，工具链支持 0.3 编译
-阶段 2 (2026 Q2): 引入 0.3 运行时，支持混合执行
-阶段 3 (2026 Q4): 默认 0.3，0.2 通过适配层支持
+阶段 1(规划中,以官方为准): 运行时不变,工具链支持 0.3 编译
+阶段 2 (2026 Q2): 引入 0.3 运行时,支持混合执行
+阶段 3 (2026 Q4): 默认 0.3,0.2 通过适配层支持
 阶段 4 (2027): 可选移除 0.2 适配层
 ```
 
@@ -734,10 +734,10 @@ variant process-result {
 
 /// 异步处理器接口
 interface async-processor {
-    /// 处理单条记录（异步）
+    /// 处理单条记录(异步)
     process-record: async func(record: record) -> process-result;
 
-    /// 处理记录流（流式输入输出）
+    /// 处理记录流(流式输入输出)
     process-stream: async func(
         input: stream<record>,
         config: processing-config
@@ -774,7 +774,7 @@ record processing-config {
     max-buffer-size: u32,
 }
 
-/// 世界定义：异步流算子
+/// 世界定义:异步流算子
 world async-stream-operator {
     import wasi:io/streams@0.3.0;
     import wasi:clocks/monotonic-clock@0.3.0;
@@ -835,7 +835,7 @@ impl Guest for AsyncStreamProcessor {
 impl GuestAsyncProcessor for AsyncStreamProcessor {
     /// 异步处理单条记录
     async fn process_record(record: Record) -> ProcessResult {
-        // 模拟异步 I/O（如远程配置获取）
+        // 模拟异步 I/O(如远程配置获取)
         let config = fetch_config_async(&record.key).await;
 
         match config {
@@ -851,7 +851,7 @@ impl GuestAsyncProcessor for AsyncStreamProcessor {
         }
     }
 
-    /// 流式处理：输入流 → 输出流
+    /// 流式处理:输入流 → 输出流
     async fn process_stream(
         input: bindings::Stream<Record>,
         config: ProcessingConfig,
@@ -859,7 +859,7 @@ impl GuestAsyncProcessor for AsyncStreamProcessor {
         // 创建输出流
         let (mut tx, rx) = bindings::stream::channel();
 
-        // 并发处理（限制并行度）
+        // 并发处理(限制并行度)
         input
             .map(|record| async move {
                 Self::process_record(record).await
@@ -979,7 +979,7 @@ bindings::export!(AsyncStreamProcessor with_types_in bindings);
 **环境准备**:
 
 ```bash
-# 1. 安装 Rust  nightly（需要 async fn in trait 支持）
+# 1. 安装 Rust  nightly(需要 async fn in trait 支持)
 rustup install nightly
 rustup component add rust-src --toolchain nightly
 
@@ -1055,7 +1055,7 @@ public class Wasi03AsyncTest {
         // 启用 WASI 0.3 实验特性
         Config config = new Config();
         config.wasmComponentModel(true);
-        config.wasmAsyncStackSwitching(true);  // 关键：启用异步栈切换
+        config.wasmAsyncStackSwitching(true);  // 关键:启用异步栈切换
 
         Engine engine = new Engine(config);
 
@@ -1414,7 +1414,7 @@ resource cancel-token {
     /// 检查是否已请求取消
     is-cancelled: func() -> bool;
 
-    /// 创建子令牌（级联取消）
+    /// 创建子令牌(级联取消)
     child-token: func() -> cancel-token;
 }
 
@@ -1446,7 +1446,7 @@ interface processor<T, U> {
 }
 
 // Specialization: stream<u8> → stream<u8>
-// 生成专用代码路径，跳过通用序列化
+// 生成专用代码路径,跳过通用序列化
 ```
 
 **预期收益**:
@@ -1471,10 +1471,10 @@ interface processor<T, U> {
 ```wit
 // 优化后的 Stream 接口 (0.3.2)
 resource stream<t> {
-    /// 批量读取（减少边界穿越）
+    /// 批量读取(减少边界穿越)
     next-batch: async func(max-items: u32) -> list<option<t>>;
 
-    /// 零拷贝写（大缓冲区）
+    /// 零拷贝写(大缓冲区)
     write-zero-copy: func(buffer: borrow<buffer>) -> future<()>;
 }
 ```
@@ -1532,7 +1532,7 @@ interface cooperative {
     /// 产生执行权
     yield: func();
 
-    /// 创建新线程（合作式调度）
+    /// 创建新线程(合作式调度)
     spawn: func(task: task) -> thread-handle;
 }
 ```
@@ -1621,9 +1621,9 @@ interface enrichment-udf {
 **场景 2: 背压感知的数据转换**
 
 ```wit
-// 流式转换（自动背压）
+// 流式转换(自动背压)
 interface stream-transform {
-    /// 输入流 → 输出流（背压自动传播）
+    /// 输入流 → 输出流(背压自动传播)
     transform: async func(
         input: stream<raw-event>,
         config: transform-config
@@ -1634,9 +1634,9 @@ interface stream-transform {
 **场景 3: 取消感知的 ML 推理**
 
 ```wit
-// 长时间推理任务（Checkpoint 安全）
+// 长时间推理任务(Checkpoint 安全)
 interface ml-inference {
-    /// 批量推理（可取消）
+    /// 批量推理(可取消)
     batch-infer: async func(
         inputs: list<feature-vector>,
         model: model-handle,
@@ -1666,8 +1666,8 @@ interface ml-inference {
   WASI 0.3: 50,000 req/s (CPU 用于实际业务逻辑)
 
 场景: 流式数据清洗
-  WASI 0.2: 需要手动背压实现，复杂度高
-  WASI 0.3: 原生 Stream 背压，代码量减少 70%
+  WASI 0.2: 需要手动背压实现,复杂度高
+  WASI 0.3: 原生 Stream 背压,代码量减少 70%
 ```
 
 ---

@@ -15,14 +15,14 @@ public interface EventReporter {
     /** 报告单个事件 */
     void report(Event event);
 
-    /** 批量报告事件（可选优化） */
+    /** 批量报告事件(可选优化) */
     default void report(List<Event> events) {
         for (Event event : events) {
             report(event);
         }
     }
 
-    /** 关闭Reporter，释放资源 */
+    /** 关闭Reporter,释放资源 */
     void close();
 }
 ```
@@ -34,7 +34,7 @@ public interface Event {
     /** 事件类型标识符 */
     String getType();
 
-    /** 事件发生时间戳（毫秒） */
+    /** 事件发生时间戳(毫秒) */
     long getTimestamp();
 
     /** 事件属性映射 */
@@ -94,12 +94,12 @@ Checkpoint 成功完成时触发的事件。
 
 ```java
 public class BusinessEvent implements Event {
-    private final String type;           // 业务事件类型，如 "order.completed"
+    private final String type;           // 业务事件类型,如 "order.completed"
     private final long timestamp;
     private final Map<String, Object> attributes;
     private final Severity severity;
     private final String businessDomain; // 业务域标识
-    private final String correlationId;  // 关联ID，用于链路追踪
+    private final String correlationId;  // 关联ID,用于链路追踪
 }
 ```
 
@@ -109,7 +109,7 @@ public class BusinessEvent implements Event {
 
 ```java
 public class AuditEvent implements Event {
-    private final String action;         // 操作类型（CREATE/UPDATE/DELETE）
+    private final String action;         // 操作类型(CREATE/UPDATE/DELETE)
     private final String resourceType;   // 资源类型
     private final String resourceId;     // 资源标识
     private final String userId;         // 操作用户
@@ -479,7 +479,7 @@ public class AuditEventReporter implements EventReporter {
             // 确保审计事件的不可变性
             validateAuditEvent(auditEvent);
 
-            // 写入审计日志（不可删除、不可修改）
+            // 写入审计日志(不可删除、不可修改)
             writeToImmutableStorage(auditEvent);
 
             // 同时发送实时通知

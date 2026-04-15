@@ -32,7 +32,7 @@
 
 ```
 10-case-studies/
-├── 00-INDEX.md                              # 本文件：案例索引
+├── 00-INDEX.md                              # 本文件:案例索引
 ├── finance/                                 # 金融行业案例
 │   ├── 10.1.1-realtime-anti-fraud-system.md    # 实时反欺诈系统
 │   ├── 10.1.2-transaction-monitoring-compliance.md  # 交易监控与合规

@@ -7,7 +7,7 @@
 ```
 docs/certification/
 ├── README.md                          # 认证体系总览
-├── CERTIFICATION-INDEX.md             # 本文件：完整索引
+├── CERTIFICATION-INDEX.md             # 本文件:完整索引
 ├── schedule-2026.md                   # 2026年考试时间表
 │
 ├── csa/                               # 初级认证
@@ -174,7 +174,7 @@ CSA → CSP → CSE
 **路径 C: 研究者**
 
 ```
-CSP → CSE（研究型）
+CSP → CSE(研究型)
 ```
 
 ### 时间投入建议

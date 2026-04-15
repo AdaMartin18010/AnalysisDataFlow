@@ -282,6 +282,7 @@ $$
 ### 6.1 MemoryStateBackend 配置 (历史版本)
 
 ```java
+// 伪代码示意,非完整可编译代码
 
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
@@ -527,7 +528,7 @@ public class ForStStateBackend implements StateBackend {
     }
 
     private StateMetadata loadMetadata(Collection<KeyedStateHandle> stateHandles) {
-        // 仅加载元数据引用，不下载实际状态数据
+        // 仅加载元数据引用,不下载实际状态数据
         StateMetadata metadata = new StateMetadata();
         for (KeyedStateHandle handle : stateHandles) {
             metadata.addStateRef(handle.getStateRef());

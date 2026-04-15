@@ -78,7 +78,7 @@ DataStream<T> 类型层次:
 │  └─ ConnectedStreams<T1, T2>       # 双流连接
 │     └─ BroadcastConnectedStream<T1,T2> # 广播连接
 │
-├─ KeyedStream<T, K>                # 键控流（分区）
+├─ KeyedStream<T, K>                # 键控流(分区)
 │  ├─ WindowedStream<T, K, W>        # 窗口流
 │  │  └─ AllWindowedStream<T, W>     # 全窗口流
 │  └─ IterativeStream<T>             # 迭代流
@@ -667,7 +667,7 @@ public class CustomWatermarkGenerator implements WatermarkGenerator<Event> {
 
 空闲数据源处理:
   .withIdleness(Duration.ofMinutes(5))
-  // 5 分钟无数据视为空闲，忽略该源的 Watermark
+  // 5 分钟无数据视为空闲,忽略该源的 Watermark
 ```
 
 **迟到数据处理**:
@@ -738,7 +738,7 @@ public class AsyncDatabaseRequest
 
     @Override
     public void asyncInvoke(String key, ResultFuture<Result> resultFuture) {
-        // 异步查询，不阻塞
+        // 异步查询,不阻塞
         CompletableFuture<QueryResult> queryResult = client.query(key);
 
         queryResult.whenComplete((result, error) -> {
@@ -820,7 +820,7 @@ int capacity = 100;  // 根据外部系统吞吐量调整
 timeout = 5_000;  // 5 seconds
 
 // 背压处理
-// 当 Future 堆积超过 capacity 时，自动触发背压
+// 当 Future 堆积超过 capacity 时,自动触发背压
 ```
 
 ---
@@ -835,14 +835,14 @@ ProcessFunction 是 Flink 提供的底层流处理抽象，提供对定时器、
 
 ```
 ProcessFunction 家族:
-├─ ProcessFunction<I, O>              # 基础版，非键控流
+├─ ProcessFunction<I, O>              # 基础版,非键控流
 ├─ KeyedProcessFunction<K, I, O>      # 键控流版本 (最常用)
 │  ├─ 支持 KeyedState                  #   分区状态
 │  ├─ 支持 TimerService                #   事件/处理时间定时器
 │  └─ 支持侧输出                        #   Side Output
 │
 ├─ CoProcessFunction<I1, I2, O>       # 双流处理
-│  └─ 独立处理两个输入流，可互相发送数据
+│  └─ 独立处理两个输入流,可互相发送数据
 │
 ├─ ProcessAllWindowFunction<I, O, W>  # 全窗口处理
 │  └─ 访问窗口内全部元素
@@ -956,7 +956,7 @@ class SessionWindowFunction(sessionGap: Duration)
     val updated = currentSession.add(event)
     state.update(updated)
 
-    // 删除旧定时器，注册新定时器
+    // 删除旧定时器,注册新定时器
     if currentSession.endTime > 0 then
       ctx.timerService().deleteEventTimeTimer(currentSession.endTime)
 
@@ -1344,7 +1344,7 @@ import org.apache.flink.api.common.state.ValueStateDescriptor;
 ValueStateDescriptor<MyState> descriptor =
     new ValueStateDescriptor<>("myState", MyState.class);
 
-// 启用可查询，指定名称
+// 启用可查询,指定名称
 descriptor.setQueryable("queryable-state-name");
 
 // 方式 2: 在 open() 中启用 (动态)
@@ -1400,7 +1400,7 @@ future.thenAccept(state -> {
 
 ```
 限制:
-├─ 查询会竞争算子资源，影响处理延迟
+├─ 查询会竞争算子资源,影响处理延迟
 ├─ 不支持所有状态类型 (仅 ValueState、MapState)
 ├─ 查询客户端有并发限制
 └─ 网络分区时查询可能失败
@@ -1675,7 +1675,7 @@ DataStream<Result> result = salted
   └─ 迭代条件: O(n * c) - c 为平均迭代次数
 
 时间窗口影响:
-  窗口越大，未完成匹配越多，状态越大
+  窗口越大,未完成匹配越多,状态越大
   建议: within() < 1 hour
 ```
 

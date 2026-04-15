@@ -134,7 +134,7 @@ Events = [Insert | Update | Delete | Replace | Invalidate]⁺
 Event = ⟨operationType, documentKey, fullDocument, updateDescription,
          clusterTime, txnNumber, lsid⟩
 
-ResumeToken: BSON Document，唯一标识事件位置
+ResumeToken: BSON Document,唯一标识事件位置
 ```
 
 **Change Stream 事件结构**:
@@ -170,13 +170,13 @@ Resume(token_k) ⇒ 从事件 e_{k+1} 开始消费
 WriteMode = {INSERT, REPLACE, UPDATE, BULK_WRITE}
 
 INSERT: db.collection.insertOne(document)
-        - 插入新文档，_id 冲突报错
+        - 插入新文档,_id 冲突报错
 
 REPLACE: db.collection.replaceOne(filter, replacement, { upsert: true })
-         - 替换整个文档，支持 upsert
+         - 替换整个文档,支持 upsert
 
 UPDATE: db.collection.updateOne(filter, update, { upsert: true })
-        - 部分字段更新，支持 upsert
+        - 部分字段更新,支持 upsert
 
 BULK_WRITE: db.collection.bulkWrite(operations)
             - 批量混合操作
@@ -237,9 +237,9 @@ BULK_WRITE: db.collection.bulkWrite(operations)
 
 ```
 BulkWrite Atomicity:
-- ordered=true: 遇到错误停止，已写入的不回滚
-- ordered=false: 并行执行，各自独立
-- 事务中: 多文档 ACID（MongoDB 4.0+ 副本集，4.2+ 分片）
+- ordered=true: 遇到错误停止,已写入的不回滚
+- ordered=false: 并行执行,各自独立
+- 事务中: 多文档 ACID(MongoDB 4.0+ 副本集,4.2+ 分片)
 ```
 
 ---
@@ -327,7 +327,7 @@ Checkpoint 周期:
     └── 恢复时
         └── 从 State 读取 Resume Token
         └── resumeAfter(token)
-        └── 继续消费（无重复、无丢失）
+        └── 继续消费(无重复、无丢失)
 ```
 
 ---
@@ -383,8 +383,8 @@ DataStream<ChangeEvent> events = env
 - Task 2: 监听 db1.collection2
 - Task 3: 监听 db2.collection1
 
-策略 2: 按 Shard Key 并行（自定义）
-- 需要多个 Change Stream，每个带 filter
+策略 2: 按 Shard Key 并行(自定义)
+- 需要多个 Change Stream,每个带 filter
 - Task 1: 监听 shard_key range [A-M)
 - Task 2: 监听 shard_key range [M-Z]
 
@@ -404,7 +404,7 @@ DataStream<ChangeEvent> events = env
 **幂等策略**:
 
 ```java
-// 策略 1: 使用 _id 作为文档 ID（天然幂等）
+// 策略 1: 使用 _id 作为文档 ID(天然幂等)
 ReplaceOneModel<Document> replace = new ReplaceOneModel<>(
     Filters.eq("_id", event.getId()),
     document,
@@ -459,10 +459,10 @@ Checkpoint:
   3. 确认 Checkpoint
 
 故障恢复:
-  1. 从 Checkpoint 恢复状态，获取 T_k
+  1. 从 Checkpoint 恢复状态,获取 T_k
   2. 执行 resumeAfter(T_k)
   3. 从 T_k 之后的第一个事件继续消费
-  4. 由于 T_k 对应的事件已被确认处理，不会重复
+  4. 由于 T_k 对应的事件已被确认处理,不会重复
 
 oplog 约束:
   保留窗口 W ≥ CheckpointInterval + RecoveryTime + Margin
@@ -494,7 +494,7 @@ oplog 约束:
 条件: updateOne({ _id: X, version < V }, { $set: { ... } })
 
 第一次: version = null < V → 更新成功
-第二次: version = V ≮ V → 无匹配，不更新（无副作用）
+第二次: version = V ≮ V → 无匹配,不更新(无副作用)
 
 ∴ 幂等性成立
 ```
@@ -563,7 +563,7 @@ public class MongoBatchSourceExample {
                     "orderId", "userId", "amount", "status", "createTime"
                 )
             )
-            .setLimit(100000L)  // 可选：限制读取数量
+            .setLimit(100000L)  // 可选:限制读取数量
             .setDeserializationSchema(new OrderDeserializationSchema())
             .build();
 
@@ -782,7 +782,7 @@ public class MongoAggregationExample {
             .window(TumblingEventTimeWindows.of(Time.hours(1)))
             .aggregate(new OrderAggregateFunction());
 
-        // 写入 MongoDB（更新或插入）
+        // 写入 MongoDB(更新或插入)
         stats.addSink(new MongoSink<UserStats>() {
             @Override
             public void invoke(UserStats value, Context context) {
@@ -952,7 +952,7 @@ com.mongodb.MongoCommandException: Command failed with error 280 (ChangeStreamFa
 # 1. 检查 oplog 大小和保留时间
 rs.printReplicationInfo()
 
-# 2. 增加 oplog 大小（需要重启）
+# 2. 增加 oplog 大小(需要重启)
 # 停止 MongoDB
 # 删除 local/oplog.rs
 # 以更大大小重新创建
@@ -963,7 +963,7 @@ mongod --replSet rs0 --oplogSize 10240  # 10GB
 env.enableCheckpointing(30000);  // 30秒
 
 // 监控 Checkpoint 成功率
-// 如果频繁失败，需要调整 oplog
+// 如果频繁失败,需要调整 oplog
 ```
 
 ---
@@ -982,7 +982,7 @@ and error message 'E11000 duplicate key error collection: mydb.orders index: _id
 **解决方案**:
 
 ```java
-// 1. 使用 Replace 模式（Upsert）
+// 1. 使用 Replace 模式(Upsert)
 ReplaceOneModel<Document> replace = new ReplaceOneModel<>(
     Filters.eq("_id", doc.getId()),
     doc,
@@ -1159,7 +1159,7 @@ FindIterable<Document> iterable = collection
 ```java
 // 写入优化配置
 BulkWriteOptions options = new BulkWriteOptions()
-    .ordered(false);  // 无序写入，错误继续
+    .ordered(false);  // 无序写入,错误继续
 
 List<WriteModel<Document>> operations = new ArrayList<>();
 // 添加操作...
@@ -1201,7 +1201,7 @@ MongoChangeStreamSource<ChangeEvent> source =
         // 优化 fullDocument 选项
         .setFullDocument(FullDocument.DEFAULT)  // 不查找完整文档
 
-        // 缩短 Checkpoint 间隔，减少 oplog 压力
+        // 缩短 Checkpoint 间隔,减少 oplog 压力
         .setCheckpointInterval(30000)
 
         .build();
@@ -1212,7 +1212,7 @@ MongoChangeStreamSource<ChangeEvent> source =
 ### 9.4 索引优化
 
 ```javascript
-// 创建复合索引（覆盖查询）
+// 创建复合索引(覆盖查询)
 db.orders.createIndex({
     userId: 1,
     createTime: -1,
@@ -1222,7 +1222,7 @@ db.orders.createIndex({
     background: true  // 后台创建
 });
 
-// TTL 索引（自动过期）
+// TTL 索引(自动过期)
 db.sessions.createIndex({
     lastAccessTime: 1
 }, {

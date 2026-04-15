@@ -853,9 +853,9 @@ def check_rules(state: RiskState):
     return {"decision": "APPROVE"}
 
 def human_review(state: RiskState):
-    """人工审核节点（流集成）"""
+    """人工审核节点(流集成)"""
     send_to_kafka("review-queue", state)
-    # 等待人工决策（通过Flink流处理消费）
+    # 等待人工决策(通过Flink流处理消费)
     return {"decision": "PENDING_REVIEW"}
 
 # 构建工作流
@@ -876,7 +876,7 @@ workflow.add_conditional_edges(
 
 app = workflow.compile()
 
-# 与Flink集成：作为ProcessFunction调用
+# 与Flink集成:作为ProcessFunction调用
 class RiskAgentFunction(ProcessFunction):
     def process_element(self, transaction, ctx):
         state = {"transaction": transaction, "risk_score": 0.0, "alerts": [], "decision": ""}
@@ -897,21 +897,21 @@ from autogen import ConversableAgent, GroupChat
 # 定义Agent角色
 data_agent = ConversableAgent(
     name="data_collector",
-    system_message="""你是数据收集Agent。从流数据源获取实时数据，
+    system_message="""你是数据收集Agent。从流数据源获取实时数据,
     提取关键指标并格式化为结构化输出。""",
     llm_config={"config_list": [{"model": "gpt-4", "api_key": "..."}]}
 )
 
 analysis_agent = ConversableAgent(
     name="analyst",
-    system_message="""你是分析Agent。接收数据并进行实时分析，
+    system_message="""你是分析Agent。接收数据并进行实时分析,
     识别异常模式并生成洞察。""",
     llm_config={"config_list": [{"model": "gpt-4", "api_key": "..."}]}
 )
 
 action_agent = ConversableAgent(
     name="action_executor",
-    system_message="""你是执行Agent。基于分析结果决定行动方案，
+    system_message="""你是执行Agent。基于分析结果决定行动方案,
     可调用工具执行具体操作。""",
     llm_config={"config_list": [{"model": "gpt-4", "api_key": "..."}]},
     function_map={"send_alert": send_alert, "update_dashboard": update_dashboard}
@@ -926,7 +926,7 @@ group_chat = GroupChat(
 
 manager = autogen.GroupChatManager(groupchat=group_chat)
 
-# 与Flink集成：作为AsyncFunction
+# 与Flink集成:作为AsyncFunction
 class AutoGenAgentFunction(AsyncFunction):
     async def async_invoke(self, input_data):
         # 触发多Agent对话
@@ -950,7 +950,7 @@ from crewai import Agent, Task, Crew, Process
 researcher = Agent(
     role="数据研究员",
     goal="从流数据中识别趋势和异常",
-    backstory="你是一位经验丰富的数据分析师，擅长实时数据分析",
+    backstory="你是一位经验丰富的数据分析师,擅长实时数据分析",
     verbose=True,
     allow_delegation=False
 )
@@ -973,9 +973,9 @@ reviewer = Agent(
 
 # 定义任务
 research_task = Task(
-    description="分析过去1小时的流数据，识别关键指标变化",
+    description="分析过去1小时的流数据,识别关键指标变化",
     agent=researcher,
-    expected_output="结构化分析报告，包含关键发现"
+    expected_output="结构化分析报告,包含关键发现"
 )
 
 writing_task = Task(

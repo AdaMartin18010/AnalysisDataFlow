@@ -104,11 +104,11 @@ Flink 3.0 Architecture Goals:
     - Performance Architecture Optimization (性能架构优化) - FLIP-504
 
   设计原则:
-    - Simplicity: 简化架构层次，降低认知负担
-    - Elasticity: 真正的弹性计算，按需扩缩容
-    - Efficiency: 性能提升3-5倍，资源利用率最大化
-    - Compatibility: 平滑迁移，保护现有投资
-    - Extensibility: 开放架构，支持自定义扩展
+    - Simplicity: 简化架构层次,降低认知负担
+    - Elasticity: 真正的弹性计算,按需扩缩容
+    - Efficiency: 性能提升3-5倍,资源利用率最大化
+    - Compatibility: 平滑迁移,保护现有投资
+    - Extensibility: 开放架构,支持自定义扩展
 ```
 
 **与2.x的架构定位对比**（2026年4月更新）:
@@ -155,10 +155,10 @@ $$
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 enum ExecutionMode {
-    STREAMING,      // 无限流，低延迟优先
-    BATCH,          // 有限数据集，吞吐优先
-    INTERACTIVE,    // 即席查询，响应时间优先
-    HYBRID          // 混合模式，自适应切换
+    STREAMING,      // 无限流,低延迟优先
+    BATCH,          // 有限数据集,吞吐优先
+    INTERACTIVE,    // 即席查询,响应时间优先
+    HYBRID          // 混合模式,自适应切换
 }
 
 ExecutionMode selectMode(DataStream<?> stream, QueryHint hints) {
@@ -203,14 +203,14 @@ $$
 
 ```yaml
 IntelligentCachePolicy:
-  - HotData: L1 + L2 (95%+命中率，3.0目标)
+  - HotData: L1 + L2 (95%+命中率,3.0目标)
   - WarmData: L2 + L3 (按需加载)
   - ColdData: L3 + L4 (延迟加载)
 
   EvictionPolicy:
     - LRU (Least Recently Used)
     - LFU (Least Frequently Used)
-    - ML-Predictive (机器学习预测，3.0新特性)
+    - ML-Predictive (机器学习预测,3.0新特性)
 ```
 
 ### Def-F-08-63: Cloud-Native Architecture 2.0 (云原生架构2.0)
@@ -220,7 +220,7 @@ IntelligentCachePolicy:
 ```yaml
 CloudNativeArchitectureV2:
   核心特性:
-    - ServerlessExecution: 按需启动，零空闲成本
+    - ServerlessExecution: 按需启动,零空闲成本
     - AutoScalingV2: 智能预测扩缩容 (ML-based)
     - MultiCloudNative: 多云原生支持
     - FinOpsIntegration: 成本优化集成
@@ -259,12 +259,12 @@ $$
 
 ```
 UnifiedAPI = {
-    CoreDSL:        // 核心DSL，支持所有场景
-    SQLInterface:   // SQL接口，标准兼容
-    TableAPI:       // Table API，类型安全
-    DataStreamAPI:  // DataStream API，细粒度控制
-    MLAPI:          // ML API，机器学习集成
-    AgentAPI:       // Agent API，AI Agent支持
+    CoreDSL:        // 核心DSL,支持所有场景
+    SQLInterface:   // SQL接口,标准兼容
+    TableAPI:       // Table API,类型安全
+    DataStreamAPI:  // DataStream API,细粒度控制
+    MLAPI:          // ML API,机器学习集成
+    AgentAPI:       // Agent API,AI Agent支持
 }
 
 // 统一转换语义
@@ -281,13 +281,13 @@ UnifiedAPI = {
 │  └──────┬──────┴──────┬──────┴──────────┬──────────┘   │
 ├─────────┴─────────────┴─────────────────┴───────────────┤
 │              Unified DSL Layer                          │
-│         (统一抽象语法树，统一语义分析)                     │
+│         (统一抽象语法树,统一语义分析)                     │
 ├─────────────────────────────────────────────────────────┤
 │              Logical Plan Layer                         │
-│         (逻辑执行计划，优化器)                            │
+│         (逻辑执行计划,优化器)                            │
 ├─────────────────────────────────────────────────────────┤
 │              Physical Plan Layer                        │
-│         (物理执行计划，统一执行层)                        │
+│         (物理执行计划,统一执行层)                        │
 └─────────────────────────────────────────────────────────┘
 ```
 
@@ -298,11 +298,11 @@ UnifiedAPI = {
 ```yaml
 CompatibilityLevels:
   FullCompatible:
-    - TableAPI/SQL: 完全兼容，无需修改
+    - TableAPI/SQL: 完全兼容,无需修改
     - Configuration: 配置参数自动迁移
 
   SourceCompatible:
-    - DataStreamAPI: 源码兼容，重新编译即可
+    - DataStreamAPI: 源码兼容,重新编译即可
     - Connectors: 连接器API兼容
 
   MigrationRequired:
@@ -362,7 +362,7 @@ ScalabilityCharacteristics:
   - KeySpace: 无限制 (分布式索引)
   - StateSize: 单作业支持PB级
   - ConcurrentAccess: 百万级QPS
-  - RecoveryTime: 与状态大小无关 (<20s，3.0目标)
+  - RecoveryTime: 与状态大小无关 (<20s,3.0目标)
   - CrossRegion: 原生多区域复制
 ```
 
@@ -556,7 +556,7 @@ Flink 2.x 问题:
   - 执行计划优化受限
 
 Flink 3.0 方案:
-  - 单一执行引擎，多模式适配
+  - 单一执行引擎,多模式适配
   - 自适应执行策略选择
   - 全局优化器统一优化
 ```
@@ -599,9 +599,9 @@ ExecutionMode selectOptimalMode(DataCharacteristics data, QueryRequirements req)
   - 不同访问模式需要不同存储介质
 
 分层存储收益:
-  - 热数据: 内存访问，<1μs延迟
-  - 温数据: SSD缓存，10-100μs延迟
-  - 冷数据: 对象存储，成本降低10x
+  - 热数据: 内存访问,<1μs延迟
+  - 温数据: SSD缓存,10-100μs延迟
+  - 冷数据: 对象存储,成本降低10x
 ```
 
 **智能缓存策略论证**:
@@ -727,13 +727,13 @@ $$
 
   数据兼容:
     - Savepoint: 自动升级
-    - Checkpoint: 新格式，支持从Savepoint恢复
+    - Checkpoint: 新格式,支持从Savepoint恢复
     - 状态: 自动转换
 
   运维兼容:
     - REST API: 向后兼容
     - Metrics: 增强但不破坏
-    - Web UI: 新设计，旧链接重定向
+    - Web UI: 新设计,旧链接重定向
 ```
 
 ---
@@ -782,14 +782,14 @@ StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironm
 // 自动检测执行模式
 DataStream<Event> stream = env.fromSource(kafkaSource, WatermarkStrategy.forBoundedOutOfOrderness(Duration.ofSeconds(5)), "Kafka Source");
 
-// 统一处理逻辑，自动适配执行模式
+// 统一处理逻辑,自动适配执行模式
 stream
     .keyBy(Event::getUserId)
     .window(TumblingEventTimeWindows.of(Time.minutes(1)))
     .aggregate(new CountAggregate())
     .sinkTo(sink);
 
-// 显式指定执行模式（可选）
+// 显式指定执行模式(可选)
 env.configure(new Configuration() {{
     set(ExecutionOptions.RUNTIME_MODE, RuntimeExecutionMode.AUTOMATIC);
 }});
@@ -870,7 +870,7 @@ public class NextGenStateExample extends KeyedProcessFunction<String, Event, Res
 
     @Override
     public void processElement(Event event, Context ctx, Collector<Result> out) throws Exception {
-        // 异步状态访问（自动优化）
+        // 异步状态访问(自动优化)
         state.getAsync().thenAccept(current -> {
             if (current == null) {
                 current = new CountState();
@@ -1066,10 +1066,10 @@ public class OldJob {
 // ===== Flink 3.0 迁移后代码 =====
 public class MigratedJob {
     public static void main(String[] args) {
-        // 统一环境（向后兼容）
+        // 统一环境(向后兼容)
         UnifiedEnvironment env = UnifiedEnvironment.getExecutionEnvironment();
 
-        // 配置自动迁移（旧配置仍有效）
+        // 配置自动迁移(旧配置仍有效)
         env.setStateBackend(new TieredStorageStateBackend());  // 新后端
         env.getCheckpointConfig().setCheckpointStorage("s3://flink-checkpoints");
 

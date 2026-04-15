@@ -485,7 +485,7 @@ class ArrowFormatDemo:
         print(f"  Null bitmap: {nullable_array.null_bitmap}")
         print(f"  Null count: {nullable_array.null_count}")
 
-        # 字符串数组（变长类型）
+        # 字符串数组(变长类型)
         string_array = pa.array(["hello", "world", "arrow", "flight"])
         print(f"\nString Array: {string_array}")
         print(f"  Value offsets: {string_array.offsets}")
@@ -558,7 +558,7 @@ class ArrowFormatDemo:
         """演示零拷贝共享"""
         import numpy as np
 
-        # 从 NumPy 数组创建 Arrow 数组（零拷贝）
+        # 从 NumPy 数组创建 Arrow 数组(零拷贝)
         numpy_array = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
         arrow_array = pa.array(numpy_array)
 
@@ -571,12 +571,12 @@ class ArrowFormatDemo:
             print(f"  Arrow buffer address: {arrow_buffers[1].address:#x}")
             print(f"  Memory shared: {numpy_array.ctypes.data == arrow_buffers[1].address}")
 
-        # 从 Arrow 数组获取 NumPy 视图（零拷贝）
+        # 从 Arrow 数组获取 NumPy 视图(零拷贝)
         numpy_view = arrow_array.to_numpy(zero_copy_only=True)
         print(f"  NumPy view base: {numpy_view.ctypes.data:#x}")
         print(f"  Views share memory: {numpy_array.ctypes.data == numpy_view.ctypes.data}")
 
-        # 切片操作（零拷贝）
+        # 切片操作(零拷贝)
         sliced = arrow_array.slice(1, 3)
         print(f"\n  Sliced array: {sliced}")
         print(f"  Sliced buffer address: {sliced.buffers()[1].address:#x}")
@@ -955,7 +955,7 @@ pub mod flight {
             // Arrow Flight 服务: 根据请求描述符返回对应的 Schema
             //
             // 实现说明:
-            // 1. 解析 FlightDescriptor，提取数据集路径/标识符
+            // 1. 解析 FlightDescriptor,提取数据集路径/标识符
             // 2. 从 SchemaRegistry 或元数据服务查询对应的 Arrow Schema
             // 3. 将 Schema 序列化为 SchemaResult 格式返回
             //
@@ -978,8 +978,8 @@ pub mod flight {
             // Arrow Flight 服务: 流式返回 Arrow RecordBatch 数据
             //
             // 实现说明:
-            // 1. 解析 Ticket 获取数据集的查询参数（如分区、过滤条件）
-            // 2. 创建数据流迭代器，读取底层存储（如Parquet、内存Buffer）
+            // 1. 解析 Ticket 获取数据集的查询参数(如分区、过滤条件)
+            // 2. 创建数据流迭代器,读取底层存储(如Parquet、内存Buffer)
             // 3. 将 RecordBatch 流转换为 FlightData 流返回给客户端
             //
             // 实现: 流式返回Arrow RecordBatch数据
@@ -1009,10 +1009,10 @@ pub mod flight {
             // Arrow Flight 服务: 接收并存储 Arrow RecordBatch 数据
             //
             // 实现说明:
-            // 1. 从流中提取 Schema（首个 FlightData 包含 Schema）
+            // 1. 从流中提取 Schema(首个 FlightData 包含 Schema)
             // 2. 将后续 FlightData 解析为 RecordBatch
-            // 3. 批量写入目标存储（如列式存储、消息队列、文件系统）
-            // 4. 返回写入确认（包含写入的记录数、存储位置等元数据）
+            // 3. 批量写入目标存储(如列式存储、消息队列、文件系统)
+            // 4. 返回写入确认(包含写入的记录数、存储位置等元数据)
             //
             // 实现: 接收并持久化Arrow RecordBatch数据
             let mut stream = request.into_inner();

@@ -235,7 +235,7 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 
-// 定义欺诈检测模式：小额测试后大额交易
+// 定义欺诈检测模式:小额测试后大额交易
 Pattern<Transaction, ?> fraudPattern = Pattern
     .<Transaction>begin("small-amount")
     .where(new SimpleCondition<Transaction>() {
@@ -251,7 +251,7 @@ Pattern<Transaction, ?> fraudPattern = Pattern
             return tx.getAmount() > 1000.0;  // 大额交易
         }
     })
-    // 同一用户，10分钟内
+    // 同一用户,10分钟内
     .where(new SimpleCondition<Transaction>() {
         @Override
         public boolean filter(Transaction tx) {
@@ -306,7 +306,7 @@ Pattern<LoginEvent, ?> suspiciousLogin = Pattern
     })
     .within(Time.minutes(3));
 
-// 处理超时（未出现成功登录）
+// 处理超时(未出现成功登录)
 patternStream
     .process(new PatternProcessFunction<LoginEvent, Alert>() {
         @Override
@@ -318,7 +318,7 @@ patternStream
         @Override
         public void processTimedOutMatch(Map<String, List<LoginEvent>> match,
                                          Context ctx, Collector<Alert> out) {
-            // 超时处理：多次失败登录但未成功
+            // 超时处理:多次失败登录但未成功
             out.collect(new Alert(match.get("failed-logins").get(0).getUserId(),
                 "BRUTE_FORCE_ATTEMPT", "Multiple failed logins without success"));
         }
@@ -364,7 +364,7 @@ Pattern<SensorReading, ?> overheatingPattern = Pattern
 ### 6.5 SQL MATCH_RECOGNIZE 等价写法
 
 ```sql
--- 使用 SQL 模式识别（Flink SQL）
+-- 使用 SQL 模式识别(Flink SQL)
 SELECT *
 FROM transactions
 MATCH_RECOGNIZE (

@@ -399,7 +399,7 @@ flowchart TB
 ```wat
 ;; Memory64 基础模块示例
 (module
-  ;; 定义 64 位内存，初始 1 页，最大 10000 页 (约 655MB)
+  ;; 定义 64 位内存,初始 1 页,最大 10000 页 (约 655MB)
   (memory $mem i64 1 10000)
 
   ;; 导出内存供 JavaScript 访问
@@ -572,7 +572,7 @@ impl MlModelUdf {
     /// 创建新的 ML 模型 UDF
     ///
     /// # Arguments
-    /// * `model_size_mb` - 模型大小 (MB)，支持 >4GB
+    /// * `model_size_mb` - 模型大小 (MB),支持 >4GB
     /// * `input_dim` - 输入特征维度
     /// * `output_dim` - 输出维度
     #[wasm_bindgen(constructor)]
@@ -603,7 +603,7 @@ impl MlModelUdf {
         }
 
         // 将权重复制到 Memory64
-        // 注意：实际实现需要使用 JS API 进行内存拷贝
+        // 注意:实际实现需要使用 JS API 进行内存拷贝
         // 这里展示概念性代码
 
         Ok(())
@@ -695,7 +695,7 @@ class FlinkMemory64UdfRuntime {
         // 编译模块
         this.module = await WebAssembly.compile(bytes);
 
-        // 实例化，创建 Memory64
+        // 实例化,创建 Memory64
         this.instance = await WebAssembly.instantiate(this.module, {
             env: {
                 // 提供必要的 imports

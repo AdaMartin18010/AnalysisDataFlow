@@ -100,7 +100,7 @@ DataStream<AudioFrame> audioStream = env
         WatermarkStrategy.<AudioFrame>forBoundedOutOfOrderness(Duration.ofMillis(100))
     );
 
-// 每 500ms 的滑动窗口，计算 Mel 频谱图
+// 每 500ms 的滑动窗口,计算 Mel 频谱图
 DataStream<MelSpectrogram> melStream = audioStream
     .windowAll(SlidingEventTimeWindows.of(Time.milliseconds(500), Time.milliseconds(250)))
     .process(new MelSpectrogramWindowFunction());
@@ -233,7 +233,7 @@ public class AudioQualityMonitorFunction extends ProcessFunction<AudioFrame, Qua
         // 1. 计算 RMS 能量
         double rms = Math.sqrt(Arrays.stream(samples).map(s -> s * s).average().orElse(0));
 
-        // 2. 估算信噪比 (简化版：基于静音段假设)
+        // 2. 估算信噪比 (简化版:基于静音段假设)
         double noiseFloor = estimateNoiseFloor(samples);
         double snrDb = 20 * Math.log10(rms / (noiseFloor + 1e-10));
 
@@ -300,11 +300,11 @@ graph LR
 ```java
 // 基于 KeyedState 的说话人追踪算子
 public class SpeakerTrackingFunction extends KeyedProcessFunction<String, AudioFrame, SpeakerEvent> {
-    // 状态：当前房间的活跃说话人列表
+    // 状态:当前房间的活跃说话人列表
     private ListState<SpeakerProfile> speakerState;
-    // 状态：每个说话人的累计发言时长
+    // 状态:每个说话人的累计发言时长
     private MapState<String, Long> speakingTimeState;
-    // 状态：音频质量历史基线（用于异常检测）
+    // 状态:音频质量历史基线(用于异常检测)
     private ValueState<QualityBaseline> baselineState;
 
     @Override
@@ -328,7 +328,7 @@ public class SpeakerTrackingFunction extends KeyedProcessFunction<String, AudioF
         if (currentTime == null) currentTime = 0L;
         speakingTimeState.put(speakerId, currentTime + frame.getDurationMs());
 
-        // 更新音频质量基线（指数移动平均）
+        // 更新音频质量基线(指数移动平均)
         QualityBaseline baseline = baselineState.value();
         if (baseline == null) {
             baseline = new QualityBaseline(frame.getRms(), frame.getSnrDb());
@@ -337,7 +337,7 @@ public class SpeakerTrackingFunction extends KeyedProcessFunction<String, AudioF
         }
         baselineState.update(baseline);
 
-        // 检测异常：当前帧 SNR 偏离基线超过 2 个标准差
+        // 检测异常:当前帧 SNR 偏离基线超过 2 个标准差
         if (Math.abs(frame.getSnrDb() - baseline.meanSnr) > 2 * baseline.stdSnr) {
             out.collect(new SpeakerEvent(
                 roomId, speakerId, "QUALITY_ANOMALY",
@@ -345,7 +345,7 @@ public class SpeakerTrackingFunction extends KeyedProcessFunction<String, AudioF
             ));
         }
 
-        // 定时器：每小时输出一次会话摘要
+        // 定时器:每小时输出一次会话摘要
         long currentHour = ctx.timestamp() / 3_600_000 * 3_600_000;
         ctx.timerService().registerEventTimeTimer(currentHour + 3_600_000);
     }

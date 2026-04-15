@@ -62,7 +62,7 @@ Feature Freeze: 2026-08-15
 FLIP-531: "Building and Running AI Agents in Flink"
 MVP状态: Flink 2.3 - 基础Agent支持
 Preview状态: 0.2.0 (2026-02-06) - 预览版本
-GA目标: Flink 2.4 (2026 H2) - 企业级生产就绪（规划中）
+GA目标: Flink 2.4 (2026 H2) - 企业级生产就绪(规划中)
 
 Preview/GA特性清单:
   - [x] 事件驱动Agent运行时
@@ -370,7 +370,7 @@ Java 17默认       性能优化          PyFlink Async     安全增强        
      - 免运维托管体验
 
 3. Self-Optimizing Engine:
-   背景: 调优复杂度高，需要专家知识
+   背景: 调优复杂度高,需要专家知识
    问题: 静态配置无法适应动态负载
    方案: ML驱动的自适应执行
    收益:
@@ -450,10 +450,10 @@ $$
 # flink-conf.yaml - Serverless 配置
 
 # Serverless Dispatcher 配置
-# 注: 以下为Serverless模式配置（规划中），尚未正式实现
-# 注意: 以下配置为预测/规划，实际版本可能不同
-# serverless.enabled: true  (尚未确定)  <!-- [Flink 2.4 前瞻] 该配置为规划特性，可能变动 -->
-serverless.scale-to-zero.delay: 5min  <!-- [Flink 2.4 前瞻] 该配置为规划特性，可能变动 -->
+# 注: 以下为Serverless模式配置(规划中),尚未正式实现
+# 注意: 以下配置为预测/规划,实际版本可能不同
+# serverless.enabled: true  (尚未确定)  <!-- [Flink 2.4 前瞻] 该配置为规划特性,可能变动 -->
+serverless.scale-to-zero.delay: 5min  <!-- [Flink 2.4 前瞻] 该配置为规划特性,可能变动 -->
 serverless.cold-start.pool-size: 10
 serverless.state.remote.uri: s3://flink-serverless-state/
 
@@ -466,12 +466,12 @@ state.checkpoints.dir: s3://flink-serverless-state/checkpoints
 
 # 自适应执行引擎
 execution.adaptive.enabled: true
-execution.adaptive.model: ml-based  <!-- [Flink 2.4 前瞻] 该配置为规划特性，可能变动 -->
+execution.adaptive.model: ml-based  <!-- [Flink 2.4 前瞻] 该配置为规划特性,可能变动 -->
 execution.adaptive.learning-rate: 0.1
 
 # 智能检查点
-checkpointing.mode: intelligent  <!-- [Flink 2.4 前瞻] 该配置为规划特性，可能变动 -->
-checkpointing.intelligent.strategy: cost-based  <!-- [Flink 2.4 前瞻] 该配置为规划特性，可能变动 -->
+checkpointing.mode: intelligent  <!-- [Flink 2.4 前瞻] 该配置为规划特性,可能变动 -->
+checkpointing.intelligent.strategy: cost-based  <!-- [Flink 2.4 前瞻] 该配置为规划特性,可能变动 -->
 checkpointing.intelligent.min-interval: 30s
 checkpointing.intelligent.max-interval: 10min
 ```
@@ -482,7 +482,7 @@ checkpointing.intelligent.max-interval: 10min
 // Java API: 多Agent协调框架
 
 // 定义Agent角色
-AgentCoordinator coordinator = new AgentCoordinator(env);  // [Flink 2.4 前瞻] 该API为规划特性，可能变动
+AgentCoordinator coordinator = new AgentCoordinator(env);  // [Flink 2.4 前瞻] 该API为规划特性,可能变动
 
 // 注册Sales Agent
 AgentDescriptor salesAgent = AgentDescriptor.builder()
@@ -522,8 +522,8 @@ agentSystem.enableCanaryDeployment()
 ```sql
 -- SQL API: 创建AI Agent
 
--- 注册MCP工具（未来可能的语法，概念设计阶段）
-<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+-- 注册MCP工具(未来可能的语法,概念设计阶段)
+<!-- 以下语法为概念设计,实际 Flink 版本尚未支持 -->
 ~~CREATE TOOL crm_search~~ (未来可能的语法)
 WITH (
     'protocol' = 'mcp',
@@ -532,9 +532,9 @@ WITH (
     'timeout' = '10s'
 );
 
--- 创建Agent（未来可能的语法，概念设计阶段）
-<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
-~~CREATE AGENT sales_assistant~~  -- [Flink 2.4 前瞻] SQL语法为规划特性，可能变动
+-- 创建Agent(未来可能的语法,概念设计阶段)
+<!-- 以下语法为概念设计,实际 Flink 版本尚未支持 -->
+~~CREATE AGENT sales_assistant~~  -- [Flink 2.4 前瞻] SQL语法为规划特性,可能变动
 WITH (
     'model.provider' = 'openai',
     'model.name' = 'gpt-4',
@@ -542,7 +542,7 @@ WITH (
     'memory.max_turns' = 20,
     -- GA新增: 版本管理
     'version' = '2.1.0',
-    'canary.enabled' = 'true',  -- [Flink 2.4 前瞻] 配置参数为规划特性，可能变动
+    'canary.enabled' = 'true',  -- [Flink 2.4 前瞻] 配置参数为规划特性,可能变动
     'canary.percentage' = '10',
     -- GA新增: 监控
     'metrics.enabled' = 'true',
@@ -552,8 +552,8 @@ INPUT (customer_query STRING, customer_id STRING)
 OUTPUT (response STRING, action STRING)
 TOOLS (crm_search, product_catalog);
 
--- 多Agent协调查询（未来可能的语法，概念设计阶段）
-~~CREATE AGENT_TEAM customer_service_team~~  -- [Flink 2.4 前瞻] SQL语法为规划特性，可能变动
+-- 多Agent协调查询(未来可能的语法,概念设计阶段)
+~~CREATE AGENT_TEAM customer_service_team~~  -- [Flink 2.4 前瞻] SQL语法为规划特性,可能变动
 WITH (
     'coordinator' = 'hierarchical',
     'routing.strategy' = 'intent-based'
@@ -574,7 +574,7 @@ StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
 // 配置自适应模式
-env.getConfig().setAdaptiveExecutionMode(AdaptiveMode.ML_BASED);  // [Flink 2.4 前瞻] 该API为规划特性，可能变动
+env.getConfig().setAdaptiveExecutionMode(AdaptiveMode.ML_BASED);  // [Flink 2.4 前瞻] 该API为规划特性,可能变动
 
 // 定义优化目标
 OptimizationGoal goal = OptimizationGoal.builder()
@@ -616,10 +616,10 @@ DataStream<Event> stream = env
     </dependencies>
 </dependencyManagement>
 
-<!-- AI Agent GA 依赖（未来可能提供的模块，设计阶段） -->
+<!-- AI Agent GA 依赖(未来可能提供的模块,设计阶段) -->
 <dependency>
     <groupId>org.apache.flink</groupId>
-    <!-- 注意: 以下依赖为预测/规划，实际版本可能不同 -->
+    <!-- 注意: 以下依赖为预测/规划,实际版本可能不同 -->
     <!-- <artifactId>flink-ai-agent</artifactId> (尚未确定) -->
     <!-- 注: 尚未正式发布 -->
 </dependency>
@@ -825,7 +825,7 @@ execution.adaptive.mode: legacy    # 请使用 execution.adaptive.model
 
 # 新增配置 (2.4推荐)
 execution.adaptive.model: ml-based          # ML驱动优化
-# 注意: 以下配置为预测/规划，实际版本可能不同
+# 注意: 以下配置为预测/规划,实际版本可能不同
 # serverless.enabled: true  (尚未确定)       # Serverless模式
 checkpointing.mode: intelligent              # 智能检查点模式
 ai.agent.version.management.enabled: true    # Agent版本管理
@@ -1216,19 +1216,19 @@ ROUTING RULES (
 
 ```yaml
 架构层次:
-  Compute Layer:  无状态TaskManager，专注于计算
-  State Layer:    远程状态服务，支持多种后端
-  Cache Layer:    本地LRU缓存，加速热点访问
+  Compute Layer:  无状态TaskManager,专注于计算
+  State Layer:    远程状态服务,支持多种后端
+  Cache Layer:    本地LRU缓存,加速热点访问
 
 状态访问模式:
-  Local Hit:   缓存命中，< 1μs延迟
-  Remote Hit:  状态服务命中，~5ms延迟
-  Cold Read:   从对象存储加载，~100ms延迟
+  Local Hit:   缓存命中,< 1μs延迟
+  Remote Hit:  状态服务命中,~5ms延迟
+  Cold Read:   从对象存储加载,~100ms延迟
 
 一致性保证:
   同步模式: 写操作同步到远程存储 (强一致性)
   异步模式: 写操作异步批量同步 (最终一致性)
-  混合模式: 检查点同步，常规操作异步
+  混合模式: 检查点同步,常规操作异步
 ```
 
 ##### Def-F-08-81: Tiered State Storage
@@ -1674,7 +1674,7 @@ GROUP BY community_id;
   核心原则: 同一套API处理批和流数据
 
   Source Reader:
-    - 对上层透明，自动适配批/流模式
+    - 对上层透明,自动适配批/流模式
     - 根据执行模式选择读取策略
 
   Split Assignment:
@@ -1709,7 +1709,7 @@ GROUP BY community_id;
   3. Hybrid Scan (混合模式):
      - 先执行Historical Scan
      - 自动切换到Incremental Scan
-     - 无缝衔接，无数据丢失
+     - 无缝衔接,无数据丢失
 
 状态管理:
   Split State:    已处理分片跟踪

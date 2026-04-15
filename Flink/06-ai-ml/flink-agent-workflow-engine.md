@@ -818,7 +818,7 @@ public class WorkflowExecutionFunction
         // 获取Agent引用
         AgentRef agentRef = node.getAgentRef();
 
-        // 调用Agent（异步）
+        // 调用Agent(异步)
         AgentInvocation invocation = AgentInvocation.builder()
             .agentRef(agentRef)
             .input(input)
@@ -1445,7 +1445,7 @@ workflow:
         {% if approved %}
           {{ response }}
         {% else %}
-          抱歉，我需要再确认一下...
+          抱歉,我需要再确认一下...
         {% endif %}
 
   edges:

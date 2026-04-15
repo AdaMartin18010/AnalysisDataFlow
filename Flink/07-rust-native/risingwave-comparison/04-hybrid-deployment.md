@@ -578,7 +578,7 @@ WHERE window > NOW() - INTERVAL '1' HOUR;
 SELECT * FROM flink_output.fraud_alerts
 WHERE risk_level = 'HIGH';
 
--- 跨引擎关联（通过时间窗口）
+-- 跨引擎关联(通过时间窗口)
 SELECT
     o.*,
     f.risk_level

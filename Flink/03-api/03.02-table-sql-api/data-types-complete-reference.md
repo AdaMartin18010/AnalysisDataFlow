@@ -121,7 +121,7 @@ STRING(100)     -- 限制最大长度100字符
 **定义：** 指定最大长度的可变字符串。
 
 ```sql
-VARCHAR         -- 同STRING，无限制
+VARCHAR         -- 同STRING,无限制
 VARCHAR(n)      -- 最大n字符
 ```
 
@@ -162,7 +162,7 @@ CHAR(n)         -- 固定n字符
 $$\text{DECIMAL}(p, s) \text{ 表示 } p \text{位有效数字，其中 } s \text{位小数}$$
 
 ```sql
-DECIMAL(10, 2)   -- 8位整数 + 2位小数，如12345678.90
+DECIMAL(10, 2)   -- 8位整数 + 2位小数,如12345678.90
 DECIMAL(38, 18)  -- 最大精度
 ```
 
@@ -315,7 +315,7 @@ DATE '2024-01-15'
 $$\text{TIME}(p) \text{ 其中 } p \text{ 是小数秒精度 (0-9)}$$
 
 ```sql
-TIME                    -- TIME(0)，无小数秒
+TIME                    -- TIME(0),无小数秒
 TIME(3)                 -- 毫秒精度
 TIME '14:30:00.123'
 ```
@@ -666,7 +666,7 @@ CREATE TABLE user_events (
 ### 8.2 类型转换示例
 
 ```sql
--- 隐式转换（自动发生）
+-- 隐式转换(自动发生)
 SELECT
     1 + 2.5 AS result,           -- INT + DOUBLE → DOUBLE
     CONCAT('ID:', 123) AS id     -- 123隐式转为STRING

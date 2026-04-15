@@ -232,7 +232,7 @@ pub unsafe fn neon_filter(data: &[i64], threshold: i64) -> Vec<i64> {
     let threshold_vec = vdupq_n_s64(threshold);
     let data_ptr = data.as_ptr();
 
-    // NEON: 128-bit，每次处理 2 个 i64
+    // NEON: 128-bit,每次处理 2 个 i64
     let chunks = len / 2;
     for i in 0..chunks {
         let offset = i * 2;

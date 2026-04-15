@@ -938,7 +938,7 @@ class RateLimiterFunction(ScalarFunction):
 
     def __init__(self, max_requests: int = 100):
         self.max_requests = max_requests
-        # 注意：实际状态管理需要使用 State API
+        # 注意:实际状态管理需要使用 State API
         self.request_count = {}
 
     def eval(self, user_id: str) -> bool:
@@ -1007,7 +1007,7 @@ class SplitFunction(TableFunction):
     """字符串分割表函数"""
 
     def eval(self, text: str, delimiter: str = ","):
-        """分割字符串，每行返回一个结果"""
+        """分割字符串,每行返回一个结果"""
         if text is None:
             return
         for word in text.split(delimiter):
@@ -1195,7 +1195,7 @@ class PercentileFunction(AggregateFunction):
         self.percentile = percentile
 
     def create_accumulator(self):
-        """创建累加器：存储所有值用于精确计算"""
+        """创建累加器:存储所有值用于精确计算"""
         return []
 
     def accumulate(self, accumulator, value):
@@ -1285,7 +1285,7 @@ class TopNFunction(TableAggregateFunction):
 
     def emit_value(self, accumulator):
         """输出 Top N 结果"""
-        # 按值排序，取 Top N
+        # 按值排序,取 Top N
         sorted_items = sorted(accumulator, key=lambda x: x[0], reverse=True)[:self.n]
 
         for rank, (value, others) in enumerate(sorted_items, 1):
@@ -1355,7 +1355,7 @@ def table_to_pandas_examples(t_env):
 
     # 方式1: 直接转换 (适合小数据量)
     df = table.to_pandas()
-    print(f"转换为 DataFrame，行数: {len(df)}")
+    print(f"转换为 DataFrame,行数: {len(df)}")
     print(df.head())
 
     # 方式2: 先执行 SQL 再转换
@@ -1487,7 +1487,7 @@ def pandas_normalize_name(names: pd.Series) -> pd.Series:
 @udf(result_type=DataTypes.DOUBLE(), udf_type="pandas")
 def pandas_calculate_bmi(weights: pd.Series, heights: pd.Series) -> pd.Series:
     """批量计算 BMI"""
-    # heights 单位为 cm，转换为 m
+    # heights 单位为 cm,转换为 m
     heights_m = heights / 100
     return weights / (heights_m ** 2)
 
@@ -1551,7 +1551,7 @@ def pandas_correlation(x: pd.Series, y: pd.Series) -> float:
 
 ```python
 """
-向量化执行 vs 逐行执行对比：
+向量化执行 vs 逐行执行对比:
 
 逐行执行 (常规 UDF):
   每行调用一次 Python 函数
@@ -1601,7 +1601,7 @@ def arrow_process_batch(data: pd.Series) -> pd.Series:
     arrow_array = pa.array(data)
 
     # 使用 Arrow 计算
-    result = pc.multiply(arrow_array, 2)  # 示例：乘以 2
+    result = pc.multiply(arrow_array, 2)  # 示例:乘以 2
 
     return pd.Series(result.to_pylist())
 ```
@@ -1827,10 +1827,10 @@ def flink_ml_integration(t_env):
     """)
 
     # 2. 使用 Flink ML 的在线算法
-    # 注意：Flink ML 目前主要支持 Java/Scala
+    # 注意:Flink ML 目前主要支持 Java/Scala
     # Python 集成通过 SQL 或 UDF 方式
 
-    # 方式：使用 SQL 进行特征工程
+    # 方式:使用 SQL 进行特征工程
     result = t_env.execute_sql("""
         SELECT
             id,
@@ -2057,7 +2057,7 @@ echo "python.executable: /path/to/pyflink-env/bin/python" >> conf/flink-conf.yam
 **YARN 部署**
 
 ```bash
-# YARN Per-Job 模式 (已废弃，但仍可用)
+# YARN Per-Job 模式 (已废弃,但仍可用)
 ./bin/flink run -t yarn-per-job \
     -py /path/to/job.py \
     -pyexec /path/to/python \
@@ -2264,7 +2264,7 @@ def configure_batch_processing(t_env):
     config = t_env.get_config()
 
     # Bundle 处理大小 - 影响吞吐量和延迟的权衡
-    # 较大的值提高吞吐量，但增加延迟
+    # 较大的值提高吞吐量,但增加延迟
     config.set("python.fn-execution.bundle.size", "1000")
 
     # Bundle 超时 - 控制最大等待时间
@@ -2303,28 +2303,28 @@ from pyflink.table import DataTypes
 import pandas as pd
 import numpy as np
 
-# ✅ 推荐：使用内置向量化操作
+# ✅ 推荐:使用内置向量化操作
 @udf(result_type=DataTypes.DOUBLE(), udf_type="pandas")
 def optimized_calculation(values: pd.Series) -> pd.Series:
     """使用 NumPy/Pandas 向量化操作"""
-    # 快：向量化操作
+    # 快:向量化操作
     return np.where(values > 0, np.log(values), 0)
 
-# ❌ 避免：逐行循环
+# ❌ 避免:逐行循环
 @udf(result_type=DataTypes.DOUBLE(), udf_type="pandas")
 def slow_calculation(values: pd.Series) -> pd.Series:
     """避免使用 apply 进行逐行处理"""
-    # 慢：逐行处理
+    # 慢:逐行处理
     return values.apply(lambda x: np.log(x) if x > 0 else 0)
 
-# ✅ 推荐：批量处理字符串
+# ✅ 推荐:批量处理字符串
 @udf(result_type=DataTypes.STRING(), udf_type="pandas")
 def optimized_string_process(texts: pd.Series) -> pd.Series:
     """批量字符串处理"""
-    # 快：使用 Pandas 字符串方法
+    # 快:使用 Pandas 字符串方法
     return texts.str.lower().str.strip().str.replace("old", "new")
 
-# ✅ 推荐：批量日期处理
+# ✅ 推荐:批量日期处理
 @udf(result_type=DataTypes.TIMESTAMP_LTZ(3), udf_type="pandas")
 def optimized_date_process(dates: pd.Series) -> pd.Series:
     """批量日期处理"""
@@ -2459,7 +2459,7 @@ from pyflink.table import DataTypes
 from pyflink.table.udf import udf
 
 # 使用简单类型而非复杂对象
-# ✅ 推荐：使用原生类型
+# ✅ 推荐:使用原生类型
 @udf(result_type=DataTypes.ROW([
     DataTypes.FIELD("id", DataTypes.STRING()),
     DataTypes.FIELD("score", DataTypes.DOUBLE())
@@ -2467,7 +2467,7 @@ from pyflink.table.udf import udf
 def optimized_return(user_id: str, score: float):
     return {"id": user_id, "score": score}
 
-# ❌ 避免：返回复杂对象
+# ❌ 避免:返回复杂对象
 @udf(result_type=DataTypes.STRING())
 def avoid_complex_return(user_data: dict):
     import json
@@ -2925,7 +2925,7 @@ class RealtimeRecommendationEngine:
                                  user_history: str) -> str:
             """
             协同过滤推荐
-            简化示例：基于最近浏览推荐相似物品
+            简化示例:基于最近浏览推荐相似物品
             """
             import json
 
@@ -3147,7 +3147,7 @@ class AnomalyDetectionSystem:
                                      timestamps: pd.Series) -> pd.Series:
             """
             使用隔离森林检测异常
-            简化版本：使用统计方法模拟
+            简化版本:使用统计方法模拟
             """
             from sklearn.ensemble import IsolationForest
 
@@ -3234,7 +3234,7 @@ class AnomalyDetectionSystem:
         self.setup_metrics_source()
         self.setup_anomaly_sink()
         self.create_statistical_udfs()
-        # self.create_ml_udf()  # 可选：启用 ML 检测
+        # self.create_ml_udf()  # 可选:启用 ML 检测
         return self.build_detection_pipeline()
 
 if __name__ == "__main__":

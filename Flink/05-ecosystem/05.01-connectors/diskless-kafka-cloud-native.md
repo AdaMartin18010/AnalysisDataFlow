@@ -413,7 +413,7 @@ public class DisklessKafkaFlinkIntegration {
             .setTopics("events-topic")
             .setGroupId("flink-consumer-group")
             .setStartingOffsets(OffsetsInitializer.earliest())
-            // Diskless 优化：增加预读缓冲区
+            // Diskless 优化:增加预读缓冲区
             .setProperty("max.poll.records", "1000")
             .setProperty("fetch.min.bytes", "1048576")  // 1MB
             .setProperty("fetch.max.wait.ms", "500")
@@ -470,7 +470,7 @@ CREATE TABLE historical_events (
     'warehouse' = 's3://data-lake/warehouse'
 );
 
--- 统一视图：实时流 UNION 历史数据
+-- 统一视图:实时流 UNION 历史数据
 CREATE VIEW unified_events AS
 SELECT * FROM kafka_events
 UNION ALL
@@ -529,7 +529,7 @@ spec:
         - name: KAFKA_REMOTE_STORAGE_S3_REGION
           value: "us-east-1"
         volumeMounts:
-        # 本地缓存 (emptyDir，重启清空)
+        # 本地缓存 (emptyDir,重启清空)
         - name: local-cache
           mountPath: /tmp/kafka-logs
         # 配置卷

@@ -100,7 +100,7 @@ graph TB
         D --> E
         E --> F{清理策略}
         F -->|Full Snapshot| G[Checkpoint 完成后清理]
-        F -->|Incremental| H[已清理，跳过]
+        F -->|Incremental| H[已清理,跳过]
         F -->|Compaction| I[RocksDB 后台清理]
     end
 ```
@@ -353,7 +353,7 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 
 /**
  * Def-F-02-87: 生产级会话状态 TTL 配置
- * 场景：用户会话跟踪，30分钟无活动视为会话结束
+ * 场景:用户会话跟踪,30分钟无活动视为会话结束
  */
 public StateTtlConfig createSessionTtlConfig() {
     return StateTtlConfig
@@ -370,7 +370,7 @@ public StateTtlConfig createSessionTtlConfig() {
 ```java
 /**
  * Def-F-02-88: 生产级聚合状态 TTL 配置
- * 场景：日级用户行为聚合，保留 7 天
+ * 场景:日级用户行为聚合,保留 7 天
  */
 public StateTtlConfig createAggregationTtlConfig() {
     return StateTtlConfig
@@ -496,7 +496,7 @@ public class UserActionCounter extends KeyedProcessFunction<String, Action, Metr
 
     @Override
     public void open(Configuration parameters) {
-        // 配置 TTL: 7 天后过期，RocksDB Compaction 清理
+        // 配置 TTL: 7 天后过期,RocksDB Compaction 清理
         StateTtlConfig ttlConfig = StateTtlConfig
             .newBuilder(Time.days(7))
             .setUpdateType(StateTtlConfig.UpdateType.OnCreateAndWrite)
@@ -649,7 +649,7 @@ public class MonitoredStateFunction extends RichFlatMapFunction<Event, Output> {
     }
 
     /**
-     * 估算状态大小（简化实现）
+     * 估算状态大小(简化实现)
      */
     private long estimateStateSize() {
         try {
@@ -711,7 +711,7 @@ public class LateDataHandlingWithTTL {
             .sideOutputLateData(lateDataTag)
             .aggregate(new MyAggregateFunction());
 
-        // 处理超迟数据（TTL 已清理，无法合并）
+        // 处理超迟数据(TTL 已清理,无法合并)
         DataStream<Event> lateData = mainStream.getSideOutput(lateDataTag);
         lateData.addSink(new LateDataSink());
     }
@@ -909,7 +909,7 @@ getRuntimeContext().getMetricGroup().gauge("stateEntries",
 // 在 open() 中打印配置
 @Override
 public void open(Configuration parameters) {
-    LOG.info("TTL Config: {}"， ttlConfig);
+    LOG.info("TTL Config: {}", ttlConfig);
 }
 ```
 
@@ -917,7 +917,7 @@ public void open(Configuration parameters) {
 
 ```bash
 # 在 Flink Web UI 查看 Checkpoint 大小趋势
-# 若持续增长，可能有状态未配置 TTL
+# 若持续增长,可能有状态未配置 TTL
 ```
 
 1. **调整增量清理参数**:

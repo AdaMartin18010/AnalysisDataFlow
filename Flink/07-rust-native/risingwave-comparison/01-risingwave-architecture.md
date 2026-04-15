@@ -230,9 +230,9 @@ $$
 ┌─────────────────────────────────────────────────────────┐
 │                   RisingWave 状态分层                    │
 ├─────────────────────────────────────────────────────────┤
-│  L1: Operator Cache (内存)  - 热数据，微秒级访问         │
-│  L2: Block Cache (本地SSD)  - 温数据，毫秒级访问         │
-│  L3: S3 Object Store        - 冷数据，百毫秒级访问       │
+│  L1: Operator Cache (内存)  - 热数据,微秒级访问         │
+│  L2: Block Cache (本地SSD)  - 温数据,毫秒级访问         │
+│  L3: S3 Object Store        - 冷数据,百毫秒级访问       │
 └─────────────────────────────────────────────────────────┘
 ```
 
@@ -315,7 +315,7 @@ $$
 ### 6.1 物化视图创建示例
 
 ```sql
--- RisingWave: 创建源表（从 Kafka 读取）
+-- RisingWave: 创建源表(从 Kafka 读取)
 CREATE SOURCE user_events (
     user_id INT,
     event_type VARCHAR,
@@ -327,7 +327,7 @@ CREATE SOURCE user_events (
     properties.bootstrap.server = 'kafka:9092'
 ) FORMAT PLAIN ENCODE JSON;
 
--- 创建物化视图（实时聚合）
+-- 创建物化视图(实时聚合)
 CREATE MATERIALIZED VIEW hourly_stats AS
 SELECT
     TUMBLE(event_time, INTERVAL '1 HOUR') as window_start,
@@ -340,7 +340,7 @@ GROUP BY
     TUMBLE(event_time, INTERVAL '1 HOUR'),
     event_type;
 
--- 直接查询物化视图（毫秒级响应）
+-- 直接查询物化视图(毫秒级响应)
 SELECT * FROM hourly_stats
 WHERE window_start >= NOW() - INTERVAL '1 DAY';
 ```
@@ -352,7 +352,7 @@ WHERE window_start >= NOW() - INTERVAL '1 DAY';
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-// Flink: 需要外部存储（如 Redis/MySQL）存储结果
+// Flink: 需要外部存储(如 Redis/MySQL)存储结果
 DataStream<Event> events = env
     .fromSource(kafkaSource, WatermarkStrategy.forMonotonousTimestamps(), "Kafka")
     .keyBy(e -> e.eventType)
@@ -360,7 +360,7 @@ DataStream<Event> events = env
     .aggregate(new StatsAggregate())
     .addSink(new RedisSink<>());  // 需要管理外部存储
 
-// 查询需要访问 Redis，非 SQL 接口
+// 查询需要访问 Redis,非 SQL 接口
 ```
 
 ### 6.2 架构部署示例
@@ -374,7 +374,7 @@ kind: Deployment
 metadata:
   name: risingwave-compute
 spec:
-  replicas: 3  # 计算节点，可独立扩缩
+  replicas: 3  # 计算节点,可独立扩缩
   template:
     spec:
       containers:

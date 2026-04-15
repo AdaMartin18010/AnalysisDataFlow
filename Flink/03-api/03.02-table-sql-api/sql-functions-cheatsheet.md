@@ -250,7 +250,7 @@ Flink SQL内置函数按功能可分为以下类别：
 ### 4.7 窗口函数使用示例
 
 ```sql
--- TUMBLE: 滚动窗口（固定大小，不重叠）
+-- TUMBLE: 滚动窗口(固定大小,不重叠)
 SELECT
     TUMBLE_START(rowtime, INTERVAL '1' HOUR) as window_start,
     TUMBLE_END(rowtime, INTERVAL '1' HOUR) as window_end,
@@ -261,7 +261,7 @@ GROUP BY
     TUMBLE(rowtime, INTERVAL '1' HOUR),
     user_id;
 
--- HOP: 滑动窗口（固定大小，可重叠）
+-- HOP: 滑动窗口(固定大小,可重叠)
 SELECT
     HOP_START(rowtime, INTERVAL '5' MINUTE, INTERVAL '1' HOUR) as window_start,
     user_id,
@@ -271,7 +271,7 @@ GROUP BY
     HOP(rowtime, INTERVAL '5' MINUTE, INTERVAL '1' HOUR),
     user_id;
 
--- SESSION: 会话窗口（动态大小，活动间隙）
+-- SESSION: 会话窗口(动态大小,活动间隙)
 SELECT
     SESSION_START(rowtime, INTERVAL '10' MINUTE) as session_start,
     SESSION_END(rowtime, INTERVAL '10' MINUTE) as session_end,
@@ -1040,11 +1040,11 @@ SELECT
     TUMBLE_START(rowtime, INTERVAL '1' HOUR) as hour_window,
     COUNT(*) as hourly_events,
 
-    -- 滑动窗口统计（每5分钟滑动1小时）
+    -- 滑动窗口统计(每5分钟滑动1小时)
     HOP_START(rowtime, INTERVAL '5' MINUTE, INTERVAL '1' HOUR) as sliding_window,
     SUM(amount) as hourly_revenue,
 
-    -- 会话窗口统计（10分钟无活动视为会话结束）
+    -- 会话窗口统计(10分钟无活动视为会话结束)
     SESSION_START(rowtime, INTERVAL '10' MINUTE) as session_start,
     SESSION_END(rowtime, INTERVAL '10' MINUTE) as session_end,
     COUNT(DISTINCT page_id) as unique_pages

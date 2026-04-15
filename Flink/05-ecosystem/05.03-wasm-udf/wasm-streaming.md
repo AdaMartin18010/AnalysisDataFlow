@@ -533,7 +533,7 @@ Wasm 3.0提案引入了多项关键特性，显著扩展了Wasm的应用场景[^
 **垃圾回收（GC）**:
 
 ```rust
-// 使用Wasm GC的类型定义（Rust示例）
+// 使用Wasm GC的类型定义(Rust示例)
 #[wasm_bindgen]
 pub struct StreamProcessor {
     config: ProcessingConfig,
@@ -542,7 +542,7 @@ pub struct StreamProcessor {
 
 #[wasm_bindgen]
 impl StreamProcessor {
-    // Wasm GC自动管理内存，无需手动释放
+    // Wasm GC自动管理内存,无需手动释放
     pub fn new(config: ProcessingConfig) -> StreamProcessor {
         StreamProcessor {
             config,
@@ -654,12 +654,12 @@ const { instance } = await WebAssembly.instantiate(module, {
   }
 });
 
-// Wasm内部以同步方式调用，JSPI自动处理异步转换
+// Wasm内部以同步方式调用,JSPI自动处理异步转换
 const result = instance.exports.process_sensor_data(sensor_id);
 ```
 
 ```rust
-// Rust侧代码（使用wasm-bindgen-futures）
+// Rust侧代码(使用wasm-bindgen-futures)
 use wasm_bindgen::prelude::*;
 use wasm_bindgen_futures::JsFuture;
 
@@ -670,7 +670,7 @@ extern "C" {
 
 #[wasm_bindgen]
 pub async fn process_sensor_data(sensor_id: String) -> Result<JsValue, JsValue> {
-    // 同步风格代码，JSPI自动转换为异步
+    // 同步风格代码,JSPI自动转换为异步
     let data = fetch_sensor_data(&sensor_id).await;
     let processed = transform_data(data)?;
     Ok(processed)

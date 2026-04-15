@@ -656,7 +656,7 @@ VolcanoPlanner planner = new VolcanoPlanner(
     Contexts.of(config)               // 配置上下文
 );
 
-// 2. 注册物理属性定义（必须）
+// 2. 注册物理属性定义(必须)
 planner.addRelTraitDef(ConventionTraitDef.INSTANCE);
 planner.addRelTraitDef(RelCollationTraitDef.INSTANCE);
 planner.addRelTraitDef(RelDistributionTraitDef.INSTANCE);
@@ -675,7 +675,7 @@ RelTraitSet desiredTraits = logicalRel.getTraitSet()
     .replace(FlinkConventions.STREAM_PHYSICAL)
     .replace(FlinkRelDistribution.hash(List.of("user_id")));
 
-// 6. 执行优化（触发CBO）
+// 6. 执行优化(触发CBO)
 RelNode optimized = planner.changeTraits(logicalRel, desiredTraits);
 ```
 
@@ -772,13 +772,13 @@ graph TD
 **分支限界剪枝策略**：
 
 ```java
-// 伪代码：分支限界剪枝逻辑
+// 伪代码:分支限界剪枝逻辑
 void optimizeGroup(Group group, Cost upperBound) {
     for (Expression expr : group.getExpressions()) {
         // 计算当前表达式代价下界
         Cost lowerBound = estimateLowerBound(expr);
 
-        // 剪枝：若下界超过上界，跳过
+        // 剪枝:若下界超过上界,跳过
         if (lowerBound.gt(upperBound)) {
             continue;  // 剪枝
         }
@@ -874,7 +874,7 @@ public void onMatch(RelOptRuleCall call) {
 **列裁剪规则**：
 
 ```sql
--- 原始查询：表有100列
+-- 原始查询:表有100列
 SELECT order_id, customer_name FROM wide_table WHERE status = 'completed';
 ```
 
@@ -1078,7 +1078,7 @@ public class WatermarkPushDownRule extends RelRule<WatermarkPushDownRule.Config>
             TableSourceScan newScan = new TableSourceScan(
                 scan.getCluster(), scan.getTraitSet(), newTable);
 
-            // 消除WatermarkAssigner，直接连接Project
+            // 消除WatermarkAssigner,直接连接Project
             call.transformTo(project.copy(project.getTraitSet(),
                 Collections.singletonList(newScan)));
         }
@@ -1412,7 +1412,7 @@ GROUP BY c.customer_name;
 **去关联化示例**：
 
 ```sql
--- 关联子查询（优化前）
+-- 关联子查询(优化前)
 SELECT * FROM employees e
 WHERE e.salary > (
     SELECT AVG(salary)
@@ -1420,7 +1420,7 @@ WHERE e.salary > (
     WHERE dept_id = e.dept_id  -- 关联条件
 );
 
--- 去关联化后（优化后）
+-- 去关联化后(优化后)
 SELECT e.*
 FROM employees e
 JOIN (
@@ -1618,16 +1618,17 @@ HAVING SUM(o.amount) > 10000;
 
 ```
 问题清单:
-1. ❌ 全表扫描orders（1亿行）
+1. ❌ 全表扫描orders(1亿行)
 2. ❌ 大表Join大表未优化
 3. ❌ COUNT(DISTINCT)单阶段执行
-4. ❌ 投影列未裁剪（读取所有列）
-5. ❌ 无统计信息，CBO未启用
+4. ❌ 投影列未裁剪(读取所有列)
+5. ❌ 无统计信息,CBO未启用
 ```
 
 **优化措施**：
 
 ```sql
+# 伪代码示意，非完整可执行配置
 -- 优化1: 添加统计信息
 ANALYZE TABLE orders COMPUTE STATISTICS FOR COLUMNS
     order_date, status, product_id, amount, user_id;
@@ -1649,11 +1650,11 @@ SELECT /*+ BROADCAST(c), BROADCAST(p) */ ...
 
 ```
 优化效果:
-1. ✅ orders表谓词下推（选择性: 5%）
-2. ✅ categories广播Join（小表: 100行）
-3. ✅ products广播Join（小表: 1万行）
-4. ✅ 两阶段聚合（Local: 90%压缩）
-5. ✅ DISTINCT拆分（独立子聚合）
+1. ✅ orders表谓词下推(选择性: 5%)
+2. ✅ categories广播Join(小表: 100行)
+3. ✅ products广播Join(小表: 1万行)
+4. ✅ 两阶段聚合(Local: 90%压缩)
+5. ✅ DISTINCT拆分(独立子聚合)
 
 性能对比:
 | 指标 | 优化前 | 优化后 | 提升 |
@@ -1706,16 +1707,16 @@ Stage 3: Interval Join
       +- TableSourceScan(table=[users])
 
 关键观察:
-1. users表的ChangelogMode包含UB/UA（更新）
+1. users表的ChangelogMode包含UB/UA(更新)
    - 说明users是CDC源或版本表
    - 需要处理Retraction
 
 2. Interval Join的TTL为2小时
-   - 匹配Join条件的时间范围（1小时前到1小时后）
+   - 匹配Join条件的时间范围(1小时前到1小时后)
    - 状态有明确上界
 
 3. Left Outer Join的输出含Update
-   - 当右侧延迟到达时，会输出-U/+U对
+   - 当右侧延迟到达时,会输出-U/+U对
    - 下游需要处理Retraction
 ```
 
@@ -1726,7 +1727,7 @@ Stage 3: Interval Join
 **业务场景**: 计算每分钟各页面的独立访客数(UV)
 
 ```sql
--- 初始实现（性能差）
+-- 初始实现(性能差)
 SELECT
     page_id,
     TUMBLE_START(event_time, INTERVAL '1' MINUTE) as window_start,
@@ -1772,7 +1773,7 @@ SET table.optimizer.local-global-enabled = 'true';
 -- 优化4: 配置状态TTL
 SET table.exec.state.ttl = '2 hours';
 
--- 优化5: 使用近似UV（业务可接受时）
+-- 优化5: 使用近似UV(业务可接受时)
 SELECT
     page_id,
     TUMBLE_START(event_time, INTERVAL '1' MINUTE) as window_start,
@@ -2085,7 +2086,7 @@ graph TB
 ```java
 /**
  * Flink 优化规则基类
- * 继承自 Calcite 的 RelOptRule，添加 Flink 特定功能
+ * 继承自 Calcite 的 RelOptRule,添加 Flink 特定功能
  */
 public abstract class FlinkRelOptRule extends RelOptRule {
 
@@ -2098,7 +2099,7 @@ public abstract class FlinkRelOptRule extends RelOptRule {
     }
 
     /**
-     * 构造器（带描述）
+     * 构造器(带描述)
      */
     protected FlinkRelOptRule(RelOptRuleOperand operand, String description) {
         super(operand, description);
@@ -2134,7 +2135,7 @@ public abstract class FlinkRelOptRule extends RelOptRule {
 public class FlinkRuleSets {
 
     /**
-     * 逻辑优化规则（HepPlanner）
+     * 逻辑优化规则(HepPlanner)
      */
     public static final RelOptRuleSet LOGICAL_OPT_RULES = RelOptRuleSets.ofList(
         // 投影下推规则
@@ -2166,7 +2167,7 @@ public class FlinkRuleSets {
     );
 
     /**
-     * 物理优化规则（VolcanoPlanner）
+     * 物理优化规则(VolcanoPlanner)
      */
     public static final RelOptRuleSet PHYSICAL_OPT_RULES = RelOptRuleSets.ofList(
         // 流物理规则
@@ -2193,7 +2194,7 @@ public class FlinkRuleSets {
 
 ```java
 /**
- * 示例：自定义谓词下推规则
+ * 示例:自定义谓词下推规则
  */
 public class CustomPushDownRule extends FlinkRelOptRule {
 
@@ -2201,7 +2202,7 @@ public class CustomPushDownRule extends FlinkRelOptRule {
     public static final CustomPushDownRule INSTANCE = new CustomPushDownRule();
 
     /**
-     * 定义匹配模式：Filter -> TableScan
+     * 定义匹配模式:Filter -> TableScan
      */
     private CustomPushDownRule() {
         super(
@@ -2230,7 +2231,7 @@ public class CustomPushDownRule extends FlinkRelOptRule {
         // 提取可下推谓词
         List<RexNode> predicates = RexUtil.pullFactors(filter.getCondition());
 
-        // 创建新的TableScan（带下推谓词）
+        // 创建新的TableScan(带下推谓词)
         TableSourceTable newTable = applyPushDown(scan.getTable(), predicates);
         LogicalTableScan newScan = LogicalTableScan.create(
             scan.getCluster(),
@@ -2286,17 +2287,17 @@ graph TB
 ```java
 /**
  * Flink 物理算子基类
- * 继承自 Calcite 的 RelNode，添加执行能力
+ * 继承自 Calcite 的 RelNode,添加执行能力
  */
 public interface FlinkPhysicalRel extends RelNode {
 
     /**
-     * 转换为执行节点（ExecNode）
+     * 转换为执行节点(ExecNode)
      */
     ExecNode<?> translateToExecNode();
 
     /**
-     * 获取所需的输入Trait（排序、分布等）
+     * 获取所需的输入Trait(排序、分布等)
      */
     RelTraitSet getRequiredInputTraits(int inputOrdinal);
 
@@ -2313,7 +2314,7 @@ public interface FlinkPhysicalRel extends RelNode {
 
 ```java
 /**
- * 流计算节点（Calc/Project+Filter）
+ * 流计算节点(Calc/Project+Filter)
  */
 public class StreamExecCalc extends ExecNodeBase<RowData>
         implements StreamExecNode<RowData> {
@@ -2622,13 +2623,13 @@ public class FlinkOptimizer {
      * 执行优化
      */
     public RelNode optimize(RelNode rootRel) {
-        // 1. 逻辑优化（HepPlanner）
+        // 1. 逻辑优化(HepPlanner)
         RelNode logicalPlan = optimizeLogicalPlan(rootRel);
 
         // 2. 转换为 Flink 逻辑算子
         RelNode flinkLogicalPlan = convertToFlinkLogical(logicalPlan);
 
-        // 3. 物理优化（VolcanoPlanner）
+        // 3. 物理优化(VolcanoPlanner)
         RelNode physicalPlan = optimizePhysicalPlan(flinkLogicalPlan);
 
         return physicalPlan;

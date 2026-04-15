@@ -394,7 +394,7 @@ function inferFreshness(query):
 **原则 1: 渐进式刷新策略**
 
 ```sql
--- 初始：保守策略
+-- 初始:保守策略
 CREATE MATERIALIZED TABLE sales_summary
 WITH (
   'refresh-interval' = '1h',
@@ -402,7 +402,7 @@ WITH (
 )
 AS SELECT * FROM sales;
 
--- 稳定后：优化为增量
+-- 稳定后:优化为增量
 ALTER MATERIALIZED TABLE sales_summary
 SET (
   'refresh-mode' = 'incremental',
@@ -452,7 +452,7 @@ Raw Data → Bronze MT → Silver MT → Gold MT → BI/ML
 3. **Join 键**：减少跨分区 shuffle
 
 ```sql
--- 示例：电商订单表分区
+-- 示例:电商订单表分区
 CREATE MATERIALIZED TABLE order_summary
 DISTRIBUTED BY HASH(user_id) INTO 32 BUCKETS
 WITH (
@@ -475,7 +475,7 @@ WHERE user_id = 'U12345';  -- 仅扫描 1/32 数据
 ### 5.5 Flink 2.2 物化表完整示例
 
 ```sql
--- 完整示例：结合 Flink 2.2 所有新特性
+-- 完整示例:结合 Flink 2.2 所有新特性
 
 -- 1. 创建带自动推断 FRESHNESS 的物化表
 CREATE MATERIALIZED TABLE user_activity_mt
@@ -483,7 +483,7 @@ DISTRIBUTED BY HASH(user_id) INTO 16 BUCKETS
 WITH (
   'connector' = 'paimon',
   'path' = 's3://warehouse/user_activity',
-  -- FRESHNESS 自动推断（基于上游表水印）
+  -- FRESHNESS 自动推断(基于上游表水印)
   'format' = 'parquet',
   'sink.parallelism' = '8',
   -- 启用 V2 Materializer
@@ -500,7 +500,7 @@ GROUP BY
   user_id,
   TUMBLE(event_time, INTERVAL '1' HOUR);
 
--- 2. 查看所有物化表（Flink 2.2+）
+-- 2. 查看所有物化表(Flink 2.2+)
 SHOW MATERIALIZED TABLES;
 
 -- 3. 查看特定物化表详细信息
@@ -557,7 +557,7 @@ CREATE TABLE user_events (
   'properties.bootstrap.servers' = 'localhost:9092'
 );
 
--- 物化表 FRESHNESS 自动推断（将自动设为约 1 分钟）
+-- 物化表 FRESHNESS 自动推断(将自动设为约 1 分钟)
 CREATE MATERIALIZED TABLE user_stats_auto
 WITH (
   'connector' = 'paimon',
@@ -578,7 +578,7 @@ DESCRIBE EXTENDED user_stats_auto;
 ### 6.3 增量刷新配置
 
 ```sql
--- 电商订单实时统计（增量模式）
+-- 电商订单实时统计(增量模式)
 CREATE MATERIALIZED TABLE order_summary
 WITH (
   'connector' = 'paimon',
@@ -601,7 +601,7 @@ GROUP BY DATE_FORMAT(order_time, 'yyyy-MM-dd'), region;
 ### 6.4 Flink 2.2 分区物化表示例
 
 ```sql
--- 分区物化表：支持高效点查和范围查询
+-- 分区物化表:支持高效点查和范围查询
 CREATE MATERIALIZED TABLE sensor_readings
 -- 按传感器 ID 哈希分布到 64 个桶
 DISTRIBUTED BY HASH(sensor_id) INTO 64 BUCKETS
@@ -656,9 +656,9 @@ GROUP BY service_name, metric_name, window_start, window_end;
 ### 6.6 Delta Join 与物化表结合示例
 
 ```sql
--- 场景：实时订单流关联物化用户画像表
+-- 场景:实时订单流关联物化用户画像表
 
--- 1. 创建物化用户画像表（低更新频率）
+-- 1. 创建物化用户画像表(低更新频率)
 CREATE MATERIALIZED TABLE user_profiles_mt
 DISTRIBUTED BY HASH(user_id) INTO 32 BUCKETS
 WITH (
@@ -690,8 +690,8 @@ FROM orders o
 DELTA JOIN user_profiles_mt p
 ON o.user_id = p.user_id;
 
--- 优势：
--- 1. 物化表 user_profiles_mt 每小时刷新，存储预计算结果
+-- 优势:
+-- 1. 物化表 user_profiles_mt 每小时刷新,存储预计算结果
 -- 2. Delta Join 只读取物化表的变更增量
 -- 3. 避免每次 join 都扫描全量用户画像表
 ```
@@ -741,7 +741,7 @@ SHOW MATERIALIZED TABLES FROM analytics_db;
 -- 带过滤条件
 SHOW MATERIALIZED TABLES LIKE 'user%';
 
--- 预期输出示例：
+-- 预期输出示例:
 -- +------------------+---------------+-----------+----------------+
 -- | table_name       | database      | freshness | refresh_mode   |
 -- +------------------+---------------+-----------+----------------+
@@ -1003,7 +1003,7 @@ flowchart TD
 ### 语法速查
 
 ```sql
--- 创建（Flink 2.2 完整语法）
+-- 创建(Flink 2.2 完整语法)
 CREATE MATERIALIZED TABLE <name>
 [DISTRIBUTED BY {HASH|RANGE|ROUND-ROBIN}(col1, col2, ...) INTO n BUCKETS]
 WITH (
@@ -1014,7 +1014,7 @@ WITH (
 )
 AS <query>;
 
--- 查看所有物化表（Flink 2.2+）
+-- 查看所有物化表(Flink 2.2+)
 SHOW MATERIALIZED TABLES [FROM db_name] [LIKE 'pattern'];
 
 -- 暂停/恢复

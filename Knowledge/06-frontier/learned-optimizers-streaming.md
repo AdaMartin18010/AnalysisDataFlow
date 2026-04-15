@@ -865,7 +865,7 @@ public class LearnedOptimizerPlugin implements OptimizerPlugin {
         this.trainer = new OnlineTrainer(costModel);
         this.collector = new MetricCollector(env);
 
-        // 注册回调：查询执行完成后更新模型
+        // 注册回调:查询执行完成后更新模型
         collector.onQueryComplete(this::onQueryComplete);
     }
 
@@ -878,7 +878,7 @@ public class LearnedOptimizerPlugin implements OptimizerPlugin {
         long actualLatency = execution.getLatency();
         trainer.update(features, plan, actualLatency);
 
-        // 检测显著漂移，触发模型重部署
+        // 检测显著漂移,触发模型重部署
         if (detectDrift(execution)) {
             redeployModel();
         }
@@ -947,7 +947,7 @@ class FinancialCostModel(LearnedCostModel):
         self.time_encoder = TimeContextEncoder()
 
     def forward(self, query_features, plan_encoding, timestamp):
-        # 编码时间上下文（小时、星期、节假日）
+        # 编码时间上下文(小时、星期、节假日)
         time_context = self.time_encoder(timestamp)
 
         # 融合时间上下文

@@ -1,8 +1,8 @@
 # MCP协议与流处理集成架构
 
-> **状态**: 前瞻 | **预计发布时间**: 2026-06 | **最后更新**: 2026-04-12
+> **状态**: ✅ MCP 已发布 | **预计发布时间**: 2026-06 (Flink 集成层仍为前瞻) | **最后更新**: 2026-04-15
 >
-> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+> ⚠️ MCP 协议已由 Anthropic 官方发布并捐赠给 Linux Foundation AAIF 治理；Flink 作为 MCP Server 的集成模式仍处于工程验证阶段。
 
 > 所属阶段: Knowledge/06-frontier | 前置依赖: [Flink LLM集成](./real-time-rag-architecture.md), [RAG架构](./real-time-rag-architecture.md) | 形式化等级: L3-L4
 
@@ -233,7 +233,7 @@ $$
 
 ### 3.4 MCP 生态现状与治理
 
-MCP 由 Anthropic 于 2024-11 推出，现由 **Linux Foundation AAIF**（AI Alliance Innovation Foundation）治理[^1]。截至 2026-02，MCP 生态规模达到 **~97M 月下载量**，公共 MCP 服务器数量超过 **5800+**[^2]。
+MCP 由 Anthropic 于 2024-11 推出，并于 **2025-12** 由 Anthropic 捐赠给 **Linux Foundation Agentic AI Foundation (AAIF)** 治理[^1][^3]。截至 **2026-03**，MCP 生态规模达到 **9700 万月 SDK 下载量**，公开 MCP 服务器数量超过 **5800+**[^2][^4]。
 
 #### Def-K-06-226: MCP Ecosystem
 
@@ -251,6 +251,7 @@ $$
 - $\mathcal{G}_{AAIF}$: Linux Foundation AAIF 治理机构
 
 **治理特征**：
+
 - 开放标准：协议规范由 AAIF 维护并持续演进
 - 社区驱动：服务器注册、能力分类、安全审计由社区贡献
 - 厂商中立：Anthropic 保留发起者角色，但协议决策由基金会主导
@@ -277,7 +278,7 @@ $$
 **反模式 1: 过度暴露内部状态**
 
 ```python
-# ❌ 错误：暴露原始状态句柄
+# ❌ 错误:暴露原始状态句柄
 @app.resource("state://internal")
 def get_internal_state():
     return flink_state_backend.get_raw()  # 危险！
@@ -286,7 +287,7 @@ def get_internal_state():
 **反模式 2: 阻塞式 Tool 实现**
 
 ```python
-# ❌ 错误：同步等待 Flink 结果
+# ❌ 错误:同步等待 Flink 结果
 @app.tool()
 def analyze_trend_blocking(params):
     result = flink_client.execute_sync(sql)  # 阻塞！
@@ -296,7 +297,7 @@ def analyze_trend_blocking(params):
 **反模式 3: 无界状态增长**
 
 ```python
-# ❌ 错误：无 TTL 的状态
+# ❌ 错误:无 TTL 的状态
 class StatefulTool:
     def __init__(self):
         self.cache = {}  # 持续增长！
@@ -684,5 +685,7 @@ graph TB
 
 ## 8. 引用参考 (References)
 
-[^1]: Anthropic, "Model Context Protocol", 2024-11. https://modelcontextprotocol.io/
-[^2]: Linux Foundation AAIF, "MCP Ecosystem Report", 2026-02. https://lf-ai-foundation.org/
+[^1]: Anthropic, "Model Context Protocol", 2024-11. <https://modelcontextprotocol.io/>
+[^2]: Linux Foundation AAIF, "MCP Ecosystem Report", 2026-03. <https://lf-ai-foundation.org/>
+[^3]: Anthropic, "Anthropic Donates MCP to Linux Foundation Agentic AI Foundation", 2025-12. <https://www.anthropic.com/>
+[^4]: digitalapplied.com / morphllm.com, "MCP Ecosystem Statistics", 2026-03.

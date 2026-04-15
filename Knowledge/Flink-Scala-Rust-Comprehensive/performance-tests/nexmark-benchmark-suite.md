@@ -69,7 +69,7 @@ graph TB
 #### Q0: Passthrough（基线测试）
 
 ```sql
--- 目的: 测量系统基础开销（解析、序列化、网络传输）
+-- 目的: 测量系统基础开销(解析、序列化、网络传输)
 SELECT * FROM Bid;
 ```
 
@@ -93,7 +93,7 @@ WHERE auction = 1007 OR auction = 1020 OR auction = 2001 OR auction = 2019
 #### Q3: Local Item Suggestion
 
 ```sql
--- 目的: 流-维表 Join（用户地理位置过滤）
+-- 目的: 流-维表 Join(用户地理位置过滤)
 SELECT P.name, P.city, P.state, A.id, A.itemName
 FROM Auction A INNER JOIN Person P on A.seller = P.id
 WHERE A.category = 10 AND (P.state = 'OR' OR P.state = 'ID' OR P.state = 'CA');
@@ -102,7 +102,7 @@ WHERE A.category = 10 AND (P.state = 'OR' OR P.state = 'ID' OR P.state = 'CA');
 #### Q4: Average Price for Category
 
 ```sql
--- 目的: 窗口聚合（Tumble Window）
+-- 目的: 窗口聚合(Tumble Window)
 SELECT AVG(Q.final) AS avg, TUMBLE_START(Q.dateTime, INTERVAL '10' SECOND) AS starttime
 FROM (
     SELECT A.reserve AS final, A.dateTime
@@ -208,7 +208,7 @@ HAVING COUNT(*) > 1;
 #### Q12: Real-time Marketing
 
 ```sql
--- 目的: 模式匹配（CEP）
+-- 目的: 模式匹配(CEP)
 SELECT B.auction, B.price, B.bidder
 FROM Bid B
 MATCH_RECOGNIZE (

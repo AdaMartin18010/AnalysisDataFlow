@@ -13,11 +13,11 @@ Flink Kubernetes Operator Autoscaler 是一个**声明式自动扩缩容系统**
 ```
 Autoscaler = ⟨Controller, Evaluator, Executor, MetricsBackend⟩
 
-其中：
-- Controller: 监听 FlinkDeployment CRD 变更，协调扩缩容决策
+其中:
+- Controller: 监听 FlinkDeployment CRD 变更,协调扩缩容决策
 - Evaluator: 基于历史指标计算目标并行度
-- Executor: 执行扩缩容操作，更新 JobGraph
-- MetricsBackend: 存储时序指标（默认使用 JobManager 内存存储）
+- Executor: 执行扩缩容操作,更新 JobGraph
+- MetricsBackend: 存储时序指标(默认使用 JobManager 内存存储)
 ```
 
 Autoscaler 在 Kubernetes 层面的集成点：
@@ -45,12 +45,12 @@ Autoscaler 在 Kubernetes 层面的集成点：
 **Def-F-10-31**: 背压是数据生产者速率超过消费者处理能力时产生的**流控反馈机制**，形式化定义为：
 
 ```
-给定算子链 C = {op₁, op₂, ..., opₙ}，背压状态 BP(opᵢ) ∈ {NONE, LOW, HIGH}
+给定算子链 C = {op₁, op₂, ..., opₙ},背压状态 BP(opᵢ) ∈ {NONE, LOW, HIGH}
 
-背压传播条件：
+背压传播条件:
 BP(opᵢ) = HIGH  ⇒  ∀j < i, BP(opⱼ) ∈ {LOW, HIGH}
 
-背压比率计算：
+背压比率计算:
 BackpressureRatio = (blockedTime / totalTime) × 100%
 
 其中 blockedTime 为线程被阻塞等待网络缓冲区的累计时间
@@ -71,13 +71,13 @@ BackpressureRatio = (blockedTime / totalTime) × 100%
 ```
 TargetUtilization = (实际处理时间 / 可用时间) × 100%
 
-理想状态：
+理想状态:
 TargetUtilization ≈ 80%  // 预留 20% 缓冲应对突发流量
 
-实际利用率计算：
+实际利用率计算:
 Utilization = busyTimeMsPerSecond / 1000ms
 
-其中 busyTimeMsPerSecond 通过 Task 的 idleTimeMsPerSecond 反推：
+其中 busyTimeMsPerSecond 通过 Task 的 idleTimeMsPerSecond 反推:
 busyTimeMsPerSecond = 1000 - idleTimeMsPerSecond
 ```
 
@@ -90,7 +90,7 @@ JobGraph J = (V, E)  // V: 顶点集合, E: 边集合
 
 ScalingPolicy: V → ℕ⁺  // 每个顶点映射到目标并行度
 
-约束条件：
+约束条件:
 ∀v ∈ V: parallelism(v) ≤ maxParallelism(v)
 ∀(u,v) ∈ E: 数据分区策略兼容 (FORWARD, HASH, REBALANCE)
 ```
@@ -108,12 +108,12 @@ ScalingPolicy: V → ℕ⁺  // 每个顶点映射到目标并行度
 **Def-F-10-34**: 追赶容量是系统处理**积压数据**所需的额外资源配额，定义为：
 
 ```
-给定：
+给定:
 - 当前积压量: B (records)
 - 目标处理延迟: T (seconds)
 - 单并行度吞吐: R (records/s)
 
-所需并行度：
+所需并行度:
 P_required = B / (T × R) + P_base
 
 其中 P_base 为处理实时流量的基础并行度
@@ -126,12 +126,12 @@ P_required = B / (T × R) + P_base
 ```
 StabilizationWindow = [t₀, t₀ + Δt]
 
-约束：
-- 窗口期内只记录推荐并行度，不执行变更
+约束:
+- 窗口期内只记录推荐并行度,不执行变更
 - 新并行度 P_new 必须维持 Δt 时间才触发执行
 - 窗口内取 P_recommended = max(P₁, P₂, ..., Pₙ)  // 保守策略
 
-默认参数：
+默认参数:
 Δt_scaleUp = 5 minutes
 Δt_scaleDown = 15 minutes  // 缩容更保守
 ```
@@ -147,16 +147,16 @@ StabilizationWindow = [t₀, t₀ + Δt]
 **证明概要**:
 
 ```
-设算子 op 当前并行度为 p，输入速率为 λ，单并行度处理能力为 μ
+设算子 op 当前并行度为 p,输入速率为 λ,单并行度处理能力为 μ
 
-当 λ > p × μ 时，产生背压
+当 λ > p × μ 时,产生背压
 
-增加并行度至 p' = p + Δp：
+增加并行度至 p' = p + Δp:
 - 新处理能力: p' × μ > p × μ
-- 若 p' × μ ≥ λ，背压消除
-- 若 p' × μ < λ，背压减轻
+- 若 p' × μ ≥ λ,背压消除
+- 若 p' × μ < λ,背压减轻
 
-因此：∂(BackpressureRatio)/∂p < 0
+因此:∂(BackpressureRatio)/∂p < 0
 ```
 
 ### Prop-F-10-16: 目标利用率的最优性
@@ -172,12 +172,12 @@ StabilizationWindow = [t₀, t₀ + Δt]
 | 95% | 高延迟风险 | 最优但危险 | 批处理、离线 |
 
 ```
-设流量波动为 N(μ, σ²)，利用率 U 的崩溃概率：
+设流量波动为 N(μ, σ²),利用率 U 的崩溃概率:
 
 P(overload) = P(arrivalRate > U × capacity)
              = 1 - Φ((U × capacity - μ) / σ)
 
-当 U = 0.8 时，通常可容忍 1.25× 突发流量 (2σ)
+当 U = 0.8 时,通常可容忍 1.25× 突发流量 (2σ)
 ```
 
 ### Prop-F-10-17: 顶点独立扩缩容的兼容性
@@ -229,7 +229,7 @@ graph TB
 ### Autoscaler 与 Checkpoint 机制的关系
 
 ```
-扩缩容触发时机与 Checkpoint 的协调：
+扩缩容触发时机与 Checkpoint 的协调:
 
 1. 正在执行 Checkpoint 时禁止扩缩容
    - 避免状态不一致
@@ -272,18 +272,18 @@ graph LR
 **异构流水线场景分析**:
 
 ```
-典型 ETL 流水线：
+典型 ETL 流水线:
 Source(Kafka) → Parse(JSON) → Enrich(Join) → Sink(ADB)
      │              │              │            │
    高吞吐        CPU密集        IO密集       外部限制
    12分区       可扩展         可扩展        固定4并发
 
-全局扩缩容问题：
-- Source 只能到 12（受分区限制）
-- Sink 固定 4（外部系统限制）
+全局扩缩容问题:
+- Source 只能到 12(受分区限制)
+- Sink 固定 4(外部系统限制)
 - 中间算子可能需要 20+
 
-顶点级别方案：
+顶点级别方案:
 Source:12 → Parse:16 → Enrich:20 → Sink:4
 ```
 
@@ -315,7 +315,7 @@ Source:12 → Parse:16 → Enrich:20 → Sink:4
 - 缩容后预留缓冲减少
 - 应对突发能力下降
 
-保守策略：
+保守策略:
 - scaleDown.cooldown > scaleUp.cooldown
 - scaleDown.utilizationThreshold < scaleUp.utilizationThreshold
 ```
@@ -331,28 +331,28 @@ Source:12 → Parse:16 → Enrich:20 → Sink:4
 **证明**:
 
 ```
-定义：
+定义:
 - λ(t): 时刻 t 的输入流量
 - P(t): 时刻 t 的并行度
 - U_target: 目标利用率
 - ε: 稳定容忍阈值
 
-稳定条件：
+稳定条件:
 | Utilization(P(t), λ(t)) - U_target | < ε
 
-收敛性证明：
+收敛性证明:
 
-1. 单调性：
-   若 Utilization < U_target - ε，Autoscaler 增加 P
-   若 Utilization > U_target + ε，Autoscaler 减少 P
+1. 单调性:
+   若 Utilization < U_target - ε,Autoscaler 增加 P
+   若 Utilization > U_target + ε,Autoscaler 减少 P
 
-2. 有界性：
+2. 有界性:
    P_min ≤ P(t) ≤ P_max (受 maxParallelism 限制)
 
-3. 稳定窗口：
+3. 稳定窗口:
    StabilizationWindow 确保每个 P 值至少维持 Δt
 
-4. 由单调有界收敛定理，P(t) 必然收敛
+4. 由单调有界收敛定理,P(t) 必然收敛
 
 Q.E.D.
 ```
@@ -365,24 +365,24 @@ Q.E.D.
 
 ```
 设流水线有 n 个顶点 V = {v₁, v₂, ..., vₙ}
-每个顶点 vᵢ 的负载为 Lᵢ，处理能力为 Cᵢ
+每个顶点 vᵢ 的负载为 Lᵢ,处理能力为 Cᵢ
 
-全局扩缩容方案：
+全局扩缩容方案:
 - 所有顶点使用相同并行度 P_global
-- 需要满足：P_global × Cᵢ ≥ Lᵢ for all i
+- 需要满足:P_global × Cᵢ ≥ Lᵢ for all i
 - 因此 P_global ≥ maxᵢ(Lᵢ / Cᵢ)
-- 总资源：R_global = P_global × Σᵢ(Cᵢ)
+- 总资源:R_global = P_global × Σᵢ(Cᵢ)
 
-顶点级别扩缩容方案：
+顶点级别扩缩容方案:
 - 每个顶点独立选择 Pᵢ ≥ Lᵢ / Cᵢ
-- 总资源：R_vertex = Σᵢ(Pᵢ × Cᵢ) = Σᵢ(Lᵢ)
+- 总资源:R_vertex = Σᵢ(Pᵢ × Cᵢ) = Σᵢ(Lᵢ)
 
-比较：
+比较:
 R_global = maxᵢ(Lᵢ/Cᵢ) × Σᵢ(Cᵢ)
          ≥ Σᵢ(Lᵢ/Cᵢ × Cᵢ)  // 因为 max ≥ 每个元素
          = Σᵢ(Lᵢ) = R_vertex
 
-因此 R_global ≥ R_vertex，顶点级别方案更优或相等。
+因此 R_global ≥ R_vertex,顶点级别方案更优或相等。
 Q.E.D.
 ```
 
@@ -393,25 +393,25 @@ Q.E.D.
 **证明**:
 
 ```
-给定：
+给定:
 - 积压量 B
 - 目标时间 T
 - 单并行度吞吐 R
 - 基础并行度 P_base
 
-追赶期间总处理能力：
+追赶期间总处理能力:
 Capacity = P_required × R × T
 
-需要满足：
+需要满足:
 Capacity ≥ B + (实时到达量 during T)
 
-假设实时到达速率为 λ，则：
+假设实时到达速率为 λ,则:
 P_required × R × T ≥ B + λ × T
 
-由于 P_base 是处理实时流量的最小并行度：
+由于 P_base 是处理实时流量的最小并行度:
 P_base × R ≥ λ
 
-因此：
+因此:
 P_required ≥ B/(R×T) + λ/R
           ≥ B/(R×T) + P_base
 
@@ -453,11 +453,11 @@ spec:
     # 目标利用率 80%
     kubernetes.operator.job.autoscaler.target.utilization: "0.8"
 
-    # 扩容阈值（当前利用率超过目标 10% 触发）
+    # 扩容阈值(当前利用率超过目标 10% 触发)
     kubernetes.operator.job.autoscaler.scale-up.grace-period: "5m"
     kubernetes.operator.job.autoscaler.scale-up.cooldown: "5m"
 
-    # 缩容阈值（更保守）
+    # 缩容阈值(更保守)
     kubernetes.operator.job.autoscaler.scale-down.grace-period: "15m"
     kubernetes.operator.job.autoscaler.scale-down.cooldown: "15m"
 
@@ -491,13 +491,13 @@ spec:
 
 ```yaml
 flinkConfiguration:
-  # 历史指标窗口（影响决策平滑度）
+  # 历史指标窗口(影响决策平滑度)
   kubernetes.operator.job.autoscaler.metrics.window: "10m"
 
-  # 稳定窗口（防止抖动）
+  # 稳定窗口(防止抖动)
   kubernetes.operator.job.autoscaler.stabilization.window: "5m"
 
-  # 最小收集数据时间（首次扩缩容前等待）
+  # 最小收集数据时间(首次扩缩容前等待)
   kubernetes.operator.job.autoscaler.metrics.collection.interval: "1m"
   kubernetes.operator.job.autoscaler.metrics.collection.min-data-points: "5"
 
@@ -641,7 +641,7 @@ flowchart TD
     C --> D{推荐值合理?}
     D -->|否| E[调整配置参数]
     E --> B
-    D -->|是| F[关闭 dry-run，启用自动]
+    D -->|是| F[关闭 dry-run,启用自动]
     F --> G[设置告警规则]
     G --> H[监控扩缩容事件]
     H --> I{频繁扩缩容?}

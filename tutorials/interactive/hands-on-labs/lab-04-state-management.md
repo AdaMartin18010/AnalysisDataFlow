@@ -74,7 +74,7 @@ public class TemperatureAlertFunction extends
             double diff = Math.abs(reading.temperature - lastTemp);
 
             if (diff > 10.0) {
-                // 检查是否已经发送过告警（10秒内只发送一次）
+                // 检查是否已经发送过告警(10秒内只发送一次)
                 long currentTime = ctx.timestamp();
                 if (lastAlertTime == null ||
                     (currentTime - lastAlertTime) > 10000) {
@@ -150,7 +150,7 @@ public class SessionEventCollector extends
             OnTimerContext ctx,
             Collector<SessionSummary> out) throws Exception {
 
-        // 会话结束，生成摘要
+        // 会话结束,生成摘要
         List<UserEvent> events = new ArrayList<>();
         sessionEventsState.get().forEach(events::add);
 
@@ -195,7 +195,7 @@ public class UserBehaviorCounter extends
 
         String behavior = event.eventType;
 
-        // 获取当前计数，不存在则为0
+        // 获取当前计数,不存在则为0
         Long currentCount = behaviorCountState.get(behavior);
         if (currentCount == null) {
             currentCount = 0L;
@@ -249,7 +249,7 @@ public class RunningAverageFunction extends
             Context ctx,
             Collector<AverageResult> out) throws Exception {
 
-        // 添加新值（自动归约）
+        // 添加新值(自动归约)
         countSumState.add(new CountSum(1, reading.temperature));
 
         // 计算并输出平均值
@@ -395,7 +395,7 @@ public void testTemperatureAlert() throws Exception {
     harness.processElement(new SensorReading("s1", 20.0, 0L), 0L);
     harness.processElement(new SensorReading("s1", 21.0, 1000L), 1000L);
 
-    // 发送跳变温度（应触发告警）
+    // 发送跳变温度(应触发告警)
     harness.processElement(new SensorReading("s1", 35.0, 2000L), 2000L);
 
     // 验证输出
@@ -429,7 +429,7 @@ public class OrderStateMachine extends KeyedProcessFunction<String, OrderEvent, 
             orderStatusState.update(newStatus);
             statusUpdateTimeState.update(ctx.timestamp());
 
-            // 超时检查：如果PAID后30分钟未SHIP，发送提醒
+            // 超时检查:如果PAID后30分钟未SHIP,发送提醒
             if (newStatus == OrderStatus.PAID) {
                 ctx.timerService().registerEventTimeTimer(
                     ctx.timestamp() + Time.minutes(30).toMilliseconds()

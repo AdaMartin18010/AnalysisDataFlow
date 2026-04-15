@@ -269,7 +269,7 @@ ConsistentCheckpoint(G) ⟹ NoDuplicateProcessing(G, internal)
 ```
 2PC(sink) =
     Phase 1: PREPARE
-        - Sink 预提交事务，保留预提交状态
+        - Sink 预提交事务,保留预提交状态
     Phase 2: COMMIT
         - 收到 Checkpoint 完成通知后正式提交
         - 或收到回滚通知后回滚
@@ -317,7 +317,7 @@ Idempotent(sink) ≜ ∀record r:
     子情况2.2: 重复由Sink输出导致
       - 与 AtomicSink(Sink) 矛盾
 
-结论: 反设不成立，ExactlyOnce成立 □
+结论: 反设不成立,ExactlyOnce成立 □
 ```
 
 ### 4.2 形式化证明

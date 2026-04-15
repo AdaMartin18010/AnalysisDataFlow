@@ -29,6 +29,33 @@
     <meta name="twitter:image" content="https://knowledge-graph.analysisdataflow.github.io/og-image-knowledge-graph.png">
     <meta name="twitter:creator" content="@AnalysisDataFlow">
     
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "AnalysisDataFlow 知识图谱",
+      "alternateName": "AnalysisDataFlow Knowledge Graph",
+      "url": "https://knowledge-graph.analysisdataflow.github.io/",
+      "description": "流计算、Flink 与分布式系统的交互式 3D 知识图谱。涵盖 10,000+ 形式化元素、定理、定义与工程实践。",
+      "inLanguage": ["zh-CN", "en"],
+      "author": {
+        "@type": "Organization",
+        "name": "AnalysisDataFlow Project"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "AnalysisDataFlow Project",
+        "url": "https://github.com/luyanfeng/AnalysisDataFlow"
+      },
+      "about": {
+        "@type": "Thing",
+        "name": "Stream Computing",
+        "alternateName": "Apache Flink"
+      }
+    }
+    </script>
+    
     <!-- CDN 预连接优化 -->
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
     <link rel="preconnect" href="https://d3js.org" crossorigin>
@@ -438,31 +465,6 @@
             .stats-bar { right: 20px; left: 20px; }
         }
     </style>
-    <!-- Schema.org Structured Data -->
-    <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "AnalysisDataFlow 知识图谱",
-  "alternateName": "AnalysisDataFlow Knowledge Graph",
-  "url": "https://knowledge-graph.analysisdataflow.github.io/",
-  "description": "流计算、Flink 与分布式系统的交互式 3D 知识图谱，涵盖 10,000+ 形式化元素、定理、定义与工程实践。",
-  "inLanguage": ["zh-CN", "en"],
-  "publisher": {
-    "@type": "Organization",
-    "name": "AnalysisDataFlow Project",
-    "url": "https://github.com/AnalysisDataFlow"
-  },
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": {
-      "@type": "EntryPoint",
-      "urlTemplate": "https://knowledge-graph.analysisdataflow.github.io/?q={search_term_string}"
-    },
-    "query-input": "required name=search_term_string"
-  }
-}
-    </script>
 </head>
 <body>
     <div id="root"></div>
@@ -536,16 +538,17 @@
         };
         
         // ============================================
-        // Algolia DocSearch Integration (TODO)
+        // Algolia DocSearch Configuration
         // ============================================
-        // 如需接入 Algolia DocSearch，请在获得凭证后填入以下配置：
-        // const docSearchConfig = {
-        //   appId: 'YOUR_APP_ID',
-        //   apiKey: 'YOUR_SEARCH_API_KEY',
-        //   indexName: 'analysisdataflow',
-        // };
-        // 然后将 DocSearch 组件集成到 SearchPanel 中。
-        // 现有的 SemanticSearchEngine 会继续作为本地回退搜索运行。
+        const ALGOLIA_CONFIG = {
+            enabled: false,
+            appId: 'YOUR_APP_ID',
+            apiKey: 'YOUR_SEARCH_API_KEY',
+            indexName: 'analysisdataflow',
+            searchParameters: {
+                hitsPerPage: 10
+            }
+        };
         // ============================================
         // Semantic Search Engine
         // ============================================
@@ -660,26 +663,89 @@
             </div>
         );
         
-        // Search Component with Semantic Search
+        // Search Component with Algolia + Local Fallback
         const SearchPanel = ({ nodes, onSearch, onSelect }) => {
             const [query, setQuery] = useState('');
             const [results, setResults] = useState([]);
             const [isSearching, setIsSearching] = useState(false);
+            const [localIndex, setLocalIndex] = useState(null);
             const searchEngine = useRef(new SemanticSearchEngine());
+            
+            // Load local search index when Algolia is not enabled
+            useEffect(() => {
+                const loadLocalIndex = async () => {
+                    try {
+                        const response = await fetch('data/search-index.json');
+                        if (response.ok) {
+                            const data = await response.json();
+                            setLocalIndex(data);
+                            console.log('Local search index loaded');
+                        }
+                    } catch (e) {
+                        console.log('Local search index not available, using semantic search fallback');
+                    }
+                };
+                if (!ALGOLIA_CONFIG.enabled) {
+                    loadLocalIndex();
+                }
+            }, []);
+            
+            const performLocalSearch = useCallback(async (q) => {
+                if (!q.trim() || !localIndex) return [];
+                const queryLower = q.toLowerCase();
+                
+                const items = Array.isArray(localIndex) ? localIndex : 
+                              (localIndex.records) ? localIndex.records :
+                              (localIndex.hits) ? localIndex.hits : [];
+                
+                return items
+                    .map(item => {
+                        const text = (item.title || item.label || item.name || item.text || '').toLowerCase();
+                        const content = (item.content || item.description || item.body || '').toLowerCase();
+                        let score = 0;
+                        if (text.includes(queryLower)) score += 1.0;
+                        if (content.includes(queryLower)) score += 0.5;
+                        const words = queryLower.split(/\s+/).filter(w => w);
+                        words.forEach(word => {
+                            if (text.includes(word)) score += 0.2;
+                            if (content.includes(word)) score += 0.1;
+                        });
+                        return { ...item, score, _source: 'local' };
+                    })
+                    .filter(item => item.score > 0)
+                    .sort((a, b) => b.score - a.score)
+                    .slice(0, ALGOLIA_CONFIG.searchParameters.hitsPerPage);
+            }, [localIndex]);
             
             const debouncedSearch = useCallback(
                 debounce(async (q) => {
                     if (!q.trim()) {
                         setResults([]);
+                        setIsSearching(false);
                         return;
                     }
                     setIsSearching(true);
-                    const searchResults = await searchEngine.current.search(q, 10);
+                    
+                    let searchResults = [];
+                    
+                    if (ALGOLIA_CONFIG.enabled) {
+                        // TODO: Integrate Algolia DocSearch here when credentials are available
+                        // For now, fallback to local search or semantic search
+                        searchResults = await performLocalSearch(q);
+                        if (searchResults.length === 0) {
+                            searchResults = await searchEngine.current.search(q, ALGOLIA_CONFIG.searchParameters.hitsPerPage);
+                        }
+                    } else if (localIndex) {
+                        searchResults = await performLocalSearch(q);
+                    } else {
+                        searchResults = await searchEngine.current.search(q, 10);
+                    }
+                    
                     setResults(searchResults);
                     onSearch?.(searchResults);
                     setIsSearching(false);
                 }, 300),
-                [onSearch]
+                [localIndex, onSearch, performLocalSearch]
             );
             
             const handleInputChange = (e) => {
@@ -689,34 +755,74 @@
             };
             
             const handleSelect = (result) => {
-                setQuery(result.label);
+                setQuery(result.label || result.title || result.name || '');
                 setResults([]);
                 onSelect?.(result);
             };
             
+            const placeholderText = ALGOLIA_CONFIG.enabled 
+                ? 'Algolia 全站搜索...' 
+                : (localIndex ? '本地索引搜索概念、定理...' : '语义搜索概念、定理、定义...');
+            
             return (
                 <div style={{ position: 'relative', marginBottom: '16px' }}>
-                    <div className="ui input fluid">
+                    <div className="ui input fluid" style={{ display: 'flex' }}>
                         <input
                             type="text"
-                            placeholder="语义搜索概念、定理、定义..."
+                            placeholder={placeholderText}
                             value={query}
                             onChange={handleInputChange}
+                            onKeyDown={(e) => e.key === 'Enter' && debouncedSearch(query)}
                             style={{
                                 background: 'var(--bg-primary)',
                                 color: 'var(--text-primary)',
-                                borderColor: 'var(--border-color)'
+                                borderColor: 'var(--border-color)',
+                                flex: 1,
+                                borderTopRightRadius: 0,
+                                borderBottomRightRadius: 0
                             }}
                         />
-                        {isSearching && <i className="spinner icon" style={{ position: 'absolute', right: 10, top: 10 }}></i>}
+                        <button
+                            className="ui button"
+                            onClick={() => debouncedSearch(query)}
+                            style={{
+                                borderTopLeftRadius: 0,
+                                borderBottomLeftRadius: 0,
+                                margin: 0,
+                                borderLeft: 'none'
+                            }}
+                            title="搜索"
+                        >
+                            🔍
+                        </button>
                     </div>
+                    {isSearching && (
+                        <div style={{ 
+                            position: 'absolute', 
+                            right: 50, 
+                            top: 10, 
+                            fontSize: '12px', 
+                            color: 'var(--text-secondary)' 
+                        }}>
+                            <i className="spinner icon"></i> 搜索中...
+                        </div>
+                    )}
+                    {!ALGOLIA_CONFIG.enabled && localIndex && (
+                        <div style={{ fontSize: '10px', color: 'var(--text-secondary)', marginTop: '4px' }}>
+                            💡 当前使用本地索引搜索（Algolia 未启用）
+                        </div>
+                    )}
                     {results.length > 0 && (
                         <div className="search-dropdown animate-fade-in">
                             {results.map((result, idx) => (
                                 <div key={idx} className="search-item" onClick={() => handleSelect(result)}>
-                                    <div style={{ fontWeight: 600, color: 'var(--accent)' }}>{result.label}</div>
+                                    <div style={{ fontWeight: 600, color: 'var(--accent)' }}>
+                                        {result.label || result.title || result.name || '未命名'}
+                                    </div>
                                     <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginTop: '4px' }}>
-                                        {result.type} · 匹配度: {(result.score * 100).toFixed(1)}%
+                                        {result.type || (result.path ? '文档' : '结果')} 
+                                        {result.score !== undefined && ` · 匹配度: ${(result.score * 100).toFixed(1)}%`}
+                                        {result.path && ` · ${result.path}`}
                                     </div>
                                 </div>
                             ))}

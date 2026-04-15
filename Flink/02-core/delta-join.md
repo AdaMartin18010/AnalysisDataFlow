@@ -199,7 +199,7 @@ Delta Join要求输入源满足特定约束：
 **工程实现**：
 
 ```
-原始执行计划（3路Join）：
+原始执行计划(3路Join):
 ┌─────┐    ┌──────────┐    ┌──────────┐
 │ S1  │───▶│ Join S1  │───▶│ Join with│───▶ Output
 └─────┘    │ with T1  │    │ T2       │
@@ -209,7 +209,7 @@ Delta Join要求输入源满足特定约束：
            └──────────┘    │   T2     │
                             └──────────┘
 
-Multi Join优化执行计划：
+Multi Join优化执行计划:
 ┌─────┐    ┌─────────────────────────┐    ┌─────────┐
 │ S1  │───▶│ StreamingMultiJoin      │───▶│ Output  │
 └─────┘    │ (共享缓存+批量查找)      │    └─────────┘
@@ -246,7 +246,7 @@ Multi Join优化执行计划：
 SET table.optimizer.multiple-delta-join.enabled = true;
 SET table.optimizer.multi-join.enabled = true;
 
--- 用户画像维表（外部存储：HBase）
+-- 用户画像维表(外部存储:HBase)
 CREATE TABLE user_profile (
     user_id STRING,
     age INT,
@@ -261,7 +261,7 @@ CREATE TABLE user_profile (
     'lookup.cache.ttl' = '60s'
 );
 
--- 商品信息维表（外部存储：MySQL）
+-- 商品信息维表(外部存储:MySQL)
 CREATE TABLE product_info (
     product_id STRING,
     category STRING,
@@ -275,7 +275,7 @@ CREATE TABLE product_info (
     'lookup.cache.ttl' = '30s'
 );
 
--- 点击流（CDC源：Kafka）
+-- 点击流(CDC源:Kafka)
 CREATE TABLE click_stream (
     user_id STRING,
     product_id STRING,
@@ -288,7 +288,7 @@ CREATE TABLE click_stream (
     'format' = 'debezium-json'
 );
 
--- Delta Join查询：双流Join转换为流+维表查找
+-- Delta Join查询:双流Join转换为流+维表查找
 SELECT
     c.user_id,
     c.product_id,
@@ -486,7 +486,7 @@ sequenceDiagram
 
 ```mermaid
 flowchart TD
-    subgraph "优化前：串行Join"
+    subgraph "优化前:串行Join"
         A[Stream] --> J1[Join T1]
         T1[Table 1] --> J1
         J1 --> J2[Join T2]
@@ -496,7 +496,7 @@ flowchart TD
         J3 --> O1[Output]
     end
 
-    subgraph "优化后：Multi Delta Join"
+    subgraph "优化后:Multi Delta Join"
         B[Stream] --> MJ[StreamingMultiJoinOperator]
         MJ --> O2[Output]
 
@@ -537,13 +537,13 @@ gantt
 Flink 2.2支持将投影（Projection）和过滤（Filter）条件下推到Delta Join的外部查询中：
 
 ```sql
--- 优化前：全字段查询后过滤
+-- 优化前:全字段查询后过滤
 SELECT u.user_id, u.age, u.city  -- 仅需3个字段
 FROM clicks c
 JOIN users u ON c.user_id = u.user_id;  -- 查询所有字段
 
--- 优化后：投影下推，仅查询必要字段
--- 外部查询变为：SELECT user_id, age, city FROM users WHERE user_id = ?
+-- 优化后:投影下推,仅查询必要字段
+-- 外部查询变为:SELECT user_id, age, city FROM users WHERE user_id = ?
 ```
 
 **性能收益**：减少外部存储IO量，网络传输降低50-80%。

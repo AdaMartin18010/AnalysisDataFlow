@@ -361,7 +361,7 @@ StateTtlConfig ttlConfig = StateTtlConfig
 ### 示例 6.2: RocksDBStateBackend 生产配置
 
 ```java
-// 创建 EmbeddedRocksDBStateBackend（启用增量 Checkpoint）
+// 创建 EmbeddedRocksDBStateBackend(启用增量 Checkpoint)
 EmbeddedRocksDBStateBackend backend =
     new EmbeddedRocksDBStateBackend(true);
 
@@ -409,7 +409,7 @@ env.getCheckpointConfig().setCheckpointTimeout(600000);
 # 创建 Savepoint
 flink stop --savepointPath hdfs:///savepoints <job-id>
 
-# 修改代码切换后端后，从 Savepoint 恢复
+# 修改代码切换后端后,从 Savepoint 恢复
 flink run -s hdfs:///savepoints/savepoint-xxxxx \
   -c com.example.MyJob my-job.jar
 ```

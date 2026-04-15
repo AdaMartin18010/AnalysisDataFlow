@@ -117,11 +117,13 @@
 
 ### 2.1 必备模板
 
-1. **bug_report.md** - 缺陷报告
-2. **feature_request.md** - 功能请求
-3. **content_request.md** - 内容补充请求（新增）
+1. **bug_report.md** - 英文缺陷报告
+2. **feature_request.md** - 英文功能请求
+3. **content-request.md** - 内容补充请求
 4. **bug_report-zh.md** - 中文缺陷报告（新增）
 5. **feature_request-zh.md** - 中文功能请求（新增）
+
+> **说明**: `bug_report-zh.md` 和 `feature_request-zh.md` 于 v4.2 社区基础设施完善任务中新增，为中文母语贡献者提供更友好的 Issue 提交入口。两个模板均包含环境信息、复现步骤、期望与实际行为、截图/日志、相关文档链接等必填字段，以及"你愿意贡献吗？"的参与引导。
 
 ### 2.2 Pull Request 模板
 

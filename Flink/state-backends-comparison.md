@@ -245,12 +245,12 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
 // ========== HashMapStateBackend ==========
-// 适合：小状态，低延迟场景
+// 适合:小状态,低延迟场景
 env.setStateBackend(new HashMapStateBackend());
 env.getCheckpointConfig().setCheckpointStorage("hdfs://namenode:8020/flink/checkpoints");
 
 // ========== RocksDB State Backend ==========
-// 适合：大状态，大窗口场景
+// 适合:大状态,大窗口场景
 EmbeddedRocksDBStateBackend rocksDbBackend = new EmbeddedRocksDBStateBackend(true); // 增量
 env.setStateBackend(rocksDbBackend);
 env.getCheckpointConfig().setCheckpointStorage("hdfs://namenode:8020/flink/checkpoints");
@@ -262,7 +262,7 @@ configurableBackend.setPredefinedOptions(PredefinedOptions.FLASH_SSD_OPTIMIZED);
 env.setStateBackend(configurableBackend);
 
 // ========== ForSt State Backend (Flink 2.0+) ==========
-// 适合：超大规模状态，存算分离
+// 适合:超大规模状态,存算分离
 ForStStateBackend forstBackend = new ForStStateBackend();
 forstBackend.setRemoteStorageUri("s3://flink-state-bucket/");
 env.setStateBackend(forstBackend);
@@ -302,7 +302,7 @@ public void monitorStateBackend(RuntimeContext ctx) {
     // 状态大小
     long stateSize = ctx.getStateSize();
 
-    // 对于 RocksDB，获取详细指标
+    // 对于 RocksDB,获取详细指标
     if (stateBackend instanceof RocksDBStateBackend) {
         // SST 文件数量
         int sstFileCount = getMetric("rocksdb.num-files-at-level0")
@@ -331,7 +331,7 @@ public void monitorStateBackend(RuntimeContext ctx) {
 import json
 
 def analyze_state_usage(checkpoint_path):
-    """分析 Checkpoint 状态大小，推荐状态后端"""
+    """分析 Checkpoint 状态大小,推荐状态后端"""
 
     # 模拟读取 Checkpoint 元数据
     checkpoint_meta = {
@@ -351,23 +351,23 @@ def analyze_state_usage(checkpoint_path):
 
     if size_mb < 100:
         recommendation["recommendation"] = "HashMapStateBackend"
-        recommendation["reasoning"].append("状态小于 100MB，适合内存存储")
+        recommendation["reasoning"].append("状态小于 100MB,适合内存存储")
         recommendation["reasoning"].append("可获得最低访问延迟")
     elif size_mb < 5120:  # 5GB
         recommendation["recommendation"] = "RocksDBStateBackend (Incremental)"
-        recommendation["reasoning"].append("状态较大，需要磁盘存储")
+        recommendation["reasoning"].append("状态较大,需要磁盘存储")
         recommendation["reasoning"].append("启用增量 Checkpoint 减少网络传输")
         recommendation["reasoning"].append("适合大窗口聚合场景")
     else:
         recommendation["recommendation"] = "ForStStateBackend (Flink 2.0+)"
-        recommendation["reasoning"].append("状态超过 5GB，考虑存算分离")
+        recommendation["reasoning"].append("状态超过 5GB,考虑存算分离")
         recommendation["reasoning"].append("避免本地磁盘瓶颈")
         recommendation["reasoning"].append("支持超大规模状态")
 
     # 额外建议
     if checkpoint_meta["checkpoint_duration_ms"] > 60000:
         recommendation["reasoning"].append(
-            "⚠️ Checkpoint 时间过长，考虑启用增量 Checkpoint 或优化状态访问模式"
+            "⚠️ Checkpoint 时间过长,考虑启用增量 Checkpoint 或优化状态访问模式"
         )
 
     return recommendation

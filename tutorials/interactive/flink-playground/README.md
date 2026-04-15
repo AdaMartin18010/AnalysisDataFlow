@@ -13,7 +13,7 @@ cd tutorials/interactive/flink-playground
 # 启动所有服务
 docker-compose up -d
 
-# 等待服务启动（约 30-60 秒）
+# 等待服务启动(约 30-60 秒)
 docker-compose ps
 ```
 
@@ -21,9 +21,9 @@ docker-compose ps
 
 | 服务 | URL | 说明 |
 |------|-----|------|
-| Flink Web UI | <http://localhost:8081> | 作业监控和管理 |
-| Kafka UI | <http://localhost:8082> | Kafka 主题管理 |
-| MinIO Console | <http://localhost:9001> | 对象存储管理 (minioadmin/minioadmin) |
+| Flink Web UI | `http://localhost:8081` | 作业监控和管理 |
+| Kafka UI | `http://localhost:8082` | Kafka 主题管理 |
+| MinIO Console | `http://localhost:9001` | 对象存储管理 (minioadmin/minioadmin) |
 | Jupyter Notebook | <[本地开发环境专用链接]> | 交互式开发 |
 
 ### 3. 验证环境
@@ -84,7 +84,7 @@ docker-compose exec jobmanager flink info <job-id>
 # 停止环境
 docker-compose down
 
-# 完全重置（删除数据）
+# 完全重置(删除数据)
 docker-compose down -v
 
 # 查看日志

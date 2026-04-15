@@ -79,16 +79,16 @@ python .scripts/quick-check.py --fail-on-error
 ### 3.2 统一质量检查
 
 ```bash
-# 基本检查（内部链接+锚点）
+# 基本检查(内部链接+锚点)
 python .scripts/quality-gates.py
 
-# 包含外部链接检查（较慢）
+# 包含外部链接检查(较慢)
 python .scripts/quality-gates.py --check-external
 
 # 执行所有检查
 python .scripts/quality-gates.py --all
 
-# 严格模式（任何错误都失败）
+# 严格模式(任何错误都失败)
 python .scripts/quality-gates.py --all --fail-threshold 0
 
 # 指定输出报告
@@ -98,7 +98,7 @@ python .scripts/quality-gates.py --all --output reports/check.md --json reports/
 ### 3.3 链接健康检查
 
 ```bash
-# 全量链接检查（包含外部链接）
+# 全量链接检查(包含外部链接)
 python .scripts/link_checker.py
 
 # 只检查内部链接
@@ -134,11 +134,11 @@ echo "🔍 运行提交前检查..."
 python .scripts/quick-check.py --staged-only --fail-on-error
 
 if [ $? -ne 0 ]; then
-    echo "❌ 检查失败，请修复问题后再提交"
+    echo "❌ 检查失败,请修复问题后再提交"
     echo ""
     echo "提示:"
     echo "  - 使用 git add 更新修改"
-    echo "  - 使用 git commit --no-verify 跳过检查（不推荐）"
+    echo "  - 使用 git commit --no-verify 跳过检查(不推荐)"
     exit 1
 fi
 
@@ -191,9 +191,9 @@ python .scripts/quick-check.py --fail-on-error
 # 2. 修复失效链接
 # - 检查文件路径是否正确
 # - 确认目标文件是否存在
-# - 使用相对路径或绝对路径（以/开头）
+# - 使用相对路径或绝对路径(以/开头)
 
-# 3. 如果链接正确但检查失败，可能是缓存问题
+# 3. 如果链接正确但检查失败,可能是缓存问题
 rm -rf .link-checker-cache
 python .scripts/quick-check.py
 ```
@@ -208,7 +208,7 @@ python .scripts/quick-check.py
 # 增加超时时间
 python .scripts/link_checker.py --timeout 60
 
-# 跳过外部链接检查（仅CI/CD）
+# 跳过外部链接检查(仅CI/CD)
 python .scripts/quality-gates.py --check-internal --check-anchors
 ```
 
@@ -244,13 +244,13 @@ python .scripts/quality-gates.py --check-internal --check-anchors
 质量门禁支持配置失败阈值：
 
 ```bash
-# 严格模式（0个错误即失败）
+# 严格模式(0个错误即失败)
 python .scripts/quality-gates.py --fail-threshold 0
 
-# 宽松模式（允许5个错误）
+# 宽松模式(允许5个错误)
 python .scripts/quality-gates.py --fail-threshold 5
 
-# 最宽松（仅报告）
+# 最宽松(仅报告)
 python .scripts/quality-gates.py --fail-threshold 999
 ```
 
@@ -263,7 +263,7 @@ python .scripts/quality-gates.py --check-internal
 # 检查内部链接和锚点
 python .scripts/quality-gates.py --check-internal --check-anchors
 
-# 完整检查（包含外部链接）
+# 完整检查(包含外部链接)
 python .scripts/quality-gates.py --all
 ```
 
@@ -287,7 +287,7 @@ python .scripts/quality-gates.py --all
 📋 快速检查结果
 ======================================================================
 
-⚠️  发现 3 个问题：
+⚠️  发现 3 个问题:
 
 📄 docs/example.md
    [内部链接] [目标文档](./non-existent.md)
@@ -393,7 +393,7 @@ chmod +x .scripts/*.py
 # 安装Python依赖
 pip install -r .scripts/requirements.txt
 
-# 或安装Node.js依赖（用于markdownlint）
+# 或安装Node.js依赖(用于markdownlint)
 npm install -g markdownlint-cli
 ```
 

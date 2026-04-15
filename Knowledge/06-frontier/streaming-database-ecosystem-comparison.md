@@ -515,7 +515,7 @@ $$Throughput_{strict} = \frac{Throughput_{best}}{CoordinationOverhead}$$
 2. **递归查询**：
 
    ```sql
-   -- 图遍历递归（有限支持）
+   -- 图遍历递归(有限支持)
    WITH RECURSIVE paths AS (...)
 ```
 
@@ -742,7 +742,7 @@ CREATE SOURCE transactions (
     location POINT
 );
 
--- 用户历史特征（滑动窗口）
+-- 用户历史特征(滑动窗口)
 CREATE MATERIALIZED VIEW user_features AS
 SELECT
     user_id,
@@ -842,7 +842,7 @@ CREATE EXTERNAL STREAM device_metrics (
     timestamp DATETIME64
 );
 
--- 本地告警（边缘执行）
+-- 本地告警(边缘执行)
 CREATE MATERIALIZED VIEW edge_alerts AS
 SELECT
     device_id,

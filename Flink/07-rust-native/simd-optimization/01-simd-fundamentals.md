@@ -452,7 +452,7 @@ fn simd_filter(values: &[f32], threshold: f32) -> Vec<f32> {
         // 比较生成掩码
         let mask = chunk.simd_gt(simd_threshold);
 
-        // 提取满足条件的元素 (简化版，实际使用 compress 指令)
+        // 提取满足条件的元素 (简化版,实际使用 compress 指令)
         for j in 0..lanes {
             if mask.test(j) {
                 result.push(values[offset + j]);

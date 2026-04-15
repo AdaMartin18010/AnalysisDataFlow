@@ -482,16 +482,16 @@ collect: JobManager × [ACK] → CompletedCheckpoint
 ```
 证明结构: 组合引理
 
-步骤1: 由 Lemma-S-17-12，Barrier 传播形成一致割集
+步骤1: 由 Lemma-S-17-12,Barrier 传播形成一致割集
        - 单通道 FIFO 保证 Barrier 顺序
        - 拓扑序传播保证无死锁
        - 对齐语义保证割集一致性
 
-步骤2: 由 Lemma-S-17-37，快照状态是一致的
+步骤2: 由 Lemma-S-17-37,快照状态是一致的
        - 每个算子状态是可达的
        - 全局状态对应某个执行配置
 
-步骤3: 由 Def-S-13-33 的编码，Checkpoint 协议正确实现
+步骤3: 由 Def-S-13-33 的编码,Checkpoint 协议正确实现
        - 注入→传播→对齐→收集流程正确
        - 故障时可以从快照恢复
 
@@ -532,7 +532,7 @@ public class CheckpointBarrier implements Serializable {
     public void processBarrier(CheckpointBarrier barrier, InputChannel channel) {
         // 对齐逻辑: 等待所有输入通道的 Barrier
         if (alignmentTracker.onBarrier(barrier, channel)) {
-            // 所有 Barrier 到达，触发快照
+            // 所有 Barrier 到达,触发快照
             triggerCheckpoint(barrier);
         }
     }

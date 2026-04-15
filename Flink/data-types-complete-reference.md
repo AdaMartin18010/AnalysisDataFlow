@@ -242,13 +242,13 @@ CREATE TABLE user_events (
 ### 6.2 类型转换示例
 
 ```sql
--- 隐式转换（自动）
+-- 隐式转换(自动)
 SELECT
     user_id + 1.5 AS user_id_double,  -- BIGINT → DOUBLE
     CONCAT('ID:', CAST(user_id AS STRING)) AS user_id_str
 FROM user_events;
 
--- 显式转换（CAST）
+-- 显式转换(CAST)
 SELECT
     CAST(event_ts AS DATE) AS event_date,
     CAST(score AS INT) AS score_int,  -- 截断小数

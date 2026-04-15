@@ -478,7 +478,7 @@ import ai.onnxruntime.OrtSession;
 /**
  * Embedding生成异步函数
  *
- * 功能: 使用ONNX Runtime本地执行Embedding模型，降低延迟
+ * 功能: 使用ONNX Runtime本地执行Embedding模型,降低延迟
  * 优化: 动态批处理、模型缓存、GPU加速
  */
 public class EmbeddingGenerationAsyncFunction
@@ -736,7 +736,7 @@ public class MilvusIndexUpdateSink extends RichSinkFunction<EmbeddedChunk> {
     }
 
     private void ensureCollectionExists() {
-        // 检查集合是否存在，不存在则创建
+        // 检查集合是否存在,不存在则创建
         R<Boolean> hasCollection = milvusClient.hasCollection(
             HasCollectionParam.newBuilder()
                 .withCollectionName(COLLECTION_NAME)

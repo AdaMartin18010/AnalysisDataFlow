@@ -27,13 +27,13 @@ $$\mathcal{F}_{builtin} = \langle \mathcal{C}, \mathcal{F}, \Sigma, \mathcal{V} 
 
 ```
 Flink Built-in Functions
-├── 标量函数 (Scalar Functions)     — 行级转换，1:1映射
+├── 标量函数 (Scalar Functions)     — 行级转换,1:1映射
 │   ├── 数学函数
 │   ├── 字符串函数
 │   ├── 日期时间函数
 │   ├── 条件函数
 │   └── 类型转换函数
-├── 聚合函数 (Aggregate Functions)  — 多行聚合，N:1映射
+├── 聚合函数 (Aggregate Functions)  — 多行聚合,N:1映射
 ├── 窗口函数 (Window Functions)     — 窗口计算
 ├── JSON函数 (JSON Functions)       — JSON处理
 └── 其他函数 (Other Functions)      — 特殊用途
@@ -155,7 +155,7 @@ graph TB
     ↓
 系统函数(System)
     ↓
-    信任度递增，优化空间递增
+    信任度递增,优化空间递增
 ```
 
 ---

@@ -107,11 +107,11 @@ $$
 ├──────────────────┬─────────────────────────────────────────────────┤
 │ 边界类型          │ 追踪挑战                                         │
 ├──────────────────┼─────────────────────────────────────────────────┤
-│ Network Shuffle   │ TM间数据传递，需通过Record携带Context              │
-│ Checkpoint Barrier│ 控制消息与数据流交织，需保证因果一致性              │
-│ Timer Callback    │ 异步定时触发，需关联注册时的Context                │
-│ Async I/O         │ 外部调用回调，需保持回调与请求的Span关联           │
-│ KeyBy Redistribution│ 数据重分区，需保持Trace连续性                    │
+│ Network Shuffle   │ TM间数据传递,需通过Record携带Context              │
+│ Checkpoint Barrier│ 控制消息与数据流交织,需保证因果一致性              │
+│ Timer Callback    │ 异步定时触发,需关联注册时的Context                │
+│ Async I/O         │ 外部调用回调,需保持回调与请求的Span关联           │
+│ KeyBy Redistribution│ 数据重分区,需保持Trace连续性                    │
 └──────────────────┴─────────────────────────────────────────────────┘
 ```
 
@@ -551,7 +551,7 @@ service:
 /**
  * Def-F-15-15: Flink OTel Trace Instrumentation
  *
- * 自动埋点覆盖：
+ * 自动埋点覆盖:
  * - Source: 从外部系统读取时创建Span
  * - Transform: 算子处理逻辑包装
  * - Sink: 写入外部系统时创建Span
@@ -821,7 +821,7 @@ public class FlinkMetricsBridge implements MetricReporter {
 /**
  * Def-F-15-17: Flink Log Correlation with Traces
  *
- * 将TraceID/SpanID注入Flink日志，实现Logs→Traces关联
+ * 将TraceID/SpanID注入Flink日志,实现Logs→Traces关联
  */
 
 import io.opentelemetry.api.trace.Span;
@@ -962,7 +962,7 @@ public class ObservableStreamingJob {
             .name("kafka-source")
             .uid("kafka-source-uid")
 
-            // 自定义处理函数，带手动埋点
+            // 自定义处理函数,带手动埋点
             .map(new RichMapFunction<OrderEvent, EnrichedOrder>() {
                 private transient OpenTelemetryFlinkWrapper tracer;
 
@@ -1005,7 +1005,7 @@ public class ObservableStreamingJob {
 
 ```yaml
 # tail-sampling-config.yaml
-# 尾部采样配置 - 保留异常和慢请求，丢弃正常请求
+# 尾部采样配置 - 保留异常和慢请求,丢弃正常请求
 
 processors:
   tail_sampling:
@@ -1018,7 +1018,7 @@ processors:
     # 预期每秒新增Trace数
     expected_new_traces_per_sec: 10000
 
-    # 采样策略（按优先级排序）
+    # 采样策略(按优先级排序)
     policies:
       # 策略1: 保留所有错误Trace
       - name: error-traces
@@ -1032,7 +1032,7 @@ processors:
         latency:
           threshold_ms: 1000
 
-      # 策略3: 按属性采样（特定用户或订单）
+      # 策略3: 按属性采样(特定用户或订单)
       - name: vip-users
         type: string_attribute
         string_attribute:
@@ -1040,13 +1040,13 @@ processors:
           values: ["platinum", "enterprise"]
           enabled_regex_matching: false
 
-      # 策略4: 按比例采样（兜底）
+      # 策略4: 按比例采样(兜底)
       - name: probabilistic-sample
         type: probabilistic
         probabilistic:
           sampling_percentage: 5
 
-      # 策略5: 组合策略（高并发场景）
+      # 策略5: 组合策略(高并发场景)
       - name: composite-rule
         type: and
         and:
@@ -1108,7 +1108,7 @@ groups:
           team: streaming-platform
         annotations:
           summary: "Flink处理错误率突增"
-          description: "错误率超过5%，可能存在问题"
+          description: "错误率超过5%,可能存在问题"
 
       # 告警4: Watermark延迟
       - alert: FlinkWatermarkLag
@@ -1120,7 +1120,7 @@ groups:
           team: streaming-platform
         annotations:
           summary: "Watermark延迟严重"
-          description: "Watermark落后当前时间超过5分钟，可能存在数据延迟"
+          description: "Watermark落后当前时间超过5分钟,可能存在数据延迟"
 
       # 告警5: 端到端延迟P99超限
       - alert: FlinkLatencyP99High

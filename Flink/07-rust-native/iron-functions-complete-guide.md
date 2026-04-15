@@ -254,14 +254,14 @@ Flink Record (Output)
 
 推导:
 1. FlinkTypeConverter 为每个字段生成 to_flink_type() 方法
-2. 对于每个字段 f: T，#[flink_type("F")] 注解指定映射 FlinkType(F)
+2. 对于每个字段 f: T,#[flink_type("F")] 注解指定映射 FlinkType(F)
 3. 编译时检查: T 必须实现 Serialize + Deserialize
 4. 运行时检查: JSON 反序列化失败时返回错误而非 panic
 
 结论:
 ∀ record ∈ FlinkRecords.
   deserialize(serialize(record)) = record
-  ⟹ 类型映射是双射的（bijective），因此是健全的
+  ⟹ 类型映射是双射的(bijective),因此是健全的
 ```
 
 **工程验证**: `ironfun package-udf` 命令在打包时执行类型检查。
@@ -275,10 +275,10 @@ Flink Record (Output)
 #### 安装 ironfun CLI
 
 ```bash
-# 方式一：使用官方安装脚本
+# 方式一:使用官方安装脚本
 curl -s https://irontools.dev/ironfun-cli-install.sh | sh
 
-# 方式二：从源码安装 (Rust 环境)
+# 方式二:从源码安装 (Rust 环境)
 cargo install ironfun-cli
 
 # 验证安装
@@ -378,7 +378,7 @@ fn process_order(input: OrderInput) -> OrderOutput {
         "Basic"
     };
 
-    // 生成客户编码（前4位大写）
+    // 生成客户编码(前4位大写)
     let customer_code = input.customer_name
         .to_uppercase()
         .chars()
@@ -529,7 +529,7 @@ public class IronWasmRowExample {
             .withInputDataType(inputDataType)
             .withOutputDataType(outputDataType)
             .withWasmResourceFile("/wasm/temperature_processor.wasm")
-            .unnestOutput()  // 如果输出是数组，展开为多行
+            .unnestOutput()  // 如果输出是数组,展开为多行
             .build();
 
         DataStream<Row> processedStream = inputStream.process(rowFunction);
@@ -657,7 +657,7 @@ fn decode_transfer(input: &EthLogInput) -> TransferEvent {
     }
 
     // 解码 data 字段
-    // Transfer 事件的 data 包含：from (32 bytes), to (32 bytes), value (32 bytes)
+    // Transfer 事件的 data 包含:from (32 bytes), to (32 bytes), value (32 bytes)
     let data_bytes = match hex::decode(input.data.trim_start_matches("0x")) {
         Ok(bytes) => bytes,
         Err(_) => return invalid_event(input),
@@ -716,7 +716,7 @@ fn invalid_event(input: &EthLogInput) -> TransferEvent {
     }
 }
 
-/// 批量解码函数（优化版本）
+/// 批量解码函数(优化版本)
 #[plugin_fn]
 pub fn decode_transfer_batch(input_json: String) -> FnResult<String> {
     let inputs: Vec<EthLogInput> = serde_json::from_str(&input_json)
@@ -749,7 +749,7 @@ public class EthereumLogProcessor {
         StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
 
-        // 读取以太坊日志（从 Kafka）
+        // 读取以太坊日志(从 Kafka)
         DataStream<EthLog> logs = env
             .addSource(new FlinkKafkaConsumer<>(
                 "ethereum-logs",
@@ -967,7 +967,7 @@ use extism_pdk::*;
 
 #[plugin_fn]
 pub fn process(input: String) -> FnResult<String> {
-    // 记录调试信息（输出到 Flink TaskManager 日志）
+    // 记录调试信息(输出到 Flink TaskManager 日志)
     info!("Processing input: {}", input);
 
     let result = match do_work(&input) {

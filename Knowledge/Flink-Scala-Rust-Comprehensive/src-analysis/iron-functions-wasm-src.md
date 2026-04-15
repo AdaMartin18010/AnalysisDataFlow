@@ -67,7 +67,7 @@ pub struct Plugin {
     exports: HashMap<String, Func>,
     /// 主机函数表
     host_functions: Vec<HostFunction>,
-    /// WASI 上下文（可选）
+    /// WASI 上下文(可选)
     wasi: Option<WasiCtx>,
 }
 ```
@@ -88,7 +88,7 @@ impl Plugin {
         // 1. 编译 WASM 模块
         let module = Module::new(engine, wasm)?;
 
-        // 2. 创建 Store（存储 WASM 实例状态）
+        // 2. 创建 Store(存储 WASM 实例状态)
         let mut store = Store::new(engine, ());
 
         // 3. 注册主机函数到导入表
@@ -142,7 +142,7 @@ macro_rules! plugin_fn {
     };
 }
 
-// 使用示例：用户定义的函数
+// 使用示例:用户定义的函数
 #[plugin_fn]
 pub fn process(input: Json<Input>) -> FnResult<Json<Output>> {
     // 业务逻辑
@@ -156,7 +156,7 @@ pub fn process(input: Json<Input>) -> FnResult<Json<Output>> {
 // 编译器展开结果
 #[no_mangle]
 pub unsafe extern "C" fn process() -> i32 {
-    // 1. 从 Host 读取输入（通过 extism:host/input 导入函数）
+    // 1. 从 Host 读取输入(通过 extism:host/input 导入函数)
     let input_bytes = extism_input();
     let input: Input = serde_json::from_slice(&input_bytes).unwrap();
 
@@ -203,9 +203,9 @@ flowchart TD
 ```rust
 // crates/extism/src/runtime.rs
 pub struct Runtime {
-    /// WASM 引擎（全局单例）
+    /// WASM 引擎(全局单例)
     engine: Engine,
-    /// 编译后的模块缓存（URL -> Module）
+    /// 编译后的模块缓存(URL -> Module)
     module_cache: Arc<RwLock<HashMap<String, Module>>>,
     /// 实例池配置
     pool_config: PoolConfig,
@@ -246,7 +246,7 @@ impl Runtime {
 ```rust
 // crates/extism/src/pool.rs
 pub struct PluginPool {
-    /// 基础模块（用于快速克隆实例）
+    /// 基础模块(用于快速克隆实例)
     base_module: Module,
     /// 空闲实例队列
     idle_instances: ArrayQueue<Plugin>,
@@ -257,7 +257,7 @@ pub struct PluginPool {
 }
 
 impl PluginPool {
-    /// 获取实例（从池或新建）
+    /// 获取实例(从池或新建)
     pub fn acquire(&self) -> Result<PooledPlugin, Error> {
         // 1. 尝试从空闲队列获取
         if let Some(plugin) = self.idle_instances.pop() {
@@ -284,12 +284,12 @@ impl PluginPool {
 
     /// 回收实例到池中
     pub fn release(&self, mut plugin: Plugin) {
-        // 重置实例状态（清空内存、重置全局变量）
+        // 重置实例状态(清空内存、重置全局变量)
         plugin.reset();
 
         // 尝试放回空闲队列
         if self.idle_instances.push(plugin).is_err() {
-            // 队列满，丢弃实例
+            // 队列满,丢弃实例
             self.current_size.fetch_sub(1, Ordering::SeqCst);
         }
     }
@@ -313,7 +313,7 @@ pub type HostFunctionImpl = Box<
 >;
 
 pub struct HostFunction {
-    /// 函数名称（WASM 中可见）
+    /// 函数名称(WASM 中可见)
     name: String,
     /// 参数类型
     params: Vec<ValType>,
@@ -343,7 +343,7 @@ pub fn http_request(
     // 2. 反序列化请求
     let request: HttpRequest = serde_json::from_slice(&req_bytes)?;
 
-    // 3. 执行 HTTP 请求（Host 侧）
+    // 3. 执行 HTTP 请求(Host 侧)
     let response = blocking_http_call(request)?;
 
     // 4. 序列化响应并写入线性内存
@@ -376,7 +376,7 @@ impl CurrentPlugin {
     }
 
     pub fn memory_alloc(&mut self, len: usize) -> Result<usize, Error> {
-        // 调用 WASM 侧的 malloc 函数（如果存在）
+        // 调用 WASM 侧的 malloc 函数(如果存在)
         if let Some(malloc) = self.get_func("malloc") {
             let mut results = [Val::I32(0)];
             malloc.call(&mut self.store, &[Val::I32(len as i32)], &mut results)?;
@@ -402,19 +402,19 @@ impl CurrentPlugin {
 ```rust
 // 线性内存布局
 // ┌─────────────────────────────────────────────────────────────┐
-// │  0x0000  │  保留区域（NULL 指针保护）                        │
+// │  0x0000  │  保留区域(NULL 指针保护)                        │
 // ├─────────────────────────────────────────────────────────────┤
-// │  0x0010  │  栈区（Stack）- 向下增长                          │
+// │  0x0010  │  栈区(Stack)- 向下增长                          │
 // │          │  ...                                              │
 // ├─────────────────────────────────────────────────────────────┤
-// │  0x4000  │  堆区（Heap）- 向上增长                           │
+// │  0x4000  │  堆区(Heap)- 向上增长                           │
 // │          │  ...                                              │
 // ├─────────────────────────────────────────────────────────────┤
-// │  0x8000  │  输入缓冲区（Host -> Plugin）                      │
+// │  0x8000  │  输入缓冲区(Host -> Plugin)                      │
 // ├─────────────────────────────────────────────────────────────┤
-// │  0xC000  │  输出缓冲区（Plugin -> Host）                      │
+// │  0xC000  │  输出缓冲区(Plugin -> Host)                      │
 // └─────────────────────────────────────────────────────────────┘
-// 每页 64KB，默认最小 2 页（128KB）
+// 每页 64KB,默认最小 2 页(128KB)
 ```
 
 #### 2.4.2 关键实现细节
@@ -480,7 +480,7 @@ impl MemoryManager {
 **零拷贝优化**:
 
 ```rust
-// 标准方式：需要数据拷贝
+// 标准方式:需要数据拷贝
 pub fn call_with_copy(&mut self, input: &[u8]) -> Result<Vec<u8>, Error> {
     // Host -> WASM: 拷贝到线性内存
     let ptr = self.alloc(input.len())?;
@@ -496,13 +496,13 @@ pub fn call_with_copy(&mut self, input: &[u8]) -> Result<Vec<u8>, Error> {
     Ok(result)
 }
 
-// 零拷贝方式：使用共享缓冲区（需 unsafe）
+// 零拷贝方式:使用共享缓冲区(需 unsafe)
 pub unsafe fn call_zero_copy(&mut self, input: &[u8]) -> Result<&[u8], Error> {
     // 获取 WASM 内存的原始指针
     let mem_ptr = self.memory.data_ptr(&self.store);
     let mem_size = self.memory.data_size(&self.store);
 
-    // 直接在 Host 内存中准备输入（需确保生命周期安全）
+    // 直接在 Host 内存中准备输入(需确保生命周期安全)
     std::ptr::copy_nonoverlapping(
         input.as_ptr(),
         mem_ptr.add(INPUT_OFFSET),
@@ -614,7 +614,7 @@ func (p *Plugin) Call(name string, input []byte) ([]byte, error) {
     length := C.extism_plugin_output_length(p.ctx, p.plugin)
     data := C.extism_plugin_output_data(p.ctx, p.plugin)
 
-    // 拷贝数据（零拷贝需要特殊处理）
+    // 拷贝数据(零拷贝需要特殊处理)
     return C.GoBytes(unsafe.Pointer(data), C.int(length)), nil
 }
 ```
@@ -658,20 +658,20 @@ sequenceDiagram
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                    函数调用开销分析（单次调用）                    │
+│                    函数调用开销分析(单次调用)                    │
 ├─────────────────────────────────────────────────────────────────┤
 │ 阶段                    │ 耗时      │ 优化策略                  │
 ├─────────────────────────────────────────────────────────────────┤
 │ 1. 输入序列化 (JSON)    │ 10-100μs  │ 使用 MsgPack/Protobuf     │
 │ 2. Host 内存分配        │ 1-5μs     │ 预分配缓冲区              │
-│ 3. 内存拷贝 (Host->WASM)│ 0.1-1μs   │ 零拷贝：共享内存映射      │
+│ 3. 内存拷贝 (Host->WASM)│ 0.1-1μs   │ 零拷贝:共享内存映射      │
 │ 4. WASM 调用开销        │ 0.5-2μs   │ 直接函数指针调用          │
 │ 5. 业务逻辑执行         │ 可变      │ 优化算法                  │
 │ 6. 输出序列化           │ 10-100μs  │ 使用二进制格式            │
 │ 7. 内存拷贝 (WASM->Host)│ 0.1-1μs   │ 零拷贝                    │
 │ 8. 反序列化             │ 10-100μs  │ 使用零拷贝反序列化        │
 ├─────────────────────────────────────────────────────────────────┤
-│ 总计（不含业务逻辑）    │ ~30-300μs │ 优化后可达 ~5-50μs        │
+│ 总计(不含业务逻辑)    │ ~30-300μs │ 优化后可达 ~5-50μs        │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -691,14 +691,14 @@ sequenceDiagram
 ### 4.2 函数调用优化
 
 ```rust
-// 优化前：动态查找函数
+// 优化前:动态查找函数
 pub fn call_slow(&mut self, name: &str, input: &[u8]) -> Result<Vec<u8>, Error> {
     let func = self.instance.get_func(&mut self.store, name)
         .ok_or(Error::FunctionNotFound)?;
     // ... 调用
 }
 
-// 优化后：缓存函数引用
+// 优化后:缓存函数引用
 pub struct OptimizedPlugin {
     func_cache: HashMap<String, TypedFunc<(i32, i32), i32>>,
 }
@@ -715,12 +715,12 @@ pub fn call_fast(&mut self, name: &str, input: &[u8]) -> Result<Vec<u8>, Error> 
 **批量处理模式**:
 
 ```rust
-// 单条处理：N 次调用开销
+// 单条处理:N 次调用开销
 for record in batch {
     plugin.call("process", record)?;
 }
 
-// 批量处理：1 次调用开销
+// 批量处理:1 次调用开销
 plugin.call("process_batch", &batch)?;
 ```
 

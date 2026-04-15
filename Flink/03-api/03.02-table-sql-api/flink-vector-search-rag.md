@@ -1,6 +1,6 @@
-> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> **状态**: ✅ 已发布 | **风险等级**: 低 | **最后更新**: 2026-04-15
 >
-> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+> Apache Flink 2.2.0 已于 2025-12-04 正式发布，VECTOR_SEARCH 已 GA。请以官方文档为准。
 >
 # Flink VECTOR_SEARCH 向量搜索与 RAG 实现
 
@@ -26,7 +26,7 @@ $$\text{VECTOR\_SEARCH}(\mathbf{q}, S, k, \text{sim}) = \{(\mathbf{v}_i, s_i) \m
 
 **Flink 2.2 GA 特性：**
 
-根据 Flink 2.2 路线图，VECTOR_SEARCH 预计发布特性：
+Flink 2.2.0 正式发布 VECTOR_SEARCH 全部功能[^2]：
 
 | 特性 | 说明 | 版本 | 状态 |
 |------|------|------|------|
@@ -35,6 +35,8 @@ $$\text{VECTOR\_SEARCH}(\mathbf{q}, S, k, \text{sim}) = \{(\mathbf{v}_i, s_i) \m
 | 元数据过滤 | 预过滤 + 向量搜索组合 | 2.2.0+ | ✅ GA |
 | 增量索引更新 | CDC 驱动的向量索引同步 | 2.2.0+ | ✅ GA |
 | 混合搜索 | 向量 + 全文搜索融合 | 2.2.0+ | ✅ GA |
+| LATERAL VECTOR_SEARCH | 支持 SQL LATERAL 关联语法 | 2.2.0+ | ✅ GA |
+| async / timeout | 异步查询与超时配置 | 2.2.0+ | ✅ GA |
 
 ---
 
@@ -260,9 +262,9 @@ $$\forall x_1, x_2: \|E(x_1) - E(x_2)\| \leq L \cdot d_{semantic}(x_1, x_2)$$
 
 ## 3. 关系建立 (Relations)
 
-### 与 ML_PREDICT（实验性）的协作关系
+### 与 ML_PREDICT（GA）的协作关系
 
-Flink 中 `ML_PREDICT`（实验性）与 `VECTOR_SEARCH`（规划中）形成完整的流式 AI 管道：
+Flink 中 `ML_PREDICT`（GA）与 `VECTOR_SEARCH`（GA）形成完整的流式 AI 管道：
 
 ```
 ┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
@@ -281,8 +283,8 @@ Flink 中 `ML_PREDICT`（实验性）与 `VECTOR_SEARCH`（规划中）形成完
 
 | 组件 | 职责 | 输入 | 输出 | 延迟 |
 |------|------|------|------|------|
-| `ML_PREDICT`（实验性） | 特征提取、嵌入生成 | 原始数据 | 稠密向量 | 10-100ms |
-| `VECTOR_SEARCH`（规划中） | 相似度计算、近邻检索 | 查询向量 | Top-K文档 | 5-50ms |
+| `ML_PREDICT`（GA） | 特征提取、嵌入生成 | 原始数据 | 稠密向量 | 10-100ms |
+| `VECTOR_SEARCH`（GA） | 相似度计算、近邻检索 | 查询向量 | Top-K文档 | 5-50ms |
 | `LLM` | 上下文生成 | 查询+上下文 | 自然语言回复 | 100-1000ms |
 
 ---
@@ -325,7 +327,7 @@ Flink 中 `ML_PREDICT`（实验性）与 `VECTOR_SEARCH`（规划中）形成完
 **问题：** 为何不直接用 SQL 计算相似度？
 
 ```sql
--- 纯 SQL 实现（不推荐 - 全表扫描）
+-- 纯 SQL 实现(不推荐 - 全表扫描)
 SELECT doc_id, content,
        COSINE_SIMILARITY(query_vector, embedding) AS score
 FROM documents
@@ -513,7 +515,7 @@ $$(n^*, d^*, k^*, \epsilon^*) = \arg\min_{n,d,k,\epsilon} C(n,d,k,\epsilon) \qua
 **6.1.1 基本 TVF 语法**
 
 ```sql
--- 基本 VECTOR_SEARCH 语法
+-- 基本 VECTOR_SEARCH 语法(Flink 2.2 GA 标准语法)
 SELECT
   q.query_id,
   q.query_text,
@@ -526,6 +528,23 @@ LATERAL TABLE(VECTOR_SEARCH(
   index_table := 'document_vectors',
   top_k := 5,
   metric := 'COSINE'
+)) AS v;
+
+-- 带 async 和 timeout 配置的 LATERAL VECTOR_SEARCH
+SELECT
+  q.query_id,
+  q.query_text,
+  v.doc_id,
+  v.content,
+  v.similarity_score
+FROM user_queries q,
+LATERAL TABLE(VECTOR_SEARCH(
+  query_vector := ML_PREDICT('text-embedding-3-small', q.query_text),
+  index_table := 'document_vectors',
+  top_k := 5,
+  metric := 'COSINE',
+  async := TRUE,
+  timeout := INTERVAL '10' SECOND
 )) AS v;
 ```
 
@@ -593,7 +612,7 @@ LATERAL TABLE(VECTOR_SEARCH(
 
 ```sql
 -- ============================================
--- 步骤 1: 创建文档向量表（知识库）
+-- 步骤 1: 创建文档向量表(知识库)
 -- ============================================
 CREATE TABLE kb_documents (
   doc_id STRING PRIMARY KEY,
@@ -631,7 +650,7 @@ CREATE TABLE customer_questions (
 -- ============================================
 -- 步骤 3: 创建嵌入模型
 -- ============================================
-<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+<!-- 以下语法为概念设计,实际 Flink 版本尚未支持 -->
 ~~CREATE MODEL text_embedder~~ (未来可能的语法)
 WITH (
   'provider' = 'openai',
@@ -797,14 +816,14 @@ FROM support_responses;
 **场景：** 实时商品推荐，基于用户行为向量
 
 ```sql
--- 商品向量表（多模态嵌入）
+-- 商品向量表(多模态嵌入)
 CREATE TABLE product_vectors (
   product_id STRING PRIMARY KEY,
   product_name STRING,
   category STRING,
   price DECIMAL(10, 2),
   brand STRING,
-  -- 多模态嵌入（文本+图像）
+  -- 多模态嵌入(文本+图像)
   embedding VECTOR(512),
   updated_at TIMESTAMP(3)
 ) WITH (
@@ -873,7 +892,7 @@ LATERAL TABLE(VECTOR_SEARCH(
   filter := CONCAT('product_id NOT IN (', ARRAY_JOIN(u.interacted_products, ','), ')')
 )) AS r;
 
--- 输出到推荐缓存（Redis）
+-- 输出到推荐缓存(Redis)
 CREATE TABLE recommendation_cache (
   user_id STRING,
   recommendations ARRAY<ROW<
@@ -923,7 +942,7 @@ CREATE TABLE document_chunks (
   'index' = 'document_chunks'
 );
 
--- 员工查询流（带权限信息）
+-- 员工查询流(带权限信息)
 CREATE TABLE employee_queries (
   query_id STRING,
   employee_id STRING,
@@ -971,13 +990,13 @@ graph TB
         A3[结构化数据]
     end
 
-    subgraph Embedding["嵌入层 - ML_PREDICT（实验性）"]
+    subgraph Embedding["嵌入层 - ML_PREDICT(实验性)"]
         B1[文本嵌入<br/>BERT/MiniLM]
         B2[图像嵌入<br/>ResNet/ViT]
         B3[多模态融合<br/>CLIP]
     end
 
-    subgraph Search["搜索层 - VECTOR_SEARCH TVF（规划中）"]
+    subgraph Search["搜索层 - VECTOR_SEARCH TVF(规划中)"]
         C1[查询向量]
         C2[元数据过滤]
         C3[向量索引<br/>HNSW/IVF]
@@ -1036,10 +1055,10 @@ flowchart LR
     end
 
     subgraph Flink["Flink SQL 引擎"]
-        F1[ML_PREDICT（实验性）<br/>嵌入生成]
-        F2[VECTOR_SEARCH（规划中）<br/>向量检索]
+        F1[ML_PREDICT(GA)<br/>嵌入生成]
+        F2[VECTOR_SEARCH(GA)<br/>向量检索]
         F3[上下文组装<br/>聚合窗口]
-        F4[ML_PREDICT（实验性）<br/>LLM生成]
+        F4[ML_PREDICT(实验性)<br/>LLM生成]
     end
 
     subgraph VectorDB["向量数据库"]
@@ -1177,7 +1196,7 @@ graph TB
 
 ### 官方发布数据 (2025-12-04)
 
-根据 Flink 2.2 路线图预览：
+Apache Flink 2.2.0 已于 2025-12-04 正式发布 VECTOR_SEARCH GA[^2]：
 
 **VECTOR_SEARCH 性能基准**:
 
@@ -1205,17 +1224,10 @@ LATERAL TABLE(VECTOR_SEARCH(
 
 ## 8. 引用参考 (References)
 
-
-
-
-
-
-
-
-
-
-
+[^1]: Apache Flink Documentation, "Vector Search", 2025. https://nightlies.apache.org/flink/flink-docs-release-2.2/docs/dev/table/sql/queries/vector-search/
+[^2]: Apache Flink Blog, "Apache Flink 2.2.0: Advancing Real-Time Data & AI", December 4, 2025. https://flink.apache.org/2025/12/04/apache-flink-2.2.0-advancing-real-time-data--ai-and-empowering-stream-processing-for-the-ai-era/
+[^3]: Confluent Blog, "Add RAG to Your Flink AI Flow Using Vector Search", 2025. https://www.confluent.io/blog/flink-ai-rag-with-federated-search/
 
 ---
 
-> **状态**: Flink 2.2 功能预览 | **文档版本**: v1.0 | **更新日期**: 2026-04-03
+> **状态**: Flink 2.2 GA | **文档版本**: v1.1 | **更新日期**: 2026-04-15

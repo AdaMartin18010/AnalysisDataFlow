@@ -345,13 +345,13 @@ Flink 2.2.0:
   主题: "AI/ML原生支持与向量搜索"
 
 关键FLIPs:
-  FLIP-471: "VECTOR_SEARCH Support"（规划中）
+  FLIP-471: "VECTOR_SEARCH Support"(规划中)
     - 向量搜索SQL函数
     - 向量索引集成
     - ANN近似最近邻
 
-  FLIP-472: "Model DDL & ML_PREDICT"（实验性）
-    - ~~CREATE MODEL~~语句（概念设计，尚未支持）
+  FLIP-472: "Model DDL & ML_PREDICT"(实验性)
+    - ~~CREATE MODEL~~语句(概念设计,尚未支持)
     - ML_PREDICT函数
     - 模型管理与版本控制
 
@@ -389,7 +389,7 @@ ORDER BY similarity DESC;
 
 ```sql
 -- 注册ML模型
-<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+<!-- 以下语法为概念设计,实际 Flink 版本尚未支持 -->
 ~~CREATE MODEL sentiment_model~~ (未来可能的语法)
 INPUT (text STRING)
 OUTPUT (sentiment STRING, confidence FLOAT)

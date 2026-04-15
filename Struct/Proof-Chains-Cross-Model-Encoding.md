@@ -243,8 +243,8 @@ SYSTEM = P_PingPong [mailbox/in, sender/out] P_Mailbox
           consistent(s_A, s_C)}
 
 步骤2: 证明 ℛ 是强互模拟
-    - 对于 Actor 的每个迁移，CSP 编码有对应迁移
-    - 对于 CSP 的每个可见动作，Actor 有对应行为
+    - 对于 Actor 的每个迁移,CSP 编码有对应迁移
+    - 对于 CSP 的每个可见动作,Actor 有对应行为
     - 迁移后状态仍保持 ℛ 关系
 
 步骤3: 由互模拟等价 ⟹ 迹等价

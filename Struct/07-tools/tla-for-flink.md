@@ -120,6 +120,7 @@ $$
 $$
 
 状态转换：
+
 - `BUFFERING`: 接收记录到缓冲区
 - `PRE_COMMIT`: 生成 WAL 条目
 - `COMMIT`: 异步提交到外部系统
@@ -287,8 +288,8 @@ Alloy基于关系逻辑，擅长静态结构分析，但对**时序行为**和**
 将Flink的复杂状态抽象为TLA+中的集合和函数：
 
 ```tla
-\* 具体：KeyGroupState[key] = value
-\* 抽象：state ∈ [Keys → Values]
+\* 具体:KeyGroupState[key] = value
+\* 抽象:state ∈ [Keys → Values]
 ```
 
 **策略2：动作原子性**
@@ -296,8 +297,8 @@ Alloy基于关系逻辑，擅长静态结构分析，但对**时序行为**和**
 将细粒度的Java操作抽象为原子动作：
 
 ```tla
-\* 具体：多个线程同步操作
-\* 抽象：single atomic action
+\* 具体:多个线程同步操作
+\* 抽象:single atomic action
 ```
 
 **策略3：环境建模**
@@ -350,7 +351,7 @@ TypeInvariant ≜
     ∧ completedCP ⊆ 0..MaxCheckpoint
     ∧ failedCP ⊆ 0..MaxCheckpoint
 
-\* 安全性不变式：已完成checkpoint的所有任务必须已确认
+\* 安全性不变式:已完成checkpoint的所有任务必须已确认
 SafetyInvariant ≜
     ∀ cp ∈ completedCP :
         ∀ t ∈ Tasks : taskStates[t] = "completed" ⇒ TRUE
@@ -389,7 +390,7 @@ AckCheckpoint(t, cp) ≜
     ∧ pendingAcks' = pendingAcks \ {t}
     ∧ UNCHANGED ⟨checkpointId, completedCP, failedCP⟩
 
-\* 完成checkpoint（所有任务已确认）
+\* 完成checkpoint(所有任务已确认)
 CompleteCheckpoint(cp) ≜
     ∧ cp = checkpointId
     ∧ pendingAcks = {}
@@ -398,7 +399,7 @@ CompleteCheckpoint(cp) ≜
     ∧ completedCP' = completedCP ∪ {cp}
     ∧ UNCHANGED ⟨checkpointId, pendingAcks, failedCP⟩
 
-\* 重置任务状态（开始下一个checkpoint）
+\* 重置任务状态(开始下一个checkpoint)
 ResetTasks ≜
     ∧ completedCP ≠ {}
     ∧ checkpointId < MaxCheckpoint
@@ -406,7 +407,7 @@ ResetTasks ≜
     ∧ taskStates' = [t ∈ Tasks ↦ "idle"]
     ∧ UNCHANGED ⟨checkpointId, pendingAcks, completedCP, failedCP⟩
 
-\* Checkpoint失败（超时或错误）
+\* Checkpoint失败(超时或错误)
 FailCheckpoint(cp) ≜
     ∧ cp = checkpointId
     ∧ cp ≤ MaxCheckpoint
@@ -423,7 +424,7 @@ Next ≜
     ∨ ∃ cp ∈ 1..MaxCheckpoint : CompleteCheckpoint(cp)
     ∨ ResetTasks
     ∨ ∃ cp ∈ 1..MaxCheckpoint : FailCheckpoint(cp)
-    ∨ UNCHANGED vars  \* 保持状态不变（用于验证stuttering）
+    ∨ UNCHANGED vars  \* 保持状态不变(用于验证stuttering)
 
 -----------------------------------------------------------------------------
 \* 完整规格
@@ -432,10 +433,10 @@ Spec ≜ Init ∧ □[Next]_vars
 -----------------------------------------------------------------------------
 \* 活性属性
 
-\* 弱公平性：最终触发checkpoint
+\* 弱公平性:最终触发checkpoint
 WF_Trigger ≜ ∀ cp ∈ 1..MaxCheckpoint : WF_vars(TriggerCheckpoint(cp))
 
-\* 弱公平性：最终完成已触发的checkpoint
+\* 弱公平性:最终完成已触发的checkpoint
 WF_Complete ≜ ∀ cp ∈ 1..MaxCheckpoint : WF_vars(CompleteCheckpoint(cp))
 
 \* 带公平性的完整规格
@@ -444,16 +445,16 @@ FairSpec ≜ Spec ∧ WF_Trigger ∧ WF_Complete
 -----------------------------------------------------------------------------
 \* 待验证的性质
 
-\* 性质1：任何已完成的checkpoint之前必须被触发过
+\* 性质1:任何已完成的checkpoint之前必须被触发过
 ValidCompletion ≜
     □(∀ cp ∈ completedCP : cp ≤ checkpointId)
 
-\* 性质2：Eventually每个checkpoint要么完成要么失败
+\* 性质2:Eventually每个checkpoint要么完成要么失败
 CheckpointOutcome ≜
     ∀ cp ∈ 1..MaxCheckpoint :
         □(checkpointId = cp ⇒ ◇(cp ∈ completedCP ∨ cp ∈ failedCP))
 
-\* 性质3：一致性 - 已完成checkpoint的所有任务都已确认
+\* 性质3:一致性 - 已完成checkpoint的所有任务都已确认
 Consistency ≜
     □(∀ cp ∈ completedCP :
         ∀ t ∈ Tasks : cp ∈ completedCP ⇒ taskStates[t] ∈ {"acknowledged", "completed"})
@@ -540,7 +541,7 @@ ReceiveBarrier(t, ch, b) ≜
     ∧ currentBarrier' = [currentBarrier EXCEPT ![t] = b]
     ∧ UNCHANGED ⟨barrierBuffers⟩
 
-\* 阻塞通道（等待其他通道的barrier）
+\* 阻塞通道(等待其他通道的barrier)
 BlockChannel(t, ch, b) ≜
     ∧ b ∈ pendingBarriers[t]
     ∧ channelStates[t][ch] = "receiving"
@@ -556,7 +557,7 @@ CompleteAlignment(t, b) ≜
     ∧ pendingBarriers' = [pendingBarriers EXCEPT ![t] = @ \\{b}]
     ∧ UNCHANGED ⟨barrierBuffers, currentBarrier⟩
 
-\* 缓冲区数据（在阻塞期间到达的数据）
+\* 缓冲区数据(在阻塞期间到达的数据)
 BufferData(t, ch, b, data) ≜
     ∧ b ∈ pendingBarriers[t]
     ∧ channelStates[t][ch] = "blocked"
@@ -577,12 +578,12 @@ Next ≜
 Spec ≜ Init ∧ □[Next]_vars
 
 -----------------------------------------------------------------------------
-\* 活性属性：最终对齐完成
+\* 活性属性:最终对齐完成
 AlignmentLiveness ≜
     ∀ t ∈ Tasks, b ∈ 1..MaxBarriers :
         □(b ∈ pendingBarriers[t] ⇒ ◇(b ∉ pendingBarriers[t]))
 
-\* 安全性：对齐完成意味着所有通道都处理完当前barrier
+\* 安全性:对齐完成意味着所有通道都处理完当前barrier
 AlignmentSafety ≜
     □(∀ t ∈ Tasks, b ∈ 1..MaxBarriers :
         b ∉ pendingBarriers[t] ∧ b ≤ currentBarrier[t] ⇒
@@ -602,7 +603,7 @@ EXTENDS Integers, Sequences, FiniteSets, TLC
 
 CONSTANTS
     Transactions,   \* 事务ID集合
-    Participants,   \* 参与者集合（Task + Sink）
+    Participants,   \* 参与者集合(Task + Sink)
     Coordinator     \* 协调者
 
 VARIABLES
@@ -621,13 +622,13 @@ TypeInvariant ≜
     ∧ coordinatorDecision ∈ [Transactions → {"commit", "abort", "undecided"}]
     ∧ logState ∈ [Participants → [Transactions → {"unlogged", "logged"}]]
 
-\* 关键不变式：已提交事务的所有参与者都必须已经投赞成票
+\* 关键不变式:已提交事务的所有参与者都必须已经投赞成票
 CommitInvariant ≜
     ∀ tx ∈ Transactions :
         txState[tx] = "committed" ⇒
             ∀ p ∈ Participants : participantVotes[tx][p] = "yes"
 
-\* 关键不变式：已提交事务必须记录在日志中
+\* 关键不变式:已提交事务必须记录在日志中
 LogInvariant ≜
     ∀ tx ∈ Transactions, p ∈ Participants :
         txState[tx] = "committed" ⇒ logState[p][tx] = "logged"
@@ -668,7 +669,7 @@ VoteNo(tx, p) ≜
 -----------------------------------------------------------------------------
 \* Phase 2: Commit/Abort
 
-\* 协调者决定commit（所有参与者投yes）
+\* 协调者决定commit(所有参与者投yes)
 DecideCommit(tx) ≜
     ∧ txState[tx] = "preparing"
     ∧ ∀ p ∈ Participants : participantVotes[tx][p] = "yes"
@@ -676,7 +677,7 @@ DecideCommit(tx) ≜
     ∧ txState' = [txState EXCEPT ![tx] = "committed"]
     ∧ UNCHANGED ⟨participantVotes, logState⟩
 
-\* 协调者决定abort（至少一个参与者投no）
+\* 协调者决定abort(至少一个参与者投no)
 DecideAbort(tx) ≜
     ∧ txState[tx] = "preparing"
     ∧ ∃ p ∈ Participants : participantVotes[tx][p] = "no"
@@ -684,14 +685,14 @@ DecideAbort(tx) ≜
     ∧ txState' = [txState EXCEPT ![tx] = "aborted"]
     ∧ UNCHANGED ⟨participantVotes, logState⟩
 
-\* 参与者执行commit（收到commit决定）
+\* 参与者执行commit(收到commit决定)
 ExecuteCommit(tx, p) ≜
     ∧ coordinatorDecision[tx] = "commit"
     ∧ txState[tx] = "committed"
     ∧ logState' = [logState EXCEPT ![p][tx] = "logged"]  \* 写commit日志
     ∧ UNCHANGED ⟨txState, participantVotes, coordinatorDecision⟩
 
-\* 参与者执行abort（收到abort决定）
+\* 参与者执行abort(收到abort决定)
 ExecuteAbort(tx, p) ≜
     ∧ coordinatorDecision[tx] = "abort"
     ∧ txState[tx] = "aborted"
@@ -715,7 +716,7 @@ Next ≜
 Spec ≜ Init ∧ □[Next]_vars
 
 -----------------------------------------------------------------------------
-\* Exactly-Once语义：每个事务要么完全提交要么完全中止
+\* Exactly-Once语义:每个事务要么完全提交要么完全中止
 ExactlyOnce ≜
     □(∀ tx ∈ Transactions :
         txState[tx] ∈ {"committed", "aborted"} ⇒
@@ -723,7 +724,7 @@ ExactlyOnce ≜
             ∧
             (txState[tx] = "aborted" ⇒ ∀ p ∈ Participants : logState[p][tx] = "logged"))
 
-\* 活性：所有事务最终都有结果
+\* 活性:所有事务最终都有结果
 Termination ≜
     ∀ tx ∈ Transactions : ◇(txState[tx] ∈ {"committed", "aborted"})
 
@@ -763,7 +764,7 @@ MonotonicityInvariant ≜
         \* 输出水印永不回退
         outputWatermark[t] ≥ 0
 
-\* 完整性：输出水印不超过任何输入水印
+\* 完整性:输出水印不超过任何输入水印
 CompletenessInvariant ≜
     ∀ t ∈ Tasks :
         outputWatermark[t] ≤ Min({inputWatermarks[t][ch] : ch ∈ 1..InputChannels})
@@ -778,21 +779,21 @@ Init ≜
 -----------------------------------------------------------------------------
 \* 动作定义
 
-\* 更新输入水印（从上游接收新水印）
+\* 更新输入水印(从上游接收新水印)
 UpdateInputWatermark(t, ch, newWm) ≜
     ∧ newWm ≥ inputWatermarks[t][ch]  \* 单调性保证
     ∧ newWm ≤ MaxTimestamp
     ∧ inputWatermarks' = [inputWatermarks EXCEPT ![t][ch] = newWm]
     ∧ UNCHANGED ⟨outputWatermark, pendingRecords⟩
 
-\* 计算并发送输出水印（取所有输入水印的最小值）
+\* 计算并发送输出水印(取所有输入水印的最小值)
 EmitOutputWatermark(t) ≜
     ∧ LET minWm ≜ Min({inputWatermarks[t][ch] : ch ∈ 1..InputChannels})
       IN ∧ minWm > outputWatermark[t]  \* 只有严格大于才更新
          ∧ outputWatermark' = [outputWatermark EXCEPT ![t] = minWm]
     ∧ UNCHANGED ⟨inputWatermarks, pendingRecords⟩
 
-\* 处理记录（时间戳小于输出水印的记录才能被处理）
+\* 处理记录(时间戳小于输出水印的记录才能被处理)
 ProcessRecord(t) ≜
     ∧ pendingRecords[t] ≠ ⟨⟩
     ∧ Head(pendingRecords[t]).timestamp ≤ outputWatermark[t]
@@ -819,11 +820,11 @@ Next ≜
 Spec ≜ Init ∧ □[Next]_vars
 
 -----------------------------------------------------------------------------
-\* 活性属性：水印最终推进到最大时间戳
+\* 活性属性:水印最终推进到最大时间戳
 WatermarkProgress ≜
     ∀ t ∈ Tasks : ◇(outputWatermark[t] = MaxTimestamp)
 
-\* 安全性：没有记录被延迟处理（所有时间戳≤水印的记录都被处理）
+\* 安全性:没有记录被延迟处理(所有时间戳≤水印的记录都被处理)
 NoLateRecords ≜
     □(∀ t ∈ Tasks, rec ∈ ToSet(pendingRecords[t]) :
         rec.timestamp > outputWatermark[t])
@@ -884,7 +885,7 @@ Init ≜
 -----------------------------------------------------------------------------
 \* 动作定义
 
-\* 开始扩容（增加并行度）
+\* 开始扩容(增加并行度)
 ScaleUp(newParallelism) ≜
     ∧ ¬scalingInProgress
     ∧ newParallelism > parallelism
@@ -897,7 +898,7 @@ ScaleUp(newParallelism) ≜
         ELSE [k ∈ KeyRange ↦ "empty"]]
     ∧ UNCHANGED ⟨keyAssignment, pendingReassignments⟩
 
-\* 开始缩容（减少并行度）
+\* 开始缩容(减少并行度)
 ScaleDown(newParallelism) ≜
     ∧ ¬scalingInProgress
     ∧ newParallelism < parallelism
@@ -908,7 +909,7 @@ ScaleDown(newParallelism) ≜
     ∧ pendingReassignments' = {k ∈ KeyRange : keyAssignment[k] ≥ newParallelism}
     ∧ UNCHANGED ⟨keyAssignment, state⟩
 
-\* 重新分配Key（在扩缩容过程中）
+\* 重新分配Key(在扩缩容过程中)
 ReassignKey(k, newSubtask) ≜
     ∧ scalingInProgress
     ∧ k ∈ pendingReassignments
@@ -929,7 +930,7 @@ CompleteScaling ≜
     ∧ scalingInProgress' = FALSE
     ∧ UNCHANGED ⟨parallelism, keyAssignment, state, pendingReassignments⟩
 
-\* 正常状态更新（非扩缩容期间）
+\* 正常状态更新(非扩缩容期间)
 UpdateState(k, v) ≜
     ∧ ¬scalingInProgress
     ∧ k ∈ KeyRange
@@ -953,11 +954,11 @@ Next ≜
 Spec ≜ Init ∧ □[Next]_vars
 
 -----------------------------------------------------------------------------
-\* 活性属性：扩缩容最终完成
+\* 活性属性:扩缩容最终完成
 ScalingLiveness ≜
     □(scalingInProgress ⇒ ◇(¬scalingInProgress))
 
-\* 安全性：在扩缩容期间，被迁移的key状态不丢失
+\* 安全性:在扩缩容期间,被迁移的key状态不丢失
 NoStateLoss ≜
     □(∀ k ∈ KeyRange, oldSt ∈ 0..(MaxParallelism-1) :
         state[oldSt][k] ≠ "empty" ⇒
@@ -1016,7 +1017,7 @@ BufferRecord(r) ≜
     ∧ buffer' = Append(buffer, r)
     ∧ UNCHANGED ⟨walLog, commitStatus, sinkState⟩
 
-\* 预提交：将缓冲区写入WAL
+\* 预提交:将缓冲区写入WAL
 PreCommit ≜
     ∧ commitStatus = "idle"
     ∧ buffer ≠ ⟨⟩
@@ -1026,7 +1027,7 @@ PreCommit ≜
     ∧ buffer' = ⟨⟩
     ∧ UNCHANGED ⟨sinkState⟩
 
-\* 提交：将WAL中的记录应用到Sink
+\* 提交:将WAL中的记录应用到Sink
 Commit ≜
     ∧ commitStatus = "pre_commit"
     ∧ ∀ i ∈ 1..Len(walLog) : walLog[i].status ∈ {"pre_committed", "committed"}
@@ -1066,13 +1067,13 @@ Spec ≜ Init ∧ □[Next]_vars
 -----------------------------------------------------------------------------
 \* 关键性质
 
-\* WAL持久性：一旦pre-commit，记录不会丢失
+\* WAL持久性:一旦pre-commit,记录不会丢失
 WALDurability ≜
     □(∀ i ∈ 1..Len(walLog) :
         walLog[i].status = "pre_committed" ⇒
             ◇(walLog[i].status ∈ {"committed", "aborted"}))
 
-\* Exactly-Once：记录要么完全提交要么完全不提交
+\* Exactly-Once:记录要么完全提交要么完全不提交
 ExactlyOnce ≜
     □(∀ r ∈ Records :
         Count(sinkState, r) ∈ {0, 1})
@@ -1175,12 +1176,12 @@ define
     TypeInvariant ≜
         ∧ channelStates ∈ [Tasks → [1..InputChannels → {"idle", "receiving", "blocked"}]]
         ∧ pendingBarriers ∈ [Tasks → SUBSET 1..MaxBarriers]
-    
+
     \* 对齐完成条件
     AlignmentComplete(t, b) ≜
         ∧ b ∈ pendingBarriers[t]
         ∧ ∀ ch ∈ 1..InputChannels : channelStates[t][ch] = "receiving"
-    
+
     \* 安全性不变式
     SafetyInvariant ≜
         ∀ t ∈ Tasks, b ∈ pendingBarriers[t] :
@@ -1194,7 +1195,7 @@ TaskLoop:
     while TRUE do
         \* 等待barrier到达任何通道
         await ∃ ch ∈ 1..InputChannels : channelStates[self][ch] = "idle";
-        
+
 ReceiveBarrier:
         with ch ∈ {c ∈ 1..InputChannels : channelStates[self][c] = "idle"} do
             localBarrier := currentBarrier[self] + 1;
@@ -1205,11 +1206,11 @@ ReceiveBarrier:
 
 BlockOrComplete:
         if AlignmentComplete(self, localBarrier) then
-            \* 所有通道都收到barrier，完成对齐
+            \* 所有通道都收到barrier,完成对齐
             channelStates[self] := [ch ∈ 1..InputChannels ↦ "idle"];
             pendingBarriers[self] := pendingBarriers[self] \\{localBarrier};
         else
-            \* 阻塞已收到barrier的通道，等待其他通道
+            \* 阻塞已收到barrier的通道,等待其他通道
             with ch ∈ {c ∈ 1..InputChannels : channelStates[self][c] = "receiving"} do
                 channelStates[self][ch] := "blocked";
                 bufferData[self] := bufferData[self] ∪ {[channel ↦ ch, barrier ↦ localBarrier]};
@@ -1226,9 +1227,9 @@ UnblockLoop:
         await ∃ t ∈ Tasks, b ∈ pendingBarriers[t] :
             ∧ b ∈ pendingBarriers[t]
             ∧ ∀ ch ∈ 1..InputChannels : channelStates[t][ch] = "receiving";
-        
+
 CompleteAlignment:
-        with t ∈ {tt ∈ Tasks : ∃ b ∈ pendingBarriers[tt] : 
+        with t ∈ {tt ∈ Tasks : ∃ b ∈ pendingBarriers[tt] :
                     ∀ ch ∈ 1..InputChannels : channelStates[tt][ch] = "receiving"} do
             with b ∈ pendingBarriers[t] do
                 if ∀ ch ∈ 1..InputChannels : channelStates[t][ch] = "receiving" then
@@ -1242,7 +1243,7 @@ end process;
 
 end algorithm; *)
 
-\* TLA+翻译结果（由PlusCal自动生成）
+\* TLA+翻译结果(由PlusCal自动生成)
 \* BEGIN TRANSLATION
 VARIABLES channelStates, pendingBarriers, currentBarrier, bufferData, pc, localBarrier
 
@@ -1250,17 +1251,17 @@ vars == ⟨ channelStates, pendingBarriers, currentBarrier, bufferData, pc, loca
 
 ProcSet == (Tasks) ∪ ({ "unblocker" })
 
-Init == 
+Init ==
     ∧ channelStates = [t ∈ Tasks ↦ [ch ∈ 1..InputChannels ↦ "idle"]]
     ∧ pendingBarriers = [t ∈ Tasks ↦ {}]
     ∧ currentBarrier = [t ∈ Tasks ↦ 0]
     ∧ bufferData = [t ∈ Tasks ↦ {}]
     ∧ localBarrier = [self ∈ Tasks ↦ 0]
-    ∧ pc = [self ∈ ProcSet ↦ 
+    ∧ pc = [self ∈ ProcSet ↦
             IF self ∈ Tasks THEN "TaskLoop"
             ELSE "UnblockLoop"]
 
-\* ...（自动生成的转换代码）
+\* ...(自动生成的转换代码)
 
 \* END TRANSLATION
 
@@ -1276,7 +1277,7 @@ AlignmentLiveness ≜
 **PlusCal转TLA+执行流程**：
 
 ```bash
-# 1. 编写PlusCal算法（嵌入在.tla文件中）
+# 1. 编写PlusCal算法(嵌入在.tla文件中)
 # 2. 使用TLA+ Toolbox或命令行转译
 git clone https://github.com/tlaplus/tlaplus.git
 cd tlaplus/tlatools/org.lamport.tlatools
@@ -1319,11 +1320,11 @@ CONSTANTS
     MaxAttempts = 2
     NULL = NULL
 
-\* 对称性定义（减少状态空间）
+\* 对称性定义(减少状态空间)
 SYMMETRY
     SymmetryPerms
 
-\* 约束条件（进一步限制状态空间）
+\* 约束条件(进一步限制状态空间)
 CONSTRAINTS
     StateConstraint
 
@@ -1354,13 +1355,13 @@ STATE_CONSTRAINT
 # 基础运行
 java -cp tla2tools.jar tlc2.TLC FlinkCheckpoint.tla
 
-# 多线程并行（8 workers）
+# 多线程并行(8 workers)
 java -cp tla2tools.jar tlc2.TLC -workers 8 FlinkCheckpoint.tla
 
 # 指定配置文件
 java -cp tla2tools.jar tlc2.TLC -config FlinkCheckpoint.cfg FlinkCheckpoint.tla
 
-# 增加内存（16GB）
+# 增加内存(16GB)
 java -Xmx16G -cp tla2tools.jar tlc2.TLC FlinkCheckpoint.tla
 
 # 生成状态图
@@ -1370,7 +1371,7 @@ java -cp tla2tools.jar tlc2.TLC -dump dot,actionlabels states.dot FlinkCheckpoin
 **步骤4：结果分析**
 
 ```
-TLC输出示例：
+TLC输出示例:
 
 @!@!@STARTMSG 2190:0 @!@!@
 Finished computing initial states: 1 distinct state generated.
@@ -1397,12 +1398,12 @@ All properties are true. No error found.
 Error: Invariant Consistency is violated.
 
 Counterexample:
-State 1: 
+State 1:
   checkpointId = 0
   taskStates = (t1 :> "idle" @@ t2 :> "idle")
   pendingAcks = {}
   completedCP = {}
-  
+
 State 2:
   checkpointId = 1
   taskStates = (t1 :> "triggering" @@ t2 :> "triggering")
@@ -1607,7 +1608,7 @@ sequenceDiagram
 sequenceDiagram
     participant S1 as Source 1
     participant S2 as Source 2
-    participant T as Task<br/>（Min Watermark）
+    participant T as Task<br/>(Min Watermark)
     participant Down as Downstream
 
     Note over S1,Down: 初始状态: wm = 0
@@ -1639,19 +1640,19 @@ sequenceDiagram
     participant Sink as 外部系统
 
     Source->>Buffer: 写入记录
-    
+
     Note over Buffer: 缓冲区满或<br/>Checkpoint触发
-    
+
     Buffer->>WAL: preCommit()<br/>写入WAL
     WAL-->>Buffer: 确认持久化
-    
+
     Note over WAL: Checkpoint完成
-    
+
     WAL->>Committer: commit()
     Committer->>Sink: 提交事务
     Sink-->>Committer: 提交成功
     Committer->>WAL: 标记已提交
-    
+
     Note over WAL: 清理已提交记录
 ```
 
@@ -1666,7 +1667,7 @@ sequenceDiagram
 **建模方法**：
 
 ```tla
-\* 扩展FlinkCheckpoint模块，增加故障注入
+\* 扩展FlinkCheckpoint模块,增加故障注入
 ---------------------------- MODULE CheckpointWithFailures ----------------------------
 
 EXTENDS FlinkCheckpoint
@@ -1724,7 +1725,7 @@ RestoreFromIncremental(cp) ≜
     ∧ LET baseCP ≜ BaseCheckpoint(cp)  \* 获取基础checkpoint
         sharedStates ≜ SharedStates(cp)  \* 获取共享状态
       IN
-        \* BUG: 如果在恢复过程中新的checkpoint完成，
+        \* BUG: 如果在恢复过程中新的checkpoint完成,
         \* sharedStates可能被覆盖
         ∧ cp ∉ completedCP'  \* 条件被违反
         ∧ state' = [t ∈ Tasks ↦
@@ -1880,22 +1881,22 @@ IncrementalRefreshCorrect ≜
 \* Standard TLC Configuration Template
 \* ============================================
 
-\* 1. 常量定义（限制状态空间）
+\* 1. 常量定义(限制状态空间)
 CONSTANTS
     Tasks = {t1, t2}
     MaxCheckpoint = 3
     MaxRetries = 2
     NULL = NULL
 
-\* 2. 对称性约简（如果适用）
+\* 2. 对称性约简(如果适用)
 SYMMETRY
     TaskSymmetry
 
-\* 3. 状态约束（防止状态爆炸）
+\* 3. 状态约束(防止状态爆炸)
 CONSTRAINT
     StateConstraint
 
-\* 4. 动作约束（限制动作交错）
+\* 4. 动作约束(限制动作交错)
 ACTION_CONSTRAINT
     ActionConstraint
 
@@ -1960,7 +1961,7 @@ java -cp tla2tools.jar tlc2.TLC -dump dot,actionlabels states.dot MySpec.tla
 # 生成详细的覆盖率报告
 java -cp tla2tools.jar tlc2.TLC -coverage 100 MySpec.tla
 
-# 使用检查点（断点续传）
+# 使用检查点(断点续传)
 java -cp tla2tools.jar tlc2.TLC -checkpoint 30 MySpec.tla
 ```
 
@@ -1972,7 +1973,7 @@ java -cp tla2tools.jar tlc2.TLC -checkpoint 30 MySpec.tla
 (* --algorithm GoodDesign
 
 \* 1. 明确定义常量
-constants 
+constants
     N = 5,           \* 进程数量
     MaxSteps = 10    \* 最大步数
 
@@ -1981,13 +1982,13 @@ variables
     counter = 0,
     pc = [i ∈ 1..N ↦ "Start"];
 
-\* 3. define块：定义不变式和辅助函数
+\* 3. define块:定义不变式和辅助函数
 define
     TypeInvariant ≜ counter ∈ Nat
     Safety ≜ counter ≤ MaxSteps
 end define
 
-\* 4. 宏定义（可选）
+\* 4. 宏定义(可选)
 macro Increment() begin
     counter := counter + 1;
 end macro
@@ -2010,17 +2011,17 @@ end algorithm; *)
 **2. 常见错误避免**
 
 ```tla
-\* 错误1：忘记处理stuttering
-\* 修复：在while循环中加入UNCHANGED或使用await
+\* 错误1:忘记处理stuttering
+\* 修复:在while循环中加入UNCHANGED或使用await
 
-\* 错误2：await条件永远不满足导致死锁
-\* 修复：确保有进程可以改变await等待的条件
+\* 错误2:await条件永远不满足导致死锁
+\* 修复:确保有进程可以改变await等待的条件
 
-\* 错误3：变量修改不在所有路径上
-\* 修复：使用with语句或确保每个分支都修改所有相关变量
+\* 错误3:变量修改不在所有路径上
+\* 修复:使用with语句或确保每个分支都修改所有相关变量
 
-\* 错误4：标签放置不当
-\* 修复：在原子操作边界放置标签，避免过大原子块
+\* 错误4:标签放置不当
+\* 修复:在原子操作边界放置标签,避免过大原子块
 ```
 
 **3. PlusCal转TLA+调试技巧**
@@ -2029,9 +2030,9 @@ end algorithm; *)
 # 查看转译后的TLA+代码
 java pcal.trans MyAlgorithm.tla
 
-# 转译后的代码在文件末尾，格式为：
+# 转译后的代码在文件末尾,格式为:
 # \* BEGIN TRANSLATION
-# ...（自动生成的TLA+代码）
+# ...(自动生成的TLA+代码)
 # \* END TRANSLATION
 
 # 手动检查转译结果是否正确

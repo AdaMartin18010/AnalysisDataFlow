@@ -62,13 +62,13 @@
 ### 3.1 性能影响
 
 ```
-场景: 每秒处理 10 万条记录，每条记录序列化耗时 0.1ms
+场景: 每秒处理 10 万条记录,每条记录序列化耗时 0.1ms
 
 未优化:
 - 序列化总耗时 = 100,000 × 0.1ms = 10,000ms/s
 - 需要 10 个 CPU 核心仅用于序列化！
 
-优化后（耗时 0.01ms）:
+优化后(耗时 0.01ms):
 - 序列化总耗时 = 100,000 × 0.01ms = 1,000ms/s
 - 仅需 1 个 CPU 核心
 ```
@@ -94,7 +94,7 @@ class MyApp {
       classOf[ProductInfoSerializer]
     )
 
-    // 启用 Kryo 引用追踪（处理循环引用）
+    // 启用 Kryo 引用追踪(处理循环引用)
     env.getConfig.setAutoTypeRegistrationEnabled(true)
   }
 }
@@ -130,7 +130,7 @@ class UserEvent(
   @BeanProperty var timestamp: Long = 0L,
   @BeanProperty var amount: Double = 0.0
 ) extends Serializable {
-  // 必须提供 getter/setter（或 Scala @BeanProperty）
+  // 必须提供 getter/setter(或 Scala @BeanProperty)
 
   // 无参构造器
   def this() = this("", "", 0L, 0.0)
@@ -170,7 +170,7 @@ env.getConfig.enableForceAvro()
 // ❌ 错误: 未注册自定义类型
 case class UserEvent(userId: String, eventType: String, timestamp: Long)
 
-// 直接使用，Kryo 使用反射序列化
+// 直接使用,Kryo 使用反射序列化
 stream.map(event => UserEvent(event.id, "click", System.currentTimeMillis()))
 
 // 问题:

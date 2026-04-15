@@ -89,14 +89,14 @@ pie title CSA 考试知识分布
 **示例**:
 
 ```
-1. 在 Flink 中，以下哪个操作会触发实际的计算执行？
+1. 在 Flink 中,以下哪个操作会触发实际的计算执行？
    A. map()
    B. filter()
    C. keyBy()
    D. execute()
 
    正确答案: D
-   解析: Flink 采用延迟执行模型，只有调用 execute() 才会提交作业。
+   解析: Flink 采用延迟执行模型,只有调用 execute() 才会提交作业。
 ```
 
 ### 3.2 多选题（10题，每题2分，共20分）
@@ -106,14 +106,14 @@ pie title CSA 考试知识分布
 **示例**:
 
 ```
-2. 以下哪些是 Flink 支持的窗口类型？（选择所有适用的）
+2. 以下哪些是 Flink 支持的窗口类型？(选择所有适用的)
    A. Tumbling Window
    B. Sliding Window
    C. Session Window
    D. Batch Window
 
    正确答案: A, B, C
-   解析: Flink 支持 Tumbling、Sliding、Session 和 Global Window，没有 Batch Window。
+   解析: Flink 支持 Tumbling、Sliding、Session 和 Global Window,没有 Batch Window。
 ```
 
 ### 3.3 判断题（5题，每题2.5分，共12.5分）
@@ -123,12 +123,12 @@ pie title CSA 考试知识分布
 **示例**:
 
 ```
-3. Watermark 用于处理乱序数据，它表示确信不会再有更早的数据到达。
+3. Watermark 用于处理乱序数据,它表示确信不会再有更早的数据到达。
    A. 正确
    B. 错误
 
    正确答案: A
-   解析: Watermark 是时间戳，表示该时间戳之前的数据应该都已经到达。
+   解析: Watermark 是时间戳,表示该时间戳之前的数据应该都已经到达。
 ```
 
 ## 4. 考试流程
@@ -309,7 +309,7 @@ flowchart LR
 │                                                             │
 │                    [学员姓名]                                │
 │                                                             │
-│    通过 CSA 认证考试，证明其具备流计算基础知识和             │
+│    通过 CSA 认证考试,证明其具备流计算基础知识和             │
 │    Apache Flink 初级开发能力                                 │
 │                                                             │
 │    证书编号: CSA-2026-XXXXX                                  │

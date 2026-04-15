@@ -120,15 +120,15 @@ FlinkConnector = ⟨Type, Interface, Semantics, Config, Compatibility⟩
 ┌─────────────────────────────────────────────────────────────┐
 │ EXACTLY_ONCE (恰好一次):                                    │
 │   ∀e ∈ Src: |{s ∈ Sink | s ~ e}| = 1                       │
-│   每个事件恰好被处理一次，无丢失、无重复                      │
+│   每个事件恰好被处理一次,无丢失、无重复                      │
 ├─────────────────────────────────────────────────────────────┤
 │ AT_LEAST_ONCE (至少一次):                                   │
 │   ∀e ∈ Src: |{s ∈ Sink | s ~ e}| ≥ 1                       │
-│   每个事件至少被处理一次，允许重复                            │
+│   每个事件至少被处理一次,允许重复                            │
 ├─────────────────────────────────────────────────────────────┤
 │ AT_MOST_ONCE (至多一次):                                    │
 │   ∀e ∈ Src: |{s ∈ Sink | s ~ e}| ≤ 1                       │
-│   每个事件至多被处理一次，允许丢失                            │
+│   每个事件至多被处理一次,允许丢失                            │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -155,7 +155,7 @@ FlinkConnector = ⟨Type, Interface, Semantics, Config, Compatibility⟩
 interface Source<T, SplitT extends SourceSplit, EnumChkT>
     extends SourceReaderFactory<T, SplitT> {
 
-    // 创建分片枚举器，负责发现和分配数据分片
+    // 创建分片枚举器,负责发现和分配数据分片
     SplitEnumerator<SplitT, EnumChkT> createEnumerator();
 
     // 从检查点恢复分片枚举器
@@ -189,13 +189,13 @@ interface Source<T, SplitT extends SourceSplit, EnumChkT>
 
 ```java
 interface Sink<InputT> {
-    // 创建 SinkWriter，负责实际写入
+    // 创建 SinkWriter,负责实际写入
     SinkWriter<InputT> createWriter(InitContext context);
 
-    // 创建提交器（用于两阶段提交）
+    // 创建提交器(用于两阶段提交)
     Optional<Committer<?>> createCommitter();
 
-    // 创建全局提交器（用于全局协调）
+    // 创建全局提交器(用于全局协调)
     Optional<GlobalCommitter<?, ?>> createGlobalCommitter();
 }
 
@@ -265,7 +265,7 @@ interface TwoPhaseCommitSinkFunction<IN, TXN, CONTEXT> {
 2. 序列化一致: 相邻连接器使用相同的序列化格式
 3. 语义兼容: 上游的交付保证 ≥ 下游的要求
 
-若满足上述条件，则组合后的数据流保持确定的语义。
+若满足上述条件,则组合后的数据流保持确定的语义。
 ```
 
 **示例**:
@@ -286,7 +286,7 @@ interface TwoPhaseCommitSinkFunction<IN, TXN, CONTEXT> {
 **形式化表述**:
 
 ```
-设数据流包含 n 个连接器，其交付保证分别为 g₁, g₂, ..., gₙ
+设数据流包含 n 个连接器,其交付保证分别为 g₁, g₂, ..., gₙ
 其中保证级别排序: AT_MOST_ONCE < AT_LEAST_ONCE < EXACTLY_ONCE
 
 端到端保证: G_end_to_end = min(g₁, g₂, ..., gₙ)
@@ -350,7 +350,7 @@ ExactlyOnce(Source, Engine, Sink) ⟺
 最优并行度: P_optimal = min(P_Flink, P_External)
 
 若 P_Flink > P_External:
-  - 部分 Subtask 空闲，资源浪费
+  - 部分 Subtask 空闲,资源浪费
 
 若 P_Flink < P_External:
   - 单个 Subtask 处理多个分区
@@ -558,7 +558,7 @@ Flink 连接器性能调优的核心是平衡吞吐和延迟:
 │  - 增大 buffer.memory (Kafka: 64MB+)                       │
 │  - 增加 Checkpoint 间隔 (5-10分钟)                         │
 │  - 启用压缩 (lz4/snappy)                                   │
-│  - 结果: 高吞吐，较高延迟 (秒级)                            │
+│  - 结果: 高吞吐,较高延迟 (秒级)                            │
 └─────────────────────────────────────────────────────────────┘
 
 低延迟配置:
@@ -567,7 +567,7 @@ Flink 连接器性能调优的核心是平衡吞吐和延迟:
 │  - 减小 linger.ms (Kafka: 0-5ms)                           │
 │  - 减小 Checkpoint 间隔 (1-5秒)                            │
 │  - 禁用压缩或压缩级别降低                                   │
-│  - 结果: 低延迟 (毫秒级)，较低吞吐                          │
+│  - 结果: 低延迟 (毫秒级),较低吞吐                          │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -612,7 +612,7 @@ Flink 连接器性能调优的核心是平衡吞吐和延迟:
 │   - 调整 Flink 并行度匹配分区数                              │
 │                                                             │
 │ 若存在数据倾斜:                                              │
-│   - 检查 Key 分布，考虑加盐                                  │
+│   - 检查 Key 分布,考虑加盐                                  │
 │   - 调整分区策略                                             │
 │                                                             │
 │ 若处理逻辑复杂:                                              │
@@ -676,7 +676,7 @@ Flink 连接器性能调优的核心是平衡吞吐和延迟:
 文件系统类 (Batch Data Storage):
 ┌─────────────────────────────────────────────────────────────┐
 │ 主流系统: HDFS, S3, GCS, Azure Blob, OSS                   │
-│ Flink 支持: ✅ 统一 FileSystem 抽象，支持所有主流对象存储   │
+│ Flink 支持: ✅ 统一 FileSystem 抽象,支持所有主流对象存储   │
 │ 格式支持: ✅ Parquet/ORC/Avro/JSON/CSV                    │
 └─────────────────────────────────────────────────────────────┘
 
@@ -695,7 +695,7 @@ Flink 连接器性能调优的核心是平衡吞吐和延迟:
 │ 流批统一: ✅ 支持流式写入和批式查询                         │
 └─────────────────────────────────────────────────────────────┘
 
-综上，Flink 连接器生态在四大存储类别中均有完整覆盖，完备性得证。∎
+综上,Flink 连接器生态在四大存储类别中均有完整覆盖,完备性得证。∎
 ```
 
 ---
@@ -712,10 +712,10 @@ Flink 连接器性能调优的核心是平衡吞吐和延迟:
 设数据流为: Source → [Operators] → Sink
 
 定义:
-- S: Source 连接器，产生记录序列 ⟨e₁, e₂, ..., eₙ⟩
-- O: 算子集合，处理记录并维护状态
-- K: Sink 连接器，输出记录到外部系统
-- C: Checkpoint 协调器，周期触发一致性快照
+- S: Source 连接器,产生记录序列 ⟨e₁, e₂, ..., eₙ⟩
+- O: 算子集合,处理记录并维护状态
+- K: Sink 连接器,输出记录到外部系统
+- C: Checkpoint 协调器,周期触发一致性快照
 ```
 
 **两阶段提交流程**:
@@ -727,9 +727,9 @@ Flink 连接器性能调优的核心是平衡吞吐和延迟:
 │ 1. CheckpointCoordinator 向所有算子发送 Checkpoint Barrier │
 │ 2. Source: 保存当前读取位置到 StateBackend                  │
 │ 3. Operators: 保存计算状态到 StateBackend                   │
-│ 4. Sink: 执行 preCommit()，准备事务                         │
+│ 4. Sink: 执行 preCommit(),准备事务                         │
 │                                                             │
-│ 不变式 I1: 所有 preCommit 完成前，Sink 输出不可见           │
+│ 不变式 I1: 所有 preCommit 完成前,Sink 输出不可见           │
 └─────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────┐
@@ -740,9 +740,9 @@ Flink 连接器性能调优的核心是平衡吞吐和延迟:
 │ 操作:                                                       │
 │ 1. CheckpointCoordinator 确认全局快照成功                   │
 │ 2. Source: 可选地提交偏移量到外部系统                        │
-│ 3. Sink: 执行 commit()，事务提交，输出可见                   │
+│ 3. Sink: 执行 commit(),事务提交,输出可见                   │
 │                                                             │
-│ 不变式 I2: Checkpoint 成功后，Sink 输出永久可见             │
+│ 不变式 I2: Checkpoint 成功后,Sink 输出永久可见             │
 └─────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────┐
@@ -750,9 +750,9 @@ Flink 连接器性能调优的核心是平衡吞吐和延迟:
 │ ─────────────────────────────────────────────────────────  │
 │ 场景1: Checkpoint 进行中失败                                │
 │   - 触发 notifyCheckpointAborted()                          │
-│   - Sink 执行 abort()，回滚事务                             │
+│   - Sink 执行 abort(),回滚事务                             │
 │   - 从上一个成功 Checkpoint 恢复                            │
-│   - 结果: 无数据丢失，无重复                                │
+│   - 结果: 无数据丢失,无重复                                │
 │                                                             │
 │ 场景2: Checkpoint 成功后 Sink 提交前失败                    │
 │   - 新 Sink 实例从 Checkpoint 恢复                          │
@@ -762,7 +762,7 @@ Flink 连接器性能调优的核心是平衡吞吐和延迟:
 │ 场景3: Source 故障                                          │
 │   - 从 StateBackend 恢复读取位置                            │
 │   - 重新消费未确认的数据                                    │
-│   - 结果: At-Least-Once，配合 Sink 幂等实现 Exactly-Once   │
+│   - 结果: At-Least-Once,配合 Sink 幂等实现 Exactly-Once   │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -2451,7 +2451,7 @@ env.getConfig().addDefaultKryoSerializer(MyClass.class, MySerializer.class);
 **问题3: Iceberg Sink 小文件过多**
 
 ```
-症状: 元数据文件膨胀，查询性能下降
+症状: 元数据文件膨胀,查询性能下降
 
 诊断:
 1. 检查 Checkpoint 间隔是否过短

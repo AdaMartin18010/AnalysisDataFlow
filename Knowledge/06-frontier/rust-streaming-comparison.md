@@ -704,19 +704,19 @@ Materialize 的 Differential Dataflow 支持递归查询，这是其独特优势
 **示例：传递闭包计算**
 
 ```sql
--- 图边表（有向图）
+-- 图边表(有向图)
 CREATE SOURCE edges (from_node INT, to_node INT) ...;
 
--- 传递闭包（递归 CTE）
+-- 传递闭包(递归 CTE)
 CREATE MATERIALIZED VIEW transitive_closure AS
 WITH RECURSIVE paths AS (
-    -- 基础：直接边
+    -- 基础:直接边
     SELECT from_node, to_node, 1 AS distance
     FROM edges
 
     UNION
 
-    -- 递归：路径延伸
+    -- 递归:路径延伸
     SELECT p.from_node, e.to_node, p.distance + 1
     FROM paths p
     JOIN edges e ON p.to_node = e.from_node
@@ -853,7 +853,7 @@ graph TB
 **关键 SQL**:
 
 ```sql
--- 递归 CTE：交易链路追踪
+-- 递归 CTE:交易链路追踪
 CREATE MATERIALIZED VIEW transaction_chain AS
 WITH RECURSIVE chain AS (
     SELECT
@@ -881,7 +881,7 @@ WITH RECURSIVE chain AS (
 )
 SELECT * FROM chain;
 
--- 实时余额（强一致）
+-- 实时余额(强一致)
 CREATE MATERIALIZED VIEW account_balance AS
 SELECT
     account_id,

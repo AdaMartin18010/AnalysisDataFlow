@@ -338,7 +338,7 @@ CREATE TABLE order_events (
     'avro-confluent.schema-registry.url' = 'http://schema-registry:8081'
 );
 
--- 实时订单统计产品（输出到下游域）
+-- 实时订单统计产品(输出到下游域)
 CREATE TABLE order_metrics (
     window_start TIMESTAMP(3),
     window_end TIMESTAMP(3),
@@ -352,7 +352,7 @@ CREATE TABLE order_metrics (
     'format' = 'avro-confluent'
 );
 
--- 实时聚合作业（数据产品生产）
+-- 实时聚合作业(数据产品生产)
 INSERT INTO order_metrics
 SELECT
     TUMBLE_START(event_time, INTERVAL '1' MINUTE) as window_start,

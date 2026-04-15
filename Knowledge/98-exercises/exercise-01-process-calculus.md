@@ -172,11 +172,11 @@ package main
 import "fmt"
 
 type Message struct {
-    From      string        // 发送者ID，标识消息来源Actor
-    Payload   interface{}   // 消息内容，可以是任意类型
-    ReplyTo   chan Message  // 用于请求-响应模式的回复通道（可选）
-    MsgType   MessageType   // 消息类型，区分不同类别的消息
-    Timestamp int64         // 发送时间戳（毫秒），用于超时处理
+    From      string        // 发送者ID,标识消息来源Actor
+    Payload   interface{}   // 消息内容,可以是任意类型
+    ReplyTo   chan Message  // 用于请求-响应模式的回复通道(可选)
+    MsgType   MessageType   // 消息类型,区分不同类别的消息
+    Timestamp int64         // 发送时间戳(毫秒),用于超时处理
 }
 
 // MessageType 定义消息类型枚举
@@ -184,18 +184,18 @@ type MessageType int
 
 const (
     MsgTypeNormal     MessageType = iota // 普通消息
-    MsgTypeRequest                       // 请求消息（需要响应）
+    MsgTypeRequest                       // 请求消息(需要响应)
     MsgTypeResponse                      // 响应消息
-    MsgTypeSupervisor                    // 监督消息（错误报告）
+    MsgTypeSupervisor                    // 监督消息(错误报告)
 )
 
-// **参考答案**：
+// **参考答案**:
 // type Message struct {
 //     From    string              // 发送者ID
 //     Payload interface{}         // 消息内容
 //     ReplyTo chan Message        // 用于请求-响应模式的回复通道
-//     MsgType MessageType         // 消息类型枚举（可选，用于区分消息类别）
-//     Timestamp int64             // 发送时间戳（可选，用于超时处理）
+//     MsgType MessageType         // 消息类型枚举(可选,用于区分消息类别)
+//     Timestamp int64             // 发送时间戳(可选,用于超时处理)
 // }
 //
 // type MessageType int
@@ -208,10 +208,10 @@ const (
 
 type Actor struct {
     ID       string              // Actor唯一标识
-    Mailbox  chan Message        // 消息邮箱（缓冲通道）
+    Mailbox  chan Message        // 消息邮箱(缓冲通道)
     Behavior func(Message)       // 消息处理行为函数
-    Children []*Actor            // 子Actor列表（监督树）
-    Parent   *Actor              // 父Actor（监督者）
+    Children []*Actor            // 子Actor列表(监督树)
+    Parent   *Actor              // 父Actor(监督者)
     system   *ActorSystem        // 所属Actor系统
     stopCh   chan struct{}       // 停止信号通道
 }
@@ -244,7 +244,7 @@ func (as *ActorSystem) Get(id string) (*Actor, bool) {
     return actor, ok
 }
 
-// Send 发送消息到指定Actor（异步）
+// Send 发送消息到指定Actor(异步)
 func (as *ActorSystem) Send(to string, msg Message) error {
     actor, ok := as.Get(to)
     if !ok {
@@ -270,7 +270,7 @@ func (as *ActorSystem) Spawn(id string, behavior func(Message), parent *Actor) *
         stopCh:   make(chan struct{}),
     }
 
-    // 如果有父Actor，添加到子列表
+    // 如果有父Actor,添加到子列表
     if parent != nil {
         parent.Children = append(parent.Children, actor)
     }
@@ -286,12 +286,12 @@ func (as *ActorSystem) Spawn(id string, behavior func(Message), parent *Actor) *
 
 // run 是Actor的主循环
 func (a *Actor) run() {
-    // 使用recover捕获panic，实现错误监督
+    // 使用recover捕获panic,实现错误监督
     defer func() {
         if r := recover(); r != nil {
             fmt.Printf("[Supervision] Actor %s panic recovered: %v\n", a.ID, r)
             if a.Parent != nil {
-                // 向父Actor报告错误（监督）
+                // 向父Actor报告错误(监督)
                 a.Parent.Mailbox <- Message{
                     From:      a.ID,
                     Payload:   fmt.Sprintf("child_failed: %v", r),
@@ -320,7 +320,7 @@ func (a *Actor) Stop() {
     close(a.stopCh)
 }
 
-// RequestResponse 发送请求并等待响应（同步）
+// RequestResponse 发送请求并等待响应(同步)
 func (a *Actor) RequestResponse(target string, payload interface{}, timeout time.Duration) (Message, error) {
     replyCh := make(chan Message, 1)
     msg := Message{
@@ -345,7 +345,7 @@ func (a *Actor) RequestResponse(target string, payload interface{}, timeout time
     }
 }
 
-// **参考答案**：Actor系统核心实现
+// **参考答案**:Actor系统核心实现
 /*
 package main
 
@@ -472,7 +472,7 @@ func main() {
     // 创建Actor系统
     system := NewActorSystem()
 
-    // ========== 1. 创建父Actor（监督者） ==========
+    // ========== 1. 创建父Actor(监督者) ==========
     parentBehavior := func(msg Message) {
         switch msg.MsgType {
         case MsgTypeSupervisor:
@@ -485,7 +485,7 @@ func main() {
     parent := system.Spawn("parent", parentBehavior, nil)
     fmt.Println("Created parent actor")
 
-    // ========== 2. 创建子Actor（有监督关系） ==========
+    // ========== 2. 创建子Actor(有监督关系) ==========
     childBehavior := func(msg Message) {
         switch msg.Payload.(type) {
         case string:
@@ -495,7 +495,7 @@ func main() {
             }
             fmt.Printf("[Child] Received: %s\n", content)
 
-            // 请求-响应模式：如果有ReplyTo通道，发送响应
+            // 请求-响应模式:如果有ReplyTo通道,发送响应
             if msg.ReplyTo != nil {
                 response := Message{
                     From:      "child",
@@ -534,7 +534,7 @@ func main() {
     }()
     time.Sleep(200 * time.Millisecond)
 
-    // ========== 5. 演示错误监督（触发panic） ==========
+    // ========== 5. 演示错误监督(触发panic) ==========
     fmt.Println("\n--- Test 3: Supervision (Error Propagation) ---")
     time.Sleep(100 * time.Millisecond)
     system.Send("child", Message{
@@ -554,7 +554,7 @@ func main() {
     fmt.Println("\n=== Demo Complete ===")
 }
 
-// 预期输出示例：
+// 预期输出示例:
 // === Actor System Demo ===
 // Created parent actor
 // Created child actor with parent supervision
@@ -576,12 +576,12 @@ func main() {
 //
 // === Demo Complete ===
 
-// **参考答案**：演示请求-响应和监督关系
+// **参考答案**:演示请求-响应和监督关系
 /*
 func main() {
     system := NewActorSystem()
 
-    // 1. 创建父Actor（监督者）
+    // 1. 创建父Actor(监督者)
     parentBehavior := func(msg Message) {
         switch msg.MsgType {
         case MsgTypeSupervisor:
@@ -592,14 +592,14 @@ func main() {
     }
     parent := system.Spawn("parent", parentBehavior, nil)
 
-    // 2. 创建子Actor（有监督关系）
+    // 2. 创建子Actor(有监督关系)
     childBehavior := func(msg Message) {
         if msg.Payload == "panic" {
             panic("simulated error")
         }
         fmt.Printf("[Child] Received: %v\n", msg.Payload)
 
-        // 请求-响应模式：回复消息
+        // 请求-响应模式:回复消息
         if msg.ReplyTo != nil {
             msg.ReplyTo <- Message{
                 From:    "child",
@@ -622,7 +622,7 @@ func main() {
         }
     }()
 
-    // 5. 演示错误传播（触发panic）
+    // 5. 演示错误传播(触发panic)
     time.Sleep(100 * time.Millisecond)
     system.Send("child", Message{From: "main", Payload: "panic"})
 

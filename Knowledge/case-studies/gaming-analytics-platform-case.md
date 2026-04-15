@@ -294,7 +294,7 @@ DataStream<DailyActiveUser> dauStream = loginEvents
     )
     .keyBy(LoginEvent::getUserId)
     .window(TumblingEventTimeWindows.of(Time.days(1), Time.hours(-8)))
-    // 使用亚洲时区（UTC+8）
+    // 使用亚洲时区(UTC+8)
     .aggregate(new DauAggregator())
     .name("realtime-dau");
 
@@ -305,7 +305,7 @@ DataStream<RevenueMetric> revenueStream = purchaseEvents
     .aggregate(new RevenueAggregator())
     .name("realtime-revenue");
 
-// 留存率计算（次日留存）
+// 留存率计算(次日留存)
 DataStream<RetentionMetric> retentionStream = loginEvents
     .keyBy(LoginEvent::getUserId)
     .process(new KeyedProcessFunction<String, LoginEvent, RetentionMetric>() {
@@ -367,7 +367,7 @@ DataStream<SessionMetric> sessionStream = gameEvents
             state.updateLastEventTime(event.getTimestamp());
             sessionState.update(state);
 
-            // 会话结束检测（超时30分钟）
+            // 会话结束检测(超时30分钟)
             long sessionTimeout = 30 * 60 * 1000;
             long nextCheckTime = event.getTimestamp() + sessionTimeout;
             ctx.timerService().registerEventTimeTimer(nextCheckTime);
@@ -520,7 +520,7 @@ public class ABTestAggregator implements
 **ClickHouse实时查询**:
 
 ```sql
--- 实时在线人数（最近5分钟）
+-- 实时在线人数(最近5分钟)
 SELECT
     toStartOfInterval(event_time, INTERVAL 1 MINUTE) as minute,
     countDistinct(user_id) as online_users
@@ -529,7 +529,7 @@ WHERE event_time >= now() - INTERVAL 5 MINUTE
 GROUP BY minute
 ORDER BY minute;
 
--- 实时收入（最近1小时）
+-- 实时收入(最近1小时)
 SELECT
     toStartOfInterval(event_time, INTERVAL 5 MINUTE) as time_bucket,
     sum(amount) as revenue,
@@ -540,7 +540,7 @@ WHERE event_time >= now() - INTERVAL 1 HOUR
 GROUP BY time_bucket
 ORDER BY time_bucket;
 
--- A/B测试结果（实时）
+-- A/B测试结果(实时)
 SELECT
     experiment_id,
     variant_id,
@@ -620,7 +620,7 @@ taskmanager.memory.network.fraction: 0.2
 taskmanager.memory.network.min: 2gb
 taskmanager.memory.network.max: 8gb
 
-# RocksDB优化（大状态）
+# RocksDB优化(大状态)
 state.backend: rocksdb
 state.backend.incremental: true
 state.backend.rocksdb.memory.managed: true
@@ -662,10 +662,10 @@ state.checkpoints.num-retained: 10
 public class KafkaLagHandler {
     public void handleLag(long lag) {
         if (lag > 1_000_000) {
-            // 降级：只处理关键事件
+            // 降级:只处理关键事件
             eventFilter.enableCriticalOnly();
         } else if (lag > 5_000_000) {
-            // 紧急降级：跳过非关键指标
+            // 紧急降级:跳过非关键指标
             skipNonCriticalMetrics();
         }
     }

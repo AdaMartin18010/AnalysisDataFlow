@@ -526,7 +526,7 @@ config.set(RocksDBOptions.MEMTABLE_SIZE, MemorySize.ofMebiBytes(128));
 // 最大后台 Flush/Compaction 线程数
 config.set(RocksDBOptions.MAX_BACKGROUND_THREADS, 4);
 
-// Block Cache 大小 (默认 8MB，建议设为 TaskManager 内存的 30-40%)
+// Block Cache 大小 (默认 8MB,建议设为 TaskManager 内存的 30-40%)
 config.set(RocksDBOptions.BLOCK_CACHE_SIZE, MemorySize.ofMebiBytes(512));
 
 // Block 大小 (默认 4KB)
@@ -581,7 +581,7 @@ config.set(ForStOptions.L1_CACHE_SIZE, MemorySize.ofMebiBytes(1024));
 config.set(ForStOptions.L2_CACHE_PATH, "/mnt/ssd/forst-cache");
 config.set(ForStOptions.L2_CACHE_SIZE, MemorySize.ofGibiBytes(50));
 
-// L3 (远程存储，无需配置，自动使用)
+// L3 (远程存储,无需配置,自动使用)
 
 // ========== 网络优化 ==========
 
@@ -623,10 +623,10 @@ write-buffer-number: 4             # 根据 CF 数量调整
 managed-memory-fraction: 0.4       # 40% 给 RocksDB
 
 # 2. 磁盘 I/O 检查
-# 确保使用 SSD，HDD 会导致性能下降 10-100x
+# 确保使用 SSD,HDD 会导致性能下降 10-100x
 
 # 3. Compaction 调优
-# 监控 compaction-pending-bytes，持续高值表示需要更多 Compaction 线程
+# 监控 compaction-pending-bytes,持续高值表示需要更多 Compaction 线程
 
 # 4. Bloom Filter 配置
 # 点查多 → 启用 Bloom Filter

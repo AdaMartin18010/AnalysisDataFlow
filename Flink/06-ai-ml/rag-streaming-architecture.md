@@ -861,6 +861,7 @@ public class UserInterestFeaturePipeline {
 ### 6.3 SQL API Implementation (Flink SQL + VECTOR_SEARCH)（规划中）
 
 ```sql
+# 伪代码示意,非完整可执行配置
 -- ============================================
 -- Streaming RAG: Flink SQL Complete Example
 -- ============================================
@@ -936,7 +937,7 @@ retrieved_contexts AS (
         STRING_AGG(d.content, '\n---\n') AS context_text,
         q.event_time
     FROM query_embeddings q,
-    -- 注: VECTOR_SEARCH 为向量搜索功能（规划中）
+    -- 注: VECTOR_SEARCH 为向量搜索功能(规划中)
 LATERAL TABLE(VECTOR_SEARCH(
         query_vector := q.query_vector,
         index_table := 'document_vectors',

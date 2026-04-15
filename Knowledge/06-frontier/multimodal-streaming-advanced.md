@@ -475,7 +475,7 @@ class RealtimeVideoAnalyzer:
         ])
 
     def process_frame(self, frame):
-        """单帧处理，目标延迟 < 33ms"""
+        """单帧处理,目标延迟 < 33ms"""
         # 预处理
         input_tensor = self.transform(frame).unsqueeze(0).cuda()
 
@@ -486,7 +486,7 @@ class RealtimeVideoAnalyzer:
         # 跟踪更新
         tracks = self.tracker.update(detections)
 
-        # 业务逻辑：交通流量统计
+        # 业务逻辑:交通流量统计
         vehicle_count = len([t for t in tracks if t.class_id == 2])  # car
 
         return {

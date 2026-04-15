@@ -330,9 +330,9 @@ public interface AdaptiveSchedulerIntegration {
 }
 
 public enum RescalingStrategy {
-    GRACEFUL,      // 优雅扩容，等待 Checkpoint
-    IMMEDIATE,     // 立即生效，可能丢数据
-    INCREMENTAL    // 增量调整，逐步迁移
+    GRACEFUL,      // 优雅扩容,等待 Checkpoint
+    IMMEDIATE,     // 立即生效,可能丢数据
+    INCREMENTAL    // 增量调整,逐步迁移
 }
 ```
 
@@ -509,13 +509,13 @@ AEE 在进行自适应调整时需要与 Checkpoint 协调，确保一致性：
 
 1. 检测到需要调整
    ↓
-2. 等待下一次 Checkpoint 完成（优雅模式）
+2. 等待下一次 Checkpoint 完成(优雅模式)
    ↓
-3. 暂停数据处理（可选）
+3. 暂停数据处理(可选)
    ↓
 4. 执行并行度/资源调整
    ↓
-5. 状态重新分配（Rescale）
+5. 状态重新分配(Rescale)
    ↓
 6. 从最新 Checkpoint 恢复
    ↓
@@ -591,8 +591,8 @@ flowchart TB
 ┌─────────────────────────────────────────────────────────────┐
 │  流量模式       静态配置        结果                          │
 ├─────────────────────────────────────────────────────────────┤
-│  流量激增       p=10           处理不过来，数据堆积            │
-│  流量低谷       p=10           资源浪费，成本高               │
+│  流量激增       p=10           处理不过来,数据堆积            │
+│  流量低谷       p=10           资源浪费,成本高               │
 │  数据倾斜       hash分区        部分subtask过载               │
 │  Key分布变化    固定分区        负载不均衡                    │
 └─────────────────────────────────────────────────────────────┘
@@ -679,7 +679,7 @@ flowchart TB
 public class SkewResistantAggregate {
 
     /**
-     * 阶段 1: 本地预聚合（在 Map 端）
+     * 阶段 1: 本地预聚合(在 Map 端)
      */
     public static class LocalAggregate extends RichMapFunction<Event, PartialResult> {
         private MapState<Key, Accumulator> localBuffer;
@@ -703,7 +703,7 @@ public class SkewResistantAggregate {
     }
 
     /**
-     * 阶段 2: 全局聚合（在 Reduce 端）
+     * 阶段 2: 全局聚合(在 Reduce 端)
      * 负载已均衡
      */
     public static class GlobalAggregate extends RichReduceFunction<PartialResult> {
@@ -716,9 +716,9 @@ public class SkewResistantAggregate {
 
 // DataStream 应用
 dataStream
-    .map(new LocalAggregate())     // 本地预聚合，减少数据量
+    .map(new LocalAggregate())     // 本地预聚合,减少数据量
     .keyBy(PartialResult::getKey)
-    .reduce(new GlobalAggregate()); // 全局聚合，负载均衡
+    .reduce(new GlobalAggregate()); // 全局聚合,负载均衡
 ```
 
 ---
@@ -802,7 +802,7 @@ public class PIDResourceController {
          流量   调整   调整   调整   调整   调整
          增加   过度   过度   过度   过度   过度
 
-结果: 系统振荡，性能反而下降
+结果: 系统振荡,性能反而下降
 ```
 
 **解决方案**:
@@ -977,10 +977,10 @@ jobmanager.scheduler: Adaptive
 adaptive-scheduler.min-parallelism: 1
 adaptive-scheduler.max-parallelism: 128
 
-# 目标资源利用率（触发扩缩容的阈值）
+# 目标资源利用率(触发扩缩容的阈值)
 adaptive-scheduler.target-utilization: 0.75  <!-- [Flink 2.4 前瞻] 配置参数可能变动 -->
 
-# 调整冷却期（毫秒）
+# 调整冷却期(毫秒)
 adaptive-scheduler.scaling-interval.min: 60000
 adaptive-scheduler.scaling-interval.max: 300000
 
@@ -988,13 +988,13 @@ adaptive-scheduler.scaling-interval.max: 300000
 # 启用倾斜检测
 skew-detection.enabled: true  <!-- [Flink 2.4 前瞻] 配置参数可能变动 -->
 
-# 倾斜检测窗口大小（秒）
+# 倾斜检测窗口大小(秒)
 skew-detection.window.size: 60
 
 # 倾斜系数阈值 (>1.5 认为是倾斜)
 skew-detection.coefficient.threshold: 1.5
 
-# 热点 Key 检测阈值（占总量比例）
+# 热点 Key 检测阈值(占总量比例)
 skew-detection.hot-key.threshold: 0.05
 
 # 热点 Key 处理策略: SPLIT | REPARTITION | LOCAL_AGG
@@ -1010,7 +1010,7 @@ resource-adaptive.target.cpu.utilization: 0.70
 # 内存利用率目标
 resource-adaptive.target.memory.utilization: 0.75
 
-# 资源调整步长（百分比）
+# 资源调整步长(百分比)
 resource-adaptive.adjustment.step: 0.20
 
 # 资源预测模型: PID | LSTM | RULE_BASED
@@ -1020,7 +1020,7 @@ resource-adaptive.predictor.type: PID
 # 启用运行时计划重优化
 execution-plan-optimization.enabled: true  <!-- [Flink 2.4 前瞻] 配置参数可能变动 -->
 
-# 优化触发间隔（秒）
+# 优化触发间隔(秒)
 execution-plan-optimization.interval: 300
 
 # 优化策略: PARALLELISM | CHAINING | JOIN_STRATEGY
@@ -1029,7 +1029,7 @@ execution-plan-optimization.strategies: PARALLELISM,CHAINING
 # ---------- 5. 背压响应配置 ----------
 backpressure-adaptive.enabled: true
 
-# 背压检测阈值（0-1）
+# 背压检测阈值(0-1)
 backpressure-adaptive.threshold: 0.8
 
 # 背压响应策略: SCALE_UP | BUFFER_INCREASE | BATCH_SIZE
@@ -1039,7 +1039,7 @@ backpressure-adaptive.response: SCALE_UP
 # 自适应调整前等待 Checkpoint
 adaptive.checkpoint-coordination.enabled: true
 
-# 最长等待时间（秒）
+# 最长等待时间(秒)
 #adaptive.checkpoint-coordination.timeout: 120
 
 # 调整模式: GRACEFUL | IMMEDIATE | INCREMENTAL
@@ -1069,7 +1069,7 @@ adaptive.adjustment.mode: GRACEFUL
 **场景 1: 数据倾斜处理性能对比**
 
 ```
-数据集: 1亿条记录，Top-10 Key 占 60% 流量
+数据集: 1亿条记录,Top-10 Key 占 60% 流量
 
 ┌──────────────────────────────────────────────────────────────┐
 │               数据倾斜处理性能对比                            │
@@ -1119,8 +1119,8 @@ Throughput
    └────┬─────┬─────┬─────┬─────┬──────→
        0    5min  10min 15min 20min
 
-无 AEE: 需配置为 50 并行度，低谷时资源浪费 80%
-有 AEE: 自动 10→50→10 调整，资源节省 60%
+无 AEE: 需配置为 50 并行度,低谷时资源浪费 80%
+有 AEE: 自动 10→50→10 调整,资源节省 60%
 ```
 
 **场景 3: 与 Adaptive Scheduler 集成效果**
@@ -1142,7 +1142,7 @@ Throughput
 
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
-// 电商场景：流量波动大，存在热点商品
+// 电商场景:流量波动大,存在热点商品
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
@@ -1155,12 +1155,12 @@ config.setInteger("adaptive-scheduler.min-parallelism", 4);
 config.setInteger("adaptive-scheduler.max-parallelism", 64);
 config.setDouble("adaptive-scheduler.target-utilization", 0.70);
 
-// 2. 数据倾斜处理（电商常见热点商品）
+// 2. 数据倾斜处理(电商常见热点商品)
 config.setBoolean("skew-detection.enabled", true);
 config.setDouble("skew-detection.hot-key.threshold", 0.03); // 3% 为热点
 config.setString("skew-detection.strategy", "LOCAL_AGG");
 
-// 3. 背压响应（大促期间流量激增）
+// 3. 背压响应(大促期间流量激增)
 config.setBoolean("backpressure-adaptive.enabled", true);
 config.setString("backpressure-adaptive.response", "SCALE_UP");
 
@@ -1169,7 +1169,7 @@ config.setLong("adaptive-scheduler.scaling-interval.min", 30000); // 30s
 
 env.configure(config);
 
-// 应用代码：用户行为流处理
+// 应用代码:用户行为流处理
 dataStream
     .assignTimestampsAndWatermarks(
         WatermarkStrategy.<UserEvent>forBoundedOutOfOrderness(
@@ -1185,14 +1185,14 @@ dataStream
 **实践 2: 金融风控实时检测**
 
 ```java
-// 金融场景：低延迟要求，数据分布均匀
+// 金融场景:低延迟要求,数据分布均匀
 Configuration config = new Configuration();
 
 // 1. 低延迟优先
 config.setDouble("adaptive-scheduler.target-utilization", 0.50);
 config.setLong("adaptive-scheduler.scaling-interval.min", 60000);
 
-// 2. 禁用倾斜检测（数据已预分区）
+// 2. 禁用倾斜检测(数据已预分区)
 config.setBoolean("skew-detection.enabled", false);
 
 // 3. 背压敏感
@@ -1206,10 +1206,10 @@ config.setDouble("resource-adaptive.target.memory.utilization", 0.60);
 **实践 3: IoT 设备数据处理**
 
 ```yaml
-# IoT 场景：设备数量大，流量模式可预测
+# IoT 场景:设备数量大,流量模式可预测
 # 配置文件: flink-conf.yaml
 
-# 大量设备，高并行度
+# 大量设备,高并行度
 adaptive-scheduler.min-parallelism: 20
 adaptive-scheduler.max-parallelism: 200
 
@@ -1217,7 +1217,7 @@ adaptive-scheduler.max-parallelism: 200
 resource-adaptive.predictor.type: LSTM
 resource-adaptive.prediction.horizon: 10min
 
-# 设备消息可能倾斜（某些设备上报频繁）
+# 设备消息可能倾斜(某些设备上报频繁)
 skew-detection.enabled: true
 skew-detection.coefficient.threshold: 2.0
 skew-detection.strategy: REPARTITION
@@ -1233,20 +1233,20 @@ execution-plan-optimization.strategies: BATCH_SIZE
 **问题 1: 自适应调整过于频繁**
 
 ```
-症状: 并行度频繁变化，日志中大量 "Scaling from X to Y"
+症状: 并行度频繁变化,日志中大量 "Scaling from X to Y"
 
 诊断步骤:
 1. 检查目标利用率设置
    $ grep target-utilization flink-conf.yaml
-   → 如果 < 0.6，设置过低，导致频繁扩容
+   → 如果 < 0.6,设置过低,导致频繁扩容
 
 2. 检查冷却期配置
    $ grep scaling-interval flink-conf.yaml
-   → 如果 < 30000，设置过短
+   → 如果 < 30000,设置过短
 
 3. 查看实际负载波动
    $ flink metrics --job-id <id> --metric throughput
-   → 如果波动 > 50%，考虑使用预测模型
+   → 如果波动 > 50%,考虑使用预测模型
 
 解决方案:
 - 提高 target-utilization: 0.5 → 0.7
@@ -1257,7 +1257,7 @@ execution-plan-optimization.strategies: BATCH_SIZE
 **问题 2: 数据倾斜未检测**
 
 ```
-症状: 部分 subtask 负载高，但 AEE 未触发倾斜处理
+症状: 部分 subtask 负载高,但 AEE 未触发倾斜处理
 
 诊断步骤:
 1. 检查倾斜检测是否启用
@@ -1265,11 +1265,11 @@ execution-plan-optimization.strategies: BATCH_SIZE
 
 2. 检查阈值设置
    $ grep coefficient.threshold flink-conf.yaml
-   → 如果 > 2.0，设置过高
+   → 如果 > 2.0,设置过高
 
 3. 查看倾斜检测窗口
    $ grep window.size flink-conf.yaml
-   → 如果 > 300，窗口过长，延迟检测
+   → 如果 > 300,窗口过长,延迟检测
 
 解决方案:
 - 降低阈值: 2.0 → 1.5
@@ -1280,7 +1280,7 @@ execution-plan-optimization.strategies: BATCH_SIZE
 **问题 3: Checkpoint 与调整冲突**
 
 ```
-症状: Checkpoint 频繁失败，或调整等待时间过长
+症状: Checkpoint 频繁失败,或调整等待时间过长
 
 诊断步骤:
 1. 检查 Checkpoint 配置
@@ -1304,7 +1304,7 @@ execution-plan-optimization.strategies: BATCH_SIZE
 **问题 4: 资源调整不生效**
 
 ```
-症状: 配置已修改，但并行度/资源未变化
+症状: 配置已修改,但并行度/资源未变化
 
 诊断步骤:
 1. 确认调度器类型
@@ -1322,7 +1322,7 @@ execution-plan-optimization.strategies: BATCH_SIZE
 解决方案:
 - 确认使用 Adaptive Scheduler
 - 提高最大并行度限制
-- 检查作业是否使用不支持调整的算子（如某些自定义 Sink）
+- 检查作业是否使用不支持调整的算子(如某些自定义 Sink)
 ```
 
 ---

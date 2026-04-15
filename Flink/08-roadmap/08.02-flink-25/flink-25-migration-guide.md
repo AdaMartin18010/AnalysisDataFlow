@@ -109,7 +109,7 @@ state.backend.incremental: true
 state.checkpoint-storage: filesystem
 state.checkpoints.dir: s3://flink-checkpoints
 
-# 可选：分层存储配置
+# 可选:分层存储配置
 state.backend.forst.cache.path: /tmp/flink-cache
 state.backend.forst.cache.capacity: 10GB
 ```
@@ -180,11 +180,11 @@ env.execute("My Job");
 
 import org.apache.flink.table.api.TableEnvironment;
 
-// 启用自适应执行模式（可选）
+// 启用自适应执行模式(可选)
 TableEnvironment tEnv = TableEnvironment.create(settings);
 tEnv.getConfig().set("execution.runtime-mode", "adaptive");
 
-// 物化表 GA（如使用）
+// 物化表 GA(如使用)
 tEnv.executeSql("""
     CREATE MATERIALIZED TABLE user_stats
     WITH (

@@ -297,7 +297,7 @@ DataStream<PredictionFeature> features = regionLoads
         @Override
         public void processElement(RegionLoad load, Context ctx,
                                    Collector<PredictionFeature> out) throws Exception {
-            // 维护96点历史数据（24小时，15分钟间隔）
+            // 维护96点历史数据(24小时,15分钟间隔)
             historyLoads.add(load);
             Iterable<RegionLoad> history = historyLoads.get();
             List<RegionLoad> historyList = new ArrayList<>();
@@ -354,7 +354,7 @@ predictions.addSink(new InfluxDBSink<>(
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-// 定义窃电检测模式：夜间持续大功率用电
+// 定义窃电检测模式:夜间持续大功率用电
 Pattern<MeterReading, ?> theftPattern = Pattern
     .<MeterReading>begin("night_start")
     .where(new SimpleCondition<MeterReading>() {

@@ -611,7 +611,7 @@ public void run() {
     } catch (Throwable t) {
         // 处理异常
     } finally {
-        // 无论是否异常，都会执行dispose
+        // 无论是否异常,都会执行dispose
         dispose();
     }
 }
@@ -654,14 +654,14 @@ public void run() {
 ```
 Barrier对齐过程:
 1. Task从所有InputChannel接收到Barrier
-2. 在最后一个Barrier到达前，继续处理已到达Barrier的Channel数据
-3. 在最后一个Barrier到达后，停止处理，触发快照
-4. 快照完成后，将所有阻塞的数据继续处理
+2. 在最后一个Barrier到达前,继续处理已到达Barrier的Channel数据
+3. 在最后一个Barrier到达后,停止处理,触发快照
+4. 快照完成后,将所有阻塞的数据继续处理
 
 状态一致性保证:
 - 快照包含所有Barrier之前到达的数据对应的状态
 - 快照不包含任何Barrier之后到达的数据对应的状态
-- 故障恢复时，从快照恢复后重新处理Barrier之后的数据
+- 故障恢复时,从快照恢复后重新处理Barrier之后的数据
 ```
 
 ∎
@@ -711,7 +711,7 @@ taskmanager.heartbeat.timeout: 50000
 ### 6.2 TaskSlot分配与Task提交示例
 
 ```java
-// 示例: TaskSlot分配流程（简化版）
+// 示例: TaskSlot分配流程(简化版)
 
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -743,7 +743,7 @@ public class TaskSlotAllocationExample {
 
         System.out.println("Slot allocated: " + allocated);
 
-        // 4. 激活Slot（准备接收Task）
+        // 4. 激活Slot(准备接收Task)
         slotTable.markSlotActive(allocationId);
 
         // 5. 提交Task到Slot
@@ -898,7 +898,7 @@ public class InputGateExample {
                 buffer.recycleBuffer();
             } else {
                 AbstractEvent event = bufferOrEvent.get().getEvent();
-                // 处理事件（如Checkpoint Barrier）
+                // 处理事件(如Checkpoint Barrier)
                 processEvent(event);
             }
         }
@@ -1051,7 +1051,7 @@ public class TaskManagerMemoryCalculation {
         // 网络内存: 默认 10% 的 Flink 内存
         long networkMemory = (long) (totalFlinkMemory * 0.10);
 
-        // Managed Memory: 默认 40% 的 Flink 内存（用于RocksDB等）
+        // Managed Memory: 默认 40% 的 Flink 内存(用于RocksDB等)
         long managedMemory = (long) (totalFlinkMemory * 0.40);
 
         // Task堆内存
@@ -1462,7 +1462,7 @@ sequenceDiagram
 
     U1->>IG: 发送Barrier-1 (Channel-1)
     IG->>T: 通知Barrier到达
-    T->>IG: 阻塞Channel-1，继续处理其他Channel
+    T->>IG: 阻塞Channel-1,继续处理其他Channel
 
     U2->>IG: 继续发送数据 (Channel-2)
     IG->>T: 交付数据

@@ -195,11 +195,11 @@ $$\mathcal{R} = 1 - \frac{\alpha}{T_{search} + \beta}$$
 
 ```
 用户查询
-    ├──→ 向量检索（语义相似度）
-    ├──→ 关键词检索（BM25）
-    └──→ 图检索（知识图谱关联）
+    ├──→ 向量检索(语义相似度)
+    ├──→ 关键词检索(BM25)
+    └──→ 图检索(知识图谱关联)
          ↓
-    融合排序（RRF / 学习排序）
+    融合排序(RRF / 学习排序)
          ↓
     Top-K 结果
 ```
@@ -441,14 +441,14 @@ public class RAGQueryService {
                     // 构建 RAG Prompt
                     String context = buildContext(enriched.getDocuments());
                     String prompt = String.format(
-                        """基于以下上下文回答问题。如果上下文中没有相关信息，请明确说明。
+                        """基于以下上下文回答问题。如果上下文中没有相关信息,请明确说明。
 
-                        上下文：
+                        上下文:
                         %s
 
-                        问题：%s
+                        问题:%s
 
-                        请提供详细且准确的回答：""",
+                        请提供详细且准确的回答:""",
                         context,
                         enriched.getQuery().getText()
                     );
@@ -700,7 +700,7 @@ public class OrderedDocumentProcessor extends KeyedProcessFunction<String, Docum
             processChange(change, out);
             lastProcessedTimestamp.update(change.getTimestamp());
         } else {
-            // 乱序事件，缓存等待
+            // 乱序事件,缓存等待
             pendingChanges.add(change);
             ctx.timerService().registerEventTimeTimer(change.getTimestamp());
         }
@@ -732,7 +732,7 @@ public class MilvusTransactionalSink extends RichSinkFunction<EmbeddedChunk> {
         String transactionId = generateTransactionId(chunk);
 
         try {
-            // 阶段1: 预写入（带事务ID）
+            // 阶段1: 预写入(带事务ID)
             milvusClient.insertWithTransaction(
                 chunk.toVector(),
                 chunk.getMetadata(),
@@ -846,7 +846,7 @@ public class ConversationContextManager {
         // 1. 检索相关知识
         List<Document> kbResults = retrieveFromKB(userQuery);
 
-        // 2. 获取对话历史（滑动窗口）
+        // 2. 获取对话历史(滑动窗口)
         List<Turn> recentHistory = session.getRecentTurns(5);
 
         // 3. 提取用户意图上下文
@@ -856,19 +856,19 @@ public class ConversationContextManager {
         return String.format("""
             你是一位专业的客服助手。请基于以下信息回答用户问题。
 
-            用户背景：%s
+            用户背景:%s
 
-            相关知识：
+            相关知识:
             %s
 
-            对话历史：
+            对话历史:
             %s
 
-            当前问题：%s
+            当前问题:%s
 
-            回答要求：
-            1. 保持回答简洁，不超过200字
-            2. 如需要更多信息，请礼貌询问
+            回答要求:
+            1. 保持回答简洁,不超过200字
+            2. 如需要更多信息,请礼貌询问
             3. 不要编造知识库中没有的信息
             """,
             userIntent,
@@ -1098,8 +1098,8 @@ fields = [
     FieldSchema(name="content", dtype=DataType.VARCHAR, max_length=8192),
     FieldSchema(name="embedding", dtype=DataType.FLOAT_VECTOR, dim=1536),
     FieldSchema(name="source", dtype=DataType.VARCHAR, max_length=128),
-    FieldSchema(name="indexed_at", dtype=DataType.INT64),  # 时间戳，用于一致性查询
-    FieldSchema(name="version", dtype=DataType.INT32),     # 版本号，用于并发控制
+    FieldSchema(name="indexed_at", dtype=DataType.INT64),  # 时间戳,用于一致性查询
+    FieldSchema(name="version", dtype=DataType.INT32),     # 版本号,用于并发控制
 ]
 
 # 创建 Collection

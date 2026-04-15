@@ -236,11 +236,11 @@ SELECT order_id, customer_name FROM wide_table;
 关联子查询是性能杀手，RBO 将其转换为等价的 Join：
 
 ```sql
--- 关联子查询（优化前）
+-- 关联子查询(优化前)
 SELECT * FROM employees e
 WHERE e.salary > (SELECT AVG(salary) FROM employees WHERE dept_id = e.dept_id);
 
--- 去关联化后（优化后）
+-- 去关联化后(优化后)
 SELECT e.*
 FROM employees e
 JOIN (
@@ -689,7 +689,7 @@ ANALYZE TABLE orders COMPUTE STATISTICS;
 -- 分析指定列
 ANALYZE TABLE orders COMPUTE STATISTICS FOR COLUMNS user_id, amount;
 
--- 采样分析（大数据表）
+-- 采样分析(大数据表)
 ANALYZE TABLE big_table COMPUTE STATISTICS WITH SAMPLE 10 PERCENT;
 ```
 
@@ -741,7 +741,7 @@ GROUP BY o.user_id;
 -- 1. 设置合理的状态 TTL
 SET table.exec.state.ttl = '24 hours';
 
--- 2. 使用 RocksDB 状态后端（大状态）
+-- 2. 使用 RocksDB 状态后端(大状态)
 SET state.backend = 'rocksdb';
 SET state.backend.incremental = 'true';
 

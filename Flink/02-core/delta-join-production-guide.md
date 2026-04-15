@@ -57,10 +57,10 @@ $$\nexists M \subseteq \text{Output}: M = \{(r_s, r_t) \mid r_s \in e_{del} \lan
 **配置实现**：
 
 ```sql
--- MySQL CDC 源：忽略 DELETE 操作
+-- MySQL CDC 源:忽略 DELETE 操作
 'debezium.skipped.operations' = 'd'  -- 跳过 DELETE
 
--- Paimon 源：使用 first_row merge-engine
+-- Paimon 源:使用 first_row merge-engine
 'merge-engine' = 'first_row'  -- 仅保留第一条记录
 ```
 
@@ -250,18 +250,18 @@ L_{ext} + \frac{\lambda}{c} & \text{if miss}
 │   ┌─────────────────────┐                 ┌─────────────────────┐   │
 │   │ 双输入缓冲状态       │                 │ 维表点查             │   │
 │   │ 状态增长无界         │◄────────────────┤ 无状态流             │   │
-│   │ 适用：双流Join       │   状态外置演化   │ 适用：流+维表        │   │
+│   │ 适用:双流Join       │   状态外置演化   │ 适用:流+维表        │   │
 │   └─────────────────────┘                 └─────────────────────┘   │
 │            ▲                                    │                   │
 │            │         Delta Join (V1/V2)         │                   │
 │            └────────────────────────────────────┘                   │
 │                      融合两种模式优势                                │
 │                                                                     │
-│   Delta Join 定位：                                                  │
+│   Delta Join 定位:                                                  │
 │   ┌─────────────────────────────────────────────────────────────┐  │
 │   │ • 保留 Lookup Join 的"流驱动查询"语义                         │  │
 │   │ • 支持 Stream Join 的"CDC变更流"输入                         │  │
-│   │ • 通过缓存实现状态可控（区别于 Lookup Join 的无状态）         │  │
+│   │ • 通过缓存实现状态可控(区别于 Lookup Join 的无状态)         │  │
 │   │ • 通过异步批量查询优化外部存储访问                             │  │
 │   └─────────────────────────────────────────────────────────────┘  │
 │                                                                     │
@@ -338,7 +338,7 @@ graph TB
 **Delta Join V2 解决方案**：
 
 ```
-状态外置策略：
+状态外置策略:
 ┌─────────────────────────────────────────────────────────────┐
 │  Regular Join                    Delta Join V2              │
 │  ┌───────────────┐              ┌───────────────┐           │
@@ -346,8 +346,8 @@ graph TB
 │  │ + 维表状态 50GB│    ─────►    │ + 外部存储     │           │
 │  └───────────────┘              └───────────────┘           │
 │                                                             │
-│  复杂度：O(|流| + |维表|)         复杂度：O(缓存)            │
-│  扩缩容：30+分钟                 扩缩容：<1分钟              │
+│  复杂度:O(|流| + |维表|)         复杂度:O(缓存)            │
+│  扩缩容:30+分钟                 扩缩容:<1分钟              │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -364,7 +364,7 @@ $$\nexists M_t = \{(r_i, r_j) \mid r_i \in S_1 \land r_j \in S_2 \land \theta(r_
 **业务场景覆盖分析**：
 
 ```
-流式数据变更类型分布（典型电商场景）:
+流式数据变更类型分布(典型电商场景):
 ┌────────────────────────────────────────────────────────────┐
 │                                                            │
 │  INSERT (+I)  ████████████████████████████████████  78%   │
@@ -373,8 +373,8 @@ $$\nexists M_t = \{(r_i, r_j) \mid r_i \in S_1 \land r_j \in S_2 \land \theta(r_
 │                                                            │
 └────────────────────────────────────────────────────────────┘
 
-适用 Delta Join V2：78% + 20% = 98% 的场景（通过配置忽略DELETE或软删除）
-不适用：2% 的场景（需要硬删除的账户、购物车等）
+适用 Delta Join V2:78% + 20% = 98% 的场景(通过配置忽略DELETE或软删除)
+不适用:2% 的场景(需要硬删除的账户、购物车等)
 ```
 
 **软删除实现模式**：
@@ -396,17 +396,17 @@ WHERE u.is_deleted = FALSE;  -- 过滤已删除用户
 **下推优化效果量化**：
 
 ```
-场景：用户表 50 字段，平均 2KB/行，查询仅需 user_name, user_tier
+场景:用户表 50 字段,平均 2KB/行,查询仅需 user_name, user_tier
 
-原始查询：
+原始查询:
 SELECT user_name, user_tier FROM users WHERE user_id = ?
-实际传输：2KB/行
+实际传输:2KB/行
 
-下推优化后：
+下推优化后:
 SELECT user_name, user_tier FROM users WHERE user_id = ?
-实际传输：100B/行（仅2个字段）
+实际传输:100B/行(仅2个字段)
 
-IO减少：1 - 100B/2KB = 95%
+IO减少:1 - 100B/2KB = 95%
 ```
 
 **支持下推的存储系统**：
@@ -432,7 +432,7 @@ IO减少：1 - 100B/2KB = 95%
 **缓存预热策略**：
 
 ```
-冷启动问题：
+冷启动问题:
 ┌─────────────────────────────────────────────────────────────┐
 │  时间 →                                                       │
 │  命中率                                                       │
@@ -447,8 +447,8 @@ IO减少：1 - 100B/2KB = 95%
 │    0% ┼────╮╭────╯                                         │
 │       启动   5min    10min    20min    30min                  │
 │                                                             │
-│  无预热：30分钟达到稳定命中率                                 │
-│  有预热：<5分钟达到稳定命中率                                 │
+│  无预热:30分钟达到稳定命中率                                 │
+│  有预热:<5分钟达到稳定命中率                                 │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -514,9 +514,9 @@ $$Cost = C_1 \cdot Size_1 + C_2 \cdot Size_2 + C_3 \cdot Size_3$$
 **实际效果**：
 
 ```
-无缓存：100% × 50ms = 50ms 平均延迟
-单级缓存：85% × 0.1ms + 15% × 50ms = 7.6ms
-三级缓存：85% × 0.1ms + 10% × 5ms + 5% × 50ms = 3.1ms
+无缓存:100% × 50ms = 50ms 平均延迟
+单级缓存:85% × 0.1ms + 15% × 50ms = 7.6ms
+三级缓存:85% × 0.1ms + 10% × 5ms + 5% × 50ms = 3.1ms
 ```
 
 延迟降低：$1 - \frac{3.1}{50} = 93.8\%$
@@ -571,10 +571,10 @@ $$A_{target} = 99.9\% \quad \checkmark$$
 
 ```sql
 -- ============================================
--- 生产级 Delta Join V2 配置：电商订单富化
+-- 生产级 Delta Join V2 配置:电商订单富化
 -- ============================================
 
--- 1. 订单 CDC 源（MySQL，忽略 DELETE）
+-- 1. 订单 CDC 源(MySQL,忽略 DELETE)
 CREATE TABLE orders_cdc (
     order_id BIGINT,
     user_id STRING,
@@ -592,14 +592,14 @@ CREATE TABLE orders_cdc (
     'table-name' = 'orders',
     'username' = '${MYSQL_USER}',
     'password' = '${MYSQL_PASS}',
-    -- 关键：忽略 DELETE 操作，确保 CDC 源兼容
+    -- 关键:忽略 DELETE 操作,确保 CDC 源兼容
     'debezium.skipped.operations' = 'd',
     -- 生产级连接池配置
     'debezium.max.batch.size' = '2048',
     'debezium.poll.interval.ms' = '1000'
 );
 
--- 2. 产品维表（Paimon，支持投影/过滤下推）
+-- 2. 产品维表(Paimon,支持投影/过滤下推)
 CREATE TABLE product_dim (
     product_id STRING PRIMARY KEY NOT ENFORCED,
     product_name STRING,
@@ -607,7 +607,7 @@ CREATE TABLE product_dim (
     category_name STRING,
     brand STRING,
     price DECIMAL(10,2),
-    cost_price DECIMAL(10,2),  -- 敏感字段，需RBAC
+    cost_price DECIMAL(10,2),  -- 敏感字段,需RBAC
     stock_quantity INT,
     update_time TIMESTAMP(3)
 ) WITH (
@@ -616,12 +616,12 @@ CREATE TABLE product_dim (
     'format' = 'parquet',
     -- Delta Join V2 缓存配置
     'lookup.cache.max-rows' = '200000',  -- 20万条热点产品
-    'lookup.cache.ttl' = '120s',          -- 2分钟TTL，平衡新鲜度与性能
-    -- 投影下推：仅查询必要字段
+    'lookup.cache.ttl' = '120s',          -- 2分钟TTL,平衡新鲜度与性能
+    -- 投影下推:仅查询必要字段
     'lookup.projection.pushdown.enabled' = 'true'
 );
 
--- 3. 用户维表（HBase，高并发点查）
+-- 3. 用户维表(HBase,高并发点查)
 CREATE TABLE user_dim (
     user_id STRING PRIMARY KEY NOT ENFORCED,
     user_name STRING,
@@ -642,7 +642,7 @@ CREATE TABLE user_dim (
     'lookup.retry-delay' = '100ms'
 );
 
--- 4. 输出目标（Doris，实时报表）
+-- 4. 输出目标(Doris,实时报表)
 CREATE TABLE enriched_orders (
     order_id BIGINT,
     user_id STRING,
@@ -664,21 +664,21 @@ CREATE TABLE enriched_orders (
     'sink.enable-delete' = 'false'  -- 与 CDC 源兼容
 );
 
--- 5. Delta Join V2 查询（自动启用投影/过滤下推）
+-- 5. Delta Join V2 查询(自动启用投影/过滤下推)
 INSERT INTO enriched_orders
 SELECT
     o.order_id,
     o.user_id,
-    -- 用户维度（投影下推：仅查询 user_level, is_vip）
+    -- 用户维度(投影下推:仅查询 user_level, is_vip)
     u.user_level,
     u.is_vip,
     o.product_id,
-    -- 产品维度（投影下推：仅查询 product_name, category_name, brand）
+    -- 产品维度(投影下推:仅查询 product_name, category_name, brand)
     p.product_name,
     p.category_name,
     p.brand,
     o.amount,
-    -- 计算利润（过滤下推：仅查询 price > 0 的记录）
+    -- 计算利润(过滤下推:仅查询 price > 0 的记录)
     CASE
         WHEN p.price IS NOT NULL AND p.price > 0
         THEN o.amount - p.cost_price * o.amount / p.price
@@ -715,7 +715,7 @@ Configuration config = new Configuration();
 config.setString("table.optimizer.delta-join.strategy", "AUTO");
 config.setBoolean("table.exec.delta-join.cache-enabled", true);
 
-// 2. 缓存配置（根据内存调整）
+// 2. 缓存配置(根据内存调整)
 config.setLong("table.exec.delta-join.left.cache-size", 200000);
 config.setLong("table.exec.delta-join.right.cache-size", 500000);
 config.setString("table.exec.delta-join.cache-ttl", "120s");
@@ -756,7 +756,7 @@ tEnv.executeSql("...");
 -- 实时推荐 Delta Join 配置
 -- ============================================
 
--- 1. 用户行为流（Kafka）
+-- 1. 用户行为流(Kafka)
 CREATE TABLE user_behavior (
     user_id STRING,
     item_id STRING,
@@ -773,7 +773,7 @@ CREATE TABLE user_behavior (
     'protobuf.message-class-name' = 'UserBehaviorEvent'
 );
 
--- 2. 用户画像（Fluss，低延迟点查）
+-- 2. 用户画像(Fluss,低延迟点查)
 CREATE TABLE user_profile (
     user_id STRING PRIMARY KEY NOT ENFORCED,
     age_group STRING,
@@ -787,13 +787,13 @@ CREATE TABLE user_profile (
     'connector' = 'fluss',
     'bootstrap.servers' = 'fluss-cluster:9123',
     'table.name' = 'user_profile',
-    -- Fluss 本地缓存配置（L2缓存）
+    -- Fluss 本地缓存配置(L2缓存)
     'lookup.cache.max-rows' = '100000',
     'lookup.cache.ttl' = '30s',  -- 短TTL保证新鲜度
     'lookup.async' = 'true'
 );
 
--- 3. 物品Embedding（向量数据库 Milvus）
+-- 3. 物品Embedding(向量数据库 Milvus)
 CREATE TABLE item_embedding (
     item_id STRING PRIMARY KEY NOT ENFORCED,
     item_vector ARRAY<FLOAT>,  -- 128维向量
@@ -810,7 +810,7 @@ CREATE TABLE item_embedding (
     'lookup.cache.ttl' = '300s'  -- 物品Embedding变化较慢
 );
 
--- 4. 推荐结果输出（Redis，实时服务）
+-- 4. 推荐结果输出(Redis,实时服务)
 CREATE TABLE recommendation_result (
     user_id STRING,
     trigger_item STRING,
@@ -854,7 +854,7 @@ enriched_behavior AS (
     WHERE b.behavior_type IN ('click', 'fav', 'cart')
 ),
 
--- Step 2: 计算相似物品（简化示例，实际使用 向量搜索功能（规划中））
+-- Step 2: 计算相似物品(简化示例,实际使用 向量搜索功能(规划中))
 similar_items AS (
     SELECT
         user_id,
@@ -900,7 +900,7 @@ execution.checkpointing.max-concurrent-checkpoints: 2
 taskmanager.memory.network.max: 256mb
 taskmanager.memory.network.min: 128mb
 
-# JVM GC优化（G1GC低延迟）
+# JVM GC优化(G1GC低延迟)
 env.java.opts.taskmanager: >
   -XX: +UseG1GC
   -XX: MaxGCPauseMillis=50
@@ -924,7 +924,7 @@ env.java.opts.taskmanager: >
 -- CDC 源多维度 Join 生产配置
 -- ============================================
 
--- 1. 订单 CDC 流（事实表）
+-- 1. 订单 CDC 流(事实表)
 CREATE TABLE orders (
     order_id BIGINT,
     user_id STRING,
@@ -940,14 +940,14 @@ CREATE TABLE orders (
     'port' = '3306',
     'database-name' = 'sales',
     'table-name' = 'orders',
-    -- CDC 配置：确保无 DELETE
+    -- CDC 配置:确保无 DELETE
     'debezium.skipped.operations' = 'd',
     -- 生产级 CDC 配置
     'debezium.snapshot.mode' = 'initial',
     'debezium.tombstones.on.delete' = 'false'
 );
 
--- 2. 用户 CDC 维表（Type 2 SCD）
+-- 2. 用户 CDC 维表(Type 2 SCD)
 CREATE TABLE users (
     user_id STRING PRIMARY KEY NOT ENFORCED,
     user_name STRING,
@@ -971,7 +971,7 @@ CREATE TABLE users (
     'lookup.cache.ttl' = '300s'  -- 用户维表变化较慢
 );
 
--- 3. 地区静态维表（极少变化）
+-- 3. 地区静态维表(极少变化)
 CREATE TABLE regions (
     region_code STRING PRIMARY KEY NOT ENFORCED,
     region_name STRING,
@@ -985,12 +985,12 @@ CREATE TABLE regions (
     'username' = '${DIM_USER}',
     'password' = '${DIM_PASS}',
     'driver' = 'com.mysql.cj.jdbc.Driver',
-    -- 长TTL缓存（静态数据）
+    -- 长TTL缓存(静态数据)
     'lookup.cache.max-rows' = '10000',
     'lookup.cache.ttl' = '3600s'  -- 1小时
 );
 
--- 4. 输出：实时聚合结果（Paimon）
+-- 4. 输出:实时聚合结果(Paimon)
 CREATE TABLE realtime_sales_agg (
     window_start TIMESTAMP(3),
     region_name STRING,
@@ -1015,11 +1015,11 @@ SELECT
     SUM(o.amount) AS total_amount,
     COUNT(DISTINCT o.user_id) AS unique_users
 FROM orders o
--- Join 用户维表（CDC源）
+-- Join 用户维表(CDC源)
 INNER JOIN users FOR SYSTEM_TIME AS OF o.create_time AS u
     ON o.user_id = u.user_id
     AND u.is_current = TRUE  -- 仅当前有效版本
--- Join 地区维表（静态）
+-- Join 地区维表(静态)
 LEFT JOIN regions FOR SYSTEM_TIME AS OF o.create_time AS r
     ON o.region_code = r.region_code
 WHERE o.status NOT IN ('CANCELLED', 'REFUNDED')
@@ -1032,7 +1032,7 @@ GROUP BY
 **SCD Type 2 处理说明**：
 
 ```
-用户维表 SCD Type 2 设计：
+用户维表 SCD Type 2 设计:
 ┌──────────┬──────────┬───────────┬─────────────────────┬─────────────────────┬────────────┐
 │ user_id  │ user_type│ region    │ valid_from          │ valid_to            │ is_current │
 ├──────────┼──────────┼───────────┼─────────────────────┼─────────────────────┼────────────┤
@@ -1041,7 +1041,7 @@ GROUP BY
 │ user_001 │ vip      │ Shanghai  │ 2024-06-01 00:00:00 │ 9999-12-31 23:59:59 │ TRUE       │
 └──────────┴──────────┴───────────┴─────────────────────┴─────────────────────┴────────────┘
 
-Flink SQL 处理：
+Flink SQL 处理:
 - 使用 FOR SYSTEM_TIME AS OF 自动选择有效版本
 - WHERE is_current = TRUE 确保使用最新版本
 ```
@@ -1196,7 +1196,7 @@ flowchart LR
 
 ```mermaid
 xychart-beta
-    title "缓存命中率 vs 缓存大小（Zipf分布 s=1）"
+    title "缓存命中率 vs 缓存大小(Zipf分布 s=1)"
     x-axis ["1K", "10K", "100K", "500K", "1M", "5M"]
     y-axis "命中率 %" 0 --> 100
     line "理论命中率" [15, 35, 60, 75, 85, 92]
@@ -1276,7 +1276,7 @@ checklist:
 **自动降级条件**：
 
 ```java
-// 伪代码：自动降级逻辑
+// 伪代码:自动降级逻辑
 if (errorRate > 0.05 || avgLatency > 1000) {
     // 触发降级
     switchToRegularJoin();
@@ -1297,8 +1297,8 @@ SET table.exec.state.ttl = '24h';
 SET execution.checkpointing.interval = '60s';
 SET execution.checkpointing.incremental = 'true';
 
--- 步骤4: 重新启动作业（带状态恢复）
--- 注意：Delta Join 状态与 Regular Join 不兼容，需要冷启动
+-- 步骤4: 重新启动作业(带状态恢复)
+-- 注意:Delta Join 状态与 Regular Join 不兼容,需要冷启动
 ```
 
 **降级决策矩阵**：

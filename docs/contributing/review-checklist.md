@@ -181,29 +181,32 @@
 **P0 评论模板**：
 
 ```markdown
+<!-- pseudo-code -->
 **[P0] 问题类型**: 简要描述
 
-详细说明：...
+详细说明:...
 
-建议修复：...
+建议修复:...
 ```
 
 **P1 评论模板**：
 
 ```markdown
+<!-- pseudo-code -->
 **[P1] 建议**: 简要描述
 
-说明：...
+说明:...
 
-可选修复：...
+可选修复:...
 ```
 
 **P2 评论模板**：
 
 ```markdown
+<!-- pseudo-code -->
 **[P2] 可选改进**: 简要描述
 
-说明：...
+说明:...
 ```
 
 ---
@@ -242,7 +245,7 @@ npx markdownlint-cli "**/*.md" --ignore node_modules
 # 检查链接
 find . -name "*.md" -not -path "./node_modules/*" -exec npx markdown-link-check {} \;
 
-# 验证 Mermaid 语法（手动检查）
+# 验证 Mermaid 语法(手动检查)
 ```
 
 **步骤 2: 内容审核**

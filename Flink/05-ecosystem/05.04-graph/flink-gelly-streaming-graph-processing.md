@@ -318,18 +318,18 @@ DataStream<Edge<String, TransactionInfo>> txEdges = transactions
 
 SimpleEdgeStream<String, TransactionInfo> txStream = new SimpleEdgeStream<>(txEdges, env);
 
-// 滑动窗口图分析（1小时窗口，5分钟滑动）
+// 滑动窗口图分析(1小时窗口,5分钟滑动)
 GraphWindowStream<String, AccountInfo, TransactionInfo> slidingGraph = txStream
     .slice(Time.hours(1), Time.minutes(5));
 
-// 计算三角形计数（检测闭环交易）
+// 计算三角形计数(检测闭环交易)
 DataStream<TriangleCountResult> triangleCounts = slidingGraph
     .apply(new TriangleCountAlgorithm<>())
     .mapWindowResult((window, count) ->
         new TriangleCountResult(window.getEnd(), count)
     );
 
-// 异常检测：三角形数量突增可能指示洗钱行为
+// 异常检测:三角形数量突增可能指示洗钱行为
 triangleCounts
     .keyBy(TriangleCountResult::getWindowEnd)
     .process(new AnomalyDetectionProcessFunction(
@@ -358,7 +358,7 @@ public class VertexState {
 // 自定义 GraphStream 构建
 DataStream<Edge<Long, Double>> edgeStream = ...;
 
-// 方法1: 使用 SimpleEdgeStream（无状态边流）
+// 方法1: 使用 SimpleEdgeStream(无状态边流)
 SimpleEdgeStream<Long, Double> simpleStream = new SimpleEdgeStream<>(edgeStream, env);
 
 // 方法2: 使用带顶点状态的 GraphStream
@@ -379,7 +379,7 @@ GraphStream<Long, VertexState, Double> graphStream = simpleStream
         }
     );
 
-// 全局聚合：计算图统计信息
+// 全局聚合:计算图统计信息
 DataStream<GraphStatistics> stats = graphStream
     .globalAggregate(new GraphStatisticsAggregator() {
         @Override
@@ -400,7 +400,7 @@ DataStream<GraphStatistics> stats = graphStream
         }
     });
 
-// 邻居聚合：计算每个顶点的加权入度
+// 邻居聚合:计算每个顶点的加权入度
 DataStream<Vertex<Long, Double>> weightedDegrees = graphStream
     .neighborhood(new NeighborhoodAggregation<Long, VertexState, Double, Double>() {
         @Override
@@ -434,7 +434,7 @@ weightedDegrees
 ### 6.4 状态后端配置优化
 
 ```java
-// RocksDB 状态后端配置（大状态场景）
+// RocksDB 状态后端配置(大状态场景)
 RocksDBStateBackend rocksDbBackend = new RocksDBStateBackend(
     "hdfs://namenode:8020/flink/checkpoints",
     true  // 增量 checkpoint

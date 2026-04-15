@@ -374,7 +374,7 @@ DataStream<Prediction> predictions = featureStream
 **缓存优化策略**:
 
 ```java
-// 多级缓存：本地Caffeine + Redis Cluster
+// 多级缓存:本地Caffeine + Redis Cluster
 public class MultiLevelFeatureCache {
     private final Cache<String, UserFeature> localCache;
     private final RedisClusterAsyncCommands<String, String> redisClient;
@@ -391,7 +391,7 @@ public class MultiLevelFeatureCache {
             return feature;
         }
 
-        // L3: 实时计算（降级）
+        // L3: 实时计算(降级)
         feature = computeInRealTime(userId);
         return feature;
     }

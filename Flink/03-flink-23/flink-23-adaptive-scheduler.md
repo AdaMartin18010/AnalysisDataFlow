@@ -123,12 +123,12 @@ $$\Delta p_i^* = \arg\max_{\Delta p} \left( \Delta Q(\Delta p) - \text{Cost}_{re
 │                    Flink 调度架构演进                          │
 ├─────────────────────────────────────────────────────────────┤
 │  Flink 1.x                                                  │
-│  ├── Default Scheduler: 静态并行度，提交时固定                 │
+│  ├── Default Scheduler: 静态并行度,提交时固定                 │
 │  └── 不支持运行时调整                                        │
 ├─────────────────────────────────────────────────────────────┤
 │  Flink 2.0+                                                 │
 │  ├── Adaptive Scheduler V1: 基于资源可用性的基本调整           │
-│  │   └── 仅支持粗粒度扩缩容（整个 Job）                        │
+│  │   └── 仅支持粗粒度扩缩容(整个 Job)                        │
 │  └── Adaptive Scheduler 2.0: 细粒度、感知负载、预测驱动         │
 │      └── 支持算子级并行度调整、状态迁移、异构调度               │
 └─────────────────────────────────────────────────────────────┘
@@ -378,7 +378,7 @@ spec:
     resource:
       memory: "8192m"
       cpu: 4
-    replicas: 3  # 初始副本数，Adaptive Scheduler 会动态调整
+    replicas: 3  # 初始副本数,Adaptive Scheduler 会动态调整
 
   flinkConfiguration:
     scheduler: "adaptive-v2"

@@ -72,7 +72,7 @@ BulkRequest = [IndexRequest | UpdateRequest | DeleteRequest]⁺
 T_max = min(T_bulk, T_es, T_network)
 where:
   T_bulk = bulk.flush.max.actions / bulk.flush.interval
-  T_es = ES集群索引能力（分片数 × 单分片吞吐）
+  T_es = ES集群索引能力(分片数 × 单分片吞吐)
   T_network = 网络带宽 / 平均文档大小
 ```
 
@@ -131,7 +131,7 @@ Data Source → Flink Processing → ES Sink → Elasticsearch Cluster
 ES Sink 作为 Stateful Sink:
 - Pre-Checkpoint: 等待所有 pending 的 bulk 请求完成
 - Snapshot: 记录最后成功确认的 document offset
-- Recovery: 从 checkpoint 恢复，重放未确认的记录
+- Recovery: 从 checkpoint 恢复,重放未确认的记录
 ```
 
 ---
@@ -164,7 +164,7 @@ ES Sink 作为 Stateful Sink:
 ```
 优点: 高吞吐、批量优化、网络复用
 缺点: 需处理背压、异常延迟感知
-适用: 流处理场景（默认）
+适用: 流处理场景(默认)
 ```
 
 ### 4.3 反例分析：错误的动态索引实现
@@ -173,7 +173,7 @@ ES Sink 作为 Stateful Sink:
 
 import org.apache.flink.streaming.api.datastream.DataStream;
 
-// ❌ 错误做法：每条记录创建新的 IndexRequest 函数
+// ❌ 错误做法:每条记录创建新的 IndexRequest 函数
 DataStream<LogEvent> stream = ...;
 stream.addSink(new ElasticsearchSink.Builder<LogEvent>(
     config,
@@ -183,11 +183,11 @@ stream.addSink(new ElasticsearchSink.Builder<LogEvent>(
         indexer.add(new IndexRequest(indexName).source(element.toJson()));
     }
 ).build());
-// 问题：没有利用批量写入的优势，每条记录单独处理
+// 问题:没有利用批量写入的优势,每条记录单独处理
 ```
 
 ```java
-// ✅ 正确做法：使用 IndexRequest 构建器，让 Sink 批量处理
+// ✅ 正确做法:使用 IndexRequest 构建器,让 Sink 批量处理
 ElasticsearchSink.Builder<LogEvent> builder = new ElasticsearchSink.Builder<>(
     config,
     (element, ctx, indexer) -> {
@@ -246,7 +246,7 @@ builder.setFlushOnCheckpoint(true);
 3. **幂等写入**: ES 检测到相同 `_id`，执行更新操作（内容相同）
 
 ```
-Result: ES 中仅有一份 r 的拷贝，无重复
+Result: ES 中仅有一份 r 的拷贝,无重复
 ```
 
 ---
@@ -511,7 +511,7 @@ public class RobustElasticsearchSink {
 
         DataStream<Event> stream = env.addSource(new EventSource());
 
-        // 死信队列流（侧输出）
+        // 死信队列流(侧输出)
         OutputTag<Event> deadLetterTag = new OutputTag<Event>("dead-letters") {};
 
         SingleOutputStreamOperator<Event> mainStream = stream
@@ -537,7 +537,7 @@ public class RobustElasticsearchSink {
                         .source(element.toJson(), XContentType.JSON)
                         .routing(element.getRoutingKey()); // 路由配置
 
-                    // 版本控制（乐观锁）
+                    // 版本控制(乐观锁)
                     if (element.getVersion() != null) {
                         request.version(element.getVersion());
                         request.versionType(VersionType.EXTERNAL);
@@ -565,7 +565,7 @@ public class RobustElasticsearchSink {
             public void onFailure(ActionRequest action, Throwable failure,
                                   int restStatusCode, RequestIndexer indexer) throws Throwable {
 
-                // 可重试错误：加入重试队列
+                // 可重试错误:加入重试队列
                 if (ExceptionUtils.findThrowable(failure, EsRejectedExecutionException.class).isPresent()
                     || restStatusCode == 429 // Too Many Requests
                     || restStatusCode >= 500) { // 服务器错误
@@ -574,16 +574,16 @@ public class RobustElasticsearchSink {
                     return;
                 }
 
-                // 不可恢复错误：跳过或发送到死信队列
+                // 不可恢复错误:跳过或发送到死信队列
                 if (ExceptionUtils.findThrowable(failure, MapperParsingException.class).isPresent()
                     || restStatusCode == 400) { // Bad Request
 
-                    // 记录错误，丢弃请求
+                    // 记录错误,丢弃请求
                     System.err.println("Dropping invalid request: " + action);
                     return;
                 }
 
-                // 其他错误：抛出异常终止任务
+                // 其他错误:抛出异常终止任务
                 throw failure;
             }
         });
@@ -612,7 +612,7 @@ settings = EnvironmentSettings.new_instance() \
 
 table_env = StreamTableEnvironment.create(env, settings)
 
-# 创建源表（Kafka 日志）
+# 创建源表(Kafka 日志)
 table_env.execute_sql("""
 CREATE TABLE kafka_logs (
     log_id STRING,

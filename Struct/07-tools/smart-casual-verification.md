@@ -330,13 +330,13 @@ NoLateRecords ==
 gantt
     title Flink SCV实施路线图
     dateFormat YYYY-MM
-    section 阶段1：基础
+    section 阶段1:基础
     Checkpoint规格建模      :a1, 2026-01, 2M
     Trace收集工具开发       :a2, 2026-02, 2M
-    section 阶段2：验证
+    section 阶段2:验证
     TLC模型检验集成         :a3, 2026-03, 2M
     CI/CD集成              :a4, 2026-04, 1M
-    section 阶段3：扩展
+    section 阶段3:扩展
     Exactly-Once验证        :a5, 2026-05, 2M
     Watermark验证          :a6, 2026-06, 2M
 ```
@@ -443,9 +443,9 @@ GC暂停                节点故障
 1. **组合多个规格动作**（处理粗粒度实现事件）:
 
 ```tla
-\* 实现中：AppendEntries消息piggyback了任期更新
-\* 规格中：UpdateTerm和HandleAppendEntries是两个独立动作
-\* 解决方案：在Trace验证中允许两者原子执行
+\* 实现中:AppendEntries消息piggyback了任期更新
+\* 规格中:UpdateTerm和HandleAppendEntries是两个独立动作
+\* 解决方案:在Trace验证中允许两者原子执行
 
 IsRevAppendEntries ==
     UpdateTerm /\ HandleAppendEntriesReq
@@ -454,7 +454,7 @@ IsRevAppendEntries ==
 1. **引入有限Stuttering**（处理细粒度实现事件）:
 
 ```tla
-\* 规格动作保持高层变量不变，允许实现执行多个步骤
+\* 规格动作保持高层变量不变,允许实现执行多个步骤
 StutterAction ==
     UNCHANGED <<highLevelVars>>
 ```
@@ -462,8 +462,8 @@ StutterAction ==
 1. **故障动作组合**（处理未记录的故障）:
 
 ```tla
-\* Trace未记录消息丢失，但规格显式建模了丢包
-\* 解决方案：在任意步骤允许故障动作
+\* Trace未记录消息丢失,但规格显式建模了丢包
+\* 解决方案:在任意步骤允许故障动作
 TraceNext ==
     \/ ImplementationAction
     \/ IsFault  \* 允许故障在任意步骤发生
@@ -575,10 +575,10 @@ Index == 0..MaxLogLength
 Entry == [term: Term, value: Value]
 
 -----------------------------------------------------------------------------
-\* 关键不变式：已提交日志条目的安全性
+\* 关键不变式:已提交日志条目的安全性
 
-\* 不变式1：Leader Completeness
-\* 如果日志条目在某个任期被提交，则该条目存在于所有更高任期的Leader日志中
+\* 不变式1:Leader Completeness
+\* 如果日志条目在某个任期被提交,则该条目存在于所有更高任期的Leader日志中
 LeaderCompleteness ==
     \A i, j \in Nodes :
         \A idx \in 1..Len(log[i]) :
@@ -591,23 +591,23 @@ LeaderCompleteness ==
             \* j的日志包含该条目
             Len(log[j]) >= idx /\ log[j][idx] = log[i][idx]
 
-\* 不变式2：State Machine Safety
-\* 如果节点已应用某索引的日志条目，则所有节点在该索引应用相同条目
+\* 不变式2:State Machine Safety
+\* 如果节点已应用某索引的日志条目,则所有节点在该索引应用相同条目
 StateMachineSafety ==
     \A i, j \in Nodes :
         \A idx \in 1..Min(Len(log[i]), Len(log[j])) :
             commitIndex[i] >= idx /\ commitIndex[j] >= idx
             => log[i][idx] = log[j][idx]
 
-\* 不变式3：Election Safety
+\* 不变式3:Election Safety
 \* 每个任期最多只有一个Leader
 ElectionSafety ==
     \A i, j \in Nodes :
         state[i] = Leader /\ state[j] = Leader /\ currentTerm[i] = currentTerm[j]
         => i = j
 
-\* 不变式4：Log Matching
-\* 如果两条日志在相同索引处有相同任期，则该索引之前的内容相同
+\* 不变式4:Log Matching
+\* 如果两条日志在相同索引处有相同任期,则该索引之前的内容相同
 LogMatching ==
     \A i, j \in Nodes :
         \A idx \in 1..Min(Len(log[i]), Len(log[j])) :
@@ -615,7 +615,7 @@ LogMatching ==
             => \A k \in 1..idx : log[i][k] = log[j][k]
 
 -----------------------------------------------------------------------------
-\* 活性属性：最终选举成功
+\* 活性属性:最终选举成功
 ElectionLiveness ==
     \A n \in Nodes :
         state[n] = Candidate ~> state[n] = Leader \/ state[n] = Follower
@@ -873,15 +873,15 @@ class CCFConsensusTest:
             'timestamp': time.time()
         })
 
-        # 应用分区（实际系统调用）
+        # 应用分区(实际系统调用)
         await self.network.isolate(partition_a, partition_b)
 
     async def run_scenario(self):
         """运行验证场景"""
-        # 阶段1: 正常运行，选举Leader
+        # 阶段1: 正常运行,选举Leader
         await self.wait_for_leader()
 
-        # 阶段2: 注入网络分区（模拟CCF-006场景）
+        # 阶段2: 注入网络分区(模拟CCF-006场景)
         await self.inject_partition(['NodeA'])  # 隔离当前Leader
 
         # 阶段3: 等待新Leader选举
@@ -890,7 +890,7 @@ class CCFConsensusTest:
         # 阶段4: 收集状态并验证Election Safety
         states = await self.collect_node_states()
 
-        # 验证：同一任期不能有两个Leader
+        # 验证:同一任期不能有两个Leader
         leaders = [(n, s['current_term']) for n, s in states.items()
                    if s['state'] == 'Leader']
 
@@ -952,7 +952,7 @@ def analyze_trace(trace, tla_spec):
 **TLA+规格（简化）**:
 
 ```tla
-\* Checkpoint完成后，所有任务状态必须一致
+\* Checkpoint完成后,所有任务状态必须一致
 CheckpointConsistency ==
     \A cp \in completedCP :
         \A t1, t2 \in Tasks :

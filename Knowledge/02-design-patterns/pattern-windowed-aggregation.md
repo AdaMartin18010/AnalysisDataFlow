@@ -192,7 +192,7 @@ $$
 │  2. 触发后驱逐 (Post-Trigger)                                │
 │     ├── 触发: 先对全部记录计算并输出                         │
 │     ├── 驱逐: 再移除部分记录                                 │
-│     └── 继续: 窗口保持打开，可继续累积                       │
+│     └── 继续: 窗口保持打开,可继续累积                       │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -356,7 +356,7 @@ $$
 
 ```
 是否需要结果实时性?
-├── 否 ──► Event Time Trigger (Watermark到达触发，结果最准确)
+├── 否 ──► Event Time Trigger (Watermark到达触发,结果最准确)
 └── 是 ──► 能否接受近似结果?
             ├── 否 ──► Processing Time Trigger (低延迟但可能遗漏)
             └── 是 ──► Continuous Trigger (周期性输出当前估计)
@@ -476,13 +476,13 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 val transactionStream: DataStream[Transaction] = env
   .fromSource(kafkaSource, watermarkStrategy, "Transactions")
 
-// 滚动窗口聚合：每5秒统计各币种交易总额
+// 滚动窗口聚合:每5秒统计各币种交易总额
 val windowedAgg = transactionStream
   .keyBy(_.currency)
   .window(TumblingEventTimeWindows.of(Time.seconds(5)))
   .aggregate(new SumAggregate())
 
-// 聚合函数实现（增量聚合）
+// 聚合函数实现(增量聚合)
 class SumAggregate extends AggregateFunction[Transaction, Double, Double] {
   override def createAccumulator(): Double = 0.0
 
@@ -498,13 +498,13 @@ class SumAggregate extends AggregateFunction[Transaction, Double, Double] {
 **示例 2: 滑动窗口计算过去1分钟每10秒的移动平均** [^3]
 
 ```java
-// 滑动窗口：窗口大小60秒，滑动步长10秒
+// 滑动窗口:窗口大小60秒,滑动步长10秒
 val slidingAgg = sensorStream
   .keyBy(_.sensorId)
   .window(SlidingEventTimeWindows.of(Time.minutes(1), Time.seconds(10)))
   .aggregate(new AverageAggregate())
 
-// 平均值聚合（需维护SUM和COUNT）
+// 平均值聚合(需维护SUM和COUNT)
 
 import org.apache.flink.api.common.functions.AggregateFunction;
 import org.apache.flink.streaming.api.windowing.time.Time;
@@ -525,7 +525,7 @@ class AverageAggregate extends AggregateFunction[SensorReading, (Double, Long), 
 **示例 3: 会话窗口分析用户访问行为** [^3][^5]
 
 ```scala
-// 会话窗口：5分钟无活动则关闭会话
+// 会话窗口:5分钟无活动则关闭会话
 val sessionAgg = clickStream
   .keyBy(_.userId)
   .window(EventTimeSessionWindows.withGap(Time.minutes(5)))
@@ -533,7 +533,7 @@ val sessionAgg = clickStream
   .sideOutputLateData(lateDataTag)     // 迟到数据侧输出
   .process(new UserSessionFunction())
 
-// 会话处理函数（全量窗口函数）
+// 会话处理函数(全量窗口函数)
 class UserSessionFunction extends ProcessWindowFunction[
   ClickEvent,           // 输入类型
   UserSession,          // 输出类型
@@ -611,7 +611,7 @@ GROUP BY
 **示例 3: SESSION 会话窗口** [^7]
 
 ```sql
--- 会话窗口：20分钟无活动为会话边界
+-- 会话窗口:20分钟无活动为会话边界
 SELECT
   SESSION_START(event_time, INTERVAL '20' MINUTE) as session_start,
   SESSION_END(event_time, INTERVAL '20' MINUTE) as session_end,
@@ -633,7 +633,7 @@ CREATE TABLE sensor_readings (
   temperature DOUBLE,
   humidity DOUBLE,
   event_time TIMESTAMP(3),
-  -- 定义 Watermark：允许10秒乱序
+  -- 定义 Watermark:允许10秒乱序
   WATERMARK FOR event_time AS event_time - INTERVAL '10' SECOND
 ) WITH (
   'connector' = 'kafka',
@@ -690,7 +690,7 @@ class TopNFunction(n: Int) extends ProcessWindowFunction[Score, RankEntry, Strin
     out: Collector[RankEntry]
   ): Unit = {
 
-    // 由于驱逐器作用，scores最多包含100条记录
+    // 由于驱逐器作用,scores最多包含100条记录
     val topN = scores
       .toList
       .sortBy(-_.points)  // 降序排列
@@ -721,7 +721,7 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 DataStream<PageView> pageViews = env
   .fromSource(
     kafkaSource,
-    // Watermark策略：允许5秒乱序，1分钟空闲检测
+    // Watermark策略:允许5秒乱序,1分钟空闲检测
     WatermarkStrategy
       .<PageView>forBoundedOutOfOrderness(Duration.ofSeconds(5))
       .withIdleness(Duration.ofMinutes(1)),
@@ -733,7 +733,7 @@ DataStream<PageView> pageViews = env
       .withTimestampAssigner((pv, _) -> pv.timestamp)
   );
 
-// 窗口聚合：5秒滚动窗口，允许1分钟延迟
+// 窗口聚合:5秒滚动窗口,允许1分钟延迟
 DataStream<PageViewStats> stats = pageViews
   .keyBy(_.pageUrl)
   .window(TumblingEventTimeWindows.of(Time.seconds(5)))

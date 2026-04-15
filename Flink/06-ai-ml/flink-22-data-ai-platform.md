@@ -224,7 +224,7 @@ SELECT
     user_query,
     LLM_GENERATE(
         connector => 'openai_gpt4',
-        prompt => CONCAT('请回答：', user_query),
+        prompt => CONCAT('请回答:', user_query),
         max_tokens => 200,
         temperature => 0.7
     ) AS ai_response
@@ -890,7 +890,7 @@ WHERE action IN ('click', 'cart');
 **示例2: 多模型A/B测试**
 
 ```sql
--- A/B测试：按用户ID哈希分流到不同模型版本
+-- A/B测试:按用户ID哈希分流到不同模型版本
 WITH user_bucket AS (
     SELECT
         *,
@@ -905,7 +905,7 @@ SELECT
             ML_PREDICT('recommendation_model@v3', features => ROW(user_id, item_id, category))
         WHEN bucket < 50 THEN   -- 40%流量使用V2
             ML_PREDICT('recommendation_model@v2', features => ROW(user_id, item_id, category))
-        ELSE                     -- 50%流量使用V1（基线）
+        ELSE                     -- 50%流量使用V1(基线)
             ML_PREDICT('recommendation_model@v1', features => ROW(user_id, item_id, category))
     END AS prediction,
     CASE
@@ -921,7 +921,7 @@ FROM user_bucket;
 **示例3: 金融风控实时评分**
 
 ```sql
--- 实时风控：结合规则引擎与ML模型
+-- 实时风控:结合规则引擎与ML模型
 CREATE TABLE transaction_stream (
     tx_id STRING,
     user_id STRING,
@@ -985,7 +985,7 @@ CREATE TABLE document_vectors (
     'table-name' = 'documents'
 );
 
--- 实时查询：语义搜索相似文档
+-- 实时查询:语义搜索相似文档
 SELECT
     q.query_id,
     d.doc_id,
@@ -1024,6 +1024,7 @@ LATERAL TABLE(VECTOR_SEARCH_TVF(
 **示例5: 实时RAG Pipeline完整实现**
 
 ```sql
+# 伪代码示意,非完整可执行配置
 -- 阶段1: 文档摄取与向量索引更新
 CREATE TABLE document_ingestion (
     doc_id STRING,
@@ -1073,9 +1074,9 @@ augmented_prompt AS (
     SELECT
         query_id,
         CONCAT(
-            '基于以下上下文回答问题：\n\n',
+            '基于以下上下文回答问题:\n\n',
             STRING_AGG(c.content, '\n---\n'),  -- 合并检索到的文档
-            '\n\n问题：',
+            '\n\n问题:',
             q.question,
             '\n\n请根据上下文给出准确回答。'
         ) AS prompt
@@ -1152,7 +1153,7 @@ WITH (
     'framework' = 'onnx',
     'input_schema' = 'STRUCT<user_id STRING, item_id STRING, category STRING>',
     'output_schema' = 'STRUCT<label INT, probability FLOAT>',
-    'description' = '深度FM模型，AUC提升3%',
+    'description' = '深度FM模型,AUC提升3%',
     'training_date' = '2024-03-15',
     'metrics' = '{"auc": 0.847, "logloss": 0.234}'
 );
@@ -1160,7 +1161,7 @@ WITH (
 -- 设置模型别名
 SET MODEL ALIAS 'recommendation_model@staging' = 'recommendation_model@v3';
 
--- 金丝雀发布：1%流量切换到新版本
+-- 金丝雀发布:1%流量切换到新版本
 CREATE MODEL ROUTE 'recommendation_canary'
 FOR 'recommendation_model'
 USING WEIGHTED_RANDOM (
@@ -1168,7 +1169,7 @@ USING WEIGHTED_RANDOM (
     'v3' => 1
 );
 
--- 监控指标（假设）
+-- 监控指标(假设)
 SELECT
     model_version,
     COUNT(*) AS request_count,
@@ -1178,7 +1179,7 @@ FROM predictions_log
 WHERE model_name = 'recommendation_model'
 GROUP BY model_version;
 
--- 全量发布：更新production别名
+-- 全量发布:更新production别名
 SET MODEL ALIAS 'recommendation_model@production' = 'recommendation_model@v3';
 
 -- 紧急回滚

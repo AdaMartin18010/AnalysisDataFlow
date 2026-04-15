@@ -596,7 +596,7 @@ public class EmbeddingExample {
             .setAgentId("knowledge-agent-v2")
             .setEmbeddingConfiguration(embedConfig)
             .setVectorStoreConfiguration(vectorConfig)
-            .setSystemPrompt("你是一个知识问答助手，基于向量检索回答问题。")
+            .setSystemPrompt("你是一个知识问答助手,基于向量检索回答问题。")
             .build();
 
         // ========== 知识库构建 ==========
@@ -693,14 +693,14 @@ public class EmbeddingExample {
                         .collect(Collectors.joining("\n---\n"));
 
                     String augmentedPrompt = String.format("""
-                        基于以下上下文回答问题：
+                        基于以下上下文回答问题:
 
-                        上下文：
+                        上下文:
                         %s
 
-                        问题：%s
+                        问题:%s
 
-                        请仅基于提供的上下文回答。如果上下文不包含答案，请明确说明。
+                        请仅基于提供的上下文回答。如果上下文不包含答案,请明确说明。
                         """, context, query.getText());
 
                     // 4. LLM生成响应
@@ -761,7 +761,7 @@ public class MCPAgentServer {
             // 注册工具 - 这些工具将通过MCP协议暴露
             .registerTool(ToolDefinition.builder()
                 .name("query_sales_data")
-                .description("查询销售数据，支持时间范围和产品类别过滤")
+                .description("查询销售数据,支持时间范围和产品类别过滤")
                 .inputSchema(JsonSchema.builder()
                     .addProperty("time_range", JsonSchema.string()
                         .addEnum("1h", "24h", "7d", "30d")
@@ -813,7 +813,7 @@ public class MCPAgentServer {
             .registerResource(ResourceDefinition.builder()
                 .uri("sales://real-time/metrics")
                 .name("实时销售指标")
-                .description("实时销售数据流，包含订单数、销售额等")
+                .description("实时销售数据流,包含订单数、销售额等")
                 .mimeType("application/json")
                 .subscribeHandler((subscriber) -> {
                     // 订阅实时销售数据
@@ -831,13 +831,13 @@ public class MCPAgentServer {
                 .name("sales_report_template")
                 .description("销售报告生成模板")
                 .template("""
-                    请基于以下数据生成销售报告：
+                    请基于以下数据生成销售报告:
 
-                    时间范围：{{time_range}}
-                    产品类别：{{product_category}}
-                    数据：{{sales_data}}
+                    时间范围:{{time_range}}
+                    产品类别:{{product_category}}
+                    数据:{{sales_data}}
 
-                    报告应包含：
+                    报告应包含:
                     1. 总体销售概况
                     2. 趋势分析
                     3. 异常检测
@@ -946,7 +946,7 @@ public class AsyncExecutionExample {
             // 异常处理
             .exceptionally(ex -> {
                 if (ex instanceof TimeoutException) {
-                    return AgentResponse.error("请求超时，请稍后重试");
+                    return AgentResponse.error("请求超时,请稍后重试");
                 }
                 return AgentResponse.error("处理失败: " + ex.getMessage());
             });
@@ -976,14 +976,14 @@ public class AsyncExecutionExample {
         return queryStream
             // 批量分组
             .buffer(100, Duration.ofMillis(100))
-            // 并行处理，背压控制
+            // 并行处理,背压控制
             .flatMap(batch ->
                 Flowable.fromIterable(batch)
                     .parallel(8)
                     .runOn(Schedulers.from(executor))
                     .map(this::processSingleQuery)
                     .sequential(),
-                16  // 预取数量，控制背压
+                16  // 预取数量,控制背压
             );
     }
 
@@ -1028,7 +1028,7 @@ public class UpgradeGuide021 {
     /**
      * 变更1: 异步上下文修复
      * 0.2.0: 偶发NullPointerException
-     * 0.2.1: 已修复，无需变更代码
+     * 0.2.1: 已修复,无需变更代码
      */
 
     /**
@@ -1064,8 +1064,8 @@ public class UpgradeGuide021 {
     /**
      * 变更4: 安全依赖升级 (必须)
      */
-    // pom.xml 或 build.gradle 更新：
-    // 0.2.1 已升级以下依赖：
+    // pom.xml 或 build.gradle 更新:
+    // 0.2.1 已升级以下依赖:
     // - jackson-databind: 2.15.2 -> 2.17.0
     // - netty: 4.1.100 -> 4.1.108
     // - jetty: 11.0.15 -> 12.0.6

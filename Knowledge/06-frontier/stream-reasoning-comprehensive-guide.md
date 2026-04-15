@@ -133,13 +133,13 @@ window-spec ::= <duration> [TUMBLING | SLIDING]
 
 **窗口语义形式化**:
 
-对于时间窗口 $W_{time}(d)$，在时间 $t$ 的可见数据为：
+对于时间窗口 $W_{time}(d)$,在时间 $t$ 的可见数据为:
 
 $$
 \mathcal{RS}|_{W_{time}(d)}^t = \{ g_{t'} \in \mathcal{RS} : t - d \leq t' \leq t \}
 $$
 
-对于元组窗口 $W_{tuple}(n)$：
+对于元组窗口 $W_{tuple}(n)$:
 
 $$
 \mathcal{RS}|_{W_{tuple}(n)}^t = \{ g_{t_i} \in \mathcal{RS} : t_i \text{ 是最近的 } n \text{ 个元素} \}
@@ -164,19 +164,19 @@ WHERE {
 HAVING (COUNT(?sensor) > 3)
 ```
 
-**语义解释**: 每10秒执行一次查询，在滑动窗口（最近5分钟）内查找温度超过30度且至少有3个传感器报告的区域。
+**语义解释**: 每10秒执行一次查询,在滑动窗口(最近5分钟)内查找温度超过30度且至少有3个传感器报告的区域。
 
 ---
 
 ### Def-K-SR-04: 窗口语义在流推理中的形式化
 
-**定义**: 流推理中的窗口语义定义为五元组：
+**定义**: 流推理中的窗口语义定义为五元组:
 
 $$
 \mathcal{W}_{SR} \triangleq \langle \mathcal{B}, \mathcal{L}, \delta, \sigma, \Pi \rangle
 $$
 
-其中：
+其中:
 
 | 组件 | 符号 | 定义 | 说明 |
 |------|------|------|------|
@@ -199,13 +199,13 @@ $$
 
 **流推理的窗口闭合语义**:
 
-不同于传统流处理仅做聚合，流推理窗口闭合时触发：
+不同于传统流处理仅做聚合,流推理窗口闭合时触发:
 
 $$
 \text{WindowClose}(W_t) \Rightarrow \mathcal{R}(\mathcal{K} \cup \mathcal{L}(W_t)) \vdash \Delta\mathcal{A}
 $$
 
-即窗口闭合时，将窗口内容加入知识库进行推理，产生新的断言 $\Delta\mathcal{A}$。
+即窗口闭合时,将窗口内容加入知识库进行推理,产生新的断言 $\Delta\mathcal{A}$。
 
 **语义完整性约束**:
 
@@ -238,48 +238,48 @@ $$
 
 ### Prop-K-SR-01: 流推理复杂度定理
 
-**命题**: 流推理的时间复杂度与窗口大小和知识库复杂度相关：
+**命题**: 流推理的时间复杂度与窗口大小和知识库复杂度相关:
 
 $$
 T_{SR}(n, m, k) = O(n \cdot m^2 \cdot \log k)
 $$
 
-其中：
-- $n = |W|$：窗口内三元组数量
-- $m = |\mathcal{K}_T|$：TBox概念数量
-- $k = |\mathcal{R}|$：规则数量
+其中:
+- $n = |W|$:窗口内三元组数量
+- $m = |\mathcal{K}_T|$:TBox概念数量
+- $k = |\mathcal{R}|$:规则数量
 
 **证明要点**:
-1. 数据解析：$O(n)$ - 线性扫描窗口内容
-2. 模式匹配：$O(n \cdot m)$ - 每个三元组与模式匹配
-3. 规则触发：$O(m^2 \cdot \log k)$ - 概念层次遍历和规则索引查询
-4. 推理迭代：收敛复杂度取决于规则集的可终止性
+1. 数据解析:$O(n)$ - 线性扫描窗口内容
+2. 模式匹配:$O(n \cdot m)$ - 每个三元组与模式匹配
+3. 规则触发:$O(m^2 \cdot \log k)$ - 概念层次遍历和规则索引查询
+4. 推理迭代:收敛复杂度取决于规则集的可终止性
 
-**优化下界**: 对于无递归的Datalog规则集，存在线性时间算法 $O(n \cdot m)$。
+**优化下界**: 对于无递归的Datalog规则集,存在线性时间算法 $O(n \cdot m)$。
 
 ---
 
 ### Lemma-K-SR-01: 窗口推理结果单调性引理
 
-**引理**: 设 $W_1 \subseteq W_2$ 为两个窗口，$\mathcal{R}$ 为单调推理算子，则：
+**引理**: 设 $W_1 \subseteq W_2$ 为两个窗口,$\mathcal{R}$ 为单调推理算子,则:
 
 $$
 \mathcal{R}(\mathcal{K} \cup \mathcal{L}(W_1)) \subseteq \mathcal{R}(\mathcal{K} \cup \mathcal{L}(W_2))
 $$
 
-**证明**: 由推理系统的单调性，知识库扩展不会撤销已有结论。形式化：
+**证明**: 由推理系统的单调性,知识库扩展不会撤销已有结论。形式化:
 
 $$
 \forall \phi: \mathcal{K}_1 \models \phi \Rightarrow \mathcal{K}_2 \models \phi, \text{ if } \mathcal{K}_1 \subseteq \mathcal{K}_2
 $$
 
-窗口扩展 $\mathcal{L}(W_1) \subseteq \mathcal{L}(W_2)$ 蕴含知识库扩展，故结论保持。
+窗口扩展 $\mathcal{L}(W_1) \subseteq \mathcal{L}(W_2)$ 蕴含知识库扩展,故结论保持。
 
 ---
 
 ### Prop-K-SR-02: 时态推理不确定性定理
 
-**命题**: 流推理中存在三种不确定性来源，其度量满足：
+**命题**: 流推理中存在三种不确定性来源,其度量满足:
 
 $$
 U_{total} = 1 - (1 - U_{data}) \cdot (1 - U_{temporal}) \cdot (1 - U_{inference})
@@ -293,7 +293,7 @@ $$
 | 时态不确定性 | $U_{temporal}$ | 时钟漂移/乱序 | 0.02-0.10 |
 | 推理不确定性 | $U_{inference}$ | 默认规则/不完备知识 | 0.10-0.30 |
 
-**联合推理置信度**: 对于置信度分别为 $c_1, c_2$ 的两个推理路径，其合取置信度为：
+**联合推理置信度**: 对于置信度分别为 $c_1, c_2$ 的两个推理路径,其合取置信度为:
 
 $$
 c_{conj} = c_1 \cdot c_2 \cdot (1 - \epsilon_{correlation})
@@ -303,20 +303,20 @@ $$
 
 ### Lemma-K-SR-02: 窗口粒度与推理精度权衡
 
-**引理**: 窗口粒度 $g$（时间跨度或元组数量）与推理精度 $P$ 存在权衡关系：
+**引理**: 窗口粒度 $g$(时间跨度或元组数量)与推理精度 $P$ 存在权衡关系:
 
 $$
 P(g) = P_{max} \cdot \left(1 - e^{-\alpha g}\right) - \beta \cdot g
 $$
 
-其中：
-- 第一项：更多数据带来更高覆盖度
-- 第二项：过时数据引入噪声
+其中:
+- 第一项:更多数据带来更高覆盖度
+- 第二项:过时数据引入噪声
 - 最优粒度 $g^* = \frac{1}{\alpha} \ln\left(\frac{\alpha \cdot P_{max}}{\beta}\right)$
 
 **工程启示**:
-- 细粒度窗口（小g）：低延迟，可能欠完备
-- 粗粒度窗口（大g）：高覆盖，可能引入过时信息
+- 细粒度窗口(小g):低延迟,可能欠完备
+- 粗粒度窗口(大g):高覆盖,可能引入过时信息
 - 最优窗口大小需根据领域动态调整
 
 ---
@@ -417,7 +417,7 @@ $$
 
 **实体链接形式化**:
 
-将流数据中的实体 $e_{stream}$ 链接到KG中的实体 $e_{kg}$：
+将流数据中的实体 $e_{stream}$ 链接到KG中的实体 $e_{kg}$:
 
 $$
 \text{link}(e_{stream}) = \arg\max_{e_{kg} \in \mathcal{K}} \text{sim}(\phi(e_{stream}), \psi(e_{kg}))
@@ -458,16 +458,16 @@ $$
 
 **时态逻辑基础**:
 
-流推理采用时态描述逻辑 $\mathcal{ALC}\mathcal{L}$ 扩展：
+流推理采用时态描述逻辑 $\mathcal{ALC}\mathcal{L}$ 扩展:
 
 $$
 \mathcal{L}_{temp} ::= C \mid \neg C \mid C \sqcap D \mid \exists R.C \mid \mathbf{O}C \mid \mathbf{\diamond}C \mid C \mathcal{U} D
 $$
 
-其中：
-- $\mathbf{O}C$：下一时刻 $C$ 成立 (Next)
-- $\mathbf{\diamond}C$：某时刻 $C$ 成立 (Eventually)
-- $C \mathcal{U} D$：$C$ 一直成立直到 $D$ 成立 (Until)
+其中:
+- $\mathbf{O}C$:下一时刻 $C$ 成立 (Next)
+- $\mathbf{\diamond}C$:某时刻 $C$ 成立 (Eventually)
+- $C \mathcal{U} D$:$C$ 一直成立直到 $D$ 成立 (Until)
 
 **时态查询示例**:
 
@@ -501,7 +501,7 @@ WHERE {
 
 ---
 
-### 3.4 主要系统对比：C-SPARQL、CQELS、Strider
+### 3.4 主要系统对比:C-SPARQL、CQELS、Strider
 
 
 **系统架构对比**:
@@ -563,19 +563,19 @@ WHERE {
 **C-SPARQL**:
 - 将C-SPARQL查询转换为Esper EPL (Event Processing Language)
 - 依赖外部RDF存储 (RDF4J/Jena) 进行推理
-- 物化窗口策略：窗口内容物化为静态RDF图
-- 局限性：窗口切换开销大，推理与查询分离
+- 物化窗口策略:窗口内容物化为静态RDF图
+- 局限性:窗口切换开销大,推理与查询分离
 
 **CQELS**:
-- 原生流处理引擎，无需外部CEP系统
-- E-Tree索引结构：高效的多谓词索引
-- Data Cluster技术：相关数据物理聚集
-- 动态查询优化：运行时调整执行计划
+- 原生流处理引擎,无需外部CEP系统
+- E-Tree索引结构:高效的多谓词索引
+- Data Cluster技术:相关数据物理聚集
+- 动态查询优化:运行时调整执行计划
 
 **Strider**:
-- 自适应执行路径选择：基于代价模型动态选择物化vs索引路径
-- 混合推理策略：将推理推入查询计划
-- 谓词窗口：基于谓词语义的语义窗口
+- 自适应执行路径选择:基于代价模型动态选择物化vs索引路径
+- 混合推理策略:将推理推入查询计划
+- 谓词窗口:基于谓词语义的语义窗口
 - 支持复杂事件处理 (CEP) 模式
 
 **性能对比基准**:
@@ -614,26 +614,26 @@ WHERE {
 
 **挑战1: 推理复杂度与实时性矛盾**
 
-描述逻辑推理 (如 $\mathcal{ALC}$) 在最坏情况下是 EXPTIME-complete 的，而流处理要求毫秒级响应。
+描述逻辑推理 (如 $\mathcal{ALC}$) 在最坏情况下是 EXPTIME-complete 的,而流处理要求毫秒级响应。
 
-**论证**: 实际应用中可通过以下策略缓解：
+**论证**: 实际应用中可通过以下策略缓解:
 1. **近似推理**: 使用有界模型论 (Bounded Model Checking) 限制推理深度
 2. **增量推理**: $\Delta\mathcal{K} = \mathcal{R}(\mathcal{K} \cup \Delta) \\ \mathcal{R}(\mathcal{K})$
-3. **预编译**: TBox推理离线完成，运行时仅执行ABox实例化
+3. **预编译**: TBox推理离线完成,运行时仅执行ABox实例化
 
 **挑战2: 语义漂移检测**
 
-数据分布变化可能导致知识库失效：
+数据分布变化可能导致知识库失效:
 
 $$
 \text{Drift}(t) = D_{KL}(P_t(\mathcal{S}) \| P_{t-w}(\mathcal{S})) > \theta_{drift}
 $$
 
-**论证**: 需要在线监控数据分布变化，触发知识库更新或模型重训练。
+**论证**: 需要在线监控数据分布变化,触发知识库更新或模型重训练。
 
 **挑战3: 不一致性处理**
 
-流数据可能包含矛盾信息：
+流数据可能包含矛盾信息:
 
 $$
 \mathcal{K} \models \phi \land \mathcal{K} \models \neg\phi
@@ -686,18 +686,18 @@ $$
 
 **反例1: 时态悖论**
 
-设知识库包含：
+设知识库包含:
 - $\text{Before}(A, B)$ - A发生在B之前
 - $\text{Before}(B, C)$ - B发生在C之前
 - $\text{Before}(C, A)$ - C发生在A之前
 
-这违反了时态关系的传递性和反对称性，导致循环依赖。
+这违反了时态关系的传递性和反对称性,导致循环依赖。
 
-**处理**: 时态一致性检查，拒绝或标记循环时态关系。
+**处理**: 时态一致性检查,拒绝或标记循环时态关系。
 
 **反例2: 默认规则冲突**
 
-规则库：
+规则库:
 - $R_1: Bird(x) \Rightarrow CanFly(x)$ (默认规则)
 - $R_2: Penguin(x) \Rightarrow \neg CanFly(x)$ (例外规则)
 - 事实: $Tweety: Bird, Penguin$
@@ -708,9 +708,9 @@ $CanFly(Tweety)$ 和 $\neg CanFly(Tweety)$ 同时可推导。
 
 **反例3: 窗口边缘效应**
 
-两个相关事件 $e_1, e_2$ 恰好被窗口边界分隔：
-- $e_1$ 在时间 $t$ 到达，进入窗口 $W_t$
-- $e_2$ 在时间 $t+\epsilon$ 到达，进入窗口 $W_{t+\delta}$
+两个相关事件 $e_1, e_2$ 恰好被窗口边界分隔:
+- $e_1$ 在时间 $t$ 到达,进入窗口 $W_t$
+- $e_2$ 在时间 $t+\epsilon$ 到达,进入窗口 $W_{t+\delta}$
 
 因果推理可能需要跨窗口的事件关系。
 
@@ -722,7 +722,7 @@ $CanFly(Tweety)$ 和 $\neg CanFly(Tweety)$ 同时可推导。
 
 ### Thm-K-SR-01: 流推理结果正确性定理
 
-**定理**: 给定一致的背景知识库 $\mathcal{K}$ 和满足语法完整性的RDF流 $\mathcal{RS}$，流推理系统 $SR$ 产生的结论集合 $\mathcal{A}_{out}$ 满足：
+**定理**: 给定一致的背景知识库 $\mathcal{K}$ 和满足语法完整性的RDF流 $\mathcal{RS}$,流推理系统 $SR$ 产生的结论集合 $\mathcal{A}_{out}$ 满足:
 
 $$
 \forall \phi \in \mathcal{A}_{out}: \mathcal{K} \cup \mathcal{RS}|_W \models \phi
@@ -733,46 +733,46 @@ $$
 **证明**:
 
 **基础步骤**:
-- 输入三元组 $t \in \mathcal{RS}|_W$ 满足 $\mathcal{K} \cup \{t\} \models t$（自明性）
+- 输入三元组 $t \in \mathcal{RS}|_W$ 满足 $\mathcal{K} \cup \{t\} \models t$(自明性)
 
 **归纳步骤**:
-设 $\phi_1, \phi_2$ 是已证明的结论，$R$ 是Horn规则 $B_1 \land B_2 \Rightarrow H$：
+设 $\phi_1, \phi_2$ 是已证明的结论,$R$ 是Horn规则 $B_1 \land B_2 \Rightarrow H$:
 
 $$
 \frac{\mathcal{K} \models \phi_1 \quad \mathcal{K} \models \phi_2 \quad R \in \mathcal{R} \quad \phi_1, \phi_2 \text{ 匹配 } B_1, B_2}{\mathcal{K} \models H}
 $$
 
-由Modus Ponens，$H$ 也是有效结论。
+由Modus Ponens,$H$ 也是有效结论。
 
 **终止性**:
-- 对于无递归的Datalog规则集，推理在有限步内终止
-- 对于递归规则，需要良基性 (well-foundedness) 保证
+- 对于无递归的Datalog规则集,推理在有限步内终止
+- 对于递归规则,需要良基性 (well-foundedness) 保证
 
 **完备性限制**:
-- 对于 $\mathcal{ALC}$ 描述逻辑，实例查询在多项式时间内可判定
-- 对于包含否定的规则集，完备性可能无法保证
+- 对于 $\mathcal{ALC}$ 描述逻辑,实例查询在多项式时间内可判定
+- 对于包含否定的规则集,完备性可能无法保证
 
 ---
 
 ### Thm-K-SR-02: 窗口推理增量更新定理
 
-**定理**: 设 $W_t$ 和 $W_{t+\delta}$ 是连续窗口，$\Delta^+ = \mathcal{RS}|_{W_{t+\delta}} \\ \mathcal{RS}|_{W_t}$（新增数据），$\Delta^- = \mathcal{RS}|_{W_t} \\ \mathcal{RS}|_{W_{t+\delta}}$（淘汰数据），则：
+**定理**: 设 $W_t$ 和 $W_{t+\delta}$ 是连续窗口,$\Delta^+ = \mathcal{RS}|_{W_{t+\delta}} \\ \mathcal{RS}|_{W_t}$(新增数据),$\Delta^- = \mathcal{RS}|_{W_t} \\ \mathcal{RS}|_{W_{t+\delta}}$(淘汰数据),则:
 
 $$
 \mathcal{R}(\mathcal{K} \cup \mathcal{RS}|_{W_{t+\delta}}) = \mathcal{R}(\mathcal{K} \cup \mathcal{RS}|_{W_t}) \cup \Delta\mathcal{A}^+ \\ \Delta\mathcal{A}^-
 $$
 
-其中：
-- $\Delta\mathcal{A}^+ = \mathcal{R}(\mathcal{K} \cup \mathcal{RS}|_{W_t} \cup \Delta^+) \\ \mathcal{R}(\mathcal{K} \cup \mathcal{RS}|_{W_t})$（新增结论）
-- $\Delta\mathcal{A}^- = \{a \in \mathcal{R}(\mathcal{K} \cup \mathcal{RS}|_{W_t}) : \text{support}(a) \subseteq \Delta^-\}$（失效结论）
+其中:
+- $\Delta\mathcal{A}^+ = \mathcal{R}(\mathcal{K} \cup \mathcal{RS}|_{W_t} \cup \Delta^+) \\ \mathcal{R}(\mathcal{K} \cup \mathcal{RS}|_{W_t})$(新增结论)
+- $\Delta\mathcal{A}^- = \{a \in \mathcal{R}(\mathcal{K} \cup \mathcal{RS}|_{W_t}) : \text{support}(a) \subseteq \Delta^-\}$(失效结论)
 
 **证明**:
 
-**结论新增**: 由 $\mathcal{RS}|_{W_{t+\delta}} = (\mathcal{RS}|_{W_t} \\ \Delta^-) \cup \Delta^+$ 和推理的单调性，新数据可能触发新规则实例。
+**结论新增**: 由 $\mathcal{RS}|_{W_{t+\delta}} = (\mathcal{RS}|_{W_t} \\ \Delta^-) \cup \Delta^+$ 和推理的单调性,新数据可能触发新规则实例。
 
-**结论淘汰**: 对于依赖淘汰数据的支持集 (support set) 的结论，其推导基础已不存在。
+**结论淘汰**: 对于依赖淘汰数据的支持集 (support set) 的结论,其推导基础已不存在。
 
-**增量算法复杂度**: $O(|\Delta^+| \cdot |\mathcal{R}| + |\Delta^-| \cdot d_{max})$，其中 $d_{max}$ 是结论依赖图的最大深度。
+**增量算法复杂度**: $O(|\Delta^+| \cdot |\mathcal{R}| + |\Delta^-| \cdot d_{max})$,其中 $d_{max}$ 是结论依赖图的最大深度。
 
 ---
 
@@ -828,12 +828,12 @@ $$
 
 ### 6.1 智能工厂设备监控
 
-**场景描述**: 工厂传感器实时监控设备状态，基于本体知识进行故障预测。
+**场景描述**: 工厂传感器实时监控设备状态,基于本体知识进行故障预测。
 
 **知识本体片段**:
 
 ```turtle
-@prefix : <http://factory.example.org/ontology#> .
+@prefix : `http://factory.example.org/ontology#` .
 @prefix ssn: <http://www.w3.org/ns/ssn/> .
 
 :Machine rdfs:subClassOf ssn:System .
@@ -870,10 +870,10 @@ $$
 
 ```sparql
 REGISTER STREAM CriticalMachineAlert AS
-PREFIX : <http://factory.example.org/ontology#>
+PREFIX : `http://factory.example.org/ontology#`
 
 SELECT ?machine ?temp ?vibration ?timestamp
-FROM STREAM <http://factory.example.org/sensor-stream> [RANGE 2m STEP 10s]
+FROM STREAM `http://factory.example.org/sensor-stream` [RANGE 2m STEP 10s]
 WHERE {
     ?machine a :CriticalMachine ;
              :hasTemperature ?temp ;
@@ -916,19 +916,19 @@ WHERE {
 
 ### 6.2 金融交易反欺诈
 
-**场景**: 实时检测可疑交易模式，结合客户知识图谱进行关联分析。
+**场景**: 实时检测可疑交易模式,结合客户知识图谱进行关联分析。
 
 **CQELS查询**:
 
 ```sparql
 # 检测: 短时间内多地点交易（可能的信用卡盗刷）
 STREAM FraudulentPattern AS
-PREFIX txn: <http://bank.example.org/transaction#>
-PREFIX cust: <http://bank.example.org/customer#>
+PREFIX txn: `http://bank.example.org/transaction#`
+PREFIX cust: `http://bank.example.org/customer#`
 
 SELECT ?customer ?card (COUNT(DISTINCT ?location) AS ?locCount)
        (MAX(?time) - MIN(?time) AS ?timeSpan)
-FROM STREAM <http://bank.example.org/txns> [RANGE 15m]
+FROM STREAM `http://bank.example.org/txns` [RANGE 15m]
 WHERE {
     ?txn txn:card ?card ;
          txn:customer ?customer ;
@@ -968,8 +968,8 @@ HAVING (?locCount > 3 && ?timeSpan < 10m)
 ```sparql
 # 时态交通模式: 流速下降直到拥堵
 REGISTER STREAM CongestionPrediction AS
-PREFIX traffic: <http://city.example.org/traffic#>
-PREFIX temporal: <http://temporal.example.org/#>
+PREFIX traffic: `http://city.example.org/traffic#`
+PREFIX temporal: `http://temporal.example.org/#`
 
 SELECT ?roadSegment ?congestionTime ?predictedDuration
 FROM STREAM <traffic-data> [RANGE 30m]
@@ -988,7 +988,7 @@ WHERE {
 }
 ```
 
-**知识融合**: 将实时传感器数据与历史拥堵模式知识库结合，实现预测性推理。
+**知识融合**: 将实时传感器数据与历史拥堵模式知识库结合,实现预测性推理。
 
 ---
 
@@ -1129,7 +1129,7 @@ sequenceDiagram
 
 **进展1: 神经符号流推理 (Neuro-Symbolic Stream Reasoning)**
 
-将神经网络与符号推理结合：
+将神经网络与符号推理结合:
 
 $$
 \mathcal{SR}_{neuro} = \mathcal{N}_{embed}(\mathcal{S}) \circ \mathcal{R}_{symbolic}(\mathcal{K})
@@ -1139,13 +1139,13 @@ $$
 - **符号推理**: 在传统知识库上进行逻辑推理
 - **融合决策**: 神经预测 + 符号验证
 
-代表工作：
+代表工作:
 - "Neuro-Symbolic Stream Reasoning for IoT" (ISWC 2024)
 - "Embedding-based Approximate Reasoning on RDF Streams" (WWW 2025)
 
 **进展2: 可微分流推理 (Differentiable Stream Reasoning)**
 
-使用可微分逻辑实现端到端训练：
+使用可微分逻辑实现端到端训练:
 
 $$
 \mathcal{L}_{total} = \mathcal{L}_{prediction} + \lambda \cdot \mathcal{L}_{consistency}
@@ -1155,17 +1155,17 @@ $$
 
 **进展3: 联邦流推理 (Federated Stream Reasoning)**
 
-在多参与方场景下进行分布式流推理：
+在多参与方场景下进行分布式流推理:
 
 $$
 \mathcal{K}_{global} = \bigoplus_{i=1}^{n} \mathcal{K}_i, \quad \text{s.t. } \mathcal{K}_i \text{ 隐私保护}
 $$
 
-挑战：知识融合时的隐私保护和一致性问题。
+挑战:知识融合时的隐私保护和一致性问题。
 
 **进展4: 量子加速流推理 (Quantum-Accelerated Stream Reasoning)**
 
-探索量子计算加速图模式匹配：
+探索量子计算加速图模式匹配:
 
 - Grover算法加速子图匹配
 - 量子近似优化 (QAOA) 求解约束满足问题
@@ -1215,7 +1215,7 @@ $$
 
 **挑战1: 概念漂移 (Concept Drift)**
 
-数据分布随时间变化导致模型/知识库失效：
+数据分布随时间变化导致模型/知识库失效:
 
 $$
 D_{KL}(P_t(X) \| P_{t-w}(X)) > \epsilon
@@ -1228,7 +1228,7 @@ $$
 
 **挑战2: 可扩展性 (Scalability)**
 
-推理复杂度与数据规模的矛盾：
+推理复杂度与数据规模的矛盾:
 
 $$
 \text{Complexity}(\mathcal{ALC}) = \text{EXPTIME-complete}
@@ -1241,7 +1241,7 @@ $$
 
 **挑战3: 不确定性量化 (Uncertainty Quantification)**
 
-推理结果的可信度评估：
+推理结果的可信度评估:
 
 $$
 P(\phi | \mathcal{K}, \mathcal{S}) = ?
@@ -1254,7 +1254,7 @@ $$
 
 **挑战4: 实时性与完整性权衡**
 
-低延迟与推理深度的矛盾：
+低延迟与推理深度的矛盾:
 
 $$
 \min_{\text{strategy}} \alpha \cdot \text{Latency} + \beta \cdot (1 - \text{Completeness})
@@ -1267,7 +1267,7 @@ $$
 
 **挑战5: 跨域知识融合**
 
-不同领域知识库的整合：
+不同领域知识库的整合:
 
 $$
 \mathcal{K}_{fused} = \mathcal{K}_1 \bowtie_{align} \mathcal{K}_2
@@ -1326,4 +1326,4 @@ $$
 
 *文档版本: v1.0 | 创建日期: 2026-04-12 | 预计阅读时间: 45分钟*
 
-*本文档是 AnalysisDataFlow 项目 Knowledge/06-frontier 专题的一部分，遵循项目六段式文档规范。*
+*本文档是 AnalysisDataFlow 项目 Knowledge/06-frontier 专题的一部分,遵循项目六段式文档规范。*

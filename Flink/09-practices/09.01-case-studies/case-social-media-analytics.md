@@ -209,10 +209,10 @@ $$
 **场景对比**: 重大社会事件的传播分析
 
 ```
-T0: 事件发生，早期信号出现在小众社群
-T1 (T0+5min): 关键KOL转发，开始扩散
-T2 (T0+15min): 进入主流视野，指数级传播
-T3 (T0+30min): 传统媒体跟进，全面爆发
+T0: 事件发生,早期信号出现在小众社群
+T1 (T0+5min): 关键KOL转发,开始扩散
+T2 (T0+15min): 进入主流视野,指数级传播
+T3 (T0+30min): 传统媒体跟进,全面爆发
 ```
 
 | 响应时间 | T1时刻 | T2时刻 | T3时刻 |
@@ -660,7 +660,7 @@ public class SocialGraphUpdateJob {
             .window(SlidingEventTimeWindows.of(Time.hours(1), Time.minutes(5)))
             .aggregate(new InfluenceAggregator());
 
-        // 3. 社区检测（增量Louvain）
+        // 3. 社区检测(增量Louvain)
         DataStream<CommunityUpdate> communities = edgeUpdates
             .keyBy(EdgeUpdate::getSourceNode)
             .process(new IncrementalCommunityDetector());
@@ -803,7 +803,7 @@ public class SocialGraphUpdateJob {
 /**
  * 社交媒体实时分析完整系统
  *
- * 功能：
+ * 功能:
  * 1. 多语言内容NLP处理
  * 2. 实时情感趋势分析
  * 3. 话题趋势检测与预警
@@ -1085,7 +1085,7 @@ public class SocialMediaAnalyticsPlatform {
                 state.setTrending(true);
                 state.setStartTime(ctx.timestamp());
             } else if (state.isTrending() && isTrending) {
-                // 趋势持续，检查加速
+                // 趋势持续,检查加速
                 if (analysis.growthRate > state.getLastGrowthRate() * 1.5) {
                     signal = new TrendSignal(
                         TrendSignal.Type.ACCEL,

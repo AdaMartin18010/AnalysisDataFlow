@@ -349,7 +349,7 @@ pub struct ColumnarTable {
     columns: Vec<Column>,
     /// 行数
     num_rows: usize,
-    /// 批大小（用于向量化处理）
+    /// 批大小(用于向量化处理)
     batch_size: usize,
 }
 
@@ -359,7 +359,7 @@ pub struct Column {
     name: String,
     /// 数据类型
     data_type: DataType,
-    /// 数据缓冲区（64字节对齐）
+    /// 数据缓冲区(64字节对齐)
     buffer: AlignedBuffer,
     /// 空值位图
     null_bitmap: Option<BitMap>,
@@ -373,7 +373,7 @@ pub struct AlignedBuffer {
 }
 
 impl AlignedBuffer {
-    /// 对齐要求：64字节（缓存行大小）
+    /// 对齐要求:64字节(缓存行大小)
     const ALIGNMENT: usize = 64;
 
     pub fn new(size: usize) -> Self {
@@ -481,7 +481,7 @@ impl DataType {
 
 /// SIMD 优化的列式扫描
 impl ColumnarTable {
-    /// 向量化过滤（AVX-512 优化）
+    /// 向量化过滤(AVX-512 优化)
     #[cfg(target_arch = "x86_64")]
     pub fn vectorized_filter(&self, column_idx: usize, threshold: f64) -> Vec<usize> {
         use std::arch::x86_64::*;
@@ -536,7 +536,7 @@ impl ColumnarTable {
         result
     }
 
-    /// 向量化聚合（SIMD 优化）
+    /// 向量化聚合(SIMD 优化)
     #[cfg(target_arch = "x86_64")]
     pub fn vectorized_sum(&self, column_idx: usize) -> f64 {
         use std::arch::x86_64::*;
@@ -548,7 +548,7 @@ impl ColumnarTable {
             let mut sum_vec = _mm512_setzero_pd();
             let batch_size = 8;
 
-            // 主循环：每次处理 8 个元素
+            // 主循环:每次处理 8 个元素
             let mut i = 0;
             while i + batch_size <= self.num_rows {
                 let data_vec = _mm512_loadu_pd(values.as_ptr().add(i));
@@ -629,9 +629,9 @@ impl PaddedCounter {
     }
 }
 
-/// 线程安全的列式处理（无锁）
+/// 线程安全的列式处理(无锁)
 pub struct ParallelColumnProcessor {
-    /// 每个线程独立的计数器（避免伪共享）
+    /// 每个线程独立的计数器(避免伪共享)
     thread_counters: Vec<PaddedCounter>,
 }
 
@@ -741,7 +741,7 @@ public class PredicatePushdownOptimizer {
         /**
          * 应用下推的谓词
          * @param predicates 可下推的谓词列表
-         * @return 未能下推的谓词（需要在引擎层执行）
+         * @return 未能下推的谓词(需要在引擎层执行)
          */
         List<ResolvedExpression> applyPredicates(List<ResolvedExpression> predicates);
 
@@ -851,7 +851,7 @@ public class PredicatePushdownOptimizer {
                     return new PredicateAnalysis(Collections.singletonList(call), Collections.emptyList());
                 }
 
-                // 检查是否为分区列（可用于分区裁剪）
+                // 检查是否为分区列(可用于分区裁剪)
                 if (partitionColumns.contains(columnName)) {
                     return new PredicateAnalysis(Collections.singletonList(call), Collections.emptyList());
                 }
@@ -894,7 +894,7 @@ public class PredicatePushdownOptimizer {
         }
 
         private boolean isSimplePushable(ResolvedExpression expr, Set<String> supportedFilters) {
-            // 简化检查：是否为简单列比较
+            // 简化检查:是否为简单列比较
             return true; // 实际实现需要更复杂的逻辑
         }
     }
@@ -923,7 +923,7 @@ public class PredicatePushdownOptimizer {
     }
 
     /**
-     * 文件格式特定的下推实现（Parquet 示例）
+     * 文件格式特定的下推实现(Parquet 示例)
      */
     public static class ParquetPredicatePushdown implements PredicatePushdownCapable {
 
@@ -965,7 +965,7 @@ public class PredicatePushdownOptimizer {
 
         private boolean canPushdownToParquet(ResolvedExpression predicate) {
             // 检查列统计信息是否可以过滤整个 Row Group
-            // 例如：如果 max(value) < threshold，可以跳过整个 Row Group
+            // 例如:如果 max(value) < threshold,可以跳过整个 Row Group
             return true;
         }
 
@@ -999,7 +999,7 @@ public class PredicatePushdownOptimizer {
 
             // 基于 min/max 统计信息判断是否可以跳过
             for (ResolvedExpression pred : predicates) {
-                // 简化示例：检查范围谓词
+                // 简化示例:检查范围谓词
                 if (isRangePredicate(pred)) {
                     String column = extractColumnName(pred);
                     ColumnStatistics colStats = stats.getColumnStats(column);
@@ -1482,7 +1482,7 @@ class ColumnarPerformanceChecker:
                 categories[check.category] = []
             categories[check.category].append(check)
 
-        # 输出失败的检查（按严重程度排序）
+        # 输出失败的检查(按严重程度排序)
         report.append("-" * 80)
         report.append("ISSUES REQUIRING ATTENTION")
         report.append("-" * 80)

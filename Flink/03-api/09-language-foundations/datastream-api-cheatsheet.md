@@ -190,7 +190,7 @@ DataStream<Result> tumbling = keyed
     .window(TumblingEventTimeWindows.of(Time.minutes(5)))
     .aggregate(new MyAggregateFunction());
 
-// 滑动窗口 - 1小时窗口，10分钟滑动
+// 滑动窗口 - 1小时窗口,10分钟滑动
 DataStream<Result> sliding = keyed
     .window(SlidingEventTimeWindows.of(Time.hours(1), Time.minutes(10)))
     .aggregate(new MyAggregateFunction());

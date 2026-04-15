@@ -125,7 +125,7 @@ $$
 输入序列: [A, X, B, B]
 
 Pattern<A, B>:
-├── next()              → 无匹配 (A后紧邻X，不是B)
+├── next()              → 无匹配 (A后紧邻X,不是B)
 ├── followedBy()        → 匹配 [A(位置1), B(位置3)]
 └── followedByAny()     → 匹配 [A(位置1), B(位置3)] 和 [A(位置1), B(位置4)]
 ```
@@ -411,7 +411,7 @@ Pattern.<Event>begin("tick").where(evt -> evt.priceChange > 0)
 
 // 6. consecutive() - 严格连续的重复
 Pattern.<Event>begin("beat").where(evt -> evt.type.equals("HEARTBEAT"))
-    .times(3).consecutive();  // 3个连续心跳，中间不能有其他事件
+    .times(3).consecutive();  // 3个连续心跳,中间不能有其他事件
 
 // 7. allowCombinations() - 允许组合
 Pattern.<Event>begin("a").where(evt -> evt.value > 10)
@@ -447,7 +447,7 @@ Pattern.<LoginEvent>begin("first").where(evt -> evt.status.equals("FAIL"))
             public boolean filter(LoginEvent event, Context<LoginEvent> ctx) {
                 // 获取之前匹配的事件
                 for (LoginEvent first : ctx.getEventsForPattern("first")) {
-                    // 相同用户，不同IP
+                    // 相同用户,不同IP
                     if (first.userId.equals(event.userId) &&
                         !first.ip.equals(event.ip)) {
                         return true;
@@ -839,7 +839,7 @@ public class DeviceFailurePrediction {
                     return new MaintenanceAlert(
                         temp.deviceId,
                         "PREDICTIVE_FAILURE",
-                        "设备即将故障，建议立即维护",
+                        "设备即将故障,建议立即维护",
                         temp.timestamp,
                         failure.timestamp
                     );
@@ -944,7 +944,7 @@ public class PurchaseIntentAnalysis {
                         view.userId,
                         "HIGH_INTENT",
                         view.productId,
-                        "用户表现出强购买意向，可推送优惠券"
+                        "用户表现出强购买意向,可推送优惠券"
                     );
                 }
             }
@@ -961,7 +961,7 @@ public class PurchaseIntentAnalysis {
                         cart.userId,
                         "CART_ABANDON",
                         cart.productId,
-                        "用户放弃购物车，可发送提醒邮件"
+                        "用户放弃购物车,可发送提醒邮件"
                     );
                 }
             }
@@ -988,7 +988,7 @@ import org.apache.flink.cep.nfa.aftermatch.AfterMatchSkipStrategy;
 // 1. 选择合适的消耗策略
 Pattern<Event, ?> pattern = Pattern
     .<Event>begin("start", AfterMatchSkipStrategy.skipPastLastEvent())
-    // skipPastLastEvent: 匹配完成后跳到结束事件之后，减少重复匹配
+    // skipPastLastEvent: 匹配完成后跳到结束事件之后,减少重复匹配
     .where(...)
     .next("middle")
     .where(...)
@@ -996,7 +996,7 @@ Pattern<Event, ?> pattern = Pattern
     .where(...);
 
 // 消耗策略对比
-AfterMatchSkipStrategy.noSkip();           // 不跳过，所有匹配都输出
+AfterMatchSkipStrategy.noSkip();           // 不跳过,所有匹配都输出
 AfterMatchSkipStrategy.skipToNext();       // 跳到下一个起始事件
 AfterMatchSkipStrategy.skipPastLastEvent(); // 跳到结束事件后 (推荐)
 AfterMatchSkipStrategy.skipToFirst("start"); // 跳到指定模式的第一个
@@ -1055,7 +1055,7 @@ Pattern.<Event>begin("start")
     .within(Time.seconds(5));
 
 // 2. 避免过于宽泛的模式
-// ❌ 不好: 过于宽泛，匹配过多
+// ❌ 不好: 过于宽泛,匹配过多
 Pattern.begin("a").where(evt -> true).times(1000);
 
 // ✅ 好: 精确限制
@@ -1068,7 +1068,7 @@ Pattern.begin("a")
 Pattern.begin("a")
     .where(evt -> evt.value > 10)
     .oneOrMore()
-    .greedy()  // 贪婪匹配，优先最长序列
+    .greedy()  // 贪婪匹配,优先最长序列
     .next("b");
 ```
 

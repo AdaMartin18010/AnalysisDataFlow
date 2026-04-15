@@ -359,7 +359,7 @@ public class PhysiologicalDataProcessingJob {
         public void processElement(RawVitalSign raw, Context ctx,
                                    Collector<VitalSign> out) throws Exception {
 
-            // 加载患者上下文（首次）
+            // 加载患者上下文(首次)
             PatientContext context = patientContext.value();
             if (context == null) {
                 context = loadPatientContext(raw.getPatientId());
@@ -377,7 +377,7 @@ public class PhysiologicalDataProcessingJob {
                 // 记录数据质量问题
                 logDataQualityIssue(raw, validation.getErrors());
 
-                // 尝试插值（如果缺失不严重）
+                // 尝试插值(如果缺失不严重)
                 if (validation.canInterpolate()) {
                     VitalSign interpolated = interpolate(raw, lastValidSign.value());
                     if (interpolated != null) {
@@ -421,10 +421,10 @@ public class PhysiologicalDataProcessingJob {
         private VitalSign interpolate(RawVitalSign raw, VitalSign lastValid) {
             if (lastValid == null) return null;
 
-            // 简单线性插值（实际可用更复杂的算法）
+            // 简单线性插值(实际可用更复杂的算法)
             long timeDelta = raw.getTimestamp() - lastValid.getTimestamp();
             if (timeDelta > TimeUnit.MINUTES.toMillis(5)) {
-                return null;  // 间隔太长，不插值
+                return null;  // 间隔太长,不插值
             }
 
             return VitalSign.builder()
@@ -617,7 +617,7 @@ public class PhysiologicalDataProcessingJob {
     }
 
     /**
-     * 异常检测器（结合EWS和趋势）
+     * 异常检测器(结合EWS和趋势)
      */
     public static class AnomalyDetector
             extends KeyedCoProcessFunction<String, EWSScore, TrendAnalysis, AlertEvent> {
@@ -658,32 +658,32 @@ public class PhysiologicalDataProcessingJob {
             AlertSuppressor sup = suppressor.value();
             if (sup == null) sup = new AlertSuppressor();
 
-            // 一级告警：高危EWS
+            // 一级告警:高危EWS
             if (score.getTotalScore() >= 7 && !sup.isHighRiskAlerted()) {
                 out.collect(createAlert(score, trend, AlertLevel.CRITICAL,
-                    "NEWS2评分高危，立即评估患者"));
+                    "NEWS2评分高危,立即评估患者"));
                 sup.setHighRiskAlerted(true);
                 sup.setHighRiskAlertTime(ctx.timestamp());
             }
 
-            // 二级告警：中危EWS
+            // 二级告警:中危EWS
             else if (score.getTotalScore() >= 5 && !sup.isMediumRiskAlerted()) {
                 out.collect(createAlert(score, trend, AlertLevel.WARNING,
-                    "NEWS2评分中危，建议医生评估"));
+                    "NEWS2评分中危,建议医生评估"));
                 sup.setMediumRiskAlerted(true);
             }
 
-            // 三级告警：趋势恶化
+            // 三级告警:趋势恶化
             else if (trend != null && isDeteriorating(trend) && !sup.isTrendAlerted()) {
                 out.collect(createAlert(score, trend, AlertLevel.ATTENTION,
-                    "多项体征呈恶化趋势，请密切关注"));
+                    "多项体征呈恶化趋势,请密切关注"));
                 sup.setTrendAlerted(true);
             }
 
             // 告警重置逻辑
             if (score.getTotalScore() < 5 && sup.isHighRiskAlerted()) {
                 if (ctx.timestamp() - sup.getHighRiskAlertTime() > TimeUnit.MINUTES.toMillis(30)) {
-                    sup.reset();  // 30分钟后评分下降，重置告警状态
+                    sup.reset();  // 30分钟后评分下降,重置告警状态
                 }
             }
 

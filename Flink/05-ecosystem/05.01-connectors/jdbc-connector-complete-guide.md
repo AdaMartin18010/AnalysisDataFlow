@@ -424,7 +424,7 @@ CREATE TABLE mysql_sink (
 
 ```
 算法: 主键范围分区
-输入: 表 T，主键列 PK，并行度 P
+输入: 表 T,主键列 PK,并行度 P
 输出: P 个分片 {S₁, S₂, ..., Sₚ}
 
 1. 查询主键范围:
@@ -456,7 +456,7 @@ Checkpoint 触发:
 ┌─────────────────────────────────────────────────────────────┐
 │ 1. Snapshot Phase                                           │
 │    - JM 触发 checkpoint                                     │
-│    - 所有算子停止处理，等待 barrier                         │
+│    - 所有算子停止处理,等待 barrier                         │
 │    - JDBC Sink 停止接受新数据                               │
 ├─────────────────────────────────────────────────────────────┤
 │ 2. Phase 1: Prepare                                         │
@@ -466,13 +466,13 @@ Checkpoint 触发:
 │    - 返回 prepare OK 到 JM                                  │
 ├─────────────────────────────────────────────────────────────┤
 │ 3. Phase 2: Commit                                          │
-│    - 所有算子确认后，JM 通知 commit                         │
+│    - 所有算子确认后,JM 通知 commit                         │
 │    - Sink 调用 XAConnection.commit(xid)                     │
-│    - 数据库提交事务，释放资源                               │
+│    - 数据库提交事务,释放资源                               │
 │    - Sink 恢复数据处理                                      │
 ├─────────────────────────────────────────────────────────────┤
 │ 4. Recovery                                                 │
-│    - 故障恢复时，扫描 prepared 事务                         │
+│    - 故障恢复时,扫描 prepared 事务                         │
 │    - 已完成的 checkpoint → commit                           │
 │    - 未完成的 checkpoint → rollback                         │
 └─────────────────────────────────────────────────────────────┘
@@ -525,8 +525,8 @@ Checkpoint 触发:
 ┌─────────────────────────────────────────────────────────────┐
 │ 引理 1: Prepare 阶段的原子性                                │
 │   - XA prepare 操作是原子的                                 │
-│   - 数据库记录事务日志，保证可恢复性                        │
-│   - 所有 RM 要么都 prepare 成功，要么都失败                 │
+│   - 数据库记录事务日志,保证可恢复性                        │
+│   - 所有 RM 要么都 prepare 成功,要么都失败                 │
 ├─────────────────────────────────────────────────────────────┤
 │ 引理 2: Checkpoint 持久化保证                               │
 │   - Checkpoint 成功 → 状态已持久化                          │
@@ -540,21 +540,21 @@ Checkpoint 触发:
 ├─────────────────────────────────────────────────────────────┤
 │ 综合论证:                                                   │
 │   情况 1: 正常流程                                          │
-│     - prepare → commit，数据精确写入一次                   │
+│     - prepare → commit,数据精确写入一次                   │
 │                                                             │
 │   情况 2: checkpoint 失败                                   │
-│     - rollback，无数据写入，可重新处理                      │
+│     - rollback,无数据写入,可重新处理                      │
 │                                                             │
 │   情况 3: checkpoint 成功但 commit 前故障                   │
 │     - 恢复时从 prepared 状态继续 commit                    │
 │     - 数据最终写入一次                                      │
 │                                                             │
 │   情况 4: commit 后通知 JM 前故障                           │
-│     - 数据库已提交，Sink 从 checkpoint 恢复                 │
-│     - 可能重复 commit（幂等性保证）                         │
+│     - 数据库已提交,Sink 从 checkpoint 恢复                 │
+│     - 可能重复 commit(幂等性保证)                         │
 └─────────────────────────────────────────────────────────────┘
 
-结论: 在所有故障场景下，数据要么被精确处理一次，要么不处理，
+结论: 在所有故障场景下,数据要么被精确处理一次,要么不处理,
       满足 Exactly-Once 语义定义。 ∎
 ```
 
@@ -582,7 +582,7 @@ Checkpoint 触发:
 ├─────────────────────────────────────────────────────────────┤
 │ 破坏条件 4 (循环等待):                                      │
 │   - 连接按固定顺序获取                                      │
-│   - 使用全局连接编号，按编号升序获取                        │
+│   - 使用全局连接编号,按编号升序获取                        │
 ├─────────────────────────────────────────────────────────────┤
 │ 连接池配置约束:                                             │
 │   - maxPoolSize ≥ parallelism × 每个任务最大连接需求        │
@@ -591,11 +591,11 @@ Checkpoint 触发:
 └─────────────────────────────────────────────────────────────┘
 
 形式化证明:
-设任务 Tᵢ 需要 nᵢ 个连接，总连接池大小为 C。
+设任务 Tᵢ 需要 nᵢ 个连接,总连接池大小为 C。
 约束: Σnᵢ ≤ C (对所有并发任务)
 
-在此约束下，任何任务都能获取所需连接，
-不会出现永久等待，故无死锁。 ∎
+在此约束下,任何任务都能获取所需连接,
+不会出现永久等待,故无死锁。 ∎
 ```
 
 ---
@@ -872,7 +872,7 @@ stream.addSink(exactlyOnceSink);
 Properties props = new Properties();
 props.setProperty("useSSL", "false");
 props.setProperty("serverTimezone", "Asia/Shanghai");
-props.setProperty("rewriteBatchedStatements", "true");  // 关键优化：启用批量重写
+props.setProperty("rewriteBatchedStatements", "true");  // 关键优化:启用批量重写
 props.setProperty("useCompression", "true");
 props.setProperty("cachePrepStmts", "true");
 props.setProperty("prepStmtCacheSize", "250");
@@ -1072,13 +1072,13 @@ JdbcSink.sink(
     // 自定义异常处理 (Flink 1.16+)
     (exception, request) -> {
         if (exception instanceof SQLTransientException) {
-            // 临时异常，允许重试
+            // 临时异常,允许重试
             return JdbcRetryStrategy.RETRY;
         } else if (exception instanceof SQLIntegrityConstraintViolationException) {
-            // 约束冲突，跳过
+            // 约束冲突,跳过
             return JdbcRetryStrategy.SKIP;
         } else {
-            // 致命错误，失败
+            // 致命错误,失败
             return JdbcRetryStrategy.FAIL;
         }
     }
@@ -1147,7 +1147,7 @@ config.setIdleTimeout(600000);   // 10分钟
 **大表读取配置**:
 
 ```java
-// 1. 游标读取配置（MySQL）
+// 1. 游标读取配置(MySQL)
 String url = "jdbc:mysql://localhost:3306/mydb" +
     "?useCursorFetch=true" +      // 启用游标
     "&defaultFetchSize=1000";     // 每次获取 1000 条
@@ -1185,16 +1185,16 @@ String incrementalQuery = "SELECT * FROM large_table " +
 
 ```java
 // 1. Checkpoint 配置
-env.enableCheckpointing(60000);  // 1分钟，不要太短
+env.enableCheckpointing(60000);  // 1分钟,不要太短
 env.getCheckpointConfig().setTimeout(600000);  // 10分钟超时
 
 // 2. JDBC 执行选项
 JdbcExecutionOptions.builder()
     .withBatchSize(1000)  // 适中的批量大小
-    .withBatchIntervalMs(5000)  // 5秒刷盘，不要太长
+    .withBatchIntervalMs(5000)  // 5秒刷盘,不要太长
     .build();
 
-// 3. 数据库超时设置（MySQL）
+// 3. 数据库超时设置(MySQL)
 String url = "jdbc:mysql://localhost:3306/mydb" +
     "&innodb_lock_wait_timeout=50" +  // 锁等待 50s
     "&max_execution_time=300000";     // 查询最大 5分钟

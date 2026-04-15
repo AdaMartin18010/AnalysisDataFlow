@@ -297,13 +297,13 @@ where:
 **升级阶段时序**：
 
 ```
-t₀: 部署 Green 环境（Blue 100% 流量）
+t₀: 部署 Green 环境(Blue 100% 流量)
 t₁: Green 健康检查通过
- t₂: 开始流量切换（Blue 90%, Green 10%）
-t₃: 渐进切换（Blue 50%, Green 50%）
-t₄: 切换完成（Blue 0%, Green 100%）
+ t₂: 开始流量切换(Blue 90%, Green 10%)
+t₃: 渐进切换(Blue 50%, Green 50%)
+t₄: 切换完成(Blue 0%, Green 100%)
 t₅: Blue 环境保留观察期
-t₆: 可选：回收 Blue 资源
+t₆: 可选:回收 Blue 资源
 ```
 
 **时间边界保证**：
@@ -387,9 +387,9 @@ CompatibilityMatrix := M ∈ ℝ^{n×n} where M[i,j] ∈ {FULL, PARTIAL, NONE}
 **兼容性级别定义**：
 
 ```
-FULL:     所有状态类型完全兼容，无需迁移
-PARTIAL:  部分状态兼容，可能需要 state processor API 处理
-NONE:     不兼容，必须从外部源重新构建状态
+FULL:     所有状态类型完全兼容,无需迁移
+PARTIAL:  部分状态兼容,可能需要 state processor API 处理
+NONE:     不兼容,必须从外部源重新构建状态
 ```
 
 **Shopify 团队贡献的状态迁移工具**：
@@ -478,7 +478,7 @@ SwitchTraffic(B→G) ⇒
 ```
 RollbackTime < T_health_check + T_service_update + T_graceful_shutdown
 
-其中：
+其中:
   T_health_check ≤ 30s (默认)
   T_service_update ≤ 5s (Service selector 更新)
   T_graceful_shutdown ≤ 60s (默认 terminationGracePeriod)
@@ -519,7 +519,7 @@ RollbackTime ≈ 10s (典型情况)
 ### 3.2 Blue/Green 与 Canary 部署关系
 
 ```
-Blue/Green 是 Canary 的特例：
+Blue/Green 是 Canary 的特例:
 
 Blue/Green: Canary with β ∈ {0, 1}
 Canary:     Blue/Green with gradual β transition
@@ -546,7 +546,7 @@ FlinkBlueGreenDeployment
 │   ├── Deployment (JobManager)
 │   ├── Deployment (TaskManager)
 │   └── Service (Green)
-├── VirtualService (可选，用于 Istio 流量管理)
+├── VirtualService (可选,用于 Istio 流量管理)
 ├── HorizontalPodAutoscaler (Blue)
 └── HorizontalPodAutoscaler (Green)
 ```
@@ -560,7 +560,7 @@ FlinkBlueGreenDeployment
 **传统升级的问题**：
 
 ```
-传统 Stateful Upgrade 的停机时间：
+传统 Stateful Upgrade 的停机时间:
   T_total = T_savepoint + T_shutdown + T_startup + T_restore
           = 30s + 10s + 60s + 45s
           = 145s (2.4 分钟)
@@ -580,14 +580,14 @@ FlinkBlueGreenDeployment
 ```
 额外资源成本 = 2x - 1x = 1x (切换期间)
 
-如果：
+如果:
   业务停机成本 > 额外资源成本
-则：
+则:
   Blue/Green 部署是经济合理的选择
 
-典型场景：
-  - 金融交易系统：停机成本 $10k+/分钟 → Blue/Green 划算
-  - 日志处理系统：停机成本低 → 传统升级足够
+典型场景:
+  - 金融交易系统:停机成本 $10k+/分钟 → Blue/Green 划算
+  - 日志处理系统:停机成本低 → 传统升级足够
 ```
 
 ### 4.2 无状态流应用适用场景分析
@@ -640,10 +640,10 @@ DataStream<Result> statefulProcess(DataStream<Event> input) {
 **限制原因**：
 
 ```
-有状态作业的限制：
+有状态作业的限制:
   State(B, t) ≠ State(G, t)  # 两个环境状态不同步
 
-  除非：
+  除非:
     - 实现双写状态 (DUAL_WRITE) - 复杂且昂贵
     - 状态迁移工具 - 有停机时间
 ```
@@ -692,7 +692,7 @@ spec:
 ```
 Given:
   - Blue 处理 100% 流量
-  - Green 正在启动，不接收流量
+  - Green 正在启动,不接收流量
   - Blue 可用性 = 1.0
 
 Therefore:
@@ -705,7 +705,7 @@ Therefore:
 
 ```
 Given:
-  - 渐进切换：Traffic(B) = α(t), Traffic(G) = 1 - α(t)
+  - 渐进切换:Traffic(B) = α(t), Traffic(G) = 1 - α(t)
   - Blue 和 Green 同时处理请求
   - Blue 可用性 = Green 可用性 = 1.0 (假设 Green 健康)
 
@@ -732,7 +732,7 @@ Therefore:
 ```
 ∀t ∈ [t₀, t₃]: Availability(App, t) = 1.0
 
-因此，Blue/Green 部署保证零停机。∎
+因此,Blue/Green 部署保证零停机。∎
 ```
 
 ---

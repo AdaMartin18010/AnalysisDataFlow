@@ -126,7 +126,7 @@ $$
 ```
 算子类型              服务曲线
 ─────────────────────────────────────────
-Map/Filter           β_{R,0}        (无状态，即时)
+Map/Filter           β_{R,0}        (无状态,即时)
 KeyedProcess         β_{R,T_state}  (状态访问延迟)
 WindowAggregate      β_{R,T_win}    (窗口触发延迟)
 AsyncIO              β_{R,T_async}  (异步调用延迟)
@@ -230,6 +230,7 @@ $$
 **流处理流水线影响**:
 
 ```
+# 伪代码示意，非完整可编译代码
 流水线: Source → Map → Filter → Window → Sink
 
 到达曲线变换:

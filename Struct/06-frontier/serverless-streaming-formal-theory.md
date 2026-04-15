@@ -981,7 +981,7 @@ from aliyun.log import LogClient
 
 logger = logging.getLogger()
 
-# 全局初始化（冷启动优化）
+# 全局初始化(冷启动优化)
 log_client = LogClient(
     endpoint='cn-hangzhou.log.aliyuncs.com',
     accessKeyId=os.environ['ALICLOUD_ACCESS_KEY'],
@@ -1062,22 +1062,20 @@ logger.info(f"Import: {import_time-start}ms, Init: {init_time-import_time}ms, Pr
 
 1. **精简依赖**：仅导入必要模块
    ```python
-   # 优化前
-   import pandas as pd  # 300MB
-
-   # 优化后
-   import csv  # 内置，轻量
+# 优化前
+import pandas as pd  # 300MB
+# 优化后
+import csv  # 内置,轻量
    ```
 
 2. **延迟初始化**：按需创建客户端
    ```python
-   _client = None
-
-   def get_client():
-       global _client
-       if _client is None:
-           _client = create_client()
-       return _client
+_client = None
+def get_client():
+    global _client
+    if _client is None:
+        _client = create_client()
+    return _client
    ```
 
 3. **预置并发**：配置 Provisioned Concurrency
@@ -1196,7 +1194,7 @@ const {PubSub} = require('@google-cloud/pubsub');
 const bigquery = new BigQuery();
 const pubsub = new PubSub();
 
-// 全局初始化（复用连接）
+// 全局初始化(复用连接)
 const dataset = bigquery.dataset('security_logs');
 const table = dataset.table('anomalies');
 
@@ -1531,12 +1529,11 @@ graph LR
 
 1. **请求打包**：合并小请求，减少调用次数
    ```python
-   # 优化前: 1000次独立调用
-   for record in records:
-       invoke_lambda(record)  # $0.0000002 x 1000 = $0.0002
-
-   # 优化后: 1次批量调用
-   invoke_lambda_batch(records)  # $0.0000002 x 1 = $0.0000002
+# 优化前: 1000次独立调用
+for record in records:
+    invoke_lambda(record)  # $0.0000002 x 1000 = $0.0002
+# 优化后: 1次批量调用
+invoke_lambda_batch(records)  # $0.0000002 x 1 = $0.0000002
    ```
 
 2. **内存调优**：找到成本和性能的平衡点

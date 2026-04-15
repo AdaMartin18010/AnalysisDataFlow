@@ -9,7 +9,7 @@
 translation_status: "in_progress"  # not_started | in_progress | pending_review | completed
 source_version: "abc123def456"     # 原文版本哈希
 translator: "translator-id"        # 翻译者标识
-reviewer: "reviewer-id"            # 审核者标识（翻译完成前可为空）
+reviewer: "reviewer-id"            # 审核者标识(翻译完成前可为空)
 translated_at: "2026-04-04T15:26:26Z"
 reviewed_at: null
 completion_percentage: 0           # 完成百分比
@@ -31,6 +31,7 @@ completion_percentage: 0           # 完成百分比
 ### 术语标记
 
 ```markdown
+<!-- pseudo-code -->
 <!-- TERM: checkpoint | 检查点 -->
 A checkpoint is a consistent snapshot...
 ```

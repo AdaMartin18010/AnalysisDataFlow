@@ -334,7 +334,7 @@ public class RealtimeMatchmaking extends
 
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-// 外挂检测：超人类操作速度
+// 外挂检测:超人类操作速度
 Pattern<GameEvent, ?> aimbotPattern = Pattern
     .<GameEvent>begin("aim_start")
     .where(evt -> evt.getType() == EventType.AIM)

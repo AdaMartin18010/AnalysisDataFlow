@@ -165,7 +165,7 @@ PodSpec := ⟨container, volumes, affinity, tolerations⟩
 IsolationLevel := {Cluster, Namespace, Node, Pod, Network, Storage}
 
 ClusterIsolation   : 独立K8s集群
-NamespaceIsolation : 共享集群，独立Namespace
+NamespaceIsolation : 共享集群,独立Namespace
 NodeIsolation      : 专用Node Pool/Node Group
 PodIsolation       : 独立Pod资源配额
 NetworkIsolation   : NetworkPolicy隔离
@@ -556,7 +556,7 @@ spec:
    Pod 重启后从最新 Checkpoint 恢复
    未提交的事务不会对外部系统可见
 
-∴ 任意故障场景下，Exactly-Once 语义得到保证
+∴ 任意故障场景下,Exactly-Once 语义得到保证
 ```
 
 ---
@@ -583,7 +583,7 @@ spec:
    - 从 Checkpoint 恢复
 
 一致性保证:
-- 重新平衡过程中，Source 暂停消费直到完成
+- 重新平衡过程中,Source 暂停消费直到完成
 - 状态迁移基于一致的 Checkpoint 快照
 - Keyed State 根据 Key Group 重新分配
 
@@ -621,7 +621,7 @@ spec:
 # ============================================================================
 # Flink Application Mode 生产级部署配置
 # 版本: Flink 2.0
-# 场景: 实时ETL管道，高吞吐，强一致性要求
+# 场景: 实时ETL管道,高吞吐,强一致性要求
 # ============================================================================
 
 apiVersion: flink.apache.org/v1beta1

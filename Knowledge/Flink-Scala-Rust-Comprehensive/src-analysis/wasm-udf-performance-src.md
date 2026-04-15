@@ -109,7 +109,7 @@ WASM 函数调用需要 **trampoline**（跳板）来处理调用约定转换：
 ```rust
 // wasmtime/crates/wasmtime/src/func.rs
 pub struct Func {
-    /// 底层存储（跨 Store 共享）
+    /// 底层存储(跨 Store 共享)
     store_id: StoreId,
     /// 导出项索引
     export: ExportFunction,
@@ -128,20 +128,20 @@ impl Func {
         // 1. 验证签名
         self.type_check(params, results)?;
 
-        // 2. 获取 trampoline（用于 Host -> WASM 调用）
+        // 2. 获取 trampoline(用于 Host -> WASM 调用)
         let trampoline = self.export.trampoline;
 
         // 3. 获取 VM 上下文
         let vmctx = self.export.vmctx;
 
-        // 4. 准备参数（转换为 VM 值）
+        // 4. 准备参数(转换为 VM 值)
         let vm_params: SmallVec<[u64; 8]> = params
             .iter()
             .map(|v| v.to_vmval())
             .collect();
 
         // 5. 调用 trampoline
-        // trampoline 负责：
+        // trampoline 负责:
         // - 保存 Host 寄存器
         // - 设置 WASM 栈帧
         // - 调用实际函数
@@ -166,7 +166,7 @@ impl Func {
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                    WASM 函数调用开销分解（x86_64）                 │
+│                    WASM 函数调用开销分解(x86_64)                 │
 ├─────────────────────────────────────────────────────────────────┤
 │ 阶段                    │ 周期数    │ 说明                      │
 ├─────────────────────────────────────────────────────────────────┤
@@ -187,14 +187,14 @@ impl Func {
 
 ```rust
 // wasmtime/crates/wasmtime/src/typed_func.rs
-/// 类型擦除的函数引用（避免运行时类型检查）
+/// 类型擦除的函数引用(避免运行时类型检查)
 pub struct TypedFunc<Params, Results> {
     func: Func,
     _marker: PhantomData<(Params, Results)>,
 }
 
 impl<Params: WasmParams, Results: WasmResults> TypedFunc<Params, Results> {
-    /// 优化后的调用（无运行时类型检查）
+    /// 优化后的调用(无运行时类型检查)
     pub fn call(
         &self,
         mut store: impl AsContextMut,
@@ -202,7 +202,7 @@ impl<Params: WasmParams, Results: WasmResults> TypedFunc<Params, Results> {
     ) -> Result<Results> {
         let store = store.as_context_mut();
 
-        // 直接调用，跳过类型检查
+        // 直接调用,跳过类型检查
         unsafe {
             let params_storage = params.into_abi(store);
             let mut results_storage = Results::Abi::default();
@@ -221,7 +221,7 @@ impl<Params: WasmParams, Results: WasmResults> TypedFunc<Params, Results> {
     }
 }
 
-// 使用示例：预编译类型信息
+// 使用示例:预编译类型信息
 let typed_func: TypedFunc<(i32, i32), (i32,)> =
     func.typed::<(i32, i32), (i32,)>(&store)?;
 
@@ -252,7 +252,7 @@ Arrow IPC 是流处理中常用的序列化格式，但存在拷贝开销：
 pub struct StreamWriter<W: Write> {
     /// 输出流
     writer: W,
-    /// 模式（Schema）
+    /// 模式(Schema)
     schema: SchemaRef,
     /// 写入选项
     options: IpcWriteOptions,
@@ -262,13 +262,13 @@ pub struct StreamWriter<W: Write> {
 
 impl<W: Write> StreamWriter<W> {
     pub fn write(&mut self, batch: &RecordBatch) -> Result<()> {
-        // 1. 序列化 Schema（首次）
+        // 1. 序列化 Schema(首次)
         if self.record_count == 0 {
             self.write_schema()?;
         }
 
         // 2. 序列化 RecordBatch
-        // 关键开销点：需要拷贝数据到连续缓冲区
+        // 关键开销点:需要拷贝数据到连续缓冲区
         let (body, buffers) = self.serialize_batch(batch)?;
 
         // 3. 计算偏移量
@@ -277,7 +277,7 @@ impl<W: Write> StreamWriter<W> {
         // 4. 写入消息头
         self.write_message_header(body.len() as i32, &buffers)?;
 
-        // 5. 写入消息体（数据拷贝发生在这里）
+        // 5. 写入消息体(数据拷贝发生在这里)
         self.writer.write_all(&body)?;
 
         self.record_count += batch.num_rows();
@@ -289,8 +289,8 @@ impl<W: Write> StreamWriter<W> {
         let mut buffers = Vec::new();
 
         for col in batch.columns() {
-            // 关键：需要拷贝数组数据到 body
-            // 即使底层数据是连续的，也需要一次 memcpy
+            // 关键:需要拷贝数组数据到 body
+            // 即使底层数据是连续的,也需要一次 memcpy
             let array_data = col.to_data();
             for buffer in array_data.buffers() {
                 let offset = body.len();
@@ -317,24 +317,24 @@ pub struct FlatBufferUdf<'a> {
 }
 
 impl<'a> FlatBufferUdf<'a> {
-    /// 直接从 WASM 内存读取（零拷贝）
+    /// 直接从 WASM 内存读取(零拷贝)
     pub unsafe fn from_wasm_memory(
         memory: &[u8],
         offset: usize,
     ) -> Result<Self, Error> {
-        // 直接解析，不拷贝数据
+        // 直接解析,不拷贝数据
         let table = flatbuffers::Table::from_memory(memory, offset)?;
         Ok(Self { table })
     }
 
-    /// 获取字段（零拷贝访问）
+    /// 获取字段(零拷贝访问)
     pub fn get_field(&self, field_id: u16) -> Option<&'a [u8]> {
         // 直接返回指向 WASM 内存的切片
         self.table.get_field_bytes(field_id)
     }
 }
 
-// 对比：Arrow IPC vs FlatBuffers
+// 对比:Arrow IPC vs FlatBuffers
 pub fn benchmark_serialization(c: &mut Criterion) {
     let batch = create_test_batch(1000);
 
@@ -350,7 +350,7 @@ pub fn benchmark_serialization(c: &mut Criterion) {
     c.bench_function("flatbuffers_zero_copy", |b| {
         let flatbuf = create_flatbuffer(&batch);
         b.iter(|| {
-            // 直接访问，无需反序列化
+            // 直接访问,无需反序列化
             let _value = unsafe {
                 FlatBufferUdf::from_wasm_memory(&flatbuf, 0).unwrap()
             };
@@ -384,28 +384,28 @@ pub struct Memory {
 }
 
 impl Memory {
-    /// 安全读取（带边界检查）
+    /// 安全读取(带边界检查)
     pub fn read(&self, store: impl AsContext, offset: usize, buf: &mut [u8]) -> Result<()> {
         // 获取内存切片
         let data = self.data(store);
 
-        // 边界检查（开销点）
+        // 边界检查(开销点)
         if offset + buf.len() > data.len() {
             return Err(Error::MemoryOutOfBounds);
         }
 
-        // 拷贝数据（开销点）
+        // 拷贝数据(开销点)
         buf.copy_from_slice(&data[offset..offset + buf.len()]);
 
         Ok(())
     }
 
-    /// 不安全直接访问（零拷贝前提）
+    /// 不安全直接访问(零拷贝前提)
     pub unsafe fn data_unchecked<'a>(
         &self,
         store: &'a mut StoreContextMut<'_, impl AsContextMut>,
     ) -> &'a mut [u8] {
-        // 直接返回原始切片，无拷贝
+        // 直接返回原始切片,无拷贝
         let ptr = self.data_ptr(store);
         let len = self.data_size(store);
         std::slice::from_raw_parts_mut(ptr, len)
@@ -454,9 +454,9 @@ impl ZeroCopyUdf {
         })
     }
 
-    /// 零拷贝执行：直接写入输入内存，从输出内存读取
+    /// 零拷贝执行:直接写入输入内存,从输出内存读取
     pub fn execute(&mut self, input: &[u8]) -> Result<&[u8], Error> {
-        // 1. 直接写入输入内存（无拷贝）
+        // 1. 直接写入输入内存(无拷贝)
         let input_slice = unsafe {
             self.input_memory.data_unchecked(&mut self.store)
         };
@@ -466,7 +466,7 @@ impl ZeroCopyUdf {
         let func = self.instance.get_func(&mut self.store, "process").unwrap();
         func.call(&mut self.store, &[0i32.into(), input.len() as i32.into()], &mut [])?;
 
-        // 3. 直接从输出内存读取（无拷贝）
+        // 3. 直接从输出内存读取(无拷贝)
         let output_slice = unsafe {
             self.output_memory.data_unchecked(&mut self.store)
         };
@@ -480,7 +480,7 @@ impl ZeroCopyUdf {
 #### 2.3.3 内存池优化
 
 ```rust
-// 预分配内存池，避免运行时分配
+// 预分配内存池,避免运行时分配
 pub struct MemoryPool {
     /// 固定大小的内存块池
     blocks: ArrayQueue<Vec<u8>>,
@@ -505,7 +505,7 @@ impl MemoryPool {
         }
     }
 
-    /// 获取内存块（无分配）
+    /// 获取内存块(无分配)
     pub fn acquire(&self) -> Option<PooledBlock> {
         self.blocks.pop().map(|block| PooledBlock {
             block: Some(block),
@@ -556,12 +556,12 @@ impl Pollable {
         }
     }
 
-    /// 检查是否就绪（非阻塞）
+    /// 检查是否就绪(非阻塞)
     pub fn ready(&self) -> bool {
         self.ready.load(Ordering::Relaxed)
     }
 
-    /// 等待就绪（阻塞直到完成）
+    /// 等待就绪(阻塞直到完成)
     pub async fn wait(&mut self) {
         if !self.ready() {
             (&mut self.future).await;
@@ -630,7 +630,7 @@ pub unsafe fn simd_sum(arr: &[f32]) -> f32 {
     sum + remainder_sum
 }
 
-// 性能对比（10000 个元素求和）
+// 性能对比(10000 个元素求和)
 // 标量实现: ~50μs
 // SIMD 实现: ~12μs (4x 提升)
 ```
@@ -654,7 +654,7 @@ sequenceDiagram
     Flink->>JNI: 调用 native 方法
     JNI->>Rust: 传递字节数组
 
-    Rust->>Rust: 反序列化（Arrow IPC）
+    Rust->>Rust: 反序列化(Arrow IPC)
     Rust->>Mem: 写入线性内存
 
     Rust->>WT: TypedFunc::call()
@@ -671,7 +671,7 @@ sequenceDiagram
     WT->>Rust: 返回结果指针
 
     Rust->>Mem: 读取结果
-    Rust->>Rust: 反序列化（Arrow IPC）
+    Rust->>Rust: 反序列化(Arrow IPC)
     Rust->>JNI: 返回字节数组
     JNI->>Flink: 反序列化 Row
     Flink->>Flink: 继续处理
@@ -680,7 +680,7 @@ sequenceDiagram
 ### 3.2 性能热点分析
 
 ```
-CPU 火焰图示意（时间占比）
+CPU 火焰图示意(时间占比)
 
 100% ┤
  90% ┤███████████████████████████████████ 序列化/反序列化 (45%)
@@ -732,12 +732,12 @@ opt-level = "z"      # 优化体积而非速度
 ### 4.3 批量处理优化
 
 ```rust
-// 单条处理（高开销）
+// 单条处理(高开销)
 for record in batch {
     udf.call(record)?;  // N 次调用开销
 }
 
-// 批量处理（推荐）
+// 批量处理(推荐)
 udf.call_batch(&batch)?;  // 1 次调用开销
 
 // 实现示例
@@ -824,13 +824,13 @@ graph LR
 
 ```mermaid
 graph TB
-    subgraph "传统方案（2次拷贝）"
+    subgraph "传统方案(2次拷贝)"
         A1[Host Buffer] -->|memcpy| B1[WASM Linear Memory]
         B1 -->|处理| C1[结果]
         C1 -->|memcpy| D1[Host Buffer]
     end
 
-    subgraph "零拷贝方案（0次拷贝）"
+    subgraph "零拷贝方案(0次拷贝)"
         A2[Host Buffer] -->|mmap| B2[WASM Memory 0]
         B2 -->|处理| C2[结果]
         C2 -->|直接访问| B3[WASM Memory 1]

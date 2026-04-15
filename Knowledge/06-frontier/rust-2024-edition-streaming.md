@@ -200,7 +200,7 @@ fn vectorized_add(a: &[f32], b: &[f32], c: &mut [f32]) {
     for i in 0..chunks {
         let va = f32x8::from_slice(&a[i*8..]);
         let vb = f32x8::from_slice(&b[i*8..]);
-        let vc = va + vb;  // 单条指令，8个并行加法
+        let vc = va + vb;  // 单条指令,8个并行加法
         vc.copy_to_slice(&mut c[i*8..]);
     }
 }
@@ -300,7 +300,7 @@ $$
 **2021 vs 2024 对比**:
 
 ```rust
-// 2021 Edition: 允许（但有警告）
+// 2021 Edition: 允许(但有警告)
 match Some(1) {
     Some(x) | None => println!("{}", x), // x 在 None 分支未定义！
 }
@@ -392,7 +392,7 @@ $$
 
 ```python
 def py_generator():
-    x = yield 1      # 产出1，接收send值
+    x = yield 1      # 产出1,接收send值
     y = yield x + 1  # 产出x+1
     return y
 
@@ -409,7 +409,7 @@ let gen = || {
     yield 2;
     return 3;
 };
-// 目前不支持 send 语义，仅有 yield/out
+// 目前不支持 send 语义,仅有 yield/out
 ```
 
 ---
@@ -714,7 +714,7 @@ fn fibonacci() -> impl Generator<Yield = u64, Return = ()> {
     }
 }
 
-// 包装为 Stream（实验性）
+// 包装为 Stream(实验性)
 struct GenStream<G>(G);
 
 impl<G: Generator<Yield = T, Return = ()> + Unpin, T> Stream for GenStream<G> {
@@ -778,10 +778,10 @@ where
     let permit = pool.semaphore.acquire().await.unwrap();
     let mut conn = PooledConnection::new(pool).await;
 
-    // 函数返回时，conn 的 async drop 自动触发
+    // 函数返回时,conn 的 async drop 自动触发
     let result = f(&mut conn).await;
 
-    // permit 在这里 drop（同步）
+    // permit 在这里 drop(同步)
     drop(permit);
 
     result
@@ -865,7 +865,7 @@ static GLOBAL: MiMalloc = MiMalloc;
 #[global_allocator]
 static GLOBAL: tikv_jemallocator::Jemalloc = tikv_jemallocator::Jemalloc;
 
-// 运行时分配器统计（mimalloc）
+// 运行时分配器统计(mimalloc)
 fn log_allocator_stats() {
     unsafe {
         let stats = mimalloc::mi_stats_print_out(|_, msg| {
@@ -874,7 +874,7 @@ fn log_allocator_stats() {
     }
 }
 
-// 自定义 per-thread arena（高级用法）
+// 自定义 per-thread arena(高级用法)
 use bumpalo::Bump;
 
 fn process_batch_with_bump_allocator(events: Vec<Event>) -> Vec<Result> {
@@ -889,7 +889,7 @@ fn process_batch_with_bump_allocator(events: Vec<Event>) -> Vec<Result> {
         })
         .collect();
 
-    // bump allocator 整体释放，无单独 drop 开销
+    // bump allocator 整体释放,无单独 drop 开销
     results
 }
 ```
@@ -1129,7 +1129,7 @@ flowchart TD
 ### 代码审查
 - [ ] 检查 Or 模式绑定一致性
 - [ ] 审查 `gen` 关键字使用情况
-- [ ] 验证 unsafe 代码块（如有）
+- [ ] 验证 unsafe 代码块(如有)
 - [ ] 运行 `cargo clippy --fix`
 
 ### 测试验证

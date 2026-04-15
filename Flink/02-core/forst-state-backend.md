@@ -49,7 +49,7 @@ interface UFS {
   // 一致性读操作
   InputStream readConsistent(Path path, ConsistencyLevel level);
 
-  // 列表操作（含一致性快照）
+  // 列表操作(含一致性快照)
   List<FileStatus> listStatus(Path dir, SnapshotId snapshot);
 
   // 多版本支持
@@ -276,7 +276,7 @@ Checkpoint Barrier → Snapshot State Mapping
    Phase 1 (Prepare):
      - Flush 所有脏页到 DFS
      - 生成新的 SST 文件列表
-     - 预提交元数据（标记为 PENDING）
+     - 预提交元数据(标记为 PENDING)
 
    Phase 2 (Commit):
      - 收到 Checkpoint Coordinator 确认
@@ -445,7 +445,7 @@ state.backend.forst.ufs.s3.bucket: flink-state-bucket
 state.backend.forst.ufs.s3.region: us-east-1
 state.backend.forst.ufs.s3.credentials.provider: IAM_ROLE
 
-# 本地缓存配置（可选）
+# 本地缓存配置(可选)
 state.backend.forst.local.cache.size: 10gb
 state.backend.forst.local.cache.policy: SLRU
 
@@ -699,7 +699,7 @@ graph TB
 public class ForStSSTFile {
 
     /**
-     * SST 文件魔数（用于文件类型识别）
+     * SST 文件魔数(用于文件类型识别)
      */
     private static final byte[] SST_MAGIC = new byte[] {0x53, 0x53, 0x54}; // "SST"
 
@@ -712,10 +712,10 @@ public class ForStSSTFile {
      * Data Block 结构
      */
     public static class DataBlock {
-        // 重启点数量（每N个key设置一个重启点）
+        // 重启点数量(每N个key设置一个重启点)
         private final int numRestarts;
 
-        // 实际的键值对数据（Delta编码压缩）
+        // 实际的键值对数据(Delta编码压缩)
         private final byte[] data;
 
         /**
@@ -739,14 +739,14 @@ public class ForStSSTFile {
     }
 
     /**
-     * Block 句柄（用于定位）
+     * Block 句柄(用于定位)
      */
     public static class BlockHandle {
         private final long offset;  // Block在文件中的偏移
         private final long size;    // Block大小
 
         public byte[] encode() {
-            // Varint编码：offset + size
+            // Varint编码:offset + size
             ByteBuffer buffer = ByteBuffer.allocate(16);
             putVarint(buffer, offset);
             putVarint(buffer, size);
@@ -755,14 +755,14 @@ public class ForStSSTFile {
     }
 
     /**
-     * Footer 结构（文件末尾48字节）
+     * Footer 结构(文件末尾48字节)
      */
     public static class Footer {
         // Meta Index Block 句柄
         private final BlockHandle metaIndexHandle;
         // Index Block 句柄
         private final BlockHandle indexHandle;
-        // 魔数（用于校验）
+        // 魔数(用于校验)
         private final byte[] magic;
 
         public static final int ENCODED_LENGTH = 48;
@@ -787,13 +787,13 @@ public class ForStSSTFile {
 public class ForStKeyFormat {
 
     /**
-     * Internal Key 结构：
+     * Internal Key 结构:
      * +-----------------+-----------------+---------------+
      * |  User Key       |  Sequence Num   |  Value Type   |
      * |  (变长)          |  (7 bytes)      |  (1 byte)     |
      * +-----------------+-----------------+---------------+
      *
-     * 总长度：user_key_len + 8 bytes
+     * 总长度:user_key_len + 8 bytes
      */
     public static class InternalKey {
         private final byte[] userKey;
@@ -803,8 +803,8 @@ public class ForStKeyFormat {
         public byte[] encode() {
             ByteBuffer buffer = ByteBuffer.allocate(userKey.length + 8);
             buffer.put(userKey);
-            // 低7字节：sequence number（递增，用于版本控制）
-            // 高1字节：value type
+            // 低7字节:sequence number(递增,用于版本控制)
+            // 高1字节:value type
             long seqAndType = (sequenceNumber << 8) | valueType.getCode();
             buffer.putLong(seqAndType);
             return buffer.array();
@@ -861,7 +861,7 @@ public class ForStCompactionScheduler {
             }
         }
 
-        // 3. 检查Seek次数（读放大触发）
+        // 3. 检查Seek次数(读放大触发)
         if (stateBackend.getSeekCompactionScore() > SEEK_COMPACTION_THRESHOLD) {
             return createSeekCompactionTask();
         }
@@ -870,7 +870,7 @@ public class ForStCompactionScheduler {
     }
 
     /**
-     * Level阈值计算（指数增长）
+     * Level阈值计算(指数增长)
      * Level N阈值 = Level N-1阈值 × 10
      */
     private long getLevelThreshold(int level) {
@@ -919,7 +919,7 @@ sequenceDiagram
 ```java
 /**
  * ForSt 统一文件系统抽象层
- * 屏蔽底层存储差异（S3/HDFS/GCS/OSS）
+ * 屏蔽底层存储差异(S3/HDFS/GCS/OSS)
  */
 public class UnifiedFileSystem {
 
@@ -928,7 +928,7 @@ public class UnifiedFileSystem {
     private final ConsistencyManager consistencyManager;
 
     /**
-     * 原子写操作（Copy-on-Write模式）
+     * 原子写操作(Copy-on-Write模式)
      */
     public boolean writeAtomic(Path tempPath, Path targetPath, byte[] data) {
         // 1. 写入临时文件
@@ -937,7 +937,7 @@ public class UnifiedFileSystem {
         // 2. 校验数据完整性
         Checksum checksum = calculateChecksum(data);
 
-        // 3. 原子重命名（保证可见性）
+        // 3. 原子重命名(保证可见性)
         if (storageBackend.supportsAtomicRename()) {
             // HDFS/OSS支持原子rename
             storageBackend.rename(tempPath, targetPath);
@@ -956,16 +956,16 @@ public class UnifiedFileSystem {
     public InputStream readConsistent(Path path, ConsistencyLevel level) {
         switch (level) {
             case STRONG:
-                // 强一致性：等待所有写入完成
+                // 强一致性:等待所有写入完成
                 consistencyManager.waitForConsistency(path);
                 return storageBackend.read(path);
 
             case EVENTUAL:
-                // 最终一致性：直接读取
+                // 最终一致性:直接读取
                 return storageBackend.read(path);
 
             case VERSIONED:
-                // 版本一致性：读取指定版本
+                // 版本一致性:读取指定版本
                 Version version = consistencyManager.getLatestVersion(path);
                 return storageBackend.readVersion(path, version);
 
@@ -981,7 +981,7 @@ public class UnifiedFileSystem {
         // 生成版本号
         Version version = versionManager.nextVersion();
 
-        // 版本化路径：/baseName_v{version}.sst
+        // 版本化路径:/baseName_v{version}.sst
         Path versionedPath = pathMapping.toVersionedPath(baseName, version);
 
         // 原子写入
@@ -1024,7 +1024,7 @@ public class S3StorageBackend implements StorageBackend {
 
     @Override
     public boolean rename(Path source, Path target) {
-        // S3不支持原子rename，使用copy+delete模拟
+        // S3不支持原子rename,使用copy+delete模拟
         String sourceKey = source.toString();
         String targetKey = target.toString();
 
@@ -1082,10 +1082,10 @@ public class ForStIncrementalSnapshotStrategy {
                                           Set<VersionedFile> currentSSTFiles,
                                           Set<VersionedFile> previousSSTFiles) {
 
-        // 1. 计算增量：找出新增的SST文件
+        // 1. 计算增量:找出新增的SST文件
         Set<VersionedFile> newFiles = Sets.difference(currentSSTFiles, previousSSTFiles);
 
-        // 2. 计算未变更的文件（可复用）
+        // 2. 计算未变更的文件(可复用)
         Set<VersionedFile> unchangedFiles = Sets.intersection(currentSSTFiles, previousSSTFiles);
 
         // 3. 处理新增文件
@@ -1103,11 +1103,11 @@ public class ForStIncrementalSnapshotStrategy {
             ));
         }
 
-        // 4. 处理未变更文件（仅记录引用）
+        // 4. 处理未变更文件(仅记录引用)
         for (VersionedFile file : unchangedFiles) {
             uploadedFiles.add(new FileReference(
                 file.getName(),
-                null,  // 不复制，使用之前的路径
+                null,  // 不复制,使用之前的路径
                 file.getVersion(),
                 file.getChecksum()
             ));

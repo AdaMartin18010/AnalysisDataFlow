@@ -195,7 +195,7 @@ $$C_{\text{total}} = 1 - \prod_{i=1}^n (1 - C_i)$$
 **失效场景1：瞬移外挂**
 
 ```
-时间线：T0 --[正常移动]--> T1 --[瞬移500米]--> T2
+时间线:T0 --[正常移动]--> T1 --[瞬移500米]--> T2
 ```
 
 若检测延迟 > 5秒，作弊者已完成击杀并正常化行为，无法回溯惩罚。
@@ -203,7 +203,7 @@ $$C_{\text{total}} = 1 - \prod_{i=1}^n (1 - C_i)$$
 **失效场景2：经济系统漏洞利用**
 
 ```
-漏洞窗口：发现 → 批量利用 → 检测 → 修复 = 4-8小时
+漏洞窗口:发现 → 批量利用 → 检测 → 修复 = 4-8小时
 ```
 
 在批量检测模式下，数百万虚拟货币已被非法获取并转移。
@@ -483,7 +483,7 @@ public class PlayerMoveEvent extends GameEvent {
     }
 
     /**
-     * 计算移动时间（秒）
+     * 计算移动时间(秒)
      */
     public double getDurationSeconds(GameEvent previousEvent) {
         return (getTimestamp() - previousEvent.getTimestamp()) / 1000.0;
@@ -616,8 +616,8 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 public class CheatDetectionPatterns {
 
     /**
-     * 模式1：瞬移检测
-     * 检测条件：在极短时间内移动超远距离
+     * 模式1:瞬移检测
+     * 检测条件:在极短时间内移动超远距离
      */
     public static Pattern<GameEvent, ?> getTeleportPattern() {
         return Pattern.<GameEvent>begin("move1")
@@ -639,8 +639,8 @@ public class CheatDetectionPatterns {
     }
 
     /**
-     * 模式2：自瞄检测
-     * 检测条件：连续多次爆头且距离变化过大
+     * 模式2:自瞄检测
+     * 检测条件:连续多次爆头且距离变化过大
      */
     public static Pattern<GameEvent, ?> getAimbotPattern() {
         return Pattern.<GameEvent>begin("combat1")
@@ -674,8 +674,8 @@ public class CheatDetectionPatterns {
     }
 
     /**
-     * 模式3：加速外挂检测
-     * 检测条件：移动速度超过理论最大值
+     * 模式3:加速外挂检测
+     * 检测条件:移动速度超过理论最大值
      */
     public static Pattern<GameEvent, ?> getSpeedHackPattern() {
         final double MAX_NORMAL_SPEED = 15.0; // 最大正常速度 m/s
@@ -694,8 +694,8 @@ public class CheatDetectionPatterns {
     }
 
     /**
-     * 模式4：透视外挂检测
-     * 检测条件：穿墙击杀或无视障碍物的瞄准
+     * 模式4:透视外挂检测
+     * 检测条件:穿墙击杀或无视障碍物的瞄准
      */
     public static Pattern<GameEvent, ?> getWallHackPattern() {
         return Pattern.<GameEvent>begin("suspiciousKill")
@@ -712,7 +712,7 @@ public class CheatDetectionPatterns {
     }
 
     /**
-     * 模式处理器：生成作弊检测结果
+     * 模式处理器:生成作弊检测结果
      */
     public static class CheatPatternHandler extends PatternProcessFunction<GameEvent, CheatDetectionResult> {
 
@@ -736,7 +736,7 @@ public class CheatDetectionPatterns {
             GameEvent firstEvent = match.values().iterator().next().get(0);
             String playerId = firstEvent.getPlayerId();
 
-            // 计算置信度（基于匹配事件数量和特征强度）
+            // 计算置信度(基于匹配事件数量和特征强度)
             int matchCount = match.values().stream()
                 .mapToInt(List::size)
                 .sum();
@@ -804,7 +804,7 @@ public class GamingAnalyticsJob {
         // 创建执行环境
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-        // 配置检查点（Exactly-Once语义）
+        // 配置检查点(Exactly-Once语义)
         env.enableCheckpointing(10000); // 10秒检查点
         env.getCheckpointConfig().setCheckpointingMode(
             org.apache.flink.streaming.api.CheckpointingMode.EXACTLY_ONCE
@@ -924,12 +924,12 @@ public class GamingAnalyticsJob {
 
         // ============ 输出到各存储 ============
 
-        // 作弊检测结果 → Redis（实时封禁）
+        // 作弊检测结果 → Redis(实时封禁)
         riskEvaluated
             .addSink(new RedisBanSink())
             .name("Redis Ban Sink");
 
-        // 作弊检测结果 → Kafka（通知其他服务）
+        // 作弊检测结果 → Kafka(通知其他服务)
         riskEvaluated
             .map(result -> objectMapper.writeValueAsString(result))
             .addSink(new org.apache.flink.connector.kafka.sink.KafkaSink.Builder<String>()
@@ -951,7 +951,7 @@ public class GamingAnalyticsJob {
             .addSink(new ClickHouseMetricsSink())
             .name("ClickHouse Metrics Sink");
 
-        // 原始事件 → 冷存储（S3/ HDFS）
+        // 原始事件 → 冷存储(S3/ HDFS)
         parsedEvents
             .map(event -> objectMapper.writeValueAsString(event))
             .sinkTo(org.apache.flink.connector.file.sink.FileSink
@@ -1200,7 +1200,7 @@ public class RedisBanSink extends org.apache.flink.streaming.api.functions.sink.
                     break;
 
                 case SUSPECT:
-                    // 标记可疑，增加观察
+                    // 标记可疑,增加观察
                     jedis.hincrBy("suspect:" + playerId, "count", 1);
                     jedis.expire("suspect:" + playerId, 3600);
                     jedis.publish("cheat:suspect",
@@ -1208,7 +1208,7 @@ public class RedisBanSink extends org.apache.flink.streaming.api.functions.sink.
                     break;
 
                 default:
-                    // 正常玩家，更新信任分
+                    // 正常玩家,更新信任分
                     jedis.hincrByFloat("trust:" + playerId, "score", 0.01);
                     break;
             }
@@ -1461,7 +1461,7 @@ public class RecommendationEngine extends KeyedProcessFunction<String, PlayerPro
         itemCatalog = getRuntimeContext().getMapState(
             new MapStateDescriptor<>("item-catalog", String.class, Item.class));
 
-        // 加载物品目录（通常从外部存储初始化）
+        // 加载物品目录(通常从外部存储初始化)
         loadItemCatalog();
     }
 
@@ -1939,7 +1939,7 @@ sequenceDiagram
         C->>C: 断开连接
     else 风险分中等
         BS->>C: 发送警告
-        C->>C: 继续游戏（监控）
+        C->>C: 继续游戏(监控)
     end
 
     R->>R: 定期清理过期状态

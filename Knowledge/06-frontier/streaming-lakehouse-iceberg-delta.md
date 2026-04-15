@@ -154,18 +154,18 @@ Lakehouse 表能够生成完备 Changelog 的充要条件：
 │                    Streaming Lakehouse                      │
 │  ┌─────────────────────────────────────────────────────┐   │
 │  │           Apache Paimon (Streaming Lakehouse)        │   │
-│  │  • 专为流设计：原生 Changelog、LSM Tree              │   │
-│  │  • 低延迟：分钟级延迟，高吞吐                          │   │
-│  │  • Flink 原生：与 Flink CDC/ETL 无缝集成               │   │
+│  │  • 专为流设计:原生 Changelog、LSM Tree              │   │
+│  │  • 低延迟:分钟级延迟,高吞吐                          │   │
+│  │  • Flink 原生:与 Flink CDC/ETL 无缝集成               │   │
 │  └─────────────────────────────────────────────────────┘   │
 │                        ▲                                   │
 │                        │ 可互操作/迁移                     │
 │                        ▼                                   │
 │  ┌─────────────────────────────────────────────────────┐   │
 │  │    Apache Iceberg / Delta Lake (Analytics Lakehouse) │   │
-│  │  • 分析优先：优化 OLAP 查询                            │   │
-│  │  • 生态丰富：Spark/Trino/Presto 广泛支持               │   │
-│  │  • 批处理成熟：历史数据管理完善                         │   │
+│  │  • 分析优先:优化 OLAP 查询                            │   │
+│  │  • 生态丰富:Spark/Trino/Presto 广泛支持               │   │
+│  │  • 批处理成熟:历史数据管理完善                         │   │
 │  └─────────────────────────────────────────────────────┘   │
 └────────────────────────────────────────────────────────────┘
 ```
@@ -339,7 +339,7 @@ WHERE event_time > NOW() - INTERVAL '7' DAY;
 ### 5.2 CDC 同步到 Iceberg 完整链路
 
 ```sql
--- 1. CDC Source：MySQL 变更捕获
+-- 1. CDC Source:MySQL 变更捕获
 CREATE TABLE mysql_users (
     id INT,
     name STRING,
@@ -357,7 +357,7 @@ CREATE TABLE mysql_users (
     'scan.startup.mode' = 'latest-offset'
 );
 
--- 2. Iceberg Sink：实时同步
+-- 2. Iceberg Sink:实时同步
 CREATE TABLE iceberg_users (
     id INT,
     name STRING,
@@ -408,7 +408,7 @@ FROM mysql_users;
 │   ODS Layer (Operational Data Store)                                │
 │   ┌─────────────────────────────────────────────────────────┐      │
 │   │  Iceberg Table: ods_events                              │      │
-│   │  • 原始事件数据，保留 7 天                               │      │
+│   │  • 原始事件数据,保留 7 天                               │      │
 │   │  • Partition: dt=YYYY-MM-DD, hour=HH                    │      │
 │   │  • Format: Parquet, Zstd compression                    │      │
 │   └─────────────────────────────────────────────────────────┘      │
@@ -417,8 +417,8 @@ FROM mysql_users;
 │   DWD Layer (Data Warehouse Detail)                                 │
 │   ┌─────────────────────────────────────────────────────────┐      │
 │   │  Paimon Table: dwd_user_events (Streaming Materialized) │      │
-│   │  • 清洗后明细数据，增量更新                              │      │
-│   │  • Changelog 生产，支持流式订阅                          │      │
+│   │  • 清洗后明细数据,增量更新                              │      │
+│   │  • Changelog 生产,支持流式订阅                          │      │
 │   │  • MergeEngine: deduplicate / aggregation               │      │
 │   └─────────────────────────────────────────────────────────┘      │
 │                              │                                      │
@@ -437,22 +437,22 @@ FROM mysql_users;
 **Flink SQL 实现**：
 
 ```sql
--- ODS: 原始数据接入（Iceberg，近实时）
+-- ODS: 原始数据接入(Iceberg,近实时)
 INSERT INTO iceberg_catalog.ods.events
 SELECT * FROM kafka_source;
 
--- DWD: 实时清洗（Paimon，增量物化）
+-- DWD: 实时清洗(Paimon,增量物化)
 INSERT INTO paimon_catalog.dwd.user_events
 SELECT
     user_id,
     event_type,
     event_time,
-    -- 数据清洗：去除敏感字段
+    -- 数据清洗:去除敏感字段
     regexp_replace(properties['ip'], '\\d+$', 'xxx') as ip_masked
 FROM iceberg_catalog.ods.events
 WHERE event_time > NOW() - INTERVAL '7' DAY;
 
--- DWS: 分钟级聚合（Paimon 物化视图）
+-- DWS: 分钟级聚合(Paimon 物化视图)
 INSERT INTO paimon_catalog.dws.user_stats
 SELECT
     user_id,
@@ -464,7 +464,7 @@ GROUP BY
     user_id,
     TUMBLE(event_time, INTERVAL '1' MINUTE);
 
--- ADS: 小时报表（Iceberg，批量归档）
+-- ADS: 小时报表(Iceberg,批量归档)
 INSERT INTO iceberg_catalog.ads.hourly_reports
 SELECT
     DATE_FORMAT(window_start, 'yyyy-MM-dd HH:00:00') as hour,
@@ -480,7 +480,7 @@ GROUP BY DATE_FORMAT(window_start, 'yyyy-MM-dd HH:00:00');
 **架构**：RisingWave 作为流处理层，Iceberg 作为历史存储层
 
 ```sql
--- RisingWave 侧：创建物化视图
+-- RisingWave 侧:创建物化视图
 CREATE SOURCE user_events (
     user_id VARCHAR,
     event_type VARCHAR,
@@ -492,7 +492,7 @@ CREATE SOURCE user_events (
     properties.bootstrap.server = 'kafka:9092'
 ) FORMAT JSON;
 
--- 实时物化视图：用户交易汇总
+-- 实时物化视图:用户交易汇总
 CREATE MATERIALIZED VIEW user_transaction_summary AS
 SELECT
     user_id,
@@ -503,7 +503,7 @@ FROM user_events
 WHERE event_time > NOW() - INTERVAL '30' DAY
 GROUP BY user_id;
 
--- RisingWave Iceberg Sink：同步到 Lakehouse
+-- RisingWave Iceberg Sink:同步到 Lakehouse
 CREATE SINK iceberg_user_summary
 FROM user_transaction_summary
 WITH (
@@ -525,12 +525,12 @@ WITH (
 ```sql
 -- Trino / StarRocks 联邦查询
 WITH recent_data AS (
-    -- 从 Paimon 读取实时数据（近 24 小时）
+    -- 从 Paimon 读取实时数据(近 24 小时)
     SELECT * FROM paimon_catalog.analytics.events
     WHERE event_time >= CURRENT_TIMESTAMP - INTERVAL '24' HOUR
 ),
 historical_data AS (
-    -- 从 Iceberg 读取历史数据（24 小时前到 30 天前）
+    -- 从 Iceberg 读取历史数据(24 小时前到 30 天前)
     SELECT * FROM iceberg_catalog.analytics.events
     WHERE event_time >= CURRENT_TIMESTAMP - INTERVAL '30' DAY
       AND event_time < CURRENT_TIMESTAMP - INTERVAL '24' HOUR

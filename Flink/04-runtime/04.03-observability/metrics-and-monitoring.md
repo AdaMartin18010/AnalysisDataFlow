@@ -278,7 +278,7 @@ P3 (Low):      趋势预警、容量规划提示
 # 每秒输入记录数
 flink_taskmanager_job_task_operator_numRecordsInPerSecond
 
-# Checkpoint持续时间（分位数）
+# Checkpoint持续时间(分位数)
 histogram_quantile(0.99,
   sum(rate(flink_jobmanager_checkpoint_duration_time[5m])) by (le)
 )
@@ -286,7 +286,7 @@ histogram_quantile(0.99,
 # 消费者延迟
 kafka_consumer_records_lag_max{job="flink-consumer"}
 
-# 端到端延迟（自定义指标）
+# 端到端延迟(自定义指标)
 flink_taskmanager_job_task_operator_latency_histogram_max
 ```
 

@@ -518,7 +518,7 @@ mindmap
 
 ```mermaid
 quadrantChart
-    title 2026 年度案例影响力矩阵（业务影响 vs 技术深度）
+    title 2026 年度案例影响力矩阵(业务影响 vs 技术深度)
     x-axis 低业务影响 --> 高业务影响
     y-axis 低技术深度 --> 高技术深度
     quadrant-1 标杆案例

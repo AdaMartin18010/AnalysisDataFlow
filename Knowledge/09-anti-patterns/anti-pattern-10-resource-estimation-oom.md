@@ -38,12 +38,12 @@
 
 ```
 总内存需求 =
-  + 托管内存（状态）
-  + 网络内存（缓冲区）
+  + 托管内存(状态)
+  + 网络内存(缓冲区)
   + JVM 元空间
   + JVM 堆内存
-  + 原生内存（RocksDB）
-  + 预留（20%）
+  + 原生内存(RocksDB)
+  + 预留(20%)
 ```
 
 ---
@@ -80,12 +80,12 @@ TaskManager OOM ──► 容器重启 ──► Checkpoint 失败 ──► 作
 // 估算示例
 def estimateMemory(
   stateSizeGb: Double,      // 预期状态大小
-  throughputKps: Double,    // 吞吐量（千条/秒）
+  throughputKps: Double,    // 吞吐量(千条/秒)
   windowMinutes: Int,       // 窗口大小
   parallelism: Int          // 并行度
 ): MemoryConfig = {
 
-  // 1. 托管内存 = 状态大小 / 并行度 × 1.5（余量）
+  // 1. 托管内存 = 状态大小 / 并行度 × 1.5(余量)
   val managedMemory = (stateSizeGb / parallelism * 1.5).gb
 
   // 2. 网络内存 = min(并行度 × 64MB, 1GB)
@@ -94,7 +94,7 @@ def estimateMemory(
   // 3. JVM 堆 = max(托管内存 × 0.5, 2GB)
   val heapMemory = Math.max(managedMemory * 0.5, 2.gb)
 
-  // 4. 总内存 = (托管 + 网络 + 堆) × 1.2（预留）
+  // 4. 总内存 = (托管 + 网络 + 堆) × 1.2(预留)
   val totalMemory = (managedMemory + networkMemory + heapMemory) * 1.2
 
   MemoryConfig(totalMemory, managedMemory, networkMemory, heapMemory)
@@ -109,7 +109,7 @@ taskmanager.memory:
   process:
     size: 8gb          # 总进程内存
   managed:
-    size: 3gb          # 托管内存（状态）
+    size: 3gb          # 托管内存(状态)
   network:
     max: 256mb         # 网络内存
   jvm-heap:
@@ -142,8 +142,8 @@ env.configure(config)
 taskmanager.memory.process.size: 2gb
 taskmanager.memory.managed.size: 512mb
 
-# 场景: 状态 10GB，并行度 4
-# 每 TM 需要 2.5GB 状态，但只配置了 512MB 托管内存
+# 场景: 状态 10GB,并行度 4
+# 每 TM 需要 2.5GB 状态,但只配置了 512MB 托管内存
 # 结果: OOM
 ```
 
@@ -155,7 +155,7 @@ taskmanager.memory.process.size: 8gb
 taskmanager.memory.managed.size: 3gb
 taskmanager.memory.network.max: 256mb
 
-# 状态 10GB，并行度 4
+# 状态 10GB,并行度 4
 # 每 TM 2.5GB 状态 < 3GB 托管内存 ✓
 ```
 

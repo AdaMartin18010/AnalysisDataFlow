@@ -111,9 +111,9 @@ Resources = { CPU_cores, Memory_heap, Memory_offheap, Network_buffers, Managed_m
 
 ```
 AllocationPolicy ∈ {
-    EVENLY_SPREAD,      # 均匀分布，最大化故障域隔离
-    PREFER_SAME_HOST,   # 优先同一主机，优化网络延迟
-    LAZY_FROM_SOURCES   # 从 Source 延迟分配，优化数据本地性
+    EVENLY_SPREAD,      # 均匀分布,最大化故障域隔离
+    PREFER_SAME_HOST,   # 优先同一主机,优化网络延迟
+    LAZY_FROM_SOURCES   # 从 Source 延迟分配,优化数据本地性
 }
 ```
 
@@ -436,7 +436,7 @@ taskmanager.memory.network.max: 512mb
 
 ```yaml
 # 错误配置
-execution.checkpointing.interval: 1s    # 过于频繁，影响吞吐
+execution.checkpointing.interval: 1s    # 过于频繁,影响吞吐
 execution.checkpointing.timeout: 10min  # 与间隔不匹配
 
 # 正确配置
@@ -574,7 +574,7 @@ sequenceDiagram
         Operator-->>User: 升级成功
     else 健康检查失败
         Operator->>Green: 清理绿色环境
-        Operator-->>User: 升级失败，保留 Blue
+        Operator-->>User: 升级失败,保留 Blue
     end
 ```
 
@@ -582,7 +582,7 @@ sequenceDiagram
 
 ```
 1. 绿色环境完全启动后才切换流量
-2. 流量切换通过 K8s Service 或 Ingress 完成，延迟 < 1s
+2. 流量切换通过 K8s Service 或 Ingress 完成,延迟 < 1s
 3. 蓝色环境保留直到绿色确认健康
 4. 失败时自动回滚到蓝色环境
 

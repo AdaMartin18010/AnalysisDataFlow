@@ -999,7 +999,7 @@ def adaptive_batching(current_B, latency_B, throughput_B, L_SLA):
     L_SLA: 延迟约束
     """
     if latency_B > L_SLA:
-        # 延迟超标，减小批大小
+        # 延迟超标,减小批大小
         return max(1, current_B // 2)
     else:
         # 尝试增大批大小以提高吞吐
@@ -1171,7 +1171,7 @@ public class KServeAsyncInference implements AsyncFunction<Sentence, SentimentRe
     private final int kservePort;
     private final int maxConcurrentRequests;
 
-    // gRPC通道和stub，每个并行实例共享
+    // gRPC通道和stub,每个并行实例共享
     private transient ManagedChannel channel;
     private transient GRPCInferenceServiceGrpc.GRPCInferenceServiceStub asyncStub;
 
@@ -1183,7 +1183,7 @@ public class KServeAsyncInference implements AsyncFunction<Sentence, SentimentRe
 
     @Override
     public void open(Configuration parameters) {
-        // 创建gRPC通道，使用连接池优化
+        // 创建gRPC通道,使用连接池优化
         channel = ManagedChannelBuilder
             .forAddress(kserveHost, kservePort)
             .usePlaintext()  // 生产环境使用TLS
@@ -1230,7 +1230,7 @@ public class KServeAsyncInference implements AsyncFunction<Sentence, SentimentRe
 
             @Override
             public void onError(Throwable t) {
-                // 错误处理：记录日志并可选择重试
+                // 错误处理:记录日志并可选择重试
                 resultFuture.completeExceptionally(
                     new InferenceException("KServe inference failed", t)
                 );
@@ -1275,7 +1275,7 @@ public class KServeFlinkJob {
             CheckpointingMode.EXACTLY_ONCE
         );
 
-        // 数据源：Kafka中的文本流
+        // 数据源:Kafka中的文本流
         DataStream<Sentence> sentences = env
             .addSource(new FlinkKafkaConsumer<>(
                 "text-input",
@@ -1290,7 +1290,7 @@ public class KServeFlinkJob {
                 new KServeAsyncInference(
                     "bert-sentiment.kserve-namespace.svc.cluster.local",
                     8080,
-                    100  // 并发度，对应Def-F-12-51
+                    100  // 并发度,对应Def-F-12-51
                 ),
                 5000,  // 超时时间5秒
                 TimeUnit.MILLISECONDS,
@@ -1378,7 +1378,7 @@ spec:
                     cpu: "2"
                     memory: 4Gi
 
-    # 影子模式: 新模型测试 (0%流量，仅记录)
+    # 影子模式: 新模型测试 (0%流量,仅记录)
     - name: model-shadow
       traffic: 0
       shadow: true
@@ -1487,7 +1487,7 @@ public class SeldonABRouter extends RichAsyncFunction<UserEvent, Recommendation>
 
                 @Override
                 public void onThrowable(Throwable t) {
-                    // 故障转移：尝试调用另一个版本
+                    // 故障转移:尝试调用另一个版本
                     fallbackToAlternative(event, modelVersion, resultFuture, t);
                 }
             });
@@ -2050,7 +2050,7 @@ class SentimentAnalyzer:
             ]
         }
 
-# 模型组合：情感分析 + 实体识别
+# 模型组合:情感分析 + 实体识别
 @serve.deployment
 class EntityExtractor:
     def __init__(self):
@@ -2112,8 +2112,8 @@ class RayInferenceMapper(MapFunction):
 
     def map(self, value):
         """
-        同步调用Ray Serve（适合低延迟场景）
-        对于高吞吐场景，建议使用Async I/O
+        同步调用Ray Serve(适合低延迟场景)
+        对于高吞吐场景,建议使用Async I/O
         """
         text = value['text']
 
@@ -2131,7 +2131,7 @@ class RayInferenceMapper(MapFunction):
         if ray.is_initialized():
             ray.shutdown()
 
-# 高级：使用Ray Data进行分布式预处理
+# 高级:使用Ray Data进行分布式预处理
 import ray.data
 
 class RayDataPreprocessor:

@@ -154,21 +154,21 @@ high-availability.zookeeper.client.acl: creator
 数据分类评估
 │
 ├── 公开数据 ──────────────────────────────► 无需保护
-│   └─ 例：产品目录、公开新闻
+│   └─ 例:产品目录、公开新闻
 │
 ├── 内部数据 ──────────────────────────────► 传输加密 (TLS)
-│   └─ 例：内部日志、非敏感指标
+│   └─ 例:内部日志、非敏感指标
 │
 ├── 机密数据 ──────────────────────────────► 端到端加密
 │   │
 │   ├── 需要检索? ──YES──► 格式保留加密 (FPE)
-│   │   └─ 例：手机号后四位查询
+│   │   └─ 例:手机号后四位查询
 │   │
 │   ├── 需要分析? ──YES──► 差分隐私 / 安全多方计算
-│   │   └─ 例：聚合统计、联邦学习
+│   │   └─ 例:聚合统计、联邦学习
 │   │
 │   └── 其他 ────────────► 应用层AES-256加密
-│       └─ 例：个人身份信息 (PII)
+│       └─ 例:个人身份信息 (PII)
 │
 └── 高度敏感 ──────────────────────────────► 应用层加密 + TEE
     │
@@ -218,7 +218,7 @@ high-availability.zookeeper.client.acl: creator
 
 ```java
 public class AuditEntry {
-    private long timestamp;        // T: 时间戳（毫秒）
+    private long timestamp;        // T: 时间戳(毫秒)
     private String action;         // A: READ/WRITE/DELETE/ADMIN
     private String userId;         // U: 执行主体
     private String resource;       // R: Topic/Table/Schema

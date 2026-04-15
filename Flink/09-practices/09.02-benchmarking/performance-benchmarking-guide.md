@@ -605,7 +605,7 @@ ORDER BY cnt DESC LIMIT 20;
 1. **两阶段聚合**:
 
 ```java
-// 先局部聚合，再全局聚合
+// 先局部聚合,再全局聚合
 stream.keyBy(key)
     .window(...)  // 第一阶段
     .aggregate(localAgg)
@@ -712,7 +712,7 @@ taskmanager.network.memory.buffer-debloat.target: 1000
 ```
 ┌─────────────────────────────────────────┐
 │           JobManager                    │
-│    (协调，不处理数据)                    │
+│    (协调,不处理数据)                    │
 └─────────────────────────────────────────┘
                     │
     ┌───────────────┼───────────────┐

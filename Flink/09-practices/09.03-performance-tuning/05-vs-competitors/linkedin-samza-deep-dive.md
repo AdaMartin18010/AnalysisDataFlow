@@ -433,7 +433,7 @@ DataStream<MemberActivity> activityStream = events
 KeyValueStore<String, MemberProfile> profileStore =
     (KeyValueStore<String, MemberProfile>) context.getStore("member-profile");
 
-// 流处理：关联活动事件与会员资料
+// 流处理:关联活动事件与会员资料
 public void processActivity(MemberEvent event, MessageCollector collector) {
     MemberProfile profile = profileStore.get(event.getMemberId());
     if (profile != null) {

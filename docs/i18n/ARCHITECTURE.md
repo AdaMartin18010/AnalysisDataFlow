@@ -10,16 +10,16 @@
 
 ```
 docs/i18n/i18n-content/
-├── zh/                         # 中文（原文/源语言）
+├── zh/                         # 中文(原文/源语言)
 │   ├── Struct/                 # 形式理论文档
 │   ├── Knowledge/              # 知识结构文档
 │   └── Flink/                  # Flink专项文档
-├── en/                         # 英文（目标语言）
+├── en/                         # 英文(目标语言)
 │   ├── Struct/
 │   ├── Knowledge/
 │   └── Flink/
-├── ja/                         # 日文（未来扩展）
-└── ko/                         # 韩文（未来扩展）
+├── ja/                         # 日文(未来扩展)
+└── ko/                         # 韩文(未来扩展)
 ```
 
 **组织原则**:
@@ -42,6 +42,7 @@ docs/i18n/i18n-content/
 ```
 
 示例：
+
 - `01.01-stream-processing-fundamentals.md`
 - `03.05-exactly-once-semantics.md`
 
@@ -61,7 +62,7 @@ i18n-content/
 ├── glossary/
 │   ├── core-terms.json           # 核心术语表
 │   ├── prohibited-list.json      # 禁止翻译列表
-│   └── domain-terms-{lang}.json  # 领域术语（按语言）
+│   └── domain-terms-{lang}.json  # 领域术语(按语言)
 └── workflows/
     ├── translation-queue.json    # 待翻译队列
     ├── review-queue.json         # 审核队列
@@ -77,7 +78,7 @@ docs/i18n/
 ├── ARCHITECTURE.md               # 本架构文档
 ├── README.md                     # i18n模块使用指南
 ├── i18n-content/                 # 多语言内容目录
-│   ├── zh/                       # 中文（源语言）
+│   ├── zh/                       # 中文(源语言)
 │   │   ├── Struct/
 │   │   ├── Knowledge/
 │   │   └── Flink/
@@ -113,7 +114,7 @@ docs/i18n/
 ```yaml
 lock_rules:
   auto_lock_on_translate: true      # 开始翻译时自动锁定
-  lock_scope: "file"                # 锁定范围：文件级
+  lock_scope: "file"                # 锁定范围:文件级
   allow_critical_fixes: true        # 允许关键修复
   critical_fix_categories:
     - "factual_error"               # 事实错误
@@ -148,7 +149,7 @@ stateDiagram-v2
     Free --> Locked: 开始翻译
     Locked --> Free: 翻译完成+审核通过
     Locked --> Free: 取消翻译
-    Locked --> Locked: 关键修复（允许）
+    Locked --> Locked: 关键修复(允许)
     Free --> Free: 正常编辑
 ```
 
@@ -177,6 +178,7 @@ completion_percentage: 45
 对于部分翻译的文档，使用标记标注状态：
 
 ```markdown
+<!-- pseudo-code -->
 <!-- TRANSLATION_STATUS: pending -->
 ## 1. 概念定义
 
@@ -206,12 +208,12 @@ graph TB
         V2["v1.1"]
         V3["v1.2"]
     end
-    
+
     subgraph Target["英文翻译"]
         TV1["v1.0"]
         TV2["v1.1"]
     end
-    
+
     V1 -->|翻译| TV1
     V2 -->|翻译| TV2
     V3 -->|待更新| TV2
@@ -224,9 +226,9 @@ version_sync:
   hash_algorithm: "sha256"
   track_sections: true
   change_types:
-    - "major": "结构性变更，需重新翻译"
-    - "minor": "内容更新，需增量翻译"
-    - "patch": "修正错误，需术语同步"
+    - "major": "结构性变更,需重新翻译"
+    - "minor": "内容更新,需增量翻译"
+    - "patch": "修正错误,需术语同步"
   sync_interval: "daily"
   notification_channels:
     - "email"
@@ -240,12 +242,12 @@ version_sync:
 def detect_changes(source_file, target_meta):
     current_hash = compute_hash(source_file)
     last_hash = target_meta['source_version']
-    
+
     if current_hash == last_hash:
         return "no_change"
-    
+
     diff = compute_diff(last_hash, current_hash)
-    
+
     if diff.has_structure_changes():
         return "major_update_required"
     elif diff.has_content_additions():
@@ -288,7 +290,7 @@ flowchart TD
 - [ ] 禁止翻译列表项目未翻译
 
 ### 语言审核
-- [ ] 语法正确，无错别字
+- [ ] 语法正确,无错别字
 - [ ] 句式符合目标语言习惯
 - [ ] 专业表达准确
 - [ ] 标点符号使用正确
@@ -358,7 +360,7 @@ term_consistency:
     - ["Stream Processing", "流处理", "数据流处理"]  # 禁止混用
   context_rules:
     - term: "Actor"
-      context: "首字母大写表示模型，小写表示实现"
+      context: "首字母大写表示模型,小写表示实现"
 ```
 
 #### 3.2.2 术语检查报告示例
@@ -371,14 +373,14 @@ term_consistency:
       "line": 45,
       "type": "term_mismatch",
       "severity": "error",
-      "message": "术语不一致: 使用 'data stream processing'，应为 'Stream Processing'",
+      "message": "术语不一致: 使用 'data stream processing',应为 'Stream Processing'",
       "suggestion": "Stream Processing"
     },
     {
       "line": 67,
       "type": "case_issue",
       "severity": "warning",
-      "message": "大小写不一致: 'checkpoint' 应为 'Checkpoint'（句首）",
+      "message": "大小写不一致: 'checkpoint' 应为 'Checkpoint'(句首)",
       "suggestion": "Checkpoint"
     }
   ]
@@ -480,9 +482,9 @@ Kleppmann, *Designing Data-Intensive Applications*, O'Reilly, 2017.
 # 提取特定目录的待翻译内容
 python .scripts/i18n-manager.py extract --source Struct/ --lang en
 
-# 输出示例：
+# 输出示例:
 # - 生成 i18n-content/en/Struct/translation-package.json
-# - 包含：原文、源版本哈希、术语提示
+# - 包含:原文、源版本哈希、术语提示
 ```
 
 #### 4.2.2 翻译进度统计
@@ -491,7 +493,7 @@ python .scripts/i18n-manager.py extract --source Struct/ --lang en
 # 查看整体进度
 python .scripts/i18n-manager.py stats
 
-# 输出示例：
+# 输出示例:
 # =========================================
 # Translation Progress Report
 # =========================================
@@ -511,7 +513,7 @@ python .scripts/i18n-manager.py stats
 # 检测缺失翻译
 python .scripts/i18n-manager.py check-missing --lang en
 
-# 输出：
+# 输出:
 # Missing translations in en/:
 # - Struct/03.05-exactly-once-semantics.md (not started)
 # - Knowledge/02.10-windowing-patterns.md (incomplete - 30%)
@@ -524,7 +526,7 @@ python .scripts/i18n-manager.py check-missing --lang en
 # 检查格式一致性
 python .scripts/i18n-manager.py check-format --file en/Struct/01.01-stream-processing.md
 
-# 检查项：
+# 检查项:
 # - Markdown 语法正确性
 # - 标题层级一致性
 # - 代码块语言标签
@@ -539,30 +541,30 @@ python .scripts/i18n-manager.py check-format --file en/Struct/01.01-stream-proce
 i18n:
   source_language: "zh"
   target_languages: ["en", "ja", "ko"]
-  
+
   paths:
     content_root: "docs/i18n/i18n-content"
     glossary_dir: "docs/i18n/glossary"
     workflow_dir: "docs/i18n/workflows"
-  
+
   source_dirs:
     - "Struct"
     - "Knowledge"
     - "Flink"
-  
+
   extraction:
     skip_patterns:
       - "*.draft.md"
       - "*.archived.md"
     include_frontmatter: true
     preserve_mermaid: true
-  
+
   quality:
     term_check: true
     format_check: true
     link_check: true
     min_completion_threshold: 95
-  
+
   notifications:
     on_translation_complete: true
     on_review_required: true
@@ -590,10 +592,10 @@ plugins:
           name: English
         - locale: ja
           name: 日本語
-      
+
       # 内容目录映射
       docs_structure: folder
-      
+
       # 语言切换配置
       alternate:
         - name: 中文
@@ -640,7 +642,7 @@ nav:
       - Actor模型: Struct/02.01-actor-model.md
     - 知识结构:
       - 设计模式: Knowledge/01.01-design-patterns.md
-  
+
   en:
     - Home: index.md
     - Formal Theory:
@@ -656,7 +658,7 @@ nav:
 # 从源语言导航自动生成分语言导航
 def generate_multilingual_nav(source_nav, target_lang):
     """
-    根据源语言导航结构，为目标语言生成对应导航
+    根据源语言导航结构,为目标语言生成对应导航
     未翻译的页面使用特殊标记
     """
     target_nav = {}
@@ -712,17 +714,17 @@ function detectPreferredLanguage() {
     // 1. 检查 URL 参数
     const urlLang = new URLSearchParams(window.location.search).get('lang');
     if (urlLang) return urlLang;
-    
+
     // 2. 检查本地存储
     const storedLang = localStorage.getItem('preferred-language');
     if (storedLang) return storedLang;
-    
+
     // 3. 检查浏览器语言
     const browserLang = navigator.language.split('-')[0];
     if (supportedLanguages.includes(browserLang)) {
         return browserLang;
     }
-    
+
     // 4. 默认语言
     return 'zh';
 }
@@ -742,6 +744,7 @@ function detectPreferredLanguage() {
 | 术语工具集成 | Dev Team | 3天 | i18n-manager.py term-check |
 
 **验收标准**:
+
 - [ ] 术语表覆盖 100% 核心技术术语
 - [ ] 自动化术语检查可用
 - [ ] 术语一致性错误检出率 > 95%
@@ -757,11 +760,13 @@ function detectPreferredLanguage() {
 | Week 7-8 | Knowledge/ 核心文档 | 2周 | 15篇知识结构文档 |
 
 **优先级排序**:
+
 1. 高优先级：README, QUICK-START, ARCHITECTURE
 2. 中优先级：核心理论文档（流处理基础、Actor模型）
 3. 低优先级：进阶专题、案例分析
 
 **验收标准**:
+
 - [ ] 至少 25 篇文档翻译完成
 - [ ] 翻译质量通过三级审核
 - [ ] 用户反馈满意度 > 80%
@@ -796,6 +801,7 @@ gantt
 | M4 | Month 6 | 全部文档翻译+审核完成 |
 
 **验收标准**:
+
 - [ ] 所有文档英文版可用
 - [ ] 翻译覆盖率 100%
 - [ ] 审核通过率 100%

@@ -869,6 +869,8 @@ $$\lambda_{breakeven} \approx 12M \text{ 调用/月 (对于 1GB, 100ms 平均执
 **系统设计**:
 
 ```python
+# 伪代码示意,非完整可编译代码
+# 伪代码示意,非完整可编译代码
 # Serverless架构
 Event Source (Kinesis) → Lambda Function → TimeStream DB
                      ↓

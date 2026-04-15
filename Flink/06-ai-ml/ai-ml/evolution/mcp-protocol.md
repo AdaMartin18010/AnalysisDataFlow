@@ -193,7 +193,7 @@ public class McpV2Adapter {
         return McpVersion.V1_0;
     }
 
-    // 批量 SQL 查询（v2.0 优化）
+    // 批量 SQL 查询(v2.0 优化)
     public List<QueryResult> batchQuery(List<String> sqlStatements) {
         if (version == McpVersion.V2_0) {
             // 使用 v2.0 批量接口

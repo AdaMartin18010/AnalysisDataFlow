@@ -58,7 +58,7 @@
 ```
 DRM = (ResourceIntent, OptimizationEngine, AllocationPolicy, FeedbackLoop)
 
-ResourceIntent: 用户声明的资源意图（如 tier=large）
+ResourceIntent: 用户声明的资源意图(如 tier=large)
 OptimizationEngine: 多目标优化引擎
 AllocationPolicy: 资源分配策略
 FeedbackLoop: 资源使用效果反馈循环
@@ -208,7 +208,7 @@ Utilization(DRM) >= Utilization(Static) * (1 + alpha)
 alpha = adaptiveFactor * workloadVariance
 adaptiveFactor in [0.15, 0.35]
 
-对于典型流式工作负载：
+对于典型流式工作负载:
     alpha ~ 0.25
     Utilization(DRM) >= 1.25 * Utilization(Static)
 ```

@@ -524,7 +524,7 @@ impl OfflineCache {
         let cf = self.db.cf_handle("records")
             .ok_or(CacheError::ColumnFamilyNotFound)?;
 
-        // 使用时间戳+序号作为 key，保证有序
+        // 使用时间戳+序号作为 key,保证有序
         let key = format!("{:020}", record.timestamp);
         let value = serde_json::to_vec(&record)?;
 
@@ -547,13 +547,13 @@ impl OfflineCache {
         self.db.write(&self.write_buffer)?;
         self.write_buffer.clear();
 
-        // 同步 WAL，确保数据持久化
+        // 同步 WAL,确保数据持久化
         self.db.sync_wal()?;
 
         Ok(())
     }
 
-    /// 读取待同步的数据（从 ack_offset 之后）
+    /// 读取待同步的数据(从 ack_offset 之后)
     pub fn read_pending(&self, batch_size: usize) -> Result<Vec<CachedRecord>, CacheError> {
         let cf = self.db.cf_handle("records")
             .ok_or(CacheError::ColumnFamilyNotFound)?;
@@ -574,7 +574,7 @@ impl OfflineCache {
         Ok(records)
     }
 
-    /// 确认数据已同步，更新 ack_offset
+    /// 确认数据已同步,更新 ack_offset
     pub fn acknowledge(&self, timestamp: u64) -> Result<(), CacheError> {
         let cf = self.db.cf_handle("metadata")
             .ok_or(CacheError::ColumnFamilyNotFound)?;

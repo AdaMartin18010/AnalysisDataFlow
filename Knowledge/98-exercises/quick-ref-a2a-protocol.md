@@ -89,7 +89,7 @@ POST /a2a/v1/tasks
 # 订阅状态更新 (SSE)
 GET /a2a/v1/tasks/{task-id}/subscribe
 
-# 提供输入（人机协作节点）
+# 提供输入(人机协作节点)
 POST /a2a/v1/tasks/{task-id}/input
 {
   "parts": [...]
@@ -124,18 +124,18 @@ POST /a2a/v1/tasks/{task-id}/cancel
 使用场景分析
 │
 ├── 单一Agent + 工具访问 ──────────────────► 仅 MCP
-│   └─ 例：客服Agent查询知识库
+│   └─ 例:客服Agent查询知识库
 │
 ├── 多Agent协作 ──────────────────────────► A2A (+ MCP可选)
 │   │
 │   ├─ 各Agent需访问工具 ────────────────► A2A + MCP
-│   │   └─ 例：招聘流程Agent协调HR、面试官、背景调查Agent
+│   │   └─ 例:招聘流程Agent协调HR、面试官、背景调查Agent
 │   │
 │   └─ 纯Agent协作无工具 ────────────────► 仅 A2A
-│       └─ 例：多Agent研究系统
+│       └─ 例:多Agent研究系统
 │
 └── 混合场景 ─────────────────────────────► A2A + MCP
-    └─ 例：主Agent用MCP获取数据，用A2A委托分析Agent
+    └─ 例:主Agent用MCP获取数据,用A2A委托分析Agent
 ```
 
 ### 架构层级关系

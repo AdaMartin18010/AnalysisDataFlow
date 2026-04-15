@@ -111,7 +111,7 @@ sequenceDiagram
     Note over 欺诈者,目标商户: 第三阶段: 大额套现 (模式匹配触发点)
     欺诈者->>银行: 交易 $4999 (接近限额上限)
     Note right of 银行: CEP模式匹配:<br/>1. 短时间内多笔递增交易<br/>2. 金额接近卡片限额<br/>3. 新商户类型<br/>→ 风险评分 0.95
-    银行->>目标商户: 拦截交易，要求二次验证
+    银行->>目标商户: 拦截交易,要求二次验证
 ```
 
 上述场景的共性特征：
@@ -473,7 +473,7 @@ graph TB
 **阶段 1: 交易接入与解析**
 
 ```scala
-// Kafka Source 配置：按用户ID分区确保同一用户交易顺序处理
+// Kafka Source 配置:按用户ID分区确保同一用户交易顺序处理
 val kafkaSource = KafkaSource.builder[Transaction]()
   .setBootstrapServers("kafka:9092")
   .setTopics("transactions")
@@ -482,7 +482,7 @@ val kafkaSource = KafkaSource.builder[Transaction]()
   .setValueDeserializer(new TransactionDeserializer())
   .build()
 
-// 分配 Watermark：容忍 500ms 乱序
+// 分配 Watermark:容忍 500ms 乱序
 val watermarkStrategy = WatermarkStrategy
   .forBoundedOutOfOrderness[Transaction](Duration.ofMillis(500))
   .withTimestampAssigner((txn, _) => txn.timestamp)
@@ -517,7 +517,7 @@ import org.apache.flink.cep.scala.CEP
 import org.apache.flink.cep.scala.pattern.Pattern
 
 // 定义"地理位置异常"模式
-// 模式: 30分钟内，在不同城市发生2笔以上交易
+// 模式: 30分钟内,在不同城市发生2笔以上交易
 val impossibleTravelPattern = Pattern
   .begin[EnrichedTransaction]("first")
   .where(_.amount > 0)
@@ -528,7 +528,7 @@ val impossibleTravelPattern = Pattern
     val timeDiff = txn.timestamp - firstTxn.timestamp
     val geoDiff = GeoUtils.distance(firstTxn.geoLocation, txn.geoLocation)
 
-    // 30分钟内，距离超过 500km
+    // 30分钟内,距离超过 500km
     timeDiff < TimeUnit.MINUTES.toMillis(30) && geoDiff > 500
   }
 
@@ -563,7 +563,7 @@ val alertStream = patternStream
 **阶段 4: 滑动窗口特征聚合**
 
 ```scala
-// 用户级滑动窗口：过去1小时交易统计
+// 用户级滑动窗口:过去1小时交易统计
 val hourlyStatsStream = enrichedStream
   .keyBy(_.userId)
   .window(SlidingEventTimeWindows.of(Time.hours(1), Time.minutes(1)))
@@ -604,7 +604,7 @@ class TransactionStatsAggregate
 **阶段 5: 风险评分与决策**
 
 ```scala
-// 连接多路输入：原始交易、CEP告警、窗口统计
+// 连接多路输入:原始交易、CEP告警、窗口统计
 val scoredStream = enrichedStream
   .keyBy(_.userId)
   .connect(alertStream.keyBy(_.userId))
@@ -811,7 +811,7 @@ object RealTimeRiskControlJob {
       })
       .within(Time.minutes(30))
 
-    // 模式2: 速度异常 (5分钟内3笔以上，总金额超过阈值)
+    // 模式2: 速度异常 (5分钟内3笔以上,总金额超过阈值)
     val velocityPattern = Pattern
       .begin[EnrichedTransaction]("txn1").where(_.amount > 100)
       .next("txn2").where(_.amount > 100)

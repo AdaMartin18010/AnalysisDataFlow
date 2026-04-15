@@ -252,7 +252,7 @@ future.thenAccept(response -> resultFuture.complete(
 **反模式2: 无状态设计**
 
 ```java
-// ❌ 错误: 每请求独立，丢失会话上下文
+// ❌ 错误: 每请求独立,丢失会话上下文
 public void processElement(Request req) {
     String response = callLLM(req.getMessage());  // 无历史
 }
@@ -355,7 +355,7 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 
 /**
  * Flink智能客服Agent
- * 功能：多轮对话、意图识别、工具调用、流式响应
+ * 功能:多轮对话、意图识别、工具调用、流式响应
  */
 public class CustomerServiceAgent {
 
@@ -363,7 +363,7 @@ public class CustomerServiceAgent {
         StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
 
-        // 启用检查点，确保exactly-once
+        // 启用检查点,确保exactly-once
         env.enableCheckpointing(60000);
         env.getCheckpointConfig().setCheckpointingMode(
             CheckpointingMode.EXACTLY_ONCE
@@ -503,12 +503,12 @@ class IntentRoutingFunction extends ProcessFunction<
 
         // 意图识别提示
         String intentPrompt = String.format("""
-            分析用户意图，选择最合适的处理路径：
+            分析用户意图,选择最合适的处理路径:
             用户消息: %s
             历史对话轮数: %d
 
             可选路径: FAQ_QUERY, ORDER_STATUS, PRODUCT_REC, HUMAN_HANDOFF
-            仅输出意图标签，不要解释。
+            仅输出意图标签,不要解释。
             """,
             request.getMessage(),
             request.getHistory().size()
@@ -568,7 +568,7 @@ class LLMInferenceAsyncFunction implements AsyncFunction<
         );
 
         future.thenAccept(response -> {
-            // 更新会话状态（异步完成后的回调）
+            // 更新会话状态(异步完成后的回调)
             resultFuture.complete(Collections.singleton(
                 new LLMResponse(
                     request.getRequest().getSessionId(),
@@ -578,7 +578,7 @@ class LLMInferenceAsyncFunction implements AsyncFunction<
                 )
             ));
         }).exceptionally(ex -> {
-            // 错误处理：降级到备用模型
+            // 错误处理:降级到备用模型
             logger.error("Primary LLM failed, falling back", ex);
             return fallbackToBackup(request, resultFuture);
         });
@@ -586,10 +586,10 @@ class LLMInferenceAsyncFunction implements AsyncFunction<
 
     private String buildSystemPrompt(String intent) {
         return switch (intent) {
-            case "FAQ_QUERY" -> "你是客服助手，基于知识库回答常见问题。";
-            case "ORDER_STATUS" -> "你是订单助手，帮助查询订单状态。";
-            case "PRODUCT_REC" -> "你是购物助手，推荐合适的产品。";
-            default -> "你是客服助手，友好地帮助用户。";
+            case "FAQ_QUERY" -> "你是客服助手,基于知识库回答常见问题。";
+            case "ORDER_STATUS" -> "你是订单助手,帮助查询订单状态。";
+            case "PRODUCT_REC" -> "你是购物助手,推荐合适的产品。";
+            default -> "你是客服助手,友好地帮助用户。";
         };
     }
 }
@@ -704,7 +704,7 @@ class CodeCompletionAsyncFunction(AsyncFunction):
                             if 'choices' in data:
                                 suggestions.append(data['choices'][0]['text'])
 
-                # 后处理：去重、排序
+                # 后处理:去重、排序
                 result = self._postprocess(suggestions)
 
                 result_future.complete([{
@@ -725,7 +725,7 @@ class CodeCompletionAsyncFunction(AsyncFunction):
         return f"""<fim_prefix>{prefix}<fim_suffix>{suffix}<fim_middle>"""
 
     def _postprocess(self, suggestions: List[str]) -> List[dict]:
-        """后处理：去重、截断、评分"""
+        """后处理:去重、截断、评分"""
         seen = set()
         results = []
 
@@ -778,7 +778,7 @@ def create_code_completion_pipeline():
         "Code Completion Requests"
     )
 
-    # 按IDE会话分区，保证同一会话的顺序
+    # 按IDE会话分区,保证同一会话的顺序
     keyed_requests = requests.key_by(lambda x: x['session_id'])
 
     # 异步推理

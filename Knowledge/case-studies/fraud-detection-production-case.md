@@ -263,7 +263,7 @@ $$
 
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-// 盗刷检测：快速多笔交易
+// 盗刷检测:快速多笔交易
 Pattern<Transaction, ?> cardFraudPattern = Pattern
     .<Transaction>begin("first")
     .where(new SimpleCondition<Transaction>() {
@@ -289,7 +289,7 @@ Pattern<Transaction, ?> cardFraudPattern = Pattern
     })
     .within(Time.minutes(10));
 
-// 位置跳跃检测：物理不可能的速度
+// 位置跳跃检测:物理不可能的速度
 Pattern<Transaction, ?> velocityPattern = Pattern
     .<Transaction>begin("loc1")
     .next("loc2")
@@ -305,7 +305,7 @@ Pattern<Transaction, ?> velocityPattern = Pattern
                 long timeDiff = tx.getTimestamp() - first.getTimestamp();
                 double speed = distance / (timeDiff / 1000.0 / 3600); // km/h
 
-                // 超过800km/h（高铁速度）判定为异常
+                // 超过800km/h(高铁速度)判定为异常
                 if (speed > 800 && timeDiff < TimeUnit.HOURS.toMillis(1)) {
                     return true;
                 }
@@ -315,7 +315,7 @@ Pattern<Transaction, ?> velocityPattern = Pattern
     })
     .within(Time.hours(1));
 
-// 洗钱检测：分层转账模式
+// 洗钱检测:分层转账模式
 Pattern<Transfer, ?> launderingPattern = Pattern
     .<Transfer>begin("layer1")
     .where(new SimpleCondition<Transfer>() {
@@ -399,7 +399,7 @@ public class GNNInferenceFunction extends
     public void asyncInvoke(Transaction tx,
                             ResultFuture<TransactionWithRisk> resultFuture) {
         try {
-            // 1. 提取子图（2-hop邻居）
+            // 1. 提取子图(2-hop邻居)
             SubGraph subGraph = graphService.extractSubGraph(
                 tx.getUserId(),
                 NEIGHBOR_HOPS,
@@ -424,7 +424,7 @@ public class GNNInferenceFunction extends
 
                 @Override
                 public void onFailure(Throwable t) {
-                    // 降级：返回中等风险
+                    // 降级:返回中等风险
                     resultFuture.complete(Collections.singletonList(
                         new TransactionWithRisk(tx, 0.5f, "GNN_FAILED")
                     ));
@@ -439,7 +439,7 @@ public class GNNInferenceFunction extends
     }
 
     private GraphData buildGraphTensor(SubGraph subGraph, Transaction tx) {
-        // 节点特征：用户画像 + 交易特征
+        // 节点特征:用户画像 + 交易特征
         float[][] nodeFeatures = new float[subGraph.numNodes()][];
         for (int i = 0; i < subGraph.numNodes(); i++) {
             Node node = subGraph.getNode(i);
@@ -476,16 +476,16 @@ DataStream<TransactionWithRisk> gnnScores = transactions
 // 多级特征缓存
 public class HighPerformanceFeatureStore {
 
-    // L1: 本地Caffeine缓存（< 100μs）
+    // L1: 本地Caffeine缓存(< 100μs)
     private final Cache<String, UserFeature> localCache = Caffeine.newBuilder()
         .maximumSize(100_000)
         .expireAfterWrite(Duration.ofSeconds(10))
         .build();
 
-    // L2: Redis集群（< 1ms）
+    // L2: Redis集群(< 1ms)
     private final RedisClusterCommands<String, String> redisClient;
 
-    // L3: Aerospike（< 3ms）
+    // L3: Aerospike(< 3ms)
     private final AerospikeClient aerospikeClient;
 
     public UserFeature getFeature(String userId) {
@@ -514,7 +514,7 @@ public class HighPerformanceFeatureStore {
             return feature;
         }
 
-        // 冷数据：实时计算
+        // 冷数据:实时计算
         feature = computeFeature(userId);
         writeToAllTiers(userId, feature);
         return feature;
@@ -617,7 +617,7 @@ state.backend.rocksdb.memory.fixed-per-slot: 512mb
 state.backend.rocksdb.threads.threads-number: 4
 state.backend.rocksdb.predefined-options: FLASH_SSD_OPTIMIZED
 
-# Checkpoint配置（异步快照）
+# Checkpoint配置(异步快照)
 execution.checkpointing.interval: 30s
 execution.checkpointing.mode: ASYNC
 state.backend.incremental: true
@@ -657,7 +657,7 @@ public class FeatureStoreFallback {
             // 降级到备份存储
             return backupStore.get(userId);
         } catch (Exception e) {
-            // 最终降级：使用默认值
+            // 最终降级:使用默认值
             return UserFeature.getDefault();
         }
     }
@@ -672,7 +672,7 @@ public class ModelInferenceFallback {
             // 降级到轻量模型
             return lightModel.predict(features);
         } catch (Exception e) {
-            // 最终降级：规则评分
+            // 最终降级:规则评分
             return ruleEngine.score(features);
         }
     }

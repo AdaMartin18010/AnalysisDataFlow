@@ -567,7 +567,7 @@ $$
 安全系数: 1.5 (应对峰值)
 
 计算并行度: max(50, 125) × 1.5 = 187.5
-实际配置: 128 (取 2 的幂次，对齐 Kafka 分区)
+实际配置: 128 (取 2 的幂次,对齐 Kafka 分区)
 ```
 
 **Kafka 分区对齐**：
@@ -588,13 +588,13 @@ $$
 窗口大小 ↑ ──────────────────────────────▶
     │
     │   延迟 ↑ (需等待更久)
-    │   准确性 ↑ (样本更多，统计更准)
+    │   准确性 ↑ (样本更多,统计更准)
     │   状态 ↑ (需缓存更多数据)
     │
 窗口大小 ↓ ──────────────────────────────▶
     │
     │   延迟 ↓ (更快输出)
-    │   准确性 ↓ (样本少，抖动大)
+    │   准确性 ↓ (样本少,抖动大)
     │   状态 ↓ (缓存数据少)
 ```
 
@@ -695,7 +695,7 @@ public class RealtimeAnalyticsJob {
         configureStateBackend(env);
         configureCheckpoint(env);
 
-        // 1. 数据源：Kafka
+        // 1. 数据源:Kafka
         KafkaSource<Transaction> source = KafkaSource.<Transaction>builder()
             .setBootstrapServers("kafka:9092")
             .setTopics("transactions")
@@ -748,7 +748,7 @@ public class RealtimeAnalyticsJob {
             .setParallelism(16)
             .uid("clickhouse-sink");
 
-        // 8. 侧输出：迟到数据
+        // 8. 侧输出:迟到数据
         windowed
             .getSideOutput(LATE_DATA_TAG)
             .addSink(new KafkaSink<>("late-events"))
@@ -812,7 +812,7 @@ public class TransactionAggregateFunction
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 private static void configureStateBackend(StreamExecutionEnvironment env) {
-    // RocksDB 状态后端，启用增量 Checkpoint
+    // RocksDB 状态后端,启用增量 Checkpoint
     EmbeddedRocksDBStateBackend rocksDbBackend =
         new EmbeddedRocksDBStateBackend(true);
 
@@ -857,7 +857,7 @@ import org.apache.flink.streaming.api.CheckpointingMode;
 private static void configureCheckpoint(StreamExecutionEnvironment env) {
     CheckpointConfig checkpointConfig = env.getCheckpointConfig();
 
-    // 启用 Checkpoint，间隔 30 秒
+    // 启用 Checkpoint,间隔 30 秒
     env.enableCheckpointing(30000);
 
     // Exactly-Once 语义
@@ -866,24 +866,24 @@ private static void configureCheckpoint(StreamExecutionEnvironment env) {
     // Checkpoint 超时 60 秒
     checkpointConfig.setCheckpointTimeout(60000);
 
-    // 最小间隔 5 秒（避免 Checkpoint 过于密集）
+    // 最小间隔 5 秒(避免 Checkpoint 过于密集)
     checkpointConfig.setMinPauseBetweenCheckpoints(5000);
 
     // 最大并发 Checkpoint 数
     checkpointConfig.setMaxConcurrentCheckpoints(1);
 
-    // 取消作业时保留 Checkpoint（用于恢复）
+    // 取消作业时保留 Checkpoint(用于恢复)
     checkpointConfig.setExternalizedCheckpointCleanup(
         ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION
     );
 
-    // 非对齐 Checkpoint（当对齐超时时启用）
+    // 非对齐 Checkpoint(当对齐超时时启用)
     checkpointConfig.setAlignmentTimeout(Duration.ofSeconds(10));
 
     // 启用非对齐 Checkpoint 作为备选
     checkpointConfig.enableUnalignedCheckpoints();
 
-    // 优先使用 Checkpoint 恢复（而非 Savepoint）
+    // 优先使用 Checkpoint 恢复(而非 Savepoint)
     checkpointConfig.setPreferCheckpointForRecovery(true);
 }
 ```

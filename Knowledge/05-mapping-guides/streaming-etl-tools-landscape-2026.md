@@ -739,7 +739,7 @@ flow.map(parse_click)
 # 按用户ID键控
 flow.key_by(lambda x: x[0])
 
-# 窗口聚合：每分钟用户行为统计
+# 窗口聚合:每分钟用户行为统计
 def aggregate_actions(window_data):
     user_id, events = window_data
     actions = {}

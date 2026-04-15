@@ -116,15 +116,15 @@ $$
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                         │
 │  【故障恢复场景】                                                       │
-│   □ 故障恢复后 Kafka 消费回溯量巨大（GB级）                            │
+│   □ 故障恢复后 Kafka 消费回溯量巨大(GB级)                            │
 │   □ 恢复时间远超业务承诺的 RTO                                         │
 │   □ 恢复期间数据重复处理导致下游去重压力                               │
-│   □ 用户投诉"丢数据"（实际为重复或延迟）                               │
+│   □ 用户投诉"丢数据"(实际为重复或延迟)                               │
 │                                                                         │
 │  【Flink指标】                                                          │
 │   □ 两次 Checkpoint 之间的时间差 >> 配置间隔                           │
 │   □ lastCheckpointDuration 远小于 interval                             │
-│   □ Checkpoint 大小持续增长（状态积累）                                │
+│   □ Checkpoint 大小持续增长(状态积累)                                │
 │                                                                         │
 │  【业务指标】                                                           │
 │   □ 故障后数据回放导致下游系统过载                                     │
@@ -142,18 +142,18 @@ $$
 │                                                                         │
 │  【运行时性能】                                                         │
 │   □ 吞吐量下降 20-50%                                                  │
-│   □ CPU 使用率周期性飙升（Checkpoint 期间）                            │
+│   □ CPU 使用率周期性飙升(Checkpoint 期间)                            │
 │   □ 延迟呈现锯齿状波动                                                 │
 │   □ 网络带宽被 Checkpoint 数据占用                                     │
 │                                                                         │
 │  【Flink指标】                                                          │
-│   □ Checkpoint 频繁触发，间隔 < 持续时间                               │
+│   □ Checkpoint 频繁触发,间隔 < 持续时间                               │
 │   □ numCompletedCheckpoints 增长过快                                   │
 │   □ Checkpoint 存储目录文件数量爆炸                                    │
 │   □ 异步阶段持续时间占比过高                                           │
 │                                                                         │
 │  【存储系统】                                                           │
-│   □ HDFS/S3 小文件过多，NameNode 压力                                  │
+│   □ HDFS/S3 小文件过多,NameNode 压力                                  │
 │   □ 存储成本异常增长                                                   │
 │   □ 历史 Checkpoint 清理压力                                           │
 │                                                                         │
@@ -178,7 +178,7 @@ $$
 **故障恢复数据回放** [^4]：
 
 ```
-场景: 处理速率 100,000 records/s，Checkpoint 间隔 30 分钟
+场景: 处理速率 100,000 records/s,Checkpoint 间隔 30 分钟
 
 故障发生时间: T
 最后成功 Checkpoint: T - 30min
@@ -188,12 +188,12 @@ $$
 需要回放的数据量:
 = 30min × 100,000 records/s × 60s/min
 = 180,000,000 条记录
-= 约 180M 条（假设每条 1KB，约 180GB）
+= 约 180M 条(假设每条 1KB,约 180GB)
 
 恢复时间:
 = 检测时间(30s) + 状态加载时间 + 数据回放时间
 = 30s + 60s + (180GB / 网络带宽)
-= 可能超过 10 分钟（远超典型 RTO 1-2min）
+= 可能超过 10 分钟(远超典型 RTO 1-2min)
 ```
 
 **业务影响**：
@@ -207,37 +207,37 @@ $$
 **吞吐量下降分析** [^5]：
 
 ```
-场景: Checkpoint 持续时间 30s，间隔设置为 30s
+场景: Checkpoint 持续时间 30s,间隔设置为 30s
 
 时间线:
 T0:  Checkpoint-1 开始
-T30: Checkpoint-1 完成，Checkpoint-2 立即开始
-T60: Checkpoint-2 完成，Checkpoint-3 立即开始
+T30: Checkpoint-1 完成,Checkpoint-2 立即开始
+T60: Checkpoint-2 完成,Checkpoint-3 立即开始
 
-结果: 系统几乎一直在做 Checkpoint，处理时间被严重挤压
+结果: 系统几乎一直在做 Checkpoint,处理时间被严重挤压
 
 理论吞吐量损失:
 = CheckpointDuration / (CheckpointDuration + ProcessingTime)
 = 30s / (30s + 0s) ≈ 100% (极端情况)
 
 实际影响:
-- 同步阶段（快照状态）阻塞处理
-- 异步阶段（写入存储）占用网络/磁盘
+- 同步阶段(快照状态)阻塞处理
+- 异步阶段(写入存储)占用网络/磁盘
 - JVM GC 压力增加
 ```
 
 **存储成本计算** [^3]：
 
 ```
-场景: Checkpoint 大小 10GB，间隔 1 分钟，保留 10 个
+场景: Checkpoint 大小 10GB,间隔 1 分钟,保留 10 个
 
-存储消耗（峰值）:
+存储消耗(峰值):
 = 10GB × 10 = 100GB
 
 每日 Checkpoint 写入量:
 = 10GB × (24 × 60) = 14,400GB/天 ≈ 14TB/天
 
-对比（间隔 10 分钟）:
+对比(间隔 10 分钟):
 = 10GB × (24 × 6) = 1,440GB/天 ≈ 1.4TB/天
 
 成本差异: 10 倍！
@@ -294,19 +294,19 @@ T60: Checkpoint-2 完成，Checkpoint-3 立即开始
 不同业务优先级使用不同配置 [^4][^5]：
 
 ```scala
-// 配置 1: 金融核心交易（RTO = 1min）
+// 配置 1: 金融核心交易(RTO = 1min)
 env.enableCheckpointing(20000)  // 20s 间隔
 env.getCheckpointConfig.setCheckpointTimeout(60000)
 env.getCheckpointConfig.setMinPauseBetweenCheckpoints(5000)
 env.setStateBackend(new EmbeddedRocksDBStateBackend(true))  // 增量
 
-// 配置 2: 实时推荐（RTO = 5min）
+// 配置 2: 实时推荐(RTO = 5min)
 env.enableCheckpointing(60000)  // 1min 间隔
 env.getCheckpointConfig.setCheckpointTimeout(300000)
 env.getCheckpointConfig.setMinPauseBetweenCheckpoints(30000)
 env.setStateBackend(new HashMapStateBackend())  // 小状态用内存
 
-// 配置 3: 日志分析（RTO = 30min）
+// 配置 3: 日志分析(RTO = 30min)
 env.enableCheckpointing(300000)  // 5min 间隔
 env.getCheckpointConfig.setCheckpointTimeout(600000)
 env.getCheckpointConfig.setMinPauseBetweenCheckpoints(60000)
@@ -329,11 +329,11 @@ config.setString("state.backend.rocksdb.predefined-options", "FLASH_SSD_OPTIMIZE
 config.setString("state.backend.rocksdb.memory.fixed-per-slot", "256mb")
 env.configure(config)
 
-// 启用 Checkpoint 压缩（减少网络传输）
+// 启用 Checkpoint 压缩(减少网络传输)
 env.getCheckpointConfig.enableUnalignedCheckpoints()
 env.getCheckpointConfig.setAlignmentTimeout(Duration.ofSeconds(30))
 
-// 配置本地恢复（加速恢复）
+// 配置本地恢复(加速恢复)
 env.getCheckpointConfig.setPreferCheckpointForRecovery(true)
 ```
 
@@ -352,7 +352,7 @@ class AdaptiveCheckpointListener extends CheckpointListener {
     val duration = getLastCheckpointDuration()
     val interval = getCurrentCheckpointInterval()
 
-    // 如果 Checkpoint 持续超过间隔的 80%，增加间隔
+    // 如果 Checkpoint 持续超过间隔的 80%,增加间隔
     if (duration > interval * 0.8) {
       consecutiveSlowCheckpoints += 1
       if (consecutiveSlowCheckpoints >= 3) {
@@ -363,7 +363,7 @@ class AdaptiveCheckpointListener extends CheckpointListener {
       consecutiveSlowCheckpoints = 0
     }
 
-    // 如果 Checkpoint 很快且资源充裕，可以考虑减少间隔
+    // 如果 Checkpoint 很快且资源充裕,可以考虑减少间隔
     if (duration < interval * 0.2 && hasSpareResources()) {
       decreaseCheckpointInterval()
     }
@@ -389,8 +389,8 @@ val env = StreamExecutionEnvironment.getExecutionEnvironment
 env.enableCheckpointing(3600000)  // 1小时！
 env.getCheckpointConfig.setCheckpointTimeout(600000)
 
-// 业务场景: 支付交易处理，要求故障恢复 < 2分钟
-// 问题: 故障后需回放1小时数据，恢复时间 > 10分钟
+// 业务场景: 支付交易处理,要求故障恢复 < 2分钟
+// 问题: 故障后需回放1小时数据,恢复时间 > 10分钟
 // 后果: 重复支付、资金不一致
 ```
 
@@ -406,8 +406,8 @@ env.setStateBackend(new EmbeddedRocksDBStateBackend(true))
 env.enableCheckpointing(10000)  // 10秒！
 env.getCheckpointConfig.setCheckpointTimeout(300000)
 
-// 问题: Checkpoint 持续时间约 60s，间隔仅 10s
-// 结果: Checkpoint 持续重叠，吞吐量下降 70%
+// 问题: Checkpoint 持续时间约 60s,间隔仅 10s
+// 结果: Checkpoint 持续重叠,吞吐量下降 70%
 // 存储成本: 50GB × 6 × 24 = 7.2TB/天
 ```
 
@@ -417,10 +417,10 @@ env.getCheckpointConfig.setCheckpointTimeout(300000)
 // ✅ 正确: 根据业务 SLA 配置 Checkpoint
 val env = StreamExecutionEnvironment.getExecutionEnvironment
 
-// 业务要求: 故障恢复 RTO = 2分钟，数据回放不超过 30s
+// 业务要求: 故障恢复 RTO = 2分钟,数据回放不超过 30s
 // 实测: Checkpoint 持续时间约 20s
 
-val checkpointInterval = 30000L  // 30s，满足 RTO/4
+val checkpointInterval = 30000L  // 30s,满足 RTO/4
 val minPauseBetweenCheckpoints = 10000L  // 至少间隔 10s
 val checkpointTimeout = 120000L  // 2分钟超时
 
@@ -505,10 +505,10 @@ env.setStateBackend(new EmbeddedRocksDBStateBackend())  // 非增量
 **优化方案**：
 
 ```scala
-// 分析: RTO = 5min，实测 D_cp = 60s
+// 分析: RTO = 5min,实测 D_cp = 60s
 // 计算: T_optimal = min(150s, max(120s, 60s)) = 120s
 
-env.enableCheckpointing(120000)  // 2 分钟，满足 RTO/2.5
+env.enableCheckpointing(120000)  // 2 分钟,满足 RTO/2.5
 env.setStateBackend(new EmbeddedRocksDBStateBackend(true))  // 增量
 
 // RocksDB 调优
@@ -577,7 +577,7 @@ flowchart TD
 
 ```mermaid
 timeline
-    title Checkpoint 间隔对比（假设 D_cp = 30s）
+    title Checkpoint 间隔对比(假设 D_cp = 30s)
 
     section 间隔过短 (T=20s)
         T0 : Checkpoint-1 开始

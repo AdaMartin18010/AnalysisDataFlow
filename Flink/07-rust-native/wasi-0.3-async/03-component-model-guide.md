@@ -297,7 +297,7 @@ interface processor {
         /// 处理错误
         error(string),
         /// 需要重试
-        retry-later(u64),  // 重试延迟（毫秒）
+        retry-later(u64),  // 重试延迟(毫秒)
     }
 
     /// 处理上下文
@@ -316,7 +316,7 @@ interface processor {
     record metrics {
         /// 处理记录数
         records-processed: u64,
-        /// 处理时间（微秒）
+        /// 处理时间(微秒)
         processing-time-us: u64,
         /// 错误数
         error-count: u32,
@@ -325,10 +325,10 @@ interface processor {
     /// 核心处理函数
     process: func(record: record, ctx: context) -> process-result;
 
-    /// 打开处理器（初始化）
+    /// 打开处理器(初始化)
     open: func(ctx: context) -> result<_, string>;
 
-    /// 关闭处理器（清理）
+    /// 关闭处理器(清理)
     close: func() -> result<_, string>;
 
     /// 获取指标
@@ -385,7 +385,7 @@ interface stateful-processor {
     /// 初始化状态存储
     init-state: func() -> result<state-store, string>;
 
-    /// 快照状态（用于 checkpoint）
+    /// 快照状态(用于 checkpoint)
     snapshot-state: func(store: state-store) -> result<list<u8>, string>;
 
     /// 恢复状态
@@ -411,7 +411,7 @@ interface checkpoint {
     abort-checkpoint: func(metadata: checkpoint-metadata);
 }
 
-/// 世界定义：标准 UDF
+/// 世界定义:标准 UDF
 world standard-udf {
     /// 导入 WASI 标准接口
     import wasi:clocks/monotonic-clock@0.3.0;
@@ -422,7 +422,7 @@ world standard-udf {
     export processor;
 }
 
-/// 世界定义：异步 UDF
+/// 世界定义:异步 UDF
 world async-udf {
     /// 导入 WASI 0.3 异步接口
     import wasi:clocks/monotonic-clock@0.3.0;
@@ -434,7 +434,7 @@ world async-udf {
     export async-processor;
 }
 
-/// 世界定义：有状态 UDF
+/// 世界定义:有状态 UDF
 world stateful-udf {
     /// 导入状态存储
     import wasi:keyvalue/store@0.3.0;

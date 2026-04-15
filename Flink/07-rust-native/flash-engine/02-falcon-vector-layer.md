@@ -84,8 +84,8 @@ Column := ⟨DataBuffer, NullBitmap, TypeInfo⟩
 列式存储: [col1_row1, col1_row2, ...][col2_row1, col2_row2, ...]
 
 缓存行利用:
-- 行式: 每行访问跨多个缓存行，缓存命中率低
-- 列式: 顺序访问同列数据，预取友好，命中率高
+- 行式: 每行访问跨多个缓存行,缓存命中率低
+- 列式: 顺序访问同列数据,预取友好,命中率高
 ```
 
 ---
@@ -123,10 +123,10 @@ SIMD_Effectiveness(op, dtype, ISA) =
     VectorWidth(ISA) / SizeOf(dtype) × ParallelEfficiency(op)
 
 其中 ParallelEfficiency(op) 取值:
-- 算术运算 (+, -, *, /): ~100% （完全并行）
+- 算术运算 (+, -, *, /): ~100% (完全并行)
 - 比较运算 (=, <, >): ~100%
-- 字符串处理: 30-70% （依赖具体算法）
-- 分支密集操作: 10-40% （SIMD 分支代价高）
+- 字符串处理: 30-70% (依赖具体算法)
+- 分支密集操作: 10-40% (SIMD 分支代价高)
 ```
 
 **实测加速比**（相对于 Java 实现）:
@@ -153,8 +153,8 @@ SIMD_Effectiveness(op, dtype, ISA) =
 Optimal_Batch_Size = f(L1_cache, L2_cache, op_complexity)
 
 一般规律:
-- 简单算子（Filter, Project）: optimal ∈ [1000, 10000]
-- 复杂算子（Join, Aggregate）: optimal ∈ [100, 1000]
+- 简单算子(Filter, Project): optimal ∈ [1000, 10000]
+- 复杂算子(Join, Aggregate): optimal ∈ [100, 1000]
 - 内存受限算子: optimal ∈ [10, 100]
 
 吞吐量模型:
@@ -176,15 +176,15 @@ d(Throughput)/dB = T_fixed / (T_fixed + T_per_element × B / SIMD_width)² > 0
 ```
 Cache_Efficiency = Useful_Data / Cache_Line_Size
 
-行式布局（访问 2 列）:
+行式布局(访问 2 列):
 - 缓存行大小: 64 bytes
-- 行大小: 100 bytes（典型）
+- 行大小: 100 bytes(典型)
 - 有效数据: 2 × 8 bytes = 16 bytes
 - 缓存效率: 16 / 64 = 25%
 
-列式布局（访问 2 列）:
+列式布局(访问 2 列):
 - 每列连续存储
-- 有效数据: 64 bytes（整行缓存行）
+- 有效数据: 64 bytes(整行缓存行)
 - 缓存效率: 64 / 64 = 100%
 ```
 
@@ -259,7 +259,7 @@ Falcon 层采用 Apache Arrow 作为底层列式格式：
 ```cpp
 // Java 实现 (逐字符)
 int length(String s) {
-    return s.length();  // UTF-16 遍历，每个字符检查
+    return s.length();  // UTF-16 遍历,每个字符检查
 }
 
 // Falcon AVX2 实现 (批量)
@@ -267,7 +267,7 @@ void vec_length(__m256i* input, int* output, int n) {
     for (int i = 0; i < n; i += 8) {
         // 同时加载 8 个字符串指针
         __m256i ptrs = _mm256_loadu_si256(input + i);
-        // 并行计算长度（SIMD 字符串长度算法）
+        // 并行计算长度(SIMD 字符串长度算法)
         __m256i lengths = simd_strlen_batch(ptrs);
         _mm256_storeu_si256((__m256i*)(output + i), lengths);
     }
@@ -285,13 +285,13 @@ String substring(String s, int start, int end) {
 
 // Falcon 实现
 void vec_substring(Column* input, int start, int end, Column* output) {
-    // 零拷贝切片：仅更新偏移量，不复制数据
+    // 零拷贝切片:仅更新偏移量,不复制数据
     for (int i = 0; i < input->num_rows; i++) {
         output->offsets[i] = input->offsets[i] + start;
         output->lengths[i] = end - start;
     }
 }
-// 加速比: ~50x（零拷贝优势）
+// 加速比: ~50x(零拷贝优势)
 ```
 
 ### 4.2 时间函数优化案例分析
@@ -310,7 +310,7 @@ int extractYear(long epochMillis) {
 
 // Falcon SIMD 实现
 __m256i vec_extract_year(__m256i epoch_millis) {
-    // SIMD 日期算法：避免分支，纯算术运算
+    // SIMD 日期算法:避免分支,纯算术运算
     // 1. 转换为天数
     __m256i days = _mm256_div_epi64(epoch_millis, MILLIS_PER_DAY);
     // 2. 使用 Zeller 公式的 SIMD 版本计算年份
@@ -327,10 +327,10 @@ Join 和 Aggregate 算子依赖哈希表，Falcon 实现了向量化哈希表：
 ```cpp
 class VectorizedHashTable {
 public:
-    // 批量查找：返回所有 key 的 value 位置
+    // 批量查找:返回所有 key 的 value 位置
     void batch_lookup(__m256i* keys, int* results, int n);
 
-    // 批量插入：处理冲突的 SIMD 优化
+    // 批量插入:处理冲突的 SIMD 优化
     void batch_insert(__m256i* keys, __m256i* values, int n);
 
 private:
@@ -373,9 +373,9 @@ T_scalar = n × (t_load + t_compute + t_store)
 向量执行 n 个元素 (假设 n mod N = 0):
 T_vector = (n/N) × (t_load + t_compute + t_store + t_overhead)
 
-其中 t_overhead 包括：
+其中 t_overhead 包括:
 - 数据对齐检查
-- 掩码处理（尾部处理）
+- 掩码处理(尾部处理)
 - 寄存器压力导致的 spill
 ```
 
@@ -385,10 +385,10 @@ T_vector = (n/N) × (t_load + t_compute + t_store + t_overhead)
 Speedup = T_scalar / T_vector
         = N × (t_load + t_compute + t_store) / (t_load + t_compute + t_store + t_overhead)
 
-理想情况（t_overhead → 0）:
+理想情况(t_overhead → 0):
 Speedup_max = N = W/w
 
-实际观测（考虑开销）:
+实际观测(考虑开销):
 Speedup_actual = 0.6 × N ~ 0.8 × N
 ```
 
@@ -397,11 +397,11 @@ Speedup_actual = 0.6 × N ~ 0.8 × N
 ```
 AVX-512 + int32:
 N = 512/32 = 16
-Speedup_actual ∈ [9.6x, 12.8x] （与实测一致）
+Speedup_actual ∈ [9.6x, 12.8x] (与实测一致)
 
 AVX2 + int64:
 N = 256/64 = 4
-Speedup_actual ∈ [2.4x, 3.2x] （与实测一致）
+Speedup_actual ∈ [2.4x, 3.2x] (与实测一致)
 ```
 
 ### 5.2 列式存储的空间局部性证明
@@ -414,7 +414,7 @@ Speedup_actual ∈ [2.4x, 3.2x] （与实测一致）
 
 ```
 假设:
-- 表有 m 列，每列平均宽度 w bytes
+- 表有 m 列,每列平均宽度 w bytes
 - 缓存行大小 C = 64 bytes
 - 查询访问 k 列
 
@@ -434,10 +434,10 @@ Data_loaded_row = C × (k / (C/R)) = k × R = k × m × w
 列式存储每列连续存储
 
 访问 k 列需要加载的数据量:
-Data_loaded_col ≈ k × w × n （n 为行数，按需求加载）
+Data_loaded_col ≈ k × w × n (n 为行数,按需求加载)
 
 有效数据量: Data_useful = k × w × n
-缓存效率: η_col ≈ 1 （忽略元数据开销）
+缓存效率: η_col ≈ 1 (忽略元数据开销)
 ```
 
 **步骤 3**: 效率比
@@ -445,7 +445,7 @@ Data_loaded_col ≈ k × w × n （n 为行数，按需求加载）
 ```
 η_col / η_row = 1 / (1/m) = m
 
-对于典型宽表（m = 20-50 列）:
+对于典型宽表(m = 20-50 列):
 列式存储缓存效率是行式的 20-50 倍
 ```
 
@@ -466,7 +466,7 @@ public:
         SelectionVector selected;
         eval_predicate_simd(input, predicate_, &selected);
 
-        // 2. 压缩选择：保留满足条件的行
+        // 2. 压缩选择:保留满足条件的行
         ColumnarBatch filtered;
         compress_selection(input, selected, &filtered);
 
@@ -527,7 +527,7 @@ public:
 
 ```
 测试环境: Intel Xeon Platinum 8369B (Ice Lake), AVX-512
-数据集: 100M 行，10 列
+数据集: 100M 行,10 列
 批大小: 1000
 
 算子            │ Java Flink │ Falcon C++ │ 加速比

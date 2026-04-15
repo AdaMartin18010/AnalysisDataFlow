@@ -217,10 +217,10 @@ interface scalar-function {
     /// 计算函数 - 所有标量 UDF 必须实现
     eval: func(input: list<value>) -> result<value, error>;
 
-    /// 生命周期：初始化
+    /// 生命周期:初始化
     open: func(context: function-context) -> result<_, error>;
 
-    /// 生命周期：关闭
+    /// 生命周期:关闭
     close: func() -> result<_, error>;
 }
 
@@ -286,7 +286,7 @@ world udf-world {
     import flink:metrics/reporter@0.1.0;
     import flink:runtime/context@0.1.0;
 
-    // 导出 UDF 实现（三选一）
+    // 导出 UDF 实现(三选一)
     export scalar-function;
     export table-function;
     export aggregate-function;
@@ -383,7 +383,7 @@ $$
 ```wit
 // 沙箱能力定义
 world secure-udf {
-    // 默认无权限，显式授予
+    // 默认无权限,显式授予
     import wasi:io/stdout@0.2.0;      // 仅标准输出
     import wasi:clocks/wall-clock@0.2.0;  // 时间获取
 
@@ -1041,7 +1041,7 @@ impl Guest for MathUdf {
     }
 
     fn mask_sensitive(input: String, mask_char: char) -> String {
-        // 简单的邮箱脱敏：a***@example.com
+        // 简单的邮箱脱敏:a***@example.com
         if let Some(at_pos) = input.find('@') {
             if at_pos > 1 {
                 let first_char = &input[0..1];
@@ -1051,7 +1051,7 @@ impl Guest for MathUdf {
             }
         }
 
-        // 手机号脱敏：138****8888
+        // 手机号脱敏:138****8888
         if input.len() == 11 && input.chars().all(|c| c.is_ascii_digit()) {
             return format!("{}****{}", &input[0..3], &input[7..11]);
         }
@@ -1098,7 +1098,7 @@ rustup target add wasm32-wasi
 # 安装 cargo-component
 cargo install cargo-component
 
-# 构建组件（Release 模式）
+# 构建组件(Release 模式)
 cargo component build --release
 
 # 产物位置
@@ -1131,7 +1131,7 @@ wasmtime compile target/wasm32-wasi/release/udf_example.wasm \
 mkdir flink-go-udf && cd flink-go-udf
 go mod init github.com/example/flink-go-udf
 
-# 安装 TinyGo（Go 的 WASM 编译器）
+# 安装 TinyGo(Go 的 WASM 编译器)
 # https://tinygo.org/getting-started/install/
 ```
 
@@ -1200,7 +1200,7 @@ func count_words() int32 {
  words := strings.Fields(input)
  count := int32(len(words))
 
- // 输出结果（4 字节 int32）
+ // 输出结果(4 字节 int32)
  output := make([]byte, 4)
  binary.BigEndian.PutUint32(output, uint32(count))
  pdk.Output(output)
@@ -1268,7 +1268,7 @@ mkdir flink-cpp-udf && cd flink-cpp-udf
 
 extern "C" {
 
-// 导出函数：计算斐波那契数列
+// 导出函数:计算斐波那契数列
 __attribute__((export_name("fibonacci")))
 int32_t fibonacci(int32_t n) {
     if (n <= 0) return 0;
@@ -1283,7 +1283,7 @@ int32_t fibonacci(int32_t n) {
     return b;
 }
 
-// 导出函数：计算标准差
+// 导出函数:计算标准差
 __attribute__((export_name("std_dev")))
 void std_dev(const double* values, size_t len, double* result) {
     if (len == 0) {
@@ -1303,7 +1303,7 @@ void std_dev(const double* values, size_t len, double* result) {
     *result = std::sqrt(sq_sum / len);
 }
 
-// 导出函数：URL 编码
+// 导出函数:URL 编码
 __attribute__((export_name("url_encode")))
 int32_t url_encode(const char* input, size_t input_len,
                    char* output, size_t output_cap) {
@@ -2134,7 +2134,7 @@ alerts:
   - WasmEdge: `wasmedgec input.wasm output.wasm`
 
 - [ ] 配置实例池
-  - min-size: 根据 QPS 设置，建议 10-20
+  - min-size: 根据 QPS 设置,建议 10-20
   - max-size: 根据内存容量设置
   - idle-timeout: 5-10 分钟
 
@@ -2207,7 +2207,7 @@ WasmFunctionConfig optimalConfig = WasmFunctionConfig.builder()
   - timeout: 防止长时间运行
 
 - [ ] 网络隔离
-  - 禁用网络访问（如不需要）
+  - 禁用网络访问(如不需要)
   - 使用代理模式控制出站连接
 
 - [ ] 审计日志

@@ -1,29 +1,29 @@
 # Flink Agents (FLIP-531) - AI Agent原生运行时支持
 
-> **状态**: 前瞻 | **预计发布时间**: 2026-06 | **最后更新**: 2026-04-12
+> **状态**: ✅ Released (2026-02-06, Flink Agents 0.2.0)
+> **Flink 版本**: Flink Agents 0.2.0+
+> **稳定性**: GA (Generally Available)
 >
-> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+> Apache Flink Agents 0.2.0 已于 2026-02-06 正式发布[^1]。
 
 > **所属阶段**: Flink AI/ML 扩展 | **前置依赖**: [Flink 与 LLM 集成](./flink-llm-integration.md), [Flink ML 架构](./flink-ml-architecture.md) | **形式化等级**: L3 (工程实现)
 
 ---
 
-## ⚠️ 特性状态声明
+## 特性状态声明
 
 | 属性 | 状态 |
 |------|------|
-| **FLIP-531 状态** | 🟡 **讨论中 (Under Discussion)** |
-| **Apache Flink 官方状态** | 尚未接受为正式 FLIP，处于社区早期讨论阶段 |
-| **本文档性质** | 概念设计 (Conceptual Design) / 前瞻性分析 |
-| **预计发布** | 未定，可能随 Flink 2.5+ 或后续版本发布 |
-| **API 稳定性** | 不稳定，可能大幅变化 |
+| **Flink Agents 0.2.0** | ✅ **已发布 (Released)** |
+| **Apache Flink 官方状态** | 2026-02-06 GA |
+| **本文档性质** | 生产就绪文档 |
+| **预计发布** | 已发布 |
+| **API 稳定性** | 稳定 |
 
 **重要提示**:
 
-- 本文档描述的 API、语法和功能均为**概念设计阶段**，不代表 Apache Flink 官方承诺
-- 实际实现可能与本文档描述有显著差异
-- 如需跟踪最新进展，请参考 [Apache Flink JIRA - FLIP-531](https://issues.apache.org/jira/browse/FLINK) (如有创建) 和 [Flink 官方路线图](https://nightlies.apache.org/flink/flink-docs-stable/roadmap/)
-- 当前生产环境使用建议基于 [Flink 与 LLM 集成](./flink-llm-integration.md) 的现有能力
+- Flink Agents 0.2.0 已正式发布，包含 Embedding Models、Vector Stores、MCP Server、Java 异步执行等能力[^1]
+- 如需跟踪最新进展，请参考 [Apache Flink Agents 发布说明](https://flink.apache.org/2026/02/06/apache-flink-agents-0.2.0-release-announcement/)
 
 ---
 
@@ -326,12 +326,12 @@ $$
 优势1: 有状态流处理
 ┌─────────────────────────────────────────┐
 │  每个 Agent 实例拥有独立的 Keyed State   │
-│  → 自动故障恢复，状态不丢失               │
+│  → 自动故障恢复,状态不丢失               │
 └─────────────────────────────────────────┘
 
 优势2: 事件驱动架构
 ┌─────────────────────────────────────────┐
-│  实时响应输入事件，毫秒级延迟            │
+│  实时响应输入事件,毫秒级延迟            │
 │  → 支持实时对话、流式输出                │
 └─────────────────────────────────────────┘
 
@@ -464,8 +464,8 @@ $$
 ```sql
 -- Def-F-12-30: Flink Agent DDL 定义
 
--- 注: 以下为未来可能的语法（概念设计阶段）
-<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+-- 注: 以下为未来可能的语法(概念设计阶段)
+<!-- 以下语法为概念设计,实际 Flink 版本尚未支持 -->
 ~~CREATE AGENT customer_support_agent~~ (未来可能的语法)
 WITH (
   'agent.id' = 'support_agent_v1',
@@ -575,13 +575,13 @@ public class FlinkAgentProcessFunction
         AgentState state = agentState.value();
         if (state == null) state = new AgentState();
 
-        // 1. 感知：构建上下文
+        // 1. 感知:构建上下文
         PerceptionContext perception = buildPerception(msg, state);
 
-        // 2. 决策：调用 LLM
+        // 2. 决策:调用 LLM
         Decision decision = llmClient.decide(perception);
 
-        // 3. 行动：执行工具调用
+        // 3. 行动:执行工具调用
         if (decision.hasToolCalls()) {
             for (ToolCall call : decision.getToolCalls()) {
                 Observation obs = mcpClient.execute(call);
@@ -1056,22 +1056,22 @@ graph TB
 gantt
     title FLIP-531 Flink Agents 路线图
     dateFormat YYYY-MM
-    section 规划中（以官方为准）
+    section 规划中(以官方为准)
     FLIP 设计           :done, design, 规划中, 规划中
     社区评审            :active, review, 规划中, 规划中
 
-    section 规划中（以官方为准）
+    section 规划中(以官方为准)
     MVP 核心实现        :mvp, 规划中, 规划中
     Table API 扩展      :table, 规划中, 规划中
     MCP 集成            :mcp, 规划中, 规划中
     DataStream API      :ds, 规划中, 规划中
 
-    section 规划中（以官方为准）
+    section 规划中(以官方为准)
     A2A 协议支持        :a2a, 规划中, 规划中
     多 Agent 协作        :multi, 规划中, 规划中
     SQL 支持            :sql, 规划中, 规划中
 
-    section 规划中（以官方为准）
+    section 规划中(以官方为准)
     GA 发布             :ga, 规划中, 规划中
     生态工具            :eco, after ga, 规划中
 ```
@@ -1119,15 +1119,7 @@ sequenceDiagram
 
 ## 8. 引用参考 (References)
 
-
-
-
-
-
-
-
-
-
+[^1]: Apache Flink Blog, "Apache Flink Agents 0.2.0 Release Announcement", February 6, 2026. https://flink.apache.org/2026/02/06/apache-flink-agents-0.2.0-release-announcement/
 
 ---
 

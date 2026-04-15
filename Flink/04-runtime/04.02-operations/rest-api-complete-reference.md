@@ -1186,7 +1186,7 @@ sequenceDiagram
     JM-->>API: CheckpointInfo
     API-->>Client: 200 + JSON
 
-    %% Savepoint 触发（异步）
+    %% Savepoint 触发(异步)
     Client->>API: POST /jobs/{id}/savepoints
     API->>JM: 触发 savepoint
     JM-->>API: trigger-id

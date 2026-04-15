@@ -991,12 +991,12 @@ class EdgeStreamProcessor:
     def process_with_partition_tolerance(self, event):
         """带分区容错的事件处理"""
         if self.is_connected():
-            # 正常模式：处理并同步
+            # 正常模式:处理并同步
             result = self.process(event)
             self.sync_to_cloud(result)
             return result
         else:
-            # 分区模式：本地处理
+            # 分区模式:本地处理
             return self.process_partitioned(event)
     
     def process_partitioned(self, event):
@@ -1008,7 +1008,7 @@ class EdgeStreamProcessor:
         if not self.buffer.is_full():
             self.buffer.append(result)
         else:
-            # 缓冲区满，执行策略
+            # 缓冲区满,执行策略
             self.handle_buffer_full(result)
         
         # 更新本地状态
@@ -1022,14 +1022,14 @@ class EdgeStreamProcessor:
     
     def handle_buffer_full(self, result):
         """处理缓冲区溢出"""
-        # 策略1：压缩旧数据
+        # 策略1:压缩旧数据
         self.compress_buffer()
         
-        # 策略2：持久化到本地存储
+        # 策略2:持久化到本地存储
         if self.checkpoint_store.available_space() > 0:
             self.persist_oldest_data()
         
-        # 策略3：降级采样
+        # 策略3:降级采样
         if self.buffer.usage_ratio() > 0.95:
             self.reduce_sampling_rate()
     
@@ -1353,28 +1353,28 @@ stateDiagram-v2
     UpdateGlobalState --> Online: Recovery Complete
     
     note right of Online
-        正常模式：
+        正常模式:
         - 实时同步
         - 强一致性
         - 完整功能
     end note
     
     note right of OfflineProcessing
-        离线模式：
+        离线模式:
         - 本地处理
         - 因果一致性
         - 缓冲数据
     end note
     
     note right of AutonomousMode
-        自治模式：
+        自治模式:
         - 完全自治
         - 最终一致性
         - 本地持久化
     end note
     
     note right of EmergencyMode
-        紧急模式：
+        紧急模式:
         - 关键任务优先
         - 最低功耗
         - 告警发送
@@ -1948,7 +1948,7 @@ Definition PartitionTolerant (ops : list Operation) : Prop :=
     | Checkpoint e => True  (* 本地检查点允许 *)
     end.
 
-(* 定理：分区期间本地处理保持有效性 *)
+(* 定理:分区期间本地处理保持有效性 *)
 Theorem local_processing_valid :
   forall (e : EdgeNode) (s : State) (input : nat),
   let s' := {| data := input :: data s;
@@ -1959,7 +1959,7 @@ Proof.
   intros. unfold Consistent. simpl. auto.
 Qed.
 
-(* 定理：同步后状态收敛 *)
+(* 定理:同步后状态收敛 *)
 Theorem sync_convergence :
   forall (s_edge s_cloud : State) (s_merged : State),
   s_merged = {| data := data s_edge ++ data s_cloud;

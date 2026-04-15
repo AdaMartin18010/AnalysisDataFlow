@@ -289,7 +289,7 @@ flowchart TD
 设兼容性检查函数为 `validate(schema_old, schema_new, policy)`，返回布尔值表示是否允许注册。
 
 ```python
-# 伪代码：兼容性验证算法
+# 伪代码:兼容性验证算法
 def validate(old_schema, new_schema, policy):
     if policy == "BACKWARD":
         # 新 schema 必须能读取旧数据
@@ -304,8 +304,8 @@ def validate(old_schema, new_schema, policy):
         return True
 
 def can_read(reader_schema, writer_schema):
-    # Avro 规范：字段匹配规则
-    # 1. writer 字段，reader 必须有同名字段
+    # Avro 规范:字段匹配规则
+    # 1. writer 字段,reader 必须有同名字段
     # 2. 类型必须兼容
     # 3. 无默认值字段不能缺失
     return avro_compatibility_check(reader_schema, writer_schema)
@@ -342,16 +342,16 @@ graph LR
 **血缘查询示例**:
 
 ```sql
--- 递归查询：获取 F(风险评分) 的完整上游
+-- 递归查询:获取 F(风险评分) 的完整上游
 WITH RECURSIVE lineage AS (
-    -- 锚点：目标数据产品
+    -- 锚点:目标数据产品
     SELECT product_id, product_name, source_product_id
     FROM data_products
     WHERE product_id = 'risk-score-v1'
 
     UNION ALL
 
-    -- 递归：向上追溯
+    -- 递归:向上追溯
     SELECT dp.product_id, dp.product_name, dp.source_product_id
     FROM data_products dp
     JOIN lineage l ON dp.product_id = l.source_product_id

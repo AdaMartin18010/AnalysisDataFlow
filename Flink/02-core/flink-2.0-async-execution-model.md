@@ -31,7 +31,7 @@ $$\text{AEM} = (\mathcal{T}, \mathcal{S}, \mathcal{F}, \mathcal{C})$$
 │  Record N → [Process] → [Read State] → [Write State] → Out  │
 │                    ↑阻塞                                    │
 │                    └── 10-100ms 远程存储RTT                │
-│                    └── 任务线程100%占用，CPU空闲            │
+│                    └── 任务线程100%占用,CPU空闲            │
 └─────────────────────────────────────────────────────────────┘
 
 异步执行模型:
@@ -213,7 +213,7 @@ interface AsyncMapState<K, V> {
 // 真实源码路径: org.apache.flink.core.state.StateFuture
 // 实现类: org.apache.flink.core.state.StateFutureImpl
 interface StateFuture<V> {
-    // 阻塞等待（仅用于兼容/调试）
+    // 阻塞等待(仅用于兼容/调试)
     V get() throws InterruptedException;
 
     // 非阻塞回调
@@ -381,7 +381,7 @@ public class AsyncExecutionController<K, N> {
 
     /**
      * 处理输入记录
-     * 核心逻辑：确保同一 Key 的记录按 FIFO 顺序处理
+     * 核心逻辑:确保同一 Key 的记录按 FIFO 顺序处理
      */
     public void processRecord(StreamRecord record) {
         // 提取记录的 Key
@@ -394,12 +394,12 @@ public class AsyncExecutionController<K, N> {
         // 创建异步处理任务
         AsyncTask task = new AsyncTask(record, key);
 
-        // 提交到 Key 队列：确保 FIFO 顺序
+        // 提交到 Key 队列:确保 FIFO 顺序
         queue.submit(task);
     }
 
     /**
-     * Key 执行队列：维护同一 Key 的顺序处理
+     * Key 执行队列:维护同一 Key 的顺序处理
      */
     private class KeyExecutionQueue {
         // 待处理任务队列
@@ -410,28 +410,28 @@ public class AsyncExecutionController<K, N> {
         private final Object lock = new Object();
 
         /**
-         * 提交新任务：链式依赖保证 FIFO
+         * 提交新任务:链式依赖保证 FIFO
          */
         public void submit(AsyncTask task) {
             synchronized (lock) {
                 // 获取前一个任务的 Future
                 StateFuture<Void> previous = currentFuture;
 
-                // 提交异步处理：Stage 1 (CPU) + Stage 2 (I/O)
+                // 提交异步处理:Stage 1 (CPU) + Stage 2 (I/O)
                 StateFuture<StateAccessResult> stateFuture =
                     recordProcessor.processAsync(task.record);
 
                 // 创建当前任务的完成 Future
-                // thenCompose 链确保：前一个任务完成后才执行当前任务
+                // thenCompose 链确保:前一个任务完成后才执行当前任务
                 currentFuture = previous.thenCompose(v -> {
                     // 当前任务开始执行
                     return stateFuture.thenCompose(result -> {
-                        // Stage 3：回调处理
+                        // Stage 3:回调处理
                         return recordProcessor.postProcessAsync(result, task.record);
                     });
                 });
 
-                // 注册完成回调，处理异常和队列状态
+                // 注册完成回调,处理异常和队列状态
                 currentFuture.exceptionally(ex -> {
                     handleProcessingError(task, ex);
                     return null;
@@ -442,7 +442,7 @@ public class AsyncExecutionController<K, N> {
         }
 
         /**
-         * 获取最后一个任务的 Future（用于链式依赖）
+         * 获取最后一个任务的 Future(用于链式依赖)
          */
         public StateFuture<Void> getLastFuture() {
             synchronized (lock) {
@@ -511,11 +511,11 @@ public class AsyncExecutionController<K, N> {
 // AsyncExecutionController.java (Watermark 处理)
 public class AsyncExecutionController<K, N> {
 
-    // Watermark 队列：按 Key 收集待处理 Watermark
+    // Watermark 队列:按 Key 收集待处理 Watermark
     private final PriorityQueue<Watermark> pendingWatermarks;
 
     /**
-     * 处理 Watermark：确保所有前置记录完成才传播
+     * 处理 Watermark:确保所有前置记录完成才传播
      */
     public void processWatermark(Watermark watermark) {
         // 收集所有 Key 队列的当前 Future
@@ -527,18 +527,18 @@ public class AsyncExecutionController<K, N> {
         // 等待所有 Key 的待处理任务完成
         StateFuture<Void> allKeysComplete = StateFutureUtils.allOf(keyFutures);
 
-        // 所有记录处理完成后，才输出 Watermark
+        // 所有记录处理完成后,才输出 Watermark
         allKeysComplete.thenAccept(v -> {
-            // 验证：此时所有时间戳 <= watermark 的记录都已处理
+            // 验证:此时所有时间戳 <= watermark 的记录都已处理
             output.emitWatermark(watermark);
         });
     }
 
     /**
-     * Checkpoint 屏障处理：确保状态一致性
+     * Checkpoint 屏障处理:确保状态一致性
      */
     public void processCheckpointBarrier(CheckpointBarrier barrier) {
-        // 类似 Watermark，等待所有待处理 Future
+        // 类似 Watermark,等待所有待处理 Future
         List<StateFuture<Void>> keyFutures = new ArrayList<>();
         for (KeyExecutionQueue queue : keyQueues.values()) {
             keyFutures.add(queue.getLastFuture());
@@ -547,7 +547,7 @@ public class AsyncExecutionController<K, N> {
         StateFuture<Void> allComplete = StateFutureUtils.allOf(keyFutures);
 
         allComplete.thenAccept(v -> {
-            // 所有异步操作完成，可以安全进行状态快照
+            // 所有异步操作完成,可以安全进行状态快照
             checkpointListener.notifyCheckpoint(barrier.getCheckpointId());
         });
     }
@@ -653,7 +653,7 @@ flowchart LR
 // 正确的启用方式
 DataStream<Result> result = stream
     .keyBy(Event::getKey)          // 1. 先进行 keyBy
-    .enableAsyncState()             // 2. 显式启用异步状态（必须）
+    .enableAsyncState()             // 2. 显式启用异步状态(必须)
     .process(new AsyncFunction());  // 3. 使用异步处理函数
 ```
 
@@ -722,7 +722,7 @@ flowchart TB
 │                                               │              │
 └─────────────────────────────────────────────────────────────┘
 
-问题: S3延迟50-200ms，同步模型下单线程吞吐量<20 records/s
+问题: S3延迟50-200ms,同步模型下单线程吞吐量<20 records/s
 解决方案: 异步模型允许单线程并发数百状态访问
 ```
 
@@ -752,7 +752,7 @@ flowchart TB
 └─────────────────────────────────────────────────────────────┘
 
 优势: 独立扩展计算和存储
-挑战: 网络延迟1-10ms，需要异步隐藏延迟
+挑战: 网络延迟1-10ms,需要异步隐藏延迟
 ```
 
 **场景3: Serverless流计算**
@@ -775,8 +775,8 @@ Serverless流计算:
 │  └───────────────────────────────────────────────────────┘   │
 └─────────────────────────────────────────────────────────────┘
 
-要求: 快速启动，无本地状态，完全依赖外部存储
-必须: 异步状态访问，否则延迟无法接受
+要求: 快速启动,无本地状态,完全依赖外部存储
+必须: 异步状态访问,否则延迟无法接受
 ```
 
 ### 4.2 乱序执行边界讨论
@@ -784,7 +784,7 @@ Serverless流计算:
 **边界情况1: 同一Key严格顺序**
 
 ```java
-// 正确：同一Key的顺序保证
+// 正确:同一Key的顺序保证
 asyncValueState.value().thenAccept(current -> {
     // 这保证按输入顺序执行
     asyncValueState.update(current + 1);
@@ -794,8 +794,8 @@ asyncValueState.value().thenAccept(current -> {
 **边界情况2: 跨Key无顺序保证**
 
 ```java
-// 注意：Key A和Key B的处理顺序不确定
-// 如果业务需要全局顺序，需要额外同步机制
+// 注意:Key A和Key B的处理顺序不确定
+// 如果业务需要全局顺序,需要额外同步机制
 asyncValueState.value().thenAccept(current -> {
     // Key A和Key B的回调可能交错执行
 });
@@ -820,15 +820,15 @@ asyncValueState.value().thenAccept(current -> {
 **反例1: 不适当使用异步**
 
 ```java
-// ❌ 错误：纯CPU操作使用异步
+// ❌ 错误:纯CPU操作使用异步
 asyncValueState.value().thenApply(current -> {
-    // 复杂计算（CPU密集型）
+    // 复杂计算(CPU密集型)
     return heavyComputation(current);
 }).thenAccept(result -> {
     // 这不会带来性能提升！
 });
 
-// ✅ 正确：同步处理CPU密集型任务
+// ✅ 正确:同步处理CPU密集型任务
 T current = syncValueState.value();
 T result = heavyComputation(current);
 syncValueState.update(result);
@@ -837,12 +837,12 @@ syncValueState.update(result);
 **反例2: 过度并发**
 
 ```java
-// ❌ 错误：无限制并发导致内存压力
+// ❌ 错误:无限制并发导致内存压力
 for (int i = 0; i < 10000; i++) {
     asyncState.value().thenAccept(...); // 同时10000个pending
 }
 
-// ✅ 正确：控制并发度
+// ✅ 正确:控制并发度
 asyncExecutionController.setMaxConcurrentRequests(100);
 ```
 
@@ -929,12 +929,12 @@ conf.setInteger("state.async.max-pending-requests", 1000);
 **最佳实践2: 避免在回调中阻塞**
 
 ```java
-// ❌ 错误：回调中阻塞
+// ❌ 错误:回调中阻塞
 .thenAccept(result -> {
     Thread.sleep(100); // 阻塞其他回调！
 })
 
-// ✅ 正确：使用异步API
+// ✅ 正确:使用异步API
 .thenCompose(result -> {
     return asyncExternalService.call(result); // 返回Future
 })
@@ -950,7 +950,7 @@ asyncState.value()
     .exceptionally(throwable -> {
         // 统一异常处理
         logger.error("Async state operation failed", throwable);
-        // 可选择：降级到默认值、记录到侧输出、触发检查点
+        // 可选择:降级到默认值、记录到侧输出、触发检查点
         return null;
     });
 ```
@@ -983,7 +983,7 @@ public class AsyncCounterFunction extends KeyedProcessFunction<String, Event, Re
             "counter",
             Types.LONG
         );
-        // 启用异步模式（Flink 2.0+）
+        // 启用异步模式(Flink 2.0+)
         descriptor.setAsyncStateEnabled(true);
 
         counterState = getRuntimeContext().getAsyncState(descriptor);
@@ -1001,7 +1001,7 @@ public class AsyncCounterFunction extends KeyedProcessFunction<String, Event, Re
                     .thenApply(v -> newCount);
             })
             .thenAccept(newCount -> {
-                // 输出结果（在任务线程回调中执行）
+                // 输出结果(在任务线程回调中执行)
                 out.collect(new Result(event.getKey(), newCount, event.getTimestamp()));
             })
             .exceptionally(throwable -> {
@@ -1050,7 +1050,7 @@ public class AsyncWindowAggregateFunction extends KeyedProcessFunction<String, E
         windowEndState.value()
             .thenCompose(existingEnd -> {
                 if (existingEnd == null || existingEnd < currentWindowEnd) {
-                    // 新窗口开始，触发旧窗口计算
+                    // 新窗口开始,触发旧窗口计算
                     return triggerWindowComputation(existingEnd, out)
                         .thenCompose(v -> windowEndState.update(currentWindowEnd));
                 }
@@ -1128,7 +1128,7 @@ public class AsyncSessionWindowFunction extends KeyedProcessFunction<String, Eve
                     return sessionState.put(sessionId, newSession)
                         .thenApply(v -> newSession);
                 } else if (currentTime - existingSession.getLastActivity() > sessionGap) {
-                    // 会话过期，触发旧会话并创建新会话
+                    // 会话过期,触发旧会话并创建新会话
                     return emitSession(existingSession, out)
                         .thenCompose(v -> {
                             SessionInfo newSession = new SessionInfo(
@@ -1168,7 +1168,7 @@ public class AsyncStateJob {
         StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
 
-        // 配置ForStStateBackend（支持异步状态）
+        // 配置ForStStateBackend(支持异步状态)
         ForStStateBackend forStBackend = new ForStStateBackend();
         forStBackend.setRemoteStoragePath("s3://flink-state-bucket/checkpoints");
         env.setStateBackend(forStBackend);
@@ -1187,7 +1187,7 @@ public class AsyncStateJob {
                 ).withTimestampAssigner((event, timestamp) -> event.getTimestamp())
             );
 
-        // 关键：启用异步状态处理
+        // 关键:启用异步状态处理
         DataStream<Result> result = source
             .keyBy(Event::getKey)
             .process(new AsyncCounterFunction())  // 使用异步状态算子
@@ -1276,9 +1276,9 @@ public class AsyncCounterFunction extends KeyedProcessFunction<String, Event, Re
 // =====================================================
 // DataStream启用方式
 // =====================================================
-// 注意: enableAsyncState() 必须显式调用，用于启用异步状态处理
+// 注意: enableAsyncState() 必须显式调用,用于启用异步状态处理
 DataStream<Result> asyncResult = keyedStream
-    .enableAsyncState()   // 关键：在 keyBy 后显式启用异步状态
+    .enableAsyncState()   // 关键:在 keyBy 后显式启用异步状态
     .process(new AsyncCounterFunction());
 ```
 
@@ -1315,7 +1315,7 @@ sequenceDiagram
         Stage3->>Thread: 请求任务线程
         Thread->>Stage3: 执行回调
         Stage3->>Output: 输出结果
-        Stage3->>AEC: 通知完成，处理Key=k的下一个记录
+        Stage3->>AEC: 通知完成,处理Key=k的下一个记录
     else 队列非空
         AEC->>AEC: 追加到 Key=k 队列
     end
@@ -1537,10 +1537,10 @@ flowchart TD
 ### 陷阱2: 忘记处理异常
 
 ```java
-// ❌ 错误：异常吞噬
+// ❌ 错误:异常吞噬
 .thenAccept(result -> process(result))
 
-// ✅ 正确：显式异常处理
+// ✅ 正确:显式异常处理
 .thenAccept(result -> process(result))
 .exceptionally(throwable -> {
     logger.error("Processing failed", throwable);
@@ -1553,7 +1553,7 @@ flowchart TD
 ### 陷阱3: 在回调中访问错误的状态类型
 
 ```java
-// ❌ 错误：混合同步/异步状态访问
+// ❌ 错误:混合同步/异步状态访问
 AsyncValueState<Long> asyncState = ...;
 ValueState<Long> syncState = ...;
 
@@ -1561,7 +1561,7 @@ asyncState.value().thenAccept(val -> {
     syncState.update(val); // 可能在错误线程执行！
 });
 
-// ✅ 正确：统一使用异步状态
+// ✅ 正确:统一使用异步状态
 asyncState.value().thenCompose(val -> {
     return asyncState.update(val);
 })
@@ -1570,10 +1570,10 @@ asyncState.value().thenCompose(val -> {
 ### 陷阱4: 过度并发导致OOM
 
 ```java
-// ❌ 错误：无限制并发
+// ❌ 错误:无限制并发
 env.getConfig().setAsyncStateMaxConcurrentRequests(Integer.MAX_VALUE);
 
-// ✅ 正确：根据内存和延迟设置合理限制
+// ✅ 正确:根据内存和延迟设置合理限制
 env.getConfig().setAsyncStateMaxConcurrentRequests(100);
 env.getConfig().setAsyncStateMaxPendingRequests(1000);
 ```

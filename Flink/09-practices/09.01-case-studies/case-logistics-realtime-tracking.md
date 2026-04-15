@@ -438,8 +438,8 @@ public class PackageTrackingEvent {
 public class Geofence {
     public String fenceId;
     public GeoLocation center;
-    public double radiusMeters;             // 半径（米）
-    public FenceType type;                  // 类型：配送中心/客户地址/禁行区
+    public double radiusMeters;             // 半径(米)
+    public FenceType type;                  // 类型:配送中心/客户地址/禁行区
 
     public boolean contains(GeoLocation point) {
         return GeoUtils.haversineDistance(center, point) <= radiusMeters;
@@ -454,7 +454,7 @@ public class ETAPrediction {
     public String destination;
     public long predictedArrivalTime;       // 预测到达时间戳
     public double confidence;               // 置信度 [0, 1]
-    public double expectedErrorMinutes;     // 预期误差（分钟）
+    public double expectedErrorMinutes;     // 预期误差(分钟)
 }
 ```
 
@@ -486,7 +486,7 @@ public class RealtimeTrackingJob {
         env.setStateBackend(rocksDbBackend);
 
         // ───────────────────────────────────────────────────────
-        // 1. 数据源：Kafka GPS 事件流
+        // 1. 数据源:Kafka GPS 事件流
         // ───────────────────────────────────────────────────────
         KafkaSource<GPSEvent> gpsSource = KafkaSource.<GPSEvent>builder()
             .setBootstrapServers("kafka.logistics.internal:9092")
@@ -532,7 +532,7 @@ public class RealtimeTrackingJob {
             .process(new ETAPredictionFunction());
 
         // ───────────────────────────────────────────────────────
-        // 5. 异常检测：延误/丢失/损坏
+        // 5. 异常检测:延误/丢失/损坏
         // ───────────────────────────────────────────────────────
         DataStream<ExceptionAlert> alertStream = statusStream
             .keyBy(event -> event.pkgId)
@@ -582,11 +582,11 @@ import org.apache.flink.api.common.typeinfo.Types;
 public class GeofenceDetectionFunction
     extends KeyedProcessFunction<String, PackageTrackingEvent, GeofenceEvent> {
 
-    // 广播状态：全局地理围栏配置
+    // 广播状态:全局地理围栏配置
     private MapStateDescriptor<String, Geofence> geofenceStateDescriptor =
         new MapStateDescriptor<>("geofences", Types.STRING, Types.GENERIC(Geofence.class));
 
-    // 值状态：每个包裹最后已知位置
+    // 值状态:每个包裹最后已知位置
     private ValueState<GeoLocation> lastLocationState;
 
     @Override
@@ -604,7 +604,7 @@ public class GeofenceDetectionFunction
         GeoLocation current = event.location;
         GeoLocation last = lastLocationState.value();
 
-        // 获取所有相关地理围栏（空间索引优化）
+        // 获取所有相关地理围栏(空间索引优化)
         List<Geofence> nearbyFences = GeofenceIndex.query(current);
 
         for (Geofence fence : nearbyFences) {
@@ -650,13 +650,13 @@ import org.apache.flink.api.common.state.ValueStateDescriptor;
 public class ETAPredictionFunction
     extends KeyedProcessFunction<String, PackageTrackingEvent, ETAPrediction> {
 
-    // 列表状态：历史轨迹点（滑动窗口）
+    // 列表状态:历史轨迹点(滑动窗口)
     private ListState<TrajectoryPoint> trajectoryState;
 
-    // 值状态：目的地信息
+    // 值状态:目的地信息
     private ValueState<Destination> destinationState;
 
-    // 广播状态：交通模型参数
+    // 广播状态:交通模型参数
     private BroadcastState<String, TrafficModel> trafficModelState;
 
     @Override
@@ -676,7 +676,7 @@ public class ETAPredictionFunction
         // 更新轨迹
         trajectoryState.add(new TrajectoryPoint(event.location, ctx.timestamp()));
 
-        // 清理过期轨迹点（保留最近30分钟）
+        // 清理过期轨迹点(保留最近30分钟)
         List<TrajectoryPoint> recentTrajectory = new ArrayList<>();
         long cutoff = ctx.timestamp() - TimeUnit.MINUTES.toMillis(30);
         for (TrajectoryPoint pt : trajectoryState.get()) {
@@ -749,7 +749,7 @@ public class ETAPredictionFunction
 
 ```java
 /**
- * 配送异常检测：延误 / 丢失 / 损坏
+ * 配送异常检测:延误 / 丢失 / 损坏
  */
 
 import org.apache.flink.api.common.state.ValueState;
@@ -785,7 +785,7 @@ public class AnomalyDetectionFunction
             checkDelayAnomaly(event, context, ctx, out);
         }
 
-        // 丢失检测：长时间无更新
+        // 丢失检测:长时间无更新
         if (shouldCheckMissing(event, context)) {
             long missingTimer = ctx.timerService().currentProcessingTime()
                 + TimeUnit.HOURS.toMillis(4); // 4小时无更新视为可疑
@@ -793,7 +793,7 @@ public class AnomalyDetectionFunction
             timerState.update(missingTimer);
         }
 
-        // 损坏检测：异常加速度/温度/震动
+        // 损坏检测:异常加速度/温度/震动
         if (event.metadata.containsKey("shock_level")) {
             double shock = Double.parseDouble(event.metadata.get("shock_level"));
             if (shock > 5.0) { // 5G 冲击力
@@ -895,7 +895,7 @@ CREATE TABLE package_info (
     'table-name' = 'packages'
 );
 
--- 3. 创建实时位置视图（连接 GPS 与包裹信息）
+-- 3. 创建实时位置视图(连接 GPS 与包裹信息)
 CREATE VIEW package_tracking AS
 SELECT
     g.pkg_id,
@@ -911,7 +911,7 @@ FROM gps_events g
 LEFT JOIN package_info FOR SYSTEM_TIME AS OF g.event_time AS p
 ON g.pkg_id = p.pkg_id;
 
--- 4. 区域包裹统计（5分钟滚动窗口）
+-- 4. 区域包裹统计(5分钟滚动窗口)
 CREATE TABLE region_stats (
     region_code     STRING,
     window_start    TIMESTAMP(3),
@@ -959,7 +959,7 @@ FROM (
         event_time,
         destination,
         speed_kmh,
-        -- 解析目的地坐标（假设存储为 "lat,lng"）
+        -- 解析目的地坐标(假设存储为 "lat,lng")
         CAST(SPLIT_INDEX(destination, ',', 0) AS DOUBLE) as dest_lat,
         CAST(SPLIT_INDEX(destination, ',', 1) AS DOUBLE) as dest_lng
     FROM package_tracking
@@ -1056,7 +1056,7 @@ def optimize_routes(
 
     # 创建路由索引管理器
     manager = pywrapcp.RoutingIndexManager(
-        num_stops + num_vehicles,  # 虚拟起点（车辆当前位置）
+        num_stops + num_vehicles,  # 虚拟起点(车辆当前位置)
         num_vehicles,
         list(range(num_vehicles))  # 每辆车的起点索引
     )
@@ -1072,7 +1072,7 @@ def optimize_routes(
     transit_callback_index = routing.RegisterTransitCallback(distance_callback)
     routing.SetArcCostEvaluatorOfAllVehicles(transit_callback_index)
 
-    # 添加容量约束（车辆装载量）
+    # 添加容量约束(车辆装载量)
     # ...
 
     # 添加时间窗约束
@@ -1080,7 +1080,7 @@ def optimize_routes(
     routing.AddDimension(
         transit_callback_index,
         slack_max=30,  # 允许等待时间
-        capacity=480,  # 最长工作时间（8小时）
+        capacity=480,  # 最长工作时间(8小时)
         fix_start_cumul_to_zero=True,
         name=time
     )
@@ -1146,7 +1146,7 @@ def handle_route_optimization_request(event: dict) -> dict:
 
     result = optimize_routes(vehicle_positions, pending_orders, traffic_matrix)
 
-    # 推送结果到 Kafka，Flink 消费后更新 TMS
+    # 推送结果到 Kafka,Flink 消费后更新 TMS
     publish_to_kafka("optimized.routes", result)
 
     return result

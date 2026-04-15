@@ -440,7 +440,7 @@ GA优化方案: 延迟加载 (Lazy Loading)
 
 ```yaml
 # ❌ 错误: 用Lambda实现带窗口的聚合
-# 问题: Lambda无状态，无法实现会话窗口
+# 问题: Lambda无状态,无法实现会话窗口
 
 # ✅ 正确: 使用Serverless Flink
 apiVersion: flink.apache.org/v1beta1
@@ -463,7 +463,7 @@ spec:
 # ❌ 错误: API-facing服务使用默认冷启动
 spec:
   job:
-    parallelism: 1  # 缩容到1，但仍有延迟
+    parallelism: 1  # 缩容到1,但仍有延迟
 
 # ✅ 正确: 预置并发
 spec:
@@ -475,8 +475,8 @@ spec:
 **反模式3: 状态存储配置不当**
 
 ```yaml
-# ❌ 错误: 使用本地状态，无法Scale-to-Zero
-state.backend: hashmap  # 内存状态，重启丢失
+# ❌ 错误: 使用本地状态,无法Scale-to-Zero
+state.backend: hashmap  # 内存状态,重启丢失
 
 # ✅ 正确: 使用分离式状态存储
 state.backend: forst
@@ -546,7 +546,7 @@ $$
    a. 读取最新检查点元数据
    b. 验证所有状态句柄存在
    c. 原子性注册检查点
-   d. 启动TaskManager，引用远程状态
+   d. 启动TaskManager,引用远程状态
    e. 从最后屏障位置恢复消费
 
 ```
@@ -608,7 +608,7 @@ spec:
     resource:
       memory: "4Gi"
       cpu: 2
-    replicas: 0  # 初始为0，由KEDA触发
+    replicas: 0  # 初始为0,由KEDA触发
 
   job:
     jarURI: local:///opt/flink/examples/streaming/StateMachineExample.jar
@@ -995,7 +995,7 @@ class ServerlessCostOptimizer:
         self.cloudwatch = boto3.client('cloudwatch') if cloud_provider == 'aws' else None
 
     def analyze_workload_pattern(self, hours: int = 168) -> Dict:
-        """分析工作负载模式，推荐最优配置"""
+        """分析工作负载模式,推荐最优配置"""
 
         # 获取历史指标
         end_time = datetime.utcnow()
@@ -1324,7 +1324,7 @@ def main():
     parser = argparse.ArgumentParser(description='Flink Serverless迁移工具')
     parser.add_argument('--job-name', required=True, help='作业名称')
     parser.add_argument('--config', required=True, help='当前配置文件路径')
-    parser.add_argument('--dry-run', action='store_true', help='仅检查，不执行')
+    parser.add_argument('--dry-run', action='store_true', help='仅检查,不执行')
 
     args = parser.parse_args()
 

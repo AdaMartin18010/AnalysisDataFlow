@@ -47,16 +47,16 @@ $$
 流处理引擎
 ├── 流处理框架 (Stream Processing Framework)
 │   ├── 代表: Apache Flink, Timely Dataflow
-│   └── 特征: 编程API为中心，灵活但需开发
+│   └── 特征: 编程API为中心,灵活但需开发
 ├── 流处理数据库 (Streaming Database)
 │   ├── 代表: RisingWave, Materialize, Timeplus
-│   └── 特征: 物化视图原生，SQL-first
+│   └── 特征: 物化视图原生,SQL-first
 ├── 流分析服务 (Streaming Analytics Service)
 │   ├── 代表: Arroyo, ksqlDB
-│   └── 特征: 简化部署，快速上手
+│   └── 特征: 简化部署,快速上手
 └── 流计算库 (Stream Compute Library)
     ├── 代表: Tokio Streams, async-stream
-    └── 特征: 嵌入式，应用内使用
+    └── 特征: 嵌入式,应用内使用
 ```
 
 ### Def-COMP-04: Rust 流处理引擎定义
@@ -448,14 +448,14 @@ Timeplus:      ██████████░░░░░░░░░░  [3,
 
 ```mermaid
 quadrantChart
-    title 流处理引擎：吞吐量 vs 一致性强度
+    title 流处理引擎:吞吐量 vs 一致性强度
     x-axis 低一致性(ALO) --> 高一致性(SC)
     y-axis 低吞吐量 --> 高吞吐量
 
-    quadrant-1 高吞吐+低一致：追求性能
-    quadrant-2 理想区域：高吞吐+强一致
-    quadrant-3 低性能区域：低吞吐+低一致
-    quadrant-4 强一致优先：准确性第一
+    quadrant-1 高吞吐+低一致:追求性能
+    quadrant-2 理想区域:高吞吐+强一致
+    quadrant-3 低性能区域:低吞吐+低一致
+    quadrant-4 强一致优先:准确性第一
 
     Flink: [0.7, 0.8]
     RisingWave: [0.7, 0.7]

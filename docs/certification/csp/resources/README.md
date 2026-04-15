@@ -89,6 +89,7 @@
 ### 本地 Docker 环境
 
 ```yaml
+# 伪代码示意，非完整可执行配置
 # docker-compose.yml 包含
 version: '3'
 services:

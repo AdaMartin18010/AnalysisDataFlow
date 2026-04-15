@@ -742,7 +742,7 @@ $$\mathcal{P}(\mathcal{E}) = 0.3 \cdot Stability + 0.25 \cdot Operability + 0.25
 ```sql
 -- RisingWave: 原生物化视图 + 服务查询
 
--- 1. 创建数据源（假设Kafka主题）
+-- 1. 创建数据源(假设Kafka主题)
 CREATE SOURCE orders (
     order_id BIGINT,
     category VARCHAR,
@@ -755,7 +755,7 @@ CREATE SOURCE orders (
     scan.startup.mode = 'latest'
 );
 
--- 2. 创建物化视图（持续更新）
+-- 2. 创建物化视图(持续更新)
 CREATE MATERIALIZED VIEW category_top10 AS
 WITH windowed_sales AS (
     SELECT
@@ -781,7 +781,7 @@ SELECT * FROM (
     FROM windowed_sales
 ) WHERE rank <= 10;
 
--- 3. 服务查询（直接从物化视图查询）
+-- 3. 服务查询(直接从物化视图查询)
 SELECT * FROM category_top10
 WHERE window_start >= NOW() - INTERVAL '1 HOUR'
 ORDER BY window_start DESC, rank;
@@ -825,7 +825,7 @@ EMIT FINAL;
 
 -- 3. 查询TOP10受限 - ksqlDB不支持窗口内的ROW_NUMBER()
 -- 需要外部应用消费category_sales_5min后再计算TOP10
--- 或使用嵌套查询（性能受限）
+-- 或使用嵌套查询(性能受限)
 
 -- 替代方案: 推送至外部系统处理
 CREATE SINK CONNECTOR top10_sink WITH (
@@ -845,7 +845,7 @@ CREATE SINK CONNECTOR top10_sink WITH (
 #### Flink SQL实现
 
 ```sql
--- Flink SQL: 统一批流，需配合Sink
+-- Flink SQL: 统一批流,需配合Sink
 
 -- 1. 创建源表
 CREATE TABLE orders (
@@ -862,7 +862,7 @@ CREATE TABLE orders (
     'scan.startup.mode' = 'latest-offset'
 );
 
--- 2. 创建结果Sink表（需外部存储如JDBC/Redis）
+-- 2. 创建结果Sink表(需外部存储如JDBC/Redis)
 CREATE TABLE category_top10_sink (
     window_start TIMESTAMP(3),
     window_end TIMESTAMP(3),

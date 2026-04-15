@@ -1,8 +1,8 @@
-> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> **状态**: ✅ 已发布 | **风险等级**: 低 | **最后更新**: 2026-04-15
 >
-> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+> Apache Flink 2.2.0 已于 2025-12-04 正式发布，ML_PREDICT 已 GA。请以官方文档为准。
 >
-# Flink 2.1 Model DDL 与实时 AI 推理
+# Flink 2.1/2.2 Model DDL 与实时 AI 推理
 
 > **状态**: ✅ Released (2025-12-04, Flink 2.2 GA)
 > **Flink 版本**: 2.2.0+
@@ -17,7 +17,7 @@
 **Model DDL** 是 Flink SQL 的扩展语法，用于声明式地定义机器学习模型及其推理接口。
 
 ```sql
-<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+<!-- CREATE MODEL 语法仍为概念设计,尚未在 Flink 2.2 中支持 -->
 ~~CREATE MODEL~~ (未来可能的语法)
   [ WITH (
     'provider' = '<provider_type>',
@@ -44,7 +44,7 @@
 ┌─────────────────┬─────────────────────────────────────────┐
 │ Provider Type   │ Description                             │
 ├─────────────────┼─────────────────────────────────────────┤
-│ 'openai'        │ OpenAI API 集成（GPT-4, GPT-3.5 等）     │
+│ 'openai'        │ OpenAI API 集成(GPT-4, GPT-3.5 等)     │
 │ 'huggingface'   │ Hugging Face Inference API              │
 │ 'custom'        │ 用户自定义模型提供者实现                  │
 └─────────────────┴─────────────────────────────────────────┘
@@ -91,10 +91,10 @@ $$\text{ML_PREDICT}(T_{in}, M) = T_{in} \bowtie_{model\_inference} M(T_{in}.\tex
 ┌─────────────────────┬──────────────────────────────────────────┐
 │ 列名                 │ 描述                                     │
 ├─────────────────────┼──────────────────────────────────────────┤
-│ <input_columns>     │ 输入表的所有原始列（保持原 schema）      │
-│ prediction          │ 模型推理结果（JSON 或结构化类型）        │
-│ prediction_metadata │ 推理元数据（延迟、token 用量等）         │
-│ prediction_error    │ 错误信息（推理失败时非 NULL）            │
+│ <input_columns>     │ 输入表的所有原始列(保持原 schema)      │
+│ prediction          │ 模型推理结果(JSON 或结构化类型)        │
+│ prediction_metadata │ 推理元数据(延迟、token 用量等)         │
+│ prediction_error    │ 错误信息(推理失败时非 NULL)            │
 └─────────────────────┴──────────────────────────────────────────┘
 ```
 
@@ -139,7 +139,7 @@ public interface ModelProvider {
     // 初始化模型连接
     void open(Configuration config);
 
-    // 批量推理（Flink 自动批处理）
+    // 批量推理(Flink 自动批处理)
     List<RowData> inferBatch(List<RowData> inputs);
 
     // 获取输入/输出 schema
@@ -392,16 +392,16 @@ $$T_{async} = \frac{C_{max}}{L_{api}} \quad \text{其中 } C_{max} \text{ 为最
 
 ```
 Level 1: API 超时
-  └── 策略: 重试 3 次，指数退避
+  └── 策略: 重试 3 次,指数退避
 
 Level 2: 速率限制 (429)
-  └── 策略: 动态背压，降低并发度
+  └── 策略: 动态背压,降低并发度
 
 Level 3: 模型错误 (5xx)
-  └── 策略: 发送到 Side Output，人工审查
+  └── 策略: 发送到 Side Output,人工审查
 
 Level 4: Schema 不匹配
-  └── 策略: 编译期报错，拒绝提交
+  └── 策略: 编译期报错,拒绝提交
 ```
 
 ---
@@ -492,7 +492,7 @@ WHERE log_category IN ('SUSPICIOUS_LOGIN', 'DATA_EXFILTRATION', 'PRIVILEGE_ESCAL
 **场景：** 基于知识库的实时问答，结合 RAG 模式。
 
 ```sql
--- 步骤 1: 创建嵌入模型（用于文档向量化）
+-- 步骤 1: 创建嵌入模型(用于文档向量化)
 ~~CREATE MODEL text_embedder~~ (未来可能的语法)
 WITH (
   'provider' = 'openai',
@@ -532,7 +532,7 @@ JOIN ML_PREDICT(
   PASSING (question_text)
 ) e ON TRUE;
 
--- 步骤 5: 执行问答（简化示例，实际需要向量检索 JOIN）
+-- 步骤 5: 执行问答(简化示例,实际需要向量检索 JOIN)
 CREATE TABLE qa_results AS
 SELECT
   question_id,
@@ -642,7 +642,7 @@ public class InternalMLProvider implements ModelProvider {
     }
 }
 
-// 步骤 3: 注册提供者（通过 SPI）
+// 步骤 3: 注册提供者(通过 SPI)
 // META-INF/services/org.apache.flink.ml.provider.ModelProviderFactory
 // 内容: com.example.InternalMLProviderFactory
 ```
@@ -675,7 +675,7 @@ SELECT * FROM ML_PREDICT(
 graph TB
     subgraph SQL_Layer["SQL Layer"]
         A1[~~CREATE MODEL~~ statement]
-        A2[ML_PREDICT TVF（实验性）]
+        A2[ML_PREDICT TVF(GA)]
         A3[Regular SQL Operations]
     end
 
@@ -762,18 +762,18 @@ flowchart LR
 
 ```mermaid
 gantt
-    title Flink ML 功能演进路线图（规划中，以官方为准）
+    title Flink ML 功能演进路线图
     dateFormat YYYY-MM
-    section Flink 2.1（规划中，以官方为准）
-    Model DDL (~~CREATE MODEL~~) :done, a1, 规划中, 规划中（概念设计）
-    ML_PREDICT TVF（实验性）    :done, a2, 规划中, 规划中
-    OpenAI Provider             :done, a3, 规划中, 规划中
-    HuggingFace Provider        :done, a4, 规划中, 规划中
+    section Flink 2.1
+    Model DDL (~~CREATE MODEL~~) :done, a1, 2025-01, 2025-11(概念设计)
+    ML_PREDICT TVF(实验性)    :done, a2, 2025-01, 2025-11
+    OpenAI Provider             :done, a3, 2025-01, 2025-11
+    HuggingFace Provider        :done, a4, 2025-01, 2025-11
 
-    section Flink 2.2（规划中，以官方为准）
-    Table API Support           :active, b1, 规划中, 规划中
-    Python Table API ML         :b2, 规划中, 规划中
-    Enhanced AI Functions       :b3, 规划中, 规划中
+    section Flink 2.2(Released 2025-12-04)
+    Table API Support           :done, b1, 2025-12-04, 0d
+    Python Table API ML         :done, b2, 2025-12-04, 0d
+    Enhanced AI Functions       :done, b3, 2025-12-04, 0d
     Local Model Support         :b4, 规划中, 规划中
 ```
 
@@ -787,7 +787,7 @@ flowchart TD
     B -->|> 1000 TPS| D{延迟要求？}
     B -->|< 100 TPS| E[使用 REST API 直连]
 
-    D -->|< 1s| F[使用 Flink ML_PREDICT（实验性）]
+    D -->|< 1s| F[使用 Flink ML_PREDICT(实验性)]
     D -->|> 5s| G[使用批处理引擎]
 
     F --> H[部署模式？]
@@ -812,9 +812,53 @@ Flink 2.2 (2025-12-04 发布) 正式将 ML_PREDICT 标记为 GA 状态[^1]：
 | **Provider 生态** | OpenAI/HF | ✅ 扩展 | 更多内置 Provider |
 | **Table API 支持** | 有限 | ✅ 完整 | Java/Scala/Python |
 
+### 8.1.1 Table API 异步模型推断示例 (Flink 2.2 GA)
+
+```java
+// Java Table API - 异步 ML_PREDICT
+import org.apache.flink.table.api.Table;
+import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
+
+StreamTableEnvironment tEnv = StreamTableEnvironment.create(env);
+
+Table events = tEnv.from("user_logs");
+
+// Table API 异步预测调用
+Table classified = events
+    .select(
+        $("user_id"),
+        $("log_message"),
+        call("ML_PREDICT",
+            lit("log_classifier"),
+            $("log_message")
+        ).as("prediction")
+    );
+
+tEnv.createTemporaryView("classified_logs", classified);
+```
+
+```python
+# Python Table API - 异步 ML_PREDICT
+from pyflink.table import StreamTableEnvironment
+from pyflink.table.expressions import col, lit, call
+
+t_env = StreamTableEnvironment.create(env)
+
+events = t_env.from_path("user_logs")
+
+# Table API 异步预测
+classified = events.select(
+    col("user_id"),
+    col("log_message"),
+    call("ML_PREDICT", lit("log_classifier"), col("log_message")).alias("prediction")
+)
+
+t_env.create_temporary_view("classified_logs", classified)
+```
+
 ### 8.2 官方性能数据
 
-根据 Flink 2.2 预览版特性（预计发布）：
+根据 Apache Flink 2.2.0 官方发布数据[^2]：
 
 - **推理吞吐量**: 相比 2.1 提升 40%
 - **端到端延迟**: 相比 2.1 降低 30%
@@ -825,8 +869,9 @@ Flink 2.2 (2025-12-04 发布) 正式将 ML_PREDICT 标记为 GA 状态[^1]：
 ## 9. 引用参考 (References)
 
 [^1]: Apache Flink Documentation, "ML_PREDICT", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/ml/ml_predict/>
+[^2]: Apache Flink Blog, "Apache Flink 2.2.0: Advancing Real-Time Data & AI", December 4, 2025. https://flink.apache.org/2025/12/04/apache-flink-2.2.0-advancing-real-time-data--ai-and-empowering-stream-processing-for-the-ai-era/
 
 
 ---
 
-> **状态**: Flink 2.2 GA | **更新日期**: 2025-12
+> **状态**: Flink 2.2 GA | **更新日期**: 2026-04-15

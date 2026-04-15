@@ -476,7 +476,7 @@ $$W_{effective} = \frac{W_{raw}}{1 + \alpha \cdot R_{compression}}$$
 
 import org.apache.flink.streaming.api.datastream.DataStream;
 
-// q0: 最简单的PassThrough，测试Source和Sink极限
+// q0: 最简单的PassThrough,测试Source和Sink极限
 DataStream<Bid> bids = env.addSource(new NexmarkSource("Bid"));
 bids.addSink(new DummySink());
 
@@ -532,7 +532,7 @@ import org.apache.flink.api.common.typeinfo.Types;
 DataStream<Person> persons = env.addSource(new NexmarkSource("Person"));
 DataStream<Bid> bids = env.addSource(new NexmarkSource("Bid"));
 
-// 流关联：Person JOIN Bid
+// 流关联:Person JOIN Bid
 persons
     .keyBy(p -> p.id)
     .connect(bids.keyBy(b -> b.bidder))
@@ -601,7 +601,7 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 
 /**
  * 端到端延迟测试
- * 在事件中注入发送时间戳，在Sink计算延迟
+ * 在事件中注入发送时间戳,在Sink计算延迟
  */
 public class LatencyBenchmark {
 
@@ -849,7 +849,7 @@ execution.checkpointing.timeout: 10min
 execution.checkpointing.min-pause-between-checkpoints: 30s
 execution.checkpointing.max-concurrent-checkpoints: 1
 
-# 非对齐Checkpoint（高延迟场景）
+# 非对齐Checkpoint(高延迟场景)
 execution.checkpointing.unaligned.enabled: false
 execution.checkpointing.unaligned.max-subtasks-per-channel-state-file: 5
 execution.checkpointing.unaligned.max-aligned-checkpoint-size: 1mb
@@ -1116,7 +1116,7 @@ echo "测试时间: $(date)"
 echo "结果目录: $RESULTS_DIR"
 echo ""
 
-# 函数：运行单个Nexmark查询
+# 函数:运行单个Nexmark查询
 run_nexmark_query() {
     local query=$1
     local rate=$2
@@ -1137,7 +1137,7 @@ run_nexmark_query() {
     sleep 30  # 冷却时间
 }
 
-# 函数：运行延迟测试
+# 函数:运行延迟测试
 run_latency_test() {
     local target_throughput=$1
 
@@ -1152,7 +1152,7 @@ run_latency_test() {
         --output "$RESULTS_DIR/latency-$(date +%s).json"
 }
 
-# 函数：运行吞吐测试
+# 函数:运行吞吐测试
 run_throughput_test() {
     echo "运行最大吞吐测试..."
 
@@ -1166,7 +1166,7 @@ run_throughput_test() {
         --output "$RESULTS_DIR/throughput-$(date +%s).json"
 }
 
-# 函数：运行Checkpoint测试
+# 函数:运行Checkpoint测试
 run_checkpoint_test() {
     local state_size_mb=$1
 
@@ -1231,6 +1231,9 @@ main "$@"
 ### 8.2 结果收集脚本
 
 ```python
+# 伪代码示意,非完整可编译代码
+# 伪代码示意,非完整可编译代码
+# 伪代码示意,非完整可编译代码
 #!/usr/bin/env python3
 # collect-metrics.py - Flink指标收集和分析脚本
 

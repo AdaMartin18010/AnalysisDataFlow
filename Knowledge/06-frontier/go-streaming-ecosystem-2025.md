@@ -280,9 +280,9 @@ $$DecisionSpace = (Performance, Reliability, EaseOfUse, Maturity, Ecosystem)$$
     │
 传输层 (Transport Layer)
     │
-    ├── Sarama (纯Go，功能全面)
+    ├── Sarama (纯Go,功能全面)
     │
-    └── kafka-go (现代API，轻量)
+    └── kafka-go (现代API,轻量)
     │
 网络层 (Network Layer)
     │
@@ -578,7 +578,7 @@ func (h *ConsumerGroupHandler) ConsumeClaim(session sarama.ConsumerGroupSession,
         // 处理消息...
         processMessage(message)
 
-        // 标记消息已处理（提交偏移量）
+        // 标记消息已处理(提交偏移量)
         session.MarkMessage(message, "")
     }
     return nil
@@ -661,7 +661,7 @@ import (
 )
 
 func main() {
-    // 创建写入器（生产者）
+    // 创建写入器(生产者)
     writer := &kafka.Writer{
         Addr:         kafka.TCP("localhost:9092"),
         Topic:        "orders",
@@ -791,7 +791,7 @@ func main() {
             continue
         }
 
-        // 手动提交偏移量（如果使用CommitInterval则自动提交）
+        // 手动提交偏移量(如果使用CommitInterval则自动提交)
         // if err := reader.CommitMessages(ctx, msg); err != nil {
         //     log.Printf("Error committing offset: %v", err)
         // }
@@ -963,7 +963,7 @@ func transactionalProducer() {
 
     topic := "orders"
 
-    // 发送消息（事务内）
+    // 发送消息(事务内)
     for i := 0; i < 10; i++ {
         msg := &kafka.Message{
             TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
@@ -1053,7 +1053,7 @@ func main() {
             // 处理消息
             if err := processMessage(msg); err != nil {
                 log.Printf("Processing error: %v", err)
-                // 可选：将消息发送到死信队列
+                // 可选:将消息发送到死信队列
             }
         }
     }
@@ -1443,7 +1443,7 @@ type Payment struct {
     Status        string  `json:"status"`
 }
 
-// 增强订单（Join结果）
+// 增强订单(Join结果)
 type EnrichedOrder struct {
     OrderID       string  `json:"order_id"`
     UserID        string  `json:"user_id"`
@@ -1468,15 +1468,15 @@ func main() {
 
     // 定义处理器组
     g := goka.DefineGroup(group,
-        // 输入：订单流
+        // 输入:订单流
         goka.Input(goka.Stream(topicOrders), new(codec.JSON), processOrder),
-        // 输入：支付流
+        // 输入:支付流
         goka.Input(goka.Stream(topicPayments), new(codec.JSON), processPayment),
-        // 输出：增强订单流
+        // 输出:增强订单流
         goka.Output(goka.Stream(topicEnriched), new(codec.JSON)),
-        // 状态表：存储订单和支付信息
+        // 状态表:存储订单和支付信息
         goka.Persist(new(codec.JSON)),
-        // 可选：join表
+        // 可选:join表
         goka.Join(goka.Table(groupTable), new(codec.JSON)),
     )
 
@@ -1558,7 +1558,7 @@ func processPayment(ctx goka.Context, msg interface{}) {
     ctx.SetValue(state)
 }
 
-// 增强订单（Join逻辑）
+// 增强订单(Join逻辑)
 func enrichOrder(state OrderState) *EnrichedOrder {
     return &EnrichedOrder{
         OrderID:       state.Order.OrderID,

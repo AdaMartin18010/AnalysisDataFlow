@@ -369,14 +369,14 @@ pub async fn process_partition(
 ├── SQL 作为首要接口
 ├── 物化视图自动维护
 ├── 强一致性保证
-└── 适合：实时分析、仪表板
+└── 适合:实时分析、仪表板
 
 流处理框架 (Flink/Timely):
 ├── 存储与计算分离
 ├── 代码/API 作为首要接口
 ├── 显式状态管理
 ├── 灵活的一致性配置
-└── 适合：ETL、复杂事件处理
+└── 适合:ETL、复杂事件处理
 ```
 
 **边界模糊化趋势**：
@@ -476,7 +476,7 @@ GROUP BY
     region,
     TUMBLE(created_at, INTERVAL '1 MINUTE');
 
--- 自动增量维护，查询即返回最新结果
+-- 自动增量维护,查询即返回最新结果
 SELECT * FROM real_time_sales
 WHERE window_start > NOW() - INTERVAL '5 MINUTE';
 ```
@@ -497,7 +497,7 @@ CREATE SOURCE transactions
 FROM KAFKA BROKER 'kafka:9092' TOPIC 'transactions'
 FORMAT AVRO USING CONFLUENT SCHEMA REGISTRY 'http://schema-registry:8081';
 
--- 实时余额计算（严格串行化）
+-- 实时余额计算(严格串行化)
 CREATE MATERIALIZED VIEW account_balances AS
 SELECT
     account_id,
@@ -505,7 +505,7 @@ SELECT
 FROM transactions
 GROUP BY account_id;
 
--- 风控规则检查（实时触发）
+-- 风控规则检查(实时触发)
 CREATE MATERIALIZED VIEW fraud_alerts AS
 SELECT
     t.account_id,
@@ -551,7 +551,7 @@ where G::Timestamp: Lattice,
     })
 }
 
-// 增量更新：当边发生变化时，仅重新计算受影响节点的 PageRank
+// 增量更新:当边发生变化时,仅重新计算受影响节点的 PageRank
 ```
 
 **增量特性**：
@@ -783,7 +783,7 @@ struct Collection<G: Scope, D: Data, R: Diff> {
 // 当输入变化时
 fn update(&mut self, delta: Vec<(D, R)>, time: G::Timestamp) {
     for (d, r) in delta {
-        // 仅传播变化，而非全量数据
+        // 仅传播变化,而非全量数据
         self.propagate_change(d, time, r);
     }
 }
@@ -877,7 +877,7 @@ g.edges.iterate(|inner| {
 
 import org.apache.flink.streaming.api.datastream.DataStream;
 
-// Flink 处理实时流，输出到 RisingWave 进行实时分析
+// Flink 处理实时流,输出到 RisingWave 进行实时分析
 DataStream<Transaction> transactions = env
     .addSource(new KafkaSource<>())
     .process(new FraudDetection())
@@ -905,7 +905,7 @@ transactions.addSink(new RisingWaveSink<>(
 │        │                                                     │
 │        └──▶ Materialize ────▶ 一致性分析 ──────▶ 风控系统     │
 │                                                              │
-│  数据流动: 每个系统处理最适合的部分，通过 Kafka 解耦           │
+│  数据流动: 每个系统处理最适合的部分,通过 Kafka 解耦           │
 │                                                              │
 └─────────────────────────────────────────────────────────────┘
 ```

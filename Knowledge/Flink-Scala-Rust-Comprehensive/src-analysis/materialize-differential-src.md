@@ -123,7 +123,7 @@ impl<G: Scope, D: Data, R: Semigroup> Collection<G, D, R> {
                   .as_collection()
     }
 
-    /// 聚合操作 (核心：产生 Arrangement)
+    /// 聚合操作 (核心:产生 Arrangement)
     pub fn reduce<L, K, V2>(&self, logic: L) -> Collection<G, (K, V2), R>
     where
         K: Data,
@@ -234,7 +234,7 @@ pub struct Antichain<T> {
 }
 
 impl<T: PartialOrder> Antichain<T> {
-    /// 插入元素，保持反链性质
+    /// 插入元素,保持反链性质
     pub fn insert(&mut self, element: T) -> bool {
         if self.elements.iter().any(|e| e.less_equal(&element)) {
             return false;
@@ -688,7 +688,7 @@ impl<K, V, T, R> TraceReader for Spine<K, V, T, R> {
 ```rust
 // differential-dataflow/src/trace/implementations/spine.rs
 impl<K, V, T, R> Spine<K, V, T, R> {
-    /// 插入新的 Batch，触发层级合并
+    /// 插入新的 Batch,触发层级合并
     pub fn insert(&mut self, batch: Batch<K, V, T, R>) {
         // 找到合适的层级
         let mut level = 0;
@@ -701,7 +701,7 @@ impl<K, V, T, R> Spine<K, V, T, R> {
             }
 
             if self.merging[level].is_none() {
-                // 该层级空闲，直接插入
+                // 该层级空闲,直接插入
                 self.merging[level] = Some(MergeState::Single(b));
             } else {
                 // 需要合并

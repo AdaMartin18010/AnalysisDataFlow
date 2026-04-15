@@ -356,7 +356,7 @@ CREATE TABLE user_events (
     CONSTRAINT valid_amount CHECK (amount >= 0),
     CONSTRAINT valid_event CHECK (event_type IN ('click', 'purchase', 'logout')),
 
-    -- 水印定义（及时性保证）
+    -- 水印定义(及时性保证)
     WATERMARK FOR timestamp AS timestamp - INTERVAL '5' SECOND
 ) WITH (
     'connector' = 'kafka',
@@ -399,7 +399,7 @@ import org.apache.flink.streaming.api.functions.ProcessFunction;
 
 /**
  * 通用数据质量验证算子
- * 支持：Schema验证、规则验证、异常检测
+ * 支持:Schema验证、规则验证、异常检测
  */
 public class DataQualityOperator<T> extends
     ProcessFunction<T, T> implements CheckpointedFunction {

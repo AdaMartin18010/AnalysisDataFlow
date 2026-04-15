@@ -34,7 +34,7 @@ $$\mathcal{F}_{\text{security}}^{2.4} = (\mathcal{A}, \mathcal{Z}, \mathcal{D}, 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │  Level 6: 零信任架构 (Zero Trust Architecture)                    │
-│           - 永不信任，始终验证，最小权限                           │
+│           - 永不信任,始终验证,最小权限                           │
 ├─────────────────────────────────────────────────────────────────┤
 │  Level 5: 现代认证 (Modern Authentication)                        │
 │           - OAuth 2.1, OIDC, PKCE, mTLS                          │
@@ -361,7 +361,7 @@ $$\mathcal{M}: D \times P_{policy} \times C_{context} \rightarrow \hat{D}$$
 
 ```sql
 -- 创建脱敏策略
-CREATE MASKING POLICY email_mask AS  -- [Flink 2.4 前瞻] SQL语法为规划特性，可能变动
+CREATE MASKING POLICY email_mask AS  -- [Flink 2.4 前瞻] SQL语法为规划特性,可能变动
   CASE
     WHEN CURRENT_ROLE() = 'admin' THEN email
     WHEN CURRENT_ROLE() = 'analyst' THEN REGEXP_REPLACE(email, '.+@', '***@')
@@ -393,7 +393,7 @@ FROM users;
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // 创建脱敏配置
-DataMaskingConfig maskingConfig = DataMaskingConfig.builder()  // [Flink 2.4 前瞻] 该API为规划特性，可能变动
+DataMaskingConfig maskingConfig = DataMaskingConfig.builder()  // [Flink 2.4 前瞻] 该API为规划特性,可能变动
     .withPolicy("PII_MASKING", policy -> policy
         .withRule("email", MaskingStrategy.PARTIAL_MASK,
             PartialMaskConfig.builder()
@@ -480,24 +480,24 @@ CREATE TABLE patient_records (
   id BIGINT,
   name STRING,
   -- 确定性加密: 支持等值查询
-  ssn STRING ENCRYPTED WITH (  -- [Flink 2.4 前瞻] SQL语法为规划特性，可能变动
+  ssn STRING ENCRYPTED WITH (  -- [Flink 2.4 前瞻] SQL语法为规划特性,可能变动
     algorithm = 'AES-256-SIV',
     key_id = 'ssn-key',
     deterministic = true
   ),
   -- 随机加密: 最高安全性
-  diagnosis STRING ENCRYPTED WITH (  -- [Flink 2.4 前瞻] SQL语法为规划特性，可能变动
+  diagnosis STRING ENCRYPTED WITH (  -- [Flink 2.4 前瞻] SQL语法为规划特性,可能变动
     algorithm = 'AES-256-GCM',
     key_id = 'phi-key',
     deterministic = false
   ),
   -- 保序加密: 支持范围查询
-  age INT ENCRYPTED WITH (  -- [Flink 2.4 前瞻] SQL语法为规划特性，可能变动
+  age INT ENCRYPTED WITH (  -- [Flink 2.4 前瞻] SQL语法为规划特性,可能变动
     algorithm = 'OPE',
     key_id = 'demographics-key'
   ),
   -- 令牌化: 支持去标识化
-  email STRING ENCRYPTED WITH (  -- [Flink 2.4 前瞻] SQL语法为规划特性，可能变动
+  email STRING ENCRYPTED WITH (  -- [Flink 2.4 前瞻] SQL语法为规划特性,可能变动
     algorithm = 'TOKENIZATION',
     key_id = 'tokenization-key',
     format = 'EMAIL'
@@ -1318,25 +1318,25 @@ public class FieldLevelEncryptionExample {
                 patient_id BIGINT,
                 name STRING,
                 -- 确定性加密: SSN 支持等值查找
-                ssn STRING ENCRYPTED WITH (  -- [Flink 2.4 前瞻] SQL语法为规划特性，可能变动
+                ssn STRING ENCRYPTED WITH (  -- [Flink 2.4 前瞻] SQL语法为规划特性,可能变动
                     'algorithm' = 'AES-256-SIV',
                     'key-id' = 'arn:aws:kms:us-east-1:123456789:key/ssn-key',
                     'deterministic' = 'true',
                     'searchable' = 'true'
                 ),
                 -- 随机加密: 诊断信息
-                diagnosis STRING ENCRYPTED WITH (  -- [Flink 2.4 前瞻] SQL语法为规划特性，可能变动
+                diagnosis STRING ENCRYPTED WITH (  -- [Flink 2.4 前瞻] SQL语法为规划特性,可能变动
                     'algorithm' = 'AES-256-GCM',
                     'key-id' = 'arn:aws:kms:us-east-1:123456789:key/phi-key',
                     'deterministic' = 'false'
                 ),
                 -- 保序加密: 年龄支持范围查询
-                age INT ENCRYPTED WITH (  -- [Flink 2.4 前瞻] SQL语法为规划特性，可能变动
+                age INT ENCRYPTED WITH (  -- [Flink 2.4 前瞻] SQL语法为规划特性,可能变动
                     'algorithm' = 'OPE',
                     'key-id' = 'arn:aws:kms:us-east-1:123456789:key/ope-key'
                 ),
                 -- 令牌化: 邮箱支持去标识化
-                email STRING ENCRYPTED WITH (  -- [Flink 2.4 前瞻] SQL语法为规划特性，可能变动
+                email STRING ENCRYPTED WITH (  -- [Flink 2.4 前瞻] SQL语法为规划特性,可能变动
                     'algorithm' = 'TOKENIZATION',
                     'key-id' = 'arn:aws:kms:us-east-1:123456789:key/token-key',
                     'format' = 'EMAIL'
@@ -1386,7 +1386,7 @@ public class FieldLevelEncryptionExample {
 -- ============================================
 
 -- 策略 1: 邮箱脱敏
-CREATE MASKING POLICY email_mask AS  -- [Flink 2.4 前瞻] SQL语法为规划特性，可能变动
+CREATE MASKING POLICY email_mask AS  -- [Flink 2.4 前瞻] SQL语法为规划特性,可能变动
   CASE
     WHEN CURRENT_ROLE() IN ('admin', 'privacy_officer') THEN email
     WHEN CURRENT_ROLE() = 'customer_service' THEN

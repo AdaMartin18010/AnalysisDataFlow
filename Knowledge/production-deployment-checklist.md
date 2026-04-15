@@ -659,7 +659,7 @@ def main():
     else:
         print(report)
 
-    # 如果有 P0 失败，返回非零退出码
+    # 如果有 P0 失败,返回非零退出码
     p0_failed = any(r.priority == Priority.P0 and r.status == Status.FAIL
                     for r in checker.results)
     sys.exit(1 if p0_failed else 0)

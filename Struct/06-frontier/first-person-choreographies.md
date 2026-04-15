@@ -213,8 +213,8 @@ $$
 ```
 场景: 工作节点动态加入/离开
 - t=0: 协调器C + 工作节点W1, W2
-- t=1: 新节点W3加入，C需通知所有节点
-- t=2: W1离开，C需重新分配任务
+- t=1: 新节点W3加入,C需通知所有节点
+- t=2: W1离开,C需重新分配任务
 ```
 
 **传统Choreographic的限制**：
@@ -228,7 +228,7 @@ $$
 ```
 1. C spawn W3  // 动态创建
 2. C → W3[Init] // 初始化
-3. C → *Ws[Update] // 广播更新（Ws为进程集合）
+3. C → *Ws[Update] // 广播更新(Ws为进程集合)
 ```
 
 ### 4.2 Continuation-Passing的必要性
@@ -376,7 +376,7 @@ Coordinator → Worker1[Task1]
 Coordinator → Worker2[Task2]
 Coordinator → Worker3[Task3]
 
-// Worker2完成后，Coordinator回收并重新分配
+// Worker2完成后,Coordinator回收并重新分配
 Coordinator ← Worker2[Done]
 Coordinator ──spawn──> Worker4  // 动态扩展
 Coordinator → Worker4[Task4]
@@ -403,7 +403,7 @@ let loadBalancer = λcoordinator. λtaskQueue.
 ```
 Primary ──K=(λx. promoteToPrimary x)──> Backup
 
-// Primary故障后，Backup执行K，提升自己为主节点
+// Primary故障后,Backup执行K,提升自己为主节点
 Backup executing K(Primary) → NewPrimary
 NewPrimary → Clients[ResumeService]
 ```

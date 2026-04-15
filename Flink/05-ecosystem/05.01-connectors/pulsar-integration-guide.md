@@ -338,7 +338,7 @@ public class EnrichmentFunction implements Function<String, String> {
 
     @Override
     public String process(String input, Context context) {
-        // 轻量级转换：添加用户元数据
+        // 轻量级转换:添加用户元数据
         Event event = Event.fromJson(input);
         User user = userService.getById(event.getUserId());
         event.setUserTier(user.getTier());
@@ -386,7 +386,7 @@ public class EnrichedStreamProcessing {
 
         DataStream<EnrichedEvent> stream = env.fromSource(...);
 
-        // 复杂聚合：5分钟滚动窗口
+        // 复杂聚合:5分钟滚动窗口
         stream.keyBy(EnrichedEvent::getUserTier)
               .window(TumblingEventTimeWindows.of(Time.minutes(5)))
               .aggregate(new TierMetricsAggregate())

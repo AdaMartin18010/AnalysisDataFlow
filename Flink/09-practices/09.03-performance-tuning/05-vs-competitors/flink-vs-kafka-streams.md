@@ -367,7 +367,7 @@ WatermarkStrategy.<Event>forBoundedOutOfOrderness(Duration.ofSeconds(30))
     .withTimestampAssigner((event, timestamp) -> event.getEventTime());
 
 // Kafka Streams: 有限的乱序处理
-// 依赖 Wall Clock 触发，事件时间支持较弱 (KIP-225)
+// 依赖 Wall Clock 触发,事件时间支持较弱 (KIP-225)
 ```
 
 ### 4.3 边界讨论: 何时 Kafka Streams 是更优选择？
@@ -402,7 +402,7 @@ WatermarkStrategy.<Event>forBoundedOutOfOrderness(Duration.ofSeconds(30))
 **边界条件 2: Kafka 中心化数据管道**
 
 ```
-场景: 纯 Kafka 生态，所有数据都在 Topic 中流转
+场景: 纯 Kafka 生态,所有数据都在 Topic 中流转
 
 数据流:
 Source Topic → Kafka Streams 处理 → Sink Topic

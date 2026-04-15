@@ -462,7 +462,7 @@ $$
 **一致性保证**：
 
 ```
-设 CP_k 为第 k 个 Checkpoint，包含模型状态 M_k
+设 CP_k 为第 k 个 Checkpoint,包含模型状态 M_k
 设 R 为从 CP_k 恢复的实例
 
 需证明: R 的状态等价于 CP_k 创建时刻的某一刻状态快照
@@ -471,12 +471,12 @@ $$
 1. Checkpoint Barrier n 对齐保证: 所有上游算子在处理 Barrier n 前
    产生的数据都已被当前算子处理
 
-2. KeyedStateBackend 快照: 在收到所有上游 Barrier n 后，
-   触发状态快照，捕获此刻的完整模型状态
+2. KeyedStateBackend 快照: 在收到所有上游 Barrier n 后,
+   触发状态快照,捕获此刻的完整模型状态
 
 3. 增量 Checkpoint: 仅序列化自 CP_{k-1} 以来变化的状态
 
-4. 恢复时: 从 CP_k 加载状态，重放未确认数据
+4. 恢复时: 从 CP_k 加载状态,重放未确认数据
    保证模型参数与故障前一致
 ```
 
@@ -999,13 +999,13 @@ public class AdaptiveLearningRate {
     public double adjustLR(double currentLR, DriftType drift) {
         switch (drift) {
             case SUDDEN:
-                // 突然漂移：增大学习率快速适应
+                // 突然漂移:增大学习率快速适应
                 return Math.min(currentLR * 2.0, MAX_LR);
             case GRADUAL:
-                // 渐进漂移：温和调整
+                // 渐进漂移:温和调整
                 return currentLR * 1.2;
             case STABLE:
-                // 稳定期：衰减学习率
+                // 稳定期:衰减学习率
                 return currentLR * DECAY_RATE;
             default:
                 return currentLR;
@@ -1116,7 +1116,7 @@ public class ShardedModelState {
    │   └── KeyedStateBackend 序列化 θ, m, v
    ├── 异步写入 Checkpoint 存储
    └── 继续处理
-3. 所有算子确认后，Checkpoint N 完成
+3. 所有算子确认后,Checkpoint N 完成
 ```
 
 **故障恢复策略**：

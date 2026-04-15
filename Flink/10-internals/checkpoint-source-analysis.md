@@ -278,7 +278,7 @@ $$
 public void processBarrier(CheckpointBarrier receivedBarrier, int channelIndex) throws IOException {
     long barrierId = receivedBarrier.getId();
 
-    // 如果是新的Checkpoint，开始新的对齐
+    // 如果是新的Checkpoint,开始新的对齐
     if (barrierId > currentCheckpointId) {
         // 释放之前阻塞的缓冲区
         releaseBlocksAndResetBarriers();
@@ -290,10 +290,10 @@ public void processBarrier(CheckpointBarrier receivedBarrier, int channelIndex) 
 
     // 检查是否所有channel都已对齐
     if (allChannelsBlocked()) {
-        // 所有Barrier对齐，触发快照
+        // 所有Barrier对齐,触发快照
         notifyCheckpoint(currentCheckpointId);
     } else {
-        // 阻塞该channel，等待其他Barrier
+        // 阻塞该channel,等待其他Barrier
         blockChannel(channelIndex);
     }
 }
@@ -318,12 +318,12 @@ $$
 ```java
 // 源码位置: SingleCheckpointBarrierHandler.java
 public void processBarrier(CheckpointBarrier barrier, int channelIndex) {
-    // 非对齐模式下，立即触发快照而不阻塞数据
+    // 非对齐模式下,立即触发快照而不阻塞数据
     // 需要缓冲in-flight数据
 
     long bytesToPersist = calculateInFlightData();
     if (bytesToPersist > maxBufferedBytes) {
-        // 如果超出内存限制，回退到对齐模式
+        // 如果超出内存限制,回退到对齐模式
         fallBackToAlignedCheckpoint();
     }
 }
@@ -525,7 +525,7 @@ public CheckpointCoordinator(
 ### Rel-F-10-04-04: Checkpoint与State Backend的交互关系
 
 ```java
-// 关系映射：Checkpoint触发时与State Backend的交互
+// 关系映射:Checkpoint触发时与State Backend的交互
 
 // 1. CheckpointCoordinator触发Checkpoint
 public void triggerCheckpoint(long timestamp) {
@@ -690,7 +690,7 @@ private void blockChannel(int channelIndex) throws IOException {
 
         // 通知反压策略
         if (numBlockedChannels == 1) {
-            // 第一个channel被阻塞，开始对齐阶段
+            // 第一个channel被阻塞,开始对齐阶段
             alignmentStartNanos = System.nanoTime();
         }
     }
@@ -703,7 +703,7 @@ private void startCaching(int channelIndex) throws IOException {
             // 缓存数据buffer
             cachedBuffers.get(channelIndex).add(buffer);
         } else if (buffer.getEvent() instanceof CheckpointBarrier) {
-            // 遇到Barrier，停止缓存
+            // 遇到Barrier,停止缓存
             processBarrier((CheckpointBarrier) buffer.getEvent(), channelIndex);
             break;
         }
@@ -716,7 +716,7 @@ private void startCaching(int channelIndex) throws IOException {
 ```java
 // 1. 单输入channel优化
 if (totalNumberOfInputChannels == 1) {
-    // 只有一个输入，无需对齐，直接触发
+    // 只有一个输入,无需对齐,直接触发
     notifyCheckpoint(currentCheckpointId);
     return;
 }
@@ -724,7 +724,7 @@ if (totalNumberOfInputChannels == 1) {
 // 2. 超时处理
 private void handleAlignmentTimeout() {
     if (alignmentDuration > maxAlignmentDuration) {
-        // 对齐超时，可能某些channel卡住
+        // 对齐超时,可能某些channel卡住
         LOG.warn("Checkpoint alignment timed out after {}", alignmentDuration);
         // 可以选择强制触发或失败Checkpoint
     }
@@ -748,7 +748,7 @@ public class AlternatingCheckpointBarrierHandler extends CheckpointBarrierHandle
             long estimatedInFlightBytes = estimateInFlightData();
 
             if (estimatedInFlightBytes > maxBufferedBytes) {
-                // 内存超限，转换为对齐Checkpoint
+                // 内存超限,转换为对齐Checkpoint
                 LOG.info("Switching to aligned checkpoint due to memory limit");
                 switchToAlignedCheckpoint(barrier);
                 return;
@@ -926,7 +926,7 @@ public class IncrementalSnapshotStrategy {
             uploadedSstFiles.add(new HandleAndLocalPath(handle, sstFile));
         }
 
-        // 4. 引用共享文件（来自之前Checkpoint）
+        // 4. 引用共享文件(来自之前Checkpoint)
         List<StateHandleID> sharedFiles = getSharedSstFiles(rocksDbSnapshot);
 
         // 5. 构建增量状态句柄
@@ -944,11 +944,11 @@ public class IncrementalSnapshotStrategy {
 
 ```
 Checkpoint N: [SST-A, SST-B, SST-C] (全量)
-Checkpoint N+1: [SST-A, SST-B, SST-C] + [SST-D] (增量，共享A,B,C)
+Checkpoint N+1: [SST-A, SST-B, SST-C] + [SST-D] (增量,共享A,B,C)
                 ↑
                 └── sharedStateHandles引用之前Checkpoint的文件
 
-恢复时：
+恢复时:
 1. 下载SST-A, SST-B, SST-C (如果本地缓存缺失)
 2. 下载SST-D (新文件)
 3. 重建RocksDB状态
@@ -975,7 +975,7 @@ Checkpoint N+1: [SST-A, SST-B, SST-C] + [SST-D] (增量，共享A,B,C)
 ```java
 // 源码: CheckpointBarrierAligner.java
 public void processBarrier(CheckpointBarrier barrier, int channelIndex) {
-    // 当收到第一个Barrier时，开始阻塞其他channel
+    // 当收到第一个Barrier时,开始阻塞其他channel
     if (!isCheckpointPending()) {
         currentCheckpointId = barrier.getId();
         // 阻塞所有其他channel
@@ -1050,7 +1050,7 @@ $$
 ```java
 // 源码: SingleCheckpointBarrierHandler.java
 public void processBarrier(CheckpointBarrier barrier, int channelIndex) {
-    // 非对齐模式：立即触发快照
+    // 非对齐模式:立即触发快照
     // 同时需要持久化所有channel的缓冲区数据
 
     // 1. 停止读取输入
@@ -1062,7 +1062,7 @@ public void processBarrier(CheckpointBarrier barrier, int channelIndex) {
         inFlightData.put(i, drainBuffers(inputGates[i]));
     }
 
-    // 3. 构建Checkpoint状态（包含in-flight数据）
+    // 3. 构建Checkpoint状态(包含in-flight数据)
     ChannelStateWriteResult channelState = channelStateWriter.write(
         barrier.getId(),
         inFlightData
@@ -1159,7 +1159,7 @@ $$
 
 ```java
 // notifyCheckpointComplete只在Checkpoint完全确认后调用
-// 如果Checkpoint失败，对应的pending事务会被丢弃
+// 如果Checkpoint失败,对应的pending事务会被丢弃
 public void notifyCheckpointAborted(long checkpointId) {
     List<Transaction> transactions = pendingTransactionsPerCheckpoint.remove(checkpointId);
     for (Transaction txn : transactions) {
@@ -1185,11 +1185,11 @@ public void notifyCheckpointAborted(long checkpointId) {
 
 ```java
 public void commit(Transaction txn) {
-    // 幂等提交：检查事务状态
+    // 幂等提交:检查事务状态
     if (txn.getStatus() == TransactionStatus.PENDING) {
         externalSystem.commit(txn.getId());
     }
-    // 如果已经提交，不做任何操作
+    // 如果已经提交,不做任何操作
 }
 ```
 
@@ -1232,8 +1232,8 @@ import java.util.List;
 
 // 增量Checkpoint结构
 class IncrementalStateHandle {
-    List<StreamStateHandle> sharedStateHandles;      // 共享状态（来自之前Checkpoint）
-    List<StreamStateHandle> privateStateHandles;     // 私有状态（本次新增）
+    List<StreamStateHandle> sharedStateHandles;      // 共享状态(来自之前Checkpoint)
+    List<StreamStateHandle> privateStateHandles;     // 私有状态(本次新增)
 }
 ```
 
@@ -1477,15 +1477,15 @@ public void processBarrier(CheckpointBarrier receivedBarrier, int channelIndex)
 
     final long barrierId = receivedBarrier.getId();
 
-    // Case 1: 收到之前Checkpoint的Barrier（迟到的Barrier）
+    // Case 1: 收到之前Checkpoint的Barrier(迟到的Barrier)
     if (barrierId < currentCheckpointId) {
-        // 忽略，已经处理过这个Checkpoint
+        // 忽略,已经处理过这个Checkpoint
         return;
     }
 
     // Case 2: 收到新Checkpoint的Barrier
     if (barrierId > currentCheckpointId) {
-        // 2.1 如果正在进行对齐，先完成之前的Checkpoint
+        // 2.1 如果正在进行对齐,先完成之前的Checkpoint
         if (isCheckpointPending()) {
             handlePendingCheckpoint(currentCheckpointId);
         }
@@ -1502,7 +1502,7 @@ public void processBarrier(CheckpointBarrier receivedBarrier, int channelIndex)
 
         // 3.2 检查是否所有channel都已对齐
         if (allBarriersReceived()) {
-            // 所有Barrier对齐，完成对齐
+            // 所有Barrier对齐,完成对齐
             completeAlignment(barrierId);
 
             // 通知Checkpoint完成
@@ -1511,7 +1511,7 @@ public void processBarrier(CheckpointBarrier receivedBarrier, int channelIndex)
             // 释放所有被阻塞的channel
             releaseBlocks();
         } else {
-            // 3.3 阻塞该channel，等待其他Barrier
+            // 3.3 阻塞该channel,等待其他Barrier
             blockChannel(channelIndex);
         }
     }
@@ -1578,7 +1578,7 @@ Channel 1:  [Record] [Record] [Record] [Record] [Barrier:ID=5] ...
                 │  - Channel 1 对齐前数据: [Record]        │
                 │                                          │
                 │  触发snapshotState()                     │
-                │  释放阻塞，重新注入缓存数据               │
+                │  释放阻塞,重新注入缓存数据               │
                 └──────────────────────────────────────────┘
 ```
 
@@ -1595,9 +1595,9 @@ public void snapshotState(StateSnapshotContext context) throws Exception {
     final long checkpointId = context.getCheckpointId();
     final long timestamp = context.getCheckpointTimestamp();
 
-    // Step 1: 执行KeyeState的快照（如果存在）
+    // Step 1: 执行KeyeState的快照(如果存在)
     if (keyedStateBackend != null) {
-        // 1.1 注册key选择器（用于广播状态）
+        // 1.1 注册key选择器(用于广播状态)
         if (keySelector != null) {
             keyedStateBackend.setCurrentKey(keySelector.getCurrentKey());
         }
@@ -1612,7 +1612,7 @@ public void snapshotState(StateSnapshotContext context) throws Exception {
         );
     }
 
-    // Step 2: 执行OperatorState的快照（如果存在）
+    // Step 2: 执行OperatorState的快照(如果存在)
     if (operatorStateBackend != null) {
         operatorStateBackend.snapshot(
             checkpointId,
@@ -1822,7 +1822,7 @@ public class HeapKeyedStateBackend<K> implements CheckpointableKeyedStateBackend
             CheckpointStreamFactory streamFactory,
             CheckpointOptions checkpointOptions) {
 
-        // 同步快照：直接复制内存中的状态
+        // 同步快照:直接复制内存中的状态
         Map<String, StateTable<K, ?, ?>> stateCopies = new HashMap<>();
 
         for (Map.Entry<String, StateTable<K, ?, ?>> entry : stateTables.entrySet()) {
@@ -1856,7 +1856,7 @@ public class RocksDBKeyedStateBackend<K> implements CheckpointableKeyedStateBack
 
     @Override
     public RunnableFuture<SnapshotResult<KeyedStateHandle>> snapshot(...) {
-        // 异步快照：创建Checkpoint但不立即执行
+        // 异步快照:创建Checkpoint但不立即执行
 
         // Step 1: 获取RocksDB快照
         RocksDBSnapshot snapshot = db.getSnapshot();
@@ -1871,7 +1871,7 @@ public class RocksDBKeyedStateBackend<K> implements CheckpointableKeyedStateBack
                     // 2.1 获取当前所有SST文件列表
                     List<String> sstFiles = getSstFiles();
 
-                    // 2.2 对于增量Checkpoint，只上传新文件
+                    // 2.2 对于增量Checkpoint,只上传新文件
                     List<HandleAndLocalPath> newFiles = new ArrayList<>();
                     for (String file : sstFiles) {
                         if (!previouslyUploaded.contains(file)) {
@@ -1988,7 +1988,7 @@ public class FlinkKafkaProducer<IN> extends TwoPhaseCommitSinkFunction<IN,
 
     @Override
     protected void preCommit(KafkaTransactionState transaction) throws Exception {
-        // 预提交：刷新数据到Kafka但不提交事务
+        // 预提交:刷新数据到Kafka但不提交事务
         transaction.producer.flush();
         // 事务处于PREPARE_COMMIT状态
     }

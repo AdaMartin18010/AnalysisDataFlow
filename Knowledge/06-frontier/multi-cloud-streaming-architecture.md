@@ -17,7 +17,7 @@
 设 StreamingComponent = {Source, Processor, Sink, SchemaRegistry}
 
 多云流处理架构 := ⟨Deployments, Links, Policies⟩
-其中：
+其中:
   - Deployments ⊆ Cloud × StreamingComponent
   - Links ⊆ Deployments × Deployments 表示跨云数据流
   - Policies: Deployments → {Active, Standby, ScaleOnDemand}
@@ -29,7 +29,7 @@
 
 ```
 复制模式 := ⟨SourceRegion, TargetRegion, Direction, Consistency⟩
-其中：
+其中:
   - Direction ∈ {UniDirectional, BiDirectional, MultiMaster}
   - Consistency ∈ {Eventual, Causal, Strong, Session}
 ```
@@ -87,11 +87,11 @@ RTO := max{t | 服务在故障后 t 时间内必须恢复}
 设 Azure可用性 = 0.9999
 设 GCP可用性 = 0.9999
 
-主动-主动场景（OR关系）:
+主动-主动场景(OR关系):
 Availability_total = 1 - ∏(1 - Availability_i)
                    = 1 - (0.0001)^3 ≈ 0.999999999999
 
-主动-被动场景（受限于切换）:
+主动-被动场景(受限于切换):
 Availability_total = Availability_primary × P(成功切换)
 ```
 
@@ -122,9 +122,9 @@ AWS us-east-1 到 eu-west-1 距离 ≈ 6,400 km
 
 ```
 多云CAP扩展:
-  - 云间分区不可避免（网络故障）
-  - 选择CP: 分区时拒绝写入，保证一致性
-  - 选择AP: 接受写入，可能产生冲突
+  - 云间分区不可避免(网络故障)
+  - 选择CP: 分区时拒绝写入,保证一致性
+  - 选择AP: 接受写入,可能产生冲突
 
 流处理场景推荐:
   - 金融交易: CP (RPO=0)
@@ -239,7 +239,7 @@ AWS us-east-1 到 eu-west-1 距离 ≈ 6,400 km
 假设:
   - 流量均匀分布到 N 个区域
   - 每个区域处理能力为 C
-  - 故障概率为 p，且相互独立
+  - 故障概率为 p,且相互独立
 
 总处理能力 = N × C
 可用性 = 1 - p^N
@@ -271,9 +271,9 @@ AWS us-east-1 到 eu-west-1 距离 ≈ 6,400 km
   - 客户端向A写入数据x=v1
   - 客户端向B写入数据x=v2
 
-  如果系统保持可用性，两个写入都会成功
-  但由于分区，A和B无法同步
-  当分区恢复时，x的值不确定
+  如果系统保持可用性,两个写入都会成功
+  但由于分区,A和B无法同步
+  当分区恢复时,x的值不确定
   违反一致性
 
 ∴ 三者不可同时满足 ∎

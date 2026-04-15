@@ -211,7 +211,7 @@ flowchart LR
 ```bash
 # crontab 示例
 
-# 每日检查版本状态（早上9点）
+# 每日检查版本状态(早上9点)
 0 9 * * * cd /path/to/project && python .scripts/flink-release-tracker-v2.py --report
 
 # 每周一生成周报告

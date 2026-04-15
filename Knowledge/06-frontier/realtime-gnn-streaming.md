@@ -360,30 +360,27 @@ def time_aware_sample(neighbors, k, current_time, decay_factor):
 
 1. **预计算邻居缓存**
    ```python
-   # 缓存高频访问节点的邻居
-   neighbor_cache = LRUCache(maxsize=100000)
-
-   def get_neighbors(node_id, timestamp):
-       key = (node_id, timestamp // CACHE_WINDOW)
-       if key in neighbor_cache:
-           return neighbor_cache[key]
-       neighbors = sample_neighbors_from_storage(node_id, timestamp)
-       neighbor_cache[key] = neighbors
-       return neighbors
+# 缓存高频访问节点的邻居
+neighbor_cache = LRUCache(maxsize=100000)
+def get_neighbors(node_id, timestamp):
+    key = (node_id, timestamp // CACHE_WINDOW)
+    if key in neighbor_cache:
+        return neighbor_cache[key]
+    neighbors = sample_neighbors_from_storage(node_id, timestamp)
+    neighbor_cache[key] = neighbors
+    return neighbors
    ```
 
 2. **异步内存更新**
    ```python
-   # 预测与内存更新解耦
-   async def process_batch(batch):
-       # 同步推理
-       embeddings = tgn.compute_embeddings(batch)
-       predictions = decoder(embeddings)
-
-       # 异步更新内存
-       asyncio.create_task(update_memories_async(batch))
-
-       return predictions
+# 预测与内存更新解耦
+async def process_batch(batch):
+    # 同步推理
+    embeddings = tgn.compute_embeddings(batch)
+    predictions = decoder(embeddings)
+    # 异步更新内存
+    asyncio.create_task(update_memories_async(batch))
+    return predictions
    ```
 
 3. **模型量化与编译**

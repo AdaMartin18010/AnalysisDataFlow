@@ -153,7 +153,7 @@ DeleteAction = ⟨_index, _id⟩
 ```
 IndexTemplate = ⟨IndexPattern, Settings, Mappings, Aliases⟩
 
-IndexPattern: 匹配索引名称模式，如 "logs-*"
+IndexPattern: 匹配索引名称模式,如 "logs-*"
 Settings: ⟨shards, replicas, refresh_interval⟩
 Mappings: 字段类型定义
 Aliases: 索引别名
@@ -177,7 +177,7 @@ Aliases: 索引别名
 ```
 RecoveryModel = ⟨AtLeastOnce, ExactlyOnce⟩
 
-AtLeastOnce: 异步批量写入，失败时重试
+AtLeastOnce: 异步批量写入,失败时重试
 ExactlyOnce: Checkpoint 同步等待 Bulk 确认
 
 Recovery = if (failure) {
@@ -204,7 +204,7 @@ T_max = min(
 
 其中:
   T_bulk = bulk_flush_max_actions / bulk_flush_interval
-  T_es = 单分片索引吞吐（通常 10-50MB/s）
+  T_es = 单分片索引吞吐(通常 10-50MB/s)
 ```
 
 ---
@@ -281,7 +281,7 @@ Checkpoint 周期:
 
 恢复流程:
     1. 从 Checkpoint 恢复状态
-    2. 重放未确认的记录（通过 _id 去重）
+    2. 重放未确认的记录(通过 _id 去重)
     3. 恢复正常写入
 ```
 
@@ -358,7 +358,7 @@ Flink Sink 并行度 = ES 索引主分片数
 
 原因:
 - 避免单个 Task 写入多个分片导致的网络跳数
-- 每个 Task 专属一个分片，写入本地化
+- 每个 Task 专属一个分片,写入本地化
 - 便于故障隔离和并行恢复
 ```
 
@@ -385,14 +385,14 @@ Flink Sink 并行度 = ES 索引主分片数
   records → buffer → BulkRequest → ES → ack → remove from buffer
 
 故障场景 1: Bulk Request 失败
-  → 重试（指数退避）
+  → 重试(指数退避)
   → 成功: 继续
-  → 失败超过 max_retries: 抛出异常，触发 Task 重启
+  → 失败超过 max_retries: 抛出异常,触发 Task 重启
 
 故障场景 2: Task 崩溃
   → 从 Checkpoint 恢复
-  → 重放未确认记录（可能重复）
-  → 通过 _id 实现幂等（如配置）
+  → 重放未确认记录(可能重复)
+  → 通过 _id 实现幂等(如配置)
 ```
 
 **结论**: 每条记录至少被写入一次，满足 At-Least-Once。
@@ -490,10 +490,10 @@ public class ElasticsearchSinkExample {
                         // 构建索引请求
                         IndexRequest request = Requests.indexRequest()
                             .index("events-" + event.getDate())  // 按日期分索引
-                            .id(event.getId())                    // 指定文档 ID（幂等）
+                            .id(event.getId())                    // 指定文档 ID(幂等)
                             .source(convertToJson(event));
 
-                        // 添加路由（可选）
+                        // 添加路由(可选)
                         if (event.getUserId() != null) {
                             request.routing(event.getUserId());
                         }
@@ -530,7 +530,7 @@ public class ElasticsearchSinkExample {
                         // 400 Bad Request: 跳过或记录到死信队列
                         log.error("Invalid document: {}", event, failure);
                     } else {
-                        // 其他错误：重新抛出触发重试
+                        // 其他错误:重新抛出触发重试
                         throw new RuntimeException(failure);
                     }
                 }
@@ -705,7 +705,7 @@ builder.setRestClientFactory(
                     credentialsProvider
                 );
 
-                // SSL 配置（如果使用自签名证书）
+                // SSL 配置(如果使用自签名证书)
                 try {
                     SSLContext sslContext = SSLContexts.custom()
                         .loadTrustMaterial(
@@ -881,7 +881,7 @@ builder.setBulkFlushBackoff(
 
 // 3. 检查 ES 集群资源
 // - 增加数据节点
-// - 增加分片数（如果写入集中在少数分片）
+// - 增加分片数(如果写入集中在少数分片)
 // - 优化 refresh_interval
 ```
 
@@ -938,7 +938,7 @@ ClusterBlockException[blocked by: [FORBIDDEN/12/index read-only / allow delete (
 **解决方案**:
 
 ```bash
-# 1. 临时解除只读（治标不治本）
+# 1. 临时解除只读(治标不治本)
 PUT /_all/_settings
 {
   "index.blocks.read_only_allow_delete": null
@@ -947,7 +947,7 @@ PUT /_all/_settings
 # 2. 清理磁盘空间
 # - 删除旧索引
 # - 增加磁盘容量
-# - 调整水位线（临时）
+# - 调整水位线(临时)
 PUT /_cluster/settings
 {
   "transient": {
@@ -1058,13 +1058,13 @@ curl -X GET "localhost:9200/_cat/shards/events-*?v"
 env.getConfig().enableObjectReuse();
 
 // 2. 调整 Checkpoint 间隔
-env.enableCheckpointing(60000);  // 60秒，避免过于频繁
+env.enableCheckpointing(60000);  // 60秒,避免过于频繁
 
 // 3. 异步 Snapshot
 env.getCheckpointConfig().enableUnalignedCheckpoints();
 
 // 4. 背压处理
-// 启用 Buffer Debloating（Flink 1.14+）
+// 启用 Buffer Debloating(Flink 1.14+)
 env.getConfig().setAutoWatermarkInterval(200);
 ```
 

@@ -113,16 +113,16 @@ $$
 │  【业务指标】                                                           │
 │   □ 端到端延迟持续高于 Watermark 延迟配置                              │
 │   □ 窗口结果输出时间显著晚于窗口结束时间                               │
-│   □ 实时性要求无法满足（如"5秒延迟"承诺无法兑现）                      │
+│   □ 实时性要求无法满足(如"5秒延迟"承诺无法兑现)                      │
 │                                                                         │
 │  【Flink指标】                                                          │
 │   □ currentOutputWatermark 落后 currentInputWatermark 固定差值         │
 │   □ watermarkLag 持续增长                                              │
-│   □ records_late 为 0 或极低（不是好事！说明延迟容忍过度）             │
+│   □ records_late 为 0 或极低(不是好事！说明延迟容忍过度)             │
 │                                                                         │
 │  【数据特征】                                                           │
 │   □ 99% 数据到达时 Watermark 还在"等待"未来数据                        │
-│   □ 窗口内数据早已到齐，但迟迟不触发                                   │
+│   □ 窗口内数据早已到齐,但迟迟不触发                                   │
 │                                                                         │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
@@ -141,13 +141,13 @@ $$
 │                                                                         │
 │  【Flink指标】                                                          │
 │   □ records_late 持续增长                                              │
-│   □ 侧输出流（Side Output）有大量数据                                  │
+│   □ 侧输出流(Side Output)有大量数据                                  │
 │   □ numLateRecordsDropped 非零                                         │
 │                                                                         │
 │  【数据特征】                                                           │
 │   □ 网络抖动期间数据丢失增加                                           │
 │   □ 跨数据中心传输的数据经常迟到                                       │
-│   □ 批量上报的数据（如IoT边缘网关）大量进入侧输出                      │
+│   □ 批量上报的数据(如IoT边缘网关)大量进入侧输出                      │
 │                                                                         │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
@@ -170,7 +170,7 @@ $$
 **延迟放大效应** [^4]：
 
 ```
-场景: 5层窗口聚合，每层 Watermark 延迟 1 分钟
+场景: 5层窗口聚合,每层 Watermark 延迟 1 分钟
 
 数据到达 ──► [Window-1] ──► [Window-2] ──► [Window-3]
              delay: 1min      delay: 1min      delay: 1min
@@ -193,16 +193,16 @@ $$
 **数据丢失的级联效应** [^5]：
 
 ```
-场景: 金融交易统计，Watermark 延迟 1 秒，实际网络延迟可达 5 秒
+场景: 金融交易统计,Watermark 延迟 1 秒,实际网络延迟可达 5 秒
 
 交易 T1 (ts=10:00:00) ──► 因网络延迟 10:00:05 到达
 
 Watermark 在 10:00:01 时已经推进到 10:00:00
 
-T1 到达时，10:00:00 的窗口已经触发关闭
+T1 到达时,10:00:00 的窗口已经触发关闭
 
-结果: T1 被标记为迟到数据，丢弃或进入侧输出
-      交易统计遗漏，风控规则误判
+结果: T1 被标记为迟到数据,丢弃或进入侧输出
+      交易统计遗漏,风控规则误判
 ```
 
 **数据一致性影响**：
@@ -255,17 +255,17 @@ class LatencyMeasurementFunction
   }
 }
 
-// 测量后分析指标：
-// - p50延迟：典型乱序程度
-// - p99延迟：极端乱序需要覆盖
-// - max延迟：决定是否需要特殊处理
+// 测量后分析指标:
+// - p50延迟:典型乱序程度
+// - p99延迟:极端乱序需要覆盖
+// - max延迟:决定是否需要特殊处理
 ```
 
 **步骤2: 基于百分位数配置** [^3]：
 
 ```scala
 // 推荐配置: Watermark 延迟 = p99乱序延迟 + 安全余量
-// 例如：p99 = 5s，配置为 8s (余量 3s)
+// 例如:p99 = 5s,配置为 8s (余量 3s)
 
 val optimalWatermarkStrategy =
   WatermarkStrategy
@@ -279,7 +279,7 @@ val optimalWatermarkStrategy =
 不同数据源使用不同配置 [^4]：
 
 ```scala
-// 源 A: 有序日志，乱序 < 100ms
+// 源 A: 有序日志,乱序 < 100ms
 val sourceA = env.fromSource(
   kafkaSourceA,
   WatermarkStrategy
@@ -288,7 +288,7 @@ val sourceA = env.fromSource(
   "Source-A-Ordered"
 )
 
-// 源 B: 跨数据中心，乱序 1-5s
+// 源 B: 跨数据中心,乱序 1-5s
 val sourceB = env.fromSource(
   kafkaSourceB,
   WatermarkStrategy
@@ -298,7 +298,7 @@ val sourceB = env.fromSource(
   "Source-B-DC-Crossing"
 )
 
-// 源 C: IoT边缘网关，批量上报，乱序可达 1min
+// 源 C: IoT边缘网关,批量上报,乱序可达 1min
 val sourceC = env.fromSource(
   kafkaSourceC,
   WatermarkStrategy
@@ -316,21 +316,21 @@ val unioned = sourceA.union(sourceB).union(sourceC)
 **优化: 延迟敏感与非敏感流分离** [^5]：
 
 ```scala
-// 方案: 延迟敏感的流单独处理，避免被慢流阻塞
+// 方案: 延迟敏感的流单独处理,避免被慢流阻塞
 
-// 快流：低延迟要求
+// 快流:低延迟要求
 val fastStream = sourceA
   .keyBy(_.key)
   .window(TumblingEventTimeWindows.of(Time.seconds(5)))
   .aggregate(new FastAggregation())
 
-// 慢流：允许高延迟
+// 慢流:允许高延迟
 val slowStream = sourceC
   .keyBy(_.key)
   .window(TumblingEventTimeWindows.of(Time.minutes(1)))
   .aggregate(new SlowAggregation())
 
-// 需要 Join 时，使用 Interval Join 允许时间差
+// 需要 Join 时,使用 Interval Join 允许时间差
 fastStream
   .keyBy(_.key)
   .intervalJoin(slowStream.keyBy(_.key))
@@ -343,7 +343,7 @@ fastStream
 根据流量模式自动调整 [^6]：
 
 ```scala
-// 自定义 Watermark 生成器，支持动态调整
+// 自定义 Watermark 生成器,支持动态调整
 class AdaptiveWatermarkGenerator(
   private val initialDelay: Long,
   private val maxDelay: Long
@@ -373,7 +373,7 @@ class AdaptiveWatermarkGenerator(
 }
 
 // 根据指标反馈调整
-// 例如：如果迟到数据率 > 1%，增加延迟；如果 < 0.01%，减少延迟
+// 例如:如果迟到数据率 > 1%,增加延迟;如果 < 0.01%,减少延迟
 ```
 
 ### 4.4 迟到数据处理策略
@@ -413,8 +413,8 @@ val conservativeStrategy =
     .forBoundedOutOfOrderness[Event](Duration.ofMinutes(5))  // 5分钟延迟！
     .withTimestampAssigner((e, _) => e.timestamp)
 
-// 业务场景: 实时监控告警，要求延迟 < 30s
-// 结果: 告警延迟 5 分钟，完全失去实时性
+// 业务场景: 实时监控告警,要求延迟 < 30s
+// 结果: 告警延迟 5 分钟,完全失去实时性
 
 // ❌ 错误: 未配置空闲源处理
 val noIdlenessStrategy =
@@ -423,8 +423,8 @@ val noIdlenessStrategy =
     .withTimestampAssigner((e, _) => e.timestamp)
     // 缺少 withIdleness()
 
-// 场景: 夜间流量骤降，某分区无数据
-// 结果: 该分区 Watermark 停滞，全局窗口永不触发
+// 场景: 夜间流量骤降,某分区无数据
+// 结果: 该分区 Watermark 停滞,全局窗口永不触发
 ```
 
 ### 5.2 正确示例：精细配置
@@ -467,8 +467,8 @@ val aggressiveStrategy =
     .forBoundedOutOfOrderness[Event](Duration.ofMillis(100))  // 仅100ms
     .withTimestampAssigner((e, _) => e.timestamp)
 
-// 场景: 数据从海外 DC 传输，典型延迟 500ms-2s
-// 结果: 大量数据迟到，统计结果严重偏低
+// 场景: 数据从海外 DC 传输,典型延迟 500ms-2s
+// 结果: 大量数据迟到,统计结果严重偏低
 
 // ❌ 错误: 单分区有序但多分区无序时未处理
 val singlePartitionStrategy =
@@ -476,8 +476,8 @@ val singlePartitionStrategy =
     .forMonotonousTimestamps[KafkaEvent]()  // 假设有序
     .withTimestampAssigner((e, _) => e.timestamp)
 
-// 场景: Kafka 多分区消费，分区间无序
-// 结果: 迟到数据率 5-10%，结果不一致
+// 场景: Kafka 多分区消费,分区间无序
+// 结果: 迟到数据率 5-10%,结果不一致
 ```
 
 ### 5.4 正确示例：多分区乱序处理
@@ -507,7 +507,7 @@ val windowed = stream
   .sideOutputLateData(lateTag)         // 捕获完全迟到数据
   .aggregate(new Aggregation())
 
-// 处理完全迟到数据（如写入补录队列）
+// 处理完全迟到数据(如写入补录队列)
 windowed.getSideOutput(lateTag).addSink(new LateDataSink())
 ```
 
@@ -522,7 +522,7 @@ windowed.getSideOutput(lateTag).addSink(new LateDataSink())
 **初始配置**（问题）：
 
 ```scala
-// 保守配置，来自批处理思维
+// 保守配置,来自批处理思维
 val watermarkStrategy =
   WatermarkStrategy
     .forBoundedOutOfOrderness[Transaction](Duration.ofSeconds(30))
@@ -595,7 +595,7 @@ flowchart TD
     L --> M{迟到数据率 > 0.1%?}
     M -->|是| N[增加延迟或配置AllowedLateness]
     M -->|否| O{端到端延迟 > SLA?}
-    O -->|是| P[减少延迟，接受更多迟到数据]
+    O -->|是| P[减少延迟,接受更多迟到数据]
     O -->|否| Q[配置完成]
     N --> Q
     P --> Q
@@ -613,27 +613,27 @@ flowchart TD
 
 ```mermaid
 timeline
-    title Watermark 延迟配置对比（假设窗口大小10s，事件时间10:00:05-10:00:15）
+    title Watermark 延迟配置对比(假设窗口大小10s,事件时间10:00:05-10:00:15)
 
     section 过度延迟 (Δ=60s)
         10:00:15 : 事件时间到达窗口结束
         10:00:16 : Watermark 仍停留在 10:00:14
         10:00:17 : 所有数据已到齐
         10:01:15 : Watermark 推进到 10:00:15
-                 : 窗口触发（延迟60s）
+                 : 窗口触发(延迟60s)
 
     section 最优配置 (Δ=5s)
         10:00:15 : 事件时间到达窗口结束
         10:00:17 : 最后数据到达
         10:00:20 : Watermark 推进到 10:00:15
-                 : 窗口触发（延迟5s）
+                 : 窗口触发(延迟5s)
 
     section 延迟不足 (Δ=1s)
         10:00:15 : 事件时间到达窗口结束
         10:00:16 : Watermark 推进到 10:00:14
-                 : 窗口触发（丢失迟到数据）
+                 : 窗口触发(丢失迟到数据)
         10:00:17 : 最后数据到达
-                 : 被标记为迟到，丢弃或进入侧输出
+                 : 被标记为迟到,丢弃或进入侧输出
 ```
 
 ---

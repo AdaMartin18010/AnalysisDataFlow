@@ -291,7 +291,7 @@ graph TB
    Milvus Flush: t=105
    查询时刻: t=103
 
-   结果：查询可能看到Flink已处理但Milvus未持久化的数据
+   结果:查询可能看到Flink已处理但Milvus未持久化的数据
    ```
 
 2. **故障恢复复杂性**:
@@ -635,7 +635,7 @@ SELECT
     created_at
 FROM twitter_stream;
 
--- 实时情绪聚合（按币种，5分钟窗口）
+-- 实时情绪聚合(按币种,5分钟窗口)
 CREATE MATERIALIZED VIEW coin_sentiment AS
 SELECT
     unnest(coin_mentions) as coin_symbol,
@@ -646,7 +646,7 @@ SELECT
 FROM TUMBLE(tweet_embeddings, created_at, INTERVAL '5' MINUTE)
 GROUP BY unnest(coin_mentions), window_start;
 
--- 相似推文检索（实时RAG）
+-- 相似推文检索(实时RAG)
 CREATE MATERIALIZED VIEW similar_tweets AS
 SELECT
     t1.tweet_id,
@@ -809,7 +809,7 @@ CREATE SOURCE user_events (
     metadata MAP<VARCHAR, VARCHAR>
 ) WITH (connector = 'kafka', ...);
 
--- 实时用户画像（滑动窗口聚合）
+-- 实时用户画像(滑动窗口聚合)
 CREATE MATERIALIZED VIEW user_realtime_profile AS
 SELECT
     user_id,
@@ -820,7 +820,7 @@ SELECT
 FROM HOP(user_events, event_time, INTERVAL '1' MINUTE, INTERVAL '5' MINUTE)
 GROUP BY user_id, window_start;
 
--- 个性化候选生成（向量相似度搜索）
+-- 个性化候选生成(向量相似度搜索)
 CREATE MATERIALIZED VIEW personalized_candidates AS
 SELECT
     p.user_id,

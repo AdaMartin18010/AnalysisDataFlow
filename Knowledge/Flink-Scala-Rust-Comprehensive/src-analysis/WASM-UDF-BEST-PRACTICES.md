@@ -52,11 +52,11 @@ flowchart TD
 ### 2.1 函数调用优化
 
 ```rust
-// ❌ 不推荐：每次调用都进行类型检查
+// ❌ 不推荐:每次调用都进行类型检查
 let func = instance.get_func(&mut store, "process").unwrap();
 func.call(&mut store, params, results)?;
 
-// ✅ 推荐：预编译 TypedFunc，消除运行时类型检查
+// ✅ 推荐:预编译 TypedFunc,消除运行时类型检查
 let typed_func: TypedFunc<(i64, i32), (i64,)> =
     instance.get_typed_func(&mut store, "process")?;
 
@@ -88,7 +88,7 @@ config.wasm_multi_memory(true);
 let input_mem = Memory::new(&mut store, MemoryType::new(1, Some(10)))?;
 let output_mem = Memory::new(&mut store, MemoryType::new(1, Some(10)))?;
 
-// 直接写入输入内存（Host -> WASM 无需拷贝）
+// 直接写入输入内存(Host -> WASM 无需拷贝)
 let input_slice = unsafe { input_mem.data_unchecked(&mut store) };
 input_slice[..data.len()].copy_from_slice(data);
 ```
@@ -97,7 +97,7 @@ input_slice[..data.len()].copy_from_slice(data);
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│              序列化方案性能对比（1000 条记录）                 │
+│              序列化方案性能对比(1000 条记录)                 │
 ├─────────────────────────────────────────────────────────────┤
 │ 格式           │ 序列化  │ 反序列化 │ 总耗时 │ 零拷贝支持      │
 ├─────────────────────────────────────────────────────────────┤
@@ -114,12 +114,12 @@ input_slice[..data.len()].copy_from_slice(data);
 ### 2.4 批量处理模式
 
 ```rust
-// ❌ 不推荐：单条处理，每次调用都有固定开销
+// ❌ 不推荐:单条处理,每次调用都有固定开销
 for record in batch {
     udf.call("process", record)?;  // N 次调用开销
 }
 
-// ✅ 推荐：批量处理，均摊调用开销
+// ✅ 推荐:批量处理,均摊调用开销
 // 在 WASM 侧实现批处理入口
 #[no_mangle]
 pub extern "C" fn process_batch(input_ptr: i64, count: i32) -> i64 {
@@ -156,7 +156,7 @@ flowchart TD
 ### 3.2 异步模式最佳实践
 
 ```rust
-// ✅ 推荐：并发发起多个独立请求
+// ✅ 推荐:并发发起多个独立请求
 async fn fetch_user_data(user_id: u64) -> Result<UserData> {
     let (profile, orders, preferences) = tokio::join!(
         fetch_profile(user_id),
@@ -171,7 +171,7 @@ async fn fetch_user_data(user_id: u64) -> Result<UserData> {
     })
 }
 
-// ✅ 推荐：流式处理大文件
+// ✅ 推荐:流式处理大文件
 async fn process_large_file(stream: InputStream) -> Result<()> {
     while let Some(chunk) = stream.next().await {
         process_chunk(chunk?)?;
@@ -179,7 +179,7 @@ async fn process_large_file(stream: InputStream) -> Result<()> {
     Ok(())
 }
 
-// ❌ 避免：在 async 中执行阻塞操作
+// ❌ 避免:在 async 中执行阻塞操作
 async fn bad_practice() {
     std::thread::sleep(Duration::from_secs(1));  // 阻塞整个任务！
 }
@@ -216,8 +216,8 @@ let result = tokio::time::timeout(
 let mut config = Config::new();
 
 // 禁用不需要的能力
-config.wasm_threads(false);        // 如无需要，禁用线程
-config.wasm_reference_types(false); // 如不需要，禁用引用类型
+config.wasm_threads(false);        // 如无需要,禁用线程
+config.wasm_reference_types(false); // 如不需要,禁用引用类型
 
 // 精细控制 WASI 能力
 let wasi_ctx = WasiCtxBuilder::new()
@@ -234,7 +234,7 @@ let wasi_ctx = WasiCtxBuilder::new()
 let mut store = Store::new(&engine, ());
 
 // 内存限制
-store.add_fuel(10_000_000_000)?;  // 燃料限制（指令数）
+store.add_fuel(10_000_000_000)?;  // 燃料限制(指令数)
 
 // 使用 ResourceLimiter
 struct Limiter;

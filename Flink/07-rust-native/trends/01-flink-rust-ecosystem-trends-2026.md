@@ -23,7 +23,7 @@
 ```
 设技术 T 在时间 t 的状态为 S(T, t) = (adoption, maturity, ecosystem)
 趋势 Trend(T) = ∃Δt, ∀t∈[t₀, t₀+Δt]: ∇S(T,t) · d > ε
-其中 d 为趋势方向向量，ε 为显著性阈值
+其中 d 为趋势方向向量,ε 为显著性阈值
 ```
 
 **直观解释**: 技术趋势不是炒作概念，而是可观测、可验证的发展方向。本文档分析的五大趋势均基于 2024-2025 年的实际技术演进和商业部署数据。
@@ -82,7 +82,7 @@
 ```
 由 P1 ∧ P2 ∧ P3 ⟹
     WASM UDF 具备生产级稳定性
-    ∧ 多语言支持（Rust/Go/TypeScript/C++）
+    ∧ 多语言支持(Rust/Go/TypeScript/C++)
     ∧ 标准化接口降低迁移成本
     ∴ WASM UDF 标准化趋势确立 (置信度: 92%)
 ```
@@ -104,13 +104,13 @@
 **数学推导**：
 
 ```
-设传统行式处理时间为 T_row，向量化处理时间为 T_vec
+设传统行式处理时间为 T_row,向量化处理时间为 T_vec
 T_row = n × (branch_misprediction + cache_miss + function_call_overhead)
 T_vec = (n/vec_size) × (SIMD_throughput + cache_hit_rate↑ + loop_unrolling)
 
 性能增益 G = T_row / T_vec
 
-已知：
+已知:
 - SIMD 宽度: 256-bit (AVX2) → 512-bit (AVX-512)
 - 每周期操作数: 8× (32-bit整数)
 - 缓存友好度提升: ~3×
@@ -353,7 +353,7 @@ T_vec ≈ (n/batch_size) × C_batch_setup + n × C_SIMD_per_element
 *步骤 4*: 流处理适用性
 
 ```
-流处理虽然数据持续到达，但:
+流处理虽然数据持续到达,但:
 1. 微批处理 (micro-batching) 可平衡延迟与吞吐
 2. 窗口操作天然适合批量处理
 3. 现代流引擎已实现亚秒级延迟的向量化执行
@@ -396,7 +396,7 @@ E1 ∧ E2 ∧ E3
 ⟹ WASM UDF 技术可行
 ∧ WASI 标准化消除碎片化风险
 ∧ 商业验证降低采用门槛
-∴ WASM UDF 标准化趋势确立（置信度: 92%）
+∴ WASM UDF 标准化趋势确立(置信度: 92%)
 ```
 
 ---

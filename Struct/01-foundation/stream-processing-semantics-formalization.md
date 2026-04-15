@@ -529,10 +529,10 @@ e4: (temp=23, event=10:00:05, process=10:00:04)
 **场景**: 设定Watermark延迟为2秒。
 
 ```
-时间线（事件时间）:  |----|----|----|----|----|
+时间线(事件时间):  |----|----|----|----|----|
                      0    5    10   15   20   25
 
-事件到达（处理时间）:
+事件到达(处理时间):
   t=3:  收到 event(4)   <- Watermark推进到 4-2=2
   t=5:  收到 event(6)   <- Watermark=4
   t=7:  收到 event(5)   <- 延迟事件！Watermark仍为4
@@ -555,8 +555,8 @@ e4: (temp=23, event=10:00:05, process=10:00:04)
 状态:    ø      ø      {key: count}    ø
 
 Checkpoint Barrier 到达时:
-1. Source: 暂停输出，记录偏移量
-2. Map: 无状态，直接传递 Barrier
+1. Source: 暂停输出,记录偏移量
+2. Map: 无状态,直接传递 Barrier
 3. KeyedProcess: 快照状态 {k1: 100, k2: 50}
 4. Sink: 预提交事务
 

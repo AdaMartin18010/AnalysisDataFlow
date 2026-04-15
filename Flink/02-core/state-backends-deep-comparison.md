@@ -568,7 +568,7 @@ env.getCheckpointConfig().setCheckpointTimeout(60000);
 # 状态后端配置
 state.backend: hashmap
 
-# 内存配置（关键！）
+# 内存配置(关键！)
 taskmanager.memory.task.heap.size: 2gb
 taskmanager.memory.managed.size: 256mb
 ```
@@ -628,7 +628,7 @@ env.setRocksDBStateBackend(rocksDbBackend, optionsFactory);
 ### 6.3 ForStStateBackend 配置（Flink 2.0+）
 
 ```java
-// ========== ForStStateBackend 配置（前瞻性） ==========
+// ========== ForStStateBackend 配置(前瞻性) ==========
 // Flink 2.0+ 支持
 ForStStateBackend forstBackend = new ForStStateBackend();
 forstBackend.setUFSStoragePath("s3://flink-state-bucket/jobs/job-001");
@@ -675,14 +675,14 @@ state.backend.forst.compaction.remote.endpoint: compaction-service:9090
 ```bash
 # ========== 从 HashMap 迁移到 RocksDB ==========
 
-# 1. 创建 Savepoint（使用原后端）
+# 1. 创建 Savepoint(使用原后端)
 flink savepoint <job-id> hdfs:///savepoints/migration
 
 # 2. 修改代码切换后端
 # env.setStateBackend(new HashMapStateBackend());  // 旧
 # env.setStateBackend(new EmbeddedRocksDBStateBackend(true));  // 新
 
-# 3. 从 Savepoint 恢复（自动转换状态格式）
+# 3. 从 Savepoint 恢复(自动转换状态格式)
 flink run -s hdfs:///savepoints/migration/savepoint-xxxxx \
   -c com.example.MyJob my-job.jar
 ```
@@ -966,13 +966,13 @@ public class EmbeddedRocksDBStateBackend implements StateBackend {
             CheckpointStreamFactory streamFactory,
             CheckpointOptions checkpointOptions) {
 
-        // 1. Flush MemTable到L0，生成新的SST文件
+        // 1. Flush MemTable到L0,生成新的SST文件
         rocksDB.flush(new FlushOptions().setWaitForFlush(true));
 
         // 2. 获取当前所有SST文件列表
         List<LiveFileMetaData> liveFiles = rocksDB.getLiveFilesMetaData();
 
-        // 3. 对比上一次Checkpoint，找出新增的SST文件
+        // 3. 对比上一次Checkpoint,找出新增的SST文件
         Set<SSTFileInfo> newSSTFiles = getNewSSTFiles(liveFiles, previousCheckpointFiles);
 
         // 4. 上传新增的SST文件
@@ -994,7 +994,7 @@ public class EmbeddedRocksDBStateBackend implements StateBackend {
     }
 
     /**
-     * 判断SST文件是否变更（基于文件大小和修改时间）
+     * 判断SST文件是否变更(基于文件大小和修改时间)
      */
     private boolean isSSTFileChanged(SSTFileInfo current, SSTFileInfo previous) {
         return current.getFileSize() != previous.getFileSize()
@@ -1070,10 +1070,10 @@ public class CompactionImpactAnalysis {
             List<LiveFileMetaData> before,
             List<LiveFileMetaData> after) {
 
-        // 被删除的文件（已合并）
+        // 被删除的文件(已合并)
         Set<String> deletedFiles = getDeletedFiles(before, after);
 
-        // 新增的文件（合并结果）
+        // 新增的文件(合并结果)
         Set<String> addedFiles = getAddedFiles(before, after);
 
         // 未变更的文件
@@ -1129,7 +1129,7 @@ public class ForStRemoteCompactionScheduler {
             // 更新本地元数据引用
             updateSSTMetadata(completedTask.getOutputFiles());
 
-            // 清理输入文件（引用计数减1）
+            // 清理输入文件(引用计数减1)
             cleanupInputFiles(inputFiles);
         });
 
@@ -1140,7 +1140,7 @@ public class ForStRemoteCompactionScheduler {
      * 判断是否应该使用远程Compaction
      */
     public boolean shouldUseRemoteCompaction(int inputFileCount, long inputFileSize) {
-        // 文件数量多或大小大时，使用远程Compaction
+        // 文件数量多或大小大时,使用远程Compaction
         return inputFileCount > REMOTE_COMPACTION_MIN_FILES
             || inputFileSize > REMOTE_COMPACTION_MIN_SIZE;
     }
@@ -1214,7 +1214,7 @@ public class StateBackendSelector {
         // 1. 检查状态大小
         long estimatedStateSize = requirements.getEstimatedStateSize();
         if (estimatedStateSize < 100 * 1024 * 1024L) {  // < 100MB
-            // 小状态使用HashMap（低延迟）
+            // 小状态使用HashMap(低延迟)
             return new HashMapStateBackend();
         }
 
@@ -1232,7 +1232,7 @@ public class StateBackendSelector {
             return createRocksDBBackend(config, true);  // 启用增量
         }
 
-        // 默认使用RocksDB（通用场景）
+        // 默认使用RocksDB(通用场景)
         return createRocksDBBackend(config, true);
     }
 

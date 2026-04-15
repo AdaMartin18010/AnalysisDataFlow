@@ -577,7 +577,7 @@ $$\text{Messages}(\mathcal{T}) \leq n(n-1) \cdot d_{\text{diam}} \cdot k_{\text{
 **关键差异**：
 
 ```
-Actor模型：                        Agent模型：
+Actor模型:                        Agent模型:
 ┌─────────────────┐              ┌──────────────────────┐
 │   receive(msg)  │              │  Perceive(d, m, c)   │
 │       ↓         │              │       ↓              │
@@ -1256,10 +1256,10 @@ class RecommendationAgent:
         """处理单个事件"""
         user_id = event.user_id
 
-        # 感知：更新用户画像
+        # 感知:更新用户画像
         self.update_profile(user_id, event)
 
-        # 思考：生成推荐
+        # 思考:生成推荐
         user_vector = self.user_profiles[user_id].to_vector()
         candidates = self.content_index.similarity_search(
             user_vector,
@@ -1269,7 +1269,7 @@ class RecommendationAgent:
         # 排序推理
         ranked = self.rerank(candidates, user_id)
 
-        # 行动：返回Top-K
+        # 行动:返回Top-K
         top_k = ranked[:10]
 
         return Recommendation(user_id, top_k)
@@ -1285,13 +1285,13 @@ class RecommendationAgent:
 **一致性验证**：
 
 ```
-测试场景：用户快速连续点击
-输入序列：[click_v1, click_v2, click_v3] (时间戳: t1 < t2 < t3)
+测试场景:用户快速连续点击
+输入序列:[click_v1, click_v2, click_v3] (时间戳: t1 < t2 < t3)
 
-验证：
+验证:
 1. 处理顺序: process(t1) → process(t2) → process(t3) ✅
 2. 推荐结果: rec(t1) 影响 rec(t2) 影响 rec(t3) ✅
-3. 因果一致性: 若 click_v2 受 rec(t1) 影响，则 rec(t2) 反映此因果 ✅
+3. 因果一致性: 若 click_v2 受 rec(t1) 影响,则 rec(t2) 反映此因果 ✅
 ```
 
 ---

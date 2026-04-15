@@ -858,7 +858,7 @@ $$B^* = 64 \text{ (从表格插值)}$$
 ```python
 from vllm import LLM, SamplingParams
 
-# 初始化模型，启用动态批处理
+# 初始化模型,启用动态批处理
 llm = LLM(
     model="meta-llama/Llama-2-70b",
     tensor_parallel_size=8,
@@ -921,7 +921,7 @@ async def inference_with_cache(prompt, context):
     if cached := await l1_cache.get(keys["exact"]):
         return cached  # 10ms
 
-    # L2查询（语义相似）
+    # L2查询(语义相似)
     similar = await l2_cache.similarity_search(
         keys["semantic"],
         threshold=0.95
@@ -929,12 +929,12 @@ async def inference_with_cache(prompt, context):
     if similar and similar.score > 0.95:
         return adapt_result(similar.result, prompt)
 
-    # L3查询（前缀匹配）
+    # L3查询(前缀匹配)
     if prefix_match := l3_cache.longest_prefix(keys["prefix"]):
         # 复用KV cache
         return await generate_with_prefix(prompt, prefix_match)
 
-    # 缓存未命中，执行推理
+    # 缓存未命中,执行推理
     result = await llm.generate(prompt)
 
     # 回填缓存
@@ -986,7 +986,7 @@ def calculate_reward(metrics, sla_target):
 
     reward = throughput_reward - 10 * latency_penalty
 
-    # 额外奖励：满足SLA
+    # 额外奖励:满足SLA
     if metrics.p99_latency <= sla_target:
         reward += 5
 
@@ -1455,7 +1455,7 @@ Output:
 16. prefix_tree = L3.get_prefix_tree()
 17. matched_prefix = prefix_tree.longest_match(request.prompt)
 18. if matched_prefix.length > MinPrefixLength:
-19.    // 复用KV cache，增量生成
+19.    // 复用KV cache,增量生成
 20.    kv_cache = L3.get_kv_cache(matched_prefix)
 21.    result = IncrementalGenerate(request.prompt, kv_cache)
 22.    return (result, L3_HIT)

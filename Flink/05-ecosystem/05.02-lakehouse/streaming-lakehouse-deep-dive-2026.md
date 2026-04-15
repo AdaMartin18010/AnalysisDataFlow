@@ -52,10 +52,10 @@ OTFMaturity = ⟨FeatureCompleteness, EngineInteroperability,
               EcosystemAdoption, ProductionReadiness⟩
 
 成熟度等级:
-- Level 5 (Production): 大规模生产验证，核心功能完备
-- Level 4 (Advanced): 生产可用，高级特性持续完善
-- Level 3 (Standard): 标准功能完备，可投入生产
-- Level 2 (Developing): 核心功能可用，边缘场景受限
+- Level 5 (Production): 大规模生产验证,核心功能完备
+- Level 4 (Advanced): 生产可用,高级特性持续完善
+- Level 3 (Standard): 标准功能完备,可投入生产
+- Level 2 (Developing): 核心功能可用,边缘场景受限
 - Level 1 (Experimental): 概念验证阶段
 ```
 
@@ -72,10 +72,10 @@ OTFMaturity = ⟨FeatureCompleteness, EngineInteroperability,
 
 ```
 2020-2022: 格式竞争期
-├── Iceberg: Netflix开源，Apache孵化
-├── Delta: Databricks主导，Linux基金会
-├── Hudi: Uber开源，Apache毕业
-└── Paimon: Flink社区孵化，Apache孵化
+├── Iceberg: Netflix开源,Apache孵化
+├── Delta: Databricks主导,Linux基金会
+├── Hudi: Uber开源,Apache毕业
+└── Paimon: Flink社区孵化,Apache孵化
 
 2023-2024: 功能完备期
 ├── 各格式核心功能趋于完备
@@ -105,7 +105,7 @@ OTFMaturity = ⟨FeatureCompleteness, EngineInteroperability,
      - 创建新Snapshot S_new = S_curr ∪ F_new
      - 原子替换 metadata-pointer → S_new
 
-   特性: 读取优化，写入放大，适合批量更新场景
+   特性: 读取优化,写入放大,适合批量更新场景
 
 2. Paimon - LSM-Tree 模型
    Write(txn):
@@ -114,7 +114,7 @@ OTFMaturity = ⟨FeatureCompleteness, EngineInteroperability,
      - 异步Compaction L0 → L1 → L2 → ...
      - Snapshot引用当前文件集合
 
-   特性: 追加写优化，读写分离，适合高频流写入
+   特性: 追加写优化,读写分离,适合高频流写入
 
 3. Hudi - Merge-on-Read (MOR) / COW 双模式
    COW模式: 同Iceberg COW
@@ -123,7 +123,7 @@ OTFMaturity = ⟨FeatureCompleteness, EngineInteroperability,
      - 读取时合并Base文件 + Delta Logs
      - 异步Compaction生成新Base文件
 
-   特性: 更新场景写放大低，读取性能可权衡
+   特性: 更新场景写放大低,读取性能可权衡
 
 4. Delta Lake - Optimistic Concurrency COW
    Write(txn):
@@ -132,7 +132,7 @@ OTFMaturity = ⟨FeatureCompleteness, EngineInteroperability,
      - 原子写入 _delta_log/{V_curr+1}.json
      - 冲突时重试或失败
 
-   特性: 乐观并发控制，Spark原生优化
+   特性: 乐观并发控制,Spark原生优化
 ```
 
 **存储模型适用场景矩阵**:
@@ -231,7 +231,7 @@ S3Tables = ⟨ManagedIceberg, S3IntelligentTiering, CrossRegionReplication,
 传统架构 (Engine-Centric):
 ┌─────────────────────────────────────────────────────────┐
 │  Flink/Spark/Trino                                      │
-│  └── 各自管理元数据，重复建设                            │
+│  └── 各自管理元数据,重复建设                            │
 ├─────────────────────────────────────────────────────────┤
 │  Iceberg/Hudi/Delta (各引擎独立部署)                    │
 ├─────────────────────────────────────────────────────────┤
@@ -321,7 +321,7 @@ REST Catalog统一后:
 **语义等价性条件**:
 
 ```
-对于跨格式查询 Q，要保证:
+对于跨格式查询 Q,要保证:
 ∀ format F1, F2: Q(F1) ≡ Q(F2)
 
 需要满足:
@@ -703,7 +703,7 @@ graph LR
 技术就绪度评估 (2026年):
 
 ✅ 流处理引擎成熟
-├── Flink 2.x: Exactly-Once稳定，性能优化
+├── Flink 2.x: Exactly-Once稳定,性能优化
 ├── Spark Structured Streaming: 生产验证
 └── 自适应Checkpointing降低延迟
 
@@ -877,7 +877,7 @@ S3 Tables解决的痛点:
 ├── 自建Iceberg需部署Catalog服务
 ├── 元数据备份与恢复
 ├── 高可用架构设计
-└── S3 Tables: 全托管，零运维
+└── S3 Tables: 全托管,零运维
 
 痛点2: 小文件问题
 ├── 需要调度Compaction作业
@@ -943,7 +943,7 @@ S3 Tables当前边界:
 一致性条件:
 ∀ T: R_stream(W(T)) ≡ R_batch(T)
 
-即: 流处理在水位线达到T时的结果，等价于批处理处理到T时刻的结果
+即: 流处理在水位线达到T时的结果,等价于批处理处理到T时刻的结果
 ```
 
 **证明**:
@@ -1032,10 +1032,10 @@ CatalogSystem = ⟨Namespace, Entity, Operation, FormatAdapter⟩
 ├── 表结构获取: 统一 ✅
 ├── 分片规划: 格式特定 ❌
 ├── 增量消费: 格式特定 ❌
-└── 时间旅行: 语义等价，实现差异 ⚠️
+└── 时间旅行: 语义等价,实现差异 ⚠️
 
-结论: 统一Catalog在治理层面提供统一抽象，
-      在执行层面保持格式特性，得证 ∎
+结论: 统一Catalog在治理层面提供统一抽象,
+      在执行层面保持格式特性,得证 ∎
 ```
 
 ---
@@ -1224,7 +1224,7 @@ CREATE TABLE mysql_orders (
     'scan.incremental.snapshot.enabled' = 'true'
 );
 
--- Paimon ODS表 (主键表，支持Upsert)
+-- Paimon ODS表 (主键表,支持Upsert)
 CREATE TABLE ods_orders (
     order_id BIGINT,
     user_id BIGINT,
@@ -1391,7 +1391,7 @@ GROUP BY
 -- ============================================
 -- 步骤6: 增量消费与下游集成
 -- ============================================
--- 增量消费DWD数据，发送到Kafka供其他系统使用
+-- 增量消费DWD数据,发送到Kafka供其他系统使用
 CREATE TABLE kafka_order_events (
     order_id BIGINT,
     user_id BIGINT,

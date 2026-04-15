@@ -390,7 +390,7 @@ results.add_sink(LogSink())    # 日志存储
 ### 6.2 会议助手实时实现
 
 ```python
-# 实时会议助手：音频+视频+屏幕共享
+# 实时会议助手:音频+视频+屏幕共享
 class MeetingAssistantPipeline:
     """
     多模态会议助手

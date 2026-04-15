@@ -431,7 +431,7 @@ int main() {
 void sve_add(const float* a, const float* b, float* c, size_t n) {
     size_t i = 0;
 
-    // 使用 WHILELT 生成谓词，自动处理尾部
+    // 使用 WHILELT 生成谓词,自动处理尾部
     svbool_t pg = svwhilelt_b32(i, n);
 
     while (svptest_any(svptrue_b32(), pg)) {

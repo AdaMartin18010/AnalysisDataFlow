@@ -455,7 +455,7 @@ public class AdaptiveScheduler implements SchedulerNG {
                 triggerSavepoint();
 
             savepoint.thenAccept(s -> {
-                // 从 Savepoint 恢复，调整并行度
+                // 从 Savepoint 恢复,调整并行度
                 rescaleController.rescaleFromSavepoint(
                     s,
                     decision.getTargetParallelism()
@@ -511,7 +511,7 @@ public class AdaptiveScheduler implements SchedulerNG {
 
         // 4. 执行扩缩容 (V2 无需 Savepoint)
         if (decision.shouldScale()) {
-            // 直接调整并行度，无需状态迁移
+            // 直接调整并行度,无需状态迁移
             rescaleController.rescaleWithoutSavepoint(
                 vertex.getID(),
                 decision.getTargetParallelism()

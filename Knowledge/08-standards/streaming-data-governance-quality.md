@@ -593,7 +593,7 @@ class StreamingAnomalyDetector(KeyedProcessFunction):
                     'timestamp': ctx.timestamp()
                 }
         else:
-            # 样本不足，直接放行
+            # 样本不足,直接放行
             yield value
 
 # 使用示例
@@ -814,10 +814,10 @@ class StreamingEntityResolution(KeyedProcessFunction):
                     'golden_record': updated
                 }
             else:
-                # 无匹配，创建新实体
+                # 无匹配,创建新实体
                 yield self._create_new_entity(record)
         else:
-            # 无候选，创建新实体
+            # 无候选,创建新实体
             yield self._create_new_entity(record)
 
     def _find_candidates(self, record):
@@ -1046,7 +1046,7 @@ public class GDPRComplianceJob {
 
         private void sendDeletionEvent(String targetSystem, String userId, List<String> columns) {
             DeletionEvent event = new DeletionEvent(userId, columns, System.currentTimeMillis());
-            // 发送到专用 topic，由下游系统消费执行
+            // 发送到专用 topic,由下游系统消费执行
             deletionEventSink.send(targetSystem + "-deletions", event);
         }
 

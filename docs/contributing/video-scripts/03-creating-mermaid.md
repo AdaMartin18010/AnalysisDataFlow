@@ -1,6 +1,7 @@
 > **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
-> 
+>
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # 视频教程脚本：创建 Mermaid 图表
 
 > 时长: 18-22 分钟 | 目标受众: 所有内容贡献者
@@ -19,13 +20,13 @@
 ```
 大家好！欢迎回到 AnalysisDataFlow 贡献指南系列教程。
 
-在前两期中，我们学习了基础贡献流程和形式化定理编写。
-今天，我们将学习如何创建 Mermaid 可视化图表。
+在前两期中,我们学习了基础贡献流程和形式化定理编写。
+今天,我们将学习如何创建 Mermaid 可视化图表。
 
-可视化是 AnalysisDataFlow 文档的重要组成部分，
+可视化是 AnalysisDataFlow 文档的重要组成部分,
 它帮助读者直观理解复杂的概念和流程。
 
-通过本教程，你将学会：
+通过本教程,你将学会:
 - 选择合适的图表类型
 - 编写 Mermaid 语法
 - 设计清晰的图表结构
@@ -46,30 +47,30 @@
 ### 脚本
 
 ```
-首先，让我们了解 Mermaid 是什么。
+首先,让我们了解 Mermaid 是什么。
 
-Mermaid 是一个基于 JavaScript 的图表绘制工具，
+Mermaid 是一个基于 JavaScript 的图表绘制工具,
 它允许你使用类似 Markdown 的语法创建图表。
 
-在 AnalysisDataFlow 项目中，
-我们主要使用以下几种图表类型：
+在 AnalysisDataFlow 项目中,
+我们主要使用以下几种图表类型:
 
-graph TB - 从上到下的层次结构图，
+graph TB - 从上到下的层次结构图,
 适合展示概念层次和架构关系。
 
-flowchart TD - 流程图，
+flowchart TD - 流程图,
 适合展示决策流程和算法步骤。
 
-sequenceDiagram - 时序图，
+sequenceDiagram - 时序图,
 适合展示组件间的交互顺序。
 
-stateDiagram-v2 - 状态图，
+stateDiagram-v2 - 状态图,
 适合展示状态转移和执行流程。
 
-classDiagram - 类图，
+classDiagram - 类图,
 适合展示类型系统和模型结构。
 
-Gantt - 甘特图，
+Gantt - 甘特图,
 适合展示项目计划和路线图。
 
 让我们看看项目中的一些实际示例。
@@ -97,22 +98,22 @@ Gantt - 甘特图，
 ```
 让我们从最常用的层次结构图开始。
 
-graph TB 表示从上到下的层次结构，
-graph TD 表示从上到下的层次结构（另一种写法）。
+graph TB 表示从上到下的层次结构,
+graph TD 表示从上到下的层次结构(另一种写法)。
 
-基本语法很简单：
+基本语法很简单:
 - 使用 A --> B 表示 A 指向 B 的箭头
 - 使用方括号 [文本] 表示矩形节点
 - 使用圆括号 (文本) 表示圆角矩形
 
 让我演示如何创建一个 Checkpoint 架构图。
 
-首先，定义图表类型：
+首先,定义图表类型:
 ```mermaid
 graph TB
 ```
 
-然后，定义节点：
+然后,定义节点:
 
 ```mermaid
 graph TB
@@ -121,7 +122,7 @@ graph TB
     SB[(State Backend)]
 ```
 
-接着，添加连接：
+接着,添加连接:
 
 ```mermaid
 graph TB
@@ -131,13 +132,13 @@ graph TB
     TM -->|报告| JM
 ```
 
-我们还可以：
+我们还可以:
 
 - 使用不同形状区分节点类型
 - 添加标签说明连接含义
 - 使用子图组织相关节点
 
-添加子图：
+添加子图:
 
 ```mermaid
 graph TB
@@ -160,7 +161,7 @@ graph TB
     TM2 -->|快照| SB
 ```
 
-子图可以帮助我们组织复杂的图表，
+子图可以帮助我们组织复杂的图表,
 让层次关系更加清晰。
 
 ```
@@ -189,13 +190,13 @@ graph TB
 
 时序图是展示交互流程的有力工具。
 
-在流处理系统中，时序图特别适合展示：
+在流处理系统中,时序图特别适合展示:
 
 - Checkpoint 协调过程
 - Watermark 传播机制
 - 故障恢复流程
 
-基本语法：
+基本语法:
 
 - participant 定义参与者
 - ->> 表示实线箭头
@@ -204,7 +205,7 @@ graph TB
 
 让我演示 Checkpoint 的协调时序。
 
-定义参与者：
+定义参与者:
 
 ```mermaid
 sequenceDiagram
@@ -213,7 +214,7 @@ sequenceDiagram
     participant State as State Backend
 ```
 
-添加交互步骤：
+添加交互步骤:
 
 ```mermaid
 sequenceDiagram
@@ -233,13 +234,13 @@ sequenceDiagram
     JM->>JM: Complete Checkpoint
 ```
 
-高级特性：
+高级特性:
 
 - 使用 loop 表示循环
 - 使用 alt/else 表示条件分支
 - 使用 opt 表示可选步骤
 
-添加循环和条件：
+添加循环和条件:
 
 ```mermaid
 sequenceDiagram
@@ -263,7 +264,7 @@ sequenceDiagram
     JM->>JM: Complete or Abort
 ```
 
-时序图让复杂的交互流程一目了然，
+时序图让复杂的交互流程一目了然,
 是理解分布式系统行为的重要工具。
 
 ```
@@ -293,21 +294,21 @@ sequenceDiagram
 
 流程图适合展示算法流程和决策过程。
 
-与 graph 不同，flowchart 提供了更多控制流元素：
+与 graph 不同,flowchart 提供了更多控制流元素:
 
 - 条件判断
 - 并行处理
 - 子流程
 
-基本语法：
+基本语法:
 
-- 使用方向关键字（TD、LR、RL、BT）
-- 使用特殊形状表示判断（菱形）
+- 使用方向关键字(TD、LR、RL、BT)
+- 使用特殊形状表示判断(菱形)
 - 使用 & 表示并行路径
 
 让我演示 Watermark 生成策略的选择流程。
 
-创建决策流程：
+创建决策流程:
 
 ```mermaid
 flowchart TD
@@ -327,12 +328,12 @@ flowchart TD
     ProcTime --> End
 ```
 
-样式美化：
+样式美化:
 
 - 使用 classDef 定义样式类
 - 应用样式到特定节点
 
-添加样式：
+添加样式:
 
 ```mermaid
 flowchart TD
@@ -347,7 +348,7 @@ flowchart TD
     class Ascending,Fixed,Custom,ProcTime action
 ```
 
-流程图让决策逻辑清晰可见，
+流程图让决策逻辑清晰可见,
 特别适合算法说明和配置指南。
 
 ```
@@ -376,13 +377,13 @@ flowchart TD
 
 状态图用于展示系统的状态转移和执行流程。
 
-在流处理中，状态图可以展示：
+在流处理中,状态图可以展示:
 
 - 算子生命周期
 - Checkpoint 状态机
 - 作业执行状态
 
-基本语法：
+基本语法:
 
 - state 定义状态
 - --> 表示状态转移
@@ -390,7 +391,7 @@ flowchart TD
 
 让我演示 Flink 作业的状态机。
 
-创建状态图：
+创建状态图:
 
 ```mermaid
 stateDiagram-v2
@@ -405,7 +406,7 @@ stateDiagram-v2
     FINISHED --> [*]
 ```
 
-添加转移条件：
+添加转移条件:
 
 ```mermaid
 stateDiagram-v2
@@ -420,7 +421,7 @@ stateDiagram-v2
     RESTARTING --> CREATED : redeploy
 ```
 
-组合状态：
+组合状态:
 
 ```mermaid
 stateDiagram-v2
@@ -436,7 +437,7 @@ stateDiagram-v2
     CP --> RUNNING : done
 ```
 
-状态图清晰展示了系统行为的动态方面，
+状态图清晰展示了系统行为的动态方面,
 是理解复杂执行流程的好工具。
 
 ```
@@ -467,27 +468,27 @@ stateDiagram-v2
 
 **1. 保持简洁**
 
-不好的示例：
+不好的示例:
 
-- 节点过多，超过 15 个
+- 节点过多,超过 15 个
 - 连接线交叉混乱
 - 文字过长
 
-好的示例：
+好的示例:
 
 - 节点控制在 10 个以内
-- 层次分明，减少交叉
+- 层次分明,减少交叉
 - 使用简洁的标签
 
 **2. 使用有意义的命名**
 
-不好的示例：
+不好的示例:
 
 ```
 A --> B --> C
 ```
 
-好的示例：
+好的示例:
 
 ```
 Source --> Operator --> Sink
@@ -495,12 +496,13 @@ Source --> Operator --> Sink
 
 **3. 添加说明文字**
 
-每个图表前都应该有文字说明：
+每个图表前都应该有文字说明:
 
 ```markdown
 以下图表展示了 Checkpoint 的协调流程：
 
 ```mermaid
+# 伪代码示意，非完整可编译代码
 ...
 ```
 
@@ -547,7 +549,7 @@ Source --> Operator --> Sink
 
 ---
 
-## 第七部分：在文档中使用 (2 分钟)
+## 第七部分:在文档中使用 (2 分钟)
 
 ### 画面
 - Markdown 文档
@@ -568,7 +570,7 @@ Mermaid 图表放在第 7 节"可视化"中。
 
 ### 7.1 架构图
 
-以下图表展示了系统的整体架构：
+以下图表展示了系统的整体架构:
 
 ```mermaid
 graph TB
@@ -640,7 +642,7 @@ VS Code 扩展推荐：
 
 ---
 
-## 附录：Mermaid 快速参考
+## 附录:Mermaid 快速参考
 
 ```markdown
 ## 常用图表类型

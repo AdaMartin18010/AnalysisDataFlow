@@ -33,25 +33,25 @@
 
 ```
 【00:00-00:30】
-大家好！欢迎来到第三集：Flink快速上手。
+大家好！欢迎来到第三集:Flink快速上手。
 
-Apache Flink 是一个开源的流处理框架，
+Apache Flink 是一个开源的流处理框架,
 以其低延迟、高吞吐和精确一次(Exactly-Once)语义著称。
 
-从阿里巴巴的双十一实时大屏，
-到Uber的实时数据分析平台，
-再到Netflix的推荐系统，
+从阿里巴巴的双十一实时大屏,
+到Uber的实时数据分析平台,
+再到Netflix的推荐系统,
 Flink都在背后支撑着海量数据的实时处理。
 
 【00:30-01:00】
-目前Flink的最新稳定版本是2.0，
-相比1.x版本，2.0引入了分离状态存储、异步执行等重大改进。
+目前Flink的最新稳定版本是2.0,
+相比1.x版本,2.0引入了分离状态存储、异步执行等重大改进。
 
-对于初学者，我建议从1.18或2.0版本开始，
-这两个版本的API相对稳定，文档也更完善。
+对于初学者,我建议从1.18或2.0版本开始,
+这两个版本的API相对稳定,文档也更完善。
 
-今天，我将带你从零开始，
-搭建Flink开发环境，编写并运行你的第一个流处理程序。
+今天,我将带你从零开始,
+搭建Flink开发环境,编写并运行你的第一个流处理程序。
 ```
 
 ### 📊 图表展示
@@ -85,10 +85,10 @@ graph TB
 
 ```
 【01:00-02:00】
-首先，我们来安装Flink开发所需的环境。
+首先,我们来安装Flink开发所需的环境。
 
-你需要准备：
-1. JDK 11 或更高版本（推荐JDK 17）
+你需要准备:
+1. JDK 11 或更高版本(推荐JDK 17)
 2. Maven 3.8+ 或 Gradle
 3. IntelliJ IDEA 或其他IDE
 
@@ -96,34 +96,34 @@ graph TB
 在终端输入 java -version。
 
 【02:00-03:30】
-好的，JDK已经安装好了。
+好的,JDK已经安装好了。
 接下来我们下载Flink。
 
-有两种方式：
-1. 下载二进制包，用于本地测试和运行
-2. 在Maven项目中添加依赖，用于开发
+有两种方式:
+1. 下载二进制包,用于本地测试和运行
+2. 在Maven项目中添加依赖,用于开发
 
 我们先下载二进制包。
-访问 Flink 官网下载页面，
-选择 Scala 2.12 版本，下载后解压即可。
+访问 Flink 官网下载页面,
+选择 Scala 2.12 版本,下载后解压即可。
 
 【03:30-05:00】
-解压完成后，进入Flink目录，
-我们可以看到几个重要的目录：
+解压完成后,进入Flink目录,
+我们可以看到几个重要的目录:
 
-- bin/：启动脚本
-- conf/：配置文件
-- lib/：依赖库
-- examples/：示例程序
+- bin/:启动脚本
+- conf/:配置文件
+- lib/:依赖库
+- examples/:示例程序
 
 我们先来启动Flink本地集群。
 执行 bin/start-cluster.sh。
 
 【05:00-06:00】
-启动成功后，打开浏览器访问 localhost:8081，
+启动成功后,打开浏览器访问 localhost:8081,
 这就是Flink的Web UI。
 
-在这里，你可以：
+在这里,你可以:
 - 查看集群状态
 - 提交和管理作业
 - 监控作业运行状态
@@ -197,35 +197,35 @@ graph LR
 【06:00-07:00】
 现在我们来创建一个Flink Maven项目。
 
-打开IntelliJ IDEA，
+打开IntelliJ IDEA,
 选择 New Project -> Maven Archetype。
 
-或者更简单的方式：
+或者更简单的方式:
 使用Flink官方提供的Maven命令直接创建项目骨架。
 
 【07:00-08:00】
-项目创建完成后，
+项目创建完成后,
 我们需要在pom.xml中添加Flink依赖。
 
-核心依赖有三个：
-1. flink-streaming-java：流处理核心
-2. flink-clients：用于本地提交作业
-3. flink-connector-kafka：Kafka连接器
+核心依赖有三个:
+1. flink-streaming-java:流处理核心
+2. flink-clients:用于本地提交作业
+3. flink-connector-kafka:Kafka连接器
 
-注意scope的设置：
-provided表示集群已提供，打包时不包含；
+注意scope的设置:
+provided表示集群已提供,打包时不包含;
 默认scope在本地运行时需要。
 
 【08:00-09:00】
-依赖添加完成后，
+依赖添加完成后,
 执行mvn clean install下载依赖。
 
-现在项目结构应该是这样的：
-- src/main/java/：Java源码
-- src/main/resources/：配置文件
-- pom.xml：Maven配置
+现在项目结构应该是这样的:
+- src/main/java/:Java源码
+- src/main/resources/:配置文件
+- pom.xml:Maven配置
 
-一切准备就绪，我们开始编写代码。
+一切准备就绪,我们开始编写代码。
 ```
 
 ### 💻 代码演示
@@ -319,15 +319,15 @@ provided表示集群已提供，打包时不包含；
 【09:00-10:00】
 现在我们来编写经典的WordCount程序。
 
-这是流计算领域的Hello World，
-虽然简单，但涵盖了流处理的核心概念。
+这是流计算领域的Hello World,
+虽然简单,但涵盖了流处理的核心概念。
 
-程序的目标很简单：
-从Socket读取文本流，
+程序的目标很简单:
+从Socket读取文本流,
 实时统计每个单词出现的次数。
 
 【10:00-11:30】
-代码分为几个部分：
+代码分为几个部分:
 
 1. 创建执行环境
    StreamExecutionEnvironment是Flink程序的入口
@@ -338,11 +338,11 @@ provided表示集群已提供，打包时不包含；
    生产环境中通常使用KafkaSource
 
 3. 数据处理
-   flatMap：将每行文本切分成单词
-   filter：过滤空字符串
-   map：将单词转换为(word, 1)元组
-   keyBy：按单词分组
-   sum：累加计数
+   flatMap:将每行文本切分成单词
+   filter:过滤空字符串
+   map:将单词转换为(word, 1)元组
+   keyBy:按单词分组
+   sum:累加计数
 
 4. 输出结果
    print将结果输出到控制台
@@ -351,26 +351,26 @@ provided表示集群已提供，打包时不包含；
    execute是触发实际执行的入口
 
 【11:30-13:00】
-让我们详细看看核心算子：
+让我们详细看看核心算子:
 
-flatMap是一个一对一或一对多的转换，
+flatMap是一个一对一或一对多的转换,
 这里我们将一行文本映射为多个单词。
 
-keyBy是分组操作，
+keyBy是分组操作,
 它决定了哪些数据会被分到同一个组进行聚合。
 Flink使用Key Selector函数提取分组的key。
 
-sum是一个聚合操作，
+sum是一个聚合操作,
 它对同一key的所有值进行累加。
 
 【13:00-14:00】
-在运行之前，我们需要先启动一个Socket服务器
+在运行之前,我们需要先启动一个Socket服务器
 来模拟数据源。
 
 在终端执行 nc -lk 9999
 然后运行我们的Flink程序。
 
-在nc终端输入一些文本，
+在nc终端输入一些文本,
 就能看到Flink实时输出的统计结果。
 ```
 
@@ -420,13 +420,13 @@ public class SocketWindowWordCount {
         env.execute("Socket Window WordCount");
     }
 
-    // 自定义FlatMap函数：切分单词
+    // 自定义FlatMap函数:切分单词
     public static class Tokenizer implements
         FlatMapFunction<String, Tuple2<String, Integer>> {
 
         @Override
         public void flatMap(String value, Collector<Tuple2<String, Integer>> out) {
-            // 统一转小写，按非单词字符分割
+            // 统一转小写,按非单词字符分割
             String[] words = value.toLowerCase().split("\\W+");
 
             for (String word : words) {
@@ -473,39 +473,39 @@ graph LR
 
 ```
 【14:00-15:00】
-现在让我们运行这个程序，
+现在让我们运行这个程序,
 看看实际效果。
 
-首先启动Socket服务器：
+首先启动Socket服务器:
 nc -lk 9999
 
 然后在IDE中运行WordCount程序。
 
-程序启动后，在nc终端输入一些文本，比如：
+程序启动后,在nc终端输入一些文本,比如:
 "hello world hello flink"
 
 就能看到控制台输出每个单词的计数。
 
 【15:00-16:00】
-如果启动了Flink本地集群，
+如果启动了Flink本地集群,
 我们还可以通过Web UI查看作业状态。
 
-访问 localhost:8081，
-点击 Running Jobs，
+访问 localhost:8081,
+点击 Running Jobs,
 可以看到我们的WordCount作业正在运行。
 
-点击作业名进入详情页，
+点击作业名进入详情页,
 可以看到数据流图、任务状态、指标等信息。
 
 【16:00-17:00】
-这里有几个重要的指标需要关注：
+这里有几个重要的指标需要关注:
 
-1. Records Received/Sent：数据收发量
-2. Backpressure：背压情况
-3. Checkpoint：检查点状态
-4. Watermark：水位线进度
+1. Records Received/Sent:数据收发量
+2. Backpressure:背压情况
+3. Checkpoint:检查点状态
+4. Watermark:水位线进度
 
-在开发阶段，如果遇到问题，
+在开发阶段,如果遇到问题,
 可以查看TaskManager日志进行排查。
 ```
 
@@ -569,32 +569,32 @@ streaming processing
 
 ```
 【17:00-17:45】
-在实际生产环境中，
-我们很少直接从Socket读取数据，
+在实际生产环境中,
+我们很少直接从Socket读取数据,
 而是使用消息队列作为数据源。
 
 Kafka是最常用的选择。
 现在让我们把数据源从Socket换成Kafka。
 
 【17:45-18:30】
-代码修改很简单：
+代码修改很简单:
 
-1. 添加Kafka连接器依赖（已在pom.xml中添加）
+1. 添加Kafka连接器依赖(已在pom.xml中添加)
 2. 使用KafkaSource替代socketTextStream
-3. 配置Kafka连接参数：
+3. 配置Kafka连接参数:
    - bootstrap.servers: Kafka地址
    - group.id: 消费者组ID
    - topics: 订阅的主题
 
 【18:30-19:00】
-Flink的Kafka连接器有很多高级特性：
+Flink的Kafka连接器有很多高级特性:
 
 - 自动发现新分区
-- 精确一次消费（结合Checkpoint）
+- 精确一次消费(结合Checkpoint)
 - 动态分区分配
 - 自定义反序列化器
 
-在生产环境中，
+在生产环境中,
 建议开启Checkpoint来保证数据的Exactly-Once语义。
 ```
 
@@ -617,7 +617,7 @@ public class KafkaWordCount {
         final StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
 
-        // 开启Checkpoint（保证Exactly-Once）
+        // 开启Checkpoint(保证Exactly-Once)
         env.enableCheckpointing(5000);
         env.getCheckpointConfig().setCheckpointingMode(
             CheckpointingMode.EXACTLY_ONCE
@@ -690,16 +690,16 @@ graph LR
 
 ```
 【19:00-19:30】
-今天我们学习了Flink快速上手的完整流程：
+今天我们学习了Flink快速上手的完整流程:
 
-1. 环境搭建：JDK、Maven、Flink安装配置
-2. 项目创建：Maven依赖配置
-3. WordCount开发：Source、Transformation、Sink
-4. 运行调试：本地运行和Web UI监控
-5. Kafka集成：生产级数据源配置
+1. 环境搭建:JDK、Maven、Flink安装配置
+2. 项目创建:Maven依赖配置
+3. WordCount开发:Source、Transformation、Sink
+4. 运行调试:本地运行和Web UI监控
+5. Kafka集成:生产级数据源配置
 
 【19:30-20:00】
-接下来的学习路线建议：
+接下来的学习路线建议:
 
 1. 深入理解DataStream API的各种算子
 2. 学习状态管理和Checkpoint机制
@@ -707,13 +707,13 @@ graph LR
 4. 了解SQL/Table API
 5. 研究生产环境的部署和调优
 
-推荐学习资源：
-- Flink官方文档：https://nightlies.apache.org/flink/
-- AnalysisDataFlow项目：Struct/理论和Knowledge/模式
-- Flink中文社区：https://flink-learning.org.cn/
+推荐学习资源:
+- Flink官方文档:https://nightlies.apache.org/flink/
+- AnalysisDataFlow项目:Struct/理论和Knowledge/模式
+- Flink中文社区:https://flink-learning.org.cn/
 
-下一集，我们将深入学习
-「流处理7大设计模式实战」，
+下一集,我们将深入学习
+「流处理7大设计模式实战」,
 敬请期待！
 ```
 

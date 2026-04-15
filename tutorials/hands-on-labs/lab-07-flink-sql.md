@@ -75,7 +75,7 @@ import org.apache.flink.types.Row;
 
 public class FlinkSqlDemo {
     public static void main(String[] args) throws Exception {
-        // 方式 1: 使用 StreamExecutionEnvironment（推荐，可与 DataStream 集成）
+        // 方式 1: 使用 StreamExecutionEnvironment(推荐,可与 DataStream 集成)
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(2);
 
@@ -86,7 +86,7 @@ public class FlinkSqlDemo {
 
         StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env, settings);
 
-        // 方式 2: 纯 Table Environment（仅 SQL/Table API）
+        // 方式 2: 纯 Table Environment(仅 SQL/Table API)
         // TableEnvironment batchEnv = TableEnvironment.create(
         //     EnvironmentSettings.inBatchMode()
         // );
@@ -146,7 +146,7 @@ tableEnv.executeSql("DESCRIBE user_events").print();
 #### 2.2 创建 Kafka 源表
 
 ```java
-// 创建 Kafka 源表（读取实时流）
+// 创建 Kafka 源表(读取实时流)
 tableEnv.executeSql("""
     CREATE TABLE kafka_user_events (
         user_id STRING,
@@ -291,7 +291,7 @@ tableEnv.executeSql("""
 #### 4.2 滑动窗口（HOP）
 
 ```java
-// 每 30 秒滑动一次，窗口大小 1 分钟
+// 每 30 秒滑动一次,窗口大小 1 分钟
 Table hopWindow = tableEnv.sqlQuery("""
     SELECT
         event_type,
@@ -328,7 +328,7 @@ sessionWindow.execute().print();
 #### 4.4 累积窗口（CUMULATE）
 
 ```java
-// 累积窗口：每分钟输出从窗口开始到现在的累积结果
+// 累积窗口:每分钟输出从窗口开始到现在的累积结果
 Table cumulateWindow = tableEnv.sqlQuery("""
     SELECT
         event_type,
@@ -361,7 +361,7 @@ DataStream<Event> eventStream = env.fromElements(
     new Event("u002", "view", "/product", System.currentTimeMillis())
 );
 
-// DataStream 转 Table（自动推断 schema）
+// DataStream 转 Table(自动推断 schema)
 Table eventTable = tableEnv.fromDataStream(eventStream);
 eventTable.printSchema();
 
@@ -385,18 +385,18 @@ Table eventTableWithSchema = tableEnv.fromDataStream(
 
 import org.apache.flink.streaming.api.datastream.DataStream;
 
-// Table 转 DataStream（Retract 模式）
+// Table 转 DataStream(Retract 模式)
 Table resultTable = tableEnv.sqlQuery("""
     SELECT event_type, COUNT(*) as cnt
     FROM user_events
     GROUP BY event_type
 """);
 
-// 追加模式（仅新增数据）
+// 追加模式(仅新增数据)
 DataStream<Row> appendStream = tableEnv.toDataStream(resultTable);
 appendStream.print();
 
-// 缩进模式（支持 UPDATE/DELETE）
+// 缩进模式(支持 UPDATE/DELETE)
 DataStream<Row> retractStream = tableEnv.toChangelogStream(resultTable);
 retractStream.print();
 ```
@@ -406,7 +406,7 @@ retractStream.print();
 ```java
 import static org.apache.flink.table.api.Expressions.*;
 
-// Table API 方式（类型安全）
+// Table API 方式(类型安全)
 Table apiResult = tableEnv.from("user_events")
     .where($("event_type").isEqual("click"))
     .groupBy($("user_id"))
@@ -442,7 +442,7 @@ public class UserBehaviorAnalysis {
             EnvironmentSettings.newInstance().inStreamingMode().build()
         );
 
-        // 1. 创建源表（Kafka）
+        // 1. 创建源表(Kafka)
         tableEnv.executeSql("""
             CREATE TABLE user_events (
                 user_id STRING,
@@ -462,7 +462,7 @@ public class UserBehaviorAnalysis {
             )
         """);
 
-        // 2. 创建结果输出表（Kafka）
+        // 2. 创建结果输出表(Kafka)
         tableEnv.executeSql("""
             CREATE TABLE hourly_stats (
                 hour_start TIMESTAMP(3),
@@ -659,7 +659,7 @@ MATCH_RECOGNIZE (
 ### 练习 3: 维表 JOIN
 
 ```sql
--- 关联用户维表（使用 Lookup Join）
+-- 关联用户维表(使用 Lookup Join)
 CREATE TABLE users (
     user_id STRING,
     user_name STRING,

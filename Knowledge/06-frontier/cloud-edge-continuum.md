@@ -449,7 +449,7 @@ Vehicle (Device) ──→ RSU (Edge) ──→ Traffic Cloud
 **自适应放置示例**：
 
 ```java
-// 伪代码：自适应放置决策
+// 伪代码:自适应放置决策
 class AdaptivePlacement {
 
     Placement decide(Task task, SystemState state) {
@@ -458,7 +458,7 @@ class AdaptivePlacement {
             return LOCAL;
         }
 
-        // 计算密集型任务，检查网络带宽
+        // 计算密集型任务,检查网络带宽
         if (task.computeIntensity > THRESHOLD) {
             if (state.bandwidthToCloud > MIN_BANDWIDTH) {
                 return CLOUD;  // 充足带宽时上云
@@ -467,7 +467,7 @@ class AdaptivePlacement {
             }
         }
 
-        // 数据密集型任务，考虑数据本地性
+        // 数据密集型任务,考虑数据本地性
         if (task.dataSize > LARGE_DATA_THRESHOLD) {
             return nearestNode(task.dataLocation);
         }

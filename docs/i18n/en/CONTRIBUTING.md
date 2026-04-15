@@ -109,6 +109,7 @@ Centralized bibliography using `[^n]` superscript format.
 Use globally unified numbering for `Struct/` and recommended style for other directories:
 
 ```markdown
+<!-- pseudo-code -->
 ### Thm-S-01-01: Main Theorem Title
 ...
 

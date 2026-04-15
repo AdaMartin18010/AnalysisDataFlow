@@ -128,7 +128,7 @@ sequenceDiagram
     State-->>Source: 确认
     Source-->>JM: Checkpoint 确认
 
-    Note over Kafka,JM: 异步偏移量提交（尽力而为）
+    Note over Kafka,JM: 异步偏移量提交(尽力而为)
     Source->>Kafka: 提交偏移量到 __consumer_offsets
     Kafka-->>Source: 确认
 
@@ -284,7 +284,7 @@ KafkaSource<String> source = KafkaSource.<String>builder()
     .setBootstrapServers("kafka:9092")
     .setTopics("input-topic")
     .setGroupId("flink-eo-consumer")
-    .setProperty("isolation.level", "read_committed")  // 关键：只读已提交
+    .setProperty("isolation.level", "read_committed")  // 关键:只读已提交
     .setProperty("enable.auto.commit", "false")         // Flink 管理偏移量
     .setStartingOffsets(OffsetsInitializer.earliest())
     .setValueOnlyDeserializer(new SimpleStringSchema())
@@ -495,7 +495,7 @@ sequenceDiagram
     State-->>JM: offset=100
     JM->>Source: 恢复 (offset=100)
     Source->>Kafka: 定位到 offset 100
-    Note right of Source: 记录 0-99 已处理，跳过
+    Note right of Source: 记录 0-99 已处理,跳过
 ```
 
 **关键**: Source 提交失败不会违反 Exactly-Once，因为 Flink 使用 StateBackend 中的偏移量恢复，而非 Kafka 提交的偏移量。
@@ -556,7 +556,7 @@ restart-strategy.fixed-delay.delay: 10s
 ```java
 KafkaSource<String> createKafkaSource(String bootstrapServers, String topic, String groupId) {
     Properties properties = new Properties();
-    properties.setProperty("isolation.level", "read_committed");  // 关键：只读已提交
+    properties.setProperty("isolation.level", "read_committed");  // 关键:只读已提交
     properties.setProperty("enable.auto.commit", "false");        // Flink 管理偏移量
     properties.setProperty("auto.offset.reset", "earliest");      // 无偏移时从最早开始
 
@@ -732,7 +732,7 @@ echo "验证完成!"
  * 两阶段提交 Sink 的抽象基类
  * 实现了 Flink 与外部系统事务的协调
  *
- * 类型参数：
+ * 类型参数:
  *   IN - 输入数据类型
  *   TXN - 事务上下文类型
  *   CONTEXT - 事务上下文持有者类型
@@ -746,10 +746,10 @@ public abstract class TwoPhaseCommitSinkFunction<IN, TXN, CONTEXT>
     // 当前正在进行的事务
     private transient TransactionHolder<TXN> currentTransaction;
 
-    // 待提交的事务队列（等待Checkpoint确认）
+    // 待提交的事务队列(等待Checkpoint确认)
     private transient List<TransactionHolder<TXN>> pendingCommitTransactions;
 
-    // 事务上下文Serializer（用于Checkpoint）
+    // 事务上下文Serializer(用于Checkpoint)
     private final TypeSerializer<CONTEXT> contextSerializer;
 
     // 事务Serializer
@@ -772,20 +772,20 @@ public abstract class TwoPhaseCommitSinkFunction<IN, TXN, CONTEXT>
 ```java
     /**
      * 开启新事务
-     * 在以下场景调用：
+     * 在以下场景调用:
      * 1. Sink初始化时
-     * 2. 每次Checkpoint完成后（开启下一轮事务）
+     * 2. 每次Checkpoint完成后(开启下一轮事务)
      */
     protected abstract TXN beginTransaction() throws Exception;
 
     /**
-     * 预提交阶段（Prepare Phase）
-     * 将数据持久化到临时位置，但不可见
+     * 预提交阶段(Prepare Phase)
+     * 将数据持久化到临时位置,但不可见
      */
     protected abstract void preCommit(TXN transaction) throws Exception;
 
     /**
-     * 正式提交阶段（Commit Phase）
+     * 正式提交阶段(Commit Phase)
      * 收到Checkpoint成功通知后调用
      */
     protected abstract void commit(TXN transaction) throws Exception;
@@ -841,7 +841,7 @@ sequenceDiagram
 
 ```java
     /**
-     * Checkpoint 时调用（Phase 1: Prepare）
+     * Checkpoint 时调用(Phase 1: Prepare)
      */
     @Override
     public void snapshotState(FunctionSnapshotContext context) throws Exception {
@@ -864,7 +864,7 @@ sequenceDiagram
             userContext
         ));
 
-        // 4. 开启新事务（用于Checkpoint之后的写入）
+        // 4. 开启新事务(用于Checkpoint之后的写入)
         currentTransaction = beginTransactionInternal();
 
         LOG.debug("Started new transaction for post-checkpoint writes");
@@ -875,7 +875,7 @@ sequenceDiagram
 
 ```java
     /**
-     * Checkpoint 成功确认后调用（Phase 2: Commit）
+     * Checkpoint 成功确认后调用(Phase 2: Commit)
      */
     @Override
     public void notifyCheckpointComplete(long checkpointId) throws Exception {
@@ -899,7 +899,7 @@ sequenceDiagram
                     // 从待提交队列移除
                     iterator.remove();
                 } catch (Exception e) {
-                    // 提交失败，将在恢复时重试
+                    // 提交失败,将在恢复时重试
                     throw new FlinkRuntimeException(
                         "Committing transaction failed", e);
                 }
@@ -968,7 +968,7 @@ public class FlinkKafkaProducer<IN> extends TwoPhaseCommitSinkFunction<IN,
     }
 
     /**
-     * 预提交：将数据刷写到 Kafka
+     * 预提交:将数据刷写到 Kafka
      */
     @Override
     protected void preCommit(FlinkKafkaProducer.KafkaTransactionState transaction) {
@@ -1010,7 +1010,7 @@ public class FlinkKafkaProducer<IN> extends TwoPhaseCommitSinkFunction<IN,
 
 ```java
 /**
- * Checkpoint 协调器：协调分布式快照
+ * Checkpoint 协调器:协调分布式快照
  */
 public class CheckpointCoordinator {
 
@@ -1124,9 +1124,9 @@ sequenceDiagram
             Sink->>Ext: commit(transaction)
             Ext-->>Sink: OK
         else 事务状态 = COMMITTED
-            Note over Sink: 事务已提交，跳过
+            Note over Sink: 事务已提交,跳过
         else 事务状态 = UNKNOWN
-            Note over Sink: 尝试提交（幂等保证）
+            Note over Sink: 尝试提交(幂等保证)
             Sink->>Ext: commit(transaction)
         end
     end
@@ -1139,7 +1139,7 @@ sequenceDiagram
 
 ```java
     /**
-     * 初始化状态（故障恢复时调用）
+     * 初始化状态(故障恢复时调用)
      */
     @Override
     public void initializeState(FunctionInitializationContext context) throws Exception {
@@ -1173,14 +1173,14 @@ sequenceDiagram
     }
 
     /**
-     * 恢复时提交事务（带幂等检查）
+     * 恢复时提交事务(带幂等检查)
      */
     protected void recoverAndCommit(TXN transaction) {
         try {
             // 尝试提交
             commit(transaction);
         } catch (Exception e) {
-            // 可能事务已提交，检查外部系统状态
+            // 可能事务已提交,检查外部系统状态
             if (isTransactionCommitted(transaction)) {
                 LOG.info("Transaction was already committed");
                 return;

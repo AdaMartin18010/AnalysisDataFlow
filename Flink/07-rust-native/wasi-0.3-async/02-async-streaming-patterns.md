@@ -226,7 +226,7 @@ $$
 
 ```rust
 //! 异步数据丰富化 UDF
-//! 模式：批量异步 + 并发控制 + 错误重试
+//! 模式:批量异步 + 并发控制 + 错误重试
 
 use futures::{stream, Stream, StreamExt};
 use std::time::Duration;
@@ -257,7 +257,7 @@ impl AsyncEnrichmentUDF {
         }
     }
 
-    /// 核心处理函数：异步流处理模式
+    /// 核心处理函数:异步流处理模式
     pub async fn process_stream(
         &self,
         input: impl Stream<Item = InputRecord>,
@@ -272,7 +272,7 @@ impl AsyncEnrichmentUDF {
             .flat_map(|result| stream::iter(result.unwrap_or_default()))
     }
 
-    /// 批量处理：内部并发
+    /// 批量处理:内部并发
     async fn process_batch(
         &self,
         batch: Vec<InputRecord>,
@@ -282,7 +282,7 @@ impl AsyncEnrichmentUDF {
             .map(|record| self.enrich_with_retry(record))
             .collect();
 
-        // 并发执行，使用 join_all
+        // 并发执行,使用 join_all
         let results = futures::future::join_all(futures).await;
         Ok(results)
     }
@@ -387,11 +387,11 @@ pub async fn process_with_backpressure<S>(
 
     input
         .map(|record| udf.enrich(record))
-        .buffered(max_in_flight)  // 限制在途请求数（背压）
+        .buffered(max_in_flight)  // 限制在途请求数(背压)
         .for_each(|result| async {
             match result {
                 Ok(enriched) => {
-                    // send().await 自然实现背压：如果 channel 满会等待
+                    // send().await 自然实现背压:如果 channel 满会等待
                     if let Err(e) = output_tx.send(enriched).await {
                         log::error!("Failed to send result: {}", e);
                     }
@@ -443,14 +443,14 @@ impl From<reqwest::Error> for EnrichmentError {
 
 ```rust
 //! 流式 I/O 处理模式
-//! 场景：边缘节点实时数据处理
+//! 场景:边缘节点实时数据处理
 
 use bytes::Bytes;
 use futures::{Sink, SinkExt, Stream, StreamExt};
 use std::pin::Pin;
 use std::task::{Context, Poll};
 
-/// 流式处理器：增量处理数据
+/// 流式处理器:增量处理数据
 pub struct StreamingProcessor {
     /// 内部缓冲区大小
     buffer_size: usize,
@@ -461,8 +461,8 @@ pub struct StreamingProcessor {
 impl StreamingProcessor {
     /// 创建流式转换管道
     ///
-    /// 模式：Source -> Transform -> Sink
-    /// 特点：增量处理，背压感知
+    /// 模式:Source -> Transform -> Sink
+    /// 特点:增量处理,背压感知
     pub fn create_pipeline<S, Si>(
         &self,
         source: S,
@@ -485,9 +485,9 @@ impl StreamingProcessor {
                     }
                 }
             })
-            // 窗口化处理：累积到 buffer_size 后处理
+            // 窗口化处理:累积到 buffer_size 后处理
             .chunks(buffer_size)
-            // 并行转换（保持顺序）
+            // 并行转换(保持顺序)
             .map(|chunk| self.transform_chunk(chunk))
             .buffered(4)  // 最多4个并发转换
             // 发送到 sink
@@ -511,13 +511,13 @@ impl StreamingProcessor {
         })
     }
 
-    /// 字节处理（异步 I/O 可能在此处）
+    /// 字节处理(异步 I/O 可能在此处)
     async fn process_bytes(
         &self,
         input: &[u8],
         output: &mut Vec<u8>,
     ) -> Result<(), TransformError> {
-        // 示例：简单的数据转换
+        // 示例:简单的数据转换
         // 实际场景可能涉及异步解析、压缩、加密等
         output.extend_from_slice(input);
         output.push(b'\n');
@@ -571,7 +571,7 @@ impl Sink<ProcessedChunk> for BackpressureSink {
         // 检查背压
         match self.backpressure_status() {
             BackpressureStatus::Apply => {
-                // 应用背压：等待
+                // 应用背压:等待
                 cx.waker().wake_by_ref();
                 Poll::Pending
             }
@@ -641,6 +641,7 @@ enum SinkError {
 ### 6.3 背压处理机制实现
 
 ```rust
+// 伪代码示意，非完整可编译代码
 //! 背压处理机制
 //! 实现多种背压策略
 
@@ -675,7 +676,7 @@ pub enum BackpressureStrategy {
         max_concurrent: usize,
     },
 
-    /// 自适应策略（结合上述多种）
+    /// 自适应策略(结合上述多种)
     Adaptive {
         target_latency_ms: u64,
         max_concurrent: usize,
@@ -750,7 +751,7 @@ impl BackpressureController {
                 // 自适应背压策略实现
                 //
                 // 算法说明:
-                // 自适应策略基于多指标反馈动态调整处理速率，包括:
+                // 自适应策略基于多指标反馈动态调整处理速率,包括:
                 // - buffer_occupancy: 缓冲区占用率 [0.0, 1.0]
                 // - processing_latency: 端到端处理延迟
                 // - current_rate: 当前处理速率 (records/sec)
@@ -794,7 +795,7 @@ impl BackpressureController {
                 //     let error = 0.6 * buffer_error + 0.4 * latency_error;
                 //
                 //     // PID控制输出
-                //     let adjustment = kp * error;  // 简化版，实际应包含积分和微分项
+                //     let adjustment = kp * error;  // 简化版,实际应包含积分和微分项
                 //     let new_rate = current_rate * (1.0 - adjustment)
                 //         .clamp(config.min_rate / current_rate.max(1.0),
                 //                config.max_rate / current_rate.max(1.0));
@@ -873,7 +874,7 @@ impl<T> BufferBasedSender<T> {
             Ordering::Relaxed
         );
 
-        // 如果缓冲区接近满，应用背压
+        // 如果缓冲区接近满,应用背压
         if ratio > 0.9 {
             self.metrics.backpressure_events.fetch_add(1, Ordering::Relaxed);
             log::warn!("High backpressure: buffer at {:.1}%", ratio * 100.0);
@@ -903,7 +904,7 @@ impl<T> ConcurrencyBasedSender<T> {
         F: FnOnce() -> Fut,
         Fut: Future<Output = R>,
     {
-        // 获取许可证（背压控制点）
+        // 获取许可证(背压控制点)
         let _permit = self
             .semaphore
             .acquire()
@@ -933,7 +934,7 @@ impl RateLimiter {
         let tokens = Arc::new(AtomicUsize::new(burst_size));
         let tokens_clone = tokens.clone();
 
-        // 后台任务：补充令牌
+        // 后台任务:补充令牌
         tokio::spawn(async move {
             let mut interval = interval(Duration::from_secs(1));
             loop {
@@ -1063,7 +1064,7 @@ sequenceDiagram
     Processor->>Output: 发送结果 (1)
     Processor->>Output: 发送结果 (2)
 
-    Note over Buffer,Output: 背压：当 Output 慢时，Buffer 累积，Source 减速
+    Note over Buffer,Output: 背压:当 Output 慢时,Buffer 累积,Source 减速
 ```
 
 ### 7.3 背压传播机制

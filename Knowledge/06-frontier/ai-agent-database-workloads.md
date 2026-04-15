@@ -478,7 +478,7 @@ class AgentDatabaseManager {
 ### 6.3 Flink + Agent 数据库集成示例
 
 ```java
-// Flink 作业：Agent 任务编排与数据库生命周期管理
+// Flink 作业:Agent 任务编排与数据库生命周期管理
 
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -488,12 +488,12 @@ public class AgentOrchestrationJob {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-        // 数据源：Agent 任务事件
+        // 数据源:Agent 任务事件
         DataStream<AgentTaskEvent> taskStream = env
             .addSource(new AgentTaskSource())
             .keyBy(AgentTaskEvent::getAgentId);
 
-        // 处理：数据库生命周期管理
+        // 处理:数据库生命周期管理
         DataStream<TaskResult> results = taskStream
             .process(new RichProcessFunction<>() {
                 private transient NeonDatabaseClient dbClient;

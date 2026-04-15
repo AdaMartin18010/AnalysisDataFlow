@@ -236,7 +236,7 @@ $$\exists t: View(t) \neq \text{SourceDB}(t') \text{ for any } t'$$
   - 所有 Source 从 e_0 开始产生数据
 
 归纳假设:
-  - 假设在 epoch e，所有 Actor 状态对应于 e 的全局一致快照
+  - 假设在 epoch e,所有 Actor 状态对应于 e 的全局一致快照
 
 归纳步骤:
   1. Meta 注入 Barrier B(e+1) 到所有 Source
@@ -245,11 +245,11 @@ $$\exists t: View(t) \neq \text{SourceDB}(t') \text{ for any } t'$$
      b. 等待所有上游 B(e+1) (对齐)
      c. 将当前状态标记为 epoch e 的快照
      d. 异步 flush 到 Hummock
-     e. 继续处理，此时处理的是 epoch e+1 的数据
+     e. 继续处理,此时处理的是 epoch e+1 的数据
 
 结论:
-  - 在 Hummock 中，每个 epoch e 对应一个全局一致状态
-  - 查询读取特定 epoch 的状态，因此具有一致性
+  - 在 Hummock 中,每个 epoch e 对应一个全局一致状态
+  - 查询读取特定 epoch 的状态,因此具有一致性
 ```
 
 ### 5.2 与 Materialize 严格序列化一致性的对比
@@ -284,7 +284,7 @@ $$SC \Rightarrow Snap \land Snap \not\Rightarrow SC$$
    - Checkpoint at t=1: A=x, B=⊥  ← T2 可能读到此状态
    - Checkpoint at t=2: A=x, B=y
 
-   T2 的查询可能在 t=1.5 执行，读到 A=x, B=⊥
+   T2 的查询可能在 t=1.5 执行,读到 A=x, B=⊥
    这不是任何真实时刻的全局状态！
    ```
 
@@ -366,7 +366,7 @@ SELECT region, SUM(amount) as revenue
 FROM orders_stream
 GROUP BY region;
 
--- 派生视图（基于上游视图）
+-- 派生视图(基于上游视图)
 CREATE MATERIALIZED VIEW top_regions AS
 SELECT * FROM regional_revenue
 WHERE revenue > 1000000
@@ -683,7 +683,7 @@ impl StateStore for HummockStorage {
         // 1. 写入 MemTable
         self.mem_table.write(batch, epoch)?;
 
-        // 2. 检查 MemTable 大小，触发 flush
+        // 2. 检查 MemTable 大小,触发 flush
         if self.mem_table.size() > FLUSH_THRESHOLD {
             let sst = self.mem_table.flush().await?;
 
@@ -704,7 +704,7 @@ impl StateStore for HummockStorage {
 ```rust
 // src/stream/src/executor/hash_agg.rs
 pub struct HashAggExecutor {
-    /// 聚合状态表，存储在 Hummock
+    /// 聚合状态表,存储在 Hummock
     state_table: StateTable<Row>,
     /// 聚合函数集合
     agg_calls: Vec<AggCall>,
@@ -730,7 +730,7 @@ impl Executor for HashAggExecutor {
                 Ok(Message::Chunk(self.generate_delta(chunk)))
             }
             Message::Barrier(b) => {
-                // 检查点：异步 flush 状态
+                // 检查点:异步 flush 状态
                 self.state_table.commit(b.epoch).await?;
                 Ok(Message::Barrier(b))
             }
@@ -801,14 +801,14 @@ block_cache_capacity_mb = 2048
 # 元数据缓存
 meta_cache_capacity_mb = 512
 
-# 共享缓冲区（MemTable）
+# 共享缓冲区(MemTable)
 shared_buffer_capacity_mb = 2048
 
 # Compactor 内存限制
 compactor_memory_limit_mb = 2560
 
 [streaming]
-# 检查点间隔（秒）
+# 检查点间隔(秒)
 checkpoint_interval_sec = 10
 
 # Barrier 超时

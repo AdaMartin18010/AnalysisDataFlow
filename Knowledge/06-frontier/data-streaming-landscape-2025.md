@@ -381,7 +381,7 @@ SaaS 成本:
 
 选型理由:
 - RisingWave: 替代 Kafka+Flink+PostgreSQL 组合
-- SQL 原生: BI 工具直接对接，无需额外 ETL
+- SQL 原生: BI 工具直接对接,无需额外 ETL
 - 部署: RisingWave Cloud 或自建 Kubernetes
 ```
 

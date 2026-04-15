@@ -511,7 +511,7 @@ class NetworkDetector:
 │  离线期间                                                   │
 │  ├─ 持续本地缓冲                                             │
 │  ├─ 周期性本地Checkpoint                                     │
-│  └─ 监控存储容量，必要时淘汰低优先级数据                      │
+│  └─ 监控存储容量,必要时淘汰低优先级数据                      │
 ├─────────────────────────────────────────────────────────────┤
 │  网络恢复                                                   │
 │  ├─ 检测到网络恢复                                           │
@@ -821,7 +821,7 @@ public class BufferedSyncSink<T> extends TwoPhaseCommitSinkFunction<T, BufferedT
                 cloudClient.send(data);
                 return;  // 同步成功
             } catch (Exception e) {
-                // 同步失败，降级到本地缓冲
+                // 同步失败,降级到本地缓冲
             }
         }
         
@@ -836,7 +836,7 @@ public class BufferedSyncSink<T> extends TwoPhaseCommitSinkFunction<T, BufferedT
     
     @Override
     protected void preCommit(BufferedTransaction transaction) throws Exception {
-        // 预提交：刷新缓冲区到磁盘
+        // 预提交:刷新缓冲区到磁盘
         if (!transaction.isEmpty()) {
             localBuffer.write(transaction.getData());
         }
@@ -844,13 +844,13 @@ public class BufferedSyncSink<T> extends TwoPhaseCommitSinkFunction<T, BufferedT
     
     @Override
     protected void commit(BufferedTransaction transaction) {
-        // 事务提交成功，清空事务数据
+        // 事务提交成功,清空事务数据
         transaction.clear();
     }
     
     @Override
     protected void abort(BufferedTransaction transaction) {
-        // 事务回滚，数据仍在缓冲区中
+        // 事务回滚,数据仍在缓冲区中
     }
     
     private void triggerSync() {
@@ -859,7 +859,7 @@ public class BufferedSyncSink<T> extends TwoPhaseCommitSinkFunction<T, BufferedT
             try {
                 localBuffer.flushToCloud(cloudClient);
             } catch (Exception e) {
-                // 同步失败，数据保留在缓冲区
+                // 同步失败,数据保留在缓冲区
             }
         }).start();
     }

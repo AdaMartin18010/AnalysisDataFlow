@@ -98,8 +98,8 @@ pie title CSP 笔试知识分布
 **简答题示例**:
 
 ```
-Q: 请阐述 Flink Checkpoint 的完整流程，包括 Barrier 注入、
-   对齐、快照制作的详细过程，以及可能失败的原因。
+Q: 请阐述 Flink Checkpoint 的完整流程,包括 Barrier 注入、
+   对齐、快照制作的详细过程,以及可能失败的原因。
 
 评分要点:
 - Barrier 注入机制 (4分)
@@ -111,8 +111,8 @@ Q: 请阐述 Flink Checkpoint 的完整流程，包括 Barrier 注入、
 **案例分析示例**:
 
 ```
-场景: 某 Flink 作业在运行 2 小时后开始出现 Checkpoint 超时，
-      最终失败。作业状态大小约 50GB，使用 RocksDBStateBackend。
+场景: 某 Flink 作业在运行 2 小时后开始出现 Checkpoint 超时,
+      最终失败。作业状态大小约 50GB,使用 RocksDBStateBackend。
 
 问题:
 1. 分析可能的原因 (5分)
@@ -204,7 +204,7 @@ flowchart TD
 │                                                             │
 │                    [学员姓名]                                │
 │                                                             │
-│    通过 CSP 认证考试，证明其具备：                           │
+│    通过 CSP 认证考试,证明其具备:                           │
 │    • Flink 核心机制深度理解                                  │
 │    • 生产级系统开发能力                                      │
 │    • 性能调优与故障排查能力                                  │

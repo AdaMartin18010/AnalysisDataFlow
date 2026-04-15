@@ -530,10 +530,10 @@ void risk_score_kernel(
     #pragma HLS INTERFACE mode=axis port=in_stream
     #pragma HLS INTERFACE mode=axis port=out_stream
 
-    // 流水线：每时钟周期处理一个交易
+    // 流水线:每时钟周期处理一个交易
     #pragma HLS PIPELINE II=1
 
-    // 内部缓存（双缓冲）
+    // 内部缓存(双缓冲)
     #pragma HLS ARRAY_PARTITION variable=rules complete dim=0
     #pragma HLS ARRAY_PARTITION variable=merchant_risk cyclic factor=4
 
@@ -556,7 +556,7 @@ void risk_score_kernel(
         ap_uint<8> merchant_risk_level = merchant_risk[txn.merchant_id];
         risk_score += merchant_risk_level;
 
-        // 规则 3: 时间异常（简化示例）
+        // 规则 3: 时间异常(简化示例)
         ap_uint<1> is_odd_hour = txn.timestamp(3, 0) < 6 || txn.timestamp(3, 0) > 22;
         risk_score += is_odd_hour ? 10 : 0;
 
@@ -567,7 +567,7 @@ void risk_score_kernel(
     }
 }
 
-// 批量处理版本（更高吞吐）
+// 批量处理版本(更高吞吐)
 void risk_score_batch_kernel(
     Transaction* in_batch,
     transaction_id_t* out_high_risk,
@@ -611,7 +611,7 @@ void parse_batch(
     }
 }
 
-// 评分阶段（并行展开）
+// 评分阶段(并行展开)
 void score_transactions(
     hls::stream<Transaction>& in_stream,
     hls::stream<ap_uint<16>>& out_stream,
@@ -627,7 +627,7 @@ void score_transactions(
 
         ap_uint<16> score = 0;
 
-        // 并行评估多条规则（展开）
+        // 并行评估多条规则(展开)
         ap_uint<8> rule_scores[10];
         #pragma HLS ARRAY_PARTITION variable=rule_scores complete
 
@@ -637,7 +637,7 @@ void score_transactions(
                             ? rules[r].risk_weight : 0;
         }
 
-        // 累加规则分数（树形归约）
+        // 累加规则分数(树形归约)
         for (int r = 0; r < 10; r++) {
             #pragma HLS UNROLL
             score += rule_scores[r];
@@ -786,7 +786,7 @@ public class FpgaRiskFilter extends ScalarFunction {
             return processBatch();
         }
 
-        // 延迟响应（简化示例）
+        // 延迟响应(简化示例)
         return false;
     }
 

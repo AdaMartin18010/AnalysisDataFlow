@@ -109,15 +109,15 @@ RisingWave 通过以下机制保证原生 Rust UDF 的安全性：
 4. **超时机制**: 单函数执行超过阈值自动终止
 
 ```rust
-// ✅ 允许：纯计算
+// ✅ 允许:纯计算
 fn allowed(x: i32) -> i32 { x * x }
 
-// ❌ 拒绝：包含 unsafe
+// ❌ 拒绝:包含 unsafe
 fn rejected() -> i32 {
     unsafe { std::ptr::read_volatile(0x0 as *const i32) }
 }
 
-// ❌ 拒绝：系统调用
+// ❌ 拒绝:系统调用
 fn rejected_io() {
     std::fs::read("/etc/passwd"); // 编译或运行时拒绝
 }
@@ -199,7 +199,7 @@ flowchart TD
 **场景 1：高频标量计算**
 
 ```rust
--- 金融实时风控：每秒百万次价格计算
+-- 金融实时风控:每秒百万次价格计算
 CREATE FUNCTION calc_volatility(prices FLOAT[]) RETURNS FLOAT
 LANGUAGE rust
 AS $$
@@ -219,7 +219,7 @@ $$;
 **场景 2：状态无关的转换**
 
 ```rust
--- 日志解析：JSON 字段提取
+-- 日志解析:JSON 字段提取
 CREATE FUNCTION extract_trace_id(log_line VARCHAR) RETURNS VARCHAR
 LANGUAGE rust
 AS $$
@@ -329,12 +329,12 @@ flowchart TD
 **技巧 1：避免不必要的内存分配**
 
 ```rust
--- ❌ 低效：每次分配新 String
+-- ❌ 低效:每次分配新 String
 fn slow(name: &str) -> String {
     format!("Hello, {}", name)  // 堆分配
 }
 
--- ✅ 高效：返回 &str 或 Cow
+-- ✅ 高效:返回 &str 或 Cow
 fn fast<'a>(name: &'a str) -> std::borrow::Cow<'a, str> {
     if name.is_empty() {
         "Anonymous".into()
@@ -347,7 +347,7 @@ fn fast<'a>(name: &'a str) -> std::borrow::Cow<'a, str> {
 **技巧 2：利用迭代器避免中间集合**
 
 ```rust
--- ❌ 低效：创建中间 Vec
+-- ❌ 低效:创建中间 Vec
 fn slow_sum_squares(nums: &[i32]) -> i32 {
     nums.iter()
         .map(|x| x * x)
@@ -356,7 +356,7 @@ fn slow_sum_squares(nums: &[i32]) -> i32 {
         .sum()
 }
 
--- ✅ 高效：直接迭代求和
+-- ✅ 高效:直接迭代求和
 fn fast_sum_squares(nums: &[i32]) -> i32 {
     nums.iter()
         .map(|x| x * x)
@@ -367,7 +367,7 @@ fn fast_sum_squares(nums: &[i32]) -> i32 {
 **技巧 3：表函数使用生成器模式**
 
 ```rust
--- ✅ 高效：惰性求值，内存友好
+-- ✅ 高效:惰性求值,内存友好
 fn parse_csv_row(row: &str) -> impl Iterator<Item = (&str, &str)> + '_ {
     row.split(',')
         .filter_map(|field| {
@@ -428,7 +428,7 @@ AS $$
     }
 $$;
 
--- 使用示例：生成 1 到 5 的序列
+-- 使用示例:生成 1 到 5 的序列
 SELECT * FROM series(1, 5);
 -- 结果:
 -- n
@@ -439,7 +439,7 @@ SELECT * FROM series(1, 5);
 -- 4
 -- 5
 
--- 在 JOIN 中使用（展开数组为行）
+-- 在 JOIN 中使用(展开数组为行)
 CREATE MATERIALIZED VIEW expanded_events AS
 SELECT
     e.id,
@@ -504,8 +504,8 @@ SELECT * FROM parse_query_string('name=John&age=30&city=NYC');
 ### 6.4 聚合函数示例（伪代码）
 
 ```sql
--- 注意：截至 2024，RisingWave 原生 Rust UDF 的聚合函数支持仍在演进中
--- 以下为预期语法（基于社区讨论）
+-- 注意:截至 2024,RisingWave 原生 Rust UDF 的聚合函数支持仍在演进中
+-- 以下为预期语法(基于社区讨论)
 
 CREATE AGGREGATE FUNCTION geometric_mean(FLOAT8)
 RETURNS FLOAT8
@@ -531,7 +531,7 @@ AS $$
         state.count += 1;
     }
 
-    // 合并（用于分布式聚合）
+    // 合并(用于分布式聚合)
     fn state_merge(
         state1: &mut GeometricMeanState,
         state2: &GeometricMeanState
@@ -624,7 +624,7 @@ sequenceDiagram
 
     U->>F: CREATE FUNCTION ... LANGUAGE rust
     F->>F: 解析 Rust 代码
-    F->>F: 安全扫描（拒绝 unsafe）
+    F->>F: 安全扫描(拒绝 unsafe)
     F->>F: 类型检查
     F->>S: 持久化函数定义
     S-->>F: 确认存储

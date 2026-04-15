@@ -222,7 +222,7 @@ PR提交后会自动触发以下检查：
 # 检查指定文件
 python .scripts/doc-quality-gate.py file1.md file2.md
 
-# PR模式（只检查变更文件）
+# PR模式(只检查变更文件)
 python .scripts/doc-quality-gate.py --pr-mode
 
 # 详细输出

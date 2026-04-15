@@ -462,7 +462,7 @@ sequenceDiagram
 
 ```java
 public interface SlotProvider {
-    // 同步分配（阻塞式）
+    // 同步分配(阻塞式)
     CompletableFuture<LogicalSlot> allocateSlot(
         SlotRequestId slotRequestId,
         ScheduledUnit scheduledUnit,
@@ -547,7 +547,7 @@ public class DelayedSchedulingStrategy implements SchedulingStrategy {
                 // 继续等待
                 scheduleRetry(vertex);
             } else {
-                // 超时，降级分配
+                // 超时,降级分配
                 ready.add(vertex);
             }
         }

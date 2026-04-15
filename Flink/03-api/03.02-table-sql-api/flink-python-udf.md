@@ -320,10 +320,10 @@ from pyflink.table.types import Row
 
 class ParseJsonArray(TableFunction):
     """
-    表值函数：将JSON数组字符串展开为多行
+    表值函数:将JSON数组字符串展开为多行
 
     示例输入: '["a", "b", "c"]'
-    示例输出: 三行，分别为 "a", "b", "c"
+    示例输出: 三行,分别为 "a", "b", "c"
     """
 
     def __init__(self):
@@ -357,7 +357,7 @@ from pyflink.table.udf import udaf, AggregateFunction
 
 class WeightedAverage(AggregateFunction):
     """
-    自定义聚合函数：计算加权平均值
+    自定义聚合函数:计算加权平均值
 
     累加器结构: (sum_value * weight, sum_weight)
     """
@@ -420,7 +420,7 @@ import aiohttp
 import asyncio
 
 # Confluent Cloud Connection 对象示例
-# 用于调用外部REST API（如ML推理服务）
+# 用于调用外部REST API(如ML推理服务)
 
 @udf(result_type=DataTypes.ROW([
     DataTypes.FIELD("sentiment", DataTypes.STRING()),
@@ -432,7 +432,7 @@ async def sentiment_analysis(text: str, context) -> dict:
 
     Args:
         text: 待分析文本
-        context: UDF执行上下文，包含connection对象
+        context: UDF执行上下文,包含connection对象
 
     Returns:
         包含sentiment和confidence的Row
@@ -496,7 +496,7 @@ SELECT
 FROM user_events
 WHERE event_time > TIMESTAMP '2025-01-01';
 
--- 4. 表值函数使用（需配合LATERAL TABLE）
+-- 4. 表值函数使用(需配合LATERAL TABLE)
 SELECT
     order_id,
     item
@@ -517,7 +517,7 @@ GROUP BY category;
 # requirements.txt 示例
 # Flink Python UDF依赖文件
 
-# 核心依赖（通常由Flink提供）
+# 核心依赖(通常由Flink提供)
 pyflink==1.20.0
 apache-beam==2.50.0
 pyarrow==14.0.0
@@ -526,12 +526,12 @@ pyarrow==14.0.0
 pandas==2.1.4
 numpy==1.26.0
 
-# ML/AI库（按需添加）
+# ML/AI库(按需添加)
 scikit-learn==1.3.0
 torch==2.1.0
 transformers==4.35.0
 
-# HTTP客户端（用于Async UDF）
+# HTTP客户端(用于Async UDF)
 aiohttp==3.9.0
 requests==2.31.0
 
@@ -542,7 +542,7 @@ pydantic==2.5.0
 
 ```bash
 #!/bin/bash
-# 创建Python虚拟环境并打包（用于Flink UDF部署）
+# 创建Python虚拟环境并打包(用于Flink UDF部署)
 
 VENV_NAME="flink_udf_env"
 PYTHON_VERSION="3.11"
@@ -554,10 +554,10 @@ source activate $VENV_NAME
 # 2. 安装依赖
 pip install -r requirements.txt
 
-# 3. 打包虚拟环境（用于上传到Flink）
+# 3. 打包虚拟环境(用于上传到Flink)
 zip -r ${VENV_NAME}.zip $CONDA_PREFIX/lib/python${PYTHON_VERSION}/site-packages/
 
-# 4. 上传到HDFS/S3（Flink可访问的存储）
+# 4. 上传到HDFS/S3(Flink可访问的存储)
 hdfs dfs -put ${VENV_NAME}.zip /flink/python-envs/
 ```
 
@@ -727,7 +727,7 @@ def retry_on_exception(max_retries=3, exceptions=(Exception,)):
                 except exceptions as e:
                     logger.warning(f"Attempt {attempt + 1} failed: {e}")
                     if attempt == max_retries - 1:
-                        # 最后一次重试失败，返回默认值或抛出
+                        # 最后一次重试失败,返回默认值或抛出
                         return None
             return None
         return wrapper

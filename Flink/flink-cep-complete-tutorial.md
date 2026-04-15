@@ -303,7 +303,7 @@ public class CEPCompleteTutorial {
 
     /**
      * 示例 1: 简单序列模式
-     * 检测：登录后 5 分钟内完成支付
+     * 检测:登录后 5 分钟内完成支付
      */
     public static Pattern<LoginEvent, ?> loginThenPayPattern() {
         return Pattern.<LoginEvent>begin("login")
@@ -325,7 +325,7 @@ public class CEPCompleteTutorial {
 
     /**
      * 示例 2: 循环模式
-     * 检测：5 分钟内 3 次以上失败登录
+     * 检测:5 分钟内 3 次以上失败登录
      */
     public static Pattern<LoginEvent, ?> bruteForcePattern() {
         return Pattern.<LoginEvent>begin("failed")
@@ -336,13 +336,13 @@ public class CEPCompleteTutorial {
                 }
             })
             .timesOrMore(3)  // 3次或更多
-            .greedy()        // 贪婪模式，尽可能多匹配
+            .greedy()        // 贪婪模式,尽可能多匹配
             .within(Time.minutes(5));
     }
 
     /**
      * 示例 3: 否定模式
-     * 检测：下单后 30 分钟内未支付
+     * 检测:下单后 30 分钟内未支付
      */
     public static Pattern<OrderEvent, ?> orderNotPaidPattern() {
         return Pattern.<OrderEvent>begin("order")
@@ -365,8 +365,8 @@ public class CEPCompleteTutorial {
     // ========== 2. 复杂条件模式 ==========
 
     /**
-     * 示例 4: 迭代条件（访问前面匹配的事件）
-     * 检测：温度持续上升超过阈值
+     * 示例 4: 迭代条件(访问前面匹配的事件)
+     * 检测:温度持续上升超过阈值
      */
     public static Pattern<SensorReading, ?> temperatureRisingPattern() {
         return Pattern.<SensorReading>begin("first")
@@ -402,7 +402,7 @@ public class CEPCompleteTutorial {
 
     /**
      * 示例 5: 或组合模式
-     * 检测：VIP用户的高额交易 或 普通用户的异常交易
+     * 检测:VIP用户的高额交易 或 普通用户的异常交易
      */
     public static Pattern<Transaction, ?> fraudPattern() {
         Pattern<Transaction, ?> vipPattern = Pattern.<Transaction>begin("vip")
@@ -504,8 +504,8 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 
 
 /**
- * 案例：信用卡欺诈检测
- * 模式：小额测试 → 大额交易（5分钟内）
+ * 案例:信用卡欺诈检测
+ * 模式:小额测试 → 大额交易(5分钟内)
  */
 public class FraudDetectionCEP {
 
@@ -537,7 +537,7 @@ public class FraudDetectionCEP {
             .where(new IterativeCondition<Transaction>() {
                 @Override
                 public boolean filter(Transaction tx, Context<Transaction> ctx) {
-                    // 大额交易（大于5000）
+                    // 大额交易(大于5000)
                     if (tx.getAmount() <= 5000.0) {
                         return false;
                     }
@@ -594,9 +594,9 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 
 
 /**
- * 案例：异常登录检测
- * 模式1: 5分钟内 3 次失败登录 → 成功登录（暴力破解）
- * 模式2: 异地登录（地理位置突变）
+ * 案例:异常登录检测
+ * 模式1: 5分钟内 3 次失败登录 → 成功登录(暴力破解)
+ * 模式2: 异地登录(地理位置突变)
  */
 public class LoginAnomalyDetection {
 
@@ -638,7 +638,7 @@ public class LoginAnomalyDetection {
 
                     LoginEvent first = ctx.getEventsForPattern("first-login").get(0);
 
-                    // 同一用户，不同城市，时间间隔小于 2 小时
+                    // 同一用户,不同城市,时间间隔小于 2 小时
                     return event.getUserId().equals(first.getUserId())
                         && !event.getCity().equals(first.getCity())
                         && (event.getTimestamp() - first.getTimestamp()) < Time.hours(2).toMilliseconds();
@@ -675,7 +675,7 @@ public class LoginAnomalyDetection {
                         Context ctx,
                         Collector<Alert> out) {
 
-                    // 正常匹配处理：暴力破解成功
+                    // 正常匹配处理:暴力破解成功
                     List<LoginEvent> failed = match.get("failed-logins");
                     LoginEvent success = match.get("success-login").get(0);
 
@@ -693,7 +693,7 @@ public class LoginAnomalyDetection {
                         Context ctx,
                         Collector<Alert> out) {
 
-                    // 超时处理：多次失败但未成功（仍在尝试）
+                    // 超时处理:多次失败但未成功(仍在尝试)
                     List<LoginEvent> failed = match.get("failed-logins");
 
                     out.collect(new Alert(
@@ -722,8 +722,8 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 
 
 /**
- * 案例：业务流程超时监控
- * 监控订单流程：创建 → 支付 → 发货 → 签收
+ * 案例:业务流程超时监控
+ * 监控订单流程:创建 → 支付 → 发货 → 签收
  * 检测各环节超时
  */
 public class BusinessProcessMonitor {
@@ -783,7 +783,7 @@ public class BusinessProcessMonitor {
                         Map<String, List<OrderEvent>> match,
                         Context ctx,
                         Collector<TimeoutAlert> out) {
-                    // 正常匹配不会触发（notFollowedBy）
+                    // 正常匹配不会触发(notFollowedBy)
                 }
 
                 @Override
@@ -832,7 +832,7 @@ public class CEPTimeSemantics {
 
         DataStream<Event> stream = env.addSource(new EventSource());
 
-        // ========== Event Time 处理（推荐用于生产） ==========
+        // ========== Event Time 处理(推荐用于生产) ==========
         DataStream<Event> eventTimeStream = stream
             .assignTimestampsAndWatermarks(
                 WatermarkStrategy.<Event>forBoundedOutOfOrderness(
@@ -840,16 +840,16 @@ public class CEPTimeSemantics {
                     .withIdleness(Duration.ofMinutes(5))  // 5分钟无数据标记为空闲
             );
 
-        // Event Time 模式下，within() 使用事件时间戳
+        // Event Time 模式下,within() 使用事件时间戳
         Pattern<Event, ?> pattern = Pattern.<Event>begin("start")
             .where(evt -> evt.getType().equals("A"))
             .followedBy("end")
             .where(evt -> evt.getType().equals("B"))
             .within(Time.minutes(5));  // 基于 Event Time 的 5 分钟窗口
 
-        // ========== Processing Time 处理（低延迟场景） ==========
-        // Processing Time 模式下，within() 使用机器时间
-        // 适用于：实时性要求高，可容忍少数迟到事件丢失
+        // ========== Processing Time 处理(低延迟场景) ==========
+        // Processing Time 模式下,within() 使用机器时间
+        // 适用于:实时性要求高,可容忍少数迟到事件丢失
 
         PatternStream<Event> patternStream = CEP.pattern(
             eventTimeStream.keyBy(Event::getKey),
@@ -876,8 +876,8 @@ import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 public class CEPWatermarkConfig {
 
     /**
-     * 推荐配置：Bounded Out Of Orderness
-     * 适用于：大多数生产场景
+     * 推荐配置:Bounded Out Of Orderness
+     * 适用于:大多数生产场景
      */
     public static WatermarkStrategy<Event> boundedOutOfOrdernessStrategy() {
         return WatermarkStrategy.<Event>forBoundedOutOfOrderness(
@@ -888,7 +888,7 @@ public class CEPWatermarkConfig {
 
     /**
      * 严格有序场景
-     * 适用于：数据源本身有序（如 Kafka 单分区）
+     * 适用于:数据源本身有序(如 Kafka 单分区)
      */
     public static WatermarkStrategy<Event> monotonousStrategy() {
         return WatermarkStrategy.<Event>forMonotonousTimestamps()
@@ -897,7 +897,7 @@ public class CEPWatermarkConfig {
 
     /**
      * 自定义 Watermark 生成
-     * 适用于：特殊乱序场景
+     * 适用于:特殊乱序场景
      */
     public static WatermarkStrategy<Event> customWatermarkStrategy() {
         return new WatermarkStrategy<Event>() {
@@ -1066,13 +1066,13 @@ public class CEPPerformanceOptimization {
 
     /**
      * 优化 1: 合理的 KeyBy 分区
-     * 避免热点，确保数据均匀分布
+     * 避免热点,确保数据均匀分布
      */
     public static void optimizedKeyBy(DataStream<Event> stream) {
-        // 不推荐：用户ID可能导致热点
+        // 不推荐:用户ID可能导致热点
         // stream.keyBy(Event::getUserId)
 
-        // 推荐：使用复合键或哈希
+        // 推荐:使用复合键或哈希
         stream.keyBy(event ->
             (event.getUserId().hashCode() % 100) + "_" + event.getRegion()
         );
@@ -1107,7 +1107,7 @@ public class CEPPerformanceOptimization {
      * 优化 4: 合理设置时间窗口
      */
     public static Pattern<Event, ?> optimizedWindow() {
-        // 窗口越小，状态越少
+        // 窗口越小,状态越少
         // 根据业务场景选择最小可行窗口
         return Pattern.<Event>begin("start")
             .where(evt -> evt.getType().equals("A"))

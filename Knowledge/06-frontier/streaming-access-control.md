@@ -650,7 +650,7 @@ $$
 kafka-acls --add --allow-principal User:flink-app \
            --operation Read --topic user_events
 
-# 拒绝直接访问敏感 Topic（必须通过策略引擎）
+# 拒绝直接访问敏感 Topic(必须通过策略引擎)
 kafka-acls --add --deny-principal User:'*' \
            --operation Read --topic pii_raw_data
 ```
@@ -668,7 +668,7 @@ kafka-acls --add --deny-principal User:'*' \
 **血缘追踪优化**：
 
 ```java
-// 伪代码：采样血缘追踪
+// 伪代码:采样血缘追踪
 class LineageTracker {
 
     void track(DataRecord record, Operator op) {

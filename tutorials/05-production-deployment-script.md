@@ -34,22 +34,22 @@
 
 ```
 【00:00-00:30】
-大家好！欢迎来到第五集：生产环境部署与监控配置。
+大家好！欢迎来到第五集:生产环境部署与监控配置。
 
-前面的教程我们学习了Flink的开发基础和设计模式，
+前面的教程我们学习了Flink的开发基础和设计模式,
 现在我们要把应用部署到生产环境。
 
-生产环境与本地开发完全不同：
+生产环境与本地开发完全不同:
 需要考虑高可用、容错、监控、扩缩容等一系列问题。
 
 【00:30-01:00】
-Flink支持多种部署模式：
-- Standalone：独立集群，简单但无资源管理
-- YARN：Hadoop生态，适合已有YARN集群
-- Kubernetes：云原生首选，弹性扩缩容
-- Mesos：逐渐被K8s取代
+Flink支持多种部署模式:
+- Standalone:独立集群,简单但无资源管理
+- YARN:Hadoop生态,适合已有YARN集群
+- Kubernetes:云原生首选,弹性扩缩容
+- Mesos:逐渐被K8s取代
 
-本集我们重点讲解Kubernetes部署，
+本集我们重点讲解Kubernetes部署,
 这是目前最主流、最推荐的部署方式。
 ```
 
@@ -98,21 +98,21 @@ graph TB
 
 ```
 【01:00-02:00】
-首先，我们需要安装Flink Kubernetes Operator。
+首先,我们需要安装Flink Kubernetes Operator。
 
-这是Apache Flink官方提供的K8s Operator，
+这是Apache Flink官方提供的K8s Operator,
 它让我们可以用声明式的方式管理Flink作业。
 
-安装步骤：
-1. 安装cert-manager（用于Webhook证书）
+安装步骤:
+1. 安装cert-manager(用于Webhook证书)
 2. 安装Flink Operator
 3. 验证安装
 
 【02:00-04:00】
-安装完成后，我们就可以提交Flink作业了。
+安装完成后,我们就可以提交Flink作业了。
 
-创建一个FlinkDeployment YAML文件，
-定义作业的配置：
+创建一个FlinkDeployment YAML文件,
+定义作业的配置:
 - 镜像地址
 - 并行度
 - 资源请求和限制
@@ -122,18 +122,18 @@ graph TB
 然后使用kubectl apply提交。
 
 【04:00-05:00】
-Flink Operator会：
+Flink Operator会:
 1. 创建JobManager Pod
 2. 创建TaskManager Pod
 3. 配置Service和ConfigMap
 4. 提交作业到集群
 
-我们可以通过kubectl get pods查看Pod状态，
+我们可以通过kubectl get pods查看Pod状态,
 通过Flink Web UI查看作业运行状态。
 
 【05:00-06:00】
-FlinkDeployment是声明式的，
-修改配置后重新apply，
+FlinkDeployment是声明式的,
+修改配置后重新apply,
 Operator会自动完成升级或扩缩容。
 
 这比传统的手动部署方式高效得多。
@@ -164,33 +164,33 @@ kubectl get pods -n default
 # FlinkDeployment示例 - wordcount.yaml
 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
-metadata: 
+metadata:
   name: wordcount-job
   namespace: default
-spec: 
+spec:
   image: flink:2.0.0-scala_2.12
   flinkVersion: v2.0
   mode: native
 
-  jobManager: 
-    resource: 
+  jobManager:
+    resource:
       memory: "2Gi"
       cpu: 1
     replicas: 1
 
-  taskManager: 
-    resource: 
+  taskManager:
+    resource:
       memory: "4Gi"
       cpu: 2
     replicas: 2
 
-  job: 
+  job:
     jarURI: local:///opt/flink/examples/streaming/WordCount.jar
     parallelism: 4
     upgradeMode: stateful
     state: running
 
-  flinkConfiguration: 
+  flinkConfiguration:
     # Checkpoint配置
     execution.checkpointing.interval: "60s"
     execution.checkpointing.timeout: "600s"
@@ -228,7 +228,7 @@ kubectl logs -f deployment/wordcount-job-taskmanager
 # 5. 端口转发访问Web UI
 kubectl port-forward svc/wordcount-job-rest 8081:80
 
-# 6. 更新作业（修改配置后）
+# 6. 更新作业(修改配置后)
 kubectl apply -f wordcount.yaml
 
 # 7. 停止作业
@@ -279,36 +279,36 @@ graph TB
 【06:00-07:00】
 正确的资源配置是Flink稳定运行的基础。
 
-TaskManager内存主要由以下部分组成：
-1. JVM Heap：用户代码、Flink运行时
-2. Off-Heap Memory：网络缓冲区、RocksDB
-3. JVM Metaspace：类元数据
-4. JVM Overhead：栈空间、直接内存
+TaskManager内存主要由以下部分组成:
+1. JVM Heap:用户代码、Flink运行时
+2. Off-Heap Memory:网络缓冲区、RocksDB
+3. JVM Metaspace:类元数据
+4. JVM Overhead:栈空间、直接内存
 
 【07:00-08:00】
-内存配置的关键原则：
+内存配置的关键原则:
 
 1. 总内存 = Framework Heap + Task Heap + Managed Memory + Network Memory + JVM Overhead
 
-2. Framework Heap固定128MB，不需要调整
+2. Framework Heap固定128MB,不需要调整
 
-3. Task Heap用于用户代码和数据结构，
+3. Task Heap用于用户代码和数据结构,
    建议占总内存的30-40%
 
-4. Managed Memory用于RocksDB和排序，
+4. Managed Memory用于RocksDB和排序,
    建议占总内存的40-50%
 
-5. Network Memory用于数据传输，
+5. Network Memory用于数据传输,
    一般占总内存的10-15%
 
 【08:00-09:00】
-CPU配置相对简单：
+CPU配置相对简单:
 
 - 根据并行度和算子复杂度决定
 - 一般每个Slot分配1-2个vCPU
-- 考虑CPU密集型算子（如复杂UDF）适当增加
+- 考虑CPU密集型算子(如复杂UDF)适当增加
 
-网络调优主要关注：
+网络调优主要关注:
 - Buffer大小和数量
 - Debloating机制
 - Credit-based流控
@@ -319,14 +319,14 @@ CPU配置相对简单：
 ```yaml
 # TaskManager内存配置详解
 
-spec: 
-  taskManager: 
-    resource: 
+spec:
+  taskManager:
+    resource:
       memory: "8Gi"  # 总内存
       cpu: 2
 
     # 内存组件详细配置
-    memory: 
+    memory:
       # 任务堆内存 - 用于用户代码和数据结构
       taskmanager.memory.task.heap.size: "3gb"
 
@@ -347,7 +347,7 @@ spec:
       taskmanager.memory.jvm-overhead.min: "256mb"
       taskmanager.memory.jvm-overhead.max: "512mb"
 
-      # 框架堆内存（Flink内部使用）
+      # 框架堆内存(Flink内部使用)
       taskmanager.memory.framework.heap.size: "128mb"
       taskmanager.memory.framework.off-heap.size: "128mb"
 
@@ -355,8 +355,8 @@ spec:
 
 # RocksDB调优配置
 
-spec: 
-  flinkConfiguration: 
+spec:
+  flinkConfiguration:
     # 状态后端
     state.backend: rocksdb
     state.backend.incremental: "true"
@@ -404,34 +404,34 @@ pie title TaskManager 8GB 内存分配示例
 【09:00-10:00】
 高可用(HA)是生产环境的基本要求。
 
-Flink的HA机制：
-1. 多个JobManager，一个Leader，其他Standby
-2. Leader故障时，ZooKeeper触发选举
+Flink的HA机制:
+1. 多个JobManager,一个Leader,其他Standby
+2. Leader故障时,ZooKeeper触发选举
 3. 新Leader从最近的Checkpoint恢复作业
 
-K8s上推荐使用Kubernetes HA模式，
+K8s上推荐使用Kubernetes HA模式,
 不需要额外部署ZooKeeper。
 
 【10:00-11:00】
 Checkpoint是HA的基础。
 
-Checkpoint配置要点：
-1. 存储路径：使用分布式存储（S3、HDFS）
-2. 间隔：平衡容错和性能
-3. 并发数：控制同时进行的最大Checkpoint数
-4. 超时：考虑状态大小和网络
+Checkpoint配置要点:
+1. 存储路径:使用分布式存储(S3、HDFS)
+2. 间隔:平衡容错和性能
+3. 并发数:控制同时进行的最大Checkpoint数
+4. 超时:考虑状态大小和网络
 
-保存点(Savepoint)是手动触发的Checkpoint，
+保存点(Savepoint)是手动触发的Checkpoint,
 用于升级、迁移、A/B测试。
 
 【11:00-12:00】
-恢复策略决定了作业失败后的行为：
+恢复策略决定了作业失败后的行为:
 
-1. fixed-delay：固定延迟后重启
-2. exponential-delay：指数退避重启
-3. failure-rate：控制失败频率
+1. fixed-delay:固定延迟后重启
+2. exponential-delay:指数退避重启
+3. failure-rate:控制失败频率
 
-生产环境建议使用exponential-delay，
+生产环境建议使用exponential-delay,
 避免频繁重启导致资源耗尽。
 ```
 
@@ -442,25 +442,25 @@ Checkpoint配置要点：
 
 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
-metadata: 
+metadata:
   name: ha-flink-job
-spec: 
+spec:
   image: flink:2.0.0-scala_2.12
   flinkVersion: v2.0
 
-  jobManager: 
+  jobManager:
     replicas: 3  # 3个JobManager实现HA
-    resource: 
+    resource:
       memory: "2Gi"
       cpu: 1
 
-  taskManager: 
-    resource: 
+  taskManager:
+    resource:
       memory: "4Gi"
       cpu: 2
     replicas: 3
 
-  flinkConfiguration: 
+  flinkConfiguration:
     # ========== Checkpoint配置 ==========
     execution.checkpointing.interval: "60s"
     execution.checkpointing.timeout: "600s"
@@ -539,37 +539,37 @@ kubectl patch flinkdeployment ha-flink-job --type=merge -p '
 【12:00-13:00】
 监控是生产运维的眼睛。
 
-Flink暴露的指标分为几类：
-1. 系统指标：JVM、内存、GC
-2. 作业指标：Checkpoint、背压、延迟
-3. 业务指标：自定义计数器、Gauge
+Flink暴露的指标分为几类:
+1. 系统指标:JVM、内存、GC
+2. 作业指标:Checkpoint、背压、延迟
+3. 业务指标:自定义计数器、Gauge
 
-采集架构：
+采集架构:
 Flink Metrics Reporter -> Prometheus PushGateway -> Prometheus -> Grafana
 
 【13:00-14:30】
-Prometheus配置：
+Prometheus配置:
 
 1. 在Flink中配置Prometheus Reporter
-2. 部署PushGateway（用于短生命周期作业）
+2. 部署PushGateway(用于短生命周期作业)
 3. Prometheus抓取配置
 4. Grafana导入Flink Dashboard
 
-常用指标：
+常用指标:
 - flink_taskmanager_job_task_operator_numRecordsIn
 - flink_jobmanager_checkpoint_duration_time
 - flink_taskmanager_job_task_backPressuredTimeMsPerSecond
 
 【14:30-16:00】
-Grafana Dashboard应该包含：
+Grafana Dashboard应该包含:
 
-1. 概览面板：作业状态、吞吐、延迟
-2. Checkpoint面板：时长、大小、成功率
-3. 资源面板：CPU、内存、GC
-4. 背压面板：各算子背压情况
-5. Watermark面板：滞后情况
+1. 概览面板:作业状态、吞吐、延迟
+2. Checkpoint面板:时长、大小、成功率
+3. 资源面板:CPU、内存、GC
+4. 背压面板:各算子背压情况
+5. Watermark面板:滞后情况
 
-我们可以导入社区提供的Flink Dashboard模板，
+我们可以导入社区提供的Flink Dashboard模板,
 然后根据需要调整。
 ```
 
@@ -578,8 +578,8 @@ Grafana Dashboard应该包含：
 ```yaml
 # Flink Prometheus Reporter配置
 
-spec: 
-  flinkConfiguration: 
+spec:
+  flinkConfiguration:
     # 启用Prometheus Reporter
     metrics.reporters: prom
     metrics.reporter.prom.factory.class: org.apache.flink.metrics.prometheus.PrometheusReporterFactory
@@ -601,22 +601,22 @@ spec:
 
 apiVersion: v1
 kind: ConfigMap
-metadata: 
+metadata:
   name: prometheus-config
-data: 
+data:
   prometheus.yml: |
-    global: 
+    global:
       scrape_interval: 15s
 
-    scrape_configs: 
+    scrape_configs:
       # JobManager指标
       - job_name: 'flink-jobmanager'
-        kubernetes_sd_configs: 
+        kubernetes_sd_configs:
           - role: pod
-            namespaces: 
-              names: 
+            namespaces:
+              names:
                 - default
-        relabel_configs: 
+        relabel_configs:
           - source_labels: [__meta_kubernetes_pod_label_component]
             action: keep
             regex: jobmanager
@@ -629,9 +629,9 @@ data:
 
       # TaskManager指标
       - job_name: 'flink-taskmanager'
-        kubernetes_sd_configs: 
+        kubernetes_sd_configs:
           - role: pod
-        relabel_configs: 
+        relabel_configs:
           - source_labels: [__meta_kubernetes_pod_label_component]
             action: keep
             regex: taskmanager
@@ -705,7 +705,7 @@ data:
 【16:00-17:00】
 告警是监控的延伸。
 
-关键告警指标：
+关键告警指标:
 1. Checkpoint超时或失败
 2. 作业失败或重启次数过多
 3. 背压持续时间过长
@@ -716,21 +716,21 @@ data:
 【17:00-18:00】
 告警配置使用Prometheus AlertManager。
 
-配置步骤：
-1. 定义告警规则（PrometheusRule）
+配置步骤:
+1. 定义告警规则(PrometheusRule)
 2. 配置AlertManager路由和接收器
 3. 测试告警通道
 
-支持多种通知渠道：
+支持多种通知渠道:
 - 邮件
 - Slack
 - PagerDuty
 - Webhook
 
-建议设置告警分级：
-- Critical：立即处理（电话通知）
-- Warning：工作时间处理（邮件/Slack）
-- Info：记录查看（Dashboard）
+建议设置告警分级:
+- Critical:立即处理(电话通知)
+- Warning:工作时间处理(邮件/Slack)
+- Info:记录查看(Dashboard)
 ```
 
 ### 💻 代码演示
@@ -740,20 +740,20 @@ data:
 
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
-metadata: 
+metadata:
   name: flink-alerts
-spec: 
-  groups: 
+spec:
+  groups:
     - name: flink-critical
-      rules: 
+      rules:
         # Checkpoint失败告警
         - alert: FlinkCheckpointFailed
           expr: |
             flink_jobmanager_numberOfFailedCheckpoints > 0
           for: 1m
-          labels: 
+          labels:
             severity: critical
-          annotations: 
+          annotations:
             summary: "Flink Checkpoint失败"
             description: "作业 {{ $labels.job_name }} Checkpoint连续失败"
 
@@ -762,9 +762,9 @@ spec:
           expr: |
             flink_jobmanager_job_status{status="FAILED"} == 1
           for: 0m
-          labels: 
+          labels:
             severity: critical
-          annotations: 
+          annotations:
             summary: "Flink作业失败"
             description: "作业 {{ $labels.job_name }} 失败"
 
@@ -773,11 +773,11 @@ spec:
           expr: |
             avg(flink_taskmanager_job_task_backPressuredTimeMsPerSecond) > 500
           for: 5m
-          labels: 
+          labels:
             severity: warning
-          annotations: 
+          annotations:
             summary: "Flink背压过高"
-            description: "作业存在严重背压，需要优化"
+            description: "作业存在严重背压,需要优化"
 
         # Watermark滞后告警
         - alert: FlinkWatermarkLag
@@ -785,9 +785,9 @@ spec:
             (flink_taskmanager_job_task_operator_currentProcessingTime -
              flink_taskmanager_job_task_operator_currentInputWatermark) > 60000
           for: 5m
-          labels: 
+          labels:
             severity: warning
-          annotations: 
+          annotations:
             summary: "Flink Watermark滞后"
             description: "Watermark滞后超过1分钟"
 
@@ -797,9 +797,9 @@ spec:
             flink_taskmanager_Status_JVM_Memory_Heap_Used /
             flink_taskmanager_Status_JVM_Memory_Heap_Committed > 0.9
           for: 5m
-          labels: 
+          labels:
             severity: warning
-          annotations: 
+          annotations:
             summary: "Flink内存使用率高"
             description: "TaskManager堆内存使用率超过90%"
 ```
@@ -809,18 +809,18 @@ spec:
 
 apiVersion: v1
 kind: ConfigMap
-metadata: 
+metadata:
   name: alertmanager-config
-data: 
+data:
   alertmanager.yml: |
-    global: 
+    global:
       slack_api_url: '<your-slack-webhook-url>'
       smtp_smarthost: 'smtp.example.com:587'
       smtp_from: 'alerts@example.com'
 
-    route: 
+    route:
       receiver: 'default'
-      routes: 
+      routes:
         - match:
             severity: critical
           receiver: 'pagerduty'
@@ -829,18 +829,18 @@ data:
             severity: warning
           receiver: 'slack'
 
-    receivers: 
+    receivers:
       - name: 'default'
-        email_configs: 
+        email_configs:
           - to: 'oncall@example.com'
 
       - name: 'pagerduty'
-        pagerduty_configs: 
+        pagerduty_configs:
           - service_key: '<your-pagerduty-key>'
             severity: critical
 
       - name: 'slack'
-        slack_configs: 
+        slack_configs:
           - channel: '#flink-alerts'
             title: 'Flink Alert'
             text: '{{ range .Alerts }}{{ .Annotations.summary }}{{ end }}'
@@ -860,34 +860,34 @@ data:
 
 ```
 【18:00-18:40】
-最后，我们来看一些常见的运维操作。
+最后,我们来看一些常见的运维操作。
 
-扩容TaskManager：
-修改FlinkDeployment的replicas，
+扩容TaskManager:
+修改FlinkDeployment的replicas,
 重新apply即可完成扩容。
 
-Flink会自动进行任务重平衡，
+Flink会自动进行任务重平衡,
 无需停止作业。
 
 【18:40-19:10】
-升级作业版本：
+升级作业版本:
 
 1. 先触发Savepoint
 2. 更新镜像版本
 3. 从Savepoint恢复
 
-使用Stateful Upgrade模式，
+使用Stateful Upgrade模式,
 可以自动完成这个过程。
 
 【19:10-19:30】
-故障排查常用命令：
+故障排查常用命令:
 
 1. 查看Pod日志定位问题
 2. 进入Pod查看JVM状态
 3. 使用Flink CLI查看作业详情
 4. 下载Heap Dump分析内存
 
-记住：生产环境改动前，
+记住:生产环境改动前,
 一定要先在测试环境验证。
 ```
 
@@ -897,7 +897,7 @@ Flink会自动进行任务重平衡，
 # 运维实战命令
 
 # ========== 扩容 ==========
-# 方法1：直接修改FlinkDeployment
+# 方法1:直接修改FlinkDeployment
 kubectl patch flinkdeployment my-job --type=merge -p '
 {
   "spec": {
@@ -907,7 +907,7 @@ kubectl patch flinkdeployment my-job --type=merge -p '
   }
 }'
 
-# 方法2：编辑YAML后apply
+# 方法2:编辑YAML后apply
 kubectl edit flinkdeployment my-job
 
 # ========== 升级 ==========
@@ -958,26 +958,26 @@ kubectl exec -it my-job-jobmanager-0 -- flink cancel <job-id>
 
 ```
 【19:30-20:00】
-最后，送上生产部署检查清单：
+最后,送上生产部署检查清单:
 
-部署前检查：
+部署前检查:
 ☑️ 资源配置是否合理
 ☑️ Checkpoint路径是否可达
 ☑️ HA配置是否正确
 ☑️ 监控告警是否配置
 
-部署后检查：
+部署后检查:
 ☑️ 作业是否正常运行
 ☑️ Checkpoint是否成功
 ☑️ 监控指标是否正常
 ☑️ 告警通道是否可用
 
-运维日常：
+运维日常:
 ☑️ 定期Review Checkpoint状态
 ☑️ 监控资源使用率趋势
 ☑️ 定期演练故障恢复
 
-下一集，我们将学习Flink的高级主题：
+下一集,我们将学习Flink的高级主题:
 状态管理优化、Checkpoint调优、以及性能调优技巧。
 
 我们下期再见！

@@ -287,14 +287,14 @@ $$T_{sync} \leq \Delta t_{checkpoint} + \Delta t_{temporal} + T_{network}$$
 │  ─────────────────────                                          │
 │  工程策略: 确定性重放 + Saga补偿                                │
 │  测试策略: 工作流单元测试、历史重放验证                         │
-│  故障恢复: 自动重放，无需人工干预                               │
+│  故障恢复: 自动重放,无需人工干预                               │
 │  适用场景: 支付、订单、合规流程                                 │
 ├─────────────────────────────────────────────────────────────────┤
 │  半可判定层 (Flink)                                             │
 │  ────────────────────                                           │
 │  工程策略: 水印时间假设 + 检查点快照                            │
 │  测试策略: 端到端一致性验证、乱序数据处理测试                   │
-│  故障恢复: 从检查点恢复，可能重复处理                           │
+│  故障恢复: 从检查点恢复,可能重复处理                           │
 │  适用场景: 实时风控、IoT聚合、指标计算                          │
 ├─────────────────────────────────────────────────────────────────┤
 │  不可判定层 (通用分布式)                                        │
@@ -405,7 +405,7 @@ public class TemporalWorkflowSink
     protected void invoke(TemporalTransaction transaction,
                           AlertEvent value,
                           Context context) {
-        // 预阶段：构建Workflow参数
+        // 预阶段:构建Workflow参数
         transaction.addPendingWorkflow(value);
     }
 
@@ -416,13 +416,13 @@ public class TemporalWorkflowSink
 
     @Override
     protected void preCommit(TemporalTransaction transaction) {
-        // 预提交：验证Workflow参数
+        // 预提交:验证Workflow参数
         transaction.validate();
     }
 
     @Override
     protected void commit(TemporalTransaction transaction) {
-        // 正式提交：启动Temporal Workflow
+        // 正式提交:启动Temporal Workflow
         for (AlertEvent alert : transaction.getPendingWorkflows()) {
             String workflowId = generateWorkflowId(alert);
             try {
@@ -432,7 +432,7 @@ public class TemporalWorkflowSink
                     alert
                 );
             } catch (WorkflowExecutionAlreadyStarted e) {
-                // 幂等处理：已存在的Workflow忽略
+                // 幂等处理:已存在的Workflow忽略
                 log.info("Workflow {} already exists, skipping", workflowId);
             }
         }
@@ -440,12 +440,12 @@ public class TemporalWorkflowSink
 
     @Override
     protected void abort(TemporalTransaction transaction) {
-        // 回滚：清理预阶段资源
+        // 回滚:清理预阶段资源
         transaction.clear();
     }
 
     private String generateWorkflowId(AlertEvent alert) {
-        // 幂等性保证：相同设备+时间窗口生成相同ID
+        // 幂等性保证:相同设备+时间窗口生成相同ID
         return String.format("maintenance-%s-%d",
                            alert.getDeviceId(),
                            alert.getWindowStart() / 3600000); // 小时级窗口
@@ -501,7 +501,7 @@ func DeviceMaintenanceWorkflow(ctx workflow.Context, alert DeviceAlert) (*Mainte
     }
     ctx = workflow.WithActivityOptions(ctx, ao)
 
-    // Step 1: 创建维护工单（幂等操作）
+    // Step 1: 创建维护工单(幂等操作)
     var ticketID string
     err := workflow.ExecuteActivity(ctx, CreateMaintenanceTicket, alert).Get(ctx, &ticketID)
     if err != nil {
@@ -515,13 +515,13 @@ func DeviceMaintenanceWorkflow(ctx workflow.Context, alert DeviceAlert) (*Mainte
 
     // Step 2: 根据告警级别决定处理流程
     if alert.AlertLevel == "CRITICAL" {
-        // CRITICAL级别：立即通知，缩短等待时间
+        // CRITICAL级别:立即通知,缩短等待时间
         err = workflow.ExecuteActivity(ctx, SendUrgentNotification, alert, ticketID).Get(ctx, nil)
         if err != nil {
             logger.Error("Failed to send urgent notification", "Error", err)
         }
 
-        // 等待工程师确认，最多1小时
+        // 等待工程师确认,最多1小时
         selector := workflow.NewSelector(ctx)
         var ack EngineerAcknowledgment
 
@@ -537,20 +537,20 @@ func DeviceMaintenanceWorkflow(ctx workflow.Context, alert DeviceAlert) (*Mainte
         // 设置超时
         timer := workflow.NewTimer(ctx, time.Hour)
         selector.AddFuture(timer, func(f workflow.Future) {
-            // 超时未确认，升级处理
+            // 超时未确认,升级处理
             _ = workflow.ExecuteActivity(ctx, EscalateToManager, ticketID).Get(ctx, nil)
         })
 
         selector.Select(ctx)
 
     } else {
-        // WARNING级别：正常流程，等待24小时
+        // WARNING级别:正常流程,等待24小时
         err = workflow.ExecuteActivity(ctx, SendNotification, alert, ticketID).Get(ctx, nil)
         if err != nil {
             logger.Error("Failed to send notification", "Error", err)
         }
 
-        // 等待工程师确认，最多24小时
+        // 等待工程师确认,最多24小时
         ackChan := workflow.GetSignalChannel(ctx, "EngineerAcknowledged")
         var ack EngineerAcknowledgment
 
@@ -682,7 +682,7 @@ func (s *MaintenanceSaga) compensate(ctx workflow.Context) error {
     for i := len(s.compensations) - 1; i >= 0; i-- {
         if err := s.compensations[i](); err != nil {
             workflow.GetLogger(ctx).Error("Compensation failed", "Index", i, "Error", err)
-            // 记录补偿失败，需人工介入
+            // 记录补偿失败,需人工介入
         }
     }
     return nil
@@ -712,7 +712,7 @@ func DeviceMaintenanceWorkflowWithSaga(ctx workflow.Context, alert DeviceAlert) 
         return workflow.ExecuteActivity(ctx, EnableDevice, alert.DeviceID).Get(ctx, nil)
     })
 
-    // Step 3: 执行维护（外部服务）
+    // Step 3: 执行维护(外部服务)
     var maintenanceResult MaintenanceResult
     err = workflow.ExecuteActivity(ctx, PerformMaintenance, alert.DeviceID).Get(ctx, &maintenanceResult)
     if err != nil {
@@ -741,7 +741,7 @@ func DeviceMaintenanceWorkflowWithSaga(ctx workflow.Context, alert DeviceAlert) 
 可靠性 ↑
        │
   高   │  ●────────────────────────────────────────────●
-       │  │ Temporal Workflow (秒级延迟，高可靠性)      │
+       │  │ Temporal Workflow (秒级延迟,高可靠性)      │
        │  │  • Saga补偿                                  │
        │  │  • 人工审批                                  │
        │  │  • 外部事件等待                              │
@@ -754,7 +754,7 @@ func DeviceMaintenanceWorkflowWithSaga(ctx workflow.Context, alert DeviceAlert) 
        │
   低   │    ●──────────────────────●
        │    │ Flink In-Memory        │
-       │    │ (毫秒级延迟，无持久化)  │
+       │    │ (毫秒级延迟,无持久化)  │
        │    ●──────────────────────●
        │
        └──────────────────────────────────────────────────→ 延迟
@@ -801,7 +801,7 @@ public class TemperatureMonitorJob {
         env.getCheckpointConfig().setCheckpointingMode(
             CheckpointingMode.EXACTLY_ONCE);
 
-        // 数据源：MQTT/Kafka
+        // 数据源:MQTT/Kafka
         DataStream<SensorReading> readings = env
             .addSource(new FlinkKafkaConsumer<>(
                 "sensor-readings",
@@ -813,7 +813,7 @@ public class TemperatureMonitorJob {
                 .withTimestampAssigner((event, timestamp) -> event.getTimestamp())
             );
 
-        // 窗口聚合：设备ID分组，1小时滚动窗口
+        // 窗口聚合:设备ID分组,1小时滚动窗口
         DataStream<DeviceAlert> alerts = readings
             .keyBy(SensorReading::getDeviceId)
             .window(TumblingEventTimeWindows.of(Time.hours(1)))
@@ -913,7 +913,7 @@ func handleCriticalAlert(ctx workflow.Context, alert DeviceAlert) error {
         return err
     }
 
-    // 等待工程师确认（最多30分钟）
+    // 等待工程师确认(最多30分钟)
     ackChan := workflow.GetSignalChannel(ctx, "EngineerAcknowledged")
     var ack EngineerAcknowledgment
 
@@ -995,7 +995,7 @@ public class FraudDetectionJob {
                     Duration.ofSeconds(5))
             );
 
-        // 定义可疑模式：同一用户在1小时内从3个不同国家交易
+        // 定义可疑模式:同一用户在1小时内从3个不同国家交易
         Pattern<Transaction, ?> suspiciousPattern = Pattern
             .<Transaction>begin("first")
             .where(new SimpleCondition<Transaction>() {
@@ -1152,7 +1152,7 @@ export async function fraudInvestigationWorkflow(alert: FraudAlert): Promise<voi
     await requestUserVerification(alert);
     status.state = 'USER_CONTACTED';
 
-    // 等待用户验证（48小时）
+    // 等待用户验证(48小时)
     const verification = await workflow.waitForSignal(verificationReceived, {
       timeout: '48h',
     });
@@ -1167,7 +1167,7 @@ export async function fraudInvestigationWorkflow(alert: FraudAlert): Promise<voi
     }
 
   } else {
-    // 低风险：记录并监控
+    // 低风险:记录并监控
     status.state = 'RESOLVED';
     status.actions.push('LOGGED_FOR_MONITORING');
   }
@@ -1214,7 +1214,7 @@ public class OrderProcessingJob {
             .map(new OrderEnrichment())
             .keyBy(OrderEvent::getOrderId);
 
-        // 实时库存检查（使用AsyncFunction调用外部服务）
+        // 实时库存检查(使用AsyncFunction调用外部服务)
         DataStream<OrderEvent> validatedOrders = AsyncDataStream
             .unorderedWait(
                 orders,
@@ -1264,7 +1264,7 @@ export async function orderFulfillmentWorkflow(order: Order): Promise<Fulfillmen
     const reservation = await reserveInventory(order.items);
     compensations.push(() => cancelReservation(reservation.id));
 
-    // Step 2: 处理支付（等待支付完成信号）
+    // Step 2: 处理支付(等待支付完成信号)
     const paymentResult = await workflow.executeChild(paymentWorkflow, {
       args: [order.payment],
       timeout: '30m',
@@ -1518,7 +1518,7 @@ sequenceDiagram
         Note over F,DB: Flink故障恢复
         F-xF: JobManager崩溃
         Note right of F: 从Checkpoint恢复
-        F->>K: 重新消费（去重）
+        F->>K: 重新消费(去重)
         T->>T: Workflow ID幂等
         Note right of T: 忽略重复Trigger
     end

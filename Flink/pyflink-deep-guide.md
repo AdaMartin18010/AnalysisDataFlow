@@ -176,10 +176,10 @@ graph TB
 
 ```
 是否需要 Python ML 库?
-    ├─ 否 → Java/Scala UDF（性能最优）
+    ├─ 否 → Java/Scala UDF(性能最优)
     └─ 是 → 数据量?
               ├─ 小 → 普通 Python UDF
-              └─ 大 → Pandas UDF（向量化）
+              └─ 大 → Pandas UDF(向量化)
 ```
 
 ---
@@ -315,15 +315,15 @@ from pyflink.table.udf import udf
 import pandas as pd
 import numpy as np
 
-# Pandas 标量 UDF（向量化）
+# Pandas 标量 UDF(向量化)
 @udf(result_type=DataTypes.DOUBLE(), func_type="pandas")
 def normalize_amount(amount: pd.Series) -> pd.Series:
-    """标准化金额（Z-score）"""
+    """标准化金额(Z-score)"""
     mean = amount.mean()
     std = amount.std()
     return (amount - mean) / std
 
-# Pandas 表 UDF（1:N 展开）
+# Pandas 表 UDF(1:N 展开)
 @udf(result_type=DataTypes.ROW([
     DataTypes.FIELD("quantile", DataTypes.STRING()),
     DataTypes.FIELD("value", DataTypes.DOUBLE())

@@ -100,9 +100,9 @@ $$
 ┌─────────────────────────────────────────────────────────────┐
 │                    ForSt 存储层级                            │
 ├─────────────────────────────────────────────────────────────┤
-│  L1 Cache (Memory)     │  热数据，微秒级访问，容量受限        │
-│  L2 Cache (Local SSD)  │  温数据，毫秒级访问，TB级容量        │
-│  Main Storage (UFS)    │  全量数据，10ms级访问，无限扩展      │
+│  L1 Cache (Memory)     │  热数据,微秒级访问,容量受限        │
+│  L2 Cache (Local SSD)  │  温数据,毫秒级访问,TB级容量        │
+│  Main Storage (UFS)    │  全量数据,10ms级访问,无限扩展      │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -958,7 +958,7 @@ spec:
           - name: forst-cache
             emptyDir:
               sizeLimit: 150Gi
-              medium: ""  # 使用节点磁盘，可改为 Memory 用于测试
+              medium: ""  # 使用节点磁盘,可改为 Memory 用于测试
   flinkConfiguration:
     state.backend: forst
     state.backend.forst.ufs.type: s3

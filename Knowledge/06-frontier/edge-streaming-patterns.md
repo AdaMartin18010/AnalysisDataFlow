@@ -571,17 +571,17 @@ pub extern "C" fn adaptive_sample(event: &SensorEvent) -> bool {
 
     match rate_of_change {
         v if v > HIGH_THRESHOLD => {
-            // 变化剧烈，全量采样
+            // 变化剧烈,全量采样
             set_sample_rate(1.0);
             true
         }
         v if v > MEDIUM_THRESHOLD => {
-            // 中等变化，50%采样
+            // 中等变化,50%采样
             set_sample_rate(0.5);
             random() < 0.5
         }
         _ => {
-            // 变化平缓，10%采样
+            // 变化平缓,10%采样
             set_sample_rate(0.1);
             random() < 0.1
         }
@@ -616,15 +616,15 @@ public class PriorityRoutingFunction
         int priority = calculatePriority(event);
 
         if (priority == CRITICAL) {
-            // 关键数据：本地处理 + 实时上传
+            // 关键数据:本地处理 + 实时上传
             processLocally(event);
             uploadToCloud(event, QoS.EXACTLY_ONCE);
         } else if (priority == HIGH) {
-            // 高优先级：本地处理 + 批量上传
+            // 高优先级:本地处理 + 批量上传
             processLocally(event);
             bufferForBatchUpload(event);
         } else {
-            // 普通数据：本地聚合后上传
+            // 普通数据:本地聚合后上传
             aggregateLocally(event);
         }
     }

@@ -110,14 +110,14 @@ $$
 │   吞吐量瓶颈 ◄─────────────────────────────────────────────► 资源利用   │
 │        │                                                       │        │
 │        │    【不均衡的 subtask 表现】                          │        │
-│        │    • 部分 subtask 背压严重，其余空闲                  │        │
+│        │    • 部分 subtask 背压严重,其余空闲                  │        │
 │        │    • 整体吞吐量 = 最慢 subtask 的吞吐量               │        │
 │        │    • 增加并行度效果不明显                             │        │
 │        │                                                       │        │
 │   延迟不均 ◄─────────────────────────────────────────────► 状态大小   │
 │        │                                                       │        │
 │        │    【延迟分布特征】                                     │        │
-│        │    • 延迟百分位差距大（p50 vs p99）                   │        │
+│        │    • 延迟百分位差距大(p50 vs p99)                   │        │
 │        │    • 某些 subtask 延迟持续增长                        │        │
 │        │    • 热点 Key 的处理延迟累积                          │        │
 │        │                                                       │        │
@@ -156,7 +156,7 @@ val distributionAnalysis = tableEnv.sqlQuery("""
   LIMIT 20
 """)
 
-// 预期结果：如果 top 10 keys 占比 > 50%，存在严重倾斜
+// 预期结果:如果 top 10 keys 占比 > 50%,存在严重倾斜
 ```
 
 ---
@@ -168,23 +168,23 @@ val distributionAnalysis = tableEnv.sqlQuery("""
 **阿姆达尔定律在数据倾斜中的体现** [^4]：
 
 ```
-场景: 并行度=8，数据分布极度倾斜
+场景: 并行度=8,数据分布极度倾斜
 
 Subtask 分布:
-- Subtask-0: 50% 数据（热点 Key）
+- Subtask-0: 50% 数据(热点 Key)
 - Subtask-1~7: 各 7.1% 数据
 
 理论最大吞吐量:
-= 单 subtask 吞吐量 × 8 （如果均匀）
+= 单 subtask 吞吐量 × 8 (如果均匀)
 
 实际最大吞吐量:
-= 单 subtask 吞吐量 × 2 （Subtask-0 成为瓶颈）
+= 单 subtask 吞吐量 × 2 (Subtask-0 成为瓶颈)
 
 吞吐量损失:
 = (8 - 2) / 8 = 75%
 
-即使将并行度增加到 16，
-如果热点 Key 仍集中在一个 subtask，
+即使将并行度增加到 16,
+如果热点 Key 仍集中在一个 subtask,
 吞吐量不会提升！
 ```
 
@@ -199,7 +199,7 @@ Subtask-2:        CPU 15%,  内存 20%, 网络 10%  → 空闲
 ...
 Subtask-7:        CPU 15%,  内存 20%, 网络 10%  → 空闲
 
-整体资源利用率: ~25%（严重浪费）
+整体资源利用率: ~25%(严重浪费)
 ```
 
 ### 3.3 状态管理影响
@@ -229,7 +229,7 @@ Subtask-7:        CPU 15%,  内存 20%, 网络 10%  → 空闲
 // ✅ 正确: 两阶段聚合解决热点 Key
 object TwoPhaseAggregation {
 
-  // 阶段1: 随机预聚合（打散热点）
+  // 阶段1: 随机预聚合(打散热点)
   def preAggregate(input: DataStream[Event]): DataStream[PartialResult] = {
     input
       .map(event => (event.key, Random.nextInt(100), event.value))  // 添加随机后缀
@@ -252,8 +252,8 @@ object TwoPhaseAggregation {
 }
 
 // 效果:
-// 阶段1: 热点 Key 被随机拆分到 100 个桶，并行处理
-// 阶段2: 每个 Key 只有 100 条部分聚合结果，无热点
+// 阶段1: 热点 Key 被随机拆分到 100 个桶,并行处理
+// 阶段2: 每个 Key 只有 100 条部分聚合结果,无热点
 ```
 
 ### 4.2 热点 Key 加盐（Salting）
@@ -266,7 +266,7 @@ class SaltedKeyProcessFunction extends KeyedProcessFunction[String, Event, Resul
 
   private val SALT_COUNT = 100  // 盐值数量
 
-  // 判断是否为热点 Key（需要预先分析或动态检测）
+  // 判断是否为热点 Key(需要预先分析或动态检测)
   private val hotKeys = Set("user_123", "product_456")
 
   override def processElement(
@@ -275,7 +275,7 @@ class SaltedKeyProcessFunction extends KeyedProcessFunction[String, Event, Resul
     out: Collector[Result]
   ): Unit = {
     if (hotKeys.contains(event.key)) {
-      // 热点 Key: 随机选择盐值，分散到多个虚拟 Key
+      // 热点 Key: 随机选择盐值,分散到多个虚拟 Key
       val salt = Random.nextInt(SALT_COUNT)
       val saltedKey = s"${event.key}#${salt}"
       // 转发到加盐后的 Key 处理
@@ -321,7 +321,7 @@ class OptimizedWindowAggregation {
         override def getResult(accumulator: Long): Long = accumulator
         override def merge(a: Long, b: Long): Long = a + b
       },
-      // 可选：ProcessWindowFunction 处理窗口元数据
+      // 可选:ProcessWindowFunction 处理窗口元数据
       new ProcessWindowFunction[Long, Result, String, TimeWindow] {
         override def process(
           key: String,
@@ -329,7 +329,7 @@ class OptimizedWindowAggregation {
           elements: Iterable[Long],
           out: Collector[Result]
         ): Unit = {
-          // 此时 elements 只有一条（已聚合），无热点问题
+          // 此时 elements 只有一条(已聚合),无热点问题
           out.collect(Result(key, elements.head, context.window))
         }
       }
@@ -351,7 +351,7 @@ class DynamicPartitioner extends Partitioner[String] {
     val load = loadTracker.computeIfAbsent(key, _ => new AtomicLong(0))
     load.incrementAndGet()
 
-    // 对于高负载 Key，使用一致性哈希分散
+    // 对于高负载 Key,使用一致性哈希分散
     if (load.get() > HIGH_LOAD_THRESHOLD) {
       // 使用 key + 时间戳后缀进行分区
       val distributedKey = s"${key}_${System.currentTimeMillis() % 10}"
@@ -374,10 +374,10 @@ stream
 适用于可拆分的大 Key [^5]：
 
 ```scala
-// ✅ 正确: 将大 Key 拆分为子 Key，处理后重组
+// ✅ 正确: 将大 Key 拆分为子 Key,处理后重组
 class KeySplitProcessFunction extends ProcessFunction[Event, Result] {
 
-  // 状态：存储子 Key 的部分结果
+  // 状态:存储子 Key 的部分结果
   private var partialResults: MapState[String, PartialResult] = _
 
   override def open(parameters: Configuration): Unit = {
@@ -417,14 +417,14 @@ class KeySplitProcessFunction extends ProcessFunction[Event, Result] {
 ```scala
 // ❌ 错误: 直接使用热点 Key 分组
 val result = eventStream
-  .keyBy(_.userId)  // userId 可能是热点（大V用户）
+  .keyBy(_.userId)  // userId 可能是热点(大V用户)
   .window(TumblingEventTimeWindows.of(Time.minutes(1)))
   .process(new UserStatsFunction())
 
 // 问题:
 // 1. 大V用户的 subtask 处理量可能是其他 subtask 的 100 倍
-// 2. 该 subtask 背压严重，影响整体吞吐量
-// 3. 大V用户的状态持续增长，Checkpoint 变慢
+// 2. 该 subtask 背压严重,影响整体吞吐量
+// 3. 大V用户的状态持续增长,Checkpoint 变慢
 ```
 
 ### 5.2 正确示例：两阶段聚合
@@ -433,7 +433,7 @@ val result = eventStream
 // ✅ 正确: 两阶段聚合处理热点
 class TwoPhaseUserStats {
 
-  // 第一阶段：随机预聚合
+  // 第一阶段:随机预聚合
   def preAggregate(input: DataStream[UserEvent]): DataStream[PartialUserStats] = {
     input
       .map { event =>
@@ -445,7 +445,7 @@ class TwoPhaseUserStats {
       .aggregate(new PreAggregateFunction())
   }
 
-  // 第二阶段：按 userId 全局聚合
+  // 第二阶段:按 userId 全局聚合
   def globalAggregate(partial: DataStream[PartialUserStats]): DataStream[UserStats] = {
     partial
       .keyBy(_.userId)
@@ -488,10 +488,10 @@ class BadHotKeyStateFunction extends KeyedProcessFunction[String, Event, Result]
   }
 
   override def processElement(event: Event, ctx: Context, out: Collector[Result]): Unit = {
-    // 热点 Key 会累积大量事件，导致状态爆炸
+    // 热点 Key 会累积大量事件,导致状态爆炸
     eventListState.add(event)
 
-    // 每小时输出一次，中间状态持续增长
+    // 每小时输出一次,中间状态持续增长
     if (shouldEmit(ctx.timestamp())) {
       val events = eventListState.get().asScala.toList
       out.collect(Result(ctx.getCurrentKey, events))
@@ -520,7 +520,7 @@ class OptimizedHotKeyFunction extends KeyedProcessFunction[String, Event, Result
   }
 
   override def processElement(event: Event, ctx: Context, out: Collector[Result]): Unit = {
-    // 增量更新，不累积原始事件
+    // 增量更新,不累积原始事件
     val current = accumulatorState.value() match {
       case null => Accumulator.empty
       case acc => acc
@@ -563,8 +563,8 @@ class OptimizedHotKeyFunction extends KeyedProcessFunction[String, Event, Result
 **优化方案**：
 
 ```scala
-// 优化前：直接按 userId 分组
-// 优化后：两阶段聚合 + 热点 Key 特殊处理
+// 优化前:直接按 userId 分组
+// 优化后:两阶段聚合 + 热点 Key 特殊处理
 
 object OptimizedUserStats {
 
@@ -582,11 +582,11 @@ object OptimizedUserStats {
           event
         }
       }
-      // 步骤2: 预聚合窗口（10秒）
+      // 步骤2: 预聚合窗口(10秒)
       .keyBy(_.userId)
       .window(TumblingEventTimeWindows.of(Time.seconds(10)))
       .aggregate(new PreAggregateFunction())
-      // 步骤3: 去掉盐值，全局聚合
+      // 步骤3: 去掉盐值,全局聚合
       .map(_.copy(userId = removeSalt(_.userId)))
       .keyBy(_.userId)
       .window(TumblingEventTimeWindows.of(Time.minutes(1)))
@@ -618,7 +618,7 @@ object OptimizedUserStats {
 
 ```mermaid
 graph TB
-    subgraph "数据倾斜（错误）"
+    subgraph "数据倾斜(错误)"
         I1[Input Stream] -->|hash(key) % 4| S1[Subtask-0<br/>80% 数据<br/>瓶颈!]
         I1 -->|hash(key) % 4| S2[Subtask-1<br/>7% 数据]
         I1 -->|hash(key) % 4| S3[Subtask-2<br/>7% 数据]
@@ -635,7 +635,7 @@ graph TB
         style S4 fill:#c8e6c9,stroke:#2e7d32
     end
 
-    subgraph "两阶段聚合（正确）"
+    subgraph "两阶段聚合(正确)"
         I2[Input Stream] -->|随机盐值| P1[Pre-aggregate<br/>Subtask-0]
         I2 -->|随机盐值| P2[Pre-aggregate<br/>Subtask-1]
         I2 -->|随机盐值| P3[Pre-aggregate<br/>Subtask-2]

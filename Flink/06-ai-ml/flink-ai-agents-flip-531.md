@@ -287,12 +287,12 @@ RocksDB典型值：TB级
 ```java
 import org.apache.flink.api.common.state.ListState;
 
-// ❌ 错误：无限增长的历史记录
+// ❌ 错误:无限增长的历史记录
 class BadAgent {
     ListState<Message> allHistory;  // 永不清理！
 }
 
-// ✅ 正确：使用TTL和窗口
+// ✅ 正确:使用TTL和窗口
 class GoodAgent {
     ListState<Message> recentHistory;  // 只保留最近100条
     MapState<String, Fact> summarizedMemory;  // 聚合后的长期记忆
@@ -302,10 +302,10 @@ class GoodAgent {
 **反模式2: 同步LLM调用**
 
 ```java
-// ❌ 错误：阻塞等待LLM响应
+// ❌ 错误:阻塞等待LLM响应
 String response = llmClient.completeSync(prompt);  // 阻塞！
 
-// ✅ 正确：异步非阻塞
+// ✅ 正确:异步非阻塞
 CompletableFuture<String> future = llmClient.completeAsync(prompt);
 future.thenApply(response -> process(response));
 ```
@@ -313,13 +313,13 @@ future.thenApply(response -> process(response));
 **反模式3: 忽略Backpressure**
 
 ```java
-// ❌ 错误：无限速生成请求
+// ❌ 错误:无限速生成请求
 while (true) {
     generateLLMRequest();  // 可能压垮服务！
 }
 
-// ✅ 正确：使用Flink背压机制
-// Flink自动处理背压，无需额外代码
+// ✅ 正确:使用Flink背压机制
+// Flink自动处理背压,无需额外代码
 ```
 
 ## 5. 形式证明 / 工程论证
@@ -508,8 +508,8 @@ sales_agent.execute()
 
 ```sql
 -- 创建Agent
--- 注: 以下为未来可能的语法（概念设计阶段）
-<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+-- 注: 以下为未来可能的语法(概念设计阶段)
+<!-- 以下语法为概念设计,实际 Flink 版本尚未支持 -->
 ~~CREATE AGENT sales_analytics_agent~~ (未来可能的语法)
 WITH (
   'model.endpoint' = 'openai:gpt-4',
@@ -520,8 +520,8 @@ WITH (
 );
 
 -- 注册SQL工具
--- 注: 以下为未来可能的语法（概念设计阶段）
-<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+-- 注: 以下为未来可能的语法(概念设计阶段)
+<!-- 以下语法为概念设计,实际 Flink 版本尚未支持 -->
 ~~CREATE TOOL query_sales_summary~~ (未来可能的语法)
 FOR AGENT sales_analytics_agent
 AS $$
@@ -535,7 +535,7 @@ AS $$
 $$;
 
 -- 注册外部工具
--- 注: 以下为未来可能的语法（概念设计阶段）
+-- 注: 以下为未来可能的语法(概念设计阶段)
 ~~CREATE TOOL send_alert~~ (未来可能的语法)
 FOR AGENT sales_analytics_agent
 TYPE 'webhook'
@@ -545,7 +545,7 @@ CONFIG (
 );
 
 -- Agent工作流
-<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+<!-- 以下语法为概念设计,实际 Flink 版本尚未支持 -->
 ~~CREATE WORKFLOW sales_monitoring~~ (未来可能的语法)
 AS AGENT sales_analytics_agent
 ON TABLE sales_events
@@ -625,7 +625,7 @@ inventoryAgent.onA2A(MessageType.QUERY, message -> {
     }
 });
 
-// 发布-订阅模式：销售数据更新广播
+// 发布-订阅模式:销售数据更新广播
 salesAgent.publish(
     Channel.of("sales.updates"),
     SalesUpdate.builder()

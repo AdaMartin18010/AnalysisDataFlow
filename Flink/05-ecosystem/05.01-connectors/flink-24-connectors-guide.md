@@ -419,9 +419,9 @@ Exactly-Once 条件:
 3. Sink: Kafka 事务保证输出不重复
 
 Kafka 3.x 改进不影响 EO:
-- KRaft 模式: 仅替换 ZooKeeper，事务协议不变
+- KRaft 模式: 仅替换 ZooKeeper,事务协议不变
 - Consumer Protocol: 新的重平衡协议保持偏移量语义
-- 性能优化: 内部实现改进，外部语义不变
+- 性能优化: 内部实现改进,外部语义不变
 
 ∴ EO 语义在 Kafka 3.x 下保持 ∎
 ```
@@ -504,7 +504,7 @@ connector:
   stream: input-stream
 
   # 自动伸缩配置
-  autoscaling:  # [Flink 2.4 前瞻] 配置段为规划特性，可能变动
+  autoscaling:  # [Flink 2.4 前瞻] 配置段为规划特性,可能变动
     enabled: true
     min-parallelism: 2
     max-parallelism: 32
@@ -872,7 +872,7 @@ CDC 3.4 (Flink 2.4)
 │ Flink 2.4 支持:                                              │
 │   • flink-connector-kafka 3.3.x (Kafka 3.x 原生)            │
 │   • flink-connector-pulsar 5.0.x (Pulsar 3.x)               │
-│   • flink-connector-fluss  <!-- [Flink 2.4 前瞻] Fluss连接器为规划特性，可能变动 --> 1.0.x (Apache Fluss)              │
+│   • flink-connector-fluss  <!-- [Flink 2.4 前瞻] Fluss连接器为规划特性,可能变动 --> 1.0.x (Apache Fluss)              │
 │ 完备性: ✅ 完全覆盖主流方案                                 │
 └─────────────────────────────────────────────────────────────┘
 
@@ -906,7 +906,7 @@ Lakehouse 类 (Lakehouse):
 │ 主流方案: Iceberg, Hudi, Paimon, Delta Lake                 │
 │ Flink 2.4 支持:                                              │
 │   • Iceberg 1.8 (V2 Format 完整支持)                        │
-│   • Paimon 1.0 (Flink 原生，生产就绪)                       │
+│   • Paimon 1.0 (Flink 原生,生产就绪)                       │
 │   • Hudi 1.1 (Flink 集成增强)                               │
 │   • Delta Lake 3.2 (连接器更新)                             │
 │ 完备性: ✅ 完全覆盖主流方案                                 │
@@ -1004,7 +1004,7 @@ Phase 2 (Commit) 扩展性:
 
 ```
 测试环境: 10节点 Kafka 3.5 + 10 TaskManager (4core/16GB)
-数据集: 1亿条记录，每条 1KB
+数据集: 1亿条记录,每条 1KB
 
 ┌─────────────────────────────────────────────────────────────┐
 │ 指标            │ Flink 2.0 │ Flink 2.4 │ 提升幅度         │
@@ -1048,7 +1048,7 @@ Phase 2 (Commit) 扩展性:
 **CDC 3.4 Pipeline 性能提升**:
 
 ```
-测试场景: MySQL → Paimon 整库同步 (100张表，1亿条记录)
+测试场景: MySQL → Paimon 整库同步 (100张表,1亿条记录)
 
 ┌─────────────────────────────────────────────────────────────┐
 │ 指标              │ CDC 3.1 │ CDC 3.4 │ 提升幅度           │

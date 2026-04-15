@@ -213,14 +213,14 @@ Mocket 生成对应的并发测试：
 ```java
 @Test
 public void testCheckpointCompletionRace() {
-    // 触发 checkpoint，向 t1, t2 发送 barrier
+    // 触发 checkpoint,向 t1, t2 发送 barrier
     coordinator.triggerCheckpoint(1);
 
-    // t1 完成 barrier 接收和快照（快速路径）
+    // t1 完成 barrier 接收和快照(快速路径)
     task1.receiveBarrier();
     task1.takeSnapshot();
 
-    // 在 t2 尚未完成快照时，尝试完成 checkpoint
+    // 在 t2 尚未完成快照时,尝试完成 checkpoint
     // 实现应拒绝或阻塞此操作
     assertThrows(IllegalStateException.class, () -> {
         coordinator.tryCompleteCheckpoint(1);
@@ -375,7 +375,7 @@ public class MocketCheckpointTest {
         });
     }
 
-    // B4: 新 barrier 在旧状态未重置时到达（规格反例对应的实现测试）
+    // B4: 新 barrier 在旧状态未重置时到达(规格反例对应的实现测试)
     @Test
     public void testNewBarrierBeforeStateReset() {
         coordinator.triggerCheckpoint(1);

@@ -36,17 +36,17 @@
 
 ```
 【00:00-00:30】
-大家好！欢迎来到第四集：流处理7大设计模式实战。
+大家好！欢迎来到第四集:流处理7大设计模式实战。
 
-在上一集中，我们学习了Flink的基础使用。
-但在实际生产中，流处理面临的问题要复杂得多：
+在上一集中,我们学习了Flink的基础使用。
+但在实际生产中,流处理面临的问题要复杂得多:
 乱序数据怎么处理？
 外部数据如何关联？
 故障如何恢复？
 
 【00:30-01:00】
-AnalysisDataFlow项目总结了7大核心设计模式，
-这些模式覆盖了流处理领域的核心问题：
+AnalysisDataFlow项目总结了7大核心设计模式,
+这些模式覆盖了流处理领域的核心问题:
 
 P01 事件时间处理 - 解决乱序和迟到数据
 P02 窗口聚合 - 无界流的有界计算
@@ -56,8 +56,8 @@ P05 状态管理 - 分布式有状态计算
 P06 侧输出 - 多路输出和异常处理
 P07 Checkpoint - 故障恢复与一致性
 
-P01和P07是其他模式的基础设施，
-掌握这两个模式，其他模式的学习会事半功倍。
+P01和P07是其他模式的基础设施,
+掌握这两个模式,其他模式的学习会事半功倍。
 ```
 
 ### 📊 图表展示
@@ -105,45 +105,45 @@ graph TB
 
 ```
 【01:00-01:45】
-首先是Pattern 01：事件时间处理。
+首先是Pattern 01:事件时间处理。
 
 这是流处理中最基础也最重要的模式。
-核心问题是：数据产生的顺序和到达的顺序不一致，
+核心问题是:数据产生的顺序和到达的顺序不一致,
 也就是「乱序」问题。
 
-想象一下快递物流：
-先发出的包裹，可能因为中转站不同，
+想象一下快递物流:
+先发出的包裹,可能因为中转站不同,
 后到达目的地。
 数据在网络中传输也是如此。
 
 【01:45-02:45】
 解决方案是Watermark机制。
 
-Watermark是一种特殊的时间戳标记，
-它告诉系统：「所有时间早于Watermark的事件都已经到达」。
+Watermark是一种特殊的时间戳标记,
+它告诉系统:「所有时间早于Watermark的事件都已经到达」。
 
-Flink提供了三种Watermark生成策略：
+Flink提供了三种Watermark生成策略:
 
-1. 单调递增：数据基本有序，无乱序
-2. 固定延迟：数据有一定乱序，允许延迟
-3. 自定义：根据业务特点定制
+1. 单调递增:数据基本有序,无乱序
+2. 固定延迟:数据有一定乱序,允许延迟
+3. 自定义:根据业务特点定制
 
 【02:45-04:00】
-对于迟到数据，Flink提供了三种处理方式：
+对于迟到数据,Flink提供了三种处理方式:
 
-1. 丢弃：默认行为，简单但可能丢失数据
-2. 允许迟到：延长窗口生命周期，更新结果
-3. 侧输出：将迟到数据发送到单独的流
+1. 丢弃:默认行为,简单但可能丢失数据
+2. 允许迟到:延长窗口生命周期,更新结果
+3. 侧输出:将迟到数据发送到单独的流
 
-在生产环境中，我推荐组合使用允许迟到和侧输出：
+在生产环境中,我推荐组合使用允许迟到和侧输出:
 - 设置合理的allowedLateness
 - 侧输出监控迟到情况
 - 根据监控结果调整Watermark策略
 
 【04:00-04:30】
-看代码示例：
-我们配置了一个允许5秒乱序的Watermark策略，
-窗口允许2分钟的迟到，
+看代码示例:
+我们配置了一个允许5秒乱序的Watermark策略,
+窗口允许2分钟的迟到,
 迟到数据会被发送到侧输出流。
 ```
 
@@ -194,7 +194,7 @@ env.getConfig().setAutoWatermarkInterval(200);
             // 5. 定义窗口
             .window(TumblingEventTimeWindows.of(Time.minutes(1)))
 
-            // 6. 允许迟到（窗口结束后2分钟内仍可更新）
+            // 6. 允许迟到(窗口结束后2分钟内仍可更新)
             .allowedLateness(Time.minutes(2))
 
             // 7. 迟到数据侧输出
@@ -206,7 +206,7 @@ env.getConfig().setAutoWatermarkInterval(200);
         // 9. 输出主结果
         result.print("正常数据");
 
-        // 10. 输出迟到数据（用于监控）
+        // 10. 输出迟到数据(用于监控)
         result.getSideOutput(lateDataTag)
               .addSink(new LateDataMonitoringSink());
 
@@ -229,39 +229,39 @@ env.getConfig().setAutoWatermarkInterval(200);
 
 ```
 【04:30-05:15】
-Pattern 02：窗口聚合。
+Pattern 02:窗口聚合。
 
-流数据是无界的，但计算需要边界。
+流数据是无界的,但计算需要边界。
 窗口就是「无界到有界」的抽象。
 
-Flink提供了四种类型的窗口：
+Flink提供了四种类型的窗口:
 
-1. 滚动窗口：固定大小，不重叠，适合周期性统计
-2. 滑动窗口：固定大小，可重叠，适合移动平均
-3. 会话窗口：动态大小，根据活动间隙划分，适合用户行为分析
-4. 全局窗口：只有一个窗口，需要自定义触发器
+1. 滚动窗口:固定大小,不重叠,适合周期性统计
+2. 滑动窗口:固定大小,可重叠,适合移动平均
+3. 会话窗口:动态大小,根据活动间隙划分,适合用户行为分析
+4. 全局窗口:只有一个窗口,需要自定义触发器
 
 【05:15-06:30】
-窗口的生命周期有三个阶段：
+窗口的生命周期有三个阶段:
 
-1. 分配(Assign)：数据到达时，决定它属于哪个窗口
-2. 触发(Trigger)：决定何时计算窗口结果
-3. 驱逐(Evict)：决定何时清除窗口状态
+1. 分配(Assign):数据到达时,决定它属于哪个窗口
+2. 触发(Trigger):决定何时计算窗口结果
+3. 驱逐(Evict):决定何时清除窗口状态
 
-默认情况下，Watermark超过窗口结束时间时触发，
+默认情况下,Watermark超过窗口结束时间时触发,
 计算完成后清除状态。
 
-但我们可以通过自定义Trigger实现更复杂的逻辑：
-比如数据量达到阈值时提前触发，
+但我们可以通过自定义Trigger实现更复杂的逻辑:
+比如数据量达到阈值时提前触发,
 或收到特定控制消息时触发。
 
 【06:30-07:30】
-看一个电商场景的实战例子：
-实时统计每分钟的GMV（成交总额），
+看一个电商场景的实战例子:
+实时统计每分钟的GMV(成交总额),
 但当GMV超过100万时提前触发告警。
 
-这需要自定义Trigger：
-在Watermark触发的基础上，
+这需要自定义Trigger:
+在Watermark触发的基础上,
 增加一个基于数据量的条件触发。
 ```
 
@@ -303,7 +303,7 @@ public class WindowedAggregationPattern {
         env.execute();
     }
 
-    // 自定义Trigger：GMV超过阈值时提前触发
+    // 自定义Trigger:GMV超过阈值时提前触发
     public static class EarlyTriggerOnHighValue extends Trigger<Order, TimeWindow> {
 
         private final double threshold;
@@ -325,7 +325,7 @@ public class WindowedAggregationPattern {
             currentSum += order.getAmount();
             sumState.update(currentSum);
 
-            // 超过阈值，触发计算
+            // 超过阈值,触发计算
             if (currentSum >= threshold) {
                 return TriggerResult.FIRE;  // 触发但不清除
             }
@@ -368,40 +368,40 @@ public class WindowedAggregationPattern {
 
 ```
 【07:30-08:30】
-Pattern 03：复杂事件处理(CEP)。
+Pattern 03:复杂事件处理(CEP)。
 
 CEP用于在事件流中检测复杂的事件模式。
-比如：用户登录失败3次后成功登录，
+比如:用户登录失败3次后成功登录,
 可能意味着账号被盗用。
 
-Flink CEP的核心概念是：
-- 模式(Pattern)：要匹配的事件序列规则
-- NFA(非确定有限自动机)：模式匹配引擎
-- 匹配结果：符合模式的事件序列
+Flink CEP的核心概念是:
+- 模式(Pattern):要匹配的事件序列规则
+- NFA(非确定有限自动机):模式匹配引擎
+- 匹配结果:符合模式的事件序列
 
 【08:30-09:45】
-CEP模式定义使用类正则表达式的API：
+CEP模式定义使用类正则表达式的API:
 
-- begin("start")：定义模式的起始状态
-- next("middle")：紧跟着的下一个事件
-- followedBy("end")：之后出现的某个事件
-- within(Time)：模式匹配的时间窗口
+- begin("start"):定义模式的起始状态
+- next("middle"):紧跟着的下一个事件
+- followedBy("end"):之后出现的某个事件
+- within(Time):模式匹配的时间窗口
 
-还可以添加条件：
-- where：基本过滤条件
-- subtype：事件子类型
-- oneOrMore：重复次数
-- times(n)：恰好n次
+还可以添加条件:
+- where:基本过滤条件
+- subtype:事件子类型
+- oneOrMore:重复次数
+- times(n):恰好n次
 
 【09:45-10:30】
-看一个金融风控的实战例子：
+看一个金融风控的实战例子:
 检测「短时间内多笔小额交易后单笔大额交易」
 这可能是信用卡盗刷的典型模式。
 
-我们定义一个3阶段的模式：
-1. 小额交易（金额<100）
+我们定义一个3阶段的模式:
+1. 小额交易(金额<100)
 2. 重复3次以上
-3. 之后1分钟内出现大额交易（金额>5000）
+3. 之后1分钟内出现大额交易(金额>5000)
 
 匹配到这个模式就触发风控告警。
 ```
@@ -437,7 +437,7 @@ public class CEPPattern {
 
         // 定义CEP模式
         Pattern<Transaction, ?> fraudPattern = Pattern
-            // 阶段1：小额交易开始
+            // 阶段1:小额交易开始
             .<Transaction>begin("small-txns")
             .where(new SimpleCondition<Transaction>() {
                 @Override
@@ -445,10 +445,10 @@ public class CEPPattern {
                     return txn.getAmount() < 100.0;
                 }
             })
-            // 阶段2：重复3次或以上
+            // 阶段2:重复3次或以上
             .timesOrMore(3)
             .within(Time.minutes(5))
-            // 阶段3：之后紧跟大额交易
+            // 阶段3:之后紧跟大额交易
             .next("large-txn")
             .where(new SimpleCondition<Transaction>() {
                 @Override
@@ -479,7 +479,7 @@ public class CEPPattern {
                     out.collect(new FraudAlert(
                         largeTxn.getCardId(),
                         "SUSPICIOUS_PATTERN",
-                        String.format("检测到可疑交易：%d笔小额后大额%.2f",
+                        String.format("检测到可疑交易:%d笔小额后大额%.2f",
                             smallTxns.size(), largeTxn.getAmount())
                     ));
                 }
@@ -505,37 +505,37 @@ public class CEPPattern {
 
 ```
 【10:30-11:15】
-Pattern 04：异步I/O扩展。
+Pattern 04:异步I/O扩展。
 
-在流处理中，我们经常需要关联外部数据：
+在流处理中,我们经常需要关联外部数据:
 查询用户画像、补全地理位置信息、获取商品详情等。
 
-如果同步调用外部服务，
-整个数据流都会被阻塞，
+如果同步调用外部服务,
+整个数据流都会被阻塞,
 吞吐率会急剧下降。
 
 【11:15-12:15】
-异步I/O模式的解决方案是：
+异步I/O模式的解决方案是:
 
 1. 发送异步请求后不等待响应
 2. 继续处理下一条数据
 3. 响应到达后通过回调处理结果
 
 Flink的AsyncFunction抽象了这种模式。
-它内部维护了一个请求队列，
+它内部维护了一个请求队列,
 支持设置并发请求数和超时时间。
 
 【12:15-13:30】
-看一个实时推荐的实战例子：
-用户点击流需要关联用户画像和商品特征，
+看一个实时推荐的实战例子:
+用户点击流需要关联用户画像和商品特征,
 这些数据存储在Redis和特征服务中。
 
-使用异步I/O，我们可以：
+使用异步I/O,我们可以:
 - 并发查询多个外部服务
 - 设置超时避免无限等待
 - 处理请求失败和重试
 
-代码中我们实现了AsyncFunction接口，
+代码中我们实现了AsyncFunction接口,
 使用Java的CompletableFuture进行异步编程。
 ```
 
@@ -632,7 +632,7 @@ public class AsyncIOPattern {
         public void timeout(
             UserClick click,
             ResultFuture<EnrichedClick> resultFuture) {
-            // 超时处理：返回原始数据或默认值
+            // 超时处理:返回原始数据或默认值
             resultFuture.complete(Collections.singletonList(
                 new EnrichedClick(click, UserProfile.empty(), ItemFeature.empty())
             ));
@@ -655,45 +655,45 @@ public class AsyncIOPattern {
 
 ```
 【13:30-14:15】
-Pattern 05：状态管理。
+Pattern 05:状态管理。
 
 有状态计算是流处理的核心能力。
-我们需要状态来：
-- 聚合计算（累加计数、求和平均）
-- 去重判断（基于ID的去重）
-- 模式匹配（CEP中的状态机）
-- 会话维护（用户会话窗口）
+我们需要状态来:
+- 聚合计算(累加计数、求和平均)
+- 去重判断(基于ID的去重)
+- 模式匹配(CEP中的状态机)
+- 会话维护(用户会话窗口)
 
-Flink提供了两种状态类型：
+Flink提供了两种状态类型:
 
-1. KeyedState：每个Key独立的的状态
+1. KeyedState:每个Key独立的的状态
    适用于按Key分组的场景
 
-2. OperatorState：算子级别的状态
+2. OperatorState:算子级别的状态
    适用于Source、Sink等不分Key的场景
 
 【14:15-15:30】
-状态后端决定了状态如何存储：
+状态后端决定了状态如何存储:
 
-1. MemoryStateBackend：内存存储，适合测试
-2. FsStateBackend：文件系统，适合小状态
-3. RocksDBStateBackend：本地RocksDB，适合大状态
+1. MemoryStateBackend:内存存储,适合测试
+2. FsStateBackend:文件系统,适合小状态
+3. RocksDBStateBackend:本地RocksDB,适合大状态
 
-生产环境推荐使用RocksDB：
+生产环境推荐使用RocksDB:
 - 状态大小只受磁盘限制
 - 支持增量Checkpoint
 - 可以开启TTL自动清理
 
 【15:30-16:30】
-看一个去重的实战例子：
-实时统计独立访客(UV)，
+看一个去重的实战例子:
+实时统计独立访客(UV),
 需要维护已访问的用户ID集合。
 
-使用ValueState存储布隆过滤器，
-可以高效地判断用户是否已访问，
+使用ValueState存储布隆过滤器,
+可以高效地判断用户是否已访问,
 同时节省内存空间。
 
-代码中我们实现了RichFlatMapFunction，
+代码中我们实现了RichFlatMapFunction,
 使用ValueState来维护布隆过滤器状态。
 ```
 
@@ -817,9 +817,9 @@ public class StateManagementPattern {
 
 ```
 【16:30-17:15】
-Pattern 06：侧输出模式。
+Pattern 06:侧输出模式。
 
-有时候我们需要将数据发送到多个目的地：
+有时候我们需要将数据发送到多个目的地:
 - 正常数据到主Sink
 - 异常数据到告警系统
 - 迟到数据到补全任务
@@ -830,21 +830,21 @@ Pattern 06：侧输出模式。
 【17:15-18:15】
 侧输出使用OutputTag来标识不同的输出流。
 
-在ProcessFunction中，
+在ProcessFunction中,
 使用context.output(tag, value)发送数据到侧输出。
-在主流程中，使用getSideOutput(tag)获取侧输出流。
+在主流程中,使用getSideOutput(tag)获取侧输出流。
 
-一个算子可以有多个侧输出，
+一个算子可以有多个侧输出,
 实现复杂的数据分流逻辑。
 
 【18:15-19:00】
-看一个数据清洗的实战例子：
-原始日志流需要分成三路：
+看一个数据清洗的实战例子:
+原始日志流需要分成三路:
 1. 正常数据 -> 数仓
 2. 异常数据 -> 告警系统
 3. 格式错误 -> 死信队列
 
-使用ProcessFunction和侧输出，
+使用ProcessFunction和侧输出,
 可以清晰地实现这个需求。
 ```
 
@@ -882,18 +882,18 @@ public class SideOutputPattern {
                 malformedLogTag, errorLogTag, slowQueryTag
             ));
 
-        // 主输出：正常日志 -> 数仓
+        // 主输出:正常日志 -> 数仓
         processed.addSink(new DataWarehouseSink());
 
-        // 侧输出1：格式错误 -> 死信队列
+        // 侧输出1:格式错误 -> 死信队列
         processed.getSideOutput(malformedLogTag)
             .addSink(new DeadLetterQueueSink());
 
-        // 侧输出2：ERROR级别 -> 实时告警
+        // 侧输出2:ERROR级别 -> 实时告警
         processed.getSideOutput(errorLogTag)
             .addSink(new AlertSink());
 
-        // 侧输出3：慢查询 -> 性能分析
+        // 侧输出3:慢查询 -> 性能分析
         processed.getSideOutput(slowQueryTag)
             .addSink(new SlowQueryAnalysisSink());
 
@@ -937,7 +937,7 @@ public class SideOutputPattern {
                     ctx.output(errorTag, event);
                 }
 
-                // 检查是否为慢查询（响应时间>1s）
+                // 检查是否为慢查询(响应时间>1s)
                 if (event.getResponseTime() > 1000) {
                     ctx.output(slowQueryTag, event);
                 }
@@ -979,35 +979,35 @@ public class SideOutputPattern {
 
 ```
 【19:00-20:00】
-Pattern 07：Checkpoint与恢复。
+Pattern 07:Checkpoint与恢复。
 
 这是保证容错和Exactly-Once语义的核心机制。
 
-Checkpoint是分布式快照，
+Checkpoint是分布式快照,
 定期保存所有算子的状态。
-当故障发生时，
-可以从最近的Checkpoint恢复，
+当故障发生时,
+可以从最近的Checkpoint恢复,
 保证数据不丢失、不重复。
 
 【20:00-21:00】
-Checkpoint的过程是这样的：
+Checkpoint的过程是这样的:
 
 1. JobManager向所有Source发送Barrier
-2. Source收到Barrier后，保存自身状态并向下游传播
-3. 每个算子收到所有输入流的Barrier后，保存状态并继续传播
-4. 当所有Sink都确认后，Checkpoint完成
+2. Source收到Barrier后,保存自身状态并向下游传播
+3. 每个算子收到所有输入流的Barrier后,保存状态并继续传播
+4. 当所有Sink都确认后,Checkpoint完成
 
 这个过程叫做「Barrier对齐」。
-如果在一定时间内Barrier没有对齐，
+如果在一定时间内Barrier没有对齐,
 可以选择使用Unaligned Checkpoint。
 
 【21:00-22:00】
-Checkpoint配置需要根据业务调整：
+Checkpoint配置需要根据业务调整:
 
-- 间隔：平衡容错开销和恢复粒度
-- 超时：考虑状态大小和网络状况
-- 并发：控制同时进行的最大Checkpoint数
-- 增量：只保存状态变化，减少开销
+- 间隔:平衡容错开销和恢复粒度
+- 超时:考虑状态大小和网络状况
+- 并发:控制同时进行的最大Checkpoint数
+- 增量:只保存状态变化,减少开销
 
 看代码中的最佳实践配置。
 ```
@@ -1031,15 +1031,15 @@ public class CheckpointPattern {
 
         // ==================== Checkpoint配置 ====================
 
-        // 1. 启用Checkpoint，每60秒触发一次
+        // 1. 启用Checkpoint,每60秒触发一次
         env.enableCheckpointing(60000);
 
-        // 2. 模式：EXACTLY_ONCE 或 AT_LEAST_ONCE
+        // 2. 模式:EXACTLY_ONCE 或 AT_LEAST_ONCE
         env.getCheckpointConfig().setCheckpointingMode(
             CheckpointingMode.EXACTLY_ONCE
         );
 
-        // 3. Checkpoint超时时间（10分钟）
+        // 3. Checkpoint超时时间(10分钟)
         env.getCheckpointConfig().setCheckpointTimeout(600000);
 
         // 4. 最大并发Checkpoint数
@@ -1053,7 +1053,7 @@ public class CheckpointPattern {
             ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION
         );
 
-        // 7. 允许Unaligned Checkpoint（应对背压）
+        // 7. 允许Unaligned Checkpoint(应对背压)
         env.getCheckpointConfig().enableUnalignedCheckpoints();
         env.getCheckpointConfig().setAlignmentTimeout(Duration.ofSeconds(30));
 
@@ -1104,7 +1104,7 @@ public class CheckpointPattern {
     }
 }
 
-// Exactly-Once Sink实现（两阶段提交）
+// Exactly-Once Sink实现(两阶段提交)
 public class TwoPhaseCommitSink extends
     TwoPhaseCommitSinkFunction<Event, Transaction, Transaction> {
 
@@ -1158,27 +1158,27 @@ public class TwoPhaseCommitSink extends
 
 ```
 【22:00-22:45】
-在实际生产中，往往需要组合使用多个模式。
+在实际生产中,往往需要组合使用多个模式。
 
-看一个完整的实时风控架构：
-数据源是交易流水，
+看一个完整的实时风控架构:
+数据源是交易流水,
 目标是实时识别可疑交易并告警。
 
 【22:45-23:30】
-架构中使用了以下模式组合：
+架构中使用了以下模式组合:
 
-1. P01 Event Time：处理乱序交易数据
-2. P03 CEP：识别复杂欺诈模式
-3. P04 Async I/O：查询用户风险画像
-4. P05 State Management：维护风控规则状态
-5. P06 Side Output：分流不同风险等级的告警
-6. P07 Checkpoint：保证Exactly-Once告警
+1. P01 Event Time:处理乱序交易数据
+2. P03 CEP:识别复杂欺诈模式
+3. P04 Async I/O:查询用户风险画像
+4. P05 State Management:维护风控规则状态
+5. P06 Side Output:分流不同风险等级的告警
+6. P07 Checkpoint:保证Exactly-Once告警
 
 【23:30-24:00】
-这种组合架构能够：
+这种组合架构能够:
 - 准确识别时序欺诈模式
-- 低延迟响应（<200ms）
-- 不丢不重（Exactly-Once）
+- 低延迟响应(<200ms)
+- 不丢不重(Exactly-Once)
 - 灵活配置风控规则
 
 代码中展示了核心部分的组合方式。
@@ -1246,14 +1246,14 @@ public class CombinedPatterns {
         SingleOutputStreamOperator<Alert> alerts = patternStream
             .process(new StatefulAlertHandler(lowRiskAlertTag, highRiskAlertTag));
 
-        // 主输出：中等风险告警
+        // 主输出:中等风险告警
         alerts.addSink(new AlertSink("medium"));
 
-        // 侧输出1：低风险告警（日志记录）
+        // 侧输出1:低风险告警(日志记录)
         alerts.getSideOutput(lowRiskAlertTag)
             .addSink(new LogSink());
 
-        // 侧输出2：高风险告警（实时通知）
+        // 侧输出2:高风险告警(实时通知)
         alerts.getSideOutput(highRiskAlertTag)
             .addSink(new UrgentAlertSink());
 
@@ -1276,21 +1276,21 @@ public class CombinedPatterns {
 
 ```
 【24:00-24:40】
-最后，我们来看模式选型矩阵。
+最后,我们来看模式选型矩阵。
 
-根据业务需求选择合适的模式组合：
+根据业务需求选择合适的模式组合:
 
-- 实时风控：P01 + P03 + P07
-- IoT数据处理：P01 + P05 + P07
-- 实时推荐：P02 + P04 + P05
-- 日志分析：P02 + P06 + P07
-- 支付处理：P01 + P05 + P07（必须Exactly-Once）
+- 实时风控:P01 + P03 + P07
+- IoT数据处理:P01 + P05 + P07
+- 实时推荐:P02 + P04 + P05
+- 日志分析:P02 + P06 + P07
+- 支付处理:P01 + P05 + P07(必须Exactly-Once)
 
 【24:40-25:00】
 7大设计模式覆盖了流处理的核心问题。
-掌握这些模式，你就能应对大多数流处理场景。
+掌握这些模式,你就能应对大多数流处理场景。
 
-下一集，我们将进入生产环境，
+下一集,我们将进入生产环境,
 学习「生产部署与监控配置」。
 包括K8s部署、Prometheus监控、Grafana仪表盘等。
 
@@ -1344,4 +1344,3 @@ public class CombinedPatterns {
 *脚本版本: v1.0*
 *创建日期: 2026-04-03*
 *预计制作时长: 25分钟*
-

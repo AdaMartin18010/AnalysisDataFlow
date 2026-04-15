@@ -1,6 +1,6 @@
 # Flink 版本发布跟踪系统 - 完整文档
 
-> **系统版本**: v1.0 | **创建日期**: 2026-04-04 | **维护状态**: 运行中
+> **系统版本**: v1.0 | **创建日期**: 2026-04-04 | **维护状态**: 运行中 | **最后更新**: 2026-04-15
 
 ## 系统架构概览
 
@@ -84,17 +84,17 @@
 ```mermaid
 timeline
     title Flink 版本跟踪时间线
-    
+
     section 2026 Q3-Q4
         Flink 2.4 GA : AI Agent GA
                      : Serverless Beta
                      : 自适应执行v2
-                     
+
     section 2027 Q1-Q2
         Flink 2.5 GA : 流批一体完成
                      : Serverless GA
                      : AI/ML生产就绪
-                     
+
     section 2027+
         Flink 3.0 : 架构重构
                   : 统一执行层
@@ -274,15 +274,18 @@ git push
 ### 常见问题
 
 **Q: 脚本运行失败，提示缺少依赖**
+
 ```bash
 pip install requests beautifulsoup4 packaging
 ```
 
 **Q: GitHub Actions 运行失败**
+
 - 检查 Secrets 配置是否正确
 - 查看 Actions 日志获取详细错误
 
 **Q: 批量更新脚本没有更新某些文件**
+
 - 检查文件是否包含正确的版本标记
 - 使用 `--dry-run` 查看哪些文件会被更新
 
@@ -318,5 +321,21 @@ python update-docs-on-release.py \
 
 ---
 
+## FLIP 状态跟踪
+
+| FLIP ID | 标题 | 状态 | 目标版本 | 备注 |
+|---------|------|------|----------|------|
+| FLIP-555 | Native S3 FileSystem | Accepted (正在实现) | 2.6 | S3 FileSystem 原生支持，进度约 15% |
+| FLIP-564 | FROM_CHANGELOG/TO_CHANGELOG Built-in PTFs | 正在讨论 | 2.7 | 标题已修正，社区讨论中 |
+| FLIP-566 | IMMUTABLE Columns Constraint | 正在讨论 | 2.7 | 列不可变性约束，进度约 5% |
+
+### Flink 2.3 计划状态
+
+- **状态**: 进行中 (Planning)
+- **预计窗口**: 2026 年中
+- **跟踪文档**: `Flink/00-meta/version-tracking/flink-23-status.md` (如存在)
+
+---
+
 *系统维护: AnalysisDataFlow 项目团队*
-*最后更新: 2026-04-04*
+*最后更新: 2026-04-15*

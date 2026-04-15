@@ -192,10 +192,10 @@ $$
 **示例计算**：
 
 ```
-边缘设备：Raspberry Pi 4 (4GB RAM, 32GB SD卡)
-数据摄入：1,000 events/sec × 200 bytes/event = 200 KB/sec
-压缩率：ρ = 0.8 (80%压缩)
-最大离线时间：24小时
+边缘设备:Raspberry Pi 4 (4GB RAM, 32GB SD卡)
+数据摄入:1,000 events/sec × 200 bytes/event = 200 KB/sec
+压缩率:ρ = 0.8 (80%压缩)
+最大离线时间:24小时
 
 B_max = min(20GB, 24×3600×200KB×0.2) = min(20GB, 3.46GB) = 3.46GB
 ```
@@ -280,7 +280,7 @@ $$
 ├─────────────────────────────────────────────────────────┤
 │  设备层 (Device Layer)                                   │
 │  ├─ 传感器数据采集                                        │
-│  ├─ 本地预处理（采样、滤波）                              │
+│  ├─ 本地预处理(采样、滤波)                              │
 │  └─ 边缘协议发布                                          │
 └─────────────────────────────────────────────────────────┘
 ```
@@ -298,14 +298,14 @@ $$
 将多个轻量级算子合并为单个算子，减少序列化开销：
 
 ```java
-// 优化前：多个独立算子
+// 优化前:多个独立算子
 dataStream
     .map(parseJson)
     .filter(validRecord)
     .map(extractFields)
     .filter(nonNullFilter);
 
-// 优化后：融合为单一算子
+// 优化后:融合为单一算子
 dataStream
     .map(new FusedParseAndFilter());
 ```
@@ -318,11 +318,11 @@ dataStream
 
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-// 优化前：全量窗口计算
+// 优化前:全量窗口计算
 .window(TumblingEventTimeWindows.of(Time.minutes(5)))
 .apply(new FullWindowFunction());
 
-// 优化后：增量聚合
+// 优化后:增量聚合
 .window(TumblingEventTimeWindows.of(Time.minutes(5)))
 .aggregate(new IncrementalAggregate());
 ```
@@ -498,7 +498,7 @@ execution.checkpointing.min-pause-between-checkpoints: 30s
 execution.checkpointing.max-concurrent-checkpoints: 1
 execution.checkpointing.externalized-checkpoint-retention: RETAIN_ON_CANCELLATION
 
-# 小状态使用内存状态后端，避免RocksDB开销
+# 小状态使用内存状态后端,避免RocksDB开销
 state.backend: hashmap
 state.checkpoints.dir: file:///opt/flink/checkpoints
 
@@ -634,7 +634,7 @@ import org.apache.flink.api.common.functions.AggregateFunction;
 /**
  * 边缘流处理作业 - IoT传感器数据预处理
  *
- * 功能：
+ * 功能:
  * 1. 接收MQTT传感器数据
  * 2. 数据清洗和验证
  * 3. 本地聚合(1分钟窗口)
@@ -668,7 +668,7 @@ public class EdgeProcessingJob {
             .fromSource(mqttSource, WatermarkStrategy
                 .<SensorReading>forBoundedOutOfOrderness(Duration.ofSeconds(10))
                 .withIdleness(Duration.ofMinutes(5)), "MQTT Source")
-            .setParallelism(1); // 单线程接收，减少资源占用
+            .setParallelism(1); // 单线程接收,减少资源占用
 
         // =========================================================================
         // 2. 数据清洗(轻量级处理)

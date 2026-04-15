@@ -258,12 +258,12 @@ $$
 **反模式1: 全量重计算**
 
 ```python
-# ❌ 错误：每条边到达都重新计算所有节点
+# ❌ 错误:每条边到达都重新计算所有节点
 for edge in stream:
     for v in all_nodes:
         recompute_embedding(v)  # O(|V|) 每边！
 
-# ✅ 正确：增量更新受影响节点
+# ✅ 正确:增量更新受影响节点
 for edge in stream:
     affected = get_affected_nodes(edge)
     for v in affected:
@@ -273,10 +273,10 @@ for edge in stream:
 **反模式2: 无界记忆增长**
 
 ```python
-# ❌ 错误：存储所有历史记忆
+# ❌ 错误:存储所有历史记忆
 memory[v].append(new_state)  # 无限增长！
 
-# ✅ 正确：使用滑动窗口或摘要
+# ✅ 正确:使用滑动窗口或摘要
 memory[v].slide_window(new_state, window_size=100)
 # 或使用可学习的记忆压缩
 memory[v] = compress(memory[v], new_state)
@@ -285,10 +285,10 @@ memory[v] = compress(memory[v], new_state)
 **反模式3: 忽视时序因果性**
 
 ```python
-# ❌ 错误：乱序事件直接更新
+# ❌ 错误:乱序事件直接更新
 process_event(event)  # 可能使用未来信息！
 
-# ✅ 正确：使用Watermark确保因果性
+# ✅ 正确:使用Watermark确保因果性
 watermark = current_time - max_out_of_orderness
 if event.time <= watermark:
     process_event(event)

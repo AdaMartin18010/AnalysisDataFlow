@@ -453,7 +453,7 @@ akka.ask.timeout: 30s
 taskmanager.network.memory.buffer-size: 32768
 taskmanager.network.memory.floating-buffers-per-gate: 16
 
-# 零拷贝传输（Flink 2.4默认启用）
+# 零拷贝传输(Flink 2.4默认启用)
 taskmanager.network.netty.transport: epoll  # Linux
 taskmanager.network.netty.zero-copy: true
 ```
@@ -552,7 +552,7 @@ env.java.opts.taskmanager: >
 import org.apache.flink.streaming.api.CheckpointingMode;
 
 // 创建ForSt StateBackend
-ForStStateBackend forStBackend = new ForStStateBackend();  // [Flink 2.4 前瞻] 该API为规划特性，可能变动
+ForStStateBackend forStBackend = new ForStStateBackend();  // [Flink 2.4 前瞻] 该API为规划特性,可能变动
 
 // 配置异步IO
 forStBackend.setEnableAsyncSnapshots(true);
@@ -605,7 +605,7 @@ SET table.exec.vectorized.batch-size = 2048;
 **查询性能对比**：
 
 ```sql
--- 测试查询：聚合Join操作
+-- 测试查询:聚合Join操作
 SELECT
     TUMBLE_START(rowtime, INTERVAL '1' MINUTE) as window_start,
     u.user_id,
@@ -903,7 +903,7 @@ pie
 
 ```markdown
 □ 兼容性检查
-  □ 验证API兼容性（Flink 2.4保持向后兼容）
+  □ 验证API兼容性(Flink 2.4保持向后兼容)
   □ 检查自定义序列化器
   □ 验证连接器版本
 

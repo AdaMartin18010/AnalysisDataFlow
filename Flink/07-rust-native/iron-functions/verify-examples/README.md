@@ -9,8 +9,8 @@ verify-examples/
 ├── Cargo.toml          # Rust 项目配置
 ├── src/
 │   └── lib.rs          # UDF 实现
-├── examples/           # 使用示例（可选）
-├── tests/              # 集成测试（可选）
+├── examples/           # 使用示例(可选)
+├── tests/              # 集成测试(可选)
 └── README.md           # 本文件
 ```
 
@@ -19,7 +19,7 @@ verify-examples/
 ### 1. 环境准备
 
 ```bash
-# 安装 Rust（如果尚未安装）
+# 安装 Rust(如果尚未安装)
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 # 安装 WASM 目标
@@ -127,7 +127,7 @@ cargo test
 使用 ironfun CLI 打包：
 
 ```bash
-# 安装 ironfun（如果尚未安装）
+# 安装 ironfun(如果尚未安装)
 curl -s https://irontools.dev/ironfun-cli-install.sh | sh
 
 # 打包为 JAR

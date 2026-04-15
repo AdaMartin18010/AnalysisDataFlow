@@ -451,6 +451,7 @@ $$
 **场景**：微服务集群中同时存在 JSON 格式应用日志、Nginx 访问日志和 Syslog 系统日志 [^10]。
 
 ```java
+// 伪代码示意,非完整可编译代码
 
 import org.apache.flink.streaming.api.datastream.DataStream;
 
@@ -497,7 +498,7 @@ DataStream<StructuredLog> jsonLogs = splitLogs
         }
     });
 
-// Nginx 日志解析（Grok 模式）
+// Nginx 日志解析(Grok 模式)
 DataStream<StructuredLog> nginxLogs = splitLogs
     .select("nginx")
     .map(new GrokParserFunction(
@@ -645,7 +646,7 @@ DataStream<Alert> dbAlerts = CEP.pattern(
 **场景**：基于日志中的耗时字段识别慢请求和性能退化 [^11]。
 
 ```java
-// 提取响应时间（从结构化日志的 duration_ms 字段）
+// 提取响应时间(从结构化日志的 duration_ms 字段)
 DataStream<LatencyMetric> latencyMetrics = unifiedLogs
     .filter(log -> log.getMetadata() != null && log.getMetadata().containsKey("duration_ms"))
     .map(log -> new LatencyMetric(
@@ -655,7 +656,7 @@ DataStream<LatencyMetric> latencyMetrics = unifiedLogs
         log.getTraceId()
     ));
 
-// 计算动态阈值（基于历史基线）
+// 计算动态阈值(基于历史基线)
 DataStream<ServiceLatencyStats> latencyStats = latencyMetrics
     .keyBy(LatencyMetric::getService)
     .window(SlidingEventTimeWindows.of(Time.minutes(10), Time.minutes(1)))

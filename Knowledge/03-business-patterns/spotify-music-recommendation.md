@@ -248,7 +248,7 @@ P50 < 50ms, P99 < 100ms, P99.9 < 200ms
 因此:
 - 跳过事件总是在对应的播放事件之后处理
 - 会话结束状态在所有会话内事件之后计算
-- 跨会话边界无因果依赖，可并行处理
+- 跨会话边界无因果依赖,可并行处理
 ```
 
 ---
@@ -352,8 +352,8 @@ P50 < 50ms, P99 < 100ms, P99.9 < 200ms
 │                                                                     │
 │  优势:                                                               │
 │  ├── 毫秒级推荐延迟                                                  │
-│  ├── 统一代码路径，逻辑一致                                          │
-│  ├── 精确一次语义，数据准确                                          │
+│  ├── 统一代码路径,逻辑一致                                          │
+│  ├── 精确一次语义,数据准确                                          │
 │  └── 状态管理简化开发                                                │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
@@ -420,7 +420,7 @@ public class CrossDeviceSessionMerger extends KeyedProcessFunction<
 其中 α = e^(-λ·t), t为上次离线更新至今的时间
 
 实现:
-├── 离线画像: 每日Spark作业计算，写入Cassandra
+├── 离线画像: 每日Spark作业计算,写入Cassandra
 ├── 实时画像: Flink会话窗口增量更新
 └── 融合服务: 推荐API实时加权合并
 ```
@@ -647,7 +647,7 @@ class SessionAggregator implements AggregateFunction<
         // 检测情绪变化
         SessionMood mood;
         if (skipRate > 0.7) {
-            mood = SessionMood.FRUSTRATED;  // 高跳过率，需要改变
+            mood = SessionMood.FRUSTRATED;  // 高跳过率,需要改变
         } else if (completionRate > 0.8) {
             mood = SessionMood.ENGAGED;     // 高度投入
         } else if (acc.likedTracks.size() > 3) {
@@ -691,15 +691,15 @@ class RealtimeRecommender extends KeyedProcessFunction<
 
             switch (insight.mood) {
                 case FRUSTRATED:
-                    // 用户不满意，尝试不同流派
+                    // 用户不满意,尝试不同流派
                     strategy = RecommendationStrategy.EXPLORE;
                     break;
                 case ENGAGED:
-                    // 用户投入，深化当前流派
+                    // 用户投入,深化当前流派
                     strategy = RecommendationStrategy.DEEPEN;
                     break;
                 case HAPPY:
-                    // 用户满意，混合推荐
+                    // 用户满意,混合推荐
                     strategy = RecommendationStrategy.BALANCE;
                     break;
                 default:

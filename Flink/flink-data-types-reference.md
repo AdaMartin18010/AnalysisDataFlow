@@ -332,7 +332,7 @@ CREATE TABLE user_events (
 
     -- 数值类型 - 业务指标
     score DECIMAL(10, 4),           -- 精确分数
-    temperature FLOAT,              -- 传感器读数（近似）
+    temperature FLOAT,              -- 传感器读数(近似)
 
     -- 二进制类型
     avatar_hash VARBINARY(64),
@@ -341,8 +341,8 @@ CREATE TABLE user_events (
     -- 时间类型 - 流计算核心
     birth_date DATE,
     preferred_time TIME(3),
-    event_ts TIMESTAMP(3),          -- 事件时间（本地）
-    event_ts_utc TIMESTAMP_LTZ(3),  -- 事件时间（UTC）
+    event_ts TIMESTAMP(3),          -- 事件时间(本地)
+    event_ts_utc TIMESTAMP_LTZ(3),  -- 事件时间(UTC)
 
     -- 复合类型 - 结构化数据
     tags ARRAY<VARCHAR(50)>,
@@ -374,13 +374,13 @@ CREATE TABLE user_events (
 ### 6.2 类型转换示例
 
 ```sql
--- 隐式转换（自动进行）
+-- 隐式转换(自动进行)
 SELECT
     user_id + 1.5 AS user_id_double,           -- BIGINT → DOUBLE
     CONCAT('ID:', CAST(user_id AS STRING)) AS user_id_str
 FROM user_events;
 
--- 显式转换（CAST）
+-- 显式转换(CAST)
 SELECT
     CAST(event_ts AS DATE) AS event_date,
     CAST(event_ts AS STRING) AS ts_string,
@@ -388,7 +388,7 @@ SELECT
     CAST(score AS BIGINT) AS score_bigint
 FROM user_events;
 
--- 安全转换（TRY_CAST）
+-- 安全转换(TRY_CAST)
 SELECT
     TRY_CAST(username AS INT) AS username_num, -- 失败返回 NULL
     TRY_CAST('2024-01-15' AS DATE) AS valid_date,

@@ -253,7 +253,7 @@ DataStream 作业分析
     ├── 机器学习推理
     │   └── 使用 RW Python UDF 或外部 ML 服务
     └── 复杂 CEP/模式匹配
-        └── 保留 Flink CEP，与 RW 混合部署
+        └── 保留 Flink CEP,与 RW 混合部署
 ```
 
 ### 4.2 状态迁移技术方案论证
@@ -405,7 +405,7 @@ CREATE SOURCE user_events (
     properties.bootstrap.server = 'kafka:9092'
 ) FORMAT PLAIN ENCODE JSON;
 
--- 物化视图直接可查询，无需外部 Sink
+-- 物化视图直接可查询,无需外部 Sink
 CREATE MATERIALIZED VIEW hourly_stats AS
 SELECT
     TUMBLE(event_time, INTERVAL '1' HOUR) as window_start,
@@ -540,7 +540,7 @@ class DualWriteMigration:
         flink_results = self.query_flink_output()
         rw_results = self.query_risingwave_output()
 
-        # 允许 0.1% 的误差（由于事件时间处理差异）
+        # 允许 0.1% 的误差(由于事件时间处理差异)
         tolerance = 0.001
         diff_rate = abs(len(flink_results) - len(rw_results)) / len(flink_results)
 
@@ -673,8 +673,8 @@ $$;
 ```
 Flink UDF 分析
 │
-├─ 是否为纯计算逻辑（无外部 IO）?
-│  ├─ 是 → 嵌入式 Rust UDF（性能最优）
+├─ 是否为纯计算逻辑(无外部 IO)?
+│  ├─ 是 → 嵌入式 Rust UDF(性能最优)
 │  └─ 否 → 继续评估
 │
 ├─ 是否需要跨平台部署?
@@ -735,7 +735,7 @@ Flink UDF 分析
 
 ### 状态评估
 - [ ] 分析状态大小和类型
-- [ ] 选择迁移策略（双写/CDC回放）
+- [ ] 选择迁移策略(双写/CDC回放)
 - [ ] 制定状态验证方案
 
 ### 性能基线

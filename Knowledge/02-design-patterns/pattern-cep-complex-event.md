@@ -388,9 +388,9 @@ NFA 表示:
     └──────┘        └──────┘        └──────┘        └──────┘
        │                                              ▲
        │               ┌──────────────────────────────┘
-       │               │  (若 B 不满足，匹配失败)
+       │               │  (若 B 不满足,匹配失败)
        │               │
-       └───────────────┘  新事件到达，从 q₀ 开始匹配
+       └───────────────┘  新事件到达,从 q₀ 开始匹配
 ```
 
 **论证结构**:
@@ -477,7 +477,7 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 
-// 定义欺诈检测模式：异地登录 → 修改密码 → 大额转账（30分钟内）
+// 定义欺诈检测模式:异地登录 → 修改密码 → 大额转账(30分钟内)
 Pattern<TransactionEvent, ?> fraudPattern = Pattern
     .<TransactionEvent>begin("login")
     .where(new SimpleCondition<TransactionEvent>() {
@@ -543,7 +543,7 @@ DataStream<AlertEvent> alerts = patternStream
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-// 定义设备故障模式：高温 → 振动尖峰（30秒内）
+// 定义设备故障模式:高温 → 振动尖峰(30秒内)
 Pattern<SensorEvent, ?> failurePattern = Pattern
     .<SensorEvent>begin("highTemp")
     .where(new SimpleCondition<SensorEvent>() {
@@ -601,7 +601,7 @@ DataStream<FailureAlert> failures = patternStream
 
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-// 模式：连续3次登录失败，然后成功登录（可能是暴力破解）
+// 模式:连续3次登录失败,然后成功登录(可能是暴力破解)
 Pattern<LoginEvent, ?> bruteForcePattern = Pattern
     .<LoginEvent>begin("failedLogins")
     .where(new SimpleCondition<LoginEvent>() {
@@ -621,7 +621,7 @@ Pattern<LoginEvent, ?> bruteForcePattern = Pattern
     })
     .within(Time.minutes(5));
 
-// 模式：设备离线后1小时内重新上线（网络抖动 vs 真正故障）
+// 模式:设备离线后1小时内重新上线(网络抖动 vs 真正故障)
 Pattern<DeviceEvent, ?> networkGlitchPattern = Pattern
     .<DeviceEvent>begin("offline")
     .where(evt -> evt.getStatus().equals("OFFLINE"))
@@ -636,11 +636,11 @@ Pattern<DeviceEvent, ?> networkGlitchPattern = Pattern
 
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-// 模式：A 后跟 B，但 A 可能有多个后续 B 候选（贪婪匹配）
+// 模式:A 后跟 B,但 A 可能有多个后续 B 候选(贪婪匹配)
 Pattern<Event, ?> greedyPattern = Pattern
     .<Event>begin("start")
     .where(evt -> evt.getType().equals("START"))
-    .followedByAny("middle")  // 非确定性：选择所有可能的匹配
+    .followedByAny("middle")  // 非确定性:选择所有可能的匹配
     .where(evt -> evt.getType().equals("MIDDLE"))
     .followedBy("end")
     .where(evt -> evt.getType().equals("END"))
@@ -657,7 +657,7 @@ Pattern<Event, ?> greedyPattern = Pattern
 
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-// 复合条件：同一设备上温度高 或 压力高，然后停机
+// 复合条件:同一设备上温度高 或 压力高,然后停机
 Pattern<AlarmEvent, ?> shutdownPattern = Pattern
     .<AlarmEvent>begin("alarm")
     .where(new SimpleCondition<AlarmEvent>() {
@@ -723,7 +723,7 @@ DataStream<String> timeouts = result.getSideOutput(timeoutTag);
 Esper 使用类 SQL 的声明式语言定义模式：
 
 ```sql
--- 示例 1: 金融欺诈检测（对应 Flink 示例 1）
+-- 示例 1: 金融欺诈检测(对应 Flink 示例 1)
 SELECT *
 FROM pattern [
     every a=LoginEvent(riskLevel > 0.5)
@@ -732,7 +732,7 @@ FROM pattern [
     WHERE timer:within(30 minutes)
 ];
 
--- 示例 2: IoT 故障检测（对应 Flink 示例 2）
+-- 示例 2: IoT 故障检测(对应 Flink 示例 2)
 SELECT *
 FROM pattern [
     every a=SensorEvent(sensorType='TEMPERATURE', value > 80)
@@ -740,7 +740,7 @@ FROM pattern [
     WHERE timer:within(30 seconds)
 ];
 
--- 示例 3: 复杂统计模式（Esper 独有优势）
+-- 示例 3: 复杂统计模式(Esper 独有优势)
 SELECT userId, count(*), avg(amount)
 FROM TransactionEvent.win:time(5 minutes)
 GROUP BY userId
@@ -770,14 +770,14 @@ HAVING count(*) > 10 AND avg(amount) > 5000;
 
 import org.apache.flink.streaming.api.datastream.DataStream;
 
-// 优化前：所有事件都进入 CEP 引擎
+// 优化前:所有事件都进入 CEP 引擎
 Pattern<Event, ?> unoptimized = Pattern
     .<Event>begin("start")
     .where(evt -> true)  // 接受所有事件
     .next("middle")
     .where(evt -> evt.getType().equals("IMPORTANT"));
 
-// 优化后：先过滤再进入 CEP
+// 优化后:先过滤再进入 CEP
 DataStream<Event> filtered = eventStream
     .filter(evt -> evt.getType().equals("IMPORTANT")
         || evt.getType().equals("START"));
@@ -795,13 +795,13 @@ Pattern<Event, ?> optimized = Pattern
 
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-// 窗口过小：可能错过有效匹配
+// 窗口过小:可能错过有效匹配
 .within(Time.seconds(5))   // 太紧张
 
-// 窗口过大：状态积压，内存压力
+// 窗口过大:状态积压,内存压力
 .within(Time.hours(24))    // 太宽松
 
-// 推荐：基于业务分析确定
+// 推荐:基于业务分析确定
 .within(Time.minutes(30));  // 平衡延迟和内存
 ```
 
@@ -826,7 +826,7 @@ StateTtlConfig ttlConfig = StateTtlConfig
 **优化 4: 模式去重减少 NFA 分支** [^8]
 
 ```java
-// 低效：模糊的后续条件导致 NFA 爆炸
+// 低效:模糊的后续条件导致 NFA 爆炸
 Pattern<Event, ?> inefficient = Pattern
     .<Event>begin("a")
     .where(evt -> evt.getType().equals("A"))
@@ -835,7 +835,7 @@ Pattern<Event, ?> inefficient = Pattern
     .followedBy("c")
     .where(evt -> evt.getValue() > 0);
 
-// 高效：精确的过滤条件
+// 高效:精确的过滤条件
 Pattern<Event, ?> efficient = Pattern
     .<Event>begin("a")
     .where(evt -> evt.getType().equals("A"))

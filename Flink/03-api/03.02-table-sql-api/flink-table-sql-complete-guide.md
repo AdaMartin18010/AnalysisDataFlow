@@ -499,7 +499,7 @@ CREATE FUNCTION analytics.parse_json_path
 #### 6.1.6 ~~CREATE MODEL~~ - 创建 ML 模型（概念设计，尚未支持）
 
 ```sql
-<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+<!-- 以下语法为概念设计,实际 Flink 版本尚未支持 -->
 ~~CREATE MODEL~~ (未来可能的语法)
 
 ```sql
@@ -1717,7 +1717,7 @@ LATERAL TABLE(VECTOR_SEARCH(
 
 ```sql
 -- 创建嵌入模型
-<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+<!-- 以下语法为概念设计,实际 Flink 版本尚未支持 -->
 ~~CREATE MODEL text_embedder~~ (未来可能的语法)
 WITH (
     'provider' = 'openai',

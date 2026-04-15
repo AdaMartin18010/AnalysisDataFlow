@@ -347,8 +347,8 @@ struct OutputData {
 ///
 /// # Iron Functions 处理流程
 /// 1. Flink 将输入记录序列化为 JSON
-/// 2. Extism 运行时调用此函数，传入 JSON 字符串
-/// 3. 函数解析输入，执行解码逻辑
+/// 2. Extism 运行时调用此函数,传入 JSON 字符串
+/// 3. 函数解析输入,执行解码逻辑
 /// 4. 输出序列化为 JSON 返回
 #[plugin_fn]
 pub fn process(input: String) -> FnResult<String> {
@@ -433,7 +433,7 @@ fn decode_log(
 
 /// 从 ABI JSON 解析 Event 定义
 fn parse_event_from_abi(abi: &serde_json::Value) -> Result<Event, String> {
-    // 简化实现：从 ABI 数组中提取第一个 event 类型定义
+    // 简化实现:从 ABI 数组中提取第一个 event 类型定义
     let events = abi.as_array()
         .ok_or("ABI must be an array")?;
 
@@ -542,7 +542,7 @@ mod tests {
 #### 步骤 4: 编译 WASM 模块
 
 ```bash
-# 安装 wasm32 目标（如果尚未安装）
+# 安装 wasm32 目标(如果尚未安装)
 rustup target add wasm32-unknown-unknown
 
 # 编译为 WASM
@@ -555,7 +555,7 @@ ls -la target/wasm32-unknown-unknown/release/ethereum_decoder.wasm
 #### 步骤 5: 打包为 Flink UDF
 
 ```bash
-# 使用 ironfun 打包为 JAR（含 Iron Functions 运行时）
+# 使用 ironfun 打包为 JAR(含 Iron Functions 运行时)
 ironfun package-udf \
     --source-path . \
     --package-name com.demo.ethereum \
@@ -587,7 +587,7 @@ public class EthereumStreamProcessor {
         StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
 
-        // 输入数据源：Ethereum 事件日志
+        // 输入数据源:Ethereum 事件日志
         DataStream<EthLogEvent> sourceStream = env
             .addSource(new EthLogKafkaSource())
             .returns(TypeInformation.of(EthLogEvent.class));
@@ -673,7 +673,7 @@ public class EthereumSqlProcessor {
 
         TableEnvironment tableEnv = TableEnvironment.create(settings);
 
-        // 注册 UDF JAR（在 SQL CLI 中使用 CREATE FUNCTION 语法）
+        // 注册 UDF JAR(在 SQL CLI 中使用 CREATE FUNCTION 语法)
         tableEnv.executeSql("""
             CREATE FUNCTION eth_decode_event
             AS 'com.demo.ethereum.EthEventDecoder'
@@ -681,7 +681,7 @@ public class EthereumSqlProcessor {
             USING JAR 'file:///path/to/EthEventDecoder.jar'
         """);
 
-        // 创建源表（Ethereum 事件日志）
+        // 创建源表(Ethereum 事件日志)
         tableEnv.executeSql("""
             CREATE TABLE eth_logs (
                 abi STRING,
@@ -765,7 +765,7 @@ public class EthereumSqlProcessor {
 use iron_functions_sdk::*;
 use serde::{Deserialize, Serialize};
 
-/// 复杂类型 UDF 示例：地理距离计算
+/// 复杂类型 UDF 示例:地理距离计算
 ///
 /// 演示如何使用 #[flink_type] 注解处理复杂 SQL 类型
 #[flink_input]
@@ -803,7 +803,7 @@ struct GeoOutput {
     #[flink_type("BOOLEAN")]
     success: bool,
 
-    /// 错误信息（如果失败）
+    /// 错误信息(如果失败)
     #[flink_type("STRING")]
     error: Option<String>,
 }
@@ -850,7 +850,7 @@ pub fn calculate_distance(input: String) -> FnResult<String> {
 
 /// Haversine 公式计算地球表面两点距离
 fn haversine_distance(lon1: f64, lat1: f64, lon2: f64, lat2: f64) -> f64 {
-    const R: f64 = 6371000.0; // 地球半径（米）
+    const R: f64 = 6371000.0; // 地球半径(米)
 
     let d_lat = (lat2 - lat1).to_radians();
     let d_lon = (lon2 - lon1).to_radians();
@@ -1092,10 +1092,10 @@ extism-pdk = "0.3"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 
-# 日志（在 WASM 中输出到 Flink 日志）
+# 日志(在 WASM 中输出到 Flink 日志)
 log = "0.4"
 
-# 可选：根据需求添加其他依赖
+# 可选:根据需求添加其他依赖
 # chrono = "0.4"  # 时间处理
 # regex = "1.10"  # 正则表达式
 # hex = "0.4"     # 十六进制编解码
@@ -1112,7 +1112,7 @@ opt-level = 3        # 最大优化
 lto = true           # 链接时优化
 strip = true         # 去除符号
 panic = "abort"      # 更小的二进制
-codegen-units = 1    # 单代码生成单元（更好优化）
+codegen-units = 1    # 单代码生成单元(更好优化)
 ```
 
 ### 目录结构
@@ -1124,7 +1124,7 @@ my-iron-function/
 ├── ironfun.toml          # ironfun CLI 配置文件
 ├── src/
 │   ├── lib.rs            # UDF 实现
-│   └── types.rs          # 类型定义（可选）
+│   └── types.rs          # 类型定义(可选)
 ├── tests/
 │   └── integration_tests.rs
 ├── examples/

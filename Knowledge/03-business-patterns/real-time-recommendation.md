@@ -477,13 +477,13 @@ graph TB
 │                                         │
 │  并行获取:                              │
 │  ├── L1 实时特征 ──────► [Flink State]  │
-│  │   (本地状态，亚毫秒)                  │
+│  │   (本地状态,亚毫秒)                  │
 │  │                                       │
 │  ├── L2 近实时特征 ────► [Redis/HBase]  │
-│  │   (Async I/O，10-50ms)               │
+│  │   (Async I/O,10-50ms)               │
 │  │                                       │
 │  └── L3 离线特征 ──────► [HBase/Cache]  │
-│      (Async I/O，20-100ms)              │
+│      (Async I/O,20-100ms)              │
 │                                         │
 │  特征拼接 ──► [完整特征向量]             │
 └─────────────────────────────────────────┘
@@ -676,7 +676,7 @@ T+0s      用户进入商品 A 详情页 (iPhone 15)
 T+50ms    系统返回初始推荐列表
           └── 基于: 用户画像 + 商品A相似度
 
-T+5s      用户下滑浏览详情，点击「参数对比」
+T+5s      用户下滑浏览详情,点击「参数对比」
           └── 信号: 用户对技术规格感兴趣
 
 T+6s      用户点击商品 B (iPhone 15 Pro)
@@ -686,7 +686,7 @@ T+6.1s    特征更新: 用户偏好 = [高端手机, 技术关注]
 
 T+10s     用户再次请求推荐
           └── 新推荐: iPhone 配件、其他旗舰机
-          └── 相比初始推荐，点击率 +18%
+          └── 相比初始推荐,点击率 +18%
 ```
 
 **实时特征更新效果** [^3]:
@@ -840,7 +840,7 @@ public class AsyncFeatureEnrichment
                 if (json != null) {
                     return JSON.parseObject(json, UserProfile.class);
                 }
-                // Redis 未命中，查询特征服务
+                // Redis 未命中,查询特征服务
                 return featureClient.getUserProfile(userId);
             }
         });

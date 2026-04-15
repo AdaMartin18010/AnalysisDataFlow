@@ -62,13 +62,13 @@ Flink 2.3 提供三层自动扩缩容能力：
 │                    自动扩缩容策略栈                           │
 ├─────────────────────────────────────────────────────────────┤
 │  L1: 作业级 (Adaptive Scheduler 2.0)                        │
-│      └── 算子并行度动态调整，无感知状态迁移                    │
+│      └── 算子并行度动态调整,无感知状态迁移                    │
 ├─────────────────────────────────────────────────────────────┤
 │  L2: Pod 级 (Flink Kubernetes Operator)                     │
 │      └── TaskManager 副本数自动调整                          │
 ├─────────────────────────────────────────────────────────────┤
 │  L3: 节点级 (Cluster Autoscaler)                            │
-│      └── K8s 节点自动扩缩容，处理底层资源                      │
+│      └── K8s 节点自动扩缩容,处理底层资源                      │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -531,7 +531,7 @@ flowchart TD
 NAMESPACE="flink-production"
 DEPLOYMENT="cn-forst-job"
 
-# 模拟 AZ-1 故障：删除该可用区内的所有 TaskManager
+# 模拟 AZ-1 故障:删除该可用区内的所有 TaskManager
 AZ1_NODES=$(kubectl get nodes -l topology.kubernetes.io/zone=az-1 -o jsonpath='{.items[*].metadata.name}')
 
 echo "=== Step 1: 删除 AZ-1 中的 Flink TaskManager Pods ==="

@@ -13,15 +13,15 @@
 ```
 嵌入函数: f: X → ℝᵈ
 
-其中：
-- X: 原始数据空间（文本、图像等）
+其中:
+- X: 原始数据空间(文本、图像等)
 - ℝᵈ: d 维实数向量空间
-- d: 嵌入维度（常见 384, 768, 1024, 1536）
+- d: 嵌入维度(常见 384, 768, 1024, 1536)
 
-语义保持性：
+语义保持性:
 ∀x₁, x₂ ∈ X: semantic_similarity(x₁, x₂) ≈ cosine_similarity(f(x₁), f(x₂))
 
-余弦相似度：
+余弦相似度:
 cosine_similarity(u, v) = (u·v) / (||u|| · ||v||) ∈ [-1, 1]
 ```
 
@@ -43,15 +43,15 @@ cosine_similarity(u, v) = (u·v) / (||u|| · ||v||) ∈ [-1, 1]
 形式化定义：
 
 ```
-给定：
+给定:
 - 向量集合 V = {v₁, v₂, ..., vₙ} ⊂ ℝᵈ
 - 查询向量 q ∈ ℝᵈ
 - 距离度量 d(·, ·): ℝᵈ × ℝᵈ → ℝ⁺
 - 近似因子 c > 1
 - 返回数量 k
 
-(c, k)-ANN 问题：
-返回集合 R ⊆ V, |R| = k，使得：
+(c, k)-ANN 问题:
+返回集合 R ⊆ V, |R| = k,使得:
 ∀v ∈ R, ∀v' ∈ V \ R: d(q, v) ≤ c · d(q, v'')
 
 其中 v'' 是真实第 k 近邻
@@ -74,19 +74,19 @@ cosine_similarity(u, v) = (u·v) / (||u|| · ||v||) ∈ [-1, 1]
 ```rust
 /// 实时向量索引接口
 trait RealtimeVectorIndex {
-    /// 插入向量，返回内部 ID
+    /// 插入向量,返回内部 ID
     fn insert(&mut self, id: String, vector: &[f32], metadata: Metadata) -> Result<IndexId>;
 
     /// 删除向量
     fn delete(&mut self, id: &str) -> Result<()>;
 
-    /// 更新向量（删除+插入原子操作）
+    /// 更新向量(删除+插入原子操作)
     fn update(&mut self, id: &str, vector: &[f32]) -> Result<()>;
 
     /// 近似最近邻搜索
     fn search(&self, query: &[f32], k: usize, filter: Option<Filter>) -> Result<Vec<SearchResult>>;
 
-    /// 批量插入（优化写入吞吐）
+    /// 批量插入(优化写入吞吐)
     fn insert_batch(&mut self, items: Vec<(String, Vec<f32>, Metadata)>) -> Result<Vec<IndexId>>;
 
     /// 获取索引统计
@@ -117,12 +117,12 @@ struct LatencySla {
 ```
 向量数据库 = (Storage, Index, Query Engine, Metadata Store)
 
-核心能力：
-1. 向量存储：高效压缩存储十亿级向量
-2. 多维索引：支持多种 ANN 算法
-3. 混合查询：向量相似度 + 标量过滤
-4. 分布式：水平扩展支持
-5. 实时性：增量更新低延迟
+核心能力:
+1. 向量存储:高效压缩存储十亿级向量
+2. 多维索引:支持多种 ANN 算法
+3. 混合查询:向量相似度 + 标量过滤
+4. 分布式:水平扩展支持
+5. 实时性:增量更新低延迟
 ```
 
 **主流 Vector DB 对比**：
@@ -149,20 +149,20 @@ struct LatencySla {
 **形式化表述**：
 
 ```
-设：
+设:
 - ef: HNSW 算法的搜索深度参数
 - nprobe: IVF 算法的聚类探测数
 - k: 返回结果数
 
-召回率估计：
+召回率估计:
 Recall(ef) ≈ 1 - exp(-α · ef / k)  其中 α 为数据集相关常数
 
-查询延迟：
+查询延迟:
 Latency(ef) = T_base + β · ef  其中 β 为每步搜索耗时
 
-权衡曲线：
+权衡曲线:
 Recall ↑ → Latency ↑
-存在帕累托最优前沿，可根据 SLA 需求选择操作点
+存在帕累托最优前沿,可根据 SLA 需求选择操作点
 ```
 
 **参数调优指导**：
@@ -181,20 +181,20 @@ Recall ↑ → Latency ↑
 **形式化分析**：
 
 ```
-系统模型：
+系统模型:
 - 写操作流: W = {w₁, w₂, w₃, ...}
 - 读操作流: R = {r₁, r₂, r₃, ...}
 - 全局时钟: t
 
-强一致性要求：
+强一致性要求:
 ∀r at time t: r observes all w where time(w) < t
 
-最终一致性要求：
+最终一致性要求:
 ∃T: ∀t > T, ∀r at time t: r observes all w where time(w) < t - Δ
 
-权衡：
-- 强一致：更新可见延迟 = 0，但吞吐受限
-- 最终一致：更新可见延迟 ≤ Δ，但支持高并发
+权衡:
+- 强一致:更新可见延迟 = 0,但吞吐受限
+- 最终一致:更新可见延迟 ≤ Δ,但支持高并发
 
 推荐 Δ ≤ 1s 用于实时应用场景
 ```
@@ -376,7 +376,7 @@ Recall ↑ → Latency ↑
 ```
 贪婪搜索每层最多访问 O(log n) 个节点
 总层数: O(log n)
-总复杂度: O(log² n) ≈ O(log n) （实际中常数很小）
+总复杂度: O(log² n) ≈ O(log n) (实际中常数很小)
 ```
 
 **存储复杂度**：
@@ -434,7 +434,7 @@ impl HnswConfig {
 ```rust
 /// 流式向量索引架构
 struct StreamingVectorIndex {
-    // 主索引（内存）
+    // 主索引(内存)
     primary_index: Arc<RwLock<HnswIndex>>,
 
     // 写前日志 (WAL)
@@ -467,7 +467,7 @@ impl StreamingVectorIndex {
         Ok(())
     }
 
-    /// 搜索（可能读取到稍旧的数据）
+    /// 搜索(可能读取到稍旧的数据)
     async fn search(&self, query: &[f32], k: usize) -> Result<Vec<SearchResult>> {
         let index = self.primary_index.read().await;
         index.search(query, k)
@@ -564,7 +564,7 @@ impl MilvusVectorStore {
         Ok(())
     }
 
-    /// 插入向量（支持批量）
+    /// 插入向量(支持批量)
     pub async fn insert_vectors(
         &self,
         documents: Vec<DocumentVector>,
@@ -1020,11 +1020,11 @@ impl AdaptiveIndexOptimizer {
         let mut config = self.config.write().await;
 
         if p99_latency > 100.0 && recall > 0.95 {
-            // 延迟过高且召回率有余量，降低搜索深度
+            // 延迟过高且召回率有余量,降低搜索深度
             config.ef_search = (config.ef_search * 0.8).max(32) as usize;
             tracing::info!("Reduced ef_search to {}", config.ef_search);
         } else if recall < 0.90 {
-            // 召回率不足，增加搜索深度
+            // 召回率不足,增加搜索深度
             config.ef_search = (config.ef_search * 1.2).min(512) as usize;
             tracing::info!("Increased ef_search to {}", config.ef_search);
         }

@@ -379,7 +379,7 @@ pub struct EdgeSensorProcessor {
     buffer: VecDeque<SensorReading>,
     /// 最大缓冲区大小
     max_buffer_size: usize,
-    /// 聚合窗口（毫秒）
+    /// 聚合窗口(毫秒)
     window_ms: u64,
     /// 最后聚合时间
     last_aggregate: AtomicU64,
@@ -427,10 +427,10 @@ impl GuestProcessor for EdgeSensorProcessor {
         let reading: SensorReading = serde_json::from_slice(&data)
             .map_err(|e| format!("Failed to parse sensor data: {}", e))?;
 
-        // 实时异常检测（轻量级）
+        // 实时异常检测(轻量级)
         let anomaly_score = self.detect_anomaly(&reading);
 
-        // 如果异常分数超过阈值，立即发送到云端
+        // 如果异常分数超过阈值,立即发送到云端
         if anomaly_score > self.filter_threshold {
             self.send_alert(&reading, anomaly_score).await?;
         }
@@ -711,7 +711,7 @@ wasm-metadce \
     -o "${OUTPUT_WASM}.dce" \
     "${OUTPUT_WASM}.opt"
 
-# 3. AOT 编译（WasmEdge）
+# 3. AOT 编译(WasmEdge)
 echo "Step 3: AOT compilation"
 wasmedge compile \
     --optimize 3 \

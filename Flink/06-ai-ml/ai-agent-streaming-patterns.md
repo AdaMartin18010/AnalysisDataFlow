@@ -415,7 +415,7 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 /**
  * 单Agent事件驱动ProcessFunction
  *
- * 功能: 独立处理每个key的事件，维护Agent状态
+ * 功能: 独立处理每个key的事件,维护Agent状态
  * 特点:
  * 1. 每个key对应一个Agent实例
  * 2. 状态持久化到Flink State Backend
@@ -838,7 +838,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  * 多Agent流水线编排
  *
  * 架构: Agent1 -> Agent2 -> Agent3
- * 模式: 每个Agent处理特定任务，结果传递给下一个
+ * 模式: 每个Agent处理特定任务,结果传递给下一个
  */
 public class MultiAgentPipeline {
 
@@ -1183,7 +1183,7 @@ class RemediationAgent
                 ctx.timestamp()
             );
         } else {
-            // 生成建议，人工确认
+            // 生成建议,人工确认
             String suggestion = llm.generateRemediationSuggestion(analysis);
             action = new RemediationAction(
                 analysis.getService(),

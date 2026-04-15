@@ -1507,7 +1507,7 @@ graph TB
 └─────────────────────────────────────────────────────────────┘
 
 Checkpoint机制:
-1. 同步阶段: 暂停状态写入，复制内存引用
+1. 同步阶段: 暂停状态写入,复制内存引用
 2. 异步阶段: 序列化状态到分布式存储
 3. 增量: 支持基于RocksDB的增量Checkpoint (需配置)
 ```
@@ -1680,7 +1680,7 @@ StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
 // 1. 低延迟配置
-env.setBufferTimeout(0); // 立即发送，减少延迟
+env.setBufferTimeout(0); // 立即发送,减少延迟
 env.getConfig().setAutoWatermarkInterval(50); // 50ms Watermark
 
 // 2. 精确一次配置
@@ -1689,7 +1689,7 @@ env.getCheckpointConfig().setCheckpointingMode(
     CheckpointingMode.EXACTLY_ONCE);
 env.getCheckpointConfig().setMinPauseBetweenCheckpoints(1000);
 
-// 3. 状态后端配置 (小状态，低延迟)
+// 3. 状态后端配置 (小状态,低延迟)
 env.setStateBackend(new HashMapStateBackend());
 env.getCheckpointConfig().setCheckpointStorage("file:///checkpoints");
 
@@ -1708,7 +1708,7 @@ StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
 // 1. 吞吐优化
-env.setBufferTimeout(100); // 100ms缓冲，提高吞吐
+env.setBufferTimeout(100); // 100ms缓冲,提高吞吐
 env.getConfig().setParallelism(100); // 高并行度
 
 // 2. 大状态配置

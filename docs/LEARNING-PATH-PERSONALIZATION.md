@@ -192,15 +192,15 @@ class LearningProgress:
 
 ```python
 def adapt_path(progress: LearningProgress) -> LearningPath:
-    # 如果进度落后，简化路径
+    # 如果进度落后,简化路径
     if is_behind_schedule(progress):
         return simplify_path(progress.path, factor=0.8)
 
-    # 如果进度超前，增加进阶内容
+    # 如果进度超前,增加进阶内容
     if is_ahead_of_schedule(progress):
         return enrich_path(progress.path, advanced_content=True)
 
-    # 如果某个主题困难，增加辅助材料
+    # 如果某个主题困难,增加辅助材料
     for item in progress.struggling_items:
         add_prerequisite_material(progress.path, item)
 
@@ -228,7 +228,7 @@ class CommunityInsight:
 
 ```python
 def get_trending_paths(time_window: str = "30d") -> List[LearningPath]:
-    # 分析社区数据，找出最受欢迎的路径
+    # 分析社区数据,找出最受欢迎的路径
     path_popularity = {}
 
     for feedback in get_recent_feedback(time_window):
@@ -309,7 +309,7 @@ async def get_personalized_recommendations(
     user_id: str,
     context: RecommendationContext
 ) -> RecommendationResponse:
-    """获取个性化推荐（增强版）"""
+    """获取个性化推荐(增强版)"""
 
     # 获取用户画像
     profile = await get_enhanced_profile(user_id)

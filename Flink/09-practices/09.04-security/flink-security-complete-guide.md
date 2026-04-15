@@ -208,13 +208,13 @@ $$\text{KeyLifecycle} = (G, D, S, R, A, U, E)$$
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  L0: 根密钥 (Root Key) - HSM 保护，永不离开硬件              │
+│  L0: 根密钥 (Root Key) - HSM 保护,永不离开硬件              │
 ├─────────────────────────────────────────────────────────────┤
 │  L1: 密钥加密密钥 (KEK) - 用于加密其他密钥                   │
 ├─────────────────────────────────────────────────────────────┤
 │  L2: 数据加密密钥 (DEK) - 用于加密实际数据                   │
 ├─────────────────────────────────────────────────────────────┤
-│  L3: 会话密钥 (Session Key) - 临时使用，用完即弃             │
+│  L3: 会话密钥 (Session Key) - 临时使用,用完即弃             │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -631,7 +631,7 @@ roleRef:
   name: flink-job-role
   apiGroup: rbac.authorization.k8s.io
 ---
-# ClusterRole - 用于跨命名空间资源（如节点信息）
+# ClusterRole - 用于跨命名空间资源(如节点信息)
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata: 
@@ -690,7 +690,7 @@ security.ssl.certificate.update-interval: 24h
 ```
 
 ```bash
-# 生成自签名证书（测试环境）
+# 生成自签名证书(测试环境)
 #!/bin/bash
 set -e
 
@@ -949,7 +949,7 @@ public class VaultIntegration {
 
             currentKey = response.getData().get("key").toString();
 
-            // 设置过期时间（租约期的 80%）
+            // 设置过期时间(租约期的 80%)
             Integer leaseDuration = (Integer) response.getData().get("lease_duration");
             keyExpiry = System.currentTimeMillis() + (leaseDuration * 800);
 
@@ -1054,7 +1054,7 @@ public class FlinkAuditLogger {
         }
 
         private String hashInput(Object input) {
-            // 计算输入数据的哈希值（用于完整性验证）
+            // 计算输入数据的哈希值(用于完整性验证)
             return Integer.toHexString(input.hashCode());
         }
 

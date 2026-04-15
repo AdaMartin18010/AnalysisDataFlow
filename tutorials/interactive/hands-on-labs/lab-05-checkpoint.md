@@ -46,7 +46,7 @@ public class CheckpointExample {
         StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
 
-        // 启用 Checkpoint，每10秒触发一次
+        // 启用 Checkpoint,每10秒触发一次
         env.enableCheckpointing(10000);
 
         // Checkpoint 模式
@@ -63,7 +63,7 @@ public class CheckpointExample {
         // 两个 Checkpoint 之间的最小间隔
         env.getCheckpointConfig().setMinPauseBetweenCheckpoints(5000);
 
-        // 外部化 Checkpoint（作业取消后保留）
+        // 外部化 Checkpoint(作业取消后保留)
         env.getCheckpointConfig().setExternalizedCheckpointCleanup(
             CheckpointConfig.ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION
         );
@@ -84,6 +84,7 @@ public class CheckpointExample {
 ### 步骤 2: 状态后端配置
 
 ```java
+// 伪代码示意,非完整可编译代码
 import org.apache.flink.contrib.streaming.state.RocksDBStateBackend;
 import org.apache.flink.runtime.state.filesystem.FsStateBackend;
 import org.apache.flink.runtime.state.memory.MemoryStateBackend;
@@ -96,9 +97,9 @@ public class StateBackendConfig {
     public static void configureStateBackend(StreamExecutionEnvironment env, String type) {
         switch (type) {
             case "memory":
-                // 内存状态后端（仅测试）
-                env.setStateBackend(new HashMapStateBackend()  // MemoryStateBackend已弃用，使用HashMapStateBackend
-// 
+                // 内存状态后端(仅测试)
+                env.setStateBackend(new HashMapStateBackend()  // MemoryStateBackend已弃用,使用HashMapStateBackend
+//
                     5242880,  // 最大状态大小 5MB
                     true       // 异步快照
                 ));
@@ -113,7 +114,7 @@ public class StateBackendConfig {
                 break;
 
             case "rocksdb":
-                // RocksDB 状态后端（推荐生产环境）
+                // RocksDB 状态后端(推荐生产环境)
                 env.setStateBackend(new RocksDBStateBackend(
                     "hdfs://namenode:8020/flink/checkpoints",
                     true  // 增量 Checkpoint
@@ -226,7 +227,7 @@ public class SavepointTrigger {
 
 ### 监控 Checkpoint
 
-通过 Flink Web UI (<http://localhost:8081>) 查看：
+通过 Flink Web UI (`http://localhost:8081`) 查看：
 
 - Checkpoint 历史
 - 每次 Checkpoint 的时长
@@ -319,7 +320,7 @@ FlinkKafkaProducer<String> kafkaSink = new FlinkKafkaProducer<>(
     FlinkKafkaProducer.Semantic.EXACTLY_ONCE  // 启用事务
 );
 
-// 事务超时配置（必须大于 Checkpoint 间隔）
+// 事务超时配置(必须大于 Checkpoint 间隔)
 properties.setProperty("transaction.timeout.ms", "900000");
 ```
 
@@ -344,7 +345,7 @@ env.getCheckpointConfig().setMinPauseBetweenCheckpoints(30000);
 // 异步快照
 env.setStateBackend(new RocksDBStateBackend(path, true));
 
-// 未对齐 Checkpoint（低延迟场景）
+// 未对齐 Checkpoint(低延迟场景)
 env.getCheckpointConfig().enableUnalignedCheckpoints();
 env.getCheckpointConfig().setAlignmentTimeout(Duration.ofSeconds(30));
 ```

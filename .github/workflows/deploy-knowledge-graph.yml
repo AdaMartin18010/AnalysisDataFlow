@@ -30,6 +30,16 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
+      - name: Cache static assets
+        uses: actions/cache@v4
+        with:
+          path: |
+            KNOWLEDGE-GRAPH/data
+            KNOWLEDGE-GRAPH/.vscode
+          key: kg-static-${{ runner.os }}-${{ hashFiles('KNOWLEDGE-GRAPH/**') }}
+          restore-keys: |
+            kg-static-${{ runner.os }}-
+
       - name: Build sitemap and robots
         run: |
           echo "Building Knowledge Graph assets..."
@@ -43,3 +53,13 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Run Lighthouse CI
+        if: steps.deployment.outputs.page_url != ''
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          urls: |
+            ${{ steps.deployment.outputs.page_url }}
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+        continue-on-error: true

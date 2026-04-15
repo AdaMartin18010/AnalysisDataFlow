@@ -47,6 +47,7 @@ docker run -d \
 **预期输出：**
 
 ```
+# 伪代码示意，非完整可编译代码
 Unable to find image 'apache/flink:1.18.0-scala_2.12-java11' locally
 1.18.0-scala_2.12-java11: Pulling from apache/flink
 ...
@@ -130,7 +131,7 @@ CREATE TABLE user_events (
 运行查询：
 
 ```sql
--- 按事件类型统计（持续10秒后按 Ctrl+C 停止）
+-- 按事件类型统计(持续10秒后按 Ctrl+C 停止)
 SELECT event_type, COUNT(*) as cnt
 FROM user_events
 GROUP BY event_type;
@@ -230,7 +231,7 @@ cd flink-1.18.0
 # 下载 Flink 1.18.0
 Invoke-WebRequest -Uri https://archive.apache.org/dist/flink/flink-1.18.0/flink-1.18.0-bin-scala_2.12.tgz -OutFile flink-1.18.0-bin-scala_2.12.tgz
 
-# 解压（需要 tar，或安装 7-Zip）
+# 解压(需要 tar,或安装 7-Zip)
 tar -xzf flink-1.18.0-bin-scala_2.12.tgz
 cd flink-1.18.0
 ```
@@ -447,7 +448,7 @@ java.net.BindException: Address already in use: bind
 **诊断：**
 
 ```bash
-# 检查 8081 端口占用（macOS/Linux）
+# 检查 8081 端口占用(macOS/Linux)
 lsof -i :8081
 
 # Windows
@@ -457,17 +458,17 @@ netstat -ano | findstr :8081
 **解决方案：**
 
 ```bash
-# 方法 1：修改 Flink 配置
+# 方法 1:修改 Flink 配置
 echo "rest.port: 8082" >> conf/flink-conf.yaml
 
-# 方法 2：终止占用进程
+# 方法 2:终止占用进程
 # macOS/Linux
 kill -9 <PID>
 
 # Windows
 taskkill /PID <PID> /F
 
-# 方法 3：Docker 用户指定其他端口
+# 方法 3:Docker 用户指定其他端口
 docker run -p 8082:8081 apache/flink:1.18.0-scala_2.12-java11 jobmanager
 ```
 
@@ -494,7 +495,7 @@ grep "taskmanager.memory" conf/flink-conf.yaml
 编辑 `conf/flink-conf.yaml`：
 
 ```yaml
-# 减少内存配置（适合开发环境）
+# 减少内存配置(适合开发环境)
 jobmanager.memory.process.size: 512m
 taskmanager.memory.process.size: 1024m
 taskmanager.numberOfTaskSlots: 1
@@ -517,6 +518,7 @@ set FLINK_ENV_JAVA_OPTS=-Xmx512m
 **症状：**
 
 ```
+# 伪代码示意，非完整可编译代码
 ClassNotFoundException: org.apache.flink...
 ```
 
@@ -575,6 +577,7 @@ chmod +x bin/*.sh
 **症状：**
 
 ```
+# 伪代码示意，非完整可编译代码
 Error: Could not find or load main class org.apache.flink...
 ```
 
@@ -719,7 +722,7 @@ flowchart TD
 
 - [ ] Docker 已安装并能正常运行
 - [ ] Flink 容器成功启动
-- [ ] Web UI 可访问 (<http://localhost:8081>)
+- [ ] Web UI 可访问 (`http://localhost:8081`)
 - [ ] SQL 查询成功执行
 - [ ] 资源已清理（容器已删除）
 

@@ -1,8 +1,10 @@
 # Flink Agents 架构深度解析
 
-> **状态**: 前瞻 | **预计发布时间**: 2026-06 | **最后更新**: 2026-04-12
+> **状态**: ✅ Released (2026-02-06, Flink Agents 0.2.0)
+> **Flink 版本**: Flink Agents 0.2.0+
+> **稳定性**: GA (Generally Available)
 >
-> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+> Apache Flink Agents 0.2.0 已于 2026-02-06 正式发布，新增 Embedding Models、Vector Stores、Java 异步执行等能力[^1]。
 
 > **所属阶段**: Flink/06-ai-ml | **前置依赖**: [FLIP-531 AI Agents](flink-agents-flip-531.md), [Flink MCP集成](flink-agents-mcp-integration.md) | **形式化等级**: L4-L5
 
@@ -93,6 +95,29 @@ $$
 - $\mathcal{T}_{RPO}$: 恢复点目标 (Recovery Point Objective)
 
 ### Def-P2-05: Agent Scaling Model
+
+### Def-P2-06: Embedding Models & Vector Stores (Agents 0.2.0)
+
+**Embedding Models** 是 Flink Agents 0.2.0 引入的内置文本/图像嵌入能力，支持将原始数据转换为向量表示并存储到 Vector Store 中[^1]。
+
+$$
+\mathcal{E}_{model}: \mathcal{X} \rightarrow \mathbb{R}^d
+$$
+
+**Vector Stores** 提供向量的持久化存储与近邻检索接口：
+
+$$
+\mathcal{V}_{store} = \langle \mathcal{D}_{vectors}, \text{index}, \text{search}_k \rangle
+$$
+
+**Agents 0.2.0 内置能力矩阵：**
+
+| 组件 | 支持模型/存储 | 说明 |
+|------|--------------|------|
+| Embedding Models | OpenAI text-embedding-3-small, sentence-transformers/all-MiniLM | 文本嵌入 |
+| Vector Stores | In-memory HNSW, Milvus, Pinecone | 向量检索 |
+| Async Execution | Java CompletableFuture, Python asyncio | 异步推理 |
+| MCP Server | 内置 MCP Server 实现 | 对外暴露 Flink 数据 |
 
 Agent 动态扩缩容模型：
 
@@ -653,7 +678,7 @@ class AgentLifecycleController:
         # 先暂停
         await self.suspend_agent(agent_id)
 
-        # 执行扩缩容（Flink 自动处理状态重分布）
+        # 执行扩缩容(Flink 自动处理状态重分布)
         await self.state_manager.rescale(agent_id, new_parallelism)
 
         # 恢复
@@ -866,3 +891,5 @@ sequenceDiagram
 ---
 
 ## 8. 引用参考 (References)
+
+[^1]: Apache Flink Blog, "Apache Flink Agents 0.2.0 Release Announcement", February 6, 2026. https://flink.apache.org/2026/02/06/apache-flink-agents-0.2.0-release-announcement/

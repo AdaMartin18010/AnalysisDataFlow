@@ -612,7 +612,7 @@ Flink 的三层图转换保持了 Dataflow 图的形式语义：
 // StreamGraph: 逻辑层 Dataflow 图
 StreamGraph streamGraph = env.getStreamGraph();
 
-// JobGraph: 合并可链化算子，保持语义等价
+// JobGraph: 合并可链化算子,保持语义等价
 JobGraph jobGraph = streamGraph.getJobGraph();
 
 // ExecutionGraph: 展开并行实例
@@ -634,7 +634,7 @@ ExecutionGraph executionGraph = scheduler.createExecutionGraph(jobGraph);
 Flink 的 Checkpoint 机制实现了 Dataflow 确定性定理的工程保证：
 
 ```java
-// Checkpoint 触发，捕获确定的状态快照
+// Checkpoint 触发,捕获确定的状态快照
 CheckpointCoordinator.triggerCheckpoint(timestamp);
 
 // 状态后端保证状态持久化
@@ -646,7 +646,7 @@ KeyedStateBackend.snapshot(checkpointId, timestamp);
 算子链化是组合确定性的典型应用：
 
 ```java
-// 逻辑上独立的算子在物理上链化执行，保持语义
+// 逻辑上独立的算子在物理上链化执行,保持语义
 env.addSource(source)
     .map(mapFunction)      // 链化为一个任务
     .filter(filterFunction) // 仍保持确定性
@@ -660,7 +660,7 @@ env.addSource(source)
 流计算确定性定理在 Flink 中的完整实现：
 
 ```java
-// 纯函数性：UDF 实现
+// 纯函数性:UDF 实现
 
 import org.apache.flink.api.common.state.ValueState;
 
@@ -672,7 +672,7 @@ class PureMapFunction extends RichMapFunction<Event, Result> {
     }
 }
 
-// FIFO 通道：网络层保证
+// FIFO 通道:网络层保证
 // Netty 的 TCP 连接保证单分区 FIFO
 
 // 事件时间处理
@@ -681,7 +681,7 @@ stream.assignTimestampsAndWatermarks(
         .withTimestampAssigner((event, timestamp) -> event.getEventTime())
 );
 
-// 无共享状态：KeyedProcessFunction
+// 无共享状态:KeyedProcessFunction
 stream.keyBy(Event::getKey)
     .process(new KeyedProcessFunction<String, Event, Result>() {
         private ValueState<State> state;

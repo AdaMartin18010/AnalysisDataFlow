@@ -99,7 +99,7 @@ public class ResultPartition implements ResultPartitionWriter {
         boolean written = bufferBuilder.append(record);
 
         if (!written) {
-            // 缓冲区已满，触发刷新
+            // 缓冲区已满,触发刷新
             bufferBuilder.finish();
             bufferBuilder = requestNewBufferBuilder(targetSubpartition);
 
@@ -122,7 +122,7 @@ public class ResultPartition implements ResultPartitionWriter {
             subpartitions[targetSubpartition].requestBufferBuilder();
 
         if (bufferBuilder == null) {
-            // 缓冲区不足，触发反压
+            // 缓冲区不足,触发反压
             throw new InsufficientNumberOfBuffersException();
         }
 
@@ -202,7 +202,7 @@ public class PipelinedSubpartition extends ResultSubpartition {
             totalNumberOfBuffers++;
             totalNumberOfBytes += bufferConsumer.getWritableBytes();
 
-            // 如果有读视图，通知有数据可读
+            // 如果有读视图,通知有数据可读
             if (readView != null) {
                 readView.notifyDataAvailable();
             }
@@ -218,7 +218,7 @@ public class PipelinedSubpartition extends ResultSubpartition {
         synchronized (buffers) {
             // 检查 Credit
             if (credits <= 0 && !isFinished) {
-                // 无可用 Credit，返回空
+                // 无可用 Credit,返回空
                 return null;
             }
 
@@ -433,7 +433,7 @@ public class RemoteInputChannel extends InputChannel {
         synchronized (receivedBuffers) {
             // 验证序列号
             if (sequenceNumber != expectedSequenceNumber) {
-                // 序列号不匹配，可能需要重排序
+                // 序列号不匹配,可能需要重排序
                 handleSequenceNumberMismatch(sequenceNumber);
             }
 
@@ -497,7 +497,7 @@ public class RemoteInputChannel extends InputChannel {
     void addCredit(int credit) {
         availableCredit.addAndGet(credit);
 
-        // 如果有挂起的数据请求，立即发送 Credit
+        // 如果有挂起的数据请求,立即发送 Credit
         if (partitionRequestClient != null) {
             sendCreditAnnouncement();
         }
@@ -563,7 +563,7 @@ sequenceDiagram
         Consumer->>BufferMgr: store(buffer)
     end
 
-    Note over Consumer,Producer: Credit 耗尽，暂停发送
+    Note over Consumer,Producer: Credit 耗尽,暂停发送
 
     Consumer->>Consumer: processBuffer()
     Consumer->>BufferMgr: recycle(buffer)
@@ -632,7 +632,7 @@ public class CreditBasedFlowControl {
         // 初始 Credit 数量
         private static final int INITIAL_CREDIT = 2;
 
-        // 信用度阈值，低于此值时申请更多
+        // 信用度阈值,低于此值时申请更多
         private static final int CREDIT_THRESHOLD = 1;
 
         /**
@@ -668,12 +668,12 @@ public class CreditBasedFlowControl {
                 int currentCredit,
                 int backlog) {
 
-            // 如果积压大于 Credit，申请更多
+            // 如果积压大于 Credit,申请更多
             if (backlog > currentCredit) {
                 return Math.min(backlog - currentCredit, MAX_CREDIT_PER_REQUEST);
             }
 
-            // 如果 Credit 低于阈值，补充到初始值
+            // 如果 Credit 低于阈值,补充到初始值
             if (currentCredit < CREDIT_THRESHOLD) {
                 return INITIAL_CREDIT - currentCredit;
             }
@@ -713,14 +713,14 @@ public class RecordSerializer {
         boolean written = bufferBuilder.append(serialized);
 
         if (!written) {
-            // 当前缓冲区已满，完成并请求新的
+            // 当前缓冲区已满,完成并请求新的
             bufferBuilder.finish();
             bufferBuilder = requestNewBufferBuilder();
 
             // 重试写入
             written = bufferBuilder.append(serialized);
             if (!written) {
-                // 记录太大，需要跨缓冲区
+                // 记录太大,需要跨缓冲区
                 return handleLargeRecord(serialized);
             }
 
@@ -730,7 +730,7 @@ public class RecordSerializer {
         if (!serialized.hasRemaining()) {
             return SerializationResult.FULL_RECORD;
         } else {
-            // 部分写入，需要更多缓冲区
+            // 部分写入,需要更多缓冲区
             return SerializationResult.PARTIAL_RECORD;
         }
     }
@@ -785,7 +785,7 @@ public class RecordDeserializer {
             target.read(deserializer);
             return DeserializationResult.FULL_RECORD;
         } else {
-            // 记录跨缓冲区，启动跨缓冲区模式
+            // 记录跨缓冲区,启动跨缓冲区模式
             spanningWrapper.start(recordLength, segment, offset + Integer.BYTES);
             return DeserializationResult.PARTIAL_RECORD;
         }
@@ -824,7 +824,7 @@ public class CreditBasedBackPressure {
             sendBuffer();
             credit--;
         } else {
-            // 缓冲数据，等待 Credit
+            // 缓冲数据,等待 Credit
             bufferData();
         }
     }

@@ -287,7 +287,7 @@ class LocalBufferPool implements BufferPool {
             }
         }
 
-        // 3. 无法获取，返回null (触发反压)
+        // 3. 无法获取,返回null (触发反压)
         return null;
     }
 
@@ -433,7 +433,7 @@ public class NetworkOptions {
             .intType()
             .defaultValue(32768);
 
-    // Buffer数 (已废弃，推荐用fraction)
+    // Buffer数 (已废弃,推荐用fraction)
     public static final ConfigOption<Integer> NETWORK_NUM_BUFFERS =
         key("taskmanager.network.numberOfBuffers")
             .intType()
@@ -534,7 +534,7 @@ private MemorySegment requestMemorySegmentInternal() {
         // 尝试从全局借
         segment = networkBufferPool.requestMemorySegment();
     }
-    // segment仍为null，返回null触发上游等待
+    // segment仍为null,返回null触发上游等待
     return segment;
 }
 ```
@@ -1102,12 +1102,12 @@ public class MemorySegmentDemo {
         // ========== 堆外内存 ==========
         MemorySegment offHeapSegment = MemorySegmentFactory.allocateOffHeapUnsafeMemory(32 * 1024);
 
-        // 同样API，底层使用Unsafe
+        // 同样API,底层使用Unsafe
         offHeapSegment.putInt(0, 100);
         offHeapSegment.putDouble(8, 3.14159);
 
         // 获取堆外地址 (Unsafe操作)
-        // address字段可通过反射获取，用于JNI传递
+        // address字段可通过反射获取,用于JNI传递
 
         // 必须手动释放堆外内存
         offHeapSegment.free();
@@ -1133,7 +1133,7 @@ taskmanager.memory.network.max: 512mb
 # Buffer大小 (默认32KB)
 taskmanager.network.memory.buffer-size: 32768
 
-# 内存类型 (OFF_HEAP推荐，HEAP用于调试)
+# 内存类型 (OFF_HEAP推荐,HEAP用于调试)
 taskmanager.network.memory.type: OFF_HEAP
 
 # 批处理请求优化
@@ -1165,7 +1165,7 @@ public class SortOperator {
         this.sortSegments = memoryManager.allocatePages(owner, numPages);
 
         // 使用内存页进行排序
-        // 每个page 32KB，共3.2MB
+        // 每个page 32KB,共3.2MB
     }
 
     public void close() throws Exception {
@@ -1201,7 +1201,7 @@ public class BufferPoolDemo {
             100       // 预分配全部
         );
 
-        // 创建本地池: 必需10个，最大50个
+        // 创建本地池: 必需10个,最大50个
         BufferPool localPool = globalPool.createBufferPool(
             10,   // required
             50,   // max
@@ -1220,13 +1220,13 @@ public class BufferPoolDemo {
                 buffers.add(buf);
             }
         }
-        // 本地持有15个，全局剩余85个
+        // 本地持有15个,全局剩余85个
 
         // 释放5个
         for (int i = 0; i < 5; i++) {
             buffers.get(i).recycle();
         }
-        // 本地保留10个(回到required)，归还5个到全局
+        // 本地保留10个(回到required),归还5个到全局
 
         // 销毁池
         localPool.lazyDestroy();
@@ -1247,7 +1247,7 @@ public class BufferPoolDemo {
  taskmanager.memory.process.size: 8192mb
 
 # ========== 网络内存调优 ==========
-# 增大网络内存，减少反压
+# 增大网络内存,减少反压
 taskmanager.memory.network.fraction: 0.2
 taskmanager.memory.network.min: 512mb
 taskmanager.memory.network.max: 1024mb

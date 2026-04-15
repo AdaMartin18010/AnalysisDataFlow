@@ -631,7 +631,7 @@ public class QualityPipeline {
                 .name("Field Validation")
                 .uid("field-validation");
 
-        // 3. 记录级验证（跨字段规则）
+        // 3. 记录级验证(跨字段规则)
         SingleOutputStreamOperator<OrderEvent> recordValidated =
             fieldValidated
                 .process(new QualityCheckOperator<>(
@@ -641,7 +641,7 @@ public class QualityPipeline {
                 .name("Record Validation")
                 .uid("record-validation");
 
-        // 4. 窗口级验证（聚合规则）
+        // 4. 窗口级验证(聚合规则)
         SingleOutputStreamOperator<OrderEvent> windowValidated =
             recordValidated
                 .keyBy(OrderEvent::getMerchantId)

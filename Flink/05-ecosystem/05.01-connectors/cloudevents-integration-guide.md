@@ -144,7 +144,7 @@ $$\mathcal{P} = \{\text{HTTP}, \text{Kafka}, \text{MQTT}, \text{NATS}, \text{AMQ
 |-------------|-----|
 | `ce-specversion` | 1.0 |
 | `ce-type` | com.example.order.created |
-| `ce-source` | <https://order-service.example.com/orders> |
+| `ce-source` | `https://order-service.example.com/orders` |
 | `ce-id` | 550e8400-e29b-41d4-a716-446655440000 |
 | `ce-time` | 2024-01-15T10:30:00Z |
 | `Content-Type` | application/json |
@@ -870,12 +870,12 @@ public class CloudEventsKafkaSource {
     @Override
     public void deserialize(ConsumerRecord<byte[], byte[]> record,
                            Collector<CloudEvent> out) {
-      // 尝试二进制模式（Headers）
+      // 尝试二进制模式(Headers)
       Headers headers = record.headers();
       if (hasCloudEventsHeaders(headers)) {
         out.collect(deserializer.deserialize(record.topic(), headers, record.value()));
       } else {
-        // 结构化模式（JSON in value）
+        // 结构化模式(JSON in value)
         out.collect(deserializer.deserialize(record.topic(), record.value()));
       }
     }
@@ -1014,7 +1014,7 @@ public class CloudEventsKafkaSink {
         timestamp,       // timestamp
         event.getId().getBytes(StandardCharsets.UTF_8),  // key (使用 event id)
         value,           // value
-        null             // headers (在结构化模式中，元数据在 value 中)
+        null             // headers (在结构化模式中,元数据在 value 中)
       );
     }
 
@@ -1257,7 +1257,7 @@ public class CloudEventTransformations {
   }
 
   /**
-   * CloudEvents 富化处理器：添加扩展属性
+   * CloudEvents 富化处理器:添加扩展属性
    */
   public static class CloudEventEnricher
       extends ProcessFunction<CloudEvent, CloudEvent> {
@@ -1287,7 +1287,7 @@ public class CloudEventTransformations {
   }
 
   /**
-   * CloudEvents 路由处理器：根据类型路由到不同输出
+   * CloudEvents 路由处理器:根据类型路由到不同输出
    */
   public static class CloudEventRouter
       extends ProcessFunction<CloudEvent, CloudEvent> {
@@ -1536,7 +1536,7 @@ public class GoogleEventarcIntegration {
     @Override
     public void invoke(CloudEvent event, Context context) {
       try {
-        // 构建 Pub/Sub 消息，包含 CloudEvents 属性
+        // 构建 Pub/Sub 消息,包含 CloudEvents 属性
         Map<String, String> attributes = new HashMap<>();
         attributes.put("ce-specversion", "1.0");
         attributes.put("ce-type", event.getType());
@@ -1633,7 +1633,7 @@ public class EventSourcingExample {
   }
 
   /**
-   * 事件存储 Source：从 Kafka 读取事件
+   * 事件存储 Source:从 Kafka 读取事件
    */
   public static class EventStoreSource {
 
@@ -1654,7 +1654,7 @@ public class EventSourcingExample {
   }
 
   /**
-   * 聚合状态重建：使用 KeyedProcessFunction 按 aggregateId 分组
+   * 聚合状态重建:使用 KeyedProcessFunction 按 aggregateId 分组
    */
   public static class AggregateRebuilder
       extends KeyedProcessFunction<String, CloudEvent, OrderAggregate> {
@@ -1686,7 +1686,7 @@ public class EventSourcingExample {
       // 输出更新后的聚合
       out.collect(aggregate);
 
-      // 可选：输出快照事件（用于优化恢复）
+      // 可选:输出快照事件(用于优化恢复)
       if (aggregate.getVersion() % 100 == 0) {
         ctx.output(SNAPSHOT_TAG, createSnapshotEvent(aggregate));
       }
@@ -1758,7 +1758,7 @@ public class EventSourcingExample {
       .keyBy(event -> event.getSubject().orElse("unknown"))
       .process(new AggregateRebuilder());
 
-    // 输出到查询存储（如 Redis、Elasticsearch）
+    // 输出到查询存储(如 Redis、Elasticsearch)
     aggregates.addSink(new QueryStoreSink());
 
     env.execute("Event Sourcing Job");
@@ -1819,7 +1819,7 @@ public class SagaOrchestrationExample {
     STEP_FAILED,      // 步骤失败
     COMPENSATING,     // 补偿中
     COMPLETED,        // Saga 完成
-    FAILED            // Saga 失败（补偿完成）
+    FAILED            // Saga 失败(补偿完成)
   }
 
   @Data
@@ -1876,7 +1876,7 @@ public class SagaOrchestrationExample {
   }
 
   /**
-   * Saga 协调器：使用 KeyedProcessFunction 实现状态机
+   * Saga 协调器:使用 KeyedProcessFunction 实现状态机
    */
   public static class SagaOrchestrator
       extends KeyedProcessFunction<String, CloudEvent, CloudEvent> {
@@ -1913,7 +1913,7 @@ public class SagaOrchestrationExample {
       }
 
       if (saga == null) {
-        // 未知的 Saga 实例，忽略或记录错误
+        // 未知的 Saga 实例,忽略或记录错误
         return;
       }
 
@@ -1998,7 +1998,7 @@ public class SagaOrchestrationExample {
         executeNextStep(saga, ctx, out);
 
       } else if (eventType.equals(step.getFailureEventType())) {
-        // 步骤失败，开始补偿
+        // 步骤失败,开始补偿
         saga.setStatus(SagaStatus.COMPENSATING);
         executeCompensation(saga, ctx, out);
       }
@@ -2090,7 +2090,7 @@ public class SagaOrchestrationExample {
       SagaInstance saga = sagaState.value();
       if (saga != null && saga.getStatus() != SagaStatus.COMPLETED
           && saga.getStatus() != SagaStatus.FAILED) {
-        // Saga 超时，开始补偿
+        // Saga 超时,开始补偿
         saga.setStatus(SagaStatus.COMPENSATING);
         executeCompensation(saga, ctx, out);
       }

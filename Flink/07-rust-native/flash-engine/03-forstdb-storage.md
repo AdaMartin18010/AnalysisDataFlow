@@ -46,8 +46,8 @@ StateColumn := ⟨ColumnName, [Value1, Value2, ...], TypeInfo⟩
 StorageLayout_Col := [KeyColumn][ValueCol1][ValueCol2]...[MetadataCol]
 
 访问模式对比:
-行式 Get(Key) → 随机 IO，整行读取
-列式 Get(Key) → 随机 IO，仅需读取相关列
+行式 Get(Key) → 随机 IO,整行读取
+列式 Get(Key) → 随机 IO,仅需读取相关列
 ```
 
 **适用场景**:
@@ -116,7 +116,7 @@ Version_Pro := ⟨HybridStorage, UnlimitedCapacity, SpillToDisk⟩
 **形式化表述**:
 
 ```
-设聚合算子有 m 个累加器列，状态有 n 个分组:
+设聚合算子有 m 个累加器列,状态有 n 个分组:
 
 行式存储空间:
 S_row = n × (KeySize + Σ|columnᵢ| + Overhead_row)
@@ -131,7 +131,7 @@ S_col = KeySize + Σ(n × |columnᵢ| + Overhead_col)
 当 n → ∞ 时:
 η → 1 - (Σ|columnᵢ|) / (KeySize + Σ|columnᵢ|)
 
-典型场景（Key=16B, 4列各8B）:
+典型场景(Key=16B, 4列各8B):
 η → 1 - 32/48 = 33%
 ```
 
@@ -144,7 +144,7 @@ S_col = KeySize + Σ(n × |columnᵢ| + Overhead_col)
 **形式化表述**:
 
 ```
-设状态大小为 S，网络带宽为 B，Checkpoint 间隔为 I:
+设状态大小为 S,网络带宽为 B,Checkpoint 间隔为 I:
 
 同步 Checkpoint 延迟:
 T_sync = T_serialize(S) + T_upload(S, B)
@@ -154,9 +154,9 @@ T_sync = T_serialize(S) + T_upload(S, B)
 异步 Checkpoint 阻塞延迟:
 T_async_block = T_barrier_align + T_cow_setup
               = O(log n) + O(1)  // n 为并行度
-              ≈ 常数（通常 < 10ms）
+              ≈ 常数(通常 < 10ms)
 
-总 Checkpoint 时间（非阻塞）:
+总 Checkpoint 时间(非阻塞):
 T_async_total = T_async_block + T_serialize(S) + T_upload(S, B)
               = O(1) + O(S)
 ```
@@ -208,8 +208,8 @@ Speedup ∈ [3x, 5x]      // 增量 + 异步上传
 │  └── 通过 State API 访问 ForStDB                            │
 ├─────────────────────────────────────────────────────────────┤
 │ ForStDB 层: 状态存储与管理                                   │
-│  ├── Mini: 纯内存，低延迟                                    │
-│  └── Pro: 混合存储，大容量                                   │
+│  ├── Mini: 纯内存,低延迟                                    │
+│  └── Pro: 混合存储,大容量                                   │
 ├─────────────────────────────────────────────────────────────┤
 │ 底层存储: Local SSD / OSS / HDFS                            │
 └─────────────────────────────────────────────────────────────┘
@@ -234,7 +234,7 @@ Flink 状态后端生态:
 ┌─────────────────────────────────────────────────────────────┐
 │                    Flink State Backends                      │
 ├─────────────────────────────────────────────────────────────┤
-│  MemoryStateBackend     │  纯内存，无持久化                  │
+│  MemoryStateBackend     │  纯内存,无持久化                  │
 │  FsStateBackend         │  内存 + 文件系统 Checkpoint        │
 │  RocksDBStateBackend    │  本地磁盘 + 增量 Checkpoint        │
 ├─────────────────────────────────────────────────────────────┤
@@ -243,9 +243,9 @@ Flink 状态后端生态:
 └─────────────────────────────────────────────────────────────┘
 
 关系:
-- ForStDB 是 Flash 引擎专用，非 Flink 标准后端
-- API 兼容：Flink State API 可在 Flash 中使用
-- 性能差异：ForStDB 针对向量化场景深度优化
+- ForStDB 是 Flash 引擎专用,非 Flink 标准后端
+- API 兼容:Flink State API 可在 Flash 中使用
+- 性能差异:ForStDB 针对向量化场景深度优化
 ```
 
 ---
@@ -260,8 +260,8 @@ Flink 状态后端生态:
 
 ```
 1. 行式存储问题:
-   - 聚合状态整行读取，实际只需累加器列
-   - 缓存效率低，热点数据分散
+   - 聚合状态整行读取,实际只需累加器列
+   - 缓存效率低,热点数据分散
 
 2. 同步 IO 问题:
    - Checkpoint 阻塞数据处理
@@ -276,16 +276,16 @@ Flink 状态后端生态:
 
 ```
 1. 列式存储:
-   - 按需加载列，减少 IO
-   - 向量访问，CPU 缓存友好
+   - 按需加载列,减少 IO
+   - 向量访问,CPU 缓存友好
 
 2. 异步架构:
    - 写日志 + 异步刷盘
-   - 增量 Checkpoint，并行上传
+   - 增量 Checkpoint,并行上传
 
 3. 原生集成:
-   - C++ 实现，无 JNI 开销
-   - Arrow 格式，零拷贝传输
+   - C++ 实现,无 JNI 开销
+   - Arrow 格式,零拷贝传输
 ```
 
 ### 4.2 Mini vs Pro 版本选择决策树
@@ -294,7 +294,7 @@ Flink 状态后端生态:
 状态规模评估:
 ├── 状态 < 10GB 且全内存可容?
 │   └── 选择 Mini 版本
-│       └── 优势: 最低延迟，最高吞吐
+│       └── 优势: 最低延迟,最高吞吐
 │
 ├── 状态 10GB-100GB 且内存紧张?
 │   └── 选择 Mini + 大内存配置
@@ -302,7 +302,7 @@ Flink 状态后端生态:
 │
 └── 状态 > 100GB 或需要长窗口?
     └── 选择 Pro 版本
-        └── 优势: 自动 Spill，无限容量
+        └── 优势: 自动 Spill,无限容量
 ```
 
 ### 4.3 Checkpoint 性能优化原理
@@ -333,12 +333,12 @@ State = Base + Σ(Incremental_i)
 ```
 时间线:
 T0: Barrier 到达
-T1: 快照创建（COW，阻塞 < 1ms）
-T2: 开始序列化（后台线程）
-T3: 开始上传（后台线程）
+T1: 快照创建(COW,阻塞 < 1ms)
+T2: 开始序列化(后台线程)
+T3: 开始上传(后台线程)
 T4: 上传完成
 
-数据处理在 T1 后恢复，与 T2-T4 并行
+数据处理在 T1 后恢复,与 T2-T4 并行
 ```
 
 ---
@@ -355,23 +355,23 @@ T4: 上传完成
 
 ```
 设聚合状态有:
-- m 列（1 个 Key 列，m-1 个 Value 列）
+- m 列(1 个 Key 列,m-1 个 Value 列)
 - 每列平均大小: c bytes
-- 单次更新访问 k 列（通常 k=2：Key + 一个累加器）
+- 单次更新访问 k 列(通常 k=2:Key + 一个累加器)
 ```
 
 **步骤 2**: 行式存储 IO 分析
 
 ```
 行式存储读取单位 = 整行 = m × c bytes
-单次更新 IO = m × c（无论访问几列）
+单次更新 IO = m × c(无论访问几列)
 ```
 
 **步骤 3**: 列式存储 IO 分析
 
 ```
 列式存储读取单位 = 单列 = c bytes
-单次更新 IO = k × c（仅访问需要的列）
+单次更新 IO = k × c(仅访问需要的列)
 ```
 
 **步骤 4**: IO 效率比
@@ -381,7 +381,7 @@ IO_Efficiency = IO_row / IO_col
               = (m × c) / (k × c)
               = m / k
 
-典型场景（m=5, k=2）:
+典型场景(m=5, k=2):
 IO_Efficiency = 5/2 = 2.5x
 ```
 
@@ -402,20 +402,20 @@ IO_Efficiency = 5/2 = 2.5x
 可用性约束:
 T_chkpt < L_max 且 I >> T_chkpt
 
-当状态增大导致 T_chkpt > L_max 时，系统不可用
+当状态增大导致 T_chkpt > L_max 时,系统不可用
 ```
 
 **步骤 2**: 异步 Checkpoint 分析
 
 ```
 设:
-- 阻塞时间: T_block（常数，< 1ms）
+- 阻塞时间: T_block(常数,< 1ms)
 - 后台处理时间: T_bg = T_chkpt
 
 可用性约束:
-T_block < L_max（总是满足）
+T_block < L_max(总是满足)
 
-系统可用性与 T_chkpt 无关，只与 T_block 有关
+系统可用性与 T_chkpt 无关,只与 T_block 有关
 ```
 
 **步骤 3**: 定量对比
@@ -448,9 +448,9 @@ forstdb.mini.cache.size: 1g
 forstdb.mini.snapshot.interval: 30s
 
 适用场景:
-- 中小规模聚合（< 1000 分组）
-- 短窗口计算（< 1 小时）
-- 低延迟要求（< 100ms）
+- 中小规模聚合(< 1000 分组)
+- 短窗口计算(< 1 小时)
+- 低延迟要求(< 100ms)
 ```
 
 **Pro 版本配置**:
@@ -465,9 +465,9 @@ forstdb.pro.checkpoint.async: true
 forstdb.pro.checkpoint.incremental: true
 
 适用场景:
-- 大规模聚合（> 10000 分组）
-- 长窗口计算（> 24 小时）
-- 大状态 Join（> 10GB 状态）
+- 大规模聚合(> 10000 分组)
+- 长窗口计算(> 24 小时)
+- 大状态 Join(> 10GB 状态)
 ```
 
 ### 6.2 性能基准测试
@@ -475,8 +475,8 @@ forstdb.pro.checkpoint.incremental: true
 **ForStDB vs RocksDB 对比测试**:
 
 ```
-测试场景: 滑动窗口聚合（1 小时窗口，5 秒滑动）
-数据量: 100M 事件，100K 唯一 Key
+测试场景: 滑动窗口聚合(1 小时窗口,5 秒滑动)
+数据量: 100M 事件,100K 唯一 Key
 硬件: 8 vCPU, 32GB RAM, SSD
 
 指标              │ RocksDB   │ ForStDB Mini │ ForStDB Pro
@@ -493,7 +493,7 @@ CPU 使用率        │ 80%       │ 60%          │ 65%
 **长窗口状态测试**:
 
 ```
-测试场景: 7 天会话窗口，10M 活跃会话
+测试场景: 7 天会话窗口,10M 活跃会话
 状态大小: ~50GB
 
 指标              │ RocksDB    │ ForStDB Pro
@@ -512,29 +512,29 @@ Checkpoint 稳定性 │ 偶发卡顿   │ 平滑
 ```
 场景: 订单全生命周期跟踪
 - 窗口: 72 小时会话窗口
-- 状态: 订单状态机（50+ 状态）
+- 状态: 订单状态机(50+ 状态)
 - 数据量: 1000万+ 并发订单
 
 方案: ForStDB Pro
 - 状态总量: 200GB
 - Checkpoint 间隔: 5 分钟
 - 恢复时间: < 2 分钟
-- 成本降低: 40%（相比 RocksDB）
+- 成本降低: 40%(相比 RocksDB)
 ```
 
 **天猫实时 BI**:
 
 ```
 场景: 多维度实时聚合
-- 维度: 类目 × 地区 × 时间（1000+ 分组）
+- 维度: 类目 × 地区 × 时间(1000+ 分组)
 - 指标: PV, UV, GMV, 转化率
 - 延迟要求: < 1 秒
 
 方案: ForStDB Mini
 - 状态大小: 2GB
-- 处理延迟: 50ms（p99）
-- Checkpoint: 无损，秒级
-- 资源节省: 30%（内存效率提升）
+- 处理延迟: 50ms(p99)
+- Checkpoint: 无损,秒级
+- 资源节省: 30%(内存效率提升)
 ```
 
 ---
@@ -652,7 +652,7 @@ flowchart TD
 ### 7.5 ForStDB 与 RocksDB 性能对比
 
 ```mermaid
-bar title 状态访问延迟对比（越低越好）
+bar title 状态访问延迟对比(越低越好)
     y-axis 延迟(毫秒) --> 0 --> 6
     bar [RocksDB] 5
     bar [ForStDB Pro] 0.5

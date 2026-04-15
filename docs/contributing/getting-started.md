@@ -1,6 +1,7 @@
 > **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
-> 
+>
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # 新贡献者入门指南
 
 > 欢迎加入 AnalysisDataFlow 社区！本指南将帮助您快速了解项目并做出第一次贡献。
@@ -122,7 +123,7 @@ npm install -g markdownlint-cli
 # 链接检查
 npm install -g markdown-link-check
 
-# Mermaid CLI（可选）
+# Mermaid CLI(可选)
 npm install -g @mermaid-js/mermaid-cli
 ```
 

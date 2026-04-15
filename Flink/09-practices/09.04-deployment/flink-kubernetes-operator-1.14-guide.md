@@ -92,7 +92,7 @@ spec:
   flinkVersion: v1_20
   deploymentMode: application
 
-  # 声明式资源配置（1.14 新特性）
+  # 声明式资源配置(1.14 新特性)
   resourceProfile:
     name: "streaming-production"
     tier: large
@@ -228,7 +228,7 @@ DynamicSlotAllocation(JobQueue, AvailableResources):
             scaleUpTaskManagers(ceil(RequiredSlots / slotsPerTM))
             allocateAfterScale(job, RequiredSlots)
 
-        # 5. 资源不足，进入等待队列
+        # 5. 资源不足,进入等待队列
         else:
             enqueueWithTimeout(job, timeout=5min)
 ```
@@ -343,7 +343,7 @@ image:
   pullPolicy: IfNotPresent
   pullSecrets: []
 
-# Operator 配置（结构化增强）
+# Operator 配置(结构化增强)
 operatorConfiguration:
   # 核心配置
   core:
@@ -364,12 +364,12 @@ operatorConfiguration:
     sessionClusterEnhancements: true
     blueGreenDeployment: true
 
-# 命名空间监控（支持动态更新）
+# 命名空间监控(支持动态更新)
 watchNamespaces:
   - "flink-jobs"
   - "flink-production"
 
-# RBAC 配置（细化权限）
+# RBAC 配置(细化权限)
 rbac:
   create: true
   scope: cluster  # cluster | namespace
@@ -697,7 +697,7 @@ Declarative Resource Management
 1. **抽象层次提升**
 
 ```yaml
-# 命令式（1.13 及之前）- 关注具体数值
+# 命令式(1.13 及之前)- 关注具体数值
 spec:
   taskManager:
     resource:
@@ -705,7 +705,7 @@ spec:
       cpu: 4
     replicas: 8
 
-# 声明式（1.14）- 关注业务需求
+# 声明式(1.14)- 关注业务需求
 spec:
   resourceProfile:
     tier: large
@@ -769,14 +769,14 @@ class AutoscalingV2:
 **场景：峰值负载下的资源不足**
 
 ```yaml
-# 手动配置的问题：固定资源配置
+# 手动配置的问题:固定资源配置
 spec:
   taskManager:
-    replicas: 10  # 按峰值配置，平时浪费
+    replicas: 10  # 按峰值配置,平时浪费
 
-# 结果：
-# - 平时：资源利用率 30%，成本浪费 70%
-# - 峰值：资源不足，导致背压和数据延迟
+# 结果:
+# - 平时:资源利用率 30%,成本浪费 70%
+# - 峰值:资源不足,导致背压和数据延迟
 ```
 
 **声明式解决方案**：
@@ -791,10 +791,10 @@ spec:
       maxTaskManagers: 20  # 峰值容量
       targetUtilization: 0.7
 
-# 结果：
-# - 平时：4 个 TM，资源利用率 85%
-# - 峰值：自动扩展到 15 个 TM
-# - 成本节省：约 50%
+# 结果:
+# - 平时:4 个 TM,资源利用率 85%
+# - 峰值:自动扩展到 15 个 TM
+# - 成本节省:约 50%
 ```
 
 ---
@@ -896,7 +896,7 @@ spec:
   Step 0: 并行度=4, 利用率=95%, 触发扩容
   Step 1: 并行度=6, 利用率=82%, 继续扩容
   Step 2: 并行度=8, 利用率=71%, 接近目标
-  Step 3: 并行度=8, 利用率=69%, 在容忍范围内，收敛
+  Step 3: 并行度=8, 利用率=69%, 在容忍范围内,收敛
 
 收敛时间: ~90s (3步)
 ```
@@ -920,7 +920,7 @@ spec:
   flinkVersion: v1_20
   deploymentMode: application
 
-  # ========== 声明式资源配置（1.14 核心特性）==========
+  # ========== 声明式资源配置(1.14 核心特性)==========
   resourceProfile:
     name: "streaming-production"
     tier: large
@@ -1060,7 +1060,7 @@ spec:
     job.autoscaler.algorithm.version: "v2"
 
     # ===== 核心算法配置 =====
-    # 目标利用率（关键参数）
+    # 目标利用率(关键参数)
     job.autoscaler.target.utilization: "0.7"
     job.autoscaler.target.utilization.boundary: "0.15"
 
@@ -1096,7 +1096,7 @@ spec:
     job.autoscaler.cost.max-hourly: "50.0"
     job.autoscaler.cost.preemptible-ratio: "0.5"
 
-    # 最大并行度（重要：需提前规划）
+    # 最大并行度(重要:需提前规划)
     pipeline.max-parallelism: "720"
 
     # 重启配置
@@ -1147,16 +1147,16 @@ spec:
         minSlots: 8
         maxSlots: 128
 
-        # 扩容阈值：当使用率超过 80% 时扩容
+        # 扩容阈值:当使用率超过 80% 时扩容
         scaleUpThreshold: 0.8
 
-        # 缩容阈值：当使用率低于 30% 时缩容
+        # 缩容阈值:当使用率低于 30% 时缩容
         scaleDownThreshold: 0.3
 
-        # 缩容延迟：防止过早释放资源
+        # 缩容延迟:防止过早释放资源
         scaleDownDelay: 10m
 
-        # 资源保留：保证最少可用资源
+        # 资源保留:保证最少可用资源
         minAvailableSlots: 8
 
       # ---- 预热池配置 ----
@@ -1169,7 +1169,7 @@ spec:
         # 预热 Slot 数量
         preWarmSlots: 8
 
-        # 空闲超时：超过此时间后回收预热资源
+        # 空闲超时:超过此时间后回收预热资源
         idleTimeout: 15m
 
         # 预热池扩容策略
@@ -1216,10 +1216,10 @@ spec:
       overcommit:
         enabled: true
 
-        # CPU 超售比：请求 1 CPU，可分配 1.5 CPU
+        # CPU 超售比:请求 1 CPU,可分配 1.5 CPU
         cpuRatio: 1.5
 
-        # 内存超售比（谨慎使用）
+        # 内存超售比(谨慎使用)
         memoryRatio: 1.2
 
         # 最大超售限制
@@ -1305,7 +1305,7 @@ image:
 imagePullSecrets:
   - name: regcred
 
-# 部署副本数（高可用）
+# 部署副本数(高可用)
 replicaCount: 2
 
 # ========== Operator 核心配置 ==========
@@ -1337,7 +1337,7 @@ operatorConfiguration:
   kubernetes.operator.session.cluster.dynamic.slot.enabled: "true"
   kubernetes.operator.session.cluster.warm.pool.enabled: "true"
 
-  # Leader 选举配置（高可用）
+  # Leader 选举配置(高可用)
   kubernetes.operator.leader-election.enabled: "true"
   kubernetes.operator.leader-election.lease-name: "flink-operator-lease"
   kubernetes.operator.leader-election.lease-duration: 15s
@@ -1351,7 +1351,7 @@ watchNamespaces:
   - "flink-staging"
   - "flink-dev"
 
-# 排除命名空间（正则表达式）
+# 排除命名空间(正则表达式)
 excludedNamespaces: "kube-.*,istio-.*"
 
 # ========== RBAC 配置 ==========
@@ -1480,7 +1480,7 @@ webhook:
 # ========== 默认 Flink 版本 ==========
 defaultFlinkVersion: "v1_20"
 
-# ========== 资源模板（声明式管理） ==========
+# ========== 资源模板(声明式管理) ==========
 resourceProfiles:
   - name: "small"
     jobManager:

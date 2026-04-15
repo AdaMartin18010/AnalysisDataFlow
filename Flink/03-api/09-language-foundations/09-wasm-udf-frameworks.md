@@ -860,7 +860,7 @@ public class IronFunctionsAnomalyUDF extends ScalarFunction {
         try {
             return fnClient.invokeFunction(functionId, sensorJson);
         } catch (Exception e) {
-            // 异常处理：返回默认值或抛出
+            // 异常处理:返回默认值或抛出
             return "{\"error\":\"" + e.getMessage() + "\"}";
         }
     }

@@ -213,17 +213,17 @@ $$
 **场景对比**：考虑一个典型电商大促场景
 
 ```
-T0 (00:00): 活动开始，用户涌入首页
-T1 (00:01): 某商品页面加载缓慢（用户开始流失）
-T2 (00:05): 实时告警触发，自动扩容CDN
-T3 (00:10): 页面恢复，流失率下降
+T0 (00:00): 活动开始,用户涌入首页
+T1 (00:01): 某商品页面加载缓慢(用户开始流失)
+T2 (00:05): 实时告警触发,自动扩容CDN
+T3 (00:10): 页面恢复,流失率下降
 
 vs
 
 T0 (00:00): 活动开始
-T1+ (00:00-02:00): 持续高流失（离线报表2小时后才能发现）
-T2 (02:30): 问题定位，手动介入
-T3 (03:00): 修复完成（损失已造成）
+T1+ (00:00-02:00): 持续高流失(离线报表2小时后才能发现)
+T2 (02:30): 问题定位,手动介入
+T3 (03:00): 修复完成(损失已造成)
 ```
 
 **实时性价值量化**:
@@ -331,9 +331,9 @@ public class ClickstreamSDK {
     // 事件结构
     public class ClickEvent {
         String eventId;        // 全局唯一事件ID
-        String userId;         // 用户ID（未登录使用设备ID）
-        String sessionId;      // 会话ID（客户端生成）
-        long timestamp;        // 事件时间戳（ms）
+        String userId;         // 用户ID(未登录使用设备ID)
+        String sessionId;      // 会话ID(客户端生成)
+        long timestamp;        // 事件时间戳(ms)
         String eventType;      // 事件类型
         Map<String, Object> properties;  // 扩展属性
         String deviceId;       // 设备指纹
@@ -466,7 +466,7 @@ public class SessionAggregator implements AggregateFunction<ClickEvent, SessionA
 
     @Override
     public SessionAcc merge(SessionAcc a, SessionAcc b) {
-        // 处理会话合并（延迟事件导致）
+        // 处理会话合并(延迟事件导致)
         return a.merge(b);
     }
 }
@@ -574,7 +574,7 @@ public class BotDetectionHandler extends PatternProcessFunction<ClickEvent, Aler
 #### 5.3.1 ClickHouse实时表结构
 
 ```sql
--- 原始事件表（按天分区）
+-- 原始事件表(按天分区)
 CREATE TABLE clickstream_events (
     event_id UUID,
     user_id String,
@@ -593,7 +593,7 @@ CREATE TABLE clickstream_events (
 PARTITION BY toYYYYMMDD(event_time)
 ORDER BY (event_type, user_id, event_time);
 
--- 实时聚合表（预聚合漏斗数据）
+-- 实时聚合表(预聚合漏斗数据)
 CREATE TABLE funnel_aggregations (
     funnel_name LowCardinality(String),
     step_index UInt8,
@@ -643,10 +643,10 @@ GROUP BY funnel_name, step_index, step_name, window_start;
 /**
  * Clickstream实时用户行为分析系统 - 完整实现
  *
- * 功能：
+ * 功能:
  * 1. 用户会话识别与聚合
  * 2. 多漏斗实时计算
- * 3. Bot/爬虫检测（CEP）
+ * 3. Bot/爬虫检测(CEP)
  * 4. 用户画像实时更新
  * 5. A/B测试实时指标
  */
@@ -805,7 +805,7 @@ public class CompleteClickstreamAnalytics {
                 acc.getClicks(),
                 acc.getAddToCarts(),
                 acc.getPurchaseAmount(),
-                acc.getBounce(),  // 是否跳出（仅1个PV）
+                acc.getBounce(),  // 是否跳出(仅1个PV)
                 acc.getEntryPage(),
                 acc.getExitPage(),
                 acc.getTrafficSource()
@@ -861,7 +861,7 @@ public class CompleteClickstreamAnalytics {
                 int newStep = evaluateFunnel(session, funnel, state);
 
                 if (newStep > previousStep) {
-                    // 漏斗进展，输出转化事件
+                    // 漏斗进展,输出转化事件
                     for (int i = previousStep; i < newStep; i++) {
                         out.collect(new FunnelConversion(
                             session.getUserId(),
@@ -976,7 +976,7 @@ public class CompleteClickstreamAnalytics {
         }
 
         private double scoreNavigationPattern(List<ClickEvent> events) {
-            // 检测过于规律的路径（如只访问商品页而不访问其他页面）
+            // 检测过于规律的路径(如只访问商品页而不访问其他页面)
             Set<String> uniquePages = events.stream()
                 .map(ClickEvent::getPageUrl)
                 .collect(Collectors.toSet());
@@ -987,14 +987,14 @@ public class CompleteClickstreamAnalytics {
 
             double productRatio = (double) productPageCount / events.size();
 
-            // 如果90%以上是商品页且几乎没有其他类型页面，可能是爬虫
+            // 如果90%以上是商品页且几乎没有其他类型页面,可能是爬虫
             if (productRatio > 0.9 && uniquePages.size() < 3) return 0.9;
             if (productRatio > 0.8 && uniquePages.size() < 5) return 0.6;
             return 0;
         }
 
         private double scoreMouseBehavior(List<ClickEvent> events) {
-            // 检查是否有鼠标移动事件（Bot通常没有真实的鼠标轨迹）
+            // 检查是否有鼠标移动事件(Bot通常没有真实的鼠标轨迹)
             long mouseEvents = events.stream()
                 .filter(e -> e.getEventType().equals("MOUSE_MOVE") ||
                             e.getEventType().equals("SCROLL"))
@@ -1009,7 +1009,7 @@ public class CompleteClickstreamAnalytics {
         }
 
         private double scoreDeviceReputation(String deviceId) {
-            // 查询设备历史信誉（可从Redis或外部服务获取）
+            // 查询设备历史信誉(可从Redis或外部服务获取)
             // 简化为基于设备指纹特征的评分
             return 0.5;  // 默认中等风险
         }
@@ -1044,10 +1044,10 @@ public class CompleteClickstreamAnalytics {
             profile.updateTotalDuration(session.getDuration());
             profile.updateAvgSessionDuration(session.getDuration());
 
-            // 更新品类偏好（基于访问页面URL推断）
+            // 更新品类偏好(基于访问页面URL推断)
             updateCategoryPreferences(profile, session);
 
-            // 更新活跃度（指数衰减）
+            // 更新活跃度(指数衰减)
             profile.updateActiveness(DECAY_FACTOR);
 
             // 更新购买意愿评分

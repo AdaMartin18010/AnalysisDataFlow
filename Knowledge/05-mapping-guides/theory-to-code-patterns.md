@@ -234,17 +234,17 @@ graph TB
 ```java
 import org.apache.flink.api.common.functions.MapFunction;
 
-// ✅ 正确实现：纯函数式映射
+// ✅ 正确实现:纯函数式映射
 public class DeterministicMapFunction
     implements MapFunction<Event, EnrichedEvent> {
 
-    // 允许：不可变配置参数
+    // 允许:不可变配置参数
     private final String staticConfig;
 
-    // 禁止：可变静态状态
+    // 禁止:可变静态状态
     // private static int counter; // ❌ 违反确定性
 
-    // 禁止：外部可变依赖
+    // 禁止:外部可变依赖
     // private ExternalCache cache; // ❌ 违反确定性
 
     public DeterministicMapFunction(String config) {
@@ -253,7 +253,7 @@ public class DeterministicMapFunction
 
     @Override
     public EnrichedEvent map(Event event) {
-        // ✅ 纯函数：输出仅依赖于输入和不可变配置
+        // ✅ 纯函数:输出仅依赖于输入和不可变配置
         return new EnrichedEvent(
             event.getId(),
             event.getTimestamp(),
@@ -271,7 +271,7 @@ public class DeterministicMapFunction
 #### Scala 实现模板
 
 ```scala
-// ✅ 正确实现：函数式风格
+// ✅ 正确实现:函数式风格
 class DeterministicMapFunction(config: String)
   extends MapFunction[Event, EnrichedEvent] {
 
@@ -308,10 +308,10 @@ class DeterministicMapFunction(MapFunction):
     def __init__(self, config: str):
         # 仅存储不可变配置
         self._static_config = config
-        # 禁止：self._cache = {}  # ❌ 可变状态
+        # 禁止:self._cache = {}  # ❌ 可变状态
 
     def map(self, event: Event) -> EnrichedEvent:
-        # 纯函数：无副作用，无外部依赖
+        # 纯函数:无副作用,无外部依赖
         return EnrichedEvent(
             id=event.id,
             timestamp=event.timestamp,
@@ -328,7 +328,7 @@ stream.map(DeterministicMapFunction("config_value"))
 **反模式示例**:
 
 ```java
-// ❌ 错误实现：非确定性
+// ❌ 错误实现:非确定性
 public class NonDeterministicMap implements MapFunction<Event, Result> {
     private Random random = new Random(); // 非确定性来源
     private static int counter = 0;       // 共享可变状态
@@ -353,7 +353,7 @@ public class NonDeterministicMap implements MapFunction<Event, Result> {
 #### Java 实现模板
 
 ```java
-// ✅ 正确实现：带乱序容忍的 Watermark 生成器
+// ✅ 正确实现:带乱序容忍的 Watermark 生成器
 public class BoundedOutOfOrdernessGenerator
     implements WatermarkGenerator<Event> {
 
@@ -375,14 +375,14 @@ public class BoundedOutOfOrdernessGenerator
         // 发射 watermark = 当前最大时间 - 乱序容忍度
         long watermarkTimestamp = currentMaxTimestamp - maxOutOfOrderness;
 
-        // ✅ 单调性保证：确保不发射倒退的 watermark
+        // ✅ 单调性保证:确保不发射倒退的 watermark
         if (watermarkTimestamp > Long.MIN_VALUE) {
             output.emitWatermark(new Watermark(watermarkTimestamp));
         }
     }
 }
 
-// ✅ 正确实现：空闲数据源处理
+// ✅ 正确实现:空闲数据源处理
 public class IdleSourceAwareGenerator
     implements WatermarkGenerator<Event> {
 
@@ -398,7 +398,7 @@ public class IdleSourceAwareGenerator
 
     @Override
     public void onPeriodicEmit(WatermarkOutput output) {
-        // 空闲检测：长时间无数据时标记为空闲
+        // 空闲检测:长时间无数据时标记为空闲
         if (System.currentTimeMillis() - lastEventTime > idleTimeout) {
             output.markIdle();
         }
@@ -410,7 +410,7 @@ public class IdleSourceAwareGenerator
 #### Scala 实现模板
 
 ```scala
-// ✅ 正确实现：函数式风格的 Watermark 策略
+// ✅ 正确实现:函数式风格的 Watermark 策略
 class BoundedOutOfOrdernessGenerator(
     maxOutOfOrderness: Duration
 ) extends WatermarkGenerator[Event] {
@@ -452,14 +452,14 @@ object WatermarkStrategies {
 from pyflink.datastream import WatermarkStrategy
 from pyflink.common import Duration
 
-# ✅ 正确实现：使用内置策略
+# ✅ 正确实现:使用内置策略
 watermark_strategy = (
     WatermarkStrategy
     .for_bounded_out_of_orderness(Duration.of_seconds(5))
     .with_timestamp_assigner(lambda event, _: event.timestamp)
 )
 
-# ✅ 正确实现：自定义 Watermark 生成器
+# ✅ 正确实现:自定义 Watermark 生成器
 class BoundedOutOfOrdernessGenerator:
     def __init__(self, max_out_of_orderness: int):
         self._max_out_of_orderness = max_out_of_orderness
@@ -485,11 +485,11 @@ stream.assign_timestamps_and_watermarks(watermark_strategy)
 **反模式示例**:
 
 ```java
-// ❌ 错误实现：非单调 Watermark
+// ❌ 错误实现:非单调 Watermark
 public class BrokenWatermarkGenerator implements WatermarkGenerator<Event> {
     @Override
     public void onEvent(Event event, long eventTimestamp, WatermarkOutput output) {
-        // ❌ 直接发射基于事件时间的 watermark，无乱序容忍
+        // ❌ 直接发射基于事件时间的 watermark,无乱序容忍
         output.emitWatermark(new Watermark(eventTimestamp));
     }
 
@@ -517,16 +517,16 @@ import org.apache.flink.api.common.state.ValueStateDescriptor;
 import org.apache.flink.api.common.typeinfo.Types;
 
 
-// ✅ 正确实现：带状态管理的 KeyedProcessFunction
+// ✅ 正确实现:带状态管理的 KeyedProcessFunction
 public class StatefulCounterFunction
     extends KeyedProcessFunction<String, Event, Result>
     implements CheckpointedFunction {
 
-    // 状态声明：使用 Flink 托管状态
+    // 状态声明:使用 Flink 托管状态
     private ValueState<Long> counterState;
     private ListState<Event> bufferedEvents;
 
-    // 非状态变量（瞬态）：不参与 Checkpoint
+    // 非状态变量(瞬态):不参与 Checkpoint
     private transient Map<String, LocalCache> localCache;
 
     @Override
@@ -540,7 +540,7 @@ public class StatefulCounterFunction
             new ListState<>("buffer", Event.class);
         bufferedEvents = getRuntimeContext().getListState(bufferDescriptor);
 
-        // 初始化瞬态缓存（仅本地使用，不 Checkpoint）
+        // 初始化瞬态缓存(仅本地使用,不 Checkpoint)
         localCache = new HashMap<>();
     }
 
@@ -574,7 +574,7 @@ public class StatefulCounterFunction
     @Override
     public void snapshotState(FunctionSnapshotContext context) throws Exception {
         // ✅ Flink 自动处理 ValueState 和 ListState 的快照
-        // 无需额外操作，已注册的状态会自动参与 Checkpoint
+        // 无需额外操作,已注册的状态会自动参与 Checkpoint
     }
 
     @Override
@@ -594,7 +594,7 @@ public class StatefulCounterFunction
 #### Scala 实现模板
 
 ```scala
-// ✅ 正确实现：Scala 风格的状态管理
+// ✅ 正确实现:Scala 风格的状态管理
 class StatefulCounterFunction
   extends KeyedProcessFunction[String, Event, Result]
      with CheckpointedFunction {
@@ -711,7 +711,7 @@ class StatefulCounterFunction(KeyedProcessFunction):
         )
 
     def on_timer(self, timestamp, ctx):
-        # 定时器触发，处理缓冲数据
+        # 定时器触发,处理缓冲数据
         count = self._counter_state.value()
         for event in self._buffer_state.get():
             yield Result(event, count)
@@ -724,14 +724,14 @@ stream.key_by(lambda e: e.key).process(StatefulCounterFunction())
 **反模式示例**:
 
 ```java
-// ❌ 错误实现：状态管理违规
+// ❌ 错误实现:状态管理违规
 public class BadStatefulFunction extends ProcessFunction<Event, Result> {
 
-    // ❌ 禁止：使用普通实例变量存储需要恢复的状态
+    // ❌ 禁止:使用普通实例变量存储需要恢复的状态
     private int counter = 0;
     private List<Event> buffer = new ArrayList<>();
 
-    // ❌ 禁止：使用静态共享状态
+    // ❌ 禁止:使用静态共享状态
     private static Map<String, Object> sharedState = new HashMap<>();
 
     @Override
@@ -742,7 +742,7 @@ public class BadStatefulFunction extends ProcessFunction<Event, Result> {
         out.collect(new Result(event, counter));
     }
 
-    // ❌ 缺失：没有实现 CheckpointedFunction 接口
+    // ❌ 缺失:没有实现 CheckpointedFunction 接口
 }
 ```
 
@@ -755,7 +755,7 @@ public class BadStatefulFunction extends ProcessFunction<Event, Result> {
 #### Java 实现模板
 
 ```java
-// ✅ 正确实现：两阶段提交 Sink（Kafka 示例）
+// ✅ 正确实现:两阶段提交 Sink(Kafka 示例)
 public class KafkaExactlyOnceSink
     extends TwoPhaseCommitSinkFunction<Event, KafkaTransactionState, Void> {
 
@@ -795,18 +795,18 @@ public class KafkaExactlyOnceSink
 
     @Override
     protected void preCommit(KafkaTransactionState transaction) throws Exception {
-        // 预提交：刷新缓冲区，确保数据已发送到 Kafka
+        // 预提交:刷新缓冲区,确保数据已发送到 Kafka
         producer.flush();
-        // 注意：此时不提交事务，等待 Checkpoint 完成
+        // 注意:此时不提交事务,等待 Checkpoint 完成
     }
 
     @Override
     protected void commit(KafkaTransactionState transaction) {
-        // 提交事务：Checkpoint 成功后调用
+        // 提交事务:Checkpoint 成功后调用
         try {
             producer.commitTransaction();
         } catch (ProducerFencedException e) {
-            // 事务已被其他生产者实例接管（正常情况）
+            // 事务已被其他生产者实例接管(正常情况)
             log.info("Transaction {} already committed by another instance",
                     transaction.getTransactionId());
         }
@@ -814,11 +814,11 @@ public class KafkaExactlyOnceSink
 
     @Override
     protected void abort(KafkaTransactionState transaction) {
-        // 中止事务：Checkpoint 失败时调用
+        // 中止事务:Checkpoint 失败时调用
         try {
             producer.abortTransaction();
         } catch (ProducerFencedException e) {
-            // 事务已被接管，忽略
+            // 事务已被接管,忽略
         }
     }
 
@@ -829,7 +829,7 @@ public class KafkaExactlyOnceSink
         // 初始化生产者
         this.producer = new FlinkKafkaProducer<>(topic, kafkaProps);
 
-        // 恢复未完成的事务（如果存在）
+        // 恢复未完成的事务(如果存在)
         if (transaction != null) {
             producer.resumeTransaction(transaction.getTransactionId());
         }
@@ -854,7 +854,7 @@ public class KafkaTransactionState {
 #### Scala 实现模板
 
 ```scala
-// ✅ 正确实现：Scala 风格的两阶段提交 Sink
+// ✅ 正确实现:Scala 风格的两阶段提交 Sink
 class KafkaExactlyOnceSink(
     topic: String,
     kafkaProps: Properties
@@ -940,7 +940,7 @@ class KafkaExactlyOnceSink(TwoPhaseCommitSinkFunction):
         }
 
     def pre_commit(self, transaction):
-        """预提交：刷新数据"""
+        """预提交:刷新数据"""
         self._producer.flush()
 
     def commit(self, transaction):
@@ -972,20 +972,20 @@ stream.add_sink(KafkaExactlyOnceSink("output-topic", kafka_config))
 ```java
 import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
 
-// ❌ 错误实现：非幂等 Sink
+// ❌ 错误实现:非幂等 Sink
 public class BadSink extends RichSinkFunction<Event> {
     private DatabaseConnection db;
 
     @Override
     public void invoke(Event event, Context context) {
-        // ❌ 直接写入，无事务保护
-        // ❌ 无幂等键，故障恢复后可能重复写入
+        // ❌ 直接写入,无事务保护
+        // ❌ 无幂等键,故障恢复后可能重复写入
         db.execute("INSERT INTO events VALUES (?, ?)",
                    event.getId(), event.getData());
     }
 
-    // ❌ 缺失：没有两阶段提交协议
-    // ❌ 缺失：没有处理故障恢复场景
+    // ❌ 缺失:没有两阶段提交协议
+    // ❌ 缺失:没有处理故障恢复场景
 }
 ```
 
@@ -1002,14 +1002,14 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.CheckpointingMode;
 
 
-// ✅ 正确实现：组合多个模式
+// ✅ 正确实现:组合多个模式
 public class ComplexStreamPipeline {
 
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
 
-        // 启用 Checkpoint（状态快照模式）
+        // 启用 Checkpoint(状态快照模式)
         env.enableCheckpointing(60000);
         env.getCheckpointConfig().setCheckpointingMode(
             CheckpointingMode.EXACTLY_ONCE
@@ -1029,7 +1029,7 @@ public class ComplexStreamPipeline {
             .map(new DeterministicMapFunction("config"))
             .returns(EnrichedEvent.class);
 
-        // 3. 状态管理模式（KeyedProcessFunction）
+        // 3. 状态管理模式(KeyedProcessFunction)
         DataStream<Result> processed = mapped
             .keyBy(EnrichedEvent::getKey)
             .process(new StatefulCounterFunction())
@@ -1089,7 +1089,7 @@ graph TB
 
 ```mermaid
 flowchart TD
-    A[开始：需要 Exactly-Once 保证？] -->|是| B[下游支持事务？]
+    A[开始:需要 Exactly-Once 保证？] -->|是| B[下游支持事务？]
     A -->|否| C[使用 At-Least-Once]
 
     B -->|是| D[使用 Two-Phase Commit Sink]

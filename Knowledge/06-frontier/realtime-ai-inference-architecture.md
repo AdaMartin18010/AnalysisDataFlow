@@ -523,9 +523,9 @@ INSERT INTO content_output
 SELECT
     product_id,
     ML_PREDICT('text-generation',
-        CONCAT('生成商品标题：', name, ' 类别：', category)) as title,
+        CONCAT('生成商品标题:', name, ' 类别:', category)) as title,
     ML_PREDICT('text-generation',
-        CONCAT('生成商品描述：', name, ' 属性：', TO_JSON(attributes))) as description,
+        CONCAT('生成商品描述:', name, ' 属性:', TO_JSON(attributes))) as description,
     ML_PREDICT('image-generation', image_url) as generated_image_url,
     0.95 as confidence,
     'pending_review' as status

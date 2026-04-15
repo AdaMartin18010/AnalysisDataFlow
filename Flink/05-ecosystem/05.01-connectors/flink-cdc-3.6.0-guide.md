@@ -2,7 +2,7 @@
 
 > 所属阶段: Flink/05-ecosystem/05.01-connectors | 前置依赖: [Flink CDC 3.0 数据集成框架](./flink-cdc-3.0-data-integration.md), [Flink 2.2 前沿特性](../../02-core/flink-2.2-frontier-features.md) | 形式化等级: L4
 
-**发布日期**: 2026-03-30 | **版本**: 3.6.0 | **状态**: GA (General Availability)
+**发布日期**: 2026-03-30 | **版本**: 3.6.0 | **状态**: GA (General Availability)[^1]
 
 ---
 
@@ -88,6 +88,8 @@ sink:
 
 **Fluss Lenient模式** 是Fluss Pipeline Connector在CDC 3.6.0中引入的Schema Evolution处理策略，允许在源端和目标端Schema不完全匹配时继续进行数据同步。
 
+> **Fluss 0.9 生产级支持** (CDC 3.6.0 新增)[^1]: CDC 3.6.0 对 Fluss 0.9 提供了完整的 schema evolution 生产级支持，包括自动列映射、类型兼容转换、以及 DDL 变更的实时传播。
+
 > **形式化定义**: 设源端Schema为 $S_{src}$，目标端Schema为 $S_{sink}$，Lenient模式定义松弛映射关系：
 >
 > $$lenient(S_{src}, S_{sink}) \iff \forall c \in S_{src} \cap S_{sink}: compatible(c_{src}.type, c_{sink}.type)$$
@@ -96,7 +98,7 @@ sink:
 > 对于 $c \in S_{sink} \setminus S_{src}$: 填充NULL或默认值
 
 ```yaml
-# Fluss Pipeline Lenient模式配置
+# Fluss Pipeline Lenient模式配置 (CDC 3.6.0 + Fluss 0.9)
 sink:
   type: fluss
   name: fluss-sink
@@ -109,6 +111,10 @@ sink:
   missing.column.default.value:
     created_at: CURRENT_TIMESTAMP
     status: 'pending'
+
+  # CDC 3.6.0 新增:Fluss 0.9 schema evolution 生产级配置
+  schema.evolution.auto-align: true
+  schema.evolution.type-cast: compatible
 ```
 
 ### Def-F-05-05: PostgreSQL Schema Evolution 支持定义
@@ -183,12 +189,12 @@ transform:
 ```yaml
 # 路由配置正则表达式示例
 route:
-  # 示例1: 分库分表合并（使用捕获组）
+  # 示例1: 分库分表合并(使用捕获组)
   - source-table: order_db_(\d+)\.order_(\d+)
     sink-table: ods.orders_all
     description: "Merge sharded orders from all databases and tables"
 
-  # 示例2: 动态表名映射（保留部分原始名称）
+  # 示例2: 动态表名映射(保留部分原始名称)
   - source-table: db_(\d+)\.(.*)
     sink-table: warehouse.$1_$2
     description: "Map db_1.users to warehouse.1_users"
@@ -286,6 +292,7 @@ route:
 | **Transform** | 基础表达式 | + VARIANT, JSON函数 | 半结构化数据处理 |
 | **路由配置** | 简单通配符 | + 正则表达式, 捕获组 | 复杂分库分表场景 |
 | **多表同步** | 基础支持 | 增强表发现, 动态路由 | 万级表同步优化 |
+| **Fluss 支持** | 基础接入 | + Fluss 0.9, 生产级 schema evolution | 实时湖仓同步 |
 
 ### 3.2 Flink CDC 3.6.0与生态系统关系
 
@@ -310,7 +317,7 @@ route:
 │  │ └──────────┘ │    │ └──────────┘ │    │ ├──────────┤ │              │
 │  │              │    │              │    │ │  Hudi    │ │◀── NEW       │
 │  │              │    │              │    │ ├──────────┤ │              │
-│  │              │    │              │    │ │  Fluss   │ │◀── ENHANCED  │
+│  │              │    │              │    │ │Fluss 0.9 │ │◀── ENHANCED  │
 │  │              │    │              │    │ └──────────┘ │              │
 │  └──────────────┘    └──────────────┘    └──────────────┘              │
 │                                                                         │
@@ -359,14 +366,14 @@ route:
 ```java
 import java.util.Optional;
 
-// JDK 11代码示例（Flink CDC 3.6.0内部实现）
+// JDK 11代码示例(Flink CDC 3.6.0内部实现)
 public class SchemaRegistry {
-    // var类型推断（JDK 10+）
+    // var类型推断(JDK 10+)
     public Optional<Schema> lookupSchema(String tableName) {
         var cacheKey = buildCacheKey(tableName);  // 编译器推断类型
         var cached = schemaCache.get(cacheKey);
 
-        // String.isBlank()（JDK 11）
+        // String.isBlank()(JDK 11)
         if (tableName == null || tableName.isBlank()) {
             return Optional.empty();
         }
@@ -374,7 +381,7 @@ public class SchemaRegistry {
         return Optional.ofNullable(cached);
     }
 
-    // 使用新的Collection.toArray方法（JDK 11）
+    // 使用新的Collection.toArray方法(JDK 11)
     public String[] getTableNames() {
         return registeredTables.toArray(String[]::new);
     }
@@ -457,7 +464,7 @@ CDC 3.0的简单通配符路由无法处理复杂的分库分表场景：
 ```
 分库分表场景:
 ├── 源端: db_001.order_202401, db_001.order_202402, ..., db_100.order_202412
-├── 传统路由: db_*.* → ods.all_orders (全部合并，丢失来源信息)
+├── 传统路由: db_*.* → ods.all_orders (全部合并,丢失来源信息)
 └── 正则路由: db_(\d+)\.(order_\d+) → ods.orders_db$1 (保留数据库标识)
 
 多租户场景:
@@ -553,14 +560,14 @@ source:
   type: oracle
   name: oracle-production-source
 
-  # 连接配置（使用PDB）
+  # 连接配置(使用PDB)
   hostname: ${ORACLE_HOST}
   port: 1521
   username: ${CDC_USER}
   password: ${CDC_PASSWORD}
   database-list: ${PDB_NAME}
 
-  # 表选择（正则表达式）
+  # 表选择(正则表达式)
   schema-list: ${SCHEMA_PATTERN}
   table-list: ${TABLE_PATTERN}
 
@@ -569,7 +576,7 @@ source:
   scan.incremental.snapshot.chunk.size: 8096
   scan.snapshot.fetch.size: 1024
 
-  # LogMiner配置（生产环境优化）
+  # LogMiner配置(生产环境优化)
   debezium.log.mining.strategy: online_catalog
   debezium.log.mining.continuous.mine: true
   debezium.log.mining.batch.size.min: 1000
@@ -577,7 +584,7 @@ source:
   debezium.log.mining.sleep.time.min.ms: 100
   debezium.log.mining.sleep.time.max.ms: 3000
 
-  # 心跳配置（检测长时间无变更场景）
+  # 心跳配置(检测长时间无变更场景)
   debezium.heartbeat.interval.ms: 10000
   debezium.heartbeat.action.query: SELECT 1 FROM DUAL
 
@@ -678,7 +685,7 @@ transform:
       HIRE_DATE,
       JOB_ID,
       SALARY,
-      -- JSON字段处理（假设有扩展信息JSON列）
+      -- JSON字段处理(假设有扩展信息JSON列)
       JSON_VALUE(EXT_INFO, '$.department') AS DEPT_CODE,
       JSON_QUERY(EXT_INFO, '$.skills[*]') AS SKILLS_ARRAY
     description: "HR employees with PII masking"
@@ -883,7 +890,7 @@ public class MultiSourceCDCMerge {
             .union(oracleStream)
             .union(pgStream);
 
-        // 统一处理：添加来源标记
+        // 统一处理:添加来源标记
         DataStream<UnifiedEvent> unifiedStream = mergedStream
             .map(new RichMapFunction<String, UnifiedEvent>() {
                 @Override
@@ -1156,16 +1163,9 @@ graph LR
 
 ## 8. 引用参考 (References)
 
-
-
-
-
-
-
-
-
-
+[^1]: Apache Flink Blog, "Apache Flink CDC 3.6.0 Release Announcement", March 30, 2026. https://flink.apache.org/2026/03/30/apache-flink-cdc-3.6.0-release-announcement/
+[^2]: Apache Flink CDC Documentation, "Flink CDC 3.6.0", 2026. https://nightlies.apache.org/flink/flink-cdc-docs-stable/docs/quickstart/
 
 ---
 
-*文档版本: v1.0 | 创建日期: 2026-04-08 | 最后更新: 2026-04-08 | 对应CDC版本: 3.6.0*
+*文档版本: v1.1 | 创建日期: 2026-04-08 | 最后更新: 2026-04-15 | 对应CDC版本: 3.6.0*

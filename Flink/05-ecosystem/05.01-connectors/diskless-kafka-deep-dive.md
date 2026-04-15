@@ -145,7 +145,7 @@ env.enableCheckpointing(60000);
 env.getCheckpointConfig().setCheckpointingMode(
     CheckpointingMode.EXACTLY_ONCE);
 
-// 非对齐检查点优化（应对对象存储延迟）
+// 非对齐检查点优化(应对对象存储延迟)
 env.getCheckpointConfig().enableUnalignedCheckpoints();
 ```
 

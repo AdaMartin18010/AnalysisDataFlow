@@ -56,11 +56,11 @@ WASI 0.3 基于 WebAssembly Component Model，定义了异步函数的低级 ABI
 
 /// 异步函数调用状态
 pub enum AsyncCallState {
-    /// 已开始，等待完成
+    /// 已开始,等待完成
     Started,
-    /// 已挂起，等待唤醒
+    /// 已挂起,等待唤醒
     Suspended { waker: Waker },
-    /// 已完成，结果就绪
+    /// 已完成,结果就绪
     Completed { result: Vec<Val> },
     /// 已取消
     Cancelled,
@@ -70,7 +70,7 @@ pub enum AsyncCallState {
 pub struct AsyncCallContext {
     /// 调用状态
     state: Arc<Mutex<AsyncCallState>>,
-    /// 调用句柄（用于取消）
+    /// 调用句柄(用于取消)
     handle: AsyncCallHandle,
 }
 
@@ -106,7 +106,7 @@ impl Future for AsyncCallFuture {
                 Poll::Ready(Err(Error::Cancelled))
             }
             _ => {
-                // 注册 waker，等待回调
+                // 注册 waker,等待回调
                 *state = AsyncCallState::Suspended {
                     waker: cx.waker().clone(),
                 };
@@ -201,7 +201,7 @@ impl<T> AsyncStore<T> {
         }).await?
     }
 
-    /// 真正的异步调用（WASI 0.3）
+    /// 真正的异步调用(WASI 0.3)
     pub async fn call_async_native(
         &mut self,
         func: &TypedFunc<impl WasmParams, impl WasmResults>,
@@ -272,7 +272,7 @@ impl<T> Future<T> {
 
     /// 等待 Future 完成
     pub async fn get(self) -> T {
-        // 如果已完成，直接返回
+        // 如果已完成,直接返回
         if let FutureState::Ready(value) = self.state.lock().unwrap() {
             return value;
         }
@@ -299,7 +299,7 @@ impl<T> Future<T> {
     }
 }
 
-/// Stream 类型（异步迭代器）
+/// Stream 类型(异步迭代器)
 pub struct Stream<T> {
     /// 内部通道
     receiver: mpsc::Receiver<T>,
@@ -327,7 +327,7 @@ impl<T> Stream<T> {
 #### 2.3.1 WASI 0.2 vs 0.3 Pollable 对比
 
 ```rust
-// WASI 0.2: 手动轮询模式（复杂）
+// WASI 0.2: 手动轮询模式(复杂)
 fn wasi_02_http_request() {
     // 1. 创建请求
     let request = outgoing_request("https://api.example.com");
@@ -348,9 +348,9 @@ fn wasi_02_http_request() {
     let response = request.get_result();
 }
 
-// WASI 0.3: 原生 async（简洁）
+// WASI 0.3: 原生 async(简洁)
 async fn wasi_03_http_request() {
-    // 直接 await，无需手动轮询
+    // 直接 await,无需手动轮询
     let response = wasi::http::request(
         Request::get("https://api.example.com")
     ).await?;
@@ -370,17 +370,17 @@ async fn wasi_03_http_request() {
 
 /// 统一的 Pollable 接口
 pub trait Pollable {
-    /// 检查是否就绪（非阻塞）
+    /// 检查是否就绪(非阻塞)
     fn ready(&self) -> bool;
 
-    /// 阻塞直到就绪（或超时）
+    /// 阻塞直到就绪(或超时)
     fn block(&self) -> Result<(), TimeoutError>;
 
-    /// 转换为 Future（WASI 0.3）
+    /// 转换为 Future(WASI 0.3)
     fn into_future(self) -> impl Future<Output = ()>;
 }
 
-/// 实现示例：Socket Pollable
+/// 实现示例:Socket Pollable
 pub struct SocketPollable {
     /// 底层 socket
     socket: TcpStream,
@@ -430,7 +430,7 @@ pub struct InputStream {
 }
 
 impl InputStream {
-    /// 读取数据（异步）
+    /// 读取数据(异步)
     pub async fn read(&self, buf: &mut [u8]) -> Result<usize, StreamError> {
         // 等待数据就绪
         loop {
@@ -475,7 +475,7 @@ pub struct OutputStream {
 }
 
 impl OutputStream {
-    /// 写入数据（异步）
+    /// 写入数据(异步)
     pub async fn write(&self, data: &[u8]) -> Result<(), StreamError> {
         self.sender.send(data.to_vec()).await
             .map_err(|_| StreamError::Closed)
@@ -495,11 +495,11 @@ impl OutputStream {
 ```rust
 // wasi:http/types@0.3.0-draft
 
-/// HTTP 响应体（流式）
+/// HTTP 响应体(流式)
 pub struct Body {
     /// 数据流
     stream: Stream<Vec<u8>>,
-    /// 尾部头信息（在流结束后）
+    /// 尾部头信息(在流结束后)
     trailers: Future<Option<Headers>>,
 }
 
@@ -529,13 +529,13 @@ impl Body {
 async fn handle_response(response: Response) -> Result<String, Error> {
     let body = response.body();
 
-    // 方式 1：流式处理（内存效率高）
+    // 方式 1:流式处理(内存效率高)
     let mut text = String::new();
     while let Some(chunk) = body.stream().next().await {
         text.push_str(std::str::from_utf8(&chunk)?);
     }
 
-    // 方式 2：一次性收集（简单）
+    // 方式 2:一次性收集(简单)
     let (data, _trailers) = body.collect().await?;
     let text = String::from_utf8(data)?;
 
@@ -698,14 +698,14 @@ sequenceDiagram
 
 ```mermaid
 graph TB
-    subgraph "WASI 0.2（单任务）"
+    subgraph "WASI 0.2(单任务)"
         A1[Task 1] --> P[Poll Loop]
         A2[Task 2] -.->|阻塞| P
         A3[Task 3] -.->|阻塞| P
         P --> R[Result]
     end
 
-    subgraph "WASI 0.3（多任务并发）"
+    subgraph "WASI 0.3(多任务并发)"
         B1[Task 1] --> S[Scheduler]
         B2[Task 2] --> S
         B3[Task 3] --> S
@@ -756,7 +756,7 @@ pub async fn zero_copy_read(
     stream: &InputStream,
     visitor: impl FnMut(&[u8]),
 ) -> Result<()> {
-    // 直接传递内部缓冲区引用，不拷贝
+    // 直接传递内部缓冲区引用,不拷贝
     stream.read_chunks(|chunk| {
         visitor(chunk);  // 零拷贝访问
         Ok(())
@@ -781,7 +781,7 @@ pub async fn zero_copy_read(
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│              WASI 0.2 vs 0.3 性能对比（1000 并发请求）            │
+│              WASI 0.2 vs 0.3 性能对比(1000 并发请求)            │
 ├─────────────────────────────────────────────────────────────────┤
 │ 指标                │ WASI 0.2    │ WASI 0.3    │ 提升          │
 ├─────────────────────────────────────────────────────────────────┤

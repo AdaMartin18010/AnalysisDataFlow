@@ -283,12 +283,12 @@ tasks:
 ```java
 import org.apache.flink.api.common.functions.Partitioner;
 
-// 问题：某些 Key 的数据量过大，导致个别 Subtask 成为瓶颈
+// 问题:某些 Key 的数据量过大,导致个别 Subtask 成为瓶颈
 
-// 诊断：在 Flink Web UI 中观察各 Subtask 的 Records Received 差异
-// 如果最大值 / 最小值 > 5，说明存在明显数据倾斜
+// 诊断:在 Flink Web UI 中观察各 Subtask 的 Records Received 差异
+// 如果最大值 / 最小值 > 5,说明存在明显数据倾斜
 
-// 优化方案 1：加盐分区（Salting）
+// 优化方案 1:加盐分区(Salting)
 public class SaltedKeyPartitioner implements Partitioner<String> {
     private final int saltCount;
 
@@ -304,7 +304,7 @@ public class SaltedKeyPartitioner implements Partitioner<String> {
     }
 }
 
-// 在聚合前使用盐键，聚合后再合并
+// 在聚合前使用盐键,聚合后再合并
 DataStream<Event> salted = events
     .map(e -> {
         int salt = ThreadLocalRandom.current().nextInt(10);
@@ -494,10 +494,10 @@ class FlinkBenchmarkComparator:
         for metric, data in results.items():
             direction = "↑" if data['change_pct'] > 0 else "↓"
             if metric in ['latency_p50', 'latency_p99', 'checkpoint_duration']:
-                # 对于延迟类指标，下降是好事
+                # 对于延迟类指标,下降是好事
                 status = "✅" if data['change_pct'] < -10 else "⚠️" if data['change_pct'] < 10 else "❌"
             else:
-                # 对于吞吐，上升是好事
+                # 对于吞吐,上升是好事
                 status = "✅" if data['change_pct'] > 10 else "⚠️" if data['change_pct'] > -10 else "❌"
             print(f"{metric}: {data['baseline']} -> {data['current']} ({direction}{abs(data['change_pct'])}%) {status}")
 

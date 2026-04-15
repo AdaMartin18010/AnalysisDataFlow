@@ -221,7 +221,7 @@ ssl.key.password=${KAFKA_SSL_KEY_PASSWORD}
 ssl.truststore.location=/etc/kafka/truststore.p12
 ssl.truststore.password=${KAFKA_SSL_TRUSTSTORE_PASSWORD}
 
-# 客户端认证（双向 TLS）
+# 客户端认证(双向 TLS)
 ssl.client.auth=required
 
 # SASL 配置
@@ -241,7 +241,7 @@ security.ssl.internal.key-password: ${FLINK_KEY_PASSWORD}
 security.ssl.internal.truststore: /opt/flink/ssl/flink.truststore
 security.ssl.internal.truststore-password: ${FLINK_TRUSTSTORE_PASSWORD}
 
-# 算法选择（性能优化）
+# 算法选择(性能优化)
 security.ssl.internal.protocol: TLSv1.3
 security.ssl.internal.algorithms: TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256
 
@@ -271,7 +271,7 @@ kafka-acls.sh --bootstrap-server kafka:9093 \
   --operation Read --operation Describe \
   --topic 'events.input' --group 'flink-consumer-group'
 
-# 拒绝规则（显式拒绝优于隐式）
+# 拒绝规则(显式拒绝优于隐式)
 kafka-acls.sh --bootstrap-server kafka:9093 \
   --add --deny-principal User:untrusted-app \
   --operation All --topic '*'

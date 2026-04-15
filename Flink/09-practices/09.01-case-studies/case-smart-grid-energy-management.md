@@ -1927,7 +1927,7 @@ public class DynamicPricingProcessFunction extends KeyedCoProcessFunction<
         state.setLoadForecast(loadForecast);
         gridState.update(state);
 
-        // 如果有可再生能源预测，触发定价计算
+        // 如果有可再生能源预测,触发定价计算
         if (state.getRenewableForecast() != null) {
             PricingSignal signal = calculatePrice(state);
             out.collect(signal);
@@ -1947,7 +1947,7 @@ public class DynamicPricingProcessFunction extends KeyedCoProcessFunction<
         state.setRenewableForecast(renewableForecast);
         gridState.update(state);
 
-        // 如果有负荷预测，触发定价计算
+        // 如果有负荷预测,触发定价计算
         if (state.getLoadForecast() != null) {
             PricingSignal signal = calculatePrice(state);
             out.collect(signal);
@@ -2035,7 +2035,7 @@ public class DynamicPricingProcessFunction extends KeyedCoProcessFunction<
         double reserveRatio = reserve / demand;
 
         if (reserveRatio > 0.2) {
-            // 供过于求，降价鼓励用电
+            // 供过于求,降价鼓励用电
             return 0.8 + (reserveRatio - 0.2) * -0.5;
         } else if (reserveRatio > 0) {
             // 供需平衡
@@ -2089,24 +2089,24 @@ public class DynamicPricingProcessFunction extends KeyedCoProcessFunction<
 
         switch (tier) {
             case SUPER_OFF_PEAK:
-                sb.append("最佳充电时段，建议EV充电、储能充电。");
+                sb.append("最佳充电时段,建议EV充电、储能充电。");
                 break;
             case OFF_PEAK:
-                sb.append("电价较低，适合可推迟负荷。");
+                sb.append("电价较低,适合可推迟负荷。");
                 break;
             case MID_PEAK:
-                sb.append("正常电价，无特殊建议。");
+                sb.append("正常电价,无特殊建议。");
                 break;
             case PEAK:
-                sb.append("电价高峰，建议减少非必要用电。");
+                sb.append("电价高峰,建议减少非必要用电。");
                 break;
             case CRITICAL_PEAK:
-                sb.append("紧急高峰，高耗电设备建议暂停。");
+                sb.append("紧急高峰,高耗电设备建议暂停。");
                 break;
         }
 
         if (supplyDemandRatio > 0.9) {
-            sb.append(" 可再生能源充裕，清洁电力占比高。");
+            sb.append(" 可再生能源充裕,清洁电力占比高。");
         }
 
         return sb.toString();

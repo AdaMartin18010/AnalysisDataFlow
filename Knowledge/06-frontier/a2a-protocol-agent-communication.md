@@ -1,8 +1,8 @@
 # Google A2A (Agent-to-Agent) 协议技术分析
 
-> **状态**: 前瞻 | **预计发布时间**: 2026-06 | **最后更新**: 2026-04-12
+> **状态**: ✅ 已发布 | **A2A v1.0**: 2026年初 GA | **最后更新**: 2026-04-15
 >
-> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+> ✅ A2A v1.0 已于 2026 年初正式发布，获 150+ 组织支持，并集成至 Azure AI Foundry、Amazon Bedrock AgentCore。
 > 所属阶段: Knowledge/06-frontier | 前置依赖: [MCP协议分析](mcp-protocol-agent-streaming.md) | 形式化等级: L3-L4
 
 ## 目录
@@ -25,6 +25,9 @@
     - [3.1 A2A vs MCP: 互补而非竞争](#31-a2a-vs-mcp-互补而非竞争)
     - [3.2 A2A + MCP 混合架构](#32-a2a--mcp-混合架构)
     - [3.3 A2A 与流处理（Flink）集成点](#33-a2a-与流处理flink集成点)
+    - [3.4 A2A 发布背景与企业采用](#34-a2a-发布背景与企业采用)
+      - [Def-K-06-236: A2A v1.0 核心增强](#def-k-06-236-a2a-v10-核心增强)
+      - [Prop-K-06-222: A2A 企业采用增长命题](#prop-k-06-222-a2a-企业采用增长命题)
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [4.1 为什么需要 A2A 协议？](#41-为什么需要-a2a-协议)
     - [4.2 反模式：避免的设计陷阱](#42-反模式避免的设计陷阱)
@@ -358,7 +361,26 @@ $$
 
 ### 3.4 A2A 发布背景与企业采用
 
-Google 于 **2025-04** 发布 A2A（Agent-to-Agent）协议，旨在解决异构 AI Agent 之间的互操作性问题[^3]。目前 A2A 与 MCP 一同由 **Linux Foundation AAIF** 共治，成为企业级 Agent 协作的开放标准[^4]。截至 2026-04，已有 **100+ 企业采用者** 加入 A2A 生态，涵盖 CRM、HR、数据分析与客服自动化等领域[^5]。
+Google 于 **2025-04** 发布 A2A（Agent-to-Agent）协议，旨在解决异构 AI Agent 之间的互操作性问题[^3]。**A2A v1.0** 于 **2026 年初** 正式发布，并于 **2026-04-09** 迎来一周年里程碑[^6]。目前 A2A 与 MCP 一同由 **Linux Foundation AAIF** 共治，成为企业级 Agent 协作的开放标准[^4]。截至 2026-04，已有 **150+ 组织** 支持 A2A 标准，涵盖 CRM、HR、数据分析与客服自动化等领域[^6]。
+
+#### Def-K-06-236: A2A v1.0 核心增强
+
+**A2A v1.0** 在初始发布基础上引入了四项关键企业级能力：
+
+$$
+\text{A2A}_{v1.0} \triangleq \text{A2A}_{base} + \langle \mathcal{S}_{signed}, \mathcal{M}_{tenant}, \mathcal{B}_{proto}, \mathcal{V}_{nego} \rangle
+$$
+
+其中：
+
+| 增强项 | 符号 | 说明 |
+|--------|------|------|
+| **Signed Agent Cards** | $\mathcal{S}_{signed}$ | Agent Card 支持加密签名身份验证，防止能力声明篡改 |
+| **多租户** | $\mathcal{M}_{tenant}$ | 原生支持多租户隔离与命名空间级别的资源边界 |
+| **双协议绑定** | $\mathcal{B}_{proto}$ | 同时支持 gRPC 与 REST/JSON-RPC 两种传输绑定 |
+| **版本协商** | $\mathcal{V}_{nego}$ | 向后兼容的协议版本协商机制，支持平滑迁移 |
+
+**云平台集成**：A2A v1.0 已原生集成到 **Azure AI Foundry** 与 **Amazon Bedrock AgentCore**[^6]。
 
 **企业采用特征**：
 
@@ -378,6 +400,7 @@ $$
 $$
 
 **工程意义**:
+
 - 多 Agent 系统（MAS）的复杂度随 Agent 数量 $N$ 以 $O(N^2)$ 增长，标准化协议可降低至 $O(N)$
 - 企业 IT 部门倾向于采用基金会治理的开放标准以降低厂商锁定风险
 
@@ -412,14 +435,14 @@ $$
 **反模式 1: 过度细粒度 Agent**
 
 ```python
-# ❌ 错误：每个函数都是独立 Agent
+# ❌ 错误:每个函数都是独立 Agent
 class CalculatorAgent:
     def add(self, a, b): return a + b
 
 class SubtractAgent:
     def sub(self, a, b): return a - b
 
-# 正确：相关功能聚合为一个 Agent
+# 正确:相关功能聚合为一个 Agent
 class MathAgent:
     def calculate(self, expression: str) -> float:
         # 处理多种数学运算
@@ -429,13 +452,13 @@ class MathAgent:
 **反模式 2: 同步阻塞调用**
 
 ```text
-# ❌ 错误：阻塞等待长时任务
+# ❌ 错误:阻塞等待长时任务
 result = a2a_client.send_task_sync(
     agent_url,
     {"query": "深度市场分析"}  # 可能需要数小时
 )
 
-# 正确：使用异步 + 回调/SSE
+# 正确:使用异步 + 回调/SSE
 async for event in a2a_client.send_subscribe(agent_url, task):
     if event.type == "status_update":
         update_ui(event.status)
@@ -446,10 +469,10 @@ async for event in a2a_client.send_subscribe(agent_url, task):
 **反模式 3: 忽视状态持久化**
 
 ```python
-# ❌ 错误：内存中存储 Task 状态
+# ❌ 错误:内存中存储 Task 状态
 task_states = {}  # 服务重启丢失
 
-# 正确：使用持久化状态存储
+# 正确:使用持久化状态存储
 class PersistentTaskStore:
     def save(self, task_id: str, state: TaskState):
         self.redis.setex(f"a2a:task:{task_id}", 86400, state.json())
@@ -613,7 +636,7 @@ def send_task():
 # 流式任务订阅端点
 @app.route("/a2a/tasks/sendSubscribe", methods=["POST"])
 def send_subscribe():
-    """流式任务提交（SSE）"""
+    """流式任务提交(SSE)"""
     data = request.json
     task_id = data["id"]
 
@@ -724,7 +747,7 @@ class A2AClient:
         message: dict,
         task_id: str = None
     ) -> AsyncIterator[dict]:
-        """流式订阅任务结果（SSE）"""
+        """流式订阅任务结果(SSE)"""
         task = {
             "id": task_id or generate_uuid(),
             "message": message
@@ -740,7 +763,7 @@ class A2AClient:
                     yield json.loads(line[6:])
 
 class AnalyticsOrchestratorAgent:
-    """分析编排 Agent：使用 A2A 协调多个 Specialist Agent"""
+    """分析编排 Agent:使用 A2A 协调多个 Specialist Agent"""
 
     def __init__(self):
         self.a2a = A2AClient()
@@ -823,7 +846,7 @@ from pyflink.table import StreamTableEnvironment
 from pyflink.cep import Pattern, PatternSelectFunction
 
 class A2AAlertAgent:
-    """A2A 告警 Agent：接收 Flink CEP 检测到的异常并触发多 Agent 响应"""
+    """A2A 告警 Agent:接收 Flink CEP 检测到的异常并触发多 Agent 响应"""
 
     def __init__(self, a2a_client: A2AClient):
         self.a2a = a2a_client
@@ -878,12 +901,12 @@ class A2AAlertAgent:
             }
         )
 
-# Flink CEP 作业：检测异常模式
+# Flink CEP 作业:检测异常模式
 def create_flink_cep_job():
     env = StreamExecutionEnvironment.get_execution_environment()
     table_env = StreamTableEnvironment.create(env)
 
-    # 定义异常模式：连续3次错误 + 响应时间 > 5s
+    # 定义异常模式:连续3次错误 + 响应时间 > 5s
     pattern = Pattern.begin("error") \
         .where(lambda evt: evt["status"] == "error") \
         .next("slow") \
@@ -1169,6 +1192,6 @@ graph TB
 
 ## 8. 引用参考 (References)
 
-[^3]: Google, "Agent-to-Agent Protocol (A2A)", 2025-04. https://google.github.io/A2A/
-[^4]: Linux Foundation AAIF, "Joint Governance Announcement: MCP & A2A", 2026-01. https://lf-ai-foundation.org/
-[^5]: Google Cloud, "A2A Enterprise Adoption Report", 2026-04. https://cloud.google.com/
+[^3]: Google, "Agent-to-Agent Protocol (A2A)", 2025-04. <https://google.github.io/A2A/>
+[^4]: Linux Foundation AAIF, "Joint Governance Announcement: MCP & A2A", 2026-01. <https://lf-ai-foundation.org/>
+[^6]: Linux Foundation, "A2A Protocol Surpasses 150 Organizations, Lands in Major Cloud Platforms", 2026-04-09. <https://www.linuxfoundation.org/press/a2a-protocol-surpasses-150-organizations-lands-in-major-cloud-platforms-and-sees-enterprise-production-use-in-first-year>

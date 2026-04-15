@@ -600,9 +600,9 @@ Pareto最优定义：\(E^*\) 是Pareto最优当且仅当不存在其他引擎 \(
 Root
 ├── Q1: 延迟要求? → < 100ms ✓ → 继续
 ├── Q2: 数据规模? → 100K TPS, 中等规模
-├── Q3: 处理复杂度? → 复杂（规则引擎、ML模型）
-├── Q4: 状态大小? → 5GB，需要精确状态管理
-├── Q5: 一致性要求? → EO（Exactly-Once）
+├── Q3: 处理复杂度? → 复杂(规则引擎、ML模型)
+├── Q4: 状态大小? → 5GB,需要精确状态管理
+├── Q5: 一致性要求? → EO(Exactly-Once)
 └── 推荐: Apache Flink
 ```
 
@@ -612,7 +612,7 @@ Root
 Root
 ├── Q1: 状态大小? → 5GB (medium)
 ├── Q2: 读写比例? → 读70%/写30%
-├── Q3: TTL需求? → 规则长期有效，无TTL
+├── Q3: TTL需求? → 规则长期有效,无TTL
 ├── Q4: 容错要求? → 快速恢复 (< 30s)
 └── 推荐: HashMapStateBackend (内存充足时) 或 RocksDBStateBackend
 ```
@@ -625,7 +625,7 @@ Root
 ├── Q2: 运维经验? → 中级
 ├── Q3: 自动化程度? → CI/CD已建立
 ├── Q4: 成本预算? → 充足
-├── Q5: 弹性需求? → 高（业务波动大）
+├── Q5: 弹性需求? → 高(业务波动大)
 └── 推荐: Kubernetes + Flink Operator
 ```
 
@@ -633,7 +633,7 @@ Root
 
 ```
 Root
-├── Q1: 准确性要求? → 100%（金融级）
+├── Q1: 准确性要求? → 100%(金融级)
 ├── Q2: 可接受错误率? → < 0.001%
 ├── Q3: 延迟容忍? → 可接受额外50ms延迟用于一致性保障
 └── 推荐: Exactly-Once (2PC + 幂等输出)
@@ -663,7 +663,7 @@ Root
 Root
 ├── Q1: 延迟要求? → 秒级
 ├── Q2: 数据源? → Kafka
-├── Q3: 处理复杂度? → 简单（解析、过滤、聚合）
+├── Q3: 处理复杂度? → 简单(解析、过滤、聚合)
 ├── Q4: 是否已有Kafka生态? → 是
 └── 推荐: Kafka Streams (或 Flink)
 ```
@@ -673,7 +673,7 @@ Root
 ```
 Root
 ├── Q1: 状态大小? → < 100MB (small)
-├── Q2: 访问模式? → 计数器（读写均衡）
+├── Q2: 访问模式? → 计数器(读写均衡)
 └── 推荐: InMemoryStore (Kafka Streams) / HashMapStateBackend (Flink)
 ```
 
@@ -720,9 +720,9 @@ Root
 Root
 ├── Q1: 数据来源? → IoT MQTT
 ├── Q2: 数据规模? → 超大规模 (1M+ 设备)
-├── Q3: 延迟敏感度? → 混合（告警低延迟，普通数据可延迟）
+├── Q3: 延迟敏感度? → 混合(告警低延迟,普通数据可延迟)
 ├── Q4: 状态大小? → 大状态 (500GB)
-├── Q5: 复杂事件处理? → 是（模式检测）
+├── Q5: 复杂事件处理? → 是(模式检测)
 └── 推荐: Apache Flink
 ```
 
@@ -732,7 +732,7 @@ Root
 Root
 ├── Q1: 状态大小? → 500GB (large)
 ├── Q2: 访问模式? → 点查为主
-├── Q3: TTL需求? → 设备离线清理，TTL=7天
+├── Q3: TTL需求? → 设备离线清理,TTL=7天
 └── 推荐: RocksDBStateBackend 或 ForStStateBackend
 ```
 
@@ -752,9 +752,9 @@ Root
 ```
 Root
 ├── Q1: 数据分类? → 告警 + 普通指标
-├── Q2: 告警一致性? → EO（不可丢失）
-├── Q3: 指标一致性? → ALO（可容忍丢失）
-└── 推荐: 混合一致性（告警流EO，指标流ALO）
+├── Q2: 告警一致性? → EO(不可丢失)
+├── Q3: 指标一致性? → ALO(可容忍丢失)
+└── 推荐: 混合一致性(告警流EO,指标流ALO)
 ```
 
 **最终架构**:
@@ -778,7 +778,7 @@ Root
 flowchart TD
     Root1["🎯 流处理引擎选型决策树<br/>输入: 业务场景 + 数据规模 + 延迟要求"]
 
-    %% 第一层：延迟要求
+    %% 第一层:延迟要求
     Root1 --> Q1{"Q1: 端到端延迟要求?"}
     Q1 -->|"< 1ms (超低延迟)"| Q2{"Q2: 数据规模?"}
     Q1 -->|"1-100ms (低延迟)"| Q3{"Q3: 处理复杂度?"}
@@ -908,7 +908,7 @@ flowchart TD
 flowchart TD
     Root2["🎯 状态后端选型决策树<br/>输入: 状态大小 + 访问模式 + 容错要求"]
 
-    %% 第一层：状态大小
+    %% 第一层:状态大小
     Root2 --> SQ1{"SQ1: 状态大小估计?"}
     SQ1 -->|"< 100MB (Tiny)"| SQ2{"SQ2: 单机 or 分布式?"}
     SQ1 -->|"100MB - 1GB (Small)"| SQ3{"SQ3: 内存充足?"}
@@ -917,7 +917,7 @@ flowchart TD
     SQ1 -->|"> 1TB (Huge)"| SQ6{"SQ6: 延迟要求?"}
 
     %% Tiny状态分支
-    SQ2 -->|"单机"| SR1["💾 HashMapStateBackend<br/>纯内存，最快访问"]
+    SQ2 -->|"单机"| SR1["💾 HashMapStateBackend<br/>纯内存,最快访问"]
     SQ2 -->|"分布式"| SR2["💾 HashMapStateBackend<br/>+ 快速网络同步"]
 
     %% Small状态分支
@@ -1042,7 +1042,7 @@ flowchart TD
 flowchart TD
     Root3["🎯 部署模式决策树<br/>输入: 团队规模 + 运维能力 + 成本预算"]
 
-    %% 第一层：团队规模与经验
+    %% 第一层:团队规模与经验
     Root3 --> DQ1{"DQ1: 团队规模?"}
     DQ1 -->|"小型 (< 5人)"| DQ2{"DQ2: Flink经验水平?"}
     DQ1 -->|"中型 (5-20人)"| DQ3{"DQ3: 运维经验水平?"}
@@ -1053,14 +1053,14 @@ flowchart TD
     DQ2 -->|"中级"| DQ6{"DQ6: 是否需要多Job共享资源?"}
     DQ2 -->|"高级"| DQ7{"DQ7: 基础设施现状?"}
 
-    DQ5 -->|"有限"| DR1["☁️ Serverless Flink<br/>免运维，按需付费"]
+    DQ5 -->|"有限"| DR1["☁️ Serverless Flink<br/>免运维,按需付费"]
     DQ5 -->|"中等"| DR2["☁️ 托管Flink服务<br/>AWS Kinesis/GCP Dataflow"]
     DQ5 -->|"充足"| DQ8{"DQ8: 长期成本考虑?"}
     DQ8 -->|"短期项目"| DR1
     DQ8 -->|"长期运营"| DR3["🔧 Application Mode<br/>YARN/K8s托管版"]
 
     DQ6 -->|"是"| DR4["⚠️ Session Mode风险<br/>不推荐小团队"]
-    DQ6 -->|"否"| DR5["🔧 Application Mode<br/>资源隔离，简化运维"]
+    DQ6 -->|"否"| DR5["🔧 Application Mode<br/>资源隔离,简化运维"]
 
     DQ7 -->|"已有K8s"| DR6["🔧 K8s Application Mode<br/>Native K8s部署"]
     DQ7 -->|"已有YARN"| DR7["🔧 YARN Application Mode<br/>Hadoop生态"]
@@ -1173,7 +1173,7 @@ flowchart TD
 flowchart TD
     Root4["🎯 一致性级别决策树<br/>输入: 数据准确性 + 延迟容忍 + 复杂度"]
 
-    %% 第一层：数据类型与准确性
+    %% 第一层:数据类型与准确性
     Root4 --> CQ1{"CQ1: 数据类型?"}
     CQ1 -->|"金融/交易数据"| CQ2{"CQ2: 涉及资金计算?"}
     CQ1 -->|"用户行为日志"| CQ3{"CQ3: 分析 or 计费?"}
@@ -1182,7 +1182,7 @@ flowchart TD
     CQ1 -->|"推荐/特征数据"| CQ6{"CQ6: 实时推荐 or 离线训练?"}
 
     %% 金融数据分支
-    CQ2 -->|"是"| CR1["🎯 Exactly-Once (EO)<br/>必须，资金准确无差错"]
+    CQ2 -->|"是"| CR1["🎯 Exactly-Once (EO)<br/>必须,资金准确无差错"]
     CQ2 -->|"否 (如风控标记)"| CQ7{"CQ7: 风控决策依赖?"}
     CQ7 -->|"核心风控"| CR2["🎯 Exactly-Once<br/>决策准确性关键"]
     CQ7 -->|"辅助风控"| CR3["✓ At-Least-Once (ALO)<br/>+ 业务去重"]
@@ -1218,7 +1218,7 @@ flowchart TD
     %% 推荐/特征分支
     CQ6 -->|"实时推荐"| CQ12{"CQ12: 推荐准确性敏感度?"}
     CQ6 -->|"特征工程"| CR15["✓ At-Least-Once<br/>特征可重复计算"]
-    CQ6 -->|"模型训练"| CR16["⚡ At-Most-Once<br/>样本量大，丢少量可接受"]
+    CQ6 -->|"模型训练"| CR16["⚡ At-Most-Once<br/>样本量大,丢少量可接受"]
 
     CQ12 -->|"极高 (金融推荐)"| CR17["🎯 Exactly-Once"]
     CQ12 -->|"高 (内容推荐)"| CR18["✓ At-Least-Once<br/>+ 曝光去重"]

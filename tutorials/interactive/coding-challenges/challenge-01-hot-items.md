@@ -25,6 +25,7 @@
 ### 示例输入
 
 ```
+# 伪代码示意，非完整可编译代码
 user_001, item_100, electronics, 2024-01-15T10:00:00Z
 user_002, item_100, electronics, 2024-01-15T10:01:00Z
 user_003, item_101, clothing, 2024-01-15T10:02:00Z
@@ -35,6 +36,7 @@ user_001, item_102, electronics, 2024-01-15T10:03:00Z
 ### 示例输出
 
 ```
+# 伪代码示意，非完整可编译代码
 === Top 10 Hot Items [10:00:00 - 10:05:00] ===
 Rank 1: item_100 (Category: electronics) - 125 views
 Rank 2: item_205 (Category: clothing) - 98 views
@@ -178,12 +180,12 @@ public class TopNItems extends ProcessWindowFunction<
             Iterable<Long> elements,
             Collector<List<ItemViewCount>> out) {
 
-        // 这里我们收集所有item的计数，然后排序
-        // 注意：实际应该在keyBy之前做全局Top N
+        // 这里我们收集所有item的计数,然后排序
+        // 注意:实际应该在keyBy之前做全局Top N
     }
 }
 
-// 更好的方式：使用 KeyedProcessFunction 实现全局 Top N
+// 更好的方式:使用 KeyedProcessFunction 实现全局 Top N
 public class GlobalTopN extends KeyedProcessFunction<
     String,                  // Key (使用固定key如"top10")
     ItemViewCount,           // 输入
@@ -207,7 +209,7 @@ public class GlobalTopN extends KeyedProcessFunction<
             Collector<String> out) throws Exception {
         itemState.add(value);
 
-        // 注册定时器，在窗口结束时计算Top N
+        // 注册定时器,在窗口结束时计算Top N
         ctx.timerService().registerEventTimeTimer(value.windowEnd + 1);
     }
 
@@ -278,7 +280,7 @@ public class HotItemsJob {
                 new WindowResultFunction()  // 添加窗口信息
             );
 
-        // 全局Top N（使用固定key）
+        // 全局Top N(使用固定key)
         windowedCounts
             .keyBy(count -> "top10")  // 所有数据到一个key
             .process(new GlobalTopN(10))
@@ -381,7 +383,7 @@ windowedCounts.addSink(new RedisSink<>(
 ### 扩展 3: 历史趋势对比
 
 ```java
-// 将当前窗口结果与上一窗口对比，输出增长最快的商品
+// 将当前窗口结果与上一窗口对比,输出增长最快的商品
 
 import org.apache.flink.api.common.state.ValueState;
 

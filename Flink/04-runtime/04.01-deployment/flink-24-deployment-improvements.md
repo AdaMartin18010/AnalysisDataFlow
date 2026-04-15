@@ -113,13 +113,13 @@ spec:
   image: flink:2.4.0
   flinkVersion: v2.4
   deploymentMode: native
-  # 新增：热更新配置
-  hotUpdate:  # [Flink 2.4 前瞻] 配置段为规划特性，可能变动
+  # 新增:热更新配置
+  hotUpdate:  # [Flink 2.4 前瞻] 配置段为规划特性,可能变动
     enabled: true
     strategy: rolling
     maxUnavailable: 1
-  # 新增：部署策略
-  deploymentStrategy:  # [Flink 2.4 前瞻] 配置段为规划特性，可能变动
+  # 新增:部署策略
+  deploymentStrategy:  # [Flink 2.4 前瞻] 配置段为规划特性,可能变动
     type: Canary
     canary:
       steps:
@@ -223,16 +223,16 @@ metadata:
     flink.apache.org/config-version: "2"  # 版本追踪
 spec:
   flinkConfiguration:
-    # L1级：即时生效
+    # L1级:即时生效
     web.timeout: "60000"
     log4j.logger.org.apache.flink: "INFO"
 
-    # L2级：协调生效
+    # L2级:协调生效
     parallelism.default: "8"
     taskmanager.memory.process.size: "8g"
     taskmanager.numberOfTaskSlots: "4"
 
-    # L3级：仅记录，下次重启生效
+    # L3级:仅记录,下次重启生效
     state.backend: rocksdb
     state.checkpoint-storage: filesystem
 ```
@@ -275,9 +275,9 @@ spec:
         - name: flink-main-container
           env:
             # 启用优化特性
-            - name: FLINK_OPTIMIZED_ROLLING_UPGRADE  # [Flink 2.4 前瞻] 环境变量为规划特性，可能变动
+            - name: FLINK_OPTIMIZED_ROLLING_UPGRADE  # [Flink 2.4 前瞻] 环境变量为规划特性,可能变动
               value: "true"
-            - name: FLINK_INCREMENTAL_STATE_TRANSFER  # [Flink 2.4 前瞻] 环境变量为规划特性，可能变动
+            - name: FLINK_INCREMENTAL_STATE_TRANSFER  # [Flink 2.4 前瞻] 环境变量为规划特性,可能变动
               value: "true"
             - name: FLINK_PREDICTIVE_CONNECTION_POOL
               value: "true"
@@ -524,7 +524,7 @@ spec:
     resource:
       memory: "4g"
       cpu: 2
-    # 资源限制（硬限制）
+    # 资源限制(硬限制)
     limits:
       memory: "6g"
       cpu: 4
@@ -552,7 +552,7 @@ spec:
             averageUtilization: 70
 
   # 突发配额配置
-  burstQuota:  # [Flink 2.4 前瞻] 配置段为规划特性，可能变动
+  burstQuota:  # [Flink 2.4 前瞻] 配置段为规划特性,可能变动
     enabled: true
     maxBurstDuration: 30m
     cooldownPeriod: 2h
@@ -864,7 +864,7 @@ else:
 └─────────────────────────────────────────────────────────────────────────┘
                               ▲
                               │
-                    优先级：L5 > L4 > L3 > L2 > L1
+                    优先级:L5 > L4 > L3 > L2 > L1
 ```
 
 ---
@@ -905,7 +905,7 @@ else:
 1. **命令式更新的风险**：
 
    ```bash
-   # 危险：直接修改Pod
+   # 危险:直接修改Pod
    kubectl exec -it flink-taskmanager-xyz -- /bin/sh
    > vi conf/flink-conf.yaml  # 修改不持久化
    > bin/taskmanager.sh restart  # 服务中断
@@ -922,7 +922,7 @@ else:
 **声明式热更新优势**：
 
 ```yaml
-# 声明式：版本可控、可审计、可回滚
+# 声明式:版本可控、可审计、可回滚
 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
@@ -944,7 +944,7 @@ status:
 **场景**：运维人员直接修改TaskManager内存配置
 
 ```bash
-# ❌ 错误做法：直接修改容器
+# ❌ 错误做法:直接修改容器
 kubectl exec flink-taskmanager-0 -- sed -i 's/4g/8g/' /opt/flink/conf/flink-conf.yaml
 kubectl exec flink-taskmanager-0 -- kill -HUP 1
 ```
@@ -961,7 +961,7 @@ kubectl exec flink-taskmanager-0 -- kill -HUP 1
 **正确做法**：
 
 ```bash
-# ✅ 正确做法：通过Operator声明式更新
+# ✅ 正确做法:通过Operator声明式更新
 kubectl patch flinkdeployment my-job --type merge -p '
 {
   "spec": {
@@ -1025,7 +1025,7 @@ flowchart TD
 **前提假设**:
 
 ```
-A1: 外部存储系统（S3/HDFS）可用且持久
+A1: 外部存储系统(S3/HDFS)可用且持久
 A2: DNS/负载均衡器支持快速切换
 A3: Green环境通过健康检查后才接收流量
 ```
@@ -1036,11 +1036,11 @@ A3: Green环境通过健康检查后才接收流量
 ∀ t ∈ DeploymentPeriod:
   Available(Blue, t) ∨ Available(Green, t)
 
-证明：
-1. 初始状态：Blue运行，Green创建中
-2. 切换前：Blue运行，Green运行但不接收流量
-3. 切换时：DNS更新期间，部分请求到Blue，部分到Green
-4. 切换后：Green运行，Blue保持（用于回滚）
+证明:
+1. 初始状态:Blue运行,Green创建中
+2. 切换前:Blue运行,Green运行但不接收流量
+3. 切换时:DNS更新期间,部分请求到Blue,部分到Green
+4. 切换后:Green运行,Blue保持(用于回滚)
 
 ∴ 任何时刻至少一个环境可用
 ```
@@ -1106,7 +1106,7 @@ Impact ≤ α × T × (t_detect + t_rollback)
 当 α = 10%, t_detect = 1min, t_rollback = 30s:
 Impact ≤ 0.10 × T × 90s = 9 × T (seconds)
 
-相比全量发布（α=100%），影响降低10倍
+相比全量发布(α=100%),影响降低10倍
 ```
 
 **自动回滚实现**：
@@ -1239,7 +1239,7 @@ operatorConfiguration:
     enabled: true
     port: 9999
 
-# Webhook配置（准入控制）
+# Webhook配置(准入控制)
 webhook:
   enabled: true
   cert:
@@ -1375,20 +1375,20 @@ spec:
     resource:
       memory: "8g"
       cpu: 4
-    replicas: 6  # 从4增加到6（热更新支持）
+    replicas: 6  # 从4增加到6(热更新支持)
 
   flinkConfiguration:
-    # L1级：即时生效
+    # L1级:即时生效
     web.timeout: "60000"
     web.checkpoints.history: "20"
 
-    # L2级：协调生效（需要TM配合）
+    # L2级:协调生效(需要TM配合)
     parallelism.default: "8"
     taskmanager.memory.network.fraction: "0.15"
     taskmanager.memory.network.min: "128mb"
     taskmanager.memory.network.max: "512mb"
 
-    # L3级：仅记录，下次重启生效
+    # L3级:仅记录,下次重启生效
     state.backend: rocksdb
     state.backend.incremental: "true"
     state.checkpoint-storage: filesystem
@@ -1509,7 +1509,7 @@ fi
 
 echo "当前环境: ${CURRENT_COLOR}, 目标环境: ${NEW_COLOR}"
 
-# 2. 创建新环境（Green）
+# 2. 创建新环境(Green)
 echo "创建 ${NEW_COLOR} 环境..."
 cat <<EOF | kubectl apply -f -
 apiVersion: flink.apache.org/v1beta1
@@ -1560,7 +1560,7 @@ sleep 5
 
 HEALTH_STATUS=$(curl -s http://localhost:8081/overview | jq -r '.[] | .health')
 if [ "$HEALTH_STATUS" != "ok" ]; then
-    echo "健康检查失败，执行回滚..."
+    echo "健康检查失败,执行回滚..."
     kubectl delete flinkdeployment ${APP_NAME}-${NEW_COLOR} -n ${NAMESPACE}
     kill $PF_PID
     exit 1
@@ -1568,15 +1568,15 @@ fi
 
 kill $PF_PID
 
-# 5. 流量切换（通过Service标签选择器）
+# 5. 流量切换(通过Service标签选择器)
 echo "切换流量到 ${NEW_COLOR} 环境..."
 kubectl patch service ${APP_NAME} -n ${NAMESPACE} -p "{\"spec\":{\"selector\":{\"deployment.color\":\"${NEW_COLOR}\"}}}"
 
-# 6. 保留旧环境一段时间（用于快速回滚）
+# 6. 保留旧环境一段时间(用于快速回滚)
 echo "保留 ${CURRENT_COLOR} 环境 30 分钟用于回滚..."
-echo "如需回滚，执行: kubectl patch service ${APP_NAME} -n ${NAMESPACE} -p '{\"spec\":{\"selector\":{\"deployment.color\":\"${CURRENT_COLOR}\"}}}'"
+echo "如需回滚,执行: kubectl patch service ${APP_NAME} -n ${NAMESPACE} -p '{\"spec\":{\"selector\":{\"deployment.color\":\"${CURRENT_COLOR}\"}}}'"
 
-# 7. （可选）删除旧环境
+# 7. (可选)删除旧环境
 # kubectl delete flinkdeployment ${APP_NAME}-${CURRENT_COLOR} -n ${NAMESPACE}
 
 echo "=== 蓝绿部署完成 ==="
@@ -1605,7 +1605,7 @@ spec:
     canary:
       # 流量切分步骤
       steps:
-        # 步骤1: 10%流量，观察10分钟
+        # 步骤1: 10%流量,观察10分钟
         - setWeight: 10
           pause: {duration: 10m}
           analysis:
@@ -1615,7 +1615,7 @@ spec:
               max: 5  # 错误率<5%
             successfulRunHistoryLimit: 5
 
-        # 步骤2: 50%流量，观察15分钟
+        # 步骤2: 50%流量,观察15分钟
         - setWeight: 50
           pause: {duration: 15m}
           analysis:
@@ -1948,7 +1948,7 @@ spec:
 # 分层资源配额管理配置
 
 ---
-# 集群级资源配额（集群管理员设置）
+# 集群级资源配额(集群管理员设置)
 apiVersion: v1
 kind: ResourceQuota
 metadata:
@@ -1964,7 +1964,7 @@ spec:
     flinkdeployments.flink.apache.org: "50"
 
 ---
-# 自动扩缩容配置（HPA）
+# 自动扩缩容配置(HPA)
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
@@ -2017,7 +2017,7 @@ spec:
     resource:
       memory: "4g"
       cpu: 2
-    # 硬资源限制（防止资源泄漏）
+    # 硬资源限制(防止资源泄漏)
     limits:
       memory: "6g"
       cpu: 4
@@ -2031,7 +2031,7 @@ spec:
       memory: "12g"
       cpu: 8
 
-  # 自动扩缩容（受配额限制）
+  # 自动扩缩容(受配额限制)
   podTemplate:
     spec:
       containers:
@@ -2282,13 +2282,13 @@ check_storage() {
         jq -r '.spec.flinkConfiguration."state.checkpoints.dir" // empty')
 
     if [[ ${CHECKPOINT_DIR} == s3://* ]]; then
-        echo "✅ 使用S3存储检查点，请确保启用服务端加密"
+        echo "✅ 使用S3存储检查点,请确保启用服务端加密"
     elif [[ ${CHECKPOINT_DIR} == gs://* ]]; then
-        echo "✅ 使用GCS存储检查点，请确保启用服务端加密"
+        echo "✅ 使用GCS存储检查点,请确保启用服务端加密"
     elif [[ ${CHECKPOINT_DIR} == wasb://* ]] || [[ ${CHECKPOINT_DIR} == abfs://* ]]; then
-        echo "✅ 使用Azure存储检查点，请确保启用服务端加密"
+        echo "✅ 使用Azure存储检查点,请确保启用服务端加密"
     elif [[ ${CHECKPOINT_DIR} == hdfs://* ]]; then
-        echo "⚠️ 使用HDFS存储，请确保启用透明加密（TDE）"
+        echo "⚠️ 使用HDFS存储,请确保启用透明加密(TDE)"
     fi
 }
 
@@ -2354,9 +2354,9 @@ fi
 echo ""
 echo "=== 安全检查总结 ==="
 if [ ${EXIT_CODE} -eq 0 ]; then
-    echo "✅ 所有安全检查通过，允许部署"
+    echo "✅ 所有安全检查通过,允许部署"
 else
-    echo "❌ 安全检查失败，请修复上述问题后重新检查"
+    echo "❌ 安全检查失败,请修复上述问题后重新检查"
 fi
 
 exit ${EXIT_CODE}
@@ -2374,7 +2374,7 @@ chmod +x security-gate-check.sh
   run: |
     ./scripts/security-gate-check.sh ${{ env.NAMESPACE }} ${{ env.DEPLOYMENT_NAME }}
     if [ $? -ne 0 ]; then
-      echo "安全检查失败，终止部署"
+      echo "安全检查失败,终止部署"
       exit 1
     fi
 ```
@@ -2702,8 +2702,8 @@ deployment_pre_checklist:
   基础设施检查:
     - [ ] Kubernetes集群版本 >= 1.25
     - [ ] Flink Kubernetes Operator已安装 >= 1.12
-    - [ ] 存储类（StorageClass）可用
-    - [ ] 网络插件（CNI）正常运行
+    - [ ] 存储类(StorageClass)可用
+    - [ ] 网络插件(CNI)正常运行
 
   资源配置检查:
     - [ ] ResourceQuota已配置且充足
@@ -2725,7 +2725,7 @@ deployment_pre_checklist:
 
   网络检查:
     - [ ] Service端口配置正确
-    - [ ] Ingress配置正确（如使用）
+    - [ ] Ingress配置正确(如使用)
     - [ ] 外部依赖可访问
 
   监控检查:
@@ -2785,7 +2785,7 @@ blue_green_deployment_checklist:
     - [ ] 使用Blue的Savepoint部署Green
     - [ ] 等待Green环境就绪
     - [ ] 验证Green健康检查通过
-    - [ ] 预热Green环境（可选）
+    - [ ] 预热Green环境(可选)
     - [ ] 在Green运行验证测试
 
   流量切换:
@@ -2796,7 +2796,7 @@ blue_green_deployment_checklist:
     - [ ] 监控错误率和延迟
 
   切换后:
-    - [ ] 保留Blue环境（保留期）
+    - [ ] 保留Blue环境(保留期)
     - [ ] 更新监控目标
     - [ ] 通知相关人员
     - [ ] 更新文档
@@ -2822,7 +2822,7 @@ canary_release_checklist:
     - [ ] 确认回滚流程
 
   步骤1 - 10%流量:
-    - [ ] 部署Canary版本（10%）
+    - [ ] 部署Canary版本(10%)
     - [ ] 监控错误率 < 5%
     - [ ] 监控延迟P99 < 500ms
     - [ ] 监控吞吐量正常
@@ -2863,9 +2863,9 @@ canary_release_checklist:
 ### 9.1 配置管理最佳实践
 
 ```yaml
-# 最佳实践：分层配置管理
+# 最佳实践:分层配置管理
 
-# 1. 全局默认配置（Git管理）
+# 1. 全局默认配置(Git管理)
 flink-conf-global.yaml: |
   # 生产环境默认值
   state.backend: rocksdb
@@ -2873,7 +2873,7 @@ flink-conf-global.yaml: |
   execution.checkpointing.mode: EXACTLY_ONCE
   execution.checkpointing.interval: 60s
 
-# 2. 环境特定配置（ConfigMap）
+# 2. 环境特定配置(ConfigMap)
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -2882,7 +2882,7 @@ data:
   ENV: "production"
   LOG_LEVEL: "INFO"
 
-# 3. 作业特定配置（FlinkDeployment）
+# 3. 作业特定配置(FlinkDeployment)
 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
@@ -2913,8 +2913,8 @@ spec:
 upgrade_strategy_selection:
   rolling_upgrade:
     when:
-      - "配置变更（L2级别）"
-      - "小版本升级（patch）"
+      - "配置变更(L2级别)"
+      - "小版本升级(patch)"
       - "资源调整"
       - "容忍<30s中断"
     threshold:
@@ -2923,7 +2923,7 @@ upgrade_strategy_selection:
 
   blue_green:
     when:
-      - "大版本升级（minor/major）"
+      - "大版本升级(minor/major)"
       - "架构变更"
       - "需要即时回滚能力"
       - "零容忍停机"
@@ -2939,7 +2939,7 @@ upgrade_strategy_selection:
       - "需要A/B测试"
       - "新功能验证"
     requirements:
-      - "流量切分能力（Istio/ALB）"
+      - "流量切分能力(Istio/ALB)"
       - "完善的监控体系"
       - "自动回滚机制"
 ```
@@ -3047,7 +3047,7 @@ spec:
             seccompProfile:
               type: RuntimeDefault
 
-          # 资源限制（防止DoS）
+          # 资源限制(防止DoS)
           resources:
             limits:
               memory: "8Gi"

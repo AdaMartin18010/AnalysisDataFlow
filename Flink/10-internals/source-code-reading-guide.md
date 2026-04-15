@@ -730,7 +730,7 @@ flowchart TD
 1. File → New → Project from Existing Sources
 2. 选择Flink源码根目录下的 pom.xml
 3. 选择 "Import Maven projects automatically"
-4. 等待依赖下载完成（约10-20分钟，视网络而定）
+4. 等待依赖下载完成(约10-20分钟,视网络而定)
 ```
 
 **Step 2: 源码关联配置**
@@ -738,7 +738,7 @@ flowchart TD
 ```
 1. File → Project Structure → Libraries
 2. 确认所有Flink模块源码已正确关联
-3. 对于SNAPSHOT版本，添加Maven仓库源码
+3. 对于SNAPSHOT版本,添加Maven仓库源码
 ```
 
 **Step 3: 编译配置**
@@ -921,7 +921,7 @@ Week 1: 基础概念与API
 Week 2: 运行时基础
 ├── Day 1-2: 阅读StreamGraph和JobGraph的构建
 ├── Day 3-4: 理解ExecutionGraph的结构
-└── Day 5-7: 跟踪Job提交流程（从CLI到Execution）
+└── Day 5-7: 跟踪Job提交流程(从CLI到Execution)
 
 Week 3: Task执行
 ├── Day 1-2: 阅读StreamTask的生命周期
@@ -933,14 +933,14 @@ Week 3: Task执行
 
 ```
 Week 1: 调度与资源管理
-├── Day 1-2: 深入Scheduler实现（DefaultScheduler）
+├── Day 1-2: 深入Scheduler实现(DefaultScheduler)
 ├── Day 3-4: 阅读SlotPool和SlotSharingManager
 └── Day 5-7: 理解Slot分配策略
 
 Week 2: Checkpoint与容错
 ├── Day 1-2: 阅读CheckpointCoordinator
 ├── Day 3-4: 理解Barrier对齐与反压
-└── Day 5-7: 阅读StateBackend实现（HeapStateBackend）
+└── Day 5-7: 阅读StateBackend实现(HeapStateBackend)
 
 Week 3: 网络层
 ├── Day 1-2: 阅读RecordWriter和ChannelSelector
@@ -967,7 +967,7 @@ Week 3-4: 部署与HA
 └── 故障恢复机制
 
 Week 5-6: 性能优化与调优
-├── 序列化框架（TypeInformation）
+├── 序列化框架(TypeInformation)
 ├── 内存管理与Unsafe操作
 └── Metrics系统实现
 ```

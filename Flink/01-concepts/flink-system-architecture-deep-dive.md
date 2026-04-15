@@ -63,7 +63,7 @@ JobManager的核心特性：
 
 ```
 TaskManager : ClusterWorkerNode
-TaskManager.slots : ℕ⁺  (正整数，表示Slot数量)
+TaskManager.slots : ℕ⁺  (正整数,表示Slot数量)
 TaskManager.tasks : 2^TaskInstance  (当前运行的任务集合)
 TaskManager.resources = {CPU, Memory, NetworkBuffer, ManagedMemory}
 TaskManager.heartbeat_interval : Duration
@@ -392,10 +392,10 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 // StreamExecutionEnvironment.execute() 入口
 public JobExecutionResult execute(String jobName) throws Exception {
-    // 1. 生成StreamGraph（逻辑图）
+    // 1. 生成StreamGraph(逻辑图)
     StreamGraph streamGraph = getStreamGraph();
 
-    // 2. 转换为JobGraph（物理图中间表示）
+    // 2. 转换为JobGraph(物理图中间表示)
     JobGraph jobGraph = StreamGraphTranslator.translate(streamGraph);
 
     // 3. 获取ClusterClient并提交
@@ -413,10 +413,10 @@ public JobExecutionResult execute(String jobName) throws Exception {
 private void handleSubmitJob(SubmitJob submitJob) {
     JobGraph jobGraph = submitJob.getJobGraph();
 
-    // 1. 持久化JobGraph（HA场景）
+    // 1. 持久化JobGraph(HA场景)
     jobGraphWriter.putJobGraph(jobGraph);
 
-    // 2. 创建JobManagerRunner（封装JobMaster）
+    // 2. 创建JobManagerRunner(封装JobMaster)
     JobManagerRunner runner = jobManagerRunnerFactory.createJobManagerRunner(
         jobGraph,
         this::handleJobManagerRunnerResult,
@@ -457,7 +457,7 @@ public void startScheduling() {
 **阶段4: Task部署**
 
 ```java
-// SlotPool申请到资源后，触发Task部署
+// SlotPool申请到资源后,触发Task部署
 private void deployTask(ExecutionVertex vertex, LogicalSlot slot) {
     // 1. 构建DeploymentDescriptor
     TaskDeploymentDescriptor tdd = TaskDeploymentDescriptorBuilder
@@ -510,7 +510,7 @@ public void submitTask(TaskDeploymentDescriptor tdd) {
 stateDiagram-v2
     [*] --> CREATED: 创建Execution
     CREATED --> SCHEDULED: 调度器分配资源
-    SCHEDULED --> DEPLOYING: 获得Slot，发送部署请求
+    SCHEDULED --> DEPLOYING: 获得Slot,发送部署请求
     DEPLOYING --> RUNNING: TaskManager确认部署成功
     RUNNING --> FINISHED: 任务正常完成
     RUNNING --> FAILED: 执行异常
@@ -653,17 +653,17 @@ JobManager (Checkpoint Coordinator)
   |
   |---- triggerCheckpoint(42) --------> 源算子Source-1, Source-2
   |
-  |                                   源算子保存offset，发送Barrier-42
+  |                                   源算子保存offset,发送Barrier-42
   |
   |<---- acknowledge(Source-1) -------- t1
   |<---- acknowledge(Source-2) -------- t1
   |
-  |                                   FlatMap收到Barrier，触发状态快照
+  |                                   FlatMap收到Barrier,触发状态快照
   |
   |<---- acknowledge(FlatMap-1) ------- t2
   |<---- acknowledge(FlatMap-2) ------- t2
   |
-  |                                   Window算子收到Barrier，触发状态快照
+  |                                   Window算子收到Barrier,触发状态快照
   |
   |<---- acknowledge(Window-1) -------- t3
   |<---- acknowledge(Window-2) -------- t3
@@ -720,7 +720,7 @@ public void receiveAcknowledgeMessage(AcknowledgeCheckpoint ack) {
 t0: Task抛出OutOfMemoryError
      |
      v
-    TaskManager捕获异常，向JobManager报告
+    TaskManager捕获异常,向JobManager报告
      |
      v
 t1: JobManager收到故障通知
@@ -735,7 +735,7 @@ t1: JobManager收到故障通知
 t2: 调度器计算重启范围
      |
      v
-    FailoverStrategy: 从Window-1开始，下游Sink-1也重启
+    FailoverStrategy: 从Window-1开始,下游Sink-1也重启
      |
      v
 t3: 取消受影响的Task (E-Window-1, E-Sink-1)
@@ -747,7 +747,7 @@ t4: 从最近成功的检查点恢复状态
     E-Window-1: 从检查点42恢复窗口状态
      |
      v
-t5: 重新部署Task，作业恢复运行
+t5: 重新部署Task,作业恢复运行
 ```
 
 ---
@@ -1131,7 +1131,7 @@ public class Execution implements AccessExecution, Archiveable<ArchivedExecution
 
     public enum ExecutionState {
         CREATED,        // 初始创建
-        SCHEDULED,      // 已调度，等待资源
+        SCHEDULED,      // 已调度,等待资源
         DEPLOYING,      // 正在部署到TM
         RUNNING,        // 正常运行
         FINISHED,       // 成功完成

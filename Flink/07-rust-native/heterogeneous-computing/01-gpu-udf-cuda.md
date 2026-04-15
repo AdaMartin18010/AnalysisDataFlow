@@ -359,7 +359,7 @@ import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
 import org.apache.flink.api.common.state.ValueState;
 
 
-// 反模式：小状态、低计算量、高吞吐要求低
+// 反模式:小状态、低计算量、高吞吐要求低
 class SmallStateProcessor extends KeyedProcessFunction<String, Event, Result> {
     ValueState<Integer> counter;
 
@@ -377,7 +377,7 @@ class SmallStateProcessor extends KeyedProcessFunction<String, Event, Result> {
 **场景 2: 复杂条件分支**
 
 ```cuda
-// 反模式：严重分支发散
+// 反模式:严重分支发散
 __global__ void divergentKernel(Data* data) {
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
     if (data[idx].type == TYPE_A) {
@@ -523,7 +523,7 @@ __global__ void cosineSimilarityKernel(
         } \
     } while(0)
 
-// Stream 池管理（每个 Task Slot 一个 Stream）
+// Stream 池管理(每个 Task Slot 一个 Stream)
 class CudaStreamPool {
 private:
     static constexpr int NUM_STREAMS = 4;
@@ -548,7 +548,7 @@ public:
     }
 };
 
-// 设备内存缓存（避免重复分配）
+// 设备内存缓存(避免重复分配)
 class DeviceBufferCache {
 private:
     struct Buffer {
@@ -688,7 +688,7 @@ __inline__ __device__ float warpReduceSum(float val) {
 }
 
 /**
- * 块级归约求和（使用共享内存）
+ * 块级归约求和(使用共享内存)
  */
 __inline__ __device__ float blockReduceSum(float val, float* sharedMem) {
     const int warpId = threadIdx.x / WARP_SIZE;
@@ -713,11 +713,11 @@ __inline__ __device__ float blockReduceSum(float val, float* sharedMem) {
 }
 
 /**
- * 主 Kernel：计算余弦相似度
+ * 主 Kernel:计算余弦相似度
  *
- * @param vecA    向量 A（设备内存）
- * @param vecB    向量 B（设备内存）
- * @param result  结果输出（设备内存）
+ * @param vecA    向量 A(设备内存)
+ * @param vecB    向量 B(设备内存)
+ * @param result  结果输出(设备内存)
  * @param dim     向量维度
  */
 __global__ void cosineSimilarityKernel(
@@ -735,7 +735,7 @@ __global__ void cosineSimilarityKernel(
     float normA = 0.0f;
     float normB = 0.0f;
 
-    // 网格步进循环（处理大维度）
+    // 网格步进循环(处理大维度)
     for (int i = blockIdx.x * blockDim.x + threadIdx.x;
          i < dim;
          i += blockDim.x * gridDim.x) {
@@ -760,8 +760,8 @@ __global__ void cosineSimilarityKernel(
 }
 
 /**
- * 批量版本：同时计算多个向量对的相似度
- * 更高效：摊平 Kernel 启动开销
+ * 批量版本:同时计算多个向量对的相似度
+ * 更高效:摊平 Kernel 启动开销
  */
 __global__ void batchCosineSimilarityKernel(
     const float* __restrict__ queries,   // [batchSize, dim]
@@ -802,7 +802,7 @@ __global__ void batchCosineSimilarityKernel(
 }
 
 /**
- * FP16 半精度版本（适用于 Tensor Core 加速）
+ * FP16 半精度版本(适用于 Tensor Core 加速)
  */
 __global__ void cosineSimilarityFP16Kernel(
     const half* __restrict__ vecA,
@@ -815,8 +815,8 @@ __global__ void cosineSimilarityFP16Kernel(
 
     float dot = 0.0f;
 
-    // 使用 WMMA API 进行矩阵乘法（适用于大批量）
-    // 简化版本：直接计算
+    // 使用 WMMA API 进行矩阵乘法(适用于大批量)
+    // 简化版本:直接计算
     for (int i = blockIdx.x * blockDim.x + threadIdx.x;
          i < dim;
          i += blockDim.x * gridDim.x) {
@@ -833,7 +833,7 @@ __global__ void cosineSimilarityFP16Kernel(
     #endif
 }
 
-// 编译指示：确保代码在多种架构上优化
+// 编译指示:确保代码在多种架构上优化
 #ifdef __CUDA_ARCH__
 #if __CUDA_ARCH__ >= 800
     // Ampere 优化
@@ -864,7 +864,7 @@ public class GpuUdfExample {
         // 注册 GPU UDF
         tEnv.createTemporarySystemFunction("gpu_cosine", GpuCosineSimilarity.class);
 
-        // 创建示例表（向量检索场景）
+        // 创建示例表(向量检索场景)
         tEnv.executeSql("""
             CREATE TABLE query_vectors (
                 query_id STRING,
@@ -1011,7 +1011,7 @@ public class GpuUdfBenchmark {
         return dot / (float)(Math.sqrt(normA) * Math.sqrt(normB));
     }
 
-    // 预期结果（A100 GPU）:
+    // 预期结果(A100 GPU):
     // Dimension | CPU (μs) | GPU (μs) | Speedup
     // ----------|----------|----------|----------
     // 128       | 0.5      | 15       | 0.03x    <- 不适合

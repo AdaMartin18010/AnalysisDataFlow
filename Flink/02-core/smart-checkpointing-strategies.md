@@ -765,7 +765,7 @@ public class AdaptiveIntervalAlgorithm {
 2. 获取上次检查点 SST 列表 L_{t-1}
 3. 新增文件: L_new = L_t \ L_{t-1}
 4. 删除文件: L_del = L_{t-1} \ L_t
-5. 变更文件: 通过文件元数据（大小、修改时间、checksum）检测
+5. 变更文件: 通过文件元数据(大小、修改时间、checksum)检测
 6. 输出: ΔSST = {新增} ∪ {变更} - {删除引用}
 ```
 
@@ -888,13 +888,13 @@ Phase 2: 提交阶段
 public class CascadeRecovery {
     public RecoveryStrategy determineRecovery(FailureContext ctx) {
         if (ctx.isLocalizedFailure()) {
-            // 单故障域失败，局部恢复
+            // 单故障域失败,局部恢复
             return new PartialRecovery(ctx.getFailedDomain());
         } else if (ctx.isCascadingFailure()) {
-            // 级联故障，先恢复根因域
+            // 级联故障,先恢复根因域
             return new RootCauseFirstRecovery(ctx.getFailureChain());
         } else {
-            // 全故障，全局恢复
+            // 全故障,全局恢复
             return new GlobalRecovery(ctx.getLastGlobalCheckpoint());
         }
     }
@@ -933,7 +933,7 @@ public class DynamicParallelismOptimizer {
     // 运行时动态调整
     public void adjustRuntime(CheckpointExecution exec) {
         if (exec.getProgress() < 0.3 && exec.getThroughput() < TARGET) {
-            // 早期进度慢，增加并行度
+            // 早期进度慢,增加并行度
             exec.increaseParallelism(ADDITIONAL_TASKS);
         }
     }
@@ -945,7 +945,7 @@ public class DynamicParallelismOptimizer {
 **资源感知的任务分配**：
 
 ```
-调度目标: 最小化完成时间，同时满足资源约束
+调度目标: 最小化完成时间,同时满足资源约束
 
 约束条件:
 - ∀task: Σ resources ≤ node_capacity
@@ -1210,7 +1210,7 @@ $$
 # ============================================================
 
 # 启用自适应检查点
-execution.checkpointing.mode: SMART  <!-- [Flink 2.4 前瞻] 智能检查点模式为规划特性，可能变动 -->
+execution.checkpointing.mode: SMART  <!-- [Flink 2.4 前瞻] 智能检查点模式为规划特性,可能变动 -->
 
 # 基础检查点间隔 (10分钟)
 execution.checkpointing.interval: 10min
@@ -1521,14 +1521,14 @@ public class LowLatencyJobConfig {
         // 2. 检查点配置
         CheckpointConfig checkpointConfig = env.getCheckpointConfig();
 
-        // 较短的基础间隔，快速恢复
+        // 较短的基础间隔,快速恢复
         checkpointConfig.setCheckpointInterval(Duration.ofSeconds(10));
 
-        // 启用非对齐检查点，减少对齐等待
+        // 启用非对齐检查点,减少对齐等待
         checkpointConfig.enableUnalignedCheckpoints();
         checkpointConfig.setAlignmentTimeout(Duration.ZERO);
 
-        // 启用局部检查点，减少单次影响范围
+        // 启用局部检查点,减少单次影响范围
         checkpointConfig.enablePartialCheckpointing(
             PartialCheckpointConfig.builder()
                 .setPartitionStrategy(PartitionStrategy.BY_OPERATOR)
@@ -1536,7 +1536,7 @@ public class LowLatencyJobConfig {
                 .build()
         );
 
-        // 3. 缓冲区消胀，减少 Barrier 传播延迟
+        // 3. 缓冲区消胀,减少 Barrier 传播延迟
         env.getConfig().setBufferDebloatingEnabled(true);
         env.getConfig().setBufferDebloatTarget(Duration.ofMillis(500));
 
@@ -1965,7 +1965,7 @@ execution.checkpointing.storage.tiered.enabled: true
 - 配置重点: 自适应间隔 + 局部检查点
 
 ```yaml
-execution.checkpointing.mode: SMART  <!-- [Flink 2.4 前瞻] 智能检查点模式为规划特性，可能变动 -->
+execution.checkpointing.mode: SMART  <!-- [Flink 2.4 前瞻] 智能检查点模式为规划特性,可能变动 -->
 execution.checkpointing.adaptive.enabled: true
 execution.checkpointing.partial.enabled: true
 execution.checkpointing.partial.partition-strategy: PRIORITY

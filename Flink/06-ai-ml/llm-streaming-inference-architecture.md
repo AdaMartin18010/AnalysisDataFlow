@@ -403,7 +403,7 @@ public class LLMInferenceAsyncFunction
 
     @Override
     public void open(Configuration parameters) {
-        // 初始化OpenAI服务，连接池自动管理
+        // 初始化OpenAI服务,连接池自动管理
         this.openAiService = new OpenAiService(apiKey, Duration.ofSeconds(30));
     }
 
@@ -637,10 +637,10 @@ import java.util.List;
 /**
  * 动态批处理ProcessFunction
  *
- * 功能: 根据负载动态调整批次大小，平衡延迟与吞吐量
+ * 功能: 根据负载动态调整批次大小,平衡延迟与吞吐量
  * 策略:
- * 1. 高负载: 增大批次，最大化吞吐量
- * 2. 低负载: 减小批次，最小化延迟
+ * 1. 高负载: 增大批次,最大化吞吐量
+ * 2. 低负载: 减小批次,最小化延迟
  */
 public class DynamicBatchingProcessFunction
     extends ProcessFunction<InferenceRequest, InferenceResponse>
@@ -685,7 +685,7 @@ public class DynamicBatchingProcessFunction
             updateBatchSize();
         }
 
-        // 注册定时器，防止请求无限等待
+        // 注册定时器,防止请求无限等待
         ctx.timerService().registerProcessingTimeTimer(
             currentTime + MAX_WAITING_TIME_MS
         );
@@ -724,11 +724,11 @@ public class DynamicBatchingProcessFunction
     private void updateBatchSize() {
         // 根据延迟反馈调整批次大小
         if (ewmaLatency > TARGET_LATENCY_MS * 1.2) {
-            // 延迟过高，减小批次
+            // 延迟过高,减小批次
             currentBatchSize = Math.max(MIN_BATCH_SIZE, currentBatchSize / 2);
         } else if (ewmaLatency < TARGET_LATENCY_MS * 0.8 &&
                    lastBatchProcessTime >= MAX_WAITING_TIME_MS) {
-            // 延迟较低且经常等待，增大批次
+            // 延迟较低且经常等待,增大批次
             currentBatchSize = Math.min(MAX_BATCH_SIZE, currentBatchSize + 2);
         }
     }
@@ -786,7 +786,7 @@ import okhttp3.sse.EventSources;
 /**
  * SSE流式生成SourceFunction
  *
- * 功能: 消费LLM的SSE流式输出，逐token输出
+ * 功能: 消费LLM的SSE流式输出,逐token输出
  * 特点:
  * 1. 低首Token延迟
  * 2. 逐token流式处理
@@ -873,7 +873,7 @@ public class LLMStreamingSource extends RichSourceFunction<TokenOutput> {
 
             @Override
             public void onFailure(EventSource eventSource, Throwable t, Response response) {
-                // 连接失败，触发重连
+                // 连接失败,触发重连
             }
 
             @Override

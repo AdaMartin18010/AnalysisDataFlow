@@ -212,12 +212,12 @@ OneInputStreamOperatorTestHarness<Integer, Integer> testHarness =
 testHarness.setup();
 testHarness.open();
 
-// 5. 输入事件（带时间戳）
+// 5. 输入事件(带时间戳)
 testHarness.processElement(1, 100);  // 事件时间 = 100ms
 testHarness.processElement(2, 200);
 testHarness.processElement(3, 300);
 
-// 6. 推进水印（触发窗口）
+// 6. 推进水印(触发窗口)
 testHarness.processWatermark(500);
 
 // 7. 验证输出
@@ -257,7 +257,7 @@ public void testStatefulOperator() throws Exception {
     harness.processElement(new Event("key2", 10), 150);
 
     // 验证各 key 的状态
-    // key1 的状态应该是 2，key2 的状态应该是 1
+    // key1 的状态应该是 2,key2 的状态应该是 1
 
     harness.close();
 }
@@ -527,7 +527,7 @@ public class DataCorrectnessValidator {
             .map(Map.Entry::getKey)
             .collect(Collectors.toList());
 
-        // 3. 顺序检查（如果业务要求）
+        // 3. 顺序检查(如果业务要求)
         boolean orderPreserved = checkOrderPreserved(inputs, outputs);
 
         // 4. 业务逻辑验证
@@ -696,7 +696,7 @@ public class WindowedAggregationTest {
 
     @Test
     public void testBasicWindowAggregation() throws Exception {
-        // 窗口大小：1秒 [0, 1000)
+        // 窗口大小:1秒 [0, 1000)
 
         // 输入事件 - 窗口 [0, 1000)
         testHarness.processElement(new Event("key1", 10), 100);
@@ -726,12 +726,12 @@ public class WindowedAggregationTest {
     @Test
     public void testLateDataHandling() throws Exception {
         // 设置允许延迟为 500ms
-        // 窗口 [0, 1000)，允许延迟到 1500
+        // 窗口 [0, 1000),允许延迟到 1500
 
         testHarness.processElement(new Event("key1", 10), 100);
         testHarness.processWatermark(1000);  // 触发窗口
 
-        // 迟到数据（在允许范围内）
+        // 迟到数据(在允许范围内)
         testHarness.processElement(new Event("key1", 20), 800);
 
         testHarness.processWatermark(1500);  // 延迟截止
@@ -916,20 +916,20 @@ public class WindowOperationProperties {
 
     /**
      * 属性1: 窗口输出的非负性
-     * 对于所有输入事件，窗口聚合结果应该是非负的
+     * 对于所有输入事件,窗口聚合结果应该是非负的
      */
     @Property
     public void windowResultShouldBeNonNegative(
             @From(EventGenerator.class) List<Event> events,
             @InRange(minInt = 100, maxInt = 10000) int windowSize) {
 
-        // 假设：所有事件值都是非负的
+        // 假设:所有事件值都是非负的
         assumeTrue(events.stream().allMatch(e -> e.getValue() >= 0));
 
         // 执行窗口聚合
         List<Result> results = runWindowAggregation(events, windowSize);
 
-        // 断言：所有结果都是非负的
+        // 断言:所有结果都是非负的
         assertTrue(results.stream().allMatch(r -> r.getSum() >= 0));
     }
 
@@ -1362,7 +1362,7 @@ public class StreamTestDataGenerator {
     }
 
     /**
-     * 生成乱序事件流（模拟真实延迟）
+     * 生成乱序事件流(模拟真实延迟)
      */
     public List<Event> generateOutOfOrderEvents(int count, long startTime,
                                                   long maxDelay) {
@@ -1379,7 +1379,7 @@ public class StreamTestDataGenerator {
             ));
         }
 
-        // 按事件时间排序（模拟乱序到达）
+        // 按事件时间排序(模拟乱序到达)
         events.sort(Comparator.comparingLong(Event::getTimestamp));
 
         return events;

@@ -180,7 +180,7 @@ DataSet<Vertex<Long, Double>> recommendations = bipartiteGraph
     )
     .getVertices();
 
-// 过滤物品顶点，按 PageRank 值排序推荐
+// 过滤物品顶点,按 PageRank 值排序推荐
 DataSet<Tuple2<Long, Double>> topItems = recommendations
     .filter(v -> isItemVertex(v.getId()))
     .map(v -> new Tuple2<>(v.getId(), v.getValue()))
@@ -195,7 +195,7 @@ DataSet<Tuple2<Long, Double>> topItems = recommendations
 **场景**: 金融交易网络中，通过社区发现识别异常资金聚集模式。
 
 ```java
-// 构建交易图：顶点=账户，边=交易（带金额和时间戳）
+// 构建交易图:顶点=账户,边=交易(带金额和时间戳)
 Graph<String, AccountInfo, Transaction> transactionGraph = ...;
 
 // 应用标签传播算法 (Label Propagation) 检测社区
@@ -206,7 +206,7 @@ Graph<String, AccountInfo, Transaction> communities = transactionGraph
         maxIterations
     );
 
-// 识别异常社区：规模小但交易密度高
+// 识别异常社区:规模小但交易密度高
 DataSet<Community> suspiciousCommunities = communities
     .getVertices()
     .groupBy(Community::getLabel)

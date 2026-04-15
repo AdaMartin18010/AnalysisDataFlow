@@ -417,7 +417,7 @@ flowchart TD
 
 ```mermaid
 flowchart TB
-    subgraph "功能覆盖评分（1-10）"
+    subgraph "功能覆盖评分(1-10)"
         direction LR
 
         subgraph SQL

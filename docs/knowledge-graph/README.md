@@ -244,7 +244,7 @@ const filters = {
 │  类型: 概念                         │
 │  引用: Thm-F-02-01                  │
 │                                     │
-│  描述: Flink的分布式快照机制，      │
+│  描述: Flink的分布式快照机制,      │
 │  用于实现exactly-once语义。         │
 │                                     │
 │  [查看文档] [查看源码] [相关节点]   │
@@ -291,7 +291,7 @@ if ('serviceWorker' in navigator) {
 ```javascript
 // 检测到新版本时提示
 if (newVersionAvailable) {
-    showNotification('新版本可用，点击刷新');
+    showNotification('新版本可用,点击刷新');
 }
 ```
 

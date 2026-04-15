@@ -378,7 +378,7 @@ class WebAssembly30Detector {
                 0x00, 0x00,              // tag 0, type 0
                 0x00, 0x00               // invalid section (truncated)
             ]);
-            // 如果浏览器支持 EH，会解析 tag 段
+            // 如果浏览器支持 EH,会解析 tag 段
             WebAssembly.validate(bytes);
             this.features.exceptionHandling = true;
         } catch (e) {
@@ -516,7 +516,7 @@ impl LargeStateUdf {
         }
 
         // 使用 SIMD 加速计算
-        // 注意：实际实现使用 wasm32-relaxed-simd 目标
+        // 注意:实际实现使用 wasm32-relaxed-simd 目标
         let mut sum = 0.0f32;
 
         // 16字节对齐的 SIMD 处理
@@ -524,7 +524,7 @@ impl LargeStateUdf {
         let remainder = chunks.remainder();
 
         for chunk in chunks {
-            // 在支持的平台上，这会被编译为 v128.f32x4.mul + f32x4.relaxed_madd
+            // 在支持的平台上,这会被编译为 v128.f32x4.mul + f32x4.relaxed_madd
             sum += chunk[0] * chunk[0] + chunk[1] * chunk[1]
                  + chunk[2] * chunk[2] + chunk[3] * chunk[3];
         }
@@ -570,7 +570,7 @@ impl FlinkWasmUdf {
         }
 
         for (i, &x) in inputs.iter().enumerate() {
-            output[i] = x * x; // 简化示例：平方计算
+            output[i] = x * x; // 简化示例:平方计算
         }
 
         Ok(())
@@ -578,14 +578,14 @@ impl FlinkWasmUdf {
 }
 
 /// 使用 Tail Calls 的递归 UDF 示例
-/// 避免栈溢出，适用于树形数据遍历
+/// 避免栈溢出,适用于树形数据遍历
 #[wasm_bindgen]
 pub fn recursive_aggregate(
     values: &[f64],
     index: usize,
     accumulator: f64
 ) -> f64 {
-    // 尾递归形式，WebAssembly 3.0 Tail Calls 会将其优化为循环
+    // 尾递归形式,WebAssembly 3.0 Tail Calls 会将其优化为循环
     if index >= values.len() {
         accumulator
     } else {
@@ -606,7 +606,7 @@ extern "C" {
 /// 使用 JS String Builtins 的字符串处理 UDF
 #[wasm_bindgen]
 pub fn process_string(input: &str) -> String {
-    // 直接调用 JavaScript String 方法，无需胶水代码
+    // 直接调用 JavaScript String 方法,无需胶水代码
     let len = length(input);
     format!("Input length: {}, processed: {}", len, input.to_uppercase())
 }

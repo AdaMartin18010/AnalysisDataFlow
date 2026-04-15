@@ -248,7 +248,7 @@ graph TB
 │  └── 边缘网关: 本地聚合、协议转换、离线缓存                       │
 │                                                                 │
 │  消息缓冲层                                                     │
-│  ├── Kafka: 高吞吐事件流缓冲，支持百万分区                       │
+│  ├── Kafka: 高吞吐事件流缓冲,支持百万分区                       │
 │  ├── 分区策略: Device-ID 哈希保证设备内顺序                      │
 │  └── 保留策略: 7 天用于故障恢复                                 │
 │                                                                 │
@@ -327,7 +327,7 @@ $$
 **挑战 1: 百万级设备接入**
 
 ```
-问题: 100万+ 设备并发连接，连接管理复杂
+问题: 100万+ 设备并发连接,连接管理复杂
 ├── 连接开销: 每个 TCP 连接占用内存
 ├── 连接抖动: 设备频繁上下线
 └── 负载均衡: 连接在网关间分配
@@ -424,7 +424,7 @@ Kafka 分区策略决策：
 分区数 = max(预期吞吐量/单分区吞吐, 消费者数)
 
 IoT 场景示例:
-├── 100万设备，每设备 1 msg/s
+├── 100万设备,每设备 1 msg/s
 ├── 总吞吐: 100万 msg/s
 ├── 单分区吞吐: 1万 msg/s (保守估计)
 └── 最小分区数: 100
@@ -499,8 +499,8 @@ Watermark 策略:
 
 ```
 Keyed State 设计:
-├── ValueState: 设备当前状态（在线/离线/告警）
-├── ListState: 最近 N 条事件（用于异常检测）
+├── ValueState: 设备当前状态(在线/离线/告警)
+├── ListState: 最近 N 条事件(用于异常检测)
 ├── MapState: 设备配置缓存
 └── TTL 配置: 30min 无更新自动清理
 
@@ -615,7 +615,7 @@ object IoTStreamProcessingJob {
       .setValueDeserializer(new SensorEventDeserializer())
       .build()
 
-    // Watermark: 容忍 30s 乱序，2min 空闲检测
+    // Watermark: 容忍 30s 乱序,2min 空闲检测
     val watermarkStrategy = WatermarkStrategy
       .forBoundedOutOfOrderness[SensorEvent](Duration.ofSeconds(30))
       .withTimestampAssigner((event, _) => event.timestamp)
@@ -634,7 +634,7 @@ object IoTStreamProcessingJob {
       .name("Data Validation")
       .uid("data-validation")
 
-    // 2. 设备状态管理（KeyedProcessFunction）
+    // 2. 设备状态管理(KeyedProcessFunction)
     val deviceStateStream = validStream
       .keyBy(_.deviceId)
       .process(new DeviceStateFunction())
@@ -642,7 +642,7 @@ object IoTStreamProcessingJob {
       .uid("device-state")
       .setParallelism(100)
 
-    // 3. 实时告警（Tumbling Window）
+    // 3. 实时告警(Tumbling Window)
     val alertStream = validStream
       .keyBy(_.deviceId)
       .window(TumblingEventTimeWindows.of(Time.seconds(10)))
@@ -652,7 +652,7 @@ object IoTStreamProcessingJob {
       .uid("temp-alert")
       .setParallelism(100)
 
-    // 4. 会话分析（Session Window）
+    // 4. 会话分析(Session Window)
     val sessionStream = validStream
       .keyBy(_.deviceId)
       .window(EventTimeSessionWindows.withGap(Time.minutes(5)))
@@ -750,7 +750,7 @@ import org.apache.flink.streaming.api.windowing.time.Time
 // 定义温度事件
 case class TemperatureEvent(deviceId: String, temperature: Double, timestamp: Long)
 
-// Watermark 策略：容忍 15 秒乱序
+// Watermark 策略:容忍 15 秒乱序
 val watermarkStrategy = WatermarkStrategy
   .forBoundedOutOfOrderness[TemperatureEvent](Duration.ofSeconds(15))
   .withTimestampAssigner((event, _) => event.timestamp)
@@ -803,7 +803,7 @@ class TemperatureAlertAggregate
 **场景**: 分析设备活跃会话，统计会话内事件数。
 
 ```scala
-// 会话窗口：5 分钟无数据视为会话结束
+// 会话窗口:5 分钟无数据视为会话结束
 val sessionStream = sensorEvents
   .keyBy(_.deviceId)
   .window(EventTimeSessionWindows.withDynamicGap((event: SensorEvent) => {
@@ -878,7 +878,7 @@ class LateDataAuditSink extends RichSinkFunction[SensorEvent] {
     auditLogger.warn(s"Late data: device=${event.deviceId}, " +
       s"eventTime=${event.timestamp}, currentTime=${System.currentTimeMillis()}")
 
-    // 2. 写入补录队列，离线补偿
+    // 2. 写入补录队列,离线补偿
     lateDataQueue.put(event)
 
     // 3. 更新监控指标
@@ -951,7 +951,7 @@ class DeviceStateFunction
       ))
     }
 
-    // 如果之前离线，现在转为在线
+    // 如果之前离线,现在转为在线
     if (!wasOnline) {
       onlineState.update(true)
       out.collect(DeviceStatus(
@@ -962,7 +962,7 @@ class DeviceStateFunction
       ))
     }
 
-    // 取消旧定时器，注册新定时器 (5 分钟后检查)
+    // 取消旧定时器,注册新定时器 (5 分钟后检查)
     Option(timerState.value()).foreach(ctx.timerService().deleteEventTimeTimer)
     val timeoutTime = currentTime + Time.minutes(5).toMilliseconds
     ctx.timerService().registerEventTimeTimer(timeoutTime)
@@ -974,7 +974,7 @@ class DeviceStateFunction
     ctx: OnTimerContext,
     out: Collector[DeviceStatus]
   ): Unit = {
-    // 定时器触发，设备 5 分钟无活动，标记为离线
+    // 定时器触发,设备 5 分钟无活动,标记为离线
     onlineState.update(false)
     alertState.update(false)
     out.collect(DeviceStatus(

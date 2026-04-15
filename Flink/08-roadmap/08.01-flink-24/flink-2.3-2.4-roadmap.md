@@ -13,7 +13,7 @@
 **Flink 2.3** 是2026年Q1-Q2发布的重要版本，聚焦：
 
 ```
-发布周期: 预计发布时间（以官方为准）
+发布周期: 预计发布时间(以官方为准)
 主要主题: AI Agent支持、安全增强、性能优化
 ```
 
@@ -42,7 +42,7 @@ FLIP-531: "Building and Running AI Agents in Flink"
 API支持:
   - Java: Agent API / DataStream
   - Python: PyFlink Agent API
-  - SQL: ~~CREATE AGENT~~ / ~~CREATE TOOL~~（未来可能的语法，概念设计阶段，实际尚未支持）
+  - SQL: ~~CREATE AGENT~~ / ~~CREATE TOOL~~(未来可能的语法,概念设计阶段,实际尚未支持)
 ```
 
 **路线图里程碑**：
@@ -209,11 +209,11 @@ Flink 2.x (2024+)
 
 新特性采用:
   - AI Agents: 需要模型API密钥、MCP Server配置
-  - SQL Hints: 可选，用于性能调优
+  - SQL Hints: 可选,用于性能调优
 
 废弃功能检查:
-  - DataSet API: 2.x已移除，需迁移到DataStream
-  - Queryable State: 2.x已移除，使用远程状态查询
+  - DataSet API: 2.x已移除,需迁移到DataStream
+  - Queryable State: 2.x已移除,使用远程状态查询
 ```
 
 ## 5. 形式证明 / 工程论证
@@ -253,12 +253,12 @@ $$
 # SSL安全更新 (必须)
 security.ssl.algorithms: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 
-# 如需兼容旧JDK，显式添加旧套件
+# 如需兼容旧JDK,显式添加旧套件
 # security.ssl.algorithms: TLS_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 
 # AI Agent配置 (可选)
-# 注: 以下为未来配置参数（概念），尚未正式实现
-# 注意: 以下配置为预测/规划，实际版本可能不同
+# 注: 以下为未来配置参数(概念),尚未正式实现
+# 注意: 以下配置为预测/规划,实际版本可能不同
 # ai.agent.enabled: true  (尚未确定)
 ai.agent.model.provider: openai
 ai.agent.model.endpoint: https://api.openai.com/v1
@@ -289,15 +289,15 @@ sink.kafka.transaction.timeout.ms: 900000
 <!-- AI Agent依赖 -->
 <dependency>
     <groupId>org.apache.flink</groupId>
-    <!-- 注: 以下为未来可能提供的模块（设计阶段），尚未正式发布 -->
-<!-- 注意: 以下依赖为预测/规划，实际版本可能不同 -->
+    <!-- 注: 以下为未来可能提供的模块(设计阶段),尚未正式发布 -->
+<!-- 注意: 以下依赖为预测/规划,实际版本可能不同 -->
     <!-- <artifactId>flink-ai-agent</artifactId> (尚未确定) -->
 </dependency>
 
 <!-- MCP协议支持 -->
 <dependency>
     <groupId>org.apache.flink</groupId>
-    <!-- MCP连接器（规划中） -->
+    <!-- MCP连接器(规划中) -->
 <artifactId>flink-mcp-connector</artifactId>
 </dependency>
 
@@ -322,8 +322,8 @@ services:
     environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
       - FLINK_PROPERTIES=
-          # 注: 未来配置参数（概念）
-# 注意: 以下配置为预测/规划，实际版本可能不同
+          # 注: 未来配置参数(概念)
+# 注意: 以下配置为预测/规划,实际版本可能不同
 # ai.agent.enabled=true  (尚未确定)
           ai.agent.model.provider=openai
           ai.agent.model.api.key=${OPENAI_API_KEY}
@@ -368,19 +368,19 @@ timeline
         2.1 : Materialized Table
             : Delta Join V1
 
-    section 规划中（以官方为准）
-        2.2 : VECTOR_SEARCH（规划中）
-            : Model DDL（实验性）
+    section 规划中(以官方为准)
+        2.2 : VECTOR_SEARCH(规划中)
+            : Model DDL(实验性)
             : PyFlink Async
 
-    section 规划中（以官方为准）
-        2.3 : AI Agents (FLIP-531)（规划中）
+    section 规划中(以官方为准)
+        2.3 : AI Agents (FLIP-531)(规划中)
             : 安全增强
             : Kafka 2PC
 
-    section 规划中（以官方为准）
-        2.4 : Agent GA（规划中）
-            : Serverless Flink（规划中）
+    section 规划中(以官方为准)
+        2.4 : Agent GA(规划中)
+            : Serverless Flink(规划中)
             : 自适应执行
 ```
 

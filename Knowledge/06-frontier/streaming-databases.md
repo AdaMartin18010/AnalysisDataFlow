@@ -392,7 +392,7 @@ CREATE SOURCE inventory_changes (
     change_time TIMESTAMP
 ) WITH (...);
 
--- 物化视图：实时库存
+-- 物化视图:实时库存
 CREATE MATERIALIZED VIEW realtime_inventory AS
 SELECT
     sku,
@@ -454,7 +454,7 @@ CREATE SOURCE transactions
 FROM POSTGRES CONNECTION pg_cdc (PUBLICATION 'mz_source')
 FOR TABLES (public.transactions);
 
--- 实时账户余额（带递归CTE支持）
+-- 实时账户余额(带递归CTE支持)
 CREATE MATERIALIZED VIEW account_balance AS
 SELECT
     account_id,
@@ -467,10 +467,10 @@ SELECT
 FROM transactions
 GROUP BY account_id;
 
--- 复杂递归查询：交易链路追踪
+-- 复杂递归查询:交易链路追踪
 CREATE MATERIALIZED VIEW transaction_chains AS
 WITH RECURSIVE chain AS (
-    -- 基础：直接交易
+    -- 基础:直接交易
     SELECT
         transaction_id,
         from_account,
@@ -482,7 +482,7 @@ WITH RECURSIVE chain AS (
 
     UNION ALL
 
-    -- 递归：追踪资金流动
+    -- 递归:追踪资金流动
     SELECT
         t.transaction_id,
         c.from_account,
@@ -497,7 +497,7 @@ WITH RECURSIVE chain AS (
 )
 SELECT * FROM chain;
 
--- 异常模式检测：短时间内多笔小额交易
+-- 异常模式检测:短时间内多笔小额交易
 CREATE MATERIALIZED VIEW suspicious_pattern AS
 SELECT
     from_account,

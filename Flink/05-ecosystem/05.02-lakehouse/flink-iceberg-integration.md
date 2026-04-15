@@ -17,9 +17,9 @@ IcebergTable = ⟨Namespace, Schema, Snapshot, PartitionSpec, MetadataLayer⟩
 
 其中:
 - Namespace: 表的逻辑命名空间 (database.table)
-- Schema: 列定义与类型系统，支持嵌套类型
+- Schema: 列定义与类型系统,支持嵌套类型
 - Snapshot: 不可变的时间点表状态集合
-- PartitionSpec: 分区策略定义（支持隐藏分区）
+- PartitionSpec: 分区策略定义(支持隐藏分区)
 - MetadataLayer: 三层元数据架构
 ```
 
@@ -33,15 +33,15 @@ CatalogLayer:
 
 SnapshotLayer (metadata-{uuid}.json):
   ├── snapshot_id: 唯一标识符
-  ├── parent_snapshot_id: 父快照引用（形成 DAG）
+  ├── parent_snapshot_id: 父快照引用(形成 DAG)
   ├── manifest_list: 指向 manifest-list-{uuid}.avro
   ├── schema_id: 当前快照使用的 schema 版本
   ├── partition_spec_id: 分区规范 ID
   └── timestamp_ms: 快照创建时间戳
 
 ManifestLayer:
-  ├── manifest-list.avro: manifest 文件列表，含分区统计
-  └── manifest.avro: 数据文件列表，含列级统计
+  ├── manifest-list.avro: manifest 文件列表,含分区统计
+  └── manifest.avro: 数据文件列表,含列级统计
 ```
 
 **数据文件层级**:
@@ -236,7 +236,7 @@ Output: 新增数据文件集合 ΔFiles
 - Month(ts):  TIMESTAMP → INT (年月编码)
 - Day(ts):    TIMESTAMP → INT (日期)
 - Hour(ts):   TIMESTAMP → INT (小时)
-- Bucket(n, col):  ANY → INT (哈希分桶，0..n-1)
+- Bucket(n, col):  ANY → INT (哈希分桶,0..n-1)
 - Truncate(w, col): STRING → STRING (前缀截断)
 ```
 
@@ -259,7 +259,7 @@ CREATE TABLE events (
     event_time TIMESTAMP(3),
     payload STRING
 ) PARTITIONED BY (
-    -- 按天分区，基于 event_time 自动派生
+    -- 按天分区,基于 event_time 自动派生
     days(event_time),
     -- 按 user_id 哈希分 16 桶
     bucket(16, user_id)
@@ -268,7 +268,7 @@ CREATE TABLE events (
     'catalog-name' = 'iceberg_catalog'
 );
 
--- 查询时无需指定分区列，自动分区裁剪
+-- 查询时无需指定分区列,自动分区裁剪
 SELECT * FROM events
 WHERE event_time >= TIMESTAMP '2024-01-01 00:00:00'
   AND event_time < TIMESTAMP '2024-01-02 00:00:00';
@@ -305,11 +305,11 @@ WHERE event_time >= TIMESTAMP '2024-01-01 00:00:00'
 │                                                             │
 │  2. 读取: 所有读操作基于 S_base 的快照状态                    │
 │                                                             │
-│  3. 写入: 生成新数据文件，本地构建 S_new                     │
+│  3. 写入: 生成新数据文件,本地构建 S_new                     │
 │                                                             │
 │  4. 提交: CAS 操作更新元数据指针                              │
 │     - 成功: 如果当前指针仍指向 S_base                       │
-│     - 失败: 如果指针已被其他事务更新，重试                   │
+│     - 失败: 如果指针已被其他事务更新,重试                   │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -330,23 +330,23 @@ WHERE event_time >= TIMESTAMP '2024-01-01 00:00:00'
 
 不可变性证明:
   设快照 s = (id, parent_id, manifest_list, timestamp)
-  由于 manifest_list 引用的是不可变的 Avro 文件，
-  且元数据 JSON 文件写入后不可修改（对象存储语义），
+  由于 manifest_list 引用的是不可变的 Avro 文件,
+  且元数据 JSON 文件写入后不可修改(对象存储语义),
   ∴ s 的所有字段在创建后不可变更。
 
 线性历史证明:
   定义偏序关系 ≤: s_i ≤ s_j  iff  s_j 可通过 parent 链追溯到 s_i
 
-  自反性: s ≤ s （显然成立）
+  自反性: s ≤ s (显然成立)
 
-  反对称性: 若 s_i ≤ s_j 且 s_j ≤ s_i，
+  反对称性: 若 s_i ≤ s_j 且 s_j ≤ s_i,
            则 s_i.parent* = s_j 且 s_j.parent* = s_i
-           由于 parent 关系是 DAG，不存在环路，
+           由于 parent 关系是 DAG,不存在环路,
            ∴ s_i = s_j
 
-  传递性: 若 s_i ≤ s_j 且 s_j ≤ s_k，
+  传递性: 若 s_i ≤ s_j 且 s_j ≤ s_k,
          则 s_k.parent* = s_j, s_j.parent* = s_i
-         ∴ s_k.parent* = s_i，即 s_i ≤ s_k
+         ∴ s_k.parent* = s_i,即 s_i ≤ s_k
 
   ∴ 快照历史构成偏序集 (V, ≤) ∎
 ```
@@ -361,27 +361,27 @@ WHERE event_time >= TIMESTAMP '2024-01-01 00:00:00'
 
 ```
 场景设定:
-- Checkpoint N 触发，Iceberg Sink 进入 preCommit 阶段
-- 写入数据文件到临时位置，生成 pending snapshot
-- Checkpoint N 失败，作业重启
+- Checkpoint N 触发,Iceberg Sink 进入 preCommit 阶段
+- 写入数据文件到临时位置,生成 pending snapshot
+- Checkpoint N 失败,作业重启
 
 幂等性保证:
 ┌─────────────────────────────────────────────────────────────┐
 │ Step 1: 重启后从 Checkpoint N-1 恢复                        │
 │                                                             │
-│ Step 2: 重新处理数据，再次触发 preCommit                    │
+│ Step 2: 重新处理数据,再次触发 preCommit                    │
 │         - 相同输入数据 → 相同数据文件内容                     │
-│         - Iceberg 文件命名包含 UUID，新文件路径不同           │
+│         - Iceberg 文件命名包含 UUID,新文件路径不同           │
 │                                                             │
-│ Step 3: Checkpoint N 成功，调用 commit                      │
+│ Step 3: Checkpoint N 成功,调用 commit                      │
 │         - 新 snapshot 提交成功                              │
-│         - 旧 pending snapshot 无人引用，成为孤儿             │
+│         - 旧 pending snapshot 无人引用,成为孤儿             │
 │                                                             │
 │ Step 4: 孤儿文件清理作业定期删除未引用文件                    │
 │         - 临时数据文件被清理                                │
 └─────────────────────────────────────────────────────────────┘
 
-结论: 即使 Checkpoint 多次失败重试，最终数据不重复 ∎
+结论: 即使 Checkpoint 多次失败重试,最终数据不重复 ∎
 ```
 
 ---
@@ -407,8 +407,8 @@ WHERE event_time >= TIMESTAMP '2024-01-01 00:00:00'
   Iceberg 快照的 timestamp_ms 是单调递增的:
   timestamp_ms(s_i) = commit_time(s_i)
 
-  由于 Flink 按 snapshot_id 顺序消费，
-  且 snapshot_id 与 timestamp_ms 正相关（非严格单调），
+  由于 Flink 按 snapshot_id 顺序消费,
+  且 snapshot_id 与 timestamp_ms 正相关(非严格单调),
 
   ∴ 消费序列保持了时间顺序 ∎
 ```
@@ -639,17 +639,17 @@ graph TB
 Lambda 架构痛点:
 ┌─────────────────────────────────────────────────────────────┐
 │  流处理层 (Kafka + Flink)                                    │
-│  ├── 低延迟，但存储成本高（SSD/内存）                         │
-│  └── 数据保留期短（天级）                                    │
+│  ├── 低延迟,但存储成本高(SSD/内存)                         │
+│  └── 数据保留期短(天级)                                    │
 │                                                             │
 │  批处理层 (Hive + Spark)                                     │
-│  ├── 低成本对象存储（S3/OSS）                                │
-│  └── 数据保留期长（年级）                                    │
+│  ├── 低成本对象存储(S3/OSS)                                │
+│  └── 数据保留期长(年级)                                    │
 │                                                             │
 │  问题:                                                       │
 │  1. 数据冗余: 同一份数据存两份                               │
 │  2. Schema 分裂: 流 Schema ≠ 批 Schema                       │
-│  3. 结果不一致: 流统计 ≠ 批统计（让用户困惑）                 │
+│  3. 结果不一致: 流统计 ≠ 批统计(让用户困惑)                 │
 └─────────────────────────────────────────────────────────────┘
 
 Iceberg 统一方案:
@@ -660,7 +660,7 @@ Iceberg 统一方案:
 │  └── 增量消费: Flink 流读变更数据                            │
 │                                                             │
 │  优势:                                                       │
-│  1. 单一真相源: 一份数据，多种访问模式                        │
+│  1. 单一真相源: 一份数据,多种访问模式                        │
 │  2. Schema 统一: 元数据层统一管理                            │
 │  3. 结果一致: 相同快照保证相同结果                            │
 └─────────────────────────────────────────────────────────────┘
@@ -683,7 +683,7 @@ Iceberg 统一方案:
 **性能边界量化**:
 
 ```
-场景: 10,000 条/秒写入，平均记录大小 1KB
+场景: 10,000 条/秒写入,平均记录大小 1KB
 
 配置参数:
 - Checkpoint 间隔: 60s
@@ -726,13 +726,13 @@ Iceberg 统一方案:
 风险边界:
 ┌─────────────────────────────────────────────────────────────┐
 │  风险 1: 长查询导致数据无法清理                              │
-│  缓解: 设置查询超时，或使用快照提示强制过期                   │
+│  缓解: 设置查询超时,或使用快照提示强制过期                   │
 │                                                             │
 │  风险 2: 级联删除误删数据                                    │
-│  缓解: 启用垃圾回收保护期（如 7 天）                          │
+│  缓解: 启用垃圾回收保护期(如 7 天)                          │
 │                                                             │
 │  风险 3: 元数据膨胀影响性能                                  │
-│  缓解: 定期压缩元数据文件，删除历史版本                       │
+│  缓解: 定期压缩元数据文件,删除历史版本                       │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -745,12 +745,12 @@ Iceberg 统一方案:
 ```
 Append 模式:
   操作: T_append(R) = Table ∪ R
-  特性: 仅追加，不可变
+  特性: 仅追加,不可变
   适用: 事件流、日志、时序数据
 
 UPSERT 模式 (基于 Equality Delete):
   操作: T_upsert(K, R) = (Table \ {r | r.K = R.K}) ∪ {R}
-  特性: 按主键更新，支持删除
+  特性: 按主键更新,支持删除
   适用: CDC 同步、维度表、状态表
 ```
 
@@ -773,11 +773,11 @@ IF 数据源是 CDC (MySQL/PostgreSQL):
     ELSE:
         → Append 模式
 ELSE IF 数据源是事件流 (Kafka):
-    → Append 模式（事件天然追加）
+    → Append 模式(事件天然追加)
 ELSE IF 需要维护最新状态:
     → UPSERT 模式 + 定期 Compaction
 ELSE:
-    → Append 模式（默认，性能最优）
+    → Append 模式(默认,性能最优)
 ```
 
 ---
@@ -793,7 +793,7 @@ ELSE:
 ```
 前提假设:
 - P1: Flink Checkpoint 机制保证作业状态的 Exactly-Once
-- P2: Iceberg 元数据更新是原子操作（基于对象存储的 put-if-absent）
+- P2: Iceberg 元数据更新是原子操作(基于对象存储的 put-if-absent)
 - P3: 数据文件写入和元数据提交满足因果序
 
 两阶段提交流程形式化:
@@ -808,43 +808,43 @@ ELSE:
 │ 3. 生成 pending snapshot P = (parent, manifest_list(F))           │
 │ 4. 向 Coordinator 汇报 P 和写入的文件列表                           │
 │                                                                  │
-│ 不变式 I1: F 已持久化到对象存储，但尚未被任何查询可见               │
+│ 不变式 I1: F 已持久化到对象存储,但尚未被任何查询可见               │
 └────────────────────────────────────────────────────────────────────┘
 
 ┌────────────────────────────────────────────────────────────────────┐
 │ Phase 2: Commit                                                   │
 │ ───────────────────────────────────────────────────────────────── │
-│ 触发条件: Checkpoint 成功（所有算子完成 preCommit）               │
+│ 触发条件: Checkpoint 成功(所有算子完成 preCommit)               │
 │                                                                  │
 │ 操作:                                                             │
 │ 1. Committer 按 Checkpoint 顺序提交 pending snapshots             │
 │ 2. 对 P 执行 commit_transaction():                                │
 │    a. 读取当前 metadata-pointer 指向的 M_current                  │
-│    b. 基于 M_current 创建新的 metadata M_new，包含 P               │
-│    c. 原子更新 metadata-pointer → M_new（CAS 操作）               │
+│    b. 基于 M_current 创建新的 metadata M_new,包含 P               │
+│    c. 原子更新 metadata-pointer → M_new(CAS 操作)               │
 │ 3. 通知 Coordinator 提交完成                                      │
 │                                                                  │
-│ 不变式 I2: P 已永久成为表历史的一部分，查询可见                    │
+│ 不变式 I2: P 已永久成为表历史的一部分,查询可见                    │
 └────────────────────────────────────────────────────────────────────┘
 
 故障恢复分析:
-Case 1: Checkpoint 失败，Phase 2 未执行
+Case 1: Checkpoint 失败,Phase 2 未执行
   - pending snapshot P 未被提交
   - 作业从上一个成功 Checkpoint 恢复
-  - R 被重新处理，生成新的 P'
-  - 由于 I1，P 中的文件不影响正确性
+  - R 被重新处理,生成新的 P'
+  - 由于 I1,P 中的文件不影响正确性
 
 Case 2: Commit 过程中 Committer 失败
-  - 部分 P 可能已提交，部分未提交
+  - 部分 P 可能已提交,部分未提交
   - 新的 Committer 从 Checkpoint 恢复
   - 对未提交的 P 重新执行 commit_transaction()
-  - Iceberg 的 CAS 保证幂等性（重复提交同一 P 无影响）
+  - Iceberg 的 CAS 保证幂等性(重复提交同一 P 无影响)
 
-Case 3: Writer 失败，数据文件写入不完整
-  - Checkpoint 失败，进入 Case 1
+Case 3: Writer 失败,数据文件写入不完整
+  - Checkpoint 失败,进入 Case 1
   - 孤儿文件由后台清理作业处理
 
-综上，端到端 Exactly-Once 得证 ∎
+综上,端到端 Exactly-Once 得证 ∎
 ```
 
 ---
@@ -857,16 +857,16 @@ Case 3: Writer 失败，数据文件写入不完整
 
 ```
 定义:
-- 快照序列: S = [s_1, s_2, ..., s_n]，其中 s_i.parent = s_{i-1}
+- 快照序列: S = [s_1, s_2, ..., s_n],其中 s_i.parent = s_{i-1}
 - 消费者位点: c = 当前消费到的 snapshot_id
 - 增量批次: B_i = scan_incremental(s_i, s_{i+1})
 
 不遗漏证明:
   需证: ∀ record r ∈ Table, ∃ B_i: r ∈ B_i
 
-  由于 Iceberg 表的所有数据都存在于某个快照中，
-  且快照序列 S 覆盖了表的全部历史，
-  设 r ∈ s_k.files，则当消费者从 s_{k-1} 消费到 s_k 时，
+  由于 Iceberg 表的所有数据都存在于某个快照中,
+  且快照序列 S 覆盖了表的全部历史,
+  设 r ∈ s_k.files,则当消费者从 s_{k-1} 消费到 s_k 时,
   r ∈ B_{k-1}
 
   ∴ 不遗漏 ∎
@@ -874,26 +874,26 @@ Case 3: Writer 失败，数据文件写入不完整
 不重复证明:
   需证: ∀ record r, |{B_i | r ∈ B_i}| ≤ 1
 
-  由于 Iceberg 快照的不可变性，
-  一旦 r 被写入 s_k，则 ∀ s_j (j ≥ k): r ∈ s_j.files
+  由于 Iceberg 快照的不可变性,
+  一旦 r 被写入 s_k,则 ∀ s_j (j ≥ k): r ∈ s_j.files
 
   增量扫描算法: B_i = files(s_{i+1}) \ files(s_i)
 
   对于 r ∈ s_k:
-  - 若 i+1 < k: r ∉ files(s_{i+1})，∴ r ∉ B_i
-  - 若 i+1 = k: r ∈ files(s_k) 且 r ∉ files(s_{k-1})，∴ r ∈ B_{k-1}
-  - 若 i+1 > k: r ∈ files(s_i) 且 r ∈ files(s_{i+1})，∴ r ∉ B_i
+  - 若 i+1 < k: r ∉ files(s_{i+1}),∴ r ∉ B_i
+  - 若 i+1 = k: r ∈ files(s_k) 且 r ∉ files(s_{k-1}),∴ r ∈ B_{k-1}
+  - 若 i+1 > k: r ∈ files(s_i) 且 r ∈ files(s_{i+1}),∴ r ∉ B_i
 
-  ∴ r 仅出现在 B_{k-1} 中，不重复 ∎
+  ∴ r 仅出现在 B_{k-1} 中,不重复 ∎
 
 有序性证明:
   需证: ∀ i < j, ∀ r_i ∈ B_i, r_j ∈ B_j: order(r_i) < order(r_j)
 
-  由于快照序列按 commit_time 排序，
-  且数据文件在快照中的可见性与 commit_time 一致，
+  由于快照序列按 commit_time 排序,
+  且数据文件在快照中的可见性与 commit_time 一致,
 
-  若 r_i ∈ B_i = scan(s_i, s_{i+1})，
-     r_j ∈ B_j = scan(s_j, s_{j+1})，
+  若 r_i ∈ B_i = scan(s_i, s_{i+1}),
+     r_j ∈ B_j = scan(s_j, s_{j+1}),
      且 i < j
   则 r_i 的 commit_time < r_j 的 commit_time
 
@@ -915,28 +915,28 @@ Case 3: Writer 失败，数据文件写入不完整
 - 快照映射函数: snapshot(t) = argmax_{s ∈ Snapshots} {s.timestamp ≤ t}
 
 一致性条件:
-  Query(t_target) 返回 snapshot(t_target) 的完整数据状态，
+  Query(t_target) 返回 snapshot(t_target) 的完整数据状态,
   且该状态不包含 snapshot(t_target).timestamp 之后写入的数据。
 
 证明:
   Step 1: 快照选择的确定性
-    snapshot(t) 函数返回唯一的快照 s_k，满足:
+    snapshot(t) 函数返回唯一的快照 s_k,满足:
     - s_k.timestamp ≤ t < s_{k+1}.timestamp
-    - 由于快照时间戳单调递增，s_k 唯一确定
+    - 由于快照时间戳单调递增,s_k 唯一确定
 
   Step 2: 快照状态的完整性
-    根据 Iceberg 元数据结构，snapshot s_k 包含:
+    根据 Iceberg 元数据结构,snapshot s_k 包含:
     - 完整的 manifest_list 引用
     - 所有祖先快照的 manifest 集合
     - 因此包含 snapshot(t) 时刻的全部数据
 
   Step 3: 快照状态的隔离性
-    由于快照不可变，且新数据只能写入新快照，
+    由于快照不可变,且新数据只能写入新快照,
     ∀ s_j (j > k): s_j 的数据文件不会被 s_k 引用
 
     ∴ Query(t_target) 不会返回 t_target 之后的数据
 
-  综上，Time Travel 一致性得证 ∎
+  综上,Time Travel 一致性得证 ∎
 ```
 
 ---
@@ -964,7 +964,7 @@ CREATE DATABASE IF NOT EXISTS ecommerce;
 USE ecommerce;
 
 -- ============================================
--- 步骤 2: 创建 Iceberg 表（支持流式读写）
+-- 步骤 2: 创建 Iceberg 表(支持流式读写)
 -- ============================================
 CREATE TABLE IF NOT EXISTS user_orders (
     order_id STRING,
@@ -1029,7 +1029,7 @@ SELECT order_id, user_id, product_id, amount, status, order_time
 FROM kafka_orders;
 
 -- ============================================
--- 步骤 4: CDC 数据入湖（Upsert 模式）
+-- 步骤 4: CDC 数据入湖(Upsert 模式)
 -- ============================================
 CREATE TABLE mysql_orders_cdc (
     order_id STRING,
@@ -1085,7 +1085,7 @@ FROM user_orders
     'start-snapshot-id' = '1234567890'
 ) */;
 
--- 方式 2: 消费变更数据（CDC 模式）
+-- 方式 2: 消费变更数据(CDC 模式)
 CREATE TABLE iceberg_orders_changes (
     order_id STRING,
     user_id STRING,
@@ -1143,7 +1143,7 @@ FOR SYSTEM_TIME AS OF TIMESTAMP '2026-03-01 00:00:00';
 SELECT * FROM user_orders
 FOR SYSTEM_TIME AS OF TIMESTAMP '2026-04-02 00:00:00' - INTERVAL '7' DAY;
 
--- 流处理中使用 Time Travel（回溯重算）
+-- 流处理中使用 Time Travel(回溯重算)
 INSERT INTO result_table
 SELECT
     DATE_FORMAT(order_time, 'yyyy-MM-dd') AS dt,
@@ -1185,7 +1185,7 @@ public class IcebergStreamWriteExample {
         StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
 
-        // 启用 Checkpoint，这是 Exactly-Once 的前提
+        // 启用 Checkpoint,这是 Exactly-Once 的前提
         env.enableCheckpointing(60000);  // 60 秒
         env.getCheckpointConfig().setCheckpointingMode(
             CheckpointingMode.EXACTLY_ONCE);
@@ -1314,7 +1314,7 @@ public class IcebergStreamReadExample {
             .monitorInterval(Duration.ofSeconds(10))
             .buildStream(env);
 
-        // 方式 2: 从最早快照开始消费（全量+增量）
+        // 方式 2: 从最早快照开始消费(全量+增量)
         DataStream<RowData> streamFromEarliest = FlinkSource.forRowData()
             .tableLoader(() -> table)
             .streaming(true)
@@ -1332,7 +1332,7 @@ public class IcebergStreamReadExample {
             .monitorInterval(Duration.ofSeconds(10))
             .buildStream(env);
 
-        // 方式 4: 从指定时间戳开始消费（Time Travel）
+        // 方式 4: 从指定时间戳开始消费(Time Travel)
         long startTimestamp = System.currentTimeMillis() - 24 * 60 * 60 * 1000; // 1天前
         DataStream<RowData> streamFromTimestamp = FlinkSource.forRowData()
             .tableLoader(() -> table)
@@ -1430,7 +1430,7 @@ public class IcebergCDCPipeline {
             )
         """);
 
-        // 3. 创建变更数据输出表（供下游消费）
+        // 3. 创建变更数据输出表(供下游消费)
         tEnv.executeSql("""
             CREATE TABLE changelog_output (
                 order_id STRING,
@@ -1479,15 +1479,15 @@ public class IcebergCDCPipeline {
 -- Iceberg 分支与标签管理
 -- ============================================
 
--- 创建标签（固定历史快照）
+-- 创建标签(固定历史快照)
 ALTER TABLE user_orders CREATE TAG etl_checkpoint_2026q1
     AS OF VERSION 1234567890123;
 
--- 创建分支（独立开发线）
+-- 创建分支(独立开发线)
 ALTER TABLE user_orders CREATE BRANCH experiment_feature_x
     AS OF VERSION 1234567890123;
 
--- 在分支上写入数据（不影响主线）
+-- 在分支上写入数据(不影响主线)
 SET 'iceberg.catalog.default-branch' = 'experiment_feature_x';
 INSERT INTO user_orders VALUES (...);
 
@@ -1529,13 +1529,13 @@ SELECT * FROM user_orders$history;
 -- 查看表属性
 SELECT * FROM user_orders$properties;
 
--- 实用查询：查找大文件
+-- 实用查询:查找大文件
 SELECT file_path, file_size_in_bytes, record_count
 FROM user_orders$files
 ORDER BY file_size_in_bytes DESC
 LIMIT 10;
 
--- 实用查询：分区数据分布
+-- 实用查询:分区数据分布
 SELECT partition, file_count, record_count, total_size
 FROM user_orders$partitions
 ORDER BY record_count DESC;
@@ -1545,36 +1545,36 @@ ORDER BY record_count DESC;
 
 ```sql
 -- ============================================
--- 分区演进：在线修改分区策略
+-- 分区演进:在线修改分区策略
 -- ============================================
 
--- 初始表：按天分区
+-- 初始表:按天分区
 CREATE TABLE events (
     event_id STRING,
     user_id STRING,
     event_time TIMESTAMP(3)
 ) PARTITIONED BY (days(event_time));
 
--- 演进 1：添加小时级分区（更细粒度）
+-- 演进 1:添加小时级分区(更细粒度)
 ALTER TABLE events ADD PARTITION FIELD hours(event_time);
 
--- 演进 2：添加哈希分桶（优化查询）
+-- 演进 2:添加哈希分桶(优化查询)
 ALTER TABLE events ADD PARTITION FIELD bucket(16, user_id);
 
--- 演进 3：删除旧分区字段（保留新数据按新策略）
+-- 演进 3:删除旧分区字段(保留新数据按新策略)
 ALTER TABLE events DROP PARTITION FIELD days(event_time);
 
 -- 查看分区演进历史
 SELECT * FROM events$partition_specs;
 
--- 注意：分区演进是增量式的，历史数据保持原分区，新数据使用新分区策略
+-- 注意:分区演进是增量式的,历史数据保持原分区,新数据使用新分区策略
 ```
 
 #### 6.3.4 行级操作与 Delete 文件
 
 ```sql
 -- ============================================
--- 行级删除与更新（需要 Equality Delete 支持）
+-- 行级删除与更新(需要 Equality Delete 支持)
 -- ============================================
 
 -- 行级删除
@@ -1582,8 +1582,8 @@ DELETE FROM user_orders
 WHERE status = 'CANCELLED'
   AND order_time < TIMESTAMP '2026-01-01 00:00:00';
 
--- 行级更新（通过 Delete + Insert 实现）
--- 注意：Iceberg 不直接支持 UPDATE，需要应用层处理
+-- 行级更新(通过 Delete + Insert 实现)
+-- 注意:Iceberg 不直接支持 UPDATE,需要应用层处理
 
 -- 查看 Delete 文件统计
 SELECT
@@ -1594,7 +1594,7 @@ SELECT
 FROM user_orders$files
 WHERE content = 2;  -- content=2 表示 Equality Delete 文件
 
--- 强制 Compaction（合并 Delete 文件）
+-- 强制 Compaction(合并 Delete 文件)
 CALL iceberg_catalog.system.rewrite_data_files(
     table => 'ecommerce.user_orders',
     options => map(
@@ -1612,7 +1612,7 @@ CALL iceberg_catalog.system.rewrite_data_files(
 
 ```sql
 -- ============================================
--- SCD Type 2：支持历史追踪的维度表
+-- SCD Type 2:支持历史追踪的维度表
 -- ============================================
 
 -- 创建 SCD Type 2 维度表
@@ -1623,7 +1623,7 @@ CREATE TABLE dim_customer_scd2 (
     customer_email STRING,
     customer_segment STRING,
     effective_date TIMESTAMP(3),  -- 生效日期
-    expiration_date TIMESTAMP(3), -- 失效日期（9999-12-31 表示当前有效）
+    expiration_date TIMESTAMP(3), -- 失效日期(9999-12-31 表示当前有效)
     is_current BOOLEAN,           -- 是否当前记录
     PRIMARY KEY (customer_sk) NOT ENFORCED
 ) PARTITIONED BY (bucket(16, customer_id)) WITH (
@@ -1631,7 +1631,7 @@ CREATE TABLE dim_customer_scd2 (
     'write.delete.mode' = 'merge-on-read'
 );
 
--- SCD Type 2 处理逻辑（Flink SQL）
+-- SCD Type 2 处理逻辑(Flink SQL)
 INSERT INTO dim_customer_scd2
 SELECT
     -- 生成新的代理键
@@ -1641,7 +1641,7 @@ SELECT
     customer_email,
     customer_segment,
     updated_at AS effective_date,
-    -- 如果是当前记录，设为最大值
+    -- 如果是当前记录,设为最大值
     CASE
         WHEN LEAD(updated_at) OVER (PARTITION BY customer_id ORDER BY updated_at) IS NULL
         THEN TIMESTAMP '9999-12-31 23:59:59.999'
@@ -1666,7 +1666,7 @@ FROM (
 -- 查询当前有效记录
 SELECT * FROM dim_customer_scd2 WHERE is_current = TRUE;
 
--- 查询历史快照（时点查询）
+-- 查询历史快照(时点查询)
 SELECT * FROM dim_customer_scd2
 WHERE effective_date <= TIMESTAMP '2026-03-01 00:00:00'
   AND expiration_date > TIMESTAMP '2026-03-01 00:00:00';
@@ -1676,7 +1676,7 @@ WHERE effective_date <= TIMESTAMP '2026-03-01 00:00:00'
 
 ```sql
 -- ============================================
--- 增量处理：从 Iceberg 读取增量并写入下游
+-- 增量处理:从 Iceberg 读取增量并写入下游
 -- ============================================
 
 -- 创建增量消费视图
@@ -1699,7 +1699,7 @@ CREATE TABLE iceberg_incremental_source (
     'start-snapshot-id' = 'earliest'  -- 或指定具体 ID
 );
 
--- 增量聚合（滑动窗口）
+-- 增量聚合(滑动窗口)
 INSERT INTO category_stats_5min
 SELECT
     TUMBLE_START(order_time, INTERVAL '5' MINUTE) AS window_start,
@@ -1740,7 +1740,7 @@ CREATE TABLE optimized_table (
     data STRING,
     ts TIMESTAMP(3)
 ) PARTITIONED BY (days(ts)) WITH (
-    -- 目标文件大小：128MB 是 Parquet 的甜点值
+    -- 目标文件大小:128MB 是 Parquet 的甜点值
     'write.target-file-size-bytes' = '134217728',
 
     -- 写入格式与压缩
@@ -1771,7 +1771,7 @@ CREATE TABLE optimized_table (
 -- 读取优化配置
 -- ============================================
 
--- 启用布隆过滤器（点查优化）
+-- 启用布隆过滤器(点查优化)
 ALTER TABLE user_orders SET TBLPROPERTIES (
     'write.parquet.bloom-filter-enabled.column.order_id' = 'true',
     'write.parquet.bloom-filter-max-bytes' = '1048576'
@@ -1799,7 +1799,7 @@ WHERE order_id = 'ORD-12345'  -- 布隆过滤器加速
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 // ============================================
-// 独立 Compaction 作业（Flink DataStream）
+// 独立 Compaction 作业(Flink DataStream)
 // ============================================
 
 public class IcebergCompactionJob {
@@ -1846,7 +1846,7 @@ public class IcebergCompactionJob {
 
 ```sql
 -- ============================================
--- 原地迁移：复用现有 Hive 表数据
+-- 原地迁移:复用现有 Hive 表数据
 -- ============================================
 
 -- 步骤 1: 在 Iceberg 中注册 Hive 外表
@@ -1865,7 +1865,7 @@ TBLPROPERTIES (
 -- 步骤 2: 使用 Spark 的 migrate 工具迁移
 -- spark-sql> CALL iceberg_catalog.system.migrate('db.hive_orders');
 
--- 步骤 3: 迁移后，Flink 可以直接读写
+-- 步骤 3: 迁移后,Flink 可以直接读写
 INSERT INTO hive_orders_iceberg
 SELECT * FROM kafka_new_orders;
 ```
@@ -1874,10 +1874,10 @@ SELECT * FROM kafka_new_orders;
 
 ```sql
 -- ============================================
--- 影子迁移：双写 + 切换
+-- 影子迁移:双写 + 切换
 -- ============================================
 
--- 阶段 1: 创建新的 Iceberg 表（并行运行）
+-- 阶段 1: 创建新的 Iceberg 表(并行运行)
 CREATE TABLE orders_iceberg_new (
     order_id STRING,
     user_id STRING,
@@ -1888,9 +1888,9 @@ CREATE TABLE orders_iceberg_new (
     'write.upsert.enabled' = 'true'
 );
 
--- 阶段 2: 双写（Flink 双 Sink）
--- Sink 1: 写入 Hive 表（保持兼容）
--- Sink 2: 写入 Iceberg 表（新架构）
+-- 阶段 2: 双写(Flink 双 Sink)
+-- Sink 1: 写入 Hive 表(保持兼容)
+-- Sink 2: 写入 Iceberg 表(新架构)
 
 -- 阶段 3: 历史数据回填
 INSERT INTO orders_iceberg_new
@@ -1901,16 +1901,16 @@ WHERE dt < '2026-04-01';
 -- 对比 Hive 和 Iceberg 表的记录数、SUM(amount) 等
 
 -- 阶段 5: 切换读流量到 Iceberg
--- 更新视图或应用配置，指向新表
+-- 更新视图或应用配置,指向新表
 
--- 阶段 6: 停止写入 Hive，保留只读一段时间
+-- 阶段 6: 停止写入 Hive,保留只读一段时间
 ```
 
 #### 6.6.3 数据验证脚本
 
 ```python
 # ============================================
-# 迁移数据验证（PySpark/Flink Python API）
+# 迁移数据验证(PySpark/Flink Python API)
 # ============================================
 
 from pyspark.sql import SparkSession

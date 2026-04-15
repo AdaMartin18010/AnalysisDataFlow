@@ -197,7 +197,7 @@ $$\text{MarginalValue}(d_{new}) = V_{base} + \alpha \cdot \sum_{d \in D} \text{l
 ### 6.1 年度文档增长趋势
 
 ```markdown
-# 2026 年文档增长时间线（示例性数据）
+# 2026 年文档增长时间线(示例性数据)
 
 2026-01: 基础理论补全期
   - Struct/ 定理体系完善

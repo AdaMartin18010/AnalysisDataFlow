@@ -559,7 +559,7 @@ env.getCheckpointConfig().setCheckpointTimeout(600000);  // 10分钟超时
 env.getCheckpointConfig().setMaxConcurrentCheckpoints(1);
 env.getCheckpointConfig().setMinPauseBetweenCheckpoints(30000);
 
-// 增量 Checkpoint（RocksDB）
+// 增量 Checkpoint(RocksDB)
 env.setStateBackend(new EmbeddedRocksDBStateBackend(true));
 
 // Unaligned Checkpoint
@@ -738,7 +738,7 @@ public class SessionTracker extends KeyedProcessFunction<String, Event, SessionR
             // 新会话
             session = new SessionInfo(event.getUserId(), currentTime);
         } else if (currentTime - session.getLastActivityTime() > SESSION_TIMEOUT_MS) {
-            // 会话过期，输出旧会话结果
+            // 会话过期,输出旧会话结果
             out.collect(new SessionResult(session, true));
             session = new SessionInfo(event.getUserId(), currentTime);
         }
@@ -908,7 +908,7 @@ public class IncrementalAggregator extends KeyedProcessFunction<String, SensorRe
 
     @Override
     public void open(Configuration parameters) {
-        // 归约函数：合并两个 SensorReading，保持总和与计数
+        // 归约函数:合并两个 SensorReading,保持总和与计数
         ReduceFunction<SensorReading> reduceFunction = (a, b) -> {
             return new SensorReading(
                 a.getSensorId(),
@@ -964,7 +964,7 @@ public class ComplexAggregator extends KeyedProcessFunction<String, Trade, Trade
 
     @Override
     public void open(Configuration parameters) {
-        // 聚合函数：累积交易统计
+        // 聚合函数:累积交易统计
         AggregateFunction<Trade, TradeStatisticsAccumulator, TradeStatistics> aggregateFunction =
             new AggregateFunction<Trade, TradeStatisticsAccumulator, TradeStatistics>() {
 
@@ -1036,7 +1036,7 @@ public class DynamicRuleProcessor {
         // 事件流
         DataStream<Event> events = env.addSource(new EventSource());
 
-        // 规则流（广播）
+        // 规则流(广播)
         DataStream<Rule> rules = env.addSource(new RuleSource());
 
         // 广播状态描述符
@@ -1137,7 +1137,7 @@ public class StateBackendConfiguration {
         env.enableCheckpointing(10000);  // 10秒间隔
         env.getCheckpointConfig().setCheckpointStorage("file:///tmp/flink-checkpoints");
 
-        // 内存调优（flink-conf.yaml）
+        // 内存调优(flink-conf.yaml)
         // taskmanager.memory.framework.heap.size: 512mb
         // taskmanager.memory.task.heap.size: 2gb
     }
@@ -1177,7 +1177,7 @@ public class StateBackendConfiguration {
 
         env.setStateBackend(forstBackend);
 
-        // Checkpoint 配置（ForSt 推荐较长间隔）
+        // Checkpoint 配置(ForSt 推荐较长间隔)
         env.enableCheckpointing(120000);  // 2分钟间隔
         env.getCheckpointConfig().setCheckpointStorage("s3://flink-checkpoints");
     }
@@ -1419,13 +1419,13 @@ for (String key : keys) {
     mapState.put(key, value);  // N 次 JNI 调用
 }
 
-// 推荐：使用批量 API（如果可用）或通过设计减少 key 数量
+// 推荐:使用批量 API(如果可用)或通过设计减少 key 数量
 ```
 
 #### 8.2.3 ListState 优化
 
 ```java
-// 控制列表大小，避免 OOM
+// 控制列表大小,避免 OOM
 if (listSize > MAX_LIST_SIZE) {
     flushAndClear();
 }
@@ -1593,18 +1593,18 @@ getRuntimeContext().getMetricGroup().gauge("stateSizeBytes",
 
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-// 策略 1：启用 TTL
+// 策略 1:启用 TTL
 StateTtlConfig ttlConfig = StateTtlConfig
     .newBuilder(Time.hours(24))
     .setUpdateType(StateTtlConfig.UpdateType.OnCreateAndWrite)
     .cleanupInRocksdbCompactFilter()
     .build();
 
-// 策略 2：切换到 RocksDB
+// 策略 2:切换到 RocksDB
 env.setStateBackend(new EmbeddedRocksDBStateBackend(true));
 
-// 策略 3：状态分片
-// 使用更细粒度的 key，分散状态到多个 subtask
+// 策略 3:状态分片
+// 使用更细粒度的 key,分散状态到多个 subtask
 ```
 
 #### 8.5.3 状态访问性能问题
@@ -1655,7 +1655,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 /**
  * Def-F-02-105: Changelog State Backend 生产配置
- * 场景：需要秒级恢复的金融交易处理
+ * 场景:需要秒级恢复的金融交易处理
  */
 public static void configureChangelogBackend(StreamExecutionEnvironment env) {
     // 基础状态后端
@@ -1670,7 +1670,7 @@ public static void configureChangelogBackend(StreamExecutionEnvironment env) {
     config.setInteger("state.backend.changelog.materialization.max-concurrent", 1);
     env.configure(config);
 
-    // Checkpoint 配置（Changelog 推荐较长间隔）
+    // Checkpoint 配置(Changelog 推荐较长间隔)
     env.enableCheckpointing(120000);  // 2分钟
     env.getCheckpointConfig().setCheckpointStorage("s3://flink-checkpoints");
 }
@@ -1700,11 +1700,11 @@ public static void configureChangelogBackend(StreamExecutionEnvironment env) {
 #### 8.6.2 状态兼容性规则
 
 ```java
-// 添加字段（向前兼容）
+// 添加字段(向前兼容)
 public class UserState {
     private String userId;      // 原有字段
     private String name;        // 原有字段
-    private int age;            // 新增字段，需设置默认值
+    private int age;            // 新增字段,需设置默认值
 
     // 构造器需处理默认值
     public UserState() {
@@ -1725,7 +1725,7 @@ flink savepoint <job-id> <target-path>
 # 2. 停止旧作业
 flink cancel <job-id>
 
-# 3. 部署新作业（使用 Savepoint 恢复）
+# 3. 部署新作业(使用 Savepoint 恢复)
 flink run -s <savepoint-path> -c <main-class> <jar-file>
 
 # 4. 验证状态恢复

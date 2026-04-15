@@ -39,7 +39,7 @@ graph TB
 Arroyo 0.10 之前的版本采用 **AOT（Ahead-of-Time）编译**，将 UDF 直接嵌入到生成的 Rust 代码中：
 
 ```rust
-// 旧架构：编译时静态链接
+// 旧架构:编译时静态链接
 // 生成代码示例
 pub fn generated_pipeline() {
     let result = user_defined_function(input); // 直接函数调用
@@ -49,7 +49,7 @@ pub fn generated_pipeline() {
 新架构采用 **WASM 动态加载**，支持运行时热更新：
 
 ```rust
-// 新架构：运行时动态加载
+// 新架构:运行时动态加载
 pub fn udf_executor(wasm_module: &[u8]) {
     let module = Module::new(&engine, wasm_module).unwrap();
     let instance = Instance::new(&mut store, &module, &[]).unwrap();
@@ -78,7 +78,7 @@ Arroyo 选择 **wasmtime** 作为 WASM 运行时，基于以下考量：
 ```rust
 // arroyo-worker/src/wasm_runtime/engine.rs
 pub struct WasmEngine {
-    /// wasmtime 引擎实例（全局单例）
+    /// wasmtime 引擎实例(全局单例)
     engine: Engine,
     /// 编译配置
     config: Config,
@@ -99,10 +99,10 @@ impl WasmEngine {
         // 启用 SIMD 支持
         config.wasm_simd(true);
 
-        // 启用多内存（用于零拷贝优化）
+        // 启用多内存(用于零拷贝优化)
         config.wasm_multi_memory(true);
 
-        // 启用引用类型（用于复杂数据结构）
+        // 启用引用类型(用于复杂数据结构)
         config.wasm_reference_types(true);
 
         let engine = Engine::new(&config)?;
@@ -123,7 +123,7 @@ impl WasmEngine {
 ```rust
 // arroyo-worker/src/wasm_runtime/instance.rs
 pub struct UdfInstance {
-    /// 存储实例状态（内存、全局变量等）
+    /// 存储实例状态(内存、全局变量等)
     store: Store<UdfState>,
     /// WASM 实例
     instance: Instance,
@@ -133,7 +133,7 @@ pub struct UdfInstance {
     memory: Memory,
 }
 
-/// UDF 状态（存储在 Store 中）
+/// UDF 状态(存储在 Store 中)
 pub struct UdfState {
     /// 输入缓冲区
     input_buffer: Vec<u8>,
@@ -145,7 +145,7 @@ pub struct UdfState {
 
 impl UdfInstance {
     pub fn new(engine: &Engine, module: &Module) -> Result<Self, WasmError> {
-        // 创建 Store，关联 UdfState
+        // 创建 Store,关联 UdfState
         let mut store = Store::new(
             engine,
             UdfState {
@@ -163,7 +163,7 @@ impl UdfInstance {
             .get_memory(&mut store, "memory")
             .ok_or(WasmError::MemoryNotFound)?;
 
-        // 缓存函数引用（避免每次动态查找）
+        // 缓存函数引用(避免每次动态查找)
         let process_fn = instance
             .get_func(&mut store, "process")
             .ok_or(WasmError::FunctionNotFound)?
@@ -318,7 +318,7 @@ impl UdfCompiler {
         // 4. 编译为 WASM
         let wasm_bytes = self.compile_to_wasm(&project_dir).await?;
 
-        // 5. 优化 WASM（使用 wasm-opt）
+        // 5. 优化 WASM(使用 wasm-opt)
         let optimized = self.optimize_wasm(&wasm_bytes)?;
 
         // 6. 验证模块
@@ -371,7 +371,7 @@ pub extern "C" fn process(input_ptr: i64, input_len: i32) -> i64 {{
         );
     }}
 
-    // 6. 返回指针（高32位为长度）
+    // 6. 返回指针(高32位为长度)
     (output.len() as i64) << 32 | (output_ptr as i64)
 }}
 
@@ -423,7 +423,7 @@ pub extern "C" fn alloc(len: i32) -> i64 {{
 pub struct UdfCache {
     /// 本地缓存
     local_cache: Cache<String, Vec<u8>>,
-    /// 分布式缓存（Redis）
+    /// 分布式缓存(Redis)
     distributed_cache: Option<RedisCache>,
 }
 
@@ -518,7 +518,7 @@ impl EdgeWindowAggregator {
         Ok(None)
     }
 
-    /// 10x 窗口优化：提前触发部分聚合
+    /// 10x 窗口优化:提前触发部分聚合
     fn should_flush(&self, key: &WindowKey) -> bool {
         match self.flush_policy {
             FlushPolicy::TimeBased { interval } => {
@@ -541,12 +541,12 @@ impl EdgeWindowAggregator {
 // arroyo-worker/src/edge_optimizer/ten_x_optimizer.rs
 /// 10x 窗口优化器
 ///
-/// 原理：对于 10 秒的窗口，每 1 秒触发一次部分聚合结果
+/// 原理:对于 10 秒的窗口,每 1 秒触发一次部分聚合结果
 /// 这样可以将端到端延迟从 10 秒降低到 1 秒
 pub struct TenXOptimizer {
     /// 基础窗口大小
     base_window: Duration,
-    /// 子窗口大小（基础窗口 / 10）
+    /// 子窗口大小(基础窗口 / 10)
     sub_window: Duration,
     /// 部分结果累加器
     partial_accumulators: HashMap<WindowKey, PartialResult>,
@@ -592,7 +592,7 @@ impl TenXOptimizer {
                     // 计算聚合值
                     let aggregated = acc.compute();
 
-                    // 发送部分结果（标记为近似值）
+                    // 发送部分结果(标记为近似值)
                     results.push((
                         base_key + (i as i64 + 1) * self.sub_window.as_millis() as i64,
                         Value::Partial(aggregated),
@@ -695,7 +695,7 @@ pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Respo
     // 2. 初始化 WASM 运行时
     let mut runtime = WasmRuntime::new(&wasm_bytes).await?;
 
-    // 3. 解析请求体（Arrow IPC 格式）
+    // 3. 解析请求体(Arrow IPC 格式)
     let body = req.bytes().await?;
     let input_batch = deserialize_arrow_ipc(&body)?;
 
@@ -713,7 +713,7 @@ pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Respo
         .with_headers(headers))
 }
 
-/// 轻量级 WASM 运行时（专为 Workers 优化）
+/// 轻量级 WASM 运行时(专为 Workers 优化)
 pub struct WorkersWasmRuntime {
     instance: wasmtime::Instance,
     store: wasmtime::Store<WorkersState>,
@@ -729,7 +729,7 @@ impl WorkersWasmRuntime {
 
         let mut store = Store::new(&engine, WorkersState::default());
 
-        // 设置执行限制（ Workers 有 CPU 时间限制）
+        // 设置执行限制( Workers 有 CPU 时间限制)
         store.epoch_deadline_async_yield_and_update(100);
 
         let instance = Instance::new(&mut store, &module, &[])?;
@@ -811,18 +811,18 @@ sequenceDiagram
 
 ```
 ┌────────────────────────────────────────────────────────────────────┐
-│                    UDF 执行性能分解（每批次 1000 条）                 │
+│                    UDF 执行性能分解(每批次 1000 条)                 │
 ├────────────────────────────────────────────────────────────────────┤
 │ 阶段                          │ 耗时      │ 占比    │ 优化方向     │
 ├────────────────────────────────────────────────────────────────────┤
-│ Arrow IPC 序列化（输入）       │ 0.5ms     │ 10%     │ 零拷贝传输   │
-│ 内存拷贝（Host→WASM）          │ 0.3ms     │ 6%      │ 共享内存映射 │
+│ Arrow IPC 序列化(输入)       │ 0.5ms     │ 10%     │ 零拷贝传输   │
+│ 内存拷贝(Host→WASM)          │ 0.3ms     │ 6%      │ 共享内存映射 │
 │ WASM 实例调用开销              │ 0.1ms     │ 2%      │ 实例池化     │
-│ Arrow IPC 反序列化（WASM 内）   │ 0.8ms     │ 16%     │ 使用 flatbuffers│
+│ Arrow IPC 反序列化(WASM 内)   │ 0.8ms     │ 16%     │ 使用 flatbuffers│
 │ 业务逻辑执行                   │ 2.0ms     │ 40%     │ 算法优化     │
-│ Arrow IPC 序列化（WASM 内）     │ 0.6ms     │ 12%     │ 使用 flatbuffers│
-│ 内存拷贝（WASM→Host）          │ 0.2ms     │ 4%      │ 零拷贝       │
-│ Arrow IPC 反序列化（输出）      │ 0.5ms     │ 10%     │ 零拷贝       │
+│ Arrow IPC 序列化(WASM 内)     │ 0.6ms     │ 12%     │ 使用 flatbuffers│
+│ 内存拷贝(WASM→Host)          │ 0.2ms     │ 4%      │ 零拷贝       │
+│ Arrow IPC 反序列化(输出)      │ 0.5ms     │ 10%     │ 零拷贝       │
 ├────────────────────────────────────────────────────────────────────┤
 │ 总计                          │ 5.0ms     │ 100%    │ 目标: 3.0ms  │
 └────────────────────────────────────────────────────────────────────┘
@@ -873,13 +873,13 @@ config.parallel_compilation(true);
 // 3. 启用 SIMD
 config.wasm_simd(true);
 
-// 4. 多内存支持（用于数据分区）
+// 4. 多内存支持(用于数据分区)
 config.wasm_multi_memory(true);
 
-// 5. 引用类型（减少序列化）
+// 5. 引用类型(减少序列化)
 config.wasm_reference_types(true);
 
-// 6. 批量编译（一次性编译多个模块）
+// 6. 批量编译(一次性编译多个模块)
 config.async_support(true);
 ```
 
@@ -996,9 +996,9 @@ sequenceDiagram
 
         alt 使用 10x 优化
             Edge->>Edge: 子窗口聚合
-            Edge->>WASM: 部分结果（每 1s）
+            Edge->>WASM: 部分结果(每 1s)
             WASM->>Edge: 近似结果
-            Edge->>Sink: 早期结果（标记近似）
+            Edge->>Sink: 早期结果(标记近似)
         end
 
         Edge->>WASM: 完整窗口数据

@@ -188,7 +188,7 @@ $$
 #### ML API层设计
 
 ```java
-// 核心抽象：Estimator-Transformer-Model 模式
+// 核心抽象:Estimator-Transformer-Model 模式
 public interface Estimator<T extends Model<T>> extends PipelineStage {
     T fit(Table... inputs);  // 训练得到模型
 }
@@ -259,7 +259,7 @@ learner.fit(tEnv.from("training"));
 #### 模型版本管理
 
 ```
-模型版本生命周期：
+模型版本生命周期:
 ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐
 │ Training │───►│ Staging  │───►│  Canary  │───►│Production│
 │  (训练)   │    │ (验证集) │    │ (1%流量) │    │(100%流量)│

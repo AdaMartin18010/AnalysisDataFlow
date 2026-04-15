@@ -1,6 +1,7 @@
 > **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
-> 
+>
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # AnalysisDataFlow Technical Architecture
 
 > **Version**: v1.0 | **Last Updated**: 2026-04-03 | **Status**: Production
@@ -22,9 +23,29 @@
       - [Layer 4: visuals/ - Visualization Navigation Layer](#layer-4-visuals---visualization-navigation-layer)
     - [1.3 Data Flow and Dependency Relations](#13-data-flow-and-dependency-relations)
   - [2. Document Generation Architecture](#2-document-generation-architecture)
+    - [Markdown Processing Pipeline](#markdown-processing-pipeline)
   - [3. Verification System Architecture](#3-verification-system-architecture)
+    - [Quality Gates](#quality-gates)
   - [4. Storage Architecture](#4-storage-architecture)
+    - [File Organization](#file-organization)
   - [5. Extension Architecture](#5-extension-architecture)
+    - [Adding New Documents](#adding-new-documents)
+    - [Document Template](#document-template)
+  - [Appendix A: Terminology](#appendix-a-terminology)
+  - [Appendix B: Directory Mapping](#appendix-b-directory-mapping)
+  - [5. Flink Architecture Components](#5-flink-architecture-components)
+    - [5.1 JobManager](#51-jobmanager)
+    - [5.2 TaskManager](#52-taskmanager)
+    - [5.3 Slot Management](#53-slot-management)
+  - [6. Deployment Modes](#6-deployment-modes)
+    - [6.1 Session Mode](#61-session-mode)
+    - [6.2 Application Mode](#62-application-mode)
+    - [6.3 Per-Job Mode (Deprecated in Flink 1.15+)](#63-per-job-mode-deprecated-in-flink-115)
+    - [6.4 Kubernetes Native](#64-kubernetes-native)
+  - [Appendix](#appendix)
+    - [A. Glossary](#a-glossary)
+    - [B. Directory Mapping Table](#b-directory-mapping-table)
+    - [C. Related Documents](#c-related-documents)
 
 ---
 
@@ -286,6 +307,7 @@ Raw Markdown → Frontmatter Parsing → Content Validation → Cross-Ref Resolu
 ### Document Template
 
 ```markdown
+<!-- pseudo-code -->
 # Title (English)
 
 > Stage: Directory | Prerequisites: [links] | Formalization Level: Lx
@@ -565,4 +587,3 @@ spec:
 ---
 
 *Merged from en/ARCHITECTURE.md | Last Updated: 2026-04-15*
-

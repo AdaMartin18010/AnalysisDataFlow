@@ -142,7 +142,7 @@ class MyProcessFunction extends ProcessFunction[Event, Result] {
 **并发竞争导致结果错误** [^3]：
 
 ```
-场景: 并行度=2，统计用户点击次数
+场景: 并行度=2,统计用户点击次数
 
 Subtask-0 处理 user_1: globalCount++ (读取: 0, 写入: 1)
 Subtask-1 处理 user_1: globalCount++ (读取: 0, 写入: 1)  // 竞争！
@@ -252,7 +252,7 @@ stream
 适用于非 Keyed Stream 或广播状态场景 [^4]：
 
 ```scala
-// ✅ 正确做法: 使用 OperatorState（用于非 Keyed 场景）
+// ✅ 正确做法: 使用 OperatorState(用于非 Keyed 场景)
 class CorrectOperatorStateFunction
   extends ProcessFunction[Event, Result]
   with CheckpointedFunction {
@@ -330,7 +330,7 @@ class DynamicConfigFunction
     ctx: ReadOnlyContext,
     out: Collector[Result]
   ): Unit = {
-    // 读取广播配置（只读）
+    // 读取广播配置(只读)
     val config = ctx.getBroadcastState(CONFIG_STATE_DESCRIPTOR).get("config")
     val profile = userState.value()
 
@@ -383,9 +383,9 @@ class BadCounterFunction extends RichFlatMapFunction[Event, CountResult] {
 }
 
 // 问题:
-// 1. 并行实例共享 counters，并发竞争导致计数不准确
-// 2. counters 不参与 Checkpoint，故障后计数重置
-// 3. 无法水平扩展，所有实例竞争同一数据结构
+// 1. 并行实例共享 counters,并发竞争导致计数不准确
+// 2. counters 不参与 Checkpoint,故障后计数重置
+// 3. 无法水平扩展,所有实例竞争同一数据结构
 ```
 
 ### 5.2 正确示例：KeyedState 计数器
@@ -424,8 +424,8 @@ stream
   .process(new CorrectCounterFunction())
 
 // 优势:
-// 1. 每个 Key 的状态独立，无并发竞争
-// 2. 状态自动参与 Checkpoint，故障可恢复
+// 1. 每个 Key 的状态独立,无并发竞争
+// 2. 状态自动参与 Checkpoint,故障可恢复
 // 3. Flink 自动管理状态分区和迁移
 ```
 
@@ -453,7 +453,7 @@ class BadBufferFunction
 }
 
 // 问题:
-// Checkpoint 时 buffer 内容不被保存，故障恢复后数据丢失
+// Checkpoint 时 buffer 内容不被保存,故障恢复后数据丢失
 ```
 
 ### 5.4 正确示例：带 Checkpoint 的缓冲
@@ -509,7 +509,7 @@ class CorrectBufferFunction
 **反模式实现**（生产故障）：
 
 ```scala
-// 故障代码（某电商平台真实案例）
+// 故障代码(某电商平台真实案例)
 object OrderStats {
   val categoryAmounts = new ConcurrentHashMap[String, BigDecimal]()
 }
@@ -621,7 +621,7 @@ orders
 
 ```mermaid
 graph TB
-    subgraph "全局状态滥用（错误）"
+    subgraph "全局状态滥用(错误)"
         GS1[Subtask-0] -->|写入| GM[(静态变量/成员变量)]
         GS2[Subtask-1] -->|写入| GM
         GS3[Subtask-2] -->|写入| GM
@@ -631,7 +631,7 @@ graph TB
         GM -.->|并发竞争| GR[❌ 结果不一致]
     end
 
-    subgraph "Flink托管状态（正确）"
+    subgraph "Flink托管状态(正确)"
         MS1[Subtask-0<br/>Key Group 0-1] -->|写入| SS1[(RocksDB State<br/>Key_A, Key_B)]
         MS2[Subtask-1<br/>Key Group 2-3] -->|写入| SS2[(RocksDB State<br/>Key_C, Key_D)]
         MS3[Subtask-2<br/>Key Group 4-5] -->|写入| SS3[(RocksDB State<br/>Key_E, Key_F)]

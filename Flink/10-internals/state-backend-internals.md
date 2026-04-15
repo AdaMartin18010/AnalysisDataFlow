@@ -65,7 +65,7 @@ $$
 public class HashMapStateBackend extends AbstractStateBackend
         implements ConfigurableStateBackend, Closeable {
 
-    // 序列化器快照，用于检查兼容性
+    // 序列化器快照,用于检查兼容性
     private final Map<String, TypeSerializerSnapshot<?>> serializerSnapshots;
 
     // 是否异步快照
@@ -185,7 +185,7 @@ public interface CheckpointStreamFactory {
             CheckpointedStateScope scope) throws IOException;
 
     /**
-     * 检查是否支持并行写（分布式文件系统）
+     * 检查是否支持并行写(分布式文件系统)
      */
     boolean canFastDuplicate(StreamStateHandle stateHandle, CheckpointedStateScope scope) throws IOException;
 
@@ -519,7 +519,7 @@ flowchart TB
 │  │   Write     │    Read     │  Checkpoint │                        │
 │  │  Serialize  │ Deserialize │  (Metadata) │                        │
 │  └─────────────┴─────────────┴─────────────┘                        │
-│  访问路径: 每次读写都需序列化，Checkpoint 几乎零开销                 │
+│  访问路径: 每次读写都需序列化,Checkpoint 几乎零开销                 │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -544,7 +544,7 @@ public class HeapKeyedStateBackend<K> extends AbstractKeyedStateBackend<K> {
     private final Map<String, StateTable<K, ?, ?>> stateTables;
 
     /**
-     * 序列化器快照映射，用于检查 StateDescriptor 兼容性
+     * 序列化器快照映射,用于检查 StateDescriptor 兼容性
      */
     private final Map<String, TypeSerializerSnapshot<?>> serializerSnapshots;
 
@@ -570,7 +570,7 @@ public class HeapKeyedStateBackend<K> extends AbstractKeyedStateBackend<K> {
                 (TypeSerializerSnapshot<V>) serializerSnapshots.get(stateName);
 
             if (previousSnapshot != null) {
-                // 从之前的快照恢复，检查兼容性
+                // 从之前的快照恢复,检查兼容性
                 TypeSerializer<V> newSerializer = stateDescriptor.getSerializer();
                 if (!previousSnapshot.isCompatibleWith(newSerializer)) {
                     throw new StateMigrationException(
@@ -606,11 +606,11 @@ public class CopyOnWriteStateTable<K, N, S> extends StateTable<K, N, S> {
     private final Map<N, Map<K, S>> namespaceMap;
 
     /**
-     * 写时复制机制：快照时创建浅拷贝
+     * 写时复制机制:快照时创建浅拷贝
      */
     @Override
     public CopyOnWriteStateTableSnapshot<K, N, S> stateSnapshot() {
-        // 创建快照视图，使用 Copy-on-Write 机制
+        // 创建快照视图,使用 Copy-on-Write 机制
         return new CopyOnWriteStateTableSnapshot<>(
             this,
             getKeySerializer(),
@@ -642,7 +642,7 @@ public class CopyOnWriteStateTable<K, N, S> extends StateTable<K, N, S> {
             n -> new HashMap<>()
         );
 
-        // 检查是否处于快照状态，如果是则触发 Copy-on-Write
+        // 检查是否处于快照状态,如果是则触发 Copy-on-Write
         if (isSnapshotInProgress()) {
             keyMap = copyOnWrite(namespace, keyMap);
         }
@@ -651,7 +651,7 @@ public class CopyOnWriteStateTable<K, N, S> extends StateTable<K, N, S> {
     }
 
     /**
-     * Copy-on-Write 实现：创建 Map 的深拷贝
+     * Copy-on-Write 实现:创建 Map 的深拷贝
      */
     private Map<K, S> copyOnWrite(N namespace, Map<K, S> original) {
         Map<K, S> copy = new HashMap<>(original);
@@ -689,7 +689,7 @@ HashMapStateBackend 的内存管理依赖 JVM 的垃圾回收机制：
 │  风险阈值:                                                           │
 │  - 状态占堆内存 < 30%: 安全                                          │
 │  - 状态占堆内存 30-50%: 监控 GC 频率                                 │
-│  - 状态占堆内存 > 50%: 高 Full GC 风险，建议迁移至 RocksDB           │
+│  - 状态占堆内存 > 50%: 高 Full GC 风险,建议迁移至 RocksDB           │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
 ```
@@ -710,7 +710,7 @@ private void snapshotStateTable(
     TypeSerializer namespaceSerializer = stateTable.getNamespaceSerializer();
     TypeSerializer stateSerializer = stateTable.getStateSerializer();
 
-    // 1. 写入序列化器快照（用于恢复时检查兼容性）
+    // 1. 写入序列化器快照(用于恢复时检查兼容性)
     TypeSerializerSnapshot keySnapshot = keySerializer.snapshotConfiguration();
     TypeSerializerSnapshot namespaceSnapshot = namespaceSerializer.snapshotConfiguration();
     TypeSerializerSnapshot stateSnapshot = stateSerializer.snapshotConfiguration();
@@ -791,7 +791,7 @@ public class RocksDBOperationUtils {
     }
 
     /**
-     * 批量写入（用于 Checkpoint 恢复）
+     * 批量写入(用于 Checkpoint 恢复)
      */
     public void writeBatch(WriteBatch writeBatch) throws RocksDBException {
         // JNI 调用原生 RocksDB::Write()
@@ -844,7 +844,7 @@ public class DefaultConfigurableOptionsFactory implements ConfigurableOptionsFac
     public enum PredefinedOptions {
 
         /**
-         * 默认配置，适用于大多数场景
+         * 默认配置,适用于大多数场景
          */
         DEFAULT {
             @Override
@@ -899,7 +899,7 @@ public class DefaultConfigurableOptionsFactory implements ConfigurableOptionsFac
         },
 
         /**
-         * 内存受限配置（边缘设备）
+         * 内存受限配置(边缘设备)
          */
         MEMORY_CONSTRAINED {
             @Override
@@ -976,7 +976,7 @@ public class RocksIncrementalSnapshotStrategy<K> implements SnapshotStrategy<Key
         // 1. 创建 RocksDB Checkpoint
         Checkpoint checkpoint = Checkpoint.create(db);
 
-        // 2. Flush MemTable，确保所有数据写入 SST
+        // 2. Flush MemTable,确保所有数据写入 SST
         FlushOptions flushOptions = new FlushOptions().setWaitForFlush(true);
         db.flush(flushOptions);
 
@@ -992,7 +992,7 @@ public class RocksIncrementalSnapshotStrategy<K> implements SnapshotStrategy<Key
             ));
         }
 
-        // 4. 对比上一次 Checkpoint，找出新增或修改的 SST 文件
+        // 4. 对比上一次 Checkpoint,找出新增或修改的 SST 文件
         Set<SSTFileInfo> newOrModifiedFiles = new HashSet<>(currentSSTFiles);
         newOrModifiedFiles.removeAll(previousSnapshotFiles);
 
@@ -1198,9 +1198,9 @@ public class UnifiedFileSystem implements Closeable {
     }
 
     /**
-     * 原子写操作（Copy-on-Write 模式）
+     * 原子写操作(Copy-on-Write 模式)
      *
-     * 保证: 写操作要么完全可见，要么完全不可见
+     * 保证: 写操作要么完全可见,要么完全不可见
      */
     public boolean writeAtomic(Path tempPath, Path targetPath, byte[] data)
             throws IOException {
@@ -1216,7 +1216,7 @@ public class UnifiedFileSystem implements Closeable {
             // HDFS、OSS 支持原子 rename
             storageBackend.rename(tempPath, targetPath);
         } else {
-            // S3 使用多版本机制：直接写入目标路径
+            // S3 使用多版本机制:直接写入目标路径
             // 旧版本仍可通过版本号访问
             storageBackend.putObject(targetPath, data);
         }
@@ -1237,21 +1237,21 @@ public class UnifiedFileSystem implements Closeable {
 
         switch (consistencyLevel) {
             case STRONG:
-                // 强一致性：等待所有未完成的写入完成
+                // 强一致性:等待所有未完成的写入完成
                 consistencyManager.waitForConsistency(path);
                 return storageBackend.read(path);
 
             case EVENTUAL:
-                // 最终一致性：直接读取（可能有延迟）
+                // 最终一致性:直接读取(可能有延迟)
                 return storageBackend.read(path);
 
             case VERSIONED:
-                // 版本一致性：读取指定版本
+                // 版本一致性:读取指定版本
                 Version latestVersion = versionManager.getLatestVersion(path);
                 return storageBackend.readVersion(path, latestVersion);
 
             case SNAPSHOT:
-                // 快照一致性：读取 Checkpoint 时刻的版本
+                // 快照一致性:读取 Checkpoint 时刻的版本
                 Version snapshotVersion = versionManager.getSnapshotVersion(path);
                 return storageBackend.readVersion(path, snapshotVersion);
 
@@ -1261,15 +1261,15 @@ public class UnifiedFileSystem implements Closeable {
     }
 
     /**
-     * 创建硬链接（用于 Checkpoint 文件共享）
+     * 创建硬链接(用于 Checkpoint 文件共享)
      *
-     * 语义: 在 UFS 层面创建文件的引用，不复制数据
+     * 语义: 在 UFS 层面创建文件的引用,不复制数据
      */
     public void createHardLink(Path source, Path target) throws IOException {
         if (storageBackend.supportsHardLink()) {
             storageBackend.createHardLink(source, target);
         } else {
-            // S3 等不支持硬链接的存储：使用元数据引用
+            // S3 等不支持硬链接的存储:使用元数据引用
             versionManager.createReference(source, target);
         }
     }
@@ -1280,7 +1280,7 @@ public class UnifiedFileSystem implements Closeable {
     public VersionedSSTFile createVersionedSST(String baseName, byte[] data)
             throws IOException {
 
-        // 生成版本号（单调递增）
+        // 生成版本号(单调递增)
         Version version = versionManager.nextVersion();
 
         // 构建版本化路径: /state/baseName_v{version}.sst
@@ -1303,12 +1303,12 @@ public class UnifiedFileSystem implements Closeable {
 public class LocalCacheManager implements Closeable {
 
     /**
-     * L1 缓存：内存缓存 (Caffeine/自定义 LRU)
+     * L1 缓存:内存缓存 (Caffeine/自定义 LRU)
      */
     private final Cache<String, CacheEntry> l1Cache;
 
     /**
-     * L2 缓存：本地磁盘缓存
+     * L2 缓存:本地磁盘缓存
      */
     private final DiskCache l2Cache;
 
@@ -1355,12 +1355,12 @@ public class LocalCacheManager implements Closeable {
         // 2. 尝试 L2 缓存
         byte[] l2Data = l2Cache.get(key);
         if (l2Data != null) {
-            // L2 命中，晋升到 L1
+            // L2 命中,晋升到 L1
             l1Cache.put(key, new CacheEntry(l2Data));
             return l2Data;
         }
 
-        // 3. 从 UFS 加载（通过 loader）
+        // 3. 从 UFS 加载(通过 loader)
         byte[] data = loader.call();
 
         // 4. 回填缓存
@@ -1379,7 +1379,7 @@ public class LocalCacheManager implements Closeable {
         // 写入 L1
         l1Cache.put(key, new CacheEntry(data));
 
-        // 异步写入 L2（如果开启）
+        // 异步写入 L2(如果开启)
         if (cachePolicy.isWriteThroughL2()) {
             l2Cache.putAsync(key, data);
         }
@@ -1397,17 +1397,17 @@ public class LocalCacheManager implements Closeable {
 
         switch (prefetchStrategy) {
             case SEQUENTIAL:
-                // 顺序预取：加载相邻的 key
+                // 顺序预取:加载相邻的 key
                 keysToPrefetch.addAll(getSequentialNeighbors(accessedKey));
                 break;
 
             case PREDICTIVE:
-                // 预测预取：基于访问模式预测
+                // 预测预取:基于访问模式预测
                 keysToPrefetch.addAll(predictiveModel.predict(accessedKey));
                 break;
 
             case HOT_KEY:
-                // 热键预取：加载热点数据
+                // 热键预取:加载热点数据
                 keysToPrefetch.addAll(getHotKeys());
                 break;
         }
@@ -1425,8 +1425,8 @@ public class LocalCacheManager implements Closeable {
      */
     public enum CachePolicy {
         LRU,           // 最近最少使用
-        SLRU,          // 分段 LRU（保护热数据）
-        W_TINY_LFU,    // 窗口 TinyLFU（高命中率）
+        SLRU,          // 分段 LRU(保护热数据)
+        W_TINY_LFU,    // 窗口 TinyLFU(高命中率)
         ADAPTIVE       // 自适应策略
     }
 }
@@ -1444,9 +1444,9 @@ public class ForStSnapshotStrategy<K> implements SnapshotStrategy<KeyedStateHand
     private final Path checkpointBasePath;
 
     /**
-     * 执行 ForSt Checkpoint（轻量级元数据快照）
+     * 执行 ForSt Checkpoint(轻量级元数据快照)
      *
-     * 复杂度: O(1)，与状态大小无关
+     * 复杂度: O(1),与状态大小无关
      */
     @Override
     public RunnableFuture<SnapshotResult<KeyedStateHandle>> snapshot(
@@ -1455,7 +1455,7 @@ public class ForStSnapshotStrategy<K> implements SnapshotStrategy<KeyedStateHand
             CheckpointStreamFactory streamFactory,
             CheckpointOptions checkpointOptions) throws Exception {
 
-        // 1. 获取当前 SST 文件列表（从元数据存储）
+        // 1. 获取当前 SST 文件列表(从元数据存储)
         List<SSTFileMeta> currentSSTFiles = metadataStore.getCurrentSSTFiles();
 
         // 2. 创建 Checkpoint 目录
@@ -1468,7 +1468,7 @@ public class ForStSnapshotStrategy<K> implements SnapshotStrategy<KeyedStateHand
             Path sourcePath = sstFile.getPath();
             Path targetPath = checkpointPath.resolve(sstFile.getFileName());
 
-            // 创建硬链接（或元数据引用）
+            // 创建硬链接(或元数据引用)
             ufsClient.createHardLink(sourcePath, targetPath);
 
             fileReferences.add(new SSTFileReference(
@@ -1523,7 +1523,7 @@ public class ForStSnapshotStrategy<K> implements SnapshotStrategy<KeyedStateHand
     /**
      * SST 文件引用
      *
-     * 不存储实际数据，只存储引用信息
+     * 不存储实际数据,只存储引用信息
      */
     private static class SSTFileReference {
         private final String fileName;
@@ -1558,7 +1558,7 @@ public class ForStSnapshotStrategy<K> implements SnapshotStrategy<KeyedStateHand
 // 源码位置: flink-runtime/src/main/java/org/apache/flink/runtime/state/StateBackend.java
 
 /**
- * StateBackend 是 Flink 状态后端的顶层接口，定义了状态存储、访问和快照的基本契约。
+ * StateBackend 是 Flink 状态后端的顶层接口,定义了状态存储、访问和快照的基本契约。
  *
  * 实现类:
  * - HashMapStateBackend: 内存状态后端
@@ -1570,7 +1570,7 @@ public interface StateBackend extends java.io.Serializable {
     /**
      * 创建键控状态后端 (KeyedStateBackend)
      *
-     * 这是状态后端的核心工厂方法，每个算子实例在启动时调用。
+     * 这是状态后端的核心工厂方法,每个算子实例在启动时调用。
      *
      * @param env Task 执行环境
      * @param jobID 作业 ID
@@ -1601,7 +1601,7 @@ public interface StateBackend extends java.io.Serializable {
     /**
      * 创建算子状态后端 (OperatorStateBackend)
      *
-     * 用于非键控状态（如广播状态、列表状态）。
+     * 用于非键控状态(如广播状态、列表状态)。
      */
     OperatorStateBackend createOperatorStateBackend(
             Environment env,
@@ -1612,7 +1612,7 @@ public interface StateBackend extends java.io.Serializable {
     /**
      * 解析 Checkpoint 存储位置
      *
-     * 创建 CheckpointStorage，用于写入和读取 Checkpoint 数据。
+     * 创建 CheckpointStorage,用于写入和读取 Checkpoint 数据。
      */
     CheckpointStorage resolveCheckpointStorage(JobID jobId, String checkpointDirectory) throws IOException;
 
@@ -1629,7 +1629,7 @@ public interface StateBackend extends java.io.Serializable {
 // 源码位置: flink-runtime/src/main/java/org/apache/flink/runtime/state/AbstractStateBackend.java
 
 /**
- * AbstractStateBackend 是 StateBackend 的抽象基类，提供了通用实现和工具方法。
+ * AbstractStateBackend 是 StateBackend 的抽象基类,提供了通用实现和工具方法。
  */
 public abstract class AbstractStateBackend implements StateBackend {
 
@@ -1667,13 +1667,13 @@ public abstract class AbstractStateBackend implements StateBackend {
 
         StateBackend backend = fromApplication;
 
-        // 1. 如果应用代码指定了后端，使用指定的
+        // 1. 如果应用代码指定了后端,使用指定的
         if (backend == null) {
             // 2. 从配置读取
             backend = loadStateBackendFromConfig(config, classLoader, logger);
         }
 
-        // 3. 如果都没有，使用默认的 HashMapStateBackend
+        // 3. 如果都没有,使用默认的 HashMapStateBackend
         if (backend == null) {
             backend = new HashMapStateBackend();
         }
@@ -1750,12 +1750,12 @@ public interface CheckpointStreamFactory {
      */
     enum CheckpointedStateScope {
         /**
-         * 独占范围：每个 Task 独立的状态
+         * 独占范围:每个 Task 独立的状态
          */
         EXCLUSIVE,
 
         /**
-         * 共享范围：多个 Task 共享的状态（如 Broadcast 状态）
+         * 共享范围:多个 Task 共享的状态(如 Broadcast 状态)
          */
         SHARED
     }
@@ -1764,7 +1764,7 @@ public interface CheckpointStreamFactory {
      * 创建 Checkpoint 状态输出流
      *
      * @param scope 状态作用域
-     * @return 状态输出流，需要调用者关闭
+     * @return 状态输出流,需要调用者关闭
      * @throws IOException 创建失败
      */
     CheckpointStateOutputStream createCheckpointStateOutputStream(CheckpointedStateScope scope)
@@ -1773,7 +1773,7 @@ public interface CheckpointStreamFactory {
     /**
      * 检查是否支持快速复制
      *
-     * 某些存储（如 S3）支持对象复制，可以比重新上传更快。
+     * 某些存储(如 S3)支持对象复制,可以比重新上传更快。
      */
     boolean canFastDuplicate(StreamStateHandle stateHandle, CheckpointedStateScope scope)
             throws IOException;
@@ -1788,7 +1788,7 @@ public interface CheckpointStreamFactory {
      * 创建 Checkpoint 存储位置
      *
      * @param checkpointId Checkpoint ID
-     * @param reference Checkpoint 存储位置引用（用于恢复）
+     * @param reference Checkpoint 存储位置引用(用于恢复)
      * @return Checkpoint 存储位置
      */
     CheckpointStorageLocation createCheckpointStorageLocation(
@@ -1804,13 +1804,13 @@ abstract class CheckpointStateOutputStream extends OutputStream {
     /**
      * 关闭流并获取状态句柄
      *
-     * @return 状态句柄，用于恢复时定位状态数据
+     * @return 状态句柄,用于恢复时定位状态数据
      * @throws IOException 关闭失败
      */
     abstract StreamStateHandle closeAndGetHandle() throws IOException;
 
     /**
-     * 获取当前写入位置（用于进度监控）
+     * 获取当前写入位置(用于进度监控)
      */
     abstract long getPos() throws IOException;
 }
@@ -1831,7 +1831,7 @@ public interface SnapshotStrategy<S extends StateObject> {
     /**
      * 执行快照
      *
-     * 返回一个 RunnableFuture，表示异步执行的快照任务。
+     * 返回一个 RunnableFuture,表示异步执行的快照任务。
      *
      * @param checkpointId Checkpoint ID
      * @param timestamp Checkpoint 时间戳
@@ -1852,12 +1852,12 @@ public interface SnapshotStrategy<S extends StateObject> {
 public class SnapshotResult<S extends StateObject> {
 
     /**
-     * 同步部分的快照结果（立即可用）
+     * 同步部分的快照结果(立即可用)
      */
     private final S jobManagerOwnedSnapshot;
 
     /**
-     * 异步部分的快照结果（可能还在上传中）
+     * 异步部分的快照结果(可能还在上传中)
      */
     private final S taskLocalSnapshot;
 
@@ -1884,7 +1884,7 @@ public class SnapshotResult<S extends StateObject> {
     }
 
     /**
-     * 检查是否有 Task 本地快照（用于本地恢复优化）
+     * 检查是否有 Task 本地快照(用于本地恢复优化)
      */
     public boolean hasTaskLocalSnapshot() {
         return taskLocalSnapshot != null;
@@ -2124,7 +2124,7 @@ $$
 # 启用 HashMapStateBackend
 state.backend: hashmap
 
-# TaskManager 内存配置（关键！）
+# TaskManager 内存配置(关键！)
 taskmanager.memory.process.size: 8192m
 taskmanager.memory.flink.size: 6144m
 taskmanager.memory.task.heap.size: 3072m  # 用户代码 + 状态存储
@@ -2221,11 +2221,11 @@ state.backend.rocksdb.thread.num: 4
 
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
-// Java API 配置（高级调优）
+// Java API 配置(高级调优)
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 
-// 创建 RocksDBStateBackend（启用增量 Checkpoint）
+// 创建 RocksDBStateBackend(启用增量 Checkpoint)
 EmbeddedRocksDBStateBackend rocksDbBackend =
     new EmbeddedRocksDBStateBackend(true);
 
@@ -2271,7 +2271,7 @@ env.getCheckpointConfig().setMinPauseBetweenCheckpoints(30000);
 # 启用 ForStStateBackend
 state.backend: forst
 
-# UFS 配置（S3 示例）
+# UFS 配置(S3 示例)
 state.backend.forst.ufs.type: s3
 state.backend.forst.ufs.s3.bucket: flink-state-bucket
 state.backend.forst.ufs.s3.region: us-east-1
@@ -2420,12 +2420,12 @@ public class MonitoredStateOperator extends KeyedProcessFunction<String, Event, 
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
 │  1. 内存配置                                                        │
-│     ✓ TM 堆内存 = 状态大小 / 0.3 （留出 70% 给其他用途）              │
+│     ✓ TM 堆内存 = 状态大小 / 0.3 (留出 70% 给其他用途)              │
 │     ✓ 使用 G1GC 或 ZGC 降低 GC 停顿                                 │
 │     ✓ 避免状态大小超过堆内存的 50%                                  │
 │                                                                     │
 │  2. 序列化优化                                                      │
-│     ✓ 使用高效的 TypeSerializer（Avro、Kryo）                       │
+│     ✓ 使用高效的 TypeSerializer(Avro、Kryo)                       │
 │     ✓ 避免在状态中存储大对象                                        │
 │     ✓ 启用序列化器快照兼容性检查                                    │
 │                                                                     │
@@ -2434,7 +2434,7 @@ public class MonitoredStateOperator extends KeyedProcessFunction<String, Event, 
 │     ✓ 使用 cleanupFullSnapshot 清理过期状态                         │
 │                                                                     │
 │  4. Checkpoint 优化                                                 │
-│     ✓ 启用异步快照（默认已启用）                                    │
+│     ✓ 启用异步快照(默认已启用)                                    │
 │     ✓ 调整 Checkpoint 间隔平衡恢复粒度和性能                        │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
@@ -2448,24 +2448,24 @@ public class MonitoredStateOperator extends KeyedProcessFunction<String, Event, 
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
 │  1. 内存配置                                                        │
-│     ✓ Block Cache + MemTable = Managed Memory（推荐 40% TM 内存）    │
+│     ✓ Block Cache + MemTable = Managed Memory(推荐 40% TM 内存)    │
 │     ✓ Block Cache 占托管内存的 60-70%                               │
 │     ✓ 每个 ColumnFamily 的 MemTable = 托管内存的 10-20%             │
 │                                                                     │
 │  2. SST 文件配置                                                    │
-│     ✓ target_file_size_base: 32-64 MB（SSD）/ 64-128 MB（HDD）      │
+│     ✓ target_file_size_base: 32-64 MB(SSD)/ 64-128 MB(HDD)      │
 │     ✓ max_bytes_for_level_base: 256-512 MB                          │
-│     ✓ 根据磁盘类型选择压缩算法（SSD: LZ4, HDD: ZSTD）               │
+│     ✓ 根据磁盘类型选择压缩算法(SSD: LZ4, HDD: ZSTD)               │
 │                                                                     │
 │  3. Compaction 调优                                                 │
-│     ✓ 增加 max_background_compactions（默认 1，推荐 2-4）           │
-│     ✓ 调整 level0_file_num_compaction_trigger（默认 4）             │
-│     ✓ 监控 Write Stall 指标，避免阻塞                               │
+│     ✓ 增加 max_background_compactions(默认 1,推荐 2-4)           │
+│     ✓ 调整 level0_file_num_compaction_trigger(默认 4)             │
+│     ✓ 监控 Write Stall 指标,避免阻塞                               │
 │                                                                     │
 │  4. 增量 Checkpoint                                                 │
-│     ✓ 始终启用增量 Checkpoint（除非有特殊需求）                     │
+│     ✓ 始终启用增量 Checkpoint(除非有特殊需求)                     │
 │     ✓ 监控 checkpointed_bytes / fullSizeBytes 比例                  │
-│     ✓ 若比例接近 1，说明状态更新过于分散，考虑业务优化              │
+│     ✓ 若比例接近 1,说明状态更新过于分散,考虑业务优化              │
 │                                                                     │
 │  5. 常见问题排查                                                    │
 │     ✓ 高磁盘 I/O → 增大 Block Cache / 使用 SSD                      │
@@ -2488,9 +2488,9 @@ public class MonitoredStateOperator extends KeyedProcessFunction<String, Event, 
 │     ✓ 使用 SSD 作为 L2 缓存盘                                       │
 │                                                                     │
 │  2. 缓存策略选择                                                    │
-│     ✓ LRU: 简单有效，通用场景                                       │
-│     ✓ SLRU: 保护扫描抵抗，适合扫描型访问                            │
-│     ✓ W-TinyLFU: 最高命中率，适合强热点场景                         │
+│     ✓ LRU: 简单有效,通用场景                                       │
+│     ✓ SLRU: 保护扫描抵抗,适合扫描型访问                            │
+│     ✓ W-TinyLFU: 最高命中率,适合强热点场景                         │
 │                                                                     │
 │  3. 预取策略                                                        │
 │     ✓ SEQUENTIAL: 适合范围扫描                                      │
@@ -2499,11 +2499,11 @@ public class MonitoredStateOperator extends KeyedProcessFunction<String, Event, 
 │                                                                     │
 │  4. UFS 优化                                                        │
 │     ✓ 使用与 Flink 集群同区域的存储桶                               │
-│     ✓ 启用 VPC 端点访问（避免公网流量）                             │
+│     ✓ 启用 VPC 端点访问(避免公网流量)                             │
 │     ✓ 配置连接池和超时参数                                          │
 │                                                                     │
 │  5. 恢复优化                                                        │
-│     ✓ 使用 LAZY 恢复模式（默认）                                    │
+│     ✓ 使用 LAZY 恢复模式(默认)                                    │
 │     ✓ 配置合理的预加载热键数量                                      │
 │     ✓ 监控恢复后首次访问延迟                                        │
 │                                                                     │

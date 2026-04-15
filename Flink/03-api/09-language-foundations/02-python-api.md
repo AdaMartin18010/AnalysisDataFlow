@@ -290,7 +290,7 @@ PyFlink 的性能损失主要来自以下环节：
 **场景 1: 高频低延迟处理**
 
 ```python
-# 反例：微秒级延迟要求的金融交易
+# 反例:微秒级延迟要求的金融交易
 env.from_collection(ticks) \
     .map(lambda tick: calc_spread(tick))  # 延迟不可接受
 ```
@@ -298,7 +298,7 @@ env.from_collection(ticks) \
 **场景 2: 纯数据管道无 ML 需求**
 
 ```python
-# 反例：简单的 ETL 转换
+# 反例:简单的 ETL 转换
 stream.map(lambda row: transform(row)) \
       .filter(lambda row: row.value > 0) \
       .add_sink(kafka_producer)
@@ -308,7 +308,7 @@ stream.map(lambda row: transform(row)) \
 **场景 3: 复杂状态操作**
 
 ```python
-# 反例：大规模状态访问
+# 反例:大规模状态访问
 class MyUDF(MapFunction):
     def map(self, value):
         # Python UDF 状态 API 有限
@@ -754,7 +754,7 @@ class AsyncLLMCaller(AsyncFunction):
 
         Args:
             input_record: 输入记录
-            result_future: 结果 Future 对象，用于异步返回
+            result_future: 结果 Future 对象,用于异步返回
         """
         try:
             # 异步 HTTP 调用
@@ -787,11 +787,11 @@ from pyflink.datastream.functions import async_func
 
 @async_func(
     capacity=100,           # 最大并发数
-    timeout=5000,           # 超时时间（毫秒）
+    timeout=5000,           # 超时时间(毫秒)
     retry_strategy=AsyncRetryStrategy(
         max_attempts=3,
-        backoff_base=100,   # 初始退避（毫秒）
-        backoff_max=10000   # 最大退避（毫秒）
+        backoff_base=100,   # 初始退避(毫秒)
+        backoff_max=10000   # 最大退避(毫秒)
     )
 )
 async def query_llm_async(record):
@@ -1018,7 +1018,7 @@ graph TB
 **反例分析**:
 
 ```text
-# 危险配置：无并发限制
+# 危险配置:无并发限制
 @async_func(capacity=10000)  # 过高并发
 def query_external_service(record):
     return await http_client.get(url)
@@ -1052,17 +1052,17 @@ def query_external_service(record):
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │  Layer 1: 并发控制 (Capacity Control)                       │
-│  - 配置合理的 capacity 参数（推荐：10-200）                 │
+│  - 配置合理的 capacity 参数(推荐:10-200)                 │
 │  - 信号量机制防止资源耗尽                                  │
 ├─────────────────────────────────────────────────────────────┤
 │  Layer 2: 超时控制 (Timeout Control)                        │
-│  - 单次调用超时（默认5000ms）                              │
-│  - 分层超时：连接超时 < 读取超时 < 总超时                  │
+│  - 单次调用超时(默认5000ms)                              │
+│  - 分层超时:连接超时 < 读取超时 < 总超时                  │
 ├─────────────────────────────────────────────────────────────┤
 │  Layer 3: 异常恢复 (Fault Recovery)                         │
 │  - 指数退避重试机制                                        │
-│  - 熔断器模式（Circuit Breaker）                           │
-│  - 死信队列（DLQ）用于失败记录                             │
+│  - 熔断器模式(Circuit Breaker)                           │
+│  - 死信队列(DLQ)用于失败记录                             │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -1195,10 +1195,10 @@ class OpenAIAsyncCaller(AsyncFunction):
             result_future.complete_exceptionally(e)
 
     async def timeout(self, input_record, result_future):
-        """超时回调：返回降级结果"""
+        """超时回调:返回降级结果"""
         result_future.complete({
             "user_id": input_record["user_id"],
-            "response": "服务繁忙，请稍后重试",
+            "response": "服务繁忙,请稍后重试",
             "tokens": 0,
             "fallback": True
         })
@@ -1218,7 +1218,7 @@ async_config = {
     "output_mode": "ordered"  # 保持顺序
 }
 
-# 数据源：用户查询流
+# 数据源:用户查询流
 user_queries = env.add_source(KafkaSource(...))
 
 # 异步调用大模型
@@ -1335,7 +1335,7 @@ class FeatureRequest:
 class AsyncFeatureServiceClient(AsyncFunction):
     """
     异步特征服务客户端
-    支持批量特征获取，适用于实时推荐系统
+    支持批量特征获取,适用于实时推荐系统
     """
 
     def __init__(:

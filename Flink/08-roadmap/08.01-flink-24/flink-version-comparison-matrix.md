@@ -175,7 +175,7 @@ graph TB
     end
 
     subgraph "Flink 2.2 AI/ML"
-        V22[2.2 向量搜索] --> V22_1[VECTOR_SEARCH（规划中）]
+        V22[2.2 向量搜索] --> V22_1[VECTOR_SEARCH(规划中)]
         V22 --> V22_2[Model DDL]
         V22 --> V22_3[PyFlink Async]
         V21 --> V22

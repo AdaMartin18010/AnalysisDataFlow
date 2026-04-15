@@ -419,7 +419,7 @@ graph TB
 │                                                                 │
 │  Q2: 是否需要中心协调者控制流程?                                  │
 │      ├─ 是 → Q3                                                  │
-│      └─ 否 → 网状拓扑（去中心化）                                 │
+│      └─ 否 → 网状拓扑(去中心化)                                 │
 │                                                                 │
 │  Q3: 是否存在层级决策结构?                                        │
 │      ├─ 是 → 树型拓扑                                            │
@@ -543,7 +543,7 @@ public class MultiAgentOrchestrationEngine {
             StreamExecutionEnvironment.getExecutionEnvironment();
         env.enableCheckpointing(5000);
 
-        // 输入流：用户请求
+        // 输入流:用户请求
         DataStream<TaskRequest> taskStream = env
             .addSource(new KafkaSource<TaskRequest>()
                 .setTopics("agent-tasks")
@@ -673,7 +673,7 @@ public class AgentSelectionFunction
 
         // 检查Agent负载
         if (load.getConcurrentTasks() >= agent.getMaxConcurrent()) {
-            // 负载过高，重新路由
+            // 负载过高,重新路由
             Agent alternative = findAlternativeAgent(assignment);
             assignment.setSelectedAgent(alternative);
         }
@@ -694,7 +694,7 @@ public class AgentSelectionFunction
     @Override
     public void onTimer(long timestamp, OnTimerContext ctx,
                        Collector<AgentAssignment> out) {
-        // 超时处理：重新调度或标记失败
+        // 超时处理:重新调度或标记失败
         AgentAssignment assignment = getPendingAssignment(ctx.getCurrentKey());
         if (assignment != null && !assignment.isCompleted()) {
             handleTimeout(assignment);

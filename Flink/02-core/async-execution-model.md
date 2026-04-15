@@ -149,9 +149,9 @@ $$
 | [e3]   |        |        |
 +--------+--------+--------+
          ↓
-    并行异步执行（不同 Key 间）
+    并行异步执行(不同 Key 间)
          ↓
-    串行回调执行（同一 Key 内）
+    串行回调执行(同一 Key 内)
 ```
 
 **形式化定义**:
@@ -342,12 +342,12 @@ Mailbox 线程:
   1. 从网络缓冲区读取记录
   2. 调用 processElement(record)
   3. 算子发起 asyncStateAccess → AEC 提交到线程池
-  4. 算子返回（不等待结果）
-  5. Mailbox 继续处理下一条记录（不同 Key）
+  4. 算子返回(不等待结果)
+  5. Mailbox 继续处理下一条记录(不同 Key)
 
 AEC 线程池:
   1. 执行异步状态访问
-  2. 收到响应后，将 callback 放入 Mailbox
+  2. 收到响应后,将 callback 放入 Mailbox
   3. Mailbox 线程执行 callback
 ```
 
@@ -393,7 +393,7 @@ $$
 
 ```
 Flink 1.x:
-k1: [op1] → [op2] → [op3]  (顺序执行，阻塞 I/O)
+k1: [op1] → [op2] → [op3]  (顺序执行,阻塞 I/O)
 
 Flink 2.0 (AEC):
 k1: [op1] ─┬→ [等待] ─┬→ [callback1] ─┬→ [op2] ─┬→ ...
@@ -453,7 +453,7 @@ PriorityQueue<OrderedCallback> callbackQueue =
 ```
 Key=k1: [callback-seq=0] → 执行 → [callback-seq=1] → 执行 → ...
 Key=k2: [callback-seq=0] → 执行 → [callback-seq=1] → 执行 → ...
-                              ↕ 并行（不同 Key）
+                              ↕ 并行(不同 Key)
 ```
 
 **形式化保证**:
@@ -503,7 +503,7 @@ state.getAsync(key)
 **正确模式**:
 
 ```java
-// 正确示例：链式异步操作
+// 正确示例:链式异步操作
 state.getAsync(key)
     .thenCompose(value ->
         // ✅ 继续异步访问
@@ -828,7 +828,7 @@ public class AsyncStateJob {
         StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
 
-        // 配置 ForSt State Backend（支持异步状态）
+        // 配置 ForSt State Backend(支持异步状态)
         ForStStateBackend forStBackend = new ForStStateBackend();
         forStBackend.setRemoteStoragePath("s3://flink-state-bucket/checkpoints");
         env.setStateBackend(forStBackend);
@@ -845,7 +845,7 @@ public class AsyncStateJob {
             );
 
         // ========================================
-        // 关键：启用异步状态处理
+        // 关键:启用异步状态处理
         // ========================================
         DataStream<Result> result = source
             .keyBy(Event::getKey)
@@ -1150,7 +1150,7 @@ graph TB
 # AEC 线程池大小 (默认: CPU 核心数 × 2)
 aec.thread-pool.size: 16
 
-# 每个 Key 的最大并发操作数 (默认: 1，严格 FIFO)
+# 每个 Key 的最大并发操作数 (默认: 1,严格 FIFO)
 aec.max-concurrent-per-key: 2
 
 # 异步操作超时时间
@@ -1196,12 +1196,12 @@ class AECCallbackProcessor {
         while (queue != null && !queue.isEmpty()) {
             Map.Entry<Long, Result> entry = queue.firstEntry();
             if (entry.getKey().equals(nextSeq)) {
-                // 顺序匹配，执行回调
+                // 顺序匹配,执行回调
                 executeCallback(key, entry.getValue());
                 queue.pollFirstEntry();
                 nextSequence.put(key, nextSeq + 1);
             } else {
-                // 顺序不匹配，等待前置操作
+                // 顺序不匹配,等待前置操作
                 break;
             }
         }

@@ -345,7 +345,7 @@ $$
 ### 6.1 标准 SQL:2011 窗口函数
 
 ```sql
--- 计算每小时内，每个用户的累计访问次数（滚动窗口）
+-- 计算每小时内,每个用户的累计访问次数(滚动窗口)
 SELECT
     user_id,
     event_time,
@@ -386,7 +386,7 @@ EMIT WITH DELAY '1' MINUTE;
 ### 6.3 SQL:2023 MATCH_RECOGNIZE (CEP)
 
 ```sql
--- 检测用户行为模式：登录 -> 浏览 -> 购买
+-- 检测用户行为模式:登录 -> 浏览 -> 购买
 SELECT *
 FROM user_events
 MATCH_RECOGNIZE (
@@ -407,7 +407,7 @@ MATCH_RECOGNIZE (
 ### 6.4 Kafka KSQL 语法
 
 ```sql
--- KSQL 窗口聚合（简化版）
+-- KSQL 窗口聚合(简化版)
 CREATE TABLE pageviews_per_region AS
 SELECT
     regionid,

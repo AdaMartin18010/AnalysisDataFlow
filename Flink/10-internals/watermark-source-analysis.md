@@ -26,12 +26,12 @@ public interface WatermarkStrategy<T>
     extends TimestampAssignerSupplier<T>,
             WatermarkGeneratorSupplier<T> {
 
-    // 创建 TimestampAssigner，负责从记录中提取事件时间戳
+    // 创建 TimestampAssigner,负责从记录中提取事件时间戳
     default TimestampAssigner<T> createTimestampAssigner(Context context) {
         return new RecordTimestampAssigner<>();
     }
 
-    // 创建 WatermarkGenerator，负责生成 Watermark
+    // 创建 WatermarkGenerator,负责生成 Watermark
     WatermarkGenerator<T> createWatermarkGenerator(Context context);
 
     // 构建带空闲超时配置的 WatermarkStrategy
@@ -58,10 +58,10 @@ public interface WatermarkStrategy<T>
 @FunctionalInterface
 public interface TimestampAssigner<T> {
 
-    // 表示记录本身没有携带时间戳，需要后续分配
+    // 表示记录本身没有携带时间戳,需要后续分配
     long NO_TIMESTAMP = Long.MIN_VALUE;
 
-    // 从记录中提取事件时间戳，单位毫秒
+    // 从记录中提取事件时间戳,单位毫秒
     long extractTimestamp(T element, long recordTimestamp);
 }
 ```
@@ -81,10 +81,10 @@ public interface TimestampAssigner<T> {
 @Public
 public interface WatermarkGenerator<T> {
 
-    // 每接收到一个事件时调用（用于标点Watermark生成）
+    // 每接收到一个事件时调用(用于标点Watermark生成)
     void onEvent(T event, long eventTimestamp, WatermarkOutput output);
 
-    // 定期调用（用于周期性Watermark生成），默认每200ms调用一次
+    // 定期调用(用于周期性Watermark生成),默认每200ms调用一次
     void onPeriodicEmit(WatermarkOutput output);
 }
 ```
@@ -100,10 +100,10 @@ public interface WatermarkGenerator<T> {
 @Public
 public final class Watermark implements Serializable {
 
-    // Watermark 值为 Long.MIN_VALUE 时表示负无穷，通常作为初始值
+    // Watermark 值为 Long.MIN_VALUE 时表示负无穷,通常作为初始值
     public static final Watermark UNINITIALIZED = new Watermark(Long.MIN_VALUE);
 
-    // Watermark 值为 Long.MAX_VALUE 时表示正无穷，用于标记流的结束
+    // Watermark 值为 Long.MAX_VALUE 时表示正无穷,用于标记流的结束
     public static final Watermark MAX_WATERMARK = new Watermark(Long.MAX_VALUE);
 
     // 当前 Watermark 的毫秒时间戳
@@ -148,7 +148,7 @@ public class StatusWatermarkValve {
     // 每个通道是否为空闲状态
     private final boolean[] isIdle;
 
-    // 当前输出的最小 Watermark（多输入对齐后的 Watermark）
+    // 当前输出的最小 Watermark(多输入对齐后的 Watermark)
     private long lastOutputWatermark = Long.MIN_VALUE;
 
     // 标记是否有通道已结束
@@ -166,7 +166,7 @@ public class StatusWatermarkValve {
         Arrays.fill(watermarks, Long.MIN_VALUE);
     }
 
-    // 核心方法：处理输入通道的 Watermark
+    // 核心方法:处理输入通道的 Watermark
     public boolean inputWatermark(Watermark watermark, int channelIndex) throws Exception {
         // ... 对齐逻辑
     }
@@ -191,7 +191,7 @@ public class StatusWatermarkValve {
 @Public
 public class BoundedOutOfOrdernessWatermarks<T> implements WatermarkGenerator<T> {
 
-    // 最大乱序延迟（毫秒）
+    // 最大乱序延迟(毫秒)
     private final long maxOutOfOrderness;
 
     // 当前最大事件时间戳
@@ -268,7 +268,7 @@ public class WatermarkStrategyWithIdleness<T> implements WatermarkStrategy<T> {
         );
     }
 
-    // 内部实现：空闲检测 Watermark 生成器
+    // 内部实现:空闲检测 Watermark 生成器
     private static class IdlenessWatermarkGenerator<T> implements WatermarkGenerator<T> {
 
         private final WatermarkGenerator<T> underlyingGenerator;
@@ -356,7 +356,7 @@ public abstract class Trigger<T, W extends Window> implements Serializable {
     // 窗口被清理时调用
     public abstract void clear(W window, TriggerContext ctx);
 
-    // 是否可以合并（用于 Session Window）
+    // 是否可以合并(用于 Session Window)
     public boolean canMerge() {
         return false;
     }
@@ -384,7 +384,7 @@ public abstract class Trigger<T, W extends Window> implements Serializable {
 @Public
 public interface Evictor<T, W extends Window> extends Serializable {
 
-    // 窗口触发前调用，可迭代移除元素
+    // 窗口触发前调用,可迭代移除元素
     void evictBefore(
         Iterable<TimestampedValue<T>> elements,
         int size,
@@ -392,7 +392,7 @@ public interface Evictor<T, W extends Window> extends Serializable {
         EvictorContext evictorContext
     );
 
-    // 窗口触发后调用，可迭代移除元素
+    // 窗口触发后调用,可迭代移除元素
     void evictAfter(
         Iterable<TimestampedValue<T>> elements,
         int size,
@@ -427,7 +427,7 @@ public interface WatermarkAlignmentStrategy {
 @Internal
 public interface WatermarkAligner {
 
-    // 提交本地 Watermark，返回对齐后的 Watermark
+    // 提交本地 Watermark,返回对齐后的 Watermark
     long alignWatermark(long localWatermark);
 
     // 更新其他并发实例的 Watermark
@@ -448,11 +448,11 @@ public interface WatermarkAligner {
 **证明**:
 
 ```
-设第 n 次调用 onPeriodicEmit 时：
+设第 n 次调用 onPeriodicEmit 时:
 - maxTimestamp_n = max(之前所有事件时间, 当前事件时间)
 - watermark_n = maxTimestamp_n - δ - 1
 
-由于 maxTimestamp_{n+1} ≥ maxTimestamp_n（最大值的单调性）
+由于 maxTimestamp_{n+1} ≥ maxTimestamp_n(最大值的单调性)
 因此 watermark_{n+1} ≥ watermark_n
 
 得证 Watermark 序列单调不减。
@@ -489,11 +489,11 @@ private static final long WATERMARK_INTERVAL = 200L; // 毫秒
 **证明**:
 
 ```
-设 idleTimeout = T，最后一次事件到达时间为 t_last
+设 idleTimeout = T,最后一次事件到达时间为 t_last
 
 条件: System.currentTimeMillis() - t_last > T
 
-当条件满足时：
+当条件满足时:
 1. isIdle 被设为 true
 2. 调用 output.markIdle() 通知下游
 3. 停止调用底层生成器的 onPeriodicEmit
@@ -522,7 +522,7 @@ private void findAndOutputNewMinWatermarkAcrossAlignedChannels() throws Exceptio
         }
     }
 
-    // 如果没有活跃通道，输出空闲标记
+    // 如果没有活跃通道,输出空闲标记
     if (!hasAliveChannels) {
         outputHandler.handleWatermark(new Watermark(Long.MAX_VALUE));
         return;
@@ -549,18 +549,18 @@ $$
 **推导**:
 
 ```
-设：
+设:
 - 通道 A 的 Watermark: w_A = 100
 - 通道 B 的 Watermark: w_B = 80
 - 对齐后输出 Watermark: w_out = min(100, 80) = 80
 
-场景：通道 A 收到事件时间 t = 85 的数据
+场景:通道 A 收到事件时间 t = 85 的数据
 
-判定：
-- t = 85 > w_out = 80，该数据不是迟到数据
-- 即使 t > w_A，只要 t > w_out，数据就是有效的
+判定:
+- t = 85 > w_out = 80,该数据不是迟到数据
+- 即使 t > w_A,只要 t > w_out,数据就是有效的
 
-这保证了慢速通道（通道 B）的数据不会被快速通道（通道 A）的进度判定为迟到。
+这保证了慢速通道(通道 B)的数据不会被快速通道(通道 A)的进度判定为迟到。
 ```
 
 ---
@@ -617,7 +617,7 @@ public class WindowOperator<K, IN, OUT, W extends Window> extends AbstractUdfStr
             // 触发计算但不清理状态
             emitWindowResult(window);
         } else {
-            // 超出允许延迟，清理窗口状态
+            // 超出允许延迟,清理窗口状态
             clearWindowState(window);
         }
     }
@@ -641,7 +641,7 @@ public class WindowOperator<K, IN, OUT, W extends Window> extends AbstractUdfStr
 -------------|--------------------------|--------------------------
 目的         | 事件时间进度推进          | 状态一致性快照
 触发机制     | 时间戳驱动/数据驱动        | 时间间隔/事件数量驱动
-传播方向     | 自上而下（Source→Sink）    | 全局同步（Barrier 传播）
+传播方向     | 自上而下(Source→Sink)    | 全局同步(Barrier 传播)
 状态影响     | 触发窗口计算               | 触发状态持久化
 语义保证     | 结果时效性                 | Exactly-Once 容错
 ```
@@ -660,7 +660,7 @@ public class SourceOperator<OUT, SplitT extends SourceSplit>
     // Checkpoint 由 CheckpointBarrierHandler 管理
     private CheckpointBarrierHandler checkpointBarrierHandler;
 
-    // 两者独立运行，但在 checkpoint 时需要同步 Watermark 状态
+    // 两者独立运行,但在 checkpoint 时需要同步 Watermark 状态
 }
 ```
 
@@ -679,12 +679,12 @@ public class SourceOperator<OUT, SplitT extends SourceSplit>
 2. Backpressure 发生:
    Source → [Watermark: 100] → Operator A (积压) → [Watermark: 80] → Operator B
 
-   由于 Operator A 处理延迟，其输出的 Watermark 推进变慢，
+   由于 Operator A 处理延迟,其输出的 Watermark 推进变慢,
    Operator B 的 Watermark 也会相应滞后。
 
 3. 语义保证:
-   即使存在 Backpressure，Watermark 的单调性不变，
-   窗口触发的正确性仍然得到保证，只是触发时间可能延迟。
+   即使存在 Backpressure,Watermark 的单调性不变,
+   窗口触发的正确性仍然得到保证,只是触发时间可能延迟。
 ```
 
 ---
@@ -716,7 +716,7 @@ withWatermark
     .evictor(...)                            // 可选的驱逐器
     .aggregate(...);
 
-// 状态 TTL 配置（必须大于 allowedLateness）
+// 状态 TTL 配置(必须大于 allowedLateness)
 StateTtlConfig ttlConfig = StateTtlConfig
     .newBuilder(Time.minutes(10))  // > allowedLateness(5min) + watermark delay(30s)
     .setUpdateType(OnCreateAndWrite)
@@ -813,7 +813,7 @@ public class WatermarkStrategyWithIdleness<T> implements WatermarkStrategy<T> {
             lastEventTimestamp = System.currentTimeMillis();
             if (isIdle) {
                 isIdle = false;
-                // 恢复活跃，重置状态
+                // 恢复活跃,重置状态
             }
             underlyingGenerator.onEvent(event, eventTimestamp, output);
         }
@@ -848,7 +848,7 @@ StatusWatermarkValve 处理:
 - 输出 Watermark: 100 (仅基于活跃通道)
 
 当 Source B 恢复:
-- onEvent 被调用，isIdle = false
+- onEvent 被调用,isIdle = false
 - 重新参与 Watermark 对齐计算
 ```
 
@@ -905,7 +905,7 @@ public class WatermarkStrategyWithAlignment<T> implements WatermarkStrategy<T> {
 对齐计算:
 1. maxGlobalWatermark = max(globalWatermarks)
 2. if (localWatermark > maxGlobalWatermark + D) {
-       // 本地 Watermark 超前太多，等待其他实例
+       // 本地 Watermark 超前太多,等待其他实例
        alignedWatermark = maxGlobalWatermark + D;
    } else {
        alignedWatermark = localWatermark;
@@ -933,7 +933,7 @@ public class WatermarkStrategyWithAlignment<T> implements WatermarkStrategy<T> {
 // 窗口分配时注册触发器
 public TriggerResult onElement(T element, long timestamp, TimeWindow window, TriggerContext ctx) {
     if (window.maxTimestamp() <= ctx.getCurrentWatermark()) {
-        // 如果 Watermark 已经超过窗口结束时间，立即触发
+        // 如果 Watermark 已经超过窗口结束时间,立即触发
         return TriggerResult.FIRE;
     } else {
         // 注册事件时间定时器
@@ -965,10 +965,10 @@ public TriggerResult onEventTime(long time, TimeWindow window, TriggerContext ct
 1. if (eventTimestamp < currentWatermark) {
        // 初步判定为迟到
        if (eventTimestamp >= windowEnd - allowedLateness) {
-           // 在允许延迟范围内，可以更新窗口
+           // 在允许延迟范围内,可以更新窗口
            return UPDATE_WINDOW;
        } else {
-           // 超出允许延迟，发送到侧输出或丢弃
+           // 超出允许延迟,发送到侧输出或丢弃
            return SIDE_OUTPUT_OR_DROP;
        }
    } else {
@@ -1005,7 +1005,7 @@ public class WindowOperator<K, IN, ACC, OUT, W extends Window> extends ... {
 
         for (W window : elementWindows) {
             if (isWindowLate(window)) {
-                // 窗口已超出允许延迟，跳过
+                // 窗口已超出允许延迟,跳过
                 continue;
             }
             // 正常处理
@@ -1044,12 +1044,12 @@ public class WindowOperator<K, IN, ACC, OUT, W extends Window> extends ... {
 
 归纳步骤 (中间算子):
 - 假设所有上游算子满足定理
-- 单输入算子: 直接传递上游 Watermark，单调性保持
+- 单输入算子: 直接传递上游 Watermark,单调性保持
 - 多输入算子: StatusWatermarkValve 取最小值 (Lemma-F-10-04)
   - 最小值操作保持单调性
   - 下界性由最小值的性质保证
 
-结论: 通过拓扑排序归纳，整个 DAG 满足定理
+结论: 通过拓扑排序归纳,整个 DAG 满足定理
 ```
 
 ---
@@ -1066,13 +1066,13 @@ public class WindowOperator<K, IN, ACC, OUT, W extends Window> extends ... {
 - Watermark 策略 W (固定参数)
 - 窗口分配器 A (固定参数)
 
-需证明: 任意两次运行，窗口输出结果集合 O_1 和 O_2 相等
+需证明: 任意两次运行,窗口输出结果集合 O_1 和 O_2 相等
 
 步骤:
-1. 由于 D 固定，每个记录的事件时间戳固定
-2. Watermark 策略 W 是确定性函数，生成的 Watermark 序列固定
-3. 窗口分配器 A 是确定性函数，每个记录分配的窗口固定
-4. 触发条件仅依赖于 Watermark 和窗口结束时间，两者都固定
+1. 由于 D 固定,每个记录的事件时间戳固定
+2. Watermark 策略 W 是确定性函数,生成的 Watermark 序列固定
+3. 窗口分配器 A 是确定性函数,每个记录分配的窗口固定
+4. 触发条件仅依赖于 Watermark 和窗口结束时间,两者都固定
 5. 因此触发时机和输出结果固定
 
 形式化:
@@ -1095,9 +1095,9 @@ public class WindowOperator<K, IN, ACC, OUT, W extends Window> extends ... {
 
 证明:
 1. 在 t_0 到 t_0 + T 期间:
-   - S_i 被视为活跃，其 Watermark 保持不变
+   - S_i 被视为活跃,其 Watermark 保持不变
    - 全局 Watermark = min(w_1, ..., w_i, ..., w_n)
-   - 如果 w_i 是最小值，可能阻塞全局进度
+   - 如果 w_i 是最小值,可能阻塞全局进度
 
 2. 在 t_0 + T 时刻:
    - IdlenessWatermarkGenerator 检测到超时
@@ -1109,7 +1109,7 @@ public class WindowOperator<K, IN, ACC, OUT, W extends Window> extends ... {
    - 全局 Watermark = min({w_j | j ≠ i})
    - 阻塞解除
 
-因此，最大阻塞时间为 T，得证。
+因此,最大阻塞时间为 T,得证。
 ```
 
 ---
@@ -1134,7 +1134,7 @@ public class WindowOperator<K, IN, ACC, OUT, W extends Window> extends ... {
 - A 的对齐后 Watermark: w_A_aligned = w_A_local
 - 实际差值: w_A_aligned - w_B ≤ D
 
-综上，任意时刻 |w_i - w_j| ≤ D，得证。
+综上,任意时刻 |w_i - w_j| ≤ D,得证。
 ```
 
 ---
@@ -1250,7 +1250,7 @@ public class AdaptiveWatermarkGenerator<T> implements WatermarkGenerator<T> {
 ```java
 /**
  * 适用于数据中携带特殊标记指示进度的场景
- * 例如：Kafka 中的事务结束标记、CDC 中的 commit 标记
+ * 例如:Kafka 中的事务结束标记、CDC 中的 commit 标记
  */
 public class PunctuatedWatermarkGenerator<T extends MarkedEvent> implements WatermarkGenerator<T> {
 
@@ -1260,16 +1260,16 @@ public class PunctuatedWatermarkGenerator<T extends MarkedEvent> implements Wate
     public void onEvent(T event, long eventTimestamp, WatermarkOutput output) {
         maxTimestamp = Math.max(maxTimestamp, eventTimestamp);
 
-        // 检查标记，如果是进度标记则立即发射 Watermark
+        // 检查标记,如果是进度标记则立即发射 Watermark
         if (event.isWatermarkMarker()) {
-            // 标点 Watermark：立即发射，不等待周期性触发
+            // 标点 Watermark:立即发射,不等待周期性触发
             output.emitWatermark(new Watermark(maxTimestamp));
         }
     }
 
     @Override
     public void onPeriodicEmit(WatermarkOutput output) {
-        // 标点模式下，周期性发射可选
+        // 标点模式下,周期性发射可选
         // 用于在长时间无标记时的兜底推进
         if (maxTimestamp > Long.MIN_VALUE) {
             output.emitWatermark(new Watermark(maxTimestamp - 1));
@@ -1289,7 +1289,7 @@ public class PunctuatedWatermarkGenerator<T extends MarkedEvent> implements Wate
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 
-// 多源 Union 场景，需要配置空闲源处理
+// 多源 Union 场景,需要配置空闲源处理
 WatermarkStrategy<MyEvent> strategy = WatermarkStrategy
     .<MyEvent>forBoundedOutOfOrderness(Duration.ofSeconds(30))
     .withTimestampAssigner((event, ts) -> event.getEventTime())
@@ -1397,7 +1397,7 @@ public class KeepLastNEvictor<T> implements Evictor<T, TimeWindow> {
             int size,
             TimeWindow window,
             EvictorContext ctx) {
-        // 触发后，只保留最后 N 个元素
+        // 触发后,只保留最后 N 个元素
         int evictCount = size - n;
         Iterator<TimestampedValue<T>> iterator = elements.iterator();
         while (evictCount > 0 && iterator.hasNext()) {
@@ -1429,7 +1429,7 @@ WatermarkStrategy<Event> alignedStrategy = WatermarkStrategy
     .withTimestampAssigner((event, ts) -> event.getEventTime())
     .withAlignment("source-group-1", Duration.ofSeconds(5));
 
-// 应用到 Kafka Source（多分区）
+// 应用到 Kafka Source(多分区)
 KafkaSource<Event> kafkaSource = KafkaSource.<Event>builder()
     .setTopics("events")
     .setGroupId("flink-consumer")
@@ -1571,7 +1571,7 @@ sequenceDiagram
 
     S1->>SWV: emit Watermark(100)
     Note right of SWV: watermarks = [100, -∞]<br/>min = -∞ (通道B未活跃)
-    SWV->>OP: 不输出（等待所有通道）
+    SWV->>OP: 不输出(等待所有通道)
 
     S2->>SWV: emit Watermark(80)
     Note right of SWV: watermarks = [100, 80]<br/>min = 80
@@ -1580,7 +1580,7 @@ sequenceDiagram
 
     S1->>SWV: emit Watermark(150)
     Note right of SWV: watermarks = [150, 80]<br/>min = 80 (不变)
-    SWV->>OP: 不输出（Watermark未前进）
+    SWV->>OP: 不输出(Watermark未前进)
 
     S2->>SWV: emit Watermark(120)
     Note right of SWV: watermarks = [150, 120]<br/>min = 120
@@ -1682,7 +1682,7 @@ public class SourceOperator<OUT, SplitT extends SourceSplit>
     private SourceReader<OUT, SplitT> sourceReader;
     private OperatorEventGateway operatorEventGateway;
 
-    // 关键方法：初始化 Watermark 生成
+    // 关键方法:初始化 Watermark 生成
     @Override
     public void open() throws Exception {
         super.open();
@@ -1838,9 +1838,9 @@ public class StatusWatermarkValve {
         long watermarkTimestamp = watermark.getTimestamp();
         long previousWatermark = watermarksPerChannel[channelIndex];
 
-        // 确保 Watermark 单调性（允许相等的 Watermark）
+        // 确保 Watermark 单调性(允许相等的 Watermark)
         if (watermarkTimestamp < previousWatermark) {
-            // 乱序 Watermark，忽略但记录日志
+            // 乱序 Watermark,忽略但记录日志
             LOG.warn("Received watermark {} is smaller than previous watermark {} on channel {}",
                 watermarkTimestamp, previousWatermark, channelIndex);
             return false;
@@ -1872,7 +1872,7 @@ public class StatusWatermarkValve {
     }
 
     /**
-     * 核心对齐算法：找出所有活跃通道的最小 Watermark
+     * 核心对齐算法:找出所有活跃通道的最小 Watermark
      */
     private boolean findAndOutputNewMinWatermarkAcrossAlignedChannels() throws Exception {
         long newMinWatermark = Long.MAX_VALUE;
@@ -1938,7 +1938,7 @@ public class WindowOperator<K, IN, ACC, OUT, W extends Window>
             timestamp = getProcessingTimeService().getCurrentProcessingTime();
         }
 
-        // 检查是否迟到（仅 Event Time）
+        // 检查是否迟到(仅 Event Time)
         if (windowAssigner.isEventTime()) {
             if (timestamp < timerService.currentWatermark()) {
                 // 迟到数据处理
@@ -2015,7 +2015,7 @@ public class WindowOperator<K, IN, ACC, OUT, W extends Window>
         ACC contents = windowState.get();
 
         if (contents != null) {
-            // 执行驱逐器（如果配置了）
+            // 执行驱逐器(如果配置了)
             if (evictor != null) {
                 contents = evictAndEmit(window, contents);
             } else {
@@ -2034,7 +2034,7 @@ public class WindowOperator<K, IN, ACC, OUT, W extends Window>
 **批量 Watermark 传播机制**:
 
 ```java
-// 在 RecordWriter 中，Watermark 和其他数据一样被批量发送
+// 在 RecordWriter 中,Watermark 和其他数据一样被批量发送
 public class RecordWriter<T> {
 
     // 发送 Buffer 时可能包含多个记录和一个 Watermark

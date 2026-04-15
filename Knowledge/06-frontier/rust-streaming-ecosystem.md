@@ -38,16 +38,16 @@ $$
 **定义**: Timely Dataflow 是 Differential Dataflow 的底层执行引擎，是一种支持**有状态、有环数据流图**的分布式计算框架。其核心抽象为：
 
 ```rust
-// Timely Dataflow 核心抽象（概念性）
+// Timely Dataflow 核心抽象(概念性)
 pub trait TimelyOperator {
     type Capability: CapabilityTrait;
 
-    // 处理输入数据，产生输出
+    // 处理输入数据,产生输出
     fn work(&mut self,
             input: &mut InputHandle,
             output: &mut OutputHandle);
 
-    // 通知：输入前端已到达给定时间戳
+    // 通知:输入前端已到达给定时间戳
     fn notify(&mut self, time: &Timestamp);
 }
 ```
@@ -757,7 +757,7 @@ WHERE ft.depth >= 3  -- 多层转账
 SELECT balance FROM account_balance WHERE account_id = 12345;
 -- 返回: 10000.00 (严格串行化保证)
 
--- 即使在高并发写入下，也不会读到中间状态
+-- 即使在高并发写入下,也不会读到中间状态
 -- (区别于 RisingWave 的快照隔离)
 ```
 

@@ -351,7 +351,7 @@ class FlinkCostEstimator:
     state_size_gb: float             # 状态大小
     latency_sla_ms: float            # 延迟要求
 
-    # 云厂商定价（AWS 示例）
+    # 云厂商定价(AWS 示例)
     vcpu_hourly: float = 0.05
     memory_gb_hourly: float = 0.006
     ebs_gp3_gb_monthly: float = 0.08
@@ -381,7 +381,7 @@ class FlinkCostEstimator:
         ondemand_cost = (vcpus * self.vcpu_hourly +
                         memory_gb * self.memory_gb_hourly) * hours_per_month
 
-        # Spot 实例成本（假设 60% 折扣）
+        # Spot 实例成本(假设 60% 折扣)
         spot_vcpu_hourly = self.vcpu_hourly * 0.4
         spot_memory_hourly = self.memory_gb_hourly * 0.4
         spot_cost = (vcpus * spot_vcpu_hourly +
@@ -398,11 +398,11 @@ class FlinkCostEstimator:
 
     def estimate_storage_cost(self) -> dict:
         """估算存储成本"""
-        # 活跃状态存储（RocksDB on EBS）
+        # 活跃状态存储(RocksDB on EBS)
         active_state_cost = self.state_size_gb * self.ebs_gp3_gb_monthly
 
-        # 检查点存储（S3）
-        # 假设增量检查点，平均每天变化 10%
+        # 检查点存储(S3)
+        # 假设增量检查点,平均每天变化 10%
         daily_change_gb = self.state_size_gb * 0.1
         checkpoint_size_gb = self.state_size_gb + daily_change_gb * 30
         checkpoint_storage_cost = (checkpoint_size_gb *
@@ -895,22 +895,22 @@ rules:
 ### 10.3 成本优化路线图
 
 ```
-第1阶段（1-2周）: 基线建立
+第1阶段(1-2周): 基线建立
 ├── 启用资源标签
 ├── 配置成本监控
 └── 建立成本报告
 
-第2阶段（2-4周）: 快速收益
-├── 实施 Spot 实例（适用于非关键作业）
+第2阶段(2-4周): 快速收益
+├── 实施 Spot 实例(适用于非关键作业)
 ├── 优化检查点配置
 └── 清理未使用资源
 
-第3阶段（1-3月）: 深度优化
+第3阶段(1-3月): 深度优化
 ├── 部署自动扩缩容
 ├── 实施存储分层
 └── 购买预留实例
 
-第4阶段（持续）: 成本治理
+第4阶段(持续): 成本治理
 ├── 定期成本回顾会议
 ├── 成本优化培训
 └── 自动化成本优化策略

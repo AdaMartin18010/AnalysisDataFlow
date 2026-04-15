@@ -893,13 +893,13 @@ if __name__ == "__main__":
         offline_store=IcebergStore("s3://data-lake/feature-store/")
     )
 
-    # 在线推理：获取实时特征
+    # 在线推理:获取实时特征
     features = client.get_online_features(
         entity_ids=["user_123", "user_456"],
         feature_names=["click_count_5m", "category_affinity"]
     )
 
-    # 离线训练：获取历史特征 (PIT正确)
+    # 离线训练:获取历史特征 (PIT正确)
     entity_df = pd.DataFrame({
         'entity_id': ['user_123', 'user_456'],
         'timestamp': ['2024-01-15 10:00:00', '2024-01-15 10:05:00']

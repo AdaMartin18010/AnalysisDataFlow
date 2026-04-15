@@ -61,7 +61,7 @@
 ```
 BackwardCompatibility = ⟨ ConfigMap₁.₁₃, ConfigMap₁.₁₄, Validity, Deprecation ⟩
 
-其中：
+其中:
   Validity(c₁.₁₃) ⇒ Validity(Migrate(c₁.₁₃))
   Deprecation: ConfigMap₁.₁₃ → {WARN, ERROR} × Message
 ```
@@ -86,7 +86,7 @@ CompatibilityMatrix:
   - path: "spec.jobManager.resource"
     compatibility: FULL
 
-  # Deprecated（仍可用但建议迁移）
+  # Deprecated(仍可用但建议迁移)
   - path: "spec.job.parallelism"
     compatibility: DEPRECATED
     replacement: "spec.resourceProfile.autoScaling.enabled"
@@ -95,7 +95,7 @@ CompatibilityMatrix:
     compatibility: DEPRECATED
     replacement: "spec.resourceProfile.autoScaling"
 
-  # Breaking（必须迁移）
+  # Breaking(必须迁移)
   - path: "spec.autoscaler.enabled"
     compatibility: BREAKING
     replacement: "spec.flinkConfiguration.job.autoscaler.enabled"
@@ -113,7 +113,7 @@ CompatibilityMatrix:
 ```
 Migrate: Config₁.₁₃ → Config₁.₁₄
 
-约束条件：
+约束条件:
   1. SemanticsPreserve(Migrate(c)) = true
   2. RuntimeBehavior(Migrate(c)) ≡ RuntimeBehavior(c) ± ε
   3. Valid₁.₁₄(Migrate(c)) = true
@@ -239,7 +239,7 @@ spec:
 ```
 VerificationPoint = ⟨ Check, Expected, ActionOnFailure, Timeout ⟩
 
-检查类型：
+检查类型:
   - HealthCheck: 作业健康状态
   - ConfigValidation: 配置有效性
   - StateConsistency: 状态一致性
@@ -619,7 +619,7 @@ SmoothUpgrade(Config₁.₁₃, Cluster) ⇒
    Backup = exportAllConfigurations(Cluster₁.₁₃)
    store(Backup, externalStorage)
 
-3. CRD 升级（原子操作）
+3. CRD 升级(原子操作)
    applyCRD_v1beta2()
    verifyStorageVersion("v1beta2")
 
@@ -675,7 +675,7 @@ return Cluster₁.₁₄
 ∀c₁.₁₃:
     RuntimeBehavior(c₁.₁₃) ≈ RuntimeBehavior(Migrate(c₁.₁₃))
 
-其中 ≈ 表示在容忍范围内等价：
+其中 ≈ 表示在容忍范围内等价:
   - 吞吐量差异 < 5%
   - 延迟差异 < 10%
   - 资源使用差异 < 15%
@@ -696,16 +696,14 @@ return Cluster₁.₁₄
 3. **验证方法**：
 
    ```python
-   def verify_equivalence(config_113, config_114):
-       # 运行基准测试
-       baseline = run_benchmark(config_113)
-       migrated = run_benchmark(config_114)
-
-       # 比较指标
-       assert abs(baseline.throughput - migrated.throughput) / baseline.throughput < 0.05
-       assert abs(baseline.latency_p99 - migrated.latency_p99) / baseline.latency_p99 < 0.10
-       assert abs(baseline.resource_usage - migrated.resource_usage) / baseline.resource_usage < 0.15
-
+def verify_equivalence(config_113, config_114):
+    # 运行基准测试
+    baseline = run_benchmark(config_113)
+    migrated = run_benchmark(config_114)
+    # 比较指标
+    assert abs(baseline.throughput - migrated.throughput) / baseline.throughput < 0.05
+    assert abs(baseline.latency_p99 - migrated.latency_p99) / baseline.latency_p99 < 0.10
+    assert abs(baseline.resource_usage - migrated.resource_usage) / baseline.resource_usage < 0.15
 ```
 
 ---
@@ -777,7 +775,7 @@ class ConfigMigrator:
             flink_conf['job.autoscaler.algorithm.version'] = 'v2'
 
             self.DEPRECATION_WARNINGS.append(
-                "spec.autoscaler 已弃用，已迁移到 spec.flinkConfiguration.job.autoscaler"
+                "spec.autoscaler 已弃用,已迁移到 spec.flinkConfiguration.job.autoscaler"
             )
 
     def _migrate_session_cluster(self):
@@ -806,14 +804,14 @@ class ConfigMigrator:
             self.config_114['spec']['sessionClusterConfig'] = session_config
 
             self.DEPRECATION_WARNINGS.append(
-                "spec.sessionCluster 结构已更新，已迁移到 spec.sessionClusterConfig"
+                "spec.sessionCluster 结构已更新,已迁移到 spec.sessionClusterConfig"
             )
 
     def _migrate_resource_management(self):
         """迁移资源管理配置"""
         spec = self.config_113.get('spec', {})
 
-        # 如果原来使用静态 replicas，建议迁移到声明式
+        # 如果原来使用静态 replicas,建议迁移到声明式
         if 'taskManager' in spec and 'replicas' in spec['taskManager']:
             replicas = spec['taskManager'].get('replicas', 1)
 
@@ -849,7 +847,7 @@ class ConfigMigrator:
 
         # 添加推荐的 1.14 配置
         if 'job.autoscaler.enabled' not in flink_conf:
-            flink_conf['job.autoscaler.enabled'] = 'false'  # 默认关闭，需显式启用
+            flink_conf['job.autoscaler.enabled'] = 'false'  # 默认关闭,需显式启用
 
         # 建议设置 maxParallelism
         if 'pipeline.max-parallelism' not in flink_conf:
@@ -945,12 +943,12 @@ replicaCount: 1
 ---
 # ========== values-1.14.yaml (迁移后) ==========
 image:
-  registry: "docker.io"  # 新增：支持私有镜像仓库
+  registry: "docker.io"  # 新增:支持私有镜像仓库
   repository: "apache/flink-kubernetes-operator"
   tag: "1.14.0"
   pullPolicy: IfNotPresent
 
-# 新增：结构化配置
+# 新增:结构化配置
 operatorConfiguration:
   # 基础配置
   core:
@@ -963,26 +961,26 @@ operatorConfiguration:
     creationTimeout: 10m
     upgradeTimeout: 15m
 
-  # 新增：声明式资源管理
+  # 新增:声明式资源管理
   declarativeResourceManagement:
     enabled: true
     defaultProfile: "medium"
     profileNamespace: "flink-operator"
 
-  # 新增：Autoscaler V2 默认配置
+  # 新增:Autoscaler V2 默认配置
   autoscaler:
     enabled: true
     defaultAlgorithm: "v2"
     metricsWindow: "5m"
 
-  # 新增：Session 集群增强
+  # 新增:Session 集群增强
   sessionCluster:
     enhancements:
       enabled: true
       dynamicSlotAllocation: true
       warmPool: true
 
-  # 新增：高可用 Leader 选举
+  # 新增:高可用 Leader 选举
   leaderElection:
     enabled: true
     leaseDuration: 15s
@@ -992,20 +990,20 @@ watchNamespaces:
   - "flink-jobs"
   - "flink-production"  # 新增监控命名空间
 
-# 新增：RBAC 范围控制
+# 新增:RBAC 范围控制
 rbac:
   create: true
   scope: cluster  # cluster | namespace
 
 resources:
   limits:
-    cpu: 2000m      # 建议增加：新特性需要更多资源
+    cpu: 2000m      # 建议增加:新特性需要更多资源
     memory: 2Gi     # 建议增加
   requests:
     cpu: 500m
     memory: 512Mi
 
-# 新增：高可用配置
+# 新增:高可用配置
 highAvailability:
   enabled: true
   replicas: 2
@@ -1013,7 +1011,7 @@ highAvailability:
     enabled: true
     minAvailable: 1
 
-# 新增：资源模板（声明式管理）
+# 新增:资源模板(声明式管理)
 resourceProfiles:
   - name: "small"
     jobManager:
@@ -1047,7 +1045,7 @@ helm get values flink-kubernetes-operator -n flink-operator > backup-values.yaml
 # 2. 下载新 Chart
 helm pull apache/flink-kubernetes-operator --version 1.14.0
 
-# 3. 升级（先 dry-run 验证）
+# 3. 升级(先 dry-run 验证)
 helm upgrade flink-kubernetes-operator apache/flink-kubernetes-operator \
     --version 1.14.0 \
     -n flink-operator \
@@ -1432,7 +1430,7 @@ jobs:
 
           echo "✅ Migration successful!"
 
-  # ========== 回滚（失败时）==========
+  # ========== 回滚(失败时)==========
   rollback:
     needs: migrate
     if: failure() && github.event.inputs.dry_run != 'true'

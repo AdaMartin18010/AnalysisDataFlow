@@ -188,10 +188,10 @@ graph TB
 **使用场景对比**：
 
 ```sql
--- 严格模式：失败即报错
+-- 严格模式:失败即报错
 SELECT CAST('invalid' AS INT);  -- 抛出异常
 
--- 容错模式：失败返回 NULL
+-- 容错模式:失败返回 NULL
 SELECT TRY_CAST('invalid' AS INT);  -- 返回 NULL
 ```
 

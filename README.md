@@ -110,6 +110,16 @@
 
 ---
 
+## 🤝 社区与贡献
+
+- 💬 [加入讨论](https://github.com/luyanfeng/AnalysisDataFlow/discussions) — 提问、分享经验、展示成果
+- 📝 [贡献指南](./docs/contributing/CONTRIBUTING.md) — 如何提交 Issue 和 PR
+- 🚀 [知识图谱 v2.0](https://knowledge-graph.analysisdataflow.github.io/) — 交互式探索 10,000+ 形式化元素
+- 📋 [社区设置指南](./COMMUNITY/SETUP-GUIDE.md) — 维护者运营手册
+- 🏠 [新用户欢迎指南](./COMMUNITY/welcome-guide.md) — 第一次参与必看
+
+---
+
 ## 快速导航
 
 ### 按主题导航
@@ -126,6 +136,7 @@
 - **对比矩阵**: [visuals/ 引擎对比矩阵](visuals/matrix-engines.md)
 - **思维导图**: [visuals/ 知识思维导图](visuals/mindmap-complete.md)
 - **知识图谱**: [visuals/ 概念关系图谱](knowledge-graph.html)
+- **3D 交互式知识图谱**: [knowledge-graph.analysisdataflow.github.io](https://knowledge-graph.analysisdataflow.github.io/)
 - **架构图集**: [visuals/ 系统架构图](visuals/struct-model-relations.md)
 
 ### 最新更新 (v5.0 项目完成总报告版)

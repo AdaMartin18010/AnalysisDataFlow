@@ -72,7 +72,7 @@ pub struct BarrierManager {
 ```rust
 // src/meta/src/barrier/mod.rs
 impl BarrierManager {
-    /// 注入全局 Barrier，触发 Checkpoint
+    /// 注入全局 Barrier,触发 Checkpoint
     async fn inject_barrier(&self, command: Command) -> Result<()> {
         let epoch = self.epoch_generator.generate();
 
@@ -411,16 +411,16 @@ impl Compactor {
 
         // 2. 遍历合并后的键值对
         while let Some((key, value)) = merge_iterator.next().await? {
-            // Block 级优化：如果当前 block 与上层无重叠，直接复制
+            // Block 级优化:如果当前 block 与上层无重叠,直接复制
             if self.can_fast_copy(&key, &task.input_sstables) {
-                // 直接复制未重叠的 block，避免解压/重压缩
+                // 直接复制未重叠的 block,避免解压/重压缩
                 current_sstable_builder.fast_copy_block(&key, &value)?;
             } else {
-                // 需要合并的 block，解压处理
+                // 需要合并的 block,解压处理
                 current_sstable_builder.add(key, value)?;
             }
 
-            // 3. SSTable 大小达到限制，刷盘
+            // 3. SSTable 大小达到限制,刷盘
             if current_sstable_builder.size() >= task.target_file_size {
                 let sstable = current_sstable_builder.finish().await?;
                 let sstable_info = self.upload_sstable(&sstable).await?;
@@ -508,11 +508,11 @@ impl HashAggExecutor {
         for msg in self.input.execute() {
             match msg? {
                 Message::Chunk(chunk) => {
-                    // 处理数据块，更新状态表
+                    // 处理数据块,更新状态表
                     self.apply_chunk(&chunk, &mut state_tables).await?;
                 }
                 Message::Barrier(barrier) => {
-                    // Barrier 到达，触发 Checkpoint
+                    // Barrier 到达,触发 Checkpoint
                     if barrier.kind == BarrierKind::Checkpoint {
                         // 1. 刷入状态到 Hummock
                         for (key, table) in &state_tables {
@@ -576,12 +576,12 @@ async fn coordinate_checkpoint(&self) -> Result<()> {
     let timeout = Duration::from_secs(30);
     match timeout(timeout, self.collect_barrier_acks(checkpoint_epoch)).await {
         Ok(_) => {
-            // 3. Checkpoint 完成，更新元数据
+            // 3. Checkpoint 完成,更新元数据
             self.hummock_manager.commit_epoch(checkpoint_epoch).await?;
             info!("Checkpoint {} completed", checkpoint_epoch);
         }
         Err(_) => {
-            // 超时，触发恢复流程
+            // 超时,触发恢复流程
             self.trigger_recovery(checkpoint_epoch).await?;
         }
     }

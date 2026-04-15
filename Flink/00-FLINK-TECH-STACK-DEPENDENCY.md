@@ -56,8 +56,8 @@
 
 ```
 设 M = {m₁, m₂, ..., mₙ} 为 Flink 模块集合
-依赖关系 D ⊆ M × M × S，其中 S = {强, 中, 弱} 为依赖强度
-若 (mᵢ, mⱼ, s) ∈ D，表示 mᵢ 对 mⱼ 存在强度为 s 的依赖
+依赖关系 D ⊆ M × M × S,其中 S = {强, 中, 弱} 为依赖强度
+若 (mᵢ, mⱼ, s) ∈ D,表示 mᵢ 对 mⱼ 存在强度为 s 的依赖
 ```
 
 ### Def-F-D-02 (核心机制层 Core)
@@ -396,7 +396,7 @@ TableEnvironment tableEnv = TableEnvironment.create(
     EnvironmentSettings.inStreamingMode()
 );
 
-// 编译为执行计划后，需要 Runtime 层的 Deployment 模块部署执行
+// 编译为执行计划后,需要 Runtime 层的 Deployment 模块部署执行
 tableEnv.executeSql("INSERT INTO sink SELECT * FROM source");
 ```
 

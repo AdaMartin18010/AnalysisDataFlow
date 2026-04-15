@@ -407,27 +407,27 @@ $$\forall k: \text{goroutine}_k \text{ 捕获 } i, v \text{（共享变量，最
 **旧行为陷阱 (Go 1.21及之前)**:
 
 ```go
-// 危险代码：所有goroutine看到相同的i, v
+// 危险代码:所有goroutine看到相同的i, v
 for i, v := range items {
     go func() {
         // BUG: i, v 是共享变量！
         fmt.Printf("index=%d, value=%v\n", i, v)
     }()
 }
-// 输出结果不确定，可能全是最后一个元素
+// 输出结果不确定,可能全是最后一个元素
 ```
 
 **Go 1.22新行为**:
 
 ```go
-// 安全代码：每次迭代新变量
+// 安全代码:每次迭代新变量
 for i, v := range items {
     go func() {
         // CORRECT: i, v 是本次迭代的新变量
         fmt.Printf("index=%d, value=%v\n", i, v)
     }()
 }
-// 输出按预期：每个元素对应自己的索引和值
+// 输出按预期:每个元素对应自己的索引和值
 ```
 
 **迁移指南**: 依赖旧行为的代码（有意共享变量）需要显式捕获：
@@ -449,7 +449,7 @@ for i := range items {
 **Go 1.22 方式（回调模式）**:
 
 ```go
-// 传统回调式迭代 - 不标准，API混乱
+// 传统回调式迭代 - 不标准,API混乱
 func ForEachUser(db *sql.DB, callback func(User) error) error {
     rows, err := db.Query("SELECT * FROM users")
     if err != nil {
@@ -463,7 +463,7 @@ func ForEachUser(db *sql.DB, callback func(User) error) error {
             return err
         }
         if err := callback(u); err != nil {
-            return err  // 提前终止，但API不统一
+            return err  // 提前终止,但API不统一
         }
     }
     return rows.Err()
@@ -489,7 +489,7 @@ func AllUsers(db *sql.DB) iter.Seq2[int, User] {
     return func(yield func(int, User) bool) {
         rows, err := db.Query("SELECT id, name FROM users")
         if err != nil {
-            return  // 迭代器不返回错误，内部处理或panic
+            return  // 迭代器不返回错误,内部处理或panic
         }
         defer rows.Close()
 
@@ -508,7 +508,7 @@ func AllUsers(db *sql.DB) iter.Seq2[int, User] {
 // 使用 - 简洁、标准、支持break/continue/return
 for id, user := range AllUsers(db) {
     if id > 100 {
-        break  // 优雅终止，自动调用yield(false)
+        break  // 优雅终止,自动调用yield(false)
     }
     fmt.Println(user.Name)
 }
@@ -666,7 +666,7 @@ func FlatMap[V, W any](f func(V) []W) Operator[V, W] {
     }
 }
 
-// Take: 限制元素数量（反压实现）
+// Take: 限制元素数量(反压实现)
 func Take[V any](n int) Operator[V, V] {
     return func(in iter.Seq[V]) iter.Seq[V] {
         return func(yield func(V) bool) {
@@ -684,7 +684,7 @@ func Take[V any](n int) Operator[V, V] {
     }
 }
 
-// Window: 滑动窗口（状态化算子）
+// Window: 滑动窗口(状态化算子)
 func Window[V any](size int) Operator[V, []V] {
     return func(in iter.Seq[V]) iter.Seq[[]V] {
         return func(yield func([]V) bool) {
@@ -737,7 +737,7 @@ import (
     "testing"
 )
 
-// 基准测试：模拟窗口状态访问
+// 基准测试:模拟窗口状态访问
 func BenchmarkWindowStateAccess(b *testing.B) {
     windowCount := 1000
     state := make(map[string]int64)
@@ -846,7 +846,7 @@ func (c *WeakCache[K, V]) Set(key K, value *V) {
     c.data[key] = weak.Make(value)
 }
 
-// 流处理场景：窗口状态弱缓存
+// 流处理场景:窗口状态弱缓存
 type WindowState struct {
     startTime time.Time
     data      []byte
@@ -866,8 +866,8 @@ func ExampleWeakCacheInStreaming() {
         println("Found window:", state.startTime.String())
     }
 
-    // 当内存压力时，GC可回收window1
-    // 下次Get将返回false，业务逻辑可重新加载
+    // 当内存压力时,GC可回收window1
+    // 下次Get将返回false,业务逻辑可重新加载
 }
 ```
 

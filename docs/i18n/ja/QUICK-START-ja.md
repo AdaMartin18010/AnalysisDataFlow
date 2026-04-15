@@ -83,25 +83,25 @@
 ```
 Day 1-2: 概念基礎
 ├── Struct/01-foundation/01.01-unified-streaming-theory.md
-│   └── 重点：六層表現力階層（L1-L6）
+│   └── 重点:六層表現力階層(L1-L6)
 ├── Knowledge/01-concept-atlas/concurrency-paradigms-matrix.md
-│   └── 重点：五大並行パラダイム比較マトリックス
+│   └── 重点:五大並行パラダイム比較マトリックス
 └── Knowledge/01-concept-atlas/streaming-models-mindmap.md
-    └── 重点：ストリームコンピューティングモデル六次元比較
+    └── 重点:ストリームコンピューティングモデル六次元比較
 
 Day 3-4: パターンと選定
 ├── Knowledge/02-design-patterns/ (全閲覧)
-│   └── 重点：7大核心パターンの関係図
+│   └── 重点:7大核心パターンの関係図
 ├── Knowledge/04-technology-selection/engine-selection-guide.md
-│   └── 重点：ストリーム処理エンジン選定決定木
+│   └── 重点:ストリーム処理エンジン選定決定木
 └── Knowledge/04-technology-selection/streaming-database-guide.md
-    └── 重点：ストリームデータベース比較マトリックス
+    └── 重点:ストリームデータベース比較マトリックス
 
 Day 5: アーキテクチャ決定
 ├── Flink/01-architecture/flink-1.x-vs-2.0-comparison.md
-│   └── 重点：アーキテクチャ進化と移行決定
+│   └── 重点:アーキテクチャ進化と移行決定
 └── Struct/03-relationships/03.03-expressiveness-hierarchy.md
-    └── 重点：表現力とエンジニアリング制約
+    └── 重点:表現力とエンジニアリング制約
 ```
 
 ---

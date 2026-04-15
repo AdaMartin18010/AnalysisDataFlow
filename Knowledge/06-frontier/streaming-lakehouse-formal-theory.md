@@ -809,19 +809,19 @@ RESTORE TABLE orders TO VERSION AS OF 10
 **场景**：日志表从按天分区演进为按小时分区
 
 ```sql
--- 初始表定义（按天分区）
+-- 初始表定义(按天分区)
 CREATE TABLE logs (
     log_id BIGINT,
     message STRING,
     log_time TIMESTAMP
 ) PARTITIONED BY (days(log_time));
 
--- 分区演进（按小时分区）
+-- 分区演进(按小时分区)
 ALTER TABLE logs
 ADD PARTITION FIELD hours(log_time);
 
 -- 历史数据自动适配新分区方案
--- 无需重写数据，通过隐藏分区实现
+-- 无需重写数据,通过隐藏分区实现
 ```
 
 **元数据结构**：
@@ -899,7 +899,7 @@ CREATE TABLE user_behavior (
     'format' = 'json'
 );
 
--- 批处理模式：历史数据分析
+-- 批处理模式:历史数据分析
 SET 'execution.runtime-mode' = 'batch';
 SELECT
     behavior,
@@ -909,7 +909,7 @@ FROM user_behavior
 WHERE ts BETWEEN '2024-01-01' AND '2024-01-31'
 GROUP BY behavior;
 
--- 流处理模式：实时指标计算
+-- 流处理模式:实时指标计算
 SET 'execution.runtime-mode' = 'streaming';
 SELECT
     behavior,
@@ -1474,14 +1474,14 @@ def optimistic_concurrency_control(transaction):
     # 阶段3: 写入
     def commit():
         if not validate():
-            return ABORT  # 验证失败，中止
+            return ABORT  # 验证失败,中止
 
         # 获取写锁
         for key in write_buffer.keys():
             acquire_lock(key, EXCLUSIVE)
 
         try:
-            # 二次验证（避免验证到获取锁期间的变化）
+            # 二次验证(避免验证到获取锁期间的变化)
             if not validate():
                 return ABORT
 
@@ -1631,13 +1631,13 @@ $$Checkpoint = \langle State_{operator}, Offsets_{source}, State_{sink} \rangle$
 **两阶段提交（2PC）**：
 
 ```
-阶段1（预提交）:
+阶段1(预提交):
   - 刷写所有缓冲数据
-  - 预提交事务（PreCommit）
+  - 预提交事务(PreCommit)
 
-阶段2（提交）:
-  - 若所有算子成功：Commit
-  - 若有算子失败：Rollback
+阶段2(提交):
+  - 若所有算子成功:Commit
+  - 若有算子失败:Rollback
 ```
 
 **恰好一次语义**：
@@ -1658,18 +1658,18 @@ $$ExactlyOnce = AtLeastOnce \land IdempotentOutput$$
 
 ```
 数据源层:
-  - MySQL Binlog（CDC）
-  - Kafka（点击流）
-  - OSS（历史归档）
+  - MySQL Binlog(CDC)
+  - Kafka(点击流)
+  - OSS(历史归档)
 
-存储层（Delta Lake）:
-  - ods_order_delta（原始订单）
-  - dwd_order_detail（明细）
-  - dws_order_stats（汇总）
+存储层(Delta Lake):
+  - ods_order_delta(原始订单)
+  - dwd_order_detail(明细)
+  - dws_order_stats(汇总)
 
 查询层:
-  - Flink SQL（实时ETL）
-  - Trino（OLAP查询）
+  - Flink SQL(实时ETL)
+  - Trino(OLAP查询)
 ```
 
 **关键配置**：
@@ -1709,7 +1709,7 @@ spark.sql.streaming.checkpointLocation=/delta/checkpoints/orders
 ```
 Kafka交易流 → Flink窗口聚合 → Hudi MOR表 → 在线特征服务
                     ↓
-           历史数据批量回补（离线修正）
+           历史数据批量回补(离线修正)
 ```
 
 **Hudi配置**：
@@ -1742,10 +1742,10 @@ CREATE TABLE logs (
     message STRING
 ) PARTITIONED BY (days(ts));
 
--- 添加新字段（向后兼容）
+-- 添加新字段(向后兼容)
 ALTER TABLE logs ADD COLUMN service_name STRING;
 
--- 分区演进（从按天到按小时）
+-- 分区演进(从按天到按小时)
 ALTER TABLE logs ADD PARTITION FIELD hours(ts);
 ```
 
@@ -1789,10 +1789,10 @@ $$\text{Optimize}(Files) = \arg\min_{Groups} \sum_{g \in Groups} |Size(g) - Targ
 **分区裁剪**：
 
 ```sql
--- 高效：分区裁剪生效
+-- 高效:分区裁剪生效
 SELECT * FROM logs WHERE date = '2024-01-01';
 
--- 低效：全表扫描
+-- 低效:全表扫描
 SELECT * FROM logs WHERE YEAR(ts) = 2024;
 ```
 

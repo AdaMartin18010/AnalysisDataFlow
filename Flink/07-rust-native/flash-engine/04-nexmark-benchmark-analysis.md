@@ -48,7 +48,7 @@ Workload:
 总加速比分解:
 Speedup_Total = Speedup_SIMD × Speedup_Runtime × Speedup_Storage × Speedup_Network
 
-对数分解（便于分析）:
+对数分解(便于分析):
 log(Speedup_Total) = log(S_SI) + log(S_RT) + log(S_ST) + log(S_NW)
 
 各因子贡献度:
@@ -66,7 +66,7 @@ Contribution(X) = log(S_X) / log(Speedup_Total) × 100%
 ```
 TPC-DS := ⟨Schema, QuerySet, DataScale, PerformanceMetric⟩
 
-Schema: 24 张表，覆盖零售数据仓库场景
+Schema: 24 张表,覆盖零售数据仓库场景
 QuerySet: 99 个复杂 SQL 查询
 DataScale: 1TB, 10TB, 100TB
 
@@ -141,10 +141,10 @@ Speedup(N) = Speedup₀ × (1 - α × log(N/N₀))
 - α: 存储瓶颈衰减系数
 - N₀: 基准规模
 
-实测数据（100M vs 200M）:
+实测数据(100M vs 200M):
 - 100M 记录: 平均 8x 加速
 - 200M 记录: 平均 5x 加速
-- 衰减原因: 状态规模增大，存储层占比上升
+- 衰减原因: 状态规模增大,存储层占比上升
 ```
 
 ---
@@ -165,7 +165,7 @@ Speedup(Nexmark) ≈ Speedup(TPC-DS) ± 20%
 实测数据:
 - Nexmark 平均: 5-10x
 - TPC-DS 10TB: 3x+
-- 差异原因: TPC-DS 查询更复杂，部分算子未完全向量化
+- 差异原因: TPC-DS 查询更复杂,部分算子未完全向量化
 ```
 
 ---
@@ -188,7 +188,7 @@ q1-q2 Projection/Filter   │ 数据清洗
 q3-q4 String Ops          │ 日志解析/文本处理
 q5-q6 Time Functions      │ 时间窗口分析
 q7-q8 Window Aggregate    │ 实时 BI 报表
-q9-q11 Join               │ 流流关联（订单-物流）
+q9-q11 Join               │ 流流关联(订单-物流)
 ```
 
 ### 3.2 性能指标之间的关系
@@ -248,10 +248,10 @@ Nexmark 平均加速比: 5-10x
 │ 向量化状态存储      │ 10%      │ 1.1-1.3x          │
 │ 零拷贝网络传输      │ 10%      │ 1.1-1.3x          │
 ├────────────────────┼──────────┼────────────────────┤
-│ 总加速比（组合）    │ 100%     │ 5-10x             │
+│ 总加速比(组合)    │ 100%     │ 5-10x             │
 └────────────────────┴──────────┴───────────────────┘
 
-注: 组合加速比 ≠ 简单相加，采用乘法模型
+注: 组合加速比 ≠ 简单相加,采用乘法模型
 ```
 
 **各因素详细分析**:
@@ -277,7 +277,7 @@ Nexmark 平均加速比: 5-10x
 贡献来源:
 - 无 JVM GC 停顿
 - 无 JIT 预热开销
-- 直接内存访问（无 JNI）
+- 直接内存访问(无 JNI)
 - 编译期优化
 
 量化分析:
@@ -296,7 +296,7 @@ Nexmark 平均加速比: 5-10x
 
 量化分析:
 - 缓存效率: 20-50x vs 行式
-- 实际性能提升: 1.15-1.5x（考虑其他瓶颈）
+- 实际性能提升: 1.15-1.5x(考虑其他瓶颈)
 ```
 
 1. **向量化状态存储 (10%)**
@@ -356,15 +356,15 @@ Nexmark 平均加速比: 5-10x
 4. 多次运行: 取中位数消除噪音
 
 数据集规模:
-- 100M 记录: 小规模测试，适合 ForStDB Mini
-- 200M 记录: 大规模测试，需 ForStDB Pro
+- 100M 记录: 小规模测试,适合 ForStDB Mini
+- 200M 记录: 大规模测试,需 ForStDB Pro
 
 监控指标:
 - 吞吐量 (events/second)
 - 端到端延迟 (ms)
 - CPU 利用率 (%)
 - 内存占用 (GB)
-- GC 暂停时间 (ms，仅 Flink)
+- GC 暂停时间 (ms,仅 Flink)
 ```
 
 ### 4.3 TPC-DS 10TB 结果分析
@@ -379,7 +379,7 @@ Nexmark 平均加速比: 5-10x
 - Apache Spark 3.4
 - Flash 1.0
 
-资源分配: 等 CU 数（100 CUs）
+资源分配: 等 CU 数(100 CUs)
 ```
 
 **结果汇总**:
@@ -408,11 +408,11 @@ Nexmark 平均加速比: 5-10x
 **结果解读**:
 
 ```
-1. Flash 在聚合查询上表现最优（4x）
+1. Flash 在聚合查询上表现最优(4x)
    - 向量化聚合算法高效
    - 列式存储减少 IO
 
-2. Join 查询提升相对较小（2.5x）
+2. Join 查询提升相对较小(2.5x)
    - 部分 Join 算法未完全向量化
    - 哈希表构建仍为瓶颈
 
@@ -435,7 +435,7 @@ Nexmark 平均加速比: 5-10x
 **步骤 1**: 定义基础性能
 
 ```
-设基础系统（Flink）处理 n 个元素的总时间为:
+设基础系统(Flink)处理 n 个元素的总时间为:
 T_base = T_compute + T_memory + T_storage + T_network
 ```
 
@@ -444,10 +444,10 @@ T_base = T_compute + T_memory + T_storage + T_network
 ```
 设各优化技术的加速比为:
 - SIMD: s₁ = T_compute / T_compute'
-- C++ Runtime: s₂（减少 GC/JNI 开销）
-- Columnar: s₃（减少内存访问时间）
-- ForStDB: s₄（减少存储访问时间）
-- Zero-Copy: s₅（减少网络时间）
+- C++ Runtime: s₂(减少 GC/JNI 开销)
+- Columnar: s₃(减少内存访问时间)
+- ForStDB: s₄(减少存储访问时间)
+- Zero-Copy: s₅(减少网络时间)
 ```
 
 **步骤 3**: 计算优化后时间
@@ -499,7 +499,7 @@ Speedup_total = 2.5 × 1.5 × 1.3 × 1.2 × 1.2
 **步骤 2**: 成本变化分析
 
 ```
-设 Flash 与 Flink 的吞吐比为 α，资源效率比为 β:
+设 Flash 与 Flink 的吞吐比为 α,资源效率比为 β:
 
 Cost_Flash / Cost_Flink = (Throughput_per_CU_Flink / Throughput_per_CU_Flash)
                         × (Price_per_CU_Flash / Price_per_CU_Flink)
@@ -516,7 +516,7 @@ Cost_Reduction = 80% - 90%
 
 ```
 实测数据:
-- 平均性能提升: 5-10x → α = 7.5（中位数）
+- 平均性能提升: 5-10x → α = 7.5(中位数)
 - 实际成本降低: ~50%
 
 差异解释:
@@ -526,7 +526,7 @@ Cost_Reduction = 80% - 90%
 
 理论预测: 1 - 1/7.5 = 87%
 实际观测: 50%
-比例: 50/87 ≈ 57% 迁移率（与官方 80%+ 覆盖率一致）
+比例: 50/87 ≈ 57% 迁移率(与官方 80%+ 覆盖率一致)
 ```
 
 ---
@@ -664,7 +664,7 @@ line title 加速比 vs 数据规模
 ### 7.4 TPC-DS 性能对比
 
 ```mermaid
-bar title TPC-DS 10TB 查询执行时间对比（相对值）
+bar title TPC-DS 10TB 查询执行时间对比(相对值)
     y-axis 相对时间 --> 0 --> 100
     bar [Spark 3.4] 100
     bar [Flink 1.19] 95

@@ -583,7 +583,7 @@ public class ABTestRouter extends BroadcastProcessFunction<InferenceRequest,
         boolean isShadow = false;
 
         if (shadow != null && userHash < SHADOW_TRAFFIC * 100) {
-            // 影子流量：同时执行生产模型和影子模型
+            // 影子流量:同时执行生产模型和影子模型
             selectedVersion = shadow;
             isShadow = true;
 
@@ -1317,7 +1317,7 @@ public class TorchServeIntegration extends ProcessFunction<Features, Prediction>
             Prediction pred = parseJson(response.body());
             out.collect(pred);
         } catch (Exception e) {
-            // 降级策略：使用备选模型
+            // 降级策略:使用备选模型
             out.collect(fallbackPrediction(features));
         }
     }
@@ -1400,7 +1400,7 @@ public class VersionedModelState extends KeyedProcessFunction<String, Sample, Pr
     }
 
     private void cleanupOldVersions(long currentVersion, int keepCount) {
-        // 清理过期版本，保持状态窄化
+        // 清理过期版本,保持状态窄化
     }
 }
 ```
@@ -1414,7 +1414,7 @@ public class VersionedModelState extends KeyedProcessFunction<String, Sample, Pr
 ```java
 public class ABTestingFramework extends BroadcastProcessFunction<Request, ModelConfig, Prediction> {
 
-    // 广播状态：实验配置
+    // 广播状态:实验配置
     private MapState<String, Experiment> experimentsState;
 
     // 用户分流策略
@@ -1427,12 +1427,12 @@ public class ABTestingFramework extends BroadcastProcessFunction<Request, ModelC
         Experiment experiment = assignExperiment(userId);
 
         if (experiment == null) {
-            // 控制组：使用基线模型
+            // 控制组:使用基线模型
             Prediction pred = baselineModel.predict(request);
             pred.setExperimentGroup("control");
             out.collect(pred);
         } else {
-            // 实验组：使用实验模型
+            // 实验组:使用实验模型
             ModelVersion model = loadModel(experiment.getModelVersion());
             Prediction pred = model.predict(request);
             pred.setExperimentGroup(experiment.getName());
@@ -1529,7 +1529,7 @@ public class ColocatedTrainingInference extends KeyedProcessFunction<String, Eve
         ModelParams model = modelState.value();
 
         if (event.hasLabel() && ENABLE_TRAINING) {
-            // 训练路径：有标签则更新模型
+            // 训练路径:有标签则更新模型
             TrainingSample sample = createSample(event);
             ModelParams updatedModel = trainStep(model, sample);
             modelState.update(updatedModel);
@@ -1541,7 +1541,7 @@ public class ColocatedTrainingInference extends KeyedProcessFunction<String, Eve
         }
 
         if (event.needsPrediction() && ENABLE_INFERENCE) {
-            // 推理路径：执行预测
+            // 推理路径:执行预测
             Prediction pred = model.predict(event.getFeatures());
             pred.setModelVersion(getCurrentVersion());
             out.collect(pred);
@@ -1588,7 +1588,7 @@ style ServingPath fill:#e3f2fd,stroke:#1565c0
 **实现示例：**
 
 ```java
-// 训练作业：专注于模型更新
+// 训练作业:专注于模型更新
 
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -1615,12 +1615,12 @@ public class TrainingJob {
     }
 }
 
-// 推理作业：专注于低延迟服务
+// 推理作业:专注于低延迟服务
 public class ServingJob {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-        // 模型更新流（广播流）
+        // 模型更新流(广播流)
         BroadcastStream<ModelVersion> modelUpdates = env
             .addSource(new ModelRegistrySource("s3://models/checkpoints/"))
             .broadcast(ModelVersion.STATE_DESCRIPTOR);
@@ -1657,11 +1657,11 @@ public class FeedbackLoopJob {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-        // 预测流：记录预测结果
+        // 预测流:记录预测结果
         DataStream<Prediction> predictions = env
             .addSource(new KafkaSource<>("predictions"));
 
-        // 实际结果流：用户行为/标签
+        // 实际结果流:用户行为/标签
         DataStream<UserAction> actions = env
             .addSource(new KafkaSource<>("user-actions"));
 
@@ -1690,7 +1690,7 @@ public class PredictionFeedbackJoin extends ProcessJoinFunction<
     public void processElement(Prediction pred, UserAction action,
             Context ctx, Collector<TrainingSample> out) {
 
-        // 计算损失：预测 vs 实际
+        // 计算损失:预测 vs 实际
         double loss = computeLoss(pred.getScore(), action.getOutcome());
 
         // 构建训练样本
@@ -1741,7 +1741,7 @@ public class ShadowDeployment extends ProcessFunction<Request, Prediction> {
         prodPrediction.setModelType("production");
         out.collect(prodPrediction);
 
-        // 影子模型推理 (采样执行，结果不输出到业务)
+        // 影子模型推理 (采样执行,结果不输出到业务)
         if (isShadowTraffic(request.getUserId())) {
             Prediction shadowPrediction = shadowModel.predict(request);
             shadowPrediction.setModelType("shadow");
@@ -1923,7 +1923,7 @@ public class RollbackManager {
 
     // 自动回滚判断逻辑
     public RollbackDecision evaluateRollback(MetricsSnapshot current, MetricsSnapshot baseline) {
-        // 严重异常：立即回滚
+        // 严重异常:立即回滚
         if (current.getErrorRate() > baseline.getErrorRate() * 2.0 ||
             current.getErrorRate() > 0.1) {  // 错误率超过 10%
             return new RollbackDecision(RollbackStrategy.IMMEDIATE, "Critical error rate");
@@ -1964,7 +1964,7 @@ public class RollbackAwareModelServing extends BroadcastProcessFunction<Request,
                 break;
 
             case EMERGENCY_STOP:
-                // 紧急停止使用当前模型，切换到默认模型
+                // 紧急停止使用当前模型,切换到默认模型
                 currentVersionState.update(0L);  // 默认版本
                 break;
         }
@@ -2341,7 +2341,7 @@ public class AdaptiveFraudTrainer extends KeyedProcessFunction<String, LabeledSa
             double baselineError = computeBaselineError();
 
             if (recentError > baselineError * (1 + DRIFT_THRESHOLD)) {
-                // 检测到漂移，触发快速适应
+                // 检测到漂移,触发快速适应
                 handleDriftDetected(ctx);
 
                 // 增大学习率快速适应
@@ -2353,7 +2353,7 @@ public class AdaptiveFraudTrainer extends KeyedProcessFunction<String, LabeledSa
                 driftStatus.update(DriftStatus.NORMAL);
             }
 
-            // 滑动窗口：移除旧数据
+            // 滑动窗口:移除旧数据
             trimErrorHistory(WINDOW_SIZE / 2);
         }
 
@@ -2538,8 +2538,8 @@ public class DynamicPriceCalculator extends KeyedCoProcessFunction<
         // Demand(Price) = BaseDemand * exp(-elasticity * ln(Price/BasePrice))
         double adjustedPrice = base * dMult * tMult * sMult;
 
-        // 如果弹性高，降低价格以提高量
-        // 如果弹性低，提高价格以提高利润
+        // 如果弹性高,降低价格以提高量
+        // 如果弹性低,提高价格以提高利润
         if (elasticity > 1.5) {
             return adjustedPrice * 0.95;
         } else if (elasticity < 0.5) {
@@ -2571,7 +2571,7 @@ public class PricingModelTrainer extends KeyedProcessFunction<String, PriceUpdat
         double elasticity = estimateElasticity(stats);
         model.updateElasticity(ctx.getCurrentKey(), elasticity);
 
-        // 如果接受率过低/过高，调整基础定价策略
+        // 如果接受率过低/过高,调整基础定价策略
         if (acceptanceRate < 0.3) {
             model.adjustBasePriceMultiplier(ctx.getCurrentKey(), 0.95);
         } else if (acceptanceRate > 0.8) {

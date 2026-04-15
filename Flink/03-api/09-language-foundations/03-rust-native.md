@@ -321,7 +321,7 @@ pub fn parse_log(json_input: &str) -> Result<JsValue, JsValue> {
     let event: LogEvent = serde_json::from_str(json_input)
         .map_err(|e| JsValue::from_str(&e.to_string()))?;
 
-    // 提取关键字段，过滤无用数据
+    // 提取关键字段,过滤无用数据
     let result = serde_json::json!({
         "ts": event.timestamp,
         "severity": event.level,

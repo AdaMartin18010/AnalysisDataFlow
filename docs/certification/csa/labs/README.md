@@ -76,7 +76,7 @@
 git clone https://github.com/analysisdataflow/labs-environment.git
 cd labs-environment
 
-# 2. 启动基础服务（Kafka, MySQL, Redis）
+# 2. 启动基础服务(Kafka, MySQL, Redis)
 docker-compose up -d
 
 # 3. 验证环境

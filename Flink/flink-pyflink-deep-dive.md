@@ -602,7 +602,7 @@ def calculate_discount(prices: pd.Series,
                        user_types: pd.Series) -> pd.Series:
     """
     向量化折扣计算
-    利用 Pandas 批量处理能力，比逐行处理快 10-100x
+    利用 Pandas 批量处理能力,比逐行处理快 10-100x
     """
     discounts = pd.Series(0.0, index=prices.index)
 
@@ -737,7 +737,7 @@ def predict_scores(features: pd.Series) -> pd.Series:
     使用 PyTorch 模型进行批量推理
 
     Args:
-        features: JSON 字符串数组，每个元素是特征向量
+        features: JSON 字符串数组,每个元素是特征向量
 
     Returns:
         每个样本对所有商品的预测分数
@@ -825,7 +825,7 @@ clf = joblib.load('classification_model.pkl')
 ]), udf_type="pandas")
 def classify_with_confidence(features: pd.Series) -> pd.DataFrame:
     """
-    使用 scikit-learn 进行分类，返回类别和置信度
+    使用 scikit-learn 进行分类,返回类别和置信度
     """
     import json
 
@@ -877,7 +877,7 @@ config.set_string("taskmanager.memory.task.off-heap.size", "512mb")
 PyFlink UDF 性能优化最佳实践
 """
 
-# ❌ 低效写法：逐行处理
+# ❌ 低效写法:逐行处理
 @udf(result_type=DataTypes.DOUBLE())
 def slow_process(value):
     result = 0
@@ -885,7 +885,7 @@ def slow_process(value):
         result += value[i] ** 2
     return result
 
-# ✅ 高效写法：使用 NumPy 向量化
+# ✅ 高效写法:使用 NumPy 向量化
 import numpy as np
 
 @udf(result_type=DataTypes.DOUBLE(), udf_type="pandas")
@@ -893,7 +893,7 @@ def fast_process(values: pd.Series) -> pd.Series:
     # 使用 NumPy 向量化操作
     return np.sum(values ** 2, axis=1)
 
-# ❌ 低效写法：频繁创建对象
+# ❌ 低效写法:频繁创建对象
 @udf(result_type=DataTypes.STRING())
 def slow_transform(data):
     result = []
@@ -901,7 +901,7 @@ def slow_transform(data):
         result.append(item.strip().upper())
     return ','.join(result)
 
-# ✅ 高效写法：减少中间对象
+# ✅ 高效写法:减少中间对象
 import re
 
 # 预编译正则表达式 (在模块级别)
@@ -968,7 +968,7 @@ logger = logging.getLogger('pyflink.udf')
 
 @udf(result_type=DataTypes.STRING())
 def debug_transform(value):
-    """带日志的 UDF，便于排查问题"""
+    """带日志的 UDF,便于排查问题"""
     logger.info(f"Processing value: {value}")
 
     try:
@@ -1010,7 +1010,7 @@ PyFlink 常见问题与解决方案
 """
 
 # 问题 1: ImportError: No module named 'xxx'
-# 解决方案：确保依赖在 Python Worker 中可用
+# 解决方案:确保依赖在 Python Worker 中可用
 
 # 方式 1: 使用 requirements.txt
 from pyflink.table import TableEnvironment
@@ -1032,14 +1032,14 @@ table_env.add_python_archive("/path/to/site-packages.zip", "deps")
 from typing import List
 import pickle
 
-# ❌ 错误：使用不可序列化的对象
+# ❌ 错误:使用不可序列化的对象
 @udf(result_type=DataTypes.STRING())
 def bad_udf(value):
-    # 在每次调用时创建连接，效率低且可能有线程问题
+    # 在每次调用时创建连接,效率低且可能有线程问题
     conn = create_database_connection()
     return conn.query(value)
 
-# ✅ 正确：在 open() 中初始化
+# ✅ 正确:在 open() 中初始化
 class GoodUdf(ScalarFunction):
     def __init__(self):
         self.conn = None
@@ -1056,7 +1056,7 @@ class GoodUdf(ScalarFunction):
             self.conn.close()
 
 # 问题 3: 内存溢出 (OOM)
-# 解决方案：控制 batch size 和内存使用
+# 解决方案:控制 batch size 和内存使用
 
 config = table_env.get_config().get_configuration()
 

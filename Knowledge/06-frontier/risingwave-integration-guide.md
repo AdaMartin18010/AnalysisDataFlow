@@ -369,7 +369,7 @@ $$
 **场景 3: 资源极度受限**
 
 ```
-约束: 单机部署，< 8GB 内存
+约束: 单机部署,< 8GB 内存
 问题: RisingWave 需要最小集群配置
 结论: 考虑 Flink MiniCluster 或单节点 RisingWave
 ```
@@ -485,14 +485,14 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-// Flink 作业：复杂事件处理后写入 RisingWave
+// Flink 作业:复杂事件处理后写入 RisingWave
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
 // 1. 读取 Kafka 源流
 DataStream<Event> stream = env
     .addSource(new FlinkKafkaConsumer<>("events", new EventDeserializationSchema(), properties));
 
-// 2. 复杂处理：窗口聚合 + CEP 模式匹配
+// 2. 复杂处理:窗口聚合 + CEP 模式匹配
 DataStream<EnrichedEvent> enriched = stream
     .keyBy(Event::getUserId)
     .window(TumblingEventTimeWindows.of(Time.minutes(5)))
@@ -604,7 +604,7 @@ CREATE SINK kafka_order_stats (
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-// Flink 读取 RisingWave 输出，进行复杂事件检测
+// Flink 读取 RisingWave 输出,进行复杂事件检测
 DataStream<OrderStats> statsStream = env
     .addSource(new FlinkKafkaConsumer<>("order-stats", new StatsSchema(), properties));
 
@@ -654,7 +654,7 @@ CREATE SOURCE mysql_users (
     password = '${MYSQL_PASSWORD}',
     database.name = 'production',
     table.name = 'users',
-    -- 可选：指定 Server ID 避免冲突
+    -- 可选:指定 Server ID 避免冲突
     server.id = '5701'
 );
 
@@ -744,7 +744,7 @@ CREATE SOURCE orders (
     created_at TIMESTAMP
 ) WITH (connector = 'kafka', topic = 'orders', ...);
 
--- 2. 实时销售额（秒级更新）
+-- 2. 实时销售额(秒级更新)
 CREATE MATERIALIZED VIEW realtime_revenue AS
 SELECT
     DATE_TRUNC('second', created_at) as second,
@@ -824,7 +824,7 @@ import org.apache.flink.api.common.state.ValueState;
 DataStream<Order> orders = env.addSource(...);
 DataStream<UserProfile> profiles = env.addSource(...);
 
-// 问题：用户画像表可能非常大，RocksDB 状态压力大
+// 问题:用户画像表可能非常大,RocksDB 状态压力大
 DataStream<EnrichedOrder> enriched = orders
     .keyBy(Order::getUserId)
     .connect(profiles.keyBy(UserProfile::getUserId))
@@ -838,9 +838,9 @@ DataStream<EnrichedOrder> enriched = orders
 
 ```sql
 -- RisingWave 中大表 Join 的优化
--- 利用 Hummock 分层存储，大状态自动扩展到 S3
+-- 利用 Hummock 分层存储,大状态自动扩展到 S3
 
--- 1. 用户画像表（可能是数亿条记录）
+-- 1. 用户画像表(可能是数亿条记录)
 CREATE TABLE user_profiles (
     user_id BIGINT PRIMARY KEY,
     age_group VARCHAR,
@@ -849,7 +849,7 @@ CREATE TABLE user_profiles (
     lifetime_value DECIMAL
 );
 
--- 2. 订单流（Kafka 源）
+-- 2. 订单流(Kafka 源)
 CREATE SOURCE order_stream (
     order_id BIGINT,
     user_id BIGINT,
@@ -858,7 +858,7 @@ CREATE SOURCE order_stream (
     order_time TIMESTAMP
 ) WITH (connector = 'kafka', ...);
 
--- 3. 流式 JOIN（RisingWave 自动优化）
+-- 3. 流式 JOIN(RisingWave 自动优化)
 CREATE MATERIALIZED VIEW enriched_orders AS
 SELECT
     o.order_id,
@@ -871,7 +871,7 @@ SELECT
 FROM order_stream o
 LEFT JOIN user_profiles p ON o.user_id = p.user_id;
 
--- 4. 分层聚合（利用 RisingWave 级联 MV）
+-- 4. 分层聚合(利用 RisingWave 级联 MV)
 CREATE MATERIALIZED VIEW sales_by_segment AS
 SELECT
     age_group,
@@ -902,7 +902,7 @@ GROUP BY age_group, membership_level;
 │   用户行为流                                                     │
 │      ↓                                                           │
 │   ┌──────────────┐                                              │
-│   │    Flink     │  ← 特征工程（复杂处理）                        │
+│   │    Flink     │  ← 特征工程(复杂处理)                        │
 │   │  (特征提取)  │                                              │
 │   └──────┬───────┘                                              │
 │          │ 用户/物品特征                                         │
@@ -914,7 +914,7 @@ GROUP BY age_group, membership_level;
 │          │                                                       │
 │          ▼                                                       │
 │   ┌──────────────┐                                              │
-│   │    Flink     │  ← 在线推理（低延迟）                          │
+│   │    Flink     │  ← 在线推理(低延迟)                          │
 │   │  (模型推理)  │     读取 RisingWave 特征                       │
 │   └──────┬───────┘                                              │
 │          │ 推荐结果                                               │
@@ -927,7 +927,7 @@ GROUP BY age_group, membership_level;
 **RisingWave 特征存储**：
 
 ```sql
--- 用户实时特征（物化视图自动更新）
+-- 用户实时特征(物化视图自动更新)
 CREATE MATERIALIZED VIEW user_features AS
 SELECT
     user_id,
@@ -940,7 +940,7 @@ SELECT
     MAX(event_time) as last_activity,
     MIN(event_time) as first_activity_today,
 
-    -- 行为序列（最近 5 个）
+    -- 行为序列(最近 5 个)
     array_agg(category ORDER BY event_time DESC LIMIT 5) as recent_categories
 FROM user_behavior_stream
 WHERE event_time > NOW() - INTERVAL '24 hours'
@@ -1379,11 +1379,11 @@ SQL 可表达 → RisingWave
 **扩容策略**：
 
 ```yaml
-# RisingWave 扩容（热扩容，无需停服务）
+# RisingWave 扩容(热扩容,无需停服务)
 # 计算节点扩容
 kubectl scale deployment risingwave-compute --replicas=8
 
-# Flink 扩容（需保存点重启）
+# Flink 扩容(需保存点重启)
 # 1. 触发保存点
 flink savepoint <job-id>
 # 2. 修改并行度
@@ -1406,7 +1406,7 @@ RisingWave:
 □ 调整 checkpoint_interval_sec (推荐 1-10s)
 □ 配置 block_cache_capacity_mb (内存的 30-40%)
 □ 优化物化视图的级联深度 (< 5 层)
-□ 使用合适的 Join 类型（避免大表 Shuffle）
+□ 使用合适的 Join 类型(避免大表 Shuffle)
 
 Flink:
 □ 调整 Checkpoint 间隔 (推荐 1-5min)

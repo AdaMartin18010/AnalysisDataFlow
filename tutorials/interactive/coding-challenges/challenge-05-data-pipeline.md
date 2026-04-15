@@ -130,7 +130,7 @@ public class SchemaValidator extends ProcessFunction<String, CleanRecord> {
             JsonNode data = root.get("after");  // 变更后的数据
 
             if (data == null) {
-                // DELETE 操作，没有 after
+                // DELETE 操作,没有 after
                 data = root.get("before");
             }
 
@@ -234,7 +234,7 @@ public class DataCleansing extends RichMapFunction<CleanRecord, CleanRecord> {
         // 3. 缺失值填充
         fillMissingValues(data, record.table);
 
-        // 4. 去重（基于业务键）
+        // 4. 去重(基于业务键)
         if (isDuplicate(record)) {
             return null;  // 过滤掉重复数据
         }
@@ -337,7 +337,7 @@ public class IcebergSink extends TwoPhaseCommitSinkFunction<CleanRecord, Iceberg
 
     @Override
     protected void preCommit(IcebergTransaction transaction) {
-        // 预提交，不真正提交
+        // 预提交,不真正提交
         transaction.prepareCommit();
     }
 
@@ -349,7 +349,7 @@ public class IcebergSink extends TwoPhaseCommitSinkFunction<CleanRecord, Iceberg
 
     @Override
     protected void abort(IcebergTransaction transaction) {
-        // Checkpoint 失败，回滚
+        // Checkpoint 失败,回滚
         transaction.rollback();
     }
 }
@@ -387,7 +387,7 @@ public class ErrorHandler extends ProcessFunction<ErrorRecord, Void> {
         // 分类处理
         switch (error.errorType) {
             case "SCHEMA_MISMATCH":
-                // 严重的 Schema 错误，立即告警
+                // 严重的 Schema 错误,立即告警
                 sendAlert(error);
                 break;
             case "VALIDATION_ERROR":
@@ -397,7 +397,7 @@ public class ErrorHandler extends ProcessFunction<ErrorRecord, Void> {
                 }
                 break;
             case "PARSE_ERROR":
-                // 解析错误，记录日志
+                // 解析错误,记录日志
                 logError(error);
                 break;
         }

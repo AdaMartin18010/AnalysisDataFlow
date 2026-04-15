@@ -260,7 +260,7 @@ CREATE TABLE product_dim (
     'format' = 'json'
 );
 
--- Delta Join：实时销售与维度关联
+-- Delta Join:实时销售与维度关联
 CREATE TABLE enriched_sales AS
 SELECT
     s.order_id,

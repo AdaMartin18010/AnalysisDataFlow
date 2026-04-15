@@ -319,7 +319,7 @@ execution.energy-saving-mode: true
 execution.auto-parallelism.enabled: true
 execution.auto-parallelism.target-utilization: 0.7
 
-# 批处理模式（非实时场景）
+# 批处理模式(非实时场景)
 execution.runtime-mode: BATCH
 
 # 压缩传输

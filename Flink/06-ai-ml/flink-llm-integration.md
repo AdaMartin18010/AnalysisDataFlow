@@ -33,7 +33,7 @@ $$
 **定义**: Model DDL 是 Flink SQL 的扩展语法，用于声明式地定义外部 AI/ML 模型连接：
 
 ```sql
-<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+<!-- 以下语法为概念设计,实际 Flink 版本尚未支持 -->
 ~~CREATE MODEL~~ (未来可能的语法)
   [ WITH (
     'provider' = '<provider_type>',
@@ -57,8 +57,8 @@ $$
 ML_PREDICT(
   model_name,           -- 模型名称 (STRING)
   input_columns,        -- 输入列或表达式
-  [task_override],      -- 可选：覆盖模型默认任务
-  [options]             -- 可选：推理参数 (temperature, max_tokens等)
+  [task_override],      -- 可选:覆盖模型默认任务
+  [options]             -- 可选:推理参数 (temperature, max_tokens等)
 )
 ```
 
@@ -186,16 +186,16 @@ LLM Inference (Flink + External API):
 **同步调用模型**:
 
 ```
-优点: 实现简单，天然背压支持
-缺点: 高延迟阻塞，吞吐量受限于 LLM RTT
+优点: 实现简单,天然背压支持
+缺点: 高延迟阻塞,吞吐量受限于 LLM RTT
 适用: 低 QPS、高准确率要求的场景
 ```
 
 **异步调用模型** (推荐):
 
 ```
-优点: 高并发，流水线并行，吞吐量高
-缺点: 实现复杂，需要超时和重试机制
+优点: 高并发,流水线并行,吞吐量高
+缺点: 实现复杂,需要超时和重试机制
 适用: 高吞吐实时流处理
 ```
 
@@ -462,6 +462,7 @@ LATERAL TABLE(
 **向量检索集成**:
 
 ```sql
+# 伪代码示意,非完整可执行配置
 -- Def-F-12-43: RAG 流式架构实例
 
 -- 步骤 1: 实时索引文档到 Milvus
@@ -532,7 +533,7 @@ public class ContextWindowManager extends KeyedProcessFunction<String, Query, En
         // 添加新消息
         history.add(query.getMessage());
 
-        // 智能截断：保留最近的对话，确保不超过上下文限制
+        // 智能截断:保留最近的对话,确保不超过上下文限制
         int estimatedTokens = estimateTokens(history);
         while (estimatedTokens > MAX_CONTEXT_TOKENS && history.size() > 1) {
             history.remove(0); // 移除最早的消息
@@ -544,7 +545,7 @@ public class ContextWindowManager extends KeyedProcessFunction<String, Query, En
     }
 
     private int estimateTokens(List<String> messages) {
-        // 近似估算：1 token ≈ 4 characters (英文)
+        // 近似估算:1 token ≈ 4 characters (英文)
         return messages.stream()
             .mapToInt(s -> s.length() / 4)
             .sum();
@@ -557,7 +558,7 @@ public class ContextWindowManager extends KeyedProcessFunction<String, Query, En
 ```sql
 -- 完整的实时客服 RAG 流程
 
--- 输入：客户消息流
+-- 输入:客户消息流
 CREATE TABLE customer_messages (
   session_id STRING,
   message_id STRING,
@@ -571,7 +572,7 @@ CREATE TABLE customer_messages (
   'properties.bootstrap.servers' = 'kafka:9092'
 );
 
--- 输出：机器人回复
+-- 输出:机器人回复
 CREATE TABLE bot_responses (
   session_id STRING,
   response_id STRING,

@@ -79,7 +79,7 @@ trait AsyncFunction[IN, OUT] extends Function {
   // 异步处理每个输入元素
   def asyncInvoke(input: IN, resultFuture: ResultFuture[OUT]): Unit
 
-  // 超时回调（可选）
+  // 超时回调(可选)
   def timeout(input: IN, resultFuture: ResultFuture[OUT]): Unit
 }
 ```
@@ -256,7 +256,7 @@ Flink 的 AsyncFunction 通过以下机制实现：
 
   请求1 ──[发起查询]─┐
   请求2 ──[发起查询]─┤
-  请求3 ──[发起查询]─┤  并发处理，无等待
+  请求3 ──[发起查询]─┤  并发处理,无等待
   ...              ─┤
   请求100 ─[发起查询]─┘
 
@@ -287,7 +287,7 @@ Flink 的 AsyncFunction 通过以下机制实现：
       ─────────────────────────────────►
       [A, B, C, D, E] (保持输入顺序)
 
-代价: 需要缓冲区，延迟可能增加
+代价: 需要缓冲区,延迟可能增加
 ```
 
 **无序模式**:
@@ -334,22 +334,22 @@ Flink 的 AsyncFunction 通过以下机制实现：
 │  Level 1: 超时控制                                           │
 │  ─────────────────                                           │
 │  配置: timeout = 5s, maxConcurrentRequests = 100            │
-│  行为: 超时的查询触发 timeout() 回调，记录可路由到侧输出      │
+│  行为: 超时的查询触发 timeout() 回调,记录可路由到侧输出      │
 │                                                             │
 │  Level 2: 异常处理                                           │
 │  ─────────────────                                           │
-│  配置: 捕获 Exception，返回默认值                            │
-│  行为: 查询失败时继续使用降级数据，不打断流处理               │
+│  配置: 捕获 Exception,返回默认值                            │
+│  行为: 查询失败时继续使用降级数据,不打断流处理               │
 │                                                             │
 │  Level 3: 断路器 (Circuit Breaker)                           │
 │  ─────────────────────────────                              │
-│  配置: 连续失败 N 次后打开断路器，快速失败                    │
-│  行为: 防止故障扩散，保护外部服务不被压垮                     │
+│  配置: 连续失败 N 次后打开断路器,快速失败                    │
+│  行为: 防止故障扩散,保护外部服务不被压垮                     │
 │                                                             │
 │  Level 4: 背压与限流                                         │
 │  ────────────────────                                       │
 │  配置: AsyncDataStream.unorderedWait(capacity = 1000)       │
-│  行为: 缓冲区满时反压上游，防止内存溢出                       │
+│  行为: 缓冲区满时反压上游,防止内存溢出                       │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -493,7 +493,7 @@ case class UserProfile(userId: String, creditScore: Int, vipLevel: Int)
  * 复杂度: ★★★☆☆
  * - 使用 AsyncTable 进行异步查询
  * - 处理超时和异常情况
- * - 支持结果缓存（可选优化）
+ * - 支持结果缓存(可选优化)
  */
 class HBaseAsyncFunction extends AsyncFunction[Order, EnrichedOrder] {
 
@@ -521,7 +521,7 @@ class HBaseAsyncFunction extends AsyncFunction[Order, EnrichedOrder] {
 
   /**
    * 核心异步查询方法
-   * 必须非阻塞，立即返回
+   * 必须非阻塞,立即返回
    */
   override def asyncInvoke(
     order: Order,
@@ -538,7 +538,7 @@ class HBaseAsyncFunction extends AsyncFunction[Order, EnrichedOrder] {
     val scalaFuture = Future {
       val result = completableFuture.get()
       if (result.isEmpty) {
-        // 用户不存在，使用默认值
+        // 用户不存在,使用默认值
         UserProfile(order.userId, creditScore = 500, vipLevel = 0)
       } else {
         val creditScore = Option(result.getValue(CF_PROFILE, COL_CREDIT))
@@ -564,7 +564,7 @@ class HBaseAsyncFunction extends AsyncFunction[Order, EnrichedOrder] {
         resultFuture.complete(java.util.Collections.singletonList(enriched))
 
       case Failure(exception) =>
-        // 查询失败，可以记录日志或返回默认值
+        // 查询失败,可以记录日志或返回默认值
         resultFuture.completeExceptionally(exception)
     }(ExecutionContext.global)
   }
@@ -577,7 +577,7 @@ class HBaseAsyncFunction extends AsyncFunction[Order, EnrichedOrder] {
     order: Order,
     resultFuture: ResultFuture[EnrichedOrder]
   ): Unit = {
-    // 超时处理：返回默认用户画像
+    // 超时处理:返回默认用户画像
     val defaultProfile = UserProfile(order.userId, creditScore = -1, vipLevel = -1)
     val enriched = EnrichedOrder(
       order.orderId,
@@ -622,7 +622,7 @@ object AsyncEnrichmentJob {
         100                             // 并发度 (容量)
       )
 
-    // 后续处理：风控评分
+    // 后续处理:风控评分
     val riskScoredStream = enrichedStream
       .map(enriched => calculateRiskScore(enriched))
       .filter(_.riskScore > 80)  // 高风险订单
@@ -670,7 +670,7 @@ import org.apache.flink.streaming.api.scala.async.{AsyncFunction, ResultFuture}
  *
  * 复杂度: ★★☆☆☆
  * - Lettuce 原生支持异步/响应式 API
- * - 连接池复用，性能优异
+ * - 连接池复用,性能优异
  */
 class RedisGeoAsyncFunction extends AsyncFunction[LocationQuery, LocationResult] {
 
@@ -726,7 +726,7 @@ class RedisGeoAsyncFunction extends AsyncFunction[LocationQuery, LocationResult]
   }
 }
 
-// 使用顺序保持模式（如果顺序重要）
+// 使用顺序保持模式(如果顺序重要)
 val orderedResult = AsyncDataStream
   .orderedWait(
     locationQueryStream,

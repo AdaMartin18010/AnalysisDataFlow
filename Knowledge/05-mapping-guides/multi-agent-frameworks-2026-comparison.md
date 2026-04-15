@@ -98,7 +98,7 @@ from langgraph.graph import StateGraph, END
 # Def-K-05-55: CrewAI核心抽象
 # Agent: 角色定义 + 目标 + 背景故事 + 工具集
 # Task: 描述 + 上下文 + 输出格式 + 执行Agent
-# Crew: 团队编排器，管理Agent间协作
+# Crew: 团队编排器,管理Agent间协作
 # Process: sequential | hierarchical 执行模式
 ```
 
@@ -110,7 +110,7 @@ from langgraph.graph import StateGraph, END
 # Def-K-05-56: AutoGen核心抽象
 # ConversableAgent: 可对话Agent基类
 # GroupChat: 多Agent对话管理器
-# UserProxyAgent: 人类代理，桥接人机交互
+# UserProxyAgent: 人类代理,桥接人机交互
 # register_function: 工具注册机制
 ```
 
@@ -412,7 +412,7 @@ import langchain
 
 langchain.llm_cache = SQLiteCache(database_path=".langchain.db")
 
-# 3. 并行Agent（有限支持）
+# 3. 并行Agent(有限支持)
 crew = Crew(
     agents=[agent1, agent2],
     tasks=[task1, task2],
@@ -640,7 +640,7 @@ writer = ConversableAgent(
     human_input_mode="NEVER"
 )
 
-# 用户代理（触发器）
+# 用户代理(触发器)
 user_proxy = autogen.UserProxyAgent(
     name="user_proxy",
     human_input_mode="NEVER",

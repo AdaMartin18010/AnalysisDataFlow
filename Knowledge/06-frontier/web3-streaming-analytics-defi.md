@@ -268,12 +268,12 @@ $$
 **反模式1: 直接查询节点**
 
 ```python
-# ❌ 错误：高频RPC调用
+# ❌ 错误:高频RPC调用
 for block in range(start, end):
     txs = web3.eth.get_block(block)['transactions']  # 压垮节点！
     process(txs)
 
-# ✅ 正确：使用索引服务或流式订阅
+# ✅ 正确:使用索引服务或流式订阅
 subscription = web3.eth.subscribe('logs', {
     'address': CONTRACT_ADDRESS,
     'topics': [EVENT_SIGNATURE]
@@ -284,11 +284,11 @@ process_stream(subscription)
 **反模式2: 忽视重组风险**
 
 ```python
-# ❌ 错误：1个确认即处理
+# ❌ 错误:1个确认即处理
 if tx['confirmations'] >= 1:
     execute_trade(tx)  # 可能被重组！
 
-# ✅ 正确：等待足够确认数
+# ✅ 正确:等待足够确认数
 REQUIRED_CONFIRMATIONS = {
     'ethereum': 12,
     'polygon': 128,
@@ -301,11 +301,11 @@ if tx['confirmations'] >= REQUIRED_CONFIRMATIONS[chain]:
 **反模式3: 忽视Gas成本**
 
 ```python
-# ❌ 错误：频繁小交易
+# ❌ 错误:频繁小交易
 for swap in small_swaps:
     execute(swap)  # Gas费可能超过收益！
 
-# ✅ 正确：批处理+成本估算
+# ✅ 正确:批处理+成本估算
 batch = aggregate(small_swaps)
 if estimated_gas_cost < expected_profit * 0.1:  # 成本<10%收益
     execute_batch(batch)
@@ -546,7 +546,7 @@ GROUP BY
     pool_address;
 """)
 
-# 异常检测：大额交易告警
+# 异常检测:大额交易告警
 t_env.execute_sql("""
 CREATE TABLE whale_alerts (
     alert_time TIMESTAMP(3),
@@ -627,7 +627,7 @@ class CrossChainTracer:
                 # 继续追踪目标链
                 queue.append((target_tx, target_chain))
             else:
-                # 普通转账，追踪资金流向
+                # 普通转账,追踪资金流向
                 for output in tx['outputs']:
                     if output['value'] > 0:
                         next_tx = await self.find_next_transaction(

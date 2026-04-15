@@ -312,7 +312,7 @@ public class JavaStreamingJob {
         final StreamExecutionEnvironment env =
             StreamExecutionEnvironment.getExecutionEnvironment();
 
-        // 启用Java 17新特性：var类型推断
+        // 启用Java 17新特性:var类型推断
         var source = KafkaSource.<String>builder()
             .setBootstrapServers("kafka:9092")
             .setTopics("transactions")
@@ -788,7 +788,7 @@ from typing import Iterator
 @udf(result_type=DataTypes.FLOAT(),
      func_type='pandas')  # 向量化UDF
 def calculate_score(features: pd.Series) -> pd.Series:
-    """Pandas UDF: 批量处理，性能提升10-100x"""
+    """Pandas UDF: 批量处理,性能提升10-100x"""
     weights = np.array([0.3, 0.5, 0.2])
     return features.apply(lambda x: np.dot(x, weights))
 
@@ -878,7 +878,7 @@ apache-flink-libraries==1.19.0
 # Python UDF 依赖
 pandas>=1.3.0
 numpy>=1.21.0
-pyarrow>=7.0.0  # 必需：用于Java-Python数据传输
+pyarrow>=7.0.0  # 必需:用于Java-Python数据传输
 
 # 异步支持
 aiohttp>=3.8.0
@@ -1235,13 +1235,13 @@ def call_java_udf():
 @udf(result_type=DataTypes.STRING())
 def hybrid_udf(input_str: str) -> str:
     """Python UDF中调用Java逻辑"""
-    # 前置处理：Python
+    # 前置处理:Python
     processed = input_str.lower().strip()
 
-    # 核心逻辑：Java
+    # 核心逻辑:Java
     result = call_java_udf(processed)
 
-    # 后置处理：Python
+    # 后置处理:Python
     return result.upper()
 ```
 
@@ -1303,7 +1303,7 @@ public class WasmUDF extends ScalarFunction {
         // 调用WASM函数
         ExportFunction processFn = wasmInstance.export("process_transaction");
 
-        // 内存操作：写入输入，读取输出
+        // 内存操作:写入输入,读取输出
         int ptr = allocateString(jsonInput);
         int resultPtr = processFn.apply(ptr).asInt();
 

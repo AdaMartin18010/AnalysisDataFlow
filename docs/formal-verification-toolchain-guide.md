@@ -49,7 +49,7 @@
 
 - **分离合取** (P * Q): P和Q关于不相交堆的断言
 - **分离蕴涵** (P -* Q): 将满足P的堆扩展为满足Q
-- **框架规则**: {P} C {Q} ⊢ {P * R} C {Q * R}
+- **框架规则**: {P} C {Q} ⊢ {P *R} C {Q* R}
 
 ---
 
@@ -61,6 +61,7 @@
 
 **证明概要**:
 设工具链T需满足：
+
 - L1: 基础逻辑层 (Coq/Isabelle)
 - L2: 时序行为层 (TLA+)
 - L3: 并发推理层 (Iris)
@@ -75,6 +76,7 @@
 
 **证明概要**:
 给定证明P₁: A → B 和 P₂: B → C
+
 - 横向组合: P₁ ⊗ P₂ 验证 (A₁ ∧ A₂) → (B₁ ∧ B₂)
 - 纵向组合: P₁ ∘ P₂ 验证 A → C
 
@@ -85,9 +87,11 @@
 **命题**: 随着证明库积累，新证明的开发成本呈对数递减。
 
 设C(n)为第n个证明的开发成本：
+
 ```
 C(n) = C₀ / (1 + α·log(1 + n))
 ```
+
 其中α为复用系数，典型值0.3-0.7。
 
 ---
@@ -157,11 +161,12 @@ C(n) = C₀ / (1 + α·log(1 + n))
 Level 3: 系统实现 (Verus/Dafny)
     ↑ 精化关系
 Level 2: 算法模型 (TLA+)
-    ↑ 精化关系  
+    ↑ 精化关系
 Level 1: 抽象规范 (Coq)
 ```
 
 **精化证明义务**:
+
 - 每个精化步骤需证明行为包含关系
 - 使用模拟关系(Simulation Relation)建立连接
 - 保持安全性(safety)和活性(liveness)属性
@@ -175,6 +180,7 @@ Level 1: 抽象规范 (Coq)
 #### 5.1.1 环境安装
 
 **系统要求**:
+
 - OCaml >= 4.13.0
 - Coq >= 8.18.0
 - CoqIDE / VSCode + VSCoq
@@ -230,13 +236,13 @@ Unset Printing Implicit Defensive.
 (* 定义流类型 *)
 Section StreamTypes.
   Variable A : Type.
-  
+
   CoInductive stream :=
     | Cons : A -> stream -> stream.
-  
+
   Definition head (s : stream) : A :=
     match s with Cons x _ => x end.
-    
+
   Definition tail (s : stream) : stream :=
     match s with Cons _ s' => s' end.
 End StreamTypes.
@@ -251,11 +257,11 @@ From iris.base_logic.lib Require Import invariants.
 
 Section WatermarkProof.
   Context `{!heapGS Σ}.
-  
+
   (* Watermark不变式 *)
   Definition watermark_inv (γ : gname) (w : nat) : iProp Σ :=
     own γ (●E w) ∗ ⌜w >= 0⌝%I.
-    
+
   Lemma watermark_monotonicity γ w₁ w₂ :
     own γ (●E w₁) -∗ own γ (◯E w₂) -∗ ⌜w₂ ≤ w₁⌝%I.
   Proof.
@@ -272,6 +278,7 @@ End WatermarkProof.
 #### 5.2.1 工具链安装
 
 **TLA+ Toolbox**:
+
 ```bash
 # 下载地址: https://github.com/tlaplus/tlaplus/releases
 # 解压后运行toolbox可执行文件
@@ -284,6 +291,7 @@ java -cp tla2tools.jar pcal.trans ModelName
 ```
 
 **VSCode集成**:
+
 - 安装 TLA+ Nightly 扩展
 - 配置Java路径
 - 启用实时语法检查
@@ -345,12 +353,12 @@ Next ==
 
 (* 安全性: 所有已处理事件都被记录 *)
 Safety ==
-    \A i \in 1..Len(log) : 
+    \A i \in 1..Len(log) :
         log[i].to = log[i].from + 1
 
 (* 活性: 检查点最终会推进 *)
 Liveness ==
-    \A op \in Operators : 
+    \A op \in Operators :
         WF_vars(state[op] - checkpoint[op] >= CheckpointInterval ~> checkpoint[op] = state[op])
 
 ================================================================
@@ -380,6 +388,7 @@ MCStateConstraint ==
 ```
 
 运行检查:
+
 ```bash
 java -cp tla2tools.jar tlc2.TLC MCCheckpoint -config MCCheckpoint.cfg
 ```
@@ -389,6 +398,7 @@ java -cp tla2tools.jar tlc2.TLC MCCheckpoint -config MCCheckpoint.cfg
 #### 5.3.1 项目配置
 
 **dune工作区** (`dune-workspace`):
+
 ```scheme
 (lang dune 3.8)
 
@@ -399,6 +409,7 @@ java -cp tla2tools.jar tlc2.TLC MCCheckpoint -config MCCheckpoint.cfg
 ```
 
 **dune文件**:
+
 ```scheme
 ;; theories/dune
 (coq.theory
@@ -434,15 +445,15 @@ Proof. solve_inG. Qed.
 
 Section StateVerification.
   Context `{!heapGS Σ, !streamG Σ}.
-  
+
   (* 状态谓词 *)
   Definition is_state (γ : gname) (s : state) : iProp Σ :=
     own γ (● Excl' s).
-    
+
   (* 水印谓词 *)
   Definition current_watermark (γ : gname) (w : nat) : iProp Σ :=
     own γ (● w).
-    
+
   (* 状态更新保持水印 *)
   Lemma state_update_preserves_watermark γₛ γ_w s s' w :
     is_state γₛ s -∗
@@ -474,6 +485,7 @@ verus --version
 ```
 
 **项目配置** (`verus-root.toml`):
+
 ```toml
 [package]
 name = "stream-verification"
@@ -497,22 +509,22 @@ use vstd::prelude::*;
 
 verus! {
 
-/// 水印类型：单调递增的时间戳
+/// 水印类型:单调递增的时间戳
 pub struct Watermark {
     value: u64,
-    ghost history: Seq<u64>,  // 历史值序列（幽灵字段）
+    ghost history: Seq<u64>,  // 历史值序列(幽灵字段)
 }
 
 impl Watermark {
-    /// 不变式：当前值是历史序列的最后一个元素
+    /// 不变式:当前值是历史序列的最后一个元素
     pub closed spec fn invariant(&self) -> bool {
         self.history.len() > 0 &&
         self.history.last() == self.value &&
-        // 单调性：序列非递减
+        // 单调性:序列非递减
         forall|i: int, j: int| 0 <= i < j < self.history.len() ==>
             self.history[i] <= self.history[j]
     }
-    
+
     /// 构造函数
     pub fn new(initial: u64) -> (w: Watermark)
         ensures w.invariant() && w.value == initial
@@ -522,11 +534,11 @@ impl Watermark {
             history: seq![initial],  // 幽灵初始化
         }
     }
-    
+
     /// 推进水印
     pub fn advance(&mut self, new_value: u64)
         requires old(self).invariant()
-        ensures self.invariant() && 
+        ensures self.invariant() &&
                 self.value == new_value &&
                 old(self).value <= new_value
     {
@@ -537,7 +549,7 @@ impl Watermark {
             // 自动验证单调性保持
         }
     }
-    
+
     /// 获取当前值
     pub fn get(&self) -> (v: u64)
         requires self.invariant()
@@ -545,7 +557,7 @@ impl Watermark {
     {
         self.value
     }
-    
+
     /// 水印比较
     pub fn is_at_least(&self, other: &Watermark) -> (b: bool)
         requires self.invariant() && other.invariant()
@@ -594,6 +606,7 @@ dafny --version
 ```
 
 **VSCode配置**:
+
 ```json
 {
   "dafny.dafnyRuntimePath": "/path/to/dafny/DafnyRuntime.dll",
@@ -609,26 +622,26 @@ dafny --version
 ```dafny
 // ExactlyOnce.dfy
 module ExactlyOnce {
-  
+
   // 消息状态
   datatype MsgState = Pending | Delivered | Processed
-  
+
   // 消息记录
   class MessageRecord {
     var id: nat
     var state: MsgState
     var payload: seq<byte>
     var deliveryCount: nat
-    
+
     ghost var processedAt: set<nat>  // 处理时间戳集合
-    
+
     predicate Valid()
       reads this
     {
       deliveryCount > 0 ==> state != Pending &&
       state == Processed ==> deliveryCount == 1 && |processedAt| == 1
     }
-    
+
     constructor (msgId: nat, data: seq<byte>)
       ensures Valid() && state == Pending && deliveryCount == 0
     {
@@ -638,7 +651,7 @@ module ExactlyOnce {
       deliveryCount := 0;
       processedAt := {};
     }
-    
+
     method Deliver() returns (success: bool)
       modifies this
       requires Valid()
@@ -654,7 +667,7 @@ module ExactlyOnce {
         success := false;
       }
     }
-    
+
     method Process(timestamp: nat) returns (success: bool)
       modifies this
       requires Valid()
@@ -671,26 +684,26 @@ module ExactlyOnce {
       }
     }
   }
-  
+
   // Exactly-Once处理器
   class ExactlyOnceProcessor {
     var messages: map<nat, MessageRecord>
     ghost var processedIds: set<nat>
-    
+
     predicate Valid()
       reads this, messages.Values
     {
       forall id :: id in messages ==> messages[id] != null && messages[id].Valid() &&
       (id in processedIds <==> messages[id].state == Processed)
     }
-    
+
     constructor ()
       ensures Valid() && messages == map[] && processedIds == {}
     {
       messages := map[];
       processedIds := {};
     }
-    
+
     // Exactly-Once处理保证
     method ProcessMessage(id: nat, timestamp: nat) returns (success: bool)
       modifies this, if id in messages then {messages[id]} else {}
@@ -701,37 +714,37 @@ module ExactlyOnce {
       ensures success ==> id !in old(processedIds)  // 首次处理
     {
       if id !in messages {
-        // 新消息，创建记录
+        // 新消息,创建记录
         var record := new MessageRecord(id, []);
         messages := messages[id := record];
       }
-      
+
       var record := messages[id];
-      
+
       if id in processedIds {
-        // 已处理，拒绝重复
+        // 已处理,拒绝重复
         success := false;
         return;
       }
-      
+
       var delivered := record.Deliver();
       if !delivered {
         success := false;
         return;
       }
-      
+
       success := record.Process(timestamp);
       if success {
         processedIds := processedIds + {id};
       }
     }
   }
-  
+
   // Exactly-Once性质引理
   lemma ExactlyOnceProperty(processor: ExactlyOnceProcessor)
     requires processor.Valid()
     ensures forall id :: id in processor.processedIds ==>
-      id in processor.messages && 
+      id in processor.messages &&
       processor.messages[id].state == Processed &&
       processor.messages[id].deliveryCount == 1
   {
@@ -780,6 +793,7 @@ module ExactlyOnce {
 **规范编写最佳实践**:
 
 1. **前置条件充分**: 明确所有假设
+
    ```coq
    Theorem exactly_once_delivery:
      forall (sys: System) (msg: Message),
@@ -790,6 +804,7 @@ module ExactlyOnce {
    ```
 
 2. **归纳结构清晰**: 数据结构定义即规范
+
    ```coq
    Inductive DeliveryStatus :=
    | NotSent
@@ -798,6 +813,7 @@ module ExactlyOnce {
    ```
 
 3. **不变式显式**: 使用类型系统编码不变式
+
    ```dafny
    predicate Valid()
      reads this
@@ -918,6 +934,7 @@ Ltac stream_induction s :=
 #### 外部求解器集成
 
 **Coq-Hammer**:
+
 ```coq
 From Hammer Require Import Hammer.
 
@@ -927,6 +944,7 @@ Proof. hammer. Qed.
 ```
 
 **SMTCoq**:
+
 ```coq
 From SMTCoq Require Import SMTCoq.
 
@@ -941,6 +959,7 @@ Proof. smt. Qed.
 #### 版本控制策略
 
 **提交粒度**:
+
 ```
 证明提交约定:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -953,6 +972,7 @@ Proof. smt. Qed.
 ```
 
 **分支策略**:
+
 ```
 main
   └── develop
@@ -964,6 +984,7 @@ main
 #### 兼容性管理
 
 **Coq版本锁定** (`coq-version`):
+
 ```opam
 opam switch create stream-verify 4.14.1
 eval $(opam env)
@@ -971,6 +992,7 @@ opam install coq.8.18.0 coq-iris.4.0.0
 ```
 
 **版本升级检查清单**:
+
 - [ ] 运行完整测试套件
 - [ ] 检查弃用警告
 - [ ] 验证依赖库兼容性
@@ -984,12 +1006,12 @@ opam install coq.8.18.0 coq-iris.4.0.0
 ```coq
 (*!
   Lemma: stream_map_compose
-  
+
   证明思路:
   1. 对流s进行结构归纳
   2. 基础情况: 空流map保持空
   3. 归纳步骤: 利用函数复合结合律
-  
+
   依赖: stream_induction, compose_assoc
   复杂度: O(n) 归纳步骤
 *)
@@ -1070,10 +1092,10 @@ Theorem exactly_once_correct:
 Proof.
   iIntros (sys Hvalid) "#Hinv #Hstep".
   iDestruct "Hinv" as %(Hsubset & Hlog & Hnodup).
-  
+
   (* 展开ExactlyOnce定义 *)
   iPureIntro. unfold ExactlyOnce. intros msg_id Hdel Hnack.
-  
+
   (* 利用不变式推导矛盾 *)
   assert (msg_id ∈ acknowledged sys) by set_solver.
   contradiction.
@@ -1083,12 +1105,14 @@ Qed.
 #### 7.1.3 证明分析
 
 **证明统计**:
+
 - 代码行数: ~450行
 - 引理数量: 12个辅助引理
 - 证明时间: 自动(80%) + 交互(20%)
 - 复用依赖: 5个库引理
 
 **关键洞察**:
+
 1. **不变式设计**: 通过集合包含关系编码Exactly-Once
 2. **幽灵状态**: 使用历史序列跟踪消息生命周期
 3. **资源分离**: 不同消息的所有权完全分离
@@ -1100,6 +1124,7 @@ Qed.
 **目标**: 验证Flink Checkpoint协议的正确性。
 
 **核心性质**:
+
 - **一致性**: 所有算子快照时间点一致
 - **完整性**: 无消息丢失或重复
 - **可恢复性**: 从检查点恢复后状态正确
@@ -1110,7 +1135,7 @@ Qed.
 (*
 --algorithm CheckpointProtocol {
   variables
-    operators = [op \in Operators |-> [state |-> "RUNNING", 
+    operators = [op \in Operators |-> [state |-> "RUNNING",
                                        pending |-> 0,
                                        snapshot |-> NULL]],
     coordinator = "IDLE",
@@ -1126,16 +1151,16 @@ Qed.
     c1: while (TRUE) {
           await coordinator = "IDLE";
           coordinator := "TRIGGERING";
-          
+
     c2:   (* 向所有source发送barrier *)
           barriers := Operators;
           coordinator := "COLLECTING";
-          
+
     c3:   (* 等待所有barrier到达 *)
           await barriers = {};
           globalSnapshot := [op \in Operators |-> operators[op].snapshot];
           coordinator := "COMPLETED";
-          
+
     c4:   (* 清理并返回IDLE *)
           coordinator := "IDLE";
         }
@@ -1148,13 +1173,13 @@ Qed.
              (* 正常处理 *)
              await operators[self].state = "RUNNING";
              operators[self].pending := operators[self].pending + 1;
-             
+
            or
-             (* 接收barrier，触发快照 *)
+             (* 接收barrier,触发快照 *)
              await self \in barriers;
              operators[self].snapshot := operators[self].pending;
              barriers := barriers \ {self};
-             
+
            or
              (* 从checkpoint恢复 *)
              await coordinator = "COMPLETED";
@@ -1169,6 +1194,7 @@ Qed.
 #### 7.2.3 验证结果
 
 **TLC检查配置**:
+
 ```tla
 MCOperators == {"op1", "op2", "op3", "op4"}
 MCMaxPending == 5
@@ -1176,7 +1202,7 @@ MCMaxPending == 5
 (* 不变式 *)
 ConsistencyInvariant ==
     coordinator = "COMPLETED" =>
-    \A op1, op2 \in Operators : 
+    \A op1, op2 \in Operators :
         globalSnapshot[op1] = globalSnapshot[op2]
 
 (* 活性 *)
@@ -1185,6 +1211,7 @@ LivenessProperty ==
 ```
 
 **检查结果**:
+
 ```
 Model checking completed. No error has been found.
   Estimates of the probability that TLC did not check all reachable states
@@ -1273,7 +1300,7 @@ Class StateBackend (S: Type) := {
   get: S -> Key -> Value;
   put: S -> Key -> Value -> S;
   remove: S -> Key -> S;
-  
+
   (* 规范 *)
   get_put_same: forall s k v, get (put s k v) k = v;
   get_put_diff: forall s k1 k2 v, k1 <> k2 -> get (put s k1 v) k2 = get s k2;
@@ -1287,7 +1314,7 @@ Class StateBackend (S: Type) := {
 
 ```coq
 (* 精化关系 *)
-Definition hashmap_rocksdb_refinement 
+Definition hashmap_rocksdb_refinement
   (h: HashMapState) (r: RocksDBState) : Prop :=
   forall k, HashMap.get h k = RocksDB.get r k.
 
@@ -1304,7 +1331,7 @@ Qed.
 
 (* 观察等价性 *)
 Theorem state_backends_observationally_equivalent :
-  forall h r, 
+  forall h r,
     hashmap_rocksdb_refinement h r ->
     forall prog, observe (run prog h) = observe (run prog r).
 Proof.
@@ -1328,45 +1355,45 @@ flowchart TB
         SYS3[Watermark推进]
         SYS4[State Backend]
     end
-    
+
     subgraph "形式化层"
         COQ[Coq/Isabelle<br/>定理证明]
         TLA[TLA+/PlusCal<br/>模型检查]
         IRIS[Iris<br/>分离逻辑]
     end
-    
+
     subgraph "实现层"
         VERUS[Verus<br/>Rust验证]
         DAF[Dafny<br/>通用验证]
         RUST[RustHorn<br/>约束求解]
     end
-    
+
     subgraph "自动化"
         Z3[Z3 SMT]
         CVC[CVC5]
         E[E Prover]
         VAM[Vampire]
     end
-    
+
     subgraph "输出"
         CERT[形式化证书]
         EXE[可执行代码]
         DOC[证明文档]
     end
-    
+
     SYS1 --> COQ
     SYS2 --> TLA
     SYS3 --> IRIS
     SYS4 --> VERUS
-    
+
     COQ --> VERUS
     TLA --> DAF
     IRIS --> RUST
-    
+
     VERUS --> Z3
     DAF --> CVC
     RUST --> E
-    
+
     Z3 --> CERT
     CVC --> EXE
     E --> DOC
@@ -1387,8 +1414,8 @@ stateDiagram-v2
     自动化提取 --> 回归验证: CI检查
     回归验证 --> 证明提交: 版本控制
     证明提交 --> [*]
-    
-    回归验证 --> 证明草图: 失败，修复
+
+    回归验证 --> 证明草图: 失败,修复
     完整证明 --> 证明草图: 重构
 ```
 
@@ -1397,22 +1424,22 @@ stateDiagram-v2
 ```mermaid
 flowchart TD
     START([开始验证任务]) --> Q1{验证目标类型?}
-    
+
     Q1 -->|分布式协议| Q2{状态空间大小?}
     Q1 -->|并发数据结构| Q3{资源复杂度?}
     Q1 -->|系统实现| Q4{语言限制?}
     Q1 -->|数学性质| COQ1[Coq/Isabelle]
-    
+
     Q2 -->|有限/中等| TLA[TLA+]
     Q2 -->|无限/复杂| COQ2[Coq+时序逻辑]
-    
+
     Q3 -->|高/精细控制| IRIS[Iris分离逻辑]
     Q3 -->|中等| DAF1[Dafny]
-    
+
     Q4 -->|Rust| VERUS[Verus]
     Q4 -->|任意语言| DAF2[Dafny]
     Q4 -->|C/LLVM| VST[VST]
-    
+
     TLA --> CI[CI集成]
     COQ1 --> CI
     COQ2 --> CI
@@ -1421,7 +1448,7 @@ flowchart TD
     VERUS --> CI
     DAF2 --> CI
     VST --> CI
-    
+
     CI --> DOC[文档生成]
     DOC --> END([完成])
 ```
@@ -1430,25 +1457,15 @@ flowchart TD
 
 ## 9. 引用参考
 
-[^1]: The Coq Proof Assistant, INRIA, https://coq.inria.fr/
 
-[^2]: Leslie Lamport, "Specifying Systems: The TLA+ Language and Tools for Hardware and Software Engineers", Addison-Wesley, 2002.
 
-[^3]: Ralf Jung et al., "Iris from the ground up: A modular foundation for higher-order concurrent separation logic", JFP, 2018.
 
-[^4]: Chris Hawblitzel et al., "Verus: Verifying Rust Programs using Linear Ghost Types", OOPSLA, 2023.
 
-[^5]: K. Rustan M. Leino, "Dafny: An Automatic Program Verifier for Functional Correctness", LPAR, 2010.
 
-[^6]: Leonardo de Moura and Nikolaj Bjørner, "Z3: An Efficient SMT Solver", TACAS, 2008.
 
-[^7]: Gerwin Klein et al., "seL4: formal verification of an OS kernel", SOSP, 2009.
 
-[^8]: AWS formally verified Mathematics, https://github.com/awslabs/aws-math
 
-[^9]: The Redex Project, "Practical Foundations for Programming Languages", Cambridge University Press, 2016.
 
-[^10]: Benjamin Pierce et al., "Software Foundations", https://softwarefoundations.cis.upenn.edu/
 
 ---
 
@@ -1506,11 +1523,13 @@ Level 3 (精通)
 #### 问题: `coqc`命令未找到
 
 **原因分析**:
+
 - opam环境未激活
 - coqc不在PATH中
 - 安装不完整
 
 **解决方案**:
+
 ```bash
 # 1. 检查opam switch
 eval $(opam env)
@@ -1519,7 +1538,7 @@ eval $(opam env)
 which coqc
 coqc --version
 
-# 3. 如仍失败，重新安装
+# 3. 如仍失败,重新安装
 cd ~/.opam
 rm -rf stream-verify
 opam switch create stream-verify 4.14.1
@@ -1531,6 +1550,7 @@ opam install coq
 **现象**: `Stack overflow` 或 `Out of memory`
 
 **解决方案**:
+
 ```bash
 # 增加栈空间
 ulimit -s 65536
@@ -1542,6 +1562,7 @@ make COQFLAGS="-async-proofs-j 1"
 #### 问题: 依赖库版本冲突
 
 **解决方案**:
+
 ```bash
 # 锁定依赖版本
 cat > coq-project.opam << 'EOF'
@@ -1563,6 +1584,7 @@ opam install . --deps-only
 **原因**: 状态空间过大
 
 **解决方案**:
+
 ```tla
 (* 在配置文件中添加 *)
 CONSTANTS MaxDepth = 100
@@ -1572,6 +1594,7 @@ CONSTRAINT StateConstraint
 #### 问题: `Java heap space`错误
 
 **解决方案**:
+
 ```bash
 # 增加Java堆内存
 export JAVA_OPTS="-Xmx16g -XX:+UseG1GC"
@@ -1581,6 +1604,7 @@ tlc -workers 8 Model.tla
 #### 问题: PlusCal翻译失败
 
 **检查点**:
+
 1. 算法标记格式: `(* --algorithm AlgorithmName { ... } *)`
 2. 变量声明正确
 3. 没有未闭合的括号
@@ -1590,6 +1614,7 @@ tlc -workers 8 Model.tla
 #### 问题: `verification failed`但无明显错误
 
 **解决方案**:
+
 ```bash
 # 启用详细输出
 verus --verify --verbose file.rs
@@ -1601,6 +1626,7 @@ verus --verify --debug file.rs 2>&1 | tee verus.log
 #### 问题: 外部库验证失败
 
 **解决方案**:
+
 ```rust
 // 使用external属性标记外部代码
 #[verifier::external]
@@ -1616,6 +1642,7 @@ pub fn external_function() { }
 #### 问题: `no triggers found`警告
 
 **解决方案**:
+
 ```dafny
 // 添加显式触发器
 forall x: T {:trigger P(x)} :: P(x) ==> Q(x)
@@ -1633,6 +1660,7 @@ ghost method Lemma() ensures forall x :: P(x)
 #### 证明脚本优化
 
 **低效模式**:
+
 ```coq
 repeat (
   match goal with
@@ -1642,6 +1670,7 @@ repeat (
 ```
 
 **高效模式**:
+
 ```coq
 (* 使用专用策略 *)
 Ltac fast_solve :=
@@ -1676,7 +1705,7 @@ View == <<state, watermark>>
 
 (* 3. 动作约束 *)
 ActionConstraint ==
-    \A op \in Operators : 
+    \A op \in Operators :
         state[op].processed - checkpoint[op] < CheckpointInterval * 2
 ```
 
@@ -1697,7 +1726,7 @@ tlc -depth 50 -simulate -num 1000 Model.tla
 ```rust
 // 低效: 复杂循环不变式
 while (i < n) {
-    invariant 
+    invariant
         i <= n,
         complex_property(x, i);  // 验证代价高
 }
@@ -1786,23 +1815,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    
+
     - name: Setup Coq
       uses: coq-community/setup-coq-action@v1
       with:
         coq-version: '8.18.0'
         opam-packages: 'coq-iris coq-mathcomp-ssreflect'
-    
+
     - name: Build Project
       run: make -j4
-    
+
     - name: Verify Proofs
       run: |
         python .scripts/verify-coq-proofs.py \
           --fail-on-admitted \
           --json \
           --report coq-report.json
-    
+
     - name: Upload Report
       uses: actions/upload-artifact@v3
       with:
@@ -1823,19 +1852,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    
+
     - name: Setup Java
       uses: actions/setup-java@v3
       with:
         java-version: '17'
         distribution: 'temurin'
-    
+
     - name: Install TLA+
       run: |
         mkdir -p ~/.tla
         wget -q -O ~/.tla/tla2tools.jar \
           https://github.com/tlaplus/tlaplus/releases/download/v1.8.0/tla2tools.jar
-    
+
     - name: Verify Models
       run: |
         python .scripts/verify-tla-models.py \
@@ -1880,7 +1909,7 @@ jobs:
 
 | 工具 | 用途 | 链接 |
 |------|------|------|
-| Alectryon | Coq文档生成 | https://github.com/cpitclaudel/alectryon |
+| Alectryon | Coq文档生成 | <https://github.com/cpitclaudel/alectryon> |
 | tlaplus-toolbox | TLA+ IDE | 随TLA+发布 |
 | VSCode Coq | Coq IDE | 扩展市场 |
 | Rust Analyzer | Rust IDE | 随Rust安装 |
@@ -1933,6 +1962,7 @@ Definition Def-FV-Stream-Coinductive:
 ### G.1 常用图类型
 
 **状态图**:
+
 ```mermaid
 stateDiagram-v2
     [*] --> Idle
@@ -1944,12 +1974,13 @@ stateDiagram-v2
 ```
 
 **时序图**:
+
 ```mermaid
 sequenceDiagram
     participant C as Coordinator
     participant O1 as Operator1
     participant O2 as Operator2
-    
+
     C->>O1: Barrier
     C->>O2: Barrier
     O1-->>C: Snapshot1
@@ -1958,6 +1989,7 @@ sequenceDiagram
 ```
 
 **类图**:
+
 ```mermaid
 classDiagram
     class SystemState {
@@ -1998,4 +2030,3 @@ classDiagram
 ---
 
 *文档结束*
-

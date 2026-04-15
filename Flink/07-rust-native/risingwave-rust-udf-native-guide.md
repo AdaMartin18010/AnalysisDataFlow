@@ -257,24 +257,24 @@ SQL 类型层                    RisingWave 内部              Rust 类型层
 UDF 开发需求分析
 │
 ├─ 需要与其他语言互操作？
-│  ├─ 是 → WASM 模式（支持多语言编译到 WASM）
+│  ├─ 是 → WASM 模式(支持多语言编译到 WASM)
 │  └─ 否 → 继续评估
 │
 ├─ 对延迟敏感 (< 100μs) 且高频调用？
 │  ├─ 是 → 嵌入式 Rust 模式
 │  └─ 否 → 继续评估
 │
-├─ 需要复杂依赖（外部 crate）？
-│  ├─ 是 → WASM 模式（更灵活的构建链）
-│  └─ 否 → 嵌入式模式（更简单）
+├─ 需要复杂依赖(外部 crate)？
+│  ├─ 是 → WASM 模式(更灵活的构建链)
+│  └─ 否 → 嵌入式模式(更简单)
 │
-├─ 安全隔离要求高（第三方 UDF）？
-│  ├─ 是 → WASM 模式（沙箱隔离）
-│  └─ 否 → 嵌入式模式（性能优先）
+├─ 安全隔离要求高(第三方 UDF)？
+│  ├─ 是 → WASM 模式(沙箱隔离)
+│  └─ 否 → 嵌入式模式(性能优先)
 │
 └─ 开发和调试便利性优先？
-   ├─ 是 → WASM 模式（独立构建、测试）
-   └─ 否 → 嵌入式模式（单文件部署）
+   ├─ 是 → WASM 模式(独立构建、测试)
+   └─ 否 → 嵌入式模式(单文件部署)
 ```
 
 ---
@@ -518,10 +518,10 @@ lto = true
 ```rust
 use arrow_udf::function;
 
-/// 计算 Haversine 距离（地理坐标距离）
+/// 计算 Haversine 距离(地理坐标距离)
 #[function("haversine(double, double, double, double) -> double")]
 fn haversine(lat1: f64, lon1: f64, lat2: f64, lon2: f64) -> f64 {
-    const R: f64 = 6371.0; // 地球半径（公里）
+    const R: f64 = 6371.0; // 地球半径(公里)
 
     let lat1_rad = lat1.to_radians();
     let lat2_rad = lat2.to_radians();
@@ -535,7 +535,7 @@ fn haversine(lat1: f64, lon1: f64, lat2: f64, lon2: f64) -> f64 {
     R * c
 }
 
-/// JSON 字段提取（返回 JSONB）
+/// JSON 字段提取(返回 JSONB)
 #[function("json_extract(varchar, varchar) -> jsonb")]
 fn json_extract(json_str: &str, path: &str) -> String {
     use serde_json::Value;
@@ -551,7 +551,7 @@ fn json_extract(json_str: &str, path: &str) -> String {
     current.to_string()
 }
 
-/// 表函数：生成日期范围
+/// 表函数:生成日期范围
 #[function("date_range(timestamp, timestamp, interval) -> setof timestamp")]
 fn date_range(start: chrono::NaiveDateTime, end: chrono::NaiveDateTime, step: chrono::Duration) -> impl Iterator<Item = chrono::NaiveDateTime> {
     std::iter::successors(Some(start), move |&prev| {
@@ -570,7 +570,7 @@ rustup target add wasm32-wasip1
 # 编译发布版本
 cargo build --target wasm32-wasip1 --release
 
-# 生成 base64 编码（用于 SQL 嵌入）
+# 生成 base64 编码(用于 SQL 嵌入)
 base64 -w 0 target/wasm32-wasip1/release/risingwave_udf_example.wasm > udf.wasm.b64
 ```
 
@@ -583,7 +583,7 @@ RETURNS DOUBLE
 LANGUAGE wasm
 AS '\x00asm...';  -- BASE64 编码的 WASM 字节码
 
--- 方式 2: 从文件系统链接（需 RisingWave 配置允许）
+-- 方式 2: 从文件系统链接(需 RisingWave 配置允许)
 CREATE FUNCTION haversine(DOUBLE, DOUBLE, DOUBLE, DOUBLE)
 RETURNS DOUBLE
 LANGUAGE wasm
@@ -616,7 +616,7 @@ CREATE SOURCE user_behavior (
     properties.bootstrap.server = 'kafka:9092'
 ) FORMAT PLAIN ENCODE JSON;
 
--- 2. 定义特征计算 UDF（嵌入式 Rust）
+-- 2. 定义特征计算 UDF(嵌入式 Rust)
 CREATE FUNCTION compute_user_features(
     prices ARRAY<DECIMAL>,
     categories ARRAY<VARCHAR>,

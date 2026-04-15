@@ -1,8 +1,8 @@
 # Google A2A (Agent-to-Agent) 协议深度解析
 
-> **状态**: 前瞻 | **预计发布时间**: 2026-06 | **最后更新**: 2026-04-12
+> **状态**: ✅ 已发布 | **A2A v1.0**: 2026年初 GA | **最后更新**: 2026-04-15
 >
-> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+> ✅ A2A v1.0 已于 2026 年初正式发布，获 150+ 组织支持，并集成至 Azure AI Foundry、Amazon Bedrock AgentCore。
 
 > **所属阶段**: Knowledge/06-frontier | **前置依赖**: [MCP协议与流处理集成](mcp-protocol-agent-streaming.md), [A2A协议技术分析](a2a-protocol-agent-communication.md) | **形式化等级**: L3-L5
 
@@ -12,7 +12,7 @@
 
 ### Def-K-06-240: Agent-to-Agent Protocol (A2A) - 形式化定义
 
-**A2A** 是由 Google 于 2025年4月 发布的开放协议标准，现由 Linux Foundation 托管，旨在实现异构 AI Agent 之间的互操作协作。其形式化定义为：
+**A2A** 是由 Google 于 2025年4月 发布的开放协议标准，**A2A v1.0** 于 2026 年初正式发布[^7]，现由 Linux Foundation 托管，旨在实现异构 AI Agent 之间的互操作协作。其形式化定义为：
 
 $$
 \text{A2A} \triangleq \langle \mathcal{A}, \mathcal{T}, \mathcal{M}, \mathcal{C}, \mathcal{S}, \mathcal{P} \rangle
@@ -34,7 +34,11 @@ $$
 1. **对等协作 (Peer-to-Peer)**: Agent 可同时扮演 Client 与 Server 角色
 2. **模态无关 (Modality Agnostic)**: 支持文本、结构化数据、音视频流
 3. **企业就绪 (Enterprise-Grade)**: 内置 OAuth 2.0、mTLS、审计日志
-4. **长时任务支持**: Task 生命周期可跨越小时甚至天级别
+4. **签名身份验证 (Signed Agent Cards)**: A2A v1.0 引入加密签名的 Agent Card，防止能力声明篡改
+5. **多租户 (Multi-tenancy)**: A2A v1.0 原生支持多租户隔离
+6. **双协议绑定**: A2A v1.0 支持 gRPC + REST/JSON-RPC 两种传输
+7. **版本协商**: A2A v1.0 提供向后兼容的协议版本协商
+8. **长时任务支持**: Task 生命周期可跨越小时甚至天级别
 
 ---
 
@@ -76,7 +80,7 @@ $$
 │              │Remote A │ │Remote B │ │Remote C │                │
 │              └─────────┘ └─────────┘ └─────────┘                │
 │                                                                 │
-│  适用场景: 中心化编排，如企业 workflow 协调                        │
+│  适用场景: 中心化编排,如企业 workflow 协调                        │
 └─────────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────────┐
@@ -96,7 +100,7 @@ $$
 │                   │ Agent D │            │ Agent E │            │
 │                   └─────────┘            └─────────┘            │
 │                                                                 │
-│  适用场景: 去中心化协作，如多 Agent 研究系统                        │
+│  适用场景: 去中心化协作,如多 Agent 研究系统                        │
 └─────────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────────┐
@@ -119,7 +123,7 @@ $$
 │                         │Execution│                             │
 │                         └─────────┘                             │
 │                                                                 │
-│  适用场景: 复杂任务分解，如多步推理与代码生成                      │
+│  适用场景: 复杂任务分解,如多步推理与代码生成                      │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -236,7 +240,7 @@ interface Skill {
   name: string;                   // 显示名称
   description: string;            // 详细描述
   tags: string[];                 // 分类标签
-  examples: string[];             // 调用示例（用于 LLM 理解）
+  examples: string[];             // 调用示例(用于 LLM 理解)
   inputModes?: string[];          // 技能特定输入模态
   outputModes?: string[];         // 技能特定输出模态
   parameters?: JSONSchema;        // 输入参数 Schema
@@ -299,7 +303,7 @@ interface StreamingArtifact {
   parts: Part[];
 
   // 流式控制字段
-  index: number;           // 分块序号，用于排序
+  index: number;           // 分块序号,用于排序
   append: boolean;         // true = 追加到已有 Artifact
   lastChunk: boolean;      // true = 最后一块
 
@@ -325,7 +329,7 @@ data: {"type": "status", "status": "working", "message": "开始生成报告"}
 
 data: {"type": "artifact", "artifact": {"name": "report", "parts": [{"type": "text", "text": "# 分析报告\n\n"}], "index": 0, "append": false, "lastChunk": false}}
 
-data: {"type": "artifact", "artifact": {"name": "report", "parts": [{"type": "text", "text": "## 第一部分：趋势分析\n..."}], "index": 1, "append": true, "lastChunk": false}}
+data: {"type": "artifact", "artifact": {"name": "report", "parts": [{"type": "text", "text": "## 第一部分:趋势分析\n..."}], "index": 1, "append": true, "lastChunk": false}}
 
 data: {"type": "artifact", "artifact": {"name": "chart", "parts": [{"type": "file", "file": {"name": "chart.png", "mimeType": "image/png", "uri": "https://..."}}], "index": 0, "append": false, "lastChunk": false}}
 
@@ -391,12 +395,12 @@ class AgentCardCache:
 
     async def get(self, agent_url: str, freshness: FreshnessLevel) -> AgentCard:
         """
-        获取 Agent Card，根据新鲜度要求选择策略
+        获取 Agent Card,根据新鲜度要求选择策略
 
         FreshnessLevel:
-        - STRICT: 强制刷新，忽略缓存
-        - BALANCED: 使用缓存，TTL 到期后刷新
-        - RELAXED: 优先使用缓存，异步刷新
+        - STRICT: 强制刷新,忽略缓存
+        - BALANCED: 使用缓存,TTL 到期后刷新
+        - RELAXED: 优先使用缓存,异步刷新
         """
         entry = self.cache.get(agent_url)
 
@@ -405,7 +409,7 @@ class AgentCardCache:
 
         if entry and not entry.is_expired():
             if freshness == FreshnessLevel.RELAXED:
-                # 异步刷新，立即返回缓存
+                # 异步刷新,立即返回缓存
                 asyncio.create_task(self._refresh_if_needed(agent_url, entry))
                 return entry.card
             return entry.card
@@ -563,9 +567,9 @@ graph TB
 **典型使用模式**：
 
 ```python
-# 模式 1: 单一 Agent，MCP 增强能力
+# 模式 1: 单一 Agent,MCP 增强能力
 class SingleAgentWithTools:
-    """客服 Agent：使用 MCP 访问工具，不使用 A2A"""
+    """客服 Agent:使用 MCP 访问工具,不使用 A2A"""
 
     async def handle(self, query: str):
         # 使用 MCP 获取上下文
@@ -576,9 +580,9 @@ class SingleAgentWithTools:
         response = await self.llm.generate(query, context=docs + user_data)
         return response
 
-# 模式 2: 多 Agent 协作，A2A + MCP
+# 模式 2: 多 Agent 协作,A2A + MCP
 class MultiAgentOrchestrator:
-    """招聘流程 Agent：A2A 协调多 Agent，每个 Agent 使用 MCP"""
+    """招聘流程 Agent:A2A 协调多 Agent,每个 Agent 使用 MCP"""
 
     async def process_hiring(self, job_req: str):
         # A2A: 委托给 Specialist Agent
@@ -598,9 +602,9 @@ class MultiAgentOrchestrator:
 
         return self.aggregate(results)
 
-# 模式 3: 混合架构（推荐）
+# 模式 3: 混合架构(推荐)
 class HybridArchitecture:
-    """完整示例：主 Agent 同时使用 A2A 和 MCP"""
+    """完整示例:主 Agent 同时使用 A2A 和 MCP"""
 
     async def complex_workflow(self, user_request: str):
         # Step 1: MCP - 获取实时数据
@@ -725,7 +729,7 @@ $$
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                    融合架构：Flink-A2A-Actor                     │
+│                    融合架构:Flink-A2A-Actor                     │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
 │  ┌─────────────┐         ┌─────────────┐         ┌───────────┐ │
@@ -737,8 +741,8 @@ $$
 │  │ - 响应式    │         │ - 路由分发  │         │ - ML      │ │
 │  └─────────────┘         └─────────────┘         └───────────┘ │
 │                                                                 │
-│  职责：快速响应            职责：跨域桥接          职责：重计算  │
-│  延迟：< 10ms             延迟：< 100ms           延迟：可变    │
+│  职责:快速响应            职责:跨域桥接          职责:重计算  │
+│  延迟:< 10ms             延迟:< 100ms           延迟:可变    │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
@@ -770,13 +774,15 @@ A2A 协议的五大设计原则源于对企业级 Agent 系统的深度观察：
     ↓
 2025 Q1: Google A2A 内部分析
     ↓
-2025 April: A2A v1.0 发布 (Google Cloud Next)
+2025 April: A2A 初始发布 (Google Cloud Next)
     ↓
-2025 Q2: Linux Foundation 托管，50+ 合作伙伴
+2025 Q2: Linux Foundation 托管,50+ 合作伙伴
     ↓
-规划中（以官方为准）: 生态扩展 (LangChain, Semantic Kernel 集成)
+2026 Jan: A2A v1.0 正式发布
     ↓
-2026 (Expected): 协议升级，更多模态支持
+2026 April: 150+ 组织支持,集成 Azure AI Foundry / Bedrock AgentCore
+    ↓
+2026+: 生态扩展 (LangChain, Semantic Kernel 集成)
 ```
 
 ---
@@ -813,8 +819,8 @@ A2A 协议的五大设计原则源于对企业级 Agent 系统的深度观察：
 │   │ - 补偿事务  │              │ - 多 Agent  │                  │
 │   └─────────────┘              └─────────────┘                  │
 │                                                                 │
-│   优势：可靠性保证              优势：灵活自适应                  │
-│   延迟：秒级                    延迟：秒-分钟级                   │
+│   优势:可靠性保证              优势:灵活自适应                  │
+│   延迟:秒级                    延迟:秒-分钟级                   │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
@@ -827,7 +833,7 @@ A2A 协议的五大设计原则源于对企业级 Agent 系统的深度观察：
 
 | 局限 | 说明 | 缓解策略 |
 |------|------|----------|
-| **协议成熟度** | 2025年发布，生产验证有限 | PoC 先行，渐进式采用 |
+| **协议成熟度** | v1.0 已于 2026 年初发布，获 150+ 组织支持 | 生产可用，重点关注 Signed Agent Cards 与多租户配置 |
 | **生态碎片化** | 与 MCP 存在竞争/重叠 | 双协议支持，关注融合趋势 |
 | **性能开销** | HTTP/JSON 相对于二进制协议 | 连接池、压缩、边缘缓存 |
 | **状态一致性** | 分布式 Task 状态需应用层处理 | Saga 模式、事件溯源 |
@@ -1019,7 +1025,7 @@ app = Flask(__name__)
 # ============ Agent Card ============
 AGENT_CARD = {
     "name": "FlinkRealtimeAnalyticsAgent",
-    "description": "基于 Apache Flink 的实时流数据分析 Agent，支持窗口聚合、异常检测、趋势预测",
+    "description": "基于 Apache Flink 的实时流数据分析 Agent,支持窗口聚合、异常检测、趋势预测",
     "url": "https://analytics.example.com/a2a",
     "version": "1.0.0",
     "provider": {
@@ -1045,7 +1051,7 @@ AGENT_CARD = {
             "tags": ["analytics", "aggregation", "streaming"],
             "examples": [
                 "分析过去1小时每5分钟的平均销售额",
-                "统计实时用户活跃度（滑动窗口）"
+                "统计实时用户活跃度(滑动窗口)"
             ],
             "inputModes": ["application/json"],
             "outputModes": ["text/event-stream", "application/json"]
@@ -1116,7 +1122,7 @@ def send_task():
 
 @app.route("/a2a/tasks/sendSubscribe", methods=["POST"])
 def send_subscribe():
-    """流式任务提交（SSE）"""
+    """流式任务提交(SSE)"""
     data = request.json
     task_id = data.get("id", str(uuid.uuid4()))
     message = data.get("message", {})
@@ -1177,14 +1183,14 @@ def execute_sync_task(skill_call: Dict) -> Dict:
     if skill == "trend_forecast":
         return execute_trend_forecast(params)
     elif skill == "window_aggregation":
-        # 对于同步请求，只返回第一个窗口的结果
+        # 对于同步请求,只返回第一个窗口的结果
         result = next(execute_window_aggregation_stream(params))
         return result["artifact"]["parts"][0]["data"]
     else:
         raise ValueError(f"Unknown skill: {skill}")
 
 def execute_streaming_task(skill_call: Dict) -> Iterator[Dict]:
-    """执行流式任务，产生 SSE 事件"""
+    """执行流式任务,产生 SSE 事件"""
     skill = skill_call.get("skill")
     params = skill_call.get("params", {})
 
@@ -1205,7 +1211,7 @@ def execute_window_aggregation_stream(params: Dict) -> Iterator[Dict]:
     env = StreamExecutionEnvironment.get_execution_environment()
     table_env = StreamTableEnvironment.create(env)
 
-    # 模拟实时窗口结果（实际应连接 Kafka）
+    # 模拟实时窗口结果(实际应连接 Kafka)
     for i in range(10):
         window_result = {
             "window_id": i,
@@ -1265,7 +1271,7 @@ def execute_anomaly_detection_stream(params: Dict) -> Iterator[Dict]:
         time.sleep(0.3)
 
 def execute_trend_forecast(params: Dict) -> Dict:
-    """趋势预测（同步）"""
+    """趋势预测(同步)"""
     historical_hours = params.get("historical_hours", 24)
     forecast_hours = params.get("forecast_hours", 6)
 
@@ -1437,7 +1443,7 @@ class A2AClient:
         return await asyncio.gather(*coroutines, return_exceptions=True)
 
 class SalesAnalyticsOrchestrator:
-    """销售分析编排器：协调多个 Specialist Agent"""
+    """销售分析编排器:协调多个 Specialist Agent"""
 
     def __init__(self):
         self.a2a = A2AClient()
@@ -1449,7 +1455,7 @@ class SalesAnalyticsOrchestrator:
         }
 
     async def comprehensive_sales_report(self, region: str, days: int = 30):
-        """生成综合销售报告（多 Agent 协作）"""
+        """生成综合销售报告(多 Agent 协作)"""
 
         print(f"🚀 启动综合销售分析 - 区域: {region}, 时间范围: {days}天")
 
@@ -1775,15 +1781,7 @@ sequenceDiagram
 
 ## 8. 引用参考 (References)
 
-
-
-
-
-
-
-
-
-
+[^7]: Linux Foundation, "A2A Protocol Surpasses 150 Organizations, Lands in Major Cloud Platforms", 2026-04-09. https://www.linuxfoundation.org/press/a2a-protocol-surpasses-150-organizations-lands-in-major-cloud-platforms-and-sees-enterprise-production-use-in-first-year
 
 ---
 

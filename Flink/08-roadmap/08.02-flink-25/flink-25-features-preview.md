@@ -47,7 +47,7 @@ ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 env.getConfig().set("execution.runtime-mode", "ADAPTIVE");
 env.getConfig().set("execution.adaptive.latency-threshold", "100ms");
 
-// 统一的处理逻辑，运行时自动选择执行模式
+// 统一的处理逻辑,运行时自动选择执行模式
 DataStream<Event> stream = env.fromSource(kafkaSource, ...);
 stream
     .keyBy(Event::getUserId)
@@ -59,7 +59,7 @@ stream
 ### 1.3 混合执行示例
 
 ```sql
--- 流批混合查询：实时流 JOIN 历史批数据
+-- 流批混合查询:实时流 JOIN 历史批数据
 SELECT
     s.user_id,
     s.event_type,
@@ -201,7 +201,7 @@ ai.inference:
 ### 4.1 自动刷新配置
 
 ```sql
--- 创建物化表，自动刷新
+-- 创建物化表,自动刷新
 CREATE MATERIALIZED TABLE user_stats
 WITH (
     'format' = 'parquet',

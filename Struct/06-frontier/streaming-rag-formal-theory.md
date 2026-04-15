@@ -748,7 +748,7 @@ class IncrementalHNSW:
         return int(-np.log(np.random.random()) * self.level_mult)
 
     def _distance(self, a: np.ndarray, b: np.ndarray) -> float:
-        """欧氏距离（可替换为内积）"""
+        """欧氏距离(可替换为内积)"""
         return np.linalg.norm(a - b)
 
     def _search_layer(self, q: np.ndarray, ep: int, ef: int, level: int) -> List[Tuple[float, int]]:
@@ -1368,9 +1368,9 @@ $$\text{Throughput}(N) = \frac{N \cdot \text{Throughput}(1)}{1 + \alpha \cdot (N
 
 ```
 版本向量格式: (major, minor, patch, timestamp)
-- major: 模型架构变更（需全量重建）
-- minor: 预训练数据更新（推荐重建）
-- patch: 微调优化（兼容更新）
+- major: 模型架构变更(需全量重建)
+- minor: 预训练数据更新(推荐重建)
+- patch: 微调优化(兼容更新)
 ```
 
 **双版本并行策略**：

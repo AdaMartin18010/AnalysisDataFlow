@@ -573,7 +573,7 @@ public class CustomerSupportAgent {
                 // 步骤 1: 查询意图分类
                 IntentClassification intent = classifyIntent(query.text);
 
-                // 步骤 2: RAG 检索（如需要）
+                // 步骤 2: RAG 检索(如需要)
                 List<Document> retrievedDocs = Collections.emptyList();
                 if (intent.requiresRetrieval()) {
                     retrievedDocs = performRAGRetrieval(query.text, 5);
@@ -884,7 +884,7 @@ class AIAgentFunction(KeyedProcessFunction):
     """
     PyFlink AI Agent 实现
 
-    功能：
+    功能:
     - 有状态对话管理
     - RAG 增强
     - 工具调用
@@ -1284,7 +1284,7 @@ public class CachingAgentFunction
                 return;
             }
 
-            // 缓存未命中，调用 LLM
+            // 缓存未命中,调用 LLM
             callLLM(query).whenComplete((llmResponse, llmError) -> {
                 if (llmError != null) {
                     resultFuture.completeExceptionally(llmError);
@@ -1356,7 +1356,7 @@ public class ResilientAgentFunction
             .orTimeout(10, TimeUnit.SECONDS)
             .whenComplete((response, error) -> {
                 if (error != null) {
-                    // 记录失败，触发降级
+                    // 记录失败,触发降级
                     circuitBreaker.recordFailure();
                     Response fallback = fallbackStrategy.generateFallback(query);
                     resultFuture.complete(Collections.singletonList(fallback));

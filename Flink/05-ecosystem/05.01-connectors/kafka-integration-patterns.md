@@ -305,7 +305,7 @@ import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsIni
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 
-// 构建 Kafka Source（Flink 1.14+ 新 API）
+// 构建 Kafka Source(Flink 1.14+ 新 API)
 KafkaSource<Event> source = KafkaSource.<Event>builder()
     .setBootstrapServers("kafka-1:9092,kafka-2:9092")
     .setTopics("input-topic")
@@ -542,7 +542,7 @@ sequenceDiagram
         JM->>Source: notifyCheckpointComplete(Checkpoint N)
         Source->>Kafka: commitAsync(offsets)<br/>异步提交到 __consumer_offsets
         Kafka-->>Source: 确认
-        Note right of Source: 偏移量提交成功<br/>(尽力而为，失败不影响一致性)
+        Note right of Source: 偏移量提交成功<br/>(尽力而为,失败不影响一致性)
     else Checkpoint 失败
         JM->>Source: notifyCheckpointAborted(Checkpoint N)
         Note right of Source: 不提交偏移量<br/>依赖 State Backend 中的偏移量
@@ -554,11 +554,11 @@ sequenceDiagram
     Note over Kafka,JM: 恢复阶段
     JM->>State: 从 Checkpoint N 恢复状态
     State-->>JM: 获取偏移量<br/>{partition-0: 150, ...}
-    JM->>Source: 恢复任务，传入偏移量状态
+    JM->>Source: 恢复任务,传入偏移量状态
     Source->>Kafka: seek(partition-0, 150)
     Source->>Kafka: seek(partition-1, 230)
     Kafka-->>Source: 从偏移量 150/230 开始消费
-    Note right of Source: 即使 Kafka 中 offset 已推进<br/>Flink 从 State 恢复，保证无丢失
+    Note right of Source: 即使 Kafka 中 offset 已推进<br/>Flink 从 State 恢复,保证无丢失
 ```
 
 **图说明**：偏移量提交到 Kafka 是尽力而为的优化，真正的容错依赖 State Backend 中保存的偏移量。
@@ -581,23 +581,23 @@ stateDiagram-v2
     ABORTED --> IDLE: 清理后重新开始
 
     note right of IN_TRANSACTION
-        记录写入 Kafka，
+        记录写入 Kafka,
         但标记为未提交
         (Transaction Marker: OPEN)
     end note
 
     note right of PREPARED
-        所有记录已发送到 Broker，
+        所有记录已发送到 Broker,
         等待 Checkpoint 结果
     end note
 
     note right of COMMITTED
-        发送 COMMIT Marker，
+        发送 COMMIT Marker,
         记录对消费者可见
     end note
 
     note right of ABORTED
-        发送 ABORT Marker 或超时，
+        发送 ABORT Marker 或超时,
         记录被过滤
     end note
 ```
@@ -622,18 +622,18 @@ stateDiagram-v2
     RUNNING --> [*]: 作业取消
 
     note right of CHECKING_PARTITIONS
-        轮询 Kafka 元数据，
+        轮询 Kafka 元数据,
         间隔由 partition.discovery.interval.ms 配置
     end note
 
     note right of REASSIGNING
-        暂停消费，
-        重新分配分区给 Reader，
+        暂停消费,
+        重新分配分区给 Reader,
         新分区从 EARLIEST/LATEST 开始
     end note
 
     note right of RESTORING
-        从 State Backend 恢复偏移量，
+        从 State Backend 恢复偏移量,
         包括已发现和新增分区的状态
     end note
 ```
@@ -668,7 +668,7 @@ isolation.level=read_committed
 enable.auto.commit=false
 auto.offset.reset=earliest
 
-# 生产者配置（Sink）
+# 生产者配置(Sink)
 enable.idempotence=true
 acks=all
 transactional.id=${uniquePrefix}-${subtaskIndex}

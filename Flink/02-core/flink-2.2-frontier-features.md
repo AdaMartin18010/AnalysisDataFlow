@@ -185,9 +185,9 @@ f_{async}(x) & \text{if success} \\
 
 ---
 
-### Def-F-02-31: Source RateLimiter
+### Def-F-02-31: Source RateLimiter (FLIP-535 / FLINK-38497)
 
-**定义**: Source RateLimiter 是 Flink 2.2 引入的 Scan Source 限流接口，允许连接器开发者实现自定义的读取速率限制策略。
+**定义**: Source RateLimiter 是 Flink 2.2 引入的 Scan Source 限流接口（FLIP-535 / FLINK-38497），仅 DataStream API 可用，允许连接器开发者实现自定义的读取速率限制策略。
 
 形式化定义：
 
@@ -203,9 +203,9 @@ $$\text{tokens}(t) = \min(B_{max}, \text{tokens}(t-\Delta t) + R_{refill} \cdot 
 
 ---
 
-### Def-F-02-32: Balanced Tasks Scheduling
+### Def-F-02-32: Balanced Tasks Scheduling (FLIP-370 / FLINK-31757)
 
-**定义**: Balanced Tasks Scheduling 是 Flink 2.2 引入的任务负载均衡调度策略，解决 TaskManager 间任务分布不均导致的性能瓶颈。
+**定义**: Balanced Tasks Scheduling 是 Flink 2.2 引入的任务负载均衡调度策略（FLIP-370 / FLINK-31757），解决 TaskManager 间任务分布不均导致的性能瓶颈。
 
 形式化定义：
 
@@ -653,10 +653,10 @@ $$\text{Throughput} \leq \min\left(\frac{c}{L_{avg}}, C_{ext}\right)$$
 ```sql
 -- ============================================
 -- Flink 2.2 Delta Join V2 完整示例
--- 场景：订单流 JOIN 用户维表（CDC源，无DELETE）
+-- 场景:订单流 JOIN 用户维表(CDC源,无DELETE)
 -- ============================================
 
--- 1. 创建 CDC 源表（MySQL CDC，忽略 DELETE）
+-- 1. 创建 CDC 源表(MySQL CDC,忽略 DELETE)
 CREATE TABLE orders_cdc (
     order_id BIGINT,
     user_id STRING,
@@ -670,11 +670,11 @@ CREATE TABLE orders_cdc (
     'port' = '3306',
     'database-name' = 'ecommerce',
     'table-name' = 'orders',
-    -- 关键配置：忽略 DELETE 操作
+    -- 关键配置:忽略 DELETE 操作
     'debezium.skipped.operations' = 'd'
 );
 
--- 2. 创建用户维表（支持 Delta Join）
+-- 2. 创建用户维表(支持 Delta Join)
 CREATE TABLE users_dim (
     user_id STRING PRIMARY KEY NOT ENFORCED,
     user_name STRING,
@@ -689,12 +689,12 @@ CREATE TABLE users_dim (
     'lookup.cache.ttl' = '60s'
 );
 
--- 3. Delta Join 查询（自动启用 V2 优化）
--- 支持：CDC源、投影下推、过滤下推
+-- 3. Delta Join 查询(自动启用 V2 优化)
+-- 支持:CDC源、投影下推、过滤下推
 SELECT
     o.order_id,
     o.user_id,
-    u.user_name,        -- 投影下推：仅查询必要字段
+    u.user_name,        -- 投影下推:仅查询必要字段
     u.user_tier,
     o.amount,
     o.order_time
@@ -730,12 +730,13 @@ tEnv.executeSql("SELECT ... FROM ... JOIN ...");
 ### 6.2 VECTOR_SEARCH 实时 RAG 示例
 
 ```sql
+# 伪代码示意,非完整可执行配置
 -- ============================================
 -- Flink 2.2 VECTOR_SEARCH 实时 RAG 示例
--- 场景：实时问答系统
+-- 场景:实时问答系统
 -- ============================================
 
--- 1. 创建文档向量表（向量数据库外部表）
+-- 1. 创建文档向量表(向量数据库外部表)
 CREATE TABLE document_vectors (
     doc_id STRING,
     content STRING,
@@ -761,8 +762,8 @@ CREATE TABLE user_queries (
     'format' = 'json'
 );
 
--- 3. 创建嵌入模型（使用 ML_PREDICT）
-<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+-- 3. 创建嵌入模型(使用 ML_PREDICT)
+<!-- 以下语法为概念设计,实际 Flink 版本尚未支持 -->
 ~~CREATE MODEL text_embedding~~ (未来可能的语法)
   INPUT (text STRING)
   OUTPUT (embedding ARRAY<FLOAT>)
@@ -773,9 +774,9 @@ WITH (
     'openai.api.key' = '${OPENAI_API_KEY}'
 );
 
--- 4. 实时 RAG 管道：嵌入 + 向量搜索 + 生成
+-- 4. 实时 RAG 管道:嵌入 + 向量搜索 + 生成
 WITH
--- 步骤1：生成查询向量
+-- 步骤1:生成查询向量
 query_embeddings AS (
     SELECT
         query_id,
@@ -785,7 +786,7 @@ query_embeddings AS (
     FROM user_queries
 ),
 
--- 步骤2：向量搜索检索相关文档
+-- 步骤2:向量搜索检索相关文档
 retrieved_docs AS (
     SELECT
         q.query_id,
@@ -804,7 +805,7 @@ retrieved_docs AS (
     ) AS v
 ),
 
--- 步骤3：组装上下文并生成回复
+-- 步骤3:组装上下文并生成回复
 contexts AS (
     SELECT
         query_id,
@@ -820,10 +821,10 @@ SELECT
     c.context,
     ML_PREDICT('gpt-4',
         CONCAT(
-            '基于以下上下文回答问题：\n\n',
-            '上下文：\n', c.context, '\n\n',
-            '问题：', c.query_text, '\n\n',
-            '回答：'
+            '基于以下上下文回答问题:\n\n',
+            '上下文:\n', c.context, '\n\n',
+            '问题:', c.query_text, '\n\n',
+            '回答:'
         )
     ) AS answer
 FROM contexts c;
@@ -863,10 +864,10 @@ env.execute("Vector Search RAG Pipeline");
 ```sql
 -- ============================================
 -- Flink 2.2 Materialized Table V2 示例
--- 场景：可选 FRESHNESS 与智能推断
+-- 场景:可选 FRESHNESS 与智能推断
 -- ============================================
 
--- 1. 创建源表（定义水印）
+-- 1. 创建源表(定义水印)
 CREATE TABLE user_events (
     user_id STRING,
     event_type STRING,
@@ -878,21 +879,21 @@ CREATE TABLE user_events (
     'format' = 'json'
 );
 
--- 2. 创建物化表（不指定 FRESHNESS，自动推断）
--- Flink 2.2：FRESHNESS 变为可选
+-- 2. 创建物化表(不指定 FRESHNESS,自动推断)
+-- Flink 2.2:FRESHNESS 变为可选
 CREATE MATERIALIZED TABLE user_event_summary (
     user_id STRING,
     event_count BIGINT,
     last_event_time TIMESTAMP(3),
     PRIMARY KEY (user_id) NOT ENFORCED
 )
-DISTRIBUTED BY HASH(user_id) INTO 16 BUCKETS  -- 新增：分桶支持
+DISTRIBUTED BY HASH(user_id) INTO 16 BUCKETS  -- 新增:分桶支持
 WITH (
     'format' = 'iceberg',
     'write.upsert.enabled' = 'true'
 )
--- 不指定 FRESHNESS，由 MaterializedTableEnricher 自动推断
--- 推断逻辑：从 user_events 的水印延迟 (5s) + 安全余量
+-- 不指定 FRESHNESS,由 MaterializedTableEnricher 自动推断
+-- 推断逻辑:从 user_events 的水印延迟 (5s) + 安全余量
 AS
 SELECT
     user_id,
@@ -901,7 +902,7 @@ SELECT
 FROM user_events
 GROUP BY user_id;
 
--- 3. 显式指定 FRESHNESS（覆盖自动推断）
+-- 3. 显式指定 FRESHNESS(覆盖自动推断)
 CREATE MATERIALIZED TABLE user_event_summary_explicit (
     user_id STRING,
     event_count BIGINT,
@@ -930,7 +931,7 @@ SHOW CREATE MATERIALIZED TABLE user_event_summary;
 ```python
 # ============================================
 # Flink 2.2 Python Async DataStream API 示例
-# 场景：LLM 推理（GPU 集群）
+# 场景:LLM 推理(GPU 集群)
 # ============================================
 
 from pyflink.common import Configuration
@@ -947,10 +948,10 @@ class AsyncLLMFunction(AsyncFunction):
     """
     异步调用部署在 GPU 集群的大语言模型
 
-    配置：
-    - 最大并发：100（避免压垮 GPU 集群）
-    - 超时：30 秒
-    - 重试：3 次（指数退避）
+    配置:
+    - 最大并发:100(避免压垮 GPU 集群)
+    - 超时:30 秒
+    - 重试:3 次(指数退避)
     """
 
     def __init__(self, endpoint: str, api_key: str, max_concurrency: int = 100):
@@ -1007,7 +1008,7 @@ class AsyncLLMFunction(AsyncFunction):
 # 主程序
 env = StreamExecutionEnvironment.get_execution_environment()
 
-# 创建输入流（用户问题）
+# 创建输入流(用户问题)
 input_stream = env.from_collection([
     "什么是 Apache Flink?",
     "解释 Delta Join 的原理",
@@ -1037,7 +1038,7 @@ env.execute("Python Async LLM Inference")
 ```java
 // ============================================
 // Flink 2.2 Source RateLimiter 示例
-// 场景：限制 Kafka 消费速率，保护下游服务
+// 场景:限制 Kafka 消费速率,保护下游服务
 // ============================================
 
 import org.apache.flink.api.connector.source.SourceReaderContext;
@@ -1115,7 +1116,7 @@ Configuration configuration = new Configuration();
 configuration.setString("cluster.scheduling.strategy", "BALANCED_TASKS");
 configuration.setString("taskmanager.load-balance.mode", "TASKS");
 
-// 可选：配置 Slot 请求间隔
+// 可选:配置 Slot 请求间隔
 cfg.setString("slot.request.max-interval", "200ms");
 
 env.configure(configuration);
@@ -1213,7 +1214,7 @@ graph TB
             A1 --> A1c[Filter Pushdown]
             A1 --> A1d[Multi-level Cache]
 
-            A2[VECTOR_SEARCH（GA）] --> A2a[ML_PREDICT（GA）Integration]
+            A2[VECTOR_SEARCH(GA)] --> A2a[ML_PREDICT(GA)Integration]
             A2 --> A2b[Real-time RAG]
             A2 --> A2c[Vector DB Connectors]
 
@@ -1303,12 +1304,12 @@ flowchart LR
     end
 
     subgraph "Embedding"
-        B --> C[ML_PREDICT（GA）]
+        B --> C[ML_PREDICT(GA)]
         C --> D[Query Vector<br/>ℝ^d]
     end
 
     subgraph "Retrieval"
-        D --> E[VECTOR_SEARCH（GA）]
+        D --> E[VECTOR_SEARCH(GA)]
         F[Document Vector DB] --> E
         E --> G[Top-K Results<br/>doc_ids + scores]
     end
@@ -1316,7 +1317,7 @@ flowchart LR
     subgraph "Generation"
         G --> H[Context Assembly]
         H --> I[LLM Prompt]
-        I --> J[ML_PREDICT（GA）<br/>GPT-4/Claude]
+        I --> J[ML_PREDICT(GA)<br/>GPT-4/Claude]
         J --> K[Generated Answer]
     end
 
@@ -1430,7 +1431,7 @@ gantt
     dateFormat YYYY-MM-DD
     section SQL/API
     Delta Join V2 (CDC/Projection/Cache) :active, dj2, 2025-01-01, 90d
-    VECTOR_SEARCH (RAG)（GA）            :done, vs, 2025-12-04, 0d
+    VECTOR_SEARCH (RAG)(GA)            :done, vs, 2025-12-04, 0d
     Materialized Table V2 (Optional Freshness) :active, mt2, 2025-01-15, 75d
     SinkUpsertMaterializer V2            :active, sum2, 2025-01-01, 60d
 

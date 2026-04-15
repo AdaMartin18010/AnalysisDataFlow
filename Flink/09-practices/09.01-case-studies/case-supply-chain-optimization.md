@@ -215,10 +215,10 @@ GPS位置 → 实时ETA计算 → 动态调度 → 路径重优化 → 司机App
 **场景对比**: 季节性促销的库存调配
 
 ```
-T-7天: 预测某SKU将热销，建议备货
-T-3天: 实际销量超预期，某区域库存告急
+T-7天: 预测某SKU将热销,建议备货
+T-3天: 实际销量超预期,某区域库存告急
 T-1天: 紧急从邻省调货
-T0: 促销开始，库存充足
+T0: 促销开始,库存充足
 ```
 
 | 响应时间 | T-7天 | T-3天 | T-1天 |
@@ -490,7 +490,7 @@ public class RealtimeInventoryJob {
                         0,
                         0,
                         ctx.timestamp(),
-                        "缺货超过4小时，启动紧急补货"
+                        "缺货超过4小时,启动紧急补货"
                     ));
                     prevState.setProlongedAlertSent(true);
                 }
@@ -519,7 +519,7 @@ public class RealtimeInventoryJob {
                 NearbyInventory best = nearby.stream()
                     .min(Comparator.comparingInt(NearbyInventory::getDistanceKm))
                     .orElse(null);
-                return String.format("建议从%s调拨%d件，距离%d公里",
+                return String.format("建议从%s调拨%d件,距离%d公里",
                     best.getWarehouseName(),
                     Math.min(best.getAvailableQuantity(), getSafetyStock(state.getWarehouseId(), state.getSkuId()) * 2),
                     best.getDistanceKm()
@@ -563,7 +563,7 @@ public class RealtimeDemandForecastJob {
         DataStream<ExternalSignal> signals = env
             .addSource(createKafkaSource("external-signals"));
 
-        // 1. 滚动统计（实时滚动窗口）
+        // 1. 滚动统计(实时滚动窗口)
         DataStream<DemandStatistics> rollingStats = sales
             .keyBy(s -> s.getSkuId() + "#" + s.getStoreId())
             .window(SlidingEventTimeWindows.of(Time.hours(24), Time.minutes(5)))
@@ -698,7 +698,7 @@ public class RealtimeDemandForecastJob {
 
         private Double calculateTrend(DemandStatistics stats) {
             // 基于最近7天数据计算趋势
-            // 简化实现，实际可接入更复杂的趋势检测算法
+            // 简化实现,实际可接入更复杂的趋势检测算法
             return 0.0;
         }
     }
@@ -730,7 +730,7 @@ public class RouteOptimizationJob {
         DataStream<TrafficEvent> trafficEvents = env
             .addSource(createKafkaSource("traffic-events"));
 
-        // 1. 需求聚类（按区域和时间窗口）
+        // 1. 需求聚类(按区域和时间窗口)
         DataStream<DeliveryCluster> clusters = requests
             .keyBy(r -> r.getDeliveryZone())
             .window(TumblingEventTimeWindows.of(Time.minutes(30)))
@@ -744,7 +744,7 @@ public class RouteOptimizationJob {
             .aggregate(new VehicleStatusAggregator())
             .setParallelism(64);
 
-        // 3. 路径优化（连接需求和车辆）
+        // 3. 路径优化(连接需求和车辆)
         DataStream<OptimizedRoute> routes = clusters
             .keyBy(DeliveryCluster::getZoneId)
             .connect(vehicleStatus.keyBy(v -> v.getCurrentZone()))
@@ -790,7 +790,7 @@ public class RouteOptimizationJob {
                                    Collector<OptimizedRoute> out) throws Exception {
             pendingClusters.add(cluster);
 
-            // 触发优化（如果车辆充足）
+            // 触发优化(如果车辆充足)
             tryOptimizeRoutes(ctx, out);
         }
 

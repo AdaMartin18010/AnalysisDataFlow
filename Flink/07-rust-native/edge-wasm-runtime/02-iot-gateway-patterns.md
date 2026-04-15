@@ -75,7 +75,7 @@ IoT Gateway Types
 ├── 协议网关 (Protocol Gateway)
 │   └── MQTT/CoAP/Modbus → Kafka/HTTP
 ├── 边缘计算网关 (Edge Compute Gateway)
-│   └── 集成 Wasm Runtime，支持本地 UDF
+│   └── 集成 Wasm Runtime,支持本地 UDF
 ├── 多协议统一网关 (Unified Gateway)
 │   └── 同时支持多种输入输出协议
 └── 移动网关 (Mobile Gateway)
@@ -309,7 +309,7 @@ $$
 ```
 预处理收益 = 节省的传输成本 - 边缘计算成本
 
-设：
+设:
 - 原始数据量: 100 GB/天
 - 预处理后: 20 GB/天 (压缩比 5:1)
 - 传输成本: $0.05/GB
@@ -810,7 +810,7 @@ impl OfflineCache {
                 }
                 Err(e) => {
                     error!("Sync failed: {}", e);
-                    break; // 停止同步，下次重试
+                    break; // 停止同步,下次重试
                 }
             }
         }
@@ -869,7 +869,7 @@ impl UnifiedGateway {
             if self.sink.is_connected() {
                 // 在线模式: 直接发送
                 if let Err(e) = self.sink.send(processed).await {
-                    // 发送失败，缓存
+                    // 发送失败,缓存
                     self.cache.store(&processed).await;
                 }
             } else {

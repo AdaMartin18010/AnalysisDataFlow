@@ -109,12 +109,12 @@ public void notifyAllocationFailure(
         .get(allocationID);
 
     if (execution != null) {
-        // 标记执行失败，触发故障恢复
+        // 标记执行失败,触发故障恢复
         execution.markFailed(cause);
 
-        // 如果是部分资源失败，尝试重新调度
+        // 如果是部分资源失败,尝试重新调度
         if (isPartialResourceFailure(cause)) {
-            // 释放失败的 slot，触发重新分配
+            // 释放失败的 slot,触发重新分配
             slotPool.releaseSlot(allocationID, cause);
 
             // 通知调度器重新尝试调度
@@ -196,9 +196,9 @@ public CompletableFuture<Acknowledge> requestSlot(
 
     // 2. 委托给 SlotManager 处理分配逻辑
     return CompletableFuture.supplyAsync(() -> {
-        // SlotManager 内部逻辑：
+        // SlotManager 内部逻辑:
         // - 首先检查是否有空闲 slot
-        // - 如果没有，向资源框架申请新容器
+        // - 如果没有,向资源框架申请新容器
         // - 返回分配的 slot 信息
 
         boolean accepted = slotManager.registerSlotRequest(slotRequest);
@@ -219,7 +219,7 @@ public CompletableFuture<Acknowledge> requestSlot(
 protected abstract CompletableFuture<WorkerType> requestNewWorker(
     ResourceProfile resourceProfile);
 
-// 在 ActiveResourceManager 中的实现：
+// 在 ActiveResourceManager 中的实现:
 @Override
 protected CompletableFuture<WorkerType> requestNewWorker(
         ResourceProfile resourceProfile) {
@@ -320,7 +320,7 @@ public CompletableFuture<Acknowledge> submitJob(
     return jobGraphStore.putJobGraph(jobGraph)
         .thenApplyAsync(ignored -> {
             // 2. 创建 JobManagerRunner
-            // 在 HA 模式下，这会触发 Leader 选举
+            // 在 HA 模式下,这会触发 Leader 选举
             JobManagerRunner runner = jobManagerRunnerFactory
                 .createJobManagerRunner(
                     jobGraph,
@@ -683,7 +683,7 @@ public class PipelinedRegionScheduler implements SchedulerNG {
     }
 
     private boolean isRegionSchedulable(PipelinedRegion region) {
-        // 区域可调度的条件：
+        // 区域可调度的条件:
         // 1. 所有输入区域的输出都已产生
         // 2. 或区域包含数据源算子
         for (ConsumedPartitionGroup consumedGroup :
@@ -797,7 +797,7 @@ class SlotPoolImpl {
             // 批量发送请求
             batch.forEach(this::requestSlotFromRM);
 
-            // 控制发送速率，避免 RM 过载
+            // 控制发送速率,避免 RM 过载
             if (i + BATCH_SIZE < requests.size()) {
                 Thread.sleep(BATCH_REQUEST_INTERVAL_MS);
             }
@@ -808,7 +808,7 @@ class SlotPoolImpl {
 // 2. 增量调度 - 只申请即将执行的 slot
 class PipelinedRegionScheduler {
     void onRegionConsumable(PipelinedRegion region) {
-        // 当上游区域完成时，才申请下游资源
+        // 当上游区域完成时,才申请下游资源
         allocateSlotsForRegion(region);
     }
 }
@@ -820,7 +820,7 @@ class PipelinedRegionScheduler {
 
 ```yaml
 # flink-conf.yaml
-# 减少心跳频率，降低网络开销
+# 减少心跳频率,降低网络开销
 heartbeat.interval: 10000  # 默认 10000ms
 heartbeat.timeout: 50000   # 默认 50000ms
 

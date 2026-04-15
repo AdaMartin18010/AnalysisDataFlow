@@ -255,23 +255,23 @@ $$
 **反模式1: 过度建模**
 
 ```text
-# ❌ 错误：追求100%物理精度
+# ❌ 错误:追求100%物理精度
 model = CFD_Model(mesh_size=1mm, turbulence=k-epsilon)
-# 计算耗时数小时，无法实时
+# 计算耗时数小时,无法实时
 
-# ✅ 正确：降阶模型 (ROM)
+# ✅ 正确:降阶模型 (ROM)
 model = ReducedOrderModel(physics_constraints)
-# 毫秒级响应，保持关键特征
+# 毫秒级响应,保持关键特征
 ```
 
 **反模式2: 忽视数据质量**
 
 ```text
-# ❌ 错误：直接使用原始传感器数据
+# ❌ 错误:直接使用原始传感器数据
 prediction = model.predict(raw_sensor_data)
 # 噪声导致误报
 
-# ✅ 正确：数据预处理流水线
+# ✅ 正确:数据预处理流水线
 clean_data = pipeline(raw_sensor_data)
     .kalman_filter()
     .outlier_detection()
@@ -282,10 +282,10 @@ prediction = model.predict(clean_data)
 **反模式3: 单点故障**
 
 ```yaml
-# ❌ 错误：集中式孪生服务
+# ❌ 错误:集中式孪生服务
 twin_service: single_instance  # 故障即失联
 
-# ✅ 正确：分布式孪生
+# ✅ 正确:分布式孪生
 edge_twins:
   - location: factory_a
     autonomy: high  # 离线自治
@@ -469,7 +469,7 @@ SELECT
     line_id,
     station_id,
     'gearbox' as component,
-    -- 使用ML_PREDICT调用预训练模型（实验性）
+    -- 使用ML_PREDICT调用预训练模型(实验性)
     ML_PREDICT(
         'gearbox_failure_model',
         temperature,
@@ -689,7 +689,7 @@ rom.offline_training(training_dataset)
 # 在线实时预测
 while True:
     current_conditions = get_sensor_data()
-    # 全阶模型需要2小时，ROM只需要50ms
+    # 全阶模型需要2小时,ROM只需要50ms
     prediction = rom.online_predict(current_conditions)
     update_digital_twin(prediction)
 ```

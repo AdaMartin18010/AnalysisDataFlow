@@ -57,7 +57,7 @@ public class BasicCEPExample {
             .addSource(new LoginEventSource())
             .assignTimestampsAndWatermarks(...);
 
-        // 定义模式：连续3次登录失败
+        // 定义模式:连续3次登录失败
         Pattern<LoginEvent, ?> loginFailPattern = Pattern
             .<LoginEvent>begin("first")      // 第一个事件
             .where(new SimpleCondition<LoginEvent>() {
@@ -168,7 +168,7 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 // 严格连续 (next): 事件必须紧邻
 Pattern<Event, ?> strictPattern = Pattern
     .<Event>begin("first")
-    .next("second")  // 严格连续，中间不能有其他事件
+    .next("second")  // 严格连续,中间不能有其他事件
     .next("third");
 
 // 宽松连续 (followedBy): 中间可以有其他事件
@@ -422,7 +422,7 @@ Pattern<UserAction, ?> couponPattern = Pattern
 
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-// 设备故障模式：温度持续上升后突然停止报告
+// 设备故障模式:温度持续上升后突然停止报告
 Pattern<SensorReading, ?> failurePattern = Pattern
     .<SensorReading>begin("rising")
     .where(r -> r.temperature > 50)

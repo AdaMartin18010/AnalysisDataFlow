@@ -51,14 +51,14 @@ public class OrderEvent {
 
 public class OrderState {
     public String orderId;
-    public String userId;     // 用户ID，用于发送通知
+    public String userId;     // 用户ID,用于发送通知
     public String status;     // CREATED / PAID / CANCELLED / SHIPPED / DELIVERED
     public double amount;
     public long createTime;
     public Long payTime;
     public Long cancelTime;
     public String cancelReason;
-    public Map<String, Integer> items;  // 商品ID -> 数量，用于库存管理
+    public Map<String, Integer> items;  // 商品ID -> 数量,用于库存管理
 }
 
 public class OrderResult {
@@ -96,6 +96,7 @@ public class InventoryReleaseEvent {
 ### Step 0: 理解Side Output机制
 
 在实现订单超时处理之前，需要理解Flink的**Side Output**机制。Side Output允许从一个主流中分离出多个旁路输出流，适用于以下场景：
+
 - 异常数据分流
 - 多路输出（如同时输出结果和日志）
 - 延迟数据处理
@@ -139,7 +140,7 @@ public class OrderProcessor extends
     private ValueState<OrderState> orderState;
     private ValueState<Long> timeoutTimerState;
 
-    // 超时时间：15分钟
+    // 超时时间:15分钟
     private static final long TIMEOUT_MS = 15 * 60 * 1000;
 
     @Override
@@ -220,7 +221,7 @@ public class OrderProcessor extends
         notification.userId = event.userId;
         notification.type = "ORDER_CREATED";
         notification.content = String.format(
-            "订单已创建，请在15分钟内完成支付，金额: %.2f", event.amount
+            "订单已创建,请在15分钟内完成支付,金额: %.2f", event.amount
         );
         notification.timestamp = ctx.timestamp();
         ctx.output(NOTIFICATION_TAG, notification);
@@ -334,7 +335,7 @@ public class OrderProcessor extends
         OrderState currentState = orderState.value();
 
         if (currentState != null && currentState.status.equals("CREATED")) {
-            // 超时，自动取消
+            // 超时,自动取消
             currentState.status = "CANCELLED";
             currentState.cancelTime = timestamp;
             currentState.cancelReason = "TIMEOUT";
@@ -355,7 +356,7 @@ public class OrderProcessor extends
             notification.userId = currentState.userId;
             notification.type = "ORDER_TIMEOUT";
             notification.content = String.format(
-                "您的订单 %s 因超时未支付已自动取消，金额: %.2f",
+                "您的订单 %s 因超时未支付已自动取消,金额: %.2f",
                 currentState.orderId, currentState.amount
             );
             notification.timestamp = timestamp;
@@ -561,7 +562,7 @@ import org.apache.flink.api.common.typeinfo.Types;
 public class InventoryReleaseHandler extends
     KeyedProcessFunction<String, InventoryReleaseEvent, InventoryReleaseResult> {
 
-    // 库存状态（实际项目中可能连接外部库存系统）
+    // 库存状态(实际项目中可能连接外部库存系统)
     private ValueState<Map<String, Integer>> inventoryState;
 
     @Override
@@ -596,7 +597,7 @@ public class InventoryReleaseHandler extends
     }
 
     private void releaseInventory(String orderId, Map<String, Integer> items) {
-        // 实际实现：
+        // 实际实现:
         // 1. 调用库存服务API
         // 2. 更新数据库
         // 3. 发送消息到库存消息队列
@@ -695,7 +696,7 @@ public void testOrderTimeout() throws Exception {
 
 @Test
 public void testOrderPay() throws Exception {
-    // 创建订单后支付，验证定时器被取消
+    // 创建订单后支付,验证定时器被取消
     harness.processElement(
         new OrderEvent(orderId, "USER_001", "CREATE", 100.0, baseTime),
         baseTime
@@ -862,7 +863,7 @@ public class OrderProcessor extends
                 handleCancel(event, ctx, out);
                 break;
             default:
-                out.collect(new OrderResult(event.orderId, "ERROR", 
+                out.collect(new OrderResult(event.orderId, "ERROR",
                     "Unknown type", ctx.timestamp()));
         }
     }
@@ -884,19 +885,19 @@ public class OrderProcessor extends
         ctx.timerService().registerEventTimeTimer(timeoutTime);
         timeoutTimerState.update(timeoutTime);
 
-        out.collect(new OrderResult(event.orderId, "SUCCESS", 
+        out.collect(new OrderResult(event.orderId, "SUCCESS",
             "Order created", ctx.timestamp()));
 
         // Side Output: 发送创建通知
         ctx.output(NOTIFICATION_TAG, buildNotification(event, "ORDER_CREATED",
-            String.format("订单已创建，请在15分钟内支付 %.2f 元", event.amount)));
+            String.format("订单已创建,请在15分钟内支付 %.2f 元", event.amount)));
     }
 
     private void handlePay(OrderEvent event, Context ctx, Collector<OrderResult> out)
             throws Exception {
         OrderState state = orderState.value();
         if (state == null || !state.status.equals("CREATED")) {
-            out.collect(new OrderResult(event.orderId, "ERROR", 
+            out.collect(new OrderResult(event.orderId, "ERROR",
                 "Invalid state for payment", ctx.timestamp()));
             return;
         }
@@ -913,12 +914,12 @@ public class OrderProcessor extends
             timeoutTimerState.clear();
         }
 
-        out.collect(new OrderResult(event.orderId, "SUCCESS", 
+        out.collect(new OrderResult(event.orderId, "SUCCESS",
             "Payment successful", ctx.timestamp()));
 
         // Side Output: 发送支付成功通知
         ctx.output(NOTIFICATION_TAG, buildNotification(event, "ORDER_PAID",
-            String.format("订单支付成功，金额: %.2f 元", event.amount)));
+            String.format("订单支付成功,金额: %.2f 元", event.amount)));
     }
 
     @Override
@@ -933,7 +934,7 @@ public class OrderProcessor extends
             orderState.update(state);
             timeoutTimerState.clear();
 
-            out.collect(new OrderResult(ctx.getCurrentKey(), "TIMEOUT", 
+            out.collect(new OrderResult(ctx.getCurrentKey(), "TIMEOUT",
                 "Order cancelled due to timeout", timestamp));
 
             // Side Output: 发送超时通知
@@ -946,7 +947,7 @@ public class OrderProcessor extends
         }
     }
 
-    private NotificationMessage buildNotification(OrderEvent event, String type, 
+    private NotificationMessage buildNotification(OrderEvent event, String type,
             String content) {
         NotificationMessage msg = new NotificationMessage();
         msg.orderId = event.orderId;

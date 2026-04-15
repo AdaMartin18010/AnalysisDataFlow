@@ -64,14 +64,14 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 
 public class SecurityRules {
 
-    // 模式1: 3次登录失败（5分钟内）
+    // 模式1: 3次登录失败(5分钟内)
     public static Pattern<LoginEvent, ?> bruteForcePattern3 = Pattern
         .<LoginEvent>begin("fail")
         .where(evt -> evt.status.equals("FAIL"))
         .times(3)
         .within(Time.minutes(5));
 
-    // 模式2: 5次登录失败（10分钟内）- 严重
+    // 模式2: 5次登录失败(10分钟内)- 严重
     public static Pattern<LoginEvent, ?> bruteForcePattern5 = Pattern
         .<LoginEvent>begin("fail")
         .where(evt -> evt.status.equals("FAIL"))
@@ -189,7 +189,7 @@ public class AccountBlocker extends KeyedProcessFunction<String, SecurityAlert, 
             Context ctx,
             Collector<BlockedAccount> out) throws Exception {
 
-        // 严重告警，封禁账户
+        // 严重告警,封禁账户
         if (alert.severity >= 4 && (blockedState.value() == null || !blockedState.value())) {
             long blockDuration = alert.severity == 5 ?
                 Time.hours(24).toMilliseconds() : Time.hours(1).toMilliseconds();
@@ -351,14 +351,14 @@ public class GeoCondition extends IterativeCondition<LoginEvent> {
             double speed = distance / timeHours;
 
             if (speed > MAX_SPEED_KMH) {
-                return true; // 不可能的速度，异常
+                return true; // 不可能的速度,异常
             }
         }
         return false;
     }
 
     private double calculateDistance(String loc1, String loc2) {
-        // 解析经纬度，计算距离
+        // 解析经纬度,计算距离
         return GeoUtils.distance(loc1, loc2);
     }
 }

@@ -124,13 +124,13 @@ MultiJoin与二Join构成算子表达能力层级：
 │                    Join算子表达能力                           │
 ├─────────────────────────────────────────────────────────────┤
 │  Level 3: MultiWay Join (n ≥ 3)                             │
-│           └── 多路同时匹配，共享状态存储                        │
+│           └── 多路同时匹配,共享状态存储                        │
 │                                                              │
 │  Level 2: Binary Join (n = 2)                               │
-│           └── 双边状态管理，中间结果输出                        │
+│           └── 双边状态管理,中间结果输出                        │
 │                                                              │
 │  Level 1: Lookup Join (n = 2, 异步)                          │
-│           └── 单流驱动，外部表查询                            │
+│           └── 单流驱动,外部表查询                            │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -390,7 +390,7 @@ DataStream<Result> result = orders
 
 import org.apache.flink.streaming.api.datastream.DataStream;
 
-// MultiJoin风格实现（自定义Processor）
+// MultiJoin风格实现(自定义Processor)
 DataStream<UnifiedResult> result =
     orders.connect(orderItems)
           .connect(products)
@@ -480,6 +480,7 @@ INNER JOIN users u
 **执行计划验证**:
 
 ```bash
+# 伪代码示意，非完整可编译代码
 # 查看优化后的执行计划
 ./bin/sql-client.sh
 Flink SQL> EXPLAIN SELECT /*+ MULTI_JOIN() */ ...
@@ -500,13 +501,13 @@ import java.util.Map;
  */
 public class MultiJoinState<K, T1, T2, T3, T4> {
 
-    // 各流记录列表（按Key分组）
+    // 各流记录列表(按Key分组)
     private final Map<K, List<T1>> stream1Records;
     private final Map<K, List<T2>> stream2Records;
     private final Map<K, List<T3>> stream3Records;
     private final Map<K, List<T4>> stream4Records;
 
-    // 已完成的Join结果（用于去重）
+    // 已完成的Join结果(用于去重)
     private final Map<K, Set<JoinSignature>> completedJoins;
 
     // TTL管理
@@ -546,7 +547,7 @@ public class MultiJoinState<K, T1, T2, T3, T4> {
     }
 
     /**
-     * 增量匹配：仅使用新记录与已有记录匹配
+     * 增量匹配:仅使用新记录与已有记录匹配
      */
     private List<JoinResult<K, T1, T2, T3, T4>> performIncrementalMatch(
             K key, int newStreamIndex) {
@@ -559,7 +560,7 @@ public class MultiJoinState<K, T1, T2, T3, T4> {
         List<JoinResult<K, T1, T2, T3, T4>> results = new ArrayList<>();
         Set<JoinSignature> completed = completedJoins.computeIfAbsent(key, k -> new HashSet<>());
 
-        // 笛卡尔积匹配（实际实现应使用更高效的算法）
+        // 笛卡尔积匹配(实际实现应使用更高效的算法)
         for (T1 t1 : s1) {
             for (T2 t2 : s2) {
                 for (T3 t3 : s3) {
@@ -593,7 +594,7 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 public class FourWayMultiJoinProcessor<K, T1, T2, T3, T4, R>
     extends KeyedCoProcessFunction<K,
         Either<T1, Either<T2, Either<T3, T4>>>, // 多流输入
-        Void, // 控制流（用于TTL触发）
+        Void, // 控制流(用于TTL触发)
         R> { // 输出类型
 
     private final KeySelector<T1, K> keySelector1;
@@ -610,7 +611,7 @@ public class FourWayMultiJoinProcessor<K, T1, T2, T3, T4, R>
     private ListState<T3> state3;
     private ListState<T4> state4;
 
-    // 去重状态（防止重复输出）
+    // 去重状态(防止重复输出)
     private MapState<String, Boolean> emittedSignatures;
 
     public FourWayMultiJoinProcessor(
@@ -683,7 +684,7 @@ public class FourWayMultiJoinProcessor<K, T1, T2, T3, T4, R>
             }
         }
 
-        // LEFT JOIN语义：处理Stream1未匹配的情况
+        // LEFT JOIN语义:处理Stream1未匹配的情况
         if (joinType == JoinType.LEFT && !s2.iterator().hasNext()) {
             emitWithNulls(record, out, 2, 3, 4);
         }
@@ -728,7 +729,7 @@ public class FourWayMultiJoinProcessor<K, T1, T2, T3, T4, R>
 import java.io.Serializable;
 
 /**
- * Join结果签名，用于去重
+ * Join结果签名,用于去重
  */
 public class JoinSignature implements Serializable {
     private final long s1Id;
@@ -1025,12 +1026,12 @@ stateDiagram-v2
 │  Flink 2.1 (当前)                                               │
 │  ├─ SQL: 使用 /*+ MULTI_JOIN() */ Hint                         │
 │  ├─ 支持INNER/LEFT JOIN                                         │
-│  ├─ 实验性功能，需评估稳定性                                     │
+│  ├─ 实验性功能,需评估稳定性                                     │
 │  └─ 生产环境建议充分测试后使用                                   │
 │                                                                  │
 │  Flink 2.2+ (计划)                                              │
 │  ├─ 完整支持RIGHT/FULL JOIN                                     │
-│  ├─ 自动优化器选择（无需Hint）                                   │
+│  ├─ 自动优化器选择(无需Hint)                                   │
 │  ├─ DataStream API原生支持                                       │
 │  └─ 生产就绪                                                     │
 │                                                                  │

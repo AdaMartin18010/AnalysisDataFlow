@@ -172,7 +172,7 @@ impl Compactor {
         let merge_iterator = self.create_merge_iterator(&task.input_sstables).await?;
 
         while let Some((key, value)) = merge_iterator.next().await? {
-            // Block 级优化：未重叠 Block 直接复制
+            // Block 级优化:未重叠 Block 直接复制
             if self.can_fast_copy(&key, &task.input_sstables) {
                 // 避免解压/重压缩
                 current_sstable_builder.fast_copy_block(&key, &value)?;

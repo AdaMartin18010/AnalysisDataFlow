@@ -464,7 +464,7 @@ $$
 │                        输出层 (Egress)                              │
 │                                                                     │
 │  Kafka: risk.decisions (实时决策流)                                  │
-│  Delta Lake: fraud_cases (历史案例，ML训练)                          │
+│  Delta Lake: fraud_cases (历史案例,ML训练)                          │
 │  API: Core Banking System (阻断指令)                                │
 └─────────────────────────────────────────────────────────────────────┘
 ```
@@ -496,7 +496,7 @@ $$
 
 import org.apache.flink.streaming.api.datastream.DataStream;
 
-// 按用户ID分区，确保同一用户的事件路由到同一分区
+// 按用户ID分区,确保同一用户的事件路由到同一分区
 DataStream<Transaction> partitioned = transactions
     .keyBy(Transaction::getUserId)
     .process(new RiskScoringFunction());
@@ -684,13 +684,13 @@ import org.apache.flink.api.common.state.ValueStateDescriptor;
 /**
  * EuroBank 实时风控引擎主作业
  *
- * 功能：
- * 1. 多源数据接入（交易、支付、登录事件）
- * 2. 实时特征工程（窗口聚合、行为分析）
- * 3. 复杂事件处理（CEP模式匹配）
- * 4. 模型推理集成（异步调用）
- * 5. 决策执行（规则引擎）
- * 6. 结果输出（Kafka + Delta Lake）
+ * 功能:
+ * 1. 多源数据接入(交易、支付、登录事件)
+ * 2. 实时特征工程(窗口聚合、行为分析)
+ * 3. 复杂事件处理(CEP模式匹配)
+ * 4. 模型推理集成(异步调用)
+ * 5. 决策执行(规则引擎)
+ * 6. 结果输出(Kafka + Delta Lake)
  */
 public class RealtimeRiskEngine {
 
@@ -703,7 +703,7 @@ public class RealtimeRiskEngine {
         env.getCheckpointConfig().setCheckpointTimeout(60000);
         env.getCheckpointConfig().setMinPauseBetweenCheckpoints(15000);
 
-        // 配置状态后端（通过配置文件，此处仅设置并行度）
+        // 配置状态后端(通过配置文件,此处仅设置并行度)
         env.setParallelism(128);
         env.setMaxParallelism(512);
 
@@ -778,7 +778,7 @@ public class RealtimeRiskEngine {
             .name("payment-behavior-analysis")
             .uid("payment-behavior-analysis");
 
-        // 3.3 用户会话状态（连接交易和登录事件）
+        // 3.3 用户会话状态(连接交易和登录事件)
         DataStream<UserSession> userSessions = enrichedTransactions
             .keyBy(EnrichedTransaction::getUserId)
             .connect(logins.keyBy(LoginEvent::getUserId))
@@ -788,7 +788,7 @@ public class RealtimeRiskEngine {
 
         // ==================== 4. 复杂事件处理 (CEP) ====================
 
-        // 4.1 定义欺诈模式：短时间内多笔小额交易后大额交易
+        // 4.1 定义欺诈模式:短时间内多笔小额交易后大额交易
         Pattern<EnrichedTransaction, ?> velocityPattern = Pattern
             .<EnrichedTransaction>begin("small-transactions")
             .where(new SimpleCondition<EnrichedTransaction>() {
@@ -839,7 +839,7 @@ public class RealtimeRiskEngine {
             .name("velocity-pattern-detection")
             .uid("velocity-pattern-detection");
 
-        // 4.3 地理异常模式：短时间内跨地理位置交易
+        // 4.3 地理异常模式:短时间内跨地理位置交易
         Pattern<UserSession, ?> geoAnomalyPattern = Pattern
             .<UserSession>begin("first-location")
             .where(new SimpleCondition<UserSession>() {
@@ -901,7 +901,7 @@ public class RealtimeRiskEngine {
 
         // ==================== 7. 结果输出 ====================
 
-        // 7.1 Kafka输出（实时决策流）
+        // 7.1 Kafka输出(实时决策流)
         KafkaSink<RiskDecision> kafkaSink = KafkaSink.<RiskDecision>builder()
             .setBootstrapServers("kafka.eurobank.internal:9092")
             .setRecordSerializer(KafkaRecordSerializationSchema.builder()
@@ -915,7 +915,7 @@ public class RealtimeRiskEngine {
             .name("kafka-sink")
             .uid("kafka-sink");
 
-        // 7.2 Delta Lake输出（历史数据，用于模型训练）
+        // 7.2 Delta Lake输出(历史数据,用于模型训练)
         decisions.addSink(new DeltaLakeSink<>())
             .name("delta-lake-sink")
             .uid("delta-lake-sink");
@@ -927,7 +927,7 @@ public class RealtimeRiskEngine {
     // ==================== 辅助类定义 ====================
 
     /**
-     * 交易特征工程：计算实时特征
+     * 交易特征工程:计算实时特征
      */
     public static class TransactionFeatureEnrichment
             extends RichFlatMapFunction<Transaction, EnrichedTransaction> {
@@ -1065,7 +1065,7 @@ public class RealtimeRiskEngine {
 
             future.whenComplete((response, error) -> {
                 if (error != null) {
-                    // 模型调用失败，使用降级策略
+                    // 模型调用失败,使用降级策略
                     resultFuture.complete(Collections.singletonList(
                         new ScoredTransaction(input.getTransaction(), 0.5, "FALLBACK")
                     ));
@@ -1083,7 +1083,7 @@ public class RealtimeRiskEngine {
 
         @Override
         public void timeout(RiskInput input, ResultFuture<ScoredTransaction> resultFuture) {
-            // 超时处理：返回中等风险评分，进入人工复核
+            // 超时处理:返回中等风险评分,进入人工复核
             resultFuture.complete(Collections.singletonList(
                 new ScoredTransaction(input.getTransaction(), 0.6, "TIMEOUT")
             ));
@@ -1104,22 +1104,22 @@ public class RealtimeRiskEngine {
             String decision = "APPROVE";
             String reason = "";
 
-            // 规则1: 模型评分 > 0.9，直接阻断
+            // 规则1: 模型评分 > 0.9,直接阻断
             if (riskScore > 0.9) {
                 decision = "BLOCK";
                 reason = "HIGH_RISK_SCORE";
             }
-            // 规则2: 模型评分 0.7-0.9，且CEP告警，阻断
+            // 规则2: 模型评分 0.7-0.9,且CEP告警,阻断
             else if (riskScore > 0.7 && velocity != null) {
                 decision = "BLOCK";
                 reason = "RISK_SCORE_WITH_VELOCITY_PATTERN";
             }
-            // 规则3: 模型评分 0.7-0.9，挑战验证
+            // 规则3: 模型评分 0.7-0.9,挑战验证
             else if (riskScore > 0.7) {
                 decision = "CHALLENGE";
                 reason = "MEDIUM_RISK_SCORE";
             }
-            // 规则4: CEP告警，标记复核
+            // 规则4: CEP告警,标记复核
             else if (velocity != null) {
                 decision = "REVIEW";
                 reason = "VELOCITY_PATTERN_DETECTED";
@@ -1301,7 +1301,7 @@ public class FraudPatternLibrary {
 
     /**
      * 模式2: 洗钱检测 - 分层交易
-     * 资金分散转入多个账户，再集中转出
+     * 资金分散转入多个账户,再集中转出
      */
     public static Pattern<Transaction, ?> structuringPattern() {
         return Pattern.<Transaction>begin("small-inbound")
@@ -1328,7 +1328,7 @@ public class FraudPatternLibrary {
 
     /**
      * 模式3: 卡测试欺诈
-     * 短时间内多次小额交易，验证卡是否有效
+     * 短时间内多次小额交易,验证卡是否有效
      */
     public static Pattern<PaymentEvent, ?> cardTestingPattern() {
         return Pattern.<PaymentEvent>begin("small-auth")
@@ -1346,7 +1346,7 @@ public class FraudPatternLibrary {
 
     /**
      * 模式4: 商户套现检测
-     * 同一用户在特定商户多次大额交易，且交易时间异常
+     * 同一用户在特定商户多次大额交易,且交易时间异常
      */
     public static Pattern<Transaction, ?> merchantCashbackPattern() {
         return Pattern.<Transaction>begin("merchant-transaction")
@@ -1452,7 +1452,7 @@ public class ModelServiceClient {
     }
 
     /**
-     * 批量评分（用于性能优化）
+     * 批量评分(用于性能优化)
      */
     public CompletableFuture<List<ModelResponse>> scoreBatchAsync(List<double[]> featureVectors) {
         return CompletableFuture.supplyAsync(() -> {
@@ -1704,7 +1704,7 @@ stateDiagram-v2
 
 ```mermaid
 xychart-beta
-    title "检测延迟对比 (毫秒，对数尺度)"
+    title "检测延迟对比 (毫秒,对数尺度)"
     x-axis ["批处理", "微批次", "实时 (Flink)"]
     y-axis "延迟 (ms)" 0 --> 15000000
     bar [14400000, 5000, 85]
@@ -1810,13 +1810,13 @@ ValueState<AggregatedStats> statsState = getRuntimeContext().getState(statsDesc)
 
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-// 使用简化的模式条件，避免复杂计算
+// 使用简化的模式条件,避免复杂计算
 Pattern<Transaction, ?> pattern = Pattern
     .<Transaction>begin("start")
     .where(new SimpleCondition<Transaction>() {
         @Override
         public boolean filter(Transaction tx) {
-            // 简单字段比较，避免外部调用
+            // 简单字段比较,避免外部调用
             return tx.getAmount() > 1000;
         }
     })
@@ -1899,11 +1899,11 @@ import org.apache.flink.api.common.state.ValueState;
 // 在线特征 - 毫秒级延迟
 ValueState<OnlineFeatures> onlineFeatures;
 
-// 近线特征 - 秒级延迟，Redis缓存
+// 近线特征 - 秒级延迟,Redis缓存
 @ExternalService
 FeatureServiceClient nearlineFeatures;
 
-// 离线特征 - 小时级延迟，Delta Lake
+// 离线特征 - 小时级延迟,Delta Lake
 @ExternalService
 HistoricalFeatureService offlineFeatures;
 ```
@@ -1915,7 +1915,7 @@ HistoricalFeatureService offlineFeatures;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-// 影子模式：新模型并行运行，不影响决策
+// 影子模式:新模型并行运行,不影响决策
 DataStream<ScoredTransaction> shadowScored = AsyncDataStream.unorderedWait(
     enrichedTransactions,
     newModelInferenceFunction,

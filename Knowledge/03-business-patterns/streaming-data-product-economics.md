@@ -533,7 +533,7 @@ class StreamingDataROI:
             recommendations.append({
                 'priority': 'HIGH',
                 'action': '提高定价或降低成本',
-                'details': f'当前利润率{margin:.1%}过低，建议优化成本结构或调整定价'
+                'details': f'当前利润率{margin:.1%}过低,建议优化成本结构或调整定价'
             })
 
         infra_ratio = sum(costs['breakdown']['infrastructure'].values()) / costs['total_annual_cost']
@@ -541,7 +541,7 @@ class StreamingDataROI:
             recommendations.append({
                 'priority': 'MEDIUM',
                 'action': '优化基础设施成本',
-                'details': f'基础设施占比{infra_ratio:.1%}过高，建议评估Spot实例或预留容量'
+                'details': f'基础设施占比{infra_ratio:.1%}过高,建议评估Spot实例或预留容量'
             })
 
         return recommendations

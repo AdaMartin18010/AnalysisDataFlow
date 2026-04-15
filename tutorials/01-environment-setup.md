@@ -138,41 +138,41 @@ taskmanager.data.port: 6126-6130
 ```yaml
 version: '3.8'
 
-services: 
-  jobmanager: 
+services:
+  jobmanager:
     image: flink:1.18-scala_2.12
     container_name: flink-jobmanager
     hostname: jobmanager
-    ports: 
+    ports:
       - "8081:8081"
       - "6123:6123"
     command: jobmanager
-    environment: 
+    environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
       - FLINK_PROPERTIES=
           jobmanager.memory.process.size: 2048m
           jobmanager.memory.jvm-heap.size: 1536m
-    volumes: 
+    volumes:
       - flink-checkpoints:/opt/flink/checkpoints
       - flink-savepoints:/opt/flink/savepoints
       - ./conf:/opt/flink/conf
-    networks: 
+    networks:
       - flink-network
-    healthcheck: 
+    healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8081"]
       interval: 30s
       timeout: 10s
       retries: 3
 
-  taskmanager: 
+  taskmanager:
     image: flink:1.18-scala_2.12
     container_name: flink-taskmanager
     hostname: taskmanager
-    depends_on: 
-      jobmanager: 
+    depends_on:
+      jobmanager:
         condition: service_healthy
     command: taskmanager
-    environment: 
+    environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
       - FLINK_PROPERTIES=
           taskmanager.memory.process.size: 4096m
@@ -180,24 +180,24 @@ services:
           taskmanager.numberOfTaskSlots: 4
           taskmanager.memory.network.min: 256m
           taskmanager.memory.network.max: 512m
-    volumes: 
+    volumes:
       - flink-checkpoints:/opt/flink/checkpoints
       - flink-savepoints:/opt/flink/savepoints
-    networks: 
+    networks:
       - flink-network
-    deploy: 
-      resources: 
-        limits: 
+    deploy:
+      resources:
+        limits:
           cpus: '2'
           memory: 4G
-        reservations: 
+        reservations:
           cpus: '1'
           memory: 2G
 
-  sql-gateway: 
+  sql-gateway:
     image: flink:1.18-scala_2.12
     container_name: flink-sql-gateway
-    depends_on: 
+    depends_on:
       - jobmanager
     command: >
       bash -c "
@@ -205,21 +205,21 @@ services:
         -Dsql-gateway.endpoint.rest.address=0.0.0.0
         -Dsql-gateway.endpoint.rest.port=8083
       "
-    ports: 
+    ports:
       - "8083:8083"
-    environment: 
+    environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
-    networks: 
+    networks:
       - flink-network
 
-volumes: 
-  flink-checkpoints: 
+volumes:
+  flink-checkpoints:
     driver: local
-  flink-savepoints: 
+  flink-savepoints:
     driver: local
 
-networks: 
-  flink-network: 
+networks:
+  flink-network:
     driver: bridge
 ```
 
@@ -240,12 +240,12 @@ echo "🚀 启动 Flink 集群..."
 
 # 检查 Docker
 if ! command -v docker &> /dev/null; then
-    echo "❌ Docker 未安装，请先安装 Docker"
+    echo "❌ Docker 未安装,请先安装 Docker"
     exit 1
 fi
 
 if ! command -v docker-compose &> /dev/null; then
-    echo "❌ Docker Compose 未安装，请先安装 Docker Compose"
+    echo "❌ Docker Compose 未安装,请先安装 Docker Compose"
     exit 1
 fi
 
@@ -279,7 +279,7 @@ while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
 done
 
 if [ $RETRY_COUNT -eq $MAX_RETRIES ]; then
-    echo "❌ 服务启动超时，请检查日志: docker-compose logs"
+    echo "❌ 服务启动超时,请检查日志: docker-compose logs"
     exit 1
 fi
 
@@ -309,7 +309,7 @@ Write-Host "🚀 启动 Flink 集群..." -ForegroundColor Green
 
 # 检查 Docker
 if (!(Get-Command docker -ErrorAction SilentlyContinue)) {
-    Write-Host "❌ Docker 未安装，请先安装 Docker" -ForegroundColor Red
+    Write-Host "❌ Docker 未安装,请先安装 Docker" -ForegroundColor Red
     exit 1
 }
 
@@ -346,7 +346,7 @@ while ($retryCount -lt $maxRetries) {
 }
 
 if ($retryCount -eq $maxRetries) {
-    Write-Host "❌ 服务启动超时，请检查日志: docker-compose logs" -ForegroundColor Red
+    Write-Host "❌ 服务启动超时,请检查日志: docker-compose logs" -ForegroundColor Red
     exit 1
 }
 
@@ -509,6 +509,7 @@ source ~/.zshrc
    # PowerShell 管理员权限
    [Environment]::SetEnvironmentVariable("JAVA_HOME", "C:\Program Files\Eclipse Adoptium\jdk-17", "Machine")
    [Environment]::SetEnvironmentVariable("Path", $env:JAVA_HOME + "\bin;" + $env:Path, "Machine")
+
 ```
 
 #### 5.2.2 Flink 下载和配置
@@ -559,7 +560,7 @@ alias flink-stop='$FLINK_HOME/bin/stop-cluster.sh'
 alias flink-ui='open http://localhost:8081'  # macOS
 # alias flink-ui='xdg-open http://localhost:8081'  # Linux
 
-# Maven 配置（如需要）
+# Maven 配置(如需要)
 export MAVEN_OPTS="-Xmx2048m -Xms1024m -XX:MaxMetaspaceSize=512m"
 
 # Flink 调试配置
@@ -1071,7 +1072,7 @@ task runLocal(type: JavaExec) {
 **使用 AWS CLI：**
 
 ```bash
-# 创建 EMR 集群（包含 Flink）
+# 创建 EMR 集群(包含 Flink)
 aws emr create-cluster \
     --name "Flink-Cluster" \
     --release-label emr-7.0.0 \
@@ -1189,7 +1190,7 @@ aliyun streamanalytics DeployJob \
 **使用 gcloud CLI：**
 
 ```bash
-# 创建 Dataproc 集群（启用 Flink）
+# 创建 Dataproc 集群(启用 Flink)
 gcloud dataproc clusters create flink-cluster \
     --region=us-central1 \
     --zone=us-central1-a \
@@ -1308,7 +1309,7 @@ fi
 echo "✅ FLINK_HOME: $FLINK_HOME"
 
 echo ""
-echo "🎉 检查完成，可以启动 Flink！"
+echo "🎉 检查完成,可以启动 Flink！"
 ```
 
 ### 6.2 运行示例作业
@@ -1336,7 +1337,7 @@ public class WordCount {
         // 设置并行度
         env.setParallelism(2);
 
-        // 创建数据源（从 Socket）
+        // 创建数据源(从 Socket)
         DataStream<String> source = env
             .socketTextStream("localhost", 9999);
 

@@ -138,7 +138,7 @@ $$
 // A2A消息定义
 message A2AMessage {
   string message_id = 1;        // UUID
-  string correlation_id = 2;    // 关联ID（用于请求-回复）
+  string correlation_id = 2;    // 关联ID(用于请求-回复)
   string sender_agent = 3;      // 发送Agent ID
   string receiver_agent = 4;    // 接收Agent ID
   MessageType type = 5;         // 消息类型
@@ -200,8 +200,8 @@ DOT_PRODUCT(u, v) = SUM(u[i] * v[i])
 **定义**: Model DDL是Flink SQL的扩展语法，用于声明式定义ML模型：
 
 ```sql
--- 模型定义语法（Def-F-12-105a）
-<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+-- 模型定义语法(Def-F-12-105a)
+<!-- 以下语法为概念设计,实际 Flink 版本尚未支持 -->
 ~~CREATE MODEL <model_name>~~ (未来可能的语法)
   [ WITH (
     'provider' = '<provider_type>',      -- openai, huggingface, custom
@@ -252,10 +252,10 @@ $$
 ```java
 // Def-F-12-106a: 异步LLM调用接口
 public interface LLMClient {
-    // 同步调用（不推荐用于流处理）
+    // 同步调用(不推荐用于流处理)
     LLMResponse completeSync(LLMRequest request);
 
-    // 异步调用（推荐）
+    // 异步调用(推荐)
     CompletableFuture<LLMResponse> completeAsync(LLMRequest request);
 
     // 流式调用
@@ -373,9 +373,9 @@ $$
 **定义**: Flink 2.3+ 引入的Agent/Tools原生SQL语法：
 
 ```sql
-<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+<!-- 以下语法为概念设计,实际 Flink 版本尚未支持 -->
 -- ~~CREATE AGENT~~ (未来可能的语法)
--- Def-F-12-110a: ~~CREATE AGENT~~ 语法（概念设计阶段）
+-- Def-F-12-110a: ~~CREATE AGENT~~ 语法(概念设计阶段)
 WITH (
   'model.endpoint' = '<provider>:<model>',
   'model.temperature' = '<float>',
@@ -386,7 +386,7 @@ WITH (
   'memory.type' = 'short-term|long-term|hybrid'
 );
 
--- Def-F-12-110b: CREATE TOOL语法（未来可能的语法，概念设计阶段）
+-- Def-F-12-110b: CREATE TOOL语法(未来可能的语法,概念设计阶段)
 -- CREATE TOOL <tool_name>
 FOR AGENT <agent_name>
 [TYPE 'sql' | 'python' | 'webhook' | 'mcp']
@@ -404,7 +404,7 @@ FOR AGENT <agent_name>
 )];
 
 -- Def-F-12-110c: Agent工作流语法
-<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+<!-- 以下语法为概念设计,实际 Flink 版本尚未支持 -->
 ~~CREATE WORKFLOW~~ (未来可能的语法)
 AS AGENT <agent_name>
 ON TABLE <source_table>
@@ -689,12 +689,12 @@ graph LR
 ```java
 import org.apache.flink.api.common.state.ListState;
 
-// ❌ 错误：无限增长的历史记录
+// ❌ 错误:无限增长的历史记录
 class BadAgent {
     ListState<Message> allHistory;  // 永不清理！
 }
 
-// ✅ 正确：使用TTL和窗口
+// ✅ 正确:使用TTL和窗口
 class GoodAgent {
     ListState<Message> recentHistory;  // 只保留最近N条
     MapState<String, Fact> summarizedMemory;  // 聚合后的长期记忆
@@ -713,10 +713,10 @@ class GoodAgent {
 **反模式2: 同步LLM调用**
 
 ```java
-// ❌ 错误：阻塞等待LLM响应
+// ❌ 错误:阻塞等待LLM响应
 String response = llmClient.completeSync(prompt);  // 阻塞！吞吐量受限
 
-// ✅ 正确：异步非阻塞
+// ✅ 正确:异步非阻塞
 CompletableFuture<String> future = llmClient.completeAsync(prompt);
 future.thenApply(response -> process(response));
 ```
@@ -724,13 +724,13 @@ future.thenApply(response -> process(response));
 **反模式3: 忽略Backpressure**
 
 ```java
-// ❌ 错误：无限速生成请求
+// ❌ 错误:无限速生成请求
 while (true) {
     generateLLMRequest();  // 可能压垮LLM服务！
 }
 
-// ✅ 正确：使用Flink背压机制
-// Flink自动处理背压，无需额外代码
+// ✅ 正确:使用Flink背压机制
+// Flink自动处理背压,无需额外代码
 // 可通过AsyncFunction的容量参数控制并发
 ```
 
@@ -746,7 +746,7 @@ while (true) {
 数据规模?
 ├── < 100K 条向量
 │   └── 使用 Flat (暴力搜索)
-│       └── 100% 召回率，延迟 < 10ms
+│       └── 100% 召回率,延迟 < 10ms
 │
 ├── 100K - 10M 条向量
 │   └── 延迟要求?
@@ -967,7 +967,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 /**
  * 智能客服Agent示例 - 完整的FLIP-531实现
  *
- * 功能：
+ * 功能:
  * 1. 接收客户消息
  * 2. 使用向量检索获取相关知识
  * 3. 调用LLM生成回复
@@ -989,8 +989,8 @@ public class CustomerServiceAgent {
         Agent supportAgent = Agent.builder()
             .name("customer-support-agent")
             .model(ModelEndpoint.openai("gpt-4"))
-            .systemPrompt("你是专业的客服助手，请基于知识库回答客户问题。" +
-                         "如果问题复杂，请转交给专业Agent处理。")
+            .systemPrompt("你是专业的客服助手,请基于知识库回答客户问题。" +
+                         "如果问题复杂,请转交给专业Agent处理。")
             .build();
 
         // ============================================
@@ -1110,7 +1110,7 @@ public class CustomerServiceAgent {
         Agent techSupportAgent = Agent.builder()
             .name("tech-support-agent")
             .model(ModelEndpoint.openai("gpt-4"))
-            .systemPrompt("你是技术支持专家，专门处理复杂的技术问题。")
+            .systemPrompt("你是技术支持专家,专门处理复杂的技术问题。")
             .build();
 
         // 注册技术工具...
@@ -1166,7 +1166,7 @@ sales_agent = Agent.builder() \
     .model(ModelEndpoint.anthropic("claude-3-opus")) \
     .system_prompt("""
     你是销售数据分析专家。请基于实时数据回答销售相关问题。
-    你可以使用以下工具：
+    你可以使用以下工具:
     - query_sales: 查询销售数据
     - forecast_trend: 预测销售趋势
     - compare_products: 比较产品表现
@@ -1348,7 +1348,7 @@ if __name__ == "__main__":
 -- ============================================
 
 -- 步骤1: 创建主客服Agent
--- 注: 以下为未来可能的语法（概念设计阶段）
+-- 注: 以下为未来可能的语法(概念设计阶段)
 ~~CREATE AGENT customer_support_agent~~ (未来可能的语法)
 WITH (
   -- LLM配置
@@ -1357,7 +1357,7 @@ WITH (
   'model.max_tokens' = '1000',
 
   -- 系统提示词
-  'system.prompt' = '你是专业的客户支持助手。请基于知识库和订单数据回答客户问题。如果客户情绪负面，请优先安抚。',
+  'system.prompt' = '你是专业的客户支持助手。请基于知识库和订单数据回答客户问题。如果客户情绪负面,请优先安抚。',
 
   -- 状态配置
   'state.backend' = 'rocksdb',
@@ -1370,17 +1370,17 @@ WITH (
 );
 
 -- 步骤2: 创建技术支持Agent
--- 注: 以下为未来可能的语法（概念设计阶段）
+-- 注: 以下为未来可能的语法(概念设计阶段)
 ~~CREATE AGENT tech_support_agent~~ (未来可能的语法)
 WITH (
   'model.endpoint' = 'openai:gpt-4',
   'model.temperature' = '0.3',
-  'system.prompt' = '你是技术支持专家，专门处理复杂的技术问题和故障排查。'
+  'system.prompt' = '你是技术支持专家,专门处理复杂的技术问题和故障排查。'
 );
 
 -- 步骤3: 注册SQL工具 - 查询订单
--- 注: 以下为未来可能的语法（概念设计阶段）
-<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+-- 注: 以下为未来可能的语法(概念设计阶段)
+<!-- 以下语法为概念设计,实际 Flink 版本尚未支持 -->
 ~~CREATE TOOL query_order_status~~ (未来可能的语法)
 FOR AGENT customer_support_agent
 TYPE 'sql'
@@ -1404,7 +1404,7 @@ CONFIG (
 );
 
 -- 步骤4: 注册SQL工具 - 查询退货政策
--- 注: 以下为未来可能的语法（概念设计阶段）
+-- 注: 以下为未来可能的语法(概念设计阶段)
 ~~CREATE TOOL query_return_policy~~ (未来可能的语法)
 FOR AGENT customer_support_agent
 TYPE 'sql'
@@ -1422,7 +1422,7 @@ CONFIG (
 );
 
 -- 步骤5: 注册向量检索工具
--- 注: 以下为未来可能的语法（概念设计阶段）
+-- 注: 以下为未来可能的语法(概念设计阶段)
 ~~CREATE TOOL search_knowledge_base~~ (未来可能的语法)
 FOR AGENT customer_support_agent
 TYPE 'vector_search'
@@ -1434,7 +1434,7 @@ CONFIG (
 );
 
 -- 步骤6: 注册MCP工具 - 外部API
--- 注: 以下为未来可能的语法（概念设计阶段）
+-- 注: 以下为未来可能的语法(概念设计阶段)
 ~~CREATE TOOL check_inventory~~ (未来可能的语法)
 FOR AGENT customer_support_agent
 TYPE 'mcp'
@@ -1445,7 +1445,7 @@ CONFIG (
 );
 
 -- 步骤7: 注册Webhook工具 - 发送告警
--- 注: 以下为未来可能的语法（概念设计阶段）
+-- 注: 以下为未来可能的语法(概念设计阶段)
 ~~CREATE TOOL send_alert~~ (未来可能的语法)
 FOR AGENT customer_support_agent
 TYPE 'webhook'
@@ -1558,7 +1558,7 @@ WITH RULES (
     )
 );
 
--- 步骤11: 启动工作流（插入数据触发）
+-- 步骤11: 启动工作流(插入数据触发)
 INSERT INTO agent_responses
 SELECT
   response_id,
@@ -1607,7 +1607,7 @@ WHERE a1.escalated = TRUE;
 CREATE TABLE document_vectors (
   doc_id STRING PRIMARY KEY,
   content STRING,
-  -- 向量字段，维度768（BERT-base）
+  -- 向量字段,维度768(BERT-base)
   embedding VECTOR(768),
   -- 元数据
   title STRING,
@@ -1644,7 +1644,7 @@ CREATE TABLE user_queries (
 );
 
 -- 步骤3: 创建嵌入模型
-<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+<!-- 以下语法为概念设计,实际 Flink 版本尚未支持 -->
 ~~CREATE MODEL text_embedding_model~~ (未来可能的语法)
 WITH (
   'provider' = 'openai',
@@ -1686,7 +1686,7 @@ query_embeddings AS (
   ) e ON TRUE
 ),
 
--- 5.2 执行向量搜索（带过滤条件）
+-- 5.2 执行向量搜索(带过滤条件)
 retrieved_docs AS (
   SELECT
     q.query_id,
@@ -1710,7 +1710,7 @@ retrieved_docs AS (
     index_table := 'document_vectors',
     top_k := 5,
     metric := 'COSINE',
-    -- 动态过滤：根据查询类型调整类别
+    -- 动态过滤:根据查询类型调整类别
     filter := CASE
       WHEN q.query_type = 'technical' THEN "category = 'technical'"
       WHEN q.query_type = 'sales' THEN "category = 'product'"
@@ -1742,7 +1742,7 @@ context_assembly AS (
   GROUP BY query_id, user_id, query_text, query_type, query_vector, event_time
 )
 
--- 5.4 生成最终输出（包含上下文）
+-- 5.4 生成最终输出(包含上下文)
 SELECT
   c.query_id,
   c.user_id,
@@ -1795,7 +1795,7 @@ JOIN ML_PREDICT(
   PASSING (query_text, context_text)
 ) g ON TRUE;
 
--- 步骤7: 实时索引更新（CDC）
+-- 步骤7: 实时索引更新(CDC)
 CREATE TABLE document_cdc (
   doc_id STRING,
   content STRING,
@@ -1877,7 +1877,7 @@ public class RealtimeCTRPrediction {
             .setInputCols("user_gender", "item_category", "device_type")
             .setOutputCols("gender_vec", "category_vec", "device_vec");
 
-        // 1.3 特征哈希（高维稀疏特征）
+        // 1.3 特征哈希(高维稀疏特征)
         FeatureHasher featureHasher = new FeatureHasher()
             .setInputCols("user_id", "item_id", "context_features")
             .setOutputCol("hashed_features")
@@ -1894,10 +1894,10 @@ public class RealtimeCTRPrediction {
         // ============================================
 
         OnlineLogisticRegression ctrModel = new OnlineLogisticRegression()
-            .setLabelCol("clicked")           // 目标列：是否点击
+            .setLabelCol("clicked")           // 目标列:是否点击
             .setFeaturesCol("features")        // 特征列
             .setPredictionCol("prediction")    // 预测列
-            .setPredictionDetailCol("detail")  // 预测详情（概率）
+            .setPredictionDetailCol("detail")  // 预测详情(概率)
             .setLearningRate(0.01)
             .setGlobalBatchSize(100)          // 每100条样本更新一次
             .setRegularization(0.1)
@@ -2035,7 +2035,7 @@ public class RealtimeCTRPrediction {
 -- LLM成本优化策略实现
 -- ============================================
 
--- 步骤1: 创建语义缓存表（Redis）
+-- 步骤1: 创建语义缓存表(Redis)
 CREATE TABLE llm_cache (
   cache_key STRING,
   query_hash STRING,
@@ -2304,10 +2304,10 @@ graph TB
         end
 
         subgraph MLLayer["ML推理层"]
-            M1[ML_PREDICT（实验性）<br/>OpenAI Provider]
-            M2[ML_PREDICT（实验性）<br/>HuggingFace Provider]
-            M3[ML_PREDICT（实验性）<br/>Custom Provider]
-            V1[VECTOR_SEARCH（规划中）<br/>HNSW Index]
+            M1[ML_PREDICT(实验性)<br/>OpenAI Provider]
+            M2[ML_PREDICT(实验性)<br/>HuggingFace Provider]
+            M3[ML_PREDICT(实验性)<br/>Custom Provider]
+            V1[VECTOR_SEARCH(规划中)<br/>HNSW Index]
         end
 
         subgraph PipelineLayer["Flink ML Pipeline"]
@@ -2536,18 +2536,18 @@ sequenceDiagram
 ```mermaid
 flowchart TB
     subgraph Ingestion["知识入库流程"]
-        I1[文档CDC] --> I2[ML_PREDICT（实验性）<br/>嵌入生成]
+        I1[文档CDC] --> I2[ML_PREDICT(实验性)<br/>嵌入生成]
         I2 --> I3[Vector Index<br/>Update]
         I3 --> I4[(Vector DB)]
     end
 
     subgraph Query["查询处理流程"]
-        Q1[用户查询] --> Q2[ML_PREDICT（实验性）<br/>查询嵌入]
-        Q2 --> Q3[VECTOR_SEARCH（规划中）<br/>相似检索]
+        Q1[用户查询] --> Q2[ML_PREDICT(实验性)<br/>查询嵌入]
+        Q2 --> Q3[VECTOR_SEARCH(规划中)<br/>相似检索]
         I4 --> Q3
         Q3 --> Q4[Context<br/>Assembly]
         Q4 --> Q5[Prompt<br/>Construction]
-        Q5 --> Q6[ML_PREDICT（实验性）<br/>LLM生成]
+        Q5 --> Q6[ML_PREDICT(实验性)<br/>LLM生成]
         Q6 --> Q7[Response<br/>Streaming]
     end
 
@@ -2731,13 +2731,13 @@ graph TB
         end
 
         subgraph TM2["TaskManager Pool 2<br/>ML Inference"]
-            M1[ML_PREDICT（实验性）<br/>Worker 1]
-            M2[ML_PREDICT（实验性）<br/>Worker 2]
+            M1[ML_PREDICT(实验性)<br/>Worker 1]
+            M2[ML_PREDICT(实验性)<br/>Worker 2]
         end
 
         subgraph TM3["TaskManager Pool 3<br/>Vector Search"]
-            V1[VECTOR_SEARCH（规划中）<br/>Worker 1]
-            V2[VECTOR_SEARCH（规划中）<br/>Worker 2]
+            V1[VECTOR_SEARCH(规划中)<br/>Worker 1]
+            V2[VECTOR_SEARCH(规划中)<br/>Worker 2]
         end
     end
 
@@ -2793,29 +2793,29 @@ graph TB
 
 ```mermaid
 gantt
-    title Flink AI/ML 功能演进路线图（规划中，以官方为准）
+    title Flink AI/ML 功能演进路线图(规划中,以官方为准)
     dateFormat YYYY-MM
 
-    section Flink 2.1（规划中，以官方为准）
+    section Flink 2.1(规划中,以官方为准)
     Model DDL                    :done, m1, 规划中, 规划中
-    ML_PREDICT TVF（实验性）     :done, m2, 规划中, 规划中
+    ML_PREDICT TVF(实验性)     :done, m2, 规划中, 规划中
     OpenAI Provider              :done, m3, 规划中, 规划中
     HuggingFace Provider         :done, m4, 规划中, 规划中
 
-    section Flink 2.2（规划中，以官方为准）
-    VECTOR_SEARCH（规划中）      :active, v1, 规划中, 规划中
+    section Flink 2.2(规划中,以官方为准)
+    VECTOR_SEARCH(规划中)      :active, v1, 规划中, 规划中
     Vector DB Connectors         :active, v2, 规划中, 规划中
     RAG Pipeline Support         :active, v3, 规划中, 规划中
     SQL ML Functions             :active, v4, 规划中, 规划中
 
-    section Flink 2.3（规划中，以官方为准）
+    section Flink 2.3(规划中,以官方为准)
     FLIP-531 AI Agents           :f1, 规划中, 规划中
     A2A Protocol                 :f2, 规划中, 规划中
     MCP Native Integration       :f3, 规划中, 规划中
     Agent Memory Management      :f4, 规划中, 规划中
-    ~~CREATE AGENT~~ Syntax      :f5, 规划中, 规划中（以官方为准）
+    ~~CREATE AGENT~~ Syntax      :f5, 规划中, 规划中(以官方为准)
 
-    section Flink 2.4（规划中，以官方为准）
+    section Flink 2.4(规划中,以官方为准)
     Multi-Modal Support          :p1, 规划中, 规划中
     AutoML Integration           :p2, 规划中, 规划中
     Model Registry               :p3, 规划中, 规划中
@@ -2903,9 +2903,9 @@ public class ProductionAgentPatterns {
             .build();
 
         // ✅ 分层记忆策略
-        ValueState<WorkingMemory> workingMemory;  // 会话级，无TTL
-        MapState<String, Fact> longTermMemory;    // 长期记忆，30天TTL
-        ListState<Event> recentEvents;            // 近期事件，7天TTL
+        ValueState<WorkingMemory> workingMemory;  // 会话级,无TTL
+        MapState<String, Fact> longTermMemory;    // 长期记忆,30天TTL
+        ListState<Event> recentEvents;            // 近期事件,7天TTL
     }
 
     // 2. 错误处理最佳实践
@@ -3041,8 +3041,8 @@ public class ProductionAgentPatterns {
 
 ```sql
 -- 创建Agent
--- 注: 以下为未来可能的语法（概念设计阶段）
-<!-- 以下语法为概念设计，实际 Flink 版本尚未支持 -->
+-- 注: 以下为未来可能的语法(概念设计阶段)
+<!-- 以下语法为概念设计,实际 Flink 版本尚未支持 -->
 -- ~~CREATE AGENT <name>~~ WITH (...); (未来可能的语法)
 
 -- 创建工具

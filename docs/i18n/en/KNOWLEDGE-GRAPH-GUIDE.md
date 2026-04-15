@@ -5,6 +5,8 @@
 # Knowledge Graph Guide
 
 > **Document Position**: English Content | **Version**: v2.0 | **Status**: Active | **Updated**: 2026-04-14
+>
+> A comprehensive guide to the AnalysisDataFlow interactive knowledge graph — covering graph concepts, generation workflows, deployment options, and query patterns for navigating 10,000+ formalized stream computing elements.
 
 ## Quick Navigation
 

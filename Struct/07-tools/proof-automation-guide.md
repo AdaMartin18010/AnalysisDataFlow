@@ -33,7 +33,7 @@ Ltac tactic_name args := tactic_body.
 Ltac 策略 = Coq 证明状态的转换函数
           : (GoalContext ⊢ Goal) → List[(GoalContext' ⊢ Goal')]
 
-变量绑定语义：
+变量绑定语义:
 - let x := constr:(...) in ...  (项绑定)
 - let x := tactic in ...       (策略绑定)
 - idtac "message"              (输出)
@@ -81,6 +81,7 @@ Reflect(P : Prop) := exists (b : bool), P <-> b = true.
 **引理**：对于任意在 Coq 中可证明的定理，存在 Ltac 策略组合能够完成证明。
 
 **说明**：
+
 - 理论完备性：Ltac 可以表达任何证明
 - 实践限制：复杂证明可能需要人工干预
 - 自动化程度：取决于策略设计质量
@@ -127,15 +128,15 @@ Reflect(P : Prop) := exists (b : bool), P <-> b = true.
 **原则2：渐进式自动化**
 
 ```coq
-(* 阶段1：手动证明 *)
+(* 阶段1:手动证明 *)
 Theorem lemma1 : ...
 Proof. intros; destruct x; simpl; auto. Qed.
 
-(* 阶段2：提取模式 *)
+(* 阶段2:提取模式 *)
 Ltac solve_by_destruct :=
   intros; destruct x; simpl; auto.
 
-(* 阶段3：通用化 *)
+(* 阶段3:通用化 *)
 Ltac solve_simple :=
   intros;
   try solve_by_destruct;
@@ -168,16 +169,16 @@ Module ProofAutomation.
 
 (* ========== 基础策略 ========== *)
 
-(* 安全的simpl：避免无限循环 *)
+(* 安全的simpl:避免无限循环 *)
 Ltac safe_simpl :=
   try (progress simpl; safe_simpl).
 
 (* 彻底的intro *)
 Ltac intro_all :=
-  repeat (intros 
-    \| intros -> 
-    \| intros <- 
-    \| intros [? ?] 
+  repeat (intros
+    \| intros ->
+    \| intros <-
+    \| intros [? ?]
     \| intros []).
 
 (* 自动等式处理 *)
@@ -225,7 +226,7 @@ Ltac eq_chain :=
   repeat (match goal with
           | [ |- ?X = ?X ] => reflexivity
           | [ |- ?X = ?Y ] =>
-              (progress (rewrite <- plus_n_O) \|\| 
+              (progress (rewrite <- plus_n_O) \|\|
                progress (rewrite <- plus_O_n) \|\|
                progress (rewrite Nat.add_assoc) \|\|
                progress (rewrite Nat.add_comm))
@@ -343,7 +344,7 @@ Theorem watermark_monotonic_auto :
   forall (events : list Event) (new_event : Event),
   compute_watermark events <= compute_watermark (new_event :: events).
 Proof.
-  (* 展开定义后，自动应用max性质 *)
+  (* 展开定义后,自动应用max性质 *)
   auto_prover.  (* 完全自动 *)
 Qed.
 
@@ -431,14 +432,14 @@ Fixpoint apply_op (op : Operator) (data : list nat) : list nat :=
   match op with
   | Map f => map f data
   | Filter p => filter p data
-  | Window n =>  (* 简化窗口：每n个取第一个 *)
+  | Window n =>  (* 简化窗口:每n个取第一个 *)
       match data with
       | nil => nil
       | cons x xs => cons x (apply_op (Window n) (skipn n xs))
       end
   end.
 
-(* 算子性质：保持顺序 *)
+(* 算子性质:保持顺序 *)
 Definition preserves_order (op : Operator) : Prop :=
   forall data,
   Forall (fun x => In x data) (apply_op op data).
@@ -481,14 +482,14 @@ Require Import List Arith.
 
 Module DebuggingTactics.
 
-(* 调试策略：显示当前目标 *)
+(* 调试策略:显示当前目标 *)
 Ltac show_goal :=
   idtac "Current goal:";
   match goal with
   | [ |- ?G ] => idtac G
   end.
 
-(* 调试策略：显示所有假设 *)
+(* 调试策略:显示所有假设 *)
 Ltac show_hyps :=
   idtac "Hypotheses:";
   match goal with
@@ -512,7 +513,7 @@ Ltac trace msg tac :=
   tac;
   idtac (msg ++ " - completed").
 
-(* 示例：带调试的证明 *)
+(* 示例:带调试的证明 *)
 Lemma debug_example : forall (x y : nat),
   x = y -> y = x.
 Proof.
@@ -621,15 +622,3 @@ Ltac rewrite_once H :=
 ---
 
 ## 9. 引用参考 (References)
-
-[^1]: Yves Bertot and Pierre Castéran, "Interactive Theorem Proving and Program Development: Coq'Art", Chapter 9: Tactics, Springer, 2004.
-
-[^2]: Adam Chlipala, "Certified Programming with Dependent Types", Chapter 14: Proof Search by Logic Programming, MIT Press, 2013.
-
-[^3]: Matthieu Sozeau, "Ltac: The Tactic Language", Coq Reference Manual, https://coq.inria.fr/refman/proof-engine/ltac.html
-
-[^4]: Thomas Braibant and Damien Pous, "Tactics for Reasoning modulo AC in Coq", CPP 2011. https://doi.org/10.1145/1963495.1963504
-
-[^5]: Georges Gonthier and Assia Mahboubi, "An introduction to small scale reflection in Coq", Journal of Formalized Reasoning, 2010.
-
-[^6]: Gregory Malecha, "Extensible Proof Engineering in Intensional Type Theory", PhD Thesis, Harvard University, 2014.

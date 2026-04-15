@@ -482,7 +482,7 @@ $$
 ```
 单维度阈值: 振动 > 10mm/s → 报警
 
-            问题: 误报率高，无法区分正常波动和真实故障
+            问题: 误报率高,无法区分正常波动和真实故障
 
 CEP模式:   振动上升(5s内增加>30%)
            AND 温度异常(>80°C)
@@ -490,7 +490,7 @@ CEP模式:   振动上升(5s内增加>30%)
            WITHIN 30s
            → 轴承故障预警
 
-           优势: 多维度关联，准确率高，可预测故障
+           优势: 多维度关联,准确率高,可预测故障
 ```
 
 **轴承故障检测案例**:
@@ -736,7 +736,7 @@ import org.apache.flink.api.common.functions.AggregateFunction;
 /**
  * AutoTech智能制造实时分析引擎
  *
- * 功能模块：
+ * 功能模块:
  * 1. 设备健康度实时监控
  * 2. CEP复杂事件故障检测
  * 3. 质量异常实时检测
@@ -758,7 +758,7 @@ public class SmartManufacturingEngine {
 
         // ==================== 1. 数据源定义 ====================
 
-        // 传感器数据流（边缘预处理后的聚合数据）
+        // 传感器数据流(边缘预处理后的聚合数据)
         KafkaSource<SensorEvent> sensorSource = KafkaSource.<SensorEvent>builder()
             .setBootstrapServers("kafka-cluster.autotech.internal:9092")
             .setTopics("edge.sensor.aggregated")
@@ -920,13 +920,13 @@ public class SmartManufacturingEngine {
 
         // ==================== 7. OEE实时计算 ====================
 
-        // 7.1 可用性计算（基于PLC状态）
+        // 7.1 可用性计算(基于PLC状态)
         DataStream<AvailabilityMetric> availabilityStream = plcStream
             .keyBy(PlcStatus::getDeviceId)
             .process(new AvailabilityCalculator())
             .name("availability-calculation").uid("availability-calculation");
 
-        // 7.2 性能计算（基于产量数据）
+        // 7.2 性能计算(基于产量数据)
         DataStream<PerformanceMetric> performanceStream = sensorStream
             .filter(e -> e.getType().equals("PRODUCTION_COUNT"))
             .keyBy(SensorEvent::getDeviceId)
@@ -934,7 +934,7 @@ public class SmartManufacturingEngine {
             .aggregate(new PerformanceCalculator())
             .name("performance-calculation").uid("performance-calculation");
 
-        // 7.3 质量计算（基于质量事件）
+        // 7.3 质量计算(基于质量事件)
         DataStream<QualityMetric> qualityMetricStream = qualityStream
             .keyBy(QualityEvent::getProductionLine)
             .window(TumblingEventTimeWindows.of(Time.minutes(5)))
@@ -1228,7 +1228,7 @@ public class SmartManufacturingEngine {
             if (metrics.getLoadFactor() < 0.3 && metrics.getCurrentConsumption() > baseline.getIdleConsumption() * 1.5) {
                 suggestions.add(new OptimizationSuggestion(
                     "IDLE_POWER_REDUCTION",
-                    "设备空闲时功耗过高，建议检查待机设置",
+                    "设备空闲时功耗过高,建议检查待机设置",
                     metrics.getCurrentConsumption() - baseline.getIdleConsumption()
                 ));
             }
@@ -1237,7 +1237,7 @@ public class SmartManufacturingEngine {
             if (metrics.getPeakLoad() > baseline.getMaxLoad() * 0.95) {
                 suggestions.add(new OptimizationSuggestion(
                     "PEAK_SHAVING",
-                    "接近峰值负载，建议错峰生产",
+                    "接近峰值负载,建议错峰生产",
                     (metrics.getPeakLoad() - baseline.getOptimalLoad()) * 0.1
                 ));
             }
@@ -1262,7 +1262,7 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 public class CEPFailureDetection {
 
     /**
-     * 轴承故障模式：振动上升 + 温度异常 + 电流波动
+     * 轴承故障模式:振动上升 + 温度异常 + 电流波动
      */
     public static Pattern<SensorEvent, ?> createBearingFailurePattern() {
         return Pattern.<SensorEvent>begin("vibration-rise")
@@ -1290,7 +1290,7 @@ public class CEPFailureDetection {
     }
 
     /**
-     * 电机过热模式：温度持续上升
+     * 电机过热模式:温度持续上升
      */
     public static Pattern<SensorEvent, ?> createMotorOverheatPattern() {
         return Pattern.<SensorEvent>begin("temp-rising")
@@ -1305,7 +1305,7 @@ public class CEPFailureDetection {
     }
 
     /**
-     * 刀具磨损模式：电流增加 + 振动频率变化
+     * 刀具磨损模式:电流增加 + 振动频率变化
      */
     public static Pattern<SensorEvent, ?> createToolWearPattern() {
         return Pattern.<SensorEvent>begin("current-increase")
@@ -1347,7 +1347,7 @@ public class CEPFailureDetection {
                 "BEARING_FAILURE",
                 severity,
                 estimatedRUL,
-                "轴承故障预警：振动、温度、电流异常",
+                "轴承故障预警:振动、温度、电流异常",
                 ctx.timestamp(),
                 Arrays.asList(
                     new FailureIndicator("vibration", vibrationEvent.getVibration()),
@@ -1426,7 +1426,7 @@ public class DigitalTwinIntegration {
         public Map<String, Double> getPredictedState(int secondsAhead) {
             Map<String, Double> predicted = new HashMap<>();
 
-            // 简单线性预测（实际项目中使用更复杂的ML模型）
+            // 简单线性预测(实际项目中使用更复杂的ML模型)
             for (String param : currentParams.keySet()) {
                 double trend = calculateTrend(param);
                 predicted.put(param, currentParams.get(param) + trend * secondsAhead);
@@ -1554,7 +1554,7 @@ public class EnergyOptimization {
                 recentValues.remove(0);
             }
 
-            // 更新空闲功耗（取最小值）
+            // 更新空闲功耗(取最小值)
             if (metrics.getLoadFactor() < 0.1) {
                 idleConsumption = Math.min(idleConsumption, consumption);
             }
@@ -1568,7 +1568,7 @@ public class EnergyOptimization {
             double consumption = metrics.getCurrentConsumption();
             double expected = getExpectedConsumption(metrics.getLoadFactor());
 
-            // 如果实际能耗超过预期的150%，判定为异常
+            // 如果实际能耗超过预期的150%,判定为异常
             return consumption > expected * 1.5;
         }
 
@@ -1637,7 +1637,7 @@ public class EnergyOptimization {
                 double potentialSaving = current.getCurrentConsumption() - baseline.getIdleConsumption();
                 suggestions.add(new OptimizationSuggestion(
                     "IDLE_POWER_OPTIMIZATION",
-                    "设备空闲时功耗偏高，建议优化待机模式",
+                    "设备空闲时功耗偏高,建议优化待机模式",
                     potentialSaving,
                     Confidence.HIGH
                 ));
@@ -1648,7 +1648,7 @@ public class EnergyOptimization {
                 double potentialSaving = (current.getPeakLoad() - baseline.getOptimalLoad()) * 0.15;
                 suggestions.add(new OptimizationSuggestion(
                     "PEAK_SHAVING",
-                    String.format("接近峰值负载(%.1f%%)，建议错峰生产或负载均衡",
+                    String.format("接近峰值负载(%.1f%%),建议错峰生产或负载均衡",
                         current.getPeakLoad() / baseline.getMaxLoad() * 100),
                     potentialSaving,
                     Confidence.MEDIUM
@@ -1662,7 +1662,7 @@ public class EnergyOptimization {
                 double potentialSaving = current.getCurrentConsumption() * (1 - efficiency / expectedEfficiency);
                 suggestions.add(new OptimizationSuggestion(
                     "EFFICIENCY_IMPROVEMENT",
-                    "当前运行效率偏低，建议检查设备状态或调整工艺参数",
+                    "当前运行效率偏低,建议检查设备状态或调整工艺参数",
                     potentialSaving,
                     Confidence.MEDIUM
                 ));
@@ -1674,7 +1674,7 @@ public class EnergyOptimization {
                 double potentialSaving = baseline.getIdleConsumption() * 0.5 * startStopCount;
                 suggestions.add(new OptimizationSuggestion(
                     "START_STOP_OPTIMIZATION",
-                    String.format("1小时内启停%d次，建议合并生产批次减少空转", startStopCount),
+                    String.format("1小时内启停%d次,建议合并生产批次减少空转", startStopCount),
                     potentialSaving,
                     Confidence.HIGH
                 ));
@@ -1693,7 +1693,7 @@ public class EnergyOptimization {
 
                 if (curr.getTimestamp() < currentTime - windowMs) continue;
 
-                // 检测启动：从低负载到高负载
+                // 检测启动:从低负载到高负载
                 if (prev.getLoadFactor() < 0.1 && curr.getLoadFactor() > 0.3) {
                     count++;
                 }

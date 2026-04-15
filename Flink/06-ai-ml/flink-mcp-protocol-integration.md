@@ -446,7 +446,7 @@ $$
    - 必填字段检查
    - 枚举值检查
    - 范围约束检查
-4. 若验证通过，执行 handler
+4. 若验证通过,执行 handler
 5. 否则返回 ValidationError
 ```
 
@@ -664,7 +664,7 @@ public class FlinkMcpV2Client {
             });
     }
 
-    // 批量工具调用（v2.0 原子操作）
+    // 批量工具调用(v2.0 原子操作)
     public CompletableFuture<List<ToolResult>> invokeToolsBatch(
             List<ToolCallRequest> batchRequests) {
 
@@ -810,7 +810,7 @@ public class FlinkMcpServer {
                     "timeout_ms": {
                       "type": "integer",
                       "default": 5000,
-                      "description": "查询超时时间（毫秒）"
+                      "description": "查询超时时间(毫秒)"
                     },
                     "limit": {
                       "type": "integer",
@@ -851,7 +851,7 @@ public class FlinkMcpServer {
                     "window_minutes": {
                       "type": "integer",
                       "default": 5,
-                      "description": "检测窗口大小（分钟）"
+                      "description": "检测窗口大小(分钟)"
                     }
                   },
                   "required": ["stream_id"]
@@ -875,7 +875,7 @@ public class FlinkMcpServer {
                       "type": "string",
                       "pattern": "^\\d+[smhd]$",
                       "default": "5m",
-                      "description": "时间范围，如 5m, 1h, 24h"
+                      "description": "时间范围,如 5m, 1h, 24h"
                     },
                     "group_by": {
                       "type": "array",
@@ -1748,7 +1748,7 @@ flowchart TD
       "slide_interval": {
         "type": "string",
         "pattern": "^\\d+[smhd]$",
-        "description": "滑动间隔（仅滑动窗口）"
+        "description": "滑动间隔(仅滑动窗口)"
       },
       "group_by": {
         "type": "array",

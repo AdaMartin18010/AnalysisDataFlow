@@ -93,7 +93,7 @@ public CompletableFuture<CompletedCheckpoint> triggerCheckpoint(
         boolean isPeriodic,
         long timestamp) {
 
-    // 1. 获取全局锁，防止并发触发
+    // 1. 获取全局锁,防止并发触发
     synchronized (lock) {
         // 2. 前置条件检查
         if (shutdown) {
@@ -163,7 +163,7 @@ private void triggerTasks(
         execution.triggerCheckpoint(message)
             .whenComplete((ack, error) -> {
                 if (error != null) {
-                    // 源任务触发失败，取消本次检查点
+                    // 源任务触发失败,取消本次检查点
                     abortPendingCheckpoint(
                         pendingCheckpoint.getCheckpointId(),
                         new CheckpointException(
@@ -202,7 +202,7 @@ public boolean receiveAcknowledgeMessage(
             .acknowledgeTask(vertexId, message, taskManagerLocation);
 
         if (checkpointCompleted) {
-            // 3. 所有任务确认完成，完成检查点
+            // 3. 所有任务确认完成,完成检查点
             completeCheckpoint(checkpoint);
         }
 
@@ -235,7 +235,7 @@ private void completeCheckpoint(PendingCheckpoint pendingCheckpoint) {
         reportCompletedCheckpointStats(completedCheckpoint);
 
     } catch (Exception e) {
-        // 完成失败，触发清理
+        // 完成失败,触发清理
         abortPendingCheckpoint(
             pendingCheckpoint.getCheckpointId(),
             new CheckpointException("Failed to finalize checkpoint", e)
@@ -326,7 +326,7 @@ public class PendingCheckpoint {
     }
 
     /**
-     * 完成检查点，创建 CompletedCheckpoint
+     * 完成检查点,创建 CompletedCheckpoint
      */
     public CompletedCheckpoint finalizeCheckpoint() {
 
@@ -429,8 +429,8 @@ public class CheckpointBarrier extends RuntimeEvent {
                 Arrays.fill(barrierReceived, false);
                 barrierReceived[channelIndex] = true;
 
-                // 阻塞此通道，直到所有通道都收到 Barrier
-                return false; // 不对齐，继续等待
+                // 阻塞此通道,直到所有通道都收到 Barrier
+                return false; // 不对齐,继续等待
             }
 
             // 2. 当前检查点的 Barrier
@@ -611,8 +611,8 @@ public class StreamTask {
 
         final long checkpointId = checkpointMetaData.getCheckpointId();
 
-        // 1. 同步阶段：准备快照
-        // 刷写所有输出缓冲区，确保 Barrier 到达下游
+        // 1. 同步阶段:准备快照
+        // 刷写所有输出缓冲区,确保 Barrier 到达下游
         for (RecordWriterOutput<?> output : outputs) {
             output.flush();
         }
@@ -726,7 +726,7 @@ public class UnalignedCheckpointHandler {
 
     @Override
     public void processBarrier(CheckpointBarrier barrier, int channel) {
-        // 不阻塞通道，直接将 Barrier 传递给下游
+        // 不阻塞通道,直接将 Barrier 传递给下游
         // 同时记录当前通道的 Buffer 序列号
 
         channelStates.add(

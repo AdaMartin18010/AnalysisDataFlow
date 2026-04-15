@@ -260,7 +260,7 @@ ElasticsearchSink<Event> esSink = new Elasticsearch7SinkBuilder<Event>()
     .setBulkFlushMaxActions(1000)
     .setBulkFlushInterval(5000)
     .setHosts(new HttpHost("localhost", 9200))
-    // 认证配置（如果需要）
+    // 认证配置(如果需要)
     .setRestClientFactory(
         restClientBuilder -> {
             restClientBuilder.setDefaultHeaders(

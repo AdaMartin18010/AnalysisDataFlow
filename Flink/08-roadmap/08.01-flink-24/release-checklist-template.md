@@ -508,7 +508,7 @@ Thanks,
 
 ## 概述
 
-Apache Flink X.Y.0 是 X.Y 系列的第一个版本，主要包含...
+Apache Flink X.Y.0 是 X.Y 系列的第一个版本,主要包含...
 
 ## 新特性与改进
 
@@ -718,7 +718,7 @@ echo "=== Maven verification completed ==="
 | Q1 | 本地模式 | ./bin/start-cluster.sh | QA | ☐ |
 | Q2 | WordCount示例 | 运行官方WordCount | QA | ☐ |
 | Q3 | SQL Client | ./bin/sql-client.sh | QA | ☐ |
-| Q4 | REST API | curl <http://localhost:8081/overview> | QA | ☐ |
+| Q4 | REST API | curl `http://localhost:8081/overview` | QA | ☐ |
 | Q5 | Web UI | 浏览器访问验证 | QA | ☐ |
 
 **快速开始验证脚本**:

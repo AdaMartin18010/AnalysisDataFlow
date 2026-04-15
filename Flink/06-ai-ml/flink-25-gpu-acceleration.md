@@ -527,7 +527,7 @@ def heterogeneous_schedule(tasks, cpu_cap, gpu_cap):
     schedule = []
     cpu_time, gpu_time = 0, 0
 
-    # 按优先级排序（工作量降序）
+    # 按优先级排序(工作量降序)
     sorted_tasks = sorted(tasks, key=lambda t: t.workload, reverse=True)
 
     for task in sorted_tasks:
@@ -680,7 +680,7 @@ Java_org_apache_flink_gpu_GPUAggregator_sumNative(
     // 启动内核
     reduceSumKernel<<<blocks, BLOCK_SIZE>>>(d_input, d_output, n);
 
-    // 二次归约（如果blocks > 1）
+    // 二次归约(如果blocks > 1)
     // ...
 
     // 拷贝结果回主机
@@ -876,7 +876,7 @@ public class GPUVectorSearchFunction
 /*
 CREATE FUNCTION vector_search_gpu AS
 'org.apache.flink.gpu.ml.GPUVectorSearchFunction'
--- 注: GPU模块（实验性），尚未正式发布
+-- 注: GPU模块(实验性),尚未正式发布
 -- USING JAR 'flink-gpu-ml.jar';
 
 SELECT

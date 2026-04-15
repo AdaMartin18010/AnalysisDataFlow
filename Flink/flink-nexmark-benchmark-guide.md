@@ -351,7 +351,7 @@ public class NexmarkGenerator {
 #### q0: Pass-through (基线测试)
 
 ```sql
--- 最简单的查询，测量系统基础开销
+-- 最简单的查询,测量系统基础开销
 SELECT * FROM Bid;
 ```
 

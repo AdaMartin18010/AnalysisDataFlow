@@ -607,7 +607,7 @@ Phase 3: 远程证明
 
 Phase 4: 安全通道建立
 ─────────────────────────────────────────
-11. 𝒞 验证 EAT 后，派生数据加密密钥
+11. 𝒞 验证 EAT 后,派生数据加密密钥
 12. 𝒞 ←→ 𝒢: 所有数据经 AES-GCM 256 加密传输
 ```
 
@@ -887,7 +887,7 @@ public class TradingStrategyOperator extends ProcessFunction<MarketData, Signal>
             .withCVM(TEEType.INTEL_TDX)
             .initialize();
 
-        // 模型在 TEE 内解密，密钥永不离开 GPU
+        // 模型在 TEE 内解密,密钥永不离开 GPU
         tradingModel = teeCtx.loadSealedModel(
             "hdfs:///models/trading-model-v2.sealed"
         );
@@ -898,7 +898,7 @@ public class TradingStrategyOperator extends ProcessFunction<MarketData, Signal>
         // 市场数据加密输入 GPU TEE
         byte[] encryptedSignal = teeCtx.execute(tradingModel, encrypt(data));
 
-        // 输出加密信号，仅授权交易系统可解密
+        // 输出加密信号,仅授权交易系统可解密
         out.collect(new Signal(encryptedSignal, ctx.timestamp()));
     }
 }
@@ -949,7 +949,7 @@ flowchart TB
 **场景**: 跨机构联邦学习，在 GPU TEE 内执行安全聚合协议。
 
 ```python
-# 伪代码：Flink GPU TEE 联邦学习
+# 伪代码:Flink GPU TEE 联邦学习
 class SecureAggregation:
     def __init__(self, gpu_tee_context):
         self.tee = gpu_tee_context
@@ -963,7 +963,7 @@ class SecureAggregation:
             # 解密各方梯度
             gradients = [self.tee.decrypt(g) for g in encrypted_gradients]
 
-            # 执行安全聚合（带差分隐私）
+            # 执行安全聚合(带差分隐私)
             aggregated = self.federated_average(gradients)
 
             # 添加噪声保护隐私
@@ -1261,7 +1261,7 @@ security.gpu.tee.enabled: true
 security.gpu.tee.type: NVIDIA_H100_CC
 security.gpu.attestation.service: https://nras.attestation.nvidia.com
 
-# CPU TEE 配置（必需）
+# CPU TEE 配置(必需)
 security.cpu.tee.type: INTEL_TDX
 security.cpu.attestation.service: https://trustauthority.intel.com
 

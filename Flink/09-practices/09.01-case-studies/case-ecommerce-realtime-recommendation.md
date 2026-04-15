@@ -361,7 +361,7 @@ CREATE TABLE customer_behavior (
   'protobuf.message-class-name' = 'ecommerce.customer.BehaviorEvent'
 );
 
--- 2. 创建用户实时兴趣画像（滑动窗口聚合）
+-- 2. 创建用户实时兴趣画像(滑动窗口聚合)
 CREATE TABLE user_interest_profile (
   user_id STRING,
   window_start TIMESTAMP(3),
@@ -382,7 +382,7 @@ CREATE TABLE user_interest_profile (
   'password' = '***'
 );
 
--- 3. 实时兴趣画像计算（15分钟滑动窗口，5分钟步长）
+-- 3. 实时兴趣画像计算(15分钟滑动窗口,5分钟步长)
 INSERT INTO user_interest_profile
 SELECT
   user_id,
@@ -402,7 +402,7 @@ GROUP BY
   category_id,
   TUMBLE(event_time, INTERVAL '15' MINUTE);
 
--- 4. 用户会话级实时特征（会话窗口）
+-- 4. 用户会话级实时特征(会话窗口)
 CREATE TABLE user_session_features (
   user_id STRING,
   session_id STRING,
@@ -564,7 +564,7 @@ public class RealtimeCollaborativeFiltering {
             .process(new IncrementalMatrixFactorization());
 
         // ============================================================================
-        // 3. 物品相似度实时计算（基于共现窗口）
+        // 3. 物品相似度实时计算(基于共现窗口)
         // ============================================================================
         DataStream<ItemSimilarity> itemSimilarities = interactions
             .keyBy(UserInteraction::getUserId)
@@ -600,7 +600,7 @@ public class RealtimeCollaborativeFiltering {
         private ValueState<Double> userBiasState;
         // 最后更新时间
         private ValueState<Long> lastUpdateState;
-        // 交互计数（用于学习率衰减）
+        // 交互计数(用于学习率衰减)
         private ValueState<Integer> interactionCountState;
 
         @Override
@@ -639,7 +639,7 @@ public class RealtimeCollaborativeFiltering {
                 userVector = applyTimeDecay(userVector, timeDelta);
             }
 
-            // 从全局模型获取物品隐向量（从广播变量或状态查询）
+            // 从全局模型获取物品隐向量(从广播变量或状态查询)
             double[] itemVector = ItemVectorLookup.get(itemId);
             double itemBias = ItemBiasLookup.get(itemId);
             double globalBias = GlobalModel.getGlobalBias();
@@ -854,7 +854,7 @@ public class RealtimeCollaborativeFiltering {
             // 获取用户隐向量
             double[] userVector = userVectorState.value();
             if (userVector == null) {
-                // 冷启动：使用基于热门和相似的混合策略
+                // 冷启动:使用基于热门和相似的混合策略
                 generateColdStartRecommendations(userId, itemId, out);
                 return;
             }
@@ -917,7 +917,7 @@ public class RealtimeCollaborativeFiltering {
 
         private void generateColdStartRecommendations(String userId, String itemId,
                 Collector<RecommendationResult> out) throws Exception {
-            // 冷启动策略：相似物品 + 热门 + 多样性
+            // 冷启动策略:相似物品 + 热门 + 多样性
             List<RecommendedItem> recommendations = new ArrayList<>();
 
             // 1. 基于当前物品的相似物品
@@ -1124,14 +1124,14 @@ public class ContextAwareRecommender
         // 库存过滤
         items.removeIf(item -> !ProductCatalog.isInStock(item.getItemId()));
 
-        // 价格区间过滤（根据用户历史消费水平）
+        // 价格区间过滤(根据用户历史消费水平)
         UserSpendingProfile profile = UserProfileService.getSpendingProfile(context.getUserId());
         if (profile != null) {
             double maxPrice = profile.getAvgOrderValue() * 2.5;
             items.removeIf(item -> ProductCatalog.getPrice(item.getItemId()) > maxPrice);
         }
 
-        // 新品推广插槽（前3位保留1个给新品）
+        // 新品推广插槽(前3位保留1个给新品)
         if (items.size() > 3) {
             String newArrival = ProductCatalog.getLatestArrival(items.get(0).getItemId());
             if (newArrival != null && items.stream().noneMatch(i -> i.getItemId().equals(newArrival))) {
@@ -1158,7 +1158,7 @@ public class ContextAwareRecommender
         Set<String> usedCategories = new HashSet<>();
         Set<String> usedBrands = new HashSet<>();
 
-        // MMR算法（最大边际相关性）
+        // MMR算法(最大边际相关性)
         for (int i = 0; i < items.size() && diversified.size() < 20; i++) {
             RecommendedItem candidate = items.get(i);
             String category = ProductCatalog.getCategory(candidate.getItemId());
@@ -1242,7 +1242,7 @@ public class ABTestFramework {
             ExperimentConfig config = experimentState.value();
 
             if (config == null || !isActive(config, ctx.timestamp())) {
-                // 无活跃实验，使用默认策略
+                // 无活跃实验,使用默认策略
                 out.collect(new AssignedVariant(userId, "control", null));
                 return;
             }
@@ -1260,7 +1260,7 @@ public class ABTestFramework {
                 return;
             }
 
-            // 一致性哈希分配（保证同一用户始终进入同一组）
+            // 一致性哈希分配(保证同一用户始终进入同一组)
             String variantId = assignVariant(userId, config);
             userAssignmentState.put(userId, variantId);
 

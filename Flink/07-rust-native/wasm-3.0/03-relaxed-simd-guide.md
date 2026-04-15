@@ -540,7 +540,7 @@ pub unsafe fn relaxed_dot_product(a: &[f32], b: &[f32]) -> f32 {
         let vb = v128_load(b.as_ptr().add(offset) as *const v128);
 
         // 使用 relaxed_madd: sum = va * vb + sum
-        // 注意：与标准 SIMD 不同，这可能在支持的硬件上使用 FMA
+        // 注意:与标准 SIMD 不同,这可能在支持的硬件上使用 FMA
         sum = f32x4_relaxed_madd(va, vb, sum);
     }
 
@@ -616,12 +616,12 @@ pub unsafe fn matmul_4x4_relaxed(a: &[f32; 16], b: &[f32; 16], c: &mut [f32; 16]
 }
 
 /// 使用 Relaxed Swizzle 的向量置换
-/// 注意：超出范围索引的行为是 relaxed 的
+/// 注意:超出范围索引的行为是 relaxed 的
 #[target_feature(enable = "relaxed-simd")]
 pub unsafe fn relaxed_shuffle(input: v128, indices: v128) -> v128 {
     // i8x16.relaxed_swizzle
     // indices 中每个字节表示从 input 中选择的 lane
-    // 如果 index > 15，行为是 relaxed 的 (可能返回 0 或保留值)
+    // 如果 index > 15,行为是 relaxed 的 (可能返回 0 或保留值)
     i8x16_relaxed_swizzle(input, indices)
 }
 
@@ -684,12 +684,12 @@ impl SimdUdf {
 
 /// 检测 Relaxed SIMD 支持
 fn is_relaxed_simd_supported() -> bool {
-    // 在 WebAssembly 中，通过特性检测确定
+    // 在 WebAssembly 中,通过特性检测确定
     // 实际实现需要 JavaScript 配合
     #[cfg(target_arch = "wasm32")]
     {
         // 使用 wasm-feature-detect 或类似库
-        true // 简化，实际应动态检测
+        true // 简化,实际应动态检测
     }
     #[cfg(not(target_arch = "wasm32"))]
     {

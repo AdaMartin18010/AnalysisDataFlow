@@ -366,7 +366,7 @@ DataStream<PlayEvent> plays = env
         WatermarkStrategy.<PlayEvent>forBoundedOutOfOrderness(Duration.ofSeconds(30))
     );
 
-// 按内容ID分组，统计实时观看人数
+// 按内容ID分组,统计实时观看人数
 plays
     .keyBy(event -> event.contentId)
     .window(TumblingEventTimeWindows.of(Time.minutes(5)))

@@ -247,7 +247,7 @@ Flink 时间函数的高效 SIMD 实现策略：
 
 ```c
 // TIMESTAMP_DIFF 向量化实现
-// 将时间戳转换为 epoch days，然后 SIMD 减法
+// 将时间戳转换为 epoch days,然后 SIMD 减法
 
 // 步骤1: 提取年/月/日分量 (8 timestamps 并行)
 __m256i years  = extract_year_vec(timestamps);   // AVX2: shift + mask
@@ -283,6 +283,7 @@ for each key k:
 
 向量化版本（8-lane 并行）：
 ```
+# 伪代码示意，非完整可编译代码
 for i in 0 to n-1 step 8:
     // 并行计算 8 个 hash
     h_vec = hash_vec(keys[i:i+8])

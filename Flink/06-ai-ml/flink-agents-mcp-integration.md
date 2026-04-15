@@ -1,8 +1,10 @@
 # Flink Agents MCP 协议集成深度指南
 
-> **状态**: 前瞻 | **预计发布时间**: 2026-06 | **最后更新**: 2026-04-12
+> **状态**: ✅ Released (2026-02-06, Flink Agents 0.2.0)
+> **Flink 版本**: Flink Agents 0.2.0+
+> **稳定性**: GA (Generally Available)
 >
-> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+> Apache Flink Agents 0.2.0 已于 2026-02-06 正式发布，新增 MCP Server、Embedding Models、Vector Stores 等能力[^1]。
 
 > **所属阶段**: Flink/06-ai-ml | **前置依赖**: [FLIP-531 AI Agents](flink-agents-flip-531.md), [Flink Agents 架构深度解析](./flink-agents-architecture-deep-dive.md) | **形式化等级**: L4-L5
 
@@ -25,9 +27,11 @@ Where:
 - $\phi_{map}$: Capability mapping between Flink and MCP
 - $\psi_{sync}$: State synchronization function
 
-### Def-P2-11: MCP Client in Flink
+### Def-P2-11: MCP Client / Server in Flink
 
 **Flink MCP Client** is a stateful operator that manages MCP connections:
+
+**Flink MCP Server** (新增于 Agents 0.2.0) 允许将 Flink 流数据作为 MCP Resource 暴露给外部 Agent[^1]：
 
 $$
 \mathcal{C}_{MCP} = \langle \mathcal{S}_{conn}, \mathcal{R}_{registry}, \mathcal{Q}_{pending}, \mathcal{H}_{handlers} \rangle
@@ -273,7 +277,9 @@ $$
 
 ## 6. 实例验证 (Examples)
 
-### 6.1 Java: MCP Client Integration
+### 6.1 Java: MCP Client & Server Integration
+
+**MCP Client 集成（已有）:**
 
 ```java
 import org.apache.flink.streaming.api.functions.async.RichAsyncFunction;
@@ -467,6 +473,34 @@ public class FlinkMCPClient {
             if (executor != null) {
                 ((ExecutorService) executor).shutdown();
             }
+        }
+    }
+
+    /**
+     * MCP Server Function (Agents 0.2.0+)
+     * 将 Flink 数据流暴露为 MCP Server Resource
+     */
+    public static class FlinkMCPServer {
+        private MCPServer server;
+
+        public void start(String endpoint) {
+            this.server = MCPServer.builder()
+                .withName("FlinkDataServer")
+                .withEndpoint(endpoint)
+                .build();
+
+            // 注册流式数据源作为 MCP Resource
+            server.registerResource("flink://metrics/realtime", () -> {
+                return queryRealtimeMetrics();
+            });
+
+            // 注册工具:执行 Flink SQL 查询
+            server.registerTool("execute_flink_sql", params -> {
+                String sql = (String) params.get("sql");
+                return executeSql(sql);
+            });
+
+            server.start();
         }
     }
 
@@ -953,3 +987,6 @@ flowchart LR
 ---
 
 ## 8. 引用参考 (References)
+
+[^1]: Apache Flink Blog, "Apache Flink Agents 0.2.0 Release Announcement", February 6, 2026. https://flink.apache.org/2026/02/06/apache-flink-agents-0.2.0-release-announcement/
+[^2]: Anthropic, "Model Context Protocol Specification", 2025. https://modelcontextprotocol.io/

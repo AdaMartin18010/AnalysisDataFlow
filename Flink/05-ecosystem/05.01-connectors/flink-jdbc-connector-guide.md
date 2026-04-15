@@ -232,9 +232,9 @@ Flink Checkpoint
        ├── Source: 记录消费偏移量
        ├── Processing: 算子状态快照
        └── JDBC Sink:
-           ├── AT_LEAST_ONCE: 异步刷盘，不等待确认
+           ├── AT_LEAST_ONCE: 异步刷盘,不等待确认
            ├── EXACTLY_ONCE: XA prepare → checkpoint → XA commit
-           └── 恢复时: 回滚 pending 事务，重放未确认记录
+           └── 恢复时: 回滚 pending 事务,重放未确认记录
 ```
 
 ### 3.3 与 CDC 连接器的关系
@@ -256,6 +256,7 @@ Flink Checkpoint
 **主键范围分片**:
 
 ```sql
+# 伪代码示意，非完整可执行配置
 -- 自动生成分片查询
 SELECT * FROM table
 WHERE id BETWEEN ? AND ?
@@ -719,7 +720,7 @@ com.mysql.cj.jdbc.exceptions.MySQLTransactionRollbackException:
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // 1. 使用分区策略避免热点
-// 按主键分区，确保相同 _id 的数据进入同一 Task
+// 按主键分区,确保相同 _id 的数据进入同一 Task
 DataStream<Order> partitioned = orders
     .partitionCustom(
         new HashPartitioner(),
@@ -728,11 +729,11 @@ DataStream<Order> partitioned = orders
 
 // 2. 调整批量大小和重试策略
 JdbcSinkBuilder.builder()
-    .setBatchSize(100)  // 减小批次，减少冲突窗口
+    .setBatchSize(100)  // 减小批次,减少冲突窗口
     .setMaxRetries(10)  // 增加重试次数
     .build();
 
-// 3. 数据库层面优化（MySQL）
+// 3. 数据库层面优化(MySQL)
 SET GLOBAL innodb_lock_wait_timeout = 50;
 SET GLOBAL innodb_deadlock_detect = ON;
 ```
@@ -842,7 +843,7 @@ SELECT * FROM pg_locks WHERE NOT granted;
 **MySQL**:
 
 ```sql
--- 启用二进制日志（CDC 必需）
+-- 启用二进制日志(CDC 必需)
 SET GLOBAL binlog_format = 'ROW';
 SET GLOBAL binlog_row_image = 'FULL';
 

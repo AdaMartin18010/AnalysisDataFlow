@@ -271,7 +271,7 @@ $$
    {
        let conn = Connection::new();  // 资源获取
        // 使用conn
-   }  // 自动调用drop，资源释放
+   }  // 自动调用drop,资源释放
    ```
 
 2. **无运行时暂停**：无垃圾回收器，无Stop-the-World暂停
@@ -969,7 +969,7 @@ impl GatewayConnection {
                 _ = heartbeat.tick() => {
                     heartbeat_misses += 1;
                     if heartbeat_misses > 2 {
-                        // 连续3次未收到心跳，断开连接
+                        // 连续3次未收到心跳,断开连接
                         tracing::warn!("Heartbeat timeout for user {}", self.user_id);
                         break;
                     }
@@ -1276,7 +1276,7 @@ impl ContinuousQueryEngine {
         let start_time = Instant::now();
         let df = self.ctx.sql(&sql).await?;
 
-        // DataFusion自动应用优化规则：
+        // DataFusion自动应用优化规则:
         // 1. 谓词下推 - 只读取时间范围内的数据
         // 2. 投影下推 - 只读取需要的列
         // 3. 分区剪枝 - 跳过不匹配的文件
@@ -1500,10 +1500,10 @@ impl MicrovmManager {
         let start = Instant::now();
 
         let vmm_config = VmmConfig {
-            // 极简配置：
+            // 极简配置:
             // - 单vCPU (可配置至32vCPU)
             // - 128MB内存起步 (可扩展至32GB)
-            // - 无BIOS，直接加载内核
+            // - 无BIOS,直接加载内核
             // - 极简设备模型
             vcpu_count: config.vcpu_count,
             mem_size_mib: config.memory_mb,
@@ -1707,10 +1707,10 @@ mindmap
                               ▼
                         吞吐能力(高)
 
-Rust:   ●────●────●────○  (延迟、内存、吞吐满分，开发效率中等)
-Go:     ○────●────○────●  (开发效率高，内存和延迟中等)
-Java:   ○────○────●────●  (吞吐和开发效率高，内存和延迟中等)
-C++:    ●────●────●────○  (性能满分，开发效率中等)
+Rust:   ●────●────●────○  (延迟、内存、吞吐满分,开发效率中等)
+Go:     ○────●────○────●  (开发效率高,内存和延迟中等)
+Java:   ○────○────●────●  (吞吐和开发效率高,内存和延迟中等)
+C++:    ●────●────●────○  (性能满分,开发效率中等)
 ```
 
 **详细评分说明**：

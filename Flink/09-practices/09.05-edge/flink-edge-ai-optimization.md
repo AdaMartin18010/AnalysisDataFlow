@@ -205,7 +205,7 @@ public class EdgeImageClassificationJob {
                 WatermarkStrategy.<VideoFrame>forBoundedOutOfOrderness(Duration.ofMillis(100))
             );
 
-        // 步骤1: 特征提取预处理（Resize, Normalize）
+        // 步骤1: 特征提取预处理(Resize, Normalize)
         DataStream<ImageTensor> tensors = frames
             .map(new FramePreprocessFunction(224, 224))
             .setParallelism(2);
@@ -532,11 +532,11 @@ flowchart TD
 在边缘场景中，模型不能通过停止作业来更新。利用 Flink 的 Broadcast Stream 可以实现不中断数据流的前提下完成模型热更新和 A/B 测试。
 
 ```java
-// 广播流：模型更新指令
+// 广播流:模型更新指令
 DataStream<ModelUpdate> modelUpdates = env
     .addSource(new KafkaSource<>("edge.model.updates", new ModelUpdateDeserializer()));
 
-// 主数据流：待推理数据
+// 主数据流:待推理数据
 DataStream<SensorReading> readings = env
     .addSource(new MqttSource<>("sensors/+/data"));
 
@@ -544,7 +544,7 @@ DataStream<SensorReading> readings = env
 MapStateDescriptor<String, ModelMetadata> modelStateDescriptor =
     new MapStateDescriptor<>("model-state", String.class, ModelMetadata.class);
 
-// 主处理函数：接收广播模型更新
+// 主处理函数:接收广播模型更新
 class ModelInferenceWithBroadcast extends BroadcastProcessFunction<SensorReading, ModelUpdate, InferenceResult> {
     private transient OrtSession session;
     private String currentModelVersion = "v1.0";
@@ -584,7 +584,7 @@ class ModelInferenceWithBroadcast extends BroadcastProcessFunction<SensorReading
                 state.put("active-model", new ModelMetadata(update.previousVersion, update.previousPath));
                 break;
             case "AB_TEST":
-                // A/B 测试：按 sensor ID 哈希分流
+                // A/B 测试:按 sensor ID 哈希分流
                 state.put("ab-config", new ModelMetadata(update.version, update.path));
                 break;
         }

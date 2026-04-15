@@ -269,7 +269,7 @@ Barrier = ⟨checkpoint_id, timestamp, source_id, alignment_mode⟩
 ```
 sync_snapshot(operator):
     1. 停止处理输入记录
-    2. 刷新缓冲区（如有）
+    2. 刷新缓冲区(如有)
     3. 获取状态引用/副本
     4. 标记同步完成时间戳
 ```
@@ -279,7 +279,7 @@ sync_snapshot(operator):
 ```
 async_snapshot(operator, state_handle):
     1. 将状态数据写入状态后端
-    2. 序列化（如需要）
+    2. 序列化(如需要)
     3. 上传到分布式存储
     4. 返回状态句柄给 CheckpointCoordinator
 ```
@@ -337,7 +337,7 @@ asyncInvoke(input, resultFuture):
 ```
 ResultFuture = ⟨complete, timeout, exceptionally⟩
 
-complete(output): 异步操作成功完成，输出结果
+complete(output): 异步操作成功完成,输出结果
 timeout(): 异步操作超时处理
 exceptionally(error): 异步操作异常处理
 ```
@@ -521,12 +521,12 @@ public void triggerCheckpoint(long timestamp) {
 ```java
 // AbstractStreamOperator.java
 public final void snapshotState(StateSnapshotContext context) {
-    // 同步阶段：获取状态锁
+    // 同步阶段:获取状态锁
     synchronized (stateLock) {
         // 快照算子状态
         snapshotOperatorState(context);
     }
-    // 异步阶段：实际序列化和上传在后台进行
+    // 异步阶段:实际序列化和上传在后台进行
 }
 ```
 
@@ -541,7 +541,7 @@ private void processElement(StreamRecord<IN> element) {
         // 启动异步操作
         asyncFunction.asyncInvoke(element.getValue(), resultFuture);
     } else {
-        // 反压：缓冲输入
+        // 反压:缓冲输入
         bufferElement(element);
     }
 }
