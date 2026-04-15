@@ -1,6 +1,7 @@
 > **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
-> 
+>
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # Flink 与 MCP 协议集成：AI 驱动的实时流计算
 
 > **所属阶段**: Flink AI/ML 扩展 | **前置依赖**: [Flink LLM 集成](./flink-llm-integration.md), [Flink 异步 I/O](../02-core/async-execution-model.md) | **形式化等级**: L3 (工程实现)

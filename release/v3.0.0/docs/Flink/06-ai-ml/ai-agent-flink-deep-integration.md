@@ -1,6 +1,7 @@
 > **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
-> 
+>
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # AI Agent 与 Flink 深度集成技术指南
 
 > **所属阶段**: Flink/AI-ML | **前置依赖**: [Flink Agents (FLIP-531)](./flink-agents-flip-531.md), [Flink ML 架构](./flink-ml-architecture.md) | **形式化等级**: L4 (系统架构与工程实现)

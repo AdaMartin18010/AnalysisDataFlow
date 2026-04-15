@@ -2,6 +2,37 @@
 
 > 所属阶段: Flink/Connectors | 前置依赖: [Flink-01-04 连接器基础](flink-connectors-ecosystem-complete-guide.md), [Flink-03-01 状态管理](../../02-core/flink-state-management-complete-guide.md) | 形式化等级: L3-L4
 
+## 目录
+
+- [Pulsar Functions 集成指南](#pulsar-functions-集成指南)
+  - [目录](#目录)
+  - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
+    - [1.1 Pulsar 基础定义](#11-pulsar-基础定义)
+    - [1.2 Pulsar 与 Kafka 对比](#12-pulsar-与-kafka-对比)
+  - [2. 属性推导 (Properties)](#2-属性推导-properties)
+    - [2.1 分层架构优势](#21-分层架构优势)
+    - [2.2 订阅模式语义](#22-订阅模式语义)
+  - [3. 关系建立 (Relations)](#3-关系建立-relations)
+    - [3.1 Pulsar-Flink 连接器架构](#31-pulsar-flink-连接器架构)
+    - [3.2 Pulsar Functions vs Flink 定位](#32-pulsar-functions-vs-flink-定位)
+  - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
+    - [4.1 连接器选型论证](#41-连接器选型论证)
+    - [4.2 订阅模式选择论证](#42-订阅模式选择论证)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+    - [5.1 Pulsar Source 配置论证](#51-pulsar-source-配置论证)
+    - [5.2 性能优化工程论证](#52-性能优化工程论证)
+  - [6. 实例验证 (Examples)](#6-实例验证-examples)
+    - [6.1 Pulsar Source 完整示例](#61-pulsar-source-完整示例)
+    - [6.2 Pulsar Sink 延迟消息示例](#62-pulsar-sink-延迟消息示例)
+    - [6.3 Pulsar Functions 集成示例](#63-pulsar-functions-集成示例)
+    - [6.4 性能优化配置示例](#64-性能优化配置示例)
+    - [6.5 Schema 演进处理](#65-schema-演进处理)
+  - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
+    - [7.1 Pulsar 分层架构深度图](#71-pulsar-分层架构深度图)
+    - [7.2 Pulsar Functions 运行时模型](#72-pulsar-functions-运行时模型)
+    - [7.3 实际案例：日志处理流水线](#73-实际案例日志处理流水线)
+  - [8. 引用参考 (References)](#8-引用参考-references)
+
 ## 1. 概念定义 (Definitions)
 
 ### 1.1 Pulsar 基础定义

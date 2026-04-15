@@ -1,6 +1,7 @@
 > **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
-> 
+>
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # Flink Kubernetes Operator 1.14.0 完整指南
 
 > **所属阶段**: Flink/04-runtime/04.01-deployment | **前置依赖**: [flink-kubernetes-operator-deep-dive.md](./flink-kubernetes-operator-deep-dive.md) | **形式化等级**: L5 (工程严格)

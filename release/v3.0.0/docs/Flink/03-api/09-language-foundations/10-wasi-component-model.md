@@ -1,6 +1,7 @@
 > **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
-> 
+>
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # WASI 0.2 与 Component Model：流计算的模块化未来
 
 > **所属阶段**: Flink/09-language-foundations | **前置依赖**: [WASM流处理](./flink-25-wasm-udf-ga.md), [Rust原生API](./flink-rust-native-api-guide.md) | **形式化等级**: L3-L4 | **版本**: WASI 0.2 / Component Model 1.0

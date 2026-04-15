@@ -1,6 +1,7 @@
 > **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
-> 
+>
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # Flink DataStream API 完整特性指南
 
 > **所属阶段**: Flink/09-language-foundations | **前置依赖**: [DataStream V2 API](./05-datastream-v2-api.md), [流处理语义形式化](../../../Struct/01-foundation/stream-processing-semantics-formalization.md) | **形式化等级**: L3-L4
