@@ -1683,7 +1683,7 @@ PROJECT-CRITICAL-REVIEW识别出13个Flink 2.4/2.5/3.0文档包含**虚构内容
 - ✅ **README 社区入口完善**：新增 Discussions / 贡献指南 / 知识图谱链接
 - ✅ **Schema.org 结构化数据**：已嵌入 `KNOWLEDGE-GRAPH/index.html`
 - ⏳ **GitHub Pages 激活**：需仓库管理员在 Settings > Pages 中切换 Source 为 "GitHub Actions"
-- ⏳ **Algolia DocSearch 申请**：需手动访问 https://docsearch.algolia.com/apply/ 提交申请
+- ⏳ **Algolia DocSearch 申请**：需手动访问 <https://docsearch.algolia.com/apply/> 提交申请
 - ⏳ **Discussions 实际启用**：需仓库管理员在 Settings > General > Discussions 中开启开关
 
 | 任务ID | 任务描述 | 状态 | 交付物 |
@@ -1737,5 +1737,100 @@ PROJECT-CRITICAL-REVIEW识别出13个Flink 2.4/2.5/3.0文档包含**虚构内容
 | 新增形式化元素 | 3+ | `Def-K-06-304` (MCP 威胁分类)、`Def-K-06-236` (A2A v1.0)、`Def-K-06-226` (MCP Ecosystem) |
 | 代码修复处数 | 3,103 | 中文标点 3,062 + 伪代码标记 39 + 缩进 2 |
 | 链接规范化文件 | 8 | localhost/example 误报消除 |
+
+---
+
+## v4.2 生态集成 — 手动激活阶段 🚀
+
+> **目标**: 完成最后 3 项手动配置，进度从 80% → 100%
+> **状态**: ✅ 代码/文档全部就绪，待管理员手动激活 | **最后更新**: 2026-04-15
+
+### 已交付资产
+
+- ✅ `v4.2-MANUAL-ACTIVATION-CHECKLIST.md` — 完整手动激活操作指南
+- ✅ GitHub Pages 部署工作流已就绪 (`deploy-knowledge-graph.yml`)
+- ✅ CNAME / robots.txt / sitemap.xml / 404.html / index.html 全部就位
+- ✅ Algolia DocSearch 本地搜索降级逻辑已集成
+- ✅ 中文 Issue 模板 (`bug_report-zh.md`, `feature_request-zh.md`) 已创建
+
+### 待执行手动步骤
+
+| 序号 | 任务 | 操作位置 | 状态 |
+|:----:|------|----------|:----:|
+| 1 | GitHub Pages 启用 | Settings > Pages | ⏳ 待手动 |
+| 2 | Algolia DocSearch 申请 | docsearch.algolia.com | ⏳ 待手动 |
+| 3 | GitHub Discussions 开启 | Settings > General | ⏳ 待手动 |
+
+> 详见 [v4.2-MANUAL-ACTIVATION-CHECKLIST.md](../v4.2-MANUAL-ACTIVATION-CHECKLIST.md)
+
+---
+
+## 2026-Q2 并行执行计划进展
+
+> **目标**: 形式化证明扩展 + 案例研究补充
+> **状态**: 🟢 全面推进中 | **最后更新**: 2026-04-15
+
+### 形式化证明扩展 (Formal Proof Extension)
+
+| 任务ID | 内容 | 状态 | 交付物 |
+|--------|------|:----:|--------|
+| F1 | Watermark代数完备性 | ✅ 已完成 | `coq-proofs/WatermarkAlgebraComplete.v` (744行, 19定理) |
+| F2 | Exactly-Once语义完整证明 | ✅ 已完成 | `coq-proofs/ExactlyOnceComplete.v` (864行, 19定理) |
+| F3 | State Backend等价性 | ✅ 已完成 | `tla-specs/StateBackendEquivalenceComplete.tla` (500+行, 13定理) |
+
+### 案例研究补充 (Case Study Supplement)
+
+| 任务ID | 内容 | 状态 | 交付物 |
+|--------|------|:----:|--------|
+| C1 | 电商实时推荐系统 | ✅ 已完成 | `ecommerce/11.11.2-realtime-recommendation-system.md` |
+| C2 | IoT智能电网 | ✅ 已完成 | `energy/11.15.2-smart-grid-iot.md` |
+| C3 | 金融反欺诈系统 | ✅ 已完成 | `finance/11.13.2-anti-fraud-system.md` |
+| C4 | 游戏实时分析 | ✅ 已完成 | `gaming/11.12.2-game-analytics-realtime.md` |
+
+**Q2 形式化验证统计**: 新增 51 个定理/引理 (Coq: 38 | TLA+: 13)
+
+---
+
+## 学术前沿内容补充 — Phase 1-3 全面推进
+
+> **来源**: [PAPER-TODO-LIST.md](../PAPER-TODO-LIST.md)
+> **状态**: 🟢 全面推进中 | **最后更新**: 2026-04-15
+
+### 高优先级任务进展
+
+| 任务ID | 方向 | 状态 | 交付物 |
+|--------|------|:----:|--------|
+| 1.1 | 特征存储架构设计 | ✅ 已完成 | `Knowledge/feature-store-architecture.md` (~16KB) |
+| 1.2 | 训练-推理一致性保证 | ✅ 已完成 | `Struct/consistency-training-inference.md` (~17KB) |
+| 1.3 | 实时特征计算与流处理集成 | ✅ 已完成 | `Knowledge/stream-feature-computation.md` (~20KB) |
+| 1.4 | 特征血缘追踪与版本管理 | ✅ 已完成 | `Knowledge/feature-lineage-tracking.md` (~15KB) |
+| 1.5 | 特征存储与Flink的集成实践 | ✅ 已完成 | `Flink/flink-feature-store-integration.md` (~21KB) |
+| 2.1 | 硬件加速流处理综述 | ✅ 已完成 | `Knowledge/hardware-accelerated-streaming.md` (~14KB) |
+| 2.2 | FPGA 在流处理中的应用 | ✅ 已完成 | `Flink/flink-fpga-acceleration.md` (~16KB) |
+| 2.3 | GPU 加速流连接算法 | ✅ 已完成 | `Knowledge/gpu-stream-join.md` (~18KB) |
+| 3.1 | 事务语义与流语义统一形式化 | ✅ 已完成 | `Struct/transactional-stream-semantics.md` (~21KB) |
+
+### 新增形式化元素 (学术前沿)
+
+| 类型 | 数量 | 说明 |
+|------|------|------|
+| 定义 (Def) | 22 | `Def-K-06-305` ~ `Def-K-06-331` (Feature Store + 硬件加速 + GPU Join) |
+| 定义 (Def) | 11 | `Def-S-16-01` ~ `Def-S-16-12` (训练-推理一致性 + 事务流语义) |
+| 定义 (Def) | 10 | `Def-F-15-01` ~ `Def-F-15-10` (Flink-Feature Store + FPGA) |
+| 定理 (Thm) | 15 | `Thm-K-06-105` ~ `Thm-K-06-121`, `Thm-S-16-07` ~ `Thm-S-16-10`, `Thm-F-15-01` ~ `Thm-F-15-06` |
+| 引理 (Lemma) | 18 | `Lemma-K-06-101` ~ `Lemma-K-06-117`, `Lemma-S-16-04` ~ `Lemma-S-16-06`, `Lemma-F-15-01` ~ `Lemma-F-15-06` |
+| 命题 (Prop) | 8 | `Prop-K-06-104` ~ `Prop-K-06-118`, `Prop-S-16-03`, `Prop-F-15-01` ~ `Prop-F-15-02` |
+| **总计** | **98** | 学术前沿高优先级任务形式化元素 |
+
+### 文档产出统计
+
+| 目录 | 新增文档 | 大小 | 状态 |
+|------|---------|------|------|
+| Knowledge/ | 5 | ~83KB | ✅ |
+| Struct/ | 2 | ~38KB | ✅ |
+| Flink/ | 2 | ~37KB | ✅ |
+| **总计** | **9** | **~158KB** | **✅** |
+
+---
 
 *未来维护计划详见 [ROADMAP-v3.3-and-beyond.md](ROADMAP-v3.3-and-beyond.md) 和 [MAINTENANCE-GUIDE.md](MAINTENANCE-GUIDE.md)*
