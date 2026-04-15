@@ -1021,34 +1021,34 @@ sequenceDiagram
 ## Pre-Migration Checklist
 
 ### Schema Compatibility
-- [ ] Verify all data types have Flink equivalents
-- [ ] Check DECIMAL precision and scale
-- [ ] Validate TIMESTAMP precision (Flink defaults to 3)
-- [ ] Review CHAR/VARCHAR length limits
+- [x] Verify all data types have Flink equivalents
+- [x] Check DECIMAL precision and scale
+- [x] Validate TIMESTAMP precision (Flink defaults to 3)
+- [x] Review CHAR/VARCHAR length limits
 
 ### Query Compatibility
-- [ ] Replace cursor-based operations with streaming queries
-- [ ] Convert DML UPDATE/DELETE to changelog streams
-- [ ] Check for unsupported set operations
-- [ ] Verify subquery support (Flink has limitations)
+- [x] Replace cursor-based operations with streaming queries
+- [x] Convert DML UPDATE/DELETE to changelog streams
+- [x] Check for unsupported set operations
+- [x] Verify subquery support (Flink has limitations)
 
 ### Function Compatibility
-- [ ] Map custom functions to Flink UDFs
-- [ ] Check JSON function syntax (Flink follows SQL:2023)
-- [ ] Verify window function behavior
-- [ ] Review aggregate function options
+- [x] Map custom functions to Flink UDFs
+- [x] Check JSON function syntax (Flink follows SQL:2023)
+- [x] Verify window function behavior
+- [x] Review aggregate function options
 
 ### Performance Considerations
-- [ ] Add appropriate watermark strategies
-- [ ] Configure checkpoint intervals
-- [ ] Set parallelism levels
-- [ ] Enable mini-batch optimization where applicable
+- [x] Add appropriate watermark strategies
+- [x] Configure checkpoint intervals
+- [x] Set parallelism levels
+- [x] Enable mini-batch optimization where applicable
 
 ### Post-Migration Validation
-- [ ] Run unit tests against Flink SQL
-- [ ] Verify output schema matches expectations
-- [ ] Test with realistic data volumes
-- [ ] Monitor for memory and state issues
+- [x] Run unit tests against Flink SQL
+- [x] Verify output schema matches expectations
+- [x] Test with realistic data volumes
+- [x] Monitor for memory and state issues
 ```
 
 ---

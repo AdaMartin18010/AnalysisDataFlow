@@ -290,18 +290,18 @@ flowchart LR
 
 ```yaml
 # benchmark-config.yaml
-baseline: 
-  throughput: 
+baseline:
+  throughput:
     target: 100000  # events/sec
     duration: 10min
-  latency: 
+  latency:
     p50: < 50ms
     p99: < 200ms
-  resource: 
+  resource:
     cpu: < 4 cores
     memory: < 8GB
 
-workloads: 
+workloads:
   - name: simple-map
     complexity: low
   - name: keyed-aggregation

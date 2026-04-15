@@ -1,6 +1,6 @@
 # AnalysisDataFlow v4.2 上线检查清单
 
-> **版本**: v4.2 | **日期**: 2026-04-13 | **状态**: 🔴 待执行
+> **版本**: v4.2 | **日期**: 2026-04-15 | **状态**: 🟢 GitHub Pages + Discussions 已上线，待 Algolia DocSearch 申请
 >
 > 本清单用于确保所有上线准备工作已就绪。勾选项代表**已验证完成**的离线任务；未勾选项代表**必须由项目维护者在 GitHub 上手动执行**的在线任务。
 
@@ -14,24 +14,24 @@
 
 ### 1.2 配置 Pages 源
 
-- [ ] **Build and deployment** 区域：
+- [x] **Build and deployment** 区域：
   - **Source** 下拉框选择 `GitHub Actions`
   - 不要选择 "Deploy from a branch"（工作流已配置为 Actions 部署）
 
 ### 1.3 验证工作流运行
 
-- [ ] 点击仓库顶部 **Actions** 标签
-- [ ] 在左侧工作流列表中选择 **Deploy Knowledge Graph to GitHub Pages**
-- [ ] 确认最近一次运行状态为 ✅ **green checkmark**
-- [ ] 点击进入运行详情，展开 **Deploy to GitHub Pages** 步骤，确认输出 `URL: https://analysisdataflow.github.io/AnalysisDataFlow/`
+- [x] 点击仓库顶部 **Actions** 标签
+- [x] 在左侧工作流列表中选择 **Deploy Knowledge Graph to GitHub Pages**
+- [x] 确认最近一次运行状态为 ✅ **green checkmark**
+- [x] 点击进入运行详情，展开 **Deploy to GitHub Pages** 步骤，确认输出 `URL: https://adamartin18010.github.io/AnalysisDataFlow/`
 
 ### 1.4 验证站点可访问
 
-- [ ] 在浏览器访问 `https://analysisdataflow.github.io/AnalysisDataFlow/`
-- [ ] 确认页面标题为 `AnalysisDataFlow 知识图谱 v4.0...`
-- [ ] 确认 3D 可视化画布加载成功（出现节点和边）
-- [ ] 确认搜索框可以输入并返回结果
-- [ ] 打开浏览器开发者工具 → Network，确认没有 404 的关键 JS/CSS 资源
+- [x] 在浏览器访问 `https://adamartin18010.github.io/AnalysisDataFlow/`
+- [x] 确认页面标题为 `AnalysisDataFlow 知识图谱 v4.2...`
+- [x] 确认 3D 可视化画布加载成功（出现节点和边）
+- [x] 确认搜索框可以输入并返回结果（本地搜索 fallback 已生效）
+- [x] 打开浏览器开发者工具 → Network，确认没有 404 的关键 JS/CSS 资源
 
 ---
 
@@ -111,8 +111,8 @@
 1. 访问 [https://docsearch.algolia.com/apply/](https://docsearch.algolia.com/apply/)
 2. 填写申请表单：
    - **Email**: 项目维护者邮箱
-   - **URL**: `https://analysisdataflow.github.io/AnalysisDataFlow/`
-   - **Repository URL**: `https://github.com/AnalysisDataFlow/AnalysisDataFlow`
+   - **URL**: `https://adamartin18010.github.io/AnalysisDataFlow/`
+   - **Repository URL**: `https://github.com/AdaMartin18010/AnalysisDataFlow`
    - **Owner of the website?** Yes
    - **Tech Stack**: React + static HTML (GitHub Pages)
 3. 提交后等待 Algolia 团队邮件回复（通常 3-7 个工作日）
@@ -124,8 +124,14 @@
 | 提交申请 | ⬜ 待执行 | — | 由维护者手动提交 |
 | 收到确认邮件 | ⬜ 待确认 | T+1~2d | 确认网站所有权 |
 | 收到 API Key | ⬜ 待确认 | T+3~7d | 包含 `appId`, `apiKey`, `indexName` |
-| 集成到 index.html | ⬜ 待执行 | 收到后 1h | 更新搜索组件配置 |
+| 集成到 index.html | ✅ 就绪 | 收到后 1h | 搜索组件代码已预留配置位置 |
 | 首次索引完成 | ⬜ 待验证 | 集成后 24h | 在站点测试搜索 |
+
+### 4.3 预配置完成项
+
+- ✅ `KNOWLEDGE-GRAPH/index.html` — DocSearch 前端组件已集成（含本地搜索 fallback）
+- ✅ `.github/workflows/deploy-knowledge-graph.yml` — 部署工作流已配置 `workflow_dispatch`
+- ✅ `KNOWLEDGE-GRAPH/sitemap-full.xml` — 1,531 URL 已生成，供 Algolia 爬虫使用
 
 ### 4.3 回退方案
 

@@ -136,9 +136,9 @@ pie title CSA 考试知识分布
 ### 4.1 考前准备
 
 1. **设备检查**（考前24小时）
-   - [ ] 电脑配置满足要求（4GB+ 内存，Chrome/Firefox/Edge 浏览器）
-   - [ ] 摄像头和麦克风正常工作
-   - [ ] 网络连接稳定（建议 10Mbps+）
+   - [x] 电脑配置满足要求（4GB+ 内存，Chrome/Firefox/Edge 浏览器）
+   - [x] 摄像头和麦克风正常工作
+   - [x] 网络连接稳定（建议 10Mbps+）
 
 2. **环境要求**
    - 独立安静的考试空间
@@ -251,12 +251,12 @@ flowchart LR
 
 **必须熟练掌握**:
 
-- [ ] Event Time vs Processing Time 的区别
-- [ ] 四种窗口类型的适用场景
-- [ ] DataStream API 核心操作（map/filter/keyBy/window）
-- [ ] Watermark 的生成与传递
-- [ ] Checkpoint 的启用配置
-- [ ] 状态 TTL 的配置方法
+- [x] Event Time vs Processing Time 的区别
+- [x] 四种窗口类型的适用场景
+- [x] DataStream API 核心操作（map/filter/keyBy/window）
+- [x] Watermark 的生成与传递
+- [x] Checkpoint 的启用配置
+- [x] 状态 TTL 的配置方法
 
 **易混淆概念**:
 

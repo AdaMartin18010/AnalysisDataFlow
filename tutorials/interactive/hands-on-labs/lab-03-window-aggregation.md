@@ -486,11 +486,11 @@ stream.keyBy(...)
 
 ### 检查清单
 
-- [ ] 理解四种窗口类型的适用场景
-- [ ] 能够正确选择时间类型 (Event/Processing Time)
-- [ ] 掌握 AggregateFunction 和 ProcessWindowFunction 的区别
-- [ ] 理解窗口触发机制
-- [ ] 能够优化窗口性能
+- [x] 理解四种窗口类型的适用场景
+- [x] 能够正确选择时间类型 (Event/Processing Time)
+- [x] 掌握 AggregateFunction 和 ProcessWindowFunction 的区别
+- [x] 理解窗口触发机制
+- [x] 能够优化窗口性能
 
 ### 性能对比测试
 

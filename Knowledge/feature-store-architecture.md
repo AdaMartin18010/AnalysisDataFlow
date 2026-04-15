@@ -1,6 +1,6 @@
 # 特征存储系统架构设计与形式化定义
 
-> **所属阶段**: Knowledge/ | **前置依赖**: [ai-agent-streaming-architecture.md](./06-frontier/ai-agent-streaming-architecture.md), [realtime-feature-engineering-feature-store.md](./06-frontier/realtime-feature-engineering-feature-store.md) | **形式化等级**: L4
+> **所属阶段**: Knowledge/ | **前置依赖**: [ai-agent-streaming-architecture.md](./06-frontier/ai-agent-streaming-architecture.md), [realtime-feature-engineering-feature-store.md](../Flink/06-ai-ml/realtime-feature-engineering-feature-store.md) | **形式化等级**: L4
 
 ---
 

@@ -1,6 +1,6 @@
 # FPGA 在 Flink 流处理中的加速应用
 
-> **所属阶段**: Flink/ | **前置依赖**: [hardware-accelerated-streaming.md](../Knowledge/hardware-accelerated-streaming.md), [flink-network-stack.md](./02-core/flink-network-stack.md) | **形式化等级**: L4
+> **所属阶段**: Flink/ | **前置依赖**: [hardware-accelerated-streaming.md](../Knowledge/hardware-accelerated-streaming.md), [network-stack-internals.md](./10-internals/network-stack-internals.md) | **形式化等级**: L4
 
 ---
 

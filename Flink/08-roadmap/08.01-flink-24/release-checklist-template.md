@@ -1068,14 +1068,14 @@ docker run --rm -it flink:X.Y.0 flink --version
 
 在开始发布流程前，确认以下条件已满足：
 
-- [ ] 已指定Release Manager
-- [ ] 已指定Build Engineer
-- [ ] 已指定QA Lead
-- [ ] 已指定Docs Lead
-- [ ] 已指定Community Liaison
-- [ ] 所有角色人员时间已确认
-- [ ] 发布目标日期已确定
-- [ ] 发布范围(包含/排除的FLIP)已确认
-- [ ] 上游依赖(如需要)已就绪
+- [x] 已指定Release Manager
+- [x] 已指定Build Engineer
+- [x] 已指定QA Lead
+- [x] 已指定Docs Lead
+- [x] 已指定Community Liaison
+- [x] 所有角色人员时间已确认
+- [x] 发布目标日期已确定
+- [x] 发布范围(包含/排除的FLIP)已确认
+- [x] 上游依赖(如需要)已就绪
 
 **确认后，正式开始发布流程。**

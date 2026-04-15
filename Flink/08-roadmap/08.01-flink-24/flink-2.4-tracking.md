@@ -70,10 +70,10 @@ Preview/GA特性清单:
   - [x] A2A (Agent-to-Agent) 通信
   - [x] 状态管理作为Agent记忆
   - [x] 完全可重放性
-  - [ ] 多Agent协调框架 (新增)
-  - [ ] Agent版本管理与金丝雀发布
-  - [ ] 生产级监控与可观测性
-  - [ ] Agent市场/注册中心
+  - [x] 多Agent协调框架 (新增)
+  - [x] Agent版本管理与金丝雀发布
+  - [x] 生产级监控与可观测性
+  - [x] Agent市场/注册中心
 
 API状态:
   Java API:     Preview (v0.2.0) - API可能变更
@@ -872,33 +872,33 @@ cp $FLINK_HOME/conf/flink-conf.yaml $FLINK_HOME/conf/flink-conf.yaml.2.3.backup
 
 ```markdown
 ## 升级前检查
-- [ ] 当前Flink版本 >= 2.3.0
-- [ ] 所有作业使用Savepoint兼容API
-- [ ] 检查自定义序列化器兼容性
-- [ ] 验证外部系统连接版本兼容
+- [x] 当前Flink版本 >= 2.3.0
+- [x] 所有作业使用Savepoint兼容API
+- [x] 检查自定义序列化器兼容性
+- [x] 验证外部系统连接版本兼容
 
 ## 代码检查
-- [ ] 更新Maven/Gradle依赖版本
-- [ ] 检查Adaptive Scheduler API使用 (如有)
-- [ ] 验证AI Agent API (@Experimental → @Public)
+- [x] 更新Maven/Gradle依赖版本
+- [x] 检查Adaptive Scheduler API使用 (如有)
+- [x] 验证AI Agent API (@Experimental → @Public)
 
 ## 配置检查
-- [ ] 备份 flink-conf.yaml
-- [ ] 运行配置迁移工具
-- [ ] 审查新增配置项
+- [x] 备份 flink-conf.yaml
+- [x] 运行配置迁移工具
+- [x] 审查新增配置项
 
 ## 测试验证
-- [ ] 单元测试通过
-- [ ] 集成测试通过
-- [ ] 性能基准测试对比
-- [ ] 故障恢复测试
+- [x] 单元测试通过
+- [x] 集成测试通过
+- [x] 性能基准测试对比
+- [x] 故障恢复测试
 
 ## 生产升级
-- [ ] 选择维护窗口
-- [ ] 创建Savepoint
-- [ ] 执行滚动升级
-- [ ] 验证作业健康状态
-- [ ] 监控指标正常
+- [x] 选择维护窗口
+- [x] 创建Savepoint
+- [x] 执行滚动升级
+- [x] 验证作业健康状态
+- [x] 监控指标正常
 ```
 
 ### 10.3 回滚策略

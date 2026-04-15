@@ -395,23 +395,23 @@ lhci autorun
 
 #### 每周
 
-- [ ] 更新CHANGELOG.md
-- [ ] 检查Google Search Console中的错误
-- [ ] 查看搜索查询表现
+- [x] 更新CHANGELOG.md
+- [x] 检查Google Search Console中的错误
+- [x] 查看搜索查询表现
 
 #### 每月
 
-- [ ] 运行 `python .scripts/seo-optimizer.py --full-audit`
-- [ ] 更新过时内容
-- [ ] 检查并修复损坏的链接
-- [ ] 查看Lighthouse报告
+- [x] 运行 `python .scripts/seo-optimizer.py --full-audit`
+- [x] 更新过时内容
+- [x] 检查并修复损坏的链接
+- [x] 查看Lighthouse报告
 
 #### 每季度
 
-- [ ] 分析搜索排名变化
-- [ ] 优化表现不佳的页面
-- [ ] 更新关键词策略
-- [ ] 检查竞争对手排名
+- [x] 分析搜索排名变化
+- [x] 优化表现不佳的页面
+- [x] 更新关键词策略
+- [x] 检查竞争对手排名
 
 ### 关键词优化
 

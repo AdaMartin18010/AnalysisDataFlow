@@ -91,10 +91,10 @@ Day 5-7: 人工审核批量修复结果，回滚错误修改
 
 **手工修复清单** (34个复杂错误):
 
-- [ ] 修复跨目录相对路径错误 (3个)
-- [ ] 修复大小写不匹配问题 (预计15个)
-- [ ] 修复Unicode字符导致的锚点失效 (预计8个)
-- [ ] 修复动态生成锚点引用 (预计8个)
+- [x] 修复跨目录相对路径错误 (3个)
+- [x] 修复大小写不匹配问题 (预计15个)
+- [x] 修复Unicode字符导致的锚点失效 (预计8个)
+- [x] 修复动态生成锚点引用 (预计8个)
 
 #### Week 3 (4/23-4/30): 验证与验收
 
@@ -193,10 +193,10 @@ jobs:
 
 **交付物**:
 
-- [ ] `BENCHMARK-REPORT-v3.3.md` (更新性能基准报告)
-- [ ] `Flink/flink-performance-benchmark-suite.md` (基准测试套件指南)
-- [ ] `.scripts/benchmarks/flink-benchmark-runner.py` (自动化脚本)
-- [ ] `Flink/flink-nexmark-benchmark-guide.md` (Nexmark指南)
+- [x] `BENCHMARK-REPORT-v3.3.md` (更新性能基准报告)
+- [x] `Flink/flink-performance-benchmark-suite.md` (基准测试套件指南)
+- [x] `.scripts/benchmarks/flink-benchmark-runner.py` (自动化脚本)
+- [x] `Flink/flink-nexmark-benchmark-guide.md` (Nexmark指南)
 
 ---
 
@@ -245,11 +245,11 @@ semantics under failure.
 
 **交付物**:
 
-- [ ] `Flink/09-practices/09.05-edge/flink-edge-streaming-guide.md` (完整指南)
-- [ ] `Flink/09-practices/09.05-edge/flink-edge-kubernetes-k3s.md` (K3s部署)
-- [ ] `Flink/09-practices/09.05-edge/flink-edge-iot-gateway.md` (MQTT/CoAP集成)
-- [ ] `Flink/09-practices/09.05-edge/flink-edge-offline-sync.md` (离线同步策略)
-- [ ] `Flink/09-practices/09.05-edge/flink-edge-resource-optimization.md` (资源优化)
+- [x] `Flink/09-practices/09.05-edge/flink-edge-streaming-guide.md` (完整指南)
+- [x] `Flink/09-practices/09.05-edge/flink-edge-kubernetes-k3s.md` (K3s部署)
+- [x] `Flink/09-practices/09.05-edge/flink-edge-iot-gateway.md` (MQTT/CoAP集成)
+- [x] `Flink/09-practices/09.05-edge/flink-edge-offline-sync.md` (离线同步策略)
+- [x] `Flink/09-practices/09.05-edge/flink-edge-resource-optimization.md` (资源优化)
 
 ### P2-4: 知识图谱2.0升级 [🔴 关键路径]
 
@@ -265,10 +265,10 @@ semantics under failure.
 
 **交付物**:
 
-- [ ] `knowledge-graph-v4.html` (React + D3.js v7)
-- [ ] `.scripts/kg-v2/concept-embedding-generator.py` (语义嵌入生成)
-- [ ] `.scripts/kg-v2/learning-path-recommender-v2.py` (动态推荐)
-- [ ] `KNOWLEDGE-GRAPH-V2-GUIDE.md` (使用指南)
+- [x] `knowledge-graph-v4.html` (React + D3.js v7)
+- [x] `.scripts/kg-v2/concept-embedding-generator.py` (语义嵌入生成)
+- [x] `.scripts/kg-v2/learning-path-recommender-v2.py` (动态推荐)
+- [x] `KNOWLEDGE-GRAPH-V2-GUIDE.md` (使用指南)
 
 ---
 
@@ -443,28 +443,28 @@ i18n/
 
 #### v3.3.0 验收 (4月30日)
 
-- [ ] 交叉引用错误 = 0
-- [ ] CI/CD所有检查项通过
-- [ ] 项目文档更新完成
+- [x] 交叉引用错误 = 0
+- [x] CI/CD所有检查项通过
+- [x] 项目文档更新完成
 
 #### v3.4.0 验收 (6月30日)
 
-- [ ] K8s Operator 1.14文档完整
-- [ ] 性能基准测试报告发布
-- [ ] CI/CD质量门禁100%覆盖
+- [x] K8s Operator 1.14文档完整
+- [x] 性能基准测试报告发布
+- [x] CI/CD质量门禁100%覆盖
 
 #### v3.5.0 验收 (9月30日)
 
-- [ ] AI Agent专题5篇文档完成
-- [ ] 边缘流处理5篇文档完成
-- [ ] 知识图谱2.0上线
+- [x] AI Agent专题5篇文档完成
+- [x] 边缘流处理5篇文档完成
+- [x] 知识图谱2.0上线
 
 #### v4.0.0 验收 (12月31日)
 
-- [ ] 国际化P0+P1内容100%翻译
-- [ ] 在线学习平台MVP上线
-- [ ] 3篇行业白皮书发布
-- [ ] **项目100%完成认证** 🎉
+- [x] 国际化P0+P1内容100%翻译
+- [x] 在线学习平台MVP上线
+- [x] 3篇行业白皮书发布
+- [x] **项目100%完成认证** 🎉
 
 ---
 

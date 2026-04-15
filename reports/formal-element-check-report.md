@@ -1,12 +1,12 @@
 # Formal Element Integrity Check Report
 
-**Generated**: 2026-04-14T23:27:32.989096
+**Generated**: 2026-04-15T23:53:32.218423
 
 ## Summary
 
 | Metric | Count |
 |--------|-------|
-| Files Checked | 335 |
+| Files Checked | 379 |
 | Files with Issues | 0 |
 
 ## Formal Elements Found
@@ -14,10 +14,10 @@
 | Type | Count |
 |------|-------|
 | Corollary (推论) | 60 |
-| Definition (定义) | 3147 |
-| Lemma (引理) | 1113 |
-| Proposition (命题) | 848 |
-| Theorem (定理) | 1042 |
+| Definition (定义) | 3341 |
+| Lemma (引理) | 1211 |
+| Proposition (命题) | 889 |
+| Theorem (定理) | 1136 |
 
 ## ⚠️ Files with Warnings Only
 
@@ -185,6 +185,8 @@
 | Flink/Formal-to-Code-Mapping-v2.md | 72 |
 | Flink/flink-built-in-functions-reference.md | 9 |
 | Flink/flink-data-types-reference.md | 11 |
+| Flink/flink-feature-store-integration.md | 12 |
+| Flink/flink-fpga-acceleration.md | 12 |
 | Knowledge/01-concept-atlas/01.01-stream-processing-fundamentals.md | 39 |
 | Knowledge/01-concept-atlas/01.02-time-semantics.md | 45 |
 | Knowledge/01-concept-atlas/01.03-window-concepts.md | 26 |
@@ -233,7 +235,7 @@
 | Knowledge/05-mapping-guides/struct-to-flink-mapping.md | 152 |
 | Knowledge/05-mapping-guides/theory-to-code-patterns.md | 57 |
 | Knowledge/05-migrations/kafka-streams-to-flink-guide.md | 8 |
-| Knowledge/06-frontier/a2a-protocol-agent-communication.md | 27 |
+| Knowledge/06-frontier/a2a-protocol-agent-communication.md | 31 |
 | Knowledge/06-frontier/ai-agent-a2a-protocol.md | 12 |
 | Knowledge/06-frontier/ai-agent-database-workloads.md | 7 |
 | Knowledge/06-frontier/cloud-edge-continuum.md | 16 |
@@ -244,7 +246,7 @@
 | Knowledge/06-frontier/go-streaming-ecosystem-2025.md | 1 |
 | Knowledge/06-frontier/materialize-comparison-guide.md | 16 |
 | Knowledge/06-frontier/mcp-protocol-agent-streaming.md | 15 |
-| Knowledge/06-frontier/mcp-security-governance-2026.md | 6 |
+| Knowledge/06-frontier/mcp-security-governance-2026.md | 7 |
 | Knowledge/06-frontier/multi-agent-streaming-orchestration.md | 12 |
 | Knowledge/06-frontier/realtime-ai-streaming-2026.md | 8 |
 | Knowledge/06-frontier/realtime-data-mesh-practice.md | 12 |
@@ -295,10 +297,36 @@
 | Knowledge/Flink-Scala-Rust-Comprehensive/05-architecture-patterns/05.03-cloud-deployment.md | 7 |
 | Knowledge/Flink-Scala-Rust-Comprehensive/05-architecture-patterns/05.04-edge-computing.md | 7 |
 | Knowledge/Flink-Scala-Rust-Comprehensive/06-trends-2026/06.01-2026-trends.md | 8 |
+| Knowledge/acid-in-stream-processing.md | 12 |
+| Knowledge/aqp-error-bounds.md | 9 |
+| Knowledge/automated-feature-selection.md | 9 |
 | Knowledge/case-studies/ecommerce-realtime-recommendation-v2.md | 12 |
 | Knowledge/case-studies/fraud-detection-production-case.md | 12 |
 | Knowledge/case-studies/gaming-analytics-platform-case.md | 16 |
 | Knowledge/case-studies/iot-smart-grid-case-study.md | 12 |
+| Knowledge/disordered-window-join.md | 9 |
+| Knowledge/dpu-stream-processing.md | 12 |
+| Knowledge/elastic-sequence-parallelism.md | 5 |
+| Knowledge/exactly-once-comparison.md | 9 |
+| Knowledge/feature-lineage-tracking.md | 12 |
+| Knowledge/gpu-stream-join.md | 12 |
+| Knowledge/hardware-accelerated-streaming.md | 14 |
+| Knowledge/llm-kg-stream-reasoning.md | 11 |
+| Knowledge/llm-query-rewrite.md | 9 |
+| Knowledge/llm-stream-diagnosis.md | 9 |
+| Knowledge/llm-stream-tuning.md | 9 |
+| Knowledge/multimodal-stream-aqp.md | 4 |
+| Knowledge/reliability-verification.md | 9 |
+| Knowledge/rl-query-optimization.md | 7 |
+| Knowledge/rl-tkg-reasoning.md | 4 |
+| Knowledge/stream-feature-computation.md | 14 |
+| Knowledge/stream-inference-scheduling.md | 5 |
+| Knowledge/stream-summaries.md | 11 |
+| Knowledge/temporal-kg-reasoning.md | 17 |
+| Knowledge/timestamp-aware-caching.md | 5 |
+| Knowledge/tkg-stream-updates.md | 9 |
+| Knowledge/video-stream-cep.md | 4 |
+| Knowledge/zero-shot-video-query.md | 4 |
 | Struct/01-foundation/01.01-unified-streaming-theory.md | 4 |
 | Struct/01-foundation/01.02-process-calculus-primer.md | 30 |
 | Struct/01-foundation/01.03-actor-model-formalization.md | 80 |
@@ -352,10 +380,26 @@
 | Struct/Key-Theorem-Proof-Chains.md | 104 |
 | Struct/Model-Selection-Decision-Tree.md | 16 |
 | Struct/Struct-to-Knowledge-Mapping.md | 108 |
+| Struct/aqp-streaming-formalization.md | 9 |
+| Struct/bounded-staleness-cache.md | 10 |
+| Struct/bounded-staleness.md | 18 |
+| Struct/consistency-training-inference.md | 19 |
+| Struct/end-to-end-reliability.md | 11 |
+| Struct/hardware-offload-decision.md | 14 |
+| Struct/interval-join-parallelism.md | 9 |
+| Struct/learned-cost-models-streaming.md | 9 |
+| Struct/online-tkg-learning.md | 9 |
+| Struct/serverless-ml-inference.md | 6 |
+| Struct/speculative-stream-ordering.md | 13 |
+| Struct/state-prefetching.md | 7 |
+| Struct/transactional-stream-semantics.md | 20 |
+| Struct/unified-aqp-theory.md | 9 |
+| Struct/window-algebra-properties.md | 9 |
+| Struct/window-join-reordering.md | 13 |
 
 ## Compliance Rate
 
-**100.0%** (335/335)
+**100.0%** (379/379)
 
 ## Recommendations
 

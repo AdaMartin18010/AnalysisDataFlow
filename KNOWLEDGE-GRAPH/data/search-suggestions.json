@@ -1,0 +1,16 @@
+[
+  "Checkpoint机制",
+  "Watermark水位线",
+  "Backpressure背压",
+  "Exactly-Once语义",
+  "Dataflow模型",
+  "Actor模型",
+  "进程演算",
+  "状态后端",
+  "窗口计算",
+  "时间语义",
+  "Thm-S-01-01",
+  "Def-K-02-01",
+  "Flink SQL",
+  "Table API"
+]

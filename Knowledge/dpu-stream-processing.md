@@ -1,6 +1,6 @@
 # DPU 与 SmartNIC 在流处理中的角色
 
-> **所属阶段**: Knowledge/ | **前置依赖**: [hardware-accelerated-streaming.md](./hardware-accelerated-streaming.md), [flink-network-stack.md](../Flink/02-core/flink-network-stack.md) | **形式化等级**: L4
+> **所属阶段**: Knowledge/ | **前置依赖**: [hardware-accelerated-streaming.md](./hardware-accelerated-streaming.md), [network-stack-internals.md](../Flink/10-internals/network-stack-internals.md) | **形式化等级**: L4
 
 ---
 
