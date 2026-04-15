@@ -198,11 +198,11 @@ jobs:
           REGRESSION_THRESHOLD = 1.5  # 1.5x slowdown = regression
 
           # 加载当前结果
-          with open('reports/performance-benchmark.json') as f:
+          with open('reports/performance-benchmark/performance-benchmark.json') as f:
               current = json.load(f)
 
           # 加载历史数据
-          history_file = Path('reports/performance-history.json')
+          history_file = Path('reports/performance-history/performance-history.json')
           if history_file.exists():
               with open(history_file) as f:
                   history = json.load(f)
@@ -317,7 +317,7 @@ jobs:
           from datetime import datetime
 
           # 加载历史数据
-          history_file = Path('reports/performance-history.json')
+          history_file = Path('reports/performance-history/performance-history.json')
           if history_file.exists():
               with open(history_file) as f:
                   history = json.load(f)

@@ -14,11 +14,11 @@ services:
       - "8081:8081"  # Web UI
       - "6123:6123"  # RPC 端口
     environment:
-      - JOB_MANAGER_RPC_ADDRESS=jobmanager
-      - FLINK_PROPERTIES=
-          jobmanager.memory.process.size: 2048m
-          jobmanager.memory.jvm-heap.size: 1536m
-          jobmanager.memory.off-heap.size: 512m
+      JOB_MANAGER_RPC_ADDRESS: jobmanager
+      FLINK_PROPERTIES: |
+        jobmanager.memory.process.size: 2048m
+        jobmanager.memory.jvm-heap.size: 1536m
+        jobmanager.memory.off-heap.size: 512m
     command: jobmanager
     volumes:
       - ./data:/data
@@ -41,12 +41,12 @@ services:
       jobmanager:
         condition: service_healthy
     environment:
-      - JOB_MANAGER_RPC_ADDRESS=jobmanager
-      - FLINK_PROPERTIES=
-          taskmanager.memory.process.size: 4096m
-          taskmanager.memory.flink.size: 3072m
-          taskmanager.memory.managed.size: 1024m
-          taskmanager.numberOfTaskSlots: 4
+      JOB_MANAGER_RPC_ADDRESS: jobmanager
+      FLINK_PROPERTIES: |
+        taskmanager.memory.process.size: 4096m
+        taskmanager.memory.flink.size: 3072m
+        taskmanager.memory.managed.size: 1024m
+        taskmanager.numberOfTaskSlots: 4
     command: taskmanager
     volumes:
       - ./data:/data

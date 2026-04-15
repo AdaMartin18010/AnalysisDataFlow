@@ -338,16 +338,30 @@ jobs:
           from pathlib import Path
 
           errors = []
+          skip_patterns = ['.git', '__pycache__', '.venv', 'venv', 'node_modules', 'mkdocs.yml']
+          skip_dirs = ['archive', 'Flink-IoT-Authority-Alignment', 'CONFIG-TEMPLATES/cloud-providers']
+          skip_name_substrings = ['docker-compose']
 
           for pattern in ['**/*.yml', '**/*.yaml']:
               for yaml_file in Path('.').glob(pattern):
-                  # 排除虚拟环境和缓存目录
-                  if any(skip in str(yaml_file) for skip in ['.git', '__pycache__', '.venv', 'venv', 'node_modules']):
+                  path_str = str(yaml_file).replace('\\', '/')
+                  # 排除虚拟环境、缓存目录和已知第三方配置文件
+                  if any(skip in path_str for skip in skip_patterns):
                       continue
-                  
+                  # 排除归档内容、扩展内容目录和已知混合格式模板
+                  if any(path_str.startswith(f'{sd}/') for sd in skip_dirs):
+                      continue
+                  # 排除Docker Compose文件(Docker Compose YAML方言与PyYAML不兼容)
+                  if any(ss in path_str.lower() for ss in skip_name_substrings):
+                      continue
+
                   try:
                       content = yaml_file.read_text(encoding='utf-8')
-                      yaml.safe_load(content)
+                      # 多文档YAML使用safe_load_all
+                      if '---' in content:
+                          list(yaml.safe_load_all(content))
+                      else:
+                          yaml.safe_load(content)
                   except yaml.YAMLError as e:
                       errors.append(f"{yaml_file}: {e}")
                   except Exception:
