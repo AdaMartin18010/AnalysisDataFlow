@@ -55,12 +55,18 @@ Proof.
   intros. unfold min_plus_mul. apply Rplus_assoc.
 Qed.
 
-(* 分配律 *)
-Lemma min_plus_distr : forall x y z, x ⊕ (y ⊙ z) = (x ⊕ y) ⊙ (x ⊕ z).
+(* 分配律: Min-Plus乘法(+)对加法(min)的分配 *)
+Lemma min_plus_distr : forall x y z, x ⊙ (y ⊕ z) = (x ⊙ y) ⊕ (x ⊙ z).
 Proof.
-  intros. unfold min_plus_add, min_plus_mul.
-  admit.  (* Rmin与Rplus的分配律需要额外条件 *)
-Admitted.
+  intros x y z. unfold min_plus_add, min_plus_mul.
+  destruct (Rle_dec y z) as [Hle | Hgt].
+  - (* y <= z *)
+    rewrite Rmin_left by lra.
+    rewrite Rmin_left; lra.
+  - (* z < y *)
+    rewrite Rmin_right by lra.
+    rewrite Rmin_right; lra.
+Qed.
 
 End MinPlus_Algebra.
 
@@ -127,34 +133,78 @@ Theorem delay_bound_theorem :
   forall alpha beta r b R T d,
     (forall t, alpha t = r * t + b) ->       (* 漏桶到达 *)
     (forall t, beta t = RateLatency R T t) -> (* 速率延迟服务 *)
+    0 < R ->                                   (* 服务速率为正 *)
+    0 <= b ->                                  (* 突发量为非负 *)
     r <= R ->                                  (* 稳定性条件 *)
     d = T + b / R ->                          (* 延迟公式 *)
     DelayBound alpha beta d.
 Proof.
-  intros alpha beta r b R T d Halpha Hbeta Hstab Hd t Ht.
+  intros alpha beta r b R T d Halpha Hbeta HR Hb Hstab Hd t Ht.
   unfold DelayBound.
-  (* 展开到达曲线和服务曲线 *)
-  rewrite Halpha, Hbeta.
-  (* 代入延迟公式 *)
-  rewrite Hd.
-  (* 代数推导 *)
-  admit.  (* 详细代数证明 *)
-Admitted.
+  rewrite Halpha, Hbeta, Hd.
+  unfold RateLatency.
+  destruct (Rlt_dec (t + (T + b / R)) T) as [Hlt | Hge].
+  - (* 不可能情况: t + T + b/R < T 意味着 t + b/R < 0,
+       但 t >= 0 且 b/R >= 0 (因 b >= 0, R > 0) *)
+    exfalso.
+    assert (0 <= b / R).
+    { apply Rdiv_le_0_compat; lra. }
+    lra.
+  - (* t + T + b/R >= T, 即 RateLatency = R * (t + d - T) *)
+    assert (Heq: R * (t + (T + b / R) - T) = R * t + b).
+    { unfold Rdiv.
+      assert (Hinv: R * /R = 1) by (apply Rinv_r; lra).
+      replace (t + (T + b * /R) - T) with (t + b * /R) by
+        (rewrite Rplus_assoc; rewrite Rplus_comm with (r1 := T);
+         rewrite <- Rplus_assoc; rewrite Rplus_opp_r; rewrite Rplus_0_r;
+         reflexivity).
+      rewrite Rmult_plus_distr_l.
+      rewrite <- Rmult_assoc.
+      rewrite Hinv.
+      rewrite Rmult_1_r.
+      reflexivity.
+    }
+    rewrite Heq.
+    apply Rplus_le_compat_r.
+    apply Rmult_le_compat_r; lra.
+Qed.
 
 (* Thm-S-01-NC-02: 积压边界定理 *)
 Theorem backlog_bound_theorem :
   forall alpha beta r b R T B,
     (forall t, alpha t = r * t + b) ->
     (forall t, beta t = RateLatency R T t) ->
+    0 < R ->                                   (* 服务速率为正 *)
+    0 <= r ->                                  (* 到达速率为非负 *)
+    0 <= b ->                                  (* 突发量为非负 *)
     r <= R ->
     B = b + r * T ->
     BacklogBound alpha beta B.
 Proof.
-  intros alpha beta r b R T B Halpha Hbeta Hstab HB t Ht.
+  intros alpha beta r b R T B Halpha Hbeta HR Hr Hb Hstab HB t Ht.
   unfold BacklogBound.
   rewrite Halpha, Hbeta, HB.
-  admit.  (* 详细代数证明 *)
-Admitted.
+  unfold RateLatency.
+  destruct (Rlt_dec t T) as [Hlt | Hge].
+  - (* t < T: beta t = 0, 需要 r * t + b <= b + r * T, 即 r * t <= r * T *)
+    replace (r * t + b - 0) with (r * t + b) by ring.
+    apply Rplus_le_compat_r.
+    apply Rmult_le_compat_l; lra.
+  - (* t >= T: beta t = R * (t - T) *)
+    assert (Heq: r * t + b - R * (t - T) = (r - R) * t + b + R * T).
+    { ring. }
+    rewrite Heq.
+    assert (Heq2: b + r * T = (r - R) * T + b + R * T).
+    { ring. }
+    rewrite Heq2.
+    apply Rplus_le_compat_r.
+    apply Rplus_le_compat_l.
+    assert (Hneg: r - R <= 0) by lra.
+    replace ((r - R) * t) with (-((R - r) * t)) by ring.
+    replace ((r - R) * T) with (-((R - r) * T)) by ring.
+    apply Ropp_le_contravar.
+    apply Rmult_le_compat_l; lra.
+Qed.
 
 End Delay_Backlog_Bounds.
 

@@ -82,6 +82,8 @@
 | [02-core/adaptive-execution-engine-v2.md](02-core/adaptive-execution-engine-v2.md) | 自适应执行引擎 V2 | 1.18+ |
 | [02-core/multi-way-join-optimization.md](02-core/multi-way-join-optimization.md) | 多路 Join 优化 | 1.18+ |
 | [02-core/delta-join.md](02-core/delta-join.md) | Delta Join | 1.19+ |
+| [02-core/flink-delta-join-deep-dive.md](02-core/flink-delta-join-deep-dive.md) | Delta Join 深度解析 (2.1+) | 2.1+ | 🆕 v4.4 |
+| [02-core/flink-streaming-multi-join-operator.md](02-core/flink-streaming-multi-join-operator.md) | StreamingMultiJoinOperator | 2.1+ | 🆕 v4.4 |
 
 ---
 
@@ -99,6 +101,7 @@
 | [03-api/03.02-table-sql-api/flink-cep-complete-guide.md](03-api/03.02-table-sql-api/flink-cep-complete-guide.md) | CEP 完整指南 | 1.17+ |
 | [03-api/03.02-table-sql-api/built-in-functions-complete-list.md](03-api/03.02-table-sql-api/built-in-functions-complete-list.md) | 内置函数列表 | 1.17+ |
 | [03-api/03.02-table-sql-api/ansi-sql-2023-compliance-guide.md](03-api/03.02-table-sql-api/ansi-sql-2023-compliance-guide.md) | ANSI SQL 2023 | 1.19+ |
+| [03-api/03.02-table-sql-api/model-ddl-and-ml-predict.md](03-api/03.02-table-sql-api/model-ddl-and-ml-predict.md) | Model DDLs 与 ML_PREDICT | 2.1+ | 🆕 v4.4 |
 
 #### DataStream API
 
@@ -115,6 +118,7 @@
 | [03-api/09-language-foundations/pyflink-complete-guide.md](03-api/09-language-foundations/pyflink-complete-guide.md) | PyFlink 完整指南 | 1.17+ |
 | [03-api/09-language-foundations/01.01-scala-types-for-streaming.md](03-api/09-language-foundations/01.01-scala-types-for-streaming.md) | Scala 类型系统 | 1.17+ |
 | [03-api/09-language-foundations/flink-rust-native-api-guide.md](03-api/09-language-foundations/flink-rust-native-api-guide.md) | Rust Native API | 2.0+ |
+| [03-api/09-language-foundations/02.03-python-async-api.md](03-api/09-language-foundations/02.03-python-async-api.md) | Python Async DataStream API | 2.2+ | 🆕 v4.4 |
 
 ---
 

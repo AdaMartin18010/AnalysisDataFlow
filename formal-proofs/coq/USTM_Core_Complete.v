@@ -111,13 +111,15 @@ Proof. discriminate. Qed.
 Lemma L5_not_L6 : L5_HigherOrder <> L6_Turing.
 Proof. discriminate. Qed.
 
-(* 反自反性 *)
-Lemma LevelLe_irreflexive : forall l, LevelLe l l -> False.
+(* 严格层次序 *)
+Definition LevelLt (l1 l2 : Level) : Prop := LevelLe l1 l2 /\ l1 <> l2.
+
+(* 严格序反自反性 *)
+Lemma LevelLt_irreflexive : forall l, LevelLt l l -> False.
 Proof.
-  intros l H.
-  (* 使用古典逻辑，证明不存在真正的严格包含循环 *)
-  (* 实际上Le_Refl是自反的，这里应该证明严格小于 *)
-Admitted.
+  intros l [Hle Hneq].
+  contradiction.
+Qed.
 
 (* Thm-S-01-02: 层次严格性定理 - 完整证明 *)
 Theorem level_strictness : forall l1 l2,
@@ -274,17 +276,41 @@ Proof.
   - apply Prefix_Step. apply IH.
 Qed.
 
+(* 流前缀长度单调性 *)
+Lemma stream_prefix_length : forall s1 s2,
+  StreamPrefix s1 s2 -> length s1 <= length s2.
+Proof.
+  intros s1 s2 H. induction H.
+  - apply le_n.
+  - simpl. apply le_S. apply IHStreamPrefix.
+Qed.
+
 (* 流前缀的反对称性 *)
 Theorem stream_prefix_antisymmetric : forall s1 s2,
   StreamPrefix s1 s2 -> StreamPrefix s2 s1 -> s1 = s2.
 Proof.
   intros s1 s2 H12 H21.
+  assert (Hlen1: length s1 <= length s2) by (apply stream_prefix_length; assumption).
+  assert (Hlen2: length s2 <= length s1) by (apply stream_prefix_length; assumption).
+  assert (Hlen: length s1 = length s2) by (apply Nat.le_antisymm; assumption).
   induction H12 as [s | e s1' s2' Hpref IH].
   - reflexivity.
-  - inversion H21; subst.
-    + f_equal. apply IH. apply H0.
-    + (* 不可能情况 *) admit.
-Admitted.
+  - simpl in Hlen.
+    inversion H21; subst.
+    + (* Prefix_Refl: s1' = e :: s2', 但 Hpref : StreamPrefix (e :: s2') s2' *)
+      exfalso.
+      assert (Hcontra: S (length s2') <= length s2') by
+        (apply stream_prefix_length; assumption).
+      apply (Nat.nle_succ_diag_l _ Hcontra).
+    + (* Prefix_Step: s1' = e0 :: s2'' 且 H0 : StreamPrefix (e :: s2') s2'' *)
+      exfalso.
+      simpl in Hlen.
+      assert (Hcontra: S (length s2') <= length s2'') by
+        (apply stream_prefix_length; assumption).
+      assert (Hlen_eq: length s2'' = length s2') by omega.
+      rewrite Hlen_eq in Hcontra.
+      apply (Nat.nle_succ_diag_l _ Hcontra).
+Qed.
 
 End Stream_Semantics.
 

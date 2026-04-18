@@ -2,6 +2,12 @@
 
 > 所属阶段: Knowledge/10-case-studies/formal-verification | 前置依赖: [Veil Framework](../../../formal-methods/06-tools/veil-framework-lean4.md), [LLM 辅助形式化证明](../../../Struct/06-frontier/llm-guided-formal-proof-automation.md) | 形式化等级: L5-L6
 
+> **案例性质**: 🔬 概念验证架构 | **验证状态**: 基于理论推导与架构设计，未经独立第三方生产验证
+>
+> 本案例描述的是基于项目理论框架推导出的理想架构方案，包含假设性性能指标与理论成本模型。
+> 实际生产部署可能因环境差异、数据规模、团队能力等因素产生显著不同结果。
+> 建议将其作为架构设计参考而非直接复制粘贴的生产蓝图。
+>
 ## 摘要
 
 本文记录了一家虚构的分布式数据库公司 **ConsensusDB** 在 2025–2026 年期间，采用 **Veil Framework（Lean 4）+ LLM 辅助证明生成 + TLA⁺ 模型检验 + Iris 分离逻辑** 的多层次形式化验证体系，成功验证其 Raft 共识算法变体在异常网络条件下的安全性（Safety）与活性（Liveness）的完整工程实践。项目周期从传统手工证明的预估 6 个月压缩至 2.5 个月，证明义务（Proof Obligation）通过率达到 87.3%，并借助 LLM 的生成-验证-修复循环发现了 3 个此前被手工证明遗漏的边界条件。本文从业务背景、技术架构、实施细节、效率对比、关键发现与踩坑记录六个维度，为工业界形式化验证的落地提供可复现的参考路径。
@@ -12,7 +18,49 @@
 
 ## 目录
 
-- [案例研究：形式化验证驱动开发 —— Veil Framework + LLM 辅助证明的分布式系统验证](#)
+- [案例研究：形式化验证驱动开发 —— Veil Framework + LLM 辅助证明的分布式系统验证](#案例研究形式化验证驱动开发--veil-framework--llm-辅助证明的分布式系统验证)
+  - [摘要](#摘要)
+  - [目录](#目录)
+  - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
+    - [Def-K-10-01-01: 形式化验证驱动开发（Formal Verification-Driven Development, FVDD）](#def-k-10-01-01-形式化验证驱动开发formal-verification-driven-development-fvdd)
+    - [Def-K-10-01-02: 共识协议的安全性（Safety）与活性（Liveness）](#def-k-10-01-02-共识协议的安全性safety与活性liveness)
+    - [Def-K-10-01-03: Veil Framework 的迁移系统规约层](#def-k-10-01-03-veil-framework-的迁移系统规约层)
+    - [Def-K-10-01-04: LLM 辅助证明的 ConsensusDB 工作流](#def-k-10-01-04-llm-辅助证明的-consensusdb-工作流)
+    - [Def-K-10-01-05: 边界条件遗漏（Boundary Condition Omission, BCO）](#def-k-10-01-05-边界条件遗漏boundary-condition-omission-bco)
+  - [2. 属性推导 (Properties)](#2-属性推导-properties)
+    - [Lemma-K-10-01-01: Veil VC 生成的完备性](#lemma-k-10-01-01-veil-vc-生成的完备性)
+    - [Lemma-K-10-01-02: 多层验证的可靠性传递](#lemma-k-10-01-02-多层验证的可靠性传递)
+    - [Prop-K-10-01-01: LLM 辅助对证明周期的压缩效应](#prop-k-10-01-01-llm-辅助对证明周期的压缩效应)
+    - [Prop-K-10-01-02: 边界条件遗漏的不可检测性（在单层验证中）](#prop-k-10-01-02-边界条件遗漏的不可检测性在单层验证中)
+  - [3. 关系建立 (Relations)](#3-关系建立-relations)
+    - [3.1 ConsensusDB 验证体系与主流形式化方法的关系映射](#31-consensusdb-验证体系与主流形式化方法的关系映射)
+    - [3.2 Veil 与 TLA⁺ 的规约等价关系](#32-veil-与-tla-的规约等价关系)
+    - [3.3 LLM 辅助证明与传统手工证明的关系](#33-llm-辅助证明与传统手工证明的关系)
+  - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
+    - [4.1 ConsensusDB 的业务背景与痛点分析](#41-consensusdb-的业务背景与痛点分析)
+    - [4.2 技术架构的四层设计](#42-技术架构的四层设计)
+    - [4.3 效率对比：手工证明 vs LLM 辅助证明](#43-效率对比手工证明-vs-llm-辅助证明)
+    - [4.4 LLM 辅助发现的手工证明边界条件遗漏](#44-llm-辅助发现的手工证明边界条件遗漏)
+    - [4.5 踩坑记录：实施过程中的关键障碍](#45-踩坑记录实施过程中的关键障碍)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+    - [5.1 Raft-EP 的 Veil 规约与 VC 生成](#51-raft-ep-的-veil-规约与-vc-生成)
+    - [5.2 LLM 生成的 Lean 4 证明策略（精化实例）](#52-llm-生成的-lean-4-证明策略精化实例)
+    - [5.3 TLA⁺ 规约片段与 TLC 模型检验](#53-tla-规约片段与-tlc-模型检验)
+    - [5.4 Iris 分离逻辑验证并发原语](#54-iris-分离逻辑验证并发原语)
+    - [5.5 工程论证：多层验证的可靠性](#55-工程论证多层验证的可靠性)
+  - [6. 实例验证 (Examples)](#6-实例验证-examples)
+    - [6.1 实例一：Pre-vote 边界条件的完整修复轨迹](#61-实例一pre-vote-边界条件的完整修复轨迹)
+    - [6.2 实例二：CI/CD 集成流水线](#62-实例二cicd-集成流水线)
+    - [6.3 实例三：LLM 修复循环的微观分析](#63-实例三llm-修复循环的微观分析)
+  - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
+    - [7.1 ConsensusDB 验证体系架构图](#71-consensusdb-验证体系架构图)
+    - [7.2 LLM 辅助证明工作流状态机](#72-llm-辅助证明工作流状态机)
+    - [7.3 Raft-EP 协议状态转移图](#73-raft-ep-协议状态转移图)
+    - [7.4 效率对比雷达图（文本表示）](#74-效率对比雷达图文本表示)
+    - [7.5 多层验证的交叉验证矩阵](#75-多层验证的交叉验证矩阵)
+  - [8. 引用参考 (References)](#8-引用参考-references)
+  - [附录 A：项目度量总览](#附录-a项目度量总览)
+  - [附录 B：术语表](#附录-b术语表)
 
 ---
 
@@ -1814,6 +1862,7 @@ graph TB
 ---
 
 ## 附录 A：项目度量总览
+>
 > 🔮 **估算数据** | 依据: 基于行业参考值与理论分析推导，非实际测试环境得出
 
 

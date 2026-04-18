@@ -171,13 +171,50 @@ Inductive LevelLe : Level -> Level -> Prop :=
   | Le_Trans : forall l1 l2 l3, 
       LevelLe l1 l2 -> LevelLe l2 l3 -> LevelLe l1 l3.
 
+(* 严格性辅助引理 *)
+Lemma L1_not_L2 : L1_Regular <> L2_ContextFree.
+Proof. discriminate. Qed.
+
+Lemma L2_not_L3 : L2_ContextFree <> L3_Process.
+Proof. discriminate. Qed.
+
+Lemma L3_not_L4 : L3_Process <> L4_Mobile.
+Proof. discriminate. Qed.
+
+Lemma L4_not_L5 : L4_Mobile <> L5_HigherOrder.
+Proof. discriminate. Qed.
+
+Lemma L5_not_L6 : L5_HigherOrder <> L6_Turing.
+Proof. discriminate. Qed.
+
 (* 层次严格性定理 - Thm-S-01-02 *)
 Theorem level_strictness : forall l1 l2,
   LevelLe l1 l2 -> l1 <> l2 -> ~ LevelLe l2 l1.
 Proof.
   intros l1 l2 Hle Hneq.
-  (* 证明层次严格包含 - 框架 *)
-Admitted.
+  intro Hcontra.
+  induction Hle as [l | | | | | l1' l2' l3' H12 H23 IH].
+  - (* Le_Refl *)
+    contradiction.
+  - (* L1_L2 *)
+    inversion Hcontra; subst; try discriminate; auto.
+    + apply L1_not_L2; auto.
+  - (* L2_L3 *)
+    inversion Hcontra; subst; try discriminate; auto.
+    + apply L2_not_L3; auto.
+  - (* L3_L4 *)
+    inversion Hcontra; subst; try discriminate; auto.
+    + apply L3_not_L4; auto.
+  - (* L4_L5 *)
+    inversion Hcontra; subst; try discriminate; auto.
+    + apply L4_not_L5; auto.
+  - (* L5_L6 *)
+    inversion Hcontra; subst; try discriminate; auto.
+    + apply L5_not_L6; auto.
+  - (* Le_Trans *)
+    apply IH; auto.
+    apply Le_Trans with l2'; auto.
+Qed.
 
 End Expressiveness_Hierarchy.
 

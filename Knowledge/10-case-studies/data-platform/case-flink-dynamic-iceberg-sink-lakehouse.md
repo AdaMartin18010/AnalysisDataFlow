@@ -1,9 +1,15 @@
-﻿# 实时数据湖入湖: Flink Dynamic Iceberg Sink 大规模集成实践
+# 实时数据湖入湖: Flink Dynamic Iceberg Sink 大规模集成实践
 
 > **所属阶段**: Knowledge/10-case-studies/data-platform | **前置依赖**: [Flink Dynamic Iceberg Sink], [Paimon集成] | **形式化等级**: L4
 
 ---
 
+> **案例性质**: 🔬 概念验证架构 | **验证状态**: 基于理论推导与架构设计，未经独立第三方生产验证
+>
+> 本案例描述的是基于项目理论框架推导出的理想架构方案，包含假设性性能指标与理论成本模型。
+> 实际生产部署可能因环境差异、数据规模、团队能力等因素产生显著不同结果。
+> 建议将其作为架构设计参考而非直接复制粘贴的生产蓝图。
+>
 ## 目录
 
 - [实时数据湖入湖: Flink Dynamic Iceberg Sink 大规模集成实践](#实时数据湖入湖-flink-dynamic-iceberg-sink-大规模集成实践)
@@ -398,6 +404,7 @@ DataFlow Inc 的 Topic 自动发现采用三层机制：
 ---
 
 <a name="5-形式证明--工程论证-proof--engineering-argument"></a>
+
 ## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
 
 ### 5.1 Thm-K-10-07-01: Dynamic Iceberg Sink 端到端一致性定理

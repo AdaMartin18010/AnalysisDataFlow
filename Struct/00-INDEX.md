@@ -18,7 +18,7 @@
 
 ## 目录结构
 
-### 01-foundation/ 基础理论 (10篇) [100%]
+### 01-foundation/ 基础理论 (11篇) [v4.4更新]
 
 | 文档 | 描述 | 等级 |
 |------|------|------|
@@ -32,6 +32,7 @@
 | [01.08-streaming-database-formalization.md](./01-foundation/01.08-streaming-database-formalization.md) | 流数据库形式化 | L4 |
 | [01.09-edge-streaming-semantics.md](./01-foundation/01.09-edge-streaming-semantics.md) | 边缘流语义 | L4 |
 | **[01.10-network-calculus](./01-foundation/network-calculus/network-calculus-streaming.md)** | Network Calculus | L4-L5 | 🆕 |
+| **[01.11-dbsp-differential-dataflow.md](./01-foundation/01.11-dbsp-differential-dataflow.md)** | DBSP/Differential Dataflow理论 | L5-L6 | 🆕 v4.4 |
 
 ### 02-properties/ 属性推导 (9篇) [100%]
 
@@ -139,6 +140,7 @@ Flink/:     [████████████████████] 100% 
 ---
 
 **关联文档**:
+
 - [Knowledge/索引](../Knowledge/00-INDEX.md)
 - [Flink/索引](../Flink/00-INDEX.md)
 - [定理注册表](../THEOREM-REGISTRY.md)

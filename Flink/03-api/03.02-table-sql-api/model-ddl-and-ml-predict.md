@@ -17,7 +17,7 @@
 **Model DDL** 是 Flink SQL 的扩展语法，用于声明式地定义机器学习模型及其推理接口。
 
 ```sql
-<!-- CREATE MODEL 语法仍为概念设计,尚未在 Flink 2.2 中支持 -->
+<!-- CREATE MODEL 语法已在 Flink 2.1 (2025-07) 中发布，ML_PREDICT TVF 在 Flink 2.1/2.2 中可用 -->
 ~~CREATE MODEL~~ (未来可能的语法)
   [ WITH (
     'provider' = '<provider_type>',
@@ -880,7 +880,7 @@ t_env.create_temporary_view("classified_logs", classified)
 ## 9. 引用参考 (References)
 
 [^1]: Apache Flink Documentation, "ML_PREDICT", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/ml/ml_predict/>
-[^2]: Apache Flink Blog, "Apache Flink 2.2.0: Advancing Real-Time Data & AI", December 4, 2025. https://flink.apache.org/2025/12/04/apache-flink-2.2.0-advancing-real-time-data--ai-and-empowering-stream-processing-for-the-ai-era/
+[^2]: Apache Flink Blog, "Apache Flink 2.2.0: Advancing Real-Time Data & AI", December 4, 2025. <https://flink.apache.org/2025/12/04/apache-flink-2.2.0-advancing-real-time-data--ai-and-empowering-stream-processing-for-the-ai-era/>
 
 
 ---

@@ -12,6 +12,11 @@ last_sync: "2026-04-15"
 
 ---
 
+> **案例性质**: 🔬 概念验证架构 | **验证状态**: 基于理论推导与架构设计，未经独立第三方生产验证
+>
+> 本案例描述的是基于项目理论框架推导出的理想架构方案，包含假设性性能指标与理论成本模型。
+> 实际生产部署可能因环境差异、数据规模、团队能力等因素产生显著不同结果。
+> 建议将其作为架构设计参考而非直接复制粘贴的生产蓝图。
 ## Table of Contents
 
 - [E-Commerce Real-Time Recommendation System Case Study](#e-commerce-real-time-recommendation-system-case-study)

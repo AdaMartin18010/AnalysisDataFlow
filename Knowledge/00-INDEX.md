@@ -161,6 +161,7 @@ Knowledge/
 | [risingwave-deep-dive.md](06-frontier/risingwave-deep-dive.md) | RisingWave深度解析: 架构、性能、最佳实践 | RisingWave adoption、技术评估 |
 | [risingwave-integration-guide.md](06-frontier/risingwave-integration-guide.md) | RisingWave集成指南: 与Flink、Kafka等集成 | 混合架构、渐进式采用 |
 | [materialize-comparison-guide.md](06-frontier/materialize-comparison-guide.md) | Materialize对比指南: SQL物化视图引擎 | 实时物化视图、SQL流处理 |
+| [arroyo-cloudflare-acquisition-analysis.md](06-frontier/arroyo-cloudflare-acquisition-analysis.md) | Arroyo被Cloudflare收购分析 | 云原生流处理、边缘计算 | 🆕 v4.4 |
 | [streaming-materialized-view-architecture.md](06-frontier/streaming-materialized-view-architecture.md) | 流式物化视图架构设计 | 实时报表、增量计算 |
 | [vector-search-streaming-convergence.md](06-frontier/vector-search-streaming-convergence.md) | 向量搜索与流计算融合: 实时向量索引更新 | RAG系统、实时语义搜索 |
 

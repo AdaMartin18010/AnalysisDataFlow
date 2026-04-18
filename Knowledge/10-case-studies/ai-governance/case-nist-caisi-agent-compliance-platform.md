@@ -1,4 +1,4 @@
-﻿# 案例研究: AI Agent 合规平台 — NIST CAISI + Agent 行为契约治理
+# 案例研究: AI Agent 合规平台 — NIST CAISI + Agent 行为契约治理
 
 > **所属阶段**: Knowledge/10-case-studies/ai-governance | **前置依赖**: [NIST CAISI](../../06-frontier/nist-caisi-agent-standards.md), [Agent 行为契约验证], [MCP 安全治理](../../06-frontier/mcp-security-governance-2026.md) | **形式化等级**: L4
 
@@ -6,6 +6,12 @@
 
 ---
 
+> **案例性质**: 🔬 概念验证架构 | **验证状态**: 基于理论推导与架构设计，未经独立第三方生产验证
+>
+> 本案例描述的是基于项目理论框架推导出的理想架构方案，包含假设性性能指标与理论成本模型。
+> 实际生产部署可能因环境差异、数据规模、团队能力等因素产生显著不同结果。
+> 建议将其作为架构设计参考而非直接复制粘贴的生产蓝图。
+>
 ## 摘要
 
 本案例研究记录了虚构金融机构 SecureFinance Corp 在 200+ 内部 AI Agent 治理中的完整工程实践。面对 SEC、FINRA、EU AI Act 多重监管压力，SecureFinance 构建了基于 NIST CAISI 框架的 Agent 合规中台，将 AgentAssert/AgentAssay 行为验证、MCP/A2A 协议安全治理与 TLA+ 形式化规约整合为统一的技术栈。
@@ -41,6 +47,9 @@
     - [3.4 与形式化验证工具的集成关系](#34-与形式化验证工具的集成关系)
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [4.1 架构设计选择的工程论证](#41-架构设计选择的工程论证)
+      - [选择 1: 为何选择 AgentAssert 而非传统静态分析？](#选择-1-为何选择-agentassert-而非传统静态分析)
+      - [选择 2: 为何将 TLA+ 规约部署为持续验证而非一次性证明？](#选择-2-为何将-tla-规约部署为持续验证而非一次性证明)
+      - [选择 3: 为何采用"契约即代码"而非配置中心模式？](#选择-3-为何采用契约即代码而非配置中心模式)
     - [4.2 反例分析: 契约验证失效场景](#42-反例分析-契约验证失效场景)
     - [4.3 边界讨论: LLM 非确定性对合规审计的影响](#43-边界讨论-llm-非确定性对合规审计的影响)
   - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
@@ -51,23 +60,16 @@
     - [6.1 案例背景: SecureFinance Corp](#61-案例背景-securefinance-corp)
     - [6.2 AgentAssert 配置与部署实例](#62-agentassert-配置与部署实例)
     - [6.3 MCP 工具白名单与 A2A Agent Cards 验证](#63-mcp-工具白名单与-a2a-agent-cards-验证)
-    - [6.4 TLA+ 规约实例: AgentToolSafety_SecureFinance](#64-tla-规约实例-agenttoolsafety_securefinance)
     - [6.5 安全事件: 工具调用越权拦截实录](#65-安全事件-工具调用越权拦截实录)
     - [6.6 踩坑记录与解决方案](#66-踩坑记录与解决方案)
     - [6.7 合规审计报告自动生成](#67-合规审计报告自动生成)
     - [6.8 关键指标与 ROI 分析](#68-关键指标与-roi-分析)
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
     - [7.1 Agent 合规平台整体架构图](#71-agent-合规平台整体架构图)
-    - [7.2 Agent 行为契约验证流程图](#72-agent-行为契约验证流程图)
-    - [7.3 NIST CAISI 三大支柱映射矩阵](#73-nist-caisi-三大支柱映射矩阵)
+    - [7.2 NIST CAISI 三大支柱映射图](#72-nist-caisi-三大支柱映射图)
+    - [7.3 Agent 行为契约验证流程图](#73-agent-行为契约验证流程图)
     - [7.4 安全事件响应时序图](#74-安全事件响应时序图)
-    - [7.5 多 Agent 死锁预防状态机](#75-多-agent-死锁预防状态机)
-    - [7.6 合规审计报告生成流水线](#76-合规审计报告生成流水线)
-    - [7.7 决策树: Agent 风险等级判定](#77-决策树-agent-风险等级判定)
   - [8. 引用参考 (References)](#8-引用参考-references)
-  - [附录 A: SecureFinance Agent 清单 (示例)](#附录-a-securefinance-agent-清单-示例)
-  - [附录 B: NIST CAISI 合规检查清单](#附录-b-nist-caisi-合规检查清单)
-  - [附录 C: 审计日志 Schema](#附录-c-审计日志-schema)
 
 ---
 
@@ -659,6 +661,7 @@ t3: 工具实际执行时，权限已失效
 ---
 
 <a name="5-形式证明--工程论证-proof--engineering-argument"></a>
+
 ## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
 
 ### Thm-K-10-AG-01: Agent 行为契约拦截完备性定理

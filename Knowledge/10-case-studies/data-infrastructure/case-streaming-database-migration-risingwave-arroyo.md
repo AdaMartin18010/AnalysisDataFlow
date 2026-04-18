@@ -1,9 +1,15 @@
-﻿# 流数据库架构迁移: AdStream实时广告平台 — Streaming Database形式化选型与迁移实践
+# 流数据库架构迁移: AdStream实时广告平台 — Streaming Database形式化选型与迁移实践
 
 > **所属阶段**: Knowledge/10-case-studies/data-infrastructure | **前置依赖**: [Streaming Database形式化定义](../../../Struct/01-foundation/streaming-database-formal-definition.md), [RisingWave深度解析](../../../Flink/03-api/09-language-foundations/06-risingwave-deep-dive.md), [USTM-F模型实例化框架](../../../USTM-F-Reconstruction/02-model-instantiation/02.00-model-instantiation-framework.md) | **形式化等级**: L4
 
 ---
 
+> **案例性质**: 🔬 概念验证架构 | **验证状态**: 基于理论推导与架构设计，未经独立第三方生产验证
+>
+> 本案例描述的是基于项目理论框架推导出的理想架构方案，包含假设性性能指标与理论成本模型。
+> 实际生产部署可能因环境差异、数据规模、团队能力等因素产生显著不同结果。
+> 建议将其作为架构设计参考而非直接复制粘贴的生产蓝图。
+>
 ## 摘要
 
 本文记录 **AdStream**（虚构全球实时广告平台）从传统 **Apache Flink + MySQL + Redis** 分层架构迁移至 **Streaming Database** 范式的完整生产实践。该平台日均处理 **12亿+** 广告曝光事件、**4.5亿+** 竞价请求，核心实时竞价（RTB）决策链路要求 **P99 < 100ms**、可用性 **99.99%**。迁移目标是在严格的延迟SLA下，消除传统架构中"流计算引擎 + 外部Serving存储"的语义断层与运维复杂度。
@@ -44,7 +50,7 @@
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [4.1 为何从Flink+MySQL迁移至Streaming Database](#41-为何从flinkmysql迁移至streaming-database)
     - [4.2 形式化选型: RisingWave vs Arroyo vs Materialize](#42-形式化选型-risingwave-vs-arroyo-vs-materialize)
-    - [4.3 反例分析: 将Flink+MySQL误判为Streaming Database的陷阱](#43-反例分析将flinkmysql误判为streaming-database的陷阱)
+    - [4.3 反例分析: 将Flink+MySQL误判为Streaming Database的陷阱](#43-反例分析-将flinkmysql误判为streaming-database的陷阱)
     - [4.4 边界讨论: Streaming Database的适用域与局限](#44-边界讨论-streaming-database的适用域与局限)
     - [4.5 构造性说明: 零停机迁移的数学保证](#45-构造性说明-零停机迁移的数学保证)
   - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
@@ -576,6 +582,7 @@ $$
 ---
 
 <a name="5-形式证明--工程论证-proof--engineering-argument"></a>
+
 ## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
 
 ### 5.1 Thm-K-10-08-01: 迁移前后语义等价性定理
