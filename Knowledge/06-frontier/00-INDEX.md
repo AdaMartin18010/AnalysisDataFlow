@@ -1,6 +1,6 @@
 # Knowledge/06-frontier 前沿技术专题索引
 
-> 所属阶段: Knowledge/06-frontier | 状态: 活跃维护 | 最后更新: 2026-04-12
+> 所属阶段: Knowledge/06-frontier | 状态: 活跃维护 | 最后更新: 2026-04-19
 
 ---
 
@@ -83,6 +83,7 @@
 | [materialize-comparison-guide.md](materialize-comparison-guide.md) | Materialize对比 | L3 | ~32KB | 2定义+1命题 |
 | [streaming-materialized-view-architecture.md](streaming-materialized-view-architecture.md) | 物化视图架构 | L4 | ~36KB | 3定义+2定理 |
 | [streaming-lakehouse-iceberg-delta.md](streaming-lakehouse-iceberg-delta.md) | 流式Lakehouse | L4 | ~40KB | 3定义+2命题 |
+| [flink-risingwave-hybrid-architecture.md](flink-risingwave-hybrid-architecture.md) | Flink+RisingWave混合架构 ⭐NEW | L4-L5 | ~35KB | 5定义+2引理+1命题 |
 
 ### Web3与区块链
 
@@ -153,12 +154,13 @@
 | 2 | [multimodal-streaming-advanced.md](multimodal-streaming-advanced.md) | 多模态流处理深化 | 33.2 KB | 3定义+2命题 |
 | 3 | [realtime-gnn-streaming.md](realtime-gnn-streaming.md) | 实时图神经网络 | 29.8 KB | 2定义+2引理 |
 | 4 | [federated-streaming-learning.md](federated-streaming-learning.md) | 联邦流学习 | 28.4 KB | 2定义+1定理 |
+| 5 | [flink-risingwave-hybrid-architecture.md](flink-risingwave-hybrid-architecture.md) | Flink+RisingWave混合架构 | 35.1 KB | 5定义+2引理+1命题 |
 
 **本次新增统计**:
 
-- 文档数量: 4篇
-- 总大小: 126.8 KB
-- 形式化元素: 10定义 + 2定理 + 4命题 + 2引理 = 18个
+- 文档数量: 5篇
+- 总大小: 161.9 KB
+- 形式化元素: 15定义 + 2定理 + 4命题 + 4引理 = 25个
 
 ---
 

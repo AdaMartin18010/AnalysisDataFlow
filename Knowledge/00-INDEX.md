@@ -163,6 +163,7 @@ Knowledge/
 | [materialize-comparison-guide.md](06-frontier/materialize-comparison-guide.md) | Materialize对比指南: SQL物化视图引擎 | 实时物化视图、SQL流处理 |
 | [arroyo-cloudflare-acquisition-analysis.md](06-frontier/arroyo-cloudflare-acquisition-analysis.md) | Arroyo被Cloudflare收购分析 | 云原生流处理、边缘计算 | 🆕 v4.4 |
 | [ai-agent-flink-end-to-end-architecture.md](06-frontier/ai-agent-flink-end-to-end-architecture.md) | AI Agent Flink端到端架构: 4种生产模式 | Agent系统、AI流式工作流 | 🆕 v4.5 |
+| [flink-risingwave-hybrid-architecture.md](06-frontier/flink-risingwave-hybrid-architecture.md) | Flink+RisingWave混合架构生产实践 | 混合流处理、实时数仓 | 🆕 v4.5 |
 | [streaming-materialized-view-architecture.md](06-frontier/streaming-materialized-view-architecture.md) | 流式物化视图架构设计 | 实时报表、增量计算 |
 | [vector-search-streaming-convergence.md](06-frontier/vector-search-streaming-convergence.md) | 向量搜索与流计算融合: 实时向量索引更新 | RAG系统、实时语义搜索 |
 
@@ -389,7 +390,7 @@ Knowledge/ 目录统计:
 ├── 03-business-patterns/:   13 文档
 ├── 04-technology-selection/: 6 文档
 ├── 05-mapping-guides/:      10 文档
-├── 06-frontier/:            42+ 文档
+├── 06-frontier/:            44+ 文档
 ├── 07-best-practices/:       7 文档
 ├── 08-standards/:            2 文档
 ├── 09-anti-patterns/:       13 文档

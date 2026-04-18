@@ -759,7 +759,7 @@ $$
 │  └─ 否 → Great Expectations (生态最广泛)
 ```
 
-**Flink 场景推荐**: 
+**Flink 场景推荐**:
 
 - **首选 Soda Core**: 若团队以 Flink SQL 为主要开发方式，Soda Core 的 YAML/SQL 检查定义可直接嵌入 Flink 管道
 - **次选 Great Expectations**: 若已有 GE 生态（期望套件、文档站点），通过自定义 `ProcessFunction` 集成
@@ -827,3 +827,1397 @@ flowchart LR
     Metrics -->|Threshold Breach| Alert
 ```
 
+
+---
+
+## 6. 实例验证 (Examples)
+
+### 6.1 Flink SQL 数据质量校验
+
+Flink SQL 提供了声明式的数据质量校验能力，无需编写 Java/Scala 代码即可实现字段级和记录级的质量检查。
+
+#### CHECK 约束与数据验证
+
+Flink 1.18+ 支持 `CREATE TABLE` 语句中的 `CHECK` 约束，可在 DDL 层定义有效性规则：
+
+```sql
+-- 定义带质量约束的订单表
+CREATE TABLE orders (
+    order_id        STRING,
+    customer_id     STRING NOT NULL,
+    order_amount    DECIMAL(18,2),
+    currency        STRING,
+    status          STRING,
+    created_at      TIMESTAMP_LTZ(3),
+    updated_at      TIMESTAMP_LTZ(3),
+    email           STRING,
+
+    -- 有效性约束 (Def-F-04-55)
+    CONSTRAINT valid_amount CHECK (order_amount >= 0 AND order_amount <= 1000000),
+    CONSTRAINT valid_currency CHECK (currency IN ('CNY', 'USD', 'EUR', 'JPY')),
+    CONSTRAINT valid_status CHECK (status IN ('PENDING', 'PAID', 'SHIPPED', 'DELIVERED', 'CANCELLED')),
+    CONSTRAINT valid_email CHECK (email IS NULL OR email LIKE '%_@_%._%'),
+
+    -- 一致性约束 (Def-F-04-53)
+    CONSTRAINT valid_time_order CHECK (updated_at >= created_at),
+
+    -- 水位线定义
+    WATERMARK FOR created_at AS created_at - INTERVAL '5' SECOND
+) WITH (
+    'connector' = 'kafka',
+    'topic' = 'orders',
+    'properties.bootstrap.servers' = 'kafka:9092',
+    'format' = 'json',
+    'json.fail-on-missing-field' = 'false',
+    'json.ignore-parse-errors' = 'true'
+);
+```
+
+**CHECK 约束的行为**：
+
+- 当约束被违反时，Flink 默认将违规记录丢弃（`METADATA` 列可捕获失败原因）
+- 对于需要隔离异常记录的场景，建议结合 `INSERT INTO` + `LEFT JOIN` 手动实现分流逻辑
+- `CHECK` 约束仅支持单行内的字段引用，不支持子查询或窗口聚合
+
+#### 自定义 UDF 质量检查函数
+
+对于 `CHECK` 约束无法表达的复杂校验逻辑，可注册自定义 UDF：
+
+```java
+import org.apache.flink.table.functions.ScalarFunction;
+
+/**
+ * 身份证号校验 UDF (ISO 7064:1983, MOD 11-2)
+ */
+public class IdCardValidateFunction extends ScalarFunction {
+
+    private static final int[] WEIGHTS = {7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2};
+    private static final char[] CHECK_CODES = {'1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2'};
+
+    public Boolean eval(String idCard) {
+        if (idCard == null || idCard.length() != 18) {
+            return false;
+        }
+
+        // 前17位必须为数字
+        for (int i = 0; i < 17; i++) {
+            if (!Character.isDigit(idCard.charAt(i))) {
+                return false;
+            }
+        }
+
+        // 校验位计算
+        int sum = 0;
+        for (int i = 0; i < 17; i++) {
+            sum += (idCard.charAt(i) - '0') * WEIGHTS[i];
+        }
+        char expectedCheck = CHECK_CODES[sum % 11];
+        return idCard.charAt(17) == expectedCheck;
+    }
+}
+
+/**
+ * 手机号格式校验 UDF
+ */
+public class PhoneValidateFunction extends ScalarFunction {
+    private static final Pattern PHONE_PATTERN =
+        Pattern.compile("^1[3-9]\\d{9}$");
+
+    public Boolean eval(String phone) {
+        return phone != null && PHONE_PATTERN.matcher(phone).matches();
+    }
+}
+```
+
+注册并使用 UDF：
+
+```sql
+-- 注册 UDF
+CREATE FUNCTION validate_id_card AS 'com.example.quality.IdCardValidateFunction';
+CREATE FUNCTION validate_phone AS 'com.example.quality.PhoneValidateFunction';
+
+-- 在 DML 中使用 UDF 进行质量校验
+CREATE VIEW valid_orders AS
+SELECT
+    order_id,
+    customer_id,
+    order_amount,
+    status,
+    created_at,
+    id_card,
+    phone,
+    -- 质量标记列
+    CASE
+        WHEN validate_id_card(id_card) AND validate_phone(phone)
+        THEN 'PASS'
+        WHEN id_card IS NULL AND phone IS NULL
+        THEN 'INCOMPLETE'
+        ELSE 'INVALID'
+    END AS quality_status,
+    -- 失败原因详情
+    CASE
+        WHEN NOT validate_id_card(id_card) THEN 'INVALID_ID_CARD'
+        WHEN NOT validate_phone(phone) THEN 'INVALID_PHONE'
+        ELSE NULL
+    END AS failure_reason
+FROM orders;
+
+-- 有效数据流
+INSERT INTO kafka_valid_orders
+SELECT * FROM valid_orders WHERE quality_status = 'PASS';
+
+-- 异常数据流 (DLQ)
+INSERT INTO kafka_dlq_orders
+SELECT
+    order_id,
+    customer_id,
+    quality_status,
+    failure_reason,
+    PROCTIME() AS dlq_timestamp
+FROM valid_orders
+WHERE quality_status != 'PASS';
+```
+
+#### SQL 窗口级质量聚合
+
+利用 Flink SQL 的窗口聚合能力，实时计算质量评分卡 (Def-F-04-60)：
+
+```sql
+-- 实时质量评分卡计算
+CREATE TABLE quality_scorecard (
+    window_start TIMESTAMP(3),
+    window_end TIMESTAMP(3),
+    total_records BIGINT,
+    valid_records BIGINT,
+    completeness_rate DOUBLE,
+    validity_rate DOUBLE,
+    consistency_rate DOUBLE,
+    overall_score DOUBLE,
+    PRIMARY KEY (window_start, window_end) NOT ENFORCED
+) WITH (
+    'connector' = 'jdbc',
+    'url' = 'jdbc:postgresql://postgres:5432/quality_db',
+    'table-name' = 'quality_scorecard',
+    'username' = 'flink',
+    'password' = 'flink'
+);
+
+INSERT INTO quality_scorecard
+SELECT
+    TUMBLE_START(created_at, INTERVAL '1' MINUTE) AS window_start,
+    TUMBLE_END(created_at, INTERVAL '1' MINUTE) AS window_end,
+    COUNT(*) AS total_records,
+    COUNT(CASE WHEN quality_status = 'PASS' THEN 1 END) AS valid_records,
+
+    -- 完整性: 必需字段非空率
+    AVG(CASE WHEN customer_id IS NOT NULL AND order_amount IS NOT NULL
+         THEN 1.0 ELSE 0.0 END) AS completeness_rate,
+
+    -- 有效性: 金额范围和枚举值合规率
+    AVG(CASE WHEN order_amount >= 0 AND order_amount <= 1000000
+          AND status IN ('PENDING', 'PAID', 'SHIPPED', 'DELIVERED', 'CANCELLED')
+         THEN 1.0 ELSE 0.0 END) AS validity_rate,
+
+    -- 一致性: 时间顺序合规率
+    AVG(CASE WHEN updated_at >= created_at THEN 1.0 ELSE 0.0 END) AS consistency_rate,
+
+    -- 综合评分 (加权)
+    AVG(
+        CASE WHEN quality_status = 'PASS' THEN 1.0 ELSE 0.0 END * 0.4
+        + CASE WHEN customer_id IS NOT NULL THEN 1.0 ELSE 0.0 END * 0.2
+        + CASE WHEN order_amount >= 0 THEN 1.0 ELSE 0.0 END * 0.2
+        + CASE WHEN updated_at >= created_at THEN 1.0 ELSE 0.0 END * 0.2
+    ) * 100 AS overall_score
+FROM orders
+GROUP BY TUMBLE(created_at, INTERVAL '1' MINUTE);
+```
+
+### 6.2 Flink CEP 异常模式检测
+
+复杂事件处理（CEP）适用于检测跨记录的质量异常模式，如连续异常事件序列、阈值突破模式等。
+
+#### 连续异常事件模式
+
+检测连续 3 条以上订单金额超过正常范围的事件序列：
+
+```java
+import org.apache.flink.cep.CEP;
+import org.apache.flink.cep.PatternStream;
+import org.apache.flink.cep.pattern.Pattern;
+import org.apache.flink.cep.pattern.conditions.SimpleCondition;
+
+// 定义异常序列模式
+Pattern<OrderEvent, ?> anomalyPattern = Pattern
+    .<OrderEvent>begin("first_anomaly")
+    .where(new SimpleCondition<OrderEvent>() {
+        @Override
+        public boolean filter(OrderEvent event) {
+            return event.getAmount() > 100000 || event.getAmount() < 0;
+        }
+    })
+    .next("second_anomaly")
+    .where(new SimpleCondition<OrderEvent>() {
+        @Override
+        public boolean filter(OrderEvent event) {
+            return event.getAmount() > 100000 || event.getAmount() < 0;
+        }
+    })
+    .next("third_anomaly")
+    .where(new SimpleCondition<OrderEvent>() {
+        @Override
+        public boolean filter(OrderEvent event) {
+            return event.getAmount() > 100000 || event.getAmount() < 0;
+        }
+    })
+    .within(Time.seconds(30)); // 30秒内连续发生
+
+// 应用模式到数据流
+PatternStream<OrderEvent> patternStream = CEP.pattern(
+    keyedOrderStream,
+    anomalyPattern
+);
+
+// 处理匹配到的异常序列
+patternStream
+    .process(new PatternProcessFunction<OrderEvent, QualityAlert>() {
+        @Override
+        public void processMatch(
+                Map<String, List<OrderEvent>> match,
+                Context ctx,
+                Collector<QualityAlert> out) {
+
+            List<OrderEvent> anomalies = match.get("third_anomaly");
+            OrderEvent lastAnomaly = anomalies.get(0);
+
+            out.collect(new QualityAlert(
+                AlertSeverity.CRITICAL,
+                "CONTINUOUS_ANOMALY",
+                String.format("连续3笔异常订单: 商户=%s, 最新金额=%.2f",
+                    lastAnomaly.getMerchantId(),
+                    lastAnomaly.getAmount()),
+                lastAnomaly.getTimestamp(),
+                match.values().stream()
+                    .flatMap(List::stream)
+                    .collect(Collectors.toList())
+            ));
+        }
+    })
+    .addSink(new AlertSink());
+```
+
+#### 阈值突破序列检测
+
+检测数据新鲜度持续恶化的事件序列（连续 5 次数据延迟超过阈值）：
+
+```java
+// 数据新鲜度异常模式
+Pattern<DataFreshnessEvent, ?> freshnessPattern = Pattern
+    .<DataFreshnessEvent>begin("delay_1")
+    .where(evt -> evt.getDelayMs() > 5000)
+    .next("delay_2")
+    .where(evt -> evt.getDelayMs() > 5000)
+    .next("delay_3")
+    .where(evt -> evt.getDelayMs() > 5000)
+    .next("delay_4")
+    .where(evt -> evt.getDelayMs() > 5000)
+    .next("delay_5")
+    .where(evt -> evt.getDelayMs() > 5000)
+    .within(Time.minutes(5));
+
+// 使用迭代条件检测上升趋势
+Pattern<DataMetricsEvent, ?> degradationPattern = Pattern
+    .<DataMetricsEvent>begin("start")
+    .where(evt -> evt.getErrorRate() > 0.01)
+    .next("middle")
+    .where(new IterativeCondition<DataMetricsEvent>() {
+        @Override
+        public boolean filter(DataMetricsEvent event, Context<DataMetricsEvent> ctx) {
+            // 获取之前匹配的事件，检测错误率持续上升
+            for (DataMetricsEvent prev : ctx.getEventsForPattern("start")) {
+                if (event.getErrorRate() <= prev.getErrorRate()) {
+                    return false; // 错误率未上升，不匹配
+                }
+            }
+            return event.getErrorRate() > 0.01;
+        }
+    })
+    .oneOrMore()
+    .within(Time.minutes(10));
+```
+
+### 6.3 Flink + Great Expectations 集成实现
+
+Great Expectations (GE) 是数据质量领域最广泛使用的开源框架，以下展示与 Flink 的集成模式。
+
+#### 核心质量检查算子
+
+```java
+import org.apache.flink.streaming.api.functions.ProcessFunction;
+import org.apache.flink.util.Collector;
+import org.apache.flink.util.OutputTag;
+import great_expectations.core.ExpectationSuite;
+import great_expectations.core.ExpectationValidationResult;
+
+/**
+ * Flink 质量检查算子 - 集成 Great Expectations
+ */
+public class QualityCheckOperator<T> extends ProcessFunction<T, T> {
+
+    private final OutputTag<QualityViolation> dlqTag;
+    private final ExpectationSuite expectationSuite;
+    private transient QualityMetrics metrics;
+
+    public QualityCheckOperator(
+            ExpectationSuite suite,
+            OutputTag<QualityViolation> dlqTag) {
+        this.expectationSuite = suite;
+        this.dlqTag = dlqTag;
+    }
+
+    @Override
+    public void open(Configuration parameters) {
+        this.metrics = new QualityMetrics(
+            getRuntimeContext().getMetricGroup()
+        );
+    }
+
+    @Override
+    public void processElement(
+            T element,
+            Context ctx,
+            Collector<T> out) {
+
+        long startTime = System.currentTimeMillis();
+
+        // 执行 Great Expectations 验证
+        ExpectationValidationResult result =
+            expectationSuite.validate(element);
+
+        long validationTime = System.currentTimeMillis() - startTime;
+        metrics.recordValidationLatency(validationTime);
+
+        if (result.isSuccessful()) {
+            out.collect(element);
+            metrics.recordValidRecord();
+        } else {
+            QualityViolation violation = new QualityViolation(
+                element,
+                result.getFailedExpectations(),
+                ctx.timestamp()
+            );
+            ctx.output(dlqTag, violation);
+            metrics.recordInvalidRecord(
+                result.getFailedExpectations().size()
+            );
+        }
+    }
+}
+```
+
+#### 质量检查流水线组装
+
+```java
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
+import org.apache.flink.util.OutputTag;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+public class QualityPipeline {
+
+    public static void buildPipeline(
+            StreamExecutionEnvironment env,
+            KafkaSource<OrderEvent> source) {
+
+        final OutputTag<QualityViolation> dlqTag =
+            new OutputTag<QualityViolation>("dlq"){};
+        final OutputTag<QualityMetrics> metricsTag =
+            new OutputTag<QualityMetrics>("metrics"){};
+
+        DataStream<OrderEvent> inputStream = env.fromSource(
+            source, WatermarkStrategy.forBoundedOutOfOrderness(
+                Duration.ofSeconds(5)), "Kafka Source"
+        );
+
+        // 1. Schema 验证层
+        SingleOutputStreamOperator<OrderEvent> schemaValidated =
+            inputStream
+                .process(new SchemaValidationOperator())
+                .name("Schema Validation")
+                .uid("schema-validation");
+
+        // 2. 字段级验证
+        SingleOutputStreamOperator<OrderEvent> fieldValidated =
+            schemaValidated
+                .process(new QualityCheckOperator<>(
+                    buildFieldExpectations(), dlqTag
+                ))
+                .name("Field Validation")
+                .uid("field-validation");
+
+        // 3. 记录级验证（跨字段规则）
+        SingleOutputStreamOperator<OrderEvent> recordValidated =
+            fieldValidated
+                .process(new QualityCheckOperator<>(
+                    buildRecordExpectations(), dlqTag
+                ))
+                .name("Record Validation")
+                .uid("record-validation");
+
+        // 4. 窗口级验证（聚合规则）
+        SingleOutputStreamOperator<OrderEvent> windowValidated =
+            recordValidated
+                .keyBy(OrderEvent::getMerchantId)
+                .window(TumblingEventTimeWindows.of(Time.minutes(1)))
+                .process(new WindowQualityCheckFunction())
+                .name("Window Validation")
+                .uid("window-validation");
+
+        // 有效数据输出
+        windowValidated
+            .addSink(buildKafkaSink("validated-orders"))
+            .name("Valid Records Sink");
+
+        // DLQ 输出
+        windowValidated
+            .getSideOutput(dlqTag)
+            .addSink(buildDLQSink())
+            .name("DLQ Sink");
+
+        // 质量指标输出
+        windowValidated
+            .getSideOutput(metricsTag)
+            .addSink(buildMetricsSink())
+            .name("Metrics Sink");
+    }
+
+    private static ExpectationSuite buildFieldExpectations() {
+        return new ExpectationSuite()
+            .addExpectation("order_id_not_null",
+                ExpectColumnValuesToNotBeNull("order_id"))
+            .addExpectation("amount_positive",
+                ExpectColumnValuesToBeBetween("amount", 0, 1000000))
+            .addExpectation("status_enum",
+                ExpectColumnValuesToBeInSet("status",
+                    Set.of("PENDING", "PAID", "SHIPPED", "DELIVERED")))
+            .addExpectation("email_format",
+                ExpectColumnValuesToMatchRegex("email",
+                    "^[A-Za-z0-9+_.-]+@(.+)$"));
+    }
+
+    private static ExpectationSuite buildRecordExpectations() {
+        return new ExpectationSuite()
+            .addExpectation("create_before_update",
+                ExpectColumnPairValuesAToBeGreaterThanB(
+                    "updated_at", "created_at"))
+            .addExpectation("total_calculation",
+                ExpectMulticolumnSumToEqual(
+                    List.of("subtotal", "tax", "shipping"), "total"));
+    }
+}
+```
+
+#### Great Expectations 期望配置
+
+```yaml
+# expectations/order_expectations.yaml
+expectation_suite_name: order_quality_suite
+
+expectations:
+  # 完整性检查
+  - expectation_type: expect_column_values_to_not_be_null
+    kwargs:
+      column: order_id
+      mostly: 1.0
+    meta:
+      dimension: completeness
+      severity: critical
+
+  - expectation_type: expect_column_values_to_not_be_null
+    kwargs:
+      column: customer_id
+      mostly: 0.99
+    meta:
+      dimension: completeness
+      severity: warning
+
+  # 有效性检查
+  - expectation_type: expect_column_values_to_be_between
+    kwargs:
+      column: order_amount
+      min_value: 0
+      max_value: 100000
+    meta:
+      dimension: validity
+      severity: critical
+
+  - expectation_type: expect_column_values_to_match_regex
+    kwargs:
+      column: email
+      regex: ^[\w\.-]+@[\w\.-]+\.\w+$
+    meta:
+      dimension: validity
+      severity: warning
+
+  # 唯一性检查
+  - expectation_type: expect_column_values_to_be_unique
+    kwargs:
+      column: order_id
+    meta:
+      dimension: uniqueness
+      severity: critical
+
+  # 一致性检查
+  - expectation_type: expect_column_pair_values_a_to_be_greater_than_b
+    kwargs:
+      column_A: updated_at
+      column_B: created_at
+      or_equal: true
+    meta:
+      dimension: consistency
+      severity: critical
+
+  # 准确性检查
+  - expectation_type: expect_column_values_to_be_in_set
+    kwargs:
+      column: payment_method
+      value_set: [CREDIT_CARD, DEBIT_CARD, PAYPAL, BANK_TRANSFER]
+    meta:
+      dimension: accuracy
+      severity: critical
+```
+
+### 6.4 Flink + Deequ 集成
+
+Deequ 是 AWS 开源的数据质量库，基于 Apache Spark 设计，其核心抽象 `Analyzer` 和 `Constraint` 可在 Flink 中通过适配器模式复用。
+
+```java
+import com.amazon.deequ.analyzers.*;
+import com.amazon.deequ.checks.*;
+import org.apache.flink.streaming.api.functions.ProcessFunction;
+
+/**
+ * Deequ 适配器：将 Deequ 的约束转换为 Flink 质量检查
+ */
+public class DeequQualityAdapter<T> extends ProcessFunction<T, T> {
+
+    private final List<Check> checks;
+    private transient CheckResult lastResult;
+    private final OutputTag<QualityViolation> dlqTag;
+
+    @Override
+    public void processElement(T element, Context ctx, Collector<T> out) {
+        // 将 Flink 记录转换为 Deequ 内部表示
+        Row row = convertToDeequRow(element);
+
+        // 逐条评估约束（流式场景下逐条而非批量）
+        for (Check check : checks) {
+            CheckResult result = check.evaluate(row);
+            if (!result.status().equals(CheckStatus.Success())) {
+                ctx.output(dlqTag, new QualityViolation(
+                    element,
+                    check.name(),
+                    result.constraintResults().mkString(", ")
+                ));
+            }
+        }
+        out.collect(element);
+    }
+
+    /**
+     * 构建 Deequ 检查配置
+     */
+    public static List<Check> buildChecks() {
+        return Arrays.asList(
+            new Check(CheckLevel.Error, "完整性检查")
+                .hasCompleteness("order_id", v -> v == 1.0)
+                .hasCompleteness("customer_id", v -> v >= 0.99),
+
+            new Check(CheckLevel.Error, "有效性检查")
+                .hasMax("order_amount", v -> v <= 1000000.0)
+                .hasMin("order_amount", v -> v >= 0.0),
+
+            new Check(CheckLevel.Warning, "唯一性检查")
+                .hasUniqueness("order_id", v -> v == 1.0),
+
+            new Check(CheckLevel.Error, "统计分析")
+                .hasMean("order_amount", v -> v >= 50.0 && v <= 500.0)
+                .hasStandardDeviation("order_amount", v -> v <= 1000.0)
+        );
+    }
+}
+```
+
+**Deequ 与 Flink 集成的注意事项**：
+
+1. Deequ 原生的 `Analyzer` 设计为批量扫描，流式场景需改造为增量模式
+2. 统计量（均值、标准差）可通过 Flink 的 `AggregateFunction` 增量维护，替代 Deequ 的全量计算
+3. Deequ 的 `ConstraintSuggestion` 可用于自动生成初始规则集，随后迁移到 Flink SQL 或 UDF 中执行
+
+### 6.5 Soda Core 与 Flink 集成
+
+Soda Core 提供声明式的 YAML 配置，可直接映射为 Flink SQL 检查：
+
+```java
+/**
+ * Soda Core 质量检查实现
+ */
+public class SodaQualityCheck implements QualityChecker {
+
+    private final SodaContext sodaContext;
+    private final String checksYaml;
+
+    @Override
+    public QualityResult check(Row record) {
+        ScanBuilder scanBuilder = ScanBuilder
+            .create(sodaContext)
+            .withCheckYaml(checksYaml);
+
+        ScanResult result = scanBuilder.executeOnRow(record);
+
+        return new QualityResult(
+            result.hasFailures(),
+            result.getFailedChecks(),
+            result.getMetrics()
+        );
+    }
+}
+```
+
+```yaml
+# soda_checks.yaml
+checks for orders:
+  # 完整性
+  - missing_count(order_id) = 0
+  - missing_percent(customer_email) < 1
+
+  # 有效性
+  - min(order_amount) >= 0
+  - max(order_amount) < 1000000
+  - invalid_count(email) = 0:
+      valid format: email
+
+  # 唯一性
+  - duplicate_count(order_id) = 0
+
+  # 一致性
+  - row_count > 0:
+      name: Orders have records
+
+  # 及时性
+  - freshness(order_timestamp) < 1h:
+      name: Data is fresh
+
+  # 自定义 SQL 检查
+  - orders_amount_consistent:
+      orders_sql: |
+        SELECT order_id, SUM(item_price * quantity) as calc_total
+        FROM order_items
+        GROUP BY order_id
+      check_sql: |
+        SELECT o.order_id
+        FROM orders o
+        JOIN ${orders_sql} c ON o.order_id = c.order_id
+        WHERE ABS(o.total_amount - c.calc_total) > 0.01
+```
+
+### 6.6 数据血缘追踪实现
+
+Flink 血缘采集通过解析 JobGraph 和运行时指标实现：
+
+```java
+import org.apache.flink.api.common.JobID;
+import org.apache.flink.streaming.api.graph.StreamGraph;
+
+/**
+ * Flink 血缘采集器
+ */
+public class FlinkLineageCollector {
+
+    /**
+     * 从 StreamGraph 提取静态血缘
+     */
+    public LineageGraph collectStaticLineage(StreamGraph graph) {
+        LineageGraph lineage = new LineageGraph();
+
+        for (StreamNode node : graph.getStreamNodes()) {
+            LineageNode lineageNode = new LineageNode(
+                node.getId(),
+                node.getOperatorName(),
+                extractNodeType(node),
+                node.getParallelism()
+            );
+            lineage.addNode(lineageNode);
+        }
+
+        for (StreamEdge edge : graph.getStreamEdges()) {
+            lineage.addEdge(
+                edge.getSourceId(),
+                edge.getTargetId(),
+                new SchemaMapping(edge.getTypeNumber())
+            );
+        }
+
+        return lineage;
+    }
+
+    /**
+     * 运行时血缘增强：附加质量指标
+     */
+    public LineageGraph enrichWithQualityMetrics(
+            LineageGraph graph,
+            Map<Integer, QualityMetrics> metrics) {
+
+        for (Map.Entry<Integer, QualityMetrics> entry : metrics.entrySet()) {
+            LineageNode node = graph.getNode(entry.getKey());
+            node.addFacet("quality", Map.of(
+                "completeness", entry.getValue().getCompleteness(),
+                "validity", entry.getValue().getValidity(),
+                "errorRate", entry.getValue().getErrorRate()
+            ))
+        }
+        return graph;
+    }
+
+    /**
+     * 导出为 OpenLineage 格式
+     */
+    public OpenLineageEvent exportToOpenLineage(
+            JobID jobId,
+            LineageGraph graph) {
+
+        OpenLineageEvent event = new OpenLineageEvent();
+        event.setRun(new Run(jobId.toHexString()));
+
+        List<InputDataset> inputs = graph.getSources().stream()
+            .map(n -> new InputDataset(
+                n.getNamespace(),
+                n.getName(),
+                n.getFacets()
+            ))
+            .collect(Collectors.toList());
+
+        List<OutputDataset> outputs = graph.getSinks().stream()
+            .map(n -> new OutputDataset(
+                n.getNamespace(),
+                n.getName(),
+                n.getFacets()
+            ))
+            .collect(Collectors.toList());
+
+        event.setInputs(inputs);
+        event.setOutputs(outputs);
+        return event;
+    }
+}
+```
+
+血缘追踪的 Flink SQL 集成：
+
+```sql
+-- 在 CREATE TABLE 中附加血缘元数据
+CREATE TABLE orders_with_lineage (
+    order_id STRING,
+    amount DECIMAL(18,2),
+    -- 血缘元数据列
+    _source_topic STRING METADATA FROM 'topic',
+    _source_partition INT METADATA FROM 'partition',
+    _source_offset BIGINT METADATA FROM 'offset',
+    _ingestion_time TIMESTAMP_LTZ(3) METADATA FROM 'timestamp'
+) WITH (
+    'connector' = 'kafka',
+    'topic' = 'orders',
+    'properties.bootstrap.servers' = 'kafka:9092',
+    'format' = 'json'
+);
+```
+
+### 6.7 质量指标聚合与 DQS 评分卡
+
+```java
+/**
+ * 质量指标窗口聚合
+ */
+public class QualityMetricsAggregateFunction
+    extends AggregateFunction<QualityEvent, QualityAccumulator, QualityMetrics> {
+
+    @Override
+    public QualityAccumulator createAccumulator() {
+        return new QualityAccumulator();
+    }
+
+    @Override
+    public void add(QualityEvent event, QualityAccumulator acc) {
+        acc.totalRecords++;
+        acc.validRecords += event.isValid() ? 1 : 0;
+
+        for (String dimension : event.getFailedDimensions()) {
+            acc.dimensionFailures.merge(dimension, 1, Integer::sum);
+        }
+
+        acc.totalLatency += event.getValidationLatency();
+
+        // 六维评分累加
+        acc.completenessSum += event.getCompletenessScore();
+        acc.accuracySum += event.getAccuracyScore();
+        acc.consistencySum += event.getConsistencyScore();
+        acc.timelinessSum += event.getTimelinessScore();
+        acc.validitySum += event.getValidityScore();
+        acc.uniquenessSum += event.getUniquenessScore();
+    }
+
+    @Override
+    public QualityMetrics getResult(QualityAccumulator acc) {
+        long n = acc.totalRecords;
+        return QualityMetrics.builder()
+            .totalRecords(n)
+            .validRecords(acc.validRecords)
+            .errorRate((n - acc.validRecords) / (double) n)
+            .avgLatency(acc.totalLatency / n)
+            .completeness(acc.completenessSum / n)
+            .accuracy(acc.accuracySum / n)
+            .consistency(acc.consistencySum / n)
+            .timeliness(acc.timelinessSum / n)
+            .validity(acc.validitySum / n)
+            .uniqueness(acc.uniquenessSum / n)
+            .overallScore(
+                (acc.completenessSum * 0.20
+               + acc.accuracySum * 0.25
+               + acc.consistencySum * 0.20
+               + acc.timelinessSum * 0.15
+               + acc.validitySum * 0.10
+               + acc.uniquenessSum * 0.10) / n * 100
+            )
+            .dimensionFailures(new HashMap<>(acc.dimensionFailures))
+            .build();
+    }
+
+    @Override
+    public void merge(QualityAccumulator a, QualityAccumulator b) {
+        a.totalRecords += b.totalRecords;
+        a.validRecords += b.validRecords;
+        a.totalLatency += b.totalLatency;
+        a.completenessSum += b.completenessSum;
+        a.accuracySum += b.accuracySum;
+        a.consistencySum += b.consistencySum;
+        a.timelinessSum += b.timelinessSum;
+        a.validitySum += b.validitySum;
+        a.uniquenessSum += b.uniquenessSum;
+        b.dimensionFailures.forEach((k, v) ->
+            a.dimensionFailures.merge(k, v, Integer::sum)
+        );
+    }
+}
+```
+
+### 6.8 自动修复与告警机制
+
+```java
+/**
+ * 质量告警处理器
+ */
+public class QualityAlertHandler extends ProcessFunction<QualityMetrics, Alert> {
+
+    private final AlertConfiguration config;
+    private transient ValueState<AlertState> alertState;
+
+    @Override
+    public void processElement(
+            QualityMetrics metrics,
+            Context ctx,
+            Collector<Alert> out) {
+
+        AlertState state = alertState.value();
+        if (state == null) {
+            state = new AlertState();
+        }
+
+        // 检查错误率阈值
+        if (metrics.getErrorRate() > config.getErrorRateThreshold()) {
+            if (state.lastErrorAlert == null ||
+                ctx.timestamp() - state.lastErrorAlert > config.getAlertCooldown()) {
+
+                out.collect(new Alert(
+                    AlertSeverity.HIGH,
+                    "DATA_QUALITY_ERROR_RATE",
+                    String.format("Error rate %.2f%% exceeds threshold %.2f%%",
+                        metrics.getErrorRate() * 100,
+                        config.getErrorRateThreshold() * 100),
+                    metrics
+                ));
+                state.lastErrorAlert = ctx.timestamp();
+            }
+        }
+
+        // 检查完整性阈值
+        Double completeness = metrics.getCompleteness();
+        if (completeness != null && completeness < config.getCompletenessThreshold()) {
+            out.collect(new Alert(
+                AlertSeverity.MEDIUM,
+                "DATA_QUALITY_COMPLETENESS",
+                String.format("Completeness %.2f%% below threshold %.2f%%",
+                    completeness * 100,
+                    config.getCompletenessThreshold() * 100),
+                metrics
+            ));
+        }
+
+        // 检查延迟阈值
+        if (metrics.getAvgLatency() > config.getLatencyThreshold()) {
+            out.collect(new Alert(
+                AlertSeverity.LOW,
+                "DATA_QUALITY_LATENCY",
+                String.format("Avg validation latency %dms exceeds %dms",
+                    metrics.getAvgLatency(),
+                    config.getLatencyThreshold()),
+                metrics
+            ));
+        }
+
+        alertState.update(state);
+    }
+}
+
+/**
+ * 自动修复处理器
+ */
+public class AutoRepairFunction extends ProcessFunction<OrderEvent, OrderEvent> {
+
+    @Override
+    public void processElement(OrderEvent event, Context ctx, Collector<OrderEvent> out) {
+        OrderEvent repaired = event;
+        boolean wasRepaired = false;
+
+        // 修复 1: 金额精度标准化
+        if (event.getAmount() != null) {
+            BigDecimal normalized = event.getAmount()
+                .setScale(2, RoundingMode.HALF_UP);
+            if (!normalized.equals(event.getAmount())) {
+                repaired = repaired.withAmount(normalized);
+                wasRepaired = true;
+            }
+        }
+
+        // 修复 2: 手机号标准化（去除空格和横线）
+        if (event.getPhone() != null) {
+            String normalized = event.getPhone()
+                .replaceAll("[\\s-]", "");
+            if (!normalized.equals(event.getPhone())) {
+                repaired = repaired.withPhone(normalized);
+                wasRepaired = true;
+            }
+        }
+
+        // 修复 3: 空枚举值填充默认值
+        if (event.getStatus() == null) {
+            repaired = repaired.withStatus("PENDING");
+            wasRepaired = true;
+        }
+
+        // 输出修复后的记录
+        out.collect(repaired);
+
+        // 输出修复事件到审计流
+        if (wasRepaired) {
+            ctx.output(repairTag, new RepairEvent(
+                event.getOrderId(),
+                event.toString(),
+                repaired.toString(),
+                ctx.timestamp()
+            ));
+        }
+    }
+}
+```
+
+### 6.9 Grafana 告警规则配置
+
+```yaml
+# grafana-alerts/quality-alerts.yaml
+apiVersion: 1
+
+groups:
+  - orgId: 1
+    name: data_quality_alerts
+    folder: Flink Quality
+    interval: 30s
+    rules:
+      # 总体质量评分告警
+      - uid: quality-overall-score
+        title: 数据质量总体评分下降
+        condition: B
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasourceUid: prometheus
+            model:
+              expr: flink_quality_overall_score
+              intervalMs: 30000
+          - refId: B
+            relativeTimeRange:
+              from: 0
+              to: 0
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              expression: A
+              conditions:
+                - evaluator:
+                    type: lt
+                    params: [85]
+        noDataState: NoData
+        execErrState: Error
+        for: 2m
+        annotations:
+          summary: "数据质量评分低于阈值"
+          description: "当前评分 {{ $value }}，低于阈值 85"
+        labels:
+          severity: warning
+          dimension: overall
+
+      # 错误率告警
+      - uid: quality-error-rate
+        title: 数据质量错误率过高
+        condition: B
+        data:
+          - refId: A
+            datasourceUid: prometheus
+            model:
+              expr: |
+                (flink_quality_invalid_records
+                 / flink_quality_total_records) * 100
+          - refId: B
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              expression: A
+              conditions:
+                - evaluator:
+                    type: gt
+                    params: [5]
+        for: 1m
+        annotations:
+          summary: "数据错误率超过 5%"
+          description: "当前错误率 {{ $value }}%"
+        labels:
+          severity: critical
+          dimension: validity
+
+      # 完整性告警
+      - uid: quality-completeness
+        title: 数据完整性下降
+        condition: B
+        data:
+          - refId: A
+            datasourceUid: prometheus
+            model:
+              expr: flink_quality_completeness_rate
+          - refId: B
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              expression: A
+              conditions:
+                - evaluator:
+                    type: lt
+                    params: [95]
+        for: 5m
+        annotations:
+          summary: "数据完整性低于 95%"
+          description: "当前完整性 {{ $value }}%"
+        labels:
+          severity: warning
+          dimension: completeness
+
+      # 延迟告警
+      - uid: quality-latency
+        title: 质量检查延迟过高
+        condition: B
+        data:
+          - refId: A
+            datasourceUid: prometheus
+            model:
+              expr: flink_quality_validation_latency_ms
+          - refId: B
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              expression: A
+              conditions:
+                - evaluator:
+                    type: gt
+                    params: [100]
+        for: 3m
+        annotations:
+          summary: "质量检查延迟超过 100ms"
+          description: "当前延迟 {{ $value }}ms"
+        labels:
+          severity: info
+          dimension: timeliness
+
+      # CEP 异常序列告警
+      - uid: quality-cep-anomaly
+        title: CEP 检测到连续异常序列
+        condition: B
+        data:
+          - refId: A
+            datasourceUid: prometheus
+            model:
+              expr: flink_cep_anomaly_sequence_count
+          - refId: B
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              expression: A
+              conditions:
+                - evaluator:
+                    type: gt
+                    params: [0]
+        for: 0m
+        annotations:
+          summary: "检测到连续异常事件序列"
+          description: "CEP 模式匹配到 {{ $value }} 个异常序列"
+        labels:
+          severity: critical
+          dimension: anomaly
+```
+
+---
+
+## 7. 可视化 (Visualizations)
+
+### 7.1 实时数据质量架构图
+
+以下架构图展示了 Flink 实时数据质量监控的完整数据流和控制流：
+
+```mermaid
+flowchart TB
+    subgraph "数据源层"
+        K1[Kafka Topic: orders]
+        K2[Kafka Topic: payments]
+        DB[(MySQL CDC)]
+    end
+
+    subgraph "Flink 实时质量引擎"
+        subgraph "摄入验证层"
+            V1[Schema Validation]
+            V2[Format Check]
+        end
+
+        subgraph "质量检查层"
+            V3[Field Validation<br/>UDF / CHECK]
+            V4[Record Validation<br/>跨字段一致性]
+            V5[CEP 异常检测<br/>连续模式匹配]
+        end
+
+        subgraph "聚合评估层"
+            V6[窗口质量聚合<br/>AggregateFunction]
+            V7[DQS 评分卡计算<br/>六维加权]
+        end
+
+        subgraph "血缘追踪层"
+            V8[OpenLineage 采集<br/>字段级血缘]
+        end
+    end
+
+    subgraph "输出与反馈"
+        OK[Kafka: valid-data]
+        DLQ[(Kafka: dlq-topic)]
+        MET[Prometheus]
+        GRA[Grafana Dashboard]
+        AL[PagerDuty / Slack]
+        LIN[DataHub / Marquez]
+    end
+
+    K1 --> V1 --> V2 --> V3 --> V4 --> V5 --> V6 --> V7
+    K2 --> V1
+    DB --> V1
+
+    V3 -.-> DLQ
+    V4 -.-> DLQ
+    V5 -.-> DLQ
+
+    V7 --> OK
+    V7 --> MET --> GRA
+    GRA -->|Threshold| AL
+    V8 --> LIN
+```
+
+### 7.2 异常检测流程图
+
+```mermaid
+flowchart TD
+    A[数据流入] --> B{规则引擎检查}
+    B -->|通过| C[统计异常检测]
+    B -->|违反| D[规则异常标记]
+
+    C --> E{3-Sigma / IQR}
+    E -->|正常| F[ML 模型检测]
+    E -->|异常| G[统计异常标记]
+
+    F --> H{Isolation Forest / LSTM}
+    H -->|正常| I[CEP 模式检测]
+    H -->|异常| J[ML 异常标记]
+
+    I --> K{连续异常序列?}
+    K -->|否| L[正常放行]
+    K -->|是| M[CEP 异常告警]
+
+    D --> N[异常分级]
+    G --> N
+    J --> N
+    M --> N
+
+    N --> O{Severity}
+    O -->|CRITICAL| P[阻断 + DLQ + 立即告警]
+    O -->|HIGH| Q[DLQ + 告警]
+    O -->|MEDIUM| R[标记放行 + 审计日志]
+    O -->|LOW| S[仅审计日志]
+
+    P --> T[自动修复尝试]
+    Q --> T
+    T --> U{修复成功?}
+    U -->|是| V[重新注入管道]
+    U -->|否| W[人工介入队列]
+```
+
+### 7.3 数据治理工作流
+
+```mermaid
+flowchart TD
+    subgraph "规划阶段"
+        A1[业务定义质量规则] --> A2[规则评审与分级]
+        A2 --> A3[确定 SLA 与阈值]
+    end
+
+    subgraph "开发阶段"
+        B1[Flink SQL / UDF 开发] --> B2[单元测试验证规则]
+        B2 --> B3[性能基准测试]
+    end
+
+    subgraph "部署阶段"
+        C1[CI/CD 流水线集成] --> C2[灰度发布验证]
+        C2 --> C3[全量上线]
+    end
+
+    subgraph "运行阶段"
+        D1[实时质量监控] --> D2[质量评分卡更新]
+        D2 --> D3{评分 >= SLA?}
+        D3 -->|是| D4[持续监控]
+        D3 -->|否| D5[触发告警]
+        D5 --> D6[根因分析<br/>血缘追溯]
+        D6 --> D7[规则修复 / 数据修复]
+        D7 --> D1
+    end
+
+    subgraph "复盘阶段"
+        E1[周/月质量报告] --> E2[规则优化迭代]
+        E2 --> A1
+    end
+
+    A3 --> B1
+    B3 --> C1
+    C3 --> D1
+    D4 --> E1
+```
+
+### 7.4 质量维度关系图
+
+```mermaid
+mindmap
+  root((数据质量\nData Quality))
+    准确性 [权重: 25%]
+      语义准确
+      句法准确
+      溯源准确
+    完整性 [权重: 20%]
+      列完整性
+      行完整性
+      表完整性
+    一致性 [权重: 20%]
+      格式一致
+      值一致
+      跨字段一致
+      跨系统一致
+    及时性 [权重: 15%]
+      数据新鲜度
+      处理延迟
+      更新频率
+    有效性 [权重: 10%]
+      类型约束
+      范围约束
+      格式约束
+      枚举约束
+    唯一性 [权重: 10%]
+      行级唯一
+      键级唯一
+      组合唯一
+```
+
+### 7.5 监控 Dashboard 设计
+
+```mermaid
+flowchart LR
+    subgraph "质量概览面板"
+        A[总体质量评分<br/>92/100]
+        B[实时错误率<br/>0.8%]
+        C[检查延迟<br/>12ms]
+    end
+
+    subgraph "六维详情"
+        D[准确性: 95%]
+        E[完整性: 88%]
+        F[一致性: 94%]
+        G[及时性: 96%]
+        H[有效性: 91%]
+        I[唯一性: 99%]
+    end
+
+    subgraph "趋势分析"
+        J[24h 错误率趋势]
+        K[质量评分变化]
+        L[异常数据分布]
+        M[血缘影响范围]
+    end
+
+    subgraph "告警状态"
+        N[活跃告警: 3]
+        O[待处理: 1]
+        P[已解决: 12/24h]
+    end
+
+    A --> D & E & F & G & H & I
+    B --> J
+    D --> K
+    E --> L
+    F --> M
+
+    J --> N
+    K --> O
+    L --> P
+```
+
+---
+
+## 8. 引用参考 (References)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+*文档版本: v2.0 | 更新日期: 2026-04-19 | 状态: Production | 形式化元素: 14 Def + 4 Prop + 1 Lemma + 2 Thm*

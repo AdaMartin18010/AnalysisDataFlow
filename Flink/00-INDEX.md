@@ -142,6 +142,7 @@
 | [04-runtime/04.03-observability/flink-observability-complete-guide.md](04-runtime/04.03-observability/flink-observability-complete-guide.md) | 可观测性完整指南 | 1.17+ |
 | [04-runtime/04.03-observability/metrics-and-monitoring.md](04-runtime/04.03-observability/metrics-and-monitoring.md) | 指标与监控 | 1.17+ |
 | [04-runtime/04.03-observability/distributed-tracing.md](04-runtime/04.03-observability/distributed-tracing.md) | 分布式追踪 | 1.18+ |
+| [04-runtime/04.03-observability/realtime-data-quality-monitoring.md](04-runtime/04.03-observability/realtime-data-quality-monitoring.md) | 实时数据质量监控与治理 | 1.17+ | 🆕 v4.5 |
 
 ---
 
@@ -165,6 +166,12 @@
 | [05-ecosystem/05.02-lakehouse/streaming-lakehouse-architecture.md](05-ecosystem/05.02-lakehouse/streaming-lakehouse-architecture.md) | Lakehouse 架构设计深度指南 | 1.18+ | 🆕 v4.5 |
 | [05-ecosystem/05.02-lakehouse/flink-iceberg-integration.md](05-ecosystem/05.02-lakehouse/flink-iceberg-integration.md) | Iceberg 集成 | 1.18+ |
 | [05-ecosystem/05.02-lakehouse/flink-paimon-integration.md](05-ecosystem/05.02-lakehouse/flink-paimon-integration.md) | Paimon 集成 | 1.18+ |
+
+#### Stateful Functions
+
+| 文档 | 描述 | 版本 |
+|------|------|------|
+| [05-ecosystem/05.05-stateful-functions/stateful-functions-3.0-guide.md](05-ecosystem/05.05-stateful-functions/stateful-functions-3.0-guide.md) | StateFun 3.0 前瞻与生产实践 | 1.17+ | 🆕 v4.5 |
 
 ---
 
@@ -342,7 +349,7 @@ Flink/ 目录统计:
 ├── 02-core/:             20+ 文档 (核心机制)
 ├── 03-api/:              26+ 文档 (API 生态)
 ├── 04-runtime/:          30+ 文档 (运行时与运维)
-├── 05-ecosystem/:        30+ 文档 (生态系统)
+├── 05-ecosystem/:        32+ 文档 (生态系统)
 ├── 06-ai-ml/:            25+ 文档 (AI/ML 集成)
 ├── 07-rust-native/:      40+ 文档 (Rust 生态)
 ├── 08-roadmap/:          16+ 文档 (路线图)
@@ -350,7 +357,7 @@ Flink/ 目录统计:
 ├── 10-internals/:        10 文档 (源码分析)
 └── 00-meta/:              4 文档 (元文档)
 ----------------------------------------
-总计: 约 394+ 文档
+总计: 约 396+ 文档
 覆盖版本: Flink 1.17 - 3.0
 ```
 
