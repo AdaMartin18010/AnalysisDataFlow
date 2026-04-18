@@ -2069,7 +2069,7 @@ graph TB
 
 [^2]: Apache Flink. "Table API & SQL - Calcite Integration." Flink 1.1 Release Documentation, 2016. <https://flink.apache.org/news/2016/03/08/release-1.0.0.html>
 
-[^3]: Ververica. "Blink: A new era of Flink SQL." Ververica Blog, 2019. <https://www.ververica.com/blog/blink-a-new-era-of-flink-sql>
+[^3]: Ververica. "Blink: A new era of Flink SQL." Ververica Blog, 2019. <https://www.ververica.com/>
 
 [^4]: T. Akidau, et al. "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing." Proceedings of the VLDB Endowment, 8(12), 2015.
 

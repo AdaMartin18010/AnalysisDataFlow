@@ -1015,6 +1015,7 @@ import java.time.Duration;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.cep.Pattern;
 import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -1038,11 +1039,13 @@ public class Example {
 
     }
 }
+
 ```
 
 ### 7.3 序列化优化
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 public class Example {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
@@ -1060,6 +1063,7 @@ public class Example {
 
     }
 }
+
 ```
 
 ### 7.4 模式设计最佳实践

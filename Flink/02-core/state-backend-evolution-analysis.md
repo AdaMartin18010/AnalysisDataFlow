@@ -377,6 +377,7 @@ state.backend.rocksdb.threads.threads-number: 4
 ### 6.3 ForStStateBackend 配置 (Flink 2.0+)
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 public class Example {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
@@ -406,6 +407,7 @@ public class Example {
 
     }
 }
+
 ```
 
 **flink-conf.yaml 完整配置**:

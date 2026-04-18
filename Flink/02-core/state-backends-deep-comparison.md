@@ -586,6 +586,7 @@ taskmanager.memory.managed.size: 256mb
 ```java
 import org.apache.flink.contrib.streaming.state.EmbeddedRocksDBStateBackend;
 import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -627,6 +628,7 @@ public class Example {
 
     }
 }
+
 ```
 
 **关键参数说明**:
@@ -643,6 +645,7 @@ public class Example {
 ### 6.3 ForStStateBackend 配置（Flink 2.0+）
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 public class Example {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
@@ -661,6 +664,7 @@ public class Example {
 
     }
 }
+
 ```
 
 **flink-conf.yaml 完整配置**:

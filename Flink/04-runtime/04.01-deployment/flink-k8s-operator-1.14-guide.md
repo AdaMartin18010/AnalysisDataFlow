@@ -154,6 +154,7 @@ IsStateless(App) ⇔ ∀op ∈ App.operators:
 
 ```java
 import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -168,6 +169,7 @@ public class Example {
 
     }
 }
+
 ```
 
 ---

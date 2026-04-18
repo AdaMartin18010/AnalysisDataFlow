@@ -876,6 +876,7 @@ g.edges.iterate(|inner| {
 ```java
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -895,6 +896,7 @@ public class Example {
 
     }
 }
+
 ```
 
 **模式 2：联邦流处理（Federation）**

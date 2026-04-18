@@ -1168,7 +1168,7 @@ gantt
 
 ## 8. 引用参考 (References)
 
-[^1]: Materialize, "What does it cost to run Flink? A TCO Analysis for 2026", Materialize Engineering Blog, March 2026. <https://materialize.com/blog/>
+[^1]: Materialize, "What does it cost to run Flink? A TCO Analysis for 2026", Materialize Engineering Blog, March 2026. <https://materialize.com/blog>
 
 [^2]: Flexera, "2025 State of FinOps Report", Flexera Research, January 2025. <https://resources.flexera.com/white-papers/state-of-finops-2025>
 

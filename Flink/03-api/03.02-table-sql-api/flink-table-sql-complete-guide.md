@@ -373,6 +373,11 @@ CREATE TABLE user_events (
 import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.table.api.DataTypes;
 import org.apache.flink.table.api.Table;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.Schema;
+import org.apache.flink.table.api.TableDescriptor;
+import org.apache.flink.table.api.TableEnvironment;
+import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -399,6 +404,7 @@ public class Example {
 
     }
 }
+
 
 ```
 
@@ -593,6 +599,9 @@ GROUP BY DATE_FORMAT(event_time, 'yyyy-MM-dd');
 ```java
 import org.apache.flink.table.api.Table;
 import static org.apache.flink.table.api.Expressions.$;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.TableEnvironment;
+import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -612,6 +621,7 @@ public class Example {
 
     }
 }
+
 
 ```
 
@@ -699,6 +709,9 @@ import org.apache.flink.table.api.Table;
 import static org.apache.flink.table.api.Expressions.$;
 import static org.apache.flink.table.api.Expressions.currentTimestamp;
 import static org.apache.flink.table.api.Expressions.lit;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.TableEnvironment;
+import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -714,6 +727,7 @@ public class Example {
 
     }
 }
+
 
 ```
 
@@ -846,6 +860,12 @@ Rank(strategy=[RetractStrategy], rankType=[ROW_NUMBER],
 import org.apache.flink.table.api.Table;
 import static org.apache.flink.table.api.Expressions.$;
 import static org.apache.flink.table.api.Expressions.lit;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.PartitionBy;
+import org.apache.flink.table.api.TableEnvironment;
+import org.apache.flink.table.api.Tumble;
+import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
+import static org.apache.flink.table.api.Expressions.rowNumber;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -872,6 +892,7 @@ public class Example {
 
     }
 }
+
 
 ```
 
@@ -1006,6 +1027,10 @@ GROUP BY user_id, window_start, window_end, window_time;
 import org.apache.flink.table.api.Table;
 import static org.apache.flink.table.api.Expressions.$;
 import static org.apache.flink.table.api.Expressions.lit;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.TableEnvironment;
+import org.apache.flink.table.api.Tumble;
+import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -1024,6 +1049,7 @@ public class Example {
 
     }
 }
+
 
 ```
 
@@ -1125,6 +1151,10 @@ LEFT JOIN exchange_rates FOR SYSTEM_TIME AS OF o.order_time e
 ```java
 import org.apache.flink.table.api.Table;
 import static org.apache.flink.table.api.Expressions.$;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.JoinHint;
+import org.apache.flink.table.api.TableEnvironment;
+import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -1148,6 +1178,7 @@ public class Example {
 
     }
 }
+
 
 ```
 
@@ -1714,6 +1745,9 @@ DROP MATERIALIZED TABLE hourly_sales_summary;
 
 ```java
 import org.apache.flink.table.api.Table;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.TableEnvironment;
+import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -1729,6 +1763,7 @@ public class Example {
 
     }
 }
+
 
 ```
 

@@ -553,6 +553,7 @@ import org.apache.flink.configuration.Configuration;
 import org.apache.flink.contrib.streaming.state.EmbeddedRocksDBStateBackend;
 import org.apache.flink.streaming.api.CheckpointingMode;
 import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -580,6 +581,7 @@ public class Example {
 
     }
 }
+
 ```
 
 ---
@@ -1354,6 +1356,7 @@ graph TB
 
 ```java
 import org.apache.flink.runtime.state.hashmap.HashMapStateBackend;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -1370,12 +1373,14 @@ public class Example {
 
     }
 }
+
 ```
 
 **大状态、高吞吐模板**:
 
 ```java
 import org.apache.flink.contrib.streaming.state.EmbeddedRocksDBStateBackend;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -1395,6 +1400,7 @@ public class Example {
 
     }
 }
+
 ```
 
 **云原生、超大规模模板**:
@@ -1473,6 +1479,7 @@ for (Event event : events) {
 
 ```java
 import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -1494,6 +1501,7 @@ public class Example {
 
     }
 }
+
 ```
 
 #### 8.3.2 Unaligned Checkpoint 配置
@@ -1501,6 +1509,7 @@ public class Example {
 ```java
 import java.time.Duration;
 import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -1517,6 +1526,7 @@ public class Example {
 
     }
 }
+
 ```
 
 ---
@@ -1638,6 +1648,7 @@ getRuntimeContext().getMetricGroup().gauge("stateSizeBytes",
 import org.apache.flink.api.common.state.StateTtlConfig;
 import org.apache.flink.contrib.streaming.state.EmbeddedRocksDBStateBackend;
 import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -1658,6 +1669,7 @@ public class Example {
 
     }
 }
+
 ```
 
 #### 8.5.3 状态访问性能问题

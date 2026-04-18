@@ -512,6 +512,8 @@ $$
 
 ```java
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.Schema;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -535,6 +537,7 @@ public class Example {
 
     }
 }
+
 ```
 
 **CDC 数据格式 (Debezium)**:
@@ -1323,6 +1326,7 @@ public class LineageSqlParser implements Parser {
 ```java
 import java.time.Duration;
 import org.apache.flink.configuration.Configuration;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -1339,6 +1343,7 @@ public class Example {
 
     }
 }
+
 ```
 
 #### 5.5.2 状态管理优化

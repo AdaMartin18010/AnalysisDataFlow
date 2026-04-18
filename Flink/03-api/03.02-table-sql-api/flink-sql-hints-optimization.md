@@ -323,6 +323,9 @@ GROUP BY user_id
 
 ```java
 import org.apache.flink.table.api.Table;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.TableEnvironment;
+import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -339,6 +342,7 @@ public class Example {
 
     }
 }
+
 
 ```
 

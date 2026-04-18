@@ -99,6 +99,7 @@ Kafka Source 的 Exactly-Once 配置关键参数[^4]：
 import java.util.Properties;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
+import org.apache.flink.table.api.Schema;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -114,6 +115,7 @@ public class Example {
 
     }
 }
+
 ```
 
 **偏移量管理流程**:
@@ -273,6 +275,7 @@ sequenceDiagram
 import java.util.Properties;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
+import org.apache.flink.table.api.Schema;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -290,6 +293,7 @@ public class Example {
 
     }
 }
+
 ```
 
 #### 4.2.2 新版 Kafka Sink (Flink 1.15+ 推荐)
@@ -303,6 +307,8 @@ import org.apache.flink.connector.kafka.sink.DeliveryGuarantee;
 import org.apache.flink.connector.kafka.sink.KafkaRecordSerializationSchema;
 import org.apache.flink.connector.kafka.sink.KafkaSink;
 import org.apache.flink.connector.kafka.source.KafkaSource;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.Schema;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -336,6 +342,7 @@ public class Example {
 
     }
 }
+
 ```
 
 #### 4.2.3 Kafka Exactly-Once 完整配置模板
@@ -583,6 +590,7 @@ restart-strategy.fixed-delay.delay: 10s
 import java.util.Properties;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.connector.kafka.source.KafkaSource;
+import org.apache.flink.table.api.Schema;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -604,6 +612,7 @@ public class Example {
 
     }
 }
+
 ```
 
 **生产级 Kafka Sink 配置**：
@@ -613,6 +622,7 @@ import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.connector.kafka.sink.DeliveryGuarantee;
 import org.apache.flink.connector.kafka.sink.KafkaRecordSerializationSchema;
 import org.apache.flink.connector.kafka.sink.KafkaSink;
+import org.apache.flink.table.api.Schema;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -630,6 +640,7 @@ public class Example {
 
     }
 }
+
 ```
 
 ### 8.3 端到端 Exactly-Once 作业完整示例

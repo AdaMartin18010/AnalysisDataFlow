@@ -257,6 +257,7 @@ Stream B: [b1] ─────────── [b2, barrier]
 ```java
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
+import org.apache.flink.table.api.Schema;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -275,6 +276,7 @@ public class Example {
 
     }
 }
+
 ```
 
 **偏移量管理策略对比**：
@@ -294,6 +296,7 @@ public class Example {
 import java.util.Properties;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
+import org.apache.flink.table.api.Schema;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -311,6 +314,7 @@ public class Example {
 
     }
 }
+
 ```
 
 **事务ID前缀管理最佳实践**：
@@ -344,6 +348,7 @@ String transactionalIdPrefix = config.getString("transaction.id.prefix") + subta
 ```java
 import org.apache.flink.streaming.api.CheckpointingMode;
 import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -362,6 +367,7 @@ public class Example {
 
     }
 }
+
 ```
 
 ### 5.4 故障恢复场景处理

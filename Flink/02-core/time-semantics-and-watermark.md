@@ -555,6 +555,7 @@ import java.time.Duration;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -567,6 +568,7 @@ public class Example {
 
     }
 }
+
 ```
 
 **实例 2: 乱序交易流（常用配置）**
@@ -575,6 +577,7 @@ public class Example {
 import java.time.Duration;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -587,6 +590,7 @@ public class Example {
 
     }
 }
+
 ```
 
 ---

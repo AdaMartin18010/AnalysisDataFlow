@@ -970,6 +970,7 @@ public void open(Configuration parameters) {
 
 ```java
 import org.apache.flink.contrib.streaming.state.EmbeddedRocksDBStateBackend;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -978,6 +979,7 @@ public class Example {
 
     }
 }
+
 ```
 
 ### Q3: 性能影响优化
@@ -997,6 +999,7 @@ public class Example {
 
 ```java
 import org.apache.flink.contrib.streaming.state.EmbeddedRocksDBStateBackend;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -1014,6 +1017,7 @@ public class Example {
 
     }
 }
+
 ```
 
 ---

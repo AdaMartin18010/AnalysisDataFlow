@@ -54,6 +54,7 @@ yarn.application-attempt-failures-validity-interval: 3600000
 ### 6.1 动态资源
 
 ```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 public class Example {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
@@ -61,6 +62,7 @@ public class Example {
 
     }
 }
+
 ```
 
 ## 7. 可视化 (Visualizations)

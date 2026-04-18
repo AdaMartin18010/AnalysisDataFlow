@@ -357,6 +357,8 @@ $$
 
 #### AI/ML 相关 FLIP
 
+> **⚠️ 虚构/占位 FLIP 声明**: 表格中 `FLIP-531-EXT` 和 `FLIP-5XX` 为**非官方占位符**，不代表 Apache Flink 社区正式分配的 FLIP 编号。
+
 | FLIP ID | 标题 | 状态 | 目标版本 | 依赖 | 进度 |
 |---------|------|------|----------|------|------|
 | FLIP-531 | AI Agents | Released | 2.3 | - | 100% |
@@ -375,6 +377,8 @@ $$
 
 #### SQL/Table API FLIP
 
+> **⚠️ 虚构/占位 FLIP 声明**: 表格中 `FLIP-5XX` 为**非官方占位符**，不代表 Apache Flink 社区正式分配的 FLIP 编号。
+
 | FLIP ID | 标题 | 状态 | 目标版本 | 进度 |
 |---------|------|------|----------|------|
 | FLIP-435 | Materialized Table | Released | 2.1 | 100% |
@@ -385,6 +389,8 @@ $$
 | FLIP-5XX | ANSI SQL 2023 Compliance | Draft | 2.5 | 15% |
 
 #### 连接器与生态 FLIP
+
+> **⚠️ 虚构/占位 FLIP 声明**: 表格中 `FLIP-5XX` 为**非官方占位符**，不代表 Apache Flink 社区正式分配的 FLIP 编号。
 
 | FLIP ID | 标题 | 状态 | 目标版本 | 组件 |
 |---------|------|------|----------|------|
@@ -447,6 +453,8 @@ flips:
 
 #### Flink 2.4 相关 FLIP (进行中)
 
+> **⚠️ 虚构/占位 FLIP 声明**: 以下 YAML 中 `FLIP-531-GA`、`FLIP-4XX` 和 `FLIP-5XX` 为**非官方占位符**，其状态、进度和描述均为假设性推测，不代表 Apache Flink 官方 FLIP。
+
 ```yaml
 version: "2.4.0"
 release_date: "2026-H2"
@@ -500,6 +508,8 @@ flips:
 ```
 
 #### Flink 2.5 预期 FLIP (规划中)
+
+> **⚠️ 虚构/占位 FLIP 声明**: 以下 YAML 中所有 `FLIP-5XX` 均为**非官方占位符**，其描述均为假设性技术愿景，不代表 Apache Flink 官方已提出或已接受的 FLIP。
 
 ```yaml
 version: "2.5.0"

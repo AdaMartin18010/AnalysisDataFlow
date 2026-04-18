@@ -37,6 +37,7 @@
 
 ```java
 import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -59,6 +60,7 @@ public class Example {
 
     }
 }
+
 ```
 
 ```scala
@@ -91,6 +93,8 @@ import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.Schema;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -113,6 +117,7 @@ public class Example {
 
     }
 }
+
 ```
 
 ```scala
@@ -386,6 +391,7 @@ import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.connector.kafka.sink.DeliveryGuarantee;
 import org.apache.flink.connector.kafka.sink.KafkaRecordSerializationSchema;
 import org.apache.flink.connector.kafka.sink.KafkaSink;
+import org.apache.flink.table.api.Schema;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -440,6 +446,7 @@ public class Example {
 
     }
 }
+
 ```
 
 ---
@@ -793,6 +800,7 @@ DataStream<Alert> alerts = eventStream
 import org.apache.flink.contrib.streaming.state.EmbeddedRocksDBStateBackend;
 import org.apache.flink.streaming.api.CheckpointingMode;
 import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 public class Example {
     public static void main(String[] args) throws Exception {
@@ -829,6 +837,7 @@ public class Example {
 
     }
 }
+
 ```
 
 ### 6.4 版本兼容性矩阵

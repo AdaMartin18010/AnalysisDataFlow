@@ -786,6 +786,13 @@ flowchart TD
 
 ## 8. FLIP 跟踪表
 
+> **⚠️ 虚构 FLIP 风险声明**
+>
+> 以下表格中 **FLIP-540 至 FLIP-551** 为本项目基于技术趋势分析构建的**假设性/虚构 FLIP 编号**，**不代表 Apache Flink 官方已分配或已投票通过的 FLIP**。
+> - 这些编号及对应标题、状态、进度均为前瞻性推测，无任何官方 JIRA/GitHub/邮件列表来源
+> - 如需了解真实 FLIP 状态，请访问 [Apache Flink 官方 FLIP 列表](https://github.com/apache/flink/tree/master/flink-docs/docs/flips/)
+> - 请勿将这些虚构 FLIP 作为生产选型或技术决策的依据
+
 | FLIP | 标题 | 状态 | 进度 | 负责人 | 目标版本 | 相关Issue |
 |------|------|------|------|--------|----------|-----------|
 | FLIP-531 | Flink AI Agents | 🔄 MVP→GA | 85% | @alice-w | 2.4 | [FLINK-35000](https://issues.apache.org/jira/browse/FLINK-35000) |
