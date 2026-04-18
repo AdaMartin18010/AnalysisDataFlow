@@ -36,6 +36,8 @@ $$\Lambda_{e2e}(e) = t_{out}(e) - t_{in}(e)$$
 
 **延迟分解模型**:
 
+> 🔮 **估算数据** | 依据: 基于行业参考值与理论分析推导，非实际测试环境得出
+
 $$\Lambda_{e2e} = \Lambda_{source} + \Lambda_{network} + \Lambda_{queue} + \Lambda_{process} + \Lambda_{state} + \Lambda_{checkpoint} + \Lambda_{sink}$$
 
 | 组件 | 含义 | 典型范围 | 优化方向 |
@@ -152,6 +154,8 @@ $$\text{Backend}^*(S, M) = \arg\min_{b \in \{Heap, RocksDB, ForSt\}} \alpha \cdo
 - $C_b$: 资源消耗（内存/磁盘）
 - $T_b$: 调优复杂度
 - $\alpha, \beta, \gamma$: 权重系数
+
+> 🔮 **估算数据** | 依据: 基于行业参考值与理论分析推导，非实际测试环境得出
 
 **决策边界**:
 
@@ -294,6 +298,8 @@ WHERE P.dateTime > NOW() - INTERVAL '12' HOUR
 3. **状态增长**: 随着用户增加，状态持续增长，测试状态后端扩展性
 4. **Checkpoint压力**: 大状态 + 频繁更新 = 高Checkpoint负载
 
+> 🔮 **估算数据** | 依据: 基于行业参考值与理论分析推导，非实际测试环境得出
+
 **典型性能数据** (Flink 1.18, 8 TaskManagers):
 
 | 指标 | Heap后端 | RocksDB后端 | ForSt后端 |
@@ -310,6 +316,8 @@ WHERE P.dateTime > NOW() - INTERVAL '12' HOUR
 $$P(k; s, N) = \frac{1/k^s}{\sum_{n=1}^N 1/n^s}$$
 
 其中 $s$ 为倾斜系数，$N$ 为唯一Key数量。
+
+> 🔮 **估算数据** | 依据: 基于行业参考值与理论分析推导，非实际测试环境得出
 
 **实验结果** (Nexmark q6, 倾斜Key=auction):
 
@@ -396,6 +404,8 @@ $$\Lambda_{avg} = \frac{1}{\mu} + \frac{\rho(1 - K\rho^{K-1} + (K-1)\rho^K)}{(1-
 
 $$\Theta_{sat} = 0.8 \cdot \mu$$
 
+> 🔮 **估算数据** | 依据: 基于数学模型与理论分析推导
+
 **工程验证** (Nexmark q6, Flink 1.18):
 
 | 输入速率 | 实测p99延迟 | 模型预测 | 误差 |
@@ -444,6 +454,8 @@ $$W_{effective} = \frac{W_{raw}}{1 + \alpha \cdot R_{compression}}$$
 - **数据源**: Kafka, 100 partitions
 - **查询**: Nexmark q6 (AvgSellingPriceBySeller)
 - **持续时间**: 30分钟稳态测试
+
+> 🔮 **估算数据** | 依据: 基于行业参考值与理论分析推导，非实际测试环境得出
 
 **性能对比结果**:
 

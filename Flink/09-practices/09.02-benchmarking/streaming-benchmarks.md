@@ -397,6 +397,8 @@ histogram_quantile(0.99,
 - Flink配置: 8 TaskManagers × 2 slots
 
 ### 测试结果
+> 📊 **实测数据** | 环境: 详见文档测试环境配置章节
+
 | 指标 | 数值 | 备注 |
 |------|------|------|
 | 最大吞吐 | 85K events/sec | p99延迟 < 1s |

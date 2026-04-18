@@ -233,6 +233,8 @@ $$
 
 对于 Streaming Database 的物化视图 $v$，其新鲜度由增量更新链路的瓶颈决定：
 
+> 🔮 **估算数据** | 依据: 基于行业参考值与理论分析推导，非实际测试环境得出
+
 $$
 \text{Freshness}(v) = L_{source} + L_{parse} + L_{\Delta} + L_{commit} + L_{visibility}
 $$
@@ -387,6 +389,8 @@ AdStream 的实时广告业务可严格映射到 Streaming Database 八元组 $\
 
 ### 3.2 RisingWave / Arroyo / Materialize / Flink+MySQL 架构映射关系
 
+> 🔮 **估算数据** | 依据: 基于行业参考值与理论分析推导，非实际测试环境得出
+
 四种候选架构在 SDB 八元组下的形式化映射对比：
 
 | 维度 | RisingWave v2.8.1 | Arroyo v0.15 | Materialize | Flink+MySQL (原架构) |
@@ -473,6 +477,8 @@ $$
 Flink 维护内部状态（RocksDB）+ MySQL 维护应用状态 + Redis 维护缓存状态 = 三重状态冗余。一致性校验需要分布式事务（2PC/XA），在 185K eps 下 2PC 的协调延迟不可接受。
 
 **矛盾3: 运维复杂度指数增长**
+
+> 🔮 **估算数据** | 依据: 基于行业参考值与理论分析推导，非实际测试环境得出
 
 原架构涉及 5 个独立子系统的运维：Flink Cluster、Kafka、MySQL、Redis、Spring Boot API。每次扩容需要协调 3 个团队，故障定位平均耗时 45 分钟。
 
@@ -638,6 +644,8 @@ $$
 
 ### 5.2 工程论证: 端到端延迟分解与优化路径
 
+> 🔮 **估算数据** | 依据: 基于行业参考值与理论分析推导，非实际测试环境得出
+
 RTB 决策链路的延迟分解与优化措施：
 
 | 链路阶段 | 原架构延迟 | 新架构延迟 | 优化手段 |
@@ -719,6 +727,8 @@ GROUP BY geo_region, device_type,
 
 ### 5.3 工程论证: TCO成本模型与ROI分析
 
+> 🔮 **估算数据** | 依据: 基于云厂商定价模型与理论计算
+
 **原架构月度成本（AWS us-east-1）**：
 
 | 组件 | 实例规格 | 数量 | 月度成本 |
@@ -731,6 +741,8 @@ GROUP BY geo_region, device_type,
 | Redis Cluster | cache.r6g.2xlarge | 6 | $4,800 |
 | Spring Boot API | m6g.2xlarge | 12 | $4,320 |
 | **总计** | | | **$36,340/月** |
+
+> 🔮 **估算数据** | 依据: 基于云厂商定价模型与理论计算
 
 **新架构月度成本**：
 
@@ -766,6 +778,8 @@ AdStream 是一家服务全球 50+ 国家/地区的程序化广告平台（Deman
 3. **竞价决策（Bidding）**: 实时计算广告主预算、频次控制、预估CTR/CVR，生成出价
 4. **曝光追踪（Impression Tracking）**: 胜出后记录曝光事件，用于计费和效果归因
 5. **实时报表（Real-Time Reporting）**: 广告主Dashboard展示实时消耗、转化数据
+
+> 🔮 **估算数据** | 依据: 基于行业参考值与理论分析推导，非实际测试环境得出
 
 **技术债务清单**：
 
@@ -850,6 +864,8 @@ SELECT remaining_budget FROM mv_advertiser_remaining_budget WHERE advertiser_id 
 -- 性能测试查询2: 实时频次控制
 SELECT impression_count FROM mv_user_ad_frequency
 WHERE user_id = 'uuid-xxx' AND ad_id = 67890 AND window_start > NOW() - INTERVAL '1' HOUR;
+
+> 🔮 **估算数据** | 依据: 基于行业参考值与理论分析推导，非实际测试环境得出
 
 -- 性能测试查询3: 地域效果聚合
 SELECT geo_region, SUM(win_price), COUNT(*)
@@ -1321,6 +1337,8 @@ ALTER MATERIALIZED VIEW mv_user_ad_frequency
 SET (retention_seconds = 86400);
 ```
 
+> 🔮 **估算数据** | 依据: 基于行业参考值与理论分析推导，非实际测试环境得出
+
 **性能调优效果**：
 
 | 指标 | 调优前 | 调优后 | 提升 |
@@ -1568,6 +1586,8 @@ class ConsistencyMonitor:
 
 ### 6.9 性能数据: 查询延迟/资源成本/数据新鲜度
 
+> 🔮 **估算数据** | 依据: 基于行业参考值与理论分析推导，非实际测试环境得出
+
 **查询延迟对比（生产环境实测，7天数据）**：
 
 | 查询场景 | Flink+MySQL P50 | Flink+MySQL P99 | RisingWave P50 | RisingWave P99 | 提升 |
@@ -1586,6 +1606,8 @@ class ConsistencyMonitor:
 | 峰值查询QPS | 12K | 45K | +275% |
 | 并发连接数 | 800 | 3,500 | +338% |
 
+> 🔮 **估算数据** | 依据: 基于行业参考值与理论分析推导，非实际测试环境得出
+
 **资源成本对比（月度，AWS us-east-1）**：
 
 | 资源类型 | 原架构 | 新架构 | 节省 |
@@ -1599,6 +1621,8 @@ class ConsistencyMonitor:
 | **总计** | **$36,340** | **$20,805** | **42.7%↓** |
 
 注：S3成本上升是因为 Hummock 使用 S3 作为持久化层，但总体仍大幅降低。
+
+> 🔮 **估算数据** | 依据: 基于行业参考值与理论分析推导，非实际测试环境得出
 
 **数据新鲜度对比**：
 

@@ -117,6 +117,8 @@ $$\forall t, \exists \mathcal{E}_t: S_{src}^{(t)} \times S_{dst}^{(t-1)} \righta
 
 $$L_{total} = L_{kafka} + L_{flink} + L_{commit} + L_{metadata}$$
 
+> 🔮 **估算数据** | 依据: 基于行业参考值与理论分析推导，非实际测试环境得出
+
 其中：
 
 | 组件 | 符号 | 典型值 | 说明 |
@@ -287,6 +289,8 @@ Topic 命名: {domain}.{entity}.{event}.{version}
 └─────────────────────────────────────────────────────────────┘
 ```
 
+> 🔮 **估算数据** | 依据: 基于云厂商定价模型与理论计算
+
 | 层级 | 技术 | 保留期 | 查询延迟 | 单位成本 | 适用查询 |
 |------|------|--------|----------|----------|----------|
 | L1 | Fluss 0.8 | 24h | < 10ms | $0.15/GB/月 | 实时看板、监控告警、Debug |
@@ -298,6 +302,8 @@ Topic 命名: {domain}.{entity}.{event}.{version}
 ## 4. 论证过程 (Argumentation)
 
 ### 4.1 为什么从 Lambda 架构迁移
+
+> 🔮 **估算数据** | 依据: 基于云厂商定价模型与理论计算
 
 DataFlow Inc 在 2023 年之前采用经典 Lambda 架构，面临以下核心痛点：
 
@@ -335,6 +341,8 @@ $$C_{mgmt}^{(dynamic)}(K) = O(\log K)$$
 Dynamic Sink 将管理复杂度从与 Topic 数量成正比降低为与规则数量成正比（规则数 << Topic 数）。
 
 ### 4.3 反例分析: Dynamic Sink 不适用场景
+
+> 🔮 **估算数据** | 依据: 基于行业参考值与案例类比分析
 
 Dynamic Sink 并非银弹，以下场景不建议使用：
 
@@ -432,6 +440,8 @@ DataFlow Inc 迁移前后的 TCO（Total Cost of Ownership）对比模型：
 - 数据保留期: 3 年
 - AWS 区域: us-east-1
 
+> 🔮 **估算数据** | 依据: 基于行业参考值与理论分析推导，非实际测试环境得出
+
 **计算资源成本**（年化，$M）:
 
 | 组件 | Lambda 架构 | Streaming Lakehouse | 备注 |
@@ -442,6 +452,8 @@ DataFlow Inc 迁移前后的 TCO（Total Cost of Ownership）对比模型：
 | HDFS (EC2 + EBS) | $2.0M | $0 | 替换为 S3 |
 | Fluss 热数据层 | $0 | $0.8M | 新增热数据层 |
 | **计算总计** | **$7.5M** | **$3.8M** | **↓ 49%** |
+
+> 🔮 **估算数据** | 依据: 基于行业参考值与理论分析推导，非实际测试环境得出
 
 **存储资源成本**（年化，$M）:
 
@@ -454,6 +466,8 @@ DataFlow Inc 迁移前后的 TCO（Total Cost of Ownership）对比模型：
 | HBase / DynamoDB | $0.8M | $0 | 不再需要 Serving Layer |
 | **存储总计** | **$6.5M** | **$2.47M** | **↓ 62%** |
 
+> 🔮 **估算数据** | 依据: 基于云厂商定价模型与理论计算
+
 **人力与运维成本**（年化，$M）:
 
 | 成本项 | Lambda 架构 | Streaming Lakehouse | 备注 |
@@ -462,6 +476,8 @@ DataFlow Inc 迁移前后的 TCO（Total Cost of Ownership）对比模型：
 | 平均故障修复时间 | 45 min | 12 min | 统一监控 |
 | Schema 变更响应 | 2.5 天 | 0 天 (自动) | 效率提升 |
 | **人力总计** | **$3.0M** | **$1.6M** | **↓ 47%** |
+
+> 🔮 **估算数据** | 依据: 基于行业参考值与理论分析推导，非实际测试环境得出
 
 **TCO 汇总**:
 
@@ -479,6 +495,8 @@ DataFlow Inc 迁移前后的 TCO（Total Cost of Ownership）对比模型：
 $$N_{files} = \frac{3600}{\Delta_{cp}} \cdot P$$
 
 当 $\Delta_{cp} = 60$s，$P = 512$ 时，$N_{files} = 30{,}720$/小时，严重影响查询性能。
+
+> 🔮 **估算数据** | 依据: 基于行业参考值与理论分析推导，非实际测试环境得出
 
 **DataFlow Inc 的分层 Compaction 策略**:
 
@@ -522,6 +540,8 @@ spec:
           restartPolicy: OnFailure
 ```
 
+> 🔮 **估算数据** | 依据: 基于云厂商定价模型与理论计算
+
 **效果评估**:
 
 | 指标 | Compaction 前 | Compaction 后 | 改善 |
@@ -539,6 +559,8 @@ spec:
 ### 6.1 案例背景: DataFlow Inc 实时数据平台
 
 **公司概况**: DataFlow Inc 是一家全球化的互联网科技公司，业务覆盖电商、广告、支付、物流四大板块，日活跃用户 4.2 亿。
+
+> 🔮 **估算数据** | 依据: 基于行业参考值与理论分析推导，非实际测试环境得出
 
 **数据规模**:
 
@@ -558,6 +580,8 @@ spec:
 2. **Schema 变更灾难**: 2023 年 Q3，上游业务系统一次性为 300+ 个 Topic 增加了 `device_fingerprint` 字段，工程团队花了 17 个工作日才完成所有 Pipeline 的同步修改。
 3. **存储成本飙升**: HDFS 集群从 20 PB 扩容到 60 PB（3 副本），年存储费用超过 $4.5M。
 4. **实时分析受限**: Speed Layer 仅保留 24 小时数据，超过 24 小时的实时分析需求被迫走 Batch Layer，延迟从秒级退化到天级。
+
+> 🔮 **估算数据** | 依据: 设计目标值，实际达成可能因环境而异
 
 **迁移目标**:
 
@@ -1492,6 +1516,8 @@ template: |
 
 ### 6.7 性能数据与瓶颈分析
 
+> 🔮 **估算数据** | 依据: 基于行业参考值与理论分析推导，非实际测试环境得出
+
 **端到端延迟指标**（生产环境实测，持续 30 天）：
 
 | 指标 | P50 | P90 | P99 | P99.9 | 测量方法 |
@@ -1531,6 +1557,8 @@ template: |
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
+> 🔮 **估算数据** | 依据: 基于行业参考值与理论分析推导，非实际测试环境得出
+
 **调优前后性能对比**:
 
 | 指标 | 调优前 | 调优后 | 优化手段 |
@@ -1543,6 +1571,8 @@ template: |
 | Checkpoint 耗时 | 45s | 18s | 增量 Checkpoint + S3 MPU |
 
 ### 6.8 存储成本对比分析
+
+> 🔮 **估算数据** | 依据: 基于云厂商定价模型与理论计算
 
 **DataFlow Inc 存储成本详细对比**（月度，$K）:
 
@@ -1570,6 +1600,8 @@ template: |
 
 ### 6.9 踩坑记录与解决方案
 
+> 🔮 **估算数据** | 依据: 基于行业参考值与理论分析推导，非实际测试环境得出
+
 **踩坑 1: Topic 发现延迟导致新 Topic 数据丢失**
 
 | 项目 | 详情 |
@@ -1579,6 +1611,8 @@ template: |
 | **影响** | 新上线业务的数据丢失约 30 万条 |
 | **解决方案** | 1. 将 discovery interval 从 300s 缩短到 30s<br>2. 增加 Kafka Admin API 的 Topic 创建事件监听（通过 MSK Event 触发 Flink Savepoint 刷新）<br>3. 新 Topic 上线前预热：通过 CI/CD Pipeline 提前注册 Topic 到配置中心 |
 | **预防措施** | 建立 Topic 创建审批工作流，新 Topic 必须先注册到路由规则再创建 |
+
+> 🔮 **估算数据** | 依据: 基于行业参考值与理论分析推导，非实际测试环境得出
 
 **踩坑 2: 小文件爆炸导致 S3 LIST 超时**
 
@@ -1590,6 +1624,8 @@ template: |
 | **解决方案** | 1. 实施三层 Compaction（见 5.3 节）<br>2. 将 write.target-file-size-bytes 从 128MB 提升到 512MB<br>3. 启用 Iceberg 的 `metadata.compact` 功能，合并元数据清单文件<br>4. 在 S3 前增加 Alluxio 本地缓存层，减少 LIST 频率 |
 | **效果** | 文件数量减少 98.8%，Trino P95 恢复到 2.1s |
 
+> 🔮 **估算数据** | 依据: 基于行业参考值与理论分析推导，非实际测试环境得出
+
 **踩坑 3: S3 Eventual Consistency 导致 Checkpoint 失败**
 
 | 项目 | 详情 |
@@ -1599,6 +1635,8 @@ template: |
 | **影响** | 作业频繁重启，产生大量 Savepoint，延迟抖动严重 |
 | **解决方案** | 1. 升级 Iceberg 到 1.8.0+，使用 `S3FileIO` 的强一致性 List 优化<br>2. 在 DynamoDB Lock Manager 中增加 `wait-for-consistency` 参数，Commit 后等待 200ms 再确认<br>3. 将 S3 Bucket 启用 strong consistency（2020 年后 AWS 已全局支持，但需确认 IAM 策略）<br>4. 增加 Checkpoint 重试次数 3 → 10 |
 | **效果** | Checkpoint 失败率降至 < 0.1% |
+
+> 🔮 **估算数据** | 依据: 基于行业参考值与理论分析推导，非实际测试环境得出
 
 **踩坑 4: Schema Evolution 并发冲突**
 
@@ -1610,6 +1648,8 @@ template: |
 | **解决方案** | 1. 在 Dynamic Sink 层增加分布式锁（基于 Redis RedLock）<br>2. Schema Evolution 操作串行化：每个表在同一时刻只允许一个 Evolution 进行<br>3. 增加指数退避重试（1s, 2s, 4s, 8s）<br>4. 失败事件进入死信队列，人工兜底 |
 | **效果** | Schema Evolution 成功率从 99.5% 提升到 99.97% |
 
+> 🔮 **估算数据** | 依据: 基于行业参考值与理论分析推导，非实际测试环境得出
+
 **踩坑 5: Compaction 与写入竞争导致资源争抢**
 
 | 项目 | 详情 |
@@ -1619,6 +1659,8 @@ template: |
 | **影响** | 凌晨时段实时分析看板出现明显延迟 |
 | **解决方案** | 1. 将 Compaction 作业调度到独立的 K8s Node Pool（spot 实例）<br>2. Compaction 作业使用 S3 的 Requester Pays Bucket，隔离带宽计费<br>3. 限制 Compaction 作业的并发度（max 20 并行）<br>4. 对实时入湖作业设置 Guaranteed QoS，Compaction 使用 Burstable |
 | **效果** | 凌晨时段入湖延迟稳定在 300ms 以内 |
+
+> 🔮 **估算数据** | 依据: 基于行业参考值与理论分析推导，非实际测试环境得出
 
 **踩坑 6: Fluss 热数据层与 Iceberg 的数据不一致**
 
