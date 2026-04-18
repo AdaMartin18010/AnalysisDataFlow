@@ -27,7 +27,7 @@
       - [突破3: 异地多活](#突破3-异地多活)
     - [4.2 工程挑战与应对](#42-工程挑战与应对)
     - [4.3 边界条件与约束](#43-边界条件与约束)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [5.1 异地多活一致性论证](#51-异地多活一致性论证)
     - [5.2 秒级扩缩容数学模型](#52-秒级扩缩容数学模型)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)

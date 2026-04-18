@@ -5,17 +5,17 @@ source_version: v4.1
 last_sync: "2026-04-15"
 ---
 
-# Flink Checkpoint Mechanism Deep Dive {#flink-checkpoint-mechanism-deep-dive}
+# Flink Checkpoint Mechanism Deep Dive
 
 > Stage: Flink/02-core-mechanisms | Prerequisites: [02.02-consistency-hierarchy.md](../../Struct/02-properties/02.02-consistency-hierarchy.md) | Formalization Level: L4
 
 ---
 
-## Table of Contents {#table-of-contents}
+## Table of Contents
 
-- [Flink Checkpoint Mechanism Deep Dive {#flink-checkpoint-mechanism-deep-dive}](#flink-checkpoint-mechanism-deep-dive-flink-checkpoint-mechanism-deep-dive)
-  - [Table of Contents {#table-of-contents}](#table-of-contents-table-of-contents)
-  - [1. Definitions {#1-definitions}](#1-definitions-1-definitions)
+- [Flink Checkpoint Mechanism Deep Dive {#flink-checkpoint-mechanism-deep-dive}](#flink-checkpoint-mechanism-deep-dive)
+  - [Table of Contents {#table-of-contents}](#table-of-contents)
+  - [1. Definitions {#1-definitions}](#1-definitions)
     - [Def-F-02-01 (Checkpoint Core Abstraction)](#def-f-02-01-checkpoint-core-abstraction)
     - [Def-F-02-02 (Checkpoint Barrier)](#def-f-02-02-checkpoint-barrier)
     - [Def-F-02-03 (Aligned Checkpoint)](#def-f-02-03-aligned-checkpoint)
@@ -24,60 +24,60 @@ last_sync: "2026-04-15"
     - [Def-F-02-06 (State Backend)](#def-f-02-06-state-backend)
     - [Def-F-02-07 (Checkpoint Coordinator)](#def-f-02-07-checkpoint-coordinator)
     - [Def-F-02-08 (Changelog State Backend)](#def-f-02-08-changelog-state-backend)
-  - [2. Properties {#2-properties}](#2-properties-2-properties)
+  - [2. Properties {#2-properties}](#2-properties)
     - [Lemma-F-02-01 (Barrier Alignment Guarantees State Consistency)](#lemma-f-02-01-barrier-alignment-guarantees-state-consistency)
     - [Lemma-F-02-02 (Asynchronous Checkpoint Low-Latency Property)](#lemma-f-02-02-asynchronous-checkpoint-low-latency-property)
     - [Lemma-F-02-03 (Incremental Checkpoint Storage Optimization)](#lemma-f-02-03-incremental-checkpoint-storage-optimization)
     - [Prop-F-02-01 (Checkpoint Type Selection Trade-offs)](#prop-f-02-01-checkpoint-type-selection-trade-offs)
-  - [3. Relations {#3-relations}](#3-relations-3-relations)
+  - [3. Relations {#3-relations}](#3-relations)
     - [Relation 1: Flink Checkpoint ↔ Chandy-Lamport Distributed Snapshot](#relation-1-flink-checkpoint--chandy-lamport-distributed-snapshot)
     - [Relation 2: Checkpoint Mechanism ⟹ Exactly-Once Semantics](#relation-2-checkpoint-mechanism--exactly-once-semantics)
     - [Relation 3: State Backend Type ↔ Application Scenarios](#relation-3-state-backend-type--application-scenarios)
-  - [4. Argumentation {#4-argumentation}](#4-argumentation-4-argumentation)
-    - [4.1 Checkpoint Architecture: JM/TM Coordination {#41-checkpoint-architecture-jmtm-coordination}](#41-checkpoint-architecture-jmtm-coordination-41-checkpoint-architecture-jmtm-coordination)
-    - [4.2 Aligned vs Unaligned: In-Depth Comparison {#42-aligned-vs-unaligned-in-depth-comparison}](#42-aligned-vs-unaligned-in-depth-comparison-42-aligned-vs-unaligned-in-depth-comparison)
+  - [4. Argumentation {#4-argumentation}](#4-argumentation)
+    - [4.1 Checkpoint Architecture: JM/TM Coordination {#41-checkpoint-architecture-jmtm-coordination}](#41-checkpoint-architecture-jmtm-coordination)
+    - [4.2 Aligned vs Unaligned: In-Depth Comparison {#42-aligned-vs-unaligned-in-depth-comparison}](#42-aligned-vs-unaligned-in-depth-comparison)
       - [Aligned Checkpoint Workflow](#aligned-checkpoint-workflow)
       - [Unaligned Checkpoint Workflow](#unaligned-checkpoint-workflow)
-    - [4.3 Incremental Checkpoint Engineering Implementation {#43-incremental-checkpoint-engineering-implementation}](#43-incremental-checkpoint-engineering-implementation-43-incremental-checkpoint-engineering-implementation)
-      - [4.3.1 RocksDB Incremental Checkpoint Principles {#431-rocksdb-incremental-checkpoint-principles}](#431-rocksdb-incremental-checkpoint-principles-431-rocksdb-incremental-checkpoint-principles)
-      - [Configuration Parameters {#configuration-parameters}](#configuration-parameters-configuration-parameters)
-    - [4.4 State Backend Snapshot Process Details {#44-state-backend-snapshot-process-details}](#44-state-backend-snapshot-process-details-44-state-backend-snapshot-process-details)
-      - [HashMapStateBackend Snapshot Process {#hashmapstatebackend-snapshot-process}](#hashmapstatebackend-snapshot-process-hashmapstatebackend-snapshot-process)
-      - [RocksDBStateBackend Snapshot Process {#rocksdbstatebackend-snapshot-process}](#rocksdbstatebackend-snapshot-process-rocksdbstatebackend-snapshot-process)
-  - [5. Proof / Engineering Argument {#5-proof--engineering-argument}](#5-proof--engineering-argument-5-proof--engineering-argument)
-    - [Thm-F-02-01 (System State Equivalence After Checkpoint Recovery) {#thm-f-02-01-system-state-equivalence-after-checkpoint-recovery}](#thm-f-02-01-system-state-equivalence-after-checkpoint-recovery-thm-f-02-01-system-state-equivalence-after-checkpoint-recovery)
-    - [Thm-F-02-02 (Incremental Checkpoint Completeness) {#thm-f-02-02-incremental-checkpoint-completeness}](#thm-f-02-02-incremental-checkpoint-completeness-thm-f-02-02-incremental-checkpoint-completeness)
-    - [Thm-F-02-01 Source Code Verification {#thm-f-02-01-source-code-verification}](#thm-f-02-01-source-code-verification-thm-f-02-01-source-code-verification)
-    - [Thm-F-02-02 Source Code Verification {#thm-f-02-02-source-code-verification}](#thm-f-02-02-source-code-verification-thm-f-02-02-source-code-verification)
-  - [6. Examples {#6-examples}](#6-examples-6-examples)
-    - [6.1 Configuration Example: Aligned Checkpoint {#61-configuration-example-aligned-checkpoint}](#61-configuration-example-aligned-checkpoint-61-configuration-example-aligned-checkpoint)
-    - [6.2 Configuration Example: Unaligned Checkpoint {#62-configuration-example-unaligned-checkpoint}](#62-configuration-example-unaligned-checkpoint-62-configuration-example-unaligned-checkpoint)
-    - [6.3 Configuration Example: Incremental Checkpoint {#63-configuration-example-incremental-checkpoint}](#63-configuration-example-incremental-checkpoint-63-configuration-example-incremental-checkpoint)
-    - [6.4 Configuration Example: Changelog State Backend {#64-configuration-example-changelog-state-backend}](#64-configuration-example-changelog-state-backend-64-configuration-example-changelog-state-backend)
-    - [6.5 Fault Recovery Case Study {#65-fault-recovery-case-study}](#65-fault-recovery-case-study-65-fault-recovery-case-study)
-  - [7. Visualizations {#7-visualizations}](#7-visualizations-7-visualizations)
-    - [7.1 Checkpoint Lifecycle Sequence Diagram {#71-checkpoint-lifecycle-sequence-diagram}](#71-checkpoint-lifecycle-sequence-diagram-71-checkpoint-lifecycle-sequence-diagram)
-    - [7.2 State Backend Snapshot Flowchart {#72-state-backend-snapshot-flowchart}](#72-state-backend-snapshot-flowchart-72-state-backend-snapshot-flowchart)
-    - [7.3 Checkpoint Type Comparison Decision Tree {#73-checkpoint-type-comparison-decision-tree}](#73-checkpoint-type-comparison-decision-tree-73-checkpoint-type-comparison-decision-tree)
-    - [7.4 Architecture Layer Relationship Diagram {#74-architecture-layer-relationship-diagram}](#74-architecture-layer-relationship-diagram-74-architecture-layer-relationship-diagram)
-  - [8. Tuning Recommendations and Monitoring Metrics {#8-tuning-recommendations-and-monitoring-metrics}](#8-tuning-recommendations-and-monitoring-metrics-8-tuning-recommendations-and-monitoring-metrics)
-    - [8.1 Checkpoint Tuning Best Practices {#81-checkpoint-tuning-best-practices}](#81-checkpoint-tuning-best-practices-81-checkpoint-tuning-best-practices)
-      - [Basic Configuration Principles {#basic-configuration-principles}](#basic-configuration-principles-basic-configuration-principles)
-      - [Large-State Job Tuning {#large-state-job-tuning}](#large-state-job-tuning-large-state-job-tuning)
-      - [Low-Latency Job Tuning {#low-latency-job-tuning}](#low-latency-job-tuning-low-latency-job-tuning)
-    - [8.2 Key Monitoring Metrics {#82-key-monitoring-metrics}](#82-key-monitoring-metrics-82-key-monitoring-metrics)
-      - [Flink Native Metrics {#flink-native-metrics}](#flink-native-metrics-flink-native-metrics)
-      - [JVM and System Metrics {#jvm-and-system-metrics}](#jvm-and-system-metrics-jvm-and-system-metrics)
-      - [Custom Monitoring Alerts {#custom-monitoring-alerts}](#custom-monitoring-alerts-custom-monitoring-alerts)
-    - [8.3 Common Issue Diagnosis {#83-common-issue-diagnosis}](#83-common-issue-diagnosis-83-common-issue-diagnosis)
-      - [Issue 1: Frequent Checkpoint Timeouts {#issue-1-frequent-checkpoint-timeouts}](#issue-1-frequent-checkpoint-timeouts-issue-1-frequent-checkpoint-timeouts)
-      - [Issue 2: Long Checkpoint Alignment Time {#issue-2-long-checkpoint-alignment-time}](#issue-2-long-checkpoint-alignment-time-issue-2-long-checkpoint-alignment-time)
-      - [Issue 3: Slow State Recovery {#issue-3-slow-state-recovery}](#issue-3-slow-state-recovery-issue-3-slow-state-recovery)
-  - [9. References {#9-references}](#9-references-9-references)
+    - [4.3 Incremental Checkpoint Engineering Implementation {#43-incremental-checkpoint-engineering-implementation}](#43-incremental-checkpoint-engineering-implementation)
+      - [4.3.1 RocksDB Incremental Checkpoint Principles {#431-rocksdb-incremental-checkpoint-principles}](#431-rocksdb-incremental-checkpoint-principles)
+      - [Configuration Parameters {#configuration-parameters}](#configuration-parameters)
+    - [4.4 State Backend Snapshot Process Details {#44-state-backend-snapshot-process-details}](#44-state-backend-snapshot-process-details)
+      - [HashMapStateBackend Snapshot Process {#hashmapstatebackend-snapshot-process}](#hashmapstatebackend-snapshot-process)
+      - [RocksDBStateBackend Snapshot Process {#rocksdbstatebackend-snapshot-process}](#rocksdbstatebackend-snapshot-process)
+  - [5. Proof / Engineering Argument {#5-proof--engineering-argument}](#5-proof--engineering-argument)
+    - [Thm-F-02-01 (System State Equivalence After Checkpoint Recovery) {#thm-f-02-01-system-state-equivalence-after-checkpoint-recovery}](#thm-f-02-01-system-state-equivalence-after-checkpoint-recovery)
+    - [Thm-F-02-02 (Incremental Checkpoint Completeness) {#thm-f-02-02-incremental-checkpoint-completeness}](#thm-f-02-02-incremental-checkpoint-completeness)
+    - [Thm-F-02-01 Source Code Verification {#thm-f-02-01-source-code-verification}](#thm-f-02-01-source-code-verification)
+    - [Thm-F-02-02 Source Code Verification {#thm-f-02-02-source-code-verification}](#thm-f-02-02-source-code-verification)
+  - [6. Examples {#6-examples}](#6-examples)
+    - [6.1 Configuration Example: Aligned Checkpoint {#61-configuration-example-aligned-checkpoint}](#61-configuration-example-aligned-checkpoint)
+    - [6.2 Configuration Example: Unaligned Checkpoint {#62-configuration-example-unaligned-checkpoint}](#62-configuration-example-unaligned-checkpoint)
+    - [6.3 Configuration Example: Incremental Checkpoint {#63-configuration-example-incremental-checkpoint}](#63-configuration-example-incremental-checkpoint)
+    - [6.4 Configuration Example: Changelog State Backend {#64-configuration-example-changelog-state-backend}](#64-configuration-example-changelog-state-backend)
+    - [6.5 Fault Recovery Case Study {#65-fault-recovery-case-study}](#65-fault-recovery-case-study)
+  - [7. Visualizations {#7-visualizations}](#7-visualizations)
+    - [7.1 Checkpoint Lifecycle Sequence Diagram {#71-checkpoint-lifecycle-sequence-diagram}](#71-checkpoint-lifecycle-sequence-diagram)
+    - [7.2 State Backend Snapshot Flowchart {#72-state-backend-snapshot-flowchart}](#72-state-backend-snapshot-flowchart)
+    - [7.3 Checkpoint Type Comparison Decision Tree {#73-checkpoint-type-comparison-decision-tree}](#73-checkpoint-type-comparison-decision-tree)
+    - [7.4 Architecture Layer Relationship Diagram {#74-architecture-layer-relationship-diagram}](#74-architecture-layer-relationship-diagram)
+  - [8. Tuning Recommendations and Monitoring Metrics {#8-tuning-recommendations-and-monitoring-metrics}](#8-tuning-recommendations-and-monitoring-metrics)
+    - [8.1 Checkpoint Tuning Best Practices {#81-checkpoint-tuning-best-practices}](#81-checkpoint-tuning-best-practices)
+      - [Basic Configuration Principles {#basic-configuration-principles}](#basic-configuration-principles)
+      - [Large-State Job Tuning {#large-state-job-tuning}](#large-state-job-tuning)
+      - [Low-Latency Job Tuning {#low-latency-job-tuning}](#low-latency-job-tuning)
+    - [8.2 Key Monitoring Metrics {#82-key-monitoring-metrics}](#82-key-monitoring-metrics)
+      - [Flink Native Metrics {#flink-native-metrics}](#flink-native-metrics)
+      - [JVM and System Metrics {#jvm-and-system-metrics}](#jvm-and-system-metrics)
+      - [Custom Monitoring Alerts {#custom-monitoring-alerts}](#custom-monitoring-alerts)
+    - [8.3 Common Issue Diagnosis {#83-common-issue-diagnosis}](#83-common-issue-diagnosis)
+      - [Issue 1: Frequent Checkpoint Timeouts {#issue-1-frequent-checkpoint-timeouts}](#issue-1-frequent-checkpoint-timeouts)
+      - [Issue 2: Long Checkpoint Alignment Time {#issue-2-long-checkpoint-alignment-time}](#issue-2-long-checkpoint-alignment-time)
+      - [Issue 3: Slow State Recovery {#issue-3-slow-state-recovery}](#issue-3-slow-state-recovery)
+  - [9. References {#9-references}](#9-references)
 
 ---
 
-## 1. Definitions {#1-definitions}
+## 1. Definitions
 
 This section establishes rigorous formal definitions for the Flink Checkpoint mechanism, laying the theoretical foundation for subsequent analysis. All definitions are consistent with the semantic hierarchy in [02.02-consistency-hierarchy.md](../../Struct/02-properties/02.02-consistency-hierarchy.md)[^1][^2].
 
@@ -274,7 +274,7 @@ state.backend.changelog.materialization.max-concurrent: 1
 
 ---
 
-## 2. Properties {#2-properties}
+## 2. Properties
 
 Building on the definitions in Section 1, this section derives the core properties of the Checkpoint mechanism.
 
@@ -357,7 +357,7 @@ Where $Storage_{full}(n)$ is the storage overhead of a full Checkpoint for the s
 
 ---
 
-## 3. Relations {#3-relations}
+## 3. Relations
 
 This section establishes the mapping between the Checkpoint mechanism and distributed systems theory, consistency semantics, and engineering practice.
 
@@ -432,13 +432,13 @@ The choice of State Backend directly determines the performance characteristics 
 
 ---
 
-## 4. Argumentation {#4-argumentation}
+## 4. Argumentation
 
 This section provides an in-depth analysis of the core engineering implementation details of the Checkpoint mechanism.
 
 ---
 
-### 4.1 Checkpoint Architecture: JM/TM Coordination {#41-checkpoint-architecture-jmtm-coordination}
+### 4.1 Checkpoint Architecture: JM/TM Coordination
 
 Flink Checkpoint adopts a **master-worker coordination** architecture, with the CheckpointCoordinator on the JobManager (JM) collaborating with Checkpoint tasks on the TaskManager (TM):
 
@@ -478,7 +478,7 @@ JM (CheckpointCoordinator)                    TM (Task with State)
 
 ---
 
-### 4.2 Aligned vs Unaligned: In-Depth Comparison {#42-aligned-vs-unaligned-in-depth-comparison}
+### 4.2 Aligned vs Unaligned: In-Depth Comparison
 
 #### Aligned Checkpoint Workflow
 
@@ -518,9 +518,9 @@ JM (CheckpointCoordinator)                    TM (Task with State)
 
 ---
 
-### 4.3 Incremental Checkpoint Engineering Implementation {#43-incremental-checkpoint-engineering-implementation}
+### 4.3 Incremental Checkpoint Engineering Implementation
 
-#### 4.3.1 RocksDB Incremental Checkpoint Principles {#431-rocksdb-incremental-checkpoint-principles}
+#### 4.3.1 RocksDB Incremental Checkpoint Principles
 
 Based on the architectural characteristics of RocksDB's LSM-Tree:
 
@@ -546,7 +546,7 @@ $$
 S_{recovered} = Base \cup \Delta_1 \cup \Delta_2 \cup \cdots \cup \Delta_n
 $$
 
-#### Configuration Parameters {#configuration-parameters}
+#### Configuration Parameters
 
 ```java
 // Enable incremental Checkpoint
@@ -565,9 +565,9 @@ DefaultConfigurableStateBackend stateBackend = new EmbeddedRocksDBStateBackend(t
 
 ---
 
-### 4.4 State Backend Snapshot Process Details {#44-state-backend-snapshot-process-details}
+### 4.4 State Backend Snapshot Process Details
 
-#### HashMapStateBackend Snapshot Process {#hashmapstatebackend-snapshot-process}
+#### HashMapStateBackend Snapshot Process
 
 ```
 [Sync Phase]
@@ -589,7 +589,7 @@ Send Ack to JM
 
 **Sync phase duration**: Proportional to the number of state entries, $O(|S|)$
 
-#### RocksDBStateBackend Snapshot Process {#rocksdbstatebackend-snapshot-process}
+#### RocksDBStateBackend Snapshot Process
 
 ```
 [Sync Phase]
@@ -613,9 +613,9 @@ Send Ack to JM
 
 ---
 
-## 5. Proof / Engineering Argument {#5-proof--engineering-argument}
+## 5. Proof / Engineering Argument
 
-### Thm-F-02-01 (System State Equivalence After Checkpoint Recovery) {#thm-f-02-01-system-state-equivalence-after-checkpoint-recovery}
+### Thm-F-02-01 (System State Equivalence After Checkpoint Recovery)
 
 **Statement**: Suppose the system fails at time $\tau_f$ during execution, and the last successfully completed Checkpoint is $CP_n$. After recovering from $CP_n$ and completing Replay, the system is observationally equivalent to a continuation of some consistent cut $C$, where $C$ corresponds to the global state captured by $CP_n$.
 
@@ -658,7 +658,7 @@ That is, $tr$ and $tr'$ completely coincide after $C_n$. The observer cannot dis
 
 ---
 
-### Thm-F-02-02 (Incremental Checkpoint Completeness) {#thm-f-02-02-incremental-checkpoint-completeness}
+### Thm-F-02-02 (Incremental Checkpoint Completeness)
 
 **Statement**: Let $Base$ be the state set captured by a full Checkpoint, and $\Delta_1, \Delta_2, \ldots, \Delta_n$ be the incremental state sets captured by the subsequent $n$ incremental Checkpoints. Then the recovered state $S_{restore}$ after the $n$-th incremental Checkpoint satisfies:
 
@@ -709,7 +709,7 @@ RocksDB's manifest file records metadata for all active SST files. Incremental C
 
 ---
 
-### Thm-F-02-01 Source Code Verification {#thm-f-02-01-source-code-verification}
+### Thm-F-02-01 Source Code Verification
 
 **Theorem**: System State Equivalence After Checkpoint Recovery
 
@@ -798,7 +798,7 @@ private void restoreOperatorState(
 
 ---
 
-### Thm-F-02-02 Source Code Verification {#thm-f-02-02-source-code-verification}
+### Thm-F-02-02 Source Code Verification
 
 **Theorem**: Incremental Checkpoint Completeness
 
@@ -888,9 +888,9 @@ public class RocksDBStateUploader extends StateUploader {
 
 ---
 
-## 6. Examples {#6-examples}
+## 6. Examples
 
-### 6.1 Configuration Example: Aligned Checkpoint {#61-configuration-example-aligned-checkpoint}
+### 6.1 Configuration Example: Aligned Checkpoint
 
 ```java
 
@@ -924,7 +924,7 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
 
 ---
 
-### 6.2 Configuration Example: Unaligned Checkpoint {#62-configuration-example-unaligned-checkpoint}
+### 6.2 Configuration Example: Unaligned Checkpoint
 
 ```java
 
@@ -951,7 +951,7 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
 
 ---
 
-### 6.3 Configuration Example: Incremental Checkpoint {#63-configuration-example-incremental-checkpoint}
+### 6.3 Configuration Example: Incremental Checkpoint
 
 ```java
 
@@ -972,7 +972,7 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
 
 ---
 
-### 6.4 Configuration Example: Changelog State Backend {#64-configuration-example-changelog-state-backend}
+### 6.4 Configuration Example: Changelog State Backend
 
 ```java
 
@@ -1009,7 +1009,7 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
 
 ---
 
-### 6.5 Fault Recovery Case Study {#65-fault-recovery-case-study}
+### 6.5 Fault Recovery Case Study
 
 ```java
 // Use RocksDB State Backend, enable incremental Checkpoint
@@ -1069,9 +1069,9 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
 
 ---
 
-## 7. Visualizations {#7-visualizations}
+## 7. Visualizations
 
-### 7.1 Checkpoint Lifecycle Sequence Diagram {#71-checkpoint-lifecycle-sequence-diagram}
+### 7.1 Checkpoint Lifecycle Sequence Diagram
 
 ```mermaid
 sequenceDiagram
@@ -1126,7 +1126,7 @@ sequenceDiagram
 
 ---
 
-### 7.2 State Backend Snapshot Flowchart {#72-state-backend-snapshot-flowchart}
+### 7.2 State Backend Snapshot Flowchart
 
 ```mermaid
 flowchart TD
@@ -1168,7 +1168,7 @@ flowchart TD
 
 ---
 
-### 7.3 Checkpoint Type Comparison Decision Tree {#73-checkpoint-type-comparison-decision-tree}
+### 7.3 Checkpoint Type Comparison Decision Tree
 
 ```mermaid
 flowchart TD
@@ -1206,7 +1206,7 @@ flowchart TD
 
 ---
 
-### 7.4 Architecture Layer Relationship Diagram {#74-architecture-layer-relationship-diagram}
+### 7.4 Architecture Layer Relationship Diagram
 
 ```mermaid
 graph TB
@@ -1258,11 +1258,11 @@ graph TB
 
 ---
 
-## 8. Tuning Recommendations and Monitoring Metrics {#8-tuning-recommendations-and-monitoring-metrics}
+## 8. Tuning Recommendations and Monitoring Metrics
 
-### 8.1 Checkpoint Tuning Best Practices {#81-checkpoint-tuning-best-practices}
+### 8.1 Checkpoint Tuning Best Practices
 
-#### Basic Configuration Principles {#basic-configuration-principles}
+#### Basic Configuration Principles
 
 | Parameter | Recommended Value | Description |
 |-----------|-------------------|-------------|
@@ -1271,7 +1271,7 @@ graph TB
 | `minPauseBetweenCheckpoints` | 500ms - 5s | Ensure data processing time slices |
 | `maxConcurrentCheckpoints` | 1 | Single concurrency is usually sufficient |
 
-#### Large-State Job Tuning {#large-state-job-tuning}
+#### Large-State Job Tuning
 
 **Problem**: When state > 10GB, Checkpoints are prone to time out.
 
@@ -1304,7 +1304,7 @@ graph TB
    env.getCheckpointConfig().setPreferCheckpointForRecovery(true);
 ```
 
-#### Low-Latency Job Tuning {#low-latency-job-tuning}
+#### Low-Latency Job Tuning
 
 **Problem**: Checkpoint alignment waiting increases latency.
 
@@ -1334,9 +1334,9 @@ import org.apache.flink.streaming.api.CheckpointingMode;
 
 ---
 
-### 8.2 Key Monitoring Metrics {#82-key-monitoring-metrics}
+### 8.2 Key Monitoring Metrics
 
-#### Flink Native Metrics {#flink-native-metrics}
+#### Flink Native Metrics
 
 | Metric Name | Type | Healthy Threshold | Description |
 |-------------|------|-------------------|-------------|
@@ -1347,7 +1347,7 @@ import org.apache.flink.streaming.api.CheckpointingMode;
 | `lastCheckpointFullSize` | Gauge | Trend monitoring | Full Checkpoint size |
 | `lastCheckpointIncrementSize` | Gauge | Trend monitoring | Incremental Checkpoint size |
 
-#### JVM and System Metrics {#jvm-and-system-metrics}
+#### JVM and System Metrics
 
 | Metric Name | Type | Healthy Threshold | Description |
 |-------------|------|-------------------|-------------|
@@ -1356,7 +1356,7 @@ import org.apache.flink.streaming.api.CheckpointingMode;
 | `RocksDB.BlockCacheUsage` | Gauge | < 80% BlockCache | RocksDB cache usage |
 | `RocksDB.EstimatedTableReadersMem` | Gauge | Trend monitoring | SST file index memory |
 
-#### Custom Monitoring Alerts {#custom-monitoring-alerts}
+#### Custom Monitoring Alerts
 
 ```yaml
 # Prometheus Alert example
@@ -1382,9 +1382,9 @@ import org.apache.flink.streaming.api.CheckpointingMode;
 
 ---
 
-### 8.3 Common Issue Diagnosis {#83-common-issue-diagnosis}
+### 8.3 Common Issue Diagnosis
 
-#### Issue 1: Frequent Checkpoint Timeouts {#issue-1-frequent-checkpoint-timeouts}
+#### Issue 1: Frequent Checkpoint Timeouts
 
 **Symptoms**: `numberOfFailedCheckpoints` continuously increases, job logs show `Checkpoint expired`.
 
@@ -1400,7 +1400,7 @@ import org.apache.flink.streaming.api.CheckpointingMode;
 - Network bottleneck: increase `checkpointTimeout` or optimize network
 - Compaction interference: adjust RocksDB `maxBackgroundJobs`
 
-#### Issue 2: Long Checkpoint Alignment Time {#issue-2-long-checkpoint-alignment-time}
+#### Issue 2: Long Checkpoint Alignment Time
 
 **Symptoms**: `checkpointAlignmentTime` continuously increases, job exhibits backpressure.
 
@@ -1415,7 +1415,7 @@ import org.apache.flink.streaming.api.CheckpointingMode;
 - Resolve data skew (repartition keys)
 - Increase operator parallelism
 
-#### Issue 3: Slow State Recovery {#issue-3-slow-state-recovery}
+#### Issue 3: Slow State Recovery
 
 **Symptoms**: Fault recovery takes a long time, affecting business availability.
 
@@ -1432,7 +1432,7 @@ import org.apache.flink.streaming.api.CheckpointingMode;
 
 ---
 
-## 9. References {#9-references}
+## 9. References
 
 [^1]: Apache Flink Documentation, "Checkpointing", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/checkpointing/>
 

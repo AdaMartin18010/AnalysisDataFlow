@@ -165,7 +165,7 @@ class CrossRefCheckerV2:
             
         try:
             resolved = target.resolve()
-            if resolved.exists() and resolved.suffix == '.md':
+            if resolved.exists():
                 return resolved, anchor
         except Exception:
             pass

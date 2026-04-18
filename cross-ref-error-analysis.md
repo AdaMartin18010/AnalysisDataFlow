@@ -103,7 +103,7 @@
 [Def-S-03-01](#def-s-03-01-actor-经典-actor-模型)
 
 # 正确
-[Def-S-03-01](#def-s-03-01-actor-经典-actor-模型-def-s-03-01-actor-经典-actor-模型)
+[Def-S-03-01](#def-s-03-01-actor-经典-actor-模型)
 ```
 
 ---

@@ -67,7 +67,7 @@ Generated: 2026-04-10 20:03:42
 | `CASE-STUDIES.md` | 114 | `#方案-12` | Anchor '#方案-12' not found in current file |
 | `cross-ref-error-analysis.md` | 89 | `flink-24/flink-24-adaptive-execution-v2.md` | File not found: flink-24\flink-24-adaptive-execution-v2.md |
 | `cross-ref-error-analysis.md` | 103 | `#def-s-03-01-actor-经典-actor-模型` | Anchor '#def-s-03-01-actor-经典-actor-模型' not found in current file |
-| `cross-ref-error-analysis.md` | 106 | `#def-s-03-01-actor-经典-actor-模型-def-s-03-01-actor-经典-actor-模型` | Anchor '#def-s-03-01-actor-经典-actor-模型-def-s-03-01-actor-经典-actor-模型' not found in current file |
+| `cross-ref-error-analysis.md` | 106 | `#def-s-03-01-actor-经典-actor-模型` | Anchor '#def-s-03-01-actor-经典-actor-模型' not found in current file |
 | `cross-ref-validation-report-v2.md` | 26 | `_.length` | File not found: _.length |
 | `cross-ref-validation-report-v2.md` | 27 | `"counter"` | File not found: "counter" |
 | `cross-ref-validation-report-v3.md` | 26 | `_.length` | File not found: _.length |
@@ -2009,9 +2009,9 @@ Generated: 2026-04-10 20:03:42
 | `reports\fictional-content-audit-20260405_143730.md` | 13590 | `Flink/03-sql-table-api/model-ddl-and-ml-predict.md` | File not found: reports\Flink\03-sql-table-api\model-ddl-and-ml-predict.md |
 | `reports\fictional-content-audit-20260405_143730.md` | 13591 | `Flink/03-sql-table-api/vector-search.md` | File not found: reports\Flink\03-sql-table-api\vector-search.md |
 | `Struct\00-INDEX.md` | 36 | `#5-形式证明--工程论证-proof--engineering-argument` | Anchor '#5-形式证明--工程论证-proof--engineering-argument' not found in current file |
-| `Struct\00-STRUCT-DERIVATION-CHAIN.md` | 16 | `#1-foundation--properties-推导-1-foundation--properties-推导` | Anchor '#1-foundation--properties-推导-1-foundation--properties-推导' not found in current file |
-| `Struct\00-STRUCT-DERIVATION-CHAIN.md` | 20 | `#2-properties--relationships-推导-2-properties--relationships-推导` | Anchor '#2-properties--relationships-推导-2-properties--relationships-推导' not found in current file |
-| `Struct\00-STRUCT-DERIVATION-CHAIN.md` | 24 | `#3-relationships--proofs-推导-3-relationships--proofs-推导` | Anchor '#3-relationships--proofs-推导-3-relationships--proofs-推导' not found in current file |
+| `Struct\00-STRUCT-DERIVATION-CHAIN.md` | 16 | `#1-foundation--properties-推导` | Anchor '#1-foundation--properties-推导' not found in current file |
+| `Struct\00-STRUCT-DERIVATION-CHAIN.md` | 20 | `#2-properties--relationships-推导` | Anchor '#2-properties--relationships-推导' not found in current file |
+| `Struct\00-STRUCT-DERIVATION-CHAIN.md` | 24 | `#3-relationships--proofs-推导` | Anchor '#3-relationships--proofs-推导' not found in current file |
 | `Struct\Key-Theorem-Proof-Chains.md` | 18 | `#依赖图-1` | Anchor '#依赖图-1' not found in current file |
 | `Struct\Key-Theorem-Proof-Chains.md` | 19 | `#步骤说明-1` | Anchor '#步骤说明-1' not found in current file |
 | `Struct\Key-Theorem-Proof-Chains.md` | 20 | `#证明概要-1` | Anchor '#证明概要-1' not found in current file |
@@ -2811,9 +2811,9 @@ Generated: 2026-04-10 20:03:42
 | `USTM-F-Reconstruction\archive\original-struct\01-foundation\01.03-actor-model-formalization.md` | 25 | `#关系-4actor-模型--dataflow-模型图灵完备等价-关系-4-actor-模型--dataflow-模型图灵完备等价` | Anchor '#关系-4actor-模型--dataflow-模型图灵完备等价-关系-4-actor-模型--dataflow-模型图灵完备等价' not found in current file |
 | `USTM-F-Reconstruction\archive\original-struct\01-foundation\01.03-actor-model-formalization.md` | 53 | `C.` | File not found: USTM-F-Reconstruction\archive\original-struct\01-foundation\C. |
 | `USTM-F-Reconstruction\archive\original-struct\01-foundation\01.03-actor-model-formalization.md` | 64 | `C.` | File not found: USTM-F-Reconstruction\archive\original-struct\01-foundation\C. |
-| `USTM-F-Reconstruction\archive\original-struct\01-foundation\01.04-dataflow-model-formalization.md` | 22 | `#关系-1-dataflow-model--kahn-进程网络-kpn-关系-1-dataflow-model--kahn-进程网络-kpn` | Anchor '#关系-1-dataflow-model--kahn-进程网络-kpn-关系-1-dataflow-model--kahn-进程网络-kpn' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\01-foundation\01.04-dataflow-model-formalization.md` | 23 | `#关系-2-同步数据流-sdf--动态数据流-ddf--dataflow-model-关系-2-同步数据流-sdf--动态数据流-ddf--dataflow-model` | Anchor '#关系-2-同步数据流-sdf--动态数据流-ddf--dataflow-model-关系-2-同步数据流-sdf--动态数据流-ddf--dataflow-model' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\01-foundation\01.04-dataflow-model-formalization.md` | 24 | `#关系-3-dataflow-理论模型--flink-runtime-实现-关系-3-dataflow-理论模型--flink-runtime-实现` | Anchor '#关系-3-dataflow-理论模型--flink-runtime-实现-关系-3-dataflow-理论模型--flink-runtime-实现' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\01-foundation\01.04-dataflow-model-formalization.md` | 22 | `#关系-1-dataflow-model--kahn-进程网络-kpn` | Anchor '#关系-1-dataflow-model--kahn-进程网络-kpn' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\01-foundation\01.04-dataflow-model-formalization.md` | 23 | `#关系-2-同步数据流-sdf--动态数据流-ddf--dataflow-model` | Anchor '#关系-2-同步数据流-sdf--动态数据流-ddf--dataflow-model' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\01-foundation\01.04-dataflow-model-formalization.md` | 24 | `#关系-3-dataflow-理论模型--flink-runtime-实现` | Anchor '#关系-3-dataflow-理论模型--flink-runtime-实现' not found in current file |
 | `USTM-F-Reconstruction\archive\original-struct\01-foundation\01.04-dataflow-model-formalization.md` | 29 | `#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证` | Anchor '#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证' not found in current file |
 | `USTM-F-Reconstruction\archive\original-struct\01-foundation\01.04-dataflow-model-formalization.md` | 68 | `Apache` | File not found: USTM-F-Reconstruction\archive\original-struct\01-foundation\Apache |
 | `USTM-F-Reconstruction\archive\original-struct\01-foundation\01.04-dataflow-model-formalization.md` | 100 | `Apache` | File not found: USTM-F-Reconstruction\archive\original-struct\01-foundation\Apache |
@@ -2830,8 +2830,8 @@ Generated: 2026-04-10 20:03:42
 | `USTM-F-Reconstruction\archive\original-struct\01-foundation\01.04-dataflow-model-formalization.md` | 382 | `K.M.` | File not found: USTM-F-Reconstruction\archive\original-struct\01-foundation\K.M. |
 | `USTM-F-Reconstruction\archive\original-struct\01-foundation\01.04-dataflow-model-formalization.md` | 438 | `G.` | File not found: USTM-F-Reconstruction\archive\original-struct\01-foundation\G. |
 | `USTM-F-Reconstruction\archive\original-struct\01-foundation\01.04-dataflow-model-formalization.md` | 461 | `T.` | File not found: USTM-F-Reconstruction\archive\original-struct\01-foundation\T. |
-| `USTM-F-Reconstruction\archive\original-struct\01-foundation\01.05-csp-formalization.md` | 38 | `#基础情形-q--0-基础情形-q--0` | Anchor '#基础情形-q--0-基础情形-q--0' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\01-foundation\01.05-csp-formalization.md` | 41 | `#6-实例验证-examples--verification-6-实例验证-examples--verification` | Anchor '#6-实例验证-examples--verification-6-实例验证-examples--verification' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\01-foundation\01.05-csp-formalization.md` | 38 | `#基础情形-q--0` | Anchor '#基础情形-q--0' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\01-foundation\01.05-csp-formalization.md` | 41 | `#6-实例验证-examples--verification` | Anchor '#6-实例验证-examples--verification' not found in current file |
 | `USTM-F-Reconstruction\archive\original-struct\01-foundation\01.05-csp-formalization.md` | 53 | `Hoare,` | File not found: USTM-F-Reconstruction\archive\original-struct\01-foundation\Hoare, |
 | `USTM-F-Reconstruction\archive\original-struct\01-foundation\01.05-csp-formalization.md` | 103 | `Roscoe,` | File not found: USTM-F-Reconstruction\archive\original-struct\01-foundation\Roscoe, |
 | `USTM-F-Reconstruction\archive\original-struct\01-foundation\01.05-csp-formalization.md` | 175 | `Roscoe,` | File not found: USTM-F-Reconstruction\archive\original-struct\01-foundation\Roscoe, |
@@ -2858,17 +2858,17 @@ Generated: 2026-04-10 20:03:42
 | `USTM-F-Reconstruction\archive\original-struct\01-foundation\01.06-petri-net-formalization.md` | 374 | `Jensen,` | File not found: USTM-F-Reconstruction\archive\original-struct\01-foundation\Jensen, |
 | `USTM-F-Reconstruction\archive\original-struct\01-foundation\01.06-petri-net-formalization.md` | 408 | `Murata,` | File not found: USTM-F-Reconstruction\archive\original-struct\01-foundation\Murata, |
 | `USTM-F-Reconstruction\archive\original-struct\01-foundation\01.06-petri-net-formalization.md` | 434 | `Murata,` | File not found: USTM-F-Reconstruction\archive\original-struct\01-foundation\Murata, |
-| `USTM-F-Reconstruction\archive\original-struct\01-foundation\01.07-session-types.md` | 28 | `#5-形式证明--工程论证-proof-5-形式证明--工程论证-proof` | Anchor '#5-形式证明--工程论证-proof-5-形式证明--工程论证-proof' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\02-properties\02.01-determinism-in-streaming.md` | 22 | `#关系-1-确定性流处理--kahn-网络确定性-关系-1-确定性流处理--kahn-网络确定性` | Anchor '#关系-1-确定性流处理--kahn-网络确定性-关系-1-确定性流处理--kahn-网络确定性' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\02-properties\02.01-determinism-in-streaming.md` | 23 | `#关系-2-汇合归约--dataflow-确定性-关系-2-汇合归约--dataflow-确定性` | Anchor '#关系-2-汇合归约--dataflow-确定性-关系-2-汇合归约--dataflow-确定性' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\02-properties\02.01-determinism-in-streaming.md` | 24 | `#关系-3-可观测确定性--语义确定性-关系-3-可观测确定性--语义确定性` | Anchor '#关系-3-可观测确定性--语义确定性-关系-3-可观测确定性--语义确定性' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\02-properties\02.01-determinism-in-streaming.md` | 29 | `#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument` | Anchor '#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\01-foundation\01.07-session-types.md` | 28 | `#5-形式证明--工程论证-proof` | Anchor '#5-形式证明--工程论证-proof' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\02-properties\02.01-determinism-in-streaming.md` | 22 | `#关系-1-确定性流处理--kahn-网络确定性` | Anchor '#关系-1-确定性流处理--kahn-网络确定性' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\02-properties\02.01-determinism-in-streaming.md` | 23 | `#关系-2-汇合归约--dataflow-确定性` | Anchor '#关系-2-汇合归约--dataflow-确定性' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\02-properties\02.01-determinism-in-streaming.md` | 24 | `#关系-3-可观测确定性--语义确定性` | Anchor '#关系-3-可观测确定性--语义确定性' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\02-properties\02.01-determinism-in-streaming.md` | 29 | `#5-形式证明--工程论证-proof--engineering-argument` | Anchor '#5-形式证明--工程论证-proof--engineering-argument' not found in current file |
 | `USTM-F-Reconstruction\archive\original-struct\02-properties\02.01-determinism-in-streaming.md` | 73 | `G.` | File not found: USTM-F-Reconstruction\archive\original-struct\02-properties\G. |
 | `USTM-F-Reconstruction\archive\original-struct\02-properties\02.01-determinism-in-streaming.md` | 103 | `J.` | File not found: USTM-F-Reconstruction\archive\original-struct\02-properties\J. |
 | `USTM-F-Reconstruction\archive\original-struct\02-properties\02.01-determinism-in-streaming.md` | 130 | `K.` | File not found: USTM-F-Reconstruction\archive\original-struct\02-properties\K. |
 | `USTM-F-Reconstruction\archive\original-struct\02-properties\02.01-determinism-in-streaming.md` | 251 | `P.` | File not found: USTM-F-Reconstruction\archive\original-struct\02-properties\P. |
-| `USTM-F-Reconstruction\archive\original-struct\02-properties\02.02-consistency-hierarchy.md` | 30 | `#关系-2-内部一致性--chandy-lamport-分布式快照-关系-2-内部一致性--chandy-lamport-分布式快照` | Anchor '#关系-2-内部一致性--chandy-lamport-分布式快照-关系-2-内部一致性--chandy-lamport-分布式快照' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\02-properties\02.02-consistency-hierarchy.md` | 35 | `#反例-41-内部一致--端到端一致-反例-41-内部一致--端到端一致` | Anchor '#反例-41-内部一致--端到端一致-反例-41-内部一致--端到端一致' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\02-properties\02.02-consistency-hierarchy.md` | 30 | `#关系-2-内部一致性--chandy-lamport-分布式快照` | Anchor '#关系-2-内部一致性--chandy-lamport-分布式快照' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\02-properties\02.02-consistency-hierarchy.md` | 35 | `#反例-41-内部一致--端到端一致` | Anchor '#反例-41-内部一致--端到端一致' not found in current file |
 | `USTM-F-Reconstruction\archive\original-struct\02-properties\02.02-consistency-hierarchy.md` | 53 | `P.` | File not found: USTM-F-Reconstruction\archive\original-struct\02-properties\P. |
 | `USTM-F-Reconstruction\archive\original-struct\02-properties\02.02-consistency-hierarchy.md` | 79 | `K.` | File not found: USTM-F-Reconstruction\archive\original-struct\02-properties\K. |
 | `USTM-F-Reconstruction\archive\original-struct\02-properties\02.02-consistency-hierarchy.md` | 101 | `Apache` | File not found: USTM-F-Reconstruction\archive\original-struct\02-properties\Apache |
@@ -2885,7 +2885,7 @@ Generated: 2026-04-10 20:03:42
 | `USTM-F-Reconstruction\archive\original-struct\02-properties\02.02-consistency-hierarchy.md` | 510 | `M.` | File not found: USTM-F-Reconstruction\archive\original-struct\02-properties\M. |
 | `USTM-F-Reconstruction\archive\original-struct\02-properties\02.02-consistency-hierarchy.md` | 518 | `L.` | File not found: USTM-F-Reconstruction\archive\original-struct\02-properties\L. |
 | `USTM-F-Reconstruction\archive\original-struct\02-properties\02.02-consistency-hierarchy.md` | 654 | `Apache` | File not found: USTM-F-Reconstruction\archive\original-struct\02-properties\Apache |
-| `USTM-F-Reconstruction\archive\original-struct\02-properties\02.03-watermark-monotonicity.md` | 26 | `#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument` | Anchor '#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\02-properties\02.03-watermark-monotonicity.md` | 26 | `#5-形式证明--工程论证-proof--engineering-argument` | Anchor '#5-形式证明--工程论证-proof--engineering-argument' not found in current file |
 | `USTM-F-Reconstruction\archive\original-struct\02-properties\02.03-watermark-monotonicity.md` | 28 | `#步骤-1基例--source-算子的-watermark-单调性-步骤-1-基例--source-算子的-watermark-单调性` | Anchor '#步骤-1基例--source-算子的-watermark-单调性-步骤-1-基例--source-算子的-watermark-单调性' not found in current file |
 | `USTM-F-Reconstruction\archive\original-struct\02-properties\02.03-watermark-monotonicity.md` | 30 | `#步骤-3归纳步骤--第-k-个算子的单调性保持-步骤-3-归纳步骤--第-k-个算子的单调性保持` | Anchor '#步骤-3归纳步骤--第-k-个算子的单调性保持-步骤-3-归纳步骤--第-k-个算子的单调性保持' not found in current file |
 | `USTM-F-Reconstruction\archive\original-struct\02-properties\02.03-watermark-monotonicity.md` | 55 | `P.` | File not found: USTM-F-Reconstruction\archive\original-struct\02-properties\P. |
@@ -2896,15 +2896,15 @@ Generated: 2026-04-10 20:03:42
 | `USTM-F-Reconstruction\archive\original-struct\02-properties\02.03-watermark-monotonicity.md` | 204 | `Apache` | File not found: USTM-F-Reconstruction\archive\original-struct\02-properties\Apache |
 | `USTM-F-Reconstruction\archive\original-struct\02-properties\02.03-watermark-monotonicity.md` | 289 | `P.` | File not found: USTM-F-Reconstruction\archive\original-struct\02-properties\P. |
 | `USTM-F-Reconstruction\archive\original-struct\02-properties\02.03-watermark-monotonicity.md` | 329 | `P.` | File not found: USTM-F-Reconstruction\archive\original-struct\02-properties\P. |
-| `USTM-F-Reconstruction\archive\original-struct\02-properties\02.04-liveness-and-safety.md` | 22 | `#关系-1-安全性--闭集-borel拓扑-关系-1-安全性--闭集-borel拓扑` | Anchor '#关系-1-安全性--闭集-borel拓扑-关系-1-安全性--闭集-borel拓扑' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\02-properties\02.04-liveness-and-safety.md` | 23 | `#关系-2-活性--稠密集-关系-2-活性--稠密集` | Anchor '#关系-2-活性--稠密集-关系-2-活性--稠密集' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\02-properties\02.04-liveness-and-safety.md` | 24 | `#关系-3-actor模型--活性验证需公平性-关系-3-actor模型--活性验证需公平性` | Anchor '#关系-3-actor模型--活性验证需公平性-关系-3-actor模型--活性验证需公平性' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\02-properties\02.04-liveness-and-safety.md` | 25 | `#关系-4-safety--运行时监控-liveness--模型检测-关系-4-safety--运行时监控-liveness--模型检测` | Anchor '#关系-4-safety--运行时监控-liveness--模型检测-关系-4-safety--运行时监控-liveness--模型检测' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\02-properties\02.04-liveness-and-safety.md` | 32 | `#6-实例与反例-examples--counter-examples-6-实例与反例-examples--counter-examples` | Anchor '#6-实例与反例-examples--counter-examples-6-实例与反例-examples--counter-examples' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\02-properties\02.05-type-safety-derivation.md` | 37 | `#6-实例与反例-examples--counter-examples-6-实例与反例-examples--counter-examples` | Anchor '#6-实例与反例-examples--counter-examples-6-实例与反例-examples--counter-examples' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\02-properties\02.04-liveness-and-safety.md` | 22 | `#关系-1-安全性--闭集-borel拓扑` | Anchor '#关系-1-安全性--闭集-borel拓扑' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\02-properties\02.04-liveness-and-safety.md` | 23 | `#关系-2-活性--稠密集` | Anchor '#关系-2-活性--稠密集' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\02-properties\02.04-liveness-and-safety.md` | 24 | `#关系-3-actor模型--活性验证需公平性` | Anchor '#关系-3-actor模型--活性验证需公平性' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\02-properties\02.04-liveness-and-safety.md` | 25 | `#关系-4-safety--运行时监控-liveness--模型检测` | Anchor '#关系-4-safety--运行时监控-liveness--模型检测' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\02-properties\02.04-liveness-and-safety.md` | 32 | `#6-实例与反例-examples--counter-examples` | Anchor '#6-实例与反例-examples--counter-examples' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\02-properties\02.05-type-safety-derivation.md` | 37 | `#6-实例与反例-examples--counter-examples` | Anchor '#6-实例与反例-examples--counter-examples' not found in current file |
 | `USTM-F-Reconstruction\archive\original-struct\02-properties\02.05-type-safety-derivation.md` | 773 | `Amin,` | File not found: USTM-F-Reconstruction\archive\original-struct\02-properties\Amin, |
-| `USTM-F-Reconstruction\archive\original-struct\03-relationships\03.01-actor-to-csp-encoding.md` | 27 | `#6-实例与反例-examples--counter-examples-6-实例与反例-examples--counter-examples` | Anchor '#6-实例与反例-examples--counter-examples-6-实例与反例-examples--counter-examples' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\03-relationships\03.02-flink-to-process-calculus.md` | 22 | `#关系-2-checkpoint-屏障协议--chandy-lamport-快照算法-关系-2-checkpoint-屏障协议--chandy-lamport-快照算法` | Anchor '#关系-2-checkpoint-屏障协议--chandy-lamport-快照算法-关系-2-checkpoint-屏障协议--chandy-lamport-快照算法' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\03-relationships\03.01-actor-to-csp-encoding.md` | 27 | `#6-实例与反例-examples--counter-examples` | Anchor '#6-实例与反例-examples--counter-examples' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\03-relationships\03.02-flink-to-process-calculus.md` | 22 | `#关系-2-checkpoint-屏障协议--chandy-lamport-快照算法` | Anchor '#关系-2-checkpoint-屏障协议--chandy-lamport-快照算法' not found in current file |
 | `USTM-F-Reconstruction\archive\original-struct\03-relationships\03.02-flink-to-process-calculus.md` | 23 | `#关系-3-flink-exactly-once--π-演算幂等进程组合-关系-3-flink-exactly-once--π-演算幂等进程组合` | Anchor '#关系-3-flink-exactly-once--π-演算幂等进程组合-关系-3-flink-exactly-once--π-演算幂等进程组合' not found in current file |
 | `USTM-F-Reconstruction\archive\original-struct\03-relationships\03.03-expressiveness-hierarchy-supplement.md` | 23 | `#关系-1-session-types--process-calculus-扩展` | Anchor '#关系-1-session-types--process-calculus-扩展' not found in current file |
 | `USTM-F-Reconstruction\archive\original-struct\03-relationships\03.03-expressiveness-hierarchy-supplement.md` | 24 | `#关系-2-choreographic-programming--actor-分支` | Anchor '#关系-2-choreographic-programming--actor-分支' not found in current file |
@@ -2921,27 +2921,27 @@ Generated: 2026-04-10 20:03:42
 | `USTM-F-Reconstruction\archive\original-struct\03-relationships\03.04-bisimulation-equivalences.md` | 134 | `D.` | File not found: USTM-F-Reconstruction\archive\original-struct\03-relationships\D. |
 | `USTM-F-Reconstruction\archive\original-struct\03-relationships\03.04-bisimulation-equivalences.md` | 311 | `D.` | File not found: USTM-F-Reconstruction\archive\original-struct\03-relationships\D. |
 | `USTM-F-Reconstruction\archive\original-struct\03-relationships\03.04-bisimulation-equivalences.md` | 403 | `R.` | File not found: USTM-F-Reconstruction\archive\original-struct\03-relationships\R. |
-| `USTM-F-Reconstruction\archive\original-struct\03-relationships\03.05-cross-model-mappings.md` | 32 | `#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument` | Anchor '#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\03-relationships\03.05-cross-model-mappings.md` | 32 | `#5-形式证明--工程论证-proof--engineering-argument` | Anchor '#5-形式证明--工程论证-proof--engineering-argument' not found in current file |
 | `USTM-F-Reconstruction\archive\original-struct\03-relationships\03.05-cross-model-mappings.md` | 63 | `C.A.R.` | File not found: USTM-F-Reconstruction\archive\original-struct\03-relationships\C.A.R. |
-| `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.01-flink-checkpoint-correctness.md` | 23 | `#关系-1-flink-checkpoint--chandy-lamport-分布式快照-关系-1-flink-checkpoint--chandy-lamport-分布式快照` | Anchor '#关系-1-flink-checkpoint--chandy-lamport-分布式快照-关系-1-flink-checkpoint--chandy-lamport-分布式快照' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.01-flink-checkpoint-correctness.md` | 24 | `#关系-2-checkpoint-对齐--consistent-cut-关系-2-checkpoint-对齐--consistent-cut` | Anchor '#关系-2-checkpoint-对齐--consistent-cut-关系-2-checkpoint-对齐--consistent-cut' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.01-flink-checkpoint-correctness.md` | 25 | `#关系-3-异步快照--同步快照语义等价-关系-3-异步快照--同步快照语义等价` | Anchor '#关系-3-异步快照--同步快照语义等价-关系-3-异步快照--同步快照语义等价' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.02-flink-exactly-once-correctness.md` | 44 | `#8-实例与反例-examples--counter-examples-8-实例与反例-examples--counter-examples` | Anchor '#8-实例与反例-examples--counter-examples-8-实例与反例-examples--counter-examples' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.03-chandy-lamport-consistency.md` | 13 | `#def-s-19-02-一致割集--consistent-cut-def-s-19-02-一致割集--consistent-cut` | Anchor '#def-s-19-02-一致割集--consistent-cut-def-s-19-02-一致割集--consistent-cut' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.03-chandy-lamport-consistency.md` | 19 | `#lemma-s-19-02-一致割集引理--consistent-cut-lemma-lemma-s-19-02-一致割集引理--consistent-cut-lemma` | Anchor '#lemma-s-19-02-一致割集引理--consistent-cut-lemma-lemma-s-19-02-一致割集引理--consistent-cut-lemma' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.03-chandy-lamport-consistency.md` | 23 | `#关系-1-marker-接收--状态记录触发-关系-1-marker-接收--状态记录触发` | Anchor '#关系-1-marker-接收--状态记录触发-关系-1-marker-接收--状态记录触发' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.03-chandy-lamport-consistency.md` | 24 | `#关系-2-通道记录规则--无消息丢失或重复-关系-2-通道记录规则--无消息丢失或重复` | Anchor '#关系-2-通道记录规则--无消息丢失或重复-关系-2-通道记录规则--无消息丢失或重复' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.03-chandy-lamport-consistency.md` | 25 | `#关系-3-chandy-lamport--flink-checkpoint-语义等价-关系-3-chandy-lamport--flink-checkpoint-语义等价` | Anchor '#关系-3-chandy-lamport--flink-checkpoint-语义等价-关系-3-chandy-lamport--flink-checkpoint-语义等价' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.01-flink-checkpoint-correctness.md` | 23 | `#关系-1-flink-checkpoint--chandy-lamport-分布式快照` | Anchor '#关系-1-flink-checkpoint--chandy-lamport-分布式快照' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.01-flink-checkpoint-correctness.md` | 24 | `#关系-2-checkpoint-对齐--consistent-cut` | Anchor '#关系-2-checkpoint-对齐--consistent-cut' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.01-flink-checkpoint-correctness.md` | 25 | `#关系-3-异步快照--同步快照语义等价` | Anchor '#关系-3-异步快照--同步快照语义等价' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.02-flink-exactly-once-correctness.md` | 44 | `#8-实例与反例-examples--counter-examples` | Anchor '#8-实例与反例-examples--counter-examples' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.03-chandy-lamport-consistency.md` | 13 | `#def-s-19-02-一致割集--consistent-cut` | Anchor '#def-s-19-02-一致割集--consistent-cut' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.03-chandy-lamport-consistency.md` | 19 | `#lemma-s-19-02-一致割集引理--consistent-cut-lemma` | Anchor '#lemma-s-19-02-一致割集引理--consistent-cut-lemma' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.03-chandy-lamport-consistency.md` | 23 | `#关系-1-marker-接收--状态记录触发` | Anchor '#关系-1-marker-接收--状态记录触发' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.03-chandy-lamport-consistency.md` | 24 | `#关系-2-通道记录规则--无消息丢失或重复` | Anchor '#关系-2-通道记录规则--无消息丢失或重复' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.03-chandy-lamport-consistency.md` | 25 | `#关系-3-chandy-lamport--flink-checkpoint-语义等价` | Anchor '#关系-3-chandy-lamport--flink-checkpoint-语义等价' not found in current file |
 | `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.03-chandy-lamport-consistency.md` | 47 | `L.` | File not found: USTM-F-Reconstruction\archive\original-struct\04-proofs\L. |
 | `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.04-watermark-algebra-formal-proof.md` | 13 | `#def-s-20-02-watermark-合并算子-` | Anchor '#def-s-20-02-watermark-合并算子-' not found in current file |
 | `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.04-watermark-algebra-formal-proof.md` | 14 | `#def-s-20-03-watermark-偏序关系-` | Anchor '#def-s-20-03-watermark-偏序关系-' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.04-watermark-algebra-formal-proof.md` | 18 | `#lemma-s-20-01--结合律-lemma-s-20-01--结合律` | Anchor '#lemma-s-20-01--结合律-lemma-s-20-01--结合律' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.04-watermark-algebra-formal-proof.md` | 19 | `#lemma-s-20-02--交换律-lemma-s-20-02--交换律` | Anchor '#lemma-s-20-02--交换律-lemma-s-20-02--交换律' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.04-watermark-algebra-formal-proof.md` | 20 | `#lemma-s-20-03--幂等律-lemma-s-20-03--幂等律` | Anchor '#lemma-s-20-03--幂等律-lemma-s-20-03--幂等律' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.04-watermark-algebra-formal-proof.md` | 21 | `#lemma-s-20-04--吸收律与单位元-lemma-s-20-04--吸收律与单位元` | Anchor '#lemma-s-20-04--吸收律与单位元-lemma-s-20-04--吸收律与单位元' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.04-watermark-algebra-formal-proof.md` | 24 | `#关系-1-watermark-格--完备格理论-关系-1-watermark-格--完备格理论` | Anchor '#关系-1-watermark-格--完备格理论-关系-1-watermark-格--完备格理论' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.04-watermark-algebra-formal-proof.md` | 25 | `#关系-2-watermark-合并--单调性保持-关系-2-watermark-合并--单调性保持` | Anchor '#关系-2-watermark-合并--单调性保持-关系-2-watermark-合并--单调性保持' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.04-watermark-algebra-formal-proof.md` | 26 | `#关系-3-watermark-传播--最小上界计算-关系-3-watermark-传播--最小上界计算` | Anchor '#关系-3-watermark-传播--最小上界计算-关系-3-watermark-传播--最小上界计算' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.04-watermark-algebra-formal-proof.md` | 18 | `#lemma-s-20-01--结合律` | Anchor '#lemma-s-20-01--结合律' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.04-watermark-algebra-formal-proof.md` | 19 | `#lemma-s-20-02--交换律` | Anchor '#lemma-s-20-02--交换律' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.04-watermark-algebra-formal-proof.md` | 20 | `#lemma-s-20-03--幂等律` | Anchor '#lemma-s-20-03--幂等律' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.04-watermark-algebra-formal-proof.md` | 21 | `#lemma-s-20-04--吸收律与单位元` | Anchor '#lemma-s-20-04--吸收律与单位元' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.04-watermark-algebra-formal-proof.md` | 24 | `#关系-1-watermark-格--完备格理论` | Anchor '#关系-1-watermark-格--完备格理论' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.04-watermark-algebra-formal-proof.md` | 25 | `#关系-2-watermark-合并--单调性保持` | Anchor '#关系-2-watermark-合并--单调性保持' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.04-watermark-algebra-formal-proof.md` | 26 | `#关系-3-watermark-传播--最小上界计算` | Anchor '#关系-3-watermark-传播--最小上界计算' not found in current file |
 | `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.04-watermark-algebra-formal-proof.md` | 31 | `#反例-42-缺失--元素的格不完备性-反例-42-缺失-元素的格不完备性` | Anchor '#反例-42-缺失--元素的格不完备性-反例-42-缺失-元素的格不完备性' not found in current file |
 | `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.05-type-safety-fg-fgg.md` | 33 | `#6-实例与反例-examples--counter-examples-6-实例验证-examples--counter-examples` | Anchor '#6-实例与反例-examples--counter-examples-6-实例验证-examples--counter-examples' not found in current file |
 | `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.05-type-safety-fg-fgg.md` | 50 | `The` | File not found: USTM-F-Reconstruction\archive\original-struct\04-proofs\The |
@@ -2954,28 +2954,28 @@ Generated: 2026-04-10 20:03:42
 | `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.07-deadlock-freedom-choreographic.md` | 47 | `F.` | File not found: USTM-F-Reconstruction\archive\original-struct\04-proofs\F. |
 | `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.07-deadlock-freedom-choreographic.md` | 87 | `F.` | File not found: USTM-F-Reconstruction\archive\original-struct\04-proofs\F. |
 | `USTM-F-Reconstruction\archive\original-struct\04-proofs\04.07-deadlock-freedom-choreographic.md` | 128 | `F.` | File not found: USTM-F-Reconstruction\archive\original-struct\04-proofs\F. |
-| `USTM-F-Reconstruction\archive\original-struct\05-comparative-analysis\05.01-go-vs-scala-expressiveness.md` | 34 | `#6-实例与反例-examples--counter-examples-6-实例与反例-examples--counter-examples` | Anchor '#6-实例与反例-examples--counter-examples-6-实例与反例-examples--counter-examples' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\05-comparative-analysis\05.01-go-vs-scala-expressiveness.md` | 34 | `#6-实例与反例-examples--counter-examples` | Anchor '#6-实例与反例-examples--counter-examples' not found in current file |
 | `USTM-F-Reconstruction\archive\original-struct\05-comparative-analysis\05.01-go-vs-scala-expressiveness.md` | 705 | `Amin,` | File not found: USTM-F-Reconstruction\archive\original-struct\05-comparative-analysis\Amin, |
 | `USTM-F-Reconstruction\archive\original-struct\05-comparative-analysis\05.02-expressiveness-vs-decidability.md` | 24 | `#prop-s-25-02-rice定理在l_4-l_6层的应用` | Anchor '#prop-s-25-02-rice定理在l_4-l_6层的应用' not found in current file |
 | `USTM-F-Reconstruction\archive\original-struct\05-comparative-analysis\05.02-expressiveness-vs-decidability.md` | 41 | `#示例-1-l_3-csp死锁检测的可判定性` | Anchor '#示例-1-l_3-csp死锁检测的可判定性' not found in current file |
 | `USTM-F-Reconstruction\archive\original-struct\05-comparative-analysis\05.02-expressiveness-vs-decidability.md` | 42 | `#示例-2-l_4-π-演算互模拟的不可判定性` | Anchor '#示例-2-l_4-π-演算互模拟的不可判定性' not found in current file |
 | `USTM-F-Reconstruction\archive\original-struct\05-comparative-analysis\05.02-expressiveness-vs-decidability.md` | 43 | `#示例-3-l_5-hoπ类型推断的不可判定性` | Anchor '#示例-3-l_5-hoπ类型推断的不可判定性' not found in current file |
 | `USTM-F-Reconstruction\archive\original-struct\05-comparative-analysis\05.02-expressiveness-vs-decidability.md` | 46 | `#表-71-模型--性质--可判定性矩阵-表-71-模型-性质-可判定性矩阵` | Anchor '#表-71-模型--性质--可判定性矩阵-表-71-模型-性质-可判定性矩阵' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\06-frontier\06.01-open-problems-streaming-verification.md` | 29 | `#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument` | Anchor '#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\06-frontier\06.01-open-problems-streaming-verification.md` | 29 | `#5-形式证明--工程论证-proof--engineering-argument` | Anchor '#5-形式证明--工程论证-proof--engineering-argument' not found in current file |
 | `USTM-F-Reconstruction\archive\original-struct\06-frontier\06.02-choreographic-streaming-programming.md` | 27 | `#关系-1-choreographic--传统数据流-关系-1-choreographic-传统数据流-关系-1-choreographic--传统数据流` | Anchor '#关系-1-choreographic--传统数据流-关系-1-choreographic-传统数据流-关系-1-choreographic--传统数据流' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\06-frontier\06.02-choreographic-streaming-programming.md` | 28 | `#关系-2-mpst--session-types-关系-2-mpst--session-types` | Anchor '#关系-2-mpst--session-types-关系-2-mpst--session-types' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\06-frontier\06.02-choreographic-streaming-programming.md` | 29 | `#关系-3-全局类型--死锁自由-关系-3-全局类型--死锁自由` | Anchor '#关系-3-全局类型--死锁自由-关系-3-全局类型--死锁自由' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\06-frontier\06.02-choreographic-streaming-programming.md` | 28 | `#关系-2-mpst--session-types` | Anchor '#关系-2-mpst--session-types' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\06-frontier\06.02-choreographic-streaming-programming.md` | 29 | `#关系-3-全局类型--死锁自由` | Anchor '#关系-3-全局类型--死锁自由' not found in current file |
 | `USTM-F-Reconstruction\archive\original-struct\06-frontier\06.02-choreographic-streaming-programming.md` | 109 | `Montesi,` | File not found: USTM-F-Reconstruction\archive\original-struct\06-frontier\Montesi, |
 | `USTM-F-Reconstruction\archive\original-struct\06-frontier\06.02-choreographic-streaming-programming.md` | 206 | `Scalas,` | File not found: USTM-F-Reconstruction\archive\original-struct\06-frontier\Scalas, |
 | `USTM-F-Reconstruction\archive\original-struct\06-frontier\06.02-choreographic-streaming-programming.md` | 326 | `Choral` | File not found: USTM-F-Reconstruction\archive\original-struct\06-frontier\Choral |
-| `USTM-F-Reconstruction\archive\original-struct\06-frontier\06.03-ai-agent-session-types.md` | 27 | `#关系-1-mast--传统-mpst-关系-1-mast--传统-mpst` | Anchor '#关系-1-mast--传统-mpst-关系-1-mast--传统-mpst' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\06-frontier\06.03-ai-agent-session-types.md` | 28 | `#关系-2-llm-agent-protocol--choreography-关系-2-llm-agent-protocol--choreography` | Anchor '#关系-2-llm-agent-protocol--choreography-关系-2-llm-agent-protocol--choreography' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\06-frontier\06.03-ai-agent-session-types.md` | 29 | `#关系-3-type-safe-agent-communication--deadlock-freedom-关系-3-type-safe-agent-communication--deadlock-freedom` | Anchor '#关系-3-type-safe-agent-communication--deadlock-freedom-关系-3-type-safe-agent-communication--deadlock-freedom' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\06-frontier\06.03-ai-agent-session-types.md` | 27 | `#关系-1-mast--传统-mpst` | Anchor '#关系-1-mast--传统-mpst' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\06-frontier\06.03-ai-agent-session-types.md` | 28 | `#关系-2-llm-agent-protocol--choreography` | Anchor '#关系-2-llm-agent-protocol--choreography' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\06-frontier\06.03-ai-agent-session-types.md` | 29 | `#关系-3-type-safe-agent-communication--deadlock-freedom` | Anchor '#关系-3-type-safe-agent-communication--deadlock-freedom' not found in current file |
 | `USTM-F-Reconstruction\archive\original-struct\06-frontier\06.03-ai-agent-session-types.md` | 67 | `W.` | File not found: USTM-F-Reconstruction\archive\original-struct\06-frontier\W. |
-| `USTM-F-Reconstruction\archive\original-struct\06-frontier\06.04-pdot-path-dependent-types.md` | 21 | `#关系-1-dot--pdot-表达能力严格扩展-关系-1-dot--pdot-表达能力严格扩展` | Anchor '#关系-1-dot--pdot-表达能力严格扩展-关系-1-dot--pdot-表达能力严格扩展' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\06-frontier\06.04-pdot-path-dependent-types.md` | 22 | `#关系-2-pdot--scala-3-类型系统-关系-2-pdot--scala-3-类型系统` | Anchor '#关系-2-pdot--scala-3-类型系统-关系-2-pdot--scala-3-类型系统' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\06-frontier\06.04-pdot-path-dependent-types.md` | 23 | `#关系-3-路径依赖类型--dataflow-状态追踪-关系-3-路径依赖类型--dataflow-状态追踪` | Anchor '#关系-3-路径依赖类型--dataflow-状态追踪-关系-3-路径依赖类型--dataflow-状态追踪' not found in current file |
-| `USTM-F-Reconstruction\archive\original-struct\06-frontier\06.04-pdot-path-dependent-types.md` | 28 | `#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument` | Anchor '#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\06-frontier\06.04-pdot-path-dependent-types.md` | 21 | `#关系-1-dot--pdot-表达能力严格扩展` | Anchor '#关系-1-dot--pdot-表达能力严格扩展' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\06-frontier\06.04-pdot-path-dependent-types.md` | 22 | `#关系-2-pdot--scala-3-类型系统` | Anchor '#关系-2-pdot--scala-3-类型系统' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\06-frontier\06.04-pdot-path-dependent-types.md` | 23 | `#关系-3-路径依赖类型--dataflow-状态追踪` | Anchor '#关系-3-路径依赖类型--dataflow-状态追踪' not found in current file |
+| `USTM-F-Reconstruction\archive\original-struct\06-frontier\06.04-pdot-path-dependent-types.md` | 28 | `#5-形式证明--工程论证-proof--engineering-argument` | Anchor '#5-形式证明--工程论证-proof--engineering-argument' not found in current file |
 | `USTM-F-Reconstruction\archive\original-struct\06-frontier\06.04-pdot-path-dependent-types.md` | 45 | `T.` | File not found: USTM-F-Reconstruction\archive\original-struct\06-frontier\T. |
 | `USTM-F-Reconstruction\archive\original-struct\06-frontier\06.04-pdot-path-dependent-types.md` | 75 | `T.` | File not found: USTM-F-Reconstruction\archive\original-struct\06-frontier\T. |
 | `USTM-F-Reconstruction\archive\original-struct\06-frontier\06.04-pdot-path-dependent-types.md` | 141 | `N.` | File not found: USTM-F-Reconstruction\archive\original-struct\06-frontier\N. |
@@ -3006,8 +3006,8 @@ Generated: 2026-04-10 20:03:42
 | `Struct\01-foundation\01.04-dataflow-model-formalization.md` | 382 | `K.M.` | File not found: Struct\01-foundation\K.M. |
 | `Struct\01-foundation\01.04-dataflow-model-formalization.md` | 438 | `G.` | File not found: Struct\01-foundation\G. |
 | `Struct\01-foundation\01.04-dataflow-model-formalization.md` | 461 | `T.` | File not found: Struct\01-foundation\T. |
-| `Struct\01-foundation\01.05-csp-formalization.md` | 38 | `#基础情形-q--0-基础情形-q--0` | Anchor '#基础情形-q--0-基础情形-q--0' not found in current file |
-| `Struct\01-foundation\01.05-csp-formalization.md` | 41 | `#6-实例验证-examples--verification-6-实例验证-examples--verification` | Anchor '#6-实例验证-examples--verification-6-实例验证-examples--verification' not found in current file |
+| `Struct\01-foundation\01.05-csp-formalization.md` | 38 | `#基础情形-q--0` | Anchor '#基础情形-q--0' not found in current file |
+| `Struct\01-foundation\01.05-csp-formalization.md` | 41 | `#6-实例验证-examples--verification` | Anchor '#6-实例验证-examples--verification' not found in current file |
 | `Struct\01-foundation\01.05-csp-formalization.md` | 57 | `Hoare,` | File not found: Struct\01-foundation\Hoare, |
 | `Struct\01-foundation\01.05-csp-formalization.md` | 107 | `Roscoe,` | File not found: Struct\01-foundation\Roscoe, |
 | `Struct\01-foundation\01.05-csp-formalization.md` | 179 | `Roscoe,` | File not found: Struct\01-foundation\Roscoe, |
@@ -3053,10 +3053,10 @@ Generated: 2026-04-10 20:03:42
 | `Struct\01-foundation\01.10-schema-evolution-formalization.md` | 791 | `../Knowledge/03-data-management/schema-design-patterns.md` | File not found: Struct\Knowledge\03-data-management\schema-design-patterns.md |
 | `Struct\02-properties\02.01-determinism-in-streaming.md` | 21 | `#lemma-s-07-05-纯函数性--fifo--事件时间--可观测确定性` | Anchor '#lemma-s-07-05-纯函数性--fifo--事件时间--可观测确定性' not found in current file |
 | `Struct\02-properties\02.01-determinism-in-streaming.md` | 22 | `#lemma-s-07-06-无竞争条件--keyed分区状态隔离` | Anchor '#lemma-s-07-06-无竞争条件--keyed分区状态隔离' not found in current file |
-| `Struct\02-properties\02.01-determinism-in-streaming.md` | 25 | `#关系-1-确定性流处理--kahn-网络确定性-关系-1-确定性流处理--kahn-网络确定性` | Anchor '#关系-1-确定性流处理--kahn-网络确定性-关系-1-确定性流处理--kahn-网络确定性' not found in current file |
-| `Struct\02-properties\02.01-determinism-in-streaming.md` | 26 | `#关系-2-汇合归约--dataflow-确定性-关系-2-汇合归约--dataflow-确定性` | Anchor '#关系-2-汇合归约--dataflow-确定性-关系-2-汇合归约--dataflow-确定性' not found in current file |
-| `Struct\02-properties\02.01-determinism-in-streaming.md` | 27 | `#关系-3-可观测确定性--语义确定性-关系-3-可观测确定性--语义确定性` | Anchor '#关系-3-可观测确定性--语义确定性-关系-3-可观测确定性--语义确定性' not found in current file |
-| `Struct\02-properties\02.01-determinism-in-streaming.md` | 32 | `#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument` | Anchor '#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument' not found in current file |
+| `Struct\02-properties\02.01-determinism-in-streaming.md` | 25 | `#关系-1-确定性流处理--kahn-网络确定性` | Anchor '#关系-1-确定性流处理--kahn-网络确定性' not found in current file |
+| `Struct\02-properties\02.01-determinism-in-streaming.md` | 26 | `#关系-2-汇合归约--dataflow-确定性` | Anchor '#关系-2-汇合归约--dataflow-确定性' not found in current file |
+| `Struct\02-properties\02.01-determinism-in-streaming.md` | 27 | `#关系-3-可观测确定性--语义确定性` | Anchor '#关系-3-可观测确定性--语义确定性' not found in current file |
+| `Struct\02-properties\02.01-determinism-in-streaming.md` | 32 | `#5-形式证明--工程论证-proof--engineering-argument` | Anchor '#5-形式证明--工程论证-proof--engineering-argument' not found in current file |
 | `Struct\02-properties\02.01-determinism-in-streaming.md` | 76 | `G.` | File not found: Struct\02-properties\G. |
 | `Struct\02-properties\02.01-determinism-in-streaming.md` | 106 | `J.` | File not found: Struct\02-properties\J. |
 | `Struct\02-properties\02.01-determinism-in-streaming.md` | 133 | `K.` | File not found: Struct\02-properties\K. |
@@ -3085,18 +3085,18 @@ Generated: 2026-04-10 20:03:42
 | `Struct\02-properties\02.03-watermark-monotonicity.md` | 204 | `Apache` | File not found: Struct\02-properties\Apache |
 | `Struct\02-properties\02.03-watermark-monotonicity.md` | 289 | `P.` | File not found: Struct\02-properties\P. |
 | `Struct\02-properties\02.03-watermark-monotonicity.md` | 329 | `P.` | File not found: Struct\02-properties\P. |
-| `Struct\02-properties\02.04-liveness-and-safety.md` | 22 | `#关系-1-安全性--闭集-borel拓扑-关系-1-安全性--闭集-borel拓扑` | Anchor '#关系-1-安全性--闭集-borel拓扑-关系-1-安全性--闭集-borel拓扑' not found in current file |
-| `Struct\02-properties\02.04-liveness-and-safety.md` | 23 | `#关系-2-活性--稠密集-关系-2-活性--稠密集` | Anchor '#关系-2-活性--稠密集-关系-2-活性--稠密集' not found in current file |
-| `Struct\02-properties\02.04-liveness-and-safety.md` | 24 | `#关系-3-actor模型--活性验证需公平性-关系-3-actor模型--活性验证需公平性` | Anchor '#关系-3-actor模型--活性验证需公平性-关系-3-actor模型--活性验证需公平性' not found in current file |
-| `Struct\02-properties\02.04-liveness-and-safety.md` | 25 | `#关系-4-safety--运行时监控-liveness--模型检测-关系-4-safety--运行时监控-liveness--模型检测` | Anchor '#关系-4-safety--运行时监控-liveness--模型检测-关系-4-safety--运行时监控-liveness--模型检测' not found in current file |
-| `Struct\02-properties\02.04-liveness-and-safety.md` | 32 | `#6-实例与反例-examples--counter-examples-6-实例与反例-examples--counter-examples` | Anchor '#6-实例与反例-examples--counter-examples-6-实例与反例-examples--counter-examples' not found in current file |
+| `Struct\02-properties\02.04-liveness-and-safety.md` | 22 | `#关系-1-安全性--闭集-borel拓扑` | Anchor '#关系-1-安全性--闭集-borel拓扑' not found in current file |
+| `Struct\02-properties\02.04-liveness-and-safety.md` | 23 | `#关系-2-活性--稠密集` | Anchor '#关系-2-活性--稠密集' not found in current file |
+| `Struct\02-properties\02.04-liveness-and-safety.md` | 24 | `#关系-3-actor模型--活性验证需公平性` | Anchor '#关系-3-actor模型--活性验证需公平性' not found in current file |
+| `Struct\02-properties\02.04-liveness-and-safety.md` | 25 | `#关系-4-safety--运行时监控-liveness--模型检测` | Anchor '#关系-4-safety--运行时监控-liveness--模型检测' not found in current file |
+| `Struct\02-properties\02.04-liveness-and-safety.md` | 32 | `#6-实例与反例-examples--counter-examples` | Anchor '#6-实例与反例-examples--counter-examples' not found in current file |
 | `Struct\02-properties\02.05-type-safety-derivation.md` | 773 | `Amin,` | File not found: Struct\02-properties\Amin, |
-| `Struct\03-relationships\03.03-expressiveness-hierarchy-supplement.md` | 23 | `#关系-1-session-types--process-calculus-扩展-关系-1-session-types--process-calculus-扩展` | Anchor '#关系-1-session-types--process-calculus-扩展-关系-1-session-types--process-calculus-扩展' not found in current file |
-| `Struct\03-relationships\03.03-expressiveness-hierarchy-supplement.md` | 24 | `#关系-2-choreographic-programming--actor-分支-关系-2-choreographic-programming--actor-分支` | Anchor '#关系-2-choreographic-programming--actor-分支-关系-2-choreographic-programming--actor-分支' not found in current file |
-| `Struct\03-relationships\03.03-expressiveness-hierarchy-supplement.md` | 25 | `#关系-3-crdts--dataflow-扩展最终一致性-关系-3-crdts--dataflow-扩展最终一致性` | Anchor '#关系-3-crdts--dataflow-扩展最终一致性-关系-3-crdts--dataflow-扩展最终一致性' not found in current file |
-| `Struct\03-relationships\03.03-expressiveness-hierarchy-supplement.md` | 26 | `#关系-4-tla--元级验证框架-关系-4-tla--元级验证框架` | Anchor '#关系-4-tla--元级验证框架-关系-4-tla--元级验证框架' not found in current file |
-| `Struct\03-relationships\03.03-expressiveness-hierarchy-supplement.md` | 27 | `#关系-5-separation-logic--process-calculus-并发验证-关系-5-separation-logic--process-calculus-并发验证` | Anchor '#关系-5-separation-logic--process-calculus-并发验证-关系-5-separation-logic--process-calculus-并发验证' not found in current file |
-| `Struct\03-relationships\03.03-expressiveness-hierarchy-supplement.md` | 32 | `#5-形式证明--工程论证-5-形式证明--工程论证` | Anchor '#5-形式证明--工程论证-5-形式证明--工程论证' not found in current file |
+| `Struct\03-relationships\03.03-expressiveness-hierarchy-supplement.md` | 23 | `#关系-1-session-types--process-calculus-扩展` | Anchor '#关系-1-session-types--process-calculus-扩展' not found in current file |
+| `Struct\03-relationships\03.03-expressiveness-hierarchy-supplement.md` | 24 | `#关系-2-choreographic-programming--actor-分支` | Anchor '#关系-2-choreographic-programming--actor-分支' not found in current file |
+| `Struct\03-relationships\03.03-expressiveness-hierarchy-supplement.md` | 25 | `#关系-3-crdts--dataflow-扩展最终一致性` | Anchor '#关系-3-crdts--dataflow-扩展最终一致性' not found in current file |
+| `Struct\03-relationships\03.03-expressiveness-hierarchy-supplement.md` | 26 | `#关系-4-tla--元级验证框架` | Anchor '#关系-4-tla--元级验证框架' not found in current file |
+| `Struct\03-relationships\03.03-expressiveness-hierarchy-supplement.md` | 27 | `#关系-5-separation-logic--process-calculus-并发验证` | Anchor '#关系-5-separation-logic--process-calculus-并发验证' not found in current file |
+| `Struct\03-relationships\03.03-expressiveness-hierarchy-supplement.md` | 32 | `#5-形式证明--工程论证` | Anchor '#5-形式证明--工程论证' not found in current file |
 | `Struct\03-relationships\03.03-expressiveness-hierarchy.md` | 34 | `#示例-1-l_3-to-l_4-分离移动通道` | Anchor '#示例-1-l_3-to-l_4-分离移动通道' not found in current file |
 | `Struct\03-relationships\03.03-expressiveness-hierarchy.md` | 35 | `#示例-2-l_4-to-l_5-分离进程传递` | Anchor '#示例-2-l_4-to-l_5-分离进程传递' not found in current file |
 | `Struct\03-relationships\03.03-expressiveness-hierarchy.md` | 36 | `#示例-3-良类型-session-进程l_4-子集` | Anchor '#示例-3-良类型-session-进程l_4-子集' not found in current file |
@@ -3123,7 +3123,7 @@ Generated: 2026-04-10 20:03:42
 | `Struct\05-comparative-analysis\05.02-expressiveness-vs-decidability.md` | 41 | `#示例-1-l_3-csp死锁检测的可判定性` | Anchor '#示例-1-l_3-csp死锁检测的可判定性' not found in current file |
 | `Struct\05-comparative-analysis\05.02-expressiveness-vs-decidability.md` | 42 | `#示例-2-l_4-π-演算互模拟的不可判定性` | Anchor '#示例-2-l_4-π-演算互模拟的不可判定性' not found in current file |
 | `Struct\05-comparative-analysis\05.02-expressiveness-vs-decidability.md` | 43 | `#示例-3-l_5-hoπ类型推断的不可判定性` | Anchor '#示例-3-l_5-hoπ类型推断的不可判定性' not found in current file |
-| `Struct\06-frontier\06.01-open-problems-streaming-verification.md` | 29 | `#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument` | Anchor '#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument' not found in current file |
+| `Struct\06-frontier\06.01-open-problems-streaming-verification.md` | 29 | `#5-形式证明--工程论证-proof--engineering-argument` | Anchor '#5-形式证明--工程论证-proof--engineering-argument' not found in current file |
 | `Struct\06-frontier\06.02-choreographic-streaming-programming.md` | 109 | `Montesi,` | File not found: Struct\06-frontier\Montesi, |
 | `Struct\06-frontier\06.02-choreographic-streaming-programming.md` | 206 | `Scalas,` | File not found: Struct\06-frontier\Scalas, |
 | `Struct\06-frontier\06.02-choreographic-streaming-programming.md` | 326 | `Choral` | File not found: Struct\06-frontier\Choral |
@@ -3625,14 +3625,14 @@ Generated: 2026-04-10 20:03:42
 | `learning-platform\node_modules\@nodelib\fs.walk\README.md` | 121 | `./src/settings.ts` | File not found: learning-platform\node_modules\@nodelib\fs.walk\src\settings.ts |
 | `learning-platform\node_modules\@nodelib\fs.walk\README.md` | 133 | `./src/settings.ts` | File not found: learning-platform\node_modules\@nodelib\fs.walk\src\settings.ts |
 | `learning-platform\node_modules\@nodelib\fs.walk\README.md` | 145 | `./src/settings.ts` | File not found: learning-platform\node_modules\@nodelib\fs.walk\src\settings.ts |
-| `Knowledge\01-concept-atlas\data-streaming-landscape-2026-complete.md` | 37 | `#趋势二-diskless-kafka--apache-iceberg-趋势二-diskless-kafka--apache-iceberg` | Anchor '#趋势二-diskless-kafka--apache-iceberg-趋势二-diskless-kafka--apache-iceberg' not found in current file |
-| `Knowledge\01-concept-atlas\data-streaming-landscape-2026-complete.md` | 48 | `#5-形式证明--工程论证-5-形式证明--工程论证` | Anchor '#5-形式证明--工程论证-5-形式证明--工程论证' not found in current file |
+| `Knowledge\01-concept-atlas\data-streaming-landscape-2026-complete.md` | 37 | `#趋势二-diskless-kafka--apache-iceberg` | Anchor '#趋势二-diskless-kafka--apache-iceberg' not found in current file |
+| `Knowledge\01-concept-atlas\data-streaming-landscape-2026-complete.md` | 48 | `#5-形式证明--工程论证` | Anchor '#5-形式证明--工程论证' not found in current file |
 | `Knowledge\01-concept-atlas\streaming-models-mindmap.md` | 26 | `#关系-1-dataflow--actor图灵完备等价-关系-1-dataflow-actor-图灵完备等价` | Anchor '#关系-1-dataflow--actor图灵完备等价-关系-1-dataflow-actor-图灵完备等价' not found in current file |
 | `Knowledge\01-concept-atlas\streaming-models-mindmap.md` | 27 | `#关系-2-dataflow--csp异步-vs-同步的连续统-关系-2-dataflow-csp-异步-vs-同步的连续统` | Anchor '#关系-2-dataflow--csp异步-vs-同步的连续统-关系-2-dataflow-csp-异步-vs-同步的连续统' not found in current file |
 | `Knowledge\01-concept-atlas\streaming-models-mindmap.md` | 28 | `#关系-3-pubsub--actor解耦是地址匿名化的特例-关系-3-pubsub-actor-解耦是地址匿名化的特例` | Anchor '#关系-3-pubsub--actor解耦是地址匿名化的特例-关系-3-pubsub-actor-解耦是地址匿名化的特例' not found in current file |
 | `Knowledge\01-concept-atlas\streaming-models-mindmap.md` | 29 | `#关系-4-cep--dataflow模式匹配是有状态算子的语法糖-关系-4-cep-dataflow-模式匹配是有状态算子的语法糖` | Anchor '#关系-4-cep--dataflow模式匹配是有状态算子的语法糖-关系-4-cep-dataflow-模式匹配是有状态算子的语法糖' not found in current file |
 | `Knowledge\01-concept-atlas\streaming-models-mindmap.md` | 35 | `#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证` | Anchor '#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证' not found in current file |
-| `Knowledge\01-concept-atlas\streaming-models-mindmap.md` | 43 | `#示例-64-cep--pubsub-混合实例金融风控实时告警-示例-64-cep--pubsub-混合实例金融风控实时告警` | Anchor '#示例-64-cep--pubsub-混合实例金融风控实时告警-示例-64-cep--pubsub-混合实例金融风控实时告警' not found in current file |
+| `Knowledge\01-concept-atlas\streaming-models-mindmap.md` | 43 | `#示例-64-cep--pubsub-混合实例金融风控实时告警` | Anchor '#示例-64-cep--pubsub-混合实例金融风控实时告警' not found in current file |
 | `Knowledge\01-concept-atlas\streaming-models-mindmap.md` | 545 | `"first"` | File not found: Knowledge\01-concept-atlas\"first" |
 | `Knowledge\02-design-patterns\pattern-async-io-enrichment.md` | 34 | `#5-形式证明--工程论证-proof--engineering-argument` | Anchor '#5-形式证明--工程论证-proof--engineering-argument' not found in current file |
 | `Knowledge\02-design-patterns\pattern-async-io-enrichment.md` | 610 | `Duration.ofSeconds(5` | File not found: Knowledge\02-design-patterns\Duration.ofSeconds(5 |
@@ -3686,9 +3686,9 @@ Generated: 2026-04-10 20:03:42
 | `Knowledge\02-design-patterns\pattern-event-time-processing.md` | 671 | `IoT` | File not found: Knowledge\02-design-patterns\IoT |
 | `Knowledge\02-design-patterns\pattern-event-time-processing.md` | 672 | `Flink` | File not found: Knowledge\02-design-patterns\Flink |
 | `Knowledge\02-design-patterns\pattern-event-time-processing.md` | 674 | `Flink` | File not found: Knowledge\02-design-patterns\Flink |
-| `Knowledge\02-design-patterns\pattern-log-analysis.md` | 21 | `#关系-log-analysis--windowed-aggregation-关系-log-analysis--windowed-aggregation` | Anchor '#关系-log-analysis--windowed-aggregation-关系-log-analysis--windowed-aggregation' not found in current file |
-| `Knowledge\02-design-patterns\pattern-log-analysis.md` | 22 | `#关系-log-analysis--cep-pattern-关系-log-analysis--cep-pattern` | Anchor '#关系-log-analysis--cep-pattern-关系-log-analysis--cep-pattern' not found in current file |
-| `Knowledge\02-design-patterns\pattern-log-analysis.md` | 27 | `#5-形式证明--工程论证-5-形式证明--工程论证` | Anchor '#5-形式证明--工程论证-5-形式证明--工程论证' not found in current file |
+| `Knowledge\02-design-patterns\pattern-log-analysis.md` | 21 | `#关系-log-analysis--windowed-aggregation` | Anchor '#关系-log-analysis--windowed-aggregation' not found in current file |
+| `Knowledge\02-design-patterns\pattern-log-analysis.md` | 22 | `#关系-log-analysis--cep-pattern` | Anchor '#关系-log-analysis--cep-pattern' not found in current file |
+| `Knowledge\02-design-patterns\pattern-log-analysis.md` | 27 | `#5-形式证明--工程论证` | Anchor '#5-形式证明--工程论证' not found in current file |
 | `Knowledge\02-design-patterns\pattern-log-analysis.md` | 47 | `Fluentd` | File not found: Knowledge\02-design-patterns\Fluentd |
 | `Knowledge\02-design-patterns\pattern-log-analysis.md` | 60 | `Elastic,` | File not found: Knowledge\02-design-patterns\Elastic, |
 | `Knowledge\02-design-patterns\pattern-log-analysis.md` | 83 | `OpenTelemetry,` | File not found: Knowledge\02-design-patterns\OpenTelemetry, |
@@ -3726,8 +3726,8 @@ Generated: 2026-04-10 20:03:42
 | `Knowledge\02-design-patterns\pattern-side-output.md` | 746 | `T.` | File not found: Knowledge\02-design-patterns\T. |
 | `Knowledge\02-design-patterns\pattern-side-output.md` | 765 | `"quality-metrics"` | File not found: Knowledge\02-design-patterns\"quality-metrics" |
 | `Knowledge\02-design-patterns\pattern-stateful-computation.md` | 376 | `Flink` | File not found: Knowledge\02-design-patterns\Flink |
-| `Knowledge\02-design-patterns\pattern-windowed-aggregation.md` | 23 | `#关系-windowed-aggregation--def-s-04-05-关系-windowed-aggregation--def-s-04-05` | Anchor '#关系-windowed-aggregation--def-s-04-05-关系-windowed-aggregation--def-s-04-05' not found in current file |
-| `Knowledge\02-design-patterns\pattern-windowed-aggregation.md` | 29 | `#5-形式证明--工程论证-5-形式证明--工程论证` | Anchor '#5-形式证明--工程论证-5-形式证明--工程论证' not found in current file |
+| `Knowledge\02-design-patterns\pattern-windowed-aggregation.md` | 23 | `#关系-windowed-aggregation--def-s-04-05` | Anchor '#关系-windowed-aggregation--def-s-04-05' not found in current file |
+| `Knowledge\02-design-patterns\pattern-windowed-aggregation.md` | 29 | `#5-形式证明--工程论证` | Anchor '#5-形式证明--工程论证' not found in current file |
 | `Knowledge\02-design-patterns\pattern-windowed-aggregation.md` | 54 | `Apache` | File not found: Knowledge\02-design-patterns\Apache |
 | `Knowledge\02-design-patterns\pattern-windowed-aggregation.md` | 80 | `Apache` | File not found: Knowledge\02-design-patterns\Apache |
 | `Knowledge\02-design-patterns\pattern-windowed-aggregation.md` | 138 | `Apache` | File not found: Knowledge\02-design-patterns\Apache |
@@ -3799,7 +3799,7 @@ Generated: 2026-04-10 20:03:42
 | `Knowledge\03-business-patterns\gaming-analytics.md` | 912 | `"high-confidence"` | File not found: Knowledge\03-business-patterns\"high-confidence" |
 | `Knowledge\03-business-patterns\gaming-analytics.md` | 913 | `"low-confidence"` | File not found: Knowledge\03-business-patterns\"low-confidence" |
 | `Knowledge\03-business-patterns\iot-stream-processing.md` | 28 | `#33-actor--dataflow-双层架构关系` | Anchor '#33-actor--dataflow-双层架构关系' not found in current file |
-| `Knowledge\03-business-patterns\iot-stream-processing.md` | 47 | `#72-actor--dataflow-双层架构-72-actor--dataflow-双层架构-72-actor--dataflow-双层架构-72-actor--dataflow-双层架构` | Anchor '#72-actor--dataflow-双层架构-72-actor--dataflow-双层架构-72-actor--dataflow-双层架构-72-actor--dataflow-双层架构' not found in current file |
+| `Knowledge\03-business-patterns\iot-stream-processing.md` | 47 | `#72-actor--dataflow-双层架构-72-actor--dataflow-双层架构` | Anchor '#72-actor--dataflow-双层架构-72-actor--dataflow-双层架构' not found in current file |
 | `Knowledge\03-business-patterns\iot-stream-processing.md` | 72 | `G.` | File not found: Knowledge\03-business-patterns\G. |
 | `Knowledge\03-business-patterns\iot-stream-processing.md` | 146 | `Apache` | File not found: Knowledge\03-business-patterns\Apache |
 | `Knowledge\03-business-patterns\iot-stream-processing.md` | 271 | `E.` | File not found: Knowledge\03-business-patterns\E. |
@@ -3842,13 +3842,13 @@ Generated: 2026-04-10 20:03:42
 | `Knowledge\04-technology-selection\paradigm-selection-guide.md` | 39 | `#5-形式证明--工程论证` | Anchor '#5-形式证明--工程论证' not found in current file |
 | `Knowledge\04-technology-selection\streaming-database-guide.md` | 51 | `#5-形式证明--工程论证-proof--engineering-argument` | Anchor '#5-形式证明--工程论证-proof--engineering-argument' not found in current file |
 | `Knowledge\04-technology-selection\streaming-databases-2026-comparison.md` | 52 | `#5-形式证明--工程论证-proof--engineering-argument` | Anchor '#5-形式证明--工程论证-proof--engineering-argument' not found in current file |
-| `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` | 20 | `#映射-1-dataflow-图--flink-datastream-api-映射-1-dataflow-图--flink-datastream-api` | Anchor '#映射-1-dataflow-图--flink-datastream-api-映射-1-dataflow-图--flink-datastream-api' not found in current file |
-| `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` | 21 | `#映射-2-watermark-单调性--flink-watermarkstrategy-映射-2-watermark-单调性--flink-watermarkstrategy` | Anchor '#映射-2-watermark-单调性--flink-watermarkstrategy-映射-2-watermark-单调性--flink-watermarkstrategy' not found in current file |
-| `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` | 22 | `#映射-3-checkpoint-barrier--flink-checkpointcoordinator-映射-3-checkpoint-barrier--flink-checkpointcoordinator` | Anchor '#映射-3-checkpoint-barrier--flink-checkpointcoordinator-映射-3-checkpoint-barrier--flink-checkpointcoordinator' not found in current file |
-| `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` | 23 | `#映射-4-一致割集--flink-全局状态快照-映射-4-一致割集--flink-全局状态快照` | Anchor '#映射-4-一致割集--flink-全局状态快照-映射-4-一致割集--flink-全局状态快照' not found in current file |
-| `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` | 24 | `#映射-5-exactly-once-语义--flink-2pc--可重放-source-映射-5-exactly-once-语义--flink-2pc--可重放-source` | Anchor '#映射-5-exactly-once-语义--flink-2pc--可重放-source-映射-5-exactly-once-语义--flink-2pc--可重放-source' not found in current file |
-| `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` | 25 | `#映射-6-actor-模型--flink-actor-运行时-映射-6-actor-模型--flink-actor-运行时` | Anchor '#映射-6-actor-模型--flink-actor-运行时-映射-6-actor-模型--flink-actor-运行时' not found in current file |
-| `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` | 26 | `#映射-7-类型安全--flink-typeinformation-系统-映射-7-类型安全--flink-typeinformation-系统` | Anchor '#映射-7-类型安全--flink-typeinformation-系统-映射-7-类型安全--flink-typeinformation-系统' not found in current file |
+| `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` | 20 | `#映射-1-dataflow-图--flink-datastream-api` | Anchor '#映射-1-dataflow-图--flink-datastream-api' not found in current file |
+| `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` | 21 | `#映射-2-watermark-单调性--flink-watermarkstrategy` | Anchor '#映射-2-watermark-单调性--flink-watermarkstrategy' not found in current file |
+| `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` | 22 | `#映射-3-checkpoint-barrier--flink-checkpointcoordinator` | Anchor '#映射-3-checkpoint-barrier--flink-checkpointcoordinator' not found in current file |
+| `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` | 23 | `#映射-4-一致割集--flink-全局状态快照` | Anchor '#映射-4-一致割集--flink-全局状态快照' not found in current file |
+| `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` | 24 | `#映射-5-exactly-once-语义--flink-2pc--可重放-source` | Anchor '#映射-5-exactly-once-语义--flink-2pc--可重放-source' not found in current file |
+| `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` | 25 | `#映射-6-actor-模型--flink-actor-运行时` | Anchor '#映射-6-actor-模型--flink-actor-运行时' not found in current file |
+| `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` | 26 | `#映射-7-类型安全--flink-typeinformation-系统` | Anchor '#映射-7-类型安全--flink-typeinformation-系统' not found in current file |
 | `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` | 31 | `#5-形式证明--工程论证-proof--engineering-argument` | Anchor '#5-形式证明--工程论证-proof--engineering-argument' not found in current file |
 | `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` | 74 | `P.` | File not found: Knowledge\05-mapping-guides\P. |
 | `Knowledge\05-mapping-guides\struct-to-flink-mapping.md` | 95 | `Apache` | File not found: Knowledge\05-mapping-guides\Apache |
@@ -3863,12 +3863,12 @@ Generated: 2026-04-10 20:03:42
 | `Knowledge\05-mapping-guides\theory-to-code-patterns.md` | 44 | `#java-实现模板-3` | Anchor '#java-实现模板-3' not found in current file |
 | `Knowledge\05-mapping-guides\theory-to-code-patterns.md` | 45 | `#scala-实现模板-3` | Anchor '#scala-实现模板-3' not found in current file |
 | `Knowledge\05-mapping-guides\theory-to-code-patterns.md` | 46 | `#python-实现模板-3` | Anchor '#python-实现模板-3' not found in current file |
-| `Knowledge\06-frontier\edge-llm-realtime-inference.md` | 14 | `#def-k-06-64-模型量化与压缩-model-quantization--compression-def-k-06-64-模型量化与压缩-model-quantization--compression` | Anchor '#def-k-06-64-模型量化与压缩-model-quantization--compression-def-k-06-64-模型量化与压缩-model-quantization--compression' not found in current file |
+| `Knowledge\06-frontier\edge-llm-realtime-inference.md` | 14 | `#def-k-06-64-模型量化与压缩-model-quantization--compression` | Anchor '#def-k-06-64-模型量化与压缩-model-quantization--compression' not found in current file |
 | `Knowledge\06-frontier\edge-llm-realtime-inference.md` | 28 | `#5-形式证明--工程论证-proof--engineering-argument` | Anchor '#5-形式证明--工程论证-proof--engineering-argument' not found in current file |
 | `Knowledge\06-frontier\edge-streaming-patterns.md` | 28 | `#5-形式证明--工程论证-proof--engineering-argument` | Anchor '#5-形式证明--工程论证-proof--engineering-argument' not found in current file |
 | `Knowledge\06-frontier\materialize-comparison-guide.md` | 30 | `#5-形式证明--工程论证-proof--engineering-argument` | Anchor '#5-形式证明--工程论证-proof--engineering-argument' not found in current file |
-| `Knowledge\06-frontier\materialize-comparison-guide.md` | 36 | `#64-混合架构flink--materialize-64-混合架构flink--materialize` | Anchor '#64-混合架构flink--materialize-64-混合架构flink--materialize' not found in current file |
-| `Knowledge\06-frontier\risingwave-integration-guide.md` | 26 | `#41-为什么需要-risingwave--flink-混合架构-41-为什么需要-risingwave--flink-混合架构` | Anchor '#41-为什么需要-risingwave--flink-混合架构-41-为什么需要-risingwave--flink-混合架构' not found in current file |
+| `Knowledge\06-frontier\materialize-comparison-guide.md` | 36 | `#64-混合架构flink--materialize` | Anchor '#64-混合架构flink--materialize' not found in current file |
+| `Knowledge\06-frontier\risingwave-integration-guide.md` | 26 | `#41-为什么需要-risingwave--flink-混合架构` | Anchor '#41-为什么需要-risingwave--flink-混合架构' not found in current file |
 | `Knowledge\06-frontier\risingwave-integration-guide.md` | 29 | `#5-形式证明--工程论证-proof--engineering-argument` | Anchor '#5-形式证明--工程论证-proof--engineering-argument' not found in current file |
 | `Knowledge\06-frontier\rust-streaming-ecosystem.md` | 32 | `F.` | File not found: Knowledge\06-frontier\F. |
 | `Knowledge\06-frontier\rust-streaming-ecosystem.md` | 90 | `Y.` | File not found: Knowledge\06-frontier\Y. |
@@ -3877,9 +3877,9 @@ Generated: 2026-04-10 20:03:42
 | `Knowledge\06-frontier\serverless-streaming-cost-optimization.md` | 16 | `#gcp-cloud-functions--pubsub` | Anchor '#gcp-cloud-functions--pubsub' not found in current file |
 | `Knowledge\06-frontier\serverless-streaming-cost-optimization.md` | 35 | `#示例61-aws-lambda--msk成本优化` | Anchor '#示例61-aws-lambda--msk成本优化' not found in current file |
 | `Knowledge\06-frontier\serverless-streaming-cost-optimization.md` | 36 | `#示例62-azure-functions--event-hubs成本对比` | Anchor '#示例62-azure-functions--event-hubs成本对比' not found in current file |
-| `Knowledge\06-frontier\streaming-access-control.md` | 13 | `#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation-def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation` | Anchor '#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation-def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation' not found in current file |
+| `Knowledge\06-frontier\streaming-access-control.md` | 13 | `#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation` | Anchor '#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation' not found in current file |
 | `Knowledge\06-frontier\streaming-database-ecosystem-comparison.md` | 28 | `#5-形式证明--工程论证` | Anchor '#5-形式证明--工程论证' not found in current file |
-| `Knowledge\06-frontier\streaming-databases.md` | 24 | `#5-形式证明--工程论证-5-形式证明--工程论证` | Anchor '#5-形式证明--工程论证-5-形式证明--工程论证' not found in current file |
+| `Knowledge\06-frontier\streaming-databases.md` | 24 | `#5-形式证明--工程论证` | Anchor '#5-形式证明--工程论证' not found in current file |
 | `Knowledge\07-best-practices\07.01-flink-production-checklist.md` | 62 | `Apache` | File not found: Knowledge\07-best-practices\Apache |
 | `Knowledge\07-best-practices\07.02-performance-tuning-patterns.md` | 21 | `#5-形式证明--工程论证-proof--engineering-argument` | Anchor '#5-形式证明--工程论证-proof--engineering-argument' not found in current file |
 | `Knowledge\07-best-practices\07.03-troubleshooting-guide.md` | 20 | `#5-形式证明--工程论证-proof--engineering-argument` | Anchor '#5-形式证明--工程论证-proof--engineering-argument' not found in current file |
@@ -5021,10 +5021,10 @@ Generated: 2026-04-10 20:03:42
 | `Flink\02-core\backpressure-and-flow-control.md` | 121 | `Apache` | File not found: Flink\02-core\Apache |
 | `Flink\02-core\backpressure-and-flow-control.md` | 258 | `A.` | File not found: Flink\02-core\A. |
 | `Flink\02-core\backpressure-and-flow-control.md` | 264 | `Apache` | File not found: Flink\02-core\Apache |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 26 | `#关系-1-flink-checkpoint--chandy-lamport-分布式快照-关系-1-flink-checkpoint--chandy-lamport-分布式快照` | Anchor '#关系-1-flink-checkpoint--chandy-lamport-分布式快照-关系-1-flink-checkpoint--chandy-lamport-分布式快照' not found in current file |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 27 | `#关系-2-checkpoint-机制--exactly-once-语义-关系-2-checkpoint-机制--exactly-once-语义` | Anchor '#关系-2-checkpoint-机制--exactly-once-语义-关系-2-checkpoint-机制--exactly-once-语义' not found in current file |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 28 | `#关系-3-state-backend-类型--应用场景-关系-3-state-backend-类型--应用场景` | Anchor '#关系-3-state-backend-类型--应用场景-关系-3-state-backend-类型--应用场景' not found in current file |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 40 | `#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument` | Anchor '#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument' not found in current file |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 26 | `#关系-1-flink-checkpoint--chandy-lamport-分布式快照` | Anchor '#关系-1-flink-checkpoint--chandy-lamport-分布式快照' not found in current file |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 27 | `#关系-2-checkpoint-机制--exactly-once-语义` | Anchor '#关系-2-checkpoint-机制--exactly-once-语义' not found in current file |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 28 | `#关系-3-state-backend-类型--应用场景` | Anchor '#关系-3-state-backend-类型--应用场景' not found in current file |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 40 | `#5-形式证明--工程论证-proof--engineering-argument` | Anchor '#5-形式证明--工程论证-proof--engineering-argument' not found in current file |
 | `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 68 | `Apache` | File not found: Flink\02-core\Apache |
 | `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 110 | `K.` | File not found: Flink\02-core\K. |
 | `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 134 | `Apache` | File not found: Flink\02-core\Apache |
@@ -5512,7 +5512,7 @@ Generated: 2026-04-10 20:03:42
 | `docs\i18n\en\Struct\04-proofs\04.01-flink-checkpoint-correctness.md` | 23 | `#relation-1-flink-checkpoint--chandy-lamport-distributed-snapshot` | Anchor '#relation-1-flink-checkpoint--chandy-lamport-distributed-snapshot' not found in current file |
 | `docs\i18n\en\Struct\04-proofs\04.01-flink-checkpoint-correctness.md` | 24 | `#relation-2-checkpoint-alignment--consistent-cut` | Anchor '#relation-2-checkpoint-alignment--consistent-cut' not found in current file |
 | `docs\i18n\en\Struct\04-proofs\04.01-flink-checkpoint-correctness.md` | 25 | `#relation-3-asynchronous-snapshot--synchronous-snapshot-semantic-equivalence` | Anchor '#relation-3-asynchronous-snapshot--synchronous-snapshot-semantic-equivalence' not found in current file |
-| `docs\i18n\en\Struct\04-proofs\04.02-flink-exactly-once-correctness.md` | 44 | `#8-examples--counter-examples-8-examples--counter-examples` | Anchor '#8-examples--counter-examples-8-examples--counter-examples' not found in current file |
+| `docs\i18n\en\Struct\04-proofs\04.02-flink-exactly-once-correctness.md` | 44 | `#8-examples--counter-examples` | Anchor '#8-examples--counter-examples' not found in current file |
 | `docs\i18n\en\Knowledge\02-design-patterns\pattern-event-time-processing.md` | 13 | `#1-problem--context` | Anchor '#1-problem--context' not found in current file |
 | `docs\i18n\en\Knowledge\02-design-patterns\pattern-event-time-processing.md` | 45 | `Apache` | File not found: docs\i18n\en\Knowledge\02-design-patterns\Apache |
 | `docs\i18n\en\Knowledge\02-design-patterns\pattern-event-time-processing.md` | 67 | `Flink` | File not found: docs\i18n\en\Knowledge\02-design-patterns\Flink |

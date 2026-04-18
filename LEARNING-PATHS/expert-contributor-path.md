@@ -195,6 +195,10 @@ gantt
    - 提供建设性意见
    - 帮助改进代码质量
 
+### 推荐文档
+
+- [formal-methods/08-ai-formal-methods/agent-behavior-contract-verification.md](../../formal-methods/08-ai-formal-methods/agent-behavior-contract-verification.md) — AI Agent 行为契约验证：多 Agent 协作安全的形式化框架
+
 ### FLIP 参与流程
 
 ```
@@ -241,6 +245,10 @@ FLIP (Flink Improvement Proposal)
    - 开发连接器
    - 创建工具库
    - 维护周边项目
+
+### 推荐文档
+
+- [Knowledge/06-frontier/nist-caisi-agent-standards.md](../../Knowledge/06-frontier/nist-caisi-agent-standards.md) — NIST CAISI：AI Agent 标准化政策解读与合规框架
 
 ### 影响力建设
 
@@ -413,4 +421,5 @@ PMC Member (PMC 成员)
 
 | 版本 | 日期 | 更新内容 |
 |------|------|----------|
+| v1.1 | 2026-04-18 | 纳入 v4.3 前沿文档：Agent 行为契约验证、NIST CAISI 标准化政策 |
 | v1.0 | 2026-04-04 | 初始版本，贡献者路径 |

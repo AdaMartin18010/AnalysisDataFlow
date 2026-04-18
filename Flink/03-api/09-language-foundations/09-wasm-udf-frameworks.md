@@ -27,7 +27,7 @@
     - [4.1 为何选择 WASM 而非 JNI](#41-为何选择-wasm-而非-jni)
     - [4.2 Framework 选型决策树](#42-framework-选型决策树)
     - [4.3 数据序列化开销分析](#43-数据序列化开销分析)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [5.1 沙箱安全性形式化论证](#51-沙箱安全性形式化论证)
     - [5.2 性能基准测试方法论](#52-性能基准测试方法论)
     - [5.3 生产就绪性评估框架](#53-生产就绪性评估框架)

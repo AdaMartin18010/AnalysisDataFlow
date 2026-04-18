@@ -22,7 +22,7 @@
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [4.1 Nexmark 设计原理](#41-nexmark-设计原理)
     - [4.2 结果可复现性保障](#42-结果可复现性保障)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [Thm-FNB-01 (Nexmark 代表性定理)](#thm-fnb-01-nexmark-代表性定理)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [6.1 Nexmark 环境搭建](#61-nexmark-环境搭建)

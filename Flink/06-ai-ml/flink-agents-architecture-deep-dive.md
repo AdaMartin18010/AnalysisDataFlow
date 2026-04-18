@@ -5,7 +5,6 @@
 > **稳定性**: GA (Generally Available)
 >
 > Apache Flink Agents 0.2.0 已于 2026-02-06 正式发布，新增 Embedding Models、Vector Stores、Java 异步执行等能力[^1]。
-
 > **所属阶段**: Flink/06-ai-ml | **前置依赖**: [FLIP-531 AI Agents](flink-agents-flip-531.md), [Flink MCP集成](flink-agents-mcp-integration.md) | **形式化等级**: L4-L5
 
 ---
@@ -53,6 +52,8 @@ CREATED --init--> INITIALIZING --activate--> ACTIVE
    |                  v                v        v
    +-----------> TERMINATING <------ TERMINATED
 ```
+
+> **延伸阅读**: [Flink Agent生命周期状态机的形式化行为契约验证](../../formal-methods/08-ai-formal-methods/agent-behavior-contract-verification.md) —— 状态转移约束 $\mathcal{T}$ 满足状态机所有可达路径的 LTL 安全性与活性。
 
 ### Def-P2-03: Agent State Persistence Model
 
@@ -261,6 +262,8 @@ stateDiagram-v2
 │  └─────────────┘  └─────────────┘  └─────────────────────────┘  │
 └─────────────────────────────────────────────────────────────────┘
 ```
+
+> **延伸阅读**: [Agent行为契约的形式化验证框架](../../formal-methods/08-ai-formal-methods/agent-behavior-contract-verification.md) —— 将 Agent 行为约束映射为流处理算子语义，通过 TLA+/Iris 证明状态转移、工具调用、副作用控制的正确性。
 
 ---
 
@@ -892,4 +895,4 @@ sequenceDiagram
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink Blog, "Apache Flink Agents 0.2.0 Release Announcement", February 6, 2026. https://flink.apache.org/2026/02/06/apache-flink-agents-0.2.0-release-announcement/
+[^1]: Apache Flink Blog, "Apache Flink Agents 0.2.0 Release Announcement", February 6, 2026. <https://flink.apache.org/2026/02/06/apache-flink-agents-0.2.0-release-announcement/>

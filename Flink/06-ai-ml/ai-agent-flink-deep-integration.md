@@ -254,6 +254,8 @@ graph LR
     style C fill:#fff3e0
 ```
 
+> **延伸阅读**: [Agent行为契约的形式化验证框架](../../formal-methods/08-ai-formal-methods/agent-behavior-contract-verification.md) —— 将 MCP/A2A 协议交互映射为 Agent 行为契约中的工具使用策略，证明跨协议调用的安全性与活性。
+
 ---
 
 ## 4. 论证过程 (Argumentation)

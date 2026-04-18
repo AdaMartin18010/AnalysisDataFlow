@@ -97,6 +97,9 @@
 - [Flink/03-sql-table-api/materialized-tables.md](../Flink/03-api/03.02-table-sql-api/materialized-tables.md)
 - [Flink/04-connectors/kafka-integration-patterns.md](../Flink/05-ecosystem/05.01-connectors/kafka-integration-patterns.md)
 - [Flink/04-connectors/flink-cdc-3.0-data-integration.md](../Flink/05-ecosystem/05.01-connectors/flink-cdc-3.0-data-integration.md)
+- [Flink/05-ecosystem/flink-dynamic-iceberg-sink-guide.md](../Flink/05-ecosystem/flink-dynamic-iceberg-sink-guide.md)
+- [Flink/05-ecosystem/05.01-connectors/fluss-integration.md](../Flink/05-ecosystem/05.01-connectors/fluss-integration.md)
+- [Flink/05-ecosystem/05.02-lakehouse/flink-paimon-integration.md](../Flink/05-ecosystem/05.02-lakehouse/flink-paimon-integration.md)
 - [Flink/10-deployment/kubernetes-deployment.md](../Flink/04-runtime/04.01-deployment/kubernetes-deployment.md)
 - [Knowledge/02-design-patterns/pattern-event-time-processing.md](../Knowledge/02-design-patterns/pattern-event-time-processing.md)
 - [Knowledge/02-design-patterns/pattern-windowed-aggregation.md](../Knowledge/02-design-patterns/pattern-windowed-aggregation.md)
@@ -166,6 +169,9 @@
 | `02-core-mechanisms/exactly-once-semantics-deep-dive.md` | Exactly-Once语义 | L3 | 4h |
 | `03-sql-table-api/flink-sql-window-functions-deep-dive.md` | SQL窗口函数 | L3 | 3h |
 | `04-connectors/flink-cdc-3.0-data-integration.md` | CDC数据集成 | L3 | 4h |
+| `05-ecosystem/flink-dynamic-iceberg-sink-guide.md` | Dynamic Iceberg Sink | L3 | 4h |
+| `05-ecosystem/05.01-connectors/fluss-integration.md` | Fluss流存储集成 | L3 | 3h |
+| `05-ecosystem/05.02-lakehouse/flink-paimon-integration.md` | Paimon湖仓集成 | L3 | 3h |
 
 ---
 

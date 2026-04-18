@@ -752,7 +752,7 @@ pie title "流处理TCO成本结构 - 电商推荐场景 (月度 $44,220)"
 ### 7.2 三部署模式成本对比
 
 ```mermaid
-bar chart
+xychart-beta
     title "三种部署模式月度TCO对比 (电商推荐场景)"
     x-axis ["常驻集群", "Serverless", "混合模式"]
     y-axis "月度成本 ($)" 0 --> 50000
@@ -781,7 +781,7 @@ xychart-beta
 ### 7.4 云厂商价格对比
 
 ```mermaid
-bar chart
+xychart-beta
     title "云厂商月度成本对比 (中型部署 100K events/s)"
     x-axis ["AWS", "Azure", "GCP", "阿里云"]
     y-axis "月度成本 ($)" 18000 --> 22000

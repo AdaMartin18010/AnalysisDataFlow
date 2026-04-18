@@ -1714,7 +1714,7 @@
 #### Cor-S-02-01
 
 - 文件: `Struct\01-foundation\01.02-process-calculus-primer.md` (第30行)
-  上下文: `- [Cor-S-02-01. 良类型会话进程无死锁 {#cor-s-02-01-良类型会话进程无死锁}](#cor-s-02-01-良类型会话进程无死锁-cor-s-02-01-良类型会话进程无死锁...`
+  上下文: `- [Cor-S-02-01. 良类型会话进程无死锁 {#cor-s-02-01-良类型会话进程无死锁}](#cor-s-02-01-良类型会话进程无死锁...`
 - 文件: `Struct\Proof-Chains-Foundation-Complete.md` (第387行)
   上下文: `**导出推论**: Cor-S-02-01: 良类型会话进程无死锁...`
 - 文件: `Struct\01-foundation\01.02-process-calculus-primer.md` (第464行)
@@ -14718,7 +14718,7 @@
 - 文件: `Struct\Key-Theorem-Proof-Chains.md` (第205行)
   上下文: `D2001 --> L2001[Lemma-S-20-01<br/>结合律]...`
 - 文件: `Struct\04-proofs\04.04-watermark-algebra-formal-proof.md` (第18行)
-  上下文: `- [Lemma-S-20-01 (⊔ 结合律) {#lemma-s-20-01--结合律}](#lemma-s-20-01--结合律-lemma-s-20-01--结合律)...`
+  上下文: `- [Lemma-S-20-01 (⊔ 结合律) {#lemma-s-20-01--结合律}](#lemma-s-20-01--结合律)...`
 - 文件: `Struct\04-proofs\04.04-watermark-algebra-formal-proof.md` (第252行)
   上下文: `### Lemma-S-20-01 (⊔ 结合律) {#lemma-s-20-01--结合律}...`
 - 文件: `Struct\04-proofs\04.04-watermark-algebra-formal-proof.md` (第909行)
@@ -14737,7 +14737,7 @@
 - 文件: `Struct\Key-Theorem-Proof-Chains.md` (第206行)
   上下文: `D2001 --> L2002[Lemma-S-20-02<br/>交换律]...`
 - 文件: `Struct\04-proofs\04.04-watermark-algebra-formal-proof.md` (第19行)
-  上下文: `- [Lemma-S-20-02 (⊔ 交换律) {#lemma-s-20-02--交换律}](#lemma-s-20-02--交换律-lemma-s-20-02--交换律)...`
+  上下文: `- [Lemma-S-20-02 (⊔ 交换律) {#lemma-s-20-02--交换律}](#lemma-s-20-02--交换律)...`
 - 文件: `Struct\04-proofs\04.04-watermark-algebra-formal-proof.md` (第312行)
   上下文: `### Lemma-S-20-02 (⊔ 交换律) {#lemma-s-20-02--交换律}...`
 - 文件: `Struct\04-proofs\04.04-watermark-algebra-formal-proof.md` (第1314行)
@@ -14754,7 +14754,7 @@
 - 文件: `Struct\Key-Theorem-Proof-Chains.md` (第207行)
   上下文: `D2001 --> L2003[Lemma-S-20-03<br/>幂等律]...`
 - 文件: `Struct\04-proofs\04.04-watermark-algebra-formal-proof.md` (第20行)
-  上下文: `- [Lemma-S-20-03 (⊔ 幂等律) {#lemma-s-20-03--幂等律}](#lemma-s-20-03--幂等律-lemma-s-20-03--幂等律)...`
+  上下文: `- [Lemma-S-20-03 (⊔ 幂等律) {#lemma-s-20-03--幂等律}](#lemma-s-20-03--幂等律)...`
 - 文件: `Struct\04-proofs\04.04-watermark-algebra-formal-proof.md` (第364行)
   上下文: `### Lemma-S-20-03 (⊔ 幂等律) {#lemma-s-20-03--幂等律}...`
 - 文件: `Struct\04-proofs\04.04-watermark-algebra-formal-proof.md` (第1315行)
@@ -14876,9 +14876,9 @@
 #### Lemma-S-23-01
 
 - 文件: `Struct\04-proofs\04.07-deadlock-freedom-choreographic.md` (第324行)
-  上下文: `### Lemma-S-23-01. EPP 保持通信结构 {#关系-2-epp--bisimulation-互模拟等价-关系-2-epp--bisimulation-互模拟等价}...`
+  上下文: `### Lemma-S-23-01. EPP 保持通信结构 {#关系-2-epp--bisimulation-互模拟等价}...`
 - 文件: `Struct\04-proofs\04.07-deadlock-freedom-choreographic.md` (第19行)
-  上下文: `- [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价-关系-2-epp--bisimulation-互模拟等价)...`
+  上下文: `- [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价)...`
 - 文件: `Struct\04-proofs\04.07-deadlock-freedom-choreographic.md` (第867行)
   上下文: `对于复合构造（顺序、并行、限制），由 EPP 的组合性（Lemma-S-23-01），投影保持结构，规约对应保持。...`
 - 文件: `Struct\04-proofs\04.07-deadlock-freedom-choreographic.md` (第911行)
@@ -16102,7 +16102,7 @@
 - 文件: `Knowledge\01-concept-atlas\data-streaming-landscape-2026-complete.md` (第390行)
   上下文: `### Prop-K-01-22. 流批统一的技术收敛 {#prop-k-01-22-流批统一的技术收敛}...`
 - 文件: `Knowledge\01-concept-atlas\data-streaming-landscape-2026-complete.md` (第29行)
-  上下文: `- [Prop-K-01-22. 流批统一的技术收敛 {#prop-k-01-22-流批统一的技术收敛}](#prop-k-01-22-流批统一的技术收敛-prop-k-01-22-流批统一的技术收敛...`
+  上下文: `- [Prop-K-01-22. 流批统一的技术收敛 {#prop-k-01-22-流批统一的技术收敛}](#prop-k-01-22-流批统一的技术收敛...`
 
 #### Prop-K-02-01
 
@@ -16296,7 +16296,7 @@
 - 文件: `Knowledge\04-technology-selection\engine-selection-guide.md` (第325行)
   上下文: `### Prop-K-04-02. 微批处理的延迟下界 {#prop-k-04-02-微批处理的延迟下界}...`
 - 文件: `Knowledge\04-technology-selection\engine-selection-guide.md` (第29行)
-  上下文: `- [Prop-K-04-02. 微批处理的延迟下界 {#prop-k-04-02-微批处理的延迟下界}](#prop-k-04-02-微批处理的延迟下界-prop-k-04-02-微批处理的延迟下界...`
+  上下文: `- [Prop-K-04-02. 微批处理的延迟下界 {#prop-k-04-02-微批处理的延迟下界}](#prop-k-04-02-微批处理的延迟下界...`
 - 文件: `Knowledge\04-technology-selection\paradigm-selection-guide.md` (第26行)
   上下文: `- [Prop-K-04-02. 同步语义与形式化可验证性的权衡](#prop-k-04-02-同步语义与形式化可验证性的权衡)...`
 - 文件: `Knowledge\04-technology-selection\paradigm-selection-guide.md` (第278行)
@@ -16751,7 +16751,7 @@
 - 文件: `Struct\00-STRUCT-DERIVATION-CHAIN.md` (第337行)
   上下文: `L2_P1[Prop-S-02-01 对偶性]...`
 - 文件: `Struct\01-foundation\01.02-process-calculus-primer.md` (第17行)
-  上下文: `- [Prop-S-02-01. 对偶性蕴含通信兼容 {#prop-s-02-01-对偶性蕴含通信兼容}](#prop-s-02-01-对偶性蕴含通信兼容-prop-s-02-01-对偶性蕴含通信兼容...`
+  上下文: `- [Prop-S-02-01. 对偶性蕴含通信兼容 {#prop-s-02-01-对偶性蕴含通信兼容}](#prop-s-02-01-对偶性蕴含通信兼容...`
 - 文件: `Struct\01-foundation\01.02-process-calculus-primer.md` (第281行)
   上下文: `### Prop-S-02-01. 对偶性蕴含通信兼容 {#prop-s-02-01-对偶性蕴含通信兼容}...`
 - 文件: `Struct\01-foundation\01.02-process-calculus-primer.md` (第386行)
@@ -17139,7 +17139,7 @@
 - 文件: `Flink\02-core\checkpoint-mechanism-deep-dive.md` (第41行)
   上下文: `- [Thm-F-02-01 (Checkpoint 恢复后系统状态等价性) {#thm-f-02-01-checkpoint-恢复后系统状态等价性}](#thm-f-02-01-checkpoint...`
 - 文件: `Flink\02-core\checkpoint-mechanism-deep-dive.md` (第43行)
-  上下文: `- [Thm-F-02-01 源码验证 {#thm-f-02-01-源码验证}](#thm-f-02-01-源码验证-thm-f-02-01-源码验证)...`
+  上下文: `- [Thm-F-02-01 源码验证 {#thm-f-02-01-源码验证}](#thm-f-02-01-源码验证)...`
 - 文件: `Flink\02-core\checkpoint-mechanism-deep-dive.md` (第604行)
   上下文: `### Thm-F-02-01 (Checkpoint 恢复后系统状态等价性) {#thm-f-02-01-checkpoint-恢复后系统状态等价性}...`
 - 文件: `Flink\02-core\checkpoint-mechanism-deep-dive.md` (第698行)
@@ -17186,7 +17186,7 @@
 - 文件: `Flink\02-core\checkpoint-mechanism-deep-dive.md` (第42行)
   上下文: `- [Thm-F-02-02 (增量 Checkpoint 完备性) {#thm-f-02-02-增量-checkpoint-完备性}](#thm-f-02-02-增量-checkpoint-完备性-...`
 - 文件: `Flink\02-core\checkpoint-mechanism-deep-dive.md` (第44行)
-  上下文: `- [Thm-F-02-02 源码验证 {#thm-f-02-02-源码验证}](#thm-f-02-02-源码验证-thm-f-02-02-源码验证)...`
+  上下文: `- [Thm-F-02-02 源码验证 {#thm-f-02-02-源码验证}](#thm-f-02-02-源码验证)...`
 - 文件: `Flink\02-core\checkpoint-mechanism-deep-dive.md` (第647行)
   上下文: `### Thm-F-02-02 (增量 Checkpoint 完备性) {#thm-f-02-02-增量-checkpoint-完备性}...`
 - 文件: `Flink\02-core\checkpoint-mechanism-deep-dive.md` (第787行)
@@ -19824,7 +19824,7 @@
 - 文件: `Knowledge\01-concept-atlas\data-streaming-landscape-2026-complete.md` (第775行)
   上下文: `#### Thm-K-01-20. 流平台选型最优性定理 {#thm-k-01-20-流平台选型最优性定理}...`
 - 文件: `Knowledge\01-concept-atlas\data-streaming-landscape-2026-complete.md` (第50行)
-  上下文: `- [Thm-K-01-20. 流平台选型最优性定理 {#thm-k-01-20-流平台选型最优性定理}](#thm-k-01-20-流平台选型最优性定理-thm-k-01-20-流平台选型最优性定理...`
+  上下文: `- [Thm-K-01-20. 流平台选型最优性定理 {#thm-k-01-20-流平台选型最优性定理}](#thm-k-01-20-流平台选型最优性定理...`
 
 #### Thm-K-02-01
 

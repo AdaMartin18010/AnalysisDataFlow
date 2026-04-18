@@ -1,6 +1,6 @@
 # CD-Raft: 跨域场景下的Raft共识优化
 
-> 所属阶段: Knowledge/06-frontier | 前置依赖: [Flink/02-core/checkpoint-mechanism-deep-dive.md](../../Flink/02-core/checkpoint-mechanism-deep-dive.md), [Struct/04-proofs/distributed-consensus-formal-proof.md](../../Struct/04-proofs/distributed-consensus-formal-proof.md) | 形式化等级: L4-L5
+> 所属阶段: Knowledge/06-frontier | 前置依赖: [Flink/02-core/checkpoint-mechanism-deep-dive.md](../../Flink/02-core/checkpoint-mechanism-deep-dive.md), Struct/04-proofs/distributed-consensus-formal-proof.md | 形式化等级: L4-L5
 
 ## 摘要
 
@@ -12,7 +12,7 @@
 2. [属性推导 (Properties)](#2-属性推导-properties)
 3. [关系建立 (Relations)](#3-关系建立-relations)
 4. [论证过程 (Argumentation)](#4-论证过程-argumentation)
-5. [形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+5. [形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
 6. [实例验证 (Examples)](#6-实例验证-examples)
 7. [可视化 (Visualizations)](#7-可视化-visualizations)
 8. [引用参考 (References)](#8-引用参考-references)

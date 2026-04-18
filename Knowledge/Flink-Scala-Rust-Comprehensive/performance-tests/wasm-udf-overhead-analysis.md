@@ -1,6 +1,6 @@
 # WASM UDF 运行时开销分析报告
 
-> **所属阶段**: Knowledge/Flink-Scala-Rust-Comprehensive | **前置依赖**: [Scala-Rust 互操作](../03-scala-rust-interop/) | **形式化等级**: L3
+> **所属阶段**: Knowledge/Flink-Scala-Rust-Comprehensive | **前置依赖**: [Scala-Rust 互操作](../03-scala-rust-interop/03.05-interop-comparison.md) | **形式化等级**: L3
 
 ## 1. 测试目标
 

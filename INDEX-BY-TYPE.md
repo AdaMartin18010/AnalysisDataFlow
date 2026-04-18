@@ -10,11 +10,13 @@
 
 ## 目录
 
-- [定理 (Theorems) (512个)](#theorems)
-- [定义 (Definitions) (1259个)](#definitions)
-- [引理 (Lemmas) (475个)](#lemmas)
-- [命题 (Propositions) (393个)](#propositions)
-- [推论 (Corollaries) (28个)](#corollarys)
+- [AnalysisDataFlow 形式化元素索引 (按类型分类)](#analysisdataflow-形式化元素索引-按类型分类)
+  - [目录](#目录)
+  - [定理 (Theorems)](#定理-theorems)
+  - [定义 (Definitions)](#定义-definitions)
+  - [引理 (Lemmas)](#引理-lemmas)
+  - [命题 (Propositions)](#命题-propositions)
+  - [推论 (Corollaries)](#推论-corollaries)
 
 
 ## 定理 (Theorems)

@@ -125,26 +125,26 @@
 | `Flink\02-core\backpressure-and-flow-control.md` | 44 | 图 7.1: Credit-based 背压在 F | `Flink\02-core\backpressure-and-flow` | `#图-71-credit-based-背压在-flink-流水线中的传播` |
 | `Flink\02-core\backpressure-and-flow-control.md` | 45 | 图 7.2: 控制-执行-数据层关联图 | `Flink\02-core\backpressure-and-flow` | `#图-72-控制-执行-数据层关联图` |
 | `Flink\02-core\backpressure-and-flow-control.md` | 46 | 图 7.3: 背压诊断与调优决策树 | `Flink\02-core\backpressure-and-flow` | `#图-73-背压诊断与调优决策树` |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 9 | Flink Checkpoint 机制深度剖析 ( | `Flink\02-core\checkpoint-mechanism-` | `#flink-checkpoint-机制深度剖析-checkpoint-mechanism-deep-dive-flink-checkpoint-机制深度剖析-checkpoint-mechanism-deep-dive` |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 10 | 目录 {#目录} | `Flink\02-core\checkpoint-mechanism-` | `#目录-目录` |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 11 | 1. 概念定义 (Definitions) {#1 | `Flink\02-core\checkpoint-mechanism-` | `#1-概念定义-definitions-1-概念定义-definitions` |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 12 | Def-F-02-01 (Checkpoint 核 | `Flink\02-core\checkpoint-mechanism-` | `#def-f-02-01-checkpoint-核心抽象-def-f-02-01-checkpoint-核心抽象` |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 13 | Def-F-02-02 (Checkpoint B | `Flink\02-core\checkpoint-mechanism-` | `#def-f-02-02-checkpoint-barrier-def-f-02-02-checkpoint-barrier` |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 14 | Def-F-02-03 (Aligned Chec | `Flink\02-core\checkpoint-mechanism-` | `#def-f-02-03-aligned-checkpoint-def-f-02-03-aligned-checkpoint` |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 15 | Def-F-02-04 (Unaligned Ch | `Flink\02-core\checkpoint-mechanism-` | `#def-f-02-04-unaligned-checkpoint-def-f-02-04-unaligned-checkpoint` |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 16 | Def-F-02-05 (Incremental  | `Flink\02-core\checkpoint-mechanism-` | `#def-f-02-05-incremental-checkpoint-def-f-02-05-incremental-checkpoint` |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 17 | Def-F-02-06 (State Backen | `Flink\02-core\checkpoint-mechanism-` | `#def-f-02-06-state-backend-def-f-02-06-state-backend` |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 18 | Def-F-02-07 (Checkpoint 协 | `Flink\02-core\checkpoint-mechanism-` | `#def-f-02-07-checkpoint-协调器-def-f-02-07-checkpoint-协调器` |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 19 | Def-F-02-08 (Changelog St | `Flink\02-core\checkpoint-mechanism-` | `#def-f-02-08-changelog-state-backend-def-f-02-08-changelog-state-backend` |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 20 | 2. 属性推导 (Properties) {#2- | `Flink\02-core\checkpoint-mechanism-` | `#2-属性推导-properties-2-属性推导-properties` |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 21 | Lemma-F-02-01 (Barrier 对齐 | `Flink\02-core\checkpoint-mechanism-` | `#lemma-f-02-01-barrier-对齐保证状态一致性-lemma-f-02-01-barrier-对齐保证状态一致性` |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 22 | Lemma-F-02-02 (异步 Checkpo | `Flink\02-core\checkpoint-mechanism-` | `#lemma-f-02-02-异步-checkpoint-的低延迟特性-lemma-f-02-02-异步-checkpoint-的低延迟特性` |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 23 | Lemma-F-02-03 (增量 Checkpo | `Flink\02-core\checkpoint-mechanism-` | `#lemma-f-02-03-增量-checkpoint-的存储优化-lemma-f-02-03-增量-checkpoint-的存储优化` |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 24 | Prop-F-02-01 (Checkpoint  | `Flink\02-core\checkpoint-mechanism-` | `#prop-f-02-01-checkpoint-类型选择的权衡空间-prop-f-02-01-checkpoint-类型选择的权衡空间` |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 25 | 3. 关系建立 (Relations) {#3-关 | `Flink\02-core\checkpoint-mechanism-` | `#3-关系建立-relations-3-关系建立-relations` |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 26 | 关系 1: Flink Checkpoint ↔  | `Flink\02-core\checkpoint-mechanism-` | `#关系-1-flink-checkpoint--chandy-lamport-分布式快照-关系-1-flink-checkpoint--chandy-lamport-分布式快照` |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 27 | 关系 2: Checkpoint 机制 ⟹ Exa | `Flink\02-core\checkpoint-mechanism-` | `#关系-2-checkpoint-机制--exactly-once-语义-关系-2-checkpoint-机制--exactly-once-语义` |
-| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 28 | 关系 3: State Backend 类型 ↔  | `Flink\02-core\checkpoint-mechanism-` | `#关系-3-state-backend-类型--应用场景-关系-3-state-backend-类型--应用场景` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 9 | Flink Checkpoint 机制深度剖析 ( | `Flink\02-core\checkpoint-mechanism-` | `#flink-checkpoint-机制深度剖析-checkpoint-mechanism-deep-dive` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 10 | 目录 {#目录} | `Flink\02-core\checkpoint-mechanism-` | `#目录` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 11 | 1. 概念定义 (Definitions) {#1 | `Flink\02-core\checkpoint-mechanism-` | `#1-概念定义-definitions` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 12 | Def-F-02-01 (Checkpoint 核 | `Flink\02-core\checkpoint-mechanism-` | `#def-f-02-01-checkpoint-核心抽象` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 13 | Def-F-02-02 (Checkpoint B | `Flink\02-core\checkpoint-mechanism-` | `#def-f-02-02-checkpoint-barrier` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 14 | Def-F-02-03 (Aligned Chec | `Flink\02-core\checkpoint-mechanism-` | `#def-f-02-03-aligned-checkpoint` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 15 | Def-F-02-04 (Unaligned Ch | `Flink\02-core\checkpoint-mechanism-` | `#def-f-02-04-unaligned-checkpoint` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 16 | Def-F-02-05 (Incremental  | `Flink\02-core\checkpoint-mechanism-` | `#def-f-02-05-incremental-checkpoint` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 17 | Def-F-02-06 (State Backen | `Flink\02-core\checkpoint-mechanism-` | `#def-f-02-06-state-backend` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 18 | Def-F-02-07 (Checkpoint 协 | `Flink\02-core\checkpoint-mechanism-` | `#def-f-02-07-checkpoint-协调器` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 19 | Def-F-02-08 (Changelog St | `Flink\02-core\checkpoint-mechanism-` | `#def-f-02-08-changelog-state-backend` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 20 | 2. 属性推导 (Properties) {#2- | `Flink\02-core\checkpoint-mechanism-` | `#2-属性推导-properties` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 21 | Lemma-F-02-01 (Barrier 对齐 | `Flink\02-core\checkpoint-mechanism-` | `#lemma-f-02-01-barrier-对齐保证状态一致性` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 22 | Lemma-F-02-02 (异步 Checkpo | `Flink\02-core\checkpoint-mechanism-` | `#lemma-f-02-02-异步-checkpoint-的低延迟特性` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 23 | Lemma-F-02-03 (增量 Checkpo | `Flink\02-core\checkpoint-mechanism-` | `#lemma-f-02-03-增量-checkpoint-的存储优化` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 24 | Prop-F-02-01 (Checkpoint  | `Flink\02-core\checkpoint-mechanism-` | `#prop-f-02-01-checkpoint-类型选择的权衡空间` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 25 | 3. 关系建立 (Relations) {#3-关 | `Flink\02-core\checkpoint-mechanism-` | `#3-关系建立-relations` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 26 | 关系 1: Flink Checkpoint ↔  | `Flink\02-core\checkpoint-mechanism-` | `#关系-1-flink-checkpoint--chandy-lamport-分布式快照` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 27 | 关系 2: Checkpoint 机制 ⟹ Exa | `Flink\02-core\checkpoint-mechanism-` | `#关系-2-checkpoint-机制--exactly-once-语义` |
+| `Flink\02-core\checkpoint-mechanism-deep-dive.md` | 28 | 关系 3: State Backend 类型 ↔  | `Flink\02-core\checkpoint-mechanism-` | `#关系-3-state-backend-类型--应用场景` |
 
 ## 📁 问题文件Top 30
 

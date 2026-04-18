@@ -1,6 +1,6 @@
 # 流处理反模式目录 (Anti-patterns Catalog)
 
-> **所属阶段**: Knowledge/09-anti-patterns | **前置依赖**: [02-design-patterns](../02-design-patterns/) | **形式化等级**: L3-L5
+> **所属阶段**: Knowledge/09-anti-patterns | **前置依赖**: [02-design-patterns](../02-design-patterns/README.md) | **形式化等级**: L3-L5
 >
 > 本目录汇集流处理系统中常见但低效、有风险的设计实践，与设计模式形成互补，帮助工程师识别并避免生产环境中的典型陷阱。
 

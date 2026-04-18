@@ -440,7 +440,7 @@ v4.2 生态集成: [████████████████████
 | P2-11 | 文档关系自动映射 | ✅ 已完成 | [.scripts/doc-relationship-mapper.py](./.scripts/doc-relationship-mapper.py) - 自动扫描文档引用关系 |
 | P2-12 | 学习路径动态推荐 | ✅ 已完成 | [Knowledge/learning-path-recommender.md](./Knowledge/learning-path-recommender.md) - 动态推荐系统文档 |
 | P2-13 | 概念依赖图自动生成 | ✅ 已完成 | [.scripts/concept-dependency-generator.py](./.scripts/concept-dependency-generator.py) - Mermaid依赖图生成 |
-| **P2-3** | **边缘流处理实战** | **✅ 已完成** | **5篇边缘流处理文档 ([详细](#p2-3-边缘流处理实战))** |
+| **P2-3** | **边缘流处理实战** | **✅ 已完成** | **5篇边缘流处理文档 ([详细](#p2-3-知識--完成))** |
 
 **P2-3 边缘流处理实战** | 状态: **✅ 已完成** | 日期: 2026-04-08
 

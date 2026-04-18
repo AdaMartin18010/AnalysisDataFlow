@@ -33,7 +33,7 @@
     - [6.1 实时库存管理系统](#61-实时库存管理系统)
     - [6.2 金融交易对账场景](#62-金融交易对账场景)
     - [6.3 实时推荐特征平台](#63-实时推荐特征平台)
-    - [6.4 混合架构：Flink + Materialize {#64-混合架构flink--materialize}](#64-混合架构flink--materialize-64-混合架构flink--materialize)
+    - [6.4 混合架构：Flink + Materialize {#64-混合架构flink--materialize}](#64-混合架构flink--materialize)
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
     - [7.1 架构对比图](#71-架构对比图)
     - [7.2 Differential Dataflow计算模型](#72-differential-dataflow计算模型)
@@ -772,7 +772,7 @@ COPY (SUBSCRIBE TO current_inventory) TO STDOUT;
             Materialize (特征分析, 离线验证)
 ```
 
-### 6.4 混合架构：Flink + Materialize {#64-混合架构flink--materialize}
+### 6.4 混合架构：Flink + Materialize
 
 **场景描述**：大型电商平台需要同时满足：
 

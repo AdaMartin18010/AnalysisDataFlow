@@ -34,7 +34,7 @@
     - [8.3 模式组合时的性质保持](#83-模式组合时的性质保持)
     - [8.4 边界条件与约束](#84-边界条件与约束)
     - [8.5 状态后端的形式化特性](#85-状态后端的形式化特性)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [5.1 Keyed State 局部确定性论证](#51-keyed-state-局部确定性论证)
     - [5.2 增量 Checkpoint 一致性论证](#52-增量-checkpoint-一致性论证)
     - [5.3 状态后端选型的工程权衡](#53-状态后端选型的工程权衡)

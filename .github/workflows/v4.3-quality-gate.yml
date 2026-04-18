@@ -1,0 +1,635 @@
+# v4.3 Quality Gate - 统一自动化质量门禁 (v4.3)
+#
+# 版本: v4.3 | 日期: 2026-04-18 | 状态: Production
+#
+# 功能: 整合所有质量门禁检查，提供统一的质量报告
+#   1. 形式化元素完整性检查
+#   2. 交叉引用完整性检查
+#   3. Mermaid语法验证
+#   4. 六段式模板合规检查
+#   5. 内容新鲜度追踪
+#
+# 失败条件:
+#   - formal-element-check: issues > 0
+#   - cross-ref-check: broken_links > 0 OR broken_anchors > 100
+#   - mermaid-check: syntax_errors > 50 OR validity_rate < 85%
+#   - six-section-check: 新文档必须100%合规 (compliance_rate < 100%)
+#   - content-freshness-check: 仅生成报告，不失败
+
+name: v4.3 Quality Gate
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  schedule:
+    - cron: '0 2 * * *'  # 每天凌晨2点运行
+  workflow_dispatch:
+    inputs:
+      check_type:
+        description: '检查类型'
+        required: true
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - formal-only
+          - cross-ref-only
+          - mermaid-only
+          - six-section-only
+          - freshness-only
+
+env:
+  PYTHON_VERSION: '3.11'
+  REPORTS_DIR: 'reports'
+
+# 并发控制 - 同一PR/分支只运行最新实例
+concurrency:
+  group: 'v4.3-quality-gate-${{ github.event.pull_request.number || github.ref }}'
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  # ============ 阶段1: 形式化元素检查 [阻塞] ============
+  formal-element-check:
+    name: 🔢 Formal Element Check
+    runs-on: ubuntu-latest
+    outputs:
+      issues: ${{ steps.check.outputs.issues }}
+      files_with_issues: ${{ steps.check.outputs.files_with_issues }}
+      total_elements: ${{ steps.check.outputs.total_elements }}
+      status: ${{ steps.check.outputs.status }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Run formal element checker
+        id: check
+        run: |
+          mkdir -p ${{ env.REPORTS_DIR }}
+
+          python .scripts/formal-element-checker.py \
+            --strict \
+            --output ${{ env.REPORTS_DIR }}/formal-element-check-report.md \
+            --dirs Struct Knowledge Flink
+
+          # 解析报告以提取统计数据 (脚本在strict模式下失败时退出码非0)
+          # 但我们仍需在失败时输出统计信息供后续步骤使用
+          if [ -f "${{ env.REPORTS_DIR }}/formal-element-check-report.md" ]; then
+            # 从报告文本中提取统计
+            issues=$(grep -oP 'Files with issues: \K\d+' "${{ env.REPORTS_DIR }}/formal-element-check-report.md" || echo "0")
+            total=$(grep -oP 'Total formal elements: \K\d+' "${{ env.REPORTS_DIR }}/formal-element-check-report.md" || echo "0")
+            echo "issues=$issues" >> $GITHUB_OUTPUT
+            echo "total_elements=$total" >> $GITHUB_OUTPUT
+          else
+            echo "issues=0" >> $GITHUB_OUTPUT
+            echo "total_elements=0" >> $GITHUB_OUTPUT
+          fi
+        continue-on-error: true
+
+      - name: Determine status
+        id: status
+        run: |
+          issues="${{ steps.check.outputs.issues }}"
+          if [ -z "$issues" ] || [ "$issues" = "0" ]; then
+            echo "status=p passed" >> $GITHUB_OUTPUT
+          else
+            echo "status=failed" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Upload formal element report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: formal-element-report
+          path: |
+            ${{ env.REPORTS_DIR }}/formal-element-check-report.md
+          if-no-files-found: ignore
+
+  # ============ 阶段2: 交叉引用检查 [阻塞] ============
+  cross-ref-check:
+    name: 📎 Cross-Reference Check
+    runs-on: ubuntu-latest
+    outputs:
+      broken_links: ${{ steps.check.outputs.broken_links }}
+      broken_anchors: ${{ steps.check.outputs.broken_anchors }}
+      total_links: ${{ steps.check.outputs.total_links }}
+      errors: ${{ steps.check.outputs.errors }}
+      status: ${{ steps.check.outputs.status }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Run cross-reference checker
+        id: check
+        run: |
+          mkdir -p ${{ env.REPORTS_DIR }}
+
+          python .scripts/cross-ref-checker-v2.py \
+            --base-path . \
+            --output ${{ env.REPORTS_DIR }}/cross-ref-report-v2.json \
+            --format json
+
+          # 解析JSON报告
+          if [ -f "${{ env.REPORTS_DIR }}/cross-ref-report-v2.json" ]; then
+            broken_links=$(python3 -c "import json; d=json.load(open('${{ env.REPORTS_DIR }}/cross-ref-report-v2.json')); print(d['stats']['broken_links'])")
+            broken_anchors=$(python3 -c "import json; d=json.load(open('${{ env.REPORTS_DIR }}/cross-ref-report-v2.json')); print(d['stats']['broken_anchors'])")
+            total_links=$(python3 -c "import json; d=json.load(open('${{ env.REPORTS_DIR }}/cross-ref-report-v2.json')); print(d['stats']['total_links'])")
+            errors=$(python3 -c "import json; d=json.load(open('${{ env.REPORTS_DIR }}/cross-ref-report-v2.json')); print(d['stats']['errors'])")
+
+            echo "broken_links=$broken_links" >> $GITHUB_OUTPUT
+            echo "broken_anchors=$broken_anchors" >> $GITHUB_OUTPUT
+            echo "total_links=$total_links" >> $GITHUB_OUTPUT
+            echo "errors=$errors" >> $GITHUB_OUTPUT
+          else
+            echo "broken_links=0" >> $GITHUB_OUTPUT
+            echo "broken_anchors=0" >> $GITHUB_OUTPUT
+            echo "total_links=0" >> $GITHUB_OUTPUT
+            echo "errors=0" >> $GITHUB_OUTPUT
+          fi
+        continue-on-error: true
+
+      - name: Evaluate failure condition
+        id: status
+        run: |
+          broken_links="${{ steps.check.outputs.broken_links }}"
+          broken_anchors="${{ steps.check.outputs.broken_anchors }}"
+
+          if [ "$broken_links" -gt 0 ] || [ "$broken_anchors" -gt 100 ]; then
+            echo "status=failed" >> $GITHUB_OUTPUT
+            echo "❌ Cross-reference check FAILED"
+            echo "   broken_links=$broken_links (threshold: 0)"
+            echo "   broken_anchors=$broken_anchors (threshold: 100)"
+            exit 1
+          else
+            echo "status=passed" >> $GITHUB_OUTPUT
+            echo "✅ Cross-reference check PASSED"
+          fi
+
+      - name: Upload cross-ref report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cross-ref-report
+          path: |
+            ${{ env.REPORTS_DIR }}/cross-ref-report-v2.json
+          if-no-files-found: ignore
+
+  # ============ 阶段3: Mermaid语法检查 [阻塞] ============
+  mermaid-check:
+    name: 📊 Mermaid Syntax Check
+    runs-on: ubuntu-latest
+    outputs:
+      syntax_errors: ${{ steps.check.outputs.syntax_errors }}
+      validity_rate: ${{ steps.check.outputs.validity_rate }}
+      total_diagrams: ${{ steps.check.outputs.total_diagrams }}
+      status: ${{ steps.check.outputs.status }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Run Mermaid syntax checker
+        id: check
+        run: |
+          mkdir -p ${{ env.REPORTS_DIR }}
+
+          python .scripts/mermaid-syntax-checker.py \
+            --base-path . \
+            --output ${{ env.REPORTS_DIR }}/mermaid-syntax-report.json
+
+          # 解析JSON报告
+          if [ -f "${{ env.REPORTS_DIR }}/mermaid-syntax-report.json" ]; then
+            syntax_errors=$(python3 -c "import json; d=json.load(open('${{ env.REPORTS_DIR }}/mermaid-syntax-report.json')); print(d['stats']['syntax_errors'])")
+            validity_rate=$(python3 -c "import json; d=json.load(open('${{ env.REPORTS_DIR }}/mermaid-syntax-report.json')); print(d['summary']['validity_rate'])")
+            total_diagrams=$(python3 -c "import json; d=json.load(open('${{ env.REPORTS_DIR }}/mermaid-syntax-report.json')); print(d['stats']['total_diagrams'])")
+
+            echo "syntax_errors=$syntax_errors" >> $GITHUB_OUTPUT
+            echo "validity_rate=$validity_rate" >> $GITHUB_OUTPUT
+            echo "total_diagrams=$total_diagrams" >> $GITHUB_OUTPUT
+          else
+            echo "syntax_errors=0" >> $GITHUB_OUTPUT
+            echo "validity_rate=100" >> $GITHUB_OUTPUT
+            echo "total_diagrams=0" >> $GITHUB_OUTPUT
+          fi
+        continue-on-error: true
+
+      - name: Evaluate failure condition
+        id: status
+        run: |
+          syntax_errors="${{ steps.check.outputs.syntax_errors }}"
+          validity_rate="${{ steps.check.outputs.validity_rate }}"
+
+          # 默认通过
+          failed=false
+
+          if [ "$syntax_errors" -gt 50 ]; then
+            echo "❌ Mermaid syntax errors ($syntax_errors) exceed threshold (50)"
+            failed=true
+          fi
+
+          # 比较浮点数: validity_rate < 85
+          if python3 -c "import sys; sys.exit(0 if float('$validity_rate') < 85 else 1)"; then
+            echo "❌ Mermaid validity rate (${validity_rate}%) below threshold (85%)"
+            failed=true
+          fi
+
+          if [ "$failed" = "true" ]; then
+            echo "status=failed" >> $GITHUB_OUTPUT
+            exit 1
+          else
+            echo "status=passed" >> $GITHUB_OUTPUT
+            echo "✅ Mermaid check PASSED (errors=$syntax_errors, validity_rate=${validity_rate}%)"
+          fi
+
+      - name: Upload Mermaid report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mermaid-syntax-report
+          path: |
+            ${{ env.REPORTS_DIR }}/mermaid-syntax-report.json
+          if-no-files-found: ignore
+
+  # ============ 阶段4: 六段式模板检查 [阻塞] ============
+  six-section-check:
+    name: 📐 Six-Section Template Check
+    runs-on: ubuntu-latest
+    outputs:
+      compliance_rate: ${{ steps.check.outputs.compliance_rate }}
+      total_files: ${{ steps.check.outputs.total_files }}
+      non_compliant_files: ${{ steps.check.outputs.non_compliant_files }}
+      error_count: ${{ steps.check.outputs.error_count }}
+      status: ${{ steps.check.outputs.status }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Run six-section validator
+        id: check
+        run: |
+          mkdir -p ${{ env.REPORTS_DIR }}
+
+          python .scripts/six-section-validator.py \
+            --base-path . \
+            --output ${{ env.REPORTS_DIR }}/six-section-validation-report.json \
+            --fail-on-error
+
+          # 解析JSON报告
+          if [ -f "${{ env.REPORTS_DIR }}/six-section-validation-report.json" ]; then
+            compliance_rate=$(python3 -c "import json; d=json.load(open('${{ env.REPORTS_DIR }}/six-section-validation-report.json')); print(d['compliance_rate'])")
+            total_files=$(python3 -c "import json; d=json.load(open('${{ env.REPORTS_DIR }}/six-section-validation-report.json')); print(d['stats']['total_files'])")
+            non_compliant=$(python3 -c "import json; d=json.load(open('${{ env.REPORTS_DIR }}/six-section-validation-report.json')); print(d['stats']['non_compliant_files'])")
+            errors=$(python3 -c "import json; d=json.load(open('${{ env.REPORTS_DIR }}/six-section-validation-report.json')); print(d['stats']['by_severity']['error'])")
+
+            echo "compliance_rate=$compliance_rate" >> $GITHUB_OUTPUT
+            echo "total_files=$total_files" >> $GITHUB_OUTPUT
+            echo "non_compliant_files=$non_compliant" >> $GITHUB_OUTPUT
+            echo "error_count=$errors" >> $GITHUB_OUTPUT
+          else
+            echo "compliance_rate=100" >> $GITHUB_OUTPUT
+            echo "total_files=0" >> $GITHUB_OUTPUT
+            echo "non_compliant_files=0" >> $GITHUB_OUTPUT
+            echo "error_count=0" >> $GITHUB_OUTPUT
+          fi
+        continue-on-error: true
+
+      - name: Evaluate failure condition
+        id: status
+        run: |
+          compliance_rate="${{ steps.check.outputs.compliance_rate }}"
+          non_compliant="${{ steps.check.outputs.non_compliant_files }}"
+
+          # 新文档必须100%合规: compliance_rate < 100 则失败
+          if python3 -c "import sys; sys.exit(0 if float('$compliance_rate') < 100 else 1)"; then
+            echo "status=failed" >> $GITHUB_OUTPUT
+            echo "❌ Six-section check FAILED"
+            echo "   compliance_rate=${compliance_rate}% (required: 100%)"
+            echo "   non_compliant_files=$non_compliant"
+            exit 1
+          else
+            echo "status=passed" >> $GITHUB_OUTPUT
+            echo "✅ Six-section check PASSED (compliance_rate=${compliance_rate}%)"
+          fi
+
+      - name: Upload six-section report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: six-section-validation-report
+          path: |
+            ${{ env.REPORTS_DIR }}/six-section-validation-report.json
+          if-no-files-found: ignore
+
+  # ============ 阶段5: 内容新鲜度追踪 [非阻塞] ============
+  content-freshness-check:
+    name: 🕒 Content Freshness Check
+    runs-on: ubuntu-latest
+    outputs:
+      status: ${{ steps.check.outputs.status }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Install optional dependencies
+        run: |
+          pip install -q requests feedparser || true
+
+      - name: Run content freshness tracker
+        id: check
+        run: |
+          mkdir -p ${{ env.REPORTS_DIR }}
+
+          # 运行检查并捕获输出
+          python .scripts/content-freshness-tracker.py check > ${{ env.REPORTS_DIR }}/content-freshness-check.log 2>&1 || true
+
+          # 生成报告
+          python .scripts/content-freshness-tracker.py report > ${{ env.REPORTS_DIR }}/content-freshness-report.md 2>&1 || true
+
+          echo "status=completed" >> $GITHUB_OUTPUT
+          echo "✅ Content freshness check completed (non-blocking)"
+        continue-on-error: true
+
+      - name: Upload freshness reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: content-freshness-report
+          path: |
+            ${{ env.REPORTS_DIR }}/content-freshness-report.md
+            ${{ env.REPORTS_DIR }}/content-freshness-check.log
+          if-no-files-found: ignore
+
+  # ============ 阶段6: 统一汇总与PR评论 ============
+  quality-gate-summary:
+    name: 📋 Quality Gate Summary
+    runs-on: ubuntu-latest
+    needs:
+      - formal-element-check
+      - cross-ref-check
+      - mermaid-check
+      - six-section-check
+      - content-freshness-check
+    if: always()
+    permissions:
+      contents: read
+      pull-requests: write
+    outputs:
+      overall_status: ${{ steps.summary.outputs.overall_status }}
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ${{ env.REPORTS_DIR }}/
+        continue-on-error: true
+
+      - name: Generate unified summary
+        id: summary
+        run: |
+          echo "## 🛡️ v4.3 Quality Gate Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Trigger**: ${{ github.event_name }} | **Ref**: ${{ github.ref }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # 各检查状态表
+          echo "### 📊 Check Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Status | Details |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|---------|" >> $GITHUB_STEP_SUMMARY
+
+          # Formal Element
+          formal_status="${{ needs.formal-element-check.outputs.status }}"
+          formal_issues="${{ needs.formal-element-check.outputs.issues }}"
+          if [ "$formal_status" = "passed" ]; then
+            echo "| 🔢 Formal Element | ✅ Pass | $formal_issues issues |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| 🔢 Formal Element | ❌ Fail | $formal_issues issues |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Cross-Ref
+          xref_status="${{ needs.cross-ref-check.outputs.status }}"
+          xref_broken="${{ needs.cross-ref-check.outputs.broken_links }}"
+          xref_anchors="${{ needs.cross-ref-check.outputs.broken_anchors }}"
+          if [ "$xref_status" = "passed" ]; then
+            echo "| 📎 Cross-Reference | ✅ Pass | broken=$xref_broken, anchors=$xref_anchors |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| 📎 Cross-Reference | ❌ Fail | broken=$xref_broken, anchors=$xref_anchors |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Mermaid
+          mermaid_status="${{ needs.mermaid-check.outputs.status }}"
+          mermaid_errors="${{ needs.mermaid-check.outputs.syntax_errors }}"
+          mermaid_rate="${{ needs.mermaid-check.outputs.validity_rate }}"
+          if [ "$mermaid_status" = "passed" ]; then
+            echo "| 📊 Mermaid Syntax | ✅ Pass | errors=$mermaid_errors, rate=${mermaid_rate}% |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| 📊 Mermaid Syntax | ❌ Fail | errors=$mermaid_errors, rate=${mermaid_rate}% |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Six-Section
+          six_status="${{ needs.six-section-check.outputs.status }}"
+          six_rate="${{ needs.six-section-check.outputs.compliance_rate }}"
+          six_noncompliant="${{ needs.six-section-check.outputs.non_compliant_files }}"
+          if [ "$six_status" = "passed" ]; then
+            echo "| 📐 Six-Section | ✅ Pass | compliance=${six_rate}% |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| 📐 Six-Section | ❌ Fail | compliance=${six_rate}%, non-compliant=$six_noncompliant |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Freshness (non-blocking)
+          echo "| 🕒 Content Freshness | ℹ️ Info | non-blocking |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # 判断整体状态
+          overall_failed=false
+          if [ "$formal_status" != "passed" ]; then overall_failed=true; fi
+          if [ "$xref_status" != "passed" ]; then overall_failed=true; fi
+          if [ "$mermaid_status" != "passed" ]; then overall_failed=true; fi
+          if [ "$six_status" != "passed" ]; then overall_failed=true; fi
+
+          if [ "$overall_failed" = "true" ]; then
+            echo "overall_status=failed" >> $GITHUB_OUTPUT
+            echo "## ❌ Quality Gate FAILED" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "One or more blocking checks failed. Please review and fix the issues before merging." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "overall_status=passed" >> $GITHUB_OUTPUT
+            echo "## ✅ Quality Gate PASSED" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "All blocking checks passed! 🎉" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "📎 [View Detailed Reports](../../actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
+
+      # ==================== PR评论机器人 ====================
+      - name: Post PR comment with quality summary
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const formalStatus = '${{ needs.formal-element-check.outputs.status }}';
+            const xrefStatus = '${{ needs.cross-ref-check.outputs.status }}';
+            const mermaidStatus = '${{ needs.mermaid-check.outputs.status }}';
+            const sixStatus = '${{ needs.six-section-check.outputs.status }}';
+
+            const formalIssues = '${{ needs.formal-element-check.outputs.issues }}' || 'N/A';
+            const xrefBroken = '${{ needs.cross-ref-check.outputs.broken_links }}' || 'N/A';
+            const xrefAnchors = '${{ needs.cross-ref-check.outputs.broken_anchors }}' || 'N/A';
+            const mermaidErrors = '${{ needs.mermaid-check.outputs.syntax_errors }}' || 'N/A';
+            const mermaidRate = '${{ needs.mermaid-check.outputs.validity_rate }}' || 'N/A';
+            const sixRate = '${{ needs.six-section-check.outputs.compliance_rate }}' || 'N/A';
+            const sixNonCompliant = '${{ needs.six-section-check.outputs.non_compliant_files }}' || 'N/A';
+
+            const overallFailed = formalStatus !== 'passed' || xrefStatus !== 'passed' ||
+                                   mermaidStatus !== 'passed' || sixStatus !== 'passed';
+
+            const statusEmoji = (status) => status === 'passed' ? '✅' : '❌';
+
+            const body = `## 🛡️ v4.3 Quality Gate Report
+
+            **Trigger**: ${context.payload.pull_request ? 'Pull Request' : 'Push'}
+            **Run**: [View Details](../../actions/runs/${{ github.run_id }})
+
+            | Check | Status | Details |
+            |-------|--------|---------|
+            | 🔢 Formal Element | ${statusEmoji(formalStatus)} | issues=${formalIssues} |
+            | 📎 Cross-Reference | ${statusEmoji(xrefStatus)} | broken=${xrefBroken}, anchors=${xrefAnchors} |
+            | 📊 Mermaid Syntax | ${statusEmoji(mermaidStatus)} | errors=${mermaidErrors}, rate=${mermaidRate}% |
+            | 📐 Six-Section | ${statusEmoji(sixStatus)} | compliance=${sixRate}% (non-compliant=${sixNonCompliant}) |
+            | 🕒 Content Freshness | ℹ️ | non-blocking |
+
+            ${overallFailed
+              ? `## ❌ Quality Gate FAILED\n\nPlease fix the issues above before merging.`
+              : `## ✅ Quality Gate PASSED\n\nAll blocking checks passed! 🎉`
+            }
+
+            ---
+            *This comment was automatically generated by the v4.3 Quality Gate workflow.*
+            `;
+
+            // 查找是否已有该工作流的评论
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number
+            });
+
+            const botComment = comments.find(c =>
+              c.user.type === 'Bot' &&
+              c.body.includes('v4.3 Quality Gate Report')
+            );
+
+            if (botComment) {
+              // 更新已有评论
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: body
+              });
+              console.log('Updated existing PR comment');
+            } else {
+              // 创建新评论
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: body
+              });
+              console.log('Created new PR comment');
+            }
+
+      # ==================== 可选: Slack/Discord通知 ====================
+      # 取消下方注释并配置 webhook URL 以启用通知
+      #
+      # - name: Notify Slack (optional)
+      #   if: always()
+      #   uses: slackapi/slack-github-action@v1
+      #   with:
+      #     payload: |
+      #       {
+      #         "text": "v4.3 Quality Gate ${{ steps.summary.outputs.overall_status == 'passed' && '✅ PASSED' || '❌ FAILED' }} for ${{ github.ref }}",
+      #         "blocks": [
+      #           {
+      #             "type": "section",
+      #             "text": {
+      #               "type": "mrkdwn",
+      #               "text": "*v4.3 Quality Gate*\n${{ steps.summary.outputs.overall_status == 'passed' && '✅ PASSED' || '❌ FAILED' }}\n<https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>"
+      #             }
+      #           }
+      #         ]
+      #       }
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      #
+      # - name: Notify Discord (optional)
+      #   if: always()
+      #   uses: Ilshidur/action-discord@master
+      #   with:
+      #     args: |
+      #       **v4.3 Quality Gate** ${{ steps.summary.outputs.overall_status == 'passed' && '✅ PASSED' || '❌ FAILED' }}
+      #       Ref: ${{ github.ref }}
+      #       Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      #   env:
+      #     DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+      - name: Upload unified report bundle
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v4.3-quality-gate-unified-report
+          path: |
+            ${{ env.REPORTS_DIR }}/
+          if-no-files-found: ignore
+
+      - name: Fail workflow if checks failed
+        if: steps.summary.outputs.overall_status == 'failed'
+        run: |
+          echo "❌ v4.3 Quality Gate failed. See summary above for details."
+          exit 1

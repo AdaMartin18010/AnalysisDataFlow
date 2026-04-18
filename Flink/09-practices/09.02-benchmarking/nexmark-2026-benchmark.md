@@ -3,7 +3,6 @@
 > **状态**: 前瞻 | **预计发布时间**: 2026-Q3 | **最后更新**: 2026-04-12
 >
 > ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
-
 > 所属阶段: Flink/09-practices | 前置依赖: [Flink 2.4/2.5基准测试](./flink-24-25-benchmark-results.md), [性能基准测试套件](./performance-benchmark-suite.md) | 形式化等级: L3-L4
 
 ## 1. 概念定义 (Definitions)
@@ -663,41 +662,15 @@ xychart-beta
 
 ### 7.4 资源效率对比矩阵
 
-```mermaid
-heatmap
-    title "资源效率矩阵 (K events/s/core/GB)"
-    x-axis Flink-2.4 Flink-2.5 RisingWave-2.0 Spark-3.6
-    y-axis q0 q3 q6 q8 q12 q16 q23
-
-    data
-    Flink-2.4_q0: 8.2
-    Flink-2.4_q3: 4.8
-    Flink-2.4_q6: 2.2
-    Flink-2.4_q8: 1.8
-    Flink-2.4_q12: 1.4
-    Flink-2.4_q16: 1.1
-    Flink-2.4_q23: 1.1
-    Flink-2.5_q0: 8.9
-    Flink-2.5_q3: 5.5
-    Flink-2.5_q6: 2.7
-    Flink-2.5_q8: 2.2
-    Flink-2.5_q12: 1.8
-    Flink-2.5_q16: 1.4
-    Flink-2.5_q23: 1.4
-    RisingWave-2.0_q0: 8.6
-    RisingWave-2.0_q3: 5.3
-    RisingWave-2.0_q6: 2.4
-    RisingWave-2.0_q8: 2.0
-    RisingWave-2.0_q12: 1.9
-    RisingWave-2.0_q16: 1.3
-    RisingWave-2.0_q23: 1.2
-    Spark-3.6_q0: 6.2
-    Spark-3.6_q3: 4.1
-    Spark-3.6_q6: 1.8
-    Spark-3.6_q8: 1.4
-    Spark-3.6_q12: 1.2
-    Spark-3.6_q16: 1.0
-    Spark-3.6_q23: 0.9
+> **资源效率矩阵 (K events/s/core/GB)**
+>
+> | 引擎 | q0 | q3 | q6 | q8 | q12 | q16 | q23 |
+> |------|----|----|----|----|-----|-----|-----|
+> | Flink-2.4 | 8.2 | 4.8 | 2.2 | 1.8 | 1.4 | 1.1 | 1.1 |
+> | Flink-2.5 | 8.9 | 5.5 | 2.7 | 2.2 | 1.8 | 1.4 | 1.4 |
+> | RisingWave-2.0 | 8.6 | 5.3 | 2.4 | 2.0 | 1.9 | 1.3 | 1.2 |
+> | Spark-3.6 | 6.2 | 4.1 | 1.8 | 1.4 | 1.2 | 1.0 | - |    Spark-3.6_q23: 0.9
+>
 ```
 
 ### 7.5 数据倾斜影响对比

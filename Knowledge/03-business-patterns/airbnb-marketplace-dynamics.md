@@ -24,7 +24,7 @@
     - [4.1 Airbnb架构演进三阶段](#41-airbnb架构演进三阶段)
     - [4.2 动态定价算法挑战](#42-动态定价算法挑战)
     - [4.3 搜索排序实时更新](#43-搜索排序实时更新)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [5.1 市场均衡价格存在性证明](#51-市场均衡价格存在性证明)
     - [5.2 实时定价扩展性论证](#52-实时定价扩展性论证)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)

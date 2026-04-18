@@ -29,7 +29,7 @@
     - [4.1 为什么选择声明式资源管理](#41-为什么选择声明式资源管理)
     - [4.2 Autoscaling V2 算法优势分析](#42-autoscaling-v2-算法优势分析)
     - [4.3 反例分析：手动资源管理的问题](#43-反例分析手动资源管理的问题)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [Thm-F-09-01: 声明式资源管理正确性](#thm-f-09-01-声明式资源管理正确性)
     - [Prop-F-09-01: 自动缩放V2收敛性命题](#prop-f-09-01-自动缩放v2收敛性命题)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)

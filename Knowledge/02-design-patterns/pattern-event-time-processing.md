@@ -31,7 +31,7 @@
     - [8.3 模式组合时的性质保持](#83-模式组合时的性质保持)
     - [8.4 边界条件与约束](#84-边界条件与约束)
     - [8.5 工程实现与理论的对应](#85-工程实现与理论的对应)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [5.1 Watermark 单调性保证](#51-watermark-单调性保证)
     - [5.2 迟到数据处理的 Exactly-Once 兼容性](#52-迟到数据处理的-exactly-once-兼容性)
     - [5.3 空闲源处理的工程论证](#53-空闲源处理的工程论证)
@@ -656,7 +656,7 @@ flowchart TD
     F -->|无乱序| G[forMonotonous<br/>Timestamps]
     F -->|轻度 <1s| H[forBoundedOutOf<br/>Orderness 1s]
     F -->|中度 1-30s| I[forBoundedOutOf<br/>Orderness 10-30s]
-    F -->|重度 >30s| J[forBoundedOutOf<br/>Orderness 60s+]<br/>+ 侧输出]
+    F -->|重度 >30s| J[forBoundedOutOf<br/>Orderness 60s+<br/>+ 侧输出]
 
     style C fill:#ffcdd2,stroke:#c62828
     style E fill:#fff9c4,stroke:#f57f17

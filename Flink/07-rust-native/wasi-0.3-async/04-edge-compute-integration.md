@@ -827,12 +827,11 @@ flowchart LR
 ### 7.2 WasmEdge 启动时间对比
 
 ```mermaid
-bar title
-    title Runtime Startup Time Comparison (ms)
-    y-axis Startup Time (ms) --> 0 --> 2000
-
-    bar ["WasmEdge AOT", "Wasmtime AOT", "wasmer", "Docker Container"]
-    10 : 50 : 30 : 1000
+xychart-beta
+    title "Runtime Startup Time Comparison (ms)"
+    x-axis ["WasmEdge AOT", "Wasmtime AOT", "wasmer", "Docker Container"]
+    y-axis "Startup Time (ms)" 0 --> 2000
+    bar [10, 50, 30, 1000]
 ```
 
 ### 7.3 边缘节点资源使用模型

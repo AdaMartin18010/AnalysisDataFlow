@@ -22,7 +22,7 @@
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [4.1 实时vs离线分析](#41-实时vs离线分析)
     - [4.2 匹配算法优化](#42-匹配算法优化)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [5.1 流失预测模型](#51-流失预测模型)
     - [5.2 实时匹配算法](#52-实时匹配算法)
     - [5.3 反作弊检测](#53-反作弊检测)

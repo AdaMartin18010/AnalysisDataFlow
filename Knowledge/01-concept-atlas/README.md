@@ -232,9 +232,9 @@ graph TB
 
 ### 项目内相关文档
 
-- [Knowledge/ 目录](../) - 知识结构文档
-- [Struct/ 目录](../../Struct/) - 形式理论文档
-- [Flink/ 目录](../../Flink/) - Flink专项文档
+- [Knowledge/ 目录](../00-INDEX.md) - 知识结构文档
+- [Struct/ 目录](../../Struct/00-INDEX.md) - 形式理论文档
+- [Flink/ 目录](../../Flink/00-INDEX.md) - Flink专项文档
 
 ---
 

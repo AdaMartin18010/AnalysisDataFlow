@@ -1267,6 +1267,8 @@ gantt
 3. **网络隔离**: Vector Store应部署在内网
 4. **依赖更新**: 及时升级到最新补丁版本
 
+> **延伸阅读**: [Agent行为契约的形式化安全验证](../../formal-methods/08-ai-formal-methods/agent-behavior-contract-verification.md) —— 将安全建议（API密钥管理、MCP认证、网络隔离）映射为形式化安全策略，证明 L4 级别下所有 Agent 行为满足不可绕过性与 containment 性质。
+
 ---
 
 ## 9. 引用参考 (References)

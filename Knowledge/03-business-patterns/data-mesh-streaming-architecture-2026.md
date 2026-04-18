@@ -26,7 +26,7 @@
     - [4.1 去中心化必然性论证](#41-去中心化必然性论证)
     - [4.2 流处理加速Data Mesh价值实现](#42-流处理加速data-mesh价值实现)
     - [4.3 反例分析：何时不应采用Data Mesh](#43-反例分析何时不应采用data-mesh)
-  - [5. 工程论证 (Proof / Engineering Argument)](#5-工程论证-proof--engineering-argument)
+  - [5. 工程论证 (Proof / Engineering Argument)](#5-工程论证-proof-engineering-argument)
     - [5.1 Data Mesh实施路径](#51-data-mesh实施路径)
     - [5.2 Data Mesh成熟度模型](#52-data-mesh成熟度模型)
     - [5.3 技术栈推荐论证](#53-技术栈推荐论证)

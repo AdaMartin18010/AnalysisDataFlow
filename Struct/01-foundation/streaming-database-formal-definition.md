@@ -48,17 +48,17 @@
     - [Prop-S-01-12-01 (SQL兼容性蕴含查询封闭性)](#prop-s-01-12-01-sql兼容性蕴含查询封闭性)
     - [Prop-S-01-12-02 (持久化存储的 exactly-once 语义保证)](#prop-s-01-12-02-持久化存储的-exactly-once-语义保证)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [关系 1: SDB ≅ SPE ⊕ MV ⊕ ACID\_Storage](#关系-1-sdb--spe--mv--acid_storage)
-    - [关系 2: SDB 查询语义 ↦ 关系代数 ⊗ 时间扩展](#关系-2-sdb-查询语义--关系代数--时间扩展)
-    - [关系 3: SDB 增量机制 ≈ DBSP ∇算子](#关系-3-sdb-增量机制--dbsp-算子)
-    - [关系 4: SDB 存储模型 ↦ LSM-tree ⊕ Object Storage](#关系-4-sdb-存储模型--lsm-tree--object-storage)
+    - [关系 1: SDB ≅ SPE ⊕ MV ⊕ ACID\_Storage](#关系-1-sdb-spe-mv-acid_storage)
+    - [关系 2: SDB 查询语义 ↦ 关系代数 ⊗ 时间扩展](#关系-2-sdb-查询语义-关系代数-时间扩展)
+    - [关系 3: SDB 增量机制 ≈ DBSP ∇算子](#关系-3-sdb-增量机制-dbsp-算子)
+    - [关系 4: SDB 存储模型 ↦ LSM-tree ⊕ Object Storage](#关系-4-sdb-存储模型-lsm-tree-object-storage)
     - [关系 5: RisingWave vs Arroyo 架构映射](#关系-5-risingwave-vs-arroyo-架构映射)
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [4.1 非物化视图的流处理引擎为何不是SDB](#41-非物化视图的流处理引擎为何不是sdb)
     - [4.2 增量计算的边界：不可增量化的查询类](#42-增量计算的边界不可增量化的查询类)
     - [4.3 快照语义与流语义的权衡空间](#43-快照语义与流语义的权衡空间)
     - [4.4 反例分析：缺乏事务保证的"流数据库"失效场景](#44-反例分析缺乏事务保证的流数据库失效场景)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [Thm-S-01-12-01 (流数据库架构等价定理)](#thm-s-01-12-01-流数据库架构等价定理)
     - [Thm-S-01-12-02 (查询语义一致性定理)](#thm-s-01-12-02-查询语义一致性定理)
     - [Thm-S-01-12-03 (增量维护复杂度下界定理)](#thm-s-01-12-03-增量维护复杂度下界定理)
@@ -72,7 +72,7 @@
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
     - [7.1 SDB vs SPE 架构对比层次图](#71-sdb-vs-spe-架构对比层次图)
     - [7.2 查询语义决策树](#72-查询语义决策树)
-    - [7.3 RisingWave / Arroyo / Materialize 架构映射图](#73-risingwave--arroyo--materialize-架构映射图)
+    - [7.3 RisingWave / Arroyo / Materialize 架构映射图](#73-risingwave-arroyo-materialize-架构映射图)
     - [7.4 增量维护执行流程图](#74-增量维护执行流程图)
     - [7.5 Streaming Database 理论体系关系图](#75-streaming-database-理论体系关系图)
   - [8. 引用参考 (References)](#8-引用参考-references)
@@ -741,6 +741,8 @@ $$
 3. **事务边界**：DBSP的增量计算是连续的；SDB的 $\mathcal{C}$ 引入了离散的事务边界与隔离级别。
 
 **直观解释**：DBSP为SDB的增量维护提供了坚实的数学基础——证明了关系查询的增量维护在Z-set代数下的正确性。SDB的工程实现则是将这一理论扩展到分布式、持久化、支持事务的工业场景中[^2]。
+
+> **延伸阅读**: [DBSP理论框架的完整形式化定义与证明](../../Struct/06-frontier/dbsp-theory-framework.md) —— 包含 Z-set 代数、差分算子 $\nabla$ 的链式法则、以及 LOOP 算子的不动点语义完整证明。
 
 ---
 

@@ -3,7 +3,6 @@
 > **状态**: 前瞻 | **预计发布时间**: 2026-Q3 | **最后更新**: 2026-04-12
 >
 > ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
-
 > ⚠️ **前瞻性声明**
 > 本文档包含Flink 2.4的前瞻性设计内容。Flink 2.4尚未正式发布，
 > 部分特性为预测/规划性质。具体实现以官方最终发布为准。
@@ -491,14 +490,11 @@ env.getConfig().registerTypeWithKryoSerializer(UserEvent.class, PojoSerializer.c
 **性能对比**：
 
 ```mermaid
-bar
-    title 序列化吞吐量对比 (records/second)
-    y-axis 吞吐量
-    x-axis 序列化器
-    bar "Kryo通用" 850000
-    bar "Avro专用" 1400000
-    bar "POJO优化" 1800000
-    bar "行式格式" 2100000
+xychart-beta
+    title "序列化吞吐量对比 (records/second)"
+    x-axis ["Kryo通用", "Avro专用", "POJO优化", "行式格式"]
+    y-axis "吞吐量" 0 --> 2500000
+    bar [850000, 1400000, 1800000, 2100000]
 ```
 
 ### 6.3 内存管理优化配置实例

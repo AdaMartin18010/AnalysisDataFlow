@@ -124,7 +124,7 @@
 
 ### 按主题导航
 
-- **理论基础**: [Struct/ 统一流计算理论](Struct/00-INDEX.md)
+- **理论基础**: [Struct/ 统一流计算理论](../Struct/00-INDEX.md)
 - **设计模式**: [Knowledge/ 流处理核心模式](Knowledge/02-design-patterns/)
 - **Flink 核心**: [Flink/ Checkpoint机制](Flink/02-core/checkpoint-mechanism-deep-dive.md)
 - **前沿技术**: [Knowledge/06-frontier/ AI-Native数据库](Knowledge/06-frontier/vector-search-streaming-convergence.md)

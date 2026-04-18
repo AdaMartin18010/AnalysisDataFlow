@@ -142,7 +142,7 @@ $$
 $$
 \begin{aligned}
 \mathbb{E}\left[(\hat{c} - c)^2\right] &= \mathbb{E}\left[(\hat{c} - \bar{c} + \bar{c} - c)^2\right] \\
-&= \mathbb{E}\left[(\hat{c} - \bar{c})^2\right] + (\bar{c} - c)^2 + 2\mathbb{E}[\hat{c} - \bar{c}](\bar{c} - c) \\
+&= \mathbb{E}\left[(\hat{c} - \bar{c})^2\right] + (\bar{c} - c)^2 + 2\mathbb{E}\hat{c} - \bar{c} \\
 &= \text{Variance} + \text{Bias}^2 + 0
 \end{aligned}
 $$

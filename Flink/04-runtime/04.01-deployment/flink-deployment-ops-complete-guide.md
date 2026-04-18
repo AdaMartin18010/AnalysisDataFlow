@@ -34,7 +34,7 @@
     - [4.1 部署模式选择决策树](#41-部署模式选择决策树)
     - [4.2 资源配置反模式分析](#42-资源配置反模式分析)
     - [4.3 升级策略的兼容性边界](#43-升级策略的兼容性边界)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [Thm-F-10-40: Kubernetes Native 部署的容错完备性](#thm-f-10-40-kubernetes-native-部署的容错完备性)
     - [Thm-F-10-41: 细粒度资源管理的最优性](#thm-f-10-41-细粒度资源管理的最优性)
     - [Thm-F-10-42: 蓝绿部署的零停机保证](#thm-f-10-42-蓝绿部署的零停机保证)
@@ -196,6 +196,8 @@ Mode ∈ { NONE, ZOOKEEPER, KUBERNETES, EMBEDDED_JOURNAL }
 | **ZooKeeper** | ZK 选举 | ZK + DFS | YARN/K8s | 30-60s |
 | **Kubernetes** | K8s Lease API | ConfigMap + DFS | K8s Native | 15-30s |
 | **Embedded Journal** | Raft 共识 | 本地磁盘 | Standalone | 10-20s |
+
+> **延伸阅读**: [Calvin对Flink JobManager高可用机制的启示：确定性预排序替代运行时协调](../../../Struct/06-frontier/calvin-deterministic-streaming.md) —— Calvin 的确定性执行模型表明，若所有控制平面决策可预先排序，则 HA 故障恢复可完全避免运行时选举开销，将 RTO 从秒级降至毫秒级。
 
 ---
 
@@ -1375,6 +1377,8 @@ jobmanager.memory.process.size: 4096m
 state.backend: rocksdb
 state.checkpoints.dir: hdfs:///flink/checkpoints
 ```
+
+> **延伸阅读**: [Calvin式确定性执行可能突破Checkpoint机制在超低延迟场景的根本局限](../../../Struct/06-frontier/calvin-deterministic-streaming.md) —— 通过将执行顺序的确定性从运行期移至编译期，Calvin 消除了 Checkpoint Barrier 对齐引入的延迟上界，为亚毫秒级 Exactly-Once 提供了理论可能。
 
 ---
 

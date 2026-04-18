@@ -62,14 +62,14 @@ Flink system architecture, evolution, and design principles.
 
 | Document | Description | Key Points |
 |----------|-------------|------------|
-| [01.01-flink-1.x-vs-2.x-architecture.md](../../Flink/01-architecture/01.01-flink-1.x-vs-2.x-architecture.md) | Flink 1.x vs 2.x Architecture Comparison | Storage-compute separation, unified batch-streaming scheduler |
-| [01.02-flink-3.0-vision.md](../../Flink/01-architecture/01.02-flink-3.0-vision.md) | Flink 3.0 Vision and Architecture | Next-generation architecture, cloud-native deep integration |
-| [01.03-disaggregated-storage.md](../../Flink/01-architecture/01.03-disaggregated-storage.md) | Disaggregated Storage Architecture | Remote state storage, tiered storage strategies |
-| [01.04-cloud-native-deep-dive.md](../../Flink/01-architecture/01.04-cloud-native-deep-dive.md) | Cloud-Native Deep Dive | Kubernetes-native design, elastic scaling |
-| [01.05-adaptive-scheduler.md](../../Flink/01-architecture/01.05-adaptive-scheduler.md) | Adaptive Scheduler | Dynamic resource allocation, auto-parallelism adjustment |
-| [01.06-resource-management.md](../../Flink/01-architecture/01.06-resource-management.md) | Resource Management | Slot allocation, resource scheduling strategies |
-| [01.07-network-stack.md](../../Flink/01-architecture/01.07-network-stack.md) | Network Stack Deep Dive | Credit-based flow control, buffer management |
-| [01.08-memory-management.md](../../Flink/01-architecture/01.08-memory-management.md) | Memory Management | Managed memory, off-heap memory, GC optimization |
+| [01.01-flink-1.x-vs-2.x-architecture.md](../../../Flink/01-architecture/01.01-flink-1.x-vs-2.x-architecture.md) | Flink 1.x vs 2.x Architecture Comparison | Storage-compute separation, unified batch-streaming scheduler |
+| [01.02-flink-3.0-vision.md](../../../Flink/01-architecture/01.02-flink-3.0-vision.md) | Flink 3.0 Vision and Architecture | Next-generation architecture, cloud-native deep integration |
+| [01.03-disaggregated-storage.md](../../../Flink/01-architecture/01.03-disaggregated-storage.md) | Disaggregated Storage Architecture | Remote state storage, tiered storage strategies |
+| [01.04-cloud-native-deep-dive.md](../../../Flink/01-architecture/01.04-cloud-native-deep-dive.md) | Cloud-Native Deep Dive | Kubernetes-native design, elastic scaling |
+| [01.05-adaptive-scheduler.md](../../../Flink/01-architecture/01.05-adaptive-scheduler.md) | Adaptive Scheduler | Dynamic resource allocation, auto-parallelism adjustment |
+| [01.06-resource-management.md](../../../Flink/01-architecture/01.06-resource-management.md) | Resource Management | Slot allocation, resource scheduling strategies |
+| [01.07-network-stack.md](../../../Flink/01-architecture/01.07-network-stack.md) | Network Stack Deep Dive | Credit-based flow control, buffer management |
+| [01.08-memory-management.md](../../../Flink/01-architecture/01.08-memory-management.md) | Memory Management | Managed memory, off-heap memory, GC optimization |
 
 ---
 
@@ -79,18 +79,18 @@ Flink's core runtime mechanisms and implementation principles.
 
 | Document | Description | Key Points |
 |----------|-------------|------------|
-| [02.01-checkpoint-mechanism.md](../../Flink/02-core/02.01-checkpoint-mechanism.md) | Checkpoint Mechanism Deep Dive | Barrier alignment, incremental checkpoint, exactly-once |
-| [02.02-exactly-once-semantics.md](../../Flink/02-core/02.02-exactly-once-semantics.md) | Exactly-Once Semantics | End-to-end consistency, 2PC protocol implementation |
-| [02.03-time-semantics-watermark.md](../../Flink/02-core/02.03-time-semantics-watermark.md) | Time Semantics and Watermark | Event time, processing time, ingestion time, Watermark propagation |
-| [02.04-state-backends.md](../../Flink/02-core/02.04-state-backends.md) | State Backends Deep Dive | HashMapStateBackend, RocksDBStateBackend comparison |
-| [02.05-backpressure-flow-control.md](../../Flink/02-core/02.05-backpressure-flow-control.md) | Backpressure and Flow Control | Credit-based backpressure, dynamic buffer expansion |
-| [02.06-fault-tolerance-recovery.md](../../Flink/02-core/02.06-fault-tolerance-recovery.md) | Fault Tolerance and Recovery | Failure detection, automatic restart, local recovery |
-| [02.07-savepoint-operations.md](../../Flink/02-core/02.07-savepoint-operations.md) | Savepoint Operations | State migration, version upgrade, application evolution |
-| [02.08-broadcast-state.md](../../Flink/02-core/02.08-broadcast-state.md) | Broadcast State Pattern | Rule updates, configuration broadcasting |
-| [02.09-queryable-state.md](../../Flink/02-core/02.09-queryable-state.md) | Queryable State | Real-time state queries, operational analytics |
-| [02.10-side-outputs.md](../../Flink/02-core/02.10-side-outputs.md) | Side Outputs | Late data handling, multi-stream output |
-| [02.11-async-checkpointing.md](../../Flink/02-core/02.11-async-checkpointing.md) | Asynchronous Checkpointing | Non-blocking checkpoints, performance optimization |
-| [02.12-state-ttl.md](../../Flink/02-core/02.12-state-ttl.md) | State TTL Management | Automatic state expiration, cleanup strategies |
+| [02.01-checkpoint-mechanism.md](../../../Flink/02-core/02.01-checkpoint-mechanism.md) | Checkpoint Mechanism Deep Dive | Barrier alignment, incremental checkpoint, exactly-once |
+| [02.02-exactly-once-semantics.md](../../../Flink/02-core/02.02-exactly-once-semantics.md) | Exactly-Once Semantics | End-to-end consistency, 2PC protocol implementation |
+| [02.03-time-semantics-watermark.md](../../../Flink/02-core/02.03-time-semantics-watermark.md) | Time Semantics and Watermark | Event time, processing time, ingestion time, Watermark propagation |
+| [02.04-state-backends.md](../../../Flink/02-core/02.04-state-backends.md) | State Backends Deep Dive | HashMapStateBackend, RocksDBStateBackend comparison |
+| [02.05-backpressure-flow-control.md](../../../Flink/02-core/02.05-backpressure-flow-control.md) | Backpressure and Flow Control | Credit-based backpressure, dynamic buffer expansion |
+| [02.06-fault-tolerance-recovery.md](../../../Flink/02-core/02.06-fault-tolerance-recovery.md) | Fault Tolerance and Recovery | Failure detection, automatic restart, local recovery |
+| [02.07-savepoint-operations.md](../../../Flink/02-core/02.07-savepoint-operations.md) | Savepoint Operations | State migration, version upgrade, application evolution |
+| [02.08-broadcast-state.md](../../../Flink/02-core/02.08-broadcast-state.md) | Broadcast State Pattern | Rule updates, configuration broadcasting |
+| [02.09-queryable-state.md](../../../Flink/02-core/02.09-queryable-state.md) | Queryable State | Real-time state queries, operational analytics |
+| [02.10-side-outputs.md](../../../Flink/02-core/02.10-side-outputs.md) | Side Outputs | Late data handling, multi-stream output |
+| [02.11-async-checkpointing.md](../../../Flink/02-core/02.11-async-checkpointing.md) | Asynchronous Checkpointing | Non-blocking checkpoints, performance optimization |
+| [02.12-state-ttl.md](../../../Flink/02-core/02.12-state-ttl.md) | State TTL Management | Automatic state expiration, cleanup strategies |
 
 ---
 
@@ -100,16 +100,16 @@ Flink SQL, Table API, and declarative stream processing.
 
 | Document | Description | Key Points |
 |----------|-------------|------------|
-| [03.01-flink-sql-overview.md](../../Flink/03-sql-table-api/03.01-flink-sql-overview.md) | Flink SQL Overview | SQL capabilities, streaming SQL semantics |
-| [03.02-table-api-guide.md](../../Flink/03-sql-table-api/03.02-table-api-guide.md) | Table API Programming Guide | Table API usage, DataStream-Table conversion |
-| [03.03-window-functions.md](../../Flink/03-sql-table-api/03.03-window-functions.md) | Window Functions | TUMBLE, HOP, SESSION, CUMULATE windows |
-| [03.04-udfs-development.md](../../Flink/03-sql-table-api/03.04-udfs-development.md) | UDF Development | Scalar, table, aggregate UDF implementation |
-| [03.05-sql-optimization.md](../../Flink/03-sql-table-api/03.05-sql-optimization.md) | SQL Optimization | Query optimization, execution plan analysis |
-| [03.06-dynamic-tables.md](../../Flink/03-sql-table-api/03.06-dynamic-tables.md) | Dynamic Tables | Changelog streams, materialized views |
-| [03.07-pattern-recognition.md](../../Flink/03-sql-table-api/03.07-pattern-recognition.md) | Pattern Recognition (MATCH_RECOGNIZE) | CEP in SQL, complex event matching |
-| [03.08-sql-client.md](../../Flink/03-sql-table-api/03.08-sql-client.md) | SQL Client | Interactive SQL, script execution |
-| [03.09-catalogs.md](../../Flink/03-sql-table-api/03.09-catalogs.md) | Catalogs and Metadata | Hive catalog, JDBC catalog, custom catalogs |
-| [03.10-sql-gateway.md](../../Flink/03-sql-table-api/03.10-sql-gateway.md) | SQL Gateway | REST API, multi-client support |
+| [03.01-flink-sql-overview.md](../../../Flink/03-sql-table-api/03.01-flink-sql-overview.md) | Flink SQL Overview | SQL capabilities, streaming SQL semantics |
+| [03.02-table-api-guide.md](../../../Flink/03-sql-table-api/03.02-table-api-guide.md) | Table API Programming Guide | Table API usage, DataStream-Table conversion |
+| [03.03-window-functions.md](../../../Flink/03-sql-table-api/03.03-window-functions.md) | Window Functions | TUMBLE, HOP, SESSION, CUMULATE windows |
+| [03.04-udfs-development.md](../../../Flink/03-sql-table-api/03.04-udfs-development.md) | UDF Development | Scalar, table, aggregate UDF implementation |
+| [03.05-sql-optimization.md](../../../Flink/03-sql-table-api/03.05-sql-optimization.md) | SQL Optimization | Query optimization, execution plan analysis |
+| [03.06-dynamic-tables.md](../../../Flink/03-sql-table-api/03.06-dynamic-tables.md) | Dynamic Tables | Changelog streams, materialized views |
+| [03.07-pattern-recognition.md](../../../Flink/03-sql-table-api/03.07-pattern-recognition.md) | Pattern Recognition (MATCH_RECOGNIZE) | CEP in SQL, complex event matching |
+| [03.08-sql-client.md](../../../Flink/03-sql-table-api/03.08-sql-client.md) | SQL Client | Interactive SQL, script execution |
+| [03.09-catalogs.md](../../../Flink/03-sql-table-api/03.09-catalogs.md) | Catalogs and Metadata | Hive catalog, JDBC catalog, custom catalogs |
+| [03.10-sql-gateway.md](../../../Flink/03-sql-table-api/03.10-sql-gateway.md) | SQL Gateway | REST API, multi-client support |
 
 ---
 
@@ -119,21 +119,21 @@ Flink connector ecosystem and data integration.
 
 | Document | Description | Key Points |
 |----------|-------------|------------|
-| [04.01-kafka-connector.md](../../Flink/04-connectors/04.01-kafka-connector.md) | Kafka Connector | Producer, consumer, exactly-once integration |
-| [04.02-filesystem-connector.md](../../Flink/04-connectors/04.02-filesystem-connector.md) | Filesystem Connector | Parquet, ORC, CSV, streaming file sink |
-| [04.03-jdbc-connector.md](../../Flink/04-connectors/04.03-jdbc-connector.md) | JDBC Connector | Database read/write, batch optimization |
-| [04.04-elasticsearch-connector.md](../../Flink/04-connectors/04.04-elasticsearch-connector.md) | Elasticsearch Connector | Real-time indexing, bulk operations |
-| [04.05-cdc-connectors.md](../../Flink/04-connectors/04.05-cdc-connectors.md) | CDC Connectors | Debezium, Canal, change data capture |
-| [04.06-pulsar-connector.md](../../Flink/04-connectors/04.06-pulsar-connector.md) | Pulsar Connector | Tiered storage, multi-tenancy integration |
-| [04.07-rabbitmq-connector.md](../../Flink/04-connectors/04.07-rabbitmq-connector.md) | RabbitMQ Connector | AMQP integration, queue semantics |
-| [04.08-kinesis-connector.md](../../Flink/04-connectors/04.08-kinesis-connector.md) | Kinesis Connector | AWS Kinesis, serverless streaming |
-| [04.09-paimon-connector.md](../../Flink/04-connectors/04.09-paimon-connector.md) | Apache Paimon Connector | Lakehouse streaming, incremental processing |
-| [04.10-iceberg-connector.md](../../Flink/04-connectors/04.10-iceberg-connector.md) | Apache Iceberg Connector | Time travel, schema evolution |
-| [04.11-hudi-connector.md](../../Flink/04-connectors/04.11-hudi-connector.md) | Apache Hudi Connector | Upsert streams, incremental views |
-| [04.12-delta-connector.md](../../Flink/04-connectors/04.12-delta-connector.md) | Delta Lake Connector | ACID transactions, streaming writes |
-| [04.13-custom-connector.md](../../Flink/04-connectors/04.13-custom-connector.md) | Custom Connector Development | Source/Sink API, implementation guide |
-| [04.14-connector-best-practices.md](../../Flink/04-connectors/04.14-connector-best-practices.md) | Connector Best Practices | Configuration tuning, fault handling |
-| [04.15-schema-registry.md](../../Flink/04-connectors/04.15-schema-registry.md) | Schema Registry Integration | Avro, Protobuf, schema evolution |
+| [04.01-kafka-connector.md](../../../Flink/04-connectors/04.01-kafka-connector.md) | Kafka Connector | Producer, consumer, exactly-once integration |
+| [04.02-filesystem-connector.md](../../../Flink/04-connectors/04.02-filesystem-connector.md) | Filesystem Connector | Parquet, ORC, CSV, streaming file sink |
+| [04.03-jdbc-connector.md](../../../Flink/04-connectors/04.03-jdbc-connector.md) | JDBC Connector | Database read/write, batch optimization |
+| [04.04-elasticsearch-connector.md](../../../Flink/04-connectors/04.04-elasticsearch-connector.md) | Elasticsearch Connector | Real-time indexing, bulk operations |
+| [04.05-cdc-connectors.md](../../../Flink/04-connectors/04.05-cdc-connectors.md) | CDC Connectors | Debezium, Canal, change data capture |
+| [04.06-pulsar-connector.md](../../../Flink/04-connectors/04.06-pulsar-connector.md) | Pulsar Connector | Tiered storage, multi-tenancy integration |
+| [04.07-rabbitmq-connector.md](../../../Flink/04-connectors/04.07-rabbitmq-connector.md) | RabbitMQ Connector | AMQP integration, queue semantics |
+| [04.08-kinesis-connector.md](../../../Flink/04-connectors/04.08-kinesis-connector.md) | Kinesis Connector | AWS Kinesis, serverless streaming |
+| [04.09-paimon-connector.md](../../../Flink/04-connectors/04.09-paimon-connector.md) | Apache Paimon Connector | Lakehouse streaming, incremental processing |
+| [04.10-iceberg-connector.md](../../../Flink/04-connectors/04.10-iceberg-connector.md) | Apache Iceberg Connector | Time travel, schema evolution |
+| [04.11-hudi-connector.md](../../../Flink/04-connectors/04.11-hudi-connector.md) | Apache Hudi Connector | Upsert streams, incremental views |
+| [04.12-delta-connector.md](../../../Flink/04-connectors/04.12-delta-connector.md) | Delta Lake Connector | ACID transactions, streaming writes |
+| [04.13-custom-connector.md](../../../Flink/04-connectors/04.13-custom-connector.md) | Custom Connector Development | Source/Sink API, implementation guide |
+| [04.14-connector-best-practices.md](../../../Flink/04-connectors/04.14-connector-best-practices.md) | Connector Best Practices | Configuration tuning, fault handling |
+| [04.15-schema-registry.md](../../../Flink/04-connectors/04.15-schema-registry.md) | Schema Registry Integration | Avro, Protobuf, schema evolution |
 
 ---
 
@@ -143,14 +143,14 @@ Flink comparison with other stream processing engines.
 
 | Document | Description | Key Points |
 |----------|-------------|------------|
-| [05.01-flink-vs-spark-streaming.md](../../Flink/05-vs-competitors/05.01-flink-vs-spark-streaming.md) | Flink vs Spark Streaming | Architecture, latency, throughput comparison |
-| [05.02-flink-vs-kafka-streams.md](../../Flink/05-vs-competitors/05.02-flink-vs-kafka-streams.md) | Flink vs Kafka Streams | Use case fit, complexity, ecosystem |
-| [05.03-flink-vs-storm.md](../../Flink/05-vs-competitors/05.03-flink-vs-storm.md) | Flink vs Apache Storm | Legacy comparison, migration path |
-| [05.04-flink-vs-risingwave.md](../../Flink/05-vs-competitors/05.04-flink-vs-risingwave.md) | Flink vs RisingWave | Stream processing vs stream database |
-| [05.05-flink-vs-materialize.md](../../Flink/05-vs-competitors/05.05-flink-vs-materialize.md) | Flink vs Materialize | SQL-first streaming comparison |
-| [05.06-engine-selection-guide.md](../../Flink/05-vs-competitors/05.06-engine-selection-guide.md) | Stream Engine Selection Guide | Decision matrix, use case mapping |
-| [05.07-migration-guide-spark-to-flink.md](../../Flink/05-vs-competitors/05.07-migration-guide-spark-to-flink.md) | Spark to Flink Migration | Code conversion, semantic mapping |
-| [05.08-hybrid-architectures.md](../../Flink/05-vs-competitors/05.08-hybrid-architectures.md) | Hybrid Architectures | Multi-engine coexistence patterns |
+| [05.01-flink-vs-spark-streaming.md](../../../Flink/05-vs-competitors/05.01-flink-vs-spark-streaming.md) | Flink vs Spark Streaming | Architecture, latency, throughput comparison |
+| [05.02-flink-vs-kafka-streams.md](../../../Flink/05-vs-competitors/05.02-flink-vs-kafka-streams.md) | Flink vs Kafka Streams | Use case fit, complexity, ecosystem |
+| [05.03-flink-vs-storm.md](../../../Flink/05-vs-competitors/05.03-flink-vs-storm.md) | Flink vs Apache Storm | Legacy comparison, migration path |
+| [05.04-flink-vs-risingwave.md](../../../Flink/05-vs-competitors/05.04-flink-vs-risingwave.md) | Flink vs RisingWave | Stream processing vs stream database |
+| [05.05-flink-vs-materialize.md](../../../Flink/05-vs-competitors/05.05-flink-vs-materialize.md) | Flink vs Materialize | SQL-first streaming comparison |
+| [05.06-engine-selection-guide.md](../../../Flink/05-vs-competitors/05.06-engine-selection-guide.md) | Stream Engine Selection Guide | Decision matrix, use case mapping |
+| [05.07-migration-guide-spark-to-flink.md](../../../Flink/05-vs-competitors/05.07-migration-guide-spark-to-flink.md) | Spark to Flink Migration | Code conversion, semantic mapping |
+| [05.08-hybrid-architectures.md](../../../Flink/05-vs-competitors/05.08-hybrid-architectures.md) | Hybrid Architectures | Multi-engine coexistence patterns |
 
 ---
 
@@ -160,16 +160,16 @@ Production engineering practices and operational guidelines.
 
 | Document | Description | Key Points |
 |----------|-------------|------------|
-| [06.01-performance-tuning.md](../../Flink/06-engineering/06.01-performance-tuning.md) | Performance Tuning Guide | Backpressure optimization, serialization tuning |
-| [06.02-production-checklist.md](../../Flink/06-engineering/06.02-production-checklist.md) | Production Checklist | Pre-launch verification, monitoring setup |
-| [06.03-testing-strategies.md](../../Flink/06-engineering/06.03-testing-strategies.md) | Testing Strategies | Unit testing, integration testing, chaos engineering |
-| [06.04-monitoring-alerting.md](../../Flink/06-engineering/06.04-monitoring-alerting.md) | Monitoring and Alerting | Metrics, logs, tracing, alert rules |
-| [06.05-cost-optimization.md](../../Flink/06-engineering/06.05-cost-optimization.md) | Cost Optimization | Resource right-sizing, spot instances |
-| [06.06-ci-cd-pipelines.md](../../Flink/06-engineering/06.06-ci-cd-pipelines.md) | CI/CD Pipelines | Automated testing, deployment automation |
-| [06.07-config-management.md](../../Flink/06-engineering/06.07-config-management.md) | Configuration Management | Dynamic config, environment separation |
-| [06.08-version-upgrades.md](../../Flink/06-engineering/06.08-version-upgrades.md) | Version Upgrade Guide | Migration strategies, compatibility testing |
-| [06.09-disaster-recovery.md](../../Flink/06-engineering/06.09-disaster-recovery.md) | Disaster Recovery | Multi-region deployment, backup strategies |
-| [06.10-security-hardening.md](../../Flink/06-engineering/06.10-security-hardening.md) | Security Hardening | Authentication, encryption, network policies |
+| [06.01-performance-tuning.md](../../../Flink/06-engineering/06.01-performance-tuning.md) | Performance Tuning Guide | Backpressure optimization, serialization tuning |
+| [06.02-production-checklist.md](../../../Flink/06-engineering/06.02-production-checklist.md) | Production Checklist | Pre-launch verification, monitoring setup |
+| [06.03-testing-strategies.md](../../../Flink/06-engineering/06.03-testing-strategies.md) | Testing Strategies | Unit testing, integration testing, chaos engineering |
+| [06.04-monitoring-alerting.md](../../../Flink/06-engineering/06.04-monitoring-alerting.md) | Monitoring and Alerting | Metrics, logs, tracing, alert rules |
+| [06.05-cost-optimization.md](../../../Flink/06-engineering/06.05-cost-optimization.md) | Cost Optimization | Resource right-sizing, spot instances |
+| [06.06-ci-cd-pipelines.md](../../../Flink/06-engineering/06.06-ci-cd-pipelines.md) | CI/CD Pipelines | Automated testing, deployment automation |
+| [06.07-config-management.md](../../../Flink/06-engineering/06.07-config-management.md) | Configuration Management | Dynamic config, environment separation |
+| [06.08-version-upgrades.md](../../../Flink/06-engineering/06.08-version-upgrades.md) | Version Upgrade Guide | Migration strategies, compatibility testing |
+| [06.09-disaster-recovery.md](../../../Flink/06-engineering/06.09-disaster-recovery.md) | Disaster Recovery | Multi-region deployment, backup strategies |
+| [06.10-security-hardening.md](../../../Flink/06-engineering/06.10-security-hardening.md) | Security Hardening | Authentication, encryption, network policies |
 
 ---
 
@@ -179,18 +179,18 @@ Real-world Flink production case studies.
 
 | Document | Description | Industry |
 |----------|-------------|----------|
-| [07.01-alibaba-double11.md](../../Flink/07-case-studies/07.01-alibaba-double11.md) | Alibaba Double 11 | E-commerce |
-| [07.02-netflix-streaming.md](../../Flink/07-case-studies/07.02-netflix-streaming.md) | Netflix Real-time Processing | Video Streaming |
-| [07.03-uber-marketplace.md](../../Flink/07-case-studies/07.03-uber-marketplace.md) | Uber Marketplace Platform | Mobility |
-| [07.04-linkedin-analytics.md](../../Flink/07-case-studies/07.04-linkedin-analytics.md) | LinkedIn Real-time Analytics | Social Network |
-| [07.05-airbnb-search.md](../../Flink/07-case-studies/07.05-airbnb-search.md) | Airbnb Search Ranking | Travel |
-| [07.06-stripe-fraud-detection.md](../../Flink/07-case-studies/07.06-stripe-fraud-detection.md) | Stripe Fraud Detection | Fintech |
-| [07.07-spotify-recommendations.md](../../Flink/07-case-studies/07.07-spotify-recommendations.md) | Spotify Recommendations | Music |
-| [07.08-lyft-rider-platform.md](../../Flink/07-case-studies/07.08-lyft-rider-platform.md) | Lyft Rider Platform | Mobility |
-| [07.09-pinterest-analytics.md](../../Flink/07-case-studies/07.09-pinterest-analytics.md) | Pinterest Analytics | Social Media |
-| [07.10-tencent-gaming.md](../../Flink/07-case-studies/07.10-tencent-gaming.md) | Tencent Gaming Analytics | Gaming |
-| [07.11-bytedance-content.md](../../Flink/07-case-studies/07.11-bytedance-content.md) | ByteDance Content Recommendation | Content |
-| [07.12-comcast-video.md](../../Flink/07-case-studies/07.12-comcast-video.md) | Comcast Video Analytics | Media |
+| [07.01-alibaba-double11.md](../../../Flink/07-case-studies/07.01-alibaba-double11.md) | Alibaba Double 11 | E-commerce |
+| [07.02-netflix-streaming.md](../../../Flink/07-case-studies/07.02-netflix-streaming.md) | Netflix Real-time Processing | Video Streaming |
+| [07.03-uber-marketplace.md](../../../Flink/07-case-studies/07.03-uber-marketplace.md) | Uber Marketplace Platform | Mobility |
+| [07.04-linkedin-analytics.md](../../../Flink/07-case-studies/07.04-linkedin-analytics.md) | LinkedIn Real-time Analytics | Social Network |
+| [07.05-airbnb-search.md](../../../Flink/07-case-studies/07.05-airbnb-search.md) | Airbnb Search Ranking | Travel |
+| [07.06-stripe-fraud-detection.md](../../../Flink/07-case-studies/07.06-stripe-fraud-detection.md) | Stripe Fraud Detection | Fintech |
+| [07.07-spotify-recommendations.md](../../../Flink/07-case-studies/07.07-spotify-recommendations.md) | Spotify Recommendations | Music |
+| [07.08-lyft-rider-platform.md](../../../Flink/07-case-studies/07.08-lyft-rider-platform.md) | Lyft Rider Platform | Mobility |
+| [07.09-pinterest-analytics.md](../../../Flink/07-case-studies/07.09-pinterest-analytics.md) | Pinterest Analytics | Social Media |
+| [07.10-tencent-gaming.md](../../../Flink/07-case-studies/07.10-tencent-gaming.md) | Tencent Gaming Analytics | Gaming |
+| [07.11-bytedance-content.md](../../../Flink/07-case-studies/07.11-bytedance-content.md) | ByteDance Content Recommendation | Content |
+| [07.12-comcast-video.md](../../../Flink/07-case-studies/07.12-comcast-video.md) | Comcast Video Analytics | Media |
 
 ---
 
@@ -200,12 +200,12 @@ Flink version roadmaps and feature tracking.
 
 | Document | Description | Key Points |
 |----------|-------------|------------|
-| [08.01-flink-1.18-roadmap.md](../../Flink/08-roadmap/08.01-flink-1.18-roadmap.md) | Flink 1.18 Roadmap | Latest stable features |
-| [08.02-flink-1.19-roadmap.md](../../Flink/08-roadmap/08.02-flink-1.19-roadmap.md) | Flink 1.19 Roadmap | Upcoming features |
-| [08.03-flink-2.0-preview.md](../../Flink/08-roadmap/08.03-flink-2.0-preview.md) | Flink 2.0 Preview | Next-generation architecture |
-| [08.04-flink-3.0-vision.md](../../Flink/08-roadmap/08.04-flink-3.0-vision.md) | Flink 3.0 Vision | Long-term vision |
-| [08.05-flip-tracking.md](../../Flink/08-roadmap/08.05-flip-tracking.md) | FLIP Tracking | Feature proposal tracking |
-| [08.06-community-update.md](../../Flink/08-roadmap/08.06-community-update.md) | Community Update | Contribution guidelines, events |
+| [08.01-flink-1.18-roadmap.md](../../../Flink/08-roadmap/08.01-flink-1.18-roadmap.md) | Flink 1.18 Roadmap | Latest stable features |
+| [08.02-flink-1.19-roadmap.md](../../../Flink/08-roadmap/08.02-flink-1.19-roadmap.md) | Flink 1.19 Roadmap | Upcoming features |
+| [08.03-flink-2.0-preview.md](../../../Flink/08-roadmap/08.03-flink-2.0-preview.md) | Flink 2.0 Preview | Next-generation architecture |
+| [08.04-flink-3.0-vision.md](../../../Flink/08-roadmap/08.04-flink-3.0-vision.md) | Flink 3.0 Vision | Long-term vision |
+| [08.05-flip-tracking.md](../../../Flink/08-roadmap/08.05-flip-tracking.md) | FLIP Tracking | Feature proposal tracking |
+| [08.06-community-update.md](../../../Flink/08-roadmap/08.06-community-update.md) | Community Update | Contribution guidelines, events |
 
 ---
 
@@ -215,14 +215,14 @@ Flink's multi-language support and development.
 
 | Document | Description | Language |
 |----------|-------------|----------|
-| [09.01-java-development.md](../../Flink/09-language-foundations/09.01-java-development.md) | Java Development Guide | Java |
-| [09.02-scala-development.md](../../Flink/09-language-foundations/09.02-scala-development.md) | Scala Development Guide | Scala |
-| [09.03-python-pyflink.md](../../Flink/09-language-foundations/09.03-python-pyflink.md) | PyFlink Guide | Python |
-| [09.04-sql-development.md](../../Flink/09-language-foundations/09.04-sql-development.md) | SQL Development Guide | SQL |
-| [09.05-go-sdk-preview.md](../../Flink/09-language-foundations/09.05-go-sdk-preview.md) | Go SDK Preview | Go |
-| [09.06-rust-udf.md](../../Flink/09-language-foundations/09.06-rust-udf.md) | Rust UDF Development | Rust |
-| [09.07-wasm-udf.md](../../Flink/09-language-foundations/09.07-wasm-udf.md) | WebAssembly UDF | WASM |
-| [09.08-language-comparison.md](../../Flink/09-language-foundations/09.08-language-comparison.md) | Language Comparison | All |
+| [09.01-java-development.md](../../../Flink/09-language-foundations/09.01-java-development.md) | Java Development Guide | Java |
+| [09.02-scala-development.md](../../../Flink/09-language-foundations/09.02-scala-development.md) | Scala Development Guide | Scala |
+| [09.03-python-pyflink.md](../../../Flink/09-language-foundations/09.03-python-pyflink.md) | PyFlink Guide | Python |
+| [09.04-sql-development.md](../../../Flink/09-language-foundations/09.04-sql-development.md) | SQL Development Guide | SQL |
+| [09.05-go-sdk-preview.md](../../../Flink/09-language-foundations/09.05-go-sdk-preview.md) | Go SDK Preview | Go |
+| [09.06-rust-udf.md](../../../Flink/09-language-foundations/09.06-rust-udf.md) | Rust UDF Development | Rust |
+| [09.07-wasm-udf.md](../../../Flink/09-language-foundations/09.07-wasm-udf.md) | WebAssembly UDF | WASM |
+| [09.08-language-comparison.md](../../../Flink/09-language-foundations/09.08-language-comparison.md) | Language Comparison | All |
 
 ---
 
@@ -232,16 +232,16 @@ Flink deployment options and operational practices.
 
 | Document | Description | Environment |
 |----------|-------------|-------------|
-| [10.01-local-setup.md](../../Flink/10-deployment/10.01-local-setup.md) | Local Development Setup | Local |
-| [10.02-standalone-cluster.md](../../Flink/10-deployment/10.02-standalone-cluster.md) | Standalone Cluster | On-premise |
-| [10.03-kubernetes-operator.md](../../Flink/10-deployment/10.03-kubernetes-operator.md) | Kubernetes Operator | K8s |
-| [10.04-docker-deployment.md](../../Flink/10-deployment/10.04-docker-deployment.md) | Docker Deployment | Container |
-| [10.05-aws-integration.md](../../Flink/10-deployment/10.05-aws-integration.md) | AWS Integration | AWS |
-| [10.06-gcp-integration.md](../../Flink/10-deployment/10.06-gcp-integration.md) | GCP Integration | GCP |
-| [10.07-azure-integration.md](../../Flink/10-deployment/10.07-azure-integration.md) | Azure Integration | Azure |
-| [10.08-alibaba-cloud-integration.md](../../Flink/10-deployment/10.08-alibaba-cloud-integration.md) | Alibaba Cloud Integration | Alibaba Cloud |
-| [10.09-serverless-flink.md](../../Flink/10-deployment/10.09-serverless-flink.md) | Serverless Flink | Serverless |
-| [10.10-high-availability.md](../../Flink/10-deployment/10.10-high-availability.md) | High Availability Setup | Production |
+| [10.01-local-setup.md](../../../Flink/10-deployment/10.01-local-setup.md) | Local Development Setup | Local |
+| [10.02-standalone-cluster.md](../../../Flink/10-deployment/10.02-standalone-cluster.md) | Standalone Cluster | On-premise |
+| [10.03-kubernetes-operator.md](../../../Flink/10-deployment/10.03-kubernetes-operator.md) | Kubernetes Operator | K8s |
+| [10.04-docker-deployment.md](../../../Flink/10-deployment/10.04-docker-deployment.md) | Docker Deployment | Container |
+| [10.05-aws-integration.md](../../../Flink/10-deployment/10.05-aws-integration.md) | AWS Integration | AWS |
+| [10.06-gcp-integration.md](../../../Flink/10-deployment/10.06-gcp-integration.md) | GCP Integration | GCP |
+| [10.07-azure-integration.md](../../../Flink/10-deployment/10.07-azure-integration.md) | Azure Integration | Azure |
+| [10.08-alibaba-cloud-integration.md](../../../Flink/10-deployment/10.08-alibaba-cloud-integration.md) | Alibaba Cloud Integration | Alibaba Cloud |
+| [10.09-serverless-flink.md](../../../Flink/10-deployment/10.09-serverless-flink.md) | Serverless Flink | Serverless |
+| [10.10-high-availability.md](../../../Flink/10-deployment/10.10-high-availability.md) | High Availability Setup | Production |
 
 ---
 
@@ -251,11 +251,11 @@ Flink performance testing and benchmarking.
 
 | Document | Description | Focus |
 |----------|-------------|-------|
-| [11.01-nexmark-benchmark.md](../../Flink/11-benchmarking/11.01-nexmark-benchmark.md) | Nexmark Benchmark | Standard SQL benchmark |
-| [11.02-custom-benchmarks.md](../../Flink/11-benchmarking/11.02-custom-benchmarks.md) | Custom Benchmarks | Domain-specific testing |
-| [11.03-latency-throughput.md](../../Flink/11-benchmarking/11.03-latency-throughput.md) | Latency vs Throughput | Trade-off analysis |
-| [11.04-state-access-performance.md](../../Flink/11-benchmarking/11.04-state-access-performance.md) | State Access Performance | State backend comparison |
-| [11.05-serialization-benchmarks.md](../../Flink/11-benchmarking/11.05-serialization-benchmarks.md) | Serialization Benchmarks | Serializer comparison |
+| [11.01-nexmark-benchmark.md](../../../Flink/11-benchmarking/11.01-nexmark-benchmark.md) | Nexmark Benchmark | Standard SQL benchmark |
+| [11.02-custom-benchmarks.md](../../../Flink/11-benchmarking/11.02-custom-benchmarks.md) | Custom Benchmarks | Domain-specific testing |
+| [11.03-latency-throughput.md](../../../Flink/11-benchmarking/11.03-latency-throughput.md) | Latency vs Throughput | Trade-off analysis |
+| [11.04-state-access-performance.md](../../../Flink/11-benchmarking/11.04-state-access-performance.md) | State Access Performance | State backend comparison |
+| [11.05-serialization-benchmarks.md](../../../Flink/11-benchmarking/11.05-serialization-benchmarks.md) | Serialization Benchmarks | Serializer comparison |
 
 ---
 
@@ -265,21 +265,21 @@ Flink integration with AI/ML workloads.
 
 | Document | Description | Focus |
 |----------|-------------|-------|
-| [12.01-ml-inference-streaming.md](../../Flink/12-ai-ml/12.01-ml-inference-streaming.md) | ML Inference in Streaming | Real-time model serving |
-| [12.02-feature-engineering.md](../../Flink/12-ai-ml/12.02-feature-engineering.md) | Feature Engineering | Real-time feature computation |
-| [12.03-flink-ai-flow.md](../../Flink/12-ai-ml/12.03-flink-ai-flow.md) | Flink AI Flow | ML pipeline orchestration |
-| [12.04-tensorflow-integration.md](../../Flink/12-ai-ml/12.04-tensorflow-integration.md) | TensorFlow Integration | TensorFlow + Flink |
-| [12.05-pytorch-integration.md](../../Flink/12-ai-ml/12.05-pytorch-integration.md) | PyTorch Integration | PyTorch + Flink |
-| [12.06-online-learning.md](../../Flink/12-ai-ml/12.06-online-learning.md) | Online Learning | Incremental model updates |
-| [12.07-model-serving.md](../../Flink/12-ai-ml/12.07-model-serving.md) | Model Serving Patterns | Low-latency inference |
-| [12.08-flip-531-ai-agents.md](../../Flink/12-ai-ml/12.08-flip-531-ai-agents.md) | FLIP-531 AI Agents | Flink AI Agents proposal |
-| [12.09-multimodal-streaming.md](../../Flink/12-ai-ml/12.09-multimodal-streaming.md) | Multimodal Streaming | Text/image/video processing |
-| [12.10-graph-neural-networks.md](../../Flink/12-ai-ml/12.10-graph-neural-networks.md) | Graph Neural Networks | TGN, TGNN integration |
-| [12.11-vector-search-integration.md](../../Flink/12-ai-ml/12.11-vector-search-integration.md) | Vector Search Integration | RAG, vector databases |
-| [12.12-llm-pipeline.md](../../Flink/12-ai-ml/12.12-llm-pipeline.md) | LLM Pipeline | Large language model workflows |
-| [12.13-mlflow-integration.md](../../Flink/12-ai-ml/12.13-mlflow-integration.md) | MLflow Integration | ML experiment tracking |
-| [12.14-kubeflow-integration.md](../../Flink/12-ai-ml/12.14-kubeflow-integration.md) | Kubeflow Integration | K8s-native ML pipelines |
-| [12.15-ai-ops.md](../../Flink/12-ai-ml/12.15-ai-ops.md) | AIOps | Intelligent operations |
+| [12.01-ml-inference-streaming.md](../../../Flink/12-ai-ml/12.01-ml-inference-streaming.md) | ML Inference in Streaming | Real-time model serving |
+| [12.02-feature-engineering.md](../../../Flink/12-ai-ml/12.02-feature-engineering.md) | Feature Engineering | Real-time feature computation |
+| [12.03-flink-ai-flow.md](../../../Flink/12-ai-ml/12.03-flink-ai-flow.md) | Flink AI Flow | ML pipeline orchestration |
+| [12.04-tensorflow-integration.md](../../../Flink/12-ai-ml/12.04-tensorflow-integration.md) | TensorFlow Integration | TensorFlow + Flink |
+| [12.05-pytorch-integration.md](../../../Flink/12-ai-ml/12.05-pytorch-integration.md) | PyTorch Integration | PyTorch + Flink |
+| [12.06-online-learning.md](../../../Flink/12-ai-ml/12.06-online-learning.md) | Online Learning | Incremental model updates |
+| [12.07-model-serving.md](../../../Flink/12-ai-ml/12.07-model-serving.md) | Model Serving Patterns | Low-latency inference |
+| [12.08-flip-531-ai-agents.md](../../../Flink/12-ai-ml/12.08-flip-531-ai-agents.md) | FLIP-531 AI Agents | Flink AI Agents proposal |
+| [12.09-multimodal-streaming.md](../../../Flink/12-ai-ml/12.09-multimodal-streaming.md) | Multimodal Streaming | Text/image/video processing |
+| [12.10-graph-neural-networks.md](../../../Flink/12-ai-ml/12.10-graph-neural-networks.md) | Graph Neural Networks | TGN, TGNN integration |
+| [12.11-vector-search-integration.md](../../../Flink/12-ai-ml/12.11-vector-search-integration.md) | Vector Search Integration | RAG, vector databases |
+| [12.12-llm-pipeline.md](../../../Flink/12-ai-ml/12.12-llm-pipeline.md) | LLM Pipeline | Large language model workflows |
+| [12.13-mlflow-integration.md](../../../Flink/12-ai-ml/12.13-mlflow-integration.md) | MLflow Integration | ML experiment tracking |
+| [12.14-kubeflow-integration.md](../../../Flink/12-ai-ml/12.14-kubeflow-integration.md) | Kubeflow Integration | K8s-native ML pipelines |
+| [12.15-ai-ops.md](../../../Flink/12-ai-ml/12.15-ai-ops.md) | AIOps | Intelligent operations |
 
 ---
 
@@ -289,11 +289,11 @@ Flink security features and compliance practices.
 
 | Document | Description | Focus |
 |----------|-------------|-------|
-| [13.01-authentication.md](../../Flink/13-security/13.01-authentication.md) | Authentication | Kerberos, OAuth, JWT |
-| [13.02-authorization.md](../../Flink/13-security/13.02-authorization.md) | Authorization | RBAC, ACLs |
-| [13.03-data-encryption.md](../../Flink/13-security/13.03-data-encryption.md) | Data Encryption | TLS, encryption at rest |
-| [13.04-audit-logging.md](../../Flink/13-security/13.04-audit-logging.md) | Audit Logging | Compliance logging |
-| [13.05-gdpr-compliance.md](../../Flink/13-security/13.05-gdpr-compliance.md) | GDPR Compliance | Data privacy, right to be forgotten |
+| [13.01-authentication.md](../../../Flink/13-security/13.01-authentication.md) | Authentication | Kerberos, OAuth, JWT |
+| [13.02-authorization.md](../../../Flink/13-security/13.02-authorization.md) | Authorization | RBAC, ACLs |
+| [13.03-data-encryption.md](../../../Flink/13-security/13.03-data-encryption.md) | Data Encryption | TLS, encryption at rest |
+| [13.04-audit-logging.md](../../../Flink/13-security/13.04-audit-logging.md) | Audit Logging | Compliance logging |
+| [13.05-gdpr-compliance.md](../../../Flink/13-security/13.05-gdpr-compliance.md) | GDPR Compliance | Data privacy, right to be forgotten |
 
 ---
 
@@ -303,12 +303,12 @@ Flink integration with Lakehouse architectures.
 
 | Document | Description | Focus |
 |----------|-------------|-------|
-| [14.01-lakehouse-overview.md](../../Flink/14-lakehouse/14.01-lakehouse-overview.md) | Lakehouse Overview | Architecture concepts |
-| [14.02-paimon-deep-dive.md](../../Flink/14-lakehouse/14.02-paimon-deep-dive.md) | Apache Paimon Deep Dive | Streaming lakehouse format |
-| [14.03-iceberg-integration.md](../../Flink/14-lakehouse/14.03-iceberg-integration.md) | Iceberg Integration | Time travel, schema evolution |
-| [14.04-delta-integration.md](../../Flink/14-lakehouse/14.04-delta-integration.md) | Delta Lake Integration | ACID transactions |
-| [14.05-hudi-integration.md](../../Flink/14-lakehouse/14.05-hudi-integration.md) | Hudi Integration | Upsert streams |
-| [14.06-lakehouse-best-practices.md](../../Flink/14-lakehouse/14.06-lakehouse-best-practices.md) | Lakehouse Best Practices | Design patterns |
+| [14.01-lakehouse-overview.md](../../../Flink/14-lakehouse/14.01-lakehouse-overview.md) | Lakehouse Overview | Architecture concepts |
+| [14.02-paimon-deep-dive.md](../../../Flink/14-lakehouse/14.02-paimon-deep-dive.md) | Apache Paimon Deep Dive | Streaming lakehouse format |
+| [14.03-iceberg-integration.md](../../../Flink/14-lakehouse/14.03-iceberg-integration.md) | Iceberg Integration | Time travel, schema evolution |
+| [14.04-delta-integration.md](../../../Flink/14-lakehouse/14.04-delta-integration.md) | Delta Lake Integration | ACID transactions |
+| [14.05-hudi-integration.md](../../../Flink/14-lakehouse/14.05-hudi-integration.md) | Hudi Integration | Upsert streams |
+| [14.06-lakehouse-best-practices.md](../../../Flink/14-lakehouse/14.06-lakehouse-best-practices.md) | Lakehouse Best Practices | Design patterns |
 
 ---
 
@@ -318,14 +318,14 @@ Flink observability and monitoring.
 
 | Document | Description | Focus |
 |----------|-------------|-------|
-| [15.01-metrics-system.md](../../Flink/15-observability/15.01-metrics-system.md) | Metrics System | Built-in metrics, custom metrics |
-| [15.02-opentelemetry-integration.md](../../Flink/15-observability/15.02-opentelemetry-integration.md) | OpenTelemetry Integration | Distributed tracing |
-| [15.03-logging-best-practices.md](../../Flink/15-observability/15.03-logging-best-practices.md) | Logging Best Practices | Structured logging, log aggregation |
-| [15.04-slo-definition.md](../../Flink/15-observability/15.04-slo-definition.md) | SLO Definition | Service level objectives |
-| [15.05-alerting-strategies.md](../../Flink/15-observability/15.05-alerting-strategies.md) | Alerting Strategies | Alert rules, incident response |
-| [15.06-dashboard-creation.md](../../Flink/15-observability/15.06-dashboard-creation.md) | Dashboard Creation | Grafana, Prometheus |
-| [15.07-debugging-techniques.md](../../Flink/15-observability/15.07-debugging-techniques.md) | Debugging Techniques | Local debugging, remote debugging |
-| [15.08-profiling-tools.md](../../Flink/15-observability/15.08-profiling-tools.md) | Profiling Tools | CPU profiling, memory profiling |
+| [15.01-metrics-system.md](../../../Flink/15-observability/15.01-metrics-system.md) | Metrics System | Built-in metrics, custom metrics |
+| [15.02-opentelemetry-integration.md](../../../Flink/15-observability/15.02-opentelemetry-integration.md) | OpenTelemetry Integration | Distributed tracing |
+| [15.03-logging-best-practices.md](../../../Flink/15-observability/15.03-logging-best-practices.md) | Logging Best Practices | Structured logging, log aggregation |
+| [15.04-slo-definition.md](../../../Flink/15-observability/15.04-slo-definition.md) | SLO Definition | Service level objectives |
+| [15.05-alerting-strategies.md](../../../Flink/15-observability/15.05-alerting-strategies.md) | Alerting Strategies | Alert rules, incident response |
+| [15.06-dashboard-creation.md](../../../Flink/15-observability/15.06-dashboard-creation.md) | Dashboard Creation | Grafana, Prometheus |
+| [15.07-debugging-techniques.md](../../../Flink/15-observability/15.07-debugging-techniques.md) | Debugging Techniques | Local debugging, remote debugging |
+| [15.08-profiling-tools.md](../../../Flink/15-observability/15.08-profiling-tools.md) | Profiling Tools | CPU profiling, memory profiling |
 
 ---
 
@@ -352,4 +352,3 @@ Flink observability and monitoring.
 
 > **Document Specification**: This document follows the six-section template in [AGENTS.md](../../../AGENTS.md)
 > **Last Updated**: 2026-04-08
-

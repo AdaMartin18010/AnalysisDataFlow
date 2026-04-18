@@ -111,6 +111,8 @@ $$
 | `lookup` | 通过Lookup生成完整变更 | 中 | 需要补全UPDATE_BEFORE |
 | `full-compaction` | Compaction后对比文件 | 高 | 无外部CDC源 |
 
+> **理论根基**: [DBSP理论框架为增量视图维护提供严格数学基础](../../../Struct/06-frontier/dbsp-theory-framework.md) —— DBSP 的差分算子 $\nabla$ 与 Paimon 的 LSM-Tree 增量日志模型在数学上同构，均为增量计算提供了代数基础。
+
 ---
 
 ### Def-F-14-04: 快照与版本管理
@@ -511,6 +513,19 @@ CREATE CATALOG paimon_jdbc WITH (
 | **Incremental Compaction** | 基础 | ✅ 优化 | 更高效的小文件合并 |
 | **CDC 同步性能** | 基准 | 基准的 1.5x | 提升 50% |
 | **Schema Evolution** | 基础 | ✅ 增强 | 更多 DDL 操作支持 |
+
+### 3.4 流数据库与 Lakehouse 的集成关系
+
+Paimon 作为流批统一的 Lakehouse 存储格式，与流数据库（Streaming Database）的物化视图机制存在深层的理论关联：
+
+| 维度 | 流数据库物化视图 | Paimon Lakehouse 表 | 关系 |
+|------|----------------|-------------------|------|
+| **增量维护** | 持续查询 + 增量更新 | LSM-Tree + Changelog | 均基于追加写语义 |
+| **一致性** | 事务边界 / Watermark | Snapshot 隔离 | 时间旅行查询等价 |
+| **查询能力** | SQL 点查 + 范围扫描 | 批处理扫描 + 流式消费 | 统一存储层实现两者 |
+| **存储后端** | Hummock / RocksDB | LSM-Tree on OSS/S3 | 对象存储 + 本地缓存 |
+
+> **理论根基**: [DBSP的差分算子∇与积分算子∇⁻¹建立了完整的增量计算理论](../../../Struct/06-frontier/dbsp-theory-framework.md)，为理解 Paimon 增量日志生成算法的正确性提供了形式化视角。
 
 ---
 

@@ -1,6 +1,6 @@
 # SIMD 向量化性能测试报告
 
-> **所属阶段**: Knowledge/Flink-Scala-Rust-Comprehensive | **前置依赖**: [Rust 引擎设计](../04-rust-engines/) | **形式化等级**: L4
+> **所属阶段**: Knowledge/Flink-Scala-Rust-Comprehensive | **前置依赖**: [Rust 引擎设计](../04-rust-engines/04.01-rust-engines-comparison.md) | **形式化等级**: L4
 
 ## 1. 测试目标
 

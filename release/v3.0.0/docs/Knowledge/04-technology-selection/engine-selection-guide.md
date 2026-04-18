@@ -1,73 +1,73 @@
-# 流处理引擎选型决策指南 (Stream Processing Engine Selection Guide) {#流处理引擎选型决策指南-stream-processing-engine-selection-guide}
+# 流处理引擎选型决策指南 (Stream Processing Engine Selection Guide)
 
 > **所属阶段**: Knowledge/04-technology-selection | **前置依赖**: [../../Struct/03-relationships/03.03-expressiveness-hierarchy.md](../../Struct/03-relationships/03.03-expressiveness-hierarchy.md), [../01-concept-atlas/concurrency-paradigms-matrix.md](../01-concept-atlas/concurrency-paradigms-matrix.md) | **形式化等级**: L4-L6
 > **版本**: 2026.04 | **文档规模**: ~25KB
 
 ---
 
-## 目录 {#目录}
+## 目录
 
-- [流处理引擎选型决策指南 (Stream Processing Engine Selection Guide) {#流处理引擎选型决策指南-stream-processing-engine-selection-guide}](#流处理引擎选型决策指南-stream-processing-engine-selection-guide-流处理引擎选型决策指南-stream-processing-engine-selection-guide)
-  - [目录 {#目录}](#目录-目录)
-  - [1. 概念定义 (Definitions) {#1-概念定义-definitions}](#1-概念定义-definitions-1-概念定义-definitions)
-    - [1.1 流处理引擎谱系 {#11-流处理引擎谱系}](#11-流处理引擎谱系-11-流处理引擎谱系)
-    - [1.2 引擎核心定义 {#12-引擎核心定义}](#12-引擎核心定义-12-引擎核心定义)
-      - [Def-K-04-01. Apache Flink {#def-k-04-01-apache-flink}](#def-k-04-01-apache-flink-def-k-04-01-apache-flink)
-      - [Def-K-04-02. Kafka Streams {#def-k-04-02-kafka-streams}](#def-k-04-02-kafka-streams-def-k-04-02-kafka-streams)
-      - [Def-K-04-03. Spark Streaming (Structured Streaming) {#def-k-04-03-spark-streaming-structured-streaming}](#def-k-04-03-spark-streaming-structured-streaming-def-k-04-03-spark-streaming-structured-streaming)
-      - [Def-K-04-04. Apache Storm {#def-k-04-04-apache-storm}](#def-k-04-04-apache-storm-def-k-04-04-apache-storm)
-      - [Def-K-04-05. Pulsar Functions {#def-k-04-05-pulsar-functions}](#def-k-04-05-pulsar-functions-def-k-04-05-pulsar-functions)
-    - [1.3 选型核心维度定义 {#13-选型核心维度定义}](#13-选型核心维度定义-13-选型核心维度定义)
-      - [Def-K-04-06. 延迟特征 (Latency Profile) {#def-k-04-06-延迟特征-latency-profile}](#def-k-04-06-延迟特征-latency-profile-def-k-04-06-延迟特征-latency-profile)
-      - [Def-K-04-07. 状态管理能力 (State Management Capability) {#def-k-04-07-状态管理能力-state-management-capability}](#def-k-04-07-状态管理能力-state-management-capability-def-k-04-07-状态管理能力-state-management-capability)
-      - [Def-K-04-08. 一致性保证级别 (Consistency Guarantee Level) {#def-k-04-08-一致性保证级别-consistency-guarantee-level}](#def-k-04-08-一致性保证级别-consistency-guarantee-level-def-k-04-08-一致性保证级别-consistency-guarantee-level)
-      - [Def-K-04-09. 表达能力层次映射 (Expressiveness Hierarchy Mapping) {#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping}](#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping-def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-K-04-01. 延迟与吞吐的权衡上界 {#lemma-k-04-01-延迟与吞吐的权衡上界}](#lemma-k-04-01-延迟与吞吐的权衡上界-lemma-k-04-01-延迟与吞吐的权衡上界)
-    - [Lemma-K-04-02. 状态复杂度与容错开销的正相关 {#lemma-k-04-02-状态复杂度与容错开销的正相关}](#lemma-k-04-02-状态复杂度与容错开销的正相关-lemma-k-04-02-状态复杂度与容错开销的正相关)
-    - [Prop-K-04-01. Dataflow模型引擎的语义优势 {#prop-k-04-01-dataflow模型引擎的语义优势}](#prop-k-04-01-dataflow模型引擎的语义优势-prop-k-04-01-dataflow模型引擎的语义优势)
-    - [Prop-K-04-02. 微批处理的延迟下界 {#prop-k-04-02-微批处理的延迟下界}](#prop-k-04-02-微批处理的延迟下界-prop-k-04-02-微批处理的延迟下界)
-  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations-3-关系建立-relations)
-    - [3.1 引擎与计算模型的关系 {#31-引擎与计算模型的关系}](#31-引擎与计算模型的关系-31-引擎与计算模型的关系)
-    - [3.2 表达能力层次映射 {#32-表达能力层次映射}](#32-表达能力层次映射-32-表达能力层次映射)
-    - [3.3 引擎间能力关系 {#33-引擎间能力关系}](#33-引擎间能力关系-33-引擎间能力关系)
-  - [4. 论证过程 (Argumentation) {#4-论证过程-argumentation}](#4-论证过程-argumentation-4-论证过程-argumentation)
-    - [4.1 六维选型对比矩阵 {#41-六维选型对比矩阵}](#41-六维选型对比矩阵-41-六维选型对比矩阵)
-      - [表 1: 核心性能对比矩阵 {#表-1-核心性能对比矩阵}](#表-1-核心性能对比矩阵-表-1-核心性能对比矩阵)
-      - [表 2: 架构与部署对比矩阵 {#表-2-架构与部署对比矩阵}](#表-2-架构与部署对比矩阵-表-2-架构与部署对比矩阵)
-      - [表 3: 开发体验对比矩阵 {#表-3-开发体验对比矩阵}](#表-3-开发体验对比矩阵-表-3-开发体验对比矩阵)
-    - [4.2 场景驱动的选型论证 {#42-场景驱动的选型论证}](#42-场景驱动的选型论证-42-场景驱动的选型论证)
-      - [论证 1: 为什么实时推荐系统应选择 Flink {#论证-1-为什么实时推荐系统应选择-flink}](#论证-1-为什么实时推荐系统应选择-flink-论证-1-为什么实时推荐系统应选择-flink)
-      - [论证 2: 为什么日志聚合应选择 Kafka Streams {#论证-2-为什么日志聚合应选择-kafka-streams}](#论证-2-为什么日志聚合应选择-kafka-streams-论证-2-为什么日志聚合应选择-kafka-streams)
-      - [论证 3: 为什么复杂事件处理(CEP)应选择 Flink {#论证-3-为什么复杂事件处理cep应选择-flink}](#论证-3-为什么复杂事件处理cep应选择-flink-论证-3-为什么复杂事件处理cep应选择-flink)
-      - [论证 4: 为什么低延迟交易系统应选择 Storm/Flink {#论证-4-为什么低延迟交易系统应选择-stormflink}](#论证-4-为什么低延迟交易系统应选择-stormflink-论证-4-为什么低延迟交易系统应选择-stormflink)
-    - [4.3 云原生能力对比 {#43-云原生能力对比}](#43-云原生能力对比-43-云原生能力对比)
-  - [5. 工程论证 (Engineering Argumentation) {#5-工程论证-engineering-argumentation}](#5-工程论证-engineering-argumentation-5-工程论证-engineering-argumentation)
-    - [5.1 迁移指南: 从 Spark Streaming 到 Flink {#51-迁移指南-从-spark-streaming-到-flink}](#51-迁移指南-从-spark-streaming-到-flink-51-迁移指南-从-spark-streaming-到-flink)
-    - [5.2 成本效益分析框架 {#52-成本效益分析框架}](#52-成本效益分析框架-52-成本效益分析框架)
-  - [6. 实例验证 (Examples) {#6-实例验证-examples}](#6-实例验证-examples-6-实例验证-examples)
-    - [6.1 实例 1: 电商实时推荐系统选型 {#61-实例-1-电商实时推荐系统选型}](#61-实例-1-电商实时推荐系统选型-61-实例-1-电商实时推荐系统选型)
-    - [6.2 实例 2: 金融风控实时决策系统选型 {#62-实例-2-金融风控实时决策系统选型}](#62-实例-2-金融风控实时决策系统选型-62-实例-2-金融风控实时决策系统选型)
-    - [6.3 实例 3: 物联网数据平台选型 {#63-实例-3-物联网数据平台选型}](#63-实例-3-物联网数据平台选型-63-实例-3-物联网数据平台选型)
-    - [6.4 反例分析 {#64-反例分析}](#64-反例分析-64-反例分析)
-      - [反例 1: 在低延迟场景误用 Spark Streaming {#反例-1-在低延迟场景误用-spark-streaming}](#反例-1-在低延迟场景误用-spark-streaming-反例-1-在低延迟场景误用-spark-streaming)
-      - [反例 2: 在复杂状态场景误用 Kafka Streams {#反例-2-在复杂状态场景误用-kafka-streams}](#反例-2-在复杂状态场景误用-kafka-streams-反例-2-在复杂状态场景误用-kafka-streams)
-      - [反例 3: 在无 Kafka 环境使用 Kafka Streams {#反例-3-在无-kafka-环境使用-kafka-streams}](#反例-3-在无-kafka-环境使用-kafka-streams-反例-3-在无-kafka-环境使用-kafka-streams)
-  - [7. 可视化 (Visualizations) {#7-可视化-visualizations}](#7-可视化-visualizations-7-可视化-visualizations)
-    - [7.1 流处理引擎选型决策树 {#71-流处理引擎选型决策树}](#71-流处理引擎选型决策树-71-流处理引擎选型决策树)
-    - [7.2 引擎能力雷达图对比 {#72-引擎能力雷达图对比}](#72-引擎能力雷达图对比-72-引擎能力雷达图对比)
-    - [7.3 场景-引擎映射矩阵 {#73-场景-引擎映射矩阵}](#73-场景-引擎映射矩阵-73-场景-引擎映射矩阵)
-  - [8. 引用参考 (References) {#8-引用参考-references}](#8-引用参考-references-8-引用参考-references)
-  - [关联文档 {#关联文档}](#关联文档-关联文档)
-    - [上游依赖 {#上游依赖}](#上游依赖-上游依赖)
-    - [同层关联 {#同层关联}](#同层关联-同层关联)
-    - [下游应用 {#下游应用}](#下游应用-下游应用)
+- [流处理引擎选型决策指南 (Stream Processing Engine Selection Guide) {#流处理引擎选型决策指南-stream-processing-engine-selection-guide}](#流处理引擎选型决策指南-stream-processing-engine-selection-guide)
+  - [目录 {#目录}](#目录)
+  - [1. 概念定义 (Definitions) {#1-概念定义-definitions}](#1-概念定义-definitions)
+    - [1.1 流处理引擎谱系 {#11-流处理引擎谱系}](#11-流处理引擎谱系)
+    - [1.2 引擎核心定义 {#12-引擎核心定义}](#12-引擎核心定义)
+      - [Def-K-04-01. Apache Flink {#def-k-04-01-apache-flink}](#def-k-04-01-apache-flink)
+      - [Def-K-04-02. Kafka Streams {#def-k-04-02-kafka-streams}](#def-k-04-02-kafka-streams)
+      - [Def-K-04-03. Spark Streaming (Structured Streaming) {#def-k-04-03-spark-streaming-structured-streaming}](#def-k-04-03-spark-streaming-structured-streaming)
+      - [Def-K-04-04. Apache Storm {#def-k-04-04-apache-storm}](#def-k-04-04-apache-storm)
+      - [Def-K-04-05. Pulsar Functions {#def-k-04-05-pulsar-functions}](#def-k-04-05-pulsar-functions)
+    - [1.3 选型核心维度定义 {#13-选型核心维度定义}](#13-选型核心维度定义)
+      - [Def-K-04-06. 延迟特征 (Latency Profile) {#def-k-04-06-延迟特征-latency-profile}](#def-k-04-06-延迟特征-latency-profile)
+      - [Def-K-04-07. 状态管理能力 (State Management Capability) {#def-k-04-07-状态管理能力-state-management-capability}](#def-k-04-07-状态管理能力-state-management-capability)
+      - [Def-K-04-08. 一致性保证级别 (Consistency Guarantee Level) {#def-k-04-08-一致性保证级别-consistency-guarantee-level}](#def-k-04-08-一致性保证级别-consistency-guarantee-level)
+      - [Def-K-04-09. 表达能力层次映射 (Expressiveness Hierarchy Mapping) {#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping}](#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-K-04-01. 延迟与吞吐的权衡上界 {#lemma-k-04-01-延迟与吞吐的权衡上界}](#lemma-k-04-01-延迟与吞吐的权衡上界)
+    - [Lemma-K-04-02. 状态复杂度与容错开销的正相关 {#lemma-k-04-02-状态复杂度与容错开销的正相关}](#lemma-k-04-02-状态复杂度与容错开销的正相关)
+    - [Prop-K-04-01. Dataflow模型引擎的语义优势 {#prop-k-04-01-dataflow模型引擎的语义优势}](#prop-k-04-01-dataflow模型引擎的语义优势)
+    - [Prop-K-04-02. 微批处理的延迟下界 {#prop-k-04-02-微批处理的延迟下界}](#prop-k-04-02-微批处理的延迟下界)
+  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations)
+    - [3.1 引擎与计算模型的关系 {#31-引擎与计算模型的关系}](#31-引擎与计算模型的关系)
+    - [3.2 表达能力层次映射 {#32-表达能力层次映射}](#32-表达能力层次映射)
+    - [3.3 引擎间能力关系 {#33-引擎间能力关系}](#33-引擎间能力关系)
+  - [4. 论证过程 (Argumentation) {#4-论证过程-argumentation}](#4-论证过程-argumentation)
+    - [4.1 六维选型对比矩阵 {#41-六维选型对比矩阵}](#41-六维选型对比矩阵)
+      - [表 1: 核心性能对比矩阵 {#表-1-核心性能对比矩阵}](#表-1-核心性能对比矩阵)
+      - [表 2: 架构与部署对比矩阵 {#表-2-架构与部署对比矩阵}](#表-2-架构与部署对比矩阵)
+      - [表 3: 开发体验对比矩阵 {#表-3-开发体验对比矩阵}](#表-3-开发体验对比矩阵)
+    - [4.2 场景驱动的选型论证 {#42-场景驱动的选型论证}](#42-场景驱动的选型论证)
+      - [论证 1: 为什么实时推荐系统应选择 Flink {#论证-1-为什么实时推荐系统应选择-flink}](#论证-1-为什么实时推荐系统应选择-flink)
+      - [论证 2: 为什么日志聚合应选择 Kafka Streams {#论证-2-为什么日志聚合应选择-kafka-streams}](#论证-2-为什么日志聚合应选择-kafka-streams)
+      - [论证 3: 为什么复杂事件处理(CEP)应选择 Flink {#论证-3-为什么复杂事件处理cep应选择-flink}](#论证-3-为什么复杂事件处理cep应选择-flink)
+      - [论证 4: 为什么低延迟交易系统应选择 Storm/Flink {#论证-4-为什么低延迟交易系统应选择-stormflink}](#论证-4-为什么低延迟交易系统应选择-stormflink)
+    - [4.3 云原生能力对比 {#43-云原生能力对比}](#43-云原生能力对比)
+  - [5. 工程论证 (Engineering Argumentation) {#5-工程论证-engineering-argumentation}](#5-工程论证-engineering-argumentation)
+    - [5.1 迁移指南: 从 Spark Streaming 到 Flink {#51-迁移指南-从-spark-streaming-到-flink}](#51-迁移指南-从-spark-streaming-到-flink)
+    - [5.2 成本效益分析框架 {#52-成本效益分析框架}](#52-成本效益分析框架)
+  - [6. 实例验证 (Examples) {#6-实例验证-examples}](#6-实例验证-examples)
+    - [6.1 实例 1: 电商实时推荐系统选型 {#61-实例-1-电商实时推荐系统选型}](#61-实例-1-电商实时推荐系统选型)
+    - [6.2 实例 2: 金融风控实时决策系统选型 {#62-实例-2-金融风控实时决策系统选型}](#62-实例-2-金融风控实时决策系统选型)
+    - [6.3 实例 3: 物联网数据平台选型 {#63-实例-3-物联网数据平台选型}](#63-实例-3-物联网数据平台选型)
+    - [6.4 反例分析 {#64-反例分析}](#64-反例分析)
+      - [反例 1: 在低延迟场景误用 Spark Streaming {#反例-1-在低延迟场景误用-spark-streaming}](#反例-1-在低延迟场景误用-spark-streaming)
+      - [反例 2: 在复杂状态场景误用 Kafka Streams {#反例-2-在复杂状态场景误用-kafka-streams}](#反例-2-在复杂状态场景误用-kafka-streams)
+      - [反例 3: 在无 Kafka 环境使用 Kafka Streams {#反例-3-在无-kafka-环境使用-kafka-streams}](#反例-3-在无-kafka-环境使用-kafka-streams)
+  - [7. 可视化 (Visualizations) {#7-可视化-visualizations}](#7-可视化-visualizations)
+    - [7.1 流处理引擎选型决策树 {#71-流处理引擎选型决策树}](#71-流处理引擎选型决策树)
+    - [7.2 引擎能力雷达图对比 {#72-引擎能力雷达图对比}](#72-引擎能力雷达图对比)
+    - [7.3 场景-引擎映射矩阵 {#73-场景-引擎映射矩阵}](#73-场景-引擎映射矩阵)
+  - [8. 引用参考 (References) {#8-引用参考-references}](#8-引用参考-references)
+  - [关联文档 {#关联文档}](#关联文档)
+    - [上游依赖 {#上游依赖}](#上游依赖)
+    - [同层关联 {#同层关联}](#同层关联)
+    - [下游应用 {#下游应用}](#下游应用)
 
 ---
 
-## 1. 概念定义 (Definitions) {#1-概念定义-definitions}
+## 1. 概念定义 (Definitions)
 
-### 1.1 流处理引擎谱系 {#11-流处理引擎谱系}
+### 1.1 流处理引擎谱系
 
 流处理引擎是实现**Dataflow Model**或相关并发模型的运行时系统。根据实现架构和一致性保证，可分为以下谱系：
 
@@ -100,9 +100,9 @@ graph TB
 
 ---
 
-### 1.2 引擎核心定义 {#12-引擎核心定义}
+### 1.2 引擎核心定义
 
-#### Def-K-04-01. Apache Flink {#def-k-04-01-apache-flink}
+#### Def-K-04-01. Apache Flink
 
 **形式化定义**（参见 [../../Struct/01-foundation/01.04-dataflow-model-formalization.md](../../Struct/01-foundation/01.04-dataflow-model-formalization.md)）：
 
@@ -127,7 +127,7 @@ $$
 
 ---
 
-#### Def-K-04-02. Kafka Streams {#def-k-04-02-kafka-streams}
+#### Def-K-04-02. Kafka Streams
 
 **形式化定义**：
 
@@ -152,7 +152,7 @@ $$
 
 ---
 
-#### Def-K-04-03. Spark Streaming (Structured Streaming) {#def-k-04-03-spark-streaming-structured-streaming}
+#### Def-K-04-03. Spark Streaming (Structured Streaming)
 
 **形式化定义**：
 
@@ -177,7 +177,7 @@ $$
 
 ---
 
-#### Def-K-04-04. Apache Storm {#def-k-04-04-apache-storm}
+#### Def-K-04-04. Apache Storm
 
 **形式化定义**：
 
@@ -202,7 +202,7 @@ $$
 
 ---
 
-#### Def-K-04-05. Pulsar Functions {#def-k-04-05-pulsar-functions}
+#### Def-K-04-05. Pulsar Functions
 
 **形式化定义**：
 
@@ -227,9 +227,9 @@ $$
 
 ---
 
-### 1.3 选型核心维度定义 {#13-选型核心维度定义}
+### 1.3 选型核心维度定义
 
-#### Def-K-04-06. 延迟特征 (Latency Profile) {#def-k-04-06-延迟特征-latency-profile}
+#### Def-K-04-06. 延迟特征 (Latency Profile)
 
 | 级别 | 延迟范围 | 适用场景 | 代表引擎 |
 |------|----------|----------|----------|
@@ -238,7 +238,7 @@ $$
 | **中等延迟** | 100ms - 1s | 日志处理、指标聚合 | Kafka Streams, Pulsar |
 | **高延迟** | > 1s | 离线分析、批量 ETL | Spark Streaming |
 
-#### Def-K-04-07. 状态管理能力 (State Management Capability) {#def-k-04-07-状态管理能力-state-management-capability}
+#### Def-K-04-07. 状态管理能力 (State Management Capability)
 
 | 级别 | 状态类型 | 容错机制 | 代表引擎 |
 |------|----------|----------|----------|
@@ -247,7 +247,7 @@ $$
 | **窗口状态** | 时间窗口状态 | Checkpoint 快照 | Flink |
 | **复杂状态** | 会话、CEP 模式 | 分布式快照 | Flink |
 
-#### Def-K-04-08. 一致性保证级别 (Consistency Guarantee Level) {#def-k-04-08-一致性保证级别-consistency-guarantee-level}
+#### Def-K-04-08. 一致性保证级别 (Consistency Guarantee Level)
 
 | 级别 | 语义 | 实现机制 | 代表引擎 |
 |------|------|----------|----------|
@@ -255,7 +255,7 @@ $$
 | **At-Least-Once** | 可能重复 | ACK 确认 | Storm |
 | **Exactly-Once** | 精确一次 | 分布式快照/事务 | Flink, Kafka Streams, Spark |
 
-#### Def-K-04-09. 表达能力层次映射 (Expressiveness Hierarchy Mapping) {#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping}
+#### Def-K-04-09. 表达能力层次映射 (Expressiveness Hierarchy Mapping)
 
 根据 [../../Struct/03-relationships/03.03-expressiveness-hierarchy.md](../../Struct/03-relationships/03.03-expressiveness-hierarchy.md) 的六层表达能力层次：
 
@@ -269,9 +269,9 @@ $$
 
 ---
 
-## 2. 属性推导 (Properties) {#2-属性推导-properties}
+## 2. 属性推导 (Properties)
 
-### Lemma-K-04-01. 延迟与吞吐的权衡上界 {#lemma-k-04-01-延迟与吞吐的权衡上界}
+### Lemma-K-04-01. 延迟与吞吐的权衡上界
 
 **陈述**：在流处理系统中，延迟（Latency）与吞吐（Throughput）存在理论权衡上界，由 Little's Law 约束：
 
@@ -292,7 +292,7 @@ $$
 
 ---
 
-### Lemma-K-04-02. 状态复杂度与容错开销的正相关 {#lemma-k-04-02-状态复杂度与容错开销的正相关}
+### Lemma-K-04-02. 状态复杂度与容错开销的正相关
 
 **陈述**：状态管理的复杂度与容错机制的开销呈正相关。
 
@@ -307,7 +307,7 @@ $$
 
 ---
 
-### Prop-K-04-01. Dataflow模型引擎的语义优势 {#prop-k-04-01-dataflow模型引擎的语义优势}
+### Prop-K-04-01. Dataflow模型引擎的语义优势
 
 **陈述**：基于严格 Dataflow 模型的引擎（Flink）在处理时间语义、窗口计算和乱序数据处理上具有语义优势。
 
@@ -322,7 +322,7 @@ $$
 
 ---
 
-### Prop-K-04-02. 微批处理的延迟下界 {#prop-k-04-02-微批处理的延迟下界}
+### Prop-K-04-02. 微批处理的延迟下界
 
 **陈述**：微批处理模型的延迟存在理论下界，由批间隔 $\Delta t$ 决定。
 
@@ -337,9 +337,9 @@ $$
 
 ---
 
-## 3. 关系建立 (Relations) {#3-关系建立-relations}
+## 3. 关系建立 (Relations)
 
-### 3.1 引擎与计算模型的关系 {#31-引擎与计算模型的关系}
+### 3.1 引擎与计算模型的关系
 
 ```mermaid
 graph TB
@@ -380,7 +380,7 @@ graph TB
     classDef serverless fill:#e1bee7,stroke:#6a1b9a
 ```
 
-### 3.2 表达能力层次映射 {#32-表达能力层次映射}
+### 3.2 表达能力层次映射
 
 根据 [../../Struct/03-relationships/03.03-expressiveness-hierarchy.md](../../Struct/03-relationships/03.03-expressiveness-hierarchy.md) 的 Thm-S-14-01：
 
@@ -398,7 +398,7 @@ graph TB
 - Flink $\approx$ Spark Streaming（图灵完备等价，语义侧重不同）
 - Kafka Streams $\perp$ Pulsar Functions（不可比较，架构差异）
 
-### 3.3 引擎间能力关系 {#33-引擎间能力关系}
+### 3.3 引擎间能力关系
 
 ```mermaid
 quadrantChart
@@ -415,11 +415,11 @@ quadrantChart
 
 ---
 
-## 4. 论证过程 (Argumentation) {#4-论证过程-argumentation}
+## 4. 论证过程 (Argumentation)
 
-### 4.1 六维选型对比矩阵 {#41-六维选型对比矩阵}
+### 4.1 六维选型对比矩阵
 
-#### 表 1: 核心性能对比矩阵 {#表-1-核心性能对比矩阵}
+#### 表 1: 核心性能对比矩阵
 
 | 维度 | Flink | Kafka Streams | Spark Streaming | Storm | Pulsar Functions |
 |------|-------|---------------|-----------------|-------|------------------|
@@ -430,7 +430,7 @@ quadrantChart
 | **SQL支持** | ✅ Flink SQL | ❌ KSQL (外部) | ✅ Spark SQL | ❌ 无 | ❌ 无 |
 | **生态集成** | 极丰富 | Kafka 生态 | Spark 生态 | 中等 | Pulsar 生态 |
 
-#### 表 2: 架构与部署对比矩阵 {#表-2-架构与部署对比矩阵}
+#### 表 2: 架构与部署对比矩阵
 
 | 维度 | Flink | Kafka Streams | Spark Streaming | Storm | Pulsar Functions |
 |------|-------|---------------|-----------------|-------|------------------|
@@ -440,7 +440,7 @@ quadrantChart
 | **K8s原生** | Operator 支持 | 有限 | Operator 支持 | 有限 | 原生支持 |
 | **云厂商支持** | Ververica/EMR | Confluent | Databricks/EMR | 有限 | StreamNative |
 
-#### 表 3: 开发体验对比矩阵 {#表-3-开发体验对比矩阵}
+#### 表 3: 开发体验对比矩阵
 
 | 维度 | Flink | Kafka Streams | Spark Streaming | Storm | Pulsar Functions |
 |------|-------|---------------|-----------------|-------|------------------|
@@ -450,9 +450,9 @@ quadrantChart
 | **调试工具** | Web UI/Metrics | 有限 | Spark UI | Storm UI | Pulsar Admin |
 | **社区活跃** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ |
 
-### 4.2 场景驱动的选型论证 {#42-场景驱动的选型论证}
+### 4.2 场景驱动的选型论证
 
-#### 论证 1: 为什么实时推荐系统应选择 Flink {#论证-1-为什么实时推荐系统应选择-flink}
+#### 论证 1: 为什么实时推荐系统应选择 Flink
 
 **场景需求**：
 
@@ -475,7 +475,7 @@ quadrantChart
 
 ---
 
-#### 论证 2: 为什么日志聚合应选择 Kafka Streams {#论证-2-为什么日志聚合应选择-kafka-streams}
+#### 论证 2: 为什么日志聚合应选择 Kafka Streams
 
 **场景需求**：
 
@@ -500,7 +500,7 @@ quadrantChart
 
 ---
 
-#### 论证 3: 为什么复杂事件处理(CEP)应选择 Flink {#论证-3-为什么复杂事件处理cep应选择-flink}
+#### 论证 3: 为什么复杂事件处理(CEP)应选择 Flink
 
 **场景需求**：
 
@@ -523,7 +523,7 @@ quadrantChart
 
 ---
 
-#### 论证 4: 为什么低延迟交易系统应选择 Storm/Flink {#论证-4-为什么低延迟交易系统应选择-stormflink}
+#### 论证 4: 为什么低延迟交易系统应选择 Storm/Flink
 
 **场景需求**：
 
@@ -543,7 +543,7 @@ quadrantChart
 
 **结论**：极端低延迟选择 Storm，延迟-一致性平衡选择 Flink。
 
-### 4.3 云原生能力对比 {#43-云原生能力对比}
+### 4.3 云原生能力对比
 
 | 能力 | Flink | Kafka Streams | Spark Streaming | Storm | Pulsar Functions |
 |------|-------|---------------|-----------------|-------|------------------|
@@ -555,9 +555,9 @@ quadrantChart
 
 ---
 
-## 5. 工程论证 (Engineering Argumentation) {#5-工程论证-engineering-argumentation}
+## 5. 工程论证 (Engineering Argumentation)
 
-### 5.1 迁移指南: 从 Spark Streaming 到 Flink {#51-迁移指南-从-spark-streaming-到-flink}
+### 5.1 迁移指南: 从 Spark Streaming 到 Flink
 
 **迁移动机**：
 
@@ -588,7 +588,7 @@ quadrantChart
 - 状态 TTL 配置需要调整
 - 监控指标体系需要重建
 
-### 5.2 成本效益分析框架 {#52-成本效益分析框架}
+### 5.2 成本效益分析框架
 
 **TCO（总拥有成本）模型**：
 
@@ -611,9 +611,9 @@ $$
 
 ---
 
-## 6. 实例验证 (Examples) {#6-实例验证-examples}
+## 6. 实例验证 (Examples)
 
-### 6.1 实例 1: 电商实时推荐系统选型 {#61-实例-1-电商实时推荐系统选型}
+### 6.1 实例 1: 电商实时推荐系统选型
 
 **场景描述**：
 
@@ -651,7 +651,7 @@ flowchart TD
 
 ---
 
-### 6.2 实例 2: 金融风控实时决策系统选型 {#62-实例-2-金融风控实时决策系统选型}
+### 6.2 实例 2: 金融风控实时决策系统选型
 
 **场景描述**：
 
@@ -687,7 +687,7 @@ env.enableCheckpointing(100, CheckpointingMode.EXACTLY_ONCE);
 
 ---
 
-### 6.3 实例 3: 物联网数据平台选型 {#63-实例-3-物联网数据平台选型}
+### 6.3 实例 3: 物联网数据平台选型
 
 **场景描述**：
 
@@ -725,9 +725,9 @@ graph LR
 
 ---
 
-### 6.4 反例分析 {#64-反例分析}
+### 6.4 反例分析
 
-#### 反例 1: 在低延迟场景误用 Spark Streaming {#反例-1-在低延迟场景误用-spark-streaming}
+#### 反例 1: 在低延迟场景误用 Spark Streaming
 
 **场景**：高频交易系统使用 Spark Streaming（微批 1秒）
 
@@ -743,7 +743,7 @@ graph LR
 
 ---
 
-#### 反例 2: 在复杂状态场景误用 Kafka Streams {#反例-2-在复杂状态场景误用-kafka-streams}
+#### 反例 2: 在复杂状态场景误用 Kafka Streams
 
 **场景**：实时会话分析使用 Kafka Streams，单用户状态 > 1GB
 
@@ -759,7 +759,7 @@ graph LR
 
 ---
 
-#### 反例 3: 在无 Kafka 环境使用 Kafka Streams {#反例-3-在无-kafka-环境使用-kafka-streams}
+#### 反例 3: 在无 Kafka 环境使用 Kafka Streams
 
 **场景**：使用 RabbitMQ 作为消息队列，却选择 Kafka Streams 作为处理引擎
 
@@ -775,9 +775,9 @@ graph LR
 
 ---
 
-## 7. 可视化 (Visualizations) {#7-可视化-visualizations}
+## 7. 可视化 (Visualizations)
 
-### 7.1 流处理引擎选型决策树 {#71-流处理引擎选型决策树}
+### 7.1 流处理引擎选型决策树
 
 ```mermaid
 flowchart TD
@@ -834,7 +834,7 @@ flowchart TD
     style PULSAR2 fill:#e1bee7,stroke:#6a1b9a
 ```
 
-### 7.2 引擎能力雷达图对比 {#72-引擎能力雷达图对比}
+### 7.2 引擎能力雷达图对比
 
 ```mermaid
 quadrantChart
@@ -849,7 +849,7 @@ quadrantChart
     "Pulsar Functions": [0.7, 0.35]
 ```
 
-### 7.3 场景-引擎映射矩阵 {#73-场景-引擎映射矩阵}
+### 7.3 场景-引擎映射矩阵
 
 | 场景 | 首选引擎 | 次选引擎 | 不推荐 |
 |------|----------|----------|--------|
@@ -866,7 +866,7 @@ quadrantChart
 
 ---
 
-## 8. 引用参考 (References) {#8-引用参考-references}
+## 8. 引用参考 (References)
 
 
 
@@ -880,21 +880,21 @@ quadrantChart
 
 ---
 
-## 关联文档 {#关联文档}
+## 关联文档
 
-### 上游依赖 {#上游依赖}
+### 上游依赖
 
 - [../../Struct/03-relationships/03.03-expressiveness-hierarchy.md](../../Struct/03-relationships/03.03-expressiveness-hierarchy.md) —— 表达能力层次理论
 - [../../Struct/01-foundation/01.04-dataflow-model-formalization.md](../../Struct/01-foundation/01.04-dataflow-model-formalization.md) —— Dataflow 模型形式化
 - [../01-concept-atlas/concurrency-paradigms-matrix.md](../01-concept-atlas/concurrency-paradigms-matrix.md) —— 并发范式对比
 
-### 同层关联 {#同层关联}
+### 同层关联
 
 - [../../Flink/](../../Flink/) —— Flink 专项深度文档
 - [../../Struct/](../../Struct/) —— 形式化理论文档
 - [./flink-vs-risingwave.md](./flink-vs-risingwave.md) —— Flink vs RisingWave深度对比
 
-### 下游应用 {#下游应用}
+### 下游应用
 
 - [../10-case-studies/00-INDEX.md](../10-case-studies/00-INDEX.md) —— 实际案例分析（待创建）
 - [../../ROADMAP.md](../../ROADMAP.md) —— 技术演进路线图（待创建）

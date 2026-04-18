@@ -1,75 +1,75 @@
-# Flink Checkpoint 机制深度剖析 (Checkpoint Mechanism Deep Dive) {#flink-checkpoint-机制深度剖析-checkpoint-mechanism-deep-dive}
+# Flink Checkpoint 机制深度剖析 (Checkpoint Mechanism Deep Dive)
 
 > 所属阶段: Flink/02-core-mechanisms | 前置依赖: [02.02-consistency-hierarchy.md](../../Struct/02-properties/02.02-consistency-hierarchy.md) | 形式化等级: L4
 
 ---
 
-## 目录 {#目录}
+## 目录
 
-- [Flink Checkpoint 机制深度剖析 (Checkpoint Mechanism Deep Dive) {#flink-checkpoint-机制深度剖析-checkpoint-mechanism-deep-dive}](#flink-checkpoint-机制深度剖析-checkpoint-mechanism-deep-dive-flink-checkpoint-机制深度剖析-checkpoint-mechanism-deep-dive)
-  - [目录 {#目录}](#目录-目录)
-  - [1. 概念定义 (Definitions) {#1-概念定义-definitions}](#1-概念定义-definitions-1-概念定义-definitions)
-    - [Def-F-02-01 (Checkpoint 核心抽象) {#def-f-02-01-checkpoint-核心抽象}](#def-f-02-01-checkpoint-核心抽象-def-f-02-01-checkpoint-核心抽象)
-    - [Def-F-02-02 (Checkpoint Barrier) {#def-f-02-02-checkpoint-barrier}](#def-f-02-02-checkpoint-barrier-def-f-02-02-checkpoint-barrier)
-    - [Def-F-02-03 (Aligned Checkpoint) {#def-f-02-03-aligned-checkpoint}](#def-f-02-03-aligned-checkpoint-def-f-02-03-aligned-checkpoint)
-    - [Def-F-02-04 (Unaligned Checkpoint) {#def-f-02-04-unaligned-checkpoint}](#def-f-02-04-unaligned-checkpoint-def-f-02-04-unaligned-checkpoint)
-    - [Def-F-02-05 (Incremental Checkpoint) {#def-f-02-05-incremental-checkpoint}](#def-f-02-05-incremental-checkpoint-def-f-02-05-incremental-checkpoint)
-    - [Def-F-02-06 (State Backend) {#def-f-02-06-state-backend}](#def-f-02-06-state-backend-def-f-02-06-state-backend)
-    - [Def-F-02-07 (Checkpoint 协调器) {#def-f-02-07-checkpoint-协调器}](#def-f-02-07-checkpoint-协调器-def-f-02-07-checkpoint-协调器)
-    - [Def-F-02-08 (Changelog State Backend) {#def-f-02-08-changelog-state-backend}](#def-f-02-08-changelog-state-backend-def-f-02-08-changelog-state-backend)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-F-02-01 (Barrier 对齐保证状态一致性) {#lemma-f-02-01-barrier-对齐保证状态一致性}](#lemma-f-02-01-barrier-对齐保证状态一致性-lemma-f-02-01-barrier-对齐保证状态一致性)
-    - [Lemma-F-02-02 (异步 Checkpoint 的低延迟特性) {#lemma-f-02-02-异步-checkpoint-的低延迟特性}](#lemma-f-02-02-异步-checkpoint-的低延迟特性-lemma-f-02-02-异步-checkpoint-的低延迟特性)
-    - [Lemma-F-02-03 (增量 Checkpoint 的存储优化) {#lemma-f-02-03-增量-checkpoint-的存储优化}](#lemma-f-02-03-增量-checkpoint-的存储优化-lemma-f-02-03-增量-checkpoint-的存储优化)
-    - [Prop-F-02-01 (Checkpoint 类型选择的权衡空间) {#prop-f-02-01-checkpoint-类型选择的权衡空间}](#prop-f-02-01-checkpoint-类型选择的权衡空间-prop-f-02-01-checkpoint-类型选择的权衡空间)
-  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations-3-关系建立-relations)
-    - [关系 1: Flink Checkpoint ↔ Chandy-Lamport 分布式快照 {#关系-1-flink-checkpoint--chandy-lamport-分布式快照}](#关系-1-flink-checkpoint--chandy-lamport-分布式快照-关系-1-flink-checkpoint--chandy-lamport-分布式快照)
-    - [关系 2: Checkpoint 机制 ⟹ Exactly-Once 语义 {#关系-2-checkpoint-机制--exactly-once-语义}](#关系-2-checkpoint-机制--exactly-once-语义-关系-2-checkpoint-机制--exactly-once-语义)
-    - [关系 3: State Backend 类型 ↔ 应用场景 {#关系-3-state-backend-类型--应用场景}](#关系-3-state-backend-类型--应用场景-关系-3-state-backend-类型--应用场景)
-  - [4. 论证过程 (Argumentation) {#4-论证过程-argumentation}](#4-论证过程-argumentation-4-论证过程-argumentation)
-    - [4.1 Checkpoint 架构：JM/TM 协调机制 {#41-checkpoint-架构jmtm-协调机制}](#41-checkpoint-架构jmtm-协调机制-41-checkpoint-架构jmtm-协调机制)
-    - [4.2 Aligned vs Unaligned：深度对比分析 {#42-aligned-vs-unaligned深度对比分析}](#42-aligned-vs-unaligned深度对比分析-42-aligned-vs-unaligned深度对比分析)
-      - [Aligned Checkpoint 工作流程 {#aligned-checkpoint-工作流程}](#aligned-checkpoint-工作流程-aligned-checkpoint-工作流程)
-      - [Unaligned Checkpoint 工作流程 {#unaligned-checkpoint-工作流程}](#unaligned-checkpoint-工作流程-unaligned-checkpoint-工作流程)
-    - [4.3 增量 Checkpoint 的工程实现 {#43-增量-checkpoint-的工程实现}](#43-增量-checkpoint-的工程实现-43-增量-checkpoint-的工程实现)
-      - [4.3.1 RocksDB 增量 Checkpoint 原理 {#431-rocksdb-增量-checkpoint-原理}](#431-rocksdb-增量-checkpoint-原理-431-rocksdb-增量-checkpoint-原理)
-      - [配置参数 {#配置参数}](#配置参数-配置参数)
-    - [4.4 State Backend 快照流程详解 {#44-state-backend-快照流程详解}](#44-state-backend-快照流程详解-44-state-backend-快照流程详解)
-      - [HashMapStateBackend 快照流程 {#hashmapstatebackend-快照流程}](#hashmapstatebackend-快照流程-hashmapstatebackend-快照流程)
-      - [RocksDBStateBackend 快照流程 {#rocksdbstatebackend-快照流程}](#rocksdbstatebackend-快照流程-rocksdbstatebackend-快照流程)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument)
-    - [Thm-F-02-01 (Checkpoint 恢复后系统状态等价性) {#thm-f-02-01-checkpoint-恢复后系统状态等价性}](#thm-f-02-01-checkpoint-恢复后系统状态等价性-thm-f-02-01-checkpoint-恢复后系统状态等价性)
-    - [Thm-F-02-02 (增量 Checkpoint 完备性) {#thm-f-02-02-增量-checkpoint-完备性}](#thm-f-02-02-增量-checkpoint-完备性-thm-f-02-02-增量-checkpoint-完备性)
-    - [Thm-F-02-01 源码验证 {#thm-f-02-01-源码验证}](#thm-f-02-01-源码验证-thm-f-02-01-源码验证)
-    - [Thm-F-02-02 源码验证 {#thm-f-02-02-源码验证}](#thm-f-02-02-源码验证-thm-f-02-02-源码验证)
-  - [6. 实例验证 (Examples) {#6-实例验证-examples}](#6-实例验证-examples-6-实例验证-examples)
-    - [6.1 配置示例：Aligned Checkpoint {#61-配置示例aligned-checkpoint}](#61-配置示例aligned-checkpoint-61-配置示例aligned-checkpoint)
-    - [6.2 配置示例：Unaligned Checkpoint {#62-配置示例unaligned-checkpoint}](#62-配置示例unaligned-checkpoint-62-配置示例unaligned-checkpoint)
-    - [6.3 配置示例：Incremental Checkpoint {#63-配置示例incremental-checkpoint}](#63-配置示例incremental-checkpoint-63-配置示例incremental-checkpoint)
-    - [6.4 配置示例：Changelog State Backend {#64-配置示例changelog-state-backend}](#64-配置示例changelog-state-backend-64-配置示例changelog-state-backend)
-    - [6.5 故障恢复实战案例 {#65-故障恢复实战案例}](#65-故障恢复实战案例-65-故障恢复实战案例)
-    - [7.2 State Backend 快照流程图 {#72-state-backend-快照流程图}](#72-state-backend-快照流程图-72-state-backend-快照流程图)
-    - [7.3 Checkpoint 类型对比决策树 {#73-checkpoint-类型对比决策树}](#73-checkpoint-类型对比决策树-73-checkpoint-类型对比决策树)
-    - [7.4 架构层次关联图 {#74-架构层次关联图}](#74-架构层次关联图-74-架构层次关联图)
-    - [8.2 关键监控指标 {#82-关键监控指标}](#82-关键监控指标-82-关键监控指标)
-      - [Flink 原生指标 {#flink-原生指标}](#flink-原生指标-flink-原生指标)
-      - [JVM 和系统指标 {#jvm-和系统指标}](#jvm-和系统指标-jvm-和系统指标)
-      - [自定义监控告警 {#自定义监控告警}](#自定义监控告警-自定义监控告警)
-    - [8.3 常见问题诊断 {#83-常见问题诊断}](#83-常见问题诊断-83-常见问题诊断)
-      - [问题 1：Checkpoint 频繁超时 {#问题-1checkpoint-频繁超时}](#问题-1checkpoint-频繁超时-问题-1checkpoint-频繁超时)
-      - [问题 2：Checkpoint 对齐时间过长 {#问题-2checkpoint-对齐时间过长}](#问题-2checkpoint-对齐时间过长-问题-2checkpoint-对齐时间过长)
-      - [问题 3：状态恢复缓慢 {#问题-3状态恢复缓慢}](#问题-3状态恢复缓慢-问题-3状态恢复缓慢)
-  - [9. 引用参考 (References) {#9-引用参考-references}](#9-引用参考-references-9-引用参考-references)
+- [Flink Checkpoint 机制深度剖析 (Checkpoint Mechanism Deep Dive)](#flink-checkpoint-机制深度剖析-checkpoint-mechanism-deep-dive)
+  - [目录](#目录)
+  - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
+    - [Def-F-02-01 (Checkpoint 核心抽象)](#def-f-02-01-checkpoint-核心抽象)
+    - [Def-F-02-02 (Checkpoint Barrier)](#def-f-02-02-checkpoint-barrier)
+    - [Def-F-02-03 (Aligned Checkpoint)](#def-f-02-03-aligned-checkpoint)
+    - [Def-F-02-04 (Unaligned Checkpoint)](#def-f-02-04-unaligned-checkpoint)
+    - [Def-F-02-05 (Incremental Checkpoint)](#def-f-02-05-incremental-checkpoint)
+    - [Def-F-02-06 (State Backend)](#def-f-02-06-state-backend)
+    - [Def-F-02-07 (Checkpoint 协调器)](#def-f-02-07-checkpoint-协调器)
+    - [Def-F-02-08 (Changelog State Backend)](#def-f-02-08-changelog-state-backend)
+  - [2. 属性推导 (Properties)](#2-属性推导-properties)
+    - [Lemma-F-02-01 (Barrier 对齐保证状态一致性)](#lemma-f-02-01-barrier-对齐保证状态一致性)
+    - [Lemma-F-02-02 (异步 Checkpoint 的低延迟特性)](#lemma-f-02-02-异步-checkpoint-的低延迟特性)
+    - [Lemma-F-02-03 (增量 Checkpoint 的存储优化)](#lemma-f-02-03-增量-checkpoint-的存储优化)
+    - [Prop-F-02-01 (Checkpoint 类型选择的权衡空间)](#prop-f-02-01-checkpoint-类型选择的权衡空间)
+  - [3. 关系建立 (Relations)](#3-关系建立-relations)
+    - [关系 1: Flink Checkpoint ↔ Chandy-Lamport 分布式快照](#关系-1-flink-checkpoint-chandy-lamport-分布式快照)
+    - [关系 2: Checkpoint 机制 ⟹ Exactly-Once 语义](#关系-2-checkpoint-机制-exactly-once-语义)
+    - [关系 3: State Backend 类型 ↔ 应用场景](#关系-3-state-backend-类型-应用场景)
+  - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
+    - [4.1 Checkpoint 架构：JM/TM 协调机制](#41-checkpoint-架构jmtm-协调机制)
+    - [4.2 Aligned vs Unaligned：深度对比分析](#42-aligned-vs-unaligned深度对比分析)
+      - [Aligned Checkpoint 工作流程](#aligned-checkpoint-工作流程)
+      - [Unaligned Checkpoint 工作流程](#unaligned-checkpoint-工作流程)
+    - [4.3 增量 Checkpoint 的工程实现](#43-增量-checkpoint-的工程实现)
+      - [4.3.1 RocksDB 增量 Checkpoint 原理](#431-rocksdb-增量-checkpoint-原理)
+      - [配置参数](#配置参数)
+    - [4.4 State Backend 快照流程详解](#44-state-backend-快照流程详解)
+      - [HashMapStateBackend 快照流程](#hashmapstatebackend-快照流程)
+      - [RocksDBStateBackend 快照流程](#rocksdbstatebackend-快照流程)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+    - [Thm-F-02-01 (Checkpoint 恢复后系统状态等价性)](#thm-f-02-01-checkpoint-恢复后系统状态等价性)
+    - [Thm-F-02-02 (增量 Checkpoint 完备性)](#thm-f-02-02-增量-checkpoint-完备性)
+    - [Thm-F-02-01 源码验证](#thm-f-02-01-源码验证)
+    - [Thm-F-02-02 源码验证](#thm-f-02-02-源码验证)
+  - [6. 实例验证 (Examples)](#6-实例验证-examples)
+    - [6.1 配置示例：Aligned Checkpoint](#61-配置示例aligned-checkpoint)
+    - [6.2 配置示例：Unaligned Checkpoint](#62-配置示例unaligned-checkpoint)
+    - [6.3 配置示例：Incremental Checkpoint](#63-配置示例incremental-checkpoint)
+    - [6.4 配置示例：Changelog State Backend](#64-配置示例changelog-state-backend)
+    - [6.5 故障恢复实战案例](#65-故障恢复实战案例)
+    - [7.2 State Backend 快照流程图](#72-state-backend-快照流程图)
+    - [7.3 Checkpoint 类型对比决策树](#73-checkpoint-类型对比决策树)
+    - [7.4 架构层次关联图](#74-架构层次关联图)
+    - [8.2 关键监控指标](#82-关键监控指标)
+      - [Flink 原生指标](#flink-原生指标)
+      - [JVM 和系统指标](#jvm-和系统指标)
+      - [自定义监控告警](#自定义监控告警)
+    - [8.3 常见问题诊断](#83-常见问题诊断)
+      - [问题 1：Checkpoint 频繁超时](#问题-1checkpoint-频繁超时)
+      - [问题 2：Checkpoint 对齐时间过长](#问题-2checkpoint-对齐时间过长)
+      - [问题 3：状态恢复缓慢](#问题-3状态恢复缓慢)
+  - [9. 引用参考 (References)](#9-引用参考-references)
 
 ---
 
-## 1. 概念定义 (Definitions) {#1-概念定义-definitions}
+## 1. 概念定义 (Definitions)
 
 本节建立 Flink Checkpoint 机制的严格形式化定义，为后续分析奠定理论基础。所有定义均与 [02.02-consistency-hierarchy.md](../../Struct/02-properties/02.02-consistency-hierarchy.md) 中的语义层级定义保持一致[^1][^2]。
 
 ---
 
-### Def-F-02-01 (Checkpoint 核心抽象) {#def-f-02-01-checkpoint-核心抽象}
+### Def-F-02-01 (Checkpoint 核心抽象)
 
 **Checkpoint** 是分布式流处理作业在某一时刻的全局一致状态快照，形式化定义为：
 
@@ -95,7 +95,7 @@ $$
 
 ---
 
-### Def-F-02-02 (Checkpoint Barrier) {#def-f-02-02-checkpoint-barrier}
+### Def-F-02-02 (Checkpoint Barrier)
 
 **Barrier** 是注入到数据流中的特殊控制事件，用于分隔不同 Checkpoint 的数据边界：
 
@@ -119,7 +119,7 @@ $$
 
 ---
 
-### Def-F-02-03 (Aligned Checkpoint) {#def-f-02-03-aligned-checkpoint}
+### Def-F-02-03 (Aligned Checkpoint)
 
 **Aligned Checkpoint**（对齐 Checkpoint）是指算子在收到**所有**输入通道的 Barrier 后才触发状态快照的机制：
 
@@ -135,7 +135,7 @@ $$
 
 ---
 
-### Def-F-02-04 (Unaligned Checkpoint) {#def-f-02-04-unaligned-checkpoint}
+### Def-F-02-04 (Unaligned Checkpoint)
 
 **Unaligned Checkpoint**（非对齐 Checkpoint）允许算子在收到**任意**输入通道的 Barrier 时立即触发快照，并将其他通道未处理的记录（in-flight data）作为状态的一部分保存：
 
@@ -151,7 +151,7 @@ $$
 
 ---
 
-### Def-F-02-05 (Incremental Checkpoint) {#def-f-02-05-incremental-checkpoint}
+### Def-F-02-05 (Incremental Checkpoint)
 
 **Incremental Checkpoint**（增量 Checkpoint）仅捕获自上次 Checkpoint 以来发生变化的状态部分：
 
@@ -167,7 +167,7 @@ $$
 
 ---
 
-### Def-F-02-06 (State Backend) {#def-f-02-06-state-backend}
+### Def-F-02-06 (State Backend)
 
 **State Backend** 是负责状态存储、访问和快照持久化的运行时组件：
 
@@ -200,7 +200,7 @@ interface StateBackend {
 
 ---
 
-### Def-F-02-07 (Checkpoint 协调器) {#def-f-02-07-checkpoint-协调器}
+### Def-F-02-07 (Checkpoint 协调器)
 
 **Checkpoint Coordinator** 是 JobManager 中负责全局 Checkpoint 生命周期管理的组件：
 
@@ -215,7 +215,7 @@ $$
 3. 管理 Checkpoint 超时和失败处理
 4. 维护已完成 Checkpoint 的元数据[^1][^4]
 
-### Def-F-02-08 (Changelog State Backend) {#def-f-02-08-changelog-state-backend}
+### Def-F-02-08 (Changelog State Backend)
 
 **Changelog State Backend** 是 Flink 1.15+ 引入的状态后端增强机制，通过将状态变更实时物化到分布式存储，实现秒级恢复[^7]：
 
@@ -232,11 +232,11 @@ $$
 **官方配置** (flink-conf.yaml):
 
 ```yaml
-# 启用 Changelog State Backend {#启用-changelog-state-backend}
+# 启用 Changelog State Backend
 state.backend.changelog.enabled: true
 state.backend.changelog.storage: filesystem
 
-# 物化配置 {#物化配置}
+# 物化配置
 execution.checkpointing.max-concurrent-checkpoints: 1
 state.backend.changelog.periodic-materialization.interval: 10min
 state.backend.changelog.materialization.max-concurrent: 1
@@ -260,13 +260,13 @@ state.backend.changelog.materialization.max-concurrent: 1
 
 ---
 
-## 2. 属性推导 (Properties) {#2-属性推导-properties}
+## 2. 属性推导 (Properties)
 
 从第 1 节的定义出发，本节推导 Checkpoint 机制的核心性质。
 
 ---
 
-### Lemma-F-02-01 (Barrier 对齐保证状态一致性) {#lemma-f-02-01-barrier-对齐保证状态一致性}
+### Lemma-F-02-01 (Barrier 对齐保证状态一致性)
 
 **陈述**：若算子 $t$ 的所有输入通道均已收到 $Barrier(n)$，则 $t$ 在快照时刻的状态 $S_t^{(n)}$ 与输入流中截止到 $Barrier(n)$ 的数据所诱导的状态一致。
 
@@ -282,7 +282,7 @@ state.backend.changelog.materialization.max-concurrent: 1
 
 ---
 
-### Lemma-F-02-02 (异步 Checkpoint 的低延迟特性) {#lemma-f-02-02-异步-checkpoint-的低延迟特性}
+### Lemma-F-02-02 (异步 Checkpoint 的低延迟特性)
 
 **陈述**：在异步 Checkpoint 模式下，算子处理数据的延迟不受状态快照持久化时间的影响。
 
@@ -297,7 +297,7 @@ state.backend.changelog.materialization.max-concurrent: 1
 
 ---
 
-### Lemma-F-02-03 (增量 Checkpoint 的存储优化) {#lemma-f-02-03-增量-checkpoint-的存储优化}
+### Lemma-F-02-03 (增量 Checkpoint 的存储优化)
 
 **陈述**：对于基于 RocksDB 的增量 Checkpoint，第 $n$ 次 Checkpoint 的存储开销 $Storage(n)$ 满足：
 
@@ -317,7 +317,7 @@ $$
 
 ---
 
-### Prop-F-02-01 (Checkpoint 类型选择的权衡空间) {#prop-f-02-01-checkpoint-类型选择的权衡空间}
+### Prop-F-02-01 (Checkpoint 类型选择的权衡空间)
 
 **陈述**：Aligned、Unaligned、Incremental、Changelog 四种 Checkpoint 机制在延迟、吞吐、存储、恢复时间、一致性保证五个维度上存在以下权衡关系：
 
@@ -343,13 +343,13 @@ $$
 
 ---
 
-## 3. 关系建立 (Relations) {#3-关系建立-relations}
+## 3. 关系建立 (Relations)
 
 本节建立 Checkpoint 机制与分布式系统理论、一致性语义以及工程实践之间的映射关系。
 
 ---
 
-### 关系 1: Flink Checkpoint ↔ Chandy-Lamport 分布式快照 {#关系-1-flink-checkpoint--chandy-lamport-分布式快照}
+### 关系 1: Flink Checkpoint ↔ Chandy-Lamport 分布式快照
 
 **论证**：
 
@@ -378,7 +378,7 @@ $$
 
 ---
 
-### 关系 2: Checkpoint 机制 ⟹ Exactly-Once 语义 {#关系-2-checkpoint-机制--exactly-once-语义}
+### 关系 2: Checkpoint 机制 ⟹ Exactly-Once 语义
 
 **论证**：
 
@@ -402,7 +402,7 @@ $$
 
 ---
 
-### 关系 3: State Backend 类型 ↔ 应用场景 {#关系-3-state-backend-类型--应用场景}
+### 关系 3: State Backend 类型 ↔ 应用场景
 
 **论证**：
 
@@ -418,13 +418,13 @@ $$
 
 ---
 
-## 4. 论证过程 (Argumentation) {#4-论证过程-argumentation}
+## 4. 论证过程 (Argumentation)
 
 本节深入分析 Checkpoint 机制的核心工程实现细节。
 
 ---
 
-### 4.1 Checkpoint 架构：JM/TM 协调机制 {#41-checkpoint-架构jmtm-协调机制}
+### 4.1 Checkpoint 架构：JM/TM 协调机制
 
 Flink Checkpoint 采用**主从协调**架构，由 JobManager (JM) 上的 CheckpointCoordinator 与 TaskManager (TM) 上的 Checkpoint 任务协作完成：
 
@@ -464,9 +464,9 @@ JM (CheckpointCoordinator)                    TM (Task with State)
 
 ---
 
-### 4.2 Aligned vs Unaligned：深度对比分析 {#42-aligned-vs-unaligned深度对比分析}
+### 4.2 Aligned vs Unaligned：深度对比分析
 
-#### Aligned Checkpoint 工作流程 {#aligned-checkpoint-工作流程}
+#### Aligned Checkpoint 工作流程
 
 1. 算子维护每个输入通道的 Barrier 到达状态
 2. 收到 Barrier $n$ 的通道停止处理，数据缓存
@@ -484,7 +484,7 @@ JM (CheckpointCoordinator)                    TM (Task with State)
 - 对齐等待引入额外延迟
 - 在反压场景下，Barrier 传播被阻塞，Checkpoint 超时风险增加
 
-#### Unaligned Checkpoint 工作流程 {#unaligned-checkpoint-工作流程}
+#### Unaligned Checkpoint 工作流程
 
 1. 算子收到任意输入通道的 Barrier $n$ 立即触发快照
 2. 将其他通道未处理的记录（in-flight）作为状态保存
@@ -504,9 +504,9 @@ JM (CheckpointCoordinator)                    TM (Task with State)
 
 ---
 
-### 4.3 增量 Checkpoint 的工程实现 {#43-增量-checkpoint-的工程实现}
+### 4.3 增量 Checkpoint 的工程实现
 
-#### 4.3.1 RocksDB 增量 Checkpoint 原理 {#431-rocksdb-增量-checkpoint-原理}
+#### 4.3.1 RocksDB 增量 Checkpoint 原理
 
 基于 RocksDB 的 LSM-Tree 架构特性：
 
@@ -532,7 +532,7 @@ $$
 S_{recovered} = Base \cup \Delta_1 \cup \Delta_2 \cup \cdots \cup \Delta_n
 $$
 
-#### 配置参数 {#配置参数}
+#### 配置参数
 
 ```java
 // 启用增量 Checkpoint
@@ -551,9 +551,9 @@ DefaultConfigurableStateBackend stateBackend = new EmbeddedRocksDBStateBackend(t
 
 ---
 
-### 4.4 State Backend 快照流程详解 {#44-state-backend-快照流程详解}
+### 4.4 State Backend 快照流程详解
 
-#### HashMapStateBackend 快照流程 {#hashmapstatebackend-快照流程}
+#### HashMapStateBackend 快照流程
 
 ```
 [同步阶段]
@@ -575,7 +575,7 @@ DefaultConfigurableStateBackend stateBackend = new EmbeddedRocksDBStateBackend(t
 
 **同步阶段耗时**：与状态条目数成正比，$O(|S|)$
 
-#### RocksDBStateBackend 快照流程 {#rocksdbstatebackend-快照流程}
+#### RocksDBStateBackend 快照流程
 
 ```
 [同步阶段]
@@ -599,9 +599,9 @@ DefaultConfigurableStateBackend stateBackend = new EmbeddedRocksDBStateBackend(t
 
 ---
 
-## 5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}
+## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
 
-### Thm-F-02-01 (Checkpoint 恢复后系统状态等价性) {#thm-f-02-01-checkpoint-恢复后系统状态等价性}
+### Thm-F-02-01 (Checkpoint 恢复后系统状态等价性)
 
 **陈述**：设系统在执行过程中于时刻 $\tau_f$ 发生故障，最后一个成功完成的 Checkpoint 为 $CP_n$。则从 $CP_n$ 恢复并 Replay 完成后，系统在观测上等价于故障前某个 consistent cut $C$ 的延续，其中 $C$ 对应于 $CP_n$ 捕获的全局状态。
 
@@ -644,7 +644,7 @@ $$
 
 ---
 
-### Thm-F-02-02 (增量 Checkpoint 完备性) {#thm-f-02-02-增量-checkpoint-完备性}
+### Thm-F-02-02 (增量 Checkpoint 完备性)
 
 **陈述**：设 $Base$ 为某次全量 Checkpoint 捕获的状态集合，$\Delta_1, \Delta_2, \ldots, \Delta_n$ 为后续 $n$ 次增量 Checkpoint 捕获的增量状态集合。则第 $n$ 次增量 Checkpoint 恢复后的状态 $S_{restore}$ 满足：
 
@@ -695,7 +695,7 @@ RocksDB 的 manifest 文件记录了所有活跃 SST 文件的元数据。增量
 
 ---
 
-### Thm-F-02-01 源码验证 {#thm-f-02-01-源码验证}
+### Thm-F-02-01 源码验证
 
 **定理**: Checkpoint 恢复后系统状态等价性
 
@@ -784,7 +784,7 @@ private void restoreOperatorState(
 
 ---
 
-### Thm-F-02-02 源码验证 {#thm-f-02-02-源码验证}
+### Thm-F-02-02 源码验证
 
 **定理**: 增量 Checkpoint 完备性
 
@@ -874,9 +874,9 @@ public class RocksDBStateUploader extends StateUploader {
 
 ---
 
-## 6. 实例验证 (Examples) {#6-实例验证-examples}
+## 6. 实例验证 (Examples)
 
-### 6.1 配置示例：Aligned Checkpoint {#61-配置示例aligned-checkpoint}
+### 6.1 配置示例：Aligned Checkpoint
 
 ```java
 
@@ -910,7 +910,7 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
 
 ---
 
-### 6.2 配置示例：Unaligned Checkpoint {#62-配置示例unaligned-checkpoint}
+### 6.2 配置示例：Unaligned Checkpoint
 
 ```java
 
@@ -937,7 +937,7 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
 
 ---
 
-### 6.3 配置示例：Incremental Checkpoint {#63-配置示例incremental-checkpoint}
+### 6.3 配置示例：Incremental Checkpoint
 
 ```java
 
@@ -958,7 +958,7 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
 
 ---
 
-### 6.4 配置示例：Changelog State Backend {#64-配置示例changelog-state-backend}
+### 6.4 配置示例：Changelog State Backend
 
 ```java
 
@@ -995,7 +995,7 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
 
 ---
 
-### 6.5 故障恢复实战案例 {#65-故障恢复实战案例}
+### 6.5 故障恢复实战案例
 
 // 使用 RocksDB State Backend，启用增量 Checkpoint
 // 第二个参数 true 表示启用增量
@@ -1054,9 +1054,9 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
 
 ---
 
-## 7. 可视化 (Visualizations) {#7-可视化-visualizations}
+## 7. 可视化 (Visualizations)
 
-### 7.1 Checkpoint 生命周期时序图 {#71-checkpoint-生命周期时序图}
+### 7.1 Checkpoint 生命周期时序图
 
 ```mermaid
 sequenceDiagram
@@ -1111,7 +1111,7 @@ sequenceDiagram
 
 ---
 
-### 7.2 State Backend 快照流程图 {#72-state-backend-快照流程图}
+### 7.2 State Backend 快照流程图
 
 ```mermaid
 flowchart TD
@@ -1153,7 +1153,7 @@ flowchart TD
 
 ---
 
-### 7.3 Checkpoint 类型对比决策树 {#73-checkpoint-类型对比决策树}
+### 7.3 Checkpoint 类型对比决策树
 
 ```mermaid
 flowchart TD
@@ -1191,7 +1191,7 @@ flowchart TD
 
 ---
 
-### 7.4 架构层次关联图 {#74-架构层次关联图}
+### 7.4 架构层次关联图
 
 ```mermaid
 graph TB
@@ -1243,11 +1243,11 @@ graph TB
 
 ---
 
-## 8. 调优建议与监控指标 {#8-调优建议与监控指标}
+## 8. 调优建议与监控指标
 
-### 8.1 Checkpoint 调优最佳实践 {#81-checkpoint-调优最佳实践}
+### 8.1 Checkpoint 调优最佳实践
 
-#### 基础配置原则 {#基础配置原则}
+#### 基础配置原则
 
 | 参数 | 推荐值 | 说明 |
 |------|-------|------|
@@ -1256,7 +1256,7 @@ graph TB
 | `minPauseBetweenCheckpoints` | 500ms - 5s | 保证数据处理时间片 |
 | `maxConcurrentCheckpoints` | 1 | 通常单并发即可 |
 
-#### 大状态作业调优 {#大状态作业调优}
+#### 大状态作业调优
 
 **问题**:状态 > 10GB 时,Checkpoint 容易超时。
 
@@ -1285,7 +1285,7 @@ graph TB
    env.getCheckpointConfig().setPreferCheckpointForRecovery(true);
    ```text
 
-#### 低延迟作业调优 {#低延迟作业调优}
+#### 低延迟作业调优
 
 **问题**:Checkpoint 对齐等待增加延迟。
 
@@ -1313,9 +1313,9 @@ import org.apache.flink.streaming.api.CheckpointingMode;
 
 ---
 
-### 8.2 关键监控指标 {#82-关键监控指标}
+### 8.2 关键监控指标
 
-#### Flink 原生指标 {#flink-原生指标}
+#### Flink 原生指标
 
 | 指标名称 | 类型 | 健康阈值 | 说明 |
 |---------|------|---------|------|
@@ -1326,7 +1326,7 @@ import org.apache.flink.streaming.api.CheckpointingMode;
 | `lastCheckpointFullSize` | Gauge | 趋势监控 | 全量 Checkpoint 大小 |
 | `lastCheckpointIncrementSize` | Gauge | 趋势监控 | 增量 Checkpoint 大小 |
 
-#### JVM 和系统指标 {#jvm-和系统指标}
+#### JVM 和系统指标
 
 | 指标名称 | 类型 | 健康阈值 | 说明 |
 |---------|------|---------|------|
@@ -1335,10 +1335,10 @@ import org.apache.flink.streaming.api.CheckpointingMode;
 | `RocksDB.BlockCacheUsage` | Gauge | < 80% BlockCache | RocksDB 缓存使用 |
 | `RocksDB.EstimatedTableReadersMem` | Gauge | 趋势监控 | SST 文件索引内存 |
 
-#### 自定义监控告警 {#自定义监控告警}
+#### 自定义监控告警
 
 ```yaml
-# Prometheus Alert 示例 {#prometheus-alert-示例}
+# Prometheus Alert 示例
 - alert: FlinkCheckpointTimeout
   expr: |
     flink_jobmanager_checkpoint_duration_time >
@@ -1361,9 +1361,9 @@ import org.apache.flink.streaming.api.CheckpointingMode;
 
 ---
 
-### 8.3 常见问题诊断 {#83-常见问题诊断}
+### 8.3 常见问题诊断
 
-#### 问题 1:Checkpoint 频繁超时 {#问题-1checkpoint-频繁超时}
+#### 问题 1:Checkpoint 频繁超时
 
 **症状**:`numberOfFailedCheckpoints` 持续增长,作业日志显示 `Checkpoint expired`。
 
@@ -1379,7 +1379,7 @@ import org.apache.flink.streaming.api.CheckpointingMode;
 - 网络瓶颈:增加 `checkpointTimeout` 或优化网络
 - Compaction 干扰:调整 RocksDB `maxBackgroundJobs`
 
-#### 问题 2:Checkpoint 对齐时间过长 {#问题-2checkpoint-对齐时间过长}
+#### 问题 2:Checkpoint 对齐时间过长
 
 **症状**:`checkpointAlignmentTime` 持续增加,作业出现反压。
 
@@ -1394,7 +1394,7 @@ import org.apache.flink.streaming.api.CheckpointingMode;
 - 解决数据倾斜(重新分区键)
 - 增加算子并行度
 
-#### 问题 3:状态恢复缓慢 {#问题-3状态恢复缓慢}
+#### 问题 3:状态恢复缓慢
 
 **症状**:故障恢复时间长,影响业务可用性。
 
@@ -1411,7 +1411,7 @@ import org.apache.flink.streaming.api.CheckpointingMode;
 
 ---
 
-## 9. 引用参考 (References) {#9-引用参考-references}
+## 9. 引用参考 (References)
 
 [^1]: Apache Flink Documentation, "Checkpointing", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/checkpointing/>
 

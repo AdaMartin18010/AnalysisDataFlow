@@ -17,13 +17,13 @@
     - [Lemma-K-05-02: 理论保持性引理](#lemma-k-05-02-理论保持性引理)
     - [Prop-K-05-01: 语义等价性命题](#prop-k-05-01-语义等价性命题)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [映射 1: Dataflow 图 → Flink DataStream API {#映射-1-dataflow-图--flink-datastream-api}](#映射-1-dataflow-图--flink-datastream-api-映射-1-dataflow-图--flink-datastream-api)
-    - [映射 2: Watermark 单调性 → Flink WatermarkStrategy {#映射-2-watermark-单调性--flink-watermarkstrategy}](#映射-2-watermark-单调性--flink-watermarkstrategy-映射-2-watermark-单调性--flink-watermarkstrategy)
-    - [映射 3: Checkpoint Barrier → Flink CheckpointCoordinator {#映射-3-checkpoint-barrier--flink-checkpointcoordinator}](#映射-3-checkpoint-barrier--flink-checkpointcoordinator-映射-3-checkpoint-barrier--flink-checkpointcoordinator)
-    - [映射 4: 一致割集 → Flink 全局状态快照 {#映射-4-一致割集--flink-全局状态快照}](#映射-4-一致割集--flink-全局状态快照-映射-4-一致割集--flink-全局状态快照)
-    - [映射 5: Exactly-Once 语义 → Flink 2PC + 可重放 Source {#映射-5-exactly-once-语义--flink-2pc--可重放-source}](#映射-5-exactly-once-语义--flink-2pc--可重放-source-映射-5-exactly-once-语义--flink-2pc--可重放-source)
-    - [映射 6: Actor 模型 → Flink Actor 运行时 {#映射-6-actor-模型--flink-actor-运行时}](#映射-6-actor-模型--flink-actor-运行时-映射-6-actor-模型--flink-actor-运行时)
-    - [映射 7: 类型安全 → Flink TypeInformation 系统 {#映射-7-类型安全--flink-typeinformation-系统}](#映射-7-类型安全--flink-typeinformation-系统-映射-7-类型安全--flink-typeinformation-系统)
+    - [映射 1: Dataflow 图 → Flink DataStream API {#映射-1-dataflow-图--flink-datastream-api}](#映射-1-dataflow-图--flink-datastream-api)
+    - [映射 2: Watermark 单调性 → Flink WatermarkStrategy {#映射-2-watermark-单调性--flink-watermarkstrategy}](#映射-2-watermark-单调性--flink-watermarkstrategy)
+    - [映射 3: Checkpoint Barrier → Flink CheckpointCoordinator {#映射-3-checkpoint-barrier--flink-checkpointcoordinator}](#映射-3-checkpoint-barrier--flink-checkpointcoordinator)
+    - [映射 4: 一致割集 → Flink 全局状态快照 {#映射-4-一致割集--flink-全局状态快照}](#映射-4-一致割集--flink-全局状态快照)
+    - [映射 5: Exactly-Once 语义 → Flink 2PC + 可重放 Source {#映射-5-exactly-once-语义--flink-2pc--可重放-source}](#映射-5-exactly-once-语义--flink-2pc--可重放-source)
+    - [映射 6: Actor 模型 → Flink Actor 运行时 {#映射-6-actor-模型--flink-actor-运行时}](#映射-6-actor-模型--flink-actor-运行时)
+    - [映射 7: 类型安全 → Flink TypeInformation 系统 {#映射-7-类型安全--flink-typeinformation-系统}](#映射-7-类型安全--flink-typeinformation-系统)
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [4.1 映射正确性分析](#41-映射正确性分析)
     - [4.2 实现近似性与形式化间隙](#42-实现近似性与形式化间隙)
@@ -182,7 +182,7 @@ $$
 
 ---
 
-### 映射 1: Dataflow 图 → Flink DataStream API {#映射-1-dataflow-图--flink-datastream-api}
+### 映射 1: Dataflow 图 → Flink DataStream API
 
 **形式化定义** ([Def-S-04-01](../../Struct/01-foundation/01.04-dataflow-model-formalization.md)):
 
@@ -241,7 +241,7 @@ windowed.addSink(new KafkaSink<>("output-topic"))
 
 ---
 
-### 映射 2: Watermark 单调性 → Flink WatermarkStrategy {#映射-2-watermark-单调性--flink-watermarkstrategy}
+### 映射 2: Watermark 单调性 → Flink WatermarkStrategy
 
 **形式化定义** ([Def-S-04-04](../../Struct/01-foundation/01.04-dataflow-model-formalization.md), [Lemma-S-04-02](../../Struct/01-foundation/01.04-dataflow-model-formalization.md)):
 
@@ -288,7 +288,7 @@ DataStream<Event> withWatermarks = stream
 
 ---
 
-### 映射 3: Checkpoint Barrier → Flink CheckpointCoordinator {#映射-3-checkpoint-barrier--flink-checkpointcoordinator}
+### 映射 3: Checkpoint Barrier → Flink CheckpointCoordinator
 
 **形式化定义** ([Def-S-17-01](../../Struct/04-proofs/04.01-flink-checkpoint-correctness.md)):
 
@@ -339,7 +339,7 @@ config.setMinPauseBetweenCheckpoints(500);
 
 ---
 
-### 映射 4: 一致割集 → Flink 全局状态快照 {#映射-4-一致割集--flink-全局状态快照}
+### 映射 4: 一致割集 → Flink 全局状态快照
 
 **形式化定义** ([Def-S-17-02](../../Struct/04-proofs/04.01-flink-checkpoint-correctness.md)):
 
@@ -381,7 +381,7 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
 
 ---
 
-### 映射 5: Exactly-Once 语义 → Flink 2PC + 可重放 Source {#映射-5-exactly-once-语义--flink-2pc--可重放-source}
+### 映射 5: Exactly-Once 语义 → Flink 2PC + 可重放 Source
 
 **形式化定义** ([Def-S-18-01](../../Struct/04-proofs/04.02-flink-exactly-once-correctness.md)):
 
@@ -439,7 +439,7 @@ env.addSource(source)
 
 ---
 
-### 映射 6: Actor 模型 → Flink Actor 运行时 {#映射-6-actor-模型--flink-actor-运行时}
+### 映射 6: Actor 模型 → Flink Actor 运行时
 
 **形式化定义** ([Def-S-03-01](../../Struct/01-foundation/01.03-actor-model-formalization.md)):
 
@@ -491,7 +491,7 @@ restart-strategy.fixed-delay.delay: 10s
 
 ---
 
-### 映射 7: 类型安全 → Flink TypeInformation 系统 {#映射-7-类型安全--flink-typeinformation-系统}
+### 映射 7: 类型安全 → Flink TypeInformation 系统
 
 **形式化定义** ([Thm-S-11-01](../../Struct/02-properties/02.05-type-safety-derivation.md)):
 

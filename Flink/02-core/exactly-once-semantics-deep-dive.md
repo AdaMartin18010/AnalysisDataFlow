@@ -73,6 +73,8 @@ INIT --(prepare)--> PREPARING --(ack)--> PREPARED --(commit)--> COMMITTING --> C
                                          (abort) --> ABORTING --> ABORTED
 ```
 
+> **延伸阅读**: [Calvin确定性协议彻底消除2PC开销，实现跨分区事务线性扩展](../../Struct/06-frontier/calvin-deterministic-streaming.md) —— Calvin 通过前置排序 + 确定性重放，将分布式事务的协调开销从运行期移至编译期，避免了 2PC 的阻塞问题。
+
 ## 2. 属性推导 (Properties)
 
 ### 2.1 一致性保证的基本性质
@@ -145,6 +147,8 @@ $$T_{\text{timeout}} > 2 \times \max(T_{\text{network}}, T_{\text{process}}) + \
 
 其中 $\sigma$ 为时钟偏差容忍度。否则可能出现不一致提交。
 
+> **延伸阅读**: [Calvin与Flink Exactly-Once语义的对比分析](../../Struct/06-frontier/calvin-deterministic-streaming.md) —— Calvin 的确定性执行将 Exactly-Once 保证从运行时协调（2PC/Barrier对齐）前移至编译期全局排序，从根本上消除了协调者故障风险与无限期阻塞问题。
+
 ## 3. 关系建立 (Relations)
 
 ### 3.1 Exactly-Once与Checkpoint机制的关系
@@ -182,6 +186,18 @@ $$T_{\text{timeout}} > 2 \times \max(T_{\text{network}}, T_{\text{process}}) + \
 |--------------|-----------|-----------|-----------|
 | **可重放Source** | ✅ Exactly-Once | ✅ Exactly-Once | ⚠️ At-Least-Once |
 | **不可重放Source** | ⚠️ At-Least-Once | ⚠️ At-Least-Once | ❌ At-Most-Once |
+
+### 3.4 Calvin 与 Flink Exactly-Once 语义对比
+
+| 维度 | Flink Checkpoint | Calvin 确定性重放 |
+|------|-----------------|------------------|
+| **协调时机** | 运行期（Barrier 对齐/非对齐） | 编译期（全局排序） |
+| **状态恢复** | 从 Checkpoint 快照恢复 | 确定性重放至相同状态 |
+| **延迟影响** | 对齐 Checkpoint 引入延迟 | 无运行时协调延迟 |
+| **扩展性** | 受限于 Checkpoint 规模 | 线性扩展（无协调瓶颈） |
+| **适用场景** | 通用流处理 | 高吞吐事务型流处理 |
+
+> **延伸阅读**: [Calvin确定性重放与Flink Checkpoint的深层形式化映射](../../Struct/06-frontier/calvin-deterministic-streaming.md)
 
 ## 4. 论证过程 (Argumentation)
 

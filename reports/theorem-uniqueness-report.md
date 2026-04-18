@@ -1791,40 +1791,40 @@ $$
 **File**: `Struct/01-foundation/01.02-process-calculus-primer.md`
 
 ```markdown
-  - [5. 形式证明 (Proofs) {#5-形式证明-proofs}](#5-形式证明-proofs-5-形式证明-proofs)
-    - [Thm-S-02-01. 动态通道演算严格包含静态通道演算 {#thm-s-02-01-动态通道演算严格包含静态通道演算}](#thm-s-02-01-动态通道演算严格包含静态通道演算-thm-s-02-01-动态通道演算严格包含静态通道演算)
-    - [Cor-S-02-01. 良类型会话进程无死锁 {#cor-s-02-01-良类型会话进程无死锁}](#cor-s-02-01-良类型会话进程无死锁-cor-s-02-01-良类型会话进程无死锁)
-  - [6. 实例验证 (Examples) {#6-实例验证-examples}](#6-实例验证-examples-6-实例验证-examples)
+  - [5. 形式证明 (Proofs) {#5-形式证明-proofs}](#5-形式证明-proofs)
+    - [Thm-S-02-01. 动态通道演算严格包含静态通道演算 {#thm-s-02-01-动态通道演算严格包含静态通道演算}](#thm-s-02-01-动态通道演算严格包含静态通道演算)
+    - [Cor-S-02-01. 良类型会话进程无死锁 {#cor-s-02-01-良类型会话进程无死锁}](#cor-s-02-01-良类型会话进程无死锁)
+  - [6. 实例验证 (Examples) {#6-实例验证-examples}](#6-实例验证-examples)
     - [示例 1：π-演算中的动态拓扑变化 {#示例-1π-演算中的动态拓扑变化}](#示例-1π-演算中的动态拓扑变化-示例-1π-演算中的动态拓扑变化)
 ```
 
 **File**: `Struct/01-foundation/01.02-process-calculus-primer.md`
 
 ```markdown
-  - [5. 形式证明 (Proofs) {#5-形式证明-proofs}](#5-形式证明-proofs-5-形式证明-proofs)
-    - [Thm-S-02-01. 动态通道演算严格包含静态通道演算 {#thm-s-02-01-动态通道演算严格包含静态通道演算}](#thm-s-02-01-动态通道演算严格包含静态通道演算-thm-s-02-01-动态通道演算严格包含静态通道演算)
-    - [Cor-S-02-01. 良类型会话进程无死锁 {#cor-s-02-01-良类型会话进程无死锁}](#cor-s-02-01-良类型会话进程无死锁-cor-s-02-01-良类型会话进程无死锁)
-  - [6. 实例验证 (Examples) {#6-实例验证-examples}](#6-实例验证-examples-6-实例验证-examples)
+  - [5. 形式证明 (Proofs) {#5-形式证明-proofs}](#5-形式证明-proofs)
+    - [Thm-S-02-01. 动态通道演算严格包含静态通道演算 {#thm-s-02-01-动态通道演算严格包含静态通道演算}](#thm-s-02-01-动态通道演算严格包含静态通道演算)
+    - [Cor-S-02-01. 良类型会话进程无死锁 {#cor-s-02-01-良类型会话进程无死锁}](#cor-s-02-01-良类型会话进程无死锁)
+  - [6. 实例验证 (Examples) {#6-实例验证-examples}](#6-实例验证-examples)
     - [示例 1：π-演算中的动态拓扑变化 {#示例-1π-演算中的动态拓扑变化}](#示例-1π-演算中的动态拓扑变化-示例-1π-演算中的动态拓扑变化)
 ```
 
 **File**: `Struct/01-foundation/01.02-process-calculus-primer.md`
 
 ```markdown
-  - [5. 形式证明 (Proofs) {#5-形式证明-proofs}](#5-形式证明-proofs-5-形式证明-proofs)
-    - [Thm-S-02-01. 动态通道演算严格包含静态通道演算 {#thm-s-02-01-动态通道演算严格包含静态通道演算}](#thm-s-02-01-动态通道演算严格包含静态通道演算-thm-s-02-01-动态通道演算严格包含静态通道演算)
-    - [Cor-S-02-01. 良类型会话进程无死锁 {#cor-s-02-01-良类型会话进程无死锁}](#cor-s-02-01-良类型会话进程无死锁-cor-s-02-01-良类型会话进程无死锁)
-  - [6. 实例验证 (Examples) {#6-实例验证-examples}](#6-实例验证-examples-6-实例验证-examples)
+  - [5. 形式证明 (Proofs) {#5-形式证明-proofs}](#5-形式证明-proofs)
+    - [Thm-S-02-01. 动态通道演算严格包含静态通道演算 {#thm-s-02-01-动态通道演算严格包含静态通道演算}](#thm-s-02-01-动态通道演算严格包含静态通道演算)
+    - [Cor-S-02-01. 良类型会话进程无死锁 {#cor-s-02-01-良类型会话进程无死锁}](#cor-s-02-01-良类型会话进程无死锁)
+  - [6. 实例验证 (Examples) {#6-实例验证-examples}](#6-实例验证-examples)
     - [示例 1：π-演算中的动态拓扑变化 {#示例-1π-演算中的动态拓扑变化}](#示例-1π-演算中的动态拓扑变化-示例-1π-演算中的动态拓扑变化)
 ```
 
 **File**: `Struct/01-foundation/01.02-process-calculus-primer.md`
 
 ```markdown
-  - [5. 形式证明 (Proofs) {#5-形式证明-proofs}](#5-形式证明-proofs-5-形式证明-proofs)
-    - [Thm-S-02-01. 动态通道演算严格包含静态通道演算 {#thm-s-02-01-动态通道演算严格包含静态通道演算}](#thm-s-02-01-动态通道演算严格包含静态通道演算-thm-s-02-01-动态通道演算严格包含静态通道演算)
-    - [Cor-S-02-01. 良类型会话进程无死锁 {#cor-s-02-01-良类型会话进程无死锁}](#cor-s-02-01-良类型会话进程无死锁-cor-s-02-01-良类型会话进程无死锁)
-  - [6. 实例验证 (Examples) {#6-实例验证-examples}](#6-实例验证-examples-6-实例验证-examples)
+  - [5. 形式证明 (Proofs) {#5-形式证明-proofs}](#5-形式证明-proofs)
+    - [Thm-S-02-01. 动态通道演算严格包含静态通道演算 {#thm-s-02-01-动态通道演算严格包含静态通道演算}](#thm-s-02-01-动态通道演算严格包含静态通道演算)
+    - [Cor-S-02-01. 良类型会话进程无死锁 {#cor-s-02-01-良类型会话进程无死锁}](#cor-s-02-01-良类型会话进程无死锁)
+  - [6. 实例验证 (Examples) {#6-实例验证-examples}](#6-实例验证-examples)
     - [示例 1：π-演算中的动态拓扑变化 {#示例-1π-演算中的动态拓扑变化}](#示例-1π-演算中的动态拓扑变化-示例-1π-演算中的动态拓扑变化)
 ```
 
@@ -2563,21 +2563,21 @@ $$
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-  - [目录 {#目录}](#目录-目录)
-  - [1. 概念定义 (Definitions) {#1-概念定义-definitions}](#1-概念定义-definitions-1-概念定义-definitions)
-    - [Def-F-02-01 (Checkpoint 核心抽象) {#def-f-02-01-checkpoint-核心抽象}](#def-f-02-01-checkpoint-核心抽象-def-f-02-01-checkpoint-核心抽象)
-    - [Def-F-02-02 (Checkpoint Barrier) {#def-f-02-02-checkpoint-barrier}](#def-f-02-02-checkpoint-barrier-def-f-02-02-checkpoint-barrier)
-    - [Def-F-02-03 (Aligned Checkpoint) {#def-f-02-03-aligned-checkpoint}](#def-f-02-03-aligned-checkpoint-def-f-02-03-aligned-checkpoint)
+  - [目录 {#目录}](#目录)
+  - [1. 概念定义 (Definitions) {#1-概念定义-definitions}](#1-概念定义-definitions)
+    - [Def-F-02-01 (Checkpoint 核心抽象) {#def-f-02-01-checkpoint-核心抽象}](#def-f-02-01-checkpoint-核心抽象)
+    - [Def-F-02-02 (Checkpoint Barrier) {#def-f-02-02-checkpoint-barrier}](#def-f-02-02-checkpoint-barrier)
+    - [Def-F-02-03 (Aligned Checkpoint) {#def-f-02-03-aligned-checkpoint}](#def-f-02-03-aligned-checkpoint)
 ```
 
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-  - [目录 {#目录}](#目录-目录)
-  - [1. 概念定义 (Definitions) {#1-概念定义-definitions}](#1-概念定义-definitions-1-概念定义-definitions)
-    - [Def-F-02-01 (Checkpoint 核心抽象) {#def-f-02-01-checkpoint-核心抽象}](#def-f-02-01-checkpoint-核心抽象-def-f-02-01-checkpoint-核心抽象)
-    - [Def-F-02-02 (Checkpoint Barrier) {#def-f-02-02-checkpoint-barrier}](#def-f-02-02-checkpoint-barrier-def-f-02-02-checkpoint-barrier)
-    - [Def-F-02-03 (Aligned Checkpoint) {#def-f-02-03-aligned-checkpoint}](#def-f-02-03-aligned-checkpoint-def-f-02-03-aligned-checkpoint)
+  - [目录 {#目录}](#目录)
+  - [1. 概念定义 (Definitions) {#1-概念定义-definitions}](#1-概念定义-definitions)
+    - [Def-F-02-01 (Checkpoint 核心抽象) {#def-f-02-01-checkpoint-核心抽象}](#def-f-02-01-checkpoint-核心抽象)
+    - [Def-F-02-02 (Checkpoint Barrier) {#def-f-02-02-checkpoint-barrier}](#def-f-02-02-checkpoint-barrier)
+    - [Def-F-02-03 (Aligned Checkpoint) {#def-f-02-03-aligned-checkpoint}](#def-f-02-03-aligned-checkpoint)
 ```
 
 **File**: `Flink/02-core/time-semantics-and-watermark.md`
@@ -2675,31 +2675,31 @@ $$
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-  - [1. 概念定义 (Definitions) {#1-概念定义-definitions}](#1-概念定义-definitions-1-概念定义-definitions)
-    - [Def-F-02-01 (Checkpoint 核心抽象) {#def-f-02-01-checkpoint-核心抽象}](#def-f-02-01-checkpoint-核心抽象-def-f-02-01-checkpoint-核心抽象)
-    - [Def-F-02-02 (Checkpoint Barrier) {#def-f-02-02-checkpoint-barrier}](#def-f-02-02-checkpoint-barrier-def-f-02-02-checkpoint-barrier)
-    - [Def-F-02-03 (Aligned Checkpoint) {#def-f-02-03-aligned-checkpoint}](#def-f-02-03-aligned-checkpoint-def-f-02-03-aligned-checkpoint)
-    - [Def-F-02-04 (Unaligned Checkpoint) {#def-f-02-04-unaligned-checkpoint}](#def-f-02-04-unaligned-checkpoint-def-f-02-04-unaligned-checkpoint)
+  - [1. 概念定义 (Definitions) {#1-概念定义-definitions}](#1-概念定义-definitions)
+    - [Def-F-02-01 (Checkpoint 核心抽象) {#def-f-02-01-checkpoint-核心抽象}](#def-f-02-01-checkpoint-核心抽象)
+    - [Def-F-02-02 (Checkpoint Barrier) {#def-f-02-02-checkpoint-barrier}](#def-f-02-02-checkpoint-barrier)
+    - [Def-F-02-03 (Aligned Checkpoint) {#def-f-02-03-aligned-checkpoint}](#def-f-02-03-aligned-checkpoint)
+    - [Def-F-02-04 (Unaligned Checkpoint) {#def-f-02-04-unaligned-checkpoint}](#def-f-02-04-unaligned-checkpoint)
 ```
 
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-  - [1. 概念定义 (Definitions) {#1-概念定义-definitions}](#1-概念定义-definitions-1-概念定义-definitions)
-    - [Def-F-02-01 (Checkpoint 核心抽象) {#def-f-02-01-checkpoint-核心抽象}](#def-f-02-01-checkpoint-核心抽象-def-f-02-01-checkpoint-核心抽象)
-    - [Def-F-02-02 (Checkpoint Barrier) {#def-f-02-02-checkpoint-barrier}](#def-f-02-02-checkpoint-barrier-def-f-02-02-checkpoint-barrier)
-    - [Def-F-02-03 (Aligned Checkpoint) {#def-f-02-03-aligned-checkpoint}](#def-f-02-03-aligned-checkpoint-def-f-02-03-aligned-checkpoint)
-    - [Def-F-02-04 (Unaligned Checkpoint) {#def-f-02-04-unaligned-checkpoint}](#def-f-02-04-unaligned-checkpoint-def-f-02-04-unaligned-checkpoint)
+  - [1. 概念定义 (Definitions) {#1-概念定义-definitions}](#1-概念定义-definitions)
+    - [Def-F-02-01 (Checkpoint 核心抽象) {#def-f-02-01-checkpoint-核心抽象}](#def-f-02-01-checkpoint-核心抽象)
+    - [Def-F-02-02 (Checkpoint Barrier) {#def-f-02-02-checkpoint-barrier}](#def-f-02-02-checkpoint-barrier)
+    - [Def-F-02-03 (Aligned Checkpoint) {#def-f-02-03-aligned-checkpoint}](#def-f-02-03-aligned-checkpoint)
+    - [Def-F-02-04 (Unaligned Checkpoint) {#def-f-02-04-unaligned-checkpoint}](#def-f-02-04-unaligned-checkpoint)
 ```
 
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-  - [1. 概念定义 (Definitions) {#1-概念定义-definitions}](#1-概念定义-definitions-1-概念定义-definitions)
-    - [Def-F-02-01 (Checkpoint 核心抽象) {#def-f-02-01-checkpoint-核心抽象}](#def-f-02-01-checkpoint-核心抽象-def-f-02-01-checkpoint-核心抽象)
-    - [Def-F-02-02 (Checkpoint Barrier) {#def-f-02-02-checkpoint-barrier}](#def-f-02-02-checkpoint-barrier-def-f-02-02-checkpoint-barrier)
-    - [Def-F-02-03 (Aligned Checkpoint) {#def-f-02-03-aligned-checkpoint}](#def-f-02-03-aligned-checkpoint-def-f-02-03-aligned-checkpoint)
-    - [Def-F-02-04 (Unaligned Checkpoint) {#def-f-02-04-unaligned-checkpoint}](#def-f-02-04-unaligned-checkpoint-def-f-02-04-unaligned-checkpoint)
+  - [1. 概念定义 (Definitions) {#1-概念定义-definitions}](#1-概念定义-definitions)
+    - [Def-F-02-01 (Checkpoint 核心抽象) {#def-f-02-01-checkpoint-核心抽象}](#def-f-02-01-checkpoint-核心抽象)
+    - [Def-F-02-02 (Checkpoint Barrier) {#def-f-02-02-checkpoint-barrier}](#def-f-02-02-checkpoint-barrier)
+    - [Def-F-02-03 (Aligned Checkpoint) {#def-f-02-03-aligned-checkpoint}](#def-f-02-03-aligned-checkpoint)
+    - [Def-F-02-04 (Unaligned Checkpoint) {#def-f-02-04-unaligned-checkpoint}](#def-f-02-04-unaligned-checkpoint)
 ```
 
 **File**: `Flink/02-core/time-semantics-and-watermark.md`
@@ -2777,31 +2777,31 @@ $$
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-    - [Def-F-02-01 (Checkpoint 核心抽象) {#def-f-02-01-checkpoint-核心抽象}](#def-f-02-01-checkpoint-核心抽象-def-f-02-01-checkpoint-核心抽象)
-    - [Def-F-02-02 (Checkpoint Barrier) {#def-f-02-02-checkpoint-barrier}](#def-f-02-02-checkpoint-barrier-def-f-02-02-checkpoint-barrier)
-    - [Def-F-02-03 (Aligned Checkpoint) {#def-f-02-03-aligned-checkpoint}](#def-f-02-03-aligned-checkpoint-def-f-02-03-aligned-checkpoint)
-    - [Def-F-02-04 (Unaligned Checkpoint) {#def-f-02-04-unaligned-checkpoint}](#def-f-02-04-unaligned-checkpoint-def-f-02-04-unaligned-checkpoint)
-    - [Def-F-02-05 (Incremental Checkpoint) {#def-f-02-05-incremental-checkpoint}](#def-f-02-05-incremental-checkpoint-def-f-02-05-incremental-checkpoint)
+    - [Def-F-02-01 (Checkpoint 核心抽象) {#def-f-02-01-checkpoint-核心抽象}](#def-f-02-01-checkpoint-核心抽象)
+    - [Def-F-02-02 (Checkpoint Barrier) {#def-f-02-02-checkpoint-barrier}](#def-f-02-02-checkpoint-barrier)
+    - [Def-F-02-03 (Aligned Checkpoint) {#def-f-02-03-aligned-checkpoint}](#def-f-02-03-aligned-checkpoint)
+    - [Def-F-02-04 (Unaligned Checkpoint) {#def-f-02-04-unaligned-checkpoint}](#def-f-02-04-unaligned-checkpoint)
+    - [Def-F-02-05 (Incremental Checkpoint) {#def-f-02-05-incremental-checkpoint}](#def-f-02-05-incremental-checkpoint)
 ```
 
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-    - [Def-F-02-01 (Checkpoint 核心抽象) {#def-f-02-01-checkpoint-核心抽象}](#def-f-02-01-checkpoint-核心抽象-def-f-02-01-checkpoint-核心抽象)
-    - [Def-F-02-02 (Checkpoint Barrier) {#def-f-02-02-checkpoint-barrier}](#def-f-02-02-checkpoint-barrier-def-f-02-02-checkpoint-barrier)
-    - [Def-F-02-03 (Aligned Checkpoint) {#def-f-02-03-aligned-checkpoint}](#def-f-02-03-aligned-checkpoint-def-f-02-03-aligned-checkpoint)
-    - [Def-F-02-04 (Unaligned Checkpoint) {#def-f-02-04-unaligned-checkpoint}](#def-f-02-04-unaligned-checkpoint-def-f-02-04-unaligned-checkpoint)
-    - [Def-F-02-05 (Incremental Checkpoint) {#def-f-02-05-incremental-checkpoint}](#def-f-02-05-incremental-checkpoint-def-f-02-05-incremental-checkpoint)
+    - [Def-F-02-01 (Checkpoint 核心抽象) {#def-f-02-01-checkpoint-核心抽象}](#def-f-02-01-checkpoint-核心抽象)
+    - [Def-F-02-02 (Checkpoint Barrier) {#def-f-02-02-checkpoint-barrier}](#def-f-02-02-checkpoint-barrier)
+    - [Def-F-02-03 (Aligned Checkpoint) {#def-f-02-03-aligned-checkpoint}](#def-f-02-03-aligned-checkpoint)
+    - [Def-F-02-04 (Unaligned Checkpoint) {#def-f-02-04-unaligned-checkpoint}](#def-f-02-04-unaligned-checkpoint)
+    - [Def-F-02-05 (Incremental Checkpoint) {#def-f-02-05-incremental-checkpoint}](#def-f-02-05-incremental-checkpoint)
 ```
 
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-    - [Def-F-02-01 (Checkpoint 核心抽象) {#def-f-02-01-checkpoint-核心抽象}](#def-f-02-01-checkpoint-核心抽象-def-f-02-01-checkpoint-核心抽象)
-    - [Def-F-02-02 (Checkpoint Barrier) {#def-f-02-02-checkpoint-barrier}](#def-f-02-02-checkpoint-barrier-def-f-02-02-checkpoint-barrier)
-    - [Def-F-02-03 (Aligned Checkpoint) {#def-f-02-03-aligned-checkpoint}](#def-f-02-03-aligned-checkpoint-def-f-02-03-aligned-checkpoint)
-    - [Def-F-02-04 (Unaligned Checkpoint) {#def-f-02-04-unaligned-checkpoint}](#def-f-02-04-unaligned-checkpoint-def-f-02-04-unaligned-checkpoint)
-    - [Def-F-02-05 (Incremental Checkpoint) {#def-f-02-05-incremental-checkpoint}](#def-f-02-05-incremental-checkpoint-def-f-02-05-incremental-checkpoint)
+    - [Def-F-02-01 (Checkpoint 核心抽象) {#def-f-02-01-checkpoint-核心抽象}](#def-f-02-01-checkpoint-核心抽象)
+    - [Def-F-02-02 (Checkpoint Barrier) {#def-f-02-02-checkpoint-barrier}](#def-f-02-02-checkpoint-barrier)
+    - [Def-F-02-03 (Aligned Checkpoint) {#def-f-02-03-aligned-checkpoint}](#def-f-02-03-aligned-checkpoint)
+    - [Def-F-02-04 (Unaligned Checkpoint) {#def-f-02-04-unaligned-checkpoint}](#def-f-02-04-unaligned-checkpoint)
+    - [Def-F-02-05 (Incremental Checkpoint) {#def-f-02-05-incremental-checkpoint}](#def-f-02-05-incremental-checkpoint)
 ```
 
 **File**: `Flink/02-core/time-semantics-and-watermark.md`
@@ -2879,21 +2879,21 @@ $$
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-    - [Def-F-02-02 (Checkpoint Barrier) {#def-f-02-02-checkpoint-barrier}](#def-f-02-02-checkpoint-barrier-def-f-02-02-checkpoint-barrier)
-    - [Def-F-02-03 (Aligned Checkpoint) {#def-f-02-03-aligned-checkpoint}](#def-f-02-03-aligned-checkpoint-def-f-02-03-aligned-checkpoint)
-    - [Def-F-02-04 (Unaligned Checkpoint) {#def-f-02-04-unaligned-checkpoint}](#def-f-02-04-unaligned-checkpoint-def-f-02-04-unaligned-checkpoint)
-    - [Def-F-02-05 (Incremental Checkpoint) {#def-f-02-05-incremental-checkpoint}](#def-f-02-05-incremental-checkpoint-def-f-02-05-incremental-checkpoint)
-    - [Def-F-02-06 (State Backend) {#def-f-02-06-state-backend}](#def-f-02-06-state-backend-def-f-02-06-state-backend)
+    - [Def-F-02-02 (Checkpoint Barrier) {#def-f-02-02-checkpoint-barrier}](#def-f-02-02-checkpoint-barrier)
+    - [Def-F-02-03 (Aligned Checkpoint) {#def-f-02-03-aligned-checkpoint}](#def-f-02-03-aligned-checkpoint)
+    - [Def-F-02-04 (Unaligned Checkpoint) {#def-f-02-04-unaligned-checkpoint}](#def-f-02-04-unaligned-checkpoint)
+    - [Def-F-02-05 (Incremental Checkpoint) {#def-f-02-05-incremental-checkpoint}](#def-f-02-05-incremental-checkpoint)
+    - [Def-F-02-06 (State Backend) {#def-f-02-06-state-backend}](#def-f-02-06-state-backend)
 ```
 
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-    - [Def-F-02-02 (Checkpoint Barrier) {#def-f-02-02-checkpoint-barrier}](#def-f-02-02-checkpoint-barrier-def-f-02-02-checkpoint-barrier)
-    - [Def-F-02-03 (Aligned Checkpoint) {#def-f-02-03-aligned-checkpoint}](#def-f-02-03-aligned-checkpoint-def-f-02-03-aligned-checkpoint)
-    - [Def-F-02-04 (Unaligned Checkpoint) {#def-f-02-04-unaligned-checkpoint}](#def-f-02-04-unaligned-checkpoint-def-f-02-04-unaligned-checkpoint)
-    - [Def-F-02-05 (Incremental Checkpoint) {#def-f-02-05-incremental-checkpoint}](#def-f-02-05-incremental-checkpoint-def-f-02-05-incremental-checkpoint)
-    - [Def-F-02-06 (State Backend) {#def-f-02-06-state-backend}](#def-f-02-06-state-backend-def-f-02-06-state-backend)
+    - [Def-F-02-02 (Checkpoint Barrier) {#def-f-02-02-checkpoint-barrier}](#def-f-02-02-checkpoint-barrier)
+    - [Def-F-02-03 (Aligned Checkpoint) {#def-f-02-03-aligned-checkpoint}](#def-f-02-03-aligned-checkpoint)
+    - [Def-F-02-04 (Unaligned Checkpoint) {#def-f-02-04-unaligned-checkpoint}](#def-f-02-04-unaligned-checkpoint)
+    - [Def-F-02-05 (Incremental Checkpoint) {#def-f-02-05-incremental-checkpoint}](#def-f-02-05-incremental-checkpoint)
+    - [Def-F-02-06 (State Backend) {#def-f-02-06-state-backend}](#def-f-02-06-state-backend)
 ```
 
 **File**: `Flink/02-core/time-semantics-and-watermark.md`
@@ -3011,21 +3011,21 @@ $$
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-    - [Def-F-02-03 (Aligned Checkpoint) {#def-f-02-03-aligned-checkpoint}](#def-f-02-03-aligned-checkpoint-def-f-02-03-aligned-checkpoint)
-    - [Def-F-02-04 (Unaligned Checkpoint) {#def-f-02-04-unaligned-checkpoint}](#def-f-02-04-unaligned-checkpoint-def-f-02-04-unaligned-checkpoint)
-    - [Def-F-02-05 (Incremental Checkpoint) {#def-f-02-05-incremental-checkpoint}](#def-f-02-05-incremental-checkpoint-def-f-02-05-incremental-checkpoint)
-    - [Def-F-02-06 (State Backend) {#def-f-02-06-state-backend}](#def-f-02-06-state-backend-def-f-02-06-state-backend)
-    - [Def-F-02-07 (Checkpoint 协调器) {#def-f-02-07-checkpoint-协调器}](#def-f-02-07-checkpoint-协调器-def-f-02-07-checkpoint-协调器)
+    - [Def-F-02-03 (Aligned Checkpoint) {#def-f-02-03-aligned-checkpoint}](#def-f-02-03-aligned-checkpoint)
+    - [Def-F-02-04 (Unaligned Checkpoint) {#def-f-02-04-unaligned-checkpoint}](#def-f-02-04-unaligned-checkpoint)
+    - [Def-F-02-05 (Incremental Checkpoint) {#def-f-02-05-incremental-checkpoint}](#def-f-02-05-incremental-checkpoint)
+    - [Def-F-02-06 (State Backend) {#def-f-02-06-state-backend}](#def-f-02-06-state-backend)
+    - [Def-F-02-07 (Checkpoint 协调器) {#def-f-02-07-checkpoint-协调器}](#def-f-02-07-checkpoint-协调器)
 ```
 
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-    - [Def-F-02-03 (Aligned Checkpoint) {#def-f-02-03-aligned-checkpoint}](#def-f-02-03-aligned-checkpoint-def-f-02-03-aligned-checkpoint)
-    - [Def-F-02-04 (Unaligned Checkpoint) {#def-f-02-04-unaligned-checkpoint}](#def-f-02-04-unaligned-checkpoint-def-f-02-04-unaligned-checkpoint)
-    - [Def-F-02-05 (Incremental Checkpoint) {#def-f-02-05-incremental-checkpoint}](#def-f-02-05-incremental-checkpoint-def-f-02-05-incremental-checkpoint)
-    - [Def-F-02-06 (State Backend) {#def-f-02-06-state-backend}](#def-f-02-06-state-backend-def-f-02-06-state-backend)
-    - [Def-F-02-07 (Checkpoint 协调器) {#def-f-02-07-checkpoint-协调器}](#def-f-02-07-checkpoint-协调器-def-f-02-07-checkpoint-协调器)
+    - [Def-F-02-03 (Aligned Checkpoint) {#def-f-02-03-aligned-checkpoint}](#def-f-02-03-aligned-checkpoint)
+    - [Def-F-02-04 (Unaligned Checkpoint) {#def-f-02-04-unaligned-checkpoint}](#def-f-02-04-unaligned-checkpoint)
+    - [Def-F-02-05 (Incremental Checkpoint) {#def-f-02-05-incremental-checkpoint}](#def-f-02-05-incremental-checkpoint)
+    - [Def-F-02-06 (State Backend) {#def-f-02-06-state-backend}](#def-f-02-06-state-backend)
+    - [Def-F-02-07 (Checkpoint 协调器) {#def-f-02-07-checkpoint-协调器}](#def-f-02-07-checkpoint-协调器)
 ```
 
 **File**: `Flink/02-core/time-semantics-and-watermark.md`
@@ -3163,31 +3163,31 @@ $$
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-    - [Def-F-02-04 (Unaligned Checkpoint) {#def-f-02-04-unaligned-checkpoint}](#def-f-02-04-unaligned-checkpoint-def-f-02-04-unaligned-checkpoint)
-    - [Def-F-02-05 (Incremental Checkpoint) {#def-f-02-05-incremental-checkpoint}](#def-f-02-05-incremental-checkpoint-def-f-02-05-incremental-checkpoint)
-    - [Def-F-02-06 (State Backend) {#def-f-02-06-state-backend}](#def-f-02-06-state-backend-def-f-02-06-state-backend)
-    - [Def-F-02-07 (Checkpoint 协调器) {#def-f-02-07-checkpoint-协调器}](#def-f-02-07-checkpoint-协调器-def-f-02-07-checkpoint-协调器)
-    - [Def-F-02-08 (Changelog State Backend) {#def-f-02-08-changelog-state-backend}](#def-f-02-08-changelog-state-backend-def-f-02-08-changelog-state-backend)
+    - [Def-F-02-04 (Unaligned Checkpoint) {#def-f-02-04-unaligned-checkpoint}](#def-f-02-04-unaligned-checkpoint)
+    - [Def-F-02-05 (Incremental Checkpoint) {#def-f-02-05-incremental-checkpoint}](#def-f-02-05-incremental-checkpoint)
+    - [Def-F-02-06 (State Backend) {#def-f-02-06-state-backend}](#def-f-02-06-state-backend)
+    - [Def-F-02-07 (Checkpoint 协调器) {#def-f-02-07-checkpoint-协调器}](#def-f-02-07-checkpoint-协调器)
+    - [Def-F-02-08 (Changelog State Backend) {#def-f-02-08-changelog-state-backend}](#def-f-02-08-changelog-state-backend)
 ```
 
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-    - [Def-F-02-04 (Unaligned Checkpoint) {#def-f-02-04-unaligned-checkpoint}](#def-f-02-04-unaligned-checkpoint-def-f-02-04-unaligned-checkpoint)
-    - [Def-F-02-05 (Incremental Checkpoint) {#def-f-02-05-incremental-checkpoint}](#def-f-02-05-incremental-checkpoint-def-f-02-05-incremental-checkpoint)
-    - [Def-F-02-06 (State Backend) {#def-f-02-06-state-backend}](#def-f-02-06-state-backend-def-f-02-06-state-backend)
-    - [Def-F-02-07 (Checkpoint 协调器) {#def-f-02-07-checkpoint-协调器}](#def-f-02-07-checkpoint-协调器-def-f-02-07-checkpoint-协调器)
-    - [Def-F-02-08 (Changelog State Backend) {#def-f-02-08-changelog-state-backend}](#def-f-02-08-changelog-state-backend-def-f-02-08-changelog-state-backend)
+    - [Def-F-02-04 (Unaligned Checkpoint) {#def-f-02-04-unaligned-checkpoint}](#def-f-02-04-unaligned-checkpoint)
+    - [Def-F-02-05 (Incremental Checkpoint) {#def-f-02-05-incremental-checkpoint}](#def-f-02-05-incremental-checkpoint)
+    - [Def-F-02-06 (State Backend) {#def-f-02-06-state-backend}](#def-f-02-06-state-backend)
+    - [Def-F-02-07 (Checkpoint 协调器) {#def-f-02-07-checkpoint-协调器}](#def-f-02-07-checkpoint-协调器)
+    - [Def-F-02-08 (Changelog State Backend) {#def-f-02-08-changelog-state-backend}](#def-f-02-08-changelog-state-backend)
 ```
 
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-    - [Def-F-02-04 (Unaligned Checkpoint) {#def-f-02-04-unaligned-checkpoint}](#def-f-02-04-unaligned-checkpoint-def-f-02-04-unaligned-checkpoint)
-    - [Def-F-02-05 (Incremental Checkpoint) {#def-f-02-05-incremental-checkpoint}](#def-f-02-05-incremental-checkpoint-def-f-02-05-incremental-checkpoint)
-    - [Def-F-02-06 (State Backend) {#def-f-02-06-state-backend}](#def-f-02-06-state-backend-def-f-02-06-state-backend)
-    - [Def-F-02-07 (Checkpoint 协调器) {#def-f-02-07-checkpoint-协调器}](#def-f-02-07-checkpoint-协调器-def-f-02-07-checkpoint-协调器)
-    - [Def-F-02-08 (Changelog State Backend) {#def-f-02-08-changelog-state-backend}](#def-f-02-08-changelog-state-backend-def-f-02-08-changelog-state-backend)
+    - [Def-F-02-04 (Unaligned Checkpoint) {#def-f-02-04-unaligned-checkpoint}](#def-f-02-04-unaligned-checkpoint)
+    - [Def-F-02-05 (Incremental Checkpoint) {#def-f-02-05-incremental-checkpoint}](#def-f-02-05-incremental-checkpoint)
+    - [Def-F-02-06 (State Backend) {#def-f-02-06-state-backend}](#def-f-02-06-state-backend)
+    - [Def-F-02-07 (Checkpoint 协调器) {#def-f-02-07-checkpoint-协调器}](#def-f-02-07-checkpoint-协调器)
+    - [Def-F-02-08 (Changelog State Backend) {#def-f-02-08-changelog-state-backend}](#def-f-02-08-changelog-state-backend)
 ```
 
 **File**: `Flink/02-core/time-semantics-and-watermark.md`
@@ -3315,21 +3315,21 @@ $$
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-    - [Def-F-02-05 (Incremental Checkpoint) {#def-f-02-05-incremental-checkpoint}](#def-f-02-05-incremental-checkpoint-def-f-02-05-incremental-checkpoint)
-    - [Def-F-02-06 (State Backend) {#def-f-02-06-state-backend}](#def-f-02-06-state-backend-def-f-02-06-state-backend)
-    - [Def-F-02-07 (Checkpoint 协调器) {#def-f-02-07-checkpoint-协调器}](#def-f-02-07-checkpoint-协调器-def-f-02-07-checkpoint-协调器)
-    - [Def-F-02-08 (Changelog State Backend) {#def-f-02-08-changelog-state-backend}](#def-f-02-08-changelog-state-backend-def-f-02-08-changelog-state-backend)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
+    - [Def-F-02-05 (Incremental Checkpoint) {#def-f-02-05-incremental-checkpoint}](#def-f-02-05-incremental-checkpoint)
+    - [Def-F-02-06 (State Backend) {#def-f-02-06-state-backend}](#def-f-02-06-state-backend)
+    - [Def-F-02-07 (Checkpoint 协调器) {#def-f-02-07-checkpoint-协调器}](#def-f-02-07-checkpoint-协调器)
+    - [Def-F-02-08 (Changelog State Backend) {#def-f-02-08-changelog-state-backend}](#def-f-02-08-changelog-state-backend)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
 ```
 
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-    - [Def-F-02-05 (Incremental Checkpoint) {#def-f-02-05-incremental-checkpoint}](#def-f-02-05-incremental-checkpoint-def-f-02-05-incremental-checkpoint)
-    - [Def-F-02-06 (State Backend) {#def-f-02-06-state-backend}](#def-f-02-06-state-backend-def-f-02-06-state-backend)
-    - [Def-F-02-07 (Checkpoint 协调器) {#def-f-02-07-checkpoint-协调器}](#def-f-02-07-checkpoint-协调器-def-f-02-07-checkpoint-协调器)
-    - [Def-F-02-08 (Changelog State Backend) {#def-f-02-08-changelog-state-backend}](#def-f-02-08-changelog-state-backend-def-f-02-08-changelog-state-backend)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
+    - [Def-F-02-05 (Incremental Checkpoint) {#def-f-02-05-incremental-checkpoint}](#def-f-02-05-incremental-checkpoint)
+    - [Def-F-02-06 (State Backend) {#def-f-02-06-state-backend}](#def-f-02-06-state-backend)
+    - [Def-F-02-07 (Checkpoint 协调器) {#def-f-02-07-checkpoint-协调器}](#def-f-02-07-checkpoint-协调器)
+    - [Def-F-02-08 (Changelog State Backend) {#def-f-02-08-changelog-state-backend}](#def-f-02-08-changelog-state-backend)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
 ```
 
 #### `Def-F-02-08`
@@ -3407,21 +3407,21 @@ $$
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-    - [Def-F-02-06 (State Backend) {#def-f-02-06-state-backend}](#def-f-02-06-state-backend-def-f-02-06-state-backend)
-    - [Def-F-02-07 (Checkpoint 协调器) {#def-f-02-07-checkpoint-协调器}](#def-f-02-07-checkpoint-协调器-def-f-02-07-checkpoint-协调器)
-    - [Def-F-02-08 (Changelog State Backend) {#def-f-02-08-changelog-state-backend}](#def-f-02-08-changelog-state-backend-def-f-02-08-changelog-state-backend)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-F-02-01 (Barrier 对齐保证状态一致性) {#lemma-f-02-01-barrier-对齐保证状态一致性}](#lemma-f-02-01-barrier-对齐保证状态一致性-lemma-f-02-01-barrier-对齐保证状态一致性)
+    - [Def-F-02-06 (State Backend) {#def-f-02-06-state-backend}](#def-f-02-06-state-backend)
+    - [Def-F-02-07 (Checkpoint 协调器) {#def-f-02-07-checkpoint-协调器}](#def-f-02-07-checkpoint-协调器)
+    - [Def-F-02-08 (Changelog State Backend) {#def-f-02-08-changelog-state-backend}](#def-f-02-08-changelog-state-backend)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-F-02-01 (Barrier 对齐保证状态一致性) {#lemma-f-02-01-barrier-对齐保证状态一致性}](#lemma-f-02-01-barrier-对齐保证状态一致性)
 ```
 
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-    - [Def-F-02-06 (State Backend) {#def-f-02-06-state-backend}](#def-f-02-06-state-backend-def-f-02-06-state-backend)
-    - [Def-F-02-07 (Checkpoint 协调器) {#def-f-02-07-checkpoint-协调器}](#def-f-02-07-checkpoint-协调器-def-f-02-07-checkpoint-协调器)
-    - [Def-F-02-08 (Changelog State Backend) {#def-f-02-08-changelog-state-backend}](#def-f-02-08-changelog-state-backend-def-f-02-08-changelog-state-backend)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-F-02-01 (Barrier 对齐保证状态一致性) {#lemma-f-02-01-barrier-对齐保证状态一致性}](#lemma-f-02-01-barrier-对齐保证状态一致性-lemma-f-02-01-barrier-对齐保证状态一致性)
+    - [Def-F-02-06 (State Backend) {#def-f-02-06-state-backend}](#def-f-02-06-state-backend)
+    - [Def-F-02-07 (Checkpoint 协调器) {#def-f-02-07-checkpoint-协调器}](#def-f-02-07-checkpoint-协调器)
+    - [Def-F-02-08 (Changelog State Backend) {#def-f-02-08-changelog-state-backend}](#def-f-02-08-changelog-state-backend)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-F-02-01 (Barrier 对齐保证状态一致性) {#lemma-f-02-01-barrier-对齐保证状态一致性}](#lemma-f-02-01-barrier-对齐保证状态一致性)
 ```
 
 #### `Def-F-02-09`
@@ -19685,21 +19685,21 @@ Flink 指标系统 $\mathcal{M}$ 按语义类型分为四类：
 **File**: `Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md`
 
 ```markdown
-  - [1. 概念定义 (Definitions) {#1-概念定义-definitions}](#1-概念定义-definitions-1-概念定义-definitions)
-    - [1.1 数据流平台形式化定义 {#11-数据流平台形式化定义}](#11-数据流平台形式化定义-11-数据流平台形式化定义)
-      - [Def-K-01-40. 数据流平台 (Data Streaming Platform) {#def-k-01-40-数据流平台-data-streaming-platform}](#def-k-01-40-数据流平台-data-streaming-platform-def-k-01-40-数据流平台-data-streaming-platform)
-      - [Def-K-01-41. 流存储层 (Stream Storage Layer) {#def-k-01-41-流存储层-stream-storage-layer}](#def-k-01-41-流存储层-stream-storage-layer-def-k-01-41-流存储层-stream-storage-layer)
-      - [Def-K-01-42. 流处理引擎 (Stream Processing Engine) {#def-k-01-42-流处理引擎-stream-processing-engine}](#def-k-01-42-流处理引擎-stream-processing-engine-def-k-01-42-流处理引擎-stream-processing-engine)
+  - [1. 概念定义 (Definitions) {#1-概念定义-definitions}](#1-概念定义-definitions)
+    - [1.1 数据流平台形式化定义 {#11-数据流平台形式化定义}](#11-数据流平台形式化定义)
+      - [Def-K-01-40. 数据流平台 (Data Streaming Platform) {#def-k-01-40-数据流平台-data-streaming-platform}](#def-k-01-40-数据流平台-data-streaming-platform)
+      - [Def-K-01-41. 流存储层 (Stream Storage Layer) {#def-k-01-41-流存储层-stream-storage-layer}](#def-k-01-41-流存储层-stream-storage-layer)
+      - [Def-K-01-42. 流处理引擎 (Stream Processing Engine) {#def-k-01-42-流处理引擎-stream-processing-engine}](#def-k-01-42-流处理引擎-stream-processing-engine)
 ```
 
 **File**: `Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md`
 
 ```markdown
-  - [1. 概念定义 (Definitions) {#1-概念定义-definitions}](#1-概念定义-definitions-1-概念定义-definitions)
-    - [1.1 数据流平台形式化定义 {#11-数据流平台形式化定义}](#11-数据流平台形式化定义-11-数据流平台形式化定义)
-      - [Def-K-01-40. 数据流平台 (Data Streaming Platform) {#def-k-01-40-数据流平台-data-streaming-platform}](#def-k-01-40-数据流平台-data-streaming-platform-def-k-01-40-数据流平台-data-streaming-platform)
-      - [Def-K-01-41. 流存储层 (Stream Storage Layer) {#def-k-01-41-流存储层-stream-storage-layer}](#def-k-01-41-流存储层-stream-storage-layer-def-k-01-41-流存储层-stream-storage-layer)
-      - [Def-K-01-42. 流处理引擎 (Stream Processing Engine) {#def-k-01-42-流处理引擎-stream-processing-engine}](#def-k-01-42-流处理引擎-stream-processing-engine-def-k-01-42-流处理引擎-stream-processing-engine)
+  - [1. 概念定义 (Definitions) {#1-概念定义-definitions}](#1-概念定义-definitions)
+    - [1.1 数据流平台形式化定义 {#11-数据流平台形式化定义}](#11-数据流平台形式化定义)
+      - [Def-K-01-40. 数据流平台 (Data Streaming Platform) {#def-k-01-40-数据流平台-data-streaming-platform}](#def-k-01-40-数据流平台-data-streaming-platform)
+      - [Def-K-01-41. 流存储层 (Stream Storage Layer) {#def-k-01-41-流存储层-stream-storage-layer}](#def-k-01-41-流存储层-stream-storage-layer)
+      - [Def-K-01-42. 流处理引擎 (Stream Processing Engine) {#def-k-01-42-流处理引擎-stream-processing-engine}](#def-k-01-42-流处理引擎-stream-processing-engine)
 ```
 
 #### `Def-K-01-41`
@@ -19707,21 +19707,21 @@ Flink 指标系统 $\mathcal{M}$ 按语义类型分为四类：
 **File**: `Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md`
 
 ```markdown
-    - [1.1 数据流平台形式化定义 {#11-数据流平台形式化定义}](#11-数据流平台形式化定义-11-数据流平台形式化定义)
-      - [Def-K-01-40. 数据流平台 (Data Streaming Platform) {#def-k-01-40-数据流平台-data-streaming-platform}](#def-k-01-40-数据流平台-data-streaming-platform-def-k-01-40-数据流平台-data-streaming-platform)
-      - [Def-K-01-41. 流存储层 (Stream Storage Layer) {#def-k-01-41-流存储层-stream-storage-layer}](#def-k-01-41-流存储层-stream-storage-layer-def-k-01-41-流存储层-stream-storage-layer)
-      - [Def-K-01-42. 流处理引擎 (Stream Processing Engine) {#def-k-01-42-流处理引擎-stream-processing-engine}](#def-k-01-42-流处理引擎-stream-processing-engine-def-k-01-42-流处理引擎-stream-processing-engine)
-      - [Def-K-01-43. 流数据库 (Streaming Database) {#def-k-01-43-流数据库-streaming-database}](#def-k-01-43-流数据库-streaming-database-def-k-01-43-流数据库-streaming-database)
+    - [1.1 数据流平台形式化定义 {#11-数据流平台形式化定义}](#11-数据流平台形式化定义)
+      - [Def-K-01-40. 数据流平台 (Data Streaming Platform) {#def-k-01-40-数据流平台-data-streaming-platform}](#def-k-01-40-数据流平台-data-streaming-platform)
+      - [Def-K-01-41. 流存储层 (Stream Storage Layer) {#def-k-01-41-流存储层-stream-storage-layer}](#def-k-01-41-流存储层-stream-storage-layer)
+      - [Def-K-01-42. 流处理引擎 (Stream Processing Engine) {#def-k-01-42-流处理引擎-stream-processing-engine}](#def-k-01-42-流处理引擎-stream-processing-engine)
+      - [Def-K-01-43. 流数据库 (Streaming Database) {#def-k-01-43-流数据库-streaming-database}](#def-k-01-43-流数据库-streaming-database)
 ```
 
 **File**: `Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md`
 
 ```markdown
-    - [1.1 数据流平台形式化定义 {#11-数据流平台形式化定义}](#11-数据流平台形式化定义-11-数据流平台形式化定义)
-      - [Def-K-01-40. 数据流平台 (Data Streaming Platform) {#def-k-01-40-数据流平台-data-streaming-platform}](#def-k-01-40-数据流平台-data-streaming-platform-def-k-01-40-数据流平台-data-streaming-platform)
-      - [Def-K-01-41. 流存储层 (Stream Storage Layer) {#def-k-01-41-流存储层-stream-storage-layer}](#def-k-01-41-流存储层-stream-storage-layer-def-k-01-41-流存储层-stream-storage-layer)
-      - [Def-K-01-42. 流处理引擎 (Stream Processing Engine) {#def-k-01-42-流处理引擎-stream-processing-engine}](#def-k-01-42-流处理引擎-stream-processing-engine-def-k-01-42-流处理引擎-stream-processing-engine)
-      - [Def-K-01-43. 流数据库 (Streaming Database) {#def-k-01-43-流数据库-streaming-database}](#def-k-01-43-流数据库-streaming-database-def-k-01-43-流数据库-streaming-database)
+    - [1.1 数据流平台形式化定义 {#11-数据流平台形式化定义}](#11-数据流平台形式化定义)
+      - [Def-K-01-40. 数据流平台 (Data Streaming Platform) {#def-k-01-40-数据流平台-data-streaming-platform}](#def-k-01-40-数据流平台-data-streaming-platform)
+      - [Def-K-01-41. 流存储层 (Stream Storage Layer) {#def-k-01-41-流存储层-stream-storage-layer}](#def-k-01-41-流存储层-stream-storage-layer)
+      - [Def-K-01-42. 流处理引擎 (Stream Processing Engine) {#def-k-01-42-流处理引擎-stream-processing-engine}](#def-k-01-42-流处理引擎-stream-processing-engine)
+      - [Def-K-01-43. 流数据库 (Streaming Database) {#def-k-01-43-流数据库-streaming-database}](#def-k-01-43-流数据库-streaming-database)
 ```
 
 #### `Def-K-01-42`
@@ -19729,21 +19729,21 @@ Flink 指标系统 $\mathcal{M}$ 按语义类型分为四类：
 **File**: `Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md`
 
 ```markdown
-      - [Def-K-01-40. 数据流平台 (Data Streaming Platform) {#def-k-01-40-数据流平台-data-streaming-platform}](#def-k-01-40-数据流平台-data-streaming-platform-def-k-01-40-数据流平台-data-streaming-platform)
-      - [Def-K-01-41. 流存储层 (Stream Storage Layer) {#def-k-01-41-流存储层-stream-storage-layer}](#def-k-01-41-流存储层-stream-storage-layer-def-k-01-41-流存储层-stream-storage-layer)
-      - [Def-K-01-42. 流处理引擎 (Stream Processing Engine) {#def-k-01-42-流处理引擎-stream-processing-engine}](#def-k-01-42-流处理引擎-stream-processing-engine-def-k-01-42-流处理引擎-stream-processing-engine)
-      - [Def-K-01-43. 流数据库 (Streaming Database) {#def-k-01-43-流数据库-streaming-database}](#def-k-01-43-流数据库-streaming-database-def-k-01-43-流数据库-streaming-database)
-      - [Def-K-01-44. 托管流服务 (Managed Streaming Service) {#def-k-01-44-托管流服务-managed-streaming-service}](#def-k-01-44-托管流服务-managed-streaming-service-def-k-01-44-托管流服务-managed-streaming-service)
+      - [Def-K-01-40. 数据流平台 (Data Streaming Platform) {#def-k-01-40-数据流平台-data-streaming-platform}](#def-k-01-40-数据流平台-data-streaming-platform)
+      - [Def-K-01-41. 流存储层 (Stream Storage Layer) {#def-k-01-41-流存储层-stream-storage-layer}](#def-k-01-41-流存储层-stream-storage-layer)
+      - [Def-K-01-42. 流处理引擎 (Stream Processing Engine) {#def-k-01-42-流处理引擎-stream-processing-engine}](#def-k-01-42-流处理引擎-stream-processing-engine)
+      - [Def-K-01-43. 流数据库 (Streaming Database) {#def-k-01-43-流数据库-streaming-database}](#def-k-01-43-流数据库-streaming-database)
+      - [Def-K-01-44. 托管流服务 (Managed Streaming Service) {#def-k-01-44-托管流服务-managed-streaming-service}](#def-k-01-44-托管流服务-managed-streaming-service)
 ```
 
 **File**: `Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md`
 
 ```markdown
-      - [Def-K-01-40. 数据流平台 (Data Streaming Platform) {#def-k-01-40-数据流平台-data-streaming-platform}](#def-k-01-40-数据流平台-data-streaming-platform-def-k-01-40-数据流平台-data-streaming-platform)
-      - [Def-K-01-41. 流存储层 (Stream Storage Layer) {#def-k-01-41-流存储层-stream-storage-layer}](#def-k-01-41-流存储层-stream-storage-layer-def-k-01-41-流存储层-stream-storage-layer)
-      - [Def-K-01-42. 流处理引擎 (Stream Processing Engine) {#def-k-01-42-流处理引擎-stream-processing-engine}](#def-k-01-42-流处理引擎-stream-processing-engine-def-k-01-42-流处理引擎-stream-processing-engine)
-      - [Def-K-01-43. 流数据库 (Streaming Database) {#def-k-01-43-流数据库-streaming-database}](#def-k-01-43-流数据库-streaming-database-def-k-01-43-流数据库-streaming-database)
-      - [Def-K-01-44. 托管流服务 (Managed Streaming Service) {#def-k-01-44-托管流服务-managed-streaming-service}](#def-k-01-44-托管流服务-managed-streaming-service-def-k-01-44-托管流服务-managed-streaming-service)
+      - [Def-K-01-40. 数据流平台 (Data Streaming Platform) {#def-k-01-40-数据流平台-data-streaming-platform}](#def-k-01-40-数据流平台-data-streaming-platform)
+      - [Def-K-01-41. 流存储层 (Stream Storage Layer) {#def-k-01-41-流存储层-stream-storage-layer}](#def-k-01-41-流存储层-stream-storage-layer)
+      - [Def-K-01-42. 流处理引擎 (Stream Processing Engine) {#def-k-01-42-流处理引擎-stream-processing-engine}](#def-k-01-42-流处理引擎-stream-processing-engine)
+      - [Def-K-01-43. 流数据库 (Streaming Database) {#def-k-01-43-流数据库-streaming-database}](#def-k-01-43-流数据库-streaming-database)
+      - [Def-K-01-44. 托管流服务 (Managed Streaming Service) {#def-k-01-44-托管流服务-managed-streaming-service}](#def-k-01-44-托管流服务-managed-streaming-service)
 ```
 
 #### `Def-K-01-43`
@@ -19751,21 +19751,21 @@ Flink 指标系统 $\mathcal{M}$ 按语义类型分为四类：
 **File**: `Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md`
 
 ```markdown
-      - [Def-K-01-41. 流存储层 (Stream Storage Layer) {#def-k-01-41-流存储层-stream-storage-layer}](#def-k-01-41-流存储层-stream-storage-layer-def-k-01-41-流存储层-stream-storage-layer)
-      - [Def-K-01-42. 流处理引擎 (Stream Processing Engine) {#def-k-01-42-流处理引擎-stream-processing-engine}](#def-k-01-42-流处理引擎-stream-processing-engine-def-k-01-42-流处理引擎-stream-processing-engine)
-      - [Def-K-01-43. 流数据库 (Streaming Database) {#def-k-01-43-流数据库-streaming-database}](#def-k-01-43-流数据库-streaming-database-def-k-01-43-流数据库-streaming-database)
-      - [Def-K-01-44. 托管流服务 (Managed Streaming Service) {#def-k-01-44-托管流服务-managed-streaming-service}](#def-k-01-44-托管流服务-managed-streaming-service-def-k-01-44-托管流服务-managed-streaming-service)
-    - [1.2 景观分类学 (Landscape Taxonomy) {#12-景观分类学-landscape-taxonomy}](#12-景观分类学-landscape-taxonomy-12-景观分类学-landscape-taxonomy)
+      - [Def-K-01-41. 流存储层 (Stream Storage Layer) {#def-k-01-41-流存储层-stream-storage-layer}](#def-k-01-41-流存储层-stream-storage-layer)
+      - [Def-K-01-42. 流处理引擎 (Stream Processing Engine) {#def-k-01-42-流处理引擎-stream-processing-engine}](#def-k-01-42-流处理引擎-stream-processing-engine)
+      - [Def-K-01-43. 流数据库 (Streaming Database) {#def-k-01-43-流数据库-streaming-database}](#def-k-01-43-流数据库-streaming-database)
+      - [Def-K-01-44. 托管流服务 (Managed Streaming Service) {#def-k-01-44-托管流服务-managed-streaming-service}](#def-k-01-44-托管流服务-managed-streaming-service)
+    - [1.2 景观分类学 (Landscape Taxonomy) {#12-景观分类学-landscape-taxonomy}](#12-景观分类学-landscape-taxonomy)
 ```
 
 **File**: `Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md`
 
 ```markdown
-      - [Def-K-01-41. 流存储层 (Stream Storage Layer) {#def-k-01-41-流存储层-stream-storage-layer}](#def-k-01-41-流存储层-stream-storage-layer-def-k-01-41-流存储层-stream-storage-layer)
-      - [Def-K-01-42. 流处理引擎 (Stream Processing Engine) {#def-k-01-42-流处理引擎-stream-processing-engine}](#def-k-01-42-流处理引擎-stream-processing-engine-def-k-01-42-流处理引擎-stream-processing-engine)
-      - [Def-K-01-43. 流数据库 (Streaming Database) {#def-k-01-43-流数据库-streaming-database}](#def-k-01-43-流数据库-streaming-database-def-k-01-43-流数据库-streaming-database)
-      - [Def-K-01-44. 托管流服务 (Managed Streaming Service) {#def-k-01-44-托管流服务-managed-streaming-service}](#def-k-01-44-托管流服务-managed-streaming-service-def-k-01-44-托管流服务-managed-streaming-service)
-    - [1.2 景观分类学 (Landscape Taxonomy) {#12-景观分类学-landscape-taxonomy}](#12-景观分类学-landscape-taxonomy-12-景观分类学-landscape-taxonomy)
+      - [Def-K-01-41. 流存储层 (Stream Storage Layer) {#def-k-01-41-流存储层-stream-storage-layer}](#def-k-01-41-流存储层-stream-storage-layer)
+      - [Def-K-01-42. 流处理引擎 (Stream Processing Engine) {#def-k-01-42-流处理引擎-stream-processing-engine}](#def-k-01-42-流处理引擎-stream-processing-engine)
+      - [Def-K-01-43. 流数据库 (Streaming Database) {#def-k-01-43-流数据库-streaming-database}](#def-k-01-43-流数据库-streaming-database)
+      - [Def-K-01-44. 托管流服务 (Managed Streaming Service) {#def-k-01-44-托管流服务-managed-streaming-service}](#def-k-01-44-托管流服务-managed-streaming-service)
+    - [1.2 景观分类学 (Landscape Taxonomy) {#12-景观分类学-landscape-taxonomy}](#12-景观分类学-landscape-taxonomy)
 ```
 
 #### `Def-K-01-44`
@@ -19773,21 +19773,21 @@ Flink 指标系统 $\mathcal{M}$ 按语义类型分为四类：
 **File**: `Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md`
 
 ```markdown
-      - [Def-K-01-42. 流处理引擎 (Stream Processing Engine) {#def-k-01-42-流处理引擎-stream-processing-engine}](#def-k-01-42-流处理引擎-stream-processing-engine-def-k-01-42-流处理引擎-stream-processing-engine)
-      - [Def-K-01-43. 流数据库 (Streaming Database) {#def-k-01-43-流数据库-streaming-database}](#def-k-01-43-流数据库-streaming-database-def-k-01-43-流数据库-streaming-database)
-      - [Def-K-01-44. 托管流服务 (Managed Streaming Service) {#def-k-01-44-托管流服务-managed-streaming-service}](#def-k-01-44-托管流服务-managed-streaming-service-def-k-01-44-托管流服务-managed-streaming-service)
-    - [1.2 景观分类学 (Landscape Taxonomy) {#12-景观分类学-landscape-taxonomy}](#12-景观分类学-landscape-taxonomy-12-景观分类学-landscape-taxonomy)
-      - [Def-K-01-45. 平台整合度 (Platform Consolidation Level) {#def-k-01-45-平台整合度-platform-consolidation-level}](#def-k-01-45-平台整合度-platform-consolidation-level-def-k-01-45-平台整合度-platform-consolidation-level)
+      - [Def-K-01-42. 流处理引擎 (Stream Processing Engine) {#def-k-01-42-流处理引擎-stream-processing-engine}](#def-k-01-42-流处理引擎-stream-processing-engine)
+      - [Def-K-01-43. 流数据库 (Streaming Database) {#def-k-01-43-流数据库-streaming-database}](#def-k-01-43-流数据库-streaming-database)
+      - [Def-K-01-44. 托管流服务 (Managed Streaming Service) {#def-k-01-44-托管流服务-managed-streaming-service}](#def-k-01-44-托管流服务-managed-streaming-service)
+    - [1.2 景观分类学 (Landscape Taxonomy) {#12-景观分类学-landscape-taxonomy}](#12-景观分类学-landscape-taxonomy)
+      - [Def-K-01-45. 平台整合度 (Platform Consolidation Level) {#def-k-01-45-平台整合度-platform-consolidation-level}](#def-k-01-45-平台整合度-platform-consolidation-level)
 ```
 
 **File**: `Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md`
 
 ```markdown
-      - [Def-K-01-42. 流处理引擎 (Stream Processing Engine) {#def-k-01-42-流处理引擎-stream-processing-engine}](#def-k-01-42-流处理引擎-stream-processing-engine-def-k-01-42-流处理引擎-stream-processing-engine)
-      - [Def-K-01-43. 流数据库 (Streaming Database) {#def-k-01-43-流数据库-streaming-database}](#def-k-01-43-流数据库-streaming-database-def-k-01-43-流数据库-streaming-database)
-      - [Def-K-01-44. 托管流服务 (Managed Streaming Service) {#def-k-01-44-托管流服务-managed-streaming-service}](#def-k-01-44-托管流服务-managed-streaming-service-def-k-01-44-托管流服务-managed-streaming-service)
-    - [1.2 景观分类学 (Landscape Taxonomy) {#12-景观分类学-landscape-taxonomy}](#12-景观分类学-landscape-taxonomy-12-景观分类学-landscape-taxonomy)
-      - [Def-K-01-45. 平台整合度 (Platform Consolidation Level) {#def-k-01-45-平台整合度-platform-consolidation-level}](#def-k-01-45-平台整合度-platform-consolidation-level-def-k-01-45-平台整合度-platform-consolidation-level)
+      - [Def-K-01-42. 流处理引擎 (Stream Processing Engine) {#def-k-01-42-流处理引擎-stream-processing-engine}](#def-k-01-42-流处理引擎-stream-processing-engine)
+      - [Def-K-01-43. 流数据库 (Streaming Database) {#def-k-01-43-流数据库-streaming-database}](#def-k-01-43-流数据库-streaming-database)
+      - [Def-K-01-44. 托管流服务 (Managed Streaming Service) {#def-k-01-44-托管流服务-managed-streaming-service}](#def-k-01-44-托管流服务-managed-streaming-service)
+    - [1.2 景观分类学 (Landscape Taxonomy) {#12-景观分类学-landscape-taxonomy}](#12-景观分类学-landscape-taxonomy)
+      - [Def-K-01-45. 平台整合度 (Platform Consolidation Level) {#def-k-01-45-平台整合度-platform-consolidation-level}](#def-k-01-45-平台整合度-platform-consolidation-level)
 ```
 
 #### `Def-K-01-45`
@@ -19795,21 +19795,21 @@ Flink 指标系统 $\mathcal{M}$ 按语义类型分为四类：
 **File**: `Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md`
 
 ```markdown
-      - [Def-K-01-44. 托管流服务 (Managed Streaming Service) {#def-k-01-44-托管流服务-managed-streaming-service}](#def-k-01-44-托管流服务-managed-streaming-service-def-k-01-44-托管流服务-managed-streaming-service)
-    - [1.2 景观分类学 (Landscape Taxonomy) {#12-景观分类学-landscape-taxonomy}](#12-景观分类学-landscape-taxonomy-12-景观分类学-landscape-taxonomy)
-      - [Def-K-01-45. 平台整合度 (Platform Consolidation Level) {#def-k-01-45-平台整合度-platform-consolidation-level}](#def-k-01-45-平台整合度-platform-consolidation-level-def-k-01-45-平台整合度-platform-consolidation-level)
-      - [Def-K-01-46. 无盘化架构 (Diskless Architecture) {#def-k-01-46-无盘化架构-diskless-architecture}](#def-k-01-46-无盘化架构-diskless-architecture-def-k-01-46-无盘化架构-diskless-architecture)
-      - [Def-K-01-47. 实时分析下沉 (Real-time Analytics下沉) {#def-k-01-47-实时分析下沉-real-time-analytics下沉}](#def-k-01-47-实时分析下沉-real-time-analytics下沉-def-k-01-47-实时分析下沉-real-time-analytics下沉)
+      - [Def-K-01-44. 托管流服务 (Managed Streaming Service) {#def-k-01-44-托管流服务-managed-streaming-service}](#def-k-01-44-托管流服务-managed-streaming-service)
+    - [1.2 景观分类学 (Landscape Taxonomy) {#12-景观分类学-landscape-taxonomy}](#12-景观分类学-landscape-taxonomy)
+      - [Def-K-01-45. 平台整合度 (Platform Consolidation Level) {#def-k-01-45-平台整合度-platform-consolidation-level}](#def-k-01-45-平台整合度-platform-consolidation-level)
+      - [Def-K-01-46. 无盘化架构 (Diskless Architecture) {#def-k-01-46-无盘化架构-diskless-architecture}](#def-k-01-46-无盘化架构-diskless-architecture)
+      - [Def-K-01-47. 实时分析下沉 (Real-time Analytics下沉) {#def-k-01-47-实时分析下沉-real-time-analytics下沉}](#def-k-01-47-实时分析下沉-real-time-analytics下沉)
 ```
 
 **File**: `Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md`
 
 ```markdown
-      - [Def-K-01-44. 托管流服务 (Managed Streaming Service) {#def-k-01-44-托管流服务-managed-streaming-service}](#def-k-01-44-托管流服务-managed-streaming-service-def-k-01-44-托管流服务-managed-streaming-service)
-    - [1.2 景观分类学 (Landscape Taxonomy) {#12-景观分类学-landscape-taxonomy}](#12-景观分类学-landscape-taxonomy-12-景观分类学-landscape-taxonomy)
-      - [Def-K-01-45. 平台整合度 (Platform Consolidation Level) {#def-k-01-45-平台整合度-platform-consolidation-level}](#def-k-01-45-平台整合度-platform-consolidation-level-def-k-01-45-平台整合度-platform-consolidation-level)
-      - [Def-K-01-46. 无盘化架构 (Diskless Architecture) {#def-k-01-46-无盘化架构-diskless-architecture}](#def-k-01-46-无盘化架构-diskless-architecture-def-k-01-46-无盘化架构-diskless-architecture)
-      - [Def-K-01-47. 实时分析下沉 (Real-time Analytics下沉) {#def-k-01-47-实时分析下沉-real-time-analytics下沉}](#def-k-01-47-实时分析下沉-real-time-analytics下沉-def-k-01-47-实时分析下沉-real-time-analytics下沉)
+      - [Def-K-01-44. 托管流服务 (Managed Streaming Service) {#def-k-01-44-托管流服务-managed-streaming-service}](#def-k-01-44-托管流服务-managed-streaming-service)
+    - [1.2 景观分类学 (Landscape Taxonomy) {#12-景观分类学-landscape-taxonomy}](#12-景观分类学-landscape-taxonomy)
+      - [Def-K-01-45. 平台整合度 (Platform Consolidation Level) {#def-k-01-45-平台整合度-platform-consolidation-level}](#def-k-01-45-平台整合度-platform-consolidation-level)
+      - [Def-K-01-46. 无盘化架构 (Diskless Architecture) {#def-k-01-46-无盘化架构-diskless-architecture}](#def-k-01-46-无盘化架构-diskless-architecture)
+      - [Def-K-01-47. 实时分析下沉 (Real-time Analytics下沉) {#def-k-01-47-实时分析下沉-real-time-analytics下沉}](#def-k-01-47-实时分析下沉-real-time-analytics下沉)
 ```
 
 #### `Def-K-01-46`
@@ -19817,21 +19817,21 @@ Flink 指标系统 $\mathcal{M}$ 按语义类型分为四类：
 **File**: `Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md`
 
 ```markdown
-    - [1.2 景观分类学 (Landscape Taxonomy) {#12-景观分类学-landscape-taxonomy}](#12-景观分类学-landscape-taxonomy-12-景观分类学-landscape-taxonomy)
-      - [Def-K-01-45. 平台整合度 (Platform Consolidation Level) {#def-k-01-45-平台整合度-platform-consolidation-level}](#def-k-01-45-平台整合度-platform-consolidation-level-def-k-01-45-平台整合度-platform-consolidation-level)
-      - [Def-K-01-46. 无盘化架构 (Diskless Architecture) {#def-k-01-46-无盘化架构-diskless-architecture}](#def-k-01-46-无盘化架构-diskless-architecture-def-k-01-46-无盘化架构-diskless-architecture)
-      - [Def-K-01-47. 实时分析下沉 (Real-time Analytics下沉) {#def-k-01-47-实时分析下沉-real-time-analytics下沉}](#def-k-01-47-实时分析下沉-real-time-analytics下沉-def-k-01-47-实时分析下沉-real-time-analytics下沉)
-      - [Def-K-01-48. 数据主权部署 (Data Sovereignty Deployment) {#def-k-01-48-数据主权部署-data-sovereignty-deployment}](#def-k-01-48-数据主权部署-data-sovereignty-deployment-def-k-01-48-数据主权部署-data-sovereignty-deployment)
+    - [1.2 景观分类学 (Landscape Taxonomy) {#12-景观分类学-landscape-taxonomy}](#12-景观分类学-landscape-taxonomy)
+      - [Def-K-01-45. 平台整合度 (Platform Consolidation Level) {#def-k-01-45-平台整合度-platform-consolidation-level}](#def-k-01-45-平台整合度-platform-consolidation-level)
+      - [Def-K-01-46. 无盘化架构 (Diskless Architecture) {#def-k-01-46-无盘化架构-diskless-architecture}](#def-k-01-46-无盘化架构-diskless-architecture)
+      - [Def-K-01-47. 实时分析下沉 (Real-time Analytics下沉) {#def-k-01-47-实时分析下沉-real-time-analytics下沉}](#def-k-01-47-实时分析下沉-real-time-analytics下沉)
+      - [Def-K-01-48. 数据主权部署 (Data Sovereignty Deployment) {#def-k-01-48-数据主权部署-data-sovereignty-deployment}](#def-k-01-48-数据主权部署-data-sovereignty-deployment)
 ```
 
 **File**: `Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md`
 
 ```markdown
-    - [1.2 景观分类学 (Landscape Taxonomy) {#12-景观分类学-landscape-taxonomy}](#12-景观分类学-landscape-taxonomy-12-景观分类学-landscape-taxonomy)
-      - [Def-K-01-45. 平台整合度 (Platform Consolidation Level) {#def-k-01-45-平台整合度-platform-consolidation-level}](#def-k-01-45-平台整合度-platform-consolidation-level-def-k-01-45-平台整合度-platform-consolidation-level)
-      - [Def-K-01-46. 无盘化架构 (Diskless Architecture) {#def-k-01-46-无盘化架构-diskless-architecture}](#def-k-01-46-无盘化架构-diskless-architecture-def-k-01-46-无盘化架构-diskless-architecture)
-      - [Def-K-01-47. 实时分析下沉 (Real-time Analytics下沉) {#def-k-01-47-实时分析下沉-real-time-analytics下沉}](#def-k-01-47-实时分析下沉-real-time-analytics下沉-def-k-01-47-实时分析下沉-real-time-analytics下沉)
-      - [Def-K-01-48. 数据主权部署 (Data Sovereignty Deployment) {#def-k-01-48-数据主权部署-data-sovereignty-deployment}](#def-k-01-48-数据主权部署-data-sovereignty-deployment-def-k-01-48-数据主权部署-data-sovereignty-deployment)
+    - [1.2 景观分类学 (Landscape Taxonomy) {#12-景观分类学-landscape-taxonomy}](#12-景观分类学-landscape-taxonomy)
+      - [Def-K-01-45. 平台整合度 (Platform Consolidation Level) {#def-k-01-45-平台整合度-platform-consolidation-level}](#def-k-01-45-平台整合度-platform-consolidation-level)
+      - [Def-K-01-46. 无盘化架构 (Diskless Architecture) {#def-k-01-46-无盘化架构-diskless-architecture}](#def-k-01-46-无盘化架构-diskless-architecture)
+      - [Def-K-01-47. 实时分析下沉 (Real-time Analytics下沉) {#def-k-01-47-实时分析下沉-real-time-analytics下沉}](#def-k-01-47-实时分析下沉-real-time-analytics下沉)
+      - [Def-K-01-48. 数据主权部署 (Data Sovereignty Deployment) {#def-k-01-48-数据主权部署-data-sovereignty-deployment}](#def-k-01-48-数据主权部署-data-sovereignty-deployment)
 ```
 
 #### `Def-K-01-47`
@@ -19839,21 +19839,21 @@ Flink 指标系统 $\mathcal{M}$ 按语义类型分为四类：
 **File**: `Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md`
 
 ```markdown
-      - [Def-K-01-45. 平台整合度 (Platform Consolidation Level) {#def-k-01-45-平台整合度-platform-consolidation-level}](#def-k-01-45-平台整合度-platform-consolidation-level-def-k-01-45-平台整合度-platform-consolidation-level)
-      - [Def-K-01-46. 无盘化架构 (Diskless Architecture) {#def-k-01-46-无盘化架构-diskless-architecture}](#def-k-01-46-无盘化架构-diskless-architecture-def-k-01-46-无盘化架构-diskless-architecture)
-      - [Def-K-01-47. 实时分析下沉 (Real-time Analytics下沉) {#def-k-01-47-实时分析下沉-real-time-analytics下沉}](#def-k-01-47-实时分析下沉-real-time-analytics下沉-def-k-01-47-实时分析下沉-real-time-analytics下沉)
-      - [Def-K-01-48. 数据主权部署 (Data Sovereignty Deployment) {#def-k-01-48-数据主权部署-data-sovereignty-deployment}](#def-k-01-48-数据主权部署-data-sovereignty-deployment-def-k-01-48-数据主权部署-data-sovereignty-deployment)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
+      - [Def-K-01-45. 平台整合度 (Platform Consolidation Level) {#def-k-01-45-平台整合度-platform-consolidation-level}](#def-k-01-45-平台整合度-platform-consolidation-level)
+      - [Def-K-01-46. 无盘化架构 (Diskless Architecture) {#def-k-01-46-无盘化架构-diskless-architecture}](#def-k-01-46-无盘化架构-diskless-architecture)
+      - [Def-K-01-47. 实时分析下沉 (Real-time Analytics下沉) {#def-k-01-47-实时分析下沉-real-time-analytics下沉}](#def-k-01-47-实时分析下沉-real-time-analytics下沉)
+      - [Def-K-01-48. 数据主权部署 (Data Sovereignty Deployment) {#def-k-01-48-数据主权部署-data-sovereignty-deployment}](#def-k-01-48-数据主权部署-data-sovereignty-deployment)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
 ```
 
 **File**: `Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md`
 
 ```markdown
-      - [Def-K-01-45. 平台整合度 (Platform Consolidation Level) {#def-k-01-45-平台整合度-platform-consolidation-level}](#def-k-01-45-平台整合度-platform-consolidation-level-def-k-01-45-平台整合度-platform-consolidation-level)
-      - [Def-K-01-46. 无盘化架构 (Diskless Architecture) {#def-k-01-46-无盘化架构-diskless-architecture}](#def-k-01-46-无盘化架构-diskless-architecture-def-k-01-46-无盘化架构-diskless-architecture)
-      - [Def-K-01-47. 实时分析下沉 (Real-time Analytics下沉) {#def-k-01-47-实时分析下沉-real-time-analytics下沉}](#def-k-01-47-实时分析下沉-real-time-analytics下沉-def-k-01-47-实时分析下沉-real-time-analytics下沉)
-      - [Def-K-01-48. 数据主权部署 (Data Sovereignty Deployment) {#def-k-01-48-数据主权部署-data-sovereignty-deployment}](#def-k-01-48-数据主权部署-data-sovereignty-deployment-def-k-01-48-数据主权部署-data-sovereignty-deployment)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
+      - [Def-K-01-45. 平台整合度 (Platform Consolidation Level) {#def-k-01-45-平台整合度-platform-consolidation-level}](#def-k-01-45-平台整合度-platform-consolidation-level)
+      - [Def-K-01-46. 无盘化架构 (Diskless Architecture) {#def-k-01-46-无盘化架构-diskless-architecture}](#def-k-01-46-无盘化架构-diskless-architecture)
+      - [Def-K-01-47. 实时分析下沉 (Real-time Analytics下沉) {#def-k-01-47-实时分析下沉-real-time-analytics下沉}](#def-k-01-47-实时分析下沉-real-time-analytics下沉)
+      - [Def-K-01-48. 数据主权部署 (Data Sovereignty Deployment) {#def-k-01-48-数据主权部署-data-sovereignty-deployment}](#def-k-01-48-数据主权部署-data-sovereignty-deployment)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
 ```
 
 #### `Def-K-01-48`
@@ -19861,21 +19861,21 @@ Flink 指标系统 $\mathcal{M}$ 按语义类型分为四类：
 **File**: `Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md`
 
 ```markdown
-      - [Def-K-01-46. 无盘化架构 (Diskless Architecture) {#def-k-01-46-无盘化架构-diskless-architecture}](#def-k-01-46-无盘化架构-diskless-architecture-def-k-01-46-无盘化架构-diskless-architecture)
-      - [Def-K-01-47. 实时分析下沉 (Real-time Analytics下沉) {#def-k-01-47-实时分析下沉-real-time-analytics下沉}](#def-k-01-47-实时分析下沉-real-time-analytics下沉-def-k-01-47-实时分析下沉-real-time-analytics下沉)
-      - [Def-K-01-48. 数据主权部署 (Data Sovereignty Deployment) {#def-k-01-48-数据主权部署-data-sovereignty-deployment}](#def-k-01-48-数据主权部署-data-sovereignty-deployment-def-k-01-48-数据主权部署-data-sovereignty-deployment)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-K-01-20. 平台生命周期与采用率关系 {#lemma-k-01-20-平台生命周期与采用率关系}](#lemma-k-01-20-平台生命周期与采用率关系-lemma-k-01-20-平台生命周期与采用率关系)
+      - [Def-K-01-46. 无盘化架构 (Diskless Architecture) {#def-k-01-46-无盘化架构-diskless-architecture}](#def-k-01-46-无盘化架构-diskless-architecture)
+      - [Def-K-01-47. 实时分析下沉 (Real-time Analytics下沉) {#def-k-01-47-实时分析下沉-real-time-analytics下沉}](#def-k-01-47-实时分析下沉-real-time-analytics下沉)
+      - [Def-K-01-48. 数据主权部署 (Data Sovereignty Deployment) {#def-k-01-48-数据主权部署-data-sovereignty-deployment}](#def-k-01-48-数据主权部署-data-sovereignty-deployment)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-K-01-20. 平台生命周期与采用率关系 {#lemma-k-01-20-平台生命周期与采用率关系}](#lemma-k-01-20-平台生命周期与采用率关系)
 ```
 
 **File**: `Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md`
 
 ```markdown
-      - [Def-K-01-46. 无盘化架构 (Diskless Architecture) {#def-k-01-46-无盘化架构-diskless-architecture}](#def-k-01-46-无盘化架构-diskless-architecture-def-k-01-46-无盘化架构-diskless-architecture)
-      - [Def-K-01-47. 实时分析下沉 (Real-time Analytics下沉) {#def-k-01-47-实时分析下沉-real-time-analytics下沉}](#def-k-01-47-实时分析下沉-real-time-analytics下沉-def-k-01-47-实时分析下沉-real-time-analytics下沉)
-      - [Def-K-01-48. 数据主权部署 (Data Sovereignty Deployment) {#def-k-01-48-数据主权部署-data-sovereignty-deployment}](#def-k-01-48-数据主权部署-data-sovereignty-deployment-def-k-01-48-数据主权部署-data-sovereignty-deployment)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-K-01-20. 平台生命周期与采用率关系 {#lemma-k-01-20-平台生命周期与采用率关系}](#lemma-k-01-20-平台生命周期与采用率关系-lemma-k-01-20-平台生命周期与采用率关系)
+      - [Def-K-01-46. 无盘化架构 (Diskless Architecture) {#def-k-01-46-无盘化架构-diskless-architecture}](#def-k-01-46-无盘化架构-diskless-architecture)
+      - [Def-K-01-47. 实时分析下沉 (Real-time Analytics下沉) {#def-k-01-47-实时分析下沉-real-time-analytics下沉}](#def-k-01-47-实时分析下沉-real-time-analytics下沉)
+      - [Def-K-01-48. 数据主权部署 (Data Sovereignty Deployment) {#def-k-01-48-数据主权部署-data-sovereignty-deployment}](#def-k-01-48-数据主权部署-data-sovereignty-deployment)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-K-01-20. 平台生命周期与采用率关系 {#lemma-k-01-20-平台生命周期与采用率关系}](#lemma-k-01-20-平台生命周期与采用率关系)
 ```
 
 #### `Def-K-02-01`
@@ -21707,21 +21707,21 @@ $$
 **File**: `Knowledge/04-technology-selection/engine-selection-guide.md`
 
 ```markdown
-    - [1.1 流处理引擎谱系 {#11-流处理引擎谱系}](#11-流处理引擎谱系-11-流处理引擎谱系)
-    - [1.2 引擎核心定义 {#12-引擎核心定义}](#12-引擎核心定义-12-引擎核心定义)
-      - [Def-K-04-01. Apache Flink {#def-k-04-01-apache-flink}](#def-k-04-01-apache-flink-def-k-04-01-apache-flink)
-      - [Def-K-04-02. Kafka Streams {#def-k-04-02-kafka-streams}](#def-k-04-02-kafka-streams-def-k-04-02-kafka-streams)
-      - [Def-K-04-03. Spark Streaming (Structured Streaming) {#def-k-04-03-spark-streaming-structured-streaming}](#def-k-04-03-spark-streaming-structured-streaming-def-k-04-03-spark-streaming-structured-streaming)
+    - [1.1 流处理引擎谱系 {#11-流处理引擎谱系}](#11-流处理引擎谱系)
+    - [1.2 引擎核心定义 {#12-引擎核心定义}](#12-引擎核心定义)
+      - [Def-K-04-01. Apache Flink {#def-k-04-01-apache-flink}](#def-k-04-01-apache-flink)
+      - [Def-K-04-02. Kafka Streams {#def-k-04-02-kafka-streams}](#def-k-04-02-kafka-streams)
+      - [Def-K-04-03. Spark Streaming (Structured Streaming) {#def-k-04-03-spark-streaming-structured-streaming}](#def-k-04-03-spark-streaming-structured-streaming)
 ```
 
 **File**: `Knowledge/04-technology-selection/engine-selection-guide.md`
 
 ```markdown
-    - [1.1 流处理引擎谱系 {#11-流处理引擎谱系}](#11-流处理引擎谱系-11-流处理引擎谱系)
-    - [1.2 引擎核心定义 {#12-引擎核心定义}](#12-引擎核心定义-12-引擎核心定义)
-      - [Def-K-04-01. Apache Flink {#def-k-04-01-apache-flink}](#def-k-04-01-apache-flink-def-k-04-01-apache-flink)
-      - [Def-K-04-02. Kafka Streams {#def-k-04-02-kafka-streams}](#def-k-04-02-kafka-streams-def-k-04-02-kafka-streams)
-      - [Def-K-04-03. Spark Streaming (Structured Streaming) {#def-k-04-03-spark-streaming-structured-streaming}](#def-k-04-03-spark-streaming-structured-streaming-def-k-04-03-spark-streaming-structured-streaming)
+    - [1.1 流处理引擎谱系 {#11-流处理引擎谱系}](#11-流处理引擎谱系)
+    - [1.2 引擎核心定义 {#12-引擎核心定义}](#12-引擎核心定义)
+      - [Def-K-04-01. Apache Flink {#def-k-04-01-apache-flink}](#def-k-04-01-apache-flink)
+      - [Def-K-04-02. Kafka Streams {#def-k-04-02-kafka-streams}](#def-k-04-02-kafka-streams)
+      - [Def-K-04-03. Spark Streaming (Structured Streaming) {#def-k-04-03-spark-streaming-structured-streaming}](#def-k-04-03-spark-streaming-structured-streaming)
 ```
 
 **File**: `Knowledge/04-technology-selection/paradigm-selection-guide.md`
@@ -21779,21 +21779,21 @@ $$
 **File**: `Knowledge/04-technology-selection/engine-selection-guide.md`
 
 ```markdown
-    - [1.2 引擎核心定义 {#12-引擎核心定义}](#12-引擎核心定义-12-引擎核心定义)
-      - [Def-K-04-01. Apache Flink {#def-k-04-01-apache-flink}](#def-k-04-01-apache-flink-def-k-04-01-apache-flink)
-      - [Def-K-04-02. Kafka Streams {#def-k-04-02-kafka-streams}](#def-k-04-02-kafka-streams-def-k-04-02-kafka-streams)
-      - [Def-K-04-03. Spark Streaming (Structured Streaming) {#def-k-04-03-spark-streaming-structured-streaming}](#def-k-04-03-spark-streaming-structured-streaming-def-k-04-03-spark-streaming-structured-streaming)
-      - [Def-K-04-04. Apache Storm {#def-k-04-04-apache-storm}](#def-k-04-04-apache-storm-def-k-04-04-apache-storm)
+    - [1.2 引擎核心定义 {#12-引擎核心定义}](#12-引擎核心定义)
+      - [Def-K-04-01. Apache Flink {#def-k-04-01-apache-flink}](#def-k-04-01-apache-flink)
+      - [Def-K-04-02. Kafka Streams {#def-k-04-02-kafka-streams}](#def-k-04-02-kafka-streams)
+      - [Def-K-04-03. Spark Streaming (Structured Streaming) {#def-k-04-03-spark-streaming-structured-streaming}](#def-k-04-03-spark-streaming-structured-streaming)
+      - [Def-K-04-04. Apache Storm {#def-k-04-04-apache-storm}](#def-k-04-04-apache-storm)
 ```
 
 **File**: `Knowledge/04-technology-selection/engine-selection-guide.md`
 
 ```markdown
-    - [1.2 引擎核心定义 {#12-引擎核心定义}](#12-引擎核心定义-12-引擎核心定义)
-      - [Def-K-04-01. Apache Flink {#def-k-04-01-apache-flink}](#def-k-04-01-apache-flink-def-k-04-01-apache-flink)
-      - [Def-K-04-02. Kafka Streams {#def-k-04-02-kafka-streams}](#def-k-04-02-kafka-streams-def-k-04-02-kafka-streams)
-      - [Def-K-04-03. Spark Streaming (Structured Streaming) {#def-k-04-03-spark-streaming-structured-streaming}](#def-k-04-03-spark-streaming-structured-streaming-def-k-04-03-spark-streaming-structured-streaming)
-      - [Def-K-04-04. Apache Storm {#def-k-04-04-apache-storm}](#def-k-04-04-apache-storm-def-k-04-04-apache-storm)
+    - [1.2 引擎核心定义 {#12-引擎核心定义}](#12-引擎核心定义)
+      - [Def-K-04-01. Apache Flink {#def-k-04-01-apache-flink}](#def-k-04-01-apache-flink)
+      - [Def-K-04-02. Kafka Streams {#def-k-04-02-kafka-streams}](#def-k-04-02-kafka-streams)
+      - [Def-K-04-03. Spark Streaming (Structured Streaming) {#def-k-04-03-spark-streaming-structured-streaming}](#def-k-04-03-spark-streaming-structured-streaming)
+      - [Def-K-04-04. Apache Storm {#def-k-04-04-apache-storm}](#def-k-04-04-apache-storm)
 ```
 
 **File**: `Knowledge/04-technology-selection/paradigm-selection-guide.md`
@@ -21851,21 +21851,21 @@ $$
 **File**: `Knowledge/04-technology-selection/engine-selection-guide.md`
 
 ```markdown
-      - [Def-K-04-01. Apache Flink {#def-k-04-01-apache-flink}](#def-k-04-01-apache-flink-def-k-04-01-apache-flink)
-      - [Def-K-04-02. Kafka Streams {#def-k-04-02-kafka-streams}](#def-k-04-02-kafka-streams-def-k-04-02-kafka-streams)
-      - [Def-K-04-03. Spark Streaming (Structured Streaming) {#def-k-04-03-spark-streaming-structured-streaming}](#def-k-04-03-spark-streaming-structured-streaming-def-k-04-03-spark-streaming-structured-streaming)
-      - [Def-K-04-04. Apache Storm {#def-k-04-04-apache-storm}](#def-k-04-04-apache-storm-def-k-04-04-apache-storm)
-      - [Def-K-04-05. Pulsar Functions {#def-k-04-05-pulsar-functions}](#def-k-04-05-pulsar-functions-def-k-04-05-pulsar-functions)
+      - [Def-K-04-01. Apache Flink {#def-k-04-01-apache-flink}](#def-k-04-01-apache-flink)
+      - [Def-K-04-02. Kafka Streams {#def-k-04-02-kafka-streams}](#def-k-04-02-kafka-streams)
+      - [Def-K-04-03. Spark Streaming (Structured Streaming) {#def-k-04-03-spark-streaming-structured-streaming}](#def-k-04-03-spark-streaming-structured-streaming)
+      - [Def-K-04-04. Apache Storm {#def-k-04-04-apache-storm}](#def-k-04-04-apache-storm)
+      - [Def-K-04-05. Pulsar Functions {#def-k-04-05-pulsar-functions}](#def-k-04-05-pulsar-functions)
 ```
 
 **File**: `Knowledge/04-technology-selection/engine-selection-guide.md`
 
 ```markdown
-      - [Def-K-04-01. Apache Flink {#def-k-04-01-apache-flink}](#def-k-04-01-apache-flink-def-k-04-01-apache-flink)
-      - [Def-K-04-02. Kafka Streams {#def-k-04-02-kafka-streams}](#def-k-04-02-kafka-streams-def-k-04-02-kafka-streams)
-      - [Def-K-04-03. Spark Streaming (Structured Streaming) {#def-k-04-03-spark-streaming-structured-streaming}](#def-k-04-03-spark-streaming-structured-streaming-def-k-04-03-spark-streaming-structured-streaming)
-      - [Def-K-04-04. Apache Storm {#def-k-04-04-apache-storm}](#def-k-04-04-apache-storm-def-k-04-04-apache-storm)
-      - [Def-K-04-05. Pulsar Functions {#def-k-04-05-pulsar-functions}](#def-k-04-05-pulsar-functions-def-k-04-05-pulsar-functions)
+      - [Def-K-04-01. Apache Flink {#def-k-04-01-apache-flink}](#def-k-04-01-apache-flink)
+      - [Def-K-04-02. Kafka Streams {#def-k-04-02-kafka-streams}](#def-k-04-02-kafka-streams)
+      - [Def-K-04-03. Spark Streaming (Structured Streaming) {#def-k-04-03-spark-streaming-structured-streaming}](#def-k-04-03-spark-streaming-structured-streaming)
+      - [Def-K-04-04. Apache Storm {#def-k-04-04-apache-storm}](#def-k-04-04-apache-storm)
+      - [Def-K-04-05. Pulsar Functions {#def-k-04-05-pulsar-functions}](#def-k-04-05-pulsar-functions)
 ```
 
 **File**: `Knowledge/04-technology-selection/paradigm-selection-guide.md`
@@ -21923,21 +21923,21 @@ $$
 **File**: `Knowledge/04-technology-selection/engine-selection-guide.md`
 
 ```markdown
-      - [Def-K-04-02. Kafka Streams {#def-k-04-02-kafka-streams}](#def-k-04-02-kafka-streams-def-k-04-02-kafka-streams)
-      - [Def-K-04-03. Spark Streaming (Structured Streaming) {#def-k-04-03-spark-streaming-structured-streaming}](#def-k-04-03-spark-streaming-structured-streaming-def-k-04-03-spark-streaming-structured-streaming)
-      - [Def-K-04-04. Apache Storm {#def-k-04-04-apache-storm}](#def-k-04-04-apache-storm-def-k-04-04-apache-storm)
-      - [Def-K-04-05. Pulsar Functions {#def-k-04-05-pulsar-functions}](#def-k-04-05-pulsar-functions-def-k-04-05-pulsar-functions)
-    - [1.3 选型核心维度定义 {#13-选型核心维度定义}](#13-选型核心维度定义-13-选型核心维度定义)
+      - [Def-K-04-02. Kafka Streams {#def-k-04-02-kafka-streams}](#def-k-04-02-kafka-streams)
+      - [Def-K-04-03. Spark Streaming (Structured Streaming) {#def-k-04-03-spark-streaming-structured-streaming}](#def-k-04-03-spark-streaming-structured-streaming)
+      - [Def-K-04-04. Apache Storm {#def-k-04-04-apache-storm}](#def-k-04-04-apache-storm)
+      - [Def-K-04-05. Pulsar Functions {#def-k-04-05-pulsar-functions}](#def-k-04-05-pulsar-functions)
+    - [1.3 选型核心维度定义 {#13-选型核心维度定义}](#13-选型核心维度定义)
 ```
 
 **File**: `Knowledge/04-technology-selection/engine-selection-guide.md`
 
 ```markdown
-      - [Def-K-04-02. Kafka Streams {#def-k-04-02-kafka-streams}](#def-k-04-02-kafka-streams-def-k-04-02-kafka-streams)
-      - [Def-K-04-03. Spark Streaming (Structured Streaming) {#def-k-04-03-spark-streaming-structured-streaming}](#def-k-04-03-spark-streaming-structured-streaming-def-k-04-03-spark-streaming-structured-streaming)
-      - [Def-K-04-04. Apache Storm {#def-k-04-04-apache-storm}](#def-k-04-04-apache-storm-def-k-04-04-apache-storm)
-      - [Def-K-04-05. Pulsar Functions {#def-k-04-05-pulsar-functions}](#def-k-04-05-pulsar-functions-def-k-04-05-pulsar-functions)
-    - [1.3 选型核心维度定义 {#13-选型核心维度定义}](#13-选型核心维度定义-13-选型核心维度定义)
+      - [Def-K-04-02. Kafka Streams {#def-k-04-02-kafka-streams}](#def-k-04-02-kafka-streams)
+      - [Def-K-04-03. Spark Streaming (Structured Streaming) {#def-k-04-03-spark-streaming-structured-streaming}](#def-k-04-03-spark-streaming-structured-streaming)
+      - [Def-K-04-04. Apache Storm {#def-k-04-04-apache-storm}](#def-k-04-04-apache-storm)
+      - [Def-K-04-05. Pulsar Functions {#def-k-04-05-pulsar-functions}](#def-k-04-05-pulsar-functions)
+    - [1.3 选型核心维度定义 {#13-选型核心维度定义}](#13-选型核心维度定义)
 ```
 
 **File**: `Knowledge/04-technology-selection/paradigm-selection-guide.md`
@@ -21975,21 +21975,21 @@ $$
 **File**: `Knowledge/04-technology-selection/engine-selection-guide.md`
 
 ```markdown
-      - [Def-K-04-03. Spark Streaming (Structured Streaming) {#def-k-04-03-spark-streaming-structured-streaming}](#def-k-04-03-spark-streaming-structured-streaming-def-k-04-03-spark-streaming-structured-streaming)
-      - [Def-K-04-04. Apache Storm {#def-k-04-04-apache-storm}](#def-k-04-04-apache-storm-def-k-04-04-apache-storm)
-      - [Def-K-04-05. Pulsar Functions {#def-k-04-05-pulsar-functions}](#def-k-04-05-pulsar-functions-def-k-04-05-pulsar-functions)
-    - [1.3 选型核心维度定义 {#13-选型核心维度定义}](#13-选型核心维度定义-13-选型核心维度定义)
-      - [Def-K-04-06. 延迟特征 (Latency Profile) {#def-k-04-06-延迟特征-latency-profile}](#def-k-04-06-延迟特征-latency-profile-def-k-04-06-延迟特征-latency-profile)
+      - [Def-K-04-03. Spark Streaming (Structured Streaming) {#def-k-04-03-spark-streaming-structured-streaming}](#def-k-04-03-spark-streaming-structured-streaming)
+      - [Def-K-04-04. Apache Storm {#def-k-04-04-apache-storm}](#def-k-04-04-apache-storm)
+      - [Def-K-04-05. Pulsar Functions {#def-k-04-05-pulsar-functions}](#def-k-04-05-pulsar-functions)
+    - [1.3 选型核心维度定义 {#13-选型核心维度定义}](#13-选型核心维度定义)
+      - [Def-K-04-06. 延迟特征 (Latency Profile) {#def-k-04-06-延迟特征-latency-profile}](#def-k-04-06-延迟特征-latency-profile)
 ```
 
 **File**: `Knowledge/04-technology-selection/engine-selection-guide.md`
 
 ```markdown
-      - [Def-K-04-03. Spark Streaming (Structured Streaming) {#def-k-04-03-spark-streaming-structured-streaming}](#def-k-04-03-spark-streaming-structured-streaming-def-k-04-03-spark-streaming-structured-streaming)
-      - [Def-K-04-04. Apache Storm {#def-k-04-04-apache-storm}](#def-k-04-04-apache-storm-def-k-04-04-apache-storm)
-      - [Def-K-04-05. Pulsar Functions {#def-k-04-05-pulsar-functions}](#def-k-04-05-pulsar-functions-def-k-04-05-pulsar-functions)
-    - [1.3 选型核心维度定义 {#13-选型核心维度定义}](#13-选型核心维度定义-13-选型核心维度定义)
-      - [Def-K-04-06. 延迟特征 (Latency Profile) {#def-k-04-06-延迟特征-latency-profile}](#def-k-04-06-延迟特征-latency-profile-def-k-04-06-延迟特征-latency-profile)
+      - [Def-K-04-03. Spark Streaming (Structured Streaming) {#def-k-04-03-spark-streaming-structured-streaming}](#def-k-04-03-spark-streaming-structured-streaming)
+      - [Def-K-04-04. Apache Storm {#def-k-04-04-apache-storm}](#def-k-04-04-apache-storm)
+      - [Def-K-04-05. Pulsar Functions {#def-k-04-05-pulsar-functions}](#def-k-04-05-pulsar-functions)
+    - [1.3 选型核心维度定义 {#13-选型核心维度定义}](#13-选型核心维度定义)
+      - [Def-K-04-06. 延迟特征 (Latency Profile) {#def-k-04-06-延迟特征-latency-profile}](#def-k-04-06-延迟特征-latency-profile)
 ```
 
 #### `Def-K-04-06`
@@ -21997,21 +21997,21 @@ $$
 **File**: `Knowledge/04-technology-selection/engine-selection-guide.md`
 
 ```markdown
-      - [Def-K-04-05. Pulsar Functions {#def-k-04-05-pulsar-functions}](#def-k-04-05-pulsar-functions-def-k-04-05-pulsar-functions)
-    - [1.3 选型核心维度定义 {#13-选型核心维度定义}](#13-选型核心维度定义-13-选型核心维度定义)
-      - [Def-K-04-06. 延迟特征 (Latency Profile) {#def-k-04-06-延迟特征-latency-profile}](#def-k-04-06-延迟特征-latency-profile-def-k-04-06-延迟特征-latency-profile)
-      - [Def-K-04-07. 状态管理能力 (State Management Capability) {#def-k-04-07-状态管理能力-state-management-capability}](#def-k-04-07-状态管理能力-state-management-capability-def-k-04-07-状态管理能力-state-management-capability)
-      - [Def-K-04-08. 一致性保证级别 (Consistency Guarantee Level) {#def-k-04-08-一致性保证级别-consistency-guarantee-level}](#def-k-04-08-一致性保证级别-consistency-guarantee-level-def-k-04-08-一致性保证级别-consistency-guarantee-level)
+      - [Def-K-04-05. Pulsar Functions {#def-k-04-05-pulsar-functions}](#def-k-04-05-pulsar-functions)
+    - [1.3 选型核心维度定义 {#13-选型核心维度定义}](#13-选型核心维度定义)
+      - [Def-K-04-06. 延迟特征 (Latency Profile) {#def-k-04-06-延迟特征-latency-profile}](#def-k-04-06-延迟特征-latency-profile)
+      - [Def-K-04-07. 状态管理能力 (State Management Capability) {#def-k-04-07-状态管理能力-state-management-capability}](#def-k-04-07-状态管理能力-state-management-capability)
+      - [Def-K-04-08. 一致性保证级别 (Consistency Guarantee Level) {#def-k-04-08-一致性保证级别-consistency-guarantee-level}](#def-k-04-08-一致性保证级别-consistency-guarantee-level)
 ```
 
 **File**: `Knowledge/04-technology-selection/engine-selection-guide.md`
 
 ```markdown
-      - [Def-K-04-05. Pulsar Functions {#def-k-04-05-pulsar-functions}](#def-k-04-05-pulsar-functions-def-k-04-05-pulsar-functions)
-    - [1.3 选型核心维度定义 {#13-选型核心维度定义}](#13-选型核心维度定义-13-选型核心维度定义)
-      - [Def-K-04-06. 延迟特征 (Latency Profile) {#def-k-04-06-延迟特征-latency-profile}](#def-k-04-06-延迟特征-latency-profile-def-k-04-06-延迟特征-latency-profile)
-      - [Def-K-04-07. 状态管理能力 (State Management Capability) {#def-k-04-07-状态管理能力-state-management-capability}](#def-k-04-07-状态管理能力-state-management-capability-def-k-04-07-状态管理能力-state-management-capability)
-      - [Def-K-04-08. 一致性保证级别 (Consistency Guarantee Level) {#def-k-04-08-一致性保证级别-consistency-guarantee-level}](#def-k-04-08-一致性保证级别-consistency-guarantee-level-def-k-04-08-一致性保证级别-consistency-guarantee-level)
+      - [Def-K-04-05. Pulsar Functions {#def-k-04-05-pulsar-functions}](#def-k-04-05-pulsar-functions)
+    - [1.3 选型核心维度定义 {#13-选型核心维度定义}](#13-选型核心维度定义)
+      - [Def-K-04-06. 延迟特征 (Latency Profile) {#def-k-04-06-延迟特征-latency-profile}](#def-k-04-06-延迟特征-latency-profile)
+      - [Def-K-04-07. 状态管理能力 (State Management Capability) {#def-k-04-07-状态管理能力-state-management-capability}](#def-k-04-07-状态管理能力-state-management-capability)
+      - [Def-K-04-08. 一致性保证级别 (Consistency Guarantee Level) {#def-k-04-08-一致性保证级别-consistency-guarantee-level}](#def-k-04-08-一致性保证级别-consistency-guarantee-level)
 ```
 
 #### `Def-K-04-07`
@@ -22019,21 +22019,21 @@ $$
 **File**: `Knowledge/04-technology-selection/engine-selection-guide.md`
 
 ```markdown
-    - [1.3 选型核心维度定义 {#13-选型核心维度定义}](#13-选型核心维度定义-13-选型核心维度定义)
-      - [Def-K-04-06. 延迟特征 (Latency Profile) {#def-k-04-06-延迟特征-latency-profile}](#def-k-04-06-延迟特征-latency-profile-def-k-04-06-延迟特征-latency-profile)
-      - [Def-K-04-07. 状态管理能力 (State Management Capability) {#def-k-04-07-状态管理能力-state-management-capability}](#def-k-04-07-状态管理能力-state-management-capability-def-k-04-07-状态管理能力-state-management-capability)
-      - [Def-K-04-08. 一致性保证级别 (Consistency Guarantee Level) {#def-k-04-08-一致性保证级别-consistency-guarantee-level}](#def-k-04-08-一致性保证级别-consistency-guarantee-level-def-k-04-08-一致性保证级别-consistency-guarantee-level)
-      - [Def-K-04-09. 表达能力层次映射 (Expressiveness Hierarchy Mapping) {#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping}](#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping-def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping)
+    - [1.3 选型核心维度定义 {#13-选型核心维度定义}](#13-选型核心维度定义)
+      - [Def-K-04-06. 延迟特征 (Latency Profile) {#def-k-04-06-延迟特征-latency-profile}](#def-k-04-06-延迟特征-latency-profile)
+      - [Def-K-04-07. 状态管理能力 (State Management Capability) {#def-k-04-07-状态管理能力-state-management-capability}](#def-k-04-07-状态管理能力-state-management-capability)
+      - [Def-K-04-08. 一致性保证级别 (Consistency Guarantee Level) {#def-k-04-08-一致性保证级别-consistency-guarantee-level}](#def-k-04-08-一致性保证级别-consistency-guarantee-level)
+      - [Def-K-04-09. 表达能力层次映射 (Expressiveness Hierarchy Mapping) {#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping}](#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping)
 ```
 
 **File**: `Knowledge/04-technology-selection/engine-selection-guide.md`
 
 ```markdown
-    - [1.3 选型核心维度定义 {#13-选型核心维度定义}](#13-选型核心维度定义-13-选型核心维度定义)
-      - [Def-K-04-06. 延迟特征 (Latency Profile) {#def-k-04-06-延迟特征-latency-profile}](#def-k-04-06-延迟特征-latency-profile-def-k-04-06-延迟特征-latency-profile)
-      - [Def-K-04-07. 状态管理能力 (State Management Capability) {#def-k-04-07-状态管理能力-state-management-capability}](#def-k-04-07-状态管理能力-state-management-capability-def-k-04-07-状态管理能力-state-management-capability)
-      - [Def-K-04-08. 一致性保证级别 (Consistency Guarantee Level) {#def-k-04-08-一致性保证级别-consistency-guarantee-level}](#def-k-04-08-一致性保证级别-consistency-guarantee-level-def-k-04-08-一致性保证级别-consistency-guarantee-level)
-      - [Def-K-04-09. 表达能力层次映射 (Expressiveness Hierarchy Mapping) {#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping}](#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping-def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping)
+    - [1.3 选型核心维度定义 {#13-选型核心维度定义}](#13-选型核心维度定义)
+      - [Def-K-04-06. 延迟特征 (Latency Profile) {#def-k-04-06-延迟特征-latency-profile}](#def-k-04-06-延迟特征-latency-profile)
+      - [Def-K-04-07. 状态管理能力 (State Management Capability) {#def-k-04-07-状态管理能力-state-management-capability}](#def-k-04-07-状态管理能力-state-management-capability)
+      - [Def-K-04-08. 一致性保证级别 (Consistency Guarantee Level) {#def-k-04-08-一致性保证级别-consistency-guarantee-level}](#def-k-04-08-一致性保证级别-consistency-guarantee-level)
+      - [Def-K-04-09. 表达能力层次映射 (Expressiveness Hierarchy Mapping) {#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping}](#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping)
 ```
 
 #### `Def-K-04-08`
@@ -22041,21 +22041,21 @@ $$
 **File**: `Knowledge/04-technology-selection/engine-selection-guide.md`
 
 ```markdown
-      - [Def-K-04-06. 延迟特征 (Latency Profile) {#def-k-04-06-延迟特征-latency-profile}](#def-k-04-06-延迟特征-latency-profile-def-k-04-06-延迟特征-latency-profile)
-      - [Def-K-04-07. 状态管理能力 (State Management Capability) {#def-k-04-07-状态管理能力-state-management-capability}](#def-k-04-07-状态管理能力-state-management-capability-def-k-04-07-状态管理能力-state-management-capability)
-      - [Def-K-04-08. 一致性保证级别 (Consistency Guarantee Level) {#def-k-04-08-一致性保证级别-consistency-guarantee-level}](#def-k-04-08-一致性保证级别-consistency-guarantee-level-def-k-04-08-一致性保证级别-consistency-guarantee-level)
-      - [Def-K-04-09. 表达能力层次映射 (Expressiveness Hierarchy Mapping) {#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping}](#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping-def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
+      - [Def-K-04-06. 延迟特征 (Latency Profile) {#def-k-04-06-延迟特征-latency-profile}](#def-k-04-06-延迟特征-latency-profile)
+      - [Def-K-04-07. 状态管理能力 (State Management Capability) {#def-k-04-07-状态管理能力-state-management-capability}](#def-k-04-07-状态管理能力-state-management-capability)
+      - [Def-K-04-08. 一致性保证级别 (Consistency Guarantee Level) {#def-k-04-08-一致性保证级别-consistency-guarantee-level}](#def-k-04-08-一致性保证级别-consistency-guarantee-level)
+      - [Def-K-04-09. 表达能力层次映射 (Expressiveness Hierarchy Mapping) {#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping}](#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
 ```
 
 **File**: `Knowledge/04-technology-selection/engine-selection-guide.md`
 
 ```markdown
-      - [Def-K-04-06. 延迟特征 (Latency Profile) {#def-k-04-06-延迟特征-latency-profile}](#def-k-04-06-延迟特征-latency-profile-def-k-04-06-延迟特征-latency-profile)
-      - [Def-K-04-07. 状态管理能力 (State Management Capability) {#def-k-04-07-状态管理能力-state-management-capability}](#def-k-04-07-状态管理能力-state-management-capability-def-k-04-07-状态管理能力-state-management-capability)
-      - [Def-K-04-08. 一致性保证级别 (Consistency Guarantee Level) {#def-k-04-08-一致性保证级别-consistency-guarantee-level}](#def-k-04-08-一致性保证级别-consistency-guarantee-level-def-k-04-08-一致性保证级别-consistency-guarantee-level)
-      - [Def-K-04-09. 表达能力层次映射 (Expressiveness Hierarchy Mapping) {#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping}](#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping-def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
+      - [Def-K-04-06. 延迟特征 (Latency Profile) {#def-k-04-06-延迟特征-latency-profile}](#def-k-04-06-延迟特征-latency-profile)
+      - [Def-K-04-07. 状态管理能力 (State Management Capability) {#def-k-04-07-状态管理能力-state-management-capability}](#def-k-04-07-状态管理能力-state-management-capability)
+      - [Def-K-04-08. 一致性保证级别 (Consistency Guarantee Level) {#def-k-04-08-一致性保证级别-consistency-guarantee-level}](#def-k-04-08-一致性保证级别-consistency-guarantee-level)
+      - [Def-K-04-09. 表达能力层次映射 (Expressiveness Hierarchy Mapping) {#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping}](#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
 ```
 
 #### `Def-K-04-09`
@@ -22063,21 +22063,21 @@ $$
 **File**: `Knowledge/04-technology-selection/engine-selection-guide.md`
 
 ```markdown
-      - [Def-K-04-07. 状态管理能力 (State Management Capability) {#def-k-04-07-状态管理能力-state-management-capability}](#def-k-04-07-状态管理能力-state-management-capability-def-k-04-07-状态管理能力-state-management-capability)
-      - [Def-K-04-08. 一致性保证级别 (Consistency Guarantee Level) {#def-k-04-08-一致性保证级别-consistency-guarantee-level}](#def-k-04-08-一致性保证级别-consistency-guarantee-level-def-k-04-08-一致性保证级别-consistency-guarantee-level)
-      - [Def-K-04-09. 表达能力层次映射 (Expressiveness Hierarchy Mapping) {#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping}](#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping-def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-K-04-01. 延迟与吞吐的权衡上界 {#lemma-k-04-01-延迟与吞吐的权衡上界}](#lemma-k-04-01-延迟与吞吐的权衡上界-lemma-k-04-01-延迟与吞吐的权衡上界)
+      - [Def-K-04-07. 状态管理能力 (State Management Capability) {#def-k-04-07-状态管理能力-state-management-capability}](#def-k-04-07-状态管理能力-state-management-capability)
+      - [Def-K-04-08. 一致性保证级别 (Consistency Guarantee Level) {#def-k-04-08-一致性保证级别-consistency-guarantee-level}](#def-k-04-08-一致性保证级别-consistency-guarantee-level)
+      - [Def-K-04-09. 表达能力层次映射 (Expressiveness Hierarchy Mapping) {#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping}](#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-K-04-01. 延迟与吞吐的权衡上界 {#lemma-k-04-01-延迟与吞吐的权衡上界}](#lemma-k-04-01-延迟与吞吐的权衡上界)
 ```
 
 **File**: `Knowledge/04-technology-selection/engine-selection-guide.md`
 
 ```markdown
-      - [Def-K-04-07. 状态管理能力 (State Management Capability) {#def-k-04-07-状态管理能力-state-management-capability}](#def-k-04-07-状态管理能力-state-management-capability-def-k-04-07-状态管理能力-state-management-capability)
-      - [Def-K-04-08. 一致性保证级别 (Consistency Guarantee Level) {#def-k-04-08-一致性保证级别-consistency-guarantee-level}](#def-k-04-08-一致性保证级别-consistency-guarantee-level-def-k-04-08-一致性保证级别-consistency-guarantee-level)
-      - [Def-K-04-09. 表达能力层次映射 (Expressiveness Hierarchy Mapping) {#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping}](#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping-def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-K-04-01. 延迟与吞吐的权衡上界 {#lemma-k-04-01-延迟与吞吐的权衡上界}](#lemma-k-04-01-延迟与吞吐的权衡上界-lemma-k-04-01-延迟与吞吐的权衡上界)
+      - [Def-K-04-07. 状态管理能力 (State Management Capability) {#def-k-04-07-状态管理能力-state-management-capability}](#def-k-04-07-状态管理能力-state-management-capability)
+      - [Def-K-04-08. 一致性保证级别 (Consistency Guarantee Level) {#def-k-04-08-一致性保证级别-consistency-guarantee-level}](#def-k-04-08-一致性保证级别-consistency-guarantee-level)
+      - [Def-K-04-09. 表达能力层次映射 (Expressiveness Hierarchy Mapping) {#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping}](#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-K-04-01. 延迟与吞吐的权衡上界 {#lemma-k-04-01-延迟与吞吐的权衡上界}](#lemma-k-04-01-延迟与吞吐的权衡上界)
 ```
 
 **File**: `Knowledge/04-technology-selection/storage-selection-guide.md`
@@ -23945,7 +23945,7 @@ $$\text{Staleness}(t) \leq \Delta_{ckpt}$$
 **File**: `Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md`
 
 ```markdown
-#### Def-K-01-43. 流数据库 (Streaming Database) {#def-k-01-43-流数据库-streaming-database}
+#### Def-K-01-43. 流数据库 (Streaming Database)
 
 **形式化定义**（参见 [Def-K-06-12](../06-frontier/streaming-databases.md)）：
 
@@ -24025,21 +24025,21 @@ $$
 **File**: `Knowledge/06-frontier/streaming-databases.md`
 
 ```markdown
-  - [目录 {#目录}](#目录-目录)
-  - [1. 概念定义 (Definitions) {#1-概念定义-definitions}](#1-概念定义-definitions-1-概念定义-definitions)
-    - [Def-K-06-12: 流数据库 (Streaming Database) {#def-k-06-12-流数据库-streaming-database}](#def-k-06-12-流数据库-streaming-database-def-k-06-12-流数据库-streaming-database)
-    - [Def-K-06-13: 物化视图维护 (Materialized View Maintenance) {#def-k-06-13-物化视图维护-materialized-view-maintenance}](#def-k-06-13-物化视图维护-materialized-view-maintenance-def-k-06-13-物化视图维护-materialized-view-maintenance)
-    - [Def-K-06-14: SQL流处理语义 (SQL Stream Processing Semantics) {#def-k-06-14-sql流处理语义-sql-stream-processing-semantics}](#def-k-06-14-sql流处理语义-sql-stream-processing-semantics-def-k-06-14-sql流处理语义-sql-stream-processing-semantics)
+  - [目录 {#目录}](#目录)
+  - [1. 概念定义 (Definitions) {#1-概念定义-definitions}](#1-概念定义-definitions)
+    - [Def-K-06-12: 流数据库 (Streaming Database) {#def-k-06-12-流数据库-streaming-database}](#def-k-06-12-流数据库-streaming-database)
+    - [Def-K-06-13: 物化视图维护 (Materialized View Maintenance) {#def-k-06-13-物化视图维护-materialized-view-maintenance}](#def-k-06-13-物化视图维护-materialized-view-maintenance)
+    - [Def-K-06-14: SQL流处理语义 (SQL Stream Processing Semantics) {#def-k-06-14-sql流处理语义-sql-stream-processing-semantics}](#def-k-06-14-sql流处理语义-sql-stream-processing-semantics)
 ```
 
 **File**: `Knowledge/06-frontier/streaming-databases.md`
 
 ```markdown
-  - [目录 {#目录}](#目录-目录)
-  - [1. 概念定义 (Definitions) {#1-概念定义-definitions}](#1-概念定义-definitions-1-概念定义-definitions)
-    - [Def-K-06-12: 流数据库 (Streaming Database) {#def-k-06-12-流数据库-streaming-database}](#def-k-06-12-流数据库-streaming-database-def-k-06-12-流数据库-streaming-database)
-    - [Def-K-06-13: 物化视图维护 (Materialized View Maintenance) {#def-k-06-13-物化视图维护-materialized-view-maintenance}](#def-k-06-13-物化视图维护-materialized-view-maintenance-def-k-06-13-物化视图维护-materialized-view-maintenance)
-    - [Def-K-06-14: SQL流处理语义 (SQL Stream Processing Semantics) {#def-k-06-14-sql流处理语义-sql-stream-processing-semantics}](#def-k-06-14-sql流处理语义-sql-stream-processing-semantics-def-k-06-14-sql流处理语义-sql-stream-processing-semantics)
+  - [目录 {#目录}](#目录)
+  - [1. 概念定义 (Definitions) {#1-概念定义-definitions}](#1-概念定义-definitions)
+    - [Def-K-06-12: 流数据库 (Streaming Database) {#def-k-06-12-流数据库-streaming-database}](#def-k-06-12-流数据库-streaming-database)
+    - [Def-K-06-13: 物化视图维护 (Materialized View Maintenance) {#def-k-06-13-物化视图维护-materialized-view-maintenance}](#def-k-06-13-物化视图维护-materialized-view-maintenance)
+    - [Def-K-06-14: SQL流处理语义 (SQL Stream Processing Semantics) {#def-k-06-14-sql流处理语义-sql-stream-processing-semantics}](#def-k-06-14-sql流处理语义-sql-stream-processing-semantics)
 ```
 
 **File**: `Knowledge/06-frontier/wasm-dataflow-patterns.md`
@@ -24147,21 +24147,21 @@ Serverless流处理系统是一个七元组 $\mathcal{S}_{serverless} = (F, E, S
 **File**: `Knowledge/06-frontier/streaming-databases.md`
 
 ```markdown
-  - [1. 概念定义 (Definitions) {#1-概念定义-definitions}](#1-概念定义-definitions-1-概念定义-definitions)
-    - [Def-K-06-12: 流数据库 (Streaming Database) {#def-k-06-12-流数据库-streaming-database}](#def-k-06-12-流数据库-streaming-database-def-k-06-12-流数据库-streaming-database)
-    - [Def-K-06-13: 物化视图维护 (Materialized View Maintenance) {#def-k-06-13-物化视图维护-materialized-view-maintenance}](#def-k-06-13-物化视图维护-materialized-view-maintenance-def-k-06-13-物化视图维护-materialized-view-maintenance)
-    - [Def-K-06-14: SQL流处理语义 (SQL Stream Processing Semantics) {#def-k-06-14-sql流处理语义-sql-stream-processing-semantics}](#def-k-06-14-sql流处理语义-sql-stream-processing-semantics-def-k-06-14-sql流处理语义-sql-stream-processing-semantics)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
+  - [1. 概念定义 (Definitions) {#1-概念定义-definitions}](#1-概念定义-definitions)
+    - [Def-K-06-12: 流数据库 (Streaming Database) {#def-k-06-12-流数据库-streaming-database}](#def-k-06-12-流数据库-streaming-database)
+    - [Def-K-06-13: 物化视图维护 (Materialized View Maintenance) {#def-k-06-13-物化视图维护-materialized-view-maintenance}](#def-k-06-13-物化视图维护-materialized-view-maintenance)
+    - [Def-K-06-14: SQL流处理语义 (SQL Stream Processing Semantics) {#def-k-06-14-sql流处理语义-sql-stream-processing-semantics}](#def-k-06-14-sql流处理语义-sql-stream-processing-semantics)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
 ```
 
 **File**: `Knowledge/06-frontier/streaming-databases.md`
 
 ```markdown
-  - [1. 概念定义 (Definitions) {#1-概念定义-definitions}](#1-概念定义-definitions-1-概念定义-definitions)
-    - [Def-K-06-12: 流数据库 (Streaming Database) {#def-k-06-12-流数据库-streaming-database}](#def-k-06-12-流数据库-streaming-database-def-k-06-12-流数据库-streaming-database)
-    - [Def-K-06-13: 物化视图维护 (Materialized View Maintenance) {#def-k-06-13-物化视图维护-materialized-view-maintenance}](#def-k-06-13-物化视图维护-materialized-view-maintenance-def-k-06-13-物化视图维护-materialized-view-maintenance)
-    - [Def-K-06-14: SQL流处理语义 (SQL Stream Processing Semantics) {#def-k-06-14-sql流处理语义-sql-stream-processing-semantics}](#def-k-06-14-sql流处理语义-sql-stream-processing-semantics-def-k-06-14-sql流处理语义-sql-stream-processing-semantics)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
+  - [1. 概念定义 (Definitions) {#1-概念定义-definitions}](#1-概念定义-definitions)
+    - [Def-K-06-12: 流数据库 (Streaming Database) {#def-k-06-12-流数据库-streaming-database}](#def-k-06-12-流数据库-streaming-database)
+    - [Def-K-06-13: 物化视图维护 (Materialized View Maintenance) {#def-k-06-13-物化视图维护-materialized-view-maintenance}](#def-k-06-13-物化视图维护-materialized-view-maintenance)
+    - [Def-K-06-14: SQL流处理语义 (SQL Stream Processing Semantics) {#def-k-06-14-sql流处理语义-sql-stream-processing-semantics}](#def-k-06-14-sql流处理语义-sql-stream-processing-semantics)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
 ```
 
 **File**: `Knowledge/06-frontier/wasm-dataflow-patterns.md`
@@ -24369,31 +24369,31 @@ Serverless流处理系统是一个七元组 $\mathcal{S}_{serverless} = (F, E, S
 **File**: `Knowledge/06-frontier/streaming-databases.md`
 
 ```markdown
-    - [Def-K-06-12: 流数据库 (Streaming Database) {#def-k-06-12-流数据库-streaming-database}](#def-k-06-12-流数据库-streaming-database-def-k-06-12-流数据库-streaming-database)
-    - [Def-K-06-13: 物化视图维护 (Materialized View Maintenance) {#def-k-06-13-物化视图维护-materialized-view-maintenance}](#def-k-06-13-物化视图维护-materialized-view-maintenance-def-k-06-13-物化视图维护-materialized-view-maintenance)
-    - [Def-K-06-14: SQL流处理语义 (SQL Stream Processing Semantics) {#def-k-06-14-sql流处理语义-sql-stream-processing-semantics}](#def-k-06-14-sql流处理语义-sql-stream-processing-semantics-def-k-06-14-sql流处理语义-sql-stream-processing-semantics)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Prop-K-06-01: 流数据库的增量计算封闭性 {#prop-k-06-01-流数据库的增量计算封闭性}](#prop-k-06-01-流数据库的增量计算封闭性-prop-k-06-01-流数据库的增量计算封闭性)
+    - [Def-K-06-12: 流数据库 (Streaming Database) {#def-k-06-12-流数据库-streaming-database}](#def-k-06-12-流数据库-streaming-database)
+    - [Def-K-06-13: 物化视图维护 (Materialized View Maintenance) {#def-k-06-13-物化视图维护-materialized-view-maintenance}](#def-k-06-13-物化视图维护-materialized-view-maintenance)
+    - [Def-K-06-14: SQL流处理语义 (SQL Stream Processing Semantics) {#def-k-06-14-sql流处理语义-sql-stream-processing-semantics}](#def-k-06-14-sql流处理语义-sql-stream-processing-semantics)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Prop-K-06-01: 流数据库的增量计算封闭性 {#prop-k-06-01-流数据库的增量计算封闭性}](#prop-k-06-01-流数据库的增量计算封闭性)
 ```
 
 **File**: `Knowledge/06-frontier/streaming-databases.md`
 
 ```markdown
-    - [Def-K-06-12: 流数据库 (Streaming Database) {#def-k-06-12-流数据库-streaming-database}](#def-k-06-12-流数据库-streaming-database-def-k-06-12-流数据库-streaming-database)
-    - [Def-K-06-13: 物化视图维护 (Materialized View Maintenance) {#def-k-06-13-物化视图维护-materialized-view-maintenance}](#def-k-06-13-物化视图维护-materialized-view-maintenance-def-k-06-13-物化视图维护-materialized-view-maintenance)
-    - [Def-K-06-14: SQL流处理语义 (SQL Stream Processing Semantics) {#def-k-06-14-sql流处理语义-sql-stream-processing-semantics}](#def-k-06-14-sql流处理语义-sql-stream-processing-semantics-def-k-06-14-sql流处理语义-sql-stream-processing-semantics)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Prop-K-06-01: 流数据库的增量计算封闭性 {#prop-k-06-01-流数据库的增量计算封闭性}](#prop-k-06-01-流数据库的增量计算封闭性-prop-k-06-01-流数据库的增量计算封闭性)
+    - [Def-K-06-12: 流数据库 (Streaming Database) {#def-k-06-12-流数据库-streaming-database}](#def-k-06-12-流数据库-streaming-database)
+    - [Def-K-06-13: 物化视图维护 (Materialized View Maintenance) {#def-k-06-13-物化视图维护-materialized-view-maintenance}](#def-k-06-13-物化视图维护-materialized-view-maintenance)
+    - [Def-K-06-14: SQL流处理语义 (SQL Stream Processing Semantics) {#def-k-06-14-sql流处理语义-sql-stream-processing-semantics}](#def-k-06-14-sql流处理语义-sql-stream-processing-semantics)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Prop-K-06-01: 流数据库的增量计算封闭性 {#prop-k-06-01-流数据库的增量计算封闭性}](#prop-k-06-01-流数据库的增量计算封闭性)
 ```
 
 **File**: `Knowledge/06-frontier/streaming-databases.md`
 
 ```markdown
-    - [Def-K-06-12: 流数据库 (Streaming Database) {#def-k-06-12-流数据库-streaming-database}](#def-k-06-12-流数据库-streaming-database-def-k-06-12-流数据库-streaming-database)
-    - [Def-K-06-13: 物化视图维护 (Materialized View Maintenance) {#def-k-06-13-物化视图维护-materialized-view-maintenance}](#def-k-06-13-物化视图维护-materialized-view-maintenance-def-k-06-13-物化视图维护-materialized-view-maintenance)
-    - [Def-K-06-14: SQL流处理语义 (SQL Stream Processing Semantics) {#def-k-06-14-sql流处理语义-sql-stream-processing-semantics}](#def-k-06-14-sql流处理语义-sql-stream-processing-semantics-def-k-06-14-sql流处理语义-sql-stream-processing-semantics)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Prop-K-06-01: 流数据库的增量计算封闭性 {#prop-k-06-01-流数据库的增量计算封闭性}](#prop-k-06-01-流数据库的增量计算封闭性-prop-k-06-01-流数据库的增量计算封闭性)
+    - [Def-K-06-12: 流数据库 (Streaming Database) {#def-k-06-12-流数据库-streaming-database}](#def-k-06-12-流数据库-streaming-database)
+    - [Def-K-06-13: 物化视图维护 (Materialized View Maintenance) {#def-k-06-13-物化视图维护-materialized-view-maintenance}](#def-k-06-13-物化视图维护-materialized-view-maintenance)
+    - [Def-K-06-14: SQL流处理语义 (SQL Stream Processing Semantics) {#def-k-06-14-sql流处理语义-sql-stream-processing-semantics}](#def-k-06-14-sql流处理语义-sql-stream-processing-semantics)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Prop-K-06-01: 流数据库的增量计算封闭性 {#prop-k-06-01-流数据库的增量计算封闭性}](#prop-k-06-01-流数据库的增量计算封闭性)
 ```
 
 **File**: `Knowledge/06-frontier/wasm-dataflow-patterns.md`
@@ -24577,7 +24577,7 @@ Serverless流处理系统是一个七元组 $\mathcal{S}_{serverless} = (F, E, S
     - [Def-K-06-15: 流数据访问控制 (Streaming Data Access Control)](#def-k-06-15-流数据访问控制-streaming-data-access-control)
     - [Def-K-06-16: 基于属性的访问控制 (ABAC)](#def-k-06-16-基于属性的访问控制-abac)
     - [Def-K-06-17: 基于关系的访问控制 (ReBAC)](#def-k-06-17-基于关系的访问控制-rebac)
-    - [Def-K-06-18: 数据血缘与策略传播 (Data Lineage \& Policy Propagation) {#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation}](#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation-def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation)
+    - [Def-K-06-18: 数据血缘与策略传播 (Data Lineage \& Policy Propagation) {#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation}](#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation)
 ```
 
 **File**: `Knowledge/06-frontier/streaming-access-control.md`
@@ -24587,7 +24587,7 @@ Serverless流处理系统是一个七元组 $\mathcal{S}_{serverless} = (F, E, S
     - [Def-K-06-15: 流数据访问控制 (Streaming Data Access Control)](#def-k-06-15-流数据访问控制-streaming-data-access-control)
     - [Def-K-06-16: 基于属性的访问控制 (ABAC)](#def-k-06-16-基于属性的访问控制-abac)
     - [Def-K-06-17: 基于关系的访问控制 (ReBAC)](#def-k-06-17-基于关系的访问控制-rebac)
-    - [Def-K-06-18: 数据血缘与策略传播 (Data Lineage \& Policy Propagation) {#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation}](#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation-def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation)
+    - [Def-K-06-18: 数据血缘与策略传播 (Data Lineage \& Policy Propagation) {#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation}](#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation)
 ```
 
 **File**: `Knowledge/06-frontier/streaming-security-compliance.md`
@@ -24658,7 +24658,7 @@ Serverless流处理系统是一个七元组 $\mathcal{S}_{serverless} = (F, E, S
     - [Def-K-06-15: 流数据访问控制 (Streaming Data Access Control)](#def-k-06-15-流数据访问控制-streaming-data-access-control)
     - [Def-K-06-16: 基于属性的访问控制 (ABAC)](#def-k-06-16-基于属性的访问控制-abac)
     - [Def-K-06-17: 基于关系的访问控制 (ReBAC)](#def-k-06-17-基于关系的访问控制-rebac)
-    - [Def-K-06-18: 数据血缘与策略传播 (Data Lineage \& Policy Propagation) {#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation}](#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation-def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation)
+    - [Def-K-06-18: 数据血缘与策略传播 (Data Lineage \& Policy Propagation) {#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation}](#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
 ```
 
@@ -24668,7 +24668,7 @@ Serverless流处理系统是一个七元组 $\mathcal{S}_{serverless} = (F, E, S
     - [Def-K-06-15: 流数据访问控制 (Streaming Data Access Control)](#def-k-06-15-流数据访问控制-streaming-data-access-control)
     - [Def-K-06-16: 基于属性的访问控制 (ABAC)](#def-k-06-16-基于属性的访问控制-abac)
     - [Def-K-06-17: 基于关系的访问控制 (ReBAC)](#def-k-06-17-基于关系的访问控制-rebac)
-    - [Def-K-06-18: 数据血缘与策略传播 (Data Lineage \& Policy Propagation) {#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation}](#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation-def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation)
+    - [Def-K-06-18: 数据血缘与策略传播 (Data Lineage \& Policy Propagation) {#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation}](#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
 ```
 
@@ -24739,7 +24739,7 @@ $$V = Q(\mathcal{B}) = \{ t \mid \exists b_1 \in B_1, ..., b_n \in B_n: t = Q(b_
 ```markdown
     - [Def-K-06-16: 基于属性的访问控制 (ABAC)](#def-k-06-16-基于属性的访问控制-abac)
     - [Def-K-06-17: 基于关系的访问控制 (ReBAC)](#def-k-06-17-基于关系的访问控制-rebac)
-    - [Def-K-06-18: 数据血缘与策略传播 (Data Lineage \& Policy Propagation) {#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation}](#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation-def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation)
+    - [Def-K-06-18: 数据血缘与策略传播 (Data Lineage \& Policy Propagation) {#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation}](#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
     - [Prop-K-06-08: ABAC在流场景的表达能力完备性](#prop-k-06-08-abac在流场景的表达能力完备性)
 ```
@@ -24749,7 +24749,7 @@ $$V = Q(\mathcal{B}) = \{ t \mid \exists b_1 \in B_1, ..., b_n \in B_n: t = Q(b_
 ```markdown
     - [Def-K-06-16: 基于属性的访问控制 (ABAC)](#def-k-06-16-基于属性的访问控制-abac)
     - [Def-K-06-17: 基于关系的访问控制 (ReBAC)](#def-k-06-17-基于关系的访问控制-rebac)
-    - [Def-K-06-18: 数据血缘与策略传播 (Data Lineage \& Policy Propagation) {#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation}](#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation-def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation)
+    - [Def-K-06-18: 数据血缘与策略传播 (Data Lineage \& Policy Propagation) {#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation}](#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
     - [Prop-K-06-08: ABAC在流场景的表达能力完备性](#prop-k-06-08-abac在流场景的表达能力完备性)
 ```
@@ -26121,7 +26121,7 @@ $$\mathcal{E} = \langle \mathcal{N}, \mathcal{S}, \mathcal{F}, \mathcal{C}, \mat
     - [Def-K-06-61: 实时推理延迟模型 (Realtime Inference Latency Model)](#def-k-06-61-实时推理延迟模型-realtime-inference-latency-model)
     - [Def-K-06-62: 边缘-云协同推理 (Edge-Cloud Collaborative Inference)](#def-k-06-62-边缘-云协同推理-edge-cloud-collaborative-inference)
     - [Def-K-06-63: 流式Token生成 (Streaming Token Generation)](#def-k-06-63-流式token生成-streaming-token-generation)
-    - [Def-K-06-64: 模型量化与压缩 (Model Quantization \& Compression) {#def-k-06-64-模型量化与压缩-model-quantization--compression}](#def-k-06-64-模型量化与压缩-model-quantization--compression-def-k-06-64-模型量化与压缩-model-quantization--compression)
+    - [Def-K-06-64: 模型量化与压缩 (Model Quantization \& Compression) {#def-k-06-64-模型量化与压缩-model-quantization--compression}](#def-k-06-64-模型量化与压缩-model-quantization--compression)
 ```
 
 **File**: `Knowledge/06-frontier/edge-llm-realtime-inference.md`
@@ -26131,7 +26131,7 @@ $$\mathcal{E} = \langle \mathcal{N}, \mathcal{S}, \mathcal{F}, \mathcal{C}, \mat
     - [Def-K-06-61: 实时推理延迟模型 (Realtime Inference Latency Model)](#def-k-06-61-实时推理延迟模型-realtime-inference-latency-model)
     - [Def-K-06-62: 边缘-云协同推理 (Edge-Cloud Collaborative Inference)](#def-k-06-62-边缘-云协同推理-edge-cloud-collaborative-inference)
     - [Def-K-06-63: 流式Token生成 (Streaming Token Generation)](#def-k-06-63-流式token生成-streaming-token-generation)
-    - [Def-K-06-64: 模型量化与压缩 (Model Quantization \& Compression) {#def-k-06-64-模型量化与压缩-model-quantization--compression}](#def-k-06-64-模型量化与压缩-model-quantization--compression-def-k-06-64-模型量化与压缩-model-quantization--compression)
+    - [Def-K-06-64: 模型量化与压缩 (Model Quantization \& Compression) {#def-k-06-64-模型量化与压缩-model-quantization--compression}](#def-k-06-64-模型量化与压缩-model-quantization--compression)
 ```
 
 #### `Def-K-06-63`
@@ -26142,7 +26142,7 @@ $$\mathcal{E} = \langle \mathcal{N}, \mathcal{S}, \mathcal{F}, \mathcal{C}, \mat
     - [Def-K-06-61: 实时推理延迟模型 (Realtime Inference Latency Model)](#def-k-06-61-实时推理延迟模型-realtime-inference-latency-model)
     - [Def-K-06-62: 边缘-云协同推理 (Edge-Cloud Collaborative Inference)](#def-k-06-62-边缘-云协同推理-edge-cloud-collaborative-inference)
     - [Def-K-06-63: 流式Token生成 (Streaming Token Generation)](#def-k-06-63-流式token生成-streaming-token-generation)
-    - [Def-K-06-64: 模型量化与压缩 (Model Quantization \& Compression) {#def-k-06-64-模型量化与压缩-model-quantization--compression}](#def-k-06-64-模型量化与压缩-model-quantization--compression-def-k-06-64-模型量化与压缩-model-quantization--compression)
+    - [Def-K-06-64: 模型量化与压缩 (Model Quantization \& Compression) {#def-k-06-64-模型量化与压缩-model-quantization--compression}](#def-k-06-64-模型量化与压缩-model-quantization--compression)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
 ```
 
@@ -26152,7 +26152,7 @@ $$\mathcal{E} = \langle \mathcal{N}, \mathcal{S}, \mathcal{F}, \mathcal{C}, \mat
     - [Def-K-06-61: 实时推理延迟模型 (Realtime Inference Latency Model)](#def-k-06-61-实时推理延迟模型-realtime-inference-latency-model)
     - [Def-K-06-62: 边缘-云协同推理 (Edge-Cloud Collaborative Inference)](#def-k-06-62-边缘-云协同推理-edge-cloud-collaborative-inference)
     - [Def-K-06-63: 流式Token生成 (Streaming Token Generation)](#def-k-06-63-流式token生成-streaming-token-generation)
-    - [Def-K-06-64: 模型量化与压缩 (Model Quantization \& Compression) {#def-k-06-64-模型量化与压缩-model-quantization--compression}](#def-k-06-64-模型量化与压缩-model-quantization--compression-def-k-06-64-模型量化与压缩-model-quantization--compression)
+    - [Def-K-06-64: 模型量化与压缩 (Model Quantization \& Compression) {#def-k-06-64-模型量化与压缩-model-quantization--compression}](#def-k-06-64-模型量化与压缩-model-quantization--compression)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
 ```
 
@@ -26163,7 +26163,7 @@ $$\mathcal{E} = \langle \mathcal{N}, \mathcal{S}, \mathcal{F}, \mathcal{C}, \mat
 ```markdown
     - [Def-K-06-62: 边缘-云协同推理 (Edge-Cloud Collaborative Inference)](#def-k-06-62-边缘-云协同推理-edge-cloud-collaborative-inference)
     - [Def-K-06-63: 流式Token生成 (Streaming Token Generation)](#def-k-06-63-流式token生成-streaming-token-generation)
-    - [Def-K-06-64: 模型量化与压缩 (Model Quantization \& Compression) {#def-k-06-64-模型量化与压缩-model-quantization--compression}](#def-k-06-64-模型量化与压缩-model-quantization--compression-def-k-06-64-模型量化与压缩-model-quantization--compression)
+    - [Def-K-06-64: 模型量化与压缩 (Model Quantization \& Compression) {#def-k-06-64-模型量化与压缩-model-quantization--compression}](#def-k-06-64-模型量化与压缩-model-quantization--compression)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
     - [Prop-K-06-15: 边缘推理延迟上界](#prop-k-06-15-边缘推理延迟上界)
 ```
@@ -26173,7 +26173,7 @@ $$\mathcal{E} = \langle \mathcal{N}, \mathcal{S}, \mathcal{F}, \mathcal{C}, \mat
 ```markdown
     - [Def-K-06-62: 边缘-云协同推理 (Edge-Cloud Collaborative Inference)](#def-k-06-62-边缘-云协同推理-edge-cloud-collaborative-inference)
     - [Def-K-06-63: 流式Token生成 (Streaming Token Generation)](#def-k-06-63-流式token生成-streaming-token-generation)
-    - [Def-K-06-64: 模型量化与压缩 (Model Quantization \& Compression) {#def-k-06-64-模型量化与压缩-model-quantization--compression}](#def-k-06-64-模型量化与压缩-model-quantization--compression-def-k-06-64-模型量化与压缩-model-quantization--compression)
+    - [Def-K-06-64: 模型量化与压缩 (Model Quantization \& Compression) {#def-k-06-64-模型量化与压缩-model-quantization--compression}](#def-k-06-64-模型量化与压缩-model-quantization--compression)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
     - [Prop-K-06-15: 边缘推理延迟上界](#prop-k-06-15-边缘推理延迟上界)
 ```
@@ -29769,20 +29769,20 @@ graph LR
 **File**: `Struct/01-foundation/01.02-process-calculus-primer.md`
 
 ```markdown
-  - [目录 {#目录}](#目录-目录)
-  - [1. 概念定义 (Definitions) {#1-概念定义-definitions}](#1-概念定义-definitions-1-概念定义-definitions)
-    - [Def-S-02-01. CCS (Calculus of Communicating Systems) {#def-s-02-01-ccs-calculus-of-communicating-systems}](#def-s-02-01-ccs-calculus-of-communicating-systems-def-s-02-01-ccs-calculus-of-communicating-systems)
-    - [Def-S-02-02. CSP (Communicating Sequential Processes) {#def-s-02-02-csp-communicating-sequential-processes}](#def-s-02-02-csp-communicating-sequential-processes-def-s-02-02-csp-communicating-sequential-processes)
+  - [目录 {#目录}](#目录)
+  - [1. 概念定义 (Definitions) {#1-概念定义-definitions}](#1-概念定义-definitions)
+    - [Def-S-02-01. CCS (Calculus of Communicating Systems) {#def-s-02-01-ccs-calculus-of-communicating-systems}](#def-s-02-01-ccs-calculus-of-communicating-systems)
+    - [Def-S-02-02. CSP (Communicating Sequential Processes) {#def-s-02-02-csp-communicating-sequential-processes}](#def-s-02-02-csp-communicating-sequential-processes)
     - [Def-S-02-03. π-Calculus {#def-s-02-03-π-calculus}](#def-s-02-03-π-calculus-def-s-02-03-π-calculus)
 ```
 
 **File**: `Struct/01-foundation/01.02-process-calculus-primer.md`
 
 ```markdown
-  - [目录 {#目录}](#目录-目录)
-  - [1. 概念定义 (Definitions) {#1-概念定义-definitions}](#1-概念定义-definitions-1-概念定义-definitions)
-    - [Def-S-02-01. CCS (Calculus of Communicating Systems) {#def-s-02-01-ccs-calculus-of-communicating-systems}](#def-s-02-01-ccs-calculus-of-communicating-systems-def-s-02-01-ccs-calculus-of-communicating-systems)
-    - [Def-S-02-02. CSP (Communicating Sequential Processes) {#def-s-02-02-csp-communicating-sequential-processes}](#def-s-02-02-csp-communicating-sequential-processes-def-s-02-02-csp-communicating-sequential-processes)
+  - [目录 {#目录}](#目录)
+  - [1. 概念定义 (Definitions) {#1-概念定义-definitions}](#1-概念定义-definitions)
+    - [Def-S-02-01. CCS (Calculus of Communicating Systems) {#def-s-02-01-ccs-calculus-of-communicating-systems}](#def-s-02-01-ccs-calculus-of-communicating-systems)
+    - [Def-S-02-02. CSP (Communicating Sequential Processes) {#def-s-02-02-csp-communicating-sequential-processes}](#def-s-02-02-csp-communicating-sequential-processes)
     - [Def-S-02-03. π-Calculus {#def-s-02-03-π-calculus}](#def-s-02-03-π-calculus-def-s-02-03-π-calculus)
 ```
 
@@ -29921,21 +29921,21 @@ Def-S-02-03 (π-Calculus - 通道移动性)
 **File**: `Struct/01-foundation/01.02-process-calculus-primer.md`
 
 ```markdown
-  - [1. 概念定义 (Definitions) {#1-概念定义-definitions}](#1-概念定义-definitions-1-概念定义-definitions)
-    - [Def-S-02-01. CCS (Calculus of Communicating Systems) {#def-s-02-01-ccs-calculus-of-communicating-systems}](#def-s-02-01-ccs-calculus-of-communicating-systems-def-s-02-01-ccs-calculus-of-communicating-systems)
-    - [Def-S-02-02. CSP (Communicating Sequential Processes) {#def-s-02-02-csp-communicating-sequential-processes}](#def-s-02-02-csp-communicating-sequential-processes-def-s-02-02-csp-communicating-sequential-processes)
+  - [1. 概念定义 (Definitions) {#1-概念定义-definitions}](#1-概念定义-definitions)
+    - [Def-S-02-01. CCS (Calculus of Communicating Systems) {#def-s-02-01-ccs-calculus-of-communicating-systems}](#def-s-02-01-ccs-calculus-of-communicating-systems)
+    - [Def-S-02-02. CSP (Communicating Sequential Processes) {#def-s-02-02-csp-communicating-sequential-processes}](#def-s-02-02-csp-communicating-sequential-processes)
     - [Def-S-02-03. π-Calculus {#def-s-02-03-π-calculus}](#def-s-02-03-π-calculus-def-s-02-03-π-calculus)
-    - [Def-S-02-04. 二进制会话类型 (Binary Session Types) {#def-s-02-04-二进制会话类型-binary-session-types}](#def-s-02-04-二进制会话类型-binary-session-types-def-s-02-04-二进制会话类型-binary-session-types)
+    - [Def-S-02-04. 二进制会话类型 (Binary Session Types) {#def-s-02-04-二进制会话类型-binary-session-types}](#def-s-02-04-二进制会话类型-binary-session-types)
 ```
 
 **File**: `Struct/01-foundation/01.02-process-calculus-primer.md`
 
 ```markdown
-  - [1. 概念定义 (Definitions) {#1-概念定义-definitions}](#1-概念定义-definitions-1-概念定义-definitions)
-    - [Def-S-02-01. CCS (Calculus of Communicating Systems) {#def-s-02-01-ccs-calculus-of-communicating-systems}](#def-s-02-01-ccs-calculus-of-communicating-systems-def-s-02-01-ccs-calculus-of-communicating-systems)
-    - [Def-S-02-02. CSP (Communicating Sequential Processes) {#def-s-02-02-csp-communicating-sequential-processes}](#def-s-02-02-csp-communicating-sequential-processes-def-s-02-02-csp-communicating-sequential-processes)
+  - [1. 概念定义 (Definitions) {#1-概念定义-definitions}](#1-概念定义-definitions)
+    - [Def-S-02-01. CCS (Calculus of Communicating Systems) {#def-s-02-01-ccs-calculus-of-communicating-systems}](#def-s-02-01-ccs-calculus-of-communicating-systems)
+    - [Def-S-02-02. CSP (Communicating Sequential Processes) {#def-s-02-02-csp-communicating-sequential-processes}](#def-s-02-02-csp-communicating-sequential-processes)
     - [Def-S-02-03. π-Calculus {#def-s-02-03-π-calculus}](#def-s-02-03-π-calculus-def-s-02-03-π-calculus)
-    - [Def-S-02-04. 二进制会话类型 (Binary Session Types) {#def-s-02-04-二进制会话类型-binary-session-types}](#def-s-02-04-二进制会话类型-binary-session-types-def-s-02-04-二进制会话类型-binary-session-types)
+    - [Def-S-02-04. 二进制会话类型 (Binary Session Types) {#def-s-02-04-二进制会话类型-binary-session-types}](#def-s-02-04-二进制会话类型-binary-session-types)
 ```
 
 #### `Def-S-02-03`
@@ -30203,21 +30203,21 @@ graph LR
 **File**: `Struct/01-foundation/01.02-process-calculus-primer.md`
 
 ```markdown
-    - [Def-S-02-01. CCS (Calculus of Communicating Systems) {#def-s-02-01-ccs-calculus-of-communicating-systems}](#def-s-02-01-ccs-calculus-of-communicating-systems-def-s-02-01-ccs-calculus-of-communicating-systems)
-    - [Def-S-02-02. CSP (Communicating Sequential Processes) {#def-s-02-02-csp-communicating-sequential-processes}](#def-s-02-02-csp-communicating-sequential-processes-def-s-02-02-csp-communicating-sequential-processes)
+    - [Def-S-02-01. CCS (Calculus of Communicating Systems) {#def-s-02-01-ccs-calculus-of-communicating-systems}](#def-s-02-01-ccs-calculus-of-communicating-systems)
+    - [Def-S-02-02. CSP (Communicating Sequential Processes) {#def-s-02-02-csp-communicating-sequential-processes}](#def-s-02-02-csp-communicating-sequential-processes)
     - [Def-S-02-03. π-Calculus {#def-s-02-03-π-calculus}](#def-s-02-03-π-calculus-def-s-02-03-π-calculus)
-    - [Def-S-02-04. 二进制会话类型 (Binary Session Types) {#def-s-02-04-二进制会话类型-binary-session-types}](#def-s-02-04-二进制会话类型-binary-session-types-def-s-02-04-二进制会话类型-binary-session-types)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
+    - [Def-S-02-04. 二进制会话类型 (Binary Session Types) {#def-s-02-04-二进制会话类型-binary-session-types}](#def-s-02-04-二进制会话类型-binary-session-types)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
 ```
 
 **File**: `Struct/01-foundation/01.02-process-calculus-primer.md`
 
 ```markdown
-    - [Def-S-02-01. CCS (Calculus of Communicating Systems) {#def-s-02-01-ccs-calculus-of-communicating-systems}](#def-s-02-01-ccs-calculus-of-communicating-systems-def-s-02-01-ccs-calculus-of-communicating-systems)
-    - [Def-S-02-02. CSP (Communicating Sequential Processes) {#def-s-02-02-csp-communicating-sequential-processes}](#def-s-02-02-csp-communicating-sequential-processes-def-s-02-02-csp-communicating-sequential-processes)
+    - [Def-S-02-01. CCS (Calculus of Communicating Systems) {#def-s-02-01-ccs-calculus-of-communicating-systems}](#def-s-02-01-ccs-calculus-of-communicating-systems)
+    - [Def-S-02-02. CSP (Communicating Sequential Processes) {#def-s-02-02-csp-communicating-sequential-processes}](#def-s-02-02-csp-communicating-sequential-processes)
     - [Def-S-02-03. π-Calculus {#def-s-02-03-π-calculus}](#def-s-02-03-π-calculus-def-s-02-03-π-calculus)
-    - [Def-S-02-04. 二进制会话类型 (Binary Session Types) {#def-s-02-04-二进制会话类型-binary-session-types}](#def-s-02-04-二进制会话类型-binary-session-types-def-s-02-04-二进制会话类型-binary-session-types)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
+    - [Def-S-02-04. 二进制会话类型 (Binary Session Types) {#def-s-02-04-二进制会话类型-binary-session-types}](#def-s-02-04-二进制会话类型-binary-session-types)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
 ```
 
 **File**: `Struct/01-foundation/01.05-csp-formalization.md`
@@ -30355,31 +30355,31 @@ graph LR
 **File**: `Struct/01-foundation/01.02-process-calculus-primer.md`
 
 ```markdown
-    - [Def-S-02-02. CSP (Communicating Sequential Processes) {#def-s-02-02-csp-communicating-sequential-processes}](#def-s-02-02-csp-communicating-sequential-processes-def-s-02-02-csp-communicating-sequential-processes)
+    - [Def-S-02-02. CSP (Communicating Sequential Processes) {#def-s-02-02-csp-communicating-sequential-processes}](#def-s-02-02-csp-communicating-sequential-processes)
     - [Def-S-02-03. π-Calculus {#def-s-02-03-π-calculus}](#def-s-02-03-π-calculus-def-s-02-03-π-calculus)
-    - [Def-S-02-04. 二进制会话类型 (Binary Session Types) {#def-s-02-04-二进制会话类型-binary-session-types}](#def-s-02-04-二进制会话类型-binary-session-types-def-s-02-04-二进制会话类型-binary-session-types)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-S-02-01. 静态通道模型的拓扑不变性 {#lemma-s-02-01-静态通道模型的拓扑不变性}](#lemma-s-02-01-静态通道模型的拓扑不变性-lemma-s-02-01-静态通道模型的拓扑不变性)
+    - [Def-S-02-04. 二进制会话类型 (Binary Session Types) {#def-s-02-04-二进制会话类型-binary-session-types}](#def-s-02-04-二进制会话类型-binary-session-types)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-S-02-01. 静态通道模型的拓扑不变性 {#lemma-s-02-01-静态通道模型的拓扑不变性}](#lemma-s-02-01-静态通道模型的拓扑不变性)
 ```
 
 **File**: `Struct/01-foundation/01.02-process-calculus-primer.md`
 
 ```markdown
-    - [Def-S-02-02. CSP (Communicating Sequential Processes) {#def-s-02-02-csp-communicating-sequential-processes}](#def-s-02-02-csp-communicating-sequential-processes-def-s-02-02-csp-communicating-sequential-processes)
+    - [Def-S-02-02. CSP (Communicating Sequential Processes) {#def-s-02-02-csp-communicating-sequential-processes}](#def-s-02-02-csp-communicating-sequential-processes)
     - [Def-S-02-03. π-Calculus {#def-s-02-03-π-calculus}](#def-s-02-03-π-calculus-def-s-02-03-π-calculus)
-    - [Def-S-02-04. 二进制会话类型 (Binary Session Types) {#def-s-02-04-二进制会话类型-binary-session-types}](#def-s-02-04-二进制会话类型-binary-session-types-def-s-02-04-二进制会话类型-binary-session-types)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-S-02-01. 静态通道模型的拓扑不变性 {#lemma-s-02-01-静态通道模型的拓扑不变性}](#lemma-s-02-01-静态通道模型的拓扑不变性-lemma-s-02-01-静态通道模型的拓扑不变性)
+    - [Def-S-02-04. 二进制会话类型 (Binary Session Types) {#def-s-02-04-二进制会话类型-binary-session-types}](#def-s-02-04-二进制会话类型-binary-session-types)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-S-02-01. 静态通道模型的拓扑不变性 {#lemma-s-02-01-静态通道模型的拓扑不变性}](#lemma-s-02-01-静态通道模型的拓扑不变性)
 ```
 
 **File**: `Struct/01-foundation/01.02-process-calculus-primer.md`
 
 ```markdown
-    - [Def-S-02-02. CSP (Communicating Sequential Processes) {#def-s-02-02-csp-communicating-sequential-processes}](#def-s-02-02-csp-communicating-sequential-processes-def-s-02-02-csp-communicating-sequential-processes)
+    - [Def-S-02-02. CSP (Communicating Sequential Processes) {#def-s-02-02-csp-communicating-sequential-processes}](#def-s-02-02-csp-communicating-sequential-processes)
     - [Def-S-02-03. π-Calculus {#def-s-02-03-π-calculus}](#def-s-02-03-π-calculus-def-s-02-03-π-calculus)
-    - [Def-S-02-04. 二进制会话类型 (Binary Session Types) {#def-s-02-04-二进制会话类型-binary-session-types}](#def-s-02-04-二进制会话类型-binary-session-types-def-s-02-04-二进制会话类型-binary-session-types)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-S-02-01. 静态通道模型的拓扑不变性 {#lemma-s-02-01-静态通道模型的拓扑不变性}](#lemma-s-02-01-静态通道模型的拓扑不变性-lemma-s-02-01-静态通道模型的拓扑不变性)
+    - [Def-S-02-04. 二进制会话类型 (Binary Session Types) {#def-s-02-04-二进制会话类型-binary-session-types}](#def-s-02-04-二进制会话类型-binary-session-types)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-S-02-01. 静态通道模型的拓扑不变性 {#lemma-s-02-01-静态通道模型的拓扑不变性}](#lemma-s-02-01-静态通道模型的拓扑不变性)
 ```
 
 #### `Def-S-02-23`
@@ -30833,7 +30833,7 @@ graph LR
 ```markdown
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
-    - [Def-S-03-01. Actor (经典 Actor 模型) {#def-s-03-01-actor-经典-actor-模型}](#def-s-03-01-actor-经典-actor-模型-def-s-03-01-actor-经典-actor-模型)
+    - [Def-S-03-01. Actor (经典 Actor 模型) {#def-s-03-01-actor-经典-actor-模型}](#def-s-03-01-actor-经典-actor-模型)
     - [Def-S-03-02. Behavior (行为)](#def-s-03-02-behavior-行为)
     - [Def-S-03-03. Mailbox (邮箱)](#def-s-03-03-mailbox-邮箱)
 ```
@@ -30843,7 +30843,7 @@ graph LR
 ```markdown
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
-    - [Def-S-03-01. Actor (经典 Actor 模型) {#def-s-03-01-actor-经典-actor-模型}](#def-s-03-01-actor-经典-actor-模型-def-s-03-01-actor-经典-actor-模型)
+    - [Def-S-03-01. Actor (经典 Actor 模型) {#def-s-03-01-actor-经典-actor-模型}](#def-s-03-01-actor-经典-actor-模型)
     - [Def-S-03-02. Behavior (行为)](#def-s-03-02-behavior-行为)
     - [Def-S-03-03. Mailbox (邮箱)](#def-s-03-03-mailbox-邮箱)
 ```
@@ -30853,7 +30853,7 @@ graph LR
 ```markdown
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
-    - [Def-S-03-01. Actor (经典 Actor 模型) {#def-s-03-01-actor-经典-actor-模型}](#def-s-03-01-actor-经典-actor-模型-def-s-03-01-actor-经典-actor-模型)
+    - [Def-S-03-01. Actor (经典 Actor 模型) {#def-s-03-01-actor-经典-actor-模型}](#def-s-03-01-actor-经典-actor-模型)
     - [Def-S-03-02. Behavior (行为)](#def-s-03-02-behavior-行为)
     - [Def-S-03-03. Mailbox (邮箱)](#def-s-03-03-mailbox-邮箱)
 ```
@@ -30863,7 +30863,7 @@ graph LR
 ```markdown
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
-    - [Def-S-03-01. Actor (经典 Actor 模型) {#def-s-03-01-actor-经典-actor-模型}](#def-s-03-01-actor-经典-actor-模型-def-s-03-01-actor-经典-actor-模型)
+    - [Def-S-03-01. Actor (经典 Actor 模型) {#def-s-03-01-actor-经典-actor-模型}](#def-s-03-01-actor-经典-actor-模型)
     - [Def-S-03-02. Behavior (行为)](#def-s-03-02-behavior-行为)
     - [Def-S-03-03. Mailbox (邮箱)](#def-s-03-03-mailbox-邮箱)
 ```
@@ -30873,7 +30873,7 @@ graph LR
 ```markdown
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
-    - [Def-S-03-01. Actor (经典 Actor 模型) {#def-s-03-01-actor-经典-actor-模型}](#def-s-03-01-actor-经典-actor-模型-def-s-03-01-actor-经典-actor-模型)
+    - [Def-S-03-01. Actor (经典 Actor 模型) {#def-s-03-01-actor-经典-actor-模型}](#def-s-03-01-actor-经典-actor-模型)
     - [Def-S-03-02. Behavior (行为)](#def-s-03-02-behavior-行为)
     - [Def-S-03-03. Mailbox (邮箱)](#def-s-03-03-mailbox-邮箱)
 ```
@@ -30883,7 +30883,7 @@ graph LR
 ```markdown
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
-    - [Def-S-03-01. Actor (经典 Actor 模型) {#def-s-03-01-actor-经典-actor-模型}](#def-s-03-01-actor-经典-actor-模型-def-s-03-01-actor-经典-actor-模型)
+    - [Def-S-03-01. Actor (经典 Actor 模型) {#def-s-03-01-actor-经典-actor-模型}](#def-s-03-01-actor-经典-actor-模型)
     - [Def-S-03-02. Behavior (行为)](#def-s-03-02-behavior-行为)
     - [Def-S-03-03. Mailbox (邮箱)](#def-s-03-03-mailbox-邮箱)
 ```
@@ -30893,7 +30893,7 @@ graph LR
 ```markdown
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
-    - [Def-S-03-01. Actor (经典 Actor 模型) {#def-s-03-01-actor-经典-actor-模型}](#def-s-03-01-actor-经典-actor-模型-def-s-03-01-actor-经典-actor-模型)
+    - [Def-S-03-01. Actor (经典 Actor 模型) {#def-s-03-01-actor-经典-actor-模型}](#def-s-03-01-actor-经典-actor-模型)
     - [Def-S-03-02. Behavior (行为)](#def-s-03-02-behavior-行为)
     - [Def-S-03-03. Mailbox (邮箱)](#def-s-03-03-mailbox-邮箱)
 ```
@@ -30921,7 +30921,7 @@ graph LR
 **File**: `Knowledge/05-mapping-guides/struct-to-flink-mapping.md`
 
 ```markdown
-### 映射 6: Actor 模型 → Flink Actor 运行时 {#映射-6-actor-模型--flink-actor-运行时}
+### 映射 6: Actor 模型 → Flink Actor 运行时
 
 **形式化定义** ([Def-S-03-01](../../Struct/01-foundation/01.03-actor-model-formalization.md)):
 
@@ -30931,7 +30931,7 @@ $$
 **File**: `Knowledge/05-mapping-guides/struct-to-flink-mapping.md`
 
 ```markdown
-### 映射 6: Actor 模型 → Flink Actor 运行时 {#映射-6-actor-模型--flink-actor-运行时}
+### 映射 6: Actor 模型 → Flink Actor 运行时
 
 **形式化定义** ([Def-S-03-01](../../Struct/01-foundation/01.03-actor-model-formalization.md)):
 
@@ -31064,7 +31064,7 @@ $$
 
 ```markdown
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
-    - [Def-S-03-01. Actor (经典 Actor 模型) {#def-s-03-01-actor-经典-actor-模型}](#def-s-03-01-actor-经典-actor-模型-def-s-03-01-actor-经典-actor-模型)
+    - [Def-S-03-01. Actor (经典 Actor 模型) {#def-s-03-01-actor-经典-actor-模型}](#def-s-03-01-actor-经典-actor-模型)
     - [Def-S-03-02. Behavior (行为)](#def-s-03-02-behavior-行为)
     - [Def-S-03-03. Mailbox (邮箱)](#def-s-03-03-mailbox-邮箱)
     - [Def-S-03-04. ActorRef (Actor 不透明引用)](#def-s-03-04-actorref-actor-不透明引用)
@@ -31074,7 +31074,7 @@ $$
 
 ```markdown
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
-    - [Def-S-03-01. Actor (经典 Actor 模型) {#def-s-03-01-actor-经典-actor-模型}](#def-s-03-01-actor-经典-actor-模型-def-s-03-01-actor-经典-actor-模型)
+    - [Def-S-03-01. Actor (经典 Actor 模型) {#def-s-03-01-actor-经典-actor-模型}](#def-s-03-01-actor-经典-actor-模型)
     - [Def-S-03-02. Behavior (行为)](#def-s-03-02-behavior-行为)
     - [Def-S-03-03. Mailbox (邮箱)](#def-s-03-03-mailbox-邮箱)
     - [Def-S-03-04. ActorRef (Actor 不透明引用)](#def-s-03-04-actorref-actor-不透明引用)
@@ -31084,7 +31084,7 @@ $$
 
 ```markdown
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
-    - [Def-S-03-01. Actor (经典 Actor 模型) {#def-s-03-01-actor-经典-actor-模型}](#def-s-03-01-actor-经典-actor-模型-def-s-03-01-actor-经典-actor-模型)
+    - [Def-S-03-01. Actor (经典 Actor 模型) {#def-s-03-01-actor-经典-actor-模型}](#def-s-03-01-actor-经典-actor-模型)
     - [Def-S-03-02. Behavior (行为)](#def-s-03-02-behavior-行为)
     - [Def-S-03-03. Mailbox (邮箱)](#def-s-03-03-mailbox-邮箱)
     - [Def-S-03-04. ActorRef (Actor 不透明引用)](#def-s-03-04-actorref-actor-不透明引用)
@@ -31094,7 +31094,7 @@ $$
 
 ```markdown
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
-    - [Def-S-03-01. Actor (经典 Actor 模型) {#def-s-03-01-actor-经典-actor-模型}](#def-s-03-01-actor-经典-actor-模型-def-s-03-01-actor-经典-actor-模型)
+    - [Def-S-03-01. Actor (经典 Actor 模型) {#def-s-03-01-actor-经典-actor-模型}](#def-s-03-01-actor-经典-actor-模型)
     - [Def-S-03-02. Behavior (行为)](#def-s-03-02-behavior-行为)
     - [Def-S-03-03. Mailbox (邮箱)](#def-s-03-03-mailbox-邮箱)
     - [Def-S-03-04. ActorRef (Actor 不透明引用)](#def-s-03-04-actorref-actor-不透明引用)
@@ -31215,7 +31215,7 @@ $$
 **File**: `Struct/01-foundation/01.03-actor-model-formalization.md`
 
 ```markdown
-    - [Def-S-03-01. Actor (经典 Actor 模型) {#def-s-03-01-actor-经典-actor-模型}](#def-s-03-01-actor-经典-actor-模型-def-s-03-01-actor-经典-actor-模型)
+    - [Def-S-03-01. Actor (经典 Actor 模型) {#def-s-03-01-actor-经典-actor-模型}](#def-s-03-01-actor-经典-actor-模型)
     - [Def-S-03-02. Behavior (行为)](#def-s-03-02-behavior-行为)
     - [Def-S-03-03. Mailbox (邮箱)](#def-s-03-03-mailbox-邮箱)
     - [Def-S-03-04. ActorRef (Actor 不透明引用)](#def-s-03-04-actorref-actor-不透明引用)
@@ -31225,7 +31225,7 @@ $$
 **File**: `Struct/01-foundation/01.03-actor-model-formalization.md`
 
 ```markdown
-    - [Def-S-03-01. Actor (经典 Actor 模型) {#def-s-03-01-actor-经典-actor-模型}](#def-s-03-01-actor-经典-actor-模型-def-s-03-01-actor-经典-actor-模型)
+    - [Def-S-03-01. Actor (经典 Actor 模型) {#def-s-03-01-actor-经典-actor-模型}](#def-s-03-01-actor-经典-actor-模型)
     - [Def-S-03-02. Behavior (行为)](#def-s-03-02-behavior-行为)
     - [Def-S-03-03. Mailbox (邮箱)](#def-s-03-03-mailbox-邮箱)
     - [Def-S-03-04. ActorRef (Actor 不透明引用)](#def-s-03-04-actorref-actor-不透明引用)
@@ -31235,7 +31235,7 @@ $$
 **File**: `Struct/01-foundation/01.03-actor-model-formalization.md`
 
 ```markdown
-    - [Def-S-03-01. Actor (经典 Actor 模型) {#def-s-03-01-actor-经典-actor-模型}](#def-s-03-01-actor-经典-actor-模型-def-s-03-01-actor-经典-actor-模型)
+    - [Def-S-03-01. Actor (经典 Actor 模型) {#def-s-03-01-actor-经典-actor-模型}](#def-s-03-01-actor-经典-actor-模型)
     - [Def-S-03-02. Behavior (行为)](#def-s-03-02-behavior-行为)
     - [Def-S-03-03. Mailbox (邮箱)](#def-s-03-03-mailbox-邮箱)
     - [Def-S-03-04. ActorRef (Actor 不透明引用)](#def-s-03-04-actorref-actor-不透明引用)
@@ -31245,7 +31245,7 @@ $$
 **File**: `Struct/01-foundation/01.03-actor-model-formalization.md`
 
 ```markdown
-    - [Def-S-03-01. Actor (经典 Actor 模型) {#def-s-03-01-actor-经典-actor-模型}](#def-s-03-01-actor-经典-actor-模型-def-s-03-01-actor-经典-actor-模型)
+    - [Def-S-03-01. Actor (经典 Actor 模型) {#def-s-03-01-actor-经典-actor-模型}](#def-s-03-01-actor-经典-actor-模型)
     - [Def-S-03-02. Behavior (行为)](#def-s-03-02-behavior-行为)
     - [Def-S-03-03. Mailbox (邮箱)](#def-s-03-03-mailbox-邮箱)
     - [Def-S-03-04. ActorRef (Actor 不透明引用)](#def-s-03-04-actorref-actor-不透明引用)
@@ -33587,7 +33587,7 @@ graph LR
 **File**: `Knowledge/05-mapping-guides/struct-to-flink-mapping.md`
 
 ```markdown
-### 映射 2: Watermark 单调性 → Flink WatermarkStrategy {#映射-2-watermark-单调性--flink-watermarkstrategy}
+### 映射 2: Watermark 单调性 → Flink WatermarkStrategy
 
 **形式化定义** ([Def-S-04-04](../../Struct/01-foundation/01.04-dataflow-model-formalization.md), [Lemma-S-04-02](../../Struct/01-foundation/01.04-dataflow-model-formalization.md)):
 
@@ -33597,7 +33597,7 @@ $$
 **File**: `Knowledge/05-mapping-guides/struct-to-flink-mapping.md`
 
 ```markdown
-### 映射 2: Watermark 单调性 → Flink WatermarkStrategy {#映射-2-watermark-单调性--flink-watermarkstrategy}
+### 映射 2: Watermark 单调性 → Flink WatermarkStrategy
 
 **形式化定义** ([Def-S-04-04](../../Struct/01-foundation/01.04-dataflow-model-formalization.md), [Lemma-S-04-02](../../Struct/01-foundation/01.04-dataflow-model-formalization.md)):
 
@@ -33607,7 +33607,7 @@ $$
 **File**: `Knowledge/05-mapping-guides/struct-to-flink-mapping.md`
 
 ```markdown
-### 映射 2: Watermark 单调性 → Flink WatermarkStrategy {#映射-2-watermark-单调性--flink-watermarkstrategy}
+### 映射 2: Watermark 单调性 → Flink WatermarkStrategy
 
 **形式化定义** ([Def-S-04-04](../../Struct/01-foundation/01.04-dataflow-model-formalization.md), [Lemma-S-04-02](../../Struct/01-foundation/01.04-dataflow-model-formalization.md)):
 
@@ -33811,7 +33811,7 @@ $$
 ```markdown
     - [Prop-K-02-02 (窗口分配确定性)](#prop-k-02-02-窗口分配确定性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [关系: Windowed Aggregation `↦` Def-S-04-05 {#关系-windowed-aggregation--def-s-04-05}](#关系-windowed-aggregation--def-s-04-05-关系-windowed-aggregation--def-s-04-05)
+    - [关系: Windowed Aggregation `↦` Def-S-04-05 {#关系-windowed-aggregation--def-s-04-05}](#关系-windowed-aggregation--def-s-04-05)
     - [关系: 窗口聚合与 Watermark](#关系-窗口聚合与-watermark)
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
 ```
@@ -33821,7 +33821,7 @@ $$
 ```markdown
     - [Prop-K-02-02 (窗口分配确定性)](#prop-k-02-02-窗口分配确定性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [关系: Windowed Aggregation `↦` Def-S-04-05 {#关系-windowed-aggregation--def-s-04-05}](#关系-windowed-aggregation--def-s-04-05-关系-windowed-aggregation--def-s-04-05)
+    - [关系: Windowed Aggregation `↦` Def-S-04-05 {#关系-windowed-aggregation--def-s-04-05}](#关系-windowed-aggregation--def-s-04-05)
     - [关系: 窗口聚合与 Watermark](#关系-窗口聚合与-watermark)
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
 ```
@@ -33831,7 +33831,7 @@ $$
 ```markdown
     - [Prop-K-02-02 (窗口分配确定性)](#prop-k-02-02-窗口分配确定性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [关系: Windowed Aggregation `↦` Def-S-04-05 {#关系-windowed-aggregation--def-s-04-05}](#关系-windowed-aggregation--def-s-04-05-关系-windowed-aggregation--def-s-04-05)
+    - [关系: Windowed Aggregation `↦` Def-S-04-05 {#关系-windowed-aggregation--def-s-04-05}](#关系-windowed-aggregation--def-s-04-05)
     - [关系: 窗口聚合与 Watermark](#关系-窗口聚合与-watermark)
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
 ```
@@ -33841,7 +33841,7 @@ $$
 ```markdown
     - [Prop-K-02-02 (窗口分配确定性)](#prop-k-02-02-窗口分配确定性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [关系: Windowed Aggregation `↦` Def-S-04-05 {#关系-windowed-aggregation--def-s-04-05}](#关系-windowed-aggregation--def-s-04-05-关系-windowed-aggregation--def-s-04-05)
+    - [关系: Windowed Aggregation `↦` Def-S-04-05 {#关系-windowed-aggregation--def-s-04-05}](#关系-windowed-aggregation--def-s-04-05)
     - [关系: 窗口聚合与 Watermark](#关系-窗口聚合与-watermark)
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
 ```
@@ -33851,7 +33851,7 @@ $$
 ```markdown
     - [Prop-K-02-02 (窗口分配确定性)](#prop-k-02-02-窗口分配确定性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [关系: Windowed Aggregation `↦` Def-S-04-05 {#关系-windowed-aggregation--def-s-04-05}](#关系-windowed-aggregation--def-s-04-05-关系-windowed-aggregation--def-s-04-05)
+    - [关系: Windowed Aggregation `↦` Def-S-04-05 {#关系-windowed-aggregation--def-s-04-05}](#关系-windowed-aggregation--def-s-04-05)
     - [关系: 窗口聚合与 Watermark](#关系-窗口聚合与-watermark)
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
 ```
@@ -33861,7 +33861,7 @@ $$
 ```markdown
     - [Prop-K-02-02 (窗口分配确定性)](#prop-k-02-02-窗口分配确定性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [关系: Windowed Aggregation `↦` Def-S-04-05 {#关系-windowed-aggregation--def-s-04-05}](#关系-windowed-aggregation--def-s-04-05-关系-windowed-aggregation--def-s-04-05)
+    - [关系: Windowed Aggregation `↦` Def-S-04-05 {#关系-windowed-aggregation--def-s-04-05}](#关系-windowed-aggregation--def-s-04-05)
     - [关系: 窗口聚合与 Watermark](#关系-窗口聚合与-watermark)
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
 ```
@@ -33871,7 +33871,7 @@ $$
 ```markdown
     - [Prop-K-02-02 (窗口分配确定性)](#prop-k-02-02-窗口分配确定性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [关系: Windowed Aggregation `↦` Def-S-04-05 {#关系-windowed-aggregation--def-s-04-05}](#关系-windowed-aggregation--def-s-04-05-关系-windowed-aggregation--def-s-04-05)
+    - [关系: Windowed Aggregation `↦` Def-S-04-05 {#关系-windowed-aggregation--def-s-04-05}](#关系-windowed-aggregation--def-s-04-05)
     - [关系: 窗口聚合与 Watermark](#关系-窗口聚合与-watermark)
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
 ```
@@ -33881,7 +33881,7 @@ $$
 ```markdown
     - [Prop-K-02-02 (窗口分配确定性)](#prop-k-02-02-窗口分配确定性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [关系: Windowed Aggregation `↦` Def-S-04-05 {#关系-windowed-aggregation--def-s-04-05}](#关系-windowed-aggregation--def-s-04-05-关系-windowed-aggregation--def-s-04-05)
+    - [关系: Windowed Aggregation `↦` Def-S-04-05 {#关系-windowed-aggregation--def-s-04-05}](#关系-windowed-aggregation--def-s-04-05)
     - [关系: 窗口聚合与 Watermark](#关系-窗口聚合与-watermark)
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
 ```
@@ -33891,7 +33891,7 @@ $$
 ```markdown
     - [Prop-K-02-02 (窗口分配确定性)](#prop-k-02-02-窗口分配确定性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [关系: Windowed Aggregation `↦` Def-S-04-05 {#关系-windowed-aggregation--def-s-04-05}](#关系-windowed-aggregation--def-s-04-05-关系-windowed-aggregation--def-s-04-05)
+    - [关系: Windowed Aggregation `↦` Def-S-04-05 {#关系-windowed-aggregation--def-s-04-05}](#关系-windowed-aggregation--def-s-04-05)
     - [关系: 窗口聚合与 Watermark](#关系-窗口聚合与-watermark)
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
 ```
@@ -33901,7 +33901,7 @@ $$
 ```markdown
     - [Prop-K-02-02 (窗口分配确定性)](#prop-k-02-02-窗口分配确定性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [关系: Windowed Aggregation `↦` Def-S-04-05 {#关系-windowed-aggregation--def-s-04-05}](#关系-windowed-aggregation--def-s-04-05-关系-windowed-aggregation--def-s-04-05)
+    - [关系: Windowed Aggregation `↦` Def-S-04-05 {#关系-windowed-aggregation--def-s-04-05}](#关系-windowed-aggregation--def-s-04-05)
     - [关系: 窗口聚合与 Watermark](#关系-窗口聚合与-watermark)
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
 ```
@@ -33911,7 +33911,7 @@ $$
 ```markdown
     - [Prop-K-02-02 (窗口分配确定性)](#prop-k-02-02-窗口分配确定性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [关系: Windowed Aggregation `↦` Def-S-04-05 {#关系-windowed-aggregation--def-s-04-05}](#关系-windowed-aggregation--def-s-04-05-关系-windowed-aggregation--def-s-04-05)
+    - [关系: Windowed Aggregation `↦` Def-S-04-05 {#关系-windowed-aggregation--def-s-04-05}](#关系-windowed-aggregation--def-s-04-05)
     - [关系: 窗口聚合与 Watermark](#关系-窗口聚合与-watermark)
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
 ```
@@ -38971,31 +38971,31 @@ $$
 **File**: `Struct/03-relationships/03.03-expressiveness-hierarchy-supplement.md`
 
 ```markdown
-  - [目录 {#目录}](#目录-目录)
-  - [1. 新增模型定义 (Definitions) {#1-新增模型定义-definitions}](#1-新增模型定义-definitions-1-新增模型定义-definitions)
-    - [Def-S-15-01. Session Types {#def-s-15-01-session-types}](#def-s-15-01-session-types-def-s-15-01-session-types)
-    - [Def-S-15-02. Choreographic Programming {#def-s-15-02-choreographic-programming}](#def-s-15-02-choreographic-programming-def-s-15-02-choreographic-programming)
-    - [Def-S-15-03. CRDTs (Conflict-free Replicated Data Types) {#def-s-15-03-crdts-conflict-free-replicated-data-types}](#def-s-15-03-crdts-conflict-free-replicated-data-types-def-s-15-03-crdts-conflict-free-replicated-data-types)
+  - [目录 {#目录}](#目录)
+  - [1. 新增模型定义 (Definitions) {#1-新增模型定义-definitions}](#1-新增模型定义-definitions)
+    - [Def-S-15-01. Session Types {#def-s-15-01-session-types}](#def-s-15-01-session-types)
+    - [Def-S-15-02. Choreographic Programming {#def-s-15-02-choreographic-programming}](#def-s-15-02-choreographic-programming)
+    - [Def-S-15-03. CRDTs (Conflict-free Replicated Data Types) {#def-s-15-03-crdts-conflict-free-replicated-data-types}](#def-s-15-03-crdts-conflict-free-replicated-data-types)
 ```
 
 **File**: `Struct/03-relationships/03.03-expressiveness-hierarchy-supplement.md`
 
 ```markdown
-  - [目录 {#目录}](#目录-目录)
-  - [1. 新增模型定义 (Definitions) {#1-新增模型定义-definitions}](#1-新增模型定义-definitions-1-新增模型定义-definitions)
-    - [Def-S-15-01. Session Types {#def-s-15-01-session-types}](#def-s-15-01-session-types-def-s-15-01-session-types)
-    - [Def-S-15-02. Choreographic Programming {#def-s-15-02-choreographic-programming}](#def-s-15-02-choreographic-programming-def-s-15-02-choreographic-programming)
-    - [Def-S-15-03. CRDTs (Conflict-free Replicated Data Types) {#def-s-15-03-crdts-conflict-free-replicated-data-types}](#def-s-15-03-crdts-conflict-free-replicated-data-types-def-s-15-03-crdts-conflict-free-replicated-data-types)
+  - [目录 {#目录}](#目录)
+  - [1. 新增模型定义 (Definitions) {#1-新增模型定义-definitions}](#1-新增模型定义-definitions)
+    - [Def-S-15-01. Session Types {#def-s-15-01-session-types}](#def-s-15-01-session-types)
+    - [Def-S-15-02. Choreographic Programming {#def-s-15-02-choreographic-programming}](#def-s-15-02-choreographic-programming)
+    - [Def-S-15-03. CRDTs (Conflict-free Replicated Data Types) {#def-s-15-03-crdts-conflict-free-replicated-data-types}](#def-s-15-03-crdts-conflict-free-replicated-data-types)
 ```
 
 **File**: `Struct/03-relationships/03.03-expressiveness-hierarchy-supplement.md`
 
 ```markdown
-  - [目录 {#目录}](#目录-目录)
-  - [1. 新增模型定义 (Definitions) {#1-新增模型定义-definitions}](#1-新增模型定义-definitions-1-新增模型定义-definitions)
-    - [Def-S-15-01. Session Types {#def-s-15-01-session-types}](#def-s-15-01-session-types-def-s-15-01-session-types)
-    - [Def-S-15-02. Choreographic Programming {#def-s-15-02-choreographic-programming}](#def-s-15-02-choreographic-programming-def-s-15-02-choreographic-programming)
-    - [Def-S-15-03. CRDTs (Conflict-free Replicated Data Types) {#def-s-15-03-crdts-conflict-free-replicated-data-types}](#def-s-15-03-crdts-conflict-free-replicated-data-types-def-s-15-03-crdts-conflict-free-replicated-data-types)
+  - [目录 {#目录}](#目录)
+  - [1. 新增模型定义 (Definitions) {#1-新增模型定义-definitions}](#1-新增模型定义-definitions)
+    - [Def-S-15-01. Session Types {#def-s-15-01-session-types}](#def-s-15-01-session-types)
+    - [Def-S-15-02. Choreographic Programming {#def-s-15-02-choreographic-programming}](#def-s-15-02-choreographic-programming)
+    - [Def-S-15-03. CRDTs (Conflict-free Replicated Data Types) {#def-s-15-03-crdts-conflict-free-replicated-data-types}](#def-s-15-03-crdts-conflict-free-replicated-data-types)
 ```
 
 **File**: `Struct/03-relationships/03.04-bisimulation-equivalences.md`
@@ -39073,21 +39073,21 @@ $P \sim Q \triangleq \exists \mathcal{R}. \, P \mathcal{R} Q \land \mathcal{R}$ 
 **File**: `Struct/03-relationships/03.03-expressiveness-hierarchy-supplement.md`
 
 ```markdown
-  - [1. 新增模型定义 (Definitions) {#1-新增模型定义-definitions}](#1-新增模型定义-definitions-1-新增模型定义-definitions)
-    - [Def-S-15-01. Session Types {#def-s-15-01-session-types}](#def-s-15-01-session-types-def-s-15-01-session-types)
-    - [Def-S-15-02. Choreographic Programming {#def-s-15-02-choreographic-programming}](#def-s-15-02-choreographic-programming-def-s-15-02-choreographic-programming)
-    - [Def-S-15-03. CRDTs (Conflict-free Replicated Data Types) {#def-s-15-03-crdts-conflict-free-replicated-data-types}](#def-s-15-03-crdts-conflict-free-replicated-data-types-def-s-15-03-crdts-conflict-free-replicated-data-types)
-    - [Def-S-15-04. TLA+ (Temporal Logic of Actions) {#def-s-15-04-tla-temporal-logic-of-actions}](#def-s-15-04-tla-temporal-logic-of-actions-def-s-15-04-tla-temporal-logic-of-actions)
+  - [1. 新增模型定义 (Definitions) {#1-新增模型定义-definitions}](#1-新增模型定义-definitions)
+    - [Def-S-15-01. Session Types {#def-s-15-01-session-types}](#def-s-15-01-session-types)
+    - [Def-S-15-02. Choreographic Programming {#def-s-15-02-choreographic-programming}](#def-s-15-02-choreographic-programming)
+    - [Def-S-15-03. CRDTs (Conflict-free Replicated Data Types) {#def-s-15-03-crdts-conflict-free-replicated-data-types}](#def-s-15-03-crdts-conflict-free-replicated-data-types)
+    - [Def-S-15-04. TLA+ (Temporal Logic of Actions) {#def-s-15-04-tla-temporal-logic-of-actions}](#def-s-15-04-tla-temporal-logic-of-actions)
 ```
 
 **File**: `Struct/03-relationships/03.03-expressiveness-hierarchy-supplement.md`
 
 ```markdown
-  - [1. 新增模型定义 (Definitions) {#1-新增模型定义-definitions}](#1-新增模型定义-definitions-1-新增模型定义-definitions)
-    - [Def-S-15-01. Session Types {#def-s-15-01-session-types}](#def-s-15-01-session-types-def-s-15-01-session-types)
-    - [Def-S-15-02. Choreographic Programming {#def-s-15-02-choreographic-programming}](#def-s-15-02-choreographic-programming-def-s-15-02-choreographic-programming)
-    - [Def-S-15-03. CRDTs (Conflict-free Replicated Data Types) {#def-s-15-03-crdts-conflict-free-replicated-data-types}](#def-s-15-03-crdts-conflict-free-replicated-data-types-def-s-15-03-crdts-conflict-free-replicated-data-types)
-    - [Def-S-15-04. TLA+ (Temporal Logic of Actions) {#def-s-15-04-tla-temporal-logic-of-actions}](#def-s-15-04-tla-temporal-logic-of-actions-def-s-15-04-tla-temporal-logic-of-actions)
+  - [1. 新增模型定义 (Definitions) {#1-新增模型定义-definitions}](#1-新增模型定义-definitions)
+    - [Def-S-15-01. Session Types {#def-s-15-01-session-types}](#def-s-15-01-session-types)
+    - [Def-S-15-02. Choreographic Programming {#def-s-15-02-choreographic-programming}](#def-s-15-02-choreographic-programming)
+    - [Def-S-15-03. CRDTs (Conflict-free Replicated Data Types) {#def-s-15-03-crdts-conflict-free-replicated-data-types}](#def-s-15-03-crdts-conflict-free-replicated-data-types)
+    - [Def-S-15-04. TLA+ (Temporal Logic of Actions) {#def-s-15-04-tla-temporal-logic-of-actions}](#def-s-15-04-tla-temporal-logic-of-actions)
 ```
 
 **File**: `Struct/03-relationships/03.04-bisimulation-equivalences.md`
@@ -39135,41 +39135,41 @@ $$
 **File**: `Struct/03-relationships/03.03-expressiveness-hierarchy-supplement.md`
 
 ```markdown
-    - [Def-S-15-01. Session Types {#def-s-15-01-session-types}](#def-s-15-01-session-types-def-s-15-01-session-types)
-    - [Def-S-15-02. Choreographic Programming {#def-s-15-02-choreographic-programming}](#def-s-15-02-choreographic-programming-def-s-15-02-choreographic-programming)
-    - [Def-S-15-03. CRDTs (Conflict-free Replicated Data Types) {#def-s-15-03-crdts-conflict-free-replicated-data-types}](#def-s-15-03-crdts-conflict-free-replicated-data-types-def-s-15-03-crdts-conflict-free-replicated-data-types)
-    - [Def-S-15-04. TLA+ (Temporal Logic of Actions) {#def-s-15-04-tla-temporal-logic-of-actions}](#def-s-15-04-tla-temporal-logic-of-actions-def-s-15-04-tla-temporal-logic-of-actions)
-    - [Def-S-15-05. Separation Logic {#def-s-15-05-separation-logic}](#def-s-15-05-separation-logic-def-s-15-05-separation-logic)
+    - [Def-S-15-01. Session Types {#def-s-15-01-session-types}](#def-s-15-01-session-types)
+    - [Def-S-15-02. Choreographic Programming {#def-s-15-02-choreographic-programming}](#def-s-15-02-choreographic-programming)
+    - [Def-S-15-03. CRDTs (Conflict-free Replicated Data Types) {#def-s-15-03-crdts-conflict-free-replicated-data-types}](#def-s-15-03-crdts-conflict-free-replicated-data-types)
+    - [Def-S-15-04. TLA+ (Temporal Logic of Actions) {#def-s-15-04-tla-temporal-logic-of-actions}](#def-s-15-04-tla-temporal-logic-of-actions)
+    - [Def-S-15-05. Separation Logic {#def-s-15-05-separation-logic}](#def-s-15-05-separation-logic)
 ```
 
 **File**: `Struct/03-relationships/03.03-expressiveness-hierarchy-supplement.md`
 
 ```markdown
-    - [Def-S-15-01. Session Types {#def-s-15-01-session-types}](#def-s-15-01-session-types-def-s-15-01-session-types)
-    - [Def-S-15-02. Choreographic Programming {#def-s-15-02-choreographic-programming}](#def-s-15-02-choreographic-programming-def-s-15-02-choreographic-programming)
-    - [Def-S-15-03. CRDTs (Conflict-free Replicated Data Types) {#def-s-15-03-crdts-conflict-free-replicated-data-types}](#def-s-15-03-crdts-conflict-free-replicated-data-types-def-s-15-03-crdts-conflict-free-replicated-data-types)
-    - [Def-S-15-04. TLA+ (Temporal Logic of Actions) {#def-s-15-04-tla-temporal-logic-of-actions}](#def-s-15-04-tla-temporal-logic-of-actions-def-s-15-04-tla-temporal-logic-of-actions)
-    - [Def-S-15-05. Separation Logic {#def-s-15-05-separation-logic}](#def-s-15-05-separation-logic-def-s-15-05-separation-logic)
+    - [Def-S-15-01. Session Types {#def-s-15-01-session-types}](#def-s-15-01-session-types)
+    - [Def-S-15-02. Choreographic Programming {#def-s-15-02-choreographic-programming}](#def-s-15-02-choreographic-programming)
+    - [Def-S-15-03. CRDTs (Conflict-free Replicated Data Types) {#def-s-15-03-crdts-conflict-free-replicated-data-types}](#def-s-15-03-crdts-conflict-free-replicated-data-types)
+    - [Def-S-15-04. TLA+ (Temporal Logic of Actions) {#def-s-15-04-tla-temporal-logic-of-actions}](#def-s-15-04-tla-temporal-logic-of-actions)
+    - [Def-S-15-05. Separation Logic {#def-s-15-05-separation-logic}](#def-s-15-05-separation-logic)
 ```
 
 **File**: `Struct/03-relationships/03.03-expressiveness-hierarchy-supplement.md`
 
 ```markdown
-    - [Def-S-15-01. Session Types {#def-s-15-01-session-types}](#def-s-15-01-session-types-def-s-15-01-session-types)
-    - [Def-S-15-02. Choreographic Programming {#def-s-15-02-choreographic-programming}](#def-s-15-02-choreographic-programming-def-s-15-02-choreographic-programming)
-    - [Def-S-15-03. CRDTs (Conflict-free Replicated Data Types) {#def-s-15-03-crdts-conflict-free-replicated-data-types}](#def-s-15-03-crdts-conflict-free-replicated-data-types-def-s-15-03-crdts-conflict-free-replicated-data-types)
-    - [Def-S-15-04. TLA+ (Temporal Logic of Actions) {#def-s-15-04-tla-temporal-logic-of-actions}](#def-s-15-04-tla-temporal-logic-of-actions-def-s-15-04-tla-temporal-logic-of-actions)
-    - [Def-S-15-05. Separation Logic {#def-s-15-05-separation-logic}](#def-s-15-05-separation-logic-def-s-15-05-separation-logic)
+    - [Def-S-15-01. Session Types {#def-s-15-01-session-types}](#def-s-15-01-session-types)
+    - [Def-S-15-02. Choreographic Programming {#def-s-15-02-choreographic-programming}](#def-s-15-02-choreographic-programming)
+    - [Def-S-15-03. CRDTs (Conflict-free Replicated Data Types) {#def-s-15-03-crdts-conflict-free-replicated-data-types}](#def-s-15-03-crdts-conflict-free-replicated-data-types)
+    - [Def-S-15-04. TLA+ (Temporal Logic of Actions) {#def-s-15-04-tla-temporal-logic-of-actions}](#def-s-15-04-tla-temporal-logic-of-actions)
+    - [Def-S-15-05. Separation Logic {#def-s-15-05-separation-logic}](#def-s-15-05-separation-logic)
 ```
 
 **File**: `Struct/03-relationships/03.03-expressiveness-hierarchy-supplement.md`
 
 ```markdown
-    - [Def-S-15-01. Session Types {#def-s-15-01-session-types}](#def-s-15-01-session-types-def-s-15-01-session-types)
-    - [Def-S-15-02. Choreographic Programming {#def-s-15-02-choreographic-programming}](#def-s-15-02-choreographic-programming-def-s-15-02-choreographic-programming)
-    - [Def-S-15-03. CRDTs (Conflict-free Replicated Data Types) {#def-s-15-03-crdts-conflict-free-replicated-data-types}](#def-s-15-03-crdts-conflict-free-replicated-data-types-def-s-15-03-crdts-conflict-free-replicated-data-types)
-    - [Def-S-15-04. TLA+ (Temporal Logic of Actions) {#def-s-15-04-tla-temporal-logic-of-actions}](#def-s-15-04-tla-temporal-logic-of-actions-def-s-15-04-tla-temporal-logic-of-actions)
-    - [Def-S-15-05. Separation Logic {#def-s-15-05-separation-logic}](#def-s-15-05-separation-logic-def-s-15-05-separation-logic)
+    - [Def-S-15-01. Session Types {#def-s-15-01-session-types}](#def-s-15-01-session-types)
+    - [Def-S-15-02. Choreographic Programming {#def-s-15-02-choreographic-programming}](#def-s-15-02-choreographic-programming)
+    - [Def-S-15-03. CRDTs (Conflict-free Replicated Data Types) {#def-s-15-03-crdts-conflict-free-replicated-data-types}](#def-s-15-03-crdts-conflict-free-replicated-data-types)
+    - [Def-S-15-04. TLA+ (Temporal Logic of Actions) {#def-s-15-04-tla-temporal-logic-of-actions}](#def-s-15-04-tla-temporal-logic-of-actions)
+    - [Def-S-15-05. Separation Logic {#def-s-15-05-separation-logic}](#def-s-15-05-separation-logic)
 ```
 
 **File**: `Struct/03-relationships/03.04-bisimulation-equivalences.md`
@@ -39207,21 +39207,21 @@ $$
 **File**: `Struct/03-relationships/03.03-expressiveness-hierarchy-supplement.md`
 
 ```markdown
-    - [Def-S-15-02. Choreographic Programming {#def-s-15-02-choreographic-programming}](#def-s-15-02-choreographic-programming-def-s-15-02-choreographic-programming)
-    - [Def-S-15-03. CRDTs (Conflict-free Replicated Data Types) {#def-s-15-03-crdts-conflict-free-replicated-data-types}](#def-s-15-03-crdts-conflict-free-replicated-data-types-def-s-15-03-crdts-conflict-free-replicated-data-types)
-    - [Def-S-15-04. TLA+ (Temporal Logic of Actions) {#def-s-15-04-tla-temporal-logic-of-actions}](#def-s-15-04-tla-temporal-logic-of-actions-def-s-15-04-tla-temporal-logic-of-actions)
-    - [Def-S-15-05. Separation Logic {#def-s-15-05-separation-logic}](#def-s-15-05-separation-logic-def-s-15-05-separation-logic)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
+    - [Def-S-15-02. Choreographic Programming {#def-s-15-02-choreographic-programming}](#def-s-15-02-choreographic-programming)
+    - [Def-S-15-03. CRDTs (Conflict-free Replicated Data Types) {#def-s-15-03-crdts-conflict-free-replicated-data-types}](#def-s-15-03-crdts-conflict-free-replicated-data-types)
+    - [Def-S-15-04. TLA+ (Temporal Logic of Actions) {#def-s-15-04-tla-temporal-logic-of-actions}](#def-s-15-04-tla-temporal-logic-of-actions)
+    - [Def-S-15-05. Separation Logic {#def-s-15-05-separation-logic}](#def-s-15-05-separation-logic)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
 ```
 
 **File**: `Struct/03-relationships/03.03-expressiveness-hierarchy-supplement.md`
 
 ```markdown
-    - [Def-S-15-02. Choreographic Programming {#def-s-15-02-choreographic-programming}](#def-s-15-02-choreographic-programming-def-s-15-02-choreographic-programming)
-    - [Def-S-15-03. CRDTs (Conflict-free Replicated Data Types) {#def-s-15-03-crdts-conflict-free-replicated-data-types}](#def-s-15-03-crdts-conflict-free-replicated-data-types-def-s-15-03-crdts-conflict-free-replicated-data-types)
-    - [Def-S-15-04. TLA+ (Temporal Logic of Actions) {#def-s-15-04-tla-temporal-logic-of-actions}](#def-s-15-04-tla-temporal-logic-of-actions-def-s-15-04-tla-temporal-logic-of-actions)
-    - [Def-S-15-05. Separation Logic {#def-s-15-05-separation-logic}](#def-s-15-05-separation-logic-def-s-15-05-separation-logic)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
+    - [Def-S-15-02. Choreographic Programming {#def-s-15-02-choreographic-programming}](#def-s-15-02-choreographic-programming)
+    - [Def-S-15-03. CRDTs (Conflict-free Replicated Data Types) {#def-s-15-03-crdts-conflict-free-replicated-data-types}](#def-s-15-03-crdts-conflict-free-replicated-data-types)
+    - [Def-S-15-04. TLA+ (Temporal Logic of Actions) {#def-s-15-04-tla-temporal-logic-of-actions}](#def-s-15-04-tla-temporal-logic-of-actions)
+    - [Def-S-15-05. Separation Logic {#def-s-15-05-separation-logic}](#def-s-15-05-separation-logic)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
 ```
 
 **File**: `Struct/03-relationships/03.04-bisimulation-equivalences.md`
@@ -39279,21 +39279,21 @@ $$
 **File**: `Struct/03-relationships/03.03-expressiveness-hierarchy-supplement.md`
 
 ```markdown
-    - [Def-S-15-03. CRDTs (Conflict-free Replicated Data Types) {#def-s-15-03-crdts-conflict-free-replicated-data-types}](#def-s-15-03-crdts-conflict-free-replicated-data-types-def-s-15-03-crdts-conflict-free-replicated-data-types)
-    - [Def-S-15-04. TLA+ (Temporal Logic of Actions) {#def-s-15-04-tla-temporal-logic-of-actions}](#def-s-15-04-tla-temporal-logic-of-actions-def-s-15-04-tla-temporal-logic-of-actions)
-    - [Def-S-15-05. Separation Logic {#def-s-15-05-separation-logic}](#def-s-15-05-separation-logic-def-s-15-05-separation-logic)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-S-15-01. Session Types 类型安全保证 {#lemma-s-15-01-session-types-类型安全保证}](#lemma-s-15-01-session-types-类型安全保证-lemma-s-15-01-session-types-类型安全保证)
+    - [Def-S-15-03. CRDTs (Conflict-free Replicated Data Types) {#def-s-15-03-crdts-conflict-free-replicated-data-types}](#def-s-15-03-crdts-conflict-free-replicated-data-types)
+    - [Def-S-15-04. TLA+ (Temporal Logic of Actions) {#def-s-15-04-tla-temporal-logic-of-actions}](#def-s-15-04-tla-temporal-logic-of-actions)
+    - [Def-S-15-05. Separation Logic {#def-s-15-05-separation-logic}](#def-s-15-05-separation-logic)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-S-15-01. Session Types 类型安全保证 {#lemma-s-15-01-session-types-类型安全保证}](#lemma-s-15-01-session-types-类型安全保证)
 ```
 
 **File**: `Struct/03-relationships/03.03-expressiveness-hierarchy-supplement.md`
 
 ```markdown
-    - [Def-S-15-03. CRDTs (Conflict-free Replicated Data Types) {#def-s-15-03-crdts-conflict-free-replicated-data-types}](#def-s-15-03-crdts-conflict-free-replicated-data-types-def-s-15-03-crdts-conflict-free-replicated-data-types)
-    - [Def-S-15-04. TLA+ (Temporal Logic of Actions) {#def-s-15-04-tla-temporal-logic-of-actions}](#def-s-15-04-tla-temporal-logic-of-actions-def-s-15-04-tla-temporal-logic-of-actions)
-    - [Def-S-15-05. Separation Logic {#def-s-15-05-separation-logic}](#def-s-15-05-separation-logic-def-s-15-05-separation-logic)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-S-15-01. Session Types 类型安全保证 {#lemma-s-15-01-session-types-类型安全保证}](#lemma-s-15-01-session-types-类型安全保证-lemma-s-15-01-session-types-类型安全保证)
+    - [Def-S-15-03. CRDTs (Conflict-free Replicated Data Types) {#def-s-15-03-crdts-conflict-free-replicated-data-types}](#def-s-15-03-crdts-conflict-free-replicated-data-types)
+    - [Def-S-15-04. TLA+ (Temporal Logic of Actions) {#def-s-15-04-tla-temporal-logic-of-actions}](#def-s-15-04-tla-temporal-logic-of-actions)
+    - [Def-S-15-05. Separation Logic {#def-s-15-05-separation-logic}](#def-s-15-05-separation-logic)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-S-15-01. Session Types 类型安全保证 {#lemma-s-15-01-session-types-类型安全保证}](#lemma-s-15-01-session-types-类型安全保证)
 ```
 
 #### `Def-S-15-06`
@@ -40735,7 +40735,7 @@ Def-S-18-03 (2PC 协议)
 **File**: `Knowledge/05-mapping-guides/struct-to-flink-mapping.md`
 
 ```markdown
-### 映射 5: Exactly-Once 语义 → Flink 2PC + 可重放 Source {#映射-5-exactly-once-语义--flink-2pc--可重放-source}
+### 映射 5: Exactly-Once 语义 → Flink 2PC + 可重放 Source
 
 **形式化定义** ([Def-S-18-01](../../Struct/04-proofs/04.02-flink-exactly-once-correctness.md)):
 
@@ -40745,7 +40745,7 @@ $$
 **File**: `Knowledge/05-mapping-guides/struct-to-flink-mapping.md`
 
 ```markdown
-### 映射 5: Exactly-Once 语义 → Flink 2PC + 可重放 Source {#映射-5-exactly-once-语义--flink-2pc--可重放-source}
+### 映射 5: Exactly-Once 语义 → Flink 2PC + 可重放 Source
 
 **形式化定义** ([Def-S-18-01](../../Struct/04-proofs/04.02-flink-exactly-once-correctness.md)):
 
@@ -40755,7 +40755,7 @@ $$
 **File**: `Knowledge/05-mapping-guides/struct-to-flink-mapping.md`
 
 ```markdown
-### 映射 5: Exactly-Once 语义 → Flink 2PC + 可重放 Source {#映射-5-exactly-once-语义--flink-2pc--可重放-source}
+### 映射 5: Exactly-Once 语义 → Flink 2PC + 可重放 Source
 
 **形式化定义** ([Def-S-18-01](../../Struct/04-proofs/04.02-flink-exactly-once-correctness.md)):
 
@@ -41717,7 +41717,7 @@ MAST 中 Def-S-29-02 的全局类型 $G$ 对应于该文档中 Def-S-20-03 的 G
     - [Def-S-20-04 (Watermark 传播规则)](#def-s-20-04-watermark-传播规则)
     - [Def-S-20-05 (Watermark 完全格)](#def-s-20-05-watermark-完全格)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Lemma-S-20-01 (⊔ 结合律) {#lemma-s-20-01--结合律}](#lemma-s-20-01--结合律-lemma-s-20-01--结合律)
+    - [Lemma-S-20-01 (⊔ 结合律) {#lemma-s-20-01--结合律}](#lemma-s-20-01--结合律)
 ```
 
 **File**: `Struct/04-proofs/04.04-watermark-algebra-formal-proof.md`
@@ -41727,7 +41727,7 @@ MAST 中 Def-S-29-02 的全局类型 $G$ 对应于该文档中 Def-S-20-03 的 G
     - [Def-S-20-04 (Watermark 传播规则)](#def-s-20-04-watermark-传播规则)
     - [Def-S-20-05 (Watermark 完全格)](#def-s-20-05-watermark-完全格)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Lemma-S-20-01 (⊔ 结合律) {#lemma-s-20-01--结合律}](#lemma-s-20-01--结合律-lemma-s-20-01--结合律)
+    - [Lemma-S-20-01 (⊔ 结合律) {#lemma-s-20-01--结合律}](#lemma-s-20-01--结合律)
 ```
 
 **File**: `Struct/04-proofs/04.04-watermark-algebra-formal-proof.md`
@@ -41737,7 +41737,7 @@ MAST 中 Def-S-29-02 的全局类型 $G$ 对应于该文档中 Def-S-20-03 的 G
     - [Def-S-20-04 (Watermark 传播规则)](#def-s-20-04-watermark-传播规则)
     - [Def-S-20-05 (Watermark 完全格)](#def-s-20-05-watermark-完全格)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Lemma-S-20-01 (⊔ 结合律) {#lemma-s-20-01--结合律}](#lemma-s-20-01--结合律-lemma-s-20-01--结合律)
+    - [Lemma-S-20-01 (⊔ 结合律) {#lemma-s-20-01--结合律}](#lemma-s-20-01--结合律)
 ```
 
 **File**: `Struct/06-frontier/06.02-choreographic-streaming-programming.md`
@@ -42002,7 +42002,7 @@ DOT 的子类型判断 $\Gamma \vdash S <: T$ 由以下规则归纳定义：
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-S-23-01. Choreographic Programming (协程式编程)](#def-s-23-01-choreographic-programming-协程式编程)
-    - [Def-S-23-02. Global Types (全局类型)](#关系-1-global-types--session-types-关系-1-global-types--session-types)
+    - [Def-S-23-02. Global Types (全局类型)](#关系-1-global-types--session-types)
     - [Def-S-23-03. Endpoint Projection (EPP, 端点投影)](#def-s-23-03-endpoint-projection-epp-端点投影)
 ```
 
@@ -42012,7 +42012,7 @@ DOT 的子类型判断 $\Gamma \vdash S <: T$ 由以下规则归纳定义：
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-S-23-01. Choreographic Programming (协程式编程)](#def-s-23-01-choreographic-programming-协程式编程)
-    - [Def-S-23-02. Global Types (全局类型)](#关系-1-global-types--session-types-关系-1-global-types--session-types)
+    - [Def-S-23-02. Global Types (全局类型)](#关系-1-global-types--session-types)
     - [Def-S-23-03. Endpoint Projection (EPP, 端点投影)](#def-s-23-03-endpoint-projection-epp-端点投影)
 ```
 
@@ -42022,7 +42022,7 @@ DOT 的子类型判断 $\Gamma \vdash S <: T$ 由以下规则归纳定义：
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-S-23-01. Choreographic Programming (协程式编程)](#def-s-23-01-choreographic-programming-协程式编程)
-    - [Def-S-23-02. Global Types (全局类型)](#关系-1-global-types--session-types-关系-1-global-types--session-types)
+    - [Def-S-23-02. Global Types (全局类型)](#关系-1-global-types--session-types)
     - [Def-S-23-03. Endpoint Projection (EPP, 端点投影)](#def-s-23-03-endpoint-projection-epp-端点投影)
 ```
 
@@ -42032,7 +42032,7 @@ DOT 的子类型判断 $\Gamma \vdash S <: T$ 由以下规则归纳定义：
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-S-23-01. Choreographic Programming (协程式编程)](#def-s-23-01-choreographic-programming-协程式编程)
-    - [Def-S-23-02. Global Types (全局类型)](#关系-1-global-types--session-types-关系-1-global-types--session-types)
+    - [Def-S-23-02. Global Types (全局类型)](#关系-1-global-types--session-types)
     - [Def-S-23-03. Endpoint Projection (EPP, 端点投影)](#def-s-23-03-endpoint-projection-epp-端点投影)
 ```
 
@@ -42063,7 +42063,7 @@ DOT 的子类型判断 $\Gamma \vdash S <: T$ 由以下规则归纳定义：
 ```markdown
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-S-23-01. Choreographic Programming (协程式编程)](#def-s-23-01-choreographic-programming-协程式编程)
-    - [Def-S-23-02. Global Types (全局类型)](#关系-1-global-types--session-types-关系-1-global-types--session-types)
+    - [Def-S-23-02. Global Types (全局类型)](#关系-1-global-types--session-types)
     - [Def-S-23-03. Endpoint Projection (EPP, 端点投影)](#def-s-23-03-endpoint-projection-epp-端点投影)
     - [Def-S-23-04. Deadlock Freedom (死锁自由)](#def-s-23-04-deadlock-freedom-死锁自由)
 ```
@@ -42073,7 +42073,7 @@ DOT 的子类型判断 $\Gamma \vdash S <: T$ 由以下规则归纳定义：
 ```markdown
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-S-23-01. Choreographic Programming (协程式编程)](#def-s-23-01-choreographic-programming-协程式编程)
-    - [Def-S-23-02. Global Types (全局类型)](#关系-1-global-types--session-types-关系-1-global-types--session-types)
+    - [Def-S-23-02. Global Types (全局类型)](#关系-1-global-types--session-types)
     - [Def-S-23-03. Endpoint Projection (EPP, 端点投影)](#def-s-23-03-endpoint-projection-epp-端点投影)
     - [Def-S-23-04. Deadlock Freedom (死锁自由)](#def-s-23-04-deadlock-freedom-死锁自由)
 ```
@@ -42083,7 +42083,7 @@ DOT 的子类型判断 $\Gamma \vdash S <: T$ 由以下规则归纳定义：
 ```markdown
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-S-23-01. Choreographic Programming (协程式编程)](#def-s-23-01-choreographic-programming-协程式编程)
-    - [Def-S-23-02. Global Types (全局类型)](#关系-1-global-types--session-types-关系-1-global-types--session-types)
+    - [Def-S-23-02. Global Types (全局类型)](#关系-1-global-types--session-types)
     - [Def-S-23-03. Endpoint Projection (EPP, 端点投影)](#def-s-23-03-endpoint-projection-epp-端点投影)
     - [Def-S-23-04. Deadlock Freedom (死锁自由)](#def-s-23-04-deadlock-freedom-死锁自由)
 ```
@@ -42093,7 +42093,7 @@ DOT 的子类型判断 $\Gamma \vdash S <: T$ 由以下规则归纳定义：
 ```markdown
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-S-23-01. Choreographic Programming (协程式编程)](#def-s-23-01-choreographic-programming-协程式编程)
-    - [Def-S-23-02. Global Types (全局类型)](#关系-1-global-types--session-types-关系-1-global-types--session-types)
+    - [Def-S-23-02. Global Types (全局类型)](#关系-1-global-types--session-types)
     - [Def-S-23-03. Endpoint Projection (EPP, 端点投影)](#def-s-23-03-endpoint-projection-epp-端点投影)
     - [Def-S-23-04. Deadlock Freedom (死锁自由)](#def-s-23-04-deadlock-freedom-死锁自由)
 ```
@@ -42103,7 +42103,7 @@ DOT 的子类型判断 $\Gamma \vdash S <: T$ 由以下规则归纳定义：
 ```markdown
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-S-23-01. Choreographic Programming (协程式编程)](#def-s-23-01-choreographic-programming-协程式编程)
-    - [Def-S-23-02. Global Types (全局类型)](#关系-1-global-types--session-types-关系-1-global-types--session-types)
+    - [Def-S-23-02. Global Types (全局类型)](#关系-1-global-types--session-types)
     - [Def-S-23-03. Endpoint Projection (EPP, 端点投影)](#def-s-23-03-endpoint-projection-epp-端点投影)
     - [Def-S-23-04. Deadlock Freedom (死锁自由)](#def-s-23-04-deadlock-freedom-死锁自由)
 ```
@@ -42134,7 +42134,7 @@ graph TD
 
 ```markdown
     - [Def-S-23-01. Choreographic Programming (协程式编程)](#def-s-23-01-choreographic-programming-协程式编程)
-    - [Def-S-23-02. Global Types (全局类型)](#关系-1-global-types--session-types-关系-1-global-types--session-types)
+    - [Def-S-23-02. Global Types (全局类型)](#关系-1-global-types--session-types)
     - [Def-S-23-03. Endpoint Projection (EPP, 端点投影)](#def-s-23-03-endpoint-projection-epp-端点投影)
     - [Def-S-23-04. Deadlock Freedom (死锁自由)](#def-s-23-04-deadlock-freedom-死锁自由)
     - [Def-S-23-05. Choral Language (Choral 语言)](#def-s-23-05-choral-language-choral-语言)
@@ -42144,7 +42144,7 @@ graph TD
 
 ```markdown
     - [Def-S-23-01. Choreographic Programming (协程式编程)](#def-s-23-01-choreographic-programming-协程式编程)
-    - [Def-S-23-02. Global Types (全局类型)](#关系-1-global-types--session-types-关系-1-global-types--session-types)
+    - [Def-S-23-02. Global Types (全局类型)](#关系-1-global-types--session-types)
     - [Def-S-23-03. Endpoint Projection (EPP, 端点投影)](#def-s-23-03-endpoint-projection-epp-端点投影)
     - [Def-S-23-04. Deadlock Freedom (死锁自由)](#def-s-23-04-deadlock-freedom-死锁自由)
     - [Def-S-23-05. Choral Language (Choral 语言)](#def-s-23-05-choral-language-choral-语言)
@@ -42154,7 +42154,7 @@ graph TD
 
 ```markdown
     - [Def-S-23-01. Choreographic Programming (协程式编程)](#def-s-23-01-choreographic-programming-协程式编程)
-    - [Def-S-23-02. Global Types (全局类型)](#关系-1-global-types--session-types-关系-1-global-types--session-types)
+    - [Def-S-23-02. Global Types (全局类型)](#关系-1-global-types--session-types)
     - [Def-S-23-03. Endpoint Projection (EPP, 端点投影)](#def-s-23-03-endpoint-projection-epp-端点投影)
     - [Def-S-23-04. Deadlock Freedom (死锁自由)](#def-s-23-04-deadlock-freedom-死锁自由)
     - [Def-S-23-05. Choral Language (Choral 语言)](#def-s-23-05-choral-language-choral-语言)
@@ -42164,7 +42164,7 @@ graph TD
 
 ```markdown
     - [Def-S-23-01. Choreographic Programming (协程式编程)](#def-s-23-01-choreographic-programming-协程式编程)
-    - [Def-S-23-02. Global Types (全局类型)](#关系-1-global-types--session-types-关系-1-global-types--session-types)
+    - [Def-S-23-02. Global Types (全局类型)](#关系-1-global-types--session-types)
     - [Def-S-23-03. Endpoint Projection (EPP, 端点投影)](#def-s-23-03-endpoint-projection-epp-端点投影)
     - [Def-S-23-04. Deadlock Freedom (死锁自由)](#def-s-23-04-deadlock-freedom-死锁自由)
     - [Def-S-23-05. Choral Language (Choral 语言)](#def-s-23-05-choral-language-choral-语言)
@@ -42205,7 +42205,7 @@ graph TD
 **File**: `Struct/04-proofs/04.07-deadlock-freedom-choreographic.md`
 
 ```markdown
-    - [Def-S-23-02. Global Types (全局类型)](#关系-1-global-types--session-types-关系-1-global-types--session-types)
+    - [Def-S-23-02. Global Types (全局类型)](#关系-1-global-types--session-types)
     - [Def-S-23-03. Endpoint Projection (EPP, 端点投影)](#def-s-23-03-endpoint-projection-epp-端点投影)
     - [Def-S-23-04. Deadlock Freedom (死锁自由)](#def-s-23-04-deadlock-freedom-死锁自由)
     - [Def-S-23-05. Choral Language (Choral 语言)](#def-s-23-05-choral-language-choral-语言)
@@ -42215,7 +42215,7 @@ graph TD
 **File**: `Struct/04-proofs/04.07-deadlock-freedom-choreographic.md`
 
 ```markdown
-    - [Def-S-23-02. Global Types (全局类型)](#关系-1-global-types--session-types-关系-1-global-types--session-types)
+    - [Def-S-23-02. Global Types (全局类型)](#关系-1-global-types--session-types)
     - [Def-S-23-03. Endpoint Projection (EPP, 端点投影)](#def-s-23-03-endpoint-projection-epp-端点投影)
     - [Def-S-23-04. Deadlock Freedom (死锁自由)](#def-s-23-04-deadlock-freedom-死锁自由)
     - [Def-S-23-05. Choral Language (Choral 语言)](#def-s-23-05-choral-language-choral-语言)
@@ -42225,7 +42225,7 @@ graph TD
 **File**: `Struct/04-proofs/04.07-deadlock-freedom-choreographic.md`
 
 ```markdown
-    - [Def-S-23-02. Global Types (全局类型)](#关系-1-global-types--session-types-关系-1-global-types--session-types)
+    - [Def-S-23-02. Global Types (全局类型)](#关系-1-global-types--session-types)
     - [Def-S-23-03. Endpoint Projection (EPP, 端点投影)](#def-s-23-03-endpoint-projection-epp-端点投影)
     - [Def-S-23-04. Deadlock Freedom (死锁自由)](#def-s-23-04-deadlock-freedom-死锁自由)
     - [Def-S-23-05. Choral Language (Choral 语言)](#def-s-23-05-choral-language-choral-语言)
@@ -42235,7 +42235,7 @@ graph TD
 **File**: `Struct/04-proofs/04.07-deadlock-freedom-choreographic.md`
 
 ```markdown
-    - [Def-S-23-02. Global Types (全局类型)](#关系-1-global-types--session-types-关系-1-global-types--session-types)
+    - [Def-S-23-02. Global Types (全局类型)](#关系-1-global-types--session-types)
     - [Def-S-23-03. Endpoint Projection (EPP, 端点投影)](#def-s-23-03-endpoint-projection-epp-端点投影)
     - [Def-S-23-04. Deadlock Freedom (死锁自由)](#def-s-23-04-deadlock-freedom-死锁自由)
     - [Def-S-23-05. Choral Language (Choral 语言)](#def-s-23-05-choral-language-choral-语言)
@@ -42283,7 +42283,7 @@ graph TD
     - [Def-S-23-05. Choral Language (Choral 语言)](#def-s-23-05-choral-language-choral-语言)
     - [Def-S-23-06. MultiChor 扩展](#def-s-23-06-multichor-扩展)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价-关系-2-epp--bisimulation-互模拟等价)
+    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价)
 ```
 
 **File**: `Struct/04-proofs/04.07-deadlock-freedom-choreographic.md`
@@ -42293,7 +42293,7 @@ graph TD
     - [Def-S-23-05. Choral Language (Choral 语言)](#def-s-23-05-choral-language-choral-语言)
     - [Def-S-23-06. MultiChor 扩展](#def-s-23-06-multichor-扩展)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价-关系-2-epp--bisimulation-互模拟等价)
+    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价)
 ```
 
 **File**: `Struct/04-proofs/04.07-deadlock-freedom-choreographic.md`
@@ -42303,7 +42303,7 @@ graph TD
     - [Def-S-23-05. Choral Language (Choral 语言)](#def-s-23-05-choral-language-choral-语言)
     - [Def-S-23-06. MultiChor 扩展](#def-s-23-06-multichor-扩展)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价-关系-2-epp--bisimulation-互模拟等价)
+    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价)
 ```
 
 #### `Def-S-25-01`
@@ -43299,51 +43299,51 @@ AEC 保证 $r_2$ 开始时，$r_1$ 的所有副作用（包括状态写入）已
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-    - [Def-F-02-08 (Changelog State Backend) {#def-f-02-08-changelog-state-backend}](#def-f-02-08-changelog-state-backend-def-f-02-08-changelog-state-backend)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-F-02-01 (Barrier 对齐保证状态一致性) {#lemma-f-02-01-barrier-对齐保证状态一致性}](#lemma-f-02-01-barrier-对齐保证状态一致性-lemma-f-02-01-barrier-对齐保证状态一致性)
-    - [Lemma-F-02-02 (异步 Checkpoint 的低延迟特性) {#lemma-f-02-02-异步-checkpoint-的低延迟特性}](#lemma-f-02-02-异步-checkpoint-的低延迟特性-lemma-f-02-02-异步-checkpoint-的低延迟特性)
-    - [Lemma-F-02-03 (增量 Checkpoint 的存储优化) {#lemma-f-02-03-增量-checkpoint-的存储优化}](#lemma-f-02-03-增量-checkpoint-的存储优化-lemma-f-02-03-增量-checkpoint-的存储优化)
+    - [Def-F-02-08 (Changelog State Backend) {#def-f-02-08-changelog-state-backend}](#def-f-02-08-changelog-state-backend)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-F-02-01 (Barrier 对齐保证状态一致性) {#lemma-f-02-01-barrier-对齐保证状态一致性}](#lemma-f-02-01-barrier-对齐保证状态一致性)
+    - [Lemma-F-02-02 (异步 Checkpoint 的低延迟特性) {#lemma-f-02-02-异步-checkpoint-的低延迟特性}](#lemma-f-02-02-异步-checkpoint-的低延迟特性)
+    - [Lemma-F-02-03 (增量 Checkpoint 的存储优化) {#lemma-f-02-03-增量-checkpoint-的存储优化}](#lemma-f-02-03-增量-checkpoint-的存储优化)
 ```
 
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-    - [Def-F-02-08 (Changelog State Backend) {#def-f-02-08-changelog-state-backend}](#def-f-02-08-changelog-state-backend-def-f-02-08-changelog-state-backend)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-F-02-01 (Barrier 对齐保证状态一致性) {#lemma-f-02-01-barrier-对齐保证状态一致性}](#lemma-f-02-01-barrier-对齐保证状态一致性-lemma-f-02-01-barrier-对齐保证状态一致性)
-    - [Lemma-F-02-02 (异步 Checkpoint 的低延迟特性) {#lemma-f-02-02-异步-checkpoint-的低延迟特性}](#lemma-f-02-02-异步-checkpoint-的低延迟特性-lemma-f-02-02-异步-checkpoint-的低延迟特性)
-    - [Lemma-F-02-03 (增量 Checkpoint 的存储优化) {#lemma-f-02-03-增量-checkpoint-的存储优化}](#lemma-f-02-03-增量-checkpoint-的存储优化-lemma-f-02-03-增量-checkpoint-的存储优化)
+    - [Def-F-02-08 (Changelog State Backend) {#def-f-02-08-changelog-state-backend}](#def-f-02-08-changelog-state-backend)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-F-02-01 (Barrier 对齐保证状态一致性) {#lemma-f-02-01-barrier-对齐保证状态一致性}](#lemma-f-02-01-barrier-对齐保证状态一致性)
+    - [Lemma-F-02-02 (异步 Checkpoint 的低延迟特性) {#lemma-f-02-02-异步-checkpoint-的低延迟特性}](#lemma-f-02-02-异步-checkpoint-的低延迟特性)
+    - [Lemma-F-02-03 (增量 Checkpoint 的存储优化) {#lemma-f-02-03-增量-checkpoint-的存储优化}](#lemma-f-02-03-增量-checkpoint-的存储优化)
 ```
 
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-    - [Def-F-02-08 (Changelog State Backend) {#def-f-02-08-changelog-state-backend}](#def-f-02-08-changelog-state-backend-def-f-02-08-changelog-state-backend)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-F-02-01 (Barrier 对齐保证状态一致性) {#lemma-f-02-01-barrier-对齐保证状态一致性}](#lemma-f-02-01-barrier-对齐保证状态一致性-lemma-f-02-01-barrier-对齐保证状态一致性)
-    - [Lemma-F-02-02 (异步 Checkpoint 的低延迟特性) {#lemma-f-02-02-异步-checkpoint-的低延迟特性}](#lemma-f-02-02-异步-checkpoint-的低延迟特性-lemma-f-02-02-异步-checkpoint-的低延迟特性)
-    - [Lemma-F-02-03 (增量 Checkpoint 的存储优化) {#lemma-f-02-03-增量-checkpoint-的存储优化}](#lemma-f-02-03-增量-checkpoint-的存储优化-lemma-f-02-03-增量-checkpoint-的存储优化)
+    - [Def-F-02-08 (Changelog State Backend) {#def-f-02-08-changelog-state-backend}](#def-f-02-08-changelog-state-backend)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-F-02-01 (Barrier 对齐保证状态一致性) {#lemma-f-02-01-barrier-对齐保证状态一致性}](#lemma-f-02-01-barrier-对齐保证状态一致性)
+    - [Lemma-F-02-02 (异步 Checkpoint 的低延迟特性) {#lemma-f-02-02-异步-checkpoint-的低延迟特性}](#lemma-f-02-02-异步-checkpoint-的低延迟特性)
+    - [Lemma-F-02-03 (增量 Checkpoint 的存储优化) {#lemma-f-02-03-增量-checkpoint-的存储优化}](#lemma-f-02-03-增量-checkpoint-的存储优化)
 ```
 
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-    - [Def-F-02-08 (Changelog State Backend) {#def-f-02-08-changelog-state-backend}](#def-f-02-08-changelog-state-backend-def-f-02-08-changelog-state-backend)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-F-02-01 (Barrier 对齐保证状态一致性) {#lemma-f-02-01-barrier-对齐保证状态一致性}](#lemma-f-02-01-barrier-对齐保证状态一致性-lemma-f-02-01-barrier-对齐保证状态一致性)
-    - [Lemma-F-02-02 (异步 Checkpoint 的低延迟特性) {#lemma-f-02-02-异步-checkpoint-的低延迟特性}](#lemma-f-02-02-异步-checkpoint-的低延迟特性-lemma-f-02-02-异步-checkpoint-的低延迟特性)
-    - [Lemma-F-02-03 (增量 Checkpoint 的存储优化) {#lemma-f-02-03-增量-checkpoint-的存储优化}](#lemma-f-02-03-增量-checkpoint-的存储优化-lemma-f-02-03-增量-checkpoint-的存储优化)
+    - [Def-F-02-08 (Changelog State Backend) {#def-f-02-08-changelog-state-backend}](#def-f-02-08-changelog-state-backend)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-F-02-01 (Barrier 对齐保证状态一致性) {#lemma-f-02-01-barrier-对齐保证状态一致性}](#lemma-f-02-01-barrier-对齐保证状态一致性)
+    - [Lemma-F-02-02 (异步 Checkpoint 的低延迟特性) {#lemma-f-02-02-异步-checkpoint-的低延迟特性}](#lemma-f-02-02-异步-checkpoint-的低延迟特性)
+    - [Lemma-F-02-03 (增量 Checkpoint 的存储优化) {#lemma-f-02-03-增量-checkpoint-的存储优化}](#lemma-f-02-03-增量-checkpoint-的存储优化)
 ```
 
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-    - [Def-F-02-08 (Changelog State Backend) {#def-f-02-08-changelog-state-backend}](#def-f-02-08-changelog-state-backend-def-f-02-08-changelog-state-backend)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-F-02-01 (Barrier 对齐保证状态一致性) {#lemma-f-02-01-barrier-对齐保证状态一致性}](#lemma-f-02-01-barrier-对齐保证状态一致性-lemma-f-02-01-barrier-对齐保证状态一致性)
-    - [Lemma-F-02-02 (异步 Checkpoint 的低延迟特性) {#lemma-f-02-02-异步-checkpoint-的低延迟特性}](#lemma-f-02-02-异步-checkpoint-的低延迟特性-lemma-f-02-02-异步-checkpoint-的低延迟特性)
-    - [Lemma-F-02-03 (增量 Checkpoint 的存储优化) {#lemma-f-02-03-增量-checkpoint-的存储优化}](#lemma-f-02-03-增量-checkpoint-的存储优化-lemma-f-02-03-增量-checkpoint-的存储优化)
+    - [Def-F-02-08 (Changelog State Backend) {#def-f-02-08-changelog-state-backend}](#def-f-02-08-changelog-state-backend)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-F-02-01 (Barrier 对齐保证状态一致性) {#lemma-f-02-01-barrier-对齐保证状态一致性}](#lemma-f-02-01-barrier-对齐保证状态一致性)
+    - [Lemma-F-02-02 (异步 Checkpoint 的低延迟特性) {#lemma-f-02-02-异步-checkpoint-的低延迟特性}](#lemma-f-02-02-异步-checkpoint-的低延迟特性)
+    - [Lemma-F-02-03 (增量 Checkpoint 的存储优化) {#lemma-f-02-03-增量-checkpoint-的存储优化}](#lemma-f-02-03-增量-checkpoint-的存储优化)
 ```
 
 **File**: `Flink/02-core/time-semantics-and-watermark.md`
@@ -43521,21 +43521,21 @@ outputmode = ORDERED ⇒ ∀e_i, e_j: i < j ⇒ out(e_i) ≺ out(e_j)
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-F-02-01 (Barrier 对齐保证状态一致性) {#lemma-f-02-01-barrier-对齐保证状态一致性}](#lemma-f-02-01-barrier-对齐保证状态一致性-lemma-f-02-01-barrier-对齐保证状态一致性)
-    - [Lemma-F-02-02 (异步 Checkpoint 的低延迟特性) {#lemma-f-02-02-异步-checkpoint-的低延迟特性}](#lemma-f-02-02-异步-checkpoint-的低延迟特性-lemma-f-02-02-异步-checkpoint-的低延迟特性)
-    - [Lemma-F-02-03 (增量 Checkpoint 的存储优化) {#lemma-f-02-03-增量-checkpoint-的存储优化}](#lemma-f-02-03-增量-checkpoint-的存储优化-lemma-f-02-03-增量-checkpoint-的存储优化)
-    - [Prop-F-02-01 (Checkpoint 类型选择的权衡空间) {#prop-f-02-01-checkpoint-类型选择的权衡空间}](#prop-f-02-01-checkpoint-类型选择的权衡空间-prop-f-02-01-checkpoint-类型选择的权衡空间)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-F-02-01 (Barrier 对齐保证状态一致性) {#lemma-f-02-01-barrier-对齐保证状态一致性}](#lemma-f-02-01-barrier-对齐保证状态一致性)
+    - [Lemma-F-02-02 (异步 Checkpoint 的低延迟特性) {#lemma-f-02-02-异步-checkpoint-的低延迟特性}](#lemma-f-02-02-异步-checkpoint-的低延迟特性)
+    - [Lemma-F-02-03 (增量 Checkpoint 的存储优化) {#lemma-f-02-03-增量-checkpoint-的存储优化}](#lemma-f-02-03-增量-checkpoint-的存储优化)
+    - [Prop-F-02-01 (Checkpoint 类型选择的权衡空间) {#prop-f-02-01-checkpoint-类型选择的权衡空间}](#prop-f-02-01-checkpoint-类型选择的权衡空间)
 ```
 
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-F-02-01 (Barrier 对齐保证状态一致性) {#lemma-f-02-01-barrier-对齐保证状态一致性}](#lemma-f-02-01-barrier-对齐保证状态一致性-lemma-f-02-01-barrier-对齐保证状态一致性)
-    - [Lemma-F-02-02 (异步 Checkpoint 的低延迟特性) {#lemma-f-02-02-异步-checkpoint-的低延迟特性}](#lemma-f-02-02-异步-checkpoint-的低延迟特性-lemma-f-02-02-异步-checkpoint-的低延迟特性)
-    - [Lemma-F-02-03 (增量 Checkpoint 的存储优化) {#lemma-f-02-03-增量-checkpoint-的存储优化}](#lemma-f-02-03-增量-checkpoint-的存储优化-lemma-f-02-03-增量-checkpoint-的存储优化)
-    - [Prop-F-02-01 (Checkpoint 类型选择的权衡空间) {#prop-f-02-01-checkpoint-类型选择的权衡空间}](#prop-f-02-01-checkpoint-类型选择的权衡空间-prop-f-02-01-checkpoint-类型选择的权衡空间)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-F-02-01 (Barrier 对齐保证状态一致性) {#lemma-f-02-01-barrier-对齐保证状态一致性}](#lemma-f-02-01-barrier-对齐保证状态一致性)
+    - [Lemma-F-02-02 (异步 Checkpoint 的低延迟特性) {#lemma-f-02-02-异步-checkpoint-的低延迟特性}](#lemma-f-02-02-异步-checkpoint-的低延迟特性)
+    - [Lemma-F-02-03 (增量 Checkpoint 的存储优化) {#lemma-f-02-03-增量-checkpoint-的存储优化}](#lemma-f-02-03-增量-checkpoint-的存储优化)
+    - [Prop-F-02-01 (Checkpoint 类型选择的权衡空间) {#prop-f-02-01-checkpoint-类型选择的权衡空间}](#prop-f-02-01-checkpoint-类型选择的权衡空间)
 ```
 
 **File**: `Flink/02-core/time-semantics-and-watermark.md`
@@ -43603,21 +43603,21 @@ outputmode = ORDERED ⇒ ∀e_i, e_j: i < j ⇒ out(e_i) ≺ out(e_j)
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-    - [Lemma-F-02-01 (Barrier 对齐保证状态一致性) {#lemma-f-02-01-barrier-对齐保证状态一致性}](#lemma-f-02-01-barrier-对齐保证状态一致性-lemma-f-02-01-barrier-对齐保证状态一致性)
-    - [Lemma-F-02-02 (异步 Checkpoint 的低延迟特性) {#lemma-f-02-02-异步-checkpoint-的低延迟特性}](#lemma-f-02-02-异步-checkpoint-的低延迟特性-lemma-f-02-02-异步-checkpoint-的低延迟特性)
-    - [Lemma-F-02-03 (增量 Checkpoint 的存储优化) {#lemma-f-02-03-增量-checkpoint-的存储优化}](#lemma-f-02-03-增量-checkpoint-的存储优化-lemma-f-02-03-增量-checkpoint-的存储优化)
-    - [Prop-F-02-01 (Checkpoint 类型选择的权衡空间) {#prop-f-02-01-checkpoint-类型选择的权衡空间}](#prop-f-02-01-checkpoint-类型选择的权衡空间-prop-f-02-01-checkpoint-类型选择的权衡空间)
-  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations-3-关系建立-relations)
+    - [Lemma-F-02-01 (Barrier 对齐保证状态一致性) {#lemma-f-02-01-barrier-对齐保证状态一致性}](#lemma-f-02-01-barrier-对齐保证状态一致性)
+    - [Lemma-F-02-02 (异步 Checkpoint 的低延迟特性) {#lemma-f-02-02-异步-checkpoint-的低延迟特性}](#lemma-f-02-02-异步-checkpoint-的低延迟特性)
+    - [Lemma-F-02-03 (增量 Checkpoint 的存储优化) {#lemma-f-02-03-增量-checkpoint-的存储优化}](#lemma-f-02-03-增量-checkpoint-的存储优化)
+    - [Prop-F-02-01 (Checkpoint 类型选择的权衡空间) {#prop-f-02-01-checkpoint-类型选择的权衡空间}](#prop-f-02-01-checkpoint-类型选择的权衡空间)
+  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations)
 ```
 
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-    - [Lemma-F-02-01 (Barrier 对齐保证状态一致性) {#lemma-f-02-01-barrier-对齐保证状态一致性}](#lemma-f-02-01-barrier-对齐保证状态一致性-lemma-f-02-01-barrier-对齐保证状态一致性)
-    - [Lemma-F-02-02 (异步 Checkpoint 的低延迟特性) {#lemma-f-02-02-异步-checkpoint-的低延迟特性}](#lemma-f-02-02-异步-checkpoint-的低延迟特性-lemma-f-02-02-异步-checkpoint-的低延迟特性)
-    - [Lemma-F-02-03 (增量 Checkpoint 的存储优化) {#lemma-f-02-03-增量-checkpoint-的存储优化}](#lemma-f-02-03-增量-checkpoint-的存储优化-lemma-f-02-03-增量-checkpoint-的存储优化)
-    - [Prop-F-02-01 (Checkpoint 类型选择的权衡空间) {#prop-f-02-01-checkpoint-类型选择的权衡空间}](#prop-f-02-01-checkpoint-类型选择的权衡空间-prop-f-02-01-checkpoint-类型选择的权衡空间)
-  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations-3-关系建立-relations)
+    - [Lemma-F-02-01 (Barrier 对齐保证状态一致性) {#lemma-f-02-01-barrier-对齐保证状态一致性}](#lemma-f-02-01-barrier-对齐保证状态一致性)
+    - [Lemma-F-02-02 (异步 Checkpoint 的低延迟特性) {#lemma-f-02-02-异步-checkpoint-的低延迟特性}](#lemma-f-02-02-异步-checkpoint-的低延迟特性)
+    - [Lemma-F-02-03 (增量 Checkpoint 的存储优化) {#lemma-f-02-03-增量-checkpoint-的存储优化}](#lemma-f-02-03-增量-checkpoint-的存储优化)
+    - [Prop-F-02-01 (Checkpoint 类型选择的权衡空间) {#prop-f-02-01-checkpoint-类型选择的权衡空间}](#prop-f-02-01-checkpoint-类型选择的权衡空间)
+  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations)
 ```
 
 **File**: `Flink/02-core/time-semantics-and-watermark.md`
@@ -47729,21 +47729,21 @@ $$
 **File**: `Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md`
 
 ```markdown
-      - [Def-K-01-48. 数据主权部署 (Data Sovereignty Deployment) {#def-k-01-48-数据主权部署-data-sovereignty-deployment}](#def-k-01-48-数据主权部署-data-sovereignty-deployment-def-k-01-48-数据主权部署-data-sovereignty-deployment)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-K-01-20. 平台生命周期与采用率关系 {#lemma-k-01-20-平台生命周期与采用率关系}](#lemma-k-01-20-平台生命周期与采用率关系-lemma-k-01-20-平台生命周期与采用率关系)
-    - [Lemma-K-01-21. 托管服务成本边际递减 {#lemma-k-01-21-托管服务成本边际递减}](#lemma-k-01-21-托管服务成本边际递减-lemma-k-01-21-托管服务成本边际递减)
-    - [Prop-K-01-20. 存储计算分离的弹性优势 {#prop-k-01-20-存储计算分离的弹性优势}](#prop-k-01-20-存储计算分离的弹性优势-prop-k-01-20-存储计算分离的弹性优势)
+      - [Def-K-01-48. 数据主权部署 (Data Sovereignty Deployment) {#def-k-01-48-数据主权部署-data-sovereignty-deployment}](#def-k-01-48-数据主权部署-data-sovereignty-deployment)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-K-01-20. 平台生命周期与采用率关系 {#lemma-k-01-20-平台生命周期与采用率关系}](#lemma-k-01-20-平台生命周期与采用率关系)
+    - [Lemma-K-01-21. 托管服务成本边际递减 {#lemma-k-01-21-托管服务成本边际递减}](#lemma-k-01-21-托管服务成本边际递减)
+    - [Prop-K-01-20. 存储计算分离的弹性优势 {#prop-k-01-20-存储计算分离的弹性优势}](#prop-k-01-20-存储计算分离的弹性优势)
 ```
 
 **File**: `Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md`
 
 ```markdown
-      - [Def-K-01-48. 数据主权部署 (Data Sovereignty Deployment) {#def-k-01-48-数据主权部署-data-sovereignty-deployment}](#def-k-01-48-数据主权部署-data-sovereignty-deployment-def-k-01-48-数据主权部署-data-sovereignty-deployment)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-K-01-20. 平台生命周期与采用率关系 {#lemma-k-01-20-平台生命周期与采用率关系}](#lemma-k-01-20-平台生命周期与采用率关系-lemma-k-01-20-平台生命周期与采用率关系)
-    - [Lemma-K-01-21. 托管服务成本边际递减 {#lemma-k-01-21-托管服务成本边际递减}](#lemma-k-01-21-托管服务成本边际递减-lemma-k-01-21-托管服务成本边际递减)
-    - [Prop-K-01-20. 存储计算分离的弹性优势 {#prop-k-01-20-存储计算分离的弹性优势}](#prop-k-01-20-存储计算分离的弹性优势-prop-k-01-20-存储计算分离的弹性优势)
+      - [Def-K-01-48. 数据主权部署 (Data Sovereignty Deployment) {#def-k-01-48-数据主权部署-data-sovereignty-deployment}](#def-k-01-48-数据主权部署-data-sovereignty-deployment)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-K-01-20. 平台生命周期与采用率关系 {#lemma-k-01-20-平台生命周期与采用率关系}](#lemma-k-01-20-平台生命周期与采用率关系)
+    - [Lemma-K-01-21. 托管服务成本边际递减 {#lemma-k-01-21-托管服务成本边际递减}](#lemma-k-01-21-托管服务成本边际递减)
+    - [Prop-K-01-20. 存储计算分离的弹性优势 {#prop-k-01-20-存储计算分离的弹性优势}](#prop-k-01-20-存储计算分离的弹性优势)
 ```
 
 #### `Lemma-K-01-21`
@@ -47751,21 +47751,21 @@ $$
 **File**: `Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md`
 
 ```markdown
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-K-01-20. 平台生命周期与采用率关系 {#lemma-k-01-20-平台生命周期与采用率关系}](#lemma-k-01-20-平台生命周期与采用率关系-lemma-k-01-20-平台生命周期与采用率关系)
-    - [Lemma-K-01-21. 托管服务成本边际递减 {#lemma-k-01-21-托管服务成本边际递减}](#lemma-k-01-21-托管服务成本边际递减-lemma-k-01-21-托管服务成本边际递减)
-    - [Prop-K-01-20. 存储计算分离的弹性优势 {#prop-k-01-20-存储计算分离的弹性优势}](#prop-k-01-20-存储计算分离的弹性优势-prop-k-01-20-存储计算分离的弹性优势)
-    - [Prop-K-01-21. 开源托管化趋势必然性 {#prop-k-01-21-开源托管化趋势必然性}](#prop-k-01-21-开源托管化趋势必然性-prop-k-01-21-开源托管化趋势必然性)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-K-01-20. 平台生命周期与采用率关系 {#lemma-k-01-20-平台生命周期与采用率关系}](#lemma-k-01-20-平台生命周期与采用率关系)
+    - [Lemma-K-01-21. 托管服务成本边际递减 {#lemma-k-01-21-托管服务成本边际递减}](#lemma-k-01-21-托管服务成本边际递减)
+    - [Prop-K-01-20. 存储计算分离的弹性优势 {#prop-k-01-20-存储计算分离的弹性优势}](#prop-k-01-20-存储计算分离的弹性优势)
+    - [Prop-K-01-21. 开源托管化趋势必然性 {#prop-k-01-21-开源托管化趋势必然性}](#prop-k-01-21-开源托管化趋势必然性)
 ```
 
 **File**: `Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md`
 
 ```markdown
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-K-01-20. 平台生命周期与采用率关系 {#lemma-k-01-20-平台生命周期与采用率关系}](#lemma-k-01-20-平台生命周期与采用率关系-lemma-k-01-20-平台生命周期与采用率关系)
-    - [Lemma-K-01-21. 托管服务成本边际递减 {#lemma-k-01-21-托管服务成本边际递减}](#lemma-k-01-21-托管服务成本边际递减-lemma-k-01-21-托管服务成本边际递减)
-    - [Prop-K-01-20. 存储计算分离的弹性优势 {#prop-k-01-20-存储计算分离的弹性优势}](#prop-k-01-20-存储计算分离的弹性优势-prop-k-01-20-存储计算分离的弹性优势)
-    - [Prop-K-01-21. 开源托管化趋势必然性 {#prop-k-01-21-开源托管化趋势必然性}](#prop-k-01-21-开源托管化趋势必然性-prop-k-01-21-开源托管化趋势必然性)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-K-01-20. 平台生命周期与采用率关系 {#lemma-k-01-20-平台生命周期与采用率关系}](#lemma-k-01-20-平台生命周期与采用率关系)
+    - [Lemma-K-01-21. 托管服务成本边际递减 {#lemma-k-01-21-托管服务成本边际递减}](#lemma-k-01-21-托管服务成本边际递减)
+    - [Prop-K-01-20. 存储计算分离的弹性优势 {#prop-k-01-20-存储计算分离的弹性优势}](#prop-k-01-20-存储计算分离的弹性优势)
+    - [Prop-K-01-21. 开源托管化趋势必然性 {#prop-k-01-21-开源托管化趋势必然性}](#prop-k-01-21-开源托管化趋势必然性)
 ```
 
 #### `Lemma-K-02-01`
@@ -48253,21 +48253,21 @@ $$
 **File**: `Knowledge/04-technology-selection/engine-selection-guide.md`
 
 ```markdown
-      - [Def-K-04-09. 表达能力层次映射 (Expressiveness Hierarchy Mapping) {#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping}](#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping-def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-K-04-01. 延迟与吞吐的权衡上界 {#lemma-k-04-01-延迟与吞吐的权衡上界}](#lemma-k-04-01-延迟与吞吐的权衡上界-lemma-k-04-01-延迟与吞吐的权衡上界)
-    - [Lemma-K-04-02. 状态复杂度与容错开销的正相关 {#lemma-k-04-02-状态复杂度与容错开销的正相关}](#lemma-k-04-02-状态复杂度与容错开销的正相关-lemma-k-04-02-状态复杂度与容错开销的正相关)
-    - [Prop-K-04-01. Dataflow模型引擎的语义优势 {#prop-k-04-01-dataflow模型引擎的语义优势}](#prop-k-04-01-dataflow模型引擎的语义优势-prop-k-04-01-dataflow模型引擎的语义优势)
+      - [Def-K-04-09. 表达能力层次映射 (Expressiveness Hierarchy Mapping) {#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping}](#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-K-04-01. 延迟与吞吐的权衡上界 {#lemma-k-04-01-延迟与吞吐的权衡上界}](#lemma-k-04-01-延迟与吞吐的权衡上界)
+    - [Lemma-K-04-02. 状态复杂度与容错开销的正相关 {#lemma-k-04-02-状态复杂度与容错开销的正相关}](#lemma-k-04-02-状态复杂度与容错开销的正相关)
+    - [Prop-K-04-01. Dataflow模型引擎的语义优势 {#prop-k-04-01-dataflow模型引擎的语义优势}](#prop-k-04-01-dataflow模型引擎的语义优势)
 ```
 
 **File**: `Knowledge/04-technology-selection/engine-selection-guide.md`
 
 ```markdown
-      - [Def-K-04-09. 表达能力层次映射 (Expressiveness Hierarchy Mapping) {#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping}](#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping-def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-K-04-01. 延迟与吞吐的权衡上界 {#lemma-k-04-01-延迟与吞吐的权衡上界}](#lemma-k-04-01-延迟与吞吐的权衡上界-lemma-k-04-01-延迟与吞吐的权衡上界)
-    - [Lemma-K-04-02. 状态复杂度与容错开销的正相关 {#lemma-k-04-02-状态复杂度与容错开销的正相关}](#lemma-k-04-02-状态复杂度与容错开销的正相关-lemma-k-04-02-状态复杂度与容错开销的正相关)
-    - [Prop-K-04-01. Dataflow模型引擎的语义优势 {#prop-k-04-01-dataflow模型引擎的语义优势}](#prop-k-04-01-dataflow模型引擎的语义优势-prop-k-04-01-dataflow模型引擎的语义优势)
+      - [Def-K-04-09. 表达能力层次映射 (Expressiveness Hierarchy Mapping) {#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping}](#def-k-04-09-表达能力层次映射-expressiveness-hierarchy-mapping)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-K-04-01. 延迟与吞吐的权衡上界 {#lemma-k-04-01-延迟与吞吐的权衡上界}](#lemma-k-04-01-延迟与吞吐的权衡上界)
+    - [Lemma-K-04-02. 状态复杂度与容错开销的正相关 {#lemma-k-04-02-状态复杂度与容错开销的正相关}](#lemma-k-04-02-状态复杂度与容错开销的正相关)
+    - [Prop-K-04-01. Dataflow模型引擎的语义优势 {#prop-k-04-01-dataflow模型引擎的语义优势}](#prop-k-04-01-dataflow模型引擎的语义优势)
 ```
 
 **File**: `Knowledge/04-technology-selection/paradigm-selection-guide.md`
@@ -48315,31 +48315,31 @@ $$
 **File**: `Knowledge/04-technology-selection/engine-selection-guide.md`
 
 ```markdown
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-K-04-01. 延迟与吞吐的权衡上界 {#lemma-k-04-01-延迟与吞吐的权衡上界}](#lemma-k-04-01-延迟与吞吐的权衡上界-lemma-k-04-01-延迟与吞吐的权衡上界)
-    - [Lemma-K-04-02. 状态复杂度与容错开销的正相关 {#lemma-k-04-02-状态复杂度与容错开销的正相关}](#lemma-k-04-02-状态复杂度与容错开销的正相关-lemma-k-04-02-状态复杂度与容错开销的正相关)
-    - [Prop-K-04-01. Dataflow模型引擎的语义优势 {#prop-k-04-01-dataflow模型引擎的语义优势}](#prop-k-04-01-dataflow模型引擎的语义优势-prop-k-04-01-dataflow模型引擎的语义优势)
-    - [Prop-K-04-02. 微批处理的延迟下界 {#prop-k-04-02-微批处理的延迟下界}](#prop-k-04-02-微批处理的延迟下界-prop-k-04-02-微批处理的延迟下界)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-K-04-01. 延迟与吞吐的权衡上界 {#lemma-k-04-01-延迟与吞吐的权衡上界}](#lemma-k-04-01-延迟与吞吐的权衡上界)
+    - [Lemma-K-04-02. 状态复杂度与容错开销的正相关 {#lemma-k-04-02-状态复杂度与容错开销的正相关}](#lemma-k-04-02-状态复杂度与容错开销的正相关)
+    - [Prop-K-04-01. Dataflow模型引擎的语义优势 {#prop-k-04-01-dataflow模型引擎的语义优势}](#prop-k-04-01-dataflow模型引擎的语义优势)
+    - [Prop-K-04-02. 微批处理的延迟下界 {#prop-k-04-02-微批处理的延迟下界}](#prop-k-04-02-微批处理的延迟下界)
 ```
 
 **File**: `Knowledge/04-technology-selection/engine-selection-guide.md`
 
 ```markdown
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-K-04-01. 延迟与吞吐的权衡上界 {#lemma-k-04-01-延迟与吞吐的权衡上界}](#lemma-k-04-01-延迟与吞吐的权衡上界-lemma-k-04-01-延迟与吞吐的权衡上界)
-    - [Lemma-K-04-02. 状态复杂度与容错开销的正相关 {#lemma-k-04-02-状态复杂度与容错开销的正相关}](#lemma-k-04-02-状态复杂度与容错开销的正相关-lemma-k-04-02-状态复杂度与容错开销的正相关)
-    - [Prop-K-04-01. Dataflow模型引擎的语义优势 {#prop-k-04-01-dataflow模型引擎的语义优势}](#prop-k-04-01-dataflow模型引擎的语义优势-prop-k-04-01-dataflow模型引擎的语义优势)
-    - [Prop-K-04-02. 微批处理的延迟下界 {#prop-k-04-02-微批处理的延迟下界}](#prop-k-04-02-微批处理的延迟下界-prop-k-04-02-微批处理的延迟下界)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-K-04-01. 延迟与吞吐的权衡上界 {#lemma-k-04-01-延迟与吞吐的权衡上界}](#lemma-k-04-01-延迟与吞吐的权衡上界)
+    - [Lemma-K-04-02. 状态复杂度与容错开销的正相关 {#lemma-k-04-02-状态复杂度与容错开销的正相关}](#lemma-k-04-02-状态复杂度与容错开销的正相关)
+    - [Prop-K-04-01. Dataflow模型引擎的语义优势 {#prop-k-04-01-dataflow模型引擎的语义优势}](#prop-k-04-01-dataflow模型引擎的语义优势)
+    - [Prop-K-04-02. 微批处理的延迟下界 {#prop-k-04-02-微批处理的延迟下界}](#prop-k-04-02-微批处理的延迟下界)
 ```
 
 **File**: `Knowledge/04-technology-selection/engine-selection-guide.md`
 
 ```markdown
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-K-04-01. 延迟与吞吐的权衡上界 {#lemma-k-04-01-延迟与吞吐的权衡上界}](#lemma-k-04-01-延迟与吞吐的权衡上界-lemma-k-04-01-延迟与吞吐的权衡上界)
-    - [Lemma-K-04-02. 状态复杂度与容错开销的正相关 {#lemma-k-04-02-状态复杂度与容错开销的正相关}](#lemma-k-04-02-状态复杂度与容错开销的正相关-lemma-k-04-02-状态复杂度与容错开销的正相关)
-    - [Prop-K-04-01. Dataflow模型引擎的语义优势 {#prop-k-04-01-dataflow模型引擎的语义优势}](#prop-k-04-01-dataflow模型引擎的语义优势-prop-k-04-01-dataflow模型引擎的语义优势)
-    - [Prop-K-04-02. 微批处理的延迟下界 {#prop-k-04-02-微批处理的延迟下界}](#prop-k-04-02-微批处理的延迟下界-prop-k-04-02-微批处理的延迟下界)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-K-04-01. 延迟与吞吐的权衡上界 {#lemma-k-04-01-延迟与吞吐的权衡上界}](#lemma-k-04-01-延迟与吞吐的权衡上界)
+    - [Lemma-K-04-02. 状态复杂度与容错开销的正相关 {#lemma-k-04-02-状态复杂度与容错开销的正相关}](#lemma-k-04-02-状态复杂度与容错开销的正相关)
+    - [Prop-K-04-01. Dataflow模型引擎的语义优势 {#prop-k-04-01-dataflow模型引擎的语义优势}](#prop-k-04-01-dataflow模型引擎的语义优势)
+    - [Prop-K-04-02. 微批处理的延迟下界 {#prop-k-04-02-微批处理的延迟下界}](#prop-k-04-02-微批处理的延迟下界)
 ```
 
 **File**: `Knowledge/04-technology-selection/paradigm-selection-guide.md`
@@ -50357,31 +50357,31 @@ graph TB
 **File**: `Struct/01-foundation/01.02-process-calculus-primer.md`
 
 ```markdown
-    - [Def-S-02-04. 二进制会话类型 (Binary Session Types) {#def-s-02-04-二进制会话类型-binary-session-types}](#def-s-02-04-二进制会话类型-binary-session-types-def-s-02-04-二进制会话类型-binary-session-types)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-S-02-01. 静态通道模型的拓扑不变性 {#lemma-s-02-01-静态通道模型的拓扑不变性}](#lemma-s-02-01-静态通道模型的拓扑不变性-lemma-s-02-01-静态通道模型的拓扑不变性)
-    - [Lemma-S-02-02. 动态通道演算的图灵完备性 {#lemma-s-02-02-动态通道演算的图灵完备性}](#lemma-s-02-02-动态通道演算的图灵完备性-lemma-s-02-02-动态通道演算的图灵完备性)
-    - [Prop-S-02-01. 对偶性蕴含通信兼容 {#prop-s-02-01-对偶性蕴含通信兼容}](#prop-s-02-01-对偶性蕴含通信兼容-prop-s-02-01-对偶性蕴含通信兼容)
+    - [Def-S-02-04. 二进制会话类型 (Binary Session Types) {#def-s-02-04-二进制会话类型-binary-session-types}](#def-s-02-04-二进制会话类型-binary-session-types)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-S-02-01. 静态通道模型的拓扑不变性 {#lemma-s-02-01-静态通道模型的拓扑不变性}](#lemma-s-02-01-静态通道模型的拓扑不变性)
+    - [Lemma-S-02-02. 动态通道演算的图灵完备性 {#lemma-s-02-02-动态通道演算的图灵完备性}](#lemma-s-02-02-动态通道演算的图灵完备性)
+    - [Prop-S-02-01. 对偶性蕴含通信兼容 {#prop-s-02-01-对偶性蕴含通信兼容}](#prop-s-02-01-对偶性蕴含通信兼容)
 ```
 
 **File**: `Struct/01-foundation/01.02-process-calculus-primer.md`
 
 ```markdown
-    - [Def-S-02-04. 二进制会话类型 (Binary Session Types) {#def-s-02-04-二进制会话类型-binary-session-types}](#def-s-02-04-二进制会话类型-binary-session-types-def-s-02-04-二进制会话类型-binary-session-types)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-S-02-01. 静态通道模型的拓扑不变性 {#lemma-s-02-01-静态通道模型的拓扑不变性}](#lemma-s-02-01-静态通道模型的拓扑不变性-lemma-s-02-01-静态通道模型的拓扑不变性)
-    - [Lemma-S-02-02. 动态通道演算的图灵完备性 {#lemma-s-02-02-动态通道演算的图灵完备性}](#lemma-s-02-02-动态通道演算的图灵完备性-lemma-s-02-02-动态通道演算的图灵完备性)
-    - [Prop-S-02-01. 对偶性蕴含通信兼容 {#prop-s-02-01-对偶性蕴含通信兼容}](#prop-s-02-01-对偶性蕴含通信兼容-prop-s-02-01-对偶性蕴含通信兼容)
+    - [Def-S-02-04. 二进制会话类型 (Binary Session Types) {#def-s-02-04-二进制会话类型-binary-session-types}](#def-s-02-04-二进制会话类型-binary-session-types)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-S-02-01. 静态通道模型的拓扑不变性 {#lemma-s-02-01-静态通道模型的拓扑不变性}](#lemma-s-02-01-静态通道模型的拓扑不变性)
+    - [Lemma-S-02-02. 动态通道演算的图灵完备性 {#lemma-s-02-02-动态通道演算的图灵完备性}](#lemma-s-02-02-动态通道演算的图灵完备性)
+    - [Prop-S-02-01. 对偶性蕴含通信兼容 {#prop-s-02-01-对偶性蕴含通信兼容}](#prop-s-02-01-对偶性蕴含通信兼容)
 ```
 
 **File**: `Struct/01-foundation/01.02-process-calculus-primer.md`
 
 ```markdown
-    - [Def-S-02-04. 二进制会话类型 (Binary Session Types) {#def-s-02-04-二进制会话类型-binary-session-types}](#def-s-02-04-二进制会话类型-binary-session-types-def-s-02-04-二进制会话类型-binary-session-types)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-S-02-01. 静态通道模型的拓扑不变性 {#lemma-s-02-01-静态通道模型的拓扑不变性}](#lemma-s-02-01-静态通道模型的拓扑不变性-lemma-s-02-01-静态通道模型的拓扑不变性)
-    - [Lemma-S-02-02. 动态通道演算的图灵完备性 {#lemma-s-02-02-动态通道演算的图灵完备性}](#lemma-s-02-02-动态通道演算的图灵完备性-lemma-s-02-02-动态通道演算的图灵完备性)
-    - [Prop-S-02-01. 对偶性蕴含通信兼容 {#prop-s-02-01-对偶性蕴含通信兼容}](#prop-s-02-01-对偶性蕴含通信兼容-prop-s-02-01-对偶性蕴含通信兼容)
+    - [Def-S-02-04. 二进制会话类型 (Binary Session Types) {#def-s-02-04-二进制会话类型-binary-session-types}](#def-s-02-04-二进制会话类型-binary-session-types)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-S-02-01. 静态通道模型的拓扑不变性 {#lemma-s-02-01-静态通道模型的拓扑不变性}](#lemma-s-02-01-静态通道模型的拓扑不变性)
+    - [Lemma-S-02-02. 动态通道演算的图灵完备性 {#lemma-s-02-02-动态通道演算的图灵完备性}](#lemma-s-02-02-动态通道演算的图灵完备性)
+    - [Prop-S-02-01. 对偶性蕴含通信兼容 {#prop-s-02-01-对偶性蕴含通信兼容}](#prop-s-02-01-对偶性蕴含通信兼容)
 ```
 
 **File**: `Struct/03-relationships/03.03-expressiveness-hierarchy.md`
@@ -50469,31 +50469,31 @@ graph TB
 **File**: `Struct/01-foundation/01.02-process-calculus-primer.md`
 
 ```markdown
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-S-02-01. 静态通道模型的拓扑不变性 {#lemma-s-02-01-静态通道模型的拓扑不变性}](#lemma-s-02-01-静态通道模型的拓扑不变性-lemma-s-02-01-静态通道模型的拓扑不变性)
-    - [Lemma-S-02-02. 动态通道演算的图灵完备性 {#lemma-s-02-02-动态通道演算的图灵完备性}](#lemma-s-02-02-动态通道演算的图灵完备性-lemma-s-02-02-动态通道演算的图灵完备性)
-    - [Prop-S-02-01. 对偶性蕴含通信兼容 {#prop-s-02-01-对偶性蕴含通信兼容}](#prop-s-02-01-对偶性蕴含通信兼容-prop-s-02-01-对偶性蕴含通信兼容)
-    - [Prop-S-02-02. 有限控制静态演算的可判定性 {#prop-s-02-02-有限控制静态演算的可判定性}](#prop-s-02-02-有限控制静态演算的可判定性-prop-s-02-02-有限控制静态演算的可判定性)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-S-02-01. 静态通道模型的拓扑不变性 {#lemma-s-02-01-静态通道模型的拓扑不变性}](#lemma-s-02-01-静态通道模型的拓扑不变性)
+    - [Lemma-S-02-02. 动态通道演算的图灵完备性 {#lemma-s-02-02-动态通道演算的图灵完备性}](#lemma-s-02-02-动态通道演算的图灵完备性)
+    - [Prop-S-02-01. 对偶性蕴含通信兼容 {#prop-s-02-01-对偶性蕴含通信兼容}](#prop-s-02-01-对偶性蕴含通信兼容)
+    - [Prop-S-02-02. 有限控制静态演算的可判定性 {#prop-s-02-02-有限控制静态演算的可判定性}](#prop-s-02-02-有限控制静态演算的可判定性)
 ```
 
 **File**: `Struct/01-foundation/01.02-process-calculus-primer.md`
 
 ```markdown
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-S-02-01. 静态通道模型的拓扑不变性 {#lemma-s-02-01-静态通道模型的拓扑不变性}](#lemma-s-02-01-静态通道模型的拓扑不变性-lemma-s-02-01-静态通道模型的拓扑不变性)
-    - [Lemma-S-02-02. 动态通道演算的图灵完备性 {#lemma-s-02-02-动态通道演算的图灵完备性}](#lemma-s-02-02-动态通道演算的图灵完备性-lemma-s-02-02-动态通道演算的图灵完备性)
-    - [Prop-S-02-01. 对偶性蕴含通信兼容 {#prop-s-02-01-对偶性蕴含通信兼容}](#prop-s-02-01-对偶性蕴含通信兼容-prop-s-02-01-对偶性蕴含通信兼容)
-    - [Prop-S-02-02. 有限控制静态演算的可判定性 {#prop-s-02-02-有限控制静态演算的可判定性}](#prop-s-02-02-有限控制静态演算的可判定性-prop-s-02-02-有限控制静态演算的可判定性)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-S-02-01. 静态通道模型的拓扑不变性 {#lemma-s-02-01-静态通道模型的拓扑不变性}](#lemma-s-02-01-静态通道模型的拓扑不变性)
+    - [Lemma-S-02-02. 动态通道演算的图灵完备性 {#lemma-s-02-02-动态通道演算的图灵完备性}](#lemma-s-02-02-动态通道演算的图灵完备性)
+    - [Prop-S-02-01. 对偶性蕴含通信兼容 {#prop-s-02-01-对偶性蕴含通信兼容}](#prop-s-02-01-对偶性蕴含通信兼容)
+    - [Prop-S-02-02. 有限控制静态演算的可判定性 {#prop-s-02-02-有限控制静态演算的可判定性}](#prop-s-02-02-有限控制静态演算的可判定性)
 ```
 
 **File**: `Struct/01-foundation/01.02-process-calculus-primer.md`
 
 ```markdown
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-S-02-01. 静态通道模型的拓扑不变性 {#lemma-s-02-01-静态通道模型的拓扑不变性}](#lemma-s-02-01-静态通道模型的拓扑不变性-lemma-s-02-01-静态通道模型的拓扑不变性)
-    - [Lemma-S-02-02. 动态通道演算的图灵完备性 {#lemma-s-02-02-动态通道演算的图灵完备性}](#lemma-s-02-02-动态通道演算的图灵完备性-lemma-s-02-02-动态通道演算的图灵完备性)
-    - [Prop-S-02-01. 对偶性蕴含通信兼容 {#prop-s-02-01-对偶性蕴含通信兼容}](#prop-s-02-01-对偶性蕴含通信兼容-prop-s-02-01-对偶性蕴含通信兼容)
-    - [Prop-S-02-02. 有限控制静态演算的可判定性 {#prop-s-02-02-有限控制静态演算的可判定性}](#prop-s-02-02-有限控制静态演算的可判定性-prop-s-02-02-有限控制静态演算的可判定性)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-S-02-01. 静态通道模型的拓扑不变性 {#lemma-s-02-01-静态通道模型的拓扑不变性}](#lemma-s-02-01-静态通道模型的拓扑不变性)
+    - [Lemma-S-02-02. 动态通道演算的图灵完备性 {#lemma-s-02-02-动态通道演算的图灵完备性}](#lemma-s-02-02-动态通道演算的图灵完备性)
+    - [Prop-S-02-01. 对偶性蕴含通信兼容 {#prop-s-02-01-对偶性蕴含通信兼容}](#prop-s-02-01-对偶性蕴含通信兼容)
+    - [Prop-S-02-02. 有限控制静态演算的可判定性 {#prop-s-02-02-有限控制静态演算的可判定性}](#prop-s-02-02-有限控制静态演算的可判定性)
 ```
 
 #### `Lemma-S-02-03`
@@ -51823,7 +51823,7 @@ Def-S-09-01 (事件时间严格定义)
 **File**: `Knowledge/05-mapping-guides/struct-to-flink-mapping.md`
 
 ```markdown
-### 映射 2: Watermark 单调性 → Flink WatermarkStrategy {#映射-2-watermark-单调性--flink-watermarkstrategy}
+### 映射 2: Watermark 单调性 → Flink WatermarkStrategy
 
 **形式化定义** ([Def-S-04-04](../../Struct/01-foundation/01.04-dataflow-model-formalization.md), [Lemma-S-04-02](../../Struct/01-foundation/01.04-dataflow-model-formalization.md)):
 
@@ -53463,7 +53463,7 @@ $$\frac{P \text{ 是持久的}}{\Box P \dashv\vdash P}$$
     - [Lemma-S-07-06 (无竞争条件 ↔ Keyed分区状态隔离)](#lemma-s-07-06-无竞争条件--keyed分区状态隔离)
     - [Lemma-S-07-07 (结合律聚合函数对重放记录顺序不敏感)](#lemma-s-07-07-结合律聚合函数对重放记录顺序不敏感)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [关系 1: 确定性流处理 `≃` Kahn 网络确定性 {#关系-1-确定性流处理--kahn-网络确定性}](#关系-1-确定性流处理--kahn-网络确定性-关系-1-确定性流处理--kahn-网络确定性)
+    - [关系 1: 确定性流处理 `≃` Kahn 网络确定性 {#关系-1-确定性流处理--kahn-网络确定性}](#关系-1-确定性流处理--kahn-网络确定性)
 ```
 
 **File**: `Struct/02-properties/02.01-determinism-in-streaming.md`
@@ -53473,7 +53473,7 @@ $$\frac{P \text{ 是持久的}}{\Box P \dashv\vdash P}$$
     - [Lemma-S-07-06 (无竞争条件 ↔ Keyed分区状态隔离)](#lemma-s-07-06-无竞争条件--keyed分区状态隔离)
     - [Lemma-S-07-07 (结合律聚合函数对重放记录顺序不敏感)](#lemma-s-07-07-结合律聚合函数对重放记录顺序不敏感)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [关系 1: 确定性流处理 `≃` Kahn 网络确定性 {#关系-1-确定性流处理--kahn-网络确定性}](#关系-1-确定性流处理--kahn-网络确定性-关系-1-确定性流处理--kahn-网络确定性)
+    - [关系 1: 确定性流处理 `≃` Kahn 网络确定性 {#关系-1-确定性流处理--kahn-网络确定性}](#关系-1-确定性流处理--kahn-网络确定性)
 ```
 
 #### `Lemma-S-08-01`
@@ -55271,21 +55271,21 @@ $$
 **File**: `Struct/03-relationships/03.03-expressiveness-hierarchy-supplement.md`
 
 ```markdown
-    - [Def-S-15-05. Separation Logic {#def-s-15-05-separation-logic}](#def-s-15-05-separation-logic-def-s-15-05-separation-logic)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-S-15-01. Session Types 类型安全保证 {#lemma-s-15-01-session-types-类型安全保证}](#lemma-s-15-01-session-types-类型安全保证-lemma-s-15-01-session-types-类型安全保证)
-    - [Lemma-S-15-02. CRDT 收敛单调性 {#lemma-s-15-02-crdt-收敛单调性}](#lemma-s-15-02-crdt-收敛单调性-lemma-s-15-02-crdt-收敛单调性)
-    - [Prop-S-15-01. 验证方法覆盖层级关系 {#prop-s-15-01-验证方法覆盖层级关系}](#prop-s-15-01-验证方法覆盖层级关系-prop-s-15-01-验证方法覆盖层级关系)
+    - [Def-S-15-05. Separation Logic {#def-s-15-05-separation-logic}](#def-s-15-05-separation-logic)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-S-15-01. Session Types 类型安全保证 {#lemma-s-15-01-session-types-类型安全保证}](#lemma-s-15-01-session-types-类型安全保证)
+    - [Lemma-S-15-02. CRDT 收敛单调性 {#lemma-s-15-02-crdt-收敛单调性}](#lemma-s-15-02-crdt-收敛单调性)
+    - [Prop-S-15-01. 验证方法覆盖层级关系 {#prop-s-15-01-验证方法覆盖层级关系}](#prop-s-15-01-验证方法覆盖层级关系)
 ```
 
 **File**: `Struct/03-relationships/03.03-expressiveness-hierarchy-supplement.md`
 
 ```markdown
-    - [Def-S-15-05. Separation Logic {#def-s-15-05-separation-logic}](#def-s-15-05-separation-logic-def-s-15-05-separation-logic)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-S-15-01. Session Types 类型安全保证 {#lemma-s-15-01-session-types-类型安全保证}](#lemma-s-15-01-session-types-类型安全保证-lemma-s-15-01-session-types-类型安全保证)
-    - [Lemma-S-15-02. CRDT 收敛单调性 {#lemma-s-15-02-crdt-收敛单调性}](#lemma-s-15-02-crdt-收敛单调性-lemma-s-15-02-crdt-收敛单调性)
-    - [Prop-S-15-01. 验证方法覆盖层级关系 {#prop-s-15-01-验证方法覆盖层级关系}](#prop-s-15-01-验证方法覆盖层级关系-prop-s-15-01-验证方法覆盖层级关系)
+    - [Def-S-15-05. Separation Logic {#def-s-15-05-separation-logic}](#def-s-15-05-separation-logic)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-S-15-01. Session Types 类型安全保证 {#lemma-s-15-01-session-types-类型安全保证}](#lemma-s-15-01-session-types-类型安全保证)
+    - [Lemma-S-15-02. CRDT 收敛单调性 {#lemma-s-15-02-crdt-收敛单调性}](#lemma-s-15-02-crdt-收敛单调性)
+    - [Prop-S-15-01. 验证方法覆盖层级关系 {#prop-s-15-01-验证方法覆盖层级关系}](#prop-s-15-01-验证方法覆盖层级关系)
 ```
 
 **File**: `Struct/03-relationships/03.04-bisimulation-equivalences.md`
@@ -55393,31 +55393,31 @@ $$
 **File**: `Struct/03-relationships/03.03-expressiveness-hierarchy-supplement.md`
 
 ```markdown
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-S-15-01. Session Types 类型安全保证 {#lemma-s-15-01-session-types-类型安全保证}](#lemma-s-15-01-session-types-类型安全保证-lemma-s-15-01-session-types-类型安全保证)
-    - [Lemma-S-15-02. CRDT 收敛单调性 {#lemma-s-15-02-crdt-收敛单调性}](#lemma-s-15-02-crdt-收敛单调性-lemma-s-15-02-crdt-收敛单调性)
-    - [Prop-S-15-01. 验证方法覆盖层级关系 {#prop-s-15-01-验证方法覆盖层级关系}](#prop-s-15-01-验证方法覆盖层级关系-prop-s-15-01-验证方法覆盖层级关系)
-  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations-3-关系建立-relations)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-S-15-01. Session Types 类型安全保证 {#lemma-s-15-01-session-types-类型安全保证}](#lemma-s-15-01-session-types-类型安全保证)
+    - [Lemma-S-15-02. CRDT 收敛单调性 {#lemma-s-15-02-crdt-收敛单调性}](#lemma-s-15-02-crdt-收敛单调性)
+    - [Prop-S-15-01. 验证方法覆盖层级关系 {#prop-s-15-01-验证方法覆盖层级关系}](#prop-s-15-01-验证方法覆盖层级关系)
+  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations)
 ```
 
 **File**: `Struct/03-relationships/03.03-expressiveness-hierarchy-supplement.md`
 
 ```markdown
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-S-15-01. Session Types 类型安全保证 {#lemma-s-15-01-session-types-类型安全保证}](#lemma-s-15-01-session-types-类型安全保证-lemma-s-15-01-session-types-类型安全保证)
-    - [Lemma-S-15-02. CRDT 收敛单调性 {#lemma-s-15-02-crdt-收敛单调性}](#lemma-s-15-02-crdt-收敛单调性-lemma-s-15-02-crdt-收敛单调性)
-    - [Prop-S-15-01. 验证方法覆盖层级关系 {#prop-s-15-01-验证方法覆盖层级关系}](#prop-s-15-01-验证方法覆盖层级关系-prop-s-15-01-验证方法覆盖层级关系)
-  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations-3-关系建立-relations)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-S-15-01. Session Types 类型安全保证 {#lemma-s-15-01-session-types-类型安全保证}](#lemma-s-15-01-session-types-类型安全保证)
+    - [Lemma-S-15-02. CRDT 收敛单调性 {#lemma-s-15-02-crdt-收敛单调性}](#lemma-s-15-02-crdt-收敛单调性)
+    - [Prop-S-15-01. 验证方法覆盖层级关系 {#prop-s-15-01-验证方法覆盖层级关系}](#prop-s-15-01-验证方法覆盖层级关系)
+  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations)
 ```
 
 **File**: `Struct/03-relationships/03.03-expressiveness-hierarchy-supplement.md`
 
 ```markdown
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Lemma-S-15-01. Session Types 类型安全保证 {#lemma-s-15-01-session-types-类型安全保证}](#lemma-s-15-01-session-types-类型安全保证-lemma-s-15-01-session-types-类型安全保证)
-    - [Lemma-S-15-02. CRDT 收敛单调性 {#lemma-s-15-02-crdt-收敛单调性}](#lemma-s-15-02-crdt-收敛单调性-lemma-s-15-02-crdt-收敛单调性)
-    - [Prop-S-15-01. 验证方法覆盖层级关系 {#prop-s-15-01-验证方法覆盖层级关系}](#prop-s-15-01-验证方法覆盖层级关系-prop-s-15-01-验证方法覆盖层级关系)
-  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations-3-关系建立-relations)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Lemma-S-15-01. Session Types 类型安全保证 {#lemma-s-15-01-session-types-类型安全保证}](#lemma-s-15-01-session-types-类型安全保证)
+    - [Lemma-S-15-02. CRDT 收敛单调性 {#lemma-s-15-02-crdt-收敛单调性}](#lemma-s-15-02-crdt-收敛单调性)
+    - [Prop-S-15-01. 验证方法覆盖层级关系 {#prop-s-15-01-验证方法覆盖层级关系}](#prop-s-15-01-验证方法覆盖层级关系)
+  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations)
 ```
 
 **File**: `Struct/03-relationships/03.04-bisimulation-equivalences.md`
@@ -57319,9 +57319,9 @@ Flink 实现中：
 ```markdown
     - [Def-S-20-05 (Watermark 完全格)](#def-s-20-05-watermark-完全格)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Lemma-S-20-01 (⊔ 结合律) {#lemma-s-20-01--结合律}](#lemma-s-20-01--结合律-lemma-s-20-01--结合律)
-    - [Lemma-S-20-02 (⊔ 交换律) {#lemma-s-20-02--交换律}](#lemma-s-20-02--交换律-lemma-s-20-02--交换律)
-    - [Lemma-S-20-03 (⊔ 幂等律) {#lemma-s-20-03--幂等律}](#lemma-s-20-03--幂等律-lemma-s-20-03--幂等律)
+    - [Lemma-S-20-01 (⊔ 结合律) {#lemma-s-20-01--结合律}](#lemma-s-20-01--结合律)
+    - [Lemma-S-20-02 (⊔ 交换律) {#lemma-s-20-02--交换律}](#lemma-s-20-02--交换律)
+    - [Lemma-S-20-03 (⊔ 幂等律) {#lemma-s-20-03--幂等律}](#lemma-s-20-03--幂等律)
 ```
 
 **File**: `Struct/04-proofs/04.04-watermark-algebra-formal-proof.md`
@@ -57329,9 +57329,9 @@ Flink 实现中：
 ```markdown
     - [Def-S-20-05 (Watermark 完全格)](#def-s-20-05-watermark-完全格)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Lemma-S-20-01 (⊔ 结合律) {#lemma-s-20-01--结合律}](#lemma-s-20-01--结合律-lemma-s-20-01--结合律)
-    - [Lemma-S-20-02 (⊔ 交换律) {#lemma-s-20-02--交换律}](#lemma-s-20-02--交换律-lemma-s-20-02--交换律)
-    - [Lemma-S-20-03 (⊔ 幂等律) {#lemma-s-20-03--幂等律}](#lemma-s-20-03--幂等律-lemma-s-20-03--幂等律)
+    - [Lemma-S-20-01 (⊔ 结合律) {#lemma-s-20-01--结合律}](#lemma-s-20-01--结合律)
+    - [Lemma-S-20-02 (⊔ 交换律) {#lemma-s-20-02--交换律}](#lemma-s-20-02--交换律)
+    - [Lemma-S-20-03 (⊔ 幂等律) {#lemma-s-20-03--幂等律}](#lemma-s-20-03--幂等律)
 ```
 
 **File**: `Struct/04-proofs/04.04-watermark-algebra-formal-proof.md`
@@ -57339,9 +57339,9 @@ Flink 实现中：
 ```markdown
     - [Def-S-20-05 (Watermark 完全格)](#def-s-20-05-watermark-完全格)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Lemma-S-20-01 (⊔ 结合律) {#lemma-s-20-01--结合律}](#lemma-s-20-01--结合律-lemma-s-20-01--结合律)
-    - [Lemma-S-20-02 (⊔ 交换律) {#lemma-s-20-02--交换律}](#lemma-s-20-02--交换律-lemma-s-20-02--交换律)
-    - [Lemma-S-20-03 (⊔ 幂等律) {#lemma-s-20-03--幂等律}](#lemma-s-20-03--幂等律-lemma-s-20-03--幂等律)
+    - [Lemma-S-20-01 (⊔ 结合律) {#lemma-s-20-01--结合律}](#lemma-s-20-01--结合律)
+    - [Lemma-S-20-02 (⊔ 交换律) {#lemma-s-20-02--交换律}](#lemma-s-20-02--交换律)
+    - [Lemma-S-20-03 (⊔ 幂等律) {#lemma-s-20-03--幂等律}](#lemma-s-20-03--幂等律)
 ```
 
 **File**: `Struct/04-proofs/04.04-watermark-algebra-formal-proof.md`
@@ -57349,9 +57349,9 @@ Flink 实现中：
 ```markdown
     - [Def-S-20-05 (Watermark 完全格)](#def-s-20-05-watermark-完全格)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Lemma-S-20-01 (⊔ 结合律) {#lemma-s-20-01--结合律}](#lemma-s-20-01--结合律-lemma-s-20-01--结合律)
-    - [Lemma-S-20-02 (⊔ 交换律) {#lemma-s-20-02--交换律}](#lemma-s-20-02--交换律-lemma-s-20-02--交换律)
-    - [Lemma-S-20-03 (⊔ 幂等律) {#lemma-s-20-03--幂等律}](#lemma-s-20-03--幂等律-lemma-s-20-03--幂等律)
+    - [Lemma-S-20-01 (⊔ 结合律) {#lemma-s-20-01--结合律}](#lemma-s-20-01--结合律)
+    - [Lemma-S-20-02 (⊔ 交换律) {#lemma-s-20-02--交换律}](#lemma-s-20-02--交换律)
+    - [Lemma-S-20-03 (⊔ 幂等律) {#lemma-s-20-03--幂等律}](#lemma-s-20-03--幂等律)
 ```
 
 **File**: `Struct/06-frontier/06.02-choreographic-streaming-programming.md`
@@ -57400,30 +57400,30 @@ Flink 实现中：
 
 ```markdown
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Lemma-S-20-01 (⊔ 结合律) {#lemma-s-20-01--结合律}](#lemma-s-20-01--结合律-lemma-s-20-01--结合律)
-    - [Lemma-S-20-02 (⊔ 交换律) {#lemma-s-20-02--交换律}](#lemma-s-20-02--交换律-lemma-s-20-02--交换律)
-    - [Lemma-S-20-03 (⊔ 幂等律) {#lemma-s-20-03--幂等律}](#lemma-s-20-03--幂等律-lemma-s-20-03--幂等律)
-    - [Lemma-S-20-04 (⊔ 吸收律与单位元) {#lemma-s-20-04--吸收律与单位元}](#lemma-s-20-04--吸收律与单位元-lemma-s-20-04--吸收律与单位元)
+    - [Lemma-S-20-01 (⊔ 结合律) {#lemma-s-20-01--结合律}](#lemma-s-20-01--结合律)
+    - [Lemma-S-20-02 (⊔ 交换律) {#lemma-s-20-02--交换律}](#lemma-s-20-02--交换律)
+    - [Lemma-S-20-03 (⊔ 幂等律) {#lemma-s-20-03--幂等律}](#lemma-s-20-03--幂等律)
+    - [Lemma-S-20-04 (⊔ 吸收律与单位元) {#lemma-s-20-04--吸收律与单位元}](#lemma-s-20-04--吸收律与单位元)
 ```
 
 **File**: `Struct/04-proofs/04.04-watermark-algebra-formal-proof.md`
 
 ```markdown
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Lemma-S-20-01 (⊔ 结合律) {#lemma-s-20-01--结合律}](#lemma-s-20-01--结合律-lemma-s-20-01--结合律)
-    - [Lemma-S-20-02 (⊔ 交换律) {#lemma-s-20-02--交换律}](#lemma-s-20-02--交换律-lemma-s-20-02--交换律)
-    - [Lemma-S-20-03 (⊔ 幂等律) {#lemma-s-20-03--幂等律}](#lemma-s-20-03--幂等律-lemma-s-20-03--幂等律)
-    - [Lemma-S-20-04 (⊔ 吸收律与单位元) {#lemma-s-20-04--吸收律与单位元}](#lemma-s-20-04--吸收律与单位元-lemma-s-20-04--吸收律与单位元)
+    - [Lemma-S-20-01 (⊔ 结合律) {#lemma-s-20-01--结合律}](#lemma-s-20-01--结合律)
+    - [Lemma-S-20-02 (⊔ 交换律) {#lemma-s-20-02--交换律}](#lemma-s-20-02--交换律)
+    - [Lemma-S-20-03 (⊔ 幂等律) {#lemma-s-20-03--幂等律}](#lemma-s-20-03--幂等律)
+    - [Lemma-S-20-04 (⊔ 吸收律与单位元) {#lemma-s-20-04--吸收律与单位元}](#lemma-s-20-04--吸收律与单位元)
 ```
 
 **File**: `Struct/04-proofs/04.04-watermark-algebra-formal-proof.md`
 
 ```markdown
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Lemma-S-20-01 (⊔ 结合律) {#lemma-s-20-01--结合律}](#lemma-s-20-01--结合律-lemma-s-20-01--结合律)
-    - [Lemma-S-20-02 (⊔ 交换律) {#lemma-s-20-02--交换律}](#lemma-s-20-02--交换律-lemma-s-20-02--交换律)
-    - [Lemma-S-20-03 (⊔ 幂等律) {#lemma-s-20-03--幂等律}](#lemma-s-20-03--幂等律-lemma-s-20-03--幂等律)
-    - [Lemma-S-20-04 (⊔ 吸收律与单位元) {#lemma-s-20-04--吸收律与单位元}](#lemma-s-20-04--吸收律与单位元-lemma-s-20-04--吸收律与单位元)
+    - [Lemma-S-20-01 (⊔ 结合律) {#lemma-s-20-01--结合律}](#lemma-s-20-01--结合律)
+    - [Lemma-S-20-02 (⊔ 交换律) {#lemma-s-20-02--交换律}](#lemma-s-20-02--交换律)
+    - [Lemma-S-20-03 (⊔ 幂等律) {#lemma-s-20-03--幂等律}](#lemma-s-20-03--幂等律)
+    - [Lemma-S-20-04 (⊔ 吸收律与单位元) {#lemma-s-20-04--吸收律与单位元}](#lemma-s-20-04--吸收律与单位元)
 ```
 
 **File**: `Struct/06-frontier/06.02-choreographic-streaming-programming.md`
@@ -57471,30 +57471,30 @@ Flink 实现中：
 **File**: `Struct/04-proofs/04.04-watermark-algebra-formal-proof.md`
 
 ```markdown
-    - [Lemma-S-20-01 (⊔ 结合律) {#lemma-s-20-01--结合律}](#lemma-s-20-01--结合律-lemma-s-20-01--结合律)
-    - [Lemma-S-20-02 (⊔ 交换律) {#lemma-s-20-02--交换律}](#lemma-s-20-02--交换律-lemma-s-20-02--交换律)
-    - [Lemma-S-20-03 (⊔ 幂等律) {#lemma-s-20-03--幂等律}](#lemma-s-20-03--幂等律-lemma-s-20-03--幂等律)
-    - [Lemma-S-20-04 (⊔ 吸收律与单位元) {#lemma-s-20-04--吸收律与单位元}](#lemma-s-20-04--吸收律与单位元-lemma-s-20-04--吸收律与单位元)
+    - [Lemma-S-20-01 (⊔ 结合律) {#lemma-s-20-01--结合律}](#lemma-s-20-01--结合律)
+    - [Lemma-S-20-02 (⊔ 交换律) {#lemma-s-20-02--交换律}](#lemma-s-20-02--交换律)
+    - [Lemma-S-20-03 (⊔ 幂等律) {#lemma-s-20-03--幂等律}](#lemma-s-20-03--幂等律)
+    - [Lemma-S-20-04 (⊔ 吸收律与单位元) {#lemma-s-20-04--吸收律与单位元}](#lemma-s-20-04--吸收律与单位元)
     - [Prop-S-20-01 (Watermark 单调性与格结构的兼容性)](#prop-s-20-01-watermark-单调性与格结构的兼容性)
 ```
 
 **File**: `Struct/04-proofs/04.04-watermark-algebra-formal-proof.md`
 
 ```markdown
-    - [Lemma-S-20-01 (⊔ 结合律) {#lemma-s-20-01--结合律}](#lemma-s-20-01--结合律-lemma-s-20-01--结合律)
-    - [Lemma-S-20-02 (⊔ 交换律) {#lemma-s-20-02--交换律}](#lemma-s-20-02--交换律-lemma-s-20-02--交换律)
-    - [Lemma-S-20-03 (⊔ 幂等律) {#lemma-s-20-03--幂等律}](#lemma-s-20-03--幂等律-lemma-s-20-03--幂等律)
-    - [Lemma-S-20-04 (⊔ 吸收律与单位元) {#lemma-s-20-04--吸收律与单位元}](#lemma-s-20-04--吸收律与单位元-lemma-s-20-04--吸收律与单位元)
+    - [Lemma-S-20-01 (⊔ 结合律) {#lemma-s-20-01--结合律}](#lemma-s-20-01--结合律)
+    - [Lemma-S-20-02 (⊔ 交换律) {#lemma-s-20-02--交换律}](#lemma-s-20-02--交换律)
+    - [Lemma-S-20-03 (⊔ 幂等律) {#lemma-s-20-03--幂等律}](#lemma-s-20-03--幂等律)
+    - [Lemma-S-20-04 (⊔ 吸收律与单位元) {#lemma-s-20-04--吸收律与单位元}](#lemma-s-20-04--吸收律与单位元)
     - [Prop-S-20-01 (Watermark 单调性与格结构的兼容性)](#prop-s-20-01-watermark-单调性与格结构的兼容性)
 ```
 
 **File**: `Struct/04-proofs/04.04-watermark-algebra-formal-proof.md`
 
 ```markdown
-    - [Lemma-S-20-01 (⊔ 结合律) {#lemma-s-20-01--结合律}](#lemma-s-20-01--结合律-lemma-s-20-01--结合律)
-    - [Lemma-S-20-02 (⊔ 交换律) {#lemma-s-20-02--交换律}](#lemma-s-20-02--交换律-lemma-s-20-02--交换律)
-    - [Lemma-S-20-03 (⊔ 幂等律) {#lemma-s-20-03--幂等律}](#lemma-s-20-03--幂等律-lemma-s-20-03--幂等律)
-    - [Lemma-S-20-04 (⊔ 吸收律与单位元) {#lemma-s-20-04--吸收律与单位元}](#lemma-s-20-04--吸收律与单位元-lemma-s-20-04--吸收律与单位元)
+    - [Lemma-S-20-01 (⊔ 结合律) {#lemma-s-20-01--结合律}](#lemma-s-20-01--结合律)
+    - [Lemma-S-20-02 (⊔ 交换律) {#lemma-s-20-02--交换律}](#lemma-s-20-02--交换律)
+    - [Lemma-S-20-03 (⊔ 幂等律) {#lemma-s-20-03--幂等律}](#lemma-s-20-03--幂等律)
+    - [Lemma-S-20-04 (⊔ 吸收律与单位元) {#lemma-s-20-04--吸收律与单位元}](#lemma-s-20-04--吸收律与单位元)
     - [Prop-S-20-01 (Watermark 单调性与格结构的兼容性)](#prop-s-20-01-watermark-单调性与格结构的兼容性)
 ```
 
@@ -57543,9 +57543,9 @@ Flink 实现中：
 **File**: `Struct/04-proofs/04.04-watermark-algebra-formal-proof.md`
 
 ```markdown
-    - [Lemma-S-20-02 (⊔ 交换律) {#lemma-s-20-02--交换律}](#lemma-s-20-02--交换律-lemma-s-20-02--交换律)
-    - [Lemma-S-20-03 (⊔ 幂等律) {#lemma-s-20-03--幂等律}](#lemma-s-20-03--幂等律-lemma-s-20-03--幂等律)
-    - [Lemma-S-20-04 (⊔ 吸收律与单位元) {#lemma-s-20-04--吸收律与单位元}](#lemma-s-20-04--吸收律与单位元-lemma-s-20-04--吸收律与单位元)
+    - [Lemma-S-20-02 (⊔ 交换律) {#lemma-s-20-02--交换律}](#lemma-s-20-02--交换律)
+    - [Lemma-S-20-03 (⊔ 幂等律) {#lemma-s-20-03--幂等律}](#lemma-s-20-03--幂等律)
+    - [Lemma-S-20-04 (⊔ 吸收律与单位元) {#lemma-s-20-04--吸收律与单位元}](#lemma-s-20-04--吸收律与单位元)
     - [Prop-S-20-01 (Watermark 单调性与格结构的兼容性)](#prop-s-20-01-watermark-单调性与格结构的兼容性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
 ```
@@ -57553,9 +57553,9 @@ Flink 实现中：
 **File**: `Struct/04-proofs/04.04-watermark-algebra-formal-proof.md`
 
 ```markdown
-    - [Lemma-S-20-02 (⊔ 交换律) {#lemma-s-20-02--交换律}](#lemma-s-20-02--交换律-lemma-s-20-02--交换律)
-    - [Lemma-S-20-03 (⊔ 幂等律) {#lemma-s-20-03--幂等律}](#lemma-s-20-03--幂等律-lemma-s-20-03--幂等律)
-    - [Lemma-S-20-04 (⊔ 吸收律与单位元) {#lemma-s-20-04--吸收律与单位元}](#lemma-s-20-04--吸收律与单位元-lemma-s-20-04--吸收律与单位元)
+    - [Lemma-S-20-02 (⊔ 交换律) {#lemma-s-20-02--交换律}](#lemma-s-20-02--交换律)
+    - [Lemma-S-20-03 (⊔ 幂等律) {#lemma-s-20-03--幂等律}](#lemma-s-20-03--幂等律)
+    - [Lemma-S-20-04 (⊔ 吸收律与单位元) {#lemma-s-20-04--吸收律与单位元}](#lemma-s-20-04--吸收律与单位元)
     - [Prop-S-20-01 (Watermark 单调性与格结构的兼容性)](#prop-s-20-01-watermark-单调性与格结构的兼容性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
 ```
@@ -57563,9 +57563,9 @@ Flink 实现中：
 **File**: `Struct/04-proofs/04.04-watermark-algebra-formal-proof.md`
 
 ```markdown
-    - [Lemma-S-20-02 (⊔ 交换律) {#lemma-s-20-02--交换律}](#lemma-s-20-02--交换律-lemma-s-20-02--交换律)
-    - [Lemma-S-20-03 (⊔ 幂等律) {#lemma-s-20-03--幂等律}](#lemma-s-20-03--幂等律-lemma-s-20-03--幂等律)
-    - [Lemma-S-20-04 (⊔ 吸收律与单位元) {#lemma-s-20-04--吸收律与单位元}](#lemma-s-20-04--吸收律与单位元-lemma-s-20-04--吸收律与单位元)
+    - [Lemma-S-20-02 (⊔ 交换律) {#lemma-s-20-02--交换律}](#lemma-s-20-02--交换律)
+    - [Lemma-S-20-03 (⊔ 幂等律) {#lemma-s-20-03--幂等律}](#lemma-s-20-03--幂等律)
+    - [Lemma-S-20-04 (⊔ 吸收律与单位元) {#lemma-s-20-04--吸收律与单位元}](#lemma-s-20-04--吸收律与单位元)
     - [Prop-S-20-01 (Watermark 单调性与格结构的兼容性)](#prop-s-20-01-watermark-单调性与格结构的兼容性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
 ```
@@ -57927,7 +57927,7 @@ $$
 ```markdown
     - [Def-S-23-06. MultiChor 扩展](#def-s-23-06-multichor-扩展)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价-关系-2-epp--bisimulation-互模拟等价)
+    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价)
     - [Lemma-S-23-02. 投影合成还原](#lemma-s-23-02-投影合成还原)
     - [Lemma-S-23-03. 类型保持性](#lemma-s-23-03-类型保持性)
 ```
@@ -57937,7 +57937,7 @@ $$
 ```markdown
     - [Def-S-23-06. MultiChor 扩展](#def-s-23-06-multichor-扩展)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价-关系-2-epp--bisimulation-互模拟等价)
+    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价)
     - [Lemma-S-23-02. 投影合成还原](#lemma-s-23-02-投影合成还原)
     - [Lemma-S-23-03. 类型保持性](#lemma-s-23-03-类型保持性)
 ```
@@ -57947,7 +57947,7 @@ $$
 ```markdown
     - [Def-S-23-06. MultiChor 扩展](#def-s-23-06-multichor-扩展)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价-关系-2-epp--bisimulation-互模拟等价)
+    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价)
     - [Lemma-S-23-02. 投影合成还原](#lemma-s-23-02-投影合成还原)
     - [Lemma-S-23-03. 类型保持性](#lemma-s-23-03-类型保持性)
 ```
@@ -57957,7 +57957,7 @@ $$
 ```markdown
     - [Def-S-23-06. MultiChor 扩展](#def-s-23-06-multichor-扩展)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价-关系-2-epp--bisimulation-互模拟等价)
+    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价)
     - [Lemma-S-23-02. 投影合成还原](#lemma-s-23-02-投影合成还原)
     - [Lemma-S-23-03. 类型保持性](#lemma-s-23-03-类型保持性)
 ```
@@ -57967,7 +57967,7 @@ $$
 ```markdown
     - [Def-S-23-06. MultiChor 扩展](#def-s-23-06-multichor-扩展)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价-关系-2-epp--bisimulation-互模拟等价)
+    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价)
     - [Lemma-S-23-02. 投影合成还原](#lemma-s-23-02-投影合成还原)
     - [Lemma-S-23-03. 类型保持性](#lemma-s-23-03-类型保持性)
 ```
@@ -57977,7 +57977,7 @@ $$
 ```markdown
     - [Def-S-23-06. MultiChor 扩展](#def-s-23-06-multichor-扩展)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价-关系-2-epp--bisimulation-互模拟等价)
+    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价)
     - [Lemma-S-23-02. 投影合成还原](#lemma-s-23-02-投影合成还原)
     - [Lemma-S-23-03. 类型保持性](#lemma-s-23-03-类型保持性)
 ```
@@ -57987,7 +57987,7 @@ $$
 ```markdown
     - [Def-S-23-06. MultiChor 扩展](#def-s-23-06-multichor-扩展)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价-关系-2-epp--bisimulation-互模拟等价)
+    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价)
     - [Lemma-S-23-02. 投影合成还原](#lemma-s-23-02-投影合成还原)
     - [Lemma-S-23-03. 类型保持性](#lemma-s-23-03-类型保持性)
 ```
@@ -57998,70 +57998,70 @@ $$
 
 ```markdown
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价-关系-2-epp--bisimulation-互模拟等价)
+    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价)
     - [Lemma-S-23-02. 投影合成还原](#lemma-s-23-02-投影合成还原)
     - [Lemma-S-23-03. 类型保持性](#lemma-s-23-03-类型保持性)
-    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus-关系-3-choreography--process-calculus)
+    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus)
 ```
 
 **File**: `Struct/04-proofs/04.07-deadlock-freedom-choreographic.md`
 
 ```markdown
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价-关系-2-epp--bisimulation-互模拟等价)
+    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价)
     - [Lemma-S-23-02. 投影合成还原](#lemma-s-23-02-投影合成还原)
     - [Lemma-S-23-03. 类型保持性](#lemma-s-23-03-类型保持性)
-    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus-关系-3-choreography--process-calculus)
+    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus)
 ```
 
 **File**: `Struct/04-proofs/04.07-deadlock-freedom-choreographic.md`
 
 ```markdown
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价-关系-2-epp--bisimulation-互模拟等价)
+    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价)
     - [Lemma-S-23-02. 投影合成还原](#lemma-s-23-02-投影合成还原)
     - [Lemma-S-23-03. 类型保持性](#lemma-s-23-03-类型保持性)
-    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus-关系-3-choreography--process-calculus)
+    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus)
 ```
 
 **File**: `Struct/04-proofs/04.07-deadlock-freedom-choreographic.md`
 
 ```markdown
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价-关系-2-epp--bisimulation-互模拟等价)
+    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价)
     - [Lemma-S-23-02. 投影合成还原](#lemma-s-23-02-投影合成还原)
     - [Lemma-S-23-03. 类型保持性](#lemma-s-23-03-类型保持性)
-    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus-关系-3-choreography--process-calculus)
+    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus)
 ```
 
 **File**: `Struct/04-proofs/04.07-deadlock-freedom-choreographic.md`
 
 ```markdown
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价-关系-2-epp--bisimulation-互模拟等价)
+    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价)
     - [Lemma-S-23-02. 投影合成还原](#lemma-s-23-02-投影合成还原)
     - [Lemma-S-23-03. 类型保持性](#lemma-s-23-03-类型保持性)
-    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus-关系-3-choreography--process-calculus)
+    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus)
 ```
 
 **File**: `Struct/04-proofs/04.07-deadlock-freedom-choreographic.md`
 
 ```markdown
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价-关系-2-epp--bisimulation-互模拟等价)
+    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价)
     - [Lemma-S-23-02. 投影合成还原](#lemma-s-23-02-投影合成还原)
     - [Lemma-S-23-03. 类型保持性](#lemma-s-23-03-类型保持性)
-    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus-关系-3-choreography--process-calculus)
+    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus)
 ```
 
 **File**: `Struct/04-proofs/04.07-deadlock-freedom-choreographic.md`
 
 ```markdown
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价-关系-2-epp--bisimulation-互模拟等价)
+    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价)
     - [Lemma-S-23-02. 投影合成还原](#lemma-s-23-02-投影合成还原)
     - [Lemma-S-23-03. 类型保持性](#lemma-s-23-03-类型保持性)
-    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus-关系-3-choreography--process-calculus)
+    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus)
 ```
 
 #### `Lemma-S-23-03`
@@ -58069,50 +58069,50 @@ $$
 **File**: `Struct/04-proofs/04.07-deadlock-freedom-choreographic.md`
 
 ```markdown
-    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价-关系-2-epp--bisimulation-互模拟等价)
+    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价)
     - [Lemma-S-23-02. 投影合成还原](#lemma-s-23-02-投影合成还原)
     - [Lemma-S-23-03. 类型保持性](#lemma-s-23-03-类型保持性)
-    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus-关系-3-choreography--process-calculus)
+    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus)
     - [Prop-S-23-02. 投影语义等价性](#prop-s-23-02-投影语义等价性)
 ```
 
 **File**: `Struct/04-proofs/04.07-deadlock-freedom-choreographic.md`
 
 ```markdown
-    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价-关系-2-epp--bisimulation-互模拟等价)
+    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价)
     - [Lemma-S-23-02. 投影合成还原](#lemma-s-23-02-投影合成还原)
     - [Lemma-S-23-03. 类型保持性](#lemma-s-23-03-类型保持性)
-    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus-关系-3-choreography--process-calculus)
+    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus)
     - [Prop-S-23-02. 投影语义等价性](#prop-s-23-02-投影语义等价性)
 ```
 
 **File**: `Struct/04-proofs/04.07-deadlock-freedom-choreographic.md`
 
 ```markdown
-    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价-关系-2-epp--bisimulation-互模拟等价)
+    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价)
     - [Lemma-S-23-02. 投影合成还原](#lemma-s-23-02-投影合成还原)
     - [Lemma-S-23-03. 类型保持性](#lemma-s-23-03-类型保持性)
-    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus-关系-3-choreography--process-calculus)
+    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus)
     - [Prop-S-23-02. 投影语义等价性](#prop-s-23-02-投影语义等价性)
 ```
 
 **File**: `Struct/04-proofs/04.07-deadlock-freedom-choreographic.md`
 
 ```markdown
-    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价-关系-2-epp--bisimulation-互模拟等价)
+    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价)
     - [Lemma-S-23-02. 投影合成还原](#lemma-s-23-02-投影合成还原)
     - [Lemma-S-23-03. 类型保持性](#lemma-s-23-03-类型保持性)
-    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus-关系-3-choreography--process-calculus)
+    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus)
     - [Prop-S-23-02. 投影语义等价性](#prop-s-23-02-投影语义等价性)
 ```
 
 **File**: `Struct/04-proofs/04.07-deadlock-freedom-choreographic.md`
 
 ```markdown
-    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价-关系-2-epp--bisimulation-互模拟等价)
+    - [Lemma-S-23-01. EPP 保持通信结构](#关系-2-epp--bisimulation-互模拟等价)
     - [Lemma-S-23-02. 投影合成还原](#lemma-s-23-02-投影合成还原)
     - [Lemma-S-23-03. 类型保持性](#lemma-s-23-03-类型保持性)
-    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus-关系-3-choreography--process-calculus)
+    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus)
     - [Prop-S-23-02. 投影语义等价性](#prop-s-23-02-投影语义等价性)
 ```
 
@@ -58489,21 +58489,21 @@ $$
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-    - [Lemma-F-02-02 (异步 Checkpoint 的低延迟特性) {#lemma-f-02-02-异步-checkpoint-的低延迟特性}](#lemma-f-02-02-异步-checkpoint-的低延迟特性-lemma-f-02-02-异步-checkpoint-的低延迟特性)
-    - [Lemma-F-02-03 (增量 Checkpoint 的存储优化) {#lemma-f-02-03-增量-checkpoint-的存储优化}](#lemma-f-02-03-增量-checkpoint-的存储优化-lemma-f-02-03-增量-checkpoint-的存储优化)
-    - [Prop-F-02-01 (Checkpoint 类型选择的权衡空间) {#prop-f-02-01-checkpoint-类型选择的权衡空间}](#prop-f-02-01-checkpoint-类型选择的权衡空间-prop-f-02-01-checkpoint-类型选择的权衡空间)
-  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations-3-关系建立-relations)
-    - [关系 1: Flink Checkpoint ↔ Chandy-Lamport 分布式快照 {#关系-1-flink-checkpoint--chandy-lamport-分布式快照}](#关系-1-flink-checkpoint--chandy-lamport-分布式快照-关系-1-flink-checkpoint--chandy-lamport-分布式快照)
+    - [Lemma-F-02-02 (异步 Checkpoint 的低延迟特性) {#lemma-f-02-02-异步-checkpoint-的低延迟特性}](#lemma-f-02-02-异步-checkpoint-的低延迟特性)
+    - [Lemma-F-02-03 (增量 Checkpoint 的存储优化) {#lemma-f-02-03-增量-checkpoint-的存储优化}](#lemma-f-02-03-增量-checkpoint-的存储优化)
+    - [Prop-F-02-01 (Checkpoint 类型选择的权衡空间) {#prop-f-02-01-checkpoint-类型选择的权衡空间}](#prop-f-02-01-checkpoint-类型选择的权衡空间)
+  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations)
+    - [关系 1: Flink Checkpoint ↔ Chandy-Lamport 分布式快照 {#关系-1-flink-checkpoint--chandy-lamport-分布式快照}](#关系-1-flink-checkpoint--chandy-lamport-分布式快照)
 ```
 
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-    - [Lemma-F-02-02 (异步 Checkpoint 的低延迟特性) {#lemma-f-02-02-异步-checkpoint-的低延迟特性}](#lemma-f-02-02-异步-checkpoint-的低延迟特性-lemma-f-02-02-异步-checkpoint-的低延迟特性)
-    - [Lemma-F-02-03 (增量 Checkpoint 的存储优化) {#lemma-f-02-03-增量-checkpoint-的存储优化}](#lemma-f-02-03-增量-checkpoint-的存储优化-lemma-f-02-03-增量-checkpoint-的存储优化)
-    - [Prop-F-02-01 (Checkpoint 类型选择的权衡空间) {#prop-f-02-01-checkpoint-类型选择的权衡空间}](#prop-f-02-01-checkpoint-类型选择的权衡空间-prop-f-02-01-checkpoint-类型选择的权衡空间)
-  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations-3-关系建立-relations)
-    - [关系 1: Flink Checkpoint ↔ Chandy-Lamport 分布式快照 {#关系-1-flink-checkpoint--chandy-lamport-分布式快照}](#关系-1-flink-checkpoint--chandy-lamport-分布式快照-关系-1-flink-checkpoint--chandy-lamport-分布式快照)
+    - [Lemma-F-02-02 (异步 Checkpoint 的低延迟特性) {#lemma-f-02-02-异步-checkpoint-的低延迟特性}](#lemma-f-02-02-异步-checkpoint-的低延迟特性)
+    - [Lemma-F-02-03 (增量 Checkpoint 的存储优化) {#lemma-f-02-03-增量-checkpoint-的存储优化}](#lemma-f-02-03-增量-checkpoint-的存储优化)
+    - [Prop-F-02-01 (Checkpoint 类型选择的权衡空间) {#prop-f-02-01-checkpoint-类型选择的权衡空间}](#prop-f-02-01-checkpoint-类型选择的权衡空间)
+  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations)
+    - [关系 1: Flink Checkpoint ↔ Chandy-Lamport 分布式快照 {#关系-1-flink-checkpoint--chandy-lamport-分布式快照}](#关系-1-flink-checkpoint--chandy-lamport-分布式快照)
 ```
 
 #### `Prop-F-02-02`
@@ -62627,21 +62627,21 @@ ightarrow$ 系统层GC时间过长或内存不足（Def-F-15-01）
 **File**: `Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md`
 
 ```markdown
-    - [Lemma-K-01-20. 平台生命周期与采用率关系 {#lemma-k-01-20-平台生命周期与采用率关系}](#lemma-k-01-20-平台生命周期与采用率关系-lemma-k-01-20-平台生命周期与采用率关系)
-    - [Lemma-K-01-21. 托管服务成本边际递减 {#lemma-k-01-21-托管服务成本边际递减}](#lemma-k-01-21-托管服务成本边际递减-lemma-k-01-21-托管服务成本边际递减)
-    - [Prop-K-01-20. 存储计算分离的弹性优势 {#prop-k-01-20-存储计算分离的弹性优势}](#prop-k-01-20-存储计算分离的弹性优势-prop-k-01-20-存储计算分离的弹性优势)
-    - [Prop-K-01-21. 开源托管化趋势必然性 {#prop-k-01-21-开源托管化趋势必然性}](#prop-k-01-21-开源托管化趋势必然性-prop-k-01-21-开源托管化趋势必然性)
-    - [Prop-K-01-22. 流批统一的技术收敛 {#prop-k-01-22-流批统一的技术收敛}](#prop-k-01-22-流批统一的技术收敛-prop-k-01-22-流批统一的技术收敛)
+    - [Lemma-K-01-20. 平台生命周期与采用率关系 {#lemma-k-01-20-平台生命周期与采用率关系}](#lemma-k-01-20-平台生命周期与采用率关系)
+    - [Lemma-K-01-21. 托管服务成本边际递减 {#lemma-k-01-21-托管服务成本边际递减}](#lemma-k-01-21-托管服务成本边际递减)
+    - [Prop-K-01-20. 存储计算分离的弹性优势 {#prop-k-01-20-存储计算分离的弹性优势}](#prop-k-01-20-存储计算分离的弹性优势)
+    - [Prop-K-01-21. 开源托管化趋势必然性 {#prop-k-01-21-开源托管化趋势必然性}](#prop-k-01-21-开源托管化趋势必然性)
+    - [Prop-K-01-22. 流批统一的技术收敛 {#prop-k-01-22-流批统一的技术收敛}](#prop-k-01-22-流批统一的技术收敛)
 ```
 
 **File**: `Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md`
 
 ```markdown
-    - [Lemma-K-01-20. 平台生命周期与采用率关系 {#lemma-k-01-20-平台生命周期与采用率关系}](#lemma-k-01-20-平台生命周期与采用率关系-lemma-k-01-20-平台生命周期与采用率关系)
-    - [Lemma-K-01-21. 托管服务成本边际递减 {#lemma-k-01-21-托管服务成本边际递减}](#lemma-k-01-21-托管服务成本边际递减-lemma-k-01-21-托管服务成本边际递减)
-    - [Prop-K-01-20. 存储计算分离的弹性优势 {#prop-k-01-20-存储计算分离的弹性优势}](#prop-k-01-20-存储计算分离的弹性优势-prop-k-01-20-存储计算分离的弹性优势)
-    - [Prop-K-01-21. 开源托管化趋势必然性 {#prop-k-01-21-开源托管化趋势必然性}](#prop-k-01-21-开源托管化趋势必然性-prop-k-01-21-开源托管化趋势必然性)
-    - [Prop-K-01-22. 流批统一的技术收敛 {#prop-k-01-22-流批统一的技术收敛}](#prop-k-01-22-流批统一的技术收敛-prop-k-01-22-流批统一的技术收敛)
+    - [Lemma-K-01-20. 平台生命周期与采用率关系 {#lemma-k-01-20-平台生命周期与采用率关系}](#lemma-k-01-20-平台生命周期与采用率关系)
+    - [Lemma-K-01-21. 托管服务成本边际递减 {#lemma-k-01-21-托管服务成本边际递减}](#lemma-k-01-21-托管服务成本边际递减)
+    - [Prop-K-01-20. 存储计算分离的弹性优势 {#prop-k-01-20-存储计算分离的弹性优势}](#prop-k-01-20-存储计算分离的弹性优势)
+    - [Prop-K-01-21. 开源托管化趋势必然性 {#prop-k-01-21-开源托管化趋势必然性}](#prop-k-01-21-开源托管化趋势必然性)
+    - [Prop-K-01-22. 流批统一的技术收敛 {#prop-k-01-22-流批统一的技术收敛}](#prop-k-01-22-流批统一的技术收敛)
 ```
 
 #### `Prop-K-01-21`
@@ -62649,21 +62649,21 @@ ightarrow$ 系统层GC时间过长或内存不足（Def-F-15-01）
 **File**: `Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md`
 
 ```markdown
-    - [Lemma-K-01-21. 托管服务成本边际递减 {#lemma-k-01-21-托管服务成本边际递减}](#lemma-k-01-21-托管服务成本边际递减-lemma-k-01-21-托管服务成本边际递减)
-    - [Prop-K-01-20. 存储计算分离的弹性优势 {#prop-k-01-20-存储计算分离的弹性优势}](#prop-k-01-20-存储计算分离的弹性优势-prop-k-01-20-存储计算分离的弹性优势)
-    - [Prop-K-01-21. 开源托管化趋势必然性 {#prop-k-01-21-开源托管化趋势必然性}](#prop-k-01-21-开源托管化趋势必然性-prop-k-01-21-开源托管化趋势必然性)
-    - [Prop-K-01-22. 流批统一的技术收敛 {#prop-k-01-22-流批统一的技术收敛}](#prop-k-01-22-流批统一的技术收敛-prop-k-01-22-流批统一的技术收敛)
-  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations-3-关系建立-relations)
+    - [Lemma-K-01-21. 托管服务成本边际递减 {#lemma-k-01-21-托管服务成本边际递减}](#lemma-k-01-21-托管服务成本边际递减)
+    - [Prop-K-01-20. 存储计算分离的弹性优势 {#prop-k-01-20-存储计算分离的弹性优势}](#prop-k-01-20-存储计算分离的弹性优势)
+    - [Prop-K-01-21. 开源托管化趋势必然性 {#prop-k-01-21-开源托管化趋势必然性}](#prop-k-01-21-开源托管化趋势必然性)
+    - [Prop-K-01-22. 流批统一的技术收敛 {#prop-k-01-22-流批统一的技术收敛}](#prop-k-01-22-流批统一的技术收敛)
+  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations)
 ```
 
 **File**: `Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md`
 
 ```markdown
-    - [Lemma-K-01-21. 托管服务成本边际递减 {#lemma-k-01-21-托管服务成本边际递减}](#lemma-k-01-21-托管服务成本边际递减-lemma-k-01-21-托管服务成本边际递减)
-    - [Prop-K-01-20. 存储计算分离的弹性优势 {#prop-k-01-20-存储计算分离的弹性优势}](#prop-k-01-20-存储计算分离的弹性优势-prop-k-01-20-存储计算分离的弹性优势)
-    - [Prop-K-01-21. 开源托管化趋势必然性 {#prop-k-01-21-开源托管化趋势必然性}](#prop-k-01-21-开源托管化趋势必然性-prop-k-01-21-开源托管化趋势必然性)
-    - [Prop-K-01-22. 流批统一的技术收敛 {#prop-k-01-22-流批统一的技术收敛}](#prop-k-01-22-流批统一的技术收敛-prop-k-01-22-流批统一的技术收敛)
-  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations-3-关系建立-relations)
+    - [Lemma-K-01-21. 托管服务成本边际递减 {#lemma-k-01-21-托管服务成本边际递减}](#lemma-k-01-21-托管服务成本边际递减)
+    - [Prop-K-01-20. 存储计算分离的弹性优势 {#prop-k-01-20-存储计算分离的弹性优势}](#prop-k-01-20-存储计算分离的弹性优势)
+    - [Prop-K-01-21. 开源托管化趋势必然性 {#prop-k-01-21-开源托管化趋势必然性}](#prop-k-01-21-开源托管化趋势必然性)
+    - [Prop-K-01-22. 流批统一的技术收敛 {#prop-k-01-22-流批统一的技术收敛}](#prop-k-01-22-流批统一的技术收敛)
+  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations)
 ```
 
 #### `Prop-K-01-22`
@@ -62671,21 +62671,21 @@ ightarrow$ 系统层GC时间过长或内存不足（Def-F-15-01）
 **File**: `Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md`
 
 ```markdown
-    - [Prop-K-01-20. 存储计算分离的弹性优势 {#prop-k-01-20-存储计算分离的弹性优势}](#prop-k-01-20-存储计算分离的弹性优势-prop-k-01-20-存储计算分离的弹性优势)
-    - [Prop-K-01-21. 开源托管化趋势必然性 {#prop-k-01-21-开源托管化趋势必然性}](#prop-k-01-21-开源托管化趋势必然性-prop-k-01-21-开源托管化趋势必然性)
-    - [Prop-K-01-22. 流批统一的技术收敛 {#prop-k-01-22-流批统一的技术收敛}](#prop-k-01-22-流批统一的技术收敛-prop-k-01-22-流批统一的技术收敛)
-  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations-3-关系建立-relations)
-    - [3.1 厂商定位与市场动态 {#31-厂商定位与市场动态}](#31-厂商定位与市场动态-31-厂商定位与市场动态)
+    - [Prop-K-01-20. 存储计算分离的弹性优势 {#prop-k-01-20-存储计算分离的弹性优势}](#prop-k-01-20-存储计算分离的弹性优势)
+    - [Prop-K-01-21. 开源托管化趋势必然性 {#prop-k-01-21-开源托管化趋势必然性}](#prop-k-01-21-开源托管化趋势必然性)
+    - [Prop-K-01-22. 流批统一的技术收敛 {#prop-k-01-22-流批统一的技术收敛}](#prop-k-01-22-流批统一的技术收敛)
+  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations)
+    - [3.1 厂商定位与市场动态 {#31-厂商定位与市场动态}](#31-厂商定位与市场动态)
 ```
 
 **File**: `Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md`
 
 ```markdown
-    - [Prop-K-01-20. 存储计算分离的弹性优势 {#prop-k-01-20-存储计算分离的弹性优势}](#prop-k-01-20-存储计算分离的弹性优势-prop-k-01-20-存储计算分离的弹性优势)
-    - [Prop-K-01-21. 开源托管化趋势必然性 {#prop-k-01-21-开源托管化趋势必然性}](#prop-k-01-21-开源托管化趋势必然性-prop-k-01-21-开源托管化趋势必然性)
-    - [Prop-K-01-22. 流批统一的技术收敛 {#prop-k-01-22-流批统一的技术收敛}](#prop-k-01-22-流批统一的技术收敛-prop-k-01-22-流批统一的技术收敛)
-  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations-3-关系建立-relations)
-    - [3.1 厂商定位与市场动态 {#31-厂商定位与市场动态}](#31-厂商定位与市场动态-31-厂商定位与市场动态)
+    - [Prop-K-01-20. 存储计算分离的弹性优势 {#prop-k-01-20-存储计算分离的弹性优势}](#prop-k-01-20-存储计算分离的弹性优势)
+    - [Prop-K-01-21. 开源托管化趋势必然性 {#prop-k-01-21-开源托管化趋势必然性}](#prop-k-01-21-开源托管化趋势必然性)
+    - [Prop-K-01-22. 流批统一的技术收敛 {#prop-k-01-22-流批统一的技术收敛}](#prop-k-01-22-流批统一的技术收敛)
+  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations)
+    - [3.1 厂商定位与市场动态 {#31-厂商定位与市场动态}](#31-厂商定位与市场动态)
 ```
 
 #### `Prop-K-02-01`
@@ -62799,7 +62799,7 @@ ightarrow$ 系统层GC时间过长或内存不足（Def-F-15-01）
     - [Prop-K-02-01 (窗口时间覆盖完备性)](#prop-k-02-01-窗口时间覆盖完备性)
     - [Prop-K-02-02 (窗口分配确定性)](#prop-k-02-02-窗口分配确定性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [关系: Windowed Aggregation `↦` Def-S-04-05 {#关系-windowed-aggregation--def-s-04-05}](#关系-windowed-aggregation--def-s-04-05-关系-windowed-aggregation--def-s-04-05)
+    - [关系: Windowed Aggregation `↦` Def-S-04-05 {#关系-windowed-aggregation--def-s-04-05}](#关系-windowed-aggregation--def-s-04-05)
 ```
 
 **File**: `Knowledge/02-design-patterns/pattern-windowed-aggregation.md`
@@ -62809,7 +62809,7 @@ ightarrow$ 系统层GC时间过长或内存不足（Def-F-15-01）
     - [Prop-K-02-01 (窗口时间覆盖完备性)](#prop-k-02-01-窗口时间覆盖完备性)
     - [Prop-K-02-02 (窗口分配确定性)](#prop-k-02-02-窗口分配确定性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [关系: Windowed Aggregation `↦` Def-S-04-05 {#关系-windowed-aggregation--def-s-04-05}](#关系-windowed-aggregation--def-s-04-05-关系-windowed-aggregation--def-s-04-05)
+    - [关系: Windowed Aggregation `↦` Def-S-04-05 {#关系-windowed-aggregation--def-s-04-05}](#关系-windowed-aggregation--def-s-04-05)
 ```
 
 **File**: `Knowledge/Flink-Scala-Rust-Comprehensive/02-flink-system/02.01-flink-2x-architecture.md`
@@ -62893,7 +62893,7 @@ ightarrow$ 系统层GC时间过长或内存不足（Def-F-15-01）
     - [Prop-K-02-03 (解析完备性)](#prop-k-02-03-解析完备性)
     - [Prop-K-02-04 (关联传递性)](#prop-k-02-04-关联传递性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [关系: Log Analysis `↦` Windowed Aggregation {#关系-log-analysis--windowed-aggregation}](#关系-log-analysis--windowed-aggregation-关系-log-analysis--windowed-aggregation)
+    - [关系: Log Analysis `↦` Windowed Aggregation {#关系-log-analysis--windowed-aggregation}](#关系-log-analysis--windowed-aggregation)
 ```
 
 **File**: `Knowledge/02-design-patterns/pattern-log-analysis.md`
@@ -62903,7 +62903,7 @@ ightarrow$ 系统层GC时间过长或内存不足（Def-F-15-01）
     - [Prop-K-02-03 (解析完备性)](#prop-k-02-03-解析完备性)
     - [Prop-K-02-04 (关联传递性)](#prop-k-02-04-关联传递性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [关系: Log Analysis `↦` Windowed Aggregation {#关系-log-analysis--windowed-aggregation}](#关系-log-analysis--windowed-aggregation-关系-log-analysis--windowed-aggregation)
+    - [关系: Log Analysis `↦` Windowed Aggregation {#关系-log-analysis--windowed-aggregation}](#关系-log-analysis--windowed-aggregation)
 ```
 
 **File**: `Knowledge/02-design-patterns/pattern-log-analysis.md`
@@ -62913,7 +62913,7 @@ ightarrow$ 系统层GC时间过长或内存不足（Def-F-15-01）
     - [Prop-K-02-03 (解析完备性)](#prop-k-02-03-解析完备性)
     - [Prop-K-02-04 (关联传递性)](#prop-k-02-04-关联传递性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [关系: Log Analysis `↦` Windowed Aggregation {#关系-log-analysis--windowed-aggregation}](#关系-log-analysis--windowed-aggregation-关系-log-analysis--windowed-aggregation)
+    - [关系: Log Analysis `↦` Windowed Aggregation {#关系-log-analysis--windowed-aggregation}](#关系-log-analysis--windowed-aggregation)
 ```
 
 **File**: `Knowledge/Flink-Scala-Rust-Comprehensive/02-flink-system/02.02-flink-runtime-deep-dive.md`
@@ -63361,31 +63361,31 @@ ightarrow$ 系统层GC时间过长或内存不足（Def-F-15-01）
 **File**: `Knowledge/04-technology-selection/engine-selection-guide.md`
 
 ```markdown
-    - [Lemma-K-04-01. 延迟与吞吐的权衡上界 {#lemma-k-04-01-延迟与吞吐的权衡上界}](#lemma-k-04-01-延迟与吞吐的权衡上界-lemma-k-04-01-延迟与吞吐的权衡上界)
-    - [Lemma-K-04-02. 状态复杂度与容错开销的正相关 {#lemma-k-04-02-状态复杂度与容错开销的正相关}](#lemma-k-04-02-状态复杂度与容错开销的正相关-lemma-k-04-02-状态复杂度与容错开销的正相关)
-    - [Prop-K-04-01. Dataflow模型引擎的语义优势 {#prop-k-04-01-dataflow模型引擎的语义优势}](#prop-k-04-01-dataflow模型引擎的语义优势-prop-k-04-01-dataflow模型引擎的语义优势)
-    - [Prop-K-04-02. 微批处理的延迟下界 {#prop-k-04-02-微批处理的延迟下界}](#prop-k-04-02-微批处理的延迟下界-prop-k-04-02-微批处理的延迟下界)
-  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations-3-关系建立-relations)
+    - [Lemma-K-04-01. 延迟与吞吐的权衡上界 {#lemma-k-04-01-延迟与吞吐的权衡上界}](#lemma-k-04-01-延迟与吞吐的权衡上界)
+    - [Lemma-K-04-02. 状态复杂度与容错开销的正相关 {#lemma-k-04-02-状态复杂度与容错开销的正相关}](#lemma-k-04-02-状态复杂度与容错开销的正相关)
+    - [Prop-K-04-01. Dataflow模型引擎的语义优势 {#prop-k-04-01-dataflow模型引擎的语义优势}](#prop-k-04-01-dataflow模型引擎的语义优势)
+    - [Prop-K-04-02. 微批处理的延迟下界 {#prop-k-04-02-微批处理的延迟下界}](#prop-k-04-02-微批处理的延迟下界)
+  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations)
 ```
 
 **File**: `Knowledge/04-technology-selection/engine-selection-guide.md`
 
 ```markdown
-    - [Lemma-K-04-01. 延迟与吞吐的权衡上界 {#lemma-k-04-01-延迟与吞吐的权衡上界}](#lemma-k-04-01-延迟与吞吐的权衡上界-lemma-k-04-01-延迟与吞吐的权衡上界)
-    - [Lemma-K-04-02. 状态复杂度与容错开销的正相关 {#lemma-k-04-02-状态复杂度与容错开销的正相关}](#lemma-k-04-02-状态复杂度与容错开销的正相关-lemma-k-04-02-状态复杂度与容错开销的正相关)
-    - [Prop-K-04-01. Dataflow模型引擎的语义优势 {#prop-k-04-01-dataflow模型引擎的语义优势}](#prop-k-04-01-dataflow模型引擎的语义优势-prop-k-04-01-dataflow模型引擎的语义优势)
-    - [Prop-K-04-02. 微批处理的延迟下界 {#prop-k-04-02-微批处理的延迟下界}](#prop-k-04-02-微批处理的延迟下界-prop-k-04-02-微批处理的延迟下界)
-  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations-3-关系建立-relations)
+    - [Lemma-K-04-01. 延迟与吞吐的权衡上界 {#lemma-k-04-01-延迟与吞吐的权衡上界}](#lemma-k-04-01-延迟与吞吐的权衡上界)
+    - [Lemma-K-04-02. 状态复杂度与容错开销的正相关 {#lemma-k-04-02-状态复杂度与容错开销的正相关}](#lemma-k-04-02-状态复杂度与容错开销的正相关)
+    - [Prop-K-04-01. Dataflow模型引擎的语义优势 {#prop-k-04-01-dataflow模型引擎的语义优势}](#prop-k-04-01-dataflow模型引擎的语义优势)
+    - [Prop-K-04-02. 微批处理的延迟下界 {#prop-k-04-02-微批处理的延迟下界}](#prop-k-04-02-微批处理的延迟下界)
+  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations)
 ```
 
 **File**: `Knowledge/04-technology-selection/engine-selection-guide.md`
 
 ```markdown
-    - [Lemma-K-04-01. 延迟与吞吐的权衡上界 {#lemma-k-04-01-延迟与吞吐的权衡上界}](#lemma-k-04-01-延迟与吞吐的权衡上界-lemma-k-04-01-延迟与吞吐的权衡上界)
-    - [Lemma-K-04-02. 状态复杂度与容错开销的正相关 {#lemma-k-04-02-状态复杂度与容错开销的正相关}](#lemma-k-04-02-状态复杂度与容错开销的正相关-lemma-k-04-02-状态复杂度与容错开销的正相关)
-    - [Prop-K-04-01. Dataflow模型引擎的语义优势 {#prop-k-04-01-dataflow模型引擎的语义优势}](#prop-k-04-01-dataflow模型引擎的语义优势-prop-k-04-01-dataflow模型引擎的语义优势)
-    - [Prop-K-04-02. 微批处理的延迟下界 {#prop-k-04-02-微批处理的延迟下界}](#prop-k-04-02-微批处理的延迟下界-prop-k-04-02-微批处理的延迟下界)
-  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations-3-关系建立-relations)
+    - [Lemma-K-04-01. 延迟与吞吐的权衡上界 {#lemma-k-04-01-延迟与吞吐的权衡上界}](#lemma-k-04-01-延迟与吞吐的权衡上界)
+    - [Lemma-K-04-02. 状态复杂度与容错开销的正相关 {#lemma-k-04-02-状态复杂度与容错开销的正相关}](#lemma-k-04-02-状态复杂度与容错开销的正相关)
+    - [Prop-K-04-01. Dataflow模型引擎的语义优势 {#prop-k-04-01-dataflow模型引擎的语义优势}](#prop-k-04-01-dataflow模型引擎的语义优势)
+    - [Prop-K-04-02. 微批处理的延迟下界 {#prop-k-04-02-微批处理的延迟下界}](#prop-k-04-02-微批处理的延迟下界)
+  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations)
 ```
 
 **File**: `Knowledge/04-technology-selection/paradigm-selection-guide.md`
@@ -63433,21 +63433,21 @@ ightarrow$ 系统层GC时间过长或内存不足（Def-F-15-01）
 **File**: `Knowledge/04-technology-selection/engine-selection-guide.md`
 
 ```markdown
-    - [Lemma-K-04-02. 状态复杂度与容错开销的正相关 {#lemma-k-04-02-状态复杂度与容错开销的正相关}](#lemma-k-04-02-状态复杂度与容错开销的正相关-lemma-k-04-02-状态复杂度与容错开销的正相关)
-    - [Prop-K-04-01. Dataflow模型引擎的语义优势 {#prop-k-04-01-dataflow模型引擎的语义优势}](#prop-k-04-01-dataflow模型引擎的语义优势-prop-k-04-01-dataflow模型引擎的语义优势)
-    - [Prop-K-04-02. 微批处理的延迟下界 {#prop-k-04-02-微批处理的延迟下界}](#prop-k-04-02-微批处理的延迟下界-prop-k-04-02-微批处理的延迟下界)
-  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations-3-关系建立-relations)
-    - [3.1 引擎与计算模型的关系 {#31-引擎与计算模型的关系}](#31-引擎与计算模型的关系-31-引擎与计算模型的关系)
+    - [Lemma-K-04-02. 状态复杂度与容错开销的正相关 {#lemma-k-04-02-状态复杂度与容错开销的正相关}](#lemma-k-04-02-状态复杂度与容错开销的正相关)
+    - [Prop-K-04-01. Dataflow模型引擎的语义优势 {#prop-k-04-01-dataflow模型引擎的语义优势}](#prop-k-04-01-dataflow模型引擎的语义优势)
+    - [Prop-K-04-02. 微批处理的延迟下界 {#prop-k-04-02-微批处理的延迟下界}](#prop-k-04-02-微批处理的延迟下界)
+  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations)
+    - [3.1 引擎与计算模型的关系 {#31-引擎与计算模型的关系}](#31-引擎与计算模型的关系)
 ```
 
 **File**: `Knowledge/04-technology-selection/engine-selection-guide.md`
 
 ```markdown
-    - [Lemma-K-04-02. 状态复杂度与容错开销的正相关 {#lemma-k-04-02-状态复杂度与容错开销的正相关}](#lemma-k-04-02-状态复杂度与容错开销的正相关-lemma-k-04-02-状态复杂度与容错开销的正相关)
-    - [Prop-K-04-01. Dataflow模型引擎的语义优势 {#prop-k-04-01-dataflow模型引擎的语义优势}](#prop-k-04-01-dataflow模型引擎的语义优势-prop-k-04-01-dataflow模型引擎的语义优势)
-    - [Prop-K-04-02. 微批处理的延迟下界 {#prop-k-04-02-微批处理的延迟下界}](#prop-k-04-02-微批处理的延迟下界-prop-k-04-02-微批处理的延迟下界)
-  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations-3-关系建立-relations)
-    - [3.1 引擎与计算模型的关系 {#31-引擎与计算模型的关系}](#31-引擎与计算模型的关系-31-引擎与计算模型的关系)
+    - [Lemma-K-04-02. 状态复杂度与容错开销的正相关 {#lemma-k-04-02-状态复杂度与容错开销的正相关}](#lemma-k-04-02-状态复杂度与容错开销的正相关)
+    - [Prop-K-04-01. Dataflow模型引擎的语义优势 {#prop-k-04-01-dataflow模型引擎的语义优势}](#prop-k-04-01-dataflow模型引擎的语义优势)
+    - [Prop-K-04-02. 微批处理的延迟下界 {#prop-k-04-02-微批处理的延迟下界}](#prop-k-04-02-微批处理的延迟下界)
+  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations)
+    - [3.1 引擎与计算模型的关系 {#31-引擎与计算模型的关系}](#31-引擎与计算模型的关系)
 ```
 
 **File**: `Knowledge/04-technology-selection/paradigm-selection-guide.md`
@@ -63605,7 +63605,7 @@ ightarrow$ 系统层GC时间过长或内存不足（Def-F-15-01）
     - [Lemma-K-05-02: 理论保持性引理](#lemma-k-05-02-理论保持性引理)
     - [Prop-K-05-01: 语义等价性命题](#prop-k-05-01-语义等价性命题)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [映射 1: Dataflow 图 → Flink DataStream API {#映射-1-dataflow-图--flink-datastream-api}](#映射-1-dataflow-图--flink-datastream-api-映射-1-dataflow-图--flink-datastream-api)
+    - [映射 1: Dataflow 图 → Flink DataStream API {#映射-1-dataflow-图--flink-datastream-api}](#映射-1-dataflow-图--flink-datastream-api)
 ```
 
 **File**: `Knowledge/05-mapping-guides/struct-to-flink-mapping.md`
@@ -63615,7 +63615,7 @@ ightarrow$ 系统层GC时间过长或内存不足（Def-F-15-01）
     - [Lemma-K-05-02: 理论保持性引理](#lemma-k-05-02-理论保持性引理)
     - [Prop-K-05-01: 语义等价性命题](#prop-k-05-01-语义等价性命题)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [映射 1: Dataflow 图 → Flink DataStream API {#映射-1-dataflow-图--flink-datastream-api}](#映射-1-dataflow-图--flink-datastream-api-映射-1-dataflow-图--flink-datastream-api)
+    - [映射 1: Dataflow 图 → Flink DataStream API {#映射-1-dataflow-图--flink-datastream-api}](#映射-1-dataflow-图--flink-datastream-api)
 ```
 
 **File**: `Knowledge/Flink-Scala-Rust-Comprehensive/01-scala-ecosystem/01.05-scala-type-system-streaming.md`
@@ -63915,21 +63915,21 @@ Kafka Streams 的并行度与 Kafka 分区数严格绑定：
 **File**: `Knowledge/06-frontier/streaming-databases.md`
 
 ```markdown
-    - [Def-K-06-14: SQL流处理语义 (SQL Stream Processing Semantics) {#def-k-06-14-sql流处理语义-sql-stream-processing-semantics}](#def-k-06-14-sql流处理语义-sql-stream-processing-semantics-def-k-06-14-sql流处理语义-sql-stream-processing-semantics)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Prop-K-06-01: 流数据库的增量计算封闭性 {#prop-k-06-01-流数据库的增量计算封闭性}](#prop-k-06-01-流数据库的增量计算封闭性-prop-k-06-01-流数据库的增量计算封闭性)
-    - [Prop-K-06-02: 一致性级别与延迟的权衡关系 {#prop-k-06-02-一致性级别与延迟的权衡关系}](#prop-k-06-02-一致性级别与延迟的权衡关系-prop-k-06-02-一致性级别与延迟的权衡关系)
-    - [Prop-K-06-03: SQL可表达性与流操作完备性 {#prop-k-06-03-sql可表达性与流操作完备性}](#prop-k-06-03-sql可表达性与流操作完备性-prop-k-06-03-sql可表达性与流操作完备性)
+    - [Def-K-06-14: SQL流处理语义 (SQL Stream Processing Semantics) {#def-k-06-14-sql流处理语义-sql-stream-processing-semantics}](#def-k-06-14-sql流处理语义-sql-stream-processing-semantics)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Prop-K-06-01: 流数据库的增量计算封闭性 {#prop-k-06-01-流数据库的增量计算封闭性}](#prop-k-06-01-流数据库的增量计算封闭性)
+    - [Prop-K-06-02: 一致性级别与延迟的权衡关系 {#prop-k-06-02-一致性级别与延迟的权衡关系}](#prop-k-06-02-一致性级别与延迟的权衡关系)
+    - [Prop-K-06-03: SQL可表达性与流操作完备性 {#prop-k-06-03-sql可表达性与流操作完备性}](#prop-k-06-03-sql可表达性与流操作完备性)
 ```
 
 **File**: `Knowledge/06-frontier/streaming-databases.md`
 
 ```markdown
-    - [Def-K-06-14: SQL流处理语义 (SQL Stream Processing Semantics) {#def-k-06-14-sql流处理语义-sql-stream-processing-semantics}](#def-k-06-14-sql流处理语义-sql-stream-processing-semantics-def-k-06-14-sql流处理语义-sql-stream-processing-semantics)
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Prop-K-06-01: 流数据库的增量计算封闭性 {#prop-k-06-01-流数据库的增量计算封闭性}](#prop-k-06-01-流数据库的增量计算封闭性-prop-k-06-01-流数据库的增量计算封闭性)
-    - [Prop-K-06-02: 一致性级别与延迟的权衡关系 {#prop-k-06-02-一致性级别与延迟的权衡关系}](#prop-k-06-02-一致性级别与延迟的权衡关系-prop-k-06-02-一致性级别与延迟的权衡关系)
-    - [Prop-K-06-03: SQL可表达性与流操作完备性 {#prop-k-06-03-sql可表达性与流操作完备性}](#prop-k-06-03-sql可表达性与流操作完备性-prop-k-06-03-sql可表达性与流操作完备性)
+    - [Def-K-06-14: SQL流处理语义 (SQL Stream Processing Semantics) {#def-k-06-14-sql流处理语义-sql-stream-processing-semantics}](#def-k-06-14-sql流处理语义-sql-stream-processing-semantics)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Prop-K-06-01: 流数据库的增量计算封闭性 {#prop-k-06-01-流数据库的增量计算封闭性}](#prop-k-06-01-流数据库的增量计算封闭性)
+    - [Prop-K-06-02: 一致性级别与延迟的权衡关系 {#prop-k-06-02-一致性级别与延迟的权衡关系}](#prop-k-06-02-一致性级别与延迟的权衡关系)
+    - [Prop-K-06-03: SQL可表达性与流操作完备性 {#prop-k-06-03-sql可表达性与流操作完备性}](#prop-k-06-03-sql可表达性与流操作完备性)
 ```
 
 **File**: `Knowledge/06-frontier/streaming-slo-definition.md`
@@ -64017,21 +64017,21 @@ Kafka Streams 的并行度与 Kafka 分区数严格绑定：
 **File**: `Knowledge/06-frontier/streaming-databases.md`
 
 ```markdown
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Prop-K-06-01: 流数据库的增量计算封闭性 {#prop-k-06-01-流数据库的增量计算封闭性}](#prop-k-06-01-流数据库的增量计算封闭性-prop-k-06-01-流数据库的增量计算封闭性)
-    - [Prop-K-06-02: 一致性级别与延迟的权衡关系 {#prop-k-06-02-一致性级别与延迟的权衡关系}](#prop-k-06-02-一致性级别与延迟的权衡关系-prop-k-06-02-一致性级别与延迟的权衡关系)
-    - [Prop-K-06-03: SQL可表达性与流操作完备性 {#prop-k-06-03-sql可表达性与流操作完备性}](#prop-k-06-03-sql可表达性与流操作完备性-prop-k-06-03-sql可表达性与流操作完备性)
-  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations-3-关系建立-relations)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Prop-K-06-01: 流数据库的增量计算封闭性 {#prop-k-06-01-流数据库的增量计算封闭性}](#prop-k-06-01-流数据库的增量计算封闭性)
+    - [Prop-K-06-02: 一致性级别与延迟的权衡关系 {#prop-k-06-02-一致性级别与延迟的权衡关系}](#prop-k-06-02-一致性级别与延迟的权衡关系)
+    - [Prop-K-06-03: SQL可表达性与流操作完备性 {#prop-k-06-03-sql可表达性与流操作完备性}](#prop-k-06-03-sql可表达性与流操作完备性)
+  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations)
 ```
 
 **File**: `Knowledge/06-frontier/streaming-databases.md`
 
 ```markdown
-  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties-2-属性推导-properties)
-    - [Prop-K-06-01: 流数据库的增量计算封闭性 {#prop-k-06-01-流数据库的增量计算封闭性}](#prop-k-06-01-流数据库的增量计算封闭性-prop-k-06-01-流数据库的增量计算封闭性)
-    - [Prop-K-06-02: 一致性级别与延迟的权衡关系 {#prop-k-06-02-一致性级别与延迟的权衡关系}](#prop-k-06-02-一致性级别与延迟的权衡关系-prop-k-06-02-一致性级别与延迟的权衡关系)
-    - [Prop-K-06-03: SQL可表达性与流操作完备性 {#prop-k-06-03-sql可表达性与流操作完备性}](#prop-k-06-03-sql可表达性与流操作完备性-prop-k-06-03-sql可表达性与流操作完备性)
-  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations-3-关系建立-relations)
+  - [2. 属性推导 (Properties) {#2-属性推导-properties}](#2-属性推导-properties)
+    - [Prop-K-06-01: 流数据库的增量计算封闭性 {#prop-k-06-01-流数据库的增量计算封闭性}](#prop-k-06-01-流数据库的增量计算封闭性)
+    - [Prop-K-06-02: 一致性级别与延迟的权衡关系 {#prop-k-06-02-一致性级别与延迟的权衡关系}](#prop-k-06-02-一致性级别与延迟的权衡关系)
+    - [Prop-K-06-03: SQL可表达性与流操作完备性 {#prop-k-06-03-sql可表达性与流操作完备性}](#prop-k-06-03-sql可表达性与流操作完备性)
+  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations)
 ```
 
 **File**: `Knowledge/06-frontier/streaming-slo-definition.md`
@@ -64109,21 +64109,21 @@ Kafka Streams 的并行度与 Kafka 分区数严格绑定：
 **File**: `Knowledge/06-frontier/streaming-databases.md`
 
 ```markdown
-    - [Prop-K-06-01: 流数据库的增量计算封闭性 {#prop-k-06-01-流数据库的增量计算封闭性}](#prop-k-06-01-流数据库的增量计算封闭性-prop-k-06-01-流数据库的增量计算封闭性)
-    - [Prop-K-06-02: 一致性级别与延迟的权衡关系 {#prop-k-06-02-一致性级别与延迟的权衡关系}](#prop-k-06-02-一致性级别与延迟的权衡关系-prop-k-06-02-一致性级别与延迟的权衡关系)
-    - [Prop-K-06-03: SQL可表达性与流操作完备性 {#prop-k-06-03-sql可表达性与流操作完备性}](#prop-k-06-03-sql可表达性与流操作完备性-prop-k-06-03-sql可表达性与流操作完备性)
-  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations-3-关系建立-relations)
-    - [3.1 流数据库与Flink的架构关系 {#31-流数据库与flink的架构关系}](#31-流数据库与flink的架构关系-31-流数据库与flink的架构关系)
+    - [Prop-K-06-01: 流数据库的增量计算封闭性 {#prop-k-06-01-流数据库的增量计算封闭性}](#prop-k-06-01-流数据库的增量计算封闭性)
+    - [Prop-K-06-02: 一致性级别与延迟的权衡关系 {#prop-k-06-02-一致性级别与延迟的权衡关系}](#prop-k-06-02-一致性级别与延迟的权衡关系)
+    - [Prop-K-06-03: SQL可表达性与流操作完备性 {#prop-k-06-03-sql可表达性与流操作完备性}](#prop-k-06-03-sql可表达性与流操作完备性)
+  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations)
+    - [3.1 流数据库与Flink的架构关系 {#31-流数据库与flink的架构关系}](#31-流数据库与flink的架构关系)
 ```
 
 **File**: `Knowledge/06-frontier/streaming-databases.md`
 
 ```markdown
-    - [Prop-K-06-01: 流数据库的增量计算封闭性 {#prop-k-06-01-流数据库的增量计算封闭性}](#prop-k-06-01-流数据库的增量计算封闭性-prop-k-06-01-流数据库的增量计算封闭性)
-    - [Prop-K-06-02: 一致性级别与延迟的权衡关系 {#prop-k-06-02-一致性级别与延迟的权衡关系}](#prop-k-06-02-一致性级别与延迟的权衡关系-prop-k-06-02-一致性级别与延迟的权衡关系)
-    - [Prop-K-06-03: SQL可表达性与流操作完备性 {#prop-k-06-03-sql可表达性与流操作完备性}](#prop-k-06-03-sql可表达性与流操作完备性-prop-k-06-03-sql可表达性与流操作完备性)
-  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations-3-关系建立-relations)
-    - [3.1 流数据库与Flink的架构关系 {#31-流数据库与flink的架构关系}](#31-流数据库与flink的架构关系-31-流数据库与flink的架构关系)
+    - [Prop-K-06-01: 流数据库的增量计算封闭性 {#prop-k-06-01-流数据库的增量计算封闭性}](#prop-k-06-01-流数据库的增量计算封闭性)
+    - [Prop-K-06-02: 一致性级别与延迟的权衡关系 {#prop-k-06-02-一致性级别与延迟的权衡关系}](#prop-k-06-02-一致性级别与延迟的权衡关系)
+    - [Prop-K-06-03: SQL可表达性与流操作完备性 {#prop-k-06-03-sql可表达性与流操作完备性}](#prop-k-06-03-sql可表达性与流操作完备性)
+  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations)
+    - [3.1 流数据库与Flink的架构关系 {#31-流数据库与flink的架构关系}](#31-流数据库与flink的架构关系)
 ```
 
 **File**: `Knowledge/Flink-Scala-Rust-Comprehensive/06-trends-2026/06.02-adoption-roadmap.md`
@@ -64329,7 +64329,7 @@ Lakehouse 表能够生成完备 Changelog 的充要条件：
 **File**: `Knowledge/06-frontier/streaming-access-control.md`
 
 ```markdown
-    - [Def-K-06-18: 数据血缘与策略传播 (Data Lineage \& Policy Propagation) {#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation}](#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation-def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation)
+    - [Def-K-06-18: 数据血缘与策略传播 (Data Lineage \& Policy Propagation) {#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation}](#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
     - [Prop-K-06-08: ABAC在流场景的表达能力完备性](#prop-k-06-08-abac在流场景的表达能力完备性)
     - [Prop-K-06-09: ReBAC与ABAC的表达能力关系](#prop-k-06-09-rebac与abac的表达能力关系)
@@ -64339,7 +64339,7 @@ Lakehouse 表能够生成完备 Changelog 的充要条件：
 **File**: `Knowledge/06-frontier/streaming-access-control.md`
 
 ```markdown
-    - [Def-K-06-18: 数据血缘与策略传播 (Data Lineage \& Policy Propagation) {#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation}](#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation-def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation)
+    - [Def-K-06-18: 数据血缘与策略传播 (Data Lineage \& Policy Propagation) {#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation}](#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
     - [Prop-K-06-08: ABAC在流场景的表达能力完备性](#prop-k-06-08-abac在流场景的表达能力完备性)
     - [Prop-K-06-09: ReBAC与ABAC的表达能力关系](#prop-k-06-09-rebac与abac的表达能力关系)
@@ -64631,7 +64631,7 @@ Lakehouse 表能够生成完备 Changelog 的充要条件：
 **File**: `Knowledge/06-frontier/edge-llm-realtime-inference.md`
 
 ```markdown
-    - [Def-K-06-64: 模型量化与压缩 (Model Quantization \& Compression) {#def-k-06-64-模型量化与压缩-model-quantization--compression}](#def-k-06-64-模型量化与压缩-model-quantization--compression-def-k-06-64-模型量化与压缩-model-quantization--compression)
+    - [Def-K-06-64: 模型量化与压缩 (Model Quantization \& Compression) {#def-k-06-64-模型量化与压缩-model-quantization--compression}](#def-k-06-64-模型量化与压缩-model-quantization--compression)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
     - [Prop-K-06-15: 边缘推理延迟上界](#prop-k-06-15-边缘推理延迟上界)
     - [Prop-K-06-16: 量化精度损失边界](#prop-k-06-16-量化精度损失边界)
@@ -64641,7 +64641,7 @@ Lakehouse 表能够生成完备 Changelog 的充要条件：
 **File**: `Knowledge/06-frontier/edge-llm-realtime-inference.md`
 
 ```markdown
-    - [Def-K-06-64: 模型量化与压缩 (Model Quantization \& Compression) {#def-k-06-64-模型量化与压缩-model-quantization--compression}](#def-k-06-64-模型量化与压缩-model-quantization--compression-def-k-06-64-模型量化与压缩-model-quantization--compression)
+    - [Def-K-06-64: 模型量化与压缩 (Model Quantization \& Compression) {#def-k-06-64-模型量化与压缩-model-quantization--compression}](#def-k-06-64-模型量化与压缩-model-quantization--compression)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
     - [Prop-K-06-15: 边缘推理延迟上界](#prop-k-06-15-边缘推理延迟上界)
     - [Prop-K-06-16: 量化精度损失边界](#prop-k-06-16-量化精度损失边界)
@@ -65385,31 +65385,31 @@ Prop-S-02-02 (有限控制静态演算的可判定性)
 **File**: `Struct/01-foundation/01.02-process-calculus-primer.md`
 
 ```markdown
-    - [Lemma-S-02-01. 静态通道模型的拓扑不变性 {#lemma-s-02-01-静态通道模型的拓扑不变性}](#lemma-s-02-01-静态通道模型的拓扑不变性-lemma-s-02-01-静态通道模型的拓扑不变性)
-    - [Lemma-S-02-02. 动态通道演算的图灵完备性 {#lemma-s-02-02-动态通道演算的图灵完备性}](#lemma-s-02-02-动态通道演算的图灵完备性-lemma-s-02-02-动态通道演算的图灵完备性)
-    - [Prop-S-02-01. 对偶性蕴含通信兼容 {#prop-s-02-01-对偶性蕴含通信兼容}](#prop-s-02-01-对偶性蕴含通信兼容-prop-s-02-01-对偶性蕴含通信兼容)
-    - [Prop-S-02-02. 有限控制静态演算的可判定性 {#prop-s-02-02-有限控制静态演算的可判定性}](#prop-s-02-02-有限控制静态演算的可判定性-prop-s-02-02-有限控制静态演算的可判定性)
-  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations-3-关系建立-relations)
+    - [Lemma-S-02-01. 静态通道模型的拓扑不变性 {#lemma-s-02-01-静态通道模型的拓扑不变性}](#lemma-s-02-01-静态通道模型的拓扑不变性)
+    - [Lemma-S-02-02. 动态通道演算的图灵完备性 {#lemma-s-02-02-动态通道演算的图灵完备性}](#lemma-s-02-02-动态通道演算的图灵完备性)
+    - [Prop-S-02-01. 对偶性蕴含通信兼容 {#prop-s-02-01-对偶性蕴含通信兼容}](#prop-s-02-01-对偶性蕴含通信兼容)
+    - [Prop-S-02-02. 有限控制静态演算的可判定性 {#prop-s-02-02-有限控制静态演算的可判定性}](#prop-s-02-02-有限控制静态演算的可判定性)
+  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations)
 ```
 
 **File**: `Struct/01-foundation/01.02-process-calculus-primer.md`
 
 ```markdown
-    - [Lemma-S-02-01. 静态通道模型的拓扑不变性 {#lemma-s-02-01-静态通道模型的拓扑不变性}](#lemma-s-02-01-静态通道模型的拓扑不变性-lemma-s-02-01-静态通道模型的拓扑不变性)
-    - [Lemma-S-02-02. 动态通道演算的图灵完备性 {#lemma-s-02-02-动态通道演算的图灵完备性}](#lemma-s-02-02-动态通道演算的图灵完备性-lemma-s-02-02-动态通道演算的图灵完备性)
-    - [Prop-S-02-01. 对偶性蕴含通信兼容 {#prop-s-02-01-对偶性蕴含通信兼容}](#prop-s-02-01-对偶性蕴含通信兼容-prop-s-02-01-对偶性蕴含通信兼容)
-    - [Prop-S-02-02. 有限控制静态演算的可判定性 {#prop-s-02-02-有限控制静态演算的可判定性}](#prop-s-02-02-有限控制静态演算的可判定性-prop-s-02-02-有限控制静态演算的可判定性)
-  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations-3-关系建立-relations)
+    - [Lemma-S-02-01. 静态通道模型的拓扑不变性 {#lemma-s-02-01-静态通道模型的拓扑不变性}](#lemma-s-02-01-静态通道模型的拓扑不变性)
+    - [Lemma-S-02-02. 动态通道演算的图灵完备性 {#lemma-s-02-02-动态通道演算的图灵完备性}](#lemma-s-02-02-动态通道演算的图灵完备性)
+    - [Prop-S-02-01. 对偶性蕴含通信兼容 {#prop-s-02-01-对偶性蕴含通信兼容}](#prop-s-02-01-对偶性蕴含通信兼容)
+    - [Prop-S-02-02. 有限控制静态演算的可判定性 {#prop-s-02-02-有限控制静态演算的可判定性}](#prop-s-02-02-有限控制静态演算的可判定性)
+  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations)
 ```
 
 **File**: `Struct/01-foundation/01.02-process-calculus-primer.md`
 
 ```markdown
-    - [Lemma-S-02-01. 静态通道模型的拓扑不变性 {#lemma-s-02-01-静态通道模型的拓扑不变性}](#lemma-s-02-01-静态通道模型的拓扑不变性-lemma-s-02-01-静态通道模型的拓扑不变性)
-    - [Lemma-S-02-02. 动态通道演算的图灵完备性 {#lemma-s-02-02-动态通道演算的图灵完备性}](#lemma-s-02-02-动态通道演算的图灵完备性-lemma-s-02-02-动态通道演算的图灵完备性)
-    - [Prop-S-02-01. 对偶性蕴含通信兼容 {#prop-s-02-01-对偶性蕴含通信兼容}](#prop-s-02-01-对偶性蕴含通信兼容-prop-s-02-01-对偶性蕴含通信兼容)
-    - [Prop-S-02-02. 有限控制静态演算的可判定性 {#prop-s-02-02-有限控制静态演算的可判定性}](#prop-s-02-02-有限控制静态演算的可判定性-prop-s-02-02-有限控制静态演算的可判定性)
-  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations-3-关系建立-relations)
+    - [Lemma-S-02-01. 静态通道模型的拓扑不变性 {#lemma-s-02-01-静态通道模型的拓扑不变性}](#lemma-s-02-01-静态通道模型的拓扑不变性)
+    - [Lemma-S-02-02. 动态通道演算的图灵完备性 {#lemma-s-02-02-动态通道演算的图灵完备性}](#lemma-s-02-02-动态通道演算的图灵完备性)
+    - [Prop-S-02-01. 对偶性蕴含通信兼容 {#prop-s-02-01-对偶性蕴含通信兼容}](#prop-s-02-01-对偶性蕴含通信兼容)
+    - [Prop-S-02-02. 有限控制静态演算的可判定性 {#prop-s-02-02-有限控制静态演算的可判定性}](#prop-s-02-02-有限控制静态演算的可判定性)
+  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations)
 ```
 
 #### `Prop-S-02-02`
@@ -65457,21 +65457,21 @@ Def-S-07-01 (确定性流处理系统)
 **File**: `Struct/01-foundation/01.02-process-calculus-primer.md`
 
 ```markdown
-    - [Lemma-S-02-02. 动态通道演算的图灵完备性 {#lemma-s-02-02-动态通道演算的图灵完备性}](#lemma-s-02-02-动态通道演算的图灵完备性-lemma-s-02-02-动态通道演算的图灵完备性)
-    - [Prop-S-02-01. 对偶性蕴含通信兼容 {#prop-s-02-01-对偶性蕴含通信兼容}](#prop-s-02-01-对偶性蕴含通信兼容-prop-s-02-01-对偶性蕴含通信兼容)
-    - [Prop-S-02-02. 有限控制静态演算的可判定性 {#prop-s-02-02-有限控制静态演算的可判定性}](#prop-s-02-02-有限控制静态演算的可判定性-prop-s-02-02-有限控制静态演算的可判定性)
-  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations-3-关系建立-relations)
-    - [关系 1：CSP $\\perp$ CCS（语义上不可比较） {#关系-1csp-perp-ccs语义上不可比较}](#关系-1csp-perp-ccs语义上不可比较-关系-1csp-perp-ccs语义上不可比较)
+    - [Lemma-S-02-02. 动态通道演算的图灵完备性 {#lemma-s-02-02-动态通道演算的图灵完备性}](#lemma-s-02-02-动态通道演算的图灵完备性)
+    - [Prop-S-02-01. 对偶性蕴含通信兼容 {#prop-s-02-01-对偶性蕴含通信兼容}](#prop-s-02-01-对偶性蕴含通信兼容)
+    - [Prop-S-02-02. 有限控制静态演算的可判定性 {#prop-s-02-02-有限控制静态演算的可判定性}](#prop-s-02-02-有限控制静态演算的可判定性)
+  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations)
+    - [关系 1：CSP $\\perp$ CCS（语义上不可比较） {#关系-1csp-perp-ccs语义上不可比较}](#关系-1csp-perp-ccs语义上不可比较)
 ```
 
 **File**: `Struct/01-foundation/01.02-process-calculus-primer.md`
 
 ```markdown
-    - [Lemma-S-02-02. 动态通道演算的图灵完备性 {#lemma-s-02-02-动态通道演算的图灵完备性}](#lemma-s-02-02-动态通道演算的图灵完备性-lemma-s-02-02-动态通道演算的图灵完备性)
-    - [Prop-S-02-01. 对偶性蕴含通信兼容 {#prop-s-02-01-对偶性蕴含通信兼容}](#prop-s-02-01-对偶性蕴含通信兼容-prop-s-02-01-对偶性蕴含通信兼容)
-    - [Prop-S-02-02. 有限控制静态演算的可判定性 {#prop-s-02-02-有限控制静态演算的可判定性}](#prop-s-02-02-有限控制静态演算的可判定性-prop-s-02-02-有限控制静态演算的可判定性)
-  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations-3-关系建立-relations)
-    - [关系 1：CSP $\\perp$ CCS（语义上不可比较） {#关系-1csp-perp-ccs语义上不可比较}](#关系-1csp-perp-ccs语义上不可比较-关系-1csp-perp-ccs语义上不可比较)
+    - [Lemma-S-02-02. 动态通道演算的图灵完备性 {#lemma-s-02-02-动态通道演算的图灵完备性}](#lemma-s-02-02-动态通道演算的图灵完备性)
+    - [Prop-S-02-01. 对偶性蕴含通信兼容 {#prop-s-02-01-对偶性蕴含通信兼容}](#prop-s-02-01-对偶性蕴含通信兼容)
+    - [Prop-S-02-02. 有限控制静态演算的可判定性 {#prop-s-02-02-有限控制静态演算的可判定性}](#prop-s-02-02-有限控制静态演算的可判定性)
+  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations)
+    - [关系 1：CSP $\\perp$ CCS（语义上不可比较） {#关系-1csp-perp-ccs语义上不可比较}](#关系-1csp-perp-ccs语义上不可比较)
 ```
 
 #### `Prop-S-03-01`
@@ -65923,21 +65923,21 @@ $$\\text{EO}(J) \\iff \\text{Replayable}(Src) \\land \\text{ConsistentCheckpoint
 **File**: `Struct/03-relationships/03.03-expressiveness-hierarchy-supplement.md`
 
 ```markdown
-    - [Lemma-S-15-01. Session Types 类型安全保证 {#lemma-s-15-01-session-types-类型安全保证}](#lemma-s-15-01-session-types-类型安全保证-lemma-s-15-01-session-types-类型安全保证)
-    - [Lemma-S-15-02. CRDT 收敛单调性 {#lemma-s-15-02-crdt-收敛单调性}](#lemma-s-15-02-crdt-收敛单调性-lemma-s-15-02-crdt-收敛单调性)
-    - [Prop-S-15-01. 验证方法覆盖层级关系 {#prop-s-15-01-验证方法覆盖层级关系}](#prop-s-15-01-验证方法覆盖层级关系-prop-s-15-01-验证方法覆盖层级关系)
-  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations-3-关系建立-relations)
-    - [关系 1: Session Types → Process Calculus 扩展 {#关系-1-session-types--process-calculus-扩展}](#关系-1-session-types--process-calculus-扩展-关系-1-session-types--process-calculus-扩展)
+    - [Lemma-S-15-01. Session Types 类型安全保证 {#lemma-s-15-01-session-types-类型安全保证}](#lemma-s-15-01-session-types-类型安全保证)
+    - [Lemma-S-15-02. CRDT 收敛单调性 {#lemma-s-15-02-crdt-收敛单调性}](#lemma-s-15-02-crdt-收敛单调性)
+    - [Prop-S-15-01. 验证方法覆盖层级关系 {#prop-s-15-01-验证方法覆盖层级关系}](#prop-s-15-01-验证方法覆盖层级关系)
+  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations)
+    - [关系 1: Session Types → Process Calculus 扩展 {#关系-1-session-types--process-calculus-扩展}](#关系-1-session-types--process-calculus-扩展)
 ```
 
 **File**: `Struct/03-relationships/03.03-expressiveness-hierarchy-supplement.md`
 
 ```markdown
-    - [Lemma-S-15-01. Session Types 类型安全保证 {#lemma-s-15-01-session-types-类型安全保证}](#lemma-s-15-01-session-types-类型安全保证-lemma-s-15-01-session-types-类型安全保证)
-    - [Lemma-S-15-02. CRDT 收敛单调性 {#lemma-s-15-02-crdt-收敛单调性}](#lemma-s-15-02-crdt-收敛单调性-lemma-s-15-02-crdt-收敛单调性)
-    - [Prop-S-15-01. 验证方法覆盖层级关系 {#prop-s-15-01-验证方法覆盖层级关系}](#prop-s-15-01-验证方法覆盖层级关系-prop-s-15-01-验证方法覆盖层级关系)
-  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations-3-关系建立-relations)
-    - [关系 1: Session Types → Process Calculus 扩展 {#关系-1-session-types--process-calculus-扩展}](#关系-1-session-types--process-calculus-扩展-关系-1-session-types--process-calculus-扩展)
+    - [Lemma-S-15-01. Session Types 类型安全保证 {#lemma-s-15-01-session-types-类型安全保证}](#lemma-s-15-01-session-types-类型安全保证)
+    - [Lemma-S-15-02. CRDT 收敛单调性 {#lemma-s-15-02-crdt-收敛单调性}](#lemma-s-15-02-crdt-收敛单调性)
+    - [Prop-S-15-01. 验证方法覆盖层级关系 {#prop-s-15-01-验证方法覆盖层级关系}](#prop-s-15-01-验证方法覆盖层级关系)
+  - [3. 关系建立 (Relations) {#3-关系建立-relations}](#3-关系建立-relations)
+    - [关系 1: Session Types → Process Calculus 扩展 {#关系-1-session-types--process-calculus-扩展}](#关系-1-session-types--process-calculus-扩展)
 ```
 
 **File**: `Struct/03-relationships/03.04-bisimulation-equivalences.md`
@@ -66209,31 +66209,31 @@ $$\\text{EO}(J) \\iff \\text{Replayable}(Src) \\land \\text{ConsistentCheckpoint
 **File**: `Struct/04-proofs/04.04-watermark-algebra-formal-proof.md`
 
 ```markdown
-    - [Lemma-S-20-03 (⊔ 幂等律) {#lemma-s-20-03--幂等律}](#lemma-s-20-03--幂等律-lemma-s-20-03--幂等律)
-    - [Lemma-S-20-04 (⊔ 吸收律与单位元) {#lemma-s-20-04--吸收律与单位元}](#lemma-s-20-04--吸收律与单位元-lemma-s-20-04--吸收律与单位元)
+    - [Lemma-S-20-03 (⊔ 幂等律) {#lemma-s-20-03--幂等律}](#lemma-s-20-03--幂等律)
+    - [Lemma-S-20-04 (⊔ 吸收律与单位元) {#lemma-s-20-04--吸收律与单位元}](#lemma-s-20-04--吸收律与单位元)
     - [Prop-S-20-01 (Watermark 单调性与格结构的兼容性)](#prop-s-20-01-watermark-单调性与格结构的兼容性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [关系 1: Watermark 格 `↦` 完备格理论 {#关系-1-watermark-格--完备格理论}](#关系-1-watermark-格--完备格理论-关系-1-watermark-格--完备格理论)
+    - [关系 1: Watermark 格 `↦` 完备格理论 {#关系-1-watermark-格--完备格理论}](#关系-1-watermark-格--完备格理论)
 ```
 
 **File**: `Struct/04-proofs/04.04-watermark-algebra-formal-proof.md`
 
 ```markdown
-    - [Lemma-S-20-03 (⊔ 幂等律) {#lemma-s-20-03--幂等律}](#lemma-s-20-03--幂等律-lemma-s-20-03--幂等律)
-    - [Lemma-S-20-04 (⊔ 吸收律与单位元) {#lemma-s-20-04--吸收律与单位元}](#lemma-s-20-04--吸收律与单位元-lemma-s-20-04--吸收律与单位元)
+    - [Lemma-S-20-03 (⊔ 幂等律) {#lemma-s-20-03--幂等律}](#lemma-s-20-03--幂等律)
+    - [Lemma-S-20-04 (⊔ 吸收律与单位元) {#lemma-s-20-04--吸收律与单位元}](#lemma-s-20-04--吸收律与单位元)
     - [Prop-S-20-01 (Watermark 单调性与格结构的兼容性)](#prop-s-20-01-watermark-单调性与格结构的兼容性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [关系 1: Watermark 格 `↦` 完备格理论 {#关系-1-watermark-格--完备格理论}](#关系-1-watermark-格--完备格理论-关系-1-watermark-格--完备格理论)
+    - [关系 1: Watermark 格 `↦` 完备格理论 {#关系-1-watermark-格--完备格理论}](#关系-1-watermark-格--完备格理论)
 ```
 
 **File**: `Struct/04-proofs/04.04-watermark-algebra-formal-proof.md`
 
 ```markdown
-    - [Lemma-S-20-03 (⊔ 幂等律) {#lemma-s-20-03--幂等律}](#lemma-s-20-03--幂等律-lemma-s-20-03--幂等律)
-    - [Lemma-S-20-04 (⊔ 吸收律与单位元) {#lemma-s-20-04--吸收律与单位元}](#lemma-s-20-04--吸收律与单位元-lemma-s-20-04--吸收律与单位元)
+    - [Lemma-S-20-03 (⊔ 幂等律) {#lemma-s-20-03--幂等律}](#lemma-s-20-03--幂等律)
+    - [Lemma-S-20-04 (⊔ 吸收律与单位元) {#lemma-s-20-04--吸收律与单位元}](#lemma-s-20-04--吸收律与单位元)
     - [Prop-S-20-01 (Watermark 单调性与格结构的兼容性)](#prop-s-20-01-watermark-单调性与格结构的兼容性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [关系 1: Watermark 格 `↦` 完备格理论 {#关系-1-watermark-格--完备格理论}](#关系-1-watermark-格--完备格理论-关系-1-watermark-格--完备格理论)
+    - [关系 1: Watermark 格 `↦` 完备格理论 {#关系-1-watermark-格--完备格理论}](#关系-1-watermark-格--完备格理论)
 ```
 
 #### `Prop-S-23-01`
@@ -66243,7 +66243,7 @@ $$\\text{EO}(J) \\iff \\text{Replayable}(Src) \\land \\text{ConsistentCheckpoint
 ```markdown
     - [Lemma-S-23-02. 投影合成还原](#lemma-s-23-02-投影合成还原)
     - [Lemma-S-23-03. 类型保持性](#lemma-s-23-03-类型保持性)
-    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus-关系-3-choreography--process-calculus)
+    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus)
     - [Prop-S-23-02. 投影语义等价性](#prop-s-23-02-投影语义等价性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
 ```
@@ -66253,7 +66253,7 @@ $$\\text{EO}(J) \\iff \\text{Replayable}(Src) \\land \\text{ConsistentCheckpoint
 ```markdown
     - [Lemma-S-23-02. 投影合成还原](#lemma-s-23-02-投影合成还原)
     - [Lemma-S-23-03. 类型保持性](#lemma-s-23-03-类型保持性)
-    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus-关系-3-choreography--process-calculus)
+    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus)
     - [Prop-S-23-02. 投影语义等价性](#prop-s-23-02-投影语义等价性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
 ```
@@ -66263,7 +66263,7 @@ $$\\text{EO}(J) \\iff \\text{Replayable}(Src) \\land \\text{ConsistentCheckpoint
 ```markdown
     - [Lemma-S-23-02. 投影合成还原](#lemma-s-23-02-投影合成还原)
     - [Lemma-S-23-03. 类型保持性](#lemma-s-23-03-类型保持性)
-    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus-关系-3-choreography--process-calculus)
+    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus)
     - [Prop-S-23-02. 投影语义等价性](#prop-s-23-02-投影语义等价性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
 ```
@@ -66273,7 +66273,7 @@ $$\\text{EO}(J) \\iff \\text{Replayable}(Src) \\land \\text{ConsistentCheckpoint
 ```markdown
     - [Lemma-S-23-02. 投影合成还原](#lemma-s-23-02-投影合成还原)
     - [Lemma-S-23-03. 类型保持性](#lemma-s-23-03-类型保持性)
-    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus-关系-3-choreography--process-calculus)
+    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus)
     - [Prop-S-23-02. 投影语义等价性](#prop-s-23-02-投影语义等价性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
 ```
@@ -66284,20 +66284,20 @@ $$\\text{EO}(J) \\iff \\text{Replayable}(Src) \\land \\text{ConsistentCheckpoint
 
 ```markdown
     - [Lemma-S-23-03. 类型保持性](#lemma-s-23-03-类型保持性)
-    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus-关系-3-choreography--process-calculus)
+    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus)
     - [Prop-S-23-02. 投影语义等价性](#prop-s-23-02-投影语义等价性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [关系 1: Global Types `↔` Session Types {#关系-1-global-types--session-types}](#关系-1-global-types--session-types-关系-1-global-types--session-types)
+    - [关系 1: Global Types `↔` Session Types {#关系-1-global-types--session-types}](#关系-1-global-types--session-types)
 ```
 
 **File**: `Struct/04-proofs/04.07-deadlock-freedom-choreographic.md`
 
 ```markdown
     - [Lemma-S-23-03. 类型保持性](#lemma-s-23-03-类型保持性)
-    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus-关系-3-choreography--process-calculus)
+    - [Prop-S-23-01. Choreography 的合流性](#关系-3-choreography--process-calculus)
     - [Prop-S-23-02. 投影语义等价性](#prop-s-23-02-投影语义等价性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [关系 1: Global Types `↔` Session Types {#关系-1-global-types--session-types}](#关系-1-global-types--session-types-关系-1-global-types--session-types)
+    - [关系 1: Global Types `↔` Session Types {#关系-1-global-types--session-types}](#关系-1-global-types--session-types)
 ```
 
 #### `Prop-S-25-01`
@@ -66873,41 +66873,41 @@ $$\\text{EO}(J) \\iff \\text{Replayable}(Src) \\land \\text{ConsistentCheckpoint
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-      - [RocksDBStateBackend 快照流程 {#rocksdbstatebackend-快照流程}](#rocksdbstatebackend-快照流程-rocksdbstatebackend-快照流程)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument)
-    - [Thm-F-02-01 (Checkpoint 恢复后系统状态等价性) {#thm-f-02-01-checkpoint-恢复后系统状态等价性}](#thm-f-02-01-checkpoint-恢复后系统状态等价性-thm-f-02-01-checkpoint-恢复后系统状态等价性)
-    - [Thm-F-02-02 (增量 Checkpoint 完备性) {#thm-f-02-02-增量-checkpoint-完备性}](#thm-f-02-02-增量-checkpoint-完备性-thm-f-02-02-增量-checkpoint-完备性)
-    - [Thm-F-02-01 源码验证 {#thm-f-02-01-源码验证}](#thm-f-02-01-源码验证-thm-f-02-01-源码验证)
+      - [RocksDBStateBackend 快照流程 {#rocksdbstatebackend-快照流程}](#rocksdbstatebackend-快照流程)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument)
+    - [Thm-F-02-01 (Checkpoint 恢复后系统状态等价性) {#thm-f-02-01-checkpoint-恢复后系统状态等价性}](#thm-f-02-01-checkpoint-恢复后系统状态等价性)
+    - [Thm-F-02-02 (增量 Checkpoint 完备性) {#thm-f-02-02-增量-checkpoint-完备性}](#thm-f-02-02-增量-checkpoint-完备性)
+    - [Thm-F-02-01 源码验证 {#thm-f-02-01-源码验证}](#thm-f-02-01-源码验证)
 ```
 
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-      - [RocksDBStateBackend 快照流程 {#rocksdbstatebackend-快照流程}](#rocksdbstatebackend-快照流程-rocksdbstatebackend-快照流程)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument)
-    - [Thm-F-02-01 (Checkpoint 恢复后系统状态等价性) {#thm-f-02-01-checkpoint-恢复后系统状态等价性}](#thm-f-02-01-checkpoint-恢复后系统状态等价性-thm-f-02-01-checkpoint-恢复后系统状态等价性)
-    - [Thm-F-02-02 (增量 Checkpoint 完备性) {#thm-f-02-02-增量-checkpoint-完备性}](#thm-f-02-02-增量-checkpoint-完备性-thm-f-02-02-增量-checkpoint-完备性)
-    - [Thm-F-02-01 源码验证 {#thm-f-02-01-源码验证}](#thm-f-02-01-源码验证-thm-f-02-01-源码验证)
+      - [RocksDBStateBackend 快照流程 {#rocksdbstatebackend-快照流程}](#rocksdbstatebackend-快照流程)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument)
+    - [Thm-F-02-01 (Checkpoint 恢复后系统状态等价性) {#thm-f-02-01-checkpoint-恢复后系统状态等价性}](#thm-f-02-01-checkpoint-恢复后系统状态等价性)
+    - [Thm-F-02-02 (增量 Checkpoint 完备性) {#thm-f-02-02-增量-checkpoint-完备性}](#thm-f-02-02-增量-checkpoint-完备性)
+    - [Thm-F-02-01 源码验证 {#thm-f-02-01-源码验证}](#thm-f-02-01-源码验证)
 ```
 
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-      - [RocksDBStateBackend 快照流程 {#rocksdbstatebackend-快照流程}](#rocksdbstatebackend-快照流程-rocksdbstatebackend-快照流程)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument)
-    - [Thm-F-02-01 (Checkpoint 恢复后系统状态等价性) {#thm-f-02-01-checkpoint-恢复后系统状态等价性}](#thm-f-02-01-checkpoint-恢复后系统状态等价性-thm-f-02-01-checkpoint-恢复后系统状态等价性)
-    - [Thm-F-02-02 (增量 Checkpoint 完备性) {#thm-f-02-02-增量-checkpoint-完备性}](#thm-f-02-02-增量-checkpoint-完备性-thm-f-02-02-增量-checkpoint-完备性)
-    - [Thm-F-02-01 源码验证 {#thm-f-02-01-源码验证}](#thm-f-02-01-源码验证-thm-f-02-01-源码验证)
+      - [RocksDBStateBackend 快照流程 {#rocksdbstatebackend-快照流程}](#rocksdbstatebackend-快照流程)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument)
+    - [Thm-F-02-01 (Checkpoint 恢复后系统状态等价性) {#thm-f-02-01-checkpoint-恢复后系统状态等价性}](#thm-f-02-01-checkpoint-恢复后系统状态等价性)
+    - [Thm-F-02-02 (增量 Checkpoint 完备性) {#thm-f-02-02-增量-checkpoint-完备性}](#thm-f-02-02-增量-checkpoint-完备性)
+    - [Thm-F-02-01 源码验证 {#thm-f-02-01-源码验证}](#thm-f-02-01-源码验证)
 ```
 
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-      - [RocksDBStateBackend 快照流程 {#rocksdbstatebackend-快照流程}](#rocksdbstatebackend-快照流程-rocksdbstatebackend-快照流程)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument)
-    - [Thm-F-02-01 (Checkpoint 恢复后系统状态等价性) {#thm-f-02-01-checkpoint-恢复后系统状态等价性}](#thm-f-02-01-checkpoint-恢复后系统状态等价性-thm-f-02-01-checkpoint-恢复后系统状态等价性)
-    - [Thm-F-02-02 (增量 Checkpoint 完备性) {#thm-f-02-02-增量-checkpoint-完备性}](#thm-f-02-02-增量-checkpoint-完备性-thm-f-02-02-增量-checkpoint-完备性)
-    - [Thm-F-02-01 源码验证 {#thm-f-02-01-源码验证}](#thm-f-02-01-源码验证-thm-f-02-01-源码验证)
+      - [RocksDBStateBackend 快照流程 {#rocksdbstatebackend-快照流程}](#rocksdbstatebackend-快照流程)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument)
+    - [Thm-F-02-01 (Checkpoint 恢复后系统状态等价性) {#thm-f-02-01-checkpoint-恢复后系统状态等价性}](#thm-f-02-01-checkpoint-恢复后系统状态等价性)
+    - [Thm-F-02-02 (增量 Checkpoint 完备性) {#thm-f-02-02-增量-checkpoint-完备性}](#thm-f-02-02-增量-checkpoint-完备性)
+    - [Thm-F-02-01 源码验证 {#thm-f-02-01-源码验证}](#thm-f-02-01-源码验证)
 ```
 
 **File**: `Flink/02-core/forst-state-backend.md`
@@ -67095,41 +67095,41 @@ env.setStateBackend(new EmbeddedRocksDBStateBackend(true));
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument)
-    - [Thm-F-02-01 (Checkpoint 恢复后系统状态等价性) {#thm-f-02-01-checkpoint-恢复后系统状态等价性}](#thm-f-02-01-checkpoint-恢复后系统状态等价性-thm-f-02-01-checkpoint-恢复后系统状态等价性)
-    - [Thm-F-02-02 (增量 Checkpoint 完备性) {#thm-f-02-02-增量-checkpoint-完备性}](#thm-f-02-02-增量-checkpoint-完备性-thm-f-02-02-增量-checkpoint-完备性)
-    - [Thm-F-02-01 源码验证 {#thm-f-02-01-源码验证}](#thm-f-02-01-源码验证-thm-f-02-01-源码验证)
-    - [Thm-F-02-02 源码验证 {#thm-f-02-02-源码验证}](#thm-f-02-02-源码验证-thm-f-02-02-源码验证)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument)
+    - [Thm-F-02-01 (Checkpoint 恢复后系统状态等价性) {#thm-f-02-01-checkpoint-恢复后系统状态等价性}](#thm-f-02-01-checkpoint-恢复后系统状态等价性)
+    - [Thm-F-02-02 (增量 Checkpoint 完备性) {#thm-f-02-02-增量-checkpoint-完备性}](#thm-f-02-02-增量-checkpoint-完备性)
+    - [Thm-F-02-01 源码验证 {#thm-f-02-01-源码验证}](#thm-f-02-01-源码验证)
+    - [Thm-F-02-02 源码验证 {#thm-f-02-02-源码验证}](#thm-f-02-02-源码验证)
 ```
 
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument)
-    - [Thm-F-02-01 (Checkpoint 恢复后系统状态等价性) {#thm-f-02-01-checkpoint-恢复后系统状态等价性}](#thm-f-02-01-checkpoint-恢复后系统状态等价性-thm-f-02-01-checkpoint-恢复后系统状态等价性)
-    - [Thm-F-02-02 (增量 Checkpoint 完备性) {#thm-f-02-02-增量-checkpoint-完备性}](#thm-f-02-02-增量-checkpoint-完备性-thm-f-02-02-增量-checkpoint-完备性)
-    - [Thm-F-02-01 源码验证 {#thm-f-02-01-源码验证}](#thm-f-02-01-源码验证-thm-f-02-01-源码验证)
-    - [Thm-F-02-02 源码验证 {#thm-f-02-02-源码验证}](#thm-f-02-02-源码验证-thm-f-02-02-源码验证)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument)
+    - [Thm-F-02-01 (Checkpoint 恢复后系统状态等价性) {#thm-f-02-01-checkpoint-恢复后系统状态等价性}](#thm-f-02-01-checkpoint-恢复后系统状态等价性)
+    - [Thm-F-02-02 (增量 Checkpoint 完备性) {#thm-f-02-02-增量-checkpoint-完备性}](#thm-f-02-02-增量-checkpoint-完备性)
+    - [Thm-F-02-01 源码验证 {#thm-f-02-01-源码验证}](#thm-f-02-01-源码验证)
+    - [Thm-F-02-02 源码验证 {#thm-f-02-02-源码验证}](#thm-f-02-02-源码验证)
 ```
 
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument)
-    - [Thm-F-02-01 (Checkpoint 恢复后系统状态等价性) {#thm-f-02-01-checkpoint-恢复后系统状态等价性}](#thm-f-02-01-checkpoint-恢复后系统状态等价性-thm-f-02-01-checkpoint-恢复后系统状态等价性)
-    - [Thm-F-02-02 (增量 Checkpoint 完备性) {#thm-f-02-02-增量-checkpoint-完备性}](#thm-f-02-02-增量-checkpoint-完备性-thm-f-02-02-增量-checkpoint-完备性)
-    - [Thm-F-02-01 源码验证 {#thm-f-02-01-源码验证}](#thm-f-02-01-源码验证-thm-f-02-01-源码验证)
-    - [Thm-F-02-02 源码验证 {#thm-f-02-02-源码验证}](#thm-f-02-02-源码验证-thm-f-02-02-源码验证)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument)
+    - [Thm-F-02-01 (Checkpoint 恢复后系统状态等价性) {#thm-f-02-01-checkpoint-恢复后系统状态等价性}](#thm-f-02-01-checkpoint-恢复后系统状态等价性)
+    - [Thm-F-02-02 (增量 Checkpoint 完备性) {#thm-f-02-02-增量-checkpoint-完备性}](#thm-f-02-02-增量-checkpoint-完备性)
+    - [Thm-F-02-01 源码验证 {#thm-f-02-01-源码验证}](#thm-f-02-01-源码验证)
+    - [Thm-F-02-02 源码验证 {#thm-f-02-02-源码验证}](#thm-f-02-02-源码验证)
 ```
 
 **File**: `Flink/02-core/checkpoint-mechanism-deep-dive.md`
 
 ```markdown
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument)
-    - [Thm-F-02-01 (Checkpoint 恢复后系统状态等价性) {#thm-f-02-01-checkpoint-恢复后系统状态等价性}](#thm-f-02-01-checkpoint-恢复后系统状态等价性-thm-f-02-01-checkpoint-恢复后系统状态等价性)
-    - [Thm-F-02-02 (增量 Checkpoint 完备性) {#thm-f-02-02-增量-checkpoint-完备性}](#thm-f-02-02-增量-checkpoint-完备性-thm-f-02-02-增量-checkpoint-完备性)
-    - [Thm-F-02-01 源码验证 {#thm-f-02-01-源码验证}](#thm-f-02-01-源码验证-thm-f-02-01-源码验证)
-    - [Thm-F-02-02 源码验证 {#thm-f-02-02-源码验证}](#thm-f-02-02-源码验证-thm-f-02-02-源码验证)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument)
+    - [Thm-F-02-01 (Checkpoint 恢复后系统状态等价性) {#thm-f-02-01-checkpoint-恢复后系统状态等价性}](#thm-f-02-01-checkpoint-恢复后系统状态等价性)
+    - [Thm-F-02-02 (增量 Checkpoint 完备性) {#thm-f-02-02-增量-checkpoint-完备性}](#thm-f-02-02-增量-checkpoint-完备性)
+    - [Thm-F-02-01 源码验证 {#thm-f-02-01-源码验证}](#thm-f-02-01-源码验证)
+    - [Thm-F-02-02 源码验证 {#thm-f-02-02-源码验证}](#thm-f-02-02-源码验证)
 ```
 
 **File**: `Flink/02-core/forst-state-backend.md`
@@ -77431,21 +77431,21 @@ $$
 **File**: `Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md`
 
 ```markdown
-  - [5. 形式证明 / 工程论证 {#5-形式证明--工程论证}](#5-形式证明--工程论证-5-形式证明--工程论证)
-    - [5.1 平台选型决策框架 {#51-平台选型决策框架}](#51-平台选型决策框架-51-平台选型决策框架)
-      - [Thm-K-01-20. 流平台选型最优性定理 {#thm-k-01-20-流平台选型最优性定理}](#thm-k-01-20-流平台选型最优性定理-thm-k-01-20-流平台选型最优性定理)
-    - [5.2 技术栈对比工程论证 {#52-技术栈对比工程论证}](#52-技术栈对比工程论证-52-技术栈对比工程论证)
-    - [5.3 成本效益分析模型 {#53-成本效益分析模型}](#53-成本效益分析模型-53-成本效益分析模型)
+  - [5. 形式证明 / 工程论证 {#5-形式证明--工程论证}](#5-形式证明--工程论证)
+    - [5.1 平台选型决策框架 {#51-平台选型决策框架}](#51-平台选型决策框架)
+      - [Thm-K-01-20. 流平台选型最优性定理 {#thm-k-01-20-流平台选型最优性定理}](#thm-k-01-20-流平台选型最优性定理)
+    - [5.2 技术栈对比工程论证 {#52-技术栈对比工程论证}](#52-技术栈对比工程论证)
+    - [5.3 成本效益分析模型 {#53-成本效益分析模型}](#53-成本效益分析模型)
 ```
 
 **File**: `Knowledge/01-concept-atlas/data-streaming-landscape-2026-complete.md`
 
 ```markdown
-  - [5. 形式证明 / 工程论证 {#5-形式证明--工程论证}](#5-形式证明--工程论证-5-形式证明--工程论证)
-    - [5.1 平台选型决策框架 {#51-平台选型决策框架}](#51-平台选型决策框架-51-平台选型决策框架)
-      - [Thm-K-01-20. 流平台选型最优性定理 {#thm-k-01-20-流平台选型最优性定理}](#thm-k-01-20-流平台选型最优性定理-thm-k-01-20-流平台选型最优性定理)
-    - [5.2 技术栈对比工程论证 {#52-技术栈对比工程论证}](#52-技术栈对比工程论证-52-技术栈对比工程论证)
-    - [5.3 成本效益分析模型 {#53-成本效益分析模型}](#53-成本效益分析模型-53-成本效益分析模型)
+  - [5. 形式证明 / 工程论证 {#5-形式证明--工程论证}](#5-形式证明--工程论证)
+    - [5.1 平台选型决策框架 {#51-平台选型决策框架}](#51-平台选型决策框架)
+      - [Thm-K-01-20. 流平台选型最优性定理 {#thm-k-01-20-流平台选型最优性定理}](#thm-k-01-20-流平台选型最优性定理)
+    - [5.2 技术栈对比工程论证 {#52-技术栈对比工程论证}](#52-技术栈对比工程论证)
+    - [5.3 成本效益分析模型 {#53-成本效益分析模型}](#53-成本效益分析模型)
 ```
 
 #### `Thm-K-02-01`
@@ -77454,7 +77454,7 @@ $$
 
 ```markdown
     - [4.3 驱逐器与增量计算的权衡](#43-驱逐器与增量计算的权衡)
-  - [5. 形式证明 / 工程论证 {#5-形式证明--工程论证}](#5-形式证明--工程论证-5-形式证明--工程论证)
+  - [5. 形式证明 / 工程论证 {#5-形式证明--工程论证}](#5-形式证明--工程论证)
     - [Thm-K-02-01 (窗口聚合正确性条件)](#thm-k-02-01-窗口聚合正确性条件)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [6.1 Flink DataStream API 示例](#61-flink-datastream-api-示例)
@@ -77464,7 +77464,7 @@ $$
 
 ```markdown
     - [4.3 驱逐器与增量计算的权衡](#43-驱逐器与增量计算的权衡)
-  - [5. 形式证明 / 工程论证 {#5-形式证明--工程论证}](#5-形式证明--工程论证-5-形式证明--工程论证)
+  - [5. 形式证明 / 工程论证 {#5-形式证明--工程论证}](#5-形式证明--工程论证)
     - [Thm-K-02-01 (窗口聚合正确性条件)](#thm-k-02-01-窗口聚合正确性条件)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [6.1 Flink DataStream API 示例](#61-flink-datastream-api-示例)
@@ -77526,7 +77526,7 @@ $$
 
 ```markdown
     - [4.3 异常检测算法选择](#43-异常检测算法选择)
-  - [5. 形式证明 / 工程论证 {#5-形式证明--工程论证}](#5-形式证明--工程论证-5-形式证明--工程论证)
+  - [5. 形式证明 / 工程论证 {#5-形式证明--工程论证}](#5-形式证明--工程论证)
     - [Thm-K-02-02 (日志关联完整性条件)](#thm-k-02-02-日志关联完整性条件)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [6.1 多格式日志解析](#61-多格式日志解析)
@@ -77536,7 +77536,7 @@ $$
 
 ```markdown
     - [4.3 异常检测算法选择](#43-异常检测算法选择)
-  - [5. 形式证明 / 工程论证 {#5-形式证明--工程论证}](#5-形式证明--工程论证-5-形式证明--工程论证)
+  - [5. 形式证明 / 工程论证 {#5-形式证明--工程论证}](#5-形式证明--工程论证)
     - [Thm-K-02-02 (日志关联完整性条件)](#thm-k-02-02-日志关联完整性条件)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [6.1 多格式日志解析](#61-多格式日志解析)
@@ -79349,30 +79349,30 @@ $$
 
 ```markdown
     - [论证 3：会话类型作为 π-演算的有纪律子集 {#论证-3会话类型作为-π-演算的有纪律子集}](#论证-3会话类型作为-π-演算的有纪律子集-论证-3会话类型作为-π-演算的有纪律子集)
-  - [5. 形式证明 (Proofs) {#5-形式证明-proofs}](#5-形式证明-proofs-5-形式证明-proofs)
-    - [Thm-S-02-01. 动态通道演算严格包含静态通道演算 {#thm-s-02-01-动态通道演算严格包含静态通道演算}](#thm-s-02-01-动态通道演算严格包含静态通道演算-thm-s-02-01-动态通道演算严格包含静态通道演算)
-    - [Cor-S-02-01. 良类型会话进程无死锁 {#cor-s-02-01-良类型会话进程无死锁}](#cor-s-02-01-良类型会话进程无死锁-cor-s-02-01-良类型会话进程无死锁)
-  - [6. 实例验证 (Examples) {#6-实例验证-examples}](#6-实例验证-examples-6-实例验证-examples)
+  - [5. 形式证明 (Proofs) {#5-形式证明-proofs}](#5-形式证明-proofs)
+    - [Thm-S-02-01. 动态通道演算严格包含静态通道演算 {#thm-s-02-01-动态通道演算严格包含静态通道演算}](#thm-s-02-01-动态通道演算严格包含静态通道演算)
+    - [Cor-S-02-01. 良类型会话进程无死锁 {#cor-s-02-01-良类型会话进程无死锁}](#cor-s-02-01-良类型会话进程无死锁)
+  - [6. 实例验证 (Examples) {#6-实例验证-examples}](#6-实例验证-examples)
 ```
 
 **File**: `Struct/01-foundation/01.02-process-calculus-primer.md`
 
 ```markdown
     - [论证 3：会话类型作为 π-演算的有纪律子集 {#论证-3会话类型作为-π-演算的有纪律子集}](#论证-3会话类型作为-π-演算的有纪律子集-论证-3会话类型作为-π-演算的有纪律子集)
-  - [5. 形式证明 (Proofs) {#5-形式证明-proofs}](#5-形式证明-proofs-5-形式证明-proofs)
-    - [Thm-S-02-01. 动态通道演算严格包含静态通道演算 {#thm-s-02-01-动态通道演算严格包含静态通道演算}](#thm-s-02-01-动态通道演算严格包含静态通道演算-thm-s-02-01-动态通道演算严格包含静态通道演算)
-    - [Cor-S-02-01. 良类型会话进程无死锁 {#cor-s-02-01-良类型会话进程无死锁}](#cor-s-02-01-良类型会话进程无死锁-cor-s-02-01-良类型会话进程无死锁)
-  - [6. 实例验证 (Examples) {#6-实例验证-examples}](#6-实例验证-examples-6-实例验证-examples)
+  - [5. 形式证明 (Proofs) {#5-形式证明-proofs}](#5-形式证明-proofs)
+    - [Thm-S-02-01. 动态通道演算严格包含静态通道演算 {#thm-s-02-01-动态通道演算严格包含静态通道演算}](#thm-s-02-01-动态通道演算严格包含静态通道演算)
+    - [Cor-S-02-01. 良类型会话进程无死锁 {#cor-s-02-01-良类型会话进程无死锁}](#cor-s-02-01-良类型会话进程无死锁)
+  - [6. 实例验证 (Examples) {#6-实例验证-examples}](#6-实例验证-examples)
 ```
 
 **File**: `Struct/01-foundation/01.02-process-calculus-primer.md`
 
 ```markdown
     - [论证 3：会话类型作为 π-演算的有纪律子集 {#论证-3会话类型作为-π-演算的有纪律子集}](#论证-3会话类型作为-π-演算的有纪律子集-论证-3会话类型作为-π-演算的有纪律子集)
-  - [5. 形式证明 (Proofs) {#5-形式证明-proofs}](#5-形式证明-proofs-5-形式证明-proofs)
-    - [Thm-S-02-01. 动态通道演算严格包含静态通道演算 {#thm-s-02-01-动态通道演算严格包含静态通道演算}](#thm-s-02-01-动态通道演算严格包含静态通道演算-thm-s-02-01-动态通道演算严格包含静态通道演算)
-    - [Cor-S-02-01. 良类型会话进程无死锁 {#cor-s-02-01-良类型会话进程无死锁}](#cor-s-02-01-良类型会话进程无死锁-cor-s-02-01-良类型会话进程无死锁)
-  - [6. 实例验证 (Examples) {#6-实例验证-examples}](#6-实例验证-examples-6-实例验证-examples)
+  - [5. 形式证明 (Proofs) {#5-形式证明-proofs}](#5-形式证明-proofs)
+    - [Thm-S-02-01. 动态通道演算严格包含静态通道演算 {#thm-s-02-01-动态通道演算严格包含静态通道演算}](#thm-s-02-01-动态通道演算严格包含静态通道演算)
+    - [Cor-S-02-01. 良类型会话进程无死锁 {#cor-s-02-01-良类型会话进程无死锁}](#cor-s-02-01-良类型会话进程无死锁)
+  - [6. 实例验证 (Examples) {#6-实例验证-examples}](#6-实例验证-examples)
 ```
 
 **File**: `Struct/01-foundation/01.03-actor-model-formalization.md`
@@ -81075,7 +81075,7 @@ Prop-S-08-01 (端到端一致性分解)
     - [论证: 迹等价定理的关键步骤](#论证-迹等价定理的关键步骤)
   - [5. 形式证明 (Proofs)](#5-形式证明-proofs)
     - [Thm-S-05-01 (Go-CS-sync 与 CSP 编码保持迹语义等价)](#thm-s-05-01-go-cs-sync-与-csp-编码保持迹语义等价)
-      - [基础情形 ($Q = 0$) {#基础情形-q--0}](#基础情形-q--0-基础情形-q--0)
+      - [基础情形 ($Q = 0$) {#基础情形-q--0}](#基础情形-q--0)
       - [归纳步骤](#归纳步骤)
 ```
 
@@ -81085,7 +81085,7 @@ Prop-S-08-01 (端到端一致性分解)
     - [论证: 迹等价定理的关键步骤](#论证-迹等价定理的关键步骤)
   - [5. 形式证明 (Proofs)](#5-形式证明-proofs)
     - [Thm-S-05-01 (Go-CS-sync 与 CSP 编码保持迹语义等价)](#thm-s-05-01-go-cs-sync-与-csp-编码保持迹语义等价)
-      - [基础情形 ($Q = 0$) {#基础情形-q--0}](#基础情形-q--0-基础情形-q--0)
+      - [基础情形 ($Q = 0$) {#基础情形-q--0}](#基础情形-q--0)
       - [归纳步骤](#归纳步骤)
 ```
 
@@ -81095,7 +81095,7 @@ Prop-S-08-01 (端到端一致性分解)
     - [论证: 迹等价定理的关键步骤](#论证-迹等价定理的关键步骤)
   - [5. 形式证明 (Proofs)](#5-形式证明-proofs)
     - [Thm-S-05-01 (Go-CS-sync 与 CSP 编码保持迹语义等价)](#thm-s-05-01-go-cs-sync-与-csp-编码保持迹语义等价)
-      - [基础情形 ($Q = 0$) {#基础情形-q--0}](#基础情形-q--0-基础情形-q--0)
+      - [基础情形 ($Q = 0$) {#基础情形-q--0}](#基础情形-q--0)
       - [归纳步骤](#归纳步骤)
 ```
 
@@ -81105,7 +81105,7 @@ Prop-S-08-01 (端到端一致性分解)
     - [论证: 迹等价定理的关键步骤](#论证-迹等价定理的关键步骤)
   - [5. 形式证明 (Proofs)](#5-形式证明-proofs)
     - [Thm-S-05-01 (Go-CS-sync 与 CSP 编码保持迹语义等价)](#thm-s-05-01-go-cs-sync-与-csp-编码保持迹语义等价)
-      - [基础情形 ($Q = 0$) {#基础情形-q--0}](#基础情形-q--0-基础情形-q--0)
+      - [基础情形 ($Q = 0$) {#基础情形-q--0}](#基础情形-q--0)
       - [归纳步骤](#归纳步骤)
 ```
 
@@ -81115,7 +81115,7 @@ Prop-S-08-01 (端到端一致性分解)
     - [论证: 迹等价定理的关键步骤](#论证-迹等价定理的关键步骤)
   - [5. 形式证明 (Proofs)](#5-形式证明-proofs)
     - [Thm-S-05-01 (Go-CS-sync 与 CSP 编码保持迹语义等价)](#thm-s-05-01-go-cs-sync-与-csp-编码保持迹语义等价)
-      - [基础情形 ($Q = 0$) {#基础情形-q--0}](#基础情形-q--0-基础情形-q--0)
+      - [基础情形 ($Q = 0$) {#基础情形-q--0}](#基础情形-q--0)
       - [归纳步骤](#归纳步骤)
 ```
 
@@ -81125,7 +81125,7 @@ Prop-S-08-01 (端到端一致性分解)
     - [论证: 迹等价定理的关键步骤](#论证-迹等价定理的关键步骤)
   - [5. 形式证明 (Proofs)](#5-形式证明-proofs)
     - [Thm-S-05-01 (Go-CS-sync 与 CSP 编码保持迹语义等价)](#thm-s-05-01-go-cs-sync-与-csp-编码保持迹语义等价)
-      - [基础情形 ($Q = 0$) {#基础情形-q--0}](#基础情形-q--0-基础情形-q--0)
+      - [基础情形 ($Q = 0$) {#基础情形-q--0}](#基础情形-q--0)
       - [归纳步骤](#归纳步骤)
 ```
 
@@ -81135,7 +81135,7 @@ Prop-S-08-01 (端到端一致性分解)
     - [论证: 迹等价定理的关键步骤](#论证-迹等价定理的关键步骤)
   - [5. 形式证明 (Proofs)](#5-形式证明-proofs)
     - [Thm-S-05-01 (Go-CS-sync 与 CSP 编码保持迹语义等价)](#thm-s-05-01-go-cs-sync-与-csp-编码保持迹语义等价)
-      - [基础情形 ($Q = 0$) {#基础情形-q--0}](#基础情形-q--0-基础情形-q--0)
+      - [基础情形 ($Q = 0$) {#基础情形-q--0}](#基础情形-q--0)
       - [归纳步骤](#归纳步骤)
 ```
 
@@ -81699,7 +81699,7 @@ Thm-S-07-01 (流计算确定性定理)
 
 ```markdown
     - [4.3 事件时间与处理时间的权衡](#43-事件时间与处理时间的权衡)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-S-07-01 (流计算确定性定理)](#thm-s-07-01-流计算确定性定理)
     - [推论 (Corollaries)](#推论-corollaries)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
@@ -81709,7 +81709,7 @@ Thm-S-07-01 (流计算确定性定理)
 
 ```markdown
     - [4.3 事件时间与处理时间的权衡](#43-事件时间与处理时间的权衡)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-S-07-01 (流计算确定性定理)](#thm-s-07-01-流计算确定性定理)
     - [推论 (Corollaries)](#推论-corollaries)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
@@ -81719,7 +81719,7 @@ Thm-S-07-01 (流计算确定性定理)
 
 ```markdown
     - [4.3 事件时间与处理时间的权衡](#43-事件时间与处理时间的权衡)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-S-07-01 (流计算确定性定理)](#thm-s-07-01-流计算确定性定理)
     - [推论 (Corollaries)](#推论-corollaries)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
@@ -81729,7 +81729,7 @@ Thm-S-07-01 (流计算确定性定理)
 
 ```markdown
     - [4.3 事件时间与处理时间的权衡](#43-事件时间与处理时间的权衡)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-S-07-01 (流计算确定性定理)](#thm-s-07-01-流计算确定性定理)
     - [推论 (Corollaries)](#推论-corollaries)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
@@ -81739,7 +81739,7 @@ Thm-S-07-01 (流计算确定性定理)
 
 ```markdown
     - [4.3 事件时间与处理时间的权衡](#43-事件时间与处理时间的权衡)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-S-07-01 (流计算确定性定理)](#thm-s-07-01-流计算确定性定理)
     - [推论 (Corollaries)](#推论-corollaries)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
@@ -81749,7 +81749,7 @@ Thm-S-07-01 (流计算确定性定理)
 
 ```markdown
     - [4.3 事件时间与处理时间的权衡](#43-事件时间与处理时间的权衡)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-S-07-01 (流计算确定性定理)](#thm-s-07-01-流计算确定性定理)
     - [推论 (Corollaries)](#推论-corollaries)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
@@ -81759,7 +81759,7 @@ Thm-S-07-01 (流计算确定性定理)
 
 ```markdown
     - [4.3 事件时间与处理时间的权衡](#43-事件时间与处理时间的权衡)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-S-07-01 (流计算确定性定理)](#thm-s-07-01-流计算确定性定理)
     - [推论 (Corollaries)](#推论-corollaries)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
@@ -81769,7 +81769,7 @@ Thm-S-07-01 (流计算确定性定理)
 
 ```markdown
     - [4.3 事件时间与处理时间的权衡](#43-事件时间与处理时间的权衡)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-S-07-01 (流计算确定性定理)](#thm-s-07-01-流计算确定性定理)
     - [推论 (Corollaries)](#推论-corollaries)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
@@ -81779,7 +81779,7 @@ Thm-S-07-01 (流计算确定性定理)
 
 ```markdown
     - [4.3 事件时间与处理时间的权衡](#43-事件时间与处理时间的权衡)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-S-07-01 (流计算确定性定理)](#thm-s-07-01-流计算确定性定理)
     - [推论 (Corollaries)](#推论-corollaries)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
@@ -81789,7 +81789,7 @@ Thm-S-07-01 (流计算确定性定理)
 
 ```markdown
     - [4.3 事件时间与处理时间的权衡](#43-事件时间与处理时间的权衡)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-S-07-01 (流计算确定性定理)](#thm-s-07-01-流计算确定性定理)
     - [推论 (Corollaries)](#推论-corollaries)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
@@ -81799,7 +81799,7 @@ Thm-S-07-01 (流计算确定性定理)
 
 ```markdown
     - [4.3 事件时间与处理时间的权衡](#43-事件时间与处理时间的权衡)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-S-07-01 (流计算确定性定理)](#thm-s-07-01-流计算确定性定理)
     - [推论 (Corollaries)](#推论-corollaries)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
@@ -82925,7 +82925,7 @@ Thm-S-09-01 (Watermark 单调性定理)
 
 ```markdown
     - [4.3 破坏单调性的反例构造](#43-破坏单调性的反例构造)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-S-09-01 (Watermark 单调性定理)](#thm-s-09-01-watermark-单调性定理)
     - [步骤 1：基例 — Source 算子的 Watermark 单调性 {#步骤-1-基例--source-算子的-watermark-单调性}](#步骤-1基例--source-算子的-watermark-单调性-步骤-1-基例--source-算子的-watermark-单调性)
     - [步骤 2：归纳假设 {#步骤-2-归纳假设}](#步骤-2归纳假设-步骤-2-归纳假设)
@@ -82935,7 +82935,7 @@ Thm-S-09-01 (Watermark 单调性定理)
 
 ```markdown
     - [4.3 破坏单调性的反例构造](#43-破坏单调性的反例构造)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-S-09-01 (Watermark 单调性定理)](#thm-s-09-01-watermark-单调性定理)
     - [步骤 1：基例 — Source 算子的 Watermark 单调性 {#步骤-1-基例--source-算子的-watermark-单调性}](#步骤-1基例--source-算子的-watermark-单调性-步骤-1-基例--source-算子的-watermark-单调性)
     - [步骤 2：归纳假设 {#步骤-2-归纳假设}](#步骤-2归纳假设-步骤-2-归纳假设)
@@ -82945,7 +82945,7 @@ Thm-S-09-01 (Watermark 单调性定理)
 
 ```markdown
     - [4.3 破坏单调性的反例构造](#43-破坏单调性的反例构造)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-S-09-01 (Watermark 单调性定理)](#thm-s-09-01-watermark-单调性定理)
     - [步骤 1：基例 — Source 算子的 Watermark 单调性 {#步骤-1-基例--source-算子的-watermark-单调性}](#步骤-1基例--source-算子的-watermark-单调性-步骤-1-基例--source-算子的-watermark-单调性)
     - [步骤 2：归纳假设 {#步骤-2-归纳假设}](#步骤-2归纳假设-步骤-2-归纳假设)
@@ -82955,7 +82955,7 @@ Thm-S-09-01 (Watermark 单调性定理)
 
 ```markdown
     - [4.3 破坏单调性的反例构造](#43-破坏单调性的反例构造)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-S-09-01 (Watermark 单调性定理)](#thm-s-09-01-watermark-单调性定理)
     - [步骤 1：基例 — Source 算子的 Watermark 单调性 {#步骤-1-基例--source-算子的-watermark-单调性}](#步骤-1基例--source-算子的-watermark-单调性-步骤-1-基例--source-算子的-watermark-单调性)
     - [步骤 2：归纳假设 {#步骤-2-归纳假设}](#步骤-2归纳假设-步骤-2-归纳假设)
@@ -82965,7 +82965,7 @@ Thm-S-09-01 (Watermark 单调性定理)
 
 ```markdown
     - [4.3 破坏单调性的反例构造](#43-破坏单调性的反例构造)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-S-09-01 (Watermark 单调性定理)](#thm-s-09-01-watermark-单调性定理)
     - [步骤 1：基例 — Source 算子的 Watermark 单调性 {#步骤-1-基例--source-算子的-watermark-单调性}](#步骤-1基例--source-算子的-watermark-单调性-步骤-1-基例--source-算子的-watermark-单调性)
     - [步骤 2：归纳假设 {#步骤-2-归纳假设}](#步骤-2归纳假设-步骤-2-归纳假设)
@@ -82975,7 +82975,7 @@ Thm-S-09-01 (Watermark 单调性定理)
 
 ```markdown
     - [4.3 破坏单调性的反例构造](#43-破坏单调性的反例构造)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-S-09-01 (Watermark 单调性定理)](#thm-s-09-01-watermark-单调性定理)
     - [步骤 1：基例 — Source 算子的 Watermark 单调性 {#步骤-1-基例--source-算子的-watermark-单调性}](#步骤-1基例--source-算子的-watermark-单调性-步骤-1-基例--source-算子的-watermark-单调性)
     - [步骤 2：归纳假设 {#步骤-2-归纳假设}](#步骤-2归纳假设-步骤-2-归纳假设)
@@ -82985,7 +82985,7 @@ Thm-S-09-01 (Watermark 单调性定理)
 
 ```markdown
     - [4.3 破坏单调性的反例构造](#43-破坏单调性的反例构造)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-S-09-01 (Watermark 单调性定理)](#thm-s-09-01-watermark-单调性定理)
     - [步骤 1：基例 — Source 算子的 Watermark 单调性 {#步骤-1-基例--source-算子的-watermark-单调性}](#步骤-1基例--source-算子的-watermark-单调性-步骤-1-基例--source-算子的-watermark-单调性)
     - [步骤 2：归纳假设 {#步骤-2-归纳假设}](#步骤-2归纳假设-步骤-2-归纳假设)
@@ -82995,7 +82995,7 @@ Thm-S-09-01 (Watermark 单调性定理)
 
 ```markdown
     - [4.3 破坏单调性的反例构造](#43-破坏单调性的反例构造)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证-proof--engineering-argument}](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-S-09-01 (Watermark 单调性定理)](#thm-s-09-01-watermark-单调性定理)
     - [步骤 1：基例 — Source 算子的 Watermark 单调性 {#步骤-1-基例--source-算子的-watermark-单调性}](#步骤-1基例--source-算子的-watermark-单调性-步骤-1-基例--source-算子的-watermark-单调性)
     - [步骤 2：归纳假设 {#步骤-2-归纳假设}](#步骤-2归纳假设-步骤-2-归纳假设)
@@ -83498,7 +83498,7 @@ $$
 **File**: `Knowledge/05-mapping-guides/struct-to-flink-mapping.md`
 
 ```markdown
-### 映射 7: 类型安全 → Flink TypeInformation 系统 {#映射-7-类型安全--flink-typeinformation-系统}
+### 映射 7: 类型安全 → Flink TypeInformation 系统
 
 **形式化定义** ([Thm-S-11-01](../../Struct/02-properties/02.05-type-safety-derivation.md)):
 
@@ -83508,7 +83508,7 @@ $$
 **File**: `Knowledge/05-mapping-guides/struct-to-flink-mapping.md`
 
 ```markdown
-### 映射 7: 类型安全 → Flink TypeInformation 系统 {#映射-7-类型安全--flink-typeinformation-系统}
+### 映射 7: 类型安全 → Flink TypeInformation 系统
 
 **形式化定义** ([Thm-S-11-01](../../Struct/02-properties/02.05-type-safety-derivation.md)):
 
@@ -83518,7 +83518,7 @@ $$
 **File**: `Knowledge/05-mapping-guides/struct-to-flink-mapping.md`
 
 ```markdown
-### 映射 7: 类型安全 → Flink TypeInformation 系统 {#映射-7-类型安全--flink-typeinformation-系统}
+### 映射 7: 类型安全 → Flink TypeInformation 系统
 
 **形式化定义** ([Thm-S-11-01](../../Struct/02-properties/02.05-type-safety-derivation.md)):
 
@@ -84796,7 +84796,7 @@ $$
 **File**: `Knowledge/04-technology-selection/engine-selection-guide.md`
 
 ```markdown
-### 3.2 表达能力层次映射 {#32-表达能力层次映射}
+### 3.2 表达能力层次映射
 
 根据 [../../Struct/03-relationships/03.03-expressiveness-hierarchy.md](../../Struct/03-relationships/03.03-expressiveness-hierarchy.md) 的 Thm-S-14-01：
 
@@ -84948,21 +84948,21 @@ $$
 **File**: `Struct/03-relationships/03.03-expressiveness-hierarchy-supplement.md`
 
 ```markdown
-    - [论证 3: 一致性光谱与模型选择 {#论证-3-一致性光谱与模型选择}](#论证-3-一致性光谱与模型选择-论证-3-一致性光谱与模型选择)
-  - [5. 形式证明 / 工程论证 {#5-形式证明--工程论证}](#5-形式证明--工程论证-5-形式证明--工程论证)
-    - [Thm-S-15-01. Session Types 死锁自由定理 {#thm-s-15-01-session-types-死锁自由定理}](#thm-s-15-01-session-types-死锁自由定理-thm-s-15-01-session-types-死锁自由定理)
-    - [Thm-S-15-02. CRDT 强最终一致性定理 {#thm-s-15-02-crdt-强最终一致性定理}](#thm-s-15-02-crdt-强最终一致性定理-thm-s-15-02-crdt-强最终一致性定理)
-  - [6. 实例验证 (Examples) {#6-实例验证-examples}](#6-实例验证-examples-6-实例验证-examples)
+    - [论证 3: 一致性光谱与模型选择 {#论证-3-一致性光谱与模型选择}](#论证-3-一致性光谱与模型选择)
+  - [5. 形式证明 / 工程论证 {#5-形式证明--工程论证}](#5-形式证明--工程论证)
+    - [Thm-S-15-01. Session Types 死锁自由定理 {#thm-s-15-01-session-types-死锁自由定理}](#thm-s-15-01-session-types-死锁自由定理)
+    - [Thm-S-15-02. CRDT 强最终一致性定理 {#thm-s-15-02-crdt-强最终一致性定理}](#thm-s-15-02-crdt-强最终一致性定理)
+  - [6. 实例验证 (Examples) {#6-实例验证-examples}](#6-实例验证-examples)
 ```
 
 **File**: `Struct/03-relationships/03.03-expressiveness-hierarchy-supplement.md`
 
 ```markdown
-    - [论证 3: 一致性光谱与模型选择 {#论证-3-一致性光谱与模型选择}](#论证-3-一致性光谱与模型选择-论证-3-一致性光谱与模型选择)
-  - [5. 形式证明 / 工程论证 {#5-形式证明--工程论证}](#5-形式证明--工程论证-5-形式证明--工程论证)
-    - [Thm-S-15-01. Session Types 死锁自由定理 {#thm-s-15-01-session-types-死锁自由定理}](#thm-s-15-01-session-types-死锁自由定理-thm-s-15-01-session-types-死锁自由定理)
-    - [Thm-S-15-02. CRDT 强最终一致性定理 {#thm-s-15-02-crdt-强最终一致性定理}](#thm-s-15-02-crdt-强最终一致性定理-thm-s-15-02-crdt-强最终一致性定理)
-  - [6. 实例验证 (Examples) {#6-实例验证-examples}](#6-实例验证-examples-6-实例验证-examples)
+    - [论证 3: 一致性光谱与模型选择 {#论证-3-一致性光谱与模型选择}](#论证-3-一致性光谱与模型选择)
+  - [5. 形式证明 / 工程论证 {#5-形式证明--工程论证}](#5-形式证明--工程论证)
+    - [Thm-S-15-01. Session Types 死锁自由定理 {#thm-s-15-01-session-types-死锁自由定理}](#thm-s-15-01-session-types-死锁自由定理)
+    - [Thm-S-15-02. CRDT 强最终一致性定理 {#thm-s-15-02-crdt-强最终一致性定理}](#thm-s-15-02-crdt-强最终一致性定理)
+  - [6. 实例验证 (Examples) {#6-实例验证-examples}](#6-实例验证-examples)
 ```
 
 **File**: `Struct/03-relationships/03.04-bisimulation-equivalences.md`
@@ -85030,21 +85030,21 @@ $$
 **File**: `Struct/03-relationships/03.03-expressiveness-hierarchy-supplement.md`
 
 ```markdown
-  - [5. 形式证明 / 工程论证 {#5-形式证明--工程论证}](#5-形式证明--工程论证-5-形式证明--工程论证)
-    - [Thm-S-15-01. Session Types 死锁自由定理 {#thm-s-15-01-session-types-死锁自由定理}](#thm-s-15-01-session-types-死锁自由定理-thm-s-15-01-session-types-死锁自由定理)
-    - [Thm-S-15-02. CRDT 强最终一致性定理 {#thm-s-15-02-crdt-强最终一致性定理}](#thm-s-15-02-crdt-强最终一致性定理-thm-s-15-02-crdt-强最终一致性定理)
-  - [6. 实例验证 (Examples) {#6-实例验证-examples}](#6-实例验证-examples-6-实例验证-examples)
-    - [示例 1: 类型安全通信协议（Session Types） {#示例-1-类型安全通信协议session-types}](#示例-1-类型安全通信协议session-types-示例-1-类型安全通信协议session-types)
+  - [5. 形式证明 / 工程论证 {#5-形式证明--工程论证}](#5-形式证明--工程论证)
+    - [Thm-S-15-01. Session Types 死锁自由定理 {#thm-s-15-01-session-types-死锁自由定理}](#thm-s-15-01-session-types-死锁自由定理)
+    - [Thm-S-15-02. CRDT 强最终一致性定理 {#thm-s-15-02-crdt-强最终一致性定理}](#thm-s-15-02-crdt-强最终一致性定理)
+  - [6. 实例验证 (Examples) {#6-实例验证-examples}](#6-实例验证-examples)
+    - [示例 1: 类型安全通信协议（Session Types） {#示例-1-类型安全通信协议session-types}](#示例-1-类型安全通信协议session-types)
 ```
 
 **File**: `Struct/03-relationships/03.03-expressiveness-hierarchy-supplement.md`
 
 ```markdown
-  - [5. 形式证明 / 工程论证 {#5-形式证明--工程论证}](#5-形式证明--工程论证-5-形式证明--工程论证)
-    - [Thm-S-15-01. Session Types 死锁自由定理 {#thm-s-15-01-session-types-死锁自由定理}](#thm-s-15-01-session-types-死锁自由定理-thm-s-15-01-session-types-死锁自由定理)
-    - [Thm-S-15-02. CRDT 强最终一致性定理 {#thm-s-15-02-crdt-强最终一致性定理}](#thm-s-15-02-crdt-强最终一致性定理-thm-s-15-02-crdt-强最终一致性定理)
-  - [6. 实例验证 (Examples) {#6-实例验证-examples}](#6-实例验证-examples-6-实例验证-examples)
-    - [示例 1: 类型安全通信协议（Session Types） {#示例-1-类型安全通信协议session-types}](#示例-1-类型安全通信协议session-types-示例-1-类型安全通信协议session-types)
+  - [5. 形式证明 / 工程论证 {#5-形式证明--工程论证}](#5-形式证明--工程论证)
+    - [Thm-S-15-01. Session Types 死锁自由定理 {#thm-s-15-01-session-types-死锁自由定理}](#thm-s-15-01-session-types-死锁自由定理)
+    - [Thm-S-15-02. CRDT 强最终一致性定理 {#thm-s-15-02-crdt-强最终一致性定理}](#thm-s-15-02-crdt-强最终一致性定理)
+  - [6. 实例验证 (Examples) {#6-实例验证-examples}](#6-实例验证-examples)
+    - [示例 1: 类型安全通信协议（Session Types） {#示例-1-类型安全通信协议session-types}](#示例-1-类型安全通信协议session-types)
 ```
 
 #### `Thm-S-16-01`
@@ -87428,7 +87428,7 @@ Cor-S-18-01 (端到端 Exactly-Once 保证)
   - [5. 形式证明 (Proofs)](#5-形式证明-proofs)
     - [Thm-S-20-01 (Watermark 完全格定理)](#thm-s-20-01-watermark-完全格定理)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
-    - [示例 6.1: 多流 Join 算子的 Watermark 合并 {#示例-61-多流-join-算子的-watermark-合并}](#示例-61-多流-join-算子的-watermark-合并-示例-61-多流-join-算子的-watermark-合并)
+    - [示例 6.1: 多流 Join 算子的 Watermark 合并 {#示例-61-多流-join-算子的-watermark-合并}](#示例-61-多流-join-算子的-watermark-合并)
 ```
 
 **File**: `Struct/04-proofs/04.04-watermark-algebra-formal-proof.md`
@@ -87438,7 +87438,7 @@ Cor-S-18-01 (端到端 Exactly-Once 保证)
   - [5. 形式证明 (Proofs)](#5-形式证明-proofs)
     - [Thm-S-20-01 (Watermark 完全格定理)](#thm-s-20-01-watermark-完全格定理)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
-    - [示例 6.1: 多流 Join 算子的 Watermark 合并 {#示例-61-多流-join-算子的-watermark-合并}](#示例-61-多流-join-算子的-watermark-合并-示例-61-多流-join-算子的-watermark-合并)
+    - [示例 6.1: 多流 Join 算子的 Watermark 合并 {#示例-61-多流-join-算子的-watermark-合并}](#示例-61-多流-join-算子的-watermark-合并)
 ```
 
 **File**: `Struct/04-proofs/04.04-watermark-algebra-formal-proof.md`
@@ -87448,7 +87448,7 @@ Cor-S-18-01 (端到端 Exactly-Once 保证)
   - [5. 形式证明 (Proofs)](#5-形式证明-proofs)
     - [Thm-S-20-01 (Watermark 完全格定理)](#thm-s-20-01-watermark-完全格定理)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
-    - [示例 6.1: 多流 Join 算子的 Watermark 合并 {#示例-61-多流-join-算子的-watermark-合并}](#示例-61-多流-join-算子的-watermark-合并-示例-61-多流-join-算子的-watermark-合并)
+    - [示例 6.1: 多流 Join 算子的 Watermark 合并 {#示例-61-多流-join-算子的-watermark-合并}](#示例-61-多流-join-算子的-watermark-合并)
 ```
 
 **File**: `Struct/04-proofs/04.04-watermark-algebra-formal-proof.md`
@@ -87458,7 +87458,7 @@ Cor-S-18-01 (端到端 Exactly-Once 保证)
   - [5. 形式证明 (Proofs)](#5-形式证明-proofs)
     - [Thm-S-20-01 (Watermark 完全格定理)](#thm-s-20-01-watermark-完全格定理)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
-    - [示例 6.1: 多流 Join 算子的 Watermark 合并 {#示例-61-多流-join-算子的-watermark-合并}](#示例-61-多流-join-算子的-watermark-合并-示例-61-多流-join-算子的-watermark-合并)
+    - [示例 6.1: 多流 Join 算子的 Watermark 合并 {#示例-61-多流-join-算子的-watermark-合并}](#示例-61-多流-join-算子的-watermark-合并)
 ```
 
 **File**: `Struct/04-proofs/04.04-watermark-algebra-formal-proof.md`
@@ -87468,7 +87468,7 @@ Cor-S-18-01 (端到端 Exactly-Once 保证)
   - [5. 形式证明 (Proofs)](#5-形式证明-proofs)
     - [Thm-S-20-01 (Watermark 完全格定理)](#thm-s-20-01-watermark-完全格定理)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
-    - [示例 6.1: 多流 Join 算子的 Watermark 合并 {#示例-61-多流-join-算子的-watermark-合并}](#示例-61-多流-join-算子的-watermark-合并-示例-61-多流-join-算子的-watermark-合并)
+    - [示例 6.1: 多流 Join 算子的 Watermark 合并 {#示例-61-多流-join-算子的-watermark-合并}](#示例-61-多流-join-算子的-watermark-合并)
 ```
 
 **File**: `Struct/04-proofs/04.04-watermark-algebra-formal-proof.md`
@@ -87478,7 +87478,7 @@ Cor-S-18-01 (端到端 Exactly-Once 保证)
   - [5. 形式证明 (Proofs)](#5-形式证明-proofs)
     - [Thm-S-20-01 (Watermark 完全格定理)](#thm-s-20-01-watermark-完全格定理)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
-    - [示例 6.1: 多流 Join 算子的 Watermark 合并 {#示例-61-多流-join-算子的-watermark-合并}](#示例-61-多流-join-算子的-watermark-合并-示例-61-多流-join-算子的-watermark-合并)
+    - [示例 6.1: 多流 Join 算子的 Watermark 合并 {#示例-61-多流-join-算子的-watermark-合并}](#示例-61-多流-join-算子的-watermark-合并)
 ```
 
 **File**: `Struct/04-proofs/04.04-watermark-algebra-formal-proof.md`
@@ -87488,7 +87488,7 @@ Cor-S-18-01 (端到端 Exactly-Once 保证)
   - [5. 形式证明 (Proofs)](#5-形式证明-proofs)
     - [Thm-S-20-01 (Watermark 完全格定理)](#thm-s-20-01-watermark-完全格定理)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
-    - [示例 6.1: 多流 Join 算子的 Watermark 合并 {#示例-61-多流-join-算子的-watermark-合并}](#示例-61-多流-join-算子的-watermark-合并-示例-61-多流-join-算子的-watermark-合并)
+    - [示例 6.1: 多流 Join 算子的 Watermark 合并 {#示例-61-多流-join-算子的-watermark-合并}](#示例-61-多流-join-算子的-watermark-合并)
 ```
 
 **File**: `Struct/06-frontier/06.02-choreographic-streaming-programming.md`

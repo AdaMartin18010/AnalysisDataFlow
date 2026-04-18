@@ -1,6 +1,6 @@
 # Flink vs RisingWave 深度对比分析
 
-> **所属阶段**: Knowledge/04-technology-selection | **前置依赖**: [engine-selection-guide.md](./engine-selection-guide.md), [../06-frontier/risingwave-deep-dive.md](../06-frontier/risingwave-deep-dive.md), [../../Flink/](../../Flink/) | **形式化等级**: L4-L5
+> **所属阶段**: Knowledge/04-technology-selection | **前置依赖**: [engine-selection-guide.md](./engine-selection-guide.md), [../06-frontier/risingwave-deep-dive.md](../06-frontier/risingwave-deep-dive.md), [../../Flink/](../../Flink/00-INDEX.md) | **形式化等级**: L4-L5
 > **版本**: 2026.04 | **文档规模**: ~35KB
 
 ---
@@ -26,7 +26,7 @@
     - [4.2 状态管理机制深度对比](#42-状态管理机制深度对比)
     - [4.3 Nexmark基准测试分析](#43-nexmark基准测试分析)
     - [4.4 反例分析：RisingWave的局限性](#44-反例分析risingwave的局限性)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [Thm-K-04-01 (流数据库vs流引擎选择定理)](#thm-k-04-01-流数据库vs流引擎选择定理)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [6.1 实时数仓构建场景](#61-实时数仓构建场景)

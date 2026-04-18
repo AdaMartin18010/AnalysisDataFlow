@@ -23,16 +23,16 @@
     - [Prop-K-01-04 (Pub/Sub 的吞吐-延迟权衡)](#prop-k-01-04-pubsub-的吞吐-延迟权衡)
     - [Prop-K-01-05 (CEP 的表达能力与状态爆炸)](#prop-k-01-05-cep-的表达能力与状态爆炸)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [关系 1: Dataflow `≈` Actor（图灵完备等价） {#关系-1-dataflow-actor-图灵完备等价}](#关系-1-dataflow--actor图灵完备等价-关系-1-dataflow-actor-图灵完备等价)
-    - [关系 2: Dataflow `↦` CSP（异步 vs 同步的连续统） {#关系-2-dataflow-csp-异步-vs-同步的连续统}](#关系-2-dataflow--csp异步-vs-同步的连续统-关系-2-dataflow-csp-异步-vs-同步的连续统)
-    - [关系 3: Pub/Sub `⊂` Actor（解耦是地址匿名化的特例） {#关系-3-pubsub-actor-解耦是地址匿名化的特例}](#关系-3-pubsub--actor解耦是地址匿名化的特例-关系-3-pubsub-actor-解耦是地址匿名化的特例)
-    - [关系 4: CEP `⊂` Dataflow（模式匹配是有状态算子的语法糖） {#关系-4-cep-dataflow-模式匹配是有状态算子的语法糖}](#关系-4-cep--dataflow模式匹配是有状态算子的语法糖-关系-4-cep-dataflow-模式匹配是有状态算子的语法糖)
+    - [关系 1: Dataflow `≈` Actor（图灵完备等价）](#关系-1-dataflow-actor-图灵完备等价)
+    - [关系 2: Dataflow `↦` CSP（异步 vs 同步的连续统）](#关系-2-dataflow-csp-异步-vs-同步的连续统)
+    - [关系 3: Pub/Sub `⊂` Actor（解耦是地址匿名化的特例）](#关系-3-pubsub-actor-解耦是地址匿名化的特例)
+    - [关系 4: CEP `⊂` Dataflow（模式匹配是有状态算子的语法糖）](#关系-4-cep-dataflow-模式匹配是有状态算子的语法糖)
     - [图 3.1 流计算模型分类心智图](#图-31-流计算模型分类心智图)
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [引理 4.1 (静态拓扑模型的调度可优化性)](#引理-41-静态拓扑模型的调度可优化性)
     - [引理 4.2 (动态拓扑模型的扩展弹性)](#引理-42-动态拓扑模型的扩展弹性)
     - [表 4.1 流计算模型六维对比矩阵](#表-41-流计算模型六维对比矩阵)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument) {#5-形式证明--工程论证}](#5-形式证明--工程论证-proof--engineering-argument-5-形式证明--工程论证)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证)
     - [定理 5.1 (流计算模型选型的充分条件)](#定理-51-流计算模型选型的充分条件)
     - [图 5.1 流计算模型选型决策树](#图-51-流计算模型选型决策树)
     - [引理 5.2 (混合模型的组合边界)](#引理-52-混合模型的组合边界)
@@ -40,7 +40,7 @@
     - [示例 6.1 Dataflow 实例：实时用户行为分析（Flink）](#示例-61-dataflow-实例实时用户行为分析flink)
     - [示例 6.2 Actor 实例：物联网设备会话管理（Akka）](#示例-62-actor-实例物联网设备会话管理akka)
     - [示例 6.3 CSP 实例：高并发限流器（Go）](#示例-63-csp-实例高并发限流器go)
-    - [示例 6.4 CEP + Pub/Sub 混合实例：金融风控实时告警 {#示例-64-cep--pubsub-混合实例金融风控实时告警}](#示例-64-cep--pubsub-混合实例金融风控实时告警-示例-64-cep--pubsub-混合实例金融风控实时告警)
+    - [示例 6.4 CEP + Pub/Sub 混合实例：金融风控实时告警 {#示例-64-cep--pubsub-混合实例金融风控实时告警}](#示例-64-cep--pubsub-混合实例金融风控实时告警)
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
     - [图 7.1 混合架构参考图：端到端流处理系统](#图-71-混合架构参考图端到端流处理系统)
   - [8. 引用参考 (References)](#8-引用参考-references)
@@ -183,6 +183,8 @@
 | 时间抽象 | EventTime / Watermark | 无内建时间模型 |
 
 > **推断 [Theory→Model]**: Dataflow 与 Actor 在图灵完备意义上表达能力等价，但工程选型时应关注"拓扑是否动态"和"时间语义是否重要"[^8]。
+>
+> **延伸阅读**: [DBSP理论框架：增量视图维护的代数基础](../../Struct/06-frontier/dbsp-theory-framework.md) 将数据库查询与流处理统一到 Z-set 代数结构，为 Dataflow 模型的增量计算提供了严格的数学基础。
 
 ---
 
@@ -212,6 +214,18 @@
 
 - CEP 引擎（如 Flink CEP）的底层执行模型仍然是 Dataflow。模式规则被编译为状态机算子，嵌入到 DataStream DAG 中。
 - CEP 在 Dataflow 基础上增加了时间窗口语义和 NFA 状态转移逻辑，但并未扩展 Dataflow 的基本表达能力。
+
+---
+
+### 关系 5: Dataflow `↦` DBSP（增量计算的代数编码） {#关系-5-dataflow-dbsp-增量计算的代数编码}
+
+**论证**：
+
+- DBSP 理论框架将数据库查询和流处理统一到 **Z-set** 代数结构，通过引入差分算子 $\nabla$ 和积分算子 $\nabla^{-1}$，建立了一套完整的增量计算理论。
+- Dataflow 模型的增量语义（如 Flink 的 Changelog、Paimon 的 LSM-Tree 增量日志）可以严格编码为 DBSP 的 Z-set 转换器序列。
+- 这一编码证明了：Dataflow 的持续查询（Continuous Query）与数据库的增量视图维护（IVM）在数学上是同构的。
+
+> **延伸阅读**: [DBSP将数据库查询与流处理统一到Z-set代数结构](../../Struct/06-frontier/dbsp-theory-framework.md)
 
 ---
 
@@ -532,7 +546,7 @@ func rateLimiter(requests <-chan Request, responses chan<- Response) {
 
 ---
 
-### 示例 6.4 CEP + Pub/Sub 混合实例：金融风控实时告警 {#示例-64-cep--pubsub-混合实例金融风控实时告警}
+### 示例 6.4 CEP + Pub/Sub 混合实例：金融风控实时告警
 
 **场景**：银行交易流中，若同一账户在 30 秒内于两个不同国家发生 ATM 取款，则触发欺诈告警。告警信息通过 Kafka 推送到风控中心。
 

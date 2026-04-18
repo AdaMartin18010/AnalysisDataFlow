@@ -652,11 +652,11 @@ flowchart TD
 ### 7.5 ForStDB 与 RocksDB 性能对比
 
 ```mermaid
-bar title 状态访问延迟对比(越低越好)
-    y-axis 延迟(毫秒) --> 0 --> 6
-    bar [RocksDB] 5
-    bar [ForStDB Pro] 0.5
-    bar [ForStDB Mini] 0.1
+xychart-beta
+    title "状态访问延迟对比(越低越好)"
+    x-axis ["RocksDB", "ForStDB Pro", "ForStDB Mini"]
+    y-axis "延迟(毫秒)" 0 --> 6
+    bar [5, 0.5, 0.1]
 ```
 
 ---

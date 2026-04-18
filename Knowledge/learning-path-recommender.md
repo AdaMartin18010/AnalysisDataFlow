@@ -1,6 +1,6 @@
 # 学习路径动态推荐系统
 
-> **所属阶段**: Knowledge | **前置依赖**: [LEARNING-PATH-GUIDE.md](../LEARNING-PATH-GUIDE.md), [learning-path-recommender.py](../learning-path-recommender.js) | **形式化等级**: L3
+> **所属阶段**: Knowledge | **前置依赖**: [LEARNING-PATH-GUIDE.md](../LEARNING-PATH-GUIDE.md), [learning-path-recommender.js](../learning-path-recommender.js) | **形式化等级**: L3
 
 ## 1. 概念定义
 

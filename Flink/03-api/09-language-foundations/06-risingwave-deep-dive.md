@@ -41,14 +41,14 @@
       - [4.4.3 统一数据库架构优势](#443-统一数据库架构优势)
       - [4.4.4 与 Flink VECTOR\_SEARCH 对比（规划中）](#444-与-flink-vector_search-对比规划中)
       - [4.4.5 技术实现细节](#445-技术实现细节)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [Thm-F-09-13: Hummock LSM-Tree 性能边界定理](#thm-f-09-13-hummock-lsm-tree-性能边界定理)
     - [Thm-F-09-14: 流处理引擎选择决策定理](#thm-f-09-14-流处理引擎选择决策定理)
     - [Thm-F-09-15: 向量搜索性能定理](#thm-f-09-15-向量搜索性能定理)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [6.1 实时仪表板：RisingWave vs Flink 实现对比](#61-实时仪表板risingwave-vs-flink-实现对比)
     - [6.2 CDC 数据同步管道](#62-cdc-数据同步管道)
-    - [6.3 混合架构：Flink + RisingWave 协同](#63-混合架构flink--risingwave-协同)
+    - [6.3 混合架构：Flink + RisingWave 协同](#63-混合架构flink-risingwave-协同)
     - [6.4 实时 RAG 案例：智能客服系统](#64-实时-rag-案例智能客服系统)
     - [6.5 向量+流+分析混合查询](#65-向量流分析混合查询)
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
@@ -97,6 +97,8 @@ $$
 1. **计算-存储完全分离**：计算节点 $\mathcal{N}_{compute}$ 本地不持久化状态，所有状态通过 $\mathcal{H}$ 写入远程对象存储
 2. **无状态计算节点**：计算节点可在任意时刻重启/迁移，状态从 $\mathcal{H}$ 恢复
 3. **PostgreSQL 协议兼容**：客户端可使用任何 PostgreSQL 驱动（psql、JDBC、Python psycopg2 等）
+
+> **延伸阅读**: [Streaming Database形式化定义：SDB八元组与RisingWave架构的严格对应](../../../Struct/01-foundation/streaming-database-formal-definition.md) —— RisingWave 的六元组 $\mathcal{RW}$ 可映射为 SDB 八元组的实例化，其中 $\mathcal{N}_{compute}$ 对应 $\mathcal{E}$（执行引擎），$\mathcal{H}$ 对应 $\mathcal{D}$（持久化存储）。
 
 ---
 

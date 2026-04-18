@@ -196,7 +196,7 @@
 |-------------------|-------------------|
 | [USTM统一流计算理论](Struct/01-foundation/01.01-unified-streaming-theory.md) | [DataStream API语义](Flink/01-concepts/datastream-v2-semantics.md) |
 | [Checkpoint正确性证明](Struct/04-proofs/04.01-flink-checkpoint-correctness.md) | [Checkpoint机制深度解析](Flink/02-core/checkpoint-mechanism-deep-dive.md) |
-| [一致性层级](Struct/02-properties/02.02-consistency-hierarchy.md) | [Exactly-Once端到端](Flink/02-core/exactly-once-end-to-end.md) |
+| [一致性层级](../02-properties/02.02-consistency-hierarchy.md) | [Exactly-Once端到端](Flink/02-core/exactly-once-end-to-end.md) |
 | [Watermark单调性](Struct/02-properties/02.03-watermark-monotonicity.md) | [时间语义与Watermark](Flink/02-core/time-semantics-and-watermark.md) |
 
 ---

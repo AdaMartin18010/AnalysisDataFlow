@@ -8,9 +8,9 @@
 
 | Language | Code | Status | Path | Completeness |
 |----------|------|--------|------|--------------|
-| 🇨🇳 中文 (Chinese) | zh | ✅ Active | [./zh/](./zh/) | 100% (Source) |
-| 🇬🇧 English | en | ✅ Active | [./en/](./en/) | Core Docs |
-| 🇯🇵 日本語 (Japanese) | ja | 📝 Partial (4 docs) | [./ja/](./ja/) | ~1% |
+| 🇨🇳 中文 (Chinese) | zh | ✅ Active | [./zh/](./zh/README.md) | 100% (Source) |
+| 🇬🇧 English | en | ✅ Active | [./en/](./en/README.md) | Core Docs |
+| 🇯🇵 日本語 (Japanese) | ja | 📝 Partial (4 docs) | [./ja/](./ja/README-ja.md) | ~1% |
 | 🇰🇷 한국어 (Korean) | ko | ⏸️ On Hold | - | - |
 
 ---
@@ -139,7 +139,7 @@ To contribute to i18n efforts:
 
 ## 📄 License
 
-All i18n documentation follows the same [Apache License 2.0](../../../LICENSE) as the main project.
+All i18n documentation follows the same [Apache License 2.0](../../LICENSE) as the main project.
 
 ---
 

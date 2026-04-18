@@ -1,4 +1,4 @@
-﻿# 2026 Q2 Flink 推进任务 (2026 Q2 Flink Tasks)
+# 2026 Q2 Flink 推进任务 (2026 Q2 Flink Tasks)
 
 > **所属阶段**: Flink/ | **前置依赖**: [../../Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](../../01-concepts/flink-1.x-vs-2.0-comparison.md) | **形式化等级**: L4
 > **文档类型**: 工程路线图 | **规划周期**: 2026 Q2 (4月-6月) | **状态**: 已批准
@@ -25,7 +25,7 @@
     - [4.1 任务优先级论证](#41-任务优先级论证)
     - [4.2 时间线可行性分析](#42-时间线可行性分析)
     - [4.3 资源约束论证](#43-资源约束论证)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [5.1 Q2 目标可达性证明](#51-q2-目标可达性证明)
     - [5.2 风险评估形式化](#52-风险评估形式化)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)

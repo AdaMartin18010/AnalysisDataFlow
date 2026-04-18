@@ -23,7 +23,7 @@
     - [3.2 数据流拓扑映射](#32-数据流拓扑映射)
     - [3.3 一致性模型对比](#33-一致性模型对比)
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
-    - [4.1 为什么需要 RisingWave + Flink 混合架构 {#41-为什么需要-risingwave--flink-混合架构}](#41-为什么需要-risingwave--flink-混合架构-41-为什么需要-risingwave--flink-混合架构)
+    - [4.1 为什么需要 RisingWave + Flink 混合架构 {#41-为什么需要-risingwave--flink-混合架构}](#41-为什么需要-risingwave--flink-混合架构)
     - [4.2 集成架构的工程权衡](#42-集成架构的工程权衡)
     - [4.3 反例分析：何时不应混合使用](#43-反例分析何时不应混合使用)
   - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
@@ -308,7 +308,7 @@ graph TB
 
 ## 4. 论证过程 (Argumentation)
 
-### 4.1 为什么需要 RisingWave + Flink 混合架构 {#41-为什么需要-risingwave--flink-混合架构}
+### 4.1 为什么需要 RisingWave + Flink 混合架构
 
 **单一系统的局限性**：
 

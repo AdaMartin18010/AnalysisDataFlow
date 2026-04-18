@@ -173,8 +173,8 @@ def main():
     with open(report_path, 'r', encoding='utf-8') as f:
         report = json.load(f)
     
-    file_errors = report['errors']['file_not_found']
-    anchor_errors = report['errors']['anchor_not_found']
+    file_errors = [i for i in report.get('issues', []) if i.get('issue_type') == 'broken_link']
+    anchor_errors = [i for i in report.get('issues', []) if i.get('issue_type') == 'broken_anchor']
     
     print(f"\n待修复错误:")
     print(f"  - 文件引用错误: {len(file_errors)}")
@@ -183,9 +183,9 @@ def main():
     # 收集需要修复的文件
     files_to_fix = set()
     for err in file_errors:
-        files_to_fix.add(err['source'])
+        files_to_fix.add(err['file_path'])
     for err in anchor_errors:
-        files_to_fix.add(err['source'])
+        files_to_fix.add(err['file_path'])
     
     print(f"\n涉及文件数: {len(files_to_fix)}")
     

@@ -31,7 +31,7 @@
     - [8.3 模式组合时的性质保持](#83-模式组合时的性质保持)
     - [8.4 边界条件与约束](#84-边界条件与约束)
     - [8.5 工程实现与理论的对应](#85-工程实现与理论的对应)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [6.1 Flink AsyncDataStream 完整示例](#61-flink-asyncdatastream-完整示例)
     - [6.2 Redis 异步查询实现](#62-redis-异步查询实现)

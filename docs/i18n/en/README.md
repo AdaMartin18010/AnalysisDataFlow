@@ -1,15 +1,15 @@
-> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+﻿> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
 >
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 >
 # AnalysisDataFlow
 
-[![中文](https://img.shields.io/badge/中文-🇨🇳-red)](../../README.md) [![English](https://img.shields.io/badge/English-🇬🇧-blue)](./README.md)
+[![中文](https://img.shields.io/badge/中文-🇨🇳-red)](../../../README.md) [![English](https://img.shields.io/badge/English-🇬🇧-blue)](./README.md)
 
-[![Version](https://img.shields.io/badge/Version-v5.0.0-brightgreen)](../../v5.0/RELEASE-NOTES-v5.0.md)
-[![PR Quality Gate](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml/badge.svg) ⚠️ **[已失效: HTTP 404]** [Archive备份](https://web.archive.org/web/*/https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml/badge.svg)](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml)
-[![Docs](https://img.shields.io/badge/Docs-1010%2B-blue)](../../)
-[![Theorems](https://img.shields.io/badge/Theorems-10000%2B-green)](../../THEOREM-REGISTRY.md)
+[![Version](https://img.shields.io/badge/Version-v5.0.0-brightgreen)](../../../v5.0/RELEASE-NOTES-v5.0.md)
+[![PR Quality Gate](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml/badge.svg) ⚠️ **[已失效: HTTP 404]** [Archive备份](https://web.archive.org/web/*/https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml/badge.svg)](<https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml>)
+[![Docs](https://img.shields.io/badge/Docs-1010%2B-blue)](../../../)
+[![Theorems](https://img.shields.io/badge/Theorems-10000%2B-green)](../../../THEOREM-REGISTRY.md)
 [![Last Updated](https://img.shields.io/badge/Last%20Updated-2026--04--11-orange)]()
 [![Status](https://img.shields.io/badge/Status-100%25%20Complete-success)]()
 
@@ -38,7 +38,7 @@
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
-> 📖 **Value Proposition Details**: [VALUE-PROPOSITION.md](../../VALUE-PROPOSITION.md) | **Content Boundary**: [CONTENT-BOUNDARY.md](../../CONTENT-BOUNDARY.md)
+> 📖 **Value Proposition Details**: [VALUE-PROPOSITION.md](../../../VALUE-PROPOSITION.md) | **Content Boundary**: [CONTENT-BOUNDARY.md](../../../CONTENT-BOUNDARY.md)
 
 ---
 
@@ -109,7 +109,7 @@ This project has reached **100% completion status**, with all planned content fu
 - ✅ **AI Agent Stream Processing Deepening**: 24 new formalized elements
 - ✅ **Relationship Mapping & Dependency Network**: 500+ relationship edges, 11 new documents
 
-**📊 Full Completion Report**: [100-PERCENT-COMPLETION-FINAL-REPORT.md](../100-PERCENT-COMPLETION-FINAL-REPORT.md)
+**📊 Full Completion Report**: [100-PERCENT-COMPLETION-FINAL-REPORT.md](../../../100-PERCENT-COMPLETION-FINAL-REPORT.md)
 
 ---
 
@@ -117,28 +117,28 @@ This project has reached **100% completion status**, with all planned content fu
 
 ### Navigation by Topic
 
-- **Theoretical Foundation**: [Struct/ Unified Stream Computing Theory](../Struct/00-INDEX.md)
-- **Design Patterns**: [Knowledge/ Core Stream Processing Patterns](../Knowledge/02-design-patterns/)
-- **Flink Core**: [Flink/ Checkpoint Mechanism](../Flink/02-core/checkpoint-mechanism-deep-dive.md)
-- **Frontier Technology**: [Knowledge/06-frontier/ AI-Native Database](../Knowledge/06-frontier/vector-search-streaming-convergence.md)
-- **Anti-patterns**: [Knowledge/09-anti-patterns/ Stream Processing Anti-patterns](../Knowledge/09-anti-patterns/)
+- **Theoretical Foundation**: [Struct/ Unified Stream Computing Theory](../../../Struct/00-INDEX.md)
+- **Design Patterns**: [Knowledge/ Core Stream Processing Patterns](../../../Knowledge/02-design-patterns/)
+- **Flink Core**: [Flink/ Checkpoint Mechanism](../../../Flink/02-core/checkpoint-mechanism-deep-dive.md)
+- **Frontier Technology**: [Knowledge/06-frontier/ AI-Native Database](../../../Knowledge/06-frontier/vector-search-streaming-convergence.md)
+- **Anti-patterns**: [Knowledge/09-anti-patterns/ Stream Processing Anti-patterns](../../../Knowledge/09-anti-patterns/)
 
 ### Visual Quick Entry Points
 
-- **Decision Trees**: [visuals/ Technology Selection Decision Tree](../visuals/selection-tree-streaming.md)
-- **Comparison Matrices**: [visuals/ Engine Comparison Matrix](../visuals/matrix-engines.md)
-- **Mind Maps**: [visuals/ Knowledge Mind Map](../visuals/mindmap-complete.md)
-- **Knowledge Graph**: [visuals/ Concept Relationship Graph](../knowledge-graph.html)
-- **Architecture Collection**: [visuals/ System Architecture Diagrams](../visuals/struct-model-relations.md)
+- **Decision Trees**: [visuals/ Technology Selection Decision Tree](../../../visuals/selection-tree-streaming.md)
+- **Comparison Matrices**: [visuals/ Engine Comparison Matrix](../../../visuals/matrix-engines.md)
+- **Mind Maps**: [visuals/ Knowledge Mind Map](../../../visuals/mindmap-complete.md)
+- **Knowledge Graph**: [visuals/ Concept Relationship Graph](../../../knowledge-graph.html)
+- **Architecture Collection**: [visuals/ System Architecture Diagrams](../../../visuals/struct-model-relations.md)
 
 ### Recent Updates (v3.6 100% Completion Edition)
 
-- **🎉 100% Completion Milestone**: [100-PERCENT-COMPLETION-FINAL-REPORT.md](../100-PERCENT-COMPLETION-FINAL-REPORT.md) - Project fully achieved 100% completion
-- **✅ Cross-references Zeroed Out**: [cross-ref-fix-report.md](../cross-ref-fix-report.md) - All 730 errors fixed
-- **🔬 Formal Verification Completed**: [COQ-COMPILATION-REPORT.md](../reconstruction/phase4-verification/COQ-COMPILATION-REPORT.md) | [TLA-MODEL-CHECK-REPORT.md](../reconstruction/phase4-verification/TLA-MODEL-CHECK-REPORT.md)
-- **📚 Flink 2.4/2.5/3.0 Completed**: [FLINK-24-25-30-COMPLETION-REPORT.md](../FLINK-24-25-30-COMPLETION-REPORT.md) - All 100 subtasks delivered
-- **🤖 AI Agent Deepening**: [ai-agent-streaming-architecture.md](../Knowledge/06-frontier/ai-agent-streaming-architecture.md) - Multi-Agent stream orchestration
-- **🔗 Relationship Mapping Completed**: [PROJECT-RELATIONSHIP-MASTER-GRAPH.md](../PROJECT-RELATIONSHIP-MASTER-GRAPH.md) - 500+ relationship edges
+- **🎉 100% Completion Milestone**: [100-PERCENT-COMPLETION-FINAL-REPORT.md](../../../100-PERCENT-COMPLETION-FINAL-REPORT.md) - Project fully achieved 100% completion
+- **✅ Cross-references Zeroed Out**: [cross-ref-fix-report.md](../../../cross-ref-fix-report.md) - All 730 errors fixed
+- **🔬 Formal Verification Completed**: [COQ-COMPILATION-REPORT.md](../../../reconstruction/phase4-verification/COQ-COMPILATION-REPORT.md) | [TLA-MODEL-CHECK-REPORT.md](../../../reconstruction/phase4-verification/TLA-MODEL-CHECK-REPORT.md)
+- **📚 Flink 2.4/2.5/3.0 Completed**: [FLINK-24-25-30-COMPLETION-REPORT.md](../../../archive/completion-reports/FLINK-24-25-30-COMPLETION-REPORT.md) - All 100 subtasks delivered
+- **🤖 AI Agent Deepening**: [ai-agent-streaming-architecture.md](../../../Knowledge/06-frontier/ai-agent-streaming-architecture.md) - Multi-Agent stream orchestration
+- **🔗 Relationship Mapping Completed**: [PROJECT-RELATIONSHIP-MASTER-GRAPH.md](../../../PROJECT-RELATIONSHIP-MASTER-GRAPH.md) - 500+ relationship edges
 
 ---
 
@@ -292,12 +292,12 @@ graph LR
 
 | Scenario | Recommended Resource |
 |----------|---------------------|
-| Learning streaming fundamentals | [Struct/01-foundation/](../Struct/01-foundation/) |
-| Flink deep dive | [Flink/02-core/](../Flink/02-core/) |
-| Architecture decision making | [Knowledge/04-technology-selection/](../Knowledge/04-technology-selection/) |
-| Production troubleshooting | [Flink/06-engineering/](../Flink/06-engineering/) |
-| Research on formal methods | [Struct/04-proofs/](../Struct/04-proofs/) |
-| AI Agent integration | [Flink/12-ai-ml/](../Flink/12-ai-ml/) |
+| Learning streaming fundamentals | [Struct/01-foundation/](../../../Struct/01-foundation/) |
+| Flink deep dive | [Flink/02-core/](../../../Flink/02-core/) |
+| Architecture decision making | [Knowledge/04-technology-selection/](../../../Knowledge/04-technology-selection/) |
+| Production troubleshooting | [Flink/09-practices/](../../../Flink/09-practices/) |
+| Research on formal methods | [Struct/04-proofs/](../../../Struct/04-proofs/) |
+| AI Agent integration | [Flink/06-ai-ml/](../../../Flink/06-ai-ml/) |
 
 ---
 
@@ -338,7 +338,7 @@ Stateful stream processing is essential for complex analytics. Flink provides so
 
 ## Contributing
 
-We welcome contributions from the community! Please see our [Contributing Guide](../CONTRIBUTING-EN.md) for details.
+We welcome contributions from the community! Please see our [Contributing Guide](../../../CONTRIBUTING-EN.md) for details.
 
 Key areas for contribution:
 
@@ -374,7 +374,7 @@ If you use AnalysisDataFlow in your research or projects, please cite:
 
 ## License
 
-This project is licensed under the Apache License 2.0 - see the [LICENSE](../LICENSE) file for details.
+This project is licensed under the Apache License 2.0 - see the [LICENSE](../../../LICENSE) file for details.
 
 ---
 
@@ -390,7 +390,7 @@ Special thanks to the researchers and engineers whose work forms the foundation 
 
 ## Related Links
 
-- [中文文档 (Chinese Documentation)](../../README.md)
+- [中文文档 (Chinese Documentation)](../../../README.md)
 - [Quick Start Guide](./04-QUICK-START.md)
 - [Architecture Overview](./ARCHITECTURE.md)
 - [Glossary](./GLOSSARY.md)
@@ -406,7 +406,7 @@ Special thanks to the researchers and engineers whose work forms the foundation 
 
 ---
 
-> **Note**: This is the English version of the AnalysisDataFlow documentation. For the complete Chinese documentation, please visit the [project root](../../).
+> **Note**: This is the English version of the AnalysisDataFlow documentation. For the complete Chinese documentation, please visit the [project root](../../../).
 
 ---
 

@@ -22,7 +22,7 @@
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [4.1 边缘计算vs云端计算](#41-边缘计算vs云端计算)
     - [4.2 时序数据存储选型](#42-时序数据存储选型)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [5.1 实时负荷预测](#51-实时负荷预测)
     - [5.2 异常检测算法](#52-异常检测算法)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)

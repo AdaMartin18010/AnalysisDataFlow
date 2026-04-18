@@ -37,6 +37,8 @@ $$
 | **L3 - 企业防护** | L2 + $\mathcal{A}_{audit} \neq \emptyset \land \mathcal{A}_{iso} \neq process$ | 完整审计 + 环境隔离 |
 | **L4 - 高 assurance** | L3 + $\mathcal{A}_{auth} = mTLS/OAuth2 \land \mathcal{A}_{iso} \in \{vm, enclave\}$ | 双向认证 + 硬件级隔离 |
 
+> **延伸阅读**: [MCP安全架构的形式化行为契约验证](../../formal-methods/08-ai-formal-methods/agent-behavior-contract-verification.md) —— 将安全级别约束 $\mathcal{A}$ 映射为 Agent 行为契约中的安全策略，证明 L4 级别下所有工具调用满足不可绕过性 (non-bypassability)。
+
 ---
 
 ### Def-K-06-301: MCP 威胁模型 (MCP Threat Model)

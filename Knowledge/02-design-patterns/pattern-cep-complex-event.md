@@ -21,7 +21,7 @@
     - [与 Event Time Processing 的关系](#与-event-time-processing-的关系)
     - [与 Stateful Computation 的关系](#与-stateful-computation-的关系)
     - [与 Async I/O Enrichment 的关系](#与-async-io-enrichment-的关系)
-    - [与 Checkpoint & Recovery 的关系](#与-checkpoint--recovery-的关系)
+    - [与 Checkpoint & Recovery 的关系](#与-checkpoint-recovery-的关系)
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [4.1 原始事件与业务语义之间的鸿沟](#41-原始事件与业务语义之间的鸿沟)
     - [4.2 时序关联的复杂性](#42-时序关联的复杂性)
@@ -32,7 +32,7 @@
     - [8.3 模式组合时的性质保持](#83-模式组合时的性质保持)
     - [8.4 边界条件与约束](#84-边界条件与约束)
     - [8.5 CEP 形式化语义](#85-cep-形式化语义)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [5.1 NFA 编码正确性论证](#51-nfa-编码正确性论证)
     - [5.2 CEP 系统架构的工程论证](#52-cep-系统架构的工程论证)
     - [5.3 性能边界与优化论证](#53-性能边界与优化论证)
@@ -994,7 +994,6 @@ flowchart TD
 
 [^13]: Flink Checkpoint 机制深度解析，详见 [Flink/02-core/checkpoint-mechanism-deep-dive.md](../../Flink/02-core/checkpoint-mechanism-deep-dive.md)
 
-[^14]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing," *PVLDB*, 8(12), 2015.
 
 ---
 

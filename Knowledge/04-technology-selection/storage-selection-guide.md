@@ -1,4 +1,4 @@
-﻿# 存储系统选型指南 (Storage System Selection Guide)
+# 存储系统选型指南 (Storage System Selection Guide)
 
 > **所属阶段**: Knowledge/04-technology-selection | **前置依赖**: [../02-design-patterns/pattern-stateful-computation.md](../02-design-patterns/pattern-stateful-computation.md), [../../Flink/02-core/checkpoint-mechanism-deep-dive.md](../../Flink/02-core/checkpoint-mechanism-deep-dive.md) | **形式化等级**: L4
 

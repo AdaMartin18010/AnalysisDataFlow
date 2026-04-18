@@ -29,8 +29,8 @@ last_sync: "2026-04-15"
     - [Lemma-F-D-03 (Runtime Layer Serviceability)](#lemma-f-d-03-runtime-layer-serviceability)
     - [Prop-F-D-01 (Tech Stack Transitivity)](#prop-f-d-01-tech-stack-transitivity)
   - [3. Relations](#3-relations)
-    - [Relation 1: Core → API Support Relation {#relation-1-core--api-support-relation}](#relation-1-core--api-support-relation-relation-1-core--api-support-relation)
-    - [Relation 2: API → Runtime Dependency Relation {#relation-2-api--runtime-dependency-relation}](#relation-2-api--runtime-dependency-relation-relation-2-api--runtime-dependency-relation)
+    - [Relation 1: Core → API Support Relation {#relation-1-core--api-support-relation}](#relation-1-core--api-support-relation)
+    - [Relation 2: API → Runtime Dependency Relation {#relation-2-api--runtime-dependency-relation}](#relation-2-api--runtime-dependency-relation)
     - [Relation 3: Runtime → Ecosystem Integration Relation](#relation-3-runtime--ecosystem-integration-relation)
     - [Relation 4: Ecosystem → Practices Guidance Relation](#relation-4-ecosystem--practices-guidance-relation)
   - [4. Argumentation](#4-argumentation)
@@ -40,7 +40,7 @@ last_sync: "2026-04-15"
   - [5. Proof](#5-proof)
     - [Thm-F-D-01 (Tech Stack Completeness Theorem)](#thm-f-d-01-tech-stack-completeness-theorem)
   - [6. Examples](#6-examples)
-    - [6.1 Core → API Dependency Example {#61-core--api-dependency-example}](#61-core--api-dependency-example-61-core--api-dependency-example)
+    - [6.1 Core → API Dependency Example {#61-core--api-dependency-example}](#61-core--api-dependency-example)
     - [6.2 API → Runtime Dependency Example](#62-api--runtime-dependency-example)
     - [6.3 Runtime → Ecosystem Dependency Example](#63-runtime--ecosystem-dependency-example)
     - [6.4 Ecosystem → Practices Dependency Example](#64-ecosystem--practices-dependency-example)
@@ -192,7 +192,7 @@ If (mᵢ, mⱼ, s) ∈ D, it means mᵢ has a dependency of strength s on mⱼ
 
 ## 3. Relations
 
-### Relation 1: Core → API Support Relation {#relation-1-core--api-support-relation}
+### Relation 1: Core → API Support Relation
 
 The core layer provides foundational capability support such as fault tolerance, state management, and network communication to the API layer.
 
@@ -215,7 +215,7 @@ Flink/02-core (Core Mechanisms)
                 └── flink-language-support-complete-guide.md
 ```
 
-### Relation 2: API → Runtime Dependency Relation {#relation-2-api--runtime-dependency-relation}
+### Relation 2: API → Runtime Dependency Relation
 
 The API layer depends on the runtime layer to provide deployment execution and resource management capabilities.
 
@@ -365,7 +365,7 @@ Since all core capabilities of stream computing systems find corresponding imple
 
 ## 6. Examples
 
-### 6.1 Core → API Dependency Example {#61-core--api-dependency-example}
+### 6.1 Core → API Dependency Example
 
 **Example**: Checkpoint mechanism supports DataStream API's Exactly-Once semantics
 

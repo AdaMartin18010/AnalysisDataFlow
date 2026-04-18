@@ -11,7 +11,7 @@
     - [Def-K-06-61: 实时推理延迟模型 (Realtime Inference Latency Model)](#def-k-06-61-实时推理延迟模型-realtime-inference-latency-model)
     - [Def-K-06-62: 边缘-云协同推理 (Edge-Cloud Collaborative Inference)](#def-k-06-62-边缘-云协同推理-edge-cloud-collaborative-inference)
     - [Def-K-06-63: 流式Token生成 (Streaming Token Generation)](#def-k-06-63-流式token生成-streaming-token-generation)
-    - [Def-K-06-64: 模型量化与压缩 (Model Quantization \& Compression) {#def-k-06-64-模型量化与压缩-model-quantization--compression}](#def-k-06-64-模型量化与压缩-model-quantization--compression-def-k-06-64-模型量化与压缩-model-quantization--compression)
+    - [Def-K-06-64: 模型量化与压缩 (Model Quantization \& Compression) {#def-k-06-64-模型量化与压缩-model-quantization--compression}](#def-k-06-64-模型量化与压缩-model-quantization--compression)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
     - [Prop-K-06-15: 边缘推理延迟上界](#prop-k-06-15-边缘推理延迟上界)
     - [Prop-K-06-16: 量化精度损失边界](#prop-k-06-16-量化精度损失边界)
@@ -25,7 +25,7 @@
     - [4.1 边缘推理必要性论证](#41-边缘推理必要性论证)
     - [4.2 实时性边界条件分析](#42-实时性边界条件分析)
     - [4.3 模型选择决策框架](#43-模型选择决策框架)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [5.1 边缘部署带宽优化论证](#51-边缘部署带宽优化论证)
     - [5.2 量化推理能耗优化论证](#52-量化推理能耗优化论证)
     - [5.3 边缘-云负载均衡定理](#53-边缘-云负载均衡定理)
@@ -210,7 +210,7 @@ $$\tau_i = \tau_{i-1} + \Delta t_{gen}, \quad \Delta t_{gen} \approx \frac{1}{TP
 
 ---
 
-### Def-K-06-64: 模型量化与压缩 (Model Quantization & Compression) {#def-k-06-64-模型量化与压缩-model-quantization--compression}
+### Def-K-06-64: 模型量化与压缩 (Model Quantization & Compression)
 
 **模型量化**是将高精度浮点权重转换为低精度整数表示的技术，在保持可接受精度的前提下大幅降低计算和存储开销。
 

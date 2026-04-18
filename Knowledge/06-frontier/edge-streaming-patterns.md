@@ -25,7 +25,7 @@
     - [4.1 边缘计算核心挑战分析](#41-边缘计算核心挑战分析)
     - [4.2 WebAssembly 边缘适用性论证](#42-webassembly-边缘适用性论证)
     - [4.3 Flink 边缘部署论证](#43-flink-边缘部署论证)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [5.1 边缘聚合带宽优化论证](#51-边缘聚合带宽优化论证)
     - [5.2 Wasm 启动延迟优化论证](#52-wasm-启动延迟优化论证)
     - [5.3 离线-在线混合调度正确性](#53-离线-在线混合调度正确性)

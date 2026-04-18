@@ -403,7 +403,7 @@
   - 新: `[performance-tuning-guide.md](Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md)`
 
 - `PROJECT-QUICK-REFERENCE.md` 第167行
-  - 旧: `[flink-vs-spark-streaming.md](Flink/05-vs-competitors/flink-vs-spark-streaming.md)`
+  - 旧: `[flink-vs-spark-streaming.md](Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-kafka-streams.md)`
   - 新: `[flink-vs-spark-streaming.md](Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-spark-streaming.md)`
 
 - `PROJECT-QUICK-REFERENCE.md` 第178行
@@ -493,32 +493,32 @@
 - `.\PDF-EXPORT-GUIDE.md`: `[下载PDF](./whitepapers/pdf/streaming-technology-trends-2026.pdf)`
 - `.\PDF-EXPORT-GUIDE.md`: `[下载PDF](./whitepapers/pdf/flink-enterprise-implementation-guide.pdf)`
 - `.\PDF-EXPORT-GUIDE.md`: `[下载PDF](./whitepapers/pdf/realtime-ai-architecture-practice.pdf)`
-- `.\PROJECT-QUICK-REFERENCE.md`: `[Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md)`
+- `.\PROJECT-QUICK-REFERENCE.md`: `[Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md](Flink/02-core/checkpoint-mechanism-deep-dive.md)`
 - `.\PROJECT-QUICK-REFERENCE.md`: `[Flink/02-core-mechanisms/exactly-once-end-to-end.md](Flink/02-core-mechanisms/exactly-once-end-to-end.md)`
-- `.\PROJECT-QUICK-REFERENCE.md`: `[Flink/02-core-mechanisms/time-semantics-and-watermark.md](Flink/02-core-mechanisms/time-semantics-and-watermark.md)`
+- `.\PROJECT-QUICK-REFERENCE.md`: `[Flink/02-core-mechanisms/time-semantics-and-watermark.md](Flink/02-core/time-semantics-and-watermark.md)`
 - `.\PROJECT-QUICK-REFERENCE.md`: `[Flink/02-core-mechanisms/backpressure-and-flow-control.md](Flink/02-core-mechanisms/backpressure-and-flow-control.md)`
-- `.\PROJECT-QUICK-REFERENCE.md`: `[checkpoint-mechanism-deep-dive.md](Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md)`
+- `.\PROJECT-QUICK-REFERENCE.md`: `[checkpoint-mechanism-deep-dive.md](Flink/02-core/checkpoint-mechanism-deep-dive.md)`
 - `.\PROJECT-QUICK-REFERENCE.md`: `[exactly-once-end-to-end.md](Flink/02-core-mechanisms/exactly-once-end-to-end.md)`
-- `.\PROJECT-QUICK-REFERENCE.md`: `[time-semantics-and-watermark.md](Flink/02-core-mechanisms/time-semantics-and-watermark.md)`
+- `.\PROJECT-QUICK-REFERENCE.md`: `[time-semantics-and-watermark.md](Flink/02-core/time-semantics-and-watermark.md)`
 - `.\PROJECT-QUICK-REFERENCE.md`: `[flink-state-management-complete-guide.md](Flink/02-core-mechanisms/flink-state-management-complete-guide.md)`
 - `.\PROJECT-QUICK-REFERENCE.md`: `[backpressure-and-flow-control.md](Flink/02-core-mechanisms/backpressure-and-flow-control.md)`
 - `.\PROJECT-QUICK-REFERENCE.md`: `[Flink/12-ai-ml/flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md)`
 - `.\PROJECT-QUICK-REFERENCE.md`: `[Flink/02-core-mechanisms/flink-state-management-complete-guide.md](Flink/02-core-mechanisms/flink-state-management-complete-guide.md)`
-- `.\PROJECT-QUICK-REFERENCE.md`: `[checkpoint-mechanism-deep-dive.md](Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md)`
+- `.\PROJECT-QUICK-REFERENCE.md`: `[checkpoint-mechanism-deep-dive.md](Flink/02-core/checkpoint-mechanism-deep-dive.md)`
 - `.\PROJECT-QUICK-REFERENCE.md`: `[backpressure-and-flow-control.md](Flink/02-core-mechanisms/backpressure-and-flow-control.md)`
 - `.\PROJECT-QUICK-REFERENCE.md`: `[performance-tuning-guide.md](Flink/06-engineering/performance-tuning-guide.md)`
 - `.\PROJECT-QUICK-REFERENCE.md`: `[exactly-once-end-to-end.md](Flink/02-core-mechanisms/exactly-once-end-to-end.md)`
-- `.\PROJECT-QUICK-REFERENCE.md`: `[time-semantics-and-watermark.md](Flink/02-core-mechanisms/time-semantics-and-watermark.md)`
+- `.\PROJECT-QUICK-REFERENCE.md`: `[time-semantics-and-watermark.md](Flink/02-core/time-semantics-and-watermark.md)`
 - `.\PROJECT-QUICK-REFERENCE.md`: `[performance-tuning-guide.md](Flink/06-engineering/performance-tuning-guide.md)`
 - `.\PROJECT-QUICK-REFERENCE.md`: `[sql-vs-datastream-comparison.md](Flink/03-sql-table-api/sql-vs-datastream-comparison.md)`
 - `.\PROJECT-QUICK-REFERENCE.md`: `[flink-ai-agents-flip-531.md](Flink/12-ai-ml/flink-ai-agents-flip-531.md)`
 - `.\PROJECT-QUICK-REFERENCE.md`: `[rag-streaming-architecture.md](Flink/12-ai-ml/rag-streaming-architecture.md)`
-- `.\PROJECT-QUICK-REFERENCE.md`: `[Checkpoint机制深度解析](Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md)`
+- `.\PROJECT-QUICK-REFERENCE.md`: `[Checkpoint机制深度解析](Flink/02-core/checkpoint-mechanism-deep-dive.md)`
 - `.\PROJECT-QUICK-REFERENCE.md`: `[Exactly-Once端到端](Flink/02-core-mechanisms/exactly-once-end-to-end.md)`
-- `.\PROJECT-QUICK-REFERENCE.md`: `[时间语义与Watermark](Flink/02-core-mechanisms/time-semantics-and-watermark.md)`
+- `.\PROJECT-QUICK-REFERENCE.md`: `[时间语义与Watermark](Flink/02-core/time-semantics-and-watermark.md)`
 - `.\PROJECT-TRACKING.md`: `[.scripts/doc-relationship-mapper.py](./.scripts/doc-relationship-mapper.py)`
 - `.\PROJECT-TRACKING.md`: `[.scripts/concept-dependency-generator.py](./.scripts/concept-dependency-generator.py)`
-- `.\README-EN.md`: `[Flink/ Checkpoint Mechanism](Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md)`
+- `.\README-EN.md`: `[Flink/ Checkpoint Mechanism](Flink/02-core/checkpoint-mechanism-deep-dive.md)`
 - `.\WHITEPAPER-PDF-EXPORT-COMPLETION-REPORT.md`: `[PDF](./whitepapers/pdf/streaming-technology-trends-2026.pdf)`
 - `.\WHITEPAPER-PDF-EXPORT-COMPLETION-REPORT.md`: `[PDF](./whitepapers/pdf/flink-enterprise-implementation-guide.pdf)`
 - `.\WHITEPAPER-PDF-EXPORT-COMPLETION-REPORT.md`: `[PDF](./whitepapers/pdf/realtime-ai-architecture-practice.pdf)`
@@ -527,9 +527,9 @@
 - `.\archive\completion-reports\CROSS-REF-VALIDATION-REPORT-v2.md`: `[相关文档2](path/to/doc2.md)`
 - `.\archive\completion-reports\CROSS-REF-VALIDATION-REPORT-v2.md`: `[](../path)`
 - `.\archive\completion-reports\CROSS-REF-VALIDATION-REPORT-v2.md`: `[text](./path/to/file.md)`
-- `.\archive\completion-reports\FLINK-DOCUMENTATION-GAP-ANALYSIS.md`: `[time-semantics-and-watermark.md](Flink/02-core-mechanisms/time-semantics-and-watermark.md)`
+- `.\archive\completion-reports\FLINK-DOCUMENTATION-GAP-ANALYSIS.md`: `[time-semantics-and-watermark.md](Flink/02-core/time-semantics-and-watermark.md)`
 - `.\archive\completion-reports\FLINK-DOCUMENTATION-GAP-ANALYSIS.md`: `[flink-state-management-complete-guide.md](Flink/02-core-mechanisms/flink-state-management-complete-guide.md)`
-- `.\archive\completion-reports\FLINK-DOCUMENTATION-GAP-ANALYSIS.md`: `[checkpoint-mechanism-deep-dive.md](Flink/02-core-mechanisms/checkpoint-mechanism-deep-dive.md)`
+- `.\archive\completion-reports\FLINK-DOCUMENTATION-GAP-ANALYSIS.md`: `[checkpoint-mechanism-deep-dive.md](Flink/02-core/checkpoint-mechanism-deep-dive.md)`
 - ... 还有 1283 条未修复
 
 ## 修复规则说明

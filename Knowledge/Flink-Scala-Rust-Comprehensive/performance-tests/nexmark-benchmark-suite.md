@@ -1,6 +1,6 @@
 # Nexmark 流处理基准测试套件
 
-> **所属阶段**: Knowledge/Flink-Scala-Rust-Comprehensive | **前置依赖**: [Flink 架构与执行模型](../02-flink-system/) | **形式化等级**: L3
+> **所属阶段**: Knowledge/Flink-Scala-Rust-Comprehensive | **前置依赖**: [Flink 架构与执行模型](../02-flink-system/02.01-flink-2x-architecture.md) | **形式化等级**: L3
 
 ## 1. 测试目标
 

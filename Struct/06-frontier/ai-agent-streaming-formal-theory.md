@@ -36,7 +36,7 @@
     - [4.1 流式Agent的计算复杂度分析](#41-流式agent的计算复杂度分析)
     - [4.2 多Agent协商的博弈论分析](#42-多agent协商的博弈论分析)
     - [4.3 概念漂移的检测与适应](#43-概念漂移的检测与适应)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [5.1 单Agent流处理正确性定理](#51-单agent流处理正确性定理)
     - [5.2 多Agent协作终止性定理](#52-多agent协作终止性定理)
     - [5.3 流式推理一致性定理](#53-流式推理一致性定理)

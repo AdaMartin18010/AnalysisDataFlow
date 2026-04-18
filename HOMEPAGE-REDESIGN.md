@@ -131,7 +131,7 @@
 - **形式化证明** — Checkpoint 正确性、Exactly-Once 保证的严格数学证明
 - **模型映射** — Actor/CSP/Dataflow 与 Flink 的语义等价性
 
-**[探索理论基础 →](Struct/00-INDEX.md)**
+**[探索理论基础 →](../Struct/00-INDEX.md)**
 
 ### 🧩 工程模式图谱 (Knowledge/)
 

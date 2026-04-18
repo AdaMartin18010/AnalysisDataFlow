@@ -18,14 +18,14 @@ Welcome to the English documentation hub for **AnalysisDataFlow** - a comprehens
 
 | Document | Description | Chinese Equivalent |
 |----------|-------------|-------------------|
-| [README.md](./README.md) | Project overview and introduction | [../README.md](../README.md) |
-| [QUICK-START.md](./QUICK-START.md) | Quick start guide for new users | [../QUICK-START-EN.md](../QUICK-START-EN.md) |
-| [ARCHITECTURE.md](./ARCHITECTURE.md) | System architecture overview | [../ARCHITECTURE.md](../ARCHITECTURE.md) |
-| [GLOSSARY.md](./GLOSSARY.md) | Technical terminology glossary | [../GLOSSARY-en.md](../GLOSSARY-en.md) |
-| [LEARNING-PATH-GUIDE.md](./LEARNING-PATH-GUIDE.md) | Learning path navigation guide | [../LEARNING-PATH-GUIDE.md](../LEARNING-PATH-GUIDE.md) |
-| [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) | Stream computing troubleshooting manual | [../TROUBLESHOOTING.md](../TROUBLESHOOTING.md) |
-| [OBSERVABILITY-GUIDE.md](./OBSERVABILITY-GUIDE.md) | Stream processing observability guide | [../OBSERVABILITY-GUIDE.md](../OBSERVABILITY-GUIDE.md) |
-| [KNOWLEDGE-GRAPH-GUIDE.md](./KNOWLEDGE-GRAPH-GUIDE.md) | Knowledge graph guide | [../KNOWLEDGE-GRAPH-GUIDE.md](../KNOWLEDGE-GRAPH-GUIDE.md) |
+| [README.md](./README.md) | Project overview and introduction | [./README.md](./README.md) |
+| [QUICK-START.md](./QUICK-START.md) | Quick start guide for new users | [./QUICK-START.md](./QUICK-START.md) |
+| [ARCHITECTURE.md](./ARCHITECTURE.md) | System architecture overview | [./ARCHITECTURE.md](./ARCHITECTURE.md) |
+| [GLOSSARY.md](./GLOSSARY.md) | Technical terminology glossary | [./GLOSSARY.md](./GLOSSARY.md) |
+| [LEARNING-PATH-GUIDE.md](./LEARNING-PATH-GUIDE.md) | Learning path navigation guide | [./LEARNING-PATH-GUIDE.md](./LEARNING-PATH-GUIDE.md) |
+| [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) | Stream computing troubleshooting manual | [./TROUBLESHOOTING.md](./TROUBLESHOOTING.md) |
+| [OBSERVABILITY-GUIDE.md](./OBSERVABILITY-GUIDE.md) | Stream processing observability guide | [./OBSERVABILITY-GUIDE.md](./OBSERVABILITY-GUIDE.md) |
+| [KNOWLEDGE-GRAPH-GUIDE.md](./KNOWLEDGE-GRAPH-GUIDE.md) | Knowledge graph guide | [./KNOWLEDGE-GRAPH-GUIDE.md](./KNOWLEDGE-GRAPH-GUIDE.md) |
 
 ### Directory-Specific Indexes
 

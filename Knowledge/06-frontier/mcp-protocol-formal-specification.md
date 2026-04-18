@@ -37,7 +37,7 @@
       - [工具名称冲突](#工具名称冲突)
       - [消息大小限制](#消息大小限制)
       - [并发调用限制](#并发调用限制)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [Thm-K-MCP-01: 协议一致性定理](#thm-k-mcp-01-协议一致性定理)
     - [Thm-K-MCP-02: 安全隔离保证（工程论证）](#thm-k-mcp-02-安全隔离保证工程论证)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)

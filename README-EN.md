@@ -62,7 +62,7 @@ AnalysisDataFlow is a comprehensive knowledge system for the stream computing do
 
 ### Navigation by Topic
 
-- **Theoretical Foundation**: [Struct/ Unified Stream Computing Theory](Struct/00-INDEX.md)
+- **Theoretical Foundation**: [Struct/ Unified Stream Computing Theory](../Struct/00-INDEX.md)
 - **Design Patterns**: [Knowledge/ Core Stream Processing Patterns](Knowledge/02-design-patterns/)
 - **Flink Core**: [Flink/ Checkpoint Mechanism](Flink/02-core/checkpoint-mechanism-deep-dive.md)
 - **Frontier Tech**: [Knowledge/06-frontier/ AI-Native Database](Knowledge/06-frontier/vector-search-streaming-convergence.md)
@@ -232,5 +232,5 @@ Copyright 2026 AdaMartin18010
 ## Related Documents
 
 - [中文版 README](README.md) - Chinese Version
-- [GLOSSARY-EN.md](GLOSSARY-EN.md) - English Glossary
+- [GLOSSARY-EN.md](GLOSSARY.md) - English Glossary
 - [QUICK-START-EN.md](QUICK-START-EN.md) - English Quick Start Guide

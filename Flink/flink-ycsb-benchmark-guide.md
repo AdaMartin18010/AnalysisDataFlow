@@ -22,7 +22,7 @@
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [4.1 YCSB 在流计算中的适配](#41-ycsb-在流计算中的适配)
     - [4.2 对比测试方法论](#42-对比测试方法论)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [Thm-FYB-01 (状态后端选择定理)](#thm-fyb-01-状态后端选择定理)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [6.1 YCSB 环境搭建](#61-ycsb-环境搭建)

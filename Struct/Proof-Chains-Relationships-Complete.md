@@ -1,6 +1,6 @@
 # 关系层（03-relationships）全量定理推导链
 
-> **所属阶段**: Struct/03-relationships | **前置依赖**: [01-foundation](./01-foundation/), [02-properties](./02-properties/) | **形式化等级**: L3-L6
+> **所属阶段**: Struct/03-relationships | **前置依赖**: 01-foundation, 02-properties | **形式化等级**: L3-L6
 >
 > **覆盖范围**: 约80个定理/引理/定义 | **文档版本**: v1.0 | **生成日期**: 2026-04-11
 

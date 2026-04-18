@@ -53,7 +53,7 @@
       - [4.6.4 Snowflake 局限性](#464-snowflake-局限性)
       - [4.6.5 Databricks 局限性](#465-databricks-局限性)
       - [4.6.6 BigQuery 局限性](#466-bigquery-局限性)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [Thm-K-04-02 (2026流数据库选型定理)](#thm-k-04-02-2026流数据库选型定理)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [6.1 实时数仓场景选型](#61-实时数仓场景选型)
@@ -336,6 +336,8 @@ gantt
 | **多租户SaaS** | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
 | **边缘计算** | ⭐⭐ | ⭐⭐ | ⭐⭐⭐ | ⭐ | ⭐⭐ | ⭐ |
 | **混合云** | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
+
+> **延伸阅读**: [Streaming Database形式化定义与增量计算理论根基](../../Struct/01-foundation/streaming-database-formal-definition.md) —— SDB 八元组模型为流数据库对比提供了严格的数学基础，将各系统的架构差异映射为形式化语义空间的参数选择。
 
 ---
 

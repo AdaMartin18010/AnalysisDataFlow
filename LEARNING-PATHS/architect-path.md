@@ -43,6 +43,7 @@
 - [Knowledge/04-technology-selection/engine-selection-guide.md](../Knowledge/04-technology-selection/engine-selection-guide.md)
 - [Knowledge/04-technology-selection/flink-vs-risingwave.md](../Knowledge/04-technology-selection/flink-vs-risingwave.md)
 - [Knowledge/04-technology-selection/streaming-database-guide.md](../Knowledge/04-technology-selection/streaming-database-guide.md)
+- [Struct/01-foundation/01.08-streaming-database-formalization.md](../Struct/01-foundation/01.08-streaming-database-formalization.md)
 - [Flink/05-vs-competitors/flink-vs-spark-streaming.md](../Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-spark-streaming.md)
 - [Flink/05-vs-competitors/flink-vs-kafka-streams.md](../Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-kafka-streams.md)
 
@@ -73,6 +74,7 @@
 - [Flink/04-connectors/flink-paimon-integration.md](../Flink/05-ecosystem/05.01-connectors/flink-paimon-integration.md)
 - [Flink/14-lakehouse/streaming-lakehouse-architecture.md](../Flink/05-ecosystem/05.02-lakehouse/streaming-lakehouse-architecture.md)
 - [Knowledge/02-design-patterns/pattern-checkpoint-recovery.md](../Knowledge/02-design-patterns/pattern-checkpoint-recovery.md)
+- [Struct/06-frontier/calvin-deterministic-streaming.md](../Struct/06-frontier/calvin-deterministic-streaming.md)
 
 **实践任务**:
 
@@ -98,6 +100,7 @@
 - [Flink/10-deployment/kubernetes-deployment-production-guide.md](../Flink/04-runtime/04.01-deployment/kubernetes-deployment-production-guide.md)
 - [Flink/06-engineering/flink-tco-cost-optimization-guide.md](../Flink/09-practices/09.03-performance-tuning/flink-tco-cost-optimization-guide.md)
 - [Flink/13-security/streaming-security-best-practices.md](../Flink/09-practices/09.04-security/streaming-security-best-practices.md)
+- [Knowledge/06-frontier/cd-raft-cross-domain-consensus.md](../Knowledge/06-frontier/cd-raft-cross-domain-consensus.md)
 - [Flink/15-observability/flink-opentelemetry-observability.md](../Flink/04-runtime/04.03-observability/flink-opentelemetry-observability.md)
 - [Knowledge/09-anti-patterns/anti-pattern-checklist.md](../Knowledge/09-anti-patterns/anti-pattern-checklist.md)
 
@@ -154,6 +157,14 @@
 | `01-architecture/deployment-architectures.md` | 部署架构 | L2 | 2h |
 | `01-architecture/disaggregated-state-analysis.md` | 分离状态分析 | L4 | 3h |
 | `10-deployment/kubernetes-deployment-production-guide.md` | K8s生产部署 | L3 | 4h |
+| `../Struct/06-frontier/calvin-deterministic-streaming.md` | Calvin确定性执行 | L5 | 4h |
+| `../Knowledge/06-frontier/cd-raft-cross-domain-consensus.md` | CD-Raft跨域共识 | L4 | 3h |
+
+### 理论深化 (Struct/01-foundation/)
+
+| 文档 | 主题 | 难度 | 预计时间 |
+|------|------|------|----------|
+| `01.08-streaming-database-formalization.md` | 流数据库形式化 | L5 | 3h |
 
 ### 行业案例 (Knowledge/03-business-patterns/)
 

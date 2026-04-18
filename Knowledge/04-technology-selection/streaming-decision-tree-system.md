@@ -1,6 +1,6 @@
 # 流处理决策树系统
 
-> **所属阶段**: Knowledge | **前置依赖**: [Flink/01-concepts/](../../Flink/01-concepts/), [flink-state-management-complete-guide.md](../../Flink/02-core/flink-state-management-complete-guide.md) | **形式化等级**: L4 | **最后更新**: 2026-04-12
+> **所属阶段**: Knowledge | **前置依赖**: [Flink/01-concepts/](../../Flink/01-concepts/README.md), [flink-state-management-complete-guide.md](../../Flink/02-core/flink-state-management-complete-guide.md) | **形式化等级**: L4 | **最后更新**: 2026-04-12
 
 ## 目录
 
@@ -38,7 +38,7 @@
     - [4.5 一致性级别决策论证](#45-一致性级别决策论证)
       - [4.5.1 金融场景一致性论证](#451-金融场景一致性论证)
       - [4.5.2 日志处理一致性论证](#452-日志处理一致性论证)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [5.1 决策树正确性证明](#51-决策树正确性证明)
     - [5.2 引擎推荐最优性证明](#52-引擎推荐最优性证明)
     - [5.3 状态后端选择正确性证明](#53-状态后端选择正确性证明)

@@ -80,6 +80,8 @@ CallToolResult = {
 ContentItem = TextContent | ImageContent | EmbeddedResource
 ```
 
+> **延伸阅读**: [MCP工具调用的形式化行为契约验证](../../formal-methods/08-ai-formal-methods/agent-behavior-contract-verification.md) —— 将工具调用约束 $\Psi_{call}$ 映射为 Agent 行为契约中的工具使用策略，通过 TLA+ 证明调用序列的安全性。
+
 ### Def-F-12-49: MCP 资源 (MCP Resource)
 
 **定义**: MCP 资源是可通过 URI 访问的数据实体，形式化为：
@@ -422,6 +424,8 @@ MCP 获得主流 AI 平台和工具支持：
 - **缺点**: 网络延迟、额外的运维复杂度
 
 **推荐策略**: 开发测试用 Sidecar，生产环境用独立服务。
+
+> **延伸阅读**: [MCP部署模式的安全性与正确性形式化分析](../../formal-methods/08-ai-formal-methods/agent-behavior-contract-verification.md) —— 对比 Sidecar 与独立服务的故障隔离边界，证明独立部署模式在 Agent 行为偏离时的 containment 性质。
 
 ---
 

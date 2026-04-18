@@ -40,7 +40,7 @@
     - [示例 6.1 Dataflow 实例：实时用户行为分析（Flink）](#示例-61-dataflow-实例实时用户行为分析flink)
     - [示例 6.2 Actor 实例：物联网设备会话管理（Akka）](#示例-62-actor-实例物联网设备会话管理akka)
     - [示例 6.3 CSP 实例：高并发限流器（Go）](#示例-63-csp-实例高并发限流器go)
-    - [示例 6.4 CEP + Pub/Sub 混合实例：金融风控实时告警 {#示例-64-cep--pubsub-混合实例金融风控实时告警}](#示例-64-cep--pubsub-混合实例金融风控实时告警-示例-64-cep--pubsub-混合实例金融风控实时告警)
+    - [示例 6.4 CEP + Pub/Sub 混合实例：金融风控实时告警 {#示例-64-cep--pubsub-混合实例金融风控实时告警}](#示例-64-cep--pubsub-混合实例金融风控实时告警)
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
     - [图 7.1 混合架构参考图：端到端流处理系统](#图-71-混合架构参考图端到端流处理系统)
   - [8. 引用参考 (References)](#8-引用参考-references)
@@ -532,7 +532,7 @@ func rateLimiter(requests <-chan Request, responses chan<- Response) {
 
 ---
 
-### 示例 6.4 CEP + Pub/Sub 混合实例：金融风控实时告警 {#示例-64-cep--pubsub-混合实例金融风控实时告警}
+### 示例 6.4 CEP + Pub/Sub 混合实例：金融风控实时告警
 
 **场景**：银行交易流中，若同一账户在 30 秒内于两个不同国家发生 ATM 取款，则触发欺诈告警。告警信息通过 Kafka 推送到风控中心。
 

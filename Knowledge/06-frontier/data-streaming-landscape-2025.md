@@ -1,6 +1,6 @@
 # 数据流平台全景对比 2025 —— Kafka vs Pulsar vs Flink
 
-> **所属阶段**: Knowledge/Frontier | **前置依赖**: [Flink/ 全系列架构文档](../../Flink/), [Knowledge/04-patterns/stream-processing-patterns.md](../02-design-patterns/pattern-event-time-processing.md) | **形式化等级**: L4 (工程选型论证)
+> **所属阶段**: Knowledge/Frontier | **前置依赖**: [Flink/ 全系列架构文档](../../Flink/00-INDEX.md), [Knowledge/04-patterns/stream-processing-patterns.md](../02-design-patterns/pattern-event-time-processing.md) | **形式化等级**: L4 (工程选型论证)
 
 ---
 

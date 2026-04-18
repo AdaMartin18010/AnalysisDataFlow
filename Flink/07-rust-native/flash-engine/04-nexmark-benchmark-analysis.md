@@ -625,18 +625,11 @@ Q95 (复杂 Join):
 ### 7.1 Nexmark 加速比对比图
 
 ```mermaid
-bar title Nexmark 各查询加速比对比
-    y-axis 加速比(x) --> 0 --> 16
-    bar [q0] 8.0
-    bar [q1] 8.0
-    bar [q2] 8.0
-    bar [q3] 10.0
-    bar [q4] 10.0
-    bar [q5] 15.0
-    bar [q6] 15.0
-    bar [q7] 5.0
-    bar [q8] 5.0
-    bar [q9] 4.0
+xychart-beta
+    title "Nexmark 各查询加速比对比"
+    x-axis ["q0", "q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8", "q9"]
+    y-axis "加速比(x)" 0 --> 16
+    bar [8.0, 8.0, 8.0, 10.0, 10.0, 15.0, 15.0, 5.0, 5.0, 4.0]
 ```
 
 ### 7.2 性能提升来源饼图
@@ -664,11 +657,11 @@ line title 加速比 vs 数据规模
 ### 7.4 TPC-DS 性能对比
 
 ```mermaid
-bar title TPC-DS 10TB 查询执行时间对比(相对值)
-    y-axis 相对时间 --> 0 --> 100
-    bar [Spark 3.4] 100
-    bar [Flink 1.19] 95
-    bar [Flash] 30
+xychart-beta
+    title "TPC-DS 10TB 查询执行时间对比(相对值)"
+    x-axis ["Spark 3.4", "Flink 1.19", "Flash"]
+    y-axis "相对时间" 0 --> 100
+    bar [100, 95, 30]
 ```
 
 ### 7.5 成本效益分析

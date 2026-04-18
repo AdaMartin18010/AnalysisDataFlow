@@ -10,7 +10,7 @@
     - [Def-K-06-15: 流数据访问控制 (Streaming Data Access Control)](#def-k-06-15-流数据访问控制-streaming-data-access-control)
     - [Def-K-06-16: 基于属性的访问控制 (ABAC)](#def-k-06-16-基于属性的访问控制-abac)
     - [Def-K-06-17: 基于关系的访问控制 (ReBAC)](#def-k-06-17-基于关系的访问控制-rebac)
-    - [Def-K-06-18: 数据血缘与策略传播 (Data Lineage \& Policy Propagation) {#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation}](#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation-def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation)
+    - [Def-K-06-18: 数据血缘与策略传播 (Data Lineage \& Policy Propagation) {#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation}](#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
     - [Prop-K-06-08: ABAC在流场景的表达能力完备性](#prop-k-06-08-abac在流场景的表达能力完备性)
     - [Prop-K-06-09: ReBAC与ABAC的表达能力关系](#prop-k-06-09-rebac与abac的表达能力关系)
@@ -163,7 +163,7 @@ $$
 
 ---
 
-### Def-K-06-18: 数据血缘与策略传播 (Data Lineage & Policy Propagation) {#def-k-06-18-数据血缘与策略传播-data-lineage--policy-propagation}
+### Def-K-06-18: 数据血缘与策略传播 (Data Lineage & Policy Propagation)
 
 数据血缘是记录数据**来源**、**转换过程**和**去向**的元数据，策略传播是指访问控制策略随数据血缘**自动继承**或**动态转换**的机制。
 
@@ -873,29 +873,29 @@ graph LR
         ReBAC["ReBAC"]
         PBAC["PBAC"]
 
-        RBAC ---|简单性: 10| C1[ ]
-        RBAC ---|灵活性: 4| C2[ ]
-        RBAC ---|性能: 9| C3[ ]
-        RBAC ---|血缘支持: 3| C4[ ]
-        RBAC ---|管理成本: 9| C5[ ]
+        RBAC ---|简单性: 10| C1[·]
+        RBAC ---|灵活性: 4| C2[·]
+        RBAC ---|性能: 9| C3[·]
+        RBAC ---|血缘支持: 3| C4[·]
+        RBAC ---|管理成本: 9| C5[·]
 
-        ABAC ---|简单性: 5| C6[ ]
-        ABAC ---|灵活性: 9| C7[ ]
-        ABAC ---|性能: 6| C8[ ]
-        ABAC ---|血缘支持: 5| C9[ ]
-        ABAC ---|管理成本: 6| C10[ ]
+        ABAC ---|简单性: 5| C6[·]
+        ABAC ---|灵活性: 9| C7[·]
+        ABAC ---|性能: 6| C8[·]
+        ABAC ---|血缘支持: 5| C9[·]
+        ABAC ---|管理成本: 6| C10[·]
 
-        ReBAC ---|简单性: 4| C11[ ]
-        ReBAC ---|灵活性: 8| C12[ ]
-        ReBAC ---|性能: 5| C13[ ]
-        ReBAC ---|血缘支持: 10| C14[ ]
-        ReBAC ---|管理成本: 5| C15[ ]
+        ReBAC ---|简单性: 4| C11[·]
+        ReBAC ---|灵活性: 8| C12[·]
+        ReBAC ---|性能: 5| C13[·]
+        ReBAC ---|血缘支持: 10| C14[·]
+        ReBAC ---|管理成本: 5| C15[·]
 
-        PBAC ---|简单性: 3| C16[ ]
-        PBAC ---|灵活性: 10| C17[ ]
-        PBAC ---|性能: 5| C18[ ]
-        PBAC ---|血缘支持: 8| C19[ ]
-        PBAC ---|管理成本: 4| C20[ ]
+        PBAC ---|简单性: 3| C16[·]
+        PBAC ---|灵活性: 10| C17[·]
+        PBAC ---|性能: 5| C18[·]
+        PBAC ---|血缘支持: 8| C19[·]
+        PBAC ---|管理成本: 4| C20[·]
     end
 
     style RBAC fill:#ffccbc

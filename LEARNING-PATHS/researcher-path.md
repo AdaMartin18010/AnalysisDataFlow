@@ -47,6 +47,7 @@
 - [Struct/01-foundation/01.03-actor-model-formalization.md](../Struct/01-foundation/01.03-actor-model-formalization.md)
 - [Struct/01-foundation/01.05-csp-formalization.md](../Struct/01-foundation/01.05-csp-formalization.md)
 - [Struct/01-foundation/01.07-session-types.md](../Struct/01-foundation/01.07-session-types.md)
+- [Struct/01-foundation/minimal-session-types-theory.md](../Struct/01-foundation/minimal-session-types-theory.md)
 - [Struct/03-relationships/03.01-actor-to-csp-encoding.md](../Struct/03-relationships/03.01-actor-to-csp-encoding.md)
 
 **实践任务**:
@@ -71,6 +72,7 @@
 **推荐文档**:
 
 - [Struct/01-foundation/01.04-dataflow-model-formalization.md](../Struct/01-foundation/01.04-dataflow-model-formalization.md)
+- [Struct/06-frontier/dbsp-theory-framework.md](../Struct/06-frontier/dbsp-theory-framework.md)
 - [Struct/02-properties/02.02-consistency-hierarchy.md](../Struct/02-properties/02.02-consistency-hierarchy.md)
 - [Struct/02-properties/02.05-type-safety-derivation.md](../Struct/02-properties/02.05-type-safety-derivation.md)
 - [Struct/04-proofs/04.04-watermark-algebra-formal-proof.md](../Struct/04-proofs/04.04-watermark-algebra-formal-proof.md)
@@ -102,6 +104,7 @@
 - [Struct/04-proofs/04.03-chandy-lamport-consistency.md](../Struct/04-proofs/04.03-chandy-lamport-consistency.md)
 - [Struct/02-properties/02.04-liveness-and-safety.md](../Struct/02-properties/02.04-liveness-and-safety.md)
 - [Struct/04-proofs/04.05-type-safety-fg-fgg.md](../Struct/04-proofs/04.05-type-safety-fg-fgg.md)
+- [Struct/06-frontier/llm-guided-formal-proof-automation.md](../Struct/06-frontier/llm-guided-formal-proof-automation.md)
 
 **实践任务**:
 
@@ -130,6 +133,7 @@
 - [Struct/07-tools/tla-for-flink.md](../Struct/07-tools/tla-for-flink.md)
 - [Struct/07-tools/coq-mechanization.md](../Struct/07-tools/coq-mechanization.md)
 - [Struct/07-tools/iris-separation-logic.md](../Struct/07-tools/iris-separation-logic.md)
+- [formal-methods/06-tools/veil-framework-lean4.md](../formal-methods/06-tools/veil-framework-lean4.md)
 
 **实践任务**:
 
@@ -151,6 +155,8 @@
 | `01.07-session-types.md` | 会话类型 | L5 | 4h |
 | `04.01-flink-checkpoint-correctness.md` | Checkpoint正确性 | L4 | 4h |
 | `04.02-flink-exactly-once-correctness.md` | Exactly-Once正确性 | L4 | 4h |
+| `minimal-session-types-theory.md` | 最小会话类型 | L5 | 4h |
+| `dbsp-theory-framework.md` | DBSP增量计算理论 | L5 | 5h |
 
 ### 形式化工具 (Struct/07-tools/)
 
@@ -159,6 +165,7 @@
 | `coq-mechanization.md` | Coq机械化证明 | L5 | 6h |
 | `iris-separation-logic.md` | Iris分离逻辑 | L5 | 6h |
 | `tla-for-flink.md` | TLA+建模 | L4 | 4h |
+| `../formal-methods/06-tools/veil-framework-lean4.md` | Veil迁移系统验证 | L5 | 6h |
 
 ### 前沿研究 (Struct/06-frontier/)
 
@@ -167,6 +174,7 @@
 | `06.01-open-problems-streaming-verification.md` | 验证开放问题 | L6 | 5h |
 | `06.03-ai-agent-session-types.md` | AI Agent会话类型 | L5 | 4h |
 | `06.04-pdot-path-dependent-types.md` | 路径依赖类型 | L6 | 5h |
+| `llm-guided-formal-proof-automation.md` | LLM辅助形式化证明 | L5 | 5h |
 
 ---
 
