@@ -379,7 +379,7 @@ $$
 对于在节点集合 $N$ 上复制的 CRDT，其状态收敛断言定义为：
 
 $$
-\text{CRDT-Converge}(c, N) \triangleq \forall n_1, n_2 \in N. \text{delivered}_{n_1}(c) = \text{delivered}_{n_2}(c) \Rightarrow \text{state}_{n_1}(c) = \text{state}_{n_2}(c)
+\text{CRDT-Converge}(c, N) \triangleq \forall n_1, n_2 \in N. \text{delivered}*{n_1}(c) = \text{delivered}*{n_2}(c) \Rightarrow \text{state}*{n_1}(c) = \text{state}*{n_2}(c)
 $$
 
 其中 $\text{delivered}_n(c)$ 表示节点 $n$ 已收到的所有更新操作集合。
@@ -399,7 +399,7 @@ $$
 若网络满足"最终交付"（eventual delivery）假设，则：
 
 $$
-\Diamond(\forall n_1, n_2 \in N. \text{delivered}_{n_1}(c) = \text{delivered}_{n_2}(c))
+\Diamond(\forall n_1, n_2 \in N. \text{delivered}*{n_1}(c) = \text{delivered}*{n_2}(c))
 $$
 
 这一性质在 Iris 中被编码为时序逻辑不变式，并通过归纳法证明：CRDT 的合并操作满足交换律、结合律和幂等律，确保不同节点以任意顺序应用更新后最终状态一致。

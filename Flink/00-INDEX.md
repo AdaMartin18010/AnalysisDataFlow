@@ -162,7 +162,7 @@
 
 | 文档 | 描述 | 版本 |
 |------|------|------|
-| [05-ecosystem/05.02-lakehouse/streaming-lakehouse-architecture.md](05-ecosystem/05.02-lakehouse/streaming-lakehouse-architecture.md) | Lakehouse 架构 | 1.18+ |
+| [05-ecosystem/05.02-lakehouse/streaming-lakehouse-architecture.md](05-ecosystem/05.02-lakehouse/streaming-lakehouse-architecture.md) | Lakehouse 架构设计深度指南 | 1.18+ | 🆕 v4.5 |
 | [05-ecosystem/05.02-lakehouse/flink-iceberg-integration.md](05-ecosystem/05.02-lakehouse/flink-iceberg-integration.md) | Iceberg 集成 | 1.18+ |
 | [05-ecosystem/05.02-lakehouse/flink-paimon-integration.md](05-ecosystem/05.02-lakehouse/flink-paimon-integration.md) | Paimon 集成 | 1.18+ |
 
@@ -206,6 +206,7 @@
 | [08-roadmap/08.01-flink-24/flink-2.4-tracking.md](08-roadmap/08.01-flink-24/flink-2.4-tracking.md) | Flink 2.4 特性追踪 | 2.4 |
 | [08-roadmap/08.01-flink-24/flink-2.5-preview.md](08-roadmap/08.01-flink-24/flink-2.5-preview.md) | Flink 2.5 预览 | 2.5 |
 | [08-roadmap/08.01-flink-24/flink-30-architecture-redesign.md](08-roadmap/08.01-flink-24/flink-30-architecture-redesign.md) | Flink 3.0 架构重设计 | 3.0 |
+| [08-roadmap/08.01-flink-24/flink-2.2-production-adoption-framework.md](08-roadmap/08.01-flink-24/flink-2.2-production-adoption-framework.md) | Flink 2.2 生产采用决策框架 | 2.2+ | 🆕 v4.5 |
 
 ---
 
@@ -236,6 +237,13 @@
 |------|------|
 | [09-practices/09.04-security/flink-security-complete-guide.md](09-practices/09.04-security/flink-security-complete-guide.md) | 安全完整指南 |
 | [09-practices/09.04-security/security-hardening-guide.md](09-practices/09.04-security/security-hardening-guide.md) | 安全加固指南 |
+
+#### 部署
+
+| 文档 | 描述 | 版本 |
+|------|------|------|
+| [09-practices/09.04-deployment/flink-gitops-deployment.md](09-practices/09.04-deployment/flink-gitops-deployment.md) | GitOps 部署深度指南 | 1.17+ | 🆕 v4.5 |
+| [09-practices/09.04-deployment/flink-multi-cluster-federation.md](09-practices/09.04-deployment/flink-multi-cluster-federation.md) | 多集群联邦架构深度指南 | 1.17+ | 🆕 v4.5 |
 
 ---
 
@@ -332,17 +340,17 @@ graph LR
 Flink/ 目录统计:
 ├── 01-concepts/:          4 文档 (架构设计)
 ├── 02-core/:             20+ 文档 (核心机制)
-├── 03-api/:              25+ 文档 (API 生态)
+├── 03-api/:              26+ 文档 (API 生态)
 ├── 04-runtime/:          30+ 文档 (运行时与运维)
 ├── 05-ecosystem/:        30+ 文档 (生态系统)
 ├── 06-ai-ml/:            25+ 文档 (AI/ML 集成)
 ├── 07-rust-native/:      40+ 文档 (Rust 生态)
-├── 08-roadmap/:          15+ 文档 (路线图)
-├── 09-practices/:        40+ 文档 (工程实践)
+├── 08-roadmap/:          16+ 文档 (路线图)
+├── 09-practices/:        42+ 文档 (工程实践)
 ├── 10-internals/:        10 文档 (源码分析)
 └── 00-meta/:              4 文档 (元文档)
 ----------------------------------------
-总计: 约 390+ 文档
+总计: 约 394+ 文档
 覆盖版本: Flink 1.17 - 3.0
 ```
 

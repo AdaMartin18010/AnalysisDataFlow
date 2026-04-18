@@ -1,26 +1,27 @@
-# Streaming Lakehouse Architecture - 流式湖仓架构设计与实践
+# Streaming Lakehouse Architecture — Flink 流式 Lakehouse 架构设计深度指南
 
-> **所属阶段**: Flink/14-lakehouse/ | **前置依赖**: [Flink/14-lakehouse/flink-iceberg-integration.md](./flink-iceberg-integration.md), [Flink/14-lakehouse/flink-paimon-integration.md](./flink-paimon-integration.md), [Flink/09-language-foundations/04-streaming-lakehouse.md](../../03-api/09-language-foundations/04-streaming-lakehouse.md) | **形式化等级**: L4-L5 | **版本**: Flink 1.18+
+> **所属阶段**: Flink/05-ecosystem/05.02-lakehouse/ | **前置依赖**: [Flink/05-ecosystem/05.02-lakehouse/flink-iceberg-integration.md](./flink-iceberg-integration.md), [Flink/05-ecosystem/05.02-lakehouse/flink-paimon-integration.md](./flink-paimon-integration.md), [Flink/03-api/09-language-foundations/04-streaming-lakehouse.md](../../03-api/09-language-foundations/04-streaming-lakehouse.md) | **形式化等级**: L4-L5 | **版本**: Flink 1.18+ / Iceberg 1.5+ / Paimon 0.8+ / Delta 3.0+
 
 ---
 
 ## 1. 概念定义 (Definitions)
 
-### Def-F-14-05: 流式湖仓架构 (Streaming Lakehouse Architecture)
+### Def-F-05-40: 流式湖仓架构 (Streaming Lakehouse Architecture)
 
-**定义**: 流式湖仓架构是一种将实时流处理能力与湖仓存储（Lakehouse）深度融合的数据架构范式，通过统一存储层支持流批一体的数据处理、分析和 serving。
+**定义**: 流式湖仓架构是一种将实时流处理能力与开放湖仓存储深度融合的数据架构范式，通过统一存储层支持流批一体的数据处理、分析与服务 (serving)。
 
 **形式化结构**:
 
 ```
-StreamingLakehouseArchitecture = ⟨StorageLayer, TableFormat, ProcessingEngine, ServingLayer, Governance⟩
+StreamingLakehouse = ⟨Storage, TableFormat, Engine, Metadata, Serving, Governance⟩
 
 其中:
-- StorageLayer: 对象存储系统 (S3/OSS/GCS/HDFS)
-- TableFormat: 开放表格式 (Iceberg/Hudi/Delta/Paimon)
-- ProcessingEngine: 流批统一计算引擎 (Flink/Spark)
-- ServingLayer: 数据服务层 (查询引擎/API/BI)
-- Governance: 数据治理体系 (血缘/质量/安全)
+- Storage:    对象存储系统 (S3 / OSS / GCS / HDFS / MinIO)
+- TableFormat: 开放表格式 (Iceberg / Paimon / Delta Lake / Hudi)
+- Engine:      流批统一计算引擎 (Flink / Spark / Trino)
+- Metadata:    统一元数据层 (Hive Metastore / Glue / Unity Catalog)
+- Serving:     数据服务层 (查询引擎 / REST API / BI / Feature Store)
+- Governance:  数据治理体系 (血缘 / 质量 / 安全 / 成本)
 ```
 
 **核心特征矩阵**:
@@ -28,31 +29,101 @@ StreamingLakehouseArchitecture = ⟨StorageLayer, TableFormat, ProcessingEngine,
 | 特征维度 | 传统数据湖 | 传统数仓 | 流式湖仓 |
 |----------|-----------|----------|----------|
 | **存储成本** | 低 | 高 | 低 |
-| **实时性** | 批处理 | 批处理 | 秒级延迟 |
-| **Schema 管理** | 弱 | 强 | 强 |
-| **并发更新** | 弱 | 强 | 强 |
-| **时间旅行** | 无 | 有限 | 完整支持 |
-| **开放格式** | 是 | 否 | 是 |
+| **实时性** | 小时~天级 | 小时~天级 | 秒级~分钟级 |
+| **Schema 管理** | 弱 (读时模式) | 强 (写时模式) | 强 (显式演进) |
+| **并发更新** | 弱 | 强 | 强 (事务隔离) |
+| **时间旅行** | 无 | 有限 | 完整快照级 |
+| **开放格式** | 是 (原始文件) | 否 (专有格式) | 是 (开放表格式) |
+| **流批统一** | 否 | 否 | 是 |
 
 ---
 
-### Def-F-14-06: Apache Iceberg 流式集成语义
+### Def-F-05-41: 开放表格式 (Open Table Format)
 
-**定义**: Apache Iceberg 通过**不可变快照**和**增量扫描**机制实现流式数据的可靠存储与消费。
+**定义**: 开放表格式是在对象存储之上提供表抽象、事务语义和元数据管理的存储中间层，通过标准化元数据层使多计算引擎共享同一套数据。
 
 **形式化模型**:
 
 ```
-IcebergStreamModel = ⟨SnapshotSequence, IncrementalScan, WatermarkAlignment⟩
+OpenTableFormat = ⟨DataFiles, MetadataLayer, TransactionLog, SnapshotIsolation⟩
 
-快照序列:
-  S = {s_1, s_2, ..., s_n} 其中 ∀i: s_i.timestamp < s_{i+1}.timestamp
+元数据层结构:
+  MetadataLayer = {Schema, PartitionSpec, Snapshots, Statistics, Properties}
 
-增量扫描算子:
-  Δ(s_i, s_j) = {f | f ∈ s_j.files ∧ f ∉ s_i.files}
+快照隔离:
+  ∀ query Q: Q reads from consistent_snapshot S_i
+  ∀ transaction T: T commits to new_snapshot S_{i+1} atomically
+```
 
-水印对齐条件:
-  ∀checkpoint c: watermark(c) ≤ snapshot(c).commit_time + ε
+**四大格式核心差异**:
+
+| 维度 | Apache Iceberg | Apache Paimon | Delta Lake | Apache Hudi |
+|------|---------------|---------------|------------|-------------|
+| **存储格式** | Parquet/ORC/Avro | Parquet/ORC/Avro | Parquet | Parquet/ORC |
+| **事务模型** | 乐观并发控制 | LSM-Tree + 快照 | 乐观并发控制 | MVCC |
+| **更新模式** | Copy-on-Write | LSM + 异步 Compaction | Copy-on-Write | MOR / COW |
+| **流式延迟** | 分钟级 | 秒级 | 分钟级 | 秒级~分钟级 |
+| **增量消费** | 增量快照扫描 | LSM Snapshot + Changelog | Change Data Feed | 时间线服务 |
+| **Flink 集成** | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ |
+| **小文件管理** | 外部调度 Compaction | 原生异步 Compaction | 自动 (Delta 2.0+) | 自动 |
+| **Lookup Join** | 有限 | 原生支持 | 支持 | 支持 |
+
+---
+
+### Def-F-05-42: 流式入湖语义 (Streaming Ingestion Semantics)
+
+**定义**: 流式入湖是将无界流数据持续、可靠地写入湖仓表的过程，需满足 exactly-once、有序性和低延迟三重约束。
+
+**形式化模型**:
+
+```
+StreamingIngestion = ⟨SourceStream, IngestionMode, CommitProtocol, Consistency⟩
+
+入湖模式:
+  Mode ∈ {NearRealtime, MicroBatch}
+
+  NearRealtime: checkpoint_interval → commit_latency
+    latency ≈ checkpoint_interval (通常 5s ~ 60s)
+
+  MicroBatch: batch_size + time_trigger → commit_latency
+    latency ≈ max(batch_time, trigger_interval) (通常 1min ~ 5min)
+
+提交协议:
+  TwoPhaseCommit:
+    Phase 1 (Pre-commit): 数据文件写入 + pending snapshot 准备
+    Phase 2 (Commit): 原子元数据提交 → 数据立即可见
+```
+
+**近实时 vs 微批对比**:
+
+| 维度 | 近实时 (Near Real-time) | 微批 (Micro-batch) |
+|------|------------------------|-------------------|
+| **Checkpoint 间隔** | 5s ~ 30s | 1min ~ 5min |
+| **延迟** | 秒级 | 分钟级 |
+| **小文件数量** | 较多 | 较少 |
+| **元数据压力** | 高 | 中 |
+| **适用场景** | CDC 同步、实时报表 | 日志聚合、批量 ETL |
+| **Flink 实现** | `INSERT INTO` streaming | `INSERT OVERWRITE` / CTAS |
+
+---
+
+### Def-F-05-43: Flink + Iceberg 动态 Iceberg Sink 与隐藏分区
+
+**定义**: Flink Dynamic Iceberg Sink 是在 Iceberg 1.5+ 中引入的流式写入优化机制，支持基于写入负载的自动分桶、隐藏分区 (Hidden Partitioning) 和 Z-Order 数据布局优化。
+
+**形式化结构**:
+
+```
+DynamicIcebergSink = ⟨PartitionSpec, HiddenPartition, ZOrderLayout, AutoCompaction⟩
+
+隐藏分区:
+  HiddenPartition(column) = transform(column) → partition_value
+  transform ∈ {identity, bucket(n), truncate(l), year, month, day, hour}
+  查询端无需显式指定分区谓词,优化器自动下推
+
+Z-Order 优化:
+  ZOrder(columns) = interleave_bits(hash(c1), hash(c2), ...) → sort_key
+  目标: 将多维查询的列相关性转化为局部性,减少 I/O
 ```
 
 **与 Flink 的集成点**:
@@ -62,18 +133,19 @@ IcebergStreamModel = ⟨SnapshotSequence, IncrementalScan, WatermarkAlignment⟩
 | **容错** | Checkpoint | 快照提交 | 两阶段提交 |
 | **时间语义** | Watermark | 快照时间戳 | 对齐触发 |
 | **增量消费** | 流式 Source | 快照差分 | 变更捕获 |
-| **Schema 演进** | TypeInference | Schema 版本 | 自动同步 |
+| **动态写入** | `SinkWriter` | `FileAppenderFactory` | 自适应文件大小 |
+| **隐藏分区** | `PartitionComputer` | `PartitionSpec` | 透明分区演化 |
 
 ---
 
-### Def-F-14-07: Apache Paimon LSM-Tree 流批模型
+### Def-F-05-44: Flink + Paimon 主键表与增量日志模型
 
-**定义**: Apache Paimon 基于**日志结构合并树 (LSM-Tree)** 实现流批统一的存储引擎，通过分层存储和异步合并优化读写性能。
+**定义**: Apache Paimon 基于日志结构合并树 (LSM-Tree) 实现流批统一的存储引擎，通过分层存储、异步合并和变更日志生成 (Changelog Generation) 优化流式场景。
 
 **形式化结构**:
 
 ```
-PaimonLSM = ⟨MemTable, L0, {L_i}_{i=1..k}, CompactionPolicy, ChangelogGen⟩
+PaimonLSM = ⟨MemTable, WAL, L0, {L_i}_{i=1..k}, CompactionPolicy, ChangelogGen⟩
 
 MemTable: 内存缓冲区 (有序跳表)
   - 写入 WAL 保证持久性
@@ -87,11 +159,14 @@ L_i (i≥1): 合并排序层
   - 文件按 Key 范围有序分区
   - 层间大小比例因子通常 10
 
-变更日志生成:
-  Changelog(snap_t) = gen_log(L0_t, L0_{t-1})
+变更日志生成模式:
+  ChangelogGen ∈ {none, input, lookup, full-compaction}
+  - input: 信任上游 CDC 变更类型
+  - lookup: 通过点查生成前后像 (适合无 CDC 源)
+  - full-compaction: 全量对比生成 (开销最大,最准确)
 ```
 
-**流批访问模式**:
+**流批访问路径**:
 
 ```
 流式写入路径:
@@ -106,14 +181,14 @@ L_i (i≥1): 合并排序层
 
 ---
 
-### Def-F-14-08: Delta Lake 流式架构
+### Def-F-05-45: Flink + Delta Lake Delta Sink 与时间旅行
 
-**定义**: Delta Lake 是一种基于**事务日志 (Transaction Log)** 的开放存储格式，通过乐观并发控制实现 ACID 事务和流批统一访问。
+**定义**: Delta Lake 是一种基于事务日志 (Transaction Log, `_delta_log`) 的开放存储格式，通过乐观并发控制实现 ACID 事务、Schema Evolution 和流批统一访问。
 
 **核心架构形式化**:
 
 ```
-DeltaLake = ⟨ParquetFiles, TransactionLog, Checkpoints, Metadata⟩
+DeltaLake = ⟨ParquetFiles, TransactionLog, Checkpoints, MetadataActions⟩
 
 事务日志结构:
   _delta_log/
@@ -124,71 +199,95 @@ DeltaLake = ⟨ParquetFiles, TransactionLog, Checkpoints, Metadata⟩
   └── _checkpoints/
       └── 00000000000000000010.checkpoint.parquet
 
-提交原子性保证:
+提交原子性:
   commit(action_list) → atomic_write(_delta_log/{version+1}.json)
 
 乐观并发控制:
   read(version) → compute(actions) → write_if_version_unchanged(version)
+
+时间旅行查询:
+  QueryAt(T, ts) = T.history.getVersionAt(ts)
+  QueryAt(T, v)  = T.state_at_version(v)
 ```
 
-**Structured Streaming 集成**:
+**Flink 集成模式**:
 
-| 模式 | 语义 | 适用场景 |
-|------|------|----------|
-| **Append** | 仅追加新数据 | 事件流、日志数据 |
-| **Complete** | 全量结果重写 | 聚合结果、小数据集 |
-| **Update** | 增量更新 | CDC、状态变更 |
+| 模式 | 语义 | Flink 支持度 | 适用场景 |
+|------|------|-------------|----------|
+| **Append** | 仅追加新数据 | ⭐⭐⭐⭐⭐ | 事件流、日志数据 |
+| **Upsert** | 主键去重更新 | ⭐⭐⭐ | CDC 同步 |
+| **Complete** | 全量结果重写 | ⭐⭐⭐ | 聚合结果、小数据集 |
+| **CDF 消费** | 读取变更数据流 | ⭐⭐⭐ | 增量 Pipeline |
 
 ---
 
-### Def-F-14-09: 统一批流处理语义
+### Def-F-05-46: 统一元数据层 (Unified Metadata Layer)
 
-**定义**: 统一批流处理 (Unified Batch-Stream Processing) 是指同一套代码/逻辑在批模式和流模式下产生一致结果的处理范式。
+**定义**: 统一元数据层是湖仓架构中的目录服务 (Catalog)，负责跨引擎的表注册、Schema 管理、分区发现和访问控制，实现"一份元数据、多引擎共享"。
 
-**形式化一致性条件**:
-
-```
-设:
-- 批处理结果: R_batch = Process(D_full, BatchMode)
-- 流处理结果: R_stream = Process(D_incremental, StreamMode)
-- 其中 D_full = ∪_{t=0}^{T} D_t
-
-一致性条件:
-  ∀ query Q: Q(R_batch) = accumulate(Q(R_stream))
-
-即: 批处理的全量结果 = 流处理增量结果的累积
-```
-
-**Flink 的批流统一实现**:
+**形式化模型**:
 
 ```
-Flink 执行模式:
-┌─────────────────────────────────────────────────────────────┐
-│                     Table API / SQL                          │
-│  SELECT user_id, COUNT(*) FROM events GROUP BY user_id      │
-└──────────────────────────┬──────────────────────────────────┘
-                           │ 统一语义解析
-                           ▼
-┌─────────────────────────────────────────────────────────────┐
-│                  Logical Plan (统一逻辑计划)                  │
-└──────────────────────────┬──────────────────────────────────┘
-                           │ 模式特定优化
-           ┌───────────────┴───────────────┐
-           ▼                               ▼
-┌─────────────────────┐         ┌─────────────────────┐
-│   Batch Physical    │         │  Stream Physical    │
-│   - Sort-Merge Join │         │  - Stream Join      │
-│   - Hash Aggregate  │         │  - Window Aggregate │
-└─────────────────────┘         └─────────────────────┘
+UnifiedMetadata = ⟨CatalogService, SchemaRegistry, AccessControl, Lineage⟩
+
+Catalog 实现:
+  Catalog ∈ {HiveMetastore, AWSGlue, UnityCatalog, Nessie, RESTCatalog}
+
+统一接口:
+  listDatabases(namespace) → [Database]
+  listTables(database) → [Table]
+  loadTable(identifier) → Table(Schema, PartitionSpec, Properties, Location)
+  createTable(identifier, schema, spec, properties) → Table
+  alterTable(identifier, changes) → Table
+```
+
+**主流 Catalog 对比**:
+
+| Catalog | 生态绑定 | ACID 支持 | 跨云能力 | 适用场景 |
+|---------|---------|-----------|----------|----------|
+| **Hive Metastore** | 开源通用 | 弱 (需格式支持) | 强 | 自建平台、混合云 |
+| **AWS Glue** | AWS | 中 | AWS 内 | AWS 原生部署 |
+| **Unity Catalog** | Databricks | 强 | 中 | Databricks 生态 |
+| **Nessie** | 开源 | 强 (Git 式分支) | 强 | 数据工程 CI/CD |
+| **REST Catalog** | Iceberg 标准 | 中 | 强 | 多引擎统一接入 |
+
+---
+
+### Def-F-05-47: Bronze-Silver-Gold 流式分层模型
+
+**定义**: Bronze-Silver-Gold (BSG) 是一种数据分层设计方法论，在流式湖仓中通过 Flink SQL Pipeline 实现从原始数据到业务就绪数据的渐进式加工。
+
+**形式化定义**:
+
+```
+BSG_Layers = ⟨Bronze, Silver, Gold, Pipeline⟩
+
+Bronze (原始数据层):
+  - 保留原始格式,不做业务变换
+  - Append-only,支持 Schema Evolution
+  - 保留周期: 长期 (1~3 年)
+
+Silver (清洗明细层):
+  - 数据清洗、标准化、去重
+  - 支持 Upsert (主键去重)
+  - Schema 约束 + 质量校验
+
+Gold (聚合服务层):
+  - 业务聚合、指标计算、特征工程
+  - 面向查询优化 (预聚合、物化视图)
+  - 服务级 SLA (延迟 < 秒级)
+
+Pipeline(Bronze → Silver → Gold):
+  ∀ record r: r ∈ Bronze ⟹ ( cleansing(r) ∈ Silver ⟹ aggregation(r) ∈ Gold )
 ```
 
 ---
 
 ## 2. 属性推导 (Properties)
 
-### Lemma-F-14-03: 湖仓格式的时间旅行完备性
+### Lemma-F-05-40: 湖仓格式时间旅行完备性
 
-**引理**: 主流开放表格式（Iceberg/Hudi/Delta/Paimon）均支持基于快照/版本的时间旅行查询，且语义等价。
+**引理**: 主流开放表格式（Iceberg / Hudi / Delta / Paimon）均支持基于快照/版本的时间旅行查询，且语义等价。
 
 **证明概要**:
 
@@ -217,17 +316,17 @@ Paimon:
 
 ---
 
-### Lemma-F-14-04: 流式写入的幂等性
+### Lemma-F-05-41: 流式写入幂等性
 
-**引理**: 在 Flink Checkpoint 失败重启场景下，湖仓 Sink 的写入操作具有幂等性。
+**引理**: 在 Flink Checkpoint 失败重启场景下，湖仓 Sink 的写入操作具有幂等性，最终数据不重复。
 
 **证明**:
 
 ```
 场景设定:
-- Checkpoint N 触发,Sink 进入 preCommit 阶段
-- 数据文件已写入存储,待提交元数据
-- Checkpoint N 失败,作业从 Checkpoint N-1 恢复
+  - Checkpoint N 触发, Sink 进入 preCommit 阶段
+  - 数据文件已写入存储,待提交元数据
+  - Checkpoint N 失败,作业从 Checkpoint N-1 恢复
 
 幂等性保证:
   1. 重启后数据重新处理,生成新数据文件 (UUID 命名)
@@ -240,23 +339,23 @@ Paimon:
 
 ---
 
-### Prop-F-14-03: 增量消费的有序性保证
+### Prop-F-05-40: 增量消费的有序性保证
 
-**命题**: 从湖仓格式的增量消费保持数据产生的时间序。
+**命题**: 从湖仓格式的增量消费保持数据产生的时间序（在快照粒度上单调）。
 
 **形式化表述**:
 
 ```
 设:
-- 快照序列: S = [s_1, s_2, ..., s_n]
-- 增量批次: Δ_i = scan_incremental(s_i, s_{i+1})
-- 记录时间戳: ts(r) = r.event_time
+  - 快照序列: S = [s_1, s_2, ..., s_n]
+  - 增量批次: Δ_i = scan_incremental(s_i, s_{i+1})
+  - 记录时间戳: ts(r) = r.event_time
 
 有序性条件:
   ∀ r_a ∈ Δ_i, r_b ∈ Δ_j: i < j ⇒ ts(r_a) ≤ ts(r_b) + ε
 
 证明:
-  1. 快照按 commit_time 排序: s_i.commit_time < s_{j}.commit_time (i < j)
+  1. 快照按 commit_time 排序: s_i.commit_time < s_j.commit_time (i < j)
   2. 数据文件的可见性与快照提交时间一致
   3. 消费者按快照 ID 顺序消费
   ∴ 消费序列保持时间序 ∎
@@ -264,9 +363,9 @@ Paimon:
 
 ---
 
-### Prop-F-14-04: 存储成本优化边界
+### Prop-F-05-41: 存储成本优化边界
 
-**命题**: 流式湖仓相比传统 Lambda 架构可降低 40-60% 存储成本。
+**命题**: 流式湖仓相比传统 Lambda 架构可降低 40–60% 存储成本。
 
 **成本模型推导**:
 
@@ -294,22 +393,22 @@ Lakehouse 成本:
 
 ## 3. 关系建立 (Relations)
 
-### 3.1 四大湖仓格式对比关系
+### 3.1 四大湖仓格式与 Flink 的集成关系
 
 **功能特性矩阵**:
 
-| 维度 | Apache Iceberg | Apache Hudi | Delta Lake | Apache Paimon |
-|------|---------------|-------------|------------|---------------|
-| **存储格式** | Parquet/ORC/Avro | Parquet/ORC | Parquet | Parquet/ORC/Avro |
-| **事务模型** | 乐观并发控制 | MVCC | 乐观并发控制 | LSM Tree |
-| **更新模式** | Copy-on-Write | MOR/COW | Copy-on-Write | LSM + Compaction |
-| **流式延迟** | 分钟级 | 秒级-分钟级 | 分钟级 | 秒级 |
-| **增量消费** | 增量扫描 | 时间线服务 | Change Data Feed | LSM Snapshot |
-| **Flink 集成** | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
-| **Spark 集成** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
-| **生态广度** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ |
-| **小文件管理** | 外部调度 | 自动 | 自动 | 原生异步 |
-| **Lookup Join** | 有限 | 支持 | 支持 | 原生支持 |
+| 维度 | Apache Iceberg | Apache Paimon | Delta Lake | Apache Hudi |
+|------|---------------|---------------|------------|-------------|
+| **存储格式** | Parquet/ORC/Avro | Parquet/ORC/Avro | Parquet | Parquet/ORC |
+| **事务模型** | 乐观并发控制 | LSM Tree | 乐观并发控制 | MVCC |
+| **更新模式** | Copy-on-Write | LSM + Compaction | Copy-on-Write | MOR/COW |
+| **流式延迟** | 分钟级 | 秒级 | 分钟级 | 秒级~分钟级 |
+| **增量消费** | 增量扫描 | LSM Snapshot | Change Data Feed | 时间线服务 |
+| **Flink 集成** | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ |
+| **Spark 集成** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
+| **生态广度** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
+| **小文件管理** | 外部调度 | 原生异步 | 自动 | 自动 |
+| **Lookup Join** | 有限 | 原生支持 | 支持 | 支持 |
 
 **选型决策树**:
 
@@ -380,13 +479,16 @@ graph TB
         direction TB
         ICEBERG_CORE["Apache Iceberg
         • Snapshot Management
-        • Metadata Layer"]
+        • Hidden Partition
+        • Z-Order"]
         PAIMON_CORE["Apache Paimon
         • LSM Engine
-        • Changelog Gen"]
+        • Changelog Gen
+        • Compaction"]
         DELTA_CORE["Delta Lake
         • Transaction Log
-        • Time Travel"]
+        • Time Travel
+        • CDF"]
         HUDI_CORE["Apache Hudi
         • Timeline Service
         • MOR/COW"]
@@ -400,7 +502,14 @@ graph TB
         GCS["Google GCS"]
     end
 
-    %% Connections
+    subgraph "Metadata Layer"
+        direction TB
+        HMS["Hive Metastore"]
+        GLUE["AWS Glue"]
+        UC["Unity Catalog"]
+        NESSIE["Nessie"]
+    end
+
     CK -.->|"Exactly-Once Commit"| SINK
     WM -.->|"Watermark Propagation"| SOURCE
     SQL -.->|"DDL/DML"| SINK
@@ -428,86 +537,38 @@ graph TB
     HUDI_CORE --> HDFS
     HUDI_CORE --> S3
 
+    ICEBERG_CORE -.-> HMS
+    PAIMON_CORE -.-> HMS
+    DELTA_CORE -.-> GLUE
+    HUDI_CORE -.-> UC
+    ICEBERG_CORE -.-> NESSIE
+
     style CK fill:#e3f2fd,stroke:#1565c0
     style SINK fill:#fff3e0,stroke:#e65100
     style PAIMON_CORE fill:#c8e6c9,stroke:#2e7d32
     style SOURCE fill:#e8f5e9,stroke:#2e7d32
+    style HMS fill:#f3e5f5,stroke:#7b1fa2
 ```
 
 ---
 
-### 3.3 Kappa + Lakehouse 融合架构
+### 3.3 统一元数据层与多引擎关系
 
-```mermaid
-graph TB
-    subgraph "数据源层"
-        CDC["CDC Sources
-MySQL/PG/Oracle"]
-        LOG["Log Sources
-Kafka/Kinesis"]
-        API["API/Files"]
-    end
+**元数据层是湖仓架构的"事实单一源"**:
 
-    subgraph "实时处理层 (Flink)"
-        ETL["实时 ETL
-清洗/转换/关联"]
-        ENRICH["维度打宽
-Lookup Join"]
-        AGG["窗口聚合
-Tumble/Session"]
-    end
+| 引擎 | Iceberg Catalog | Paimon Catalog | Delta Catalog | 说明 |
+|------|----------------|----------------|---------------|------|
+| **Flink** | `CREATE CATALOG iceberg_catalog WITH ('type'='iceberg')` | `CREATE CATALOG paimon_catalog WITH ('type'='paimon')` | delta-flink connector | 原生 Table API 支持 |
+| **Spark** | `spark.sql.catalog.iceberg` | `spark.sql.catalog.paimon` | `spark.sql.catalog.spark_catalog=delta` | 深度集成 |
+| **Trino** | `iceberg` connector | 有限支持 | `delta-lake` connector | 查询优化 |
+| **StarRocks** | External Catalog | 有限支持 | 有限支持 | 湖仓联邦查询 |
 
-    subgraph "Lakehouse 存储层"
-        subgraph "ODS"
-            ODS_RAW["原始数据
-Append Only"]
-        end
+**统一元数据的关键价值**:
 
-        subgraph "DWD"
-            DWD_DETAIL["明细数据
-Upsert/CDC"]
-        end
-
-        subgraph "DWS"
-            DWS_AGG["汇总数据
-Aggregation"]
-        end
-
-        subgraph "ADS"
-            ADS_SERV["服务数据
-Serving Ready"]
-        end
-    end
-
-    subgraph "服务层"
-        BI["BI 分析
-Superset/Tableau"]
-        ML["机器学习
-Feature Store"]
-        API_SERV["数据服务
-REST API"]
-        RT_APP["实时应用
-Flink Consumer"]
-    end
-
-    CDC --> ETL
-    LOG --> ETL
-    API --> ETL
-
-    ETL --> ODS_RAW
-    ODS_RAW --> ENRICH --> DWD_DETAIL
-    DWD_DETAIL --> AGG --> DWS_AGG
-    DWS_AGG --> ADS_SERV
-
-    DWD_DETAIL --> BI
-    DWS_AGG --> ML
-    ADS_SERV --> API_SERV
-    DWD_DETAIL --> RT_APP
-
-    style ETL fill:#e3f2fd,stroke:#1565c0
-    style DWD_DETAIL fill:#c8e6c9,stroke:#2e7d32
-    style ADS_SERV fill:#fff3e0,stroke:#e65100
-```
+1. **Schema 一致性**: 一次 DDL 变更，全引擎感知
+2. **分区发现**: 自动识别新增分区，无需 `MSCK REPAIR`
+3. **统计信息共享**: 列统计、分区统计跨引擎复用
+4. **访问控制统一**: 基于 Catalog 的 RBAC，避免多副本权限漂移
 
 ---
 
@@ -538,27 +599,6 @@ Lambda 架构痛点:
 └─────────────────────────────────────────────────────────────┘
 ```
 
-**Kappa 架构的演进**:
-
-```
-Kappa Architecture:
-┌─────────────────────────────────────────────────────────────┐
-│  统一处理层: 仅使用流处理 (Flink on Kafka)                   │
-│  ├── 所有数据通过 Kafka 流入                                 │
-│  ├── 流处理引擎处理所有场景                                  │
-│  └── 重放能力支持历史数据处理                                │
-│                                                             │
-│  改进:                                                       │
-│  ✓ 单一代码路径,逻辑统一                                    │
-│  ✓ 实时性与吞吐兼顾                                          │
-│                                                             │
-│  仍有问题:                                                   │
-│  ✗ Kafka 存储成本高,不适合长期保留                          │
-│  ✗ 复杂分析 (Ad-hoc) 性能差                                  │
-│  ✗ 数据治理能力不足 (血缘/质量)                              │
-└─────────────────────────────────────────────────────────────┘
-```
-
 **Kappa + Lakehouse 融合方案**:
 
 ```
@@ -586,50 +626,98 @@ Kappa Architecture:
 
 ---
 
-### 4.2 Delta Lake 流式处理工程权衡
+### 4.2 小文件问题与合并策略的工程权衡
 
-**Structured Streaming 集成深度分析**:
-
-| 特性 | Delta Lake + Spark | Delta Lake + Flink | 影响分析 |
-|------|-------------------|-------------------|----------|
-| **原生集成** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | Spark 是 Databricks 出品 |
-| **自动优化** | 深度集成 (OPTIMIZE) | 需外部调度 | 影响小文件合并 |
-| **CDC 输出** | 原生 CDF | 需连接器支持 | 影响增量消费 |
-| **Schema 演进** | 完整支持 | 部分支持 | 影响兼容性 |
-| **时间旅行** | 完整支持 | 完整支持 | 功能对等 |
-
-**Flink 读取 Delta Lake 的实现路径**:
+**问题根源**:
 
 ```
-方案 1: Delta Standalone 连接器
-┌─────────────────────────────────────────────────────────────┐
-│  Flink Source → Delta Standalone Reader → Parquet Files     │
-│  • 支持批式读取                                               │
-│  • 支持增量扫描 (基于版本号)                                   │
-│  • 不支持流式持续消费                                         │
-│  • 社区维护,更新较慢                                         │
-└─────────────────────────────────────────────────────────────┘
+高频流式写入 → 每个 Checkpoint 生成独立数据文件
+  Checkpoint 间隔 10s → 每小时 360 个文件 → 每天 8,640 个文件
+  元数据压力: manifest 文件数量爆炸
+  查询性能: 过多小文件导致 I/O 放大、调度开销增加
+```
 
-方案 2: Delta + Kafka 中转
-┌─────────────────────────────────────────────────────────────┐
-│  Delta Lake → CDC → Kafka → Flink Consumer                  │
-│  • 实时性高                                                   │
-│  • 架构复杂,引入额外组件                                      │
-│  • 适合已使用 Kafka 的场景                                    │
-└─────────────────────────────────────────────────────────────┘
+**各格式合并策略对比**:
 
-方案 3: 统一使用 Paimon/Iceberg
-┌─────────────────────────────────────────────────────────────┐
-│  若 Flink 为主引擎,建议直接使用 Paimon/Iceberg               │
-│  • 原生流批支持                                               │
-│  • 无需额外连接器                                             │
-│  • 更好的 Flink 集成体验                                      │
-└─────────────────────────────────────────────────────────────┘
+| 表格式 | 合并机制 | 触发方式 | 配置复杂度 | 推荐场景 |
+|--------|---------|----------|-----------|----------|
+| **Iceberg** | `OPTIMIZE` / `REWRITE_DATA_FILES` | 外部调度 (Spark/Flink 作业) | 中 | 已有 Spark 生态 |
+| **Paimon** | 原生异步 Compaction | 自动触发 (文件数/时间阈值) | 低 | Flink 原生场景 |
+| **Delta** | `OPTIMIZE` + `VACUUM` | 自动 (Delta 2.0+) / Databricks 托管 | 低 | Databricks 平台 |
+| **Hudi** | Compaction + Clustering | 自动 (MOR 表内联) | 中 | 高频更新场景 |
+
+**Paimon Compaction 配置示例**:
+
+```sql
+-- 自动异步 Compaction,无需外部作业
+CREATE TABLE paimon_events (
+    event_id STRING,
+    user_id STRING,
+    event_time TIMESTAMP(3),
+    dt STRING,
+    PRIMARY KEY (event_id, dt) NOT ENFORCED
+) PARTITIONED BY (dt) WITH (
+    'bucket' = '16',
+    'compaction.async' = 'true',
+    'compaction.min.file-num' = '5',
+    'compaction.max.file-num' = '50',
+    'num-sorted-run.compaction-trigger' = '5',
+    'compaction.early-max.file-num' = '30'
+);
+```
+
+**Iceberg 外部 Compaction 作业**:
+
+```sql
+-- 使用 Flink SQL 定期执行 OPTIMIZE
+CALL iceberg_catalog.system.rewrite_data_files(
+    table => 'realtime_dw.events',
+    options => map(
+        'min-input-files', '5',
+        'max-concurrent-file-group-rewrites', '5',
+        'target-file-size-bytes', '134217728'
+    )
+);
 ```
 
 ---
 
-### 4.3 成本优化策略边界分析
+### 4.3 Schema Evolution 处理策略
+
+**演进类型与兼容性矩阵**:
+
+| 变更类型 | Iceberg | Paimon | Delta | 兼容性 |
+|----------|---------|--------|-------|--------|
+| **添加列 (Add Column)** | ✅ | ✅ | ✅ | 向后兼容 |
+| **删除列 (Drop Column)** | ✅ | ✅ | ✅ | 不兼容 |
+| **重命名列 (Rename)** | ✅ | ✅ | ✅ | 向后兼容 |
+| **修改列类型 (Alter Type)** | ✅ ( widening ) | ✅ ( widening ) | ✅ ( widening ) | 有限兼容 |
+| **添加嵌套字段** | ✅ | ⚠️ | ✅ | 向后兼容 |
+| **分区演进 (Partition Evolution)** | ✅ 原生 | ⚠️ 需重建 | ❌ | 不兼容 |
+
+**Flink SQL Schema Evolution 示例 (Iceberg)**:
+
+```sql
+-- 1. 初始表结构
+CREATE TABLE iceberg_users (
+    user_id STRING,
+    name STRING,
+    age INT
+);
+
+-- 2. 添加新列 (向后兼容)
+ALTER TABLE iceberg_users ADD COLUMN email STRING;
+
+-- 3. 修改列注释和类型 widening
+ALTER TABLE iceberg_users ALTER COLUMN age TYPE BIGINT;
+
+-- 4. 分区演进 (Iceberg 特有,支持修改分区策略而不重写历史数据)
+ALTER TABLE iceberg_users ADD PARTITION FIELD bucket(16, user_id);
+```
+
+---
+
+### 4.4 成本优化策略边界分析
 
 **存储层成本优化**:
 
@@ -638,7 +726,7 @@ Kappa Architecture:
 ┌─────────────────────────────────────────────────────────────┐
 │  热数据 (最近 7 天) → 标准存储 (Standard)                    │
 │  温数据 (7-90 天) → 低频访问 (IA)                            │
-│  冷数据 (90 天+) → 归档存储 (Archive)                        │
+│  冷数据 (90 天+) → 归档存储 (Archive / Glacier)              │
 │                                                             │
 │  Lakehouse 配合:                                            │
 │  - 按时间分区 (dt=yyyy-MM-dd)                               │
@@ -656,18 +744,6 @@ Kappa Architecture:
 │  典型压缩比:                                                 │
 │  - 日志数据: 10:1 ~ 20:1                                     │
 │  - 业务数据: 3:1 ~ 5:1                                       │
-└─────────────────────────────────────────────────────────────┘
-
-策略 3: 小文件合并策略
-┌─────────────────────────────────────────────────────────────┐
-│  问题: 高频流式写入产生大量小文件                             │
-│  - 元数据压力大                                              │
-│  - 查询性能下降                                              │
-│                                                             │
-│  解决方案:                                                   │
-│  - Iceberg: 定期 Spark/Flink Compaction 作业                │
-│  - Paimon: 原生异步 Compaction,无需外部调度                 │
-│  - 目标文件大小: 128MB ~ 256MB                               │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -703,7 +779,7 @@ Kappa Architecture:
 
 ## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
 
-### Thm-F-14-04: 统一批流结果一致性定理
+### Thm-F-05-40: 统一批流结果一致性定理
 
 **定理**: 在 Streaming Lakehouse 架构中，同一 Flink SQL 查询在批模式和流模式下产生一致的结果。
 
@@ -711,9 +787,9 @@ Kappa Architecture:
 
 ```
 设:
-- 输入数据集 D = {d_1, d_2, ..., d_n}
-- 批模式结果: R_batch = Flink_SQL(D, BATCH_MODE)
-- 流模式结果: R_stream = accumulate(Flink_SQL(ΔD, STREAM_MODE))
+  - 输入数据集 D = {d_1, d_2, ..., d_n}
+  - 批模式结果: R_batch = Flink_SQL(D, BATCH_MODE)
+  - 流模式结果: R_stream = accumulate(Flink_SQL(ΔD, STREAM_MODE))
 
 一致性条件:
   R_batch ≡ R_stream
@@ -765,7 +841,7 @@ Step 3: 执行语义等价
 
 ---
 
-### Thm-F-14-05: 湖仓格式端到端 Exactly-Once 语义定理
+### Thm-F-05-41: 湖仓格式端到端 Exactly-Once 语义定理
 
 **定理**: Flink 通过两阶段提交协议与湖仓格式的事务机制，可以保证流写入的端到端 Exactly-Once 语义。
 
@@ -824,7 +900,7 @@ Case 2: Commit 过程中失败
 
 ---
 
-### Thm-F-14-06: 增量消费完备性定理
+### Thm-F-05-42: 增量消费完备性定理
 
 **定理**: 湖仓格式的增量消费机制保证不遗漏、不重复地消费所有变更数据。
 
@@ -874,7 +950,111 @@ Step 4: 不重复证明
 
 ## 6. 实例验证 (Examples)
 
-### 6.1 Apache Iceberg + Flink 流式数仓
+### 6.1 架构模式 1: 实时数仓 (Real-time DWH)
+
+**场景**: 构建基于 Paimon 的实时数仓，支持秒级延迟的报表查询。
+
+```sql
+-- ============================================
+-- 步骤 1: 创建 Paimon Catalog
+-- ============================================
+CREATE CATALOG paimon_catalog WITH (
+    'type' = 'paimon',
+    'warehouse' = 'oss://my-bucket/paimon-warehouse',
+    'metastore' = 'hive',
+    'uri' = 'thrift://hive-metastore:9083',
+    'snapshot.num-retained.min' = '10',
+    'snapshot.num-retained.max' = '200',
+    'snapshot.time-retained' = '24h'
+);
+
+USE CATALOG paimon_catalog;
+
+-- ============================================
+-- 步骤 2: Bronze 层 - 原始事件接入
+-- ============================================
+CREATE TABLE bronze_events (
+    raw_json STRING,
+    ingest_time TIMESTAMP(3),
+    dt STRING
+) PARTITIONED BY (dt) WITH (
+    'bucket' = '8',
+    'write-mode' = 'append-only'
+);
+
+INSERT INTO bronze_events
+SELECT
+    raw_data AS raw_json,
+    NOW() AS ingest_time,
+    DATE_FORMAT(ingest_time, 'yyyy-MM-dd') AS dt
+FROM kafka_raw_source;
+
+-- ============================================
+-- 步骤 3: Silver 层 - 清洗与标准化
+-- ============================================
+CREATE TABLE silver_user_events (
+    event_id STRING,
+    user_id STRING,
+    event_type STRING,
+    page_id STRING,
+    duration_ms INT,
+    event_time TIMESTAMP(3),
+    dt STRING,
+    PRIMARY KEY (event_id, dt) NOT ENFORCED
+) PARTITIONED BY (dt) WITH (
+    'bucket' = '32',
+    'changelog-producer' = 'input',
+    'compaction.async' = 'true'
+);
+
+INSERT INTO silver_user_events
+SELECT
+    JSON_VALUE(raw_json, '$.event_id') AS event_id,
+    JSON_VALUE(raw_json, '$.user_id') AS user_id,
+    JSON_VALUE(raw_json, '$.event_type') AS event_type,
+    JSON_VALUE(raw_json, '$.page_id') AS page_id,
+    CAST(JSON_VALUE(raw_json, '$.duration') AS INT) AS duration_ms,
+    TO_TIMESTAMP(JSON_VALUE(raw_json, '$.timestamp')) AS event_time,
+    dt
+FROM bronze_events
+WHERE raw_json IS NOT NULL;
+
+-- ============================================
+-- 步骤 4: Gold 层 - 聚合指标
+-- ============================================
+CREATE TABLE gold_page_stats_5min (
+    window_start TIMESTAMP(3),
+    window_end TIMESTAMP(3),
+    page_id STRING,
+    uv BIGINT,
+    pv BIGINT,
+    avg_duration_ms BIGINT,
+    PRIMARY KEY (window_start, page_id) NOT ENFORCED
+) WITH (
+    'bucket' = '16',
+    'changelog-producer' = 'input'
+);
+
+INSERT INTO gold_page_stats_5min
+SELECT
+    TUMBLE_START(event_time, INTERVAL '5' MINUTE) AS window_start,
+    TUMBLE_END(event_time, INTERVAL '5' MINUTE) AS window_end,
+    page_id,
+    COUNT(DISTINCT user_id) AS uv,
+    COUNT(*) AS pv,
+    AVG(duration_ms) AS avg_duration_ms
+FROM silver_user_events
+WHERE event_type = 'page_view'
+GROUP BY
+    TUMBLE(event_time, INTERVAL '5' MINUTE),
+    page_id;
+```
+
+---
+
+### 6.2 架构模式 2: CDC 入湖 (Change Data Capture to Lakehouse)
+
+**场景**: MySQL 实时 CDC 同步到 Iceberg，支持时间旅行和增量消费。
 
 ```sql
 -- ============================================
@@ -889,176 +1069,10 @@ CREATE CATALOG iceberg_catalog WITH (
 );
 
 USE CATALOG iceberg_catalog;
-CREATE DATABASE IF NOT EXISTS realtime_dw;
-USE realtime_dw;
 
 -- ============================================
--- 步骤 2: 创建 ODS 层 - 原始事件表
+-- 步骤 2: MySQL CDC Source
 -- ============================================
-CREATE TABLE IF NOT EXISTS ods_events (
-    event_id STRING,
-    user_id STRING,
-    event_type STRING,
-    properties STRING,
-    event_time TIMESTAMP(3),
-    dt STRING  -- 分区字段
-) PARTITIONED BY (dt, event_type) WITH (
-    'write.format.default' = 'parquet',
-    'write.parquet.compression-codec' = 'zstd',
-    'write.target-file-size-bytes' = '134217728',
-    'write.metadata.previous-versions-max' = '100',
-
-    -- 流式读取配置
-    'read.streaming.enabled' = 'true',
-    'read.streaming.start-mode' = 'latest',
-    'monitor-interval' = '30s',
-
-    -- 快照保留策略
-    'history.expire.max-snapshot-age-ms' = '604800000',
-    'history.expire.min-snapshots-to-keep' = '5'
-);
-
--- ============================================
--- 步骤 3: 从 Kafka 流式写入 Iceberg
--- ============================================
-CREATE TABLE kafka_events (
-    event_id STRING,
-    user_id STRING,
-    event_type STRING,
-    properties STRING,
-    event_time TIMESTAMP(3),
-    WATERMARK FOR event_time AS event_time - INTERVAL '5' SECOND
-) WITH (
-    'connector' = 'kafka',
-    'topic' = 'user-events',
-    'properties.bootstrap.servers' = 'kafka:9092',
-    'properties.group.id' = 'iceberg-sink-group',
-    'format' = 'json',
-    'json.ignore-parse-errors' = 'true'
-);
-
--- 启动流式写入
-INSERT INTO ods_events
-SELECT
-    event_id,
-    user_id,
-    event_type,
-    properties,
-    event_time,
-    DATE_FORMAT(event_time, 'yyyy-MM-dd') AS dt
-FROM kafka_events;
-
--- ============================================
--- 步骤 4: 创建 DWD 层 - 明细表
--- ============================================
-CREATE TABLE IF NOT EXISTS dwd_user_events (
-    event_id STRING,
-    user_id STRING,
-    event_type STRING,
-    page_id STRING,
-    duration_ms INT,
-    event_time TIMESTAMP(3),
-    dt STRING,
-    PRIMARY KEY (event_id) NOT ENFORCED
-) PARTITIONED BY (dt) WITH (
-    'write.format.default' = 'parquet',
-    'write.distribution-mode' = 'hash',
-    'write.metadata.compression-codec' = 'gzip'
-);
-
--- 数据清洗与打宽
-INSERT INTO dwd_user_events
-SELECT
-    event_id,
-    user_id,
-    event_type,
-    JSON_VALUE(properties, '$.page_id') AS page_id,
-    CAST(JSON_VALUE(properties, '$.duration') AS INT) AS duration_ms,
-    event_time,
-    DATE_FORMAT(event_time, 'yyyy-MM-dd') AS dt
-FROM ods_events
-WHERE event_type IN ('page_view', 'click', 'purchase');
-
--- ============================================
--- 步骤 5: 增量消费 Iceberg 数据
--- ============================================
-SET 'execution.runtime-mode' = 'streaming';
-
--- 消费 Iceberg 变更数据
-CREATE TABLE iceberg_changes (
-    event_id STRING,
-    user_id STRING,
-    event_type STRING,
-    page_id STRING,
-    _change_type STRING,  -- INSERT, UPDATE_AFTER, DELETE
-    _change_timestamp TIMESTAMP(3)
-) WITH (
-    'connector' = 'iceberg',
-    'catalog-name' = 'iceberg_catalog',
-    'catalog-database' = 'realtime_dw',
-    'catalog-table' = 'dwd_user_events',
-    'streaming' = 'true',
-    'streaming-scheme' = 'incremental-snapshot',
-    'monitor-interval' = '10s'
-);
-
--- 将变更数据写入下游 Kafka
-INSERT INTO kafka_analytics_events
-SELECT
-    event_id,
-    user_id,
-    event_type,
-    page_id,
-    CASE _change_type
-        WHEN 'INSERT' THEN 'CREATED'
-        WHEN 'UPDATE_AFTER' THEN 'UPDATED'
-        WHEN 'DELETE' THEN 'DELETED'
-    END AS event_action,
-    _change_timestamp
-FROM iceberg_changes;
-
--- ============================================
--- 步骤 6: Time Travel 查询示例
--- ============================================
--- 查询 7 天前的数据状态
-SELECT
-    event_type,
-    COUNT(*) AS event_count
-FROM dwd_user_events
-FOR SYSTEM_TIME AS OF TIMESTAMP '2026-04-02 00:00:00' - INTERVAL '7' DAY
-WHERE dt = '2026-03-26'
-GROUP BY event_type;
-
--- 基于特定快照 ID 查询
-SELECT * FROM dwd_user_events FOR SYSTEM_VERSION AS OF 1234567890123;
-```
-
----
-
-### 6.2 Apache Paimon + Flink 实时数仓
-
-```sql
--- ============================================
--- 步骤 1: 创建 Paimon Catalog
--- ============================================
-CREATE CATALOG paimon_catalog WITH (
-    'type' = 'paimon',
-    'warehouse' = 'oss://my-bucket/paimon-warehouse',
-    'metastore' = 'hive',
-    'uri' = 'thrift://hive-metastore:9083',
-
-    -- 快照管理
-    'snapshot.num-retained.min' = '10',
-    'snapshot.num-retained.max' = '200',
-    'snapshot.time-retained' = '24h'
-);
-
-USE CATALOG paimon_catalog;
-
--- ============================================
--- 步骤 2: CDC 实时入湖 - MySQL 到 Paimon
--- ============================================
--- MySQL CDC Source
 CREATE TABLE mysql_orders (
     order_id STRING,
     user_id STRING,
@@ -1080,8 +1094,10 @@ CREATE TABLE mysql_orders (
     'scan.incremental.snapshot.enabled' = 'true'
 );
 
--- Paimon 目标表 (主键表支持 Upsert)
-CREATE TABLE paimon_orders (
+-- ============================================
+-- 步骤 3: Iceberg 目标表 (支持 Upsert)
+-- ============================================
+CREATE TABLE iceberg_orders (
     order_id STRING,
     user_id STRING,
     product_id STRING,
@@ -1089,48 +1105,347 @@ CREATE TABLE paimon_orders (
     status STRING,
     created_at TIMESTAMP(3),
     updated_at TIMESTAMP(3),
-    dt STRING,
-    PRIMARY KEY (order_id, dt) NOT ENFORCED
+    dt STRING
 ) PARTITIONED BY (dt) WITH (
-    -- 基础配置
-    'bucket' = '16',
-    'bucket-key' = 'order_id',
-
-    -- 变更日志生成 (input 模式,上游 CDC 已含完整变更类型)
-    'changelog-producer' = 'input',
-
-    -- 文件格式
-    'file.format' = 'parquet',
-    'file.compression' = 'zstd',
-
-    -- Compaction 配置
-    'compaction.min.file-num' = '5',
-    'compaction.max.file-num' = '50',
-    'num-sorted-run.compaction-trigger' = '5',
-    'compaction.async' = 'true',
-
-    -- 分区配置
-    'partition.timestamp-formatter' = 'yyyy-MM-dd',
-    'partition.timestamp-pattern' = '$updated_at'
+    'write.format.default' = 'parquet',
+    'write.parquet.compression-codec' = 'zstd',
+    'write.target-file-size-bytes' = '134217728',
+    'write.distribution-mode' = 'hash',
+    'write.metadata.previous-versions-max' = '100',
+    'read.streaming.enabled' = 'true',
+    'read.streaming.start-mode' = 'latest',
+    'monitor-interval' = '30s',
+    'history.expire.max-snapshot-age-ms' = '604800000'
 );
 
 -- 启动 CDC 同步
-INSERT INTO paimon_orders
+INSERT INTO iceberg_orders
 SELECT
-    order_id,
-    user_id,
-    product_id,
-    amount,
-    status,
-    created_at,
-    updated_at,
+    order_id, user_id, product_id, amount, status,
+    created_at, updated_at,
     DATE_FORMAT(updated_at, 'yyyy-MM-dd') AS dt
 FROM mysql_orders;
 
 -- ============================================
--- 步骤 3: Lookup Join 维度关联
+-- 步骤 4: 增量消费 Iceberg 变更
 -- ============================================
--- 用户维度表 (Paimon 支持高效 Lookup)
+SET 'execution.runtime-mode' = 'streaming';
+
+CREATE TABLE iceberg_order_changes (
+    order_id STRING,
+    user_id STRING,
+    product_id STRING,
+    amount DECIMAL(18,2),
+    status STRING,
+    _change_type STRING,
+    _change_timestamp TIMESTAMP(3)
+) WITH (
+    'connector' = 'iceberg',
+    'catalog-name' = 'iceberg_catalog',
+    'catalog-database' = 'default',
+    'catalog-table' = 'iceberg_orders',
+    'streaming' = 'true',
+    'streaming-scheme' = 'incremental-snapshot',
+    'monitor-interval' = '10s'
+);
+
+-- 将变更写入下游 Kafka 供实时应用消费
+INSERT INTO kafka_order_changes
+SELECT *, _change_type, _change_timestamp FROM iceberg_order_changes;
+```
+
+---
+
+### 6.3 架构模式 3: 实时特征平台 (Feature Store on Lakehouse)
+
+**场景**: 基于 Paimon 构建实时特征平台，支持在线 Serving 和离线训练的特征一致性。
+
+```sql
+-- ============================================
+-- 特征表 1: 用户实时画像 (Lookup 支持)
+-- ============================================
+CREATE TABLE fs_user_profile (
+    user_id STRING PRIMARY KEY NOT ENFORCED,
+    total_orders BIGINT,
+    total_gmv DECIMAL(38,2),
+    last_order_time TIMESTAMP(3),
+    favorite_category STRING,
+    user_segment STRING,
+    update_time TIMESTAMP(3)
+) WITH (
+    'bucket' = '64',
+    'changelog-producer' = 'lookup',
+    'compaction.async' = 'true',
+    -- 优化 Lookup 性能
+    'lookup.cache-rows' = '100000',
+    'lookup.cache-ttl' = '10min'
+);
+
+-- 从订单流实时计算用户画像
+INSERT INTO fs_user_profile
+SELECT
+    user_id,
+    COUNT(*) AS total_orders,
+    SUM(amount) AS total_gmv,
+    MAX(created_at) AS last_order_time,
+    MODE(product_category) AS favorite_category,
+    CASE
+        WHEN SUM(amount) > 10000 THEN 'VIP'
+        WHEN SUM(amount) > 1000 THEN 'GOLD'
+        ELSE 'NORMAL'
+    END AS user_segment,
+    NOW() AS update_time
+FROM paimon_orders
+GROUP BY user_id;
+
+-- ============================================
+-- 特征表 2: 实时窗口特征 (滑动窗口)
+-- ============================================
+CREATE TABLE fs_user_behavior_1h (
+    window_start TIMESTAMP(3),
+    window_end TIMESTAMP(3),
+    user_id STRING,
+    page_view_count BIGINT,
+    click_count BIGINT,
+    avg_session_duration_ms BIGINT,
+    PRIMARY KEY (window_start, user_id) NOT ENFORCED
+) WITH (
+    'bucket' = '32',
+    'changelog-producer' = 'input'
+);
+
+INSERT INTO fs_user_behavior_1h
+SELECT
+    HOP_START(event_time, INTERVAL '1' HOUR, INTERVAL '5' MINUTE) AS window_start,
+    HOP_END(event_time, INTERVAL '1' HOUR, INTERVAL '5' MINUTE) AS window_end,
+    user_id,
+    COUNT(*) FILTER (WHERE event_type = 'page_view') AS page_view_count,
+    COUNT(*) FILTER (WHERE event_type = 'click') AS click_count,
+    AVG(session_duration_ms) AS avg_session_duration_ms
+FROM silver_user_events
+GROUP BY
+    HOP(event_time, INTERVAL '1' HOUR, INTERVAL '5' MINUTE),
+    user_id;
+
+-- ============================================
+-- 在线 Serving: Lookup Join
+-- ============================================
+-- 实时推荐场景: 订单流 Lookup 用户画像
+CREATE TABLE realtime_recommendation (
+    order_id STRING,
+    user_id STRING,
+    user_segment STRING,
+    favorite_category STRING,
+    recommend_category STRING,
+    proc_time TIMESTAMP(3)
+) WITH (
+    'connector' = 'jdbc',
+    'url' = 'jdbc:mysql://serving-db:3306/recommendations',
+    'table-name' = 'recommendation_log'
+);
+
+INSERT INTO realtime_recommendation
+SELECT
+    o.order_id,
+    o.user_id,
+    u.user_segment,
+    u.favorite_category,
+    COALESCE(u.favorite_category, 'general') AS recommend_category,
+    NOW() AS proc_time
+FROM paimon_orders o
+LEFT JOIN fs_user_profile FOR SYSTEM_TIME AS OF o.proc_time AS u
+    ON o.user_id = u.user_id;
+```
+
+---
+
+### 6.4 架构模式 4: AI/ML 数据流水线 (ML Pipeline on Lakehouse)
+
+**场景**: 构建从实时数据到 ML 训练/推理的端到端流水线，利用 Lakehouse 的开放格式实现特征共享。
+
+```sql
+-- ============================================
+-- ML 特征存储 (Iceberg, 支持版本回溯)
+-- ============================================
+CREATE CATALOG ml_catalog WITH (
+    'type' = 'iceberg',
+    'catalog-type' = 'rest',
+    'uri' = 'http://iceberg-rest:8181',
+    'warehouse' = 's3://ml-bucket/feature-store'
+);
+
+USE CATALOG ml_catalog;
+
+-- ============================================
+-- 训练特征表 (批式写入,支持版本管理)
+-- ============================================
+CREATE TABLE ml_training_features (
+    user_id STRING,
+    feature_timestamp TIMESTAMP(3),
+    f_numeric_1 DOUBLE,
+    f_numeric_2 DOUBLE,
+    f_category_1 STRING,
+    label DOUBLE,
+    dt STRING
+) PARTITIONED BY (dt) WITH (
+    'write.format.default' = 'parquet',
+    'write.parquet.compression-codec' = 'zstd',
+    'write.target-file-size-bytes' = '268435456',
+    -- 保留历史版本供实验回溯
+    'history.expire.max-snapshot-age-ms' = '2592000000',
+    'history.expire.min-snapshots-to-keep' = '10'
+);
+
+-- ============================================
+-- 特征工程 Pipeline (Flink SQL)
+-- ============================================
+INSERT INTO ml_training_features
+SELECT
+    user_id,
+    window_end AS feature_timestamp,
+    CAST(page_view_count AS DOUBLE) / 100.0 AS f_numeric_1,
+    CAST(click_count AS DOUBLE) / CAST(NULLIF(page_view_count, 0) AS DOUBLE) AS f_numeric_2,
+    favorite_category AS f_category_1,
+    CASE WHEN total_gmv > 500 THEN 1.0 ELSE 0.0 END AS label,
+    DATE_FORMAT(window_end, 'yyyy-MM-dd') AS dt
+FROM fs_user_behavior_1h ub
+LEFT JOIN fs_user_profile up
+    ON ub.user_id = up.user_id;
+
+-- ============================================
+-- 推理特征表 (实时更新,低延迟)
+-- ============================================
+CREATE TABLE ml_online_features (
+    user_id STRING PRIMARY KEY NOT ENFORCED,
+    f_numeric_1 DOUBLE,
+    f_numeric_2 DOUBLE,
+    f_category_1 STRING,
+    update_time TIMESTAMP(3)
+) WITH (
+    'bucket' = '128',
+    'changelog-producer' = 'lookup'
+);
+
+INSERT INTO ml_online_features
+SELECT
+    user_id,
+    CAST(total_orders AS DOUBLE) / 100.0 AS f_numeric_1,
+    CAST(total_gmv AS DOUBLE) / 10000.0 AS f_numeric_2,
+    favorite_category AS f_category_1,
+    update_time
+FROM fs_user_profile;
+
+-- ============================================
+-- 模型训练与推理衔接 (Python + PyFlink)
+-- ============================================
+-- 训练端 (Spark/PyTorch) 读取 Iceberg 历史快照
+-- SELECT * FROM ml_training_features FOR SYSTEM_VERSION AS OF 12345;
+
+-- 推理端 (Flink) 实时消费在线特征并调用模型服务
+```
+
+**ML Pipeline 架构说明**:
+
+| 阶段 | 技术栈 | 存储格式 | 延迟要求 |
+|------|--------|---------|----------|
+| **数据采集** | Flink CDC / Kafka | 原始流 | 实时 |
+| **特征工程** | Flink SQL | Iceberg / Paimon | 分钟级 |
+| **离线训练** | Spark / PyTorch | Iceberg (版本快照) | 小时级 |
+| **在线推理** | Flink + Model Serving | Paimon (Lookup) | 毫秒级 |
+| **监控反馈** | Flink | Iceberg (Append) | 实时 |
+
+---
+
+### 6.5 Flink + Iceberg: 动态 Sink、隐藏分区与 Z-Order
+
+```sql
+-- ============================================
+-- 动态 Iceberg Sink 配置
+-- ============================================
+CREATE CATALOG iceberg_catalog WITH (
+    'type' = 'iceberg',
+    'catalog-type' = 'hive',
+    'uri' = 'thrift://hive-metastore:9083',
+    'warehouse' = 'oss://my-bucket/iceberg-warehouse'
+);
+
+USE CATALOG iceberg_catalog;
+
+-- 隐藏分区表: 查询端无需感知分区字段
+CREATE TABLE iceberg_hidden_partition_events (
+    event_id STRING,
+    user_id STRING,
+    event_type STRING,
+    event_time TIMESTAMP(3)
+) PARTITIONED BY (
+    -- 隐藏分区: 按月分区,但查询 WHERE event_time 自动下推
+    MONTH(event_time),
+    -- 桶分区: 16 个桶均匀分布
+    BUCKET(16, user_id)
+) WITH (
+    'write.format.default' = 'parquet',
+    'write.parquet.compression-codec' = 'zstd',
+    -- 动态写入优化
+    'write.target-file-size-bytes' = '134217728',
+    'write.distribution-mode' = 'hash',
+    -- 启用 Z-Order (Iceberg 1.5+ 通过 Spark, Flink 侧配合写入排序)
+    'write.ordering.mode' = 'sort',
+    'write.ordering.columns' = 'user_id,event_type'
+);
+
+-- ============================================
+-- Z-Order 优化: 通过 Flink 预排序写入
+-- ============================================
+INSERT INTO iceberg_hidden_partition_events
+SELECT
+    event_id,
+    user_id,
+    event_type,
+    event_time
+FROM kafka_source
+-- Flink 侧按 Z-Order 键排序后写入,提升多维查询局部性
+ORDER BY event_time, user_id, event_type;
+
+-- ============================================
+-- 查询时自动分区下推 (对用户透明)
+-- ============================================
+-- 以下查询会自动下推到 2026-04 的分区,无需指定 dt
+SELECT event_type, COUNT(*) AS cnt
+FROM iceberg_hidden_partition_events
+WHERE event_time >= TIMESTAMP '2026-04-01 00:00:00'
+  AND event_time < TIMESTAMP '2026-05-01 00:00:00'
+GROUP BY event_type;
+
+-- ============================================
+-- Iceberg Compaction (小文件合并)
+-- ============================================
+CALL iceberg_catalog.system.rewrite_data_files(
+    table => 'default.iceberg_hidden_partition_events',
+    options => map(
+        'min-input-files', '5',
+        'max-concurrent-file-group-rewrites', '5',
+        'target-file-size-bytes', '134217728',
+        'sort-order', 'user_id ASC NULLS LAST'
+    )
+);
+```
+
+---
+
+### 6.6 Flink + Paimon: Lookup Join 与物化表
+
+```sql
+-- ============================================
+-- Paimon Lookup Join 最佳实践
+-- ============================================
+CREATE CATALOG paimon_catalog WITH (
+    'type' = 'paimon',
+    'warehouse' = 'oss://my-bucket/paimon-warehouse'
+);
+
+USE CATALOG paimon_catalog;
+
+-- 维度表: 用户基础信息 (开启 Lookup 支持)
 CREATE TABLE dim_users (
     user_id STRING PRIMARY KEY NOT ENFORCED,
     user_name STRING,
@@ -1139,11 +1454,13 @@ CREATE TABLE dim_users (
     city STRING,
     register_date DATE
 ) WITH (
-    'bucket' = '8',
-    'changelog-producer' = 'lookup'
+    'bucket' = '16',
+    'changelog-producer' = 'lookup',
+    'lookup.cache-rows' = '50000',
+    'lookup.cache-ttl' = '5min'
 );
 
--- 产品维度表
+-- 维度表: 产品信息
 CREATE TABLE dim_products (
     product_id STRING PRIMARY KEY NOT ENFORCED,
     product_name STRING,
@@ -1155,8 +1472,8 @@ CREATE TABLE dim_products (
     'changelog-producer' = 'lookup'
 );
 
--- 订单明细宽表
-CREATE TABLE dwd_order_detail (
+-- 实时订单宽表 (流式 Join 维度)
+CREATE TABLE dwd_order_full (
     order_id STRING,
     user_id STRING,
     user_name STRING,
@@ -1166,6 +1483,7 @@ CREATE TABLE dwd_order_detail (
     product_name STRING,
     category STRING,
     brand STRING,
+    price DECIMAL(18,2),
     amount DECIMAL(18,2),
     status STRING,
     created_at TIMESTAMP(3),
@@ -1176,8 +1494,8 @@ CREATE TABLE dwd_order_detail (
     'changelog-producer' = 'lookup'
 );
 
--- 流式 Join 维度表
-INSERT INTO dwd_order_detail
+-- 流式 Lookup Join (实时打宽)
+INSERT INTO dwd_order_full
 SELECT
     o.order_id,
     o.user_id,
@@ -1188,6 +1506,7 @@ SELECT
     p.product_name,
     p.category,
     p.brand,
+    p.price,
     o.amount,
     o.status,
     o.created_at,
@@ -1199,40 +1518,9 @@ LEFT JOIN dim_products FOR SYSTEM_TIME AS OF o.proc_time AS p
     ON o.product_id = p.product_id;
 
 -- ============================================
--- 步骤 4: 窗口聚合 (DWS 层)
+-- 物化表 (Materialized Table) 实时报表
 -- ============================================
-CREATE TABLE dws_category_stats_5min (
-    window_start TIMESTAMP(3),
-    window_end TIMESTAMP(3),
-    category STRING,
-    brand STRING,
-    gmv DECIMAL(38,2),
-    order_count BIGINT,
-    PRIMARY KEY (window_start, category, brand) NOT ENFORCED
-) WITH (
-    'bucket' = '16',
-    'changelog-producer' = 'input'
-);
-
--- 滚动窗口聚合
-INSERT INTO dws_category_stats_5min
-SELECT
-    TUMBLE_START(created_at, INTERVAL '5' MINUTE) AS window_start,
-    TUMBLE_END(created_at, INTERVAL '5' MINUTE) AS window_end,
-    category,
-    brand,
-    SUM(amount) AS gmv,
-    COUNT(*) AS order_count
-FROM dwd_order_detail
-GROUP BY
-    TUMBLE(created_at, INTERVAL '5' MINUTE),
-    category,
-    brand;
-
--- ============================================
--- 步骤 5: 物化表实时报表 (ADS 层)
--- ============================================
-CREATE MATERIALIZED TABLE ads_realtime_dashboard
+CREATE MATERIALIZED TABLE ads_realtime_gmv
 REFRESH MODE AUTO
 WITH (
     'refresh-interval' = '1min'
@@ -1242,27 +1530,25 @@ SELECT
     DATE_FORMAT(window_start, 'yyyy-MM-dd HH:mm') AS time_slot,
     category,
     brand,
-    gmv,
-    order_count,
+    SUM(amount) AS gmv,
+    COUNT(*) AS order_count,
     NOW() AS update_time
 FROM dws_category_stats_5min;
 ```
 
 ---
 
-### 6.3 Delta Lake + Flink 集成示例
+### 6.7 Flink + Delta Lake: Time Travel 与 Schema Evolution
 
 ```java
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-
-import org.apache.flink.table.api.TableEnvironment;
-
+import org.apache.flink.table.api.Table;
+import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
 /**
- * Delta Lake 与 Flink 集成示例
- * 使用 delta-flink 连接器
+ * Delta Lake 与 Flink 集成: Time Travel 与 Schema Evolution
  */
-public class DeltaLakeFlinkIntegration {
+public class DeltaLakeAdvanced {
 
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env =
@@ -1271,9 +1557,7 @@ public class DeltaLakeFlinkIntegration {
 
         StreamTableEnvironment tEnv = StreamTableEnvironment.create(env);
 
-        // ============================================
-        // 1. 创建 Delta Lake Catalog
-        // ============================================
+        // 1. 创建 Delta Catalog
         tEnv.executeSql("""
             CREATE CATALOG delta_catalog WITH (
                 'type' = 'delta',
@@ -1283,95 +1567,77 @@ public class DeltaLakeFlinkIntegration {
 
         tEnv.useCatalog("delta_catalog");
 
-        // ============================================
-        // 2. 创建 Delta Lake 表
-        // ============================================
+        // 2. 创建支持 Schema Evolution 的 Delta 表
         tEnv.executeSql("""
-            CREATE TABLE IF NOT EXISTS delta_events (
-                event_id STRING,
+            CREATE TABLE IF NOT EXISTS delta_ml_features (
                 user_id STRING,
-                event_type STRING,
-                event_time TIMESTAMP(3),
+                feature_1 DOUBLE,
+                feature_2 DOUBLE,
+                label DOUBLE,
                 dt STRING
             ) PARTITIONED BY (dt) WITH (
                 'connector' = 'delta',
-                'table-path' = 's3://my-bucket/delta-warehouse/events'
+                'table-path' = 's3://my-bucket/delta-warehouse/ml_features',
+                'delta.columnMapping.mode' = 'name',
+                'delta.enableDeletionVectors' = 'true'
             )
         """);
 
-        // ============================================
-        // 3. 流式写入 Delta Lake
-        // ============================================
+        // 3. 流式写入
         tEnv.executeSql("""
-            CREATE TABLE kafka_source (
-                event_id STRING,
-                user_id STRING,
-                event_type STRING,
-                event_time TIMESTAMP(3)
-            ) WITH (
-                'connector' = 'kafka',
-                'topic' = 'events',
-                'properties.bootstrap.servers' = 'kafka:9092',
-                'format' = 'json'
-            )
-        """);
-
-        // 写入 Delta Lake
-        tEnv.executeSql("""
-            INSERT INTO delta_events
+            INSERT INTO delta_ml_features
             SELECT
-                event_id,
                 user_id,
-                event_type,
-                event_time,
-                DATE_FORMAT(event_time, 'yyyy-MM-dd') AS dt
-            FROM kafka_source
+                f_numeric_1 AS feature_1,
+                f_numeric_2 AS feature_2,
+                label,
+                DATE_FORMAT(feature_timestamp, 'yyyy-MM-dd') AS dt
+            FROM ml_feature_source
         """);
 
-        // ============================================
-        // 4. 批式读取 Delta Lake (Time Travel)
-        // ============================================
+        // 4. Time Travel 查询 (批模式)
         // 查询特定版本
-        Table result = tEnv.sqlQuery("""
-            SELECT * FROM delta_events VERSION AS OF 12345
+        Table versionResult = tEnv.sqlQuery("""
+            SELECT user_id, feature_1, feature_2, label
+            FROM delta_ml_features VERSION AS OF 100
             WHERE dt = '2026-04-01'
         """);
 
-        // 查询特定时间
+        // 查询特定时间点的数据状态
         Table timeTravelResult = tEnv.sqlQuery("""
-            SELECT * FROM delta_events TIMESTAMP AS OF '2026-04-01T00:00:00Z'
+            SELECT user_id, feature_1, feature_2, label
+            FROM delta_ml_features TIMESTAMP AS OF '2026-04-01T00:00:00Z'
+            WHERE dt = '2026-04-01'
         """);
 
-        // ============================================
-        // 5. Delta Lake + Structured Streaming 风格
-        // ============================================
-        // 读取变更数据 (Change Data Feed)
+        // 5. 读取变更数据流 (Change Data Feed)
         tEnv.executeSql("""
-            CREATE TABLE delta_cdf (
-                event_id STRING,
+            CREATE TABLE delta_feature_cdf (
                 user_id STRING,
-                event_type STRING,
-                _change_type STRING,  -- insert, update, delete
-                _commit_version BIGINT,
-                _commit_timestamp TIMESTAMP(3)
+                feature_1 DOUBLE,
+                feature_2 DOUBLE,
+                label DOUBLE,
+                _change_type STRING,
+                _commit_version BIGINT
             ) WITH (
                 'connector' = 'delta',
-                'table-path' = 's3://my-bucket/delta-warehouse/events',
+                'table-path' = 's3://my-bucket/delta-warehouse/ml_features',
                 'read-change-feed' = 'true',
                 'starting-version' = '0'
             )
         """);
 
-        // 处理变更数据
+        // 处理变更数据用于增量训练
         tEnv.executeSql("""
-            INSERT INTO kafka_change_stream
+            INSERT INTO kafka_incremental_training
             SELECT
-                event_id,
                 user_id,
-                event_type,
-                _change_type,
-                _commit_timestamp
-            FROM delta_cdf
+                feature_1,
+                feature_2,
+                label,
+                _change_type
+            FROM delta_feature_cdf
+            WHERE _change_type IN ('insert', 'update_postimage')
         """);
     }
 }
@@ -1379,151 +1645,9 @@ public class DeltaLakeFlinkIntegration {
 
 ---
 
-### 6.4 分层实时数仓完整 Pipeline
-
-```sql
--- ============================================
--- 完整分层实时数仓 Pipeline
--- 使用 Paimon 作为统一存储
--- ============================================
-
--- 1. ODS 层: 原始数据接入
-CREATE TABLE ods_kafka_raw (
-    raw_data STRING,
-    ingest_time TIMESTAMP(3),
-    dt STRING
-) PARTITIONED BY (dt) WITH (
-    'bucket' = '8',
-    'write-mode' = 'append-only'
-);
-
--- 2. DWD 层: 数据清洗与标准化
-CREATE TABLE dwd_cleaned_events (
-    event_id STRING,
-    user_id STRING,
-    session_id STRING,
-    event_type STRING,
-    page_id STRING,
-    referrer STRING,
-    device_type STRING,
-    os STRING,
-    browser STRING,
-    event_time TIMESTAMP(3),
-    dt STRING,
-    PRIMARY KEY (event_id, dt) NOT ENFORCED
-) PARTITIONED BY (dt) WITH (
-    'bucket' = '32',
-    'changelog-producer' = 'input'
-);
-
-INSERT INTO dwd_cleaned_events
-SELECT
-    JSON_VALUE(raw_data, '$.event_id') AS event_id,
-    JSON_VALUE(raw_data, '$.user_id') AS user_id,
-    JSON_VALUE(raw_data, '$.session_id') AS session_id,
-    JSON_VALUE(raw_data, '$.event_type') AS event_type,
-    JSON_VALUE(raw_data, '$.page_id') AS page_id,
-    JSON_VALUE(raw_data, '$.referrer') AS referrer,
-    JSON_VALUE(raw_data, '$.device.type') AS device_type,
-    JSON_VALUE(raw_data, '$.device.os') AS os,
-    JSON_VALUE(raw_data, '$.device.browser') AS browser,
-    TO_TIMESTAMP(JSON_VALUE(raw_data, '$.timestamp')) AS event_time,
-    DATE_FORMAT(ingest_time, 'yyyy-MM-dd') AS dt
-FROM ods_kafka_raw
-WHERE raw_data IS NOT NULL;
-
--- 3. DWS 层: 多维度聚合
--- 3.1 用户行为统计
-CREATE TABLE dws_user_behavior_1h (
-    window_start TIMESTAMP(3),
-    window_end TIMESTAMP(3),
-    user_id STRING,
-    session_count BIGINT,
-    page_view_count BIGINT,
-    click_count BIGINT,
-    PRIMARY KEY (window_start, user_id) NOT ENFORCED
-) WITH (
-    'bucket' = '16',
-    'changelog-producer' = 'input'
-);
-
-INSERT INTO dws_user_behavior_1h
-SELECT
-    TUMBLE_START(event_time, INTERVAL '1' HOUR) AS window_start,
-    TUMBLE_END(event_time, INTERVAL '1' HOUR) AS window_end,
-    user_id,
-    COUNT(DISTINCT session_id) AS session_count,
-    COUNT(*) FILTER (WHERE event_type = 'page_view') AS page_view_count,
-    COUNT(*) FILTER (WHERE event_type = 'click') AS click_count
-FROM dwd_cleaned_events
-GROUP BY
-    TUMBLE(event_time, INTERVAL '1' HOUR),
-    user_id;
-
--- 3.2 页面访问统计
-CREATE TABLE dws_page_stats_10min (
-    window_start TIMESTAMP(3),
-    window_end TIMESTAMP(3),
-    page_id STRING,
-    uv BIGINT,
-    pv BIGINT,
-    avg_duration_ms BIGINT,
-    PRIMARY KEY (window_start, page_id) NOT ENFORCED
-) WITH (
-    'bucket' = '16',
-    'changelog-producer' = 'input'
-);
-
-INSERT INTO dws_page_stats_10min
-SELECT
-    TUMBLE_START(event_time, INTERVAL '10' MINUTE) AS window_start,
-    TUMBLE_END(event_time, INTERVAL '10' MINUTE) AS window_end,
-    page_id,
-    COUNT(DISTINCT user_id) AS uv,
-    COUNT(*) AS pv,
-    AVG(duration_ms) AS avg_duration_ms
-FROM dwd_cleaned_events
-WHERE event_type = 'page_view'
-GROUP BY
-    TUMBLE(event_time, INTERVAL '10' MINUTE),
-    page_id;
-
--- 4. ADS 层: 应用服务数据
-CREATE TABLE ads_user_realtime_profile (
-    user_id STRING PRIMARY KEY NOT ENFORCED,
-    total_sessions BIGINT,
-    total_page_views BIGINT,
-    last_active_time TIMESTAMP(3),
-    favorite_category STRING,
-    user_segment STRING,
-    update_time TIMESTAMP(3)
-) WITH (
-    'bucket' = '32',
-    'changelog-producer' = 'lookup'
-);
-
-INSERT INTO ads_user_realtime_profile
-SELECT
-    user_id,
-    SUM(session_count) AS total_sessions,
-    SUM(page_view_count) AS total_page_views,
-    MAX(window_end) AS last_active_time,
-    'TBD' AS favorite_category,
-    CASE
-        WHEN SUM(page_view_count) > 100 THEN 'high_active'
-        WHEN SUM(page_view_count) > 10 THEN 'medium_active'
-        ELSE 'low_active'
-    END AS user_segment,
-    NOW() AS update_time
-FROM dws_user_behavior_1h
-GROUP BY user_id;
-```
-
----
-
 ## 7. 可视化 (Visualizations)
 
-### 7.1 Streaming Lakehouse 架构全景图
+### 7.1 流式 Lakehouse 架构全景图
 
 ```mermaid
 graph TB
@@ -1539,20 +1663,23 @@ graph TB
         ETL["ETL & Cleansing"]
         ENRICH["Dimension Lookup"]
         AGG["Window Aggregation"]
-        ML["Real-time ML"]
+        ML_FEAT["Feature Engineering"]
     end
 
     subgraph "Lakehouse Storage Layer"
         subgraph "Table Formats"
             ICEBERG["Apache Iceberg
 • Open ecosystem
-• Time Travel"]
+• Time Travel
+• Hidden Partition"]
             PAIMON["Apache Paimon
 • Flink Native
-• LSM Engine"]
+• LSM Engine
+• Lookup Join"]
             DELTA["Delta Lake
 • ACID Trans
-• Databricks"]
+• CDF
+• Schema Evolution"]
             HUDI["Apache Hudi
 • Incremental
 • MOR/COW"]
@@ -1561,12 +1688,13 @@ graph TB
         subgraph "Metadata"
             META["Hive Metastore
 Unity Catalog
-AWS Glue"]
+AWS Glue
+Nessie"]
         end
 
         subgraph "Object Storage"
             S3["S3/OSS/GCS
-HDFS"]
+HDFS/MinIO"]
         end
     end
 
@@ -1577,8 +1705,9 @@ Tableau/Superset"]
 Trino/Presto"]
         ML_BATCH["ML Training
 Spark/TensorFlow"]
-        SERVING["Serving API
-Flink/StarRocks"]
+        SERVING["Online Serving
+Flink/StarRocks
+Feature Store"]
     end
 
     CDC --> ETL
@@ -1586,7 +1715,7 @@ Flink/StarRocks"]
     FILE --> ETL
     API --> ETL
 
-    ETL --> ENRICH --> AGG --> ML
+    ETL --> ENRICH --> AGG --> ML_FEAT
 
     ETL --> ICEBERG
     ETL --> PAIMON
@@ -1607,147 +1736,150 @@ Flink/StarRocks"]
     PAIMON --> SERVING
     DELTA --> ML_BATCH
     HUDI --> ADHOC
+    PAIMON --> ML_BATCH
 
     style ETL fill:#e3f2fd,stroke:#1565c0
     style PAIMON fill:#c8e6c9,stroke:#2e7d32
     style SERVING fill:#fff3e0,stroke:#e65100
+    style META fill:#f3e5f5,stroke:#7b1fa2
 ```
 
 ---
 
-### 7.2 统一批流处理架构对比
+### 7.2 数据分层流向图 (Bronze-Silver-Gold)
 
 ```mermaid
 graph LR
-    subgraph "Lambda Architecture"
-        direction TB
-        L1["Batch Layer
-Spark/Hive"] --> L3["Serving Layer
-Merge View"]
-        L2["Speed Layer
-Flink/Storm"] --> L3
-        L4["Data Source"] --> L1
-        L4 --> L2
+    subgraph "Data Sources"
+        KAFKA["Kafka / Kinesis"]
+        CDC_SRC["MySQL CDC"]
+        API_SRC["API / Files"]
     end
 
-    subgraph "Kappa Architecture"
-        direction TB
-        K1["Stream Layer Only
-Flink on Kafka"] --> K2["Serving Layer"]
-        K3["Data Source"] --> K4["Kafka"] --> K1
+    subgraph "Bronze Layer"
+        B1["bronze_events<br/>Append-only<br/>Raw JSON"]
+        B2["bronze_orders<br/>Append-only<br/>CDC Raw"]
+        B3["bronze_api_logs<br/>Append-only<br/>Raw Log"]
     end
 
-    subgraph "Lakehouse Architecture"
-        direction TB
-        H1["Unified Storage
-Iceberg/Paimon"] --> H2["Serving Layer"]
-        H3["Data Source"] --> H4["Flink"] --> H1
-        H5["Batch Process
-Spark/Flink"] --> H1
+    subgraph "Silver Layer"
+        S1["silver_user_events<br/>Upsert / PK<br/>Cleaned & Standardized"]
+        S2["silver_order_detail<br/>Upsert / PK<br/>Enriched with Dimensions"]
+        S3["silver_page_views<br/>Upsert / PK<br/>Sessionized"]
     end
 
-    L1 -.->|"High Cost
-Inconsistent"| K1
-    K1 -.->|"Storage Cost
-Governance Gap"| H4
+    subgraph "Gold Layer"
+        G1["gold_page_stats_5min<br/>Aggregated<br/>Real-time Metrics"]
+        G2["gold_user_profile<br/>Upsert<br/>Feature Store"]
+        G3["gold_category_gmv<br/>Aggregated<br/>Business KPI"]
+    end
 
-    style L1 fill:#ffcdd2,stroke:#c62828
-    style L2 fill:#ffcdd2,stroke:#c62828
-    style H1 fill:#c8e6c9,stroke:#2e7d32
-    style H4 fill:#c8e6c9,stroke:#2e7d32
+    subgraph "Serving"
+        BI["BI Dashboard"]
+        ML["ML Training"]
+        API_OUT["REST API"]
+    end
+
+    KAFKA --> B1
+    CDC_SRC --> B2
+    API_SRC --> B3
+
+    B1 --> S1
+    B2 --> S2
+    B3 --> S3
+
+    S1 --> G1
+    S1 --> G2
+    S2 --> G3
+    S3 --> G1
+
+    G1 --> BI
+    G2 --> ML
+    G3 --> API_OUT
+
+    style B1 fill:#d7ccc8,stroke:#5d4037
+    style B2 fill:#d7ccc8,stroke:#5d4037
+    style S1 fill:#c8e6c9,stroke:#2e7d32
+    style S2 fill:#c8e6c9,stroke:#2e7d32
+    style G1 fill:#fff3e0,stroke:#e65100
+    style G2 fill:#fff3e0,stroke:#e65100
 ```
 
 ---
 
-### 7.3 湖仓格式技术选型决策树
+### 7.3 CDC 入湖流程图
 
 ```mermaid
-flowchart TD
-    START[技术选型] --> Q1{主要计算引擎?}
+sequenceDiagram
+    participant MySQL as MySQL<br/>Binlog
+    participant CDC as Flink CDC<br/>Connector
+    participant ETL as Flink ETL<br/>Transform
+    participant Sink as Lakehouse Sink<br/>Iceberg/Paimon
+    participant Meta as Catalog<br/>HMS/Glue
+    participant Store as Object Storage<br/>S3/OSS
 
-    Q1 -->|Flink 为主| Q2{延迟要求?}
-    Q1 -->|Spark 为主| Q3{更新频率?}
-    Q1 -->|多引擎共享| ICEBERG1[Apache Iceberg
-    开放生态
-    成熟稳定]
+    MySQL->>CDC: Binlog Stream<br/>(INSERT/UPDATE/DELETE)
+    Note over CDC: Debezium Format<br/>Schema Capture
 
-    Q2 -->|秒级| Q4{需要 Lookup?}
-    Q2 -->|分钟级| ICEBERG2[Apache Iceberg
-    通用场景]
+    CDC->>ETL: RowData<br/>(+Schema)
+    Note over ETL: Data Cleansing<br/>Type Conversion<br/>Partition Computing
 
-    Q4 -->|是| PAIMON[Apache Paimon
-    Flink Native
-    LSM 优化
-    Lookup Join]
-    Q4 -->|否| HUDI1[Apache Hudi
-    MOR 模式
-    增量处理]
+    ETL->>Sink: Transformed Records
+    Note over Sink: Two-Phase Commit<br/>Checkpoint N
 
-    Q3 -->|高频更新| HUDI2[Apache Hudi
-    MOR 模式]
-    Q3 -->|低频更新| DELTA[Delta Lake
-    Photon 优化
-    Databricks 生态]
+    Sink->>Store: Write Parquet Files<br/>(UUID Naming)
+    Store-->>Sink: File Locations
 
-    ICEBERG1 --> END1[生产部署]
-    ICEBERG2 --> END1
-    PAIMON --> END1
-    HUDI1 --> END1
-    HUDI2 --> END1
-    DELTA --> END1
+    Sink->>Meta: Pre-commit<br/>(Pending Snapshot)
+    Note over Sink: Phase 2: On Checkpoint ACK
 
-    style PAIMON fill:#c8e6c9,stroke:#2e7d32,stroke-width:3px
-    style ICEBERG1 fill:#e3f2fd,stroke:#1565c0
-    style HUDI1 fill:#fff3e0,stroke:#e65100
-    style DELTA fill:#f3e5f5,stroke:#7b1fa2
+    Sink->>Meta: Commit Snapshot<br/>(Atomic Metadata Update)
+    Sink->>Store: Old Orphan Files<br/>(Background Cleanup)
+
+    Note over Meta,Store: Data Visible<br/>to Query Engine
 ```
 
 ---
 
-### 7.4 流式湖仓成本优化架构
+### 7.4 查询优化路径图
 
 ```mermaid
 graph TB
-    subgraph "Storage Tiering"
-        direction TB
-        HOT["Hot Data<br/>Last 7 Days<br/>Standard Storage"]
-        WARM["Warm Data<br/>7-90 Days<br/>IA Storage"]
-        COLD["Cold Data<br/>90+ Days<br/>Archive Storage"]
+    subgraph "Query Input"
+        Q1["BI Query<br/>SELECT * WHERE dt='2026-04-01'"]
+        Q2["Ad-hoc Query<br/>SELECT user_id, SUM(amount) GROUP BY user_id"]
+        Q3["ML Training<br/>Full Table Scan + Time Travel"]
+        Q4["Online Serving<br/>Lookup by PK"]
     end
 
-    subgraph "Compute Optimization"
-        direction TB
-        SPOT["Spot Instances<br/>60-90% Savings"]
-        AUTO["Auto Scaling<br/>Based on Backlog"]
-        SERVERLESS["Serverless<br/>Pay per Use"]
+    subgraph "Catalog / Optimizer"
+        CAT["Catalog Resolution<br/>Schema + Partition Spec"]
+        OPT["Query Optimizer<br/>Partition Pruning<br/>Predicate Pushdown"]
+        STATS["Statistics<br/>Column Stats<br/>Partition Stats"]
     end
 
-    subgraph "Lakehouse Optimization"
-        direction TB
-        COMPACT["Compaction
-Small File Merge"]
-        COMPRESS["Compression
-ZSTD/Snappy"]
-        PARTITION["Smart Partitioning
-Time-based"]
+    subgraph "Storage Access"
+        PP["Partition Pruning<br/>Skip irrelevant partitions"]
+        ZO["Z-Order / Data Skipping<br/>Min/Max Statistics"]
+        PK["Primary Key Index<br/>Hash/Bucket Lookup"]
+        FS["Full Scan<br/>Parallel Read"]
     end
 
-    HOT --> WARM --> COLD
+    subgraph "Result"
+        R1["Filtered Result<br/>(I/O ↓ 90%+)"]
+        R2["Aggregated Result<br/>(Pushdown + Local Agg)"]
+        R3["Historical Snapshot<br/>(Version Isolation)"]
+        R4["Single Row<br/>(O(1) Lookup)"]
+    end
 
-    SPOT --> COMPUTE["Flink Cluster"]
-    AUTO --> COMPUTE
-    SERVERLESS --> COMPUTE
+    Q1 --> CAT --> OPT --> PP --> R1
+    Q2 --> CAT --> OPT --> STATS --> ZO --> R2
+    Q3 --> CAT --> OPT --> FS --> R3
+    Q4 --> CAT --> PK --> R4
 
-    COMPACT --> STORAGE["Lakehouse Tables"]
-    COMPRESS --> STORAGE
-    PARTITION --> STORAGE
-
-    COMPUTE --> STORAGE
-
-    style HOT fill:#ffcdd2,stroke:#c62828
-    style WARM fill:#fff3e0,stroke:#e65100
-    style COLD fill:#e3f2fd,stroke:#1565c0
-    style SPOT fill:#c8e6c9,stroke:#2e7d32
+    style OPT fill:#e3f2fd,stroke:#1565c0
+    style PP fill:#c8e6c9,stroke:#2e7d32
+    style PK fill:#fff3e0,stroke:#e65100
 ```
 
 ---

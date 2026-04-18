@@ -104,6 +104,7 @@
 | **[model-checking-guided-testing.md](./07-tools/model-checking-guided-testing.md)** | Mocket模型检查引导测试 | L5 | 🆕 |
 | **[trillium-aneris-distributed-verification.md](./07-tools/trillium-aneris-distributed-verification.md)** | Trillium/Aneris分布式验证 | L6 | 🆕 |
 | **[ai-formal-verification](./07-tools/ai-formal-verification/ai-formal-verification-integration.md)** | AI+形式验证融合 | L6 | 🆕 |
+| **[formal-verification-industrial-roadmap.md](./07-tools/formal-verification-industrial-roadmap.md)** | 形式化验证工业化路线图 | L4-L5 | 🆕 v4.5 |
 
 ### 08-standards/ 标准规范 (2篇) [100%]
 
@@ -121,6 +122,7 @@
 | **Mocket引导测试** | `07-tools/model-checking-guided-testing.md` | TLA+反例→测试用例、规格-实现鸿沟弥合 |
 | **Trillium/Aneris验证** | `07-tools/trillium-aneris-distributed-verification.md` | 网络协议精化、分布式系统容错验证 |
 | **AI+形式验证融合** | `07-tools/ai-formal-verification/` | FoVer框架、神经证明证书、PRM形式化 |
+| **形式化验证工业化路线图** | `07-tools/formal-verification-industrial-roadmap.md` | 与Verdi/IronFleet/CompCert/seL4等权威基准的差距分析与路线图 | 🆕 v4.5 |
 | **Network Calculus** | `01-foundation/network-calculus/` | 延迟边界分析、积压分析、Min-Plus代数 |
 | **概率流处理** | `06-frontier/probabilistic-streaming/` | PAC语义、随机处理器、近似正确性 |
 | **1CP前沿** | `06-frontier/first-person-choreographies/` | 动态投影、Census Polymorphism |
