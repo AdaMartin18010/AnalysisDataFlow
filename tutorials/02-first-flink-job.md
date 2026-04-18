@@ -64,6 +64,7 @@ Flink支持三种时间语义用于处理乱序事件：
 3. 可以通过 `disableChaining()` 或 `slotSharingGroup()` 手动控制
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 算子链示例:flatMap -> map -> filter 会被优化为一条链
 dataStream
     .flatMap(tokenizer)  // 链内
@@ -795,6 +796,7 @@ graph TB
 **提示**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 在flatMap中添加过滤逻辑
 Set<String> stopWords = new HashSet<>(Arrays.asList("the", "a", "is", "of"));
 
@@ -861,6 +863,7 @@ public class TopNWordCount {
 **提示**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 使用自定义key selector按长度分组
 stream
     .flatMap(new Tokenizer())

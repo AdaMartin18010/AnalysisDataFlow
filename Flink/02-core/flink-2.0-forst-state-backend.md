@@ -368,6 +368,7 @@ ForSt 通过以下机制保证 Dataflow Model 的一致性要求：
 Flink 2.0 引入的 State V2 API 与 ForSt 深度集成：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // State V2 API with ForSt Backend
 StateDescriptor<V> descriptor = StateDescriptor
     .<V>builder("my-state", TypeInformation.of(V.class))

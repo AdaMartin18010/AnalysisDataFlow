@@ -250,6 +250,7 @@ Operator2.0 = (Transform, StateReference, ProcessingLogic)
 **同步状态访问 (Flink 1.x)**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 同步语义: 状态转移立即完成
 CountState current = state.value();  // 阻塞调用
 current.count++;
@@ -261,6 +262,7 @@ state.update(current);  // 同步写入
 **异步状态访问 (Flink 2.0)**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 异步语义: 状态转移延迟完成
 state.getAsync(key)
     .thenApply(current -> { current.count++; return current; })
@@ -371,6 +373,7 @@ $$
 **Flink 1.x (同步)**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 public void processElement(Event event, Context ctx) {
     CountState current = state.value();  // 阻塞
     current.increment();
@@ -382,6 +385,7 @@ public void processElement(Event event, Context ctx) {
 **Flink 2.0 (异步)**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 public void processElement(Event event, Context ctx) {
     state.getAsync(event.getKey())
         .thenApply(current -> { current.increment(); return current; })

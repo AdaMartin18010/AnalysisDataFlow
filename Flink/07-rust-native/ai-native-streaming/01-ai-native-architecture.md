@@ -183,6 +183,7 @@ Regret_T / T = O(1/√T) → 0 (当 T → ∞)
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // Flink ML 在线逻辑回归
@@ -399,6 +400,7 @@ Correctness: ∀W, Feature(W) = agg({v_i | t_i ∈ W})
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 

@@ -273,6 +273,7 @@ $$
 **策略 1: 并行度优化**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 根据可用CPU核心动态设置并行度
 int availableCores = Runtime.getRuntime().availableProcessors();
 int optimalParallelism = Math.max(1, (int)(availableCores * 0.7));
@@ -285,6 +286,7 @@ configuration.setInteger(TaskManagerOptions.NUM_TASK_SLOTS, 2);
 **策略 2: 算子链优化**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 启用算子链减少线程切换
 dataStream
     .filter(...)
@@ -303,6 +305,7 @@ dataStream
 **策略 3: 异步执行**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // IO密集型操作使用异步模式
 AsyncDataStream.unorderedWait(
     inputStream,

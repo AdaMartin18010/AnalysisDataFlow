@@ -505,6 +505,7 @@ CEP模式:   振动上升(5s内增加>30%)
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 Pattern.<SensorEvent>begin("vibration-rise")

@@ -61,6 +61,7 @@ $$
 ### 5.1 JDBC Source
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 JdbcSourceBuilder<Row> builder = JdbcSourceBuilder.<Row>builder()
     .setDriverName("com.mysql.cj.jdbc.Driver")
     .setUrl("jdbc:mysql://localhost:3306/mydb")
@@ -73,6 +74,7 @@ JdbcSourceBuilder<Row> builder = JdbcSourceBuilder.<Row>builder()
 ### 6.1 JDBC Sink
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 JdbcSink.sink(
     "INSERT INTO orders (id, amount) VALUES (?, ?)",
     (ps, order) -> {

@@ -303,6 +303,7 @@ Adopt a **gradual tightening** strategy:
 **Step 4: Implement Monitoring**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Prometheus metric example
 Counter slo_violations_total = Counter.build()
     .name("streaming_slo_violations_total")

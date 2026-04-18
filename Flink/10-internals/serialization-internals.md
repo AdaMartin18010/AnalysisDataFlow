@@ -200,6 +200,7 @@ graph LR
 **Flink解决方案对比**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 方案1: 显式TypeInformation(显式但冗长)
 DataStream<Tuple2<String, Integer>> stream = env.fromElements(
     TypeInformation.of(new TypeHint<Tuple2<String, Integer>>() {}),
@@ -357,6 +358,7 @@ public class TypeExtractor {
 **POJO类型识别算法详解**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 /**
  * POJO识别条件(必须同时满足):
  * Def-F-10-05: POJO严格定义
@@ -419,6 +421,7 @@ private static <T> boolean isValidPojoClass(Class<T> clazz) {
 **类型变量解析机制**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 /**
  * 关键算法:从函数签名提取类型参数
  * 示例:将 List<T> 中的 T 映射到实际类型

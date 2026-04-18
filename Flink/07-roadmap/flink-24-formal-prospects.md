@@ -883,6 +883,7 @@ $$
 异步操作通过Future组合实现：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 state.getAsync(key)
     .thenCompose(v -> asyncTransform(v))
     .thenCompose(r -> sink.commitAsync(r))

@@ -96,15 +96,24 @@ $$
 Kafka Source 的 Exactly-Once 配置关键参数[^4]：
 
 ```java
-Properties properties = new Properties();
-properties.setProperty("bootstrap.servers", "kafka:9092");
-properties.setProperty("group.id", "flink-eo-consumer");
-properties.setProperty("isolation.level", "read_committed");  // 只读已提交事务
-properties.setProperty("enable.auto.commit", "false");         // Flink 管理偏移量
+import java.util.Properties;
+import org.apache.flink.api.common.serialization.SimpleStringSchema;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
 
-FlinkKafkaConsumer<String> source = new FlinkKafkaConsumer<>(
-    "input-topic", new SimpleStringSchema(), properties);
-source.setCommitOffsetsOnCheckpoints(true);  // Checkpoint 成功后提交偏移量
+public class Example {
+    public static void main(String[] args) throws Exception {
+        Properties properties = new Properties();
+        properties.setProperty("bootstrap.servers", "kafka:9092");
+        properties.setProperty("group.id", "flink-eo-consumer");
+        properties.setProperty("isolation.level", "read_committed");  // 只读已提交事务
+        properties.setProperty("enable.auto.commit", "false");         // Flink 管理偏移量
+
+        FlinkKafkaConsumer<String> source = new FlinkKafkaConsumer<>(
+            "input-topic", new SimpleStringSchema(), properties);
+        source.setCommitOffsetsOnCheckpoints(true);  // Checkpoint 成功后提交偏移量
+
+    }
+}
 ```
 
 **偏移量管理流程**:
@@ -261,17 +270,26 @@ sequenceDiagram
 #### 4.2.1 旧版 Kafka Producer (Flink 1.14 之前)
 
 ```java
-Properties properties = new Properties();
-properties.put("bootstrap.servers", "localhost:9092");
-properties.put("transactional.id", "flink-job-" + subtaskIndex);  // 唯一 transactional.id
-properties.put("enable.idempotence", "true");
-properties.put("acks", "all");
-properties.put("retries", Integer.MAX_VALUE);
+import java.util.Properties;
+import org.apache.flink.api.common.serialization.SimpleStringSchema;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
 
-FlinkKafkaProducer<String> sink = new FlinkKafkaProducer<>(
-    "output-topic", new SimpleStringSchema(), properties,
-    FlinkKafkaProducer.Semantic.EXACTLY_ONCE  // 启用 2PC
-);
+public class Example {
+    public static void main(String[] args) throws Exception {
+        Properties properties = new Properties();
+        properties.put("bootstrap.servers", "localhost:9092");
+        properties.put("transactional.id", "flink-job-" + subtaskIndex);  // 唯一 transactional.id
+        properties.put("enable.idempotence", "true");
+        properties.put("acks", "all");
+        properties.put("retries", Integer.MAX_VALUE);
+
+        FlinkKafkaProducer<String> sink = new FlinkKafkaProducer<>(
+            "output-topic", new SimpleStringSchema(), properties,
+            FlinkKafkaProducer.Semantic.EXACTLY_ONCE  // 启用 2PC
+        );
+
+    }
+}
 ```
 
 #### 4.2.2 新版 Kafka Sink (Flink 1.15+ 推荐)
@@ -279,32 +297,45 @@ FlinkKafkaProducer<String> sink = new FlinkKafkaProducer<>(
 基于 Flink Connector 新架构的 Kafka Exactly-Once 配置[^8][^11]：
 
 ```java
-// Source 配置 - 只读已提交事务
-KafkaSource<String> source = KafkaSource.<String>builder()
-    .setBootstrapServers("kafka:9092")
-    .setTopics("input-topic")
-    .setGroupId("flink-eo-consumer")
-    .setProperty("isolation.level", "read_committed")  // 关键:只读已提交
-    .setProperty("enable.auto.commit", "false")         // Flink 管理偏移量
-    .setStartingOffsets(OffsetsInitializer.earliest())
-    .setValueOnlyDeserializer(new SimpleStringSchema())
-    .build();
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.api.common.serialization.SimpleStringSchema;
+import org.apache.flink.connector.kafka.sink.DeliveryGuarantee;
+import org.apache.flink.connector.kafka.sink.KafkaRecordSerializationSchema;
+import org.apache.flink.connector.kafka.sink.KafkaSink;
+import org.apache.flink.connector.kafka.source.KafkaSource;
 
-// Sink 配置 - Exactly-Once 事务写入
-KafkaSink<String> sink = KafkaSink.<String>builder()
-    .setBootstrapServers("kafka:9092")
-    .setRecordSerializer(KafkaRecordSerializationSchema.builder()
-        .setTopic("output-topic")
-        .setValueSerializationSchema(new SimpleStringSchema())
-        .build())
-    .setDeliveryGuarantee(DeliveryGuarantee.EXACTLY_ONCE)  // 启用 Exactly-Once
-    .setTransactionalIdPrefix("flink-processor")            // 事务 ID 前缀
-    .build();
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        // Source 配置 - 只读已提交事务
+        KafkaSource<String> source = KafkaSource.<String>builder()
+            .setBootstrapServers("kafka:9092")
+            .setTopics("input-topic")
+            .setGroupId("flink-eo-consumer")
+            .setProperty("isolation.level", "read_committed")  // 关键:只读已提交
+            .setProperty("enable.auto.commit", "false")         // Flink 管理偏移量
+            .setStartingOffsets(OffsetsInitializer.earliest())
+            .setValueOnlyDeserializer(new SimpleStringSchema())
+            .build();
 
-// 构建作业
-env.fromSource(source, WatermarkStrategy.noWatermarks(), "Kafka Source")
-    .map(new ProcessingFunction())
-    .sinkTo(sink);
+        // Sink 配置 - Exactly-Once 事务写入
+        KafkaSink<String> sink = KafkaSink.<String>builder()
+            .setBootstrapServers("kafka:9092")
+            .setRecordSerializer(KafkaRecordSerializationSchema.builder()
+                .setTopic("output-topic")
+                .setValueSerializationSchema(new SimpleStringSchema())
+                .build())
+            .setDeliveryGuarantee(DeliveryGuarantee.EXACTLY_ONCE)  // 启用 Exactly-Once
+            .setTransactionalIdPrefix("flink-processor")            // 事务 ID 前缀
+            .build();
+
+        // 构建作业
+        env.fromSource(source, WatermarkStrategy.noWatermarks(), "Kafka Source")
+            .map(new ProcessingFunction())
+            .sinkTo(sink);
+
+    }
+}
 ```
 
 #### 4.2.3 Kafka Exactly-Once 完整配置模板
@@ -351,6 +382,7 @@ transaction.max.timeout.ms=900000  # 匹配 Flink Checkpoint 超时
 JDBC XA Sink 实现 Exactly-Once[^9]:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 JdbcXaSinkFunction<Row> xaSink = new JdbcXaSinkFunction<>(
     "INSERT INTO results (id, value, ts) VALUES (?, ?, ?) " +
     "ON CONFLICT (id) DO UPDATE SET value = EXCLUDED.value",
@@ -392,6 +424,7 @@ $$
 使用原子重命名实现文件系统 Exactly-Once:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 @Override
 protected void preCommit(String pendingFile) throws Exception {
     // 从 .inprogress 重命名为 pending (HDFS 原子操作)
@@ -547,36 +580,55 @@ restart-strategy.fixed-delay.delay: 10s
 **生产级 Kafka Source 配置**：
 
 ```java
-KafkaSource<String> createKafkaSource(String bootstrapServers, String topic, String groupId) {
-    Properties properties = new Properties();
-    properties.setProperty("isolation.level", "read_committed");  // 关键:只读已提交
-    properties.setProperty("enable.auto.commit", "false");        // Flink 管理偏移量
-    properties.setProperty("auto.offset.reset", "earliest");      // 无偏移时从最早开始
+import java.util.Properties;
+import org.apache.flink.api.common.serialization.SimpleStringSchema;
+import org.apache.flink.connector.kafka.source.KafkaSource;
 
-    return KafkaSource.<String>builder()
-        .setBootstrapServers(bootstrapServers)
-        .setTopics(topic)
-        .setGroupId(groupId)
-        .setProperties(properties)
-        .setStartingOffsets(OffsetsInitializer.committedOffsets(OffsetResetStrategy.EARLIEST))
-        .setValueOnlyDeserializer(new SimpleStringSchema())
-        .build();
+public class Example {
+    public static void main(String[] args) throws Exception {
+        KafkaSource<String> createKafkaSource(String bootstrapServers, String topic, String groupId) {
+            Properties properties = new Properties();
+            properties.setProperty("isolation.level", "read_committed");  // 关键:只读已提交
+            properties.setProperty("enable.auto.commit", "false");        // Flink 管理偏移量
+            properties.setProperty("auto.offset.reset", "earliest");      // 无偏移时从最早开始
+
+            return KafkaSource.<String>builder()
+                .setBootstrapServers(bootstrapServers)
+                .setTopics(topic)
+                .setGroupId(groupId)
+                .setProperties(properties)
+                .setStartingOffsets(OffsetsInitializer.committedOffsets(OffsetResetStrategy.EARLIEST))
+                .setValueOnlyDeserializer(new SimpleStringSchema())
+                .build();
+        }
+
+    }
 }
 ```
 
 **生产级 Kafka Sink 配置**：
 
 ```java
-KafkaSink<String> createKafkaSink(String bootstrapServers, String topic, String transactionalIdPrefix) {
-    return KafkaSink.<String>builder()
-        .setBootstrapServers(bootstrapServers)
-        .setRecordSerializer(KafkaRecordSerializationSchema.builder()
-            .setTopic(topic)
-            .setValueSerializationSchema(new SimpleStringSchema())
-            .build())
-        .setDeliveryGuarantee(DeliveryGuarantee.EXACTLY_ONCE)
-        .setTransactionalIdPrefix(transactionalIdPrefix)
-        .build();
+import org.apache.flink.api.common.serialization.SimpleStringSchema;
+import org.apache.flink.connector.kafka.sink.DeliveryGuarantee;
+import org.apache.flink.connector.kafka.sink.KafkaRecordSerializationSchema;
+import org.apache.flink.connector.kafka.sink.KafkaSink;
+
+public class Example {
+    public static void main(String[] args) throws Exception {
+        KafkaSink<String> createKafkaSink(String bootstrapServers, String topic, String transactionalIdPrefix) {
+            return KafkaSink.<String>builder()
+                .setBootstrapServers(bootstrapServers)
+                .setRecordSerializer(KafkaRecordSerializationSchema.builder()
+                    .setTopic(topic)
+                    .setValueSerializationSchema(new SimpleStringSchema())
+                    .build())
+                .setDeliveryGuarantee(DeliveryGuarantee.EXACTLY_ONCE)
+                .setTransactionalIdPrefix(transactionalIdPrefix)
+                .build();
+        }
+
+    }
 }
 ```
 
@@ -763,6 +815,7 @@ public abstract class TwoPhaseCommitSinkFunction<IN, TXN, CONTEXT>
 #### 11.1.2 事务生命周期方法
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
     /**
      * 开启新事务
      * 在以下场景调用:
@@ -833,6 +886,7 @@ sequenceDiagram
 #### 11.1.4 snapshotState 方法详解
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
     /**
      * Checkpoint 时调用(Phase 1: Prepare)
      */
@@ -867,6 +921,7 @@ sequenceDiagram
 #### 11.1.5 notifyCheckpointComplete 方法详解
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
     /**
      * Checkpoint 成功确认后调用(Phase 2: Commit)
      */
@@ -1131,6 +1186,7 @@ sequenceDiagram
 #### 11.4.1 恢复时的事务处理源码
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
     /**
      * 初始化状态(故障恢复时调用)
      */

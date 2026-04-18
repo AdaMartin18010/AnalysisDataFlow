@@ -305,6 +305,7 @@ graph TB
 **实时特征计算代码示例**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 用户行为特征计算
 DataStream<UserFeature> userFeatures = events
     .keyBy(Event::getUserId)

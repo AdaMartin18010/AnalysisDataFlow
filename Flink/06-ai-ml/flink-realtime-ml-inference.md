@@ -296,6 +296,7 @@ $$\forall i < j: \text{complete}(e_i) \leq \text{complete}(e_j) \Rightarrow \tex
 **实现约束**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 有序输出需维护缓冲区
 AsyncDataStream.orderedWait(
     inputStream,

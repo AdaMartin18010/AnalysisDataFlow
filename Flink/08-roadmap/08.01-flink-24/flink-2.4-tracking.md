@@ -1,4 +1,11 @@
-<!-- 版本状态标记: status=speculative, target=undefined -->
+﻿> **⚠️ 前瞻性内容风险声明**
+>
+> 本文档描述的技术特性处于早期规划或社区讨论阶段，**不代表 Apache Flink 官方承诺**。
+> - 相关 FLIP 可能尚未进入正式投票，或可能在实现过程中发生显著变更
+> - 预计发布时间基于社区讨论趋势分析，存在延迟或取消的风险
+> - 生产环境选型请以 Apache Flink 官方发布为准
+> - **最后核实日期**: 2026-04-19 | **信息来源**: 社区邮件列表/FLIP/官方博客
+>
 > ⚠️ **前瞻性声明 - 重要提示**
 >
 > **本文档内容为基于社区讨论的推测性分析，不代表 Apache Flink 官方承诺**
@@ -476,6 +483,7 @@ checkpointing.intelligent.max-interval: 10min
 ### 6.2 AI Agent GA 多Agent协调示例
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Java API: 多Agent协调框架
 
 // 定义Agent角色
@@ -1562,6 +1570,7 @@ graph TB
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 // 创建动态图
@@ -1755,6 +1764,7 @@ graph TB
 #### 13.4.3 配置示例
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 统一源配置
 UnifiedSource<RowData> source = UnifiedSource.<RowData>builder()
     .setSourceType(SourceType.KAFKA)

@@ -183,6 +183,7 @@ $$
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.api.common.typeinfo.Types;
 
@@ -283,6 +284,7 @@ $$
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.api.common.functions.AggregateFunction;
 
@@ -404,22 +406,28 @@ $$
 **状态 TTL 配置**:
 
 ```java
-
+import org.apache.flink.api.common.state.StateTtlConfig;
 import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-// TTL 配置 (所有状态类型支持)
-StateTtlConfig ttlConfig = StateTtlConfig
-    .newBuilder(Time.hours(24))
-    .setUpdateType(StateTtlConfig.UpdateType.OnCreateAndWrite)
-    .setStateVisibility(StateTtlConfig.StateVisibility.NeverReturnExpired)
-    .cleanupIncrementally(10, true)
-    .build();
+public class Example {
+    public static void main(String[] args) throws Exception {
 
-ValueStateDescriptor<Long> descriptor = new ValueStateDescriptor<>(
-    "counter", Types.LONG
-);
-descriptor.enableTimeToLive(ttlConfig);
+        // TTL 配置 (所有状态类型支持)
+        StateTtlConfig ttlConfig = StateTtlConfig
+            .newBuilder(Time.hours(24))
+            .setUpdateType(StateTtlConfig.UpdateType.OnCreateAndWrite)
+            .setStateVisibility(StateTtlConfig.StateVisibility.NeverReturnExpired)
+            .cleanupIncrementally(10, true)
+            .build();
+
+        ValueStateDescriptor<Long> descriptor = new ValueStateDescriptor<>(
+            "counter", Types.LONG
+        );
+        descriptor.enableTimeToLive(ttlConfig);
+
+    }
+}
 ```
 
 **Java 状态使用完整示例**:
@@ -555,27 +563,35 @@ $$
 **时间戳分配**:
 
 ```java
-
-import org.apache.flink.streaming.api.datastream.DataStream;
+import java.time.Duration;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
 
-// 方式 1: 从元素中提取时间戳
-DataStream<Event> withTimestamps = stream
-    .assignTimestampsAndWatermarks(
-        WatermarkStrategy
-            .<Event>forBoundedOutOfOrderness(Duration.ofSeconds(5))
-            .withIdleness(Duration.ofMinutes(1))
-    );
+public class Example {
+    public static void main(String[] args) throws Exception {
 
-// 方式 2: 使用自定义 Timestamp Assigner
-WatermarkStrategy<Event> strategy = WatermarkStrategy
-    .forGenerator(ctx -> new CustomWatermarkGenerator())
-    .withTimestampAssigner((event, timestamp) -> event.getEventTime());
+        // 方式 1: 从元素中提取时间戳
+        DataStream<Event> withTimestamps = stream
+            .assignTimestampsAndWatermarks(
+                WatermarkStrategy
+                    .<Event>forBoundedOutOfOrderness(Duration.ofSeconds(5))
+                    .withIdleness(Duration.ofMinutes(1))
+            );
+
+        // 方式 2: 使用自定义 Timestamp Assigner
+        WatermarkStrategy<Event> strategy = WatermarkStrategy
+            .forGenerator(ctx -> new CustomWatermarkGenerator())
+            .withTimestampAssigner((event, timestamp) -> event.getEventTime());
+
+    }
+}
 ```
 
 **时间语义设置**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 全局时间语义设置 (Flink 1.12+ 默认 EventTime)
 // 使用WatermarkStrategy替代已弃用的setStreamTimeCharacteristic
 env.getConfig().setAutoWatermarkInterval(200);
@@ -673,20 +689,26 @@ public class CustomWatermarkGenerator implements WatermarkGenerator<Event> {
 **迟到数据处理**:
 
 ```java
-
 import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-// 窗口允许迟到数据
-stream
-    .keyBy(Event::getUserId)
-    .window(TumblingEventTimeWindows.of(Time.minutes(5)))
-    .allowedLateness(Time.minutes(2))  // 允许 2 分钟迟到
-    .sideOutputLateData(lateDataTag)    // 迟到数据侧输出
-    .aggregate(new MyAggregate());
+public class Example {
+    public static void main(String[] args) throws Exception {
 
-// 获取迟到数据
-DataStream<Event> lateData = result.getSideOutput(lateDataTag);
+        // 窗口允许迟到数据
+        stream
+            .keyBy(Event::getUserId)
+            .window(TumblingEventTimeWindows.of(Time.minutes(5)))
+            .allowedLateness(Time.minutes(2))  // 允许 2 分钟迟到
+            .sideOutputLateData(lateDataTag)    // 迟到数据侧输出
+            .aggregate(new MyAggregate());
+
+        // 获取迟到数据
+        DataStream<Event> lateData = result.getSideOutput(lateDataTag);
+
+    }
+}
 ```
 
 ---
@@ -813,6 +835,7 @@ class AsyncEnrichmentFunction extends AsyncFunction[Event, EnrichedEvent]:
 **性能调优参数**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 容量 (并发请求数)
 int capacity = 100;  // 根据外部系统吞吐量调整
 
@@ -1030,6 +1053,7 @@ CEP 架构:
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -1106,6 +1130,7 @@ DataStream<Alert> result = patternStream
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 // 迭代条件 (Iterative Condition)
@@ -1179,6 +1204,7 @@ $$
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.api.common.state.ValueState;
 import org.apache.flink.api.common.state.ValueStateDescriptor;
@@ -1259,6 +1285,7 @@ DataStream<EnrichedEvent> enriched = eventStream
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.api.common.state.ValueState;
 
 // 适用于需要键控状态 + 广播状态的场景
@@ -1337,6 +1364,7 @@ $$
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.api.common.state.ValueState;
 import org.apache.flink.api.common.state.ValueStateDescriptor;
 
@@ -1360,6 +1388,7 @@ public void open(Configuration parameters) {
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.api.common.state.ValueState;
 
 // 创建查询客户端
@@ -1543,31 +1572,40 @@ flowchart TD
 ### 3.4 DataStream API 与 Table API 互操作
 
 ```java
-
-import org.apache.flink.streaming.api.datastream.DataStream;
-import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.api.common.typeinfo.Types;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.table.api.DataTypes;
+import org.apache.flink.table.api.Table;
+import org.apache.flink.table.api.TableEnvironment;
+import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
-// DataStream -> Table
-StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-Table table = tableEnv.fromDataStream(
-    dataStream,
-    Schema.newBuilder()
-        .column("userId", DataTypes.STRING())
-        .column("timestamp", DataTypes.TIMESTAMP_LTZ())
-        .column("amount", DataTypes.DECIMAL(10, 2))
-        .watermark("timestamp", "SOURCE_WATERMARK()")
-        .build()
-);
+        // DataStream -> Table
+        StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
 
-// Table -> DataStream
-DataStream<Row> resultStream = tableEnv
-    .toDataStream(resultTable);
+        Table table = tableEnv.fromDataStream(
+            dataStream,
+            Schema.newBuilder()
+                .column("userId", DataTypes.STRING())
+                .column("timestamp", DataTypes.TIMESTAMP_LTZ())
+                .column("amount", DataTypes.DECIMAL(10, 2))
+                .watermark("timestamp", "SOURCE_WATERMARK()")
+                .build()
+        );
 
-// 使用 TypeInformation 转换
-DataStream<ResultPojo> typedStream = tableEnv
-    .toDataStream(resultTable, ResultPojo.class);
+        // Table -> DataStream
+        DataStream<Row> resultStream = tableEnv
+            .toDataStream(resultTable);
+
+        // 使用 TypeInformation 转换
+        DataStream<ResultPojo> typedStream = tableEnv
+            .toDataStream(resultTable, ResultPojo.class);
+
+    }
+}
 ```
 
 ---
@@ -1597,28 +1635,35 @@ DataStream<ResultPojo> typedStream = tableEnv
 **数据倾斜处理**:
 
 ```java
-
 import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
+import static org.apache.flink.table.api.Expressions.lit;
 
-// 加盐处理热点键
-DataStream<Event> salted = events
-    .map(event -> {
-        if (isHotKey(event.getUserId())) {
-            // 热点键添加随机后缀
-            event.setSaltedKey(event.getUserId() + "_" + random.nextInt(10));
-        }
-        return event;
-    });
+public class Example {
+    public static void main(String[] args) throws Exception {
 
-// 两阶段聚合
-DataStream<Result> result = salted
-    .keyBy(Event::getSaltedKey)
-    .window(TumblingEventTimeWindows.of(Time.minutes(1)))
-    .aggregate(new PartialAggregate())
-    .keyBy(r -> r.getKey().split("_")[0])  // 去除盐值
-    .window(TumblingEventTimeWindows.of(Time.minutes(1)))
-    .aggregate(new FinalAggregate());
+        // 加盐处理热点键
+        DataStream<Event> salted = events
+            .map(event -> {
+                if (isHotKey(event.getUserId())) {
+                    // 热点键添加随机后缀
+                    event.setSaltedKey(event.getUserId() + "_" + random.nextInt(10));
+                }
+                return event;
+            });
+
+        // 两阶段聚合
+        DataStream<Result> result = salted
+            .keyBy(Event::getSaltedKey)
+            .window(TumblingEventTimeWindows.of(Time.minutes(1)))
+            .aggregate(new PartialAggregate())
+            .keyBy(r -> r.getKey().split("_")[0])  // 去除盐值
+            .window(TumblingEventTimeWindows.of(Time.minutes(1)))
+            .aggregate(new FinalAggregate());
+
+    }
+}
 ```
 
 ---

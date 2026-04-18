@@ -322,6 +322,7 @@ Scale_KS ≤ Partition_count × Instance_count
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 // Flink CEP: 可以定义复杂模式
@@ -348,6 +349,7 @@ Pattern<Transaction, ?> fraudPattern = Pattern
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // Flink: 可轻松集成多源
@@ -362,6 +364,7 @@ DataStream<Event3> file = env.fromSource(fileSource, ...);
 **场景 4: 精确时间窗口与乱序处理**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Flink: 灵活的水印策略
 WatermarkStrategy.<Event>forBoundedOutOfOrderness(Duration.ofSeconds(30))
     .withTimestampAssigner((event, timestamp) -> event.getEventTime());
@@ -527,6 +530,7 @@ Score(R, E) = w1 · LatencyScore + w2 · StateScore + w3 · EcoScore + w4 · Ops
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.api.common.typeinfo.Types;
 
 // Kafka Streams 实现
@@ -580,6 +584,7 @@ public Integer getInventory(@PathVariable String productId) {
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -1002,6 +1007,7 @@ flowchart TD
 **Kafka Streams (DSL)**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 StreamsBuilder builder = new StreamsBuilder();
 
 KStream<String, String> source = builder.stream("input-topic");
@@ -1021,6 +1027,7 @@ streams.start();
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;

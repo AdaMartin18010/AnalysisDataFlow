@@ -359,6 +359,7 @@ Time complexity is $O(n)$ because only a single pass is required.
 Always inject `trace_id` and `span_id` into MDC so that every log line can be joined with traces:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 MDC.put("trace_id", TraceContext.getCurrentTraceId());
 MDC.put("span_id", TraceContext.getCurrentSpanId());
 ```

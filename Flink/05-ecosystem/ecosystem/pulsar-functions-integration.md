@@ -72,6 +72,7 @@ graph TB
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // Maven dependency
@@ -98,6 +99,7 @@ DataStream<String> stream = env.fromSource(
 **Flink Pulsar Sink**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 PulsarSink<String> sink = PulsarSink.builder()
     .setServiceUrl("pulsar://localhost:6650")
     .setAdminUrl("http://localhost:8080")
@@ -232,6 +234,7 @@ Examples:
 **Pulsar Schema**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Define schema in Pulsar
 Schema<OrderEvent> schema = Schema.AVRO(OrderEvent.class);
 
@@ -243,6 +246,7 @@ Producer<OrderEvent> producer = client.newProducer(schema)
 **Flink Schema**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Use same schema in Flink
 PulsarSource<OrderEvent> source = PulsarSource.builder()
     .setDeserializationSchema(
@@ -261,6 +265,7 @@ PulsarSource<OrderEvent> source = PulsarSource.builder()
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.CheckpointingMode;
 
 env.enableCheckpointing(5000);
@@ -277,6 +282,7 @@ PulsarSink<String> sink = PulsarSink.builder()
 ### 4.4 Backpressure Handling
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Configure Pulsar consumer for backpressure
 PulsarSource<String> source = PulsarSource.builder()
     // ...

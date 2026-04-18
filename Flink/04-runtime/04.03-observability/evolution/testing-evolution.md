@@ -52,18 +52,23 @@ $$
 ### 5.1 DataStream测试
 
 ```java
-
-import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
-@Test
-public void testPipeline() throws Exception {
-    StreamExecutionEnvironment env =
-        StreamExecutionEnvironment.getExecutionEnvironment();
-    env.setParallelism(1);
+public class Example {
+    public static void main(String[] args) throws Exception {
 
-    DataStream<String> stream = env.fromElements("a", "b", "c");
-    // 测试逻辑
+        @Test
+        public void testPipeline() throws Exception {
+            StreamExecutionEnvironment env =
+                StreamExecutionEnvironment.getExecutionEnvironment();
+            env.setParallelism(1);
+
+            DataStream<String> stream = env.fromElements("a", "b", "c");
+            // 测试逻辑
+        }
+
+    }
 }
 ```
 
@@ -72,6 +77,7 @@ public void testPipeline() throws Exception {
 ### 6.1 MiniCluster测试
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 MiniCluster cluster = new MiniCluster(
     new MiniClusterConfiguration.Builder()
         .setNumTaskManagers(1)

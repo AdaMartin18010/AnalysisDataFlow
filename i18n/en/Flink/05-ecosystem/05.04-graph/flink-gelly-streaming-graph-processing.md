@@ -268,6 +268,7 @@ The algorithm needs to query the neighbor sets of $u$ and $v$ ($O(1)$ hash looku
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -312,6 +313,7 @@ communities
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -441,6 +443,7 @@ weightedDegrees
 ### 6.4 State Backend Configuration Optimization
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // RocksDB state backend configuration (large state scenarios)
 RocksDBStateBackend rocksDbBackend = new RocksDBStateBackend(
     "hdfs://namenode:8020/flink/checkpoints",

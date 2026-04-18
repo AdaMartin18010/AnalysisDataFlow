@@ -102,6 +102,7 @@ graph TB
 ### 6.1 Flink Video Stream Processing Job
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 DataStream<VideoFrame> videoStream = env
     .addSource(new RstpFrameSource("rtsp://camera-01/stream"))
     .assignTimestampsAndWatermarks(

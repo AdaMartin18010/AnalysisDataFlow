@@ -62,6 +62,7 @@ security.kerberos.login.keytab: /path/to/keytab
 ### 6.1 OAuth2集成
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 OAuth2Client client = new OAuth2Client()
     .withClientId("flink")
     .withClientSecret("secret");

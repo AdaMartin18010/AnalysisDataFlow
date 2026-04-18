@@ -249,6 +249,7 @@ Watermark 机制在以下边界条件下需要特别注意：
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 
 WatermarkStrategy<Event> strategy = WatermarkStrategy
@@ -396,6 +397,7 @@ Apache Flink 实现了异步屏障快照（Asynchronous Barrier Snapshotting，A
 ✅ 正确：
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // Java 代码示例
@@ -453,6 +455,7 @@ WatermarkStrategy<Event> strategy = WatermarkStrategy
 ❌ 不完整的示例：
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // 缺少 import 和上下文

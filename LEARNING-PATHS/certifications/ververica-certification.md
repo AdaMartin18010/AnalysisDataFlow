@@ -68,6 +68,7 @@
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.CheckpointingMode;
 
@@ -132,6 +133,7 @@ D. env.setCheckpointMode(CheckpointingMode.EXACTLY_ONCE);
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.CheckpointingMode;
 
 // Checkpoint 配置
@@ -152,6 +154,7 @@ env.getCheckpointConfig().enableUnalignedCheckpoints();
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.api.common.state.ValueState;
 import org.apache.flink.api.common.state.ValueStateDescriptor;
 import org.apache.flink.api.common.typeinfo.Types;
@@ -180,6 +183,7 @@ BroadcastStream<Rule> broadcastStream = ruleStream.broadcast(ruleStateDescriptor
 #### Watermark 策略
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 固定延迟 Watermark
 WatermarkStrategy.<Event>forBoundedOutOfOrderness(Duration.ofSeconds(5))
     .withTimestampAssigner((event, timestamp) -> event.getEventTime());

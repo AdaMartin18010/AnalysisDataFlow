@@ -36,23 +36,29 @@
 ### 1.2 代码示例
 
 ```java
-
 import org.apache.flink.streaming.api.datastream.DataStream;
 
-// Java: fromElements
-DataStream<Integer> numbers = env.fromElements(1, 2, 3, 4, 5);
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-// Java: fromCollection
-List<String> list = Arrays.asList("a", "b", "c");
-DataStream<String> stream = env.fromCollection(list);
+        // Java: fromElements
+        DataStream<Integer> numbers = env.fromElements(1, 2, 3, 4, 5);
 
-// Java: socketTextStream
-DataStream<String> socketStream = env
-    .socketTextStream("localhost", 9999);
+        // Java: fromCollection
+        List<String> list = Arrays.asList("a", "b", "c");
+        DataStream<String> stream = env.fromCollection(list);
 
-// Java: 文件读取
-DataStream<String> fileStream = env
-    .readTextFile("/path/to/file.txt");
+        // Java: socketTextStream
+        DataStream<String> socketStream = env
+            .socketTextStream("localhost", 9999);
+
+        // Java: 文件读取
+        DataStream<String> fileStream = env
+            .readTextFile("/path/to/file.txt");
+
+    }
+}
 ```
 
 ```scala
@@ -81,23 +87,32 @@ val socketStream = env.socketTextStream("localhost", 9999)
 ### 1.4 Kafka Source示例
 
 ```java
-
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.api.common.serialization.SimpleStringSchema;
+import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.streaming.api.datastream.DataStream;
 
-// Java: 新版KafkaSource (推荐)
-KafkaSource<String> source = KafkaSource.<String>builder()
-    .setBootstrapServers("kafka:9092")
-    .setTopics("input-topic")
-    .setGroupId("flink-group")
-    .setStartingOffsets(OffsetsInitializer.earliest())
-    .setValueOnlyDeserializer(new SimpleStringSchema())
-    .build();
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-DataStream<String> stream = env.fromSource(
-    source,
-    WatermarkStrategy.noWatermarks(),
-    "Kafka Source"
-);
+        // Java: 新版KafkaSource (推荐)
+        KafkaSource<String> source = KafkaSource.<String>builder()
+            .setBootstrapServers("kafka:9092")
+            .setTopics("input-topic")
+            .setGroupId("flink-group")
+            .setStartingOffsets(OffsetsInitializer.earliest())
+            .setValueOnlyDeserializer(new SimpleStringSchema())
+            .build();
+
+        DataStream<String> stream = env.fromSource(
+            source,
+            WatermarkStrategy.noWatermarks(),
+            "Kafka Source"
+        );
+
+    }
+}
 ```
 
 ```scala
@@ -126,18 +141,23 @@ val stream = env.fromSource(source, WatermarkStrategy.noWatermarks(), "Kafka Sou
 | `flatMap` | `FlatMapFunction<T,R>` | `DataStream<R>` | 继承 | 一对多展开 |
 
 ```java
-
 import org.apache.flink.streaming.api.datastream.DataStream;
 
-// Java示例
-DataStream<Integer> mapped = stream.map(x -> x * 2);
-DataStream<Integer> filtered = stream.filter(x -> x > 0);
-DataStream<String> flatMapped = stream.flatMap(
-    (Integer x, Collector<String> out) -> {
-        out.collect("val:" + x);
-        out.collect("square:" + x*x);
+public class Example {
+    public static void main(String[] args) throws Exception {
+
+        // Java示例
+        DataStream<Integer> mapped = stream.map(x -> x * 2);
+        DataStream<Integer> filtered = stream.filter(x -> x > 0);
+        DataStream<String> flatMapped = stream.flatMap(
+            (Integer x, Collector<String> out) -> {
+                out.collect("val:" + x);
+                out.collect("square:" + x*x);
+            }
+        );
+
     }
-);
+}
 ```
 
 ### 2.2 KeyedStream操作
@@ -150,22 +170,27 @@ DataStream<String> flatMapped = stream.flatMap(
 | `process` | `KeyedStream<T>` | `DataStream<R>` | 处理函数 | 1.2+ |
 
 ```java
-
 import org.apache.flink.streaming.api.datastream.DataStream;
 
-// Java: KeyedStream操作
-KeyedStream<Event, String> keyed = stream
-    .keyBy(event -> event.getUserId());
+public class Example {
+    public static void main(String[] args) throws Exception {
 
-// Reduce: 累加计数
-DataStream<CountResult> reduced = keyed.reduce(
-    (a, b) -> new CountResult(a.key, a.count + b.count)
-);
+        // Java: KeyedStream操作
+        KeyedStream<Event, String> keyed = stream
+            .keyBy(event -> event.getUserId());
 
-// Aggregate: 平均值计算
-DataStream<Double> aggregated = keyed.aggregate(
-    new AverageAggregate()
-);
+        // Reduce: 累加计数
+        DataStream<CountResult> reduced = keyed.reduce(
+            (a, b) -> new CountResult(a.key, a.count + b.count)
+        );
+
+        // Aggregate: 平均值计算
+        DataStream<Double> aggregated = keyed.aggregate(
+            new AverageAggregate()
+        );
+
+    }
+}
 ```
 
 ### 2.3 Window操作大全
@@ -178,32 +203,40 @@ DataStream<Double> aggregated = keyed.aggregate(
 | **全局窗口** | `GlobalWindows.create()` | 自定义触发器 | 自定义逻辑 |
 
 ```java
-
-import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.assigners.EventTimeSessionWindows;
+import org.apache.flink.streaming.api.windowing.assigners.SlidingEventTimeWindows;
+import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-// Java: Window操作示例
+public class Example {
+    public static void main(String[] args) throws Exception {
 
-// 滚动窗口 - 5分钟固定窗口
-DataStream<Result> tumbling = keyed
-    .window(TumblingEventTimeWindows.of(Time.minutes(5)))
-    .aggregate(new MyAggregateFunction());
+        // Java: Window操作示例
 
-// 滑动窗口 - 1小时窗口,10分钟滑动
-DataStream<Result> sliding = keyed
-    .window(SlidingEventTimeWindows.of(Time.hours(1), Time.minutes(10)))
-    .aggregate(new MyAggregateFunction());
+        // 滚动窗口 - 5分钟固定窗口
+        DataStream<Result> tumbling = keyed
+            .window(TumblingEventTimeWindows.of(Time.minutes(5)))
+            .aggregate(new MyAggregateFunction());
 
-// 会话窗口 - 30分钟无活动间隙
-DataStream<Result> session = keyed
-    .window(EventTimeSessionWindows.withGap(Time.minutes(30)))
-    .aggregate(new MyAggregateFunction());
+        // 滑动窗口 - 1小时窗口,10分钟滑动
+        DataStream<Result> sliding = keyed
+            .window(SlidingEventTimeWindows.of(Time.hours(1), Time.minutes(10)))
+            .aggregate(new MyAggregateFunction());
 
-// 增量聚合 + 全窗口函数
-DataStream<Result> combined = keyed
-    .window(TumblingEventTimeWindows.of(Time.minutes(5)))
-    .aggregate(new IncrementalAgg(), new WindowFunction());
+        // 会话窗口 - 30分钟无活动间隙
+        DataStream<Result> session = keyed
+            .window(EventTimeSessionWindows.withGap(Time.minutes(30)))
+            .aggregate(new MyAggregateFunction());
+
+        // 增量聚合 + 全窗口函数
+        DataStream<Result> combined = keyed
+            .window(TumblingEventTimeWindows.of(Time.minutes(5)))
+            .aggregate(new IncrementalAgg(), new WindowFunction());
+
+    }
+}
 ```
 
 ### 2.4 Window函数对比
@@ -225,6 +258,7 @@ DataStream<Result> combined = keyed
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -318,13 +352,18 @@ class CountWithTimeout extends KeyedProcessFunction<String, Event, Result> {
 | `sinkTo` | `stream.sinkTo(Sink)` | 新版Sink API | 1.15+ |
 
 ```java
-// Java: 基础Sink
-stream.print();                           // 输出到stdout
-stream.printToErr();                      // 输出到stderr
-stream.addSink(new MySinkFunction());     // 自定义Sink
+public class Example {
+    public static void main(String[] args) throws Exception {
+        // Java: 基础Sink
+        stream.print();                           // 输出到stdout
+        stream.printToErr();                      // 输出到stderr
+        stream.addSink(new MySinkFunction());     // 自定义Sink
 
-// 带前缀的print
-stream.print("DEBUG-OUTPUT");
+        // 带前缀的print
+        stream.print("DEBUG-OUTPUT");
+
+    }
+}
 ```
 
 ### 3.2 连接器Sink
@@ -342,54 +381,65 @@ stream.print("DEBUG-OUTPUT");
 ### 3.3 Sink示例代码
 
 ```java
-// Java: Kafka Sink (新版API - 推荐)
-KafkaSink<String> sink = KafkaSink.<String>builder()
-    .setBootstrapServers("kafka:9092")
-    .setRecordSerializer(KafkaRecordSerializationSchema.builder()
-        .setTopic("output-topic")
-        .setValueSerializationSchema(new SimpleStringSchema())
-        .build())
-    .setDeliveryGuarantee(DeliveryGuarantee.EXACTLY_ONCE)
-    .build();
+import java.time.Duration;
+import org.apache.flink.api.common.serialization.SimpleStringSchema;
+import org.apache.flink.connector.kafka.sink.DeliveryGuarantee;
+import org.apache.flink.connector.kafka.sink.KafkaRecordSerializationSchema;
+import org.apache.flink.connector.kafka.sink.KafkaSink;
 
-stream.sinkTo(sink);
+public class Example {
+    public static void main(String[] args) throws Exception {
+        // Java: Kafka Sink (新版API - 推荐)
+        KafkaSink<String> sink = KafkaSink.<String>builder()
+            .setBootstrapServers("kafka:9092")
+            .setRecordSerializer(KafkaRecordSerializationSchema.builder()
+                .setTopic("output-topic")
+                .setValueSerializationSchema(new SimpleStringSchema())
+                .build())
+            .setDeliveryGuarantee(DeliveryGuarantee.EXACTLY_ONCE)
+            .build();
 
-// Java: JDBC Sink
-String sql = "INSERT INTO events (id, data) VALUES (?, ?)";
-JdbcSink.sink(
-    sql,
-    (ps, event) -> {
-        ps.setLong(1, event.getId());
-        ps.setString(2, event.getData());
-    },
-    JdbcExecutionOptions.builder()
-        .withBatchSize(100)
-        .withBatchIntervalMs(200)
-        .build(),
-    new JdbcConnectionOptions.JdbcConnectionOptionsBuilder()
-        .withUrl("jdbc:mysql://localhost:3306/db")
-        .withDriverName("com.mysql.cj.jdbc.Driver")
-        .withUsername("user")
-        .withPassword("pass")
-        .build()
-);
+        stream.sinkTo(sink);
 
-// Java: File Sink (Exactly-Once)
-FileSink<String> fileSink = FileSink
-    .forRowFormat(
-        new Path("/output/path"),
-        new SimpleStringEncoder<String>("UTF-8")
-    )
-    .withRollingPolicy(
-        DefaultRollingPolicy.builder()
-            .withRolloverInterval(Duration.ofMinutes(15))
-            .withInactivityInterval(Duration.ofMinutes(5))
-            .withMaxPartSize(MemorySize.ofMebiBytes(128))
-            .build()
-    )
-    .build();
+        // Java: JDBC Sink
+        String sql = "INSERT INTO events (id, data) VALUES (?, ?)";
+        JdbcSink.sink(
+            sql,
+            (ps, event) -> {
+                ps.setLong(1, event.getId());
+                ps.setString(2, event.getData());
+            },
+            JdbcExecutionOptions.builder()
+                .withBatchSize(100)
+                .withBatchIntervalMs(200)
+                .build(),
+            new JdbcConnectionOptions.JdbcConnectionOptionsBuilder()
+                .withUrl("jdbc:mysql://localhost:3306/db")
+                .withDriverName("com.mysql.cj.jdbc.Driver")
+                .withUsername("user")
+                .withPassword("pass")
+                .build()
+        );
 
-stream.sinkTo(fileSink);
+        // Java: File Sink (Exactly-Once)
+        FileSink<String> fileSink = FileSink
+            .forRowFormat(
+                new Path("/output/path"),
+                new SimpleStringEncoder<String>("UTF-8")
+            )
+            .withRollingPolicy(
+                DefaultRollingPolicy.builder()
+                    .withRolloverInterval(Duration.ofMinutes(15))
+                    .withInactivityInterval(Duration.ofMinutes(5))
+                    .withMaxPartSize(MemorySize.ofMebiBytes(128))
+                    .build()
+            )
+            .build();
+
+        stream.sinkTo(fileSink);
+
+    }
+}
 ```
 
 ---
@@ -405,19 +455,26 @@ stream.sinkTo(fileSink);
 | **Ingestion Time** | `env.setStreamTimeCharacteristic(TimeCharacteristic.IngestionTime)` | 无需Watermark | 1.0+ |
 
 ```java
-
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.time.Time;
 
-// Java: 时间语义配置 (Flink 1.12+ 默认Event Time)
-StreamExecutionEnvironment env =
-    StreamExecutionEnvironment.getExecutionEnvironment();
+public class Example {
+    public static void main(String[] args) throws Exception {
 
-// 显式设置Event Time (Flink 1.12前需要)
-// 使用WatermarkStrategy替代已弃用的setStreamTimeCharacteristic
-env.getConfig().setAutoWatermarkInterval(200);
-// Flink 1.12+ 推荐方式
-// 使用WatermarkStrategy替代已弃用的setStreamTimeCharacteristic
-env.getConfig().setAutoWatermarkInterval(200);
+        // Java: 时间语义配置 (Flink 1.12+ 默认Event Time)
+        StreamExecutionEnvironment env =
+            StreamExecutionEnvironment.getExecutionEnvironment();
+
+        // 显式设置Event Time (Flink 1.12前需要)
+        // 使用WatermarkStrategy替代已弃用的setStreamTimeCharacteristic
+        env.getConfig().setAutoWatermarkInterval(200);
+        // Flink 1.12+ 推荐方式
+        // 使用WatermarkStrategy替代已弃用的setStreamTimeCharacteristic
+        env.getConfig().setAutoWatermarkInterval(200);
+
+    }
+}
 ```
 
 ### 4.2 Watermark生成策略
@@ -431,6 +488,7 @@ env.getConfig().setAutoWatermarkInterval(200);
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // Java: Watermark策略
@@ -481,6 +539,7 @@ DataStream<Event> withTimestamps = stream
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 // Java: 窗口分配器示例
@@ -513,6 +572,7 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 // Java: 触发器与延迟处理
@@ -630,27 +690,34 @@ public class StatefulFunction extends KeyedProcessFunction<String, Event, Result
 | `cleanupInRocksdbCompactFilter` | RocksDB清理 | - | 大状态 |
 
 ```java
-
+import org.apache.flink.api.common.state.StateTtlConfig;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-// Java: 状态TTL配置
-StateTtlConfig ttlConfig = StateTtlConfig
-    .newBuilder(Time.hours(24))                       // 24小时TTL
-    .setUpdateType(StateTtlConfig.UpdateType.OnCreateAndWrite)
-    .setStateVisibility(StateTtlConfig.StateVisibility.NeverReturnExpired)
-    .cleanupIncrementally(10, true)                   // 增量清理
-    // .cleanupInRocksdbCompactFilter(1000)           // RocksDB专用
-    .build();
+public class Example {
+    public static void main(String[] args) throws Exception {
 
-ValueStateDescriptor<MyState> descriptor =
-    new ValueStateDescriptor<>("myState", MyState.class);
-descriptor.enableTimeToLive(ttlConfig);
+        // Java: 状态TTL配置
+        StateTtlConfig ttlConfig = StateTtlConfig
+            .newBuilder(Time.hours(24))                       // 24小时TTL
+            .setUpdateType(StateTtlConfig.UpdateType.OnCreateAndWrite)
+            .setStateVisibility(StateTtlConfig.StateVisibility.NeverReturnExpired)
+            .cleanupIncrementally(10, true)                   // 增量清理
+            // .cleanupInRocksdbCompactFilter(1000)           // RocksDB专用
+            .build();
+
+        ValueStateDescriptor<MyState> descriptor =
+            new ValueStateDescriptor<>("myState", MyState.class);
+        descriptor.enableTimeToLive(ttlConfig);
+
+    }
+}
 ```
 
 ### 5.4 广播状态 (Broadcast State)
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.api.common.typeinfo.Types;
 
@@ -723,38 +790,45 @@ DataStream<Alert> alerts = eventStream
 | **SerializationException** | 序列化失败 | 检查Kryo/Avro配置 |
 
 ```java
-
+import org.apache.flink.contrib.streaming.state.EmbeddedRocksDBStateBackend;
 import org.apache.flink.streaming.api.CheckpointingMode;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-// Java: 异常处理配置
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-// Checkpoint配置
-env.enableCheckpointing(60000);
-env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);
-env.getCheckpointConfig().setCheckpointTimeout(600000);
-env.getCheckpointConfig().setMaxConcurrentCheckpoints(1);
-env.getCheckpointConfig().setMinPauseBetweenCheckpoints(30000);
+        // Java: 异常处理配置
 
-// 重启策略 - 固定延迟
-env.setRestartStrategy(RestartStrategies.fixedDelayRestart(
-    3,                    // 最大重启次数
-    Time.of(10, TimeUnit.SECONDS)  // 延迟
-));
+        // Checkpoint配置
+        env.enableCheckpointing(60000);
+        env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);
+        env.getCheckpointConfig().setCheckpointTimeout(600000);
+        env.getCheckpointConfig().setMaxConcurrentCheckpoints(1);
+        env.getCheckpointConfig().setMinPauseBetweenCheckpoints(30000);
 
-// 重启策略 - 指数退避
-env.setRestartStrategy(RestartStrategies.exponentialDelayRestart(
-    Time.milliseconds(100),   // 初始延迟
-    Time.milliseconds(1000),  // 最大延迟
-    1.5,                      // 指数倍数
-    Time.milliseconds(2000),  // 重置延迟
-    0.1                       // 抖动因子
-));
+        // 重启策略 - 固定延迟
+        env.setRestartStrategy(RestartStrategies.fixedDelayRestart(
+            3,                    // 最大重启次数
+            Time.of(10, TimeUnit.SECONDS)  // 延迟
+        ));
 
-// 状态后端配置 (Flink 1.13+)
-EmbeddedRocksDBStateBackend rocksDbBackend = new EmbeddedRocksDBStateBackend(true);
-env.setStateBackend(rocksDbBackend);
-env.getCheckpointConfig().setCheckpointStorage("file:///checkpoint/dir");
+        // 重启策略 - 指数退避
+        env.setRestartStrategy(RestartStrategies.exponentialDelayRestart(
+            Time.milliseconds(100),   // 初始延迟
+            Time.milliseconds(1000),  // 最大延迟
+            1.5,                      // 指数倍数
+            Time.milliseconds(2000),  // 重置延迟
+            0.1                       // 抖动因子
+        ));
+
+        // 状态后端配置 (Flink 1.13+)
+        EmbeddedRocksDBStateBackend rocksDbBackend = new EmbeddedRocksDBStateBackend(true);
+        env.setStateBackend(rocksDbBackend);
+        env.getCheckpointConfig().setCheckpointStorage("file:///checkpoint/dir");
+
+    }
+}
 ```
 
 ### 6.4 版本兼容性矩阵

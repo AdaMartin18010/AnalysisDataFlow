@@ -451,6 +451,7 @@ $$
 **场景**：微服务集群中同时存在 JSON 格式应用日志、Nginx 访问日志和 Syslog 系统日志 [^10]。
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 伪代码示意,非完整可编译代码
 
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -595,6 +596,7 @@ class TraceAnalysisFunction extends ProcessWindowFunction<
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 

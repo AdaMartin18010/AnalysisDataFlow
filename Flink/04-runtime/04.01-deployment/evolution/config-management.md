@@ -46,10 +46,16 @@ $$
 ### 5.1 动态配置
 
 ```java
-ConfigManager cm = ConfigManager.getInstance();
-cm.addListener("parallelism", newValue -> {
-    env.setParallelism(Integer.parseInt(newValue));
-});
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        ConfigManager cm = ConfigManager.getInstance();
+        cm.addListener("parallelism", newValue -> {
+            env.setParallelism(Integer.parseInt(newValue));
+        });
+
+    }
+}
 ```
 
 ## 6. 实例验证 (Examples)

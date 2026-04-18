@@ -565,6 +565,7 @@ public class DynamicWindowAssigner extends WindowAssigner<Object, TimeWindow> {
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // 使用 Side Output 处理迟到数据,并触发窗口重计算

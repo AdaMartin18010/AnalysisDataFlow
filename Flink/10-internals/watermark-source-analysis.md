@@ -466,6 +466,7 @@ public interface WatermarkAligner {
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 
 // 源码位置: flink-streaming-java/src/main/java/org/apache/flink/streaming/api/watermark/WatermarkStrategy.java
@@ -510,6 +511,7 @@ private static final long WATERMARK_INTERVAL = 200L; // 毫秒
 **证明**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 简化后的核心对齐逻辑
 private void findAndOutputNewMinWatermarkAcrossAlignedChannels() throws Exception {
     long newMinWatermark = Long.MAX_VALUE;
@@ -697,6 +699,7 @@ public class SourceOperator<OUT, SplitT extends SourceSplit>
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -930,6 +933,7 @@ public class WatermarkStrategyWithAlignment<T> implements WatermarkStrategy<T> {
 **EventTimeTrigger 详细流程**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 窗口分配时注册触发器
 public TriggerResult onElement(T element, long timestamp, TimeWindow window, TriggerContext ctx) {
     if (window.maxTimestamp() <= ctx.getCurrentWatermark()) {
@@ -1147,6 +1151,7 @@ public class WindowOperator<K, IN, ACC, OUT, W extends Window> extends ... {
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // 适用于 Kafka 单分区、有序日志等场景
@@ -1163,6 +1168,7 @@ DataStream<Event> stream = env
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // 适用于网络传输导致的乱序场景
@@ -1286,6 +1292,7 @@ public class PunctuatedWatermarkGenerator<T extends MarkedEvent> implements Wate
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 
@@ -1309,6 +1316,7 @@ DataStream<MyEvent> unionStream = source1.union(source2);
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -1343,6 +1351,7 @@ orders
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -1421,6 +1430,7 @@ stream
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 
 // 多并发 Source 实例的 Watermark 对齐
@@ -2077,6 +2087,7 @@ public class RecordWriter<T> {
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 // flink-streaming-java/src/main/java/org/apache/flink/streaming/api/environment/StreamExecutionEnvironment.java
@@ -2165,6 +2176,7 @@ if (watermarkInterval > 0) {
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 // 1. 增大乱序延迟
@@ -2188,6 +2200,7 @@ WatermarkStrategy.forBoundedOutOfOrderness(Duration.ofMinutes(5))
 **启用 Watermark 日志**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // log4j.properties
 log4j.logger.org.apache.flink.streaming.runtime.io.StatusWatermarkValve=DEBUG
 log4j.logger.org.apache.flink.streaming.api.watermark=DEBUG

@@ -657,6 +657,7 @@ $$
 **配置建议**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // RocksDB配置优化
 RocksDBStateBackend rocksDbBackend = new RocksDBStateBackend(
     "hdfs://checkpoint/grid-realtime",

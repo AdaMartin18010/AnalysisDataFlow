@@ -809,6 +809,7 @@ public class TransactionAggregateFunction
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 private static void configureStateBackend(StreamExecutionEnvironment env) {
@@ -851,6 +852,7 @@ private static void configureStateBackend(StreamExecutionEnvironment env) {
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.CheckpointingMode;
 
@@ -1054,6 +1056,7 @@ public class MetricsReporter {
 在项目早期识别到 1% 用户产生 30% 流量的问题，通过自定义分区策略解决：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 热点用户打散策略
 public int getPartition(String userId) {
     if (isHotUser(userId)) {
@@ -1087,6 +1090,7 @@ public int getPartition(String userId) {
 - **解决**：使用 `WatermarkStrategy.withIdleness()` 标记空闲分区
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 WatermarkStrategy
     .<Transaction>forBoundedOutOfOrderness(Duration.ofSeconds(10))
     .withIdleness(Duration.ofMinutes(1))  // 1分钟无数据视为空闲
@@ -1111,6 +1115,7 @@ WatermarkStrategy
 所有算子必须设置 UID，便于作业升级和 Savepoint 兼容：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 .map(new ParseFunction())
 .setParallelism(48)
 .uid("parse-json-v1")  // 包含版本号
@@ -1121,6 +1126,7 @@ WatermarkStrategy
 用户画像状态设置 TTL 避免无限增长：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 StateTtlConfig ttlConfig = StateTtlConfig
     .newBuilder(Time.days(7))  // 7天过期
     .setUpdateType(OnCreateAndWrite)
@@ -1134,6 +1140,7 @@ StateTtlConfig ttlConfig = StateTtlConfig
 实现 `CheckpointedFunction` 确保状态一致性：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 @Override
 public void snapshotState(FunctionSnapshotContext context) throws Exception {
     // 刷出缓冲区数据

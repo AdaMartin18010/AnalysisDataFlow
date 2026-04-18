@@ -67,6 +67,7 @@ graph LR
 **Kafka Streams**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 StreamsBuilder builder = new StreamsBuilder();
 KStream<String, String> stream = builder.stream("input-topic");
 ```
@@ -75,6 +76,7 @@ KStream<String, String> stream = builder.stream("input-topic");
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.datastream.DataStream;
 
@@ -100,6 +102,7 @@ DataStream<String> stream = env.fromSource(
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.table.api.TableEnvironment;
 
 StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
@@ -124,6 +127,7 @@ tableEnv.executeSql("""
 **Kafka Streams**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 KStream<String, Integer> transformed = stream
     .filter((key, value) -> value != null)
     .mapValues(value -> value.length())
@@ -135,6 +139,7 @@ KStream<String, Integer> transformed = stream
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 DataStream<Tuple2<String, Integer>> transformed = stream
@@ -147,6 +152,7 @@ DataStream<Tuple2<String, Integer>> transformed = stream
 **Flink Table API**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 Table transformed = tableEnv.from("input_table")
     .where($("value").isNotNull())
     .select(
@@ -163,6 +169,7 @@ Table transformed = tableEnv.from("input_table")
 **Kafka Streams**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 KTable<String, Long> counts = stream
     .groupByKey()
     .count(Materialized.as("counts-store"));
@@ -172,6 +179,7 @@ KTable<String, Long> counts = stream
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.api.common.state.ValueState;
 import org.apache.flink.api.common.state.ValueStateDescriptor;
@@ -212,6 +220,7 @@ DataStream<Tuple2<String, Long>> keyedCounts = stream
 **Kafka Streams**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 KStream<String, String> joined = stream1.join(
     stream2,
     (v1, v2) -> v1 + "-" + v2,
@@ -224,6 +233,7 @@ KStream<String, String> joined = stream1.join(
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -238,6 +248,7 @@ DataStream<String> joined = stream1
 **Flink Table API**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 Table joined = table1
     .join(table2)
     .where($("key").isEqual($("key")))
@@ -328,12 +339,14 @@ public class UserStatsState {
 **Kafka Streams**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 properties.put(StreamsConfig.NUM_STREAM_THREADS_CONFIG, 4);
 ```
 
 **Flink**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 env.setParallelism(4);
 
 // Or per-operator
@@ -345,6 +358,7 @@ stream.map(...).setParallelism(2);
 **Kafka Streams**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 properties.put(StreamsConfig.PROCESSING_GUARANTEE_CONFIG,
     StreamsConfig.EXACTLY_ONCE_V2);
 properties.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 100);
@@ -354,6 +368,7 @@ properties.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 100);
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.CheckpointingMode;
 
 env.enableCheckpointing(100);  // 100ms
@@ -375,6 +390,7 @@ env.getCheckpointConfig().enableExternalizedCheckpoints(
 **Kafka Streams Test**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 @Test
 public void testTopology() {
     TopologyTestDriver testDriver = new TopologyTestDriver(topology, props);
@@ -394,6 +410,7 @@ public void testTopology() {
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.api.common.typeinfo.Types;
@@ -420,6 +437,7 @@ public void testPipeline() throws Exception {
 **Dual Run Validation**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 @Test
 public void testMigrationParity() {
     // Run both implementations

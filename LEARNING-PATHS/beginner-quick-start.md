@@ -124,6 +124,7 @@ curl http://localhost:8081
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.api.common.state.ValueState;
 import org.apache.flink.api.common.state.ValueStateDescriptor;
 import org.apache.flink.streaming.api.CheckpointingMode;
@@ -226,6 +227,7 @@ public class QuickStartPipeline {
 ### 监控快速配置
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 开启指标报告
 env.getConfig().setAutoWatermarkInterval(200);
 
@@ -263,6 +265,7 @@ public void open(Configuration parameters) {
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.api.common.state.ValueState;
 import org.apache.flink.api.common.state.ValueStateDescriptor;

@@ -51,6 +51,7 @@ $$
 ### 5.1 Feature Retrieval
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 FeatureVector fv = featureStore.getOnlineFeatures(entityId, features);
 ```
 
@@ -59,6 +60,7 @@ FeatureVector fv = featureStore.getOnlineFeatures(entityId, features);
 ### 6.1 Streaming Features
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 stream.map(event -> {
     return enrich(event, featureStore);
 });

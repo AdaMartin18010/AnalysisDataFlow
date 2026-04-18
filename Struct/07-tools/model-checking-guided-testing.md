@@ -211,6 +211,7 @@ Action : CompleteCheckpoint
 Mocket 生成对应的并发测试：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 @Test
 public void testCheckpointCompletionRace() {
     // 触发 checkpoint,向 t1, t2 发送 barrier

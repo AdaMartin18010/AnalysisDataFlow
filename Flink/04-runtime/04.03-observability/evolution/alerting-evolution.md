@@ -63,6 +63,7 @@ alerts:
 ### 6.1 自定义告警
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 AlertManager.register(new AlertRule()
     .when(metrics -> metrics.getLatency() > 1000)
     .then(alert -> notifySlack(alert)));

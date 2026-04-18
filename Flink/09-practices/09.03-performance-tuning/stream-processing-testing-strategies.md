@@ -195,6 +195,7 @@ Flink 提供 `OneInputStreamOperatorTestHarness` 用于测试单输入算子：
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 // 1. 创建测试环境
@@ -233,6 +234,7 @@ testHarness.close();
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.api.common.typeinfo.Types;
 
 @Test
@@ -266,6 +268,7 @@ public void testStatefulOperator() throws Exception {
 #### 5.1.3 Mock 与 Stub 使用
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 使用 Mockito 模拟外部服务
 @Mock
 private ExternalServiceClient mockClient;
@@ -304,6 +307,7 @@ public void testEnrichmentOperatorWithMock() throws Exception {
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.datastream.DataStream;
 
@@ -356,6 +360,7 @@ public void testKafkaSourceIntegration() throws Exception {
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 @Test
@@ -399,6 +404,7 @@ public void testRocksDBStateBackend() throws Exception {
 #### 5.2.3 检查点恢复测试
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 @Test
 public void testCheckpointRecovery() throws Exception {
     // 创建 MiniCluster
@@ -452,6 +458,7 @@ $$Completeness_{E2E} = \bigwedge_{i=1}^{4} Property_i$$
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 @Test
@@ -547,6 +554,7 @@ public class DataCorrectnessValidator {
 #### 5.3.3 故障注入测试
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 @Test
 public void testFailureRecovery() throws Exception {
     MiniCluster miniCluster = createMiniCluster();

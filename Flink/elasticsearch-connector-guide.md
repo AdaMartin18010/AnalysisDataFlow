@@ -246,6 +246,7 @@ Checkpoint Complete
 ### 6.2 DataStream API 示例
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.connector.elasticsearch.sink.Elasticsearch7SinkBuilder;
 import org.apache.flink.connector.elasticsearch.sink.ElasticsearchEmitter;
 import org.apache.http.HttpHost;
@@ -323,6 +324,7 @@ FROM kafka_source;
 ### 6.4 配置模板
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 高级配置示例
 ElasticsearchSink<Event> esSink = new Elasticsearch7SinkBuilder<Event>()
     // 批量配置

@@ -72,6 +72,7 @@ public class JobMaster extends FencedRpcEndpoint<JobMasterId>
 #### 2.1.1 startJobExecution() - 启动作业执行
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 private void startJobExecution() {
     // 1. 验证作业状态
     validateRunsInMainThread();
@@ -99,6 +100,7 @@ private void startJobExecution() {
 #### 2.1.2 notifyAllocationFailure() - 资源分配失败处理
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 @Override
 public void notifyAllocationFailure(
         AllocationID allocationID,
@@ -179,6 +181,7 @@ public abstract class ResourceManager<WorkerType extends ResourceIDRetrievable>
 #### 2.2.1 requestSlot() - Slot 资源申请
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 @Override
 public CompletableFuture<Acknowledge> requestSlot(
         JobMasterId jobMasterId,
@@ -216,6 +219,7 @@ public CompletableFuture<Acknowledge> requestSlot(
 #### 2.2.2 requestNewWorker() - 动态资源申请
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 protected abstract CompletableFuture<WorkerType> requestNewWorker(
     ResourceProfile resourceProfile);
 
@@ -309,6 +313,7 @@ public abstract class Dispatcher extends FencedRpcEndpoint<DispatcherId>
 #### 2.3.1 submitJob() - 作业提交流程
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 @Override
 public CompletableFuture<Acknowledge> submitJob(
         JobGraph jobGraph,
@@ -348,6 +353,7 @@ public CompletableFuture<Acknowledge> submitJob(
 #### 2.3.2 onJobManagerRunnerComplete() - 作业完成处理
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 private void onJobManagerRunnerComplete(
         JobID jobId,
         JobManagerRunnerResult result) {
@@ -526,6 +532,7 @@ JobMaster.requestNewSlot()
 **算法目标**: 将逻辑 JobGraph 转换为可分布式执行的 ExecutionGraph
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 public ExecutionGraph buildExecutionGraph(JobGraph jobGraph) {
     // 1. 创建执行图结构
     ExecutionGraph executionGraph = new ExecutionGraph(
@@ -716,6 +723,7 @@ public class PipelinedRegionScheduler implements SchedulerNG {
 **关键类变化**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 1.10 及之前
 class JobManager {
     void scheduleTask();  // 内嵌调度逻辑

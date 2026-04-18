@@ -417,6 +417,7 @@ spec:
 ### 6.3 Performance Optimization Configuration Example
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Flink 2.1 performance optimization
 Configuration config = new Configuration();
 

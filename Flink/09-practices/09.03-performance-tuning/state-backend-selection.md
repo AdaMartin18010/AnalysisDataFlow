@@ -336,6 +336,7 @@ $$
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -361,6 +362,7 @@ StateTtlConfig ttlConfig = StateTtlConfig
 ### 示例 6.2: RocksDBStateBackend 生产配置
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 创建 EmbeddedRocksDBStateBackend(启用增量 Checkpoint)
 EmbeddedRocksDBStateBackend backend =
     new EmbeddedRocksDBStateBackend(true);
@@ -382,6 +384,7 @@ optionsFactory.setRocksDBOptions(
 ### 示例 6.3: 增量检查点配置与监控
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 启用增量检查点
 EmbeddedRocksDBStateBackend backend =
     new EmbeddedRocksDBStateBackend(true);
@@ -421,6 +424,7 @@ env.getCheckpointConfig().setCheckpointTimeout(600000);
 **错误配置**：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 conf.setString("taskmanager.memory.managed.size", "64mb");  // 过小！
 ```
 
@@ -429,6 +433,7 @@ conf.setString("taskmanager.memory.managed.size", "64mb");  // 过小！
 **正确做法**：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 conf.setString("taskmanager.memory.managed.fraction", "0.4");
 // 或
 optionsFactory.setRocksDBOptions(

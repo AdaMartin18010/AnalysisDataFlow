@@ -299,6 +299,7 @@ WHERE region = 'us-west';
 在 Flink 的 RocksDB State Backend 中，可以配置状态读取的"近实时"模式：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 概念性配置：允许读取上一次 Checkpoint 的状态快照
 StateBackendConfig config = new RocksDBStateBackendConfig();
 config.setStateReadMode(StateReadMode.BOUNDED_STALENESS);

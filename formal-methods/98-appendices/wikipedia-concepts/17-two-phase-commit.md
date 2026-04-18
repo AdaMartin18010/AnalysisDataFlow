@@ -526,6 +526,7 @@ data Decision3PC = Commit | Abort | TimeoutCommit
 ### 9.2 事务处理中间件
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // JTA (Java Transaction API) 2PC示例
 UserTransaction ut = getUserTransaction();
 try {

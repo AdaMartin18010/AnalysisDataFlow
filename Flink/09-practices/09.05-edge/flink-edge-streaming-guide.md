@@ -298,6 +298,7 @@ $$
 将多个轻量级算子合并为单个算子，减少序列化开销：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 优化前:多个独立算子
 dataStream
     .map(parseJson)
@@ -316,6 +317,7 @@ dataStream
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 // 优化前:全量窗口计算

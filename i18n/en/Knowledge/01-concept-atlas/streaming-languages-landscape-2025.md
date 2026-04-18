@@ -344,6 +344,7 @@ The advent of ZGC and Shenandoah brings Java into the sub-millisecond GC pause e
 Java 21 officially introduced virtual threads, fundamentally changing Java's concurrency model:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Traditional thread pool approach
 ExecutorService executor = Executors.newFixedThreadPool(100);
 

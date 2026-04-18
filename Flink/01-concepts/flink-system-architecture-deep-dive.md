@@ -388,6 +388,7 @@ Akka的学习曲线较陡，调试困难（异步消息栈追踪复杂）。Flin
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 // StreamExecutionEnvironment.execute() 入口
@@ -409,6 +410,7 @@ public JobExecutionResult execute(String jobName) throws Exception {
 **阶段2: Dispatcher处理 (JobManager)**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Dispatcher.receiveAndHandle() 处理提交请求
 private void handleSubmitJob(SubmitJob submitJob) {
     JobGraph jobGraph = submitJob.getJobGraph();
@@ -432,6 +434,7 @@ private void handleSubmitJob(SubmitJob submitJob) {
 **阶段3: JobMaster初始化**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // JobMaster构造与启动
 public void start() throws Exception {
     // 1. 创建ExecutionGraph
@@ -457,6 +460,7 @@ public void startScheduling() {
 **阶段4: Task部署**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // SlotPool申请到资源后,触发Task部署
 private void deployTask(ExecutionVertex vertex, LogicalSlot slot) {
     // 1. 构建DeploymentDescriptor
@@ -477,6 +481,7 @@ private void deployTask(ExecutionVertex vertex, LogicalSlot slot) {
 **阶段5: TaskManager执行**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // TaskManager接收Task并执行
 public void submitTask(TaskDeploymentDescriptor tdd) {
     // 1. 反序列化任务信息
@@ -567,6 +572,7 @@ where:
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -681,6 +687,7 @@ JobManager (Checkpoint Coordinator)
 **源码关键点**：`CheckpointCoordinator.java`
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 触发检查点
 public void triggerCheckpoint(long timestamp) {
     PendingCheckpoint checkpoint = new PendingCheckpoint(
@@ -1221,6 +1228,7 @@ graph TB
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 

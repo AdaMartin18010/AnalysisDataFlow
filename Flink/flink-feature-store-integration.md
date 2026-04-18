@@ -382,6 +382,7 @@ public class KafkaFeatureStoreSink {
 对于需要同时支持离线训练和在线 Serving 的场景，Flink 可将特征写入 Apache Paimon（或 Iceberg）：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Flink SQL 方式写入 Paimon
 String createTable = "CREATE TABLE user_features (" +
     "  user_id STRING," +

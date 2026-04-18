@@ -284,6 +284,7 @@ RocksDB典型值：TB级
 **反模式1: 无界状态增长**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.api.common.state.ListState;
 
 // ❌ 错误:无限增长的历史记录
@@ -301,6 +302,7 @@ class GoodAgent {
 **反模式2: 同步LLM调用**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // ❌ 错误:阻塞等待LLM响应
 String response = llmClient.completeSync(prompt);  // 阻塞！
 
@@ -312,6 +314,7 @@ future.thenApply(response -> process(response));
 **反模式3: 忽略Backpressure**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // ❌ 错误:无限速生成请求
 while (true) {
     generateLLMRequest();  // 可能压垮服务！
@@ -569,6 +572,7 @@ WITH RULES (
 ### 6.4 A2A多Agent协作
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Agent A: 销售分析Agent
 Agent salesAgent = Agent.builder()
     .name("sales-agent")

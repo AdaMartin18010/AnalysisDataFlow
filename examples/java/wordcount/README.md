@@ -100,6 +100,7 @@ WordCount程序已启动
 修改 `WordCount.java` 中的 `Tokenizer` 类来自定义分词逻辑：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 示例：只统计长度大于3的单词
 if (word.length() > 3) {
     out.collect(new Tuple2<>(word, 1));

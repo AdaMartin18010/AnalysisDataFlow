@@ -2137,6 +2137,7 @@ wasm:
 **性能调优示例**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 最优配置示例
 WasmFunctionConfig optimalConfig = WasmFunctionConfig.builder()
     // 使用 AOT 编译

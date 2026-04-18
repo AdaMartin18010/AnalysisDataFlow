@@ -8591,6 +8591,7 @@ COUNTER = increment -> COUNTER
 **Dataflow表示**：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Def-D-01: Dataflow算子定义
 dataStream
   .keyBy("counterId")
@@ -10784,6 +10785,7 @@ Dataflow的所有概念都在USTM中有对应。
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -10826,6 +10828,7 @@ Time Model:
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 stream
@@ -12616,6 +12619,7 @@ graph TB
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.api.common.functions.AggregateFunction;
 
@@ -12941,6 +12945,7 @@ $$
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 env.socketTextStream("localhost", 9999)
@@ -15474,6 +15479,7 @@ $$
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.CheckpointingMode;
 
 // At-Least-Once
@@ -15489,6 +15495,7 @@ env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);
 **示例2: Kafka Streams 的一致性**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 生产者配置
 properties.put(ProducerConfig.ACKS_CONFIG, "all");  // 强一致性
 properties.put(ProducerConfig.RETRIES_CONFIG, 3);    // At-Least-Once
@@ -17391,6 +17398,7 @@ $$
 **示例1: Flink Kafka Exactly-Once**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Source: Kafka Consumer with offset commit
 FlinkKafkaConsumer<String> source = new FlinkKafkaConsumer<>(
     "topic",
@@ -17411,6 +17419,7 @@ FlinkKafkaProducer<String> sink = new FlinkKafkaProducer<>(
 **示例2: 幂等数据库写入**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 使用主键去重实现幂等性
 INSERT INTO results (id, value)
 VALUES (?, ?)
@@ -20727,6 +20736,7 @@ SIMPLE_PIPELINE =
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 stream
@@ -20753,6 +20763,7 @@ WINDOW_AGGREGATION =
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 stream1.join(stream2)
@@ -20786,6 +20797,7 @@ JOIN_STATE(ch1, ch2, ch_out, buffer1, buffer2, key_func, size, watermark) =
 **场景**: 需要存储所有历史事件的算子。
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 stream.process(new ProcessFunction() {
     ListState<Event> allEvents;
 

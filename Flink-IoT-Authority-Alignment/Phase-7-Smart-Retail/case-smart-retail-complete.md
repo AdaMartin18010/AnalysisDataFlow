@@ -6122,6 +6122,7 @@ AI摄像头系统采用端到端的深度学习方案，实现商品识别和顾
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 // Flink状态配置示例

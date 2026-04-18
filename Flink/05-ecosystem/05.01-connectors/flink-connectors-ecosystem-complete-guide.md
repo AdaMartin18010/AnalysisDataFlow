@@ -152,6 +152,7 @@ FlinkConnector = ⟨Type, Interface, Semantics, Config, Compatibility⟩
 **形式化契约**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 interface Source<T, SplitT extends SourceSplit, EnumChkT>
     extends SourceReaderFactory<T, SplitT> {
 
@@ -188,6 +189,7 @@ interface Source<T, SplitT extends SourceSplit, EnumChkT>
 **形式化契约**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 interface Sink<InputT> {
     // 创建 SinkWriter,负责实际写入
     SinkWriter<InputT> createWriter(InitContext context);
@@ -800,6 +802,7 @@ Flink 连接器性能调优的核心是平衡吞吐和延迟:
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // Kafka Source (Flink 1.14+ 新 API)
@@ -823,6 +826,7 @@ DataStream<String> stream = env.fromSource(
 **Sink 配置**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Kafka Sink with Exactly-Once
 KafkaSink<String> sink = KafkaSink.<String>builder()
     .setBootstrapServers("kafka-1:9092,kafka-2:9092")
@@ -869,6 +873,7 @@ stream.sinkTo(sink);
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // Pulsar Source
@@ -893,6 +898,7 @@ DataStream<String> stream = env.fromSource(
 **Sink 配置**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Pulsar Sink
 PulsarSink<String> sink = PulsarSink.builder()
     .setServiceUrl("pulsar://pulsar-broker:6650")
@@ -924,6 +930,7 @@ stream.sinkTo(sink);
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // RabbitMQ Connection Config
@@ -973,6 +980,7 @@ stream.addSink(sink);
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // Kinesis Source
@@ -998,6 +1006,7 @@ DataStream<String> stream = env.fromSource(
 **Sink 配置**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Kinesis Sink
 Properties producerConfig = new Properties();
 producerConfig.put(AWSConfigConstants.AWS_REGION, "us-east-1");
@@ -1036,6 +1045,7 @@ stream.sinkTo(sink);
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // Pub/Sub Source
@@ -1079,6 +1089,7 @@ stream.addSink(sink);
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // MQTT Source
@@ -1131,6 +1142,7 @@ stream.sinkTo(sink);
 **文件系统配置示例**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 创建 FileSystem 实例
 FileSystem fs = FileSystem.get(new URI("s3://my-bucket/data"));
 
@@ -1152,6 +1164,7 @@ FileSystem.initialize(conf, null);
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // Parquet Source
@@ -1170,6 +1183,7 @@ DataStream<Row> stream = env.fromSource(
 **Avro 文件读取**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Avro Source with Schema
 Schema schema = new Schema.Parser().parse(
     new File("user.avsc")
@@ -1188,6 +1202,7 @@ FileSource<GenericRecord> source = FileSource.forRecordStreamFormat(
 **Parquet 文件写入**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Streaming File Sink with Parquet
 final StreamingFileSink<Row> sink = StreamingFileSink
     .forBulkFormat(
@@ -1209,6 +1224,7 @@ stream.addSink(sink);
 **Flink 1.14+ FileSink API**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // New FileSink API (Recommended)
 FileSink<Row> sink = FileSink.forBulkFormat(
     new Path("s3://bucket/output/"),
@@ -1254,6 +1270,7 @@ stream.sinkTo(sink);
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // JDBC Source (Bounded)
@@ -1277,6 +1294,7 @@ DataStream<Row> stream = env.fromSource(
 **JDBC Sink**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // JDBC Sink with Exactly-Once (XA)
 JdbcExactlyOnceSink<Row> sink = JdbcExactlyOnceSink.sink(
     "INSERT INTO orders (id, name, amount) VALUES (?, ?, ?) " +
@@ -1355,6 +1373,7 @@ ON o.user_id = u.user_id;
 **Cassandra Sink**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Cassandra Sink
 ClusterBuilder clusterBuilder = new ClusterBuilder() {
     @Override
@@ -1395,6 +1414,7 @@ CassandraSink.addSink(stream)
 **HBase Source/Sink**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // HBase Source
 HBaseSourceFunction<Row> source = new HBaseSourceFunction<>(
     "mytable",
@@ -1437,6 +1457,7 @@ stream.addSink(sink);
 **Elasticsearch Sink**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Elasticsearch Sink
 List<HttpHost> httpHosts = Arrays.asList(
     new HttpHost("es-host-1", 9200),
@@ -1481,6 +1502,7 @@ stream.addSink(builder.build());
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // MongoDB Source
@@ -1528,6 +1550,7 @@ stream.map(Json::parse).map(Document::parse).sinkTo(sink);
 **Redis Sink**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Redis Sink Configuration
 FlinkJedisPoolConfig conf = new FlinkJedisPoolConfig.Builder()
     .setHost("redis-host")
@@ -1580,6 +1603,7 @@ stream.addSink(redisSink);
 **InfluxDB Sink**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // InfluxDB Sink
 InfluxDBSink<String> sink = InfluxDBSink.builder()
     .setInfluxDBUrl("http://influxdb:8086")
@@ -1620,6 +1644,7 @@ stream.sinkTo(sink);
 **Iceberg Catalog 配置**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Hive Catalog
 CatalogLoader catalogLoader = CatalogLoader.hive(
     "hive_catalog",
@@ -1674,6 +1699,7 @@ FROM kafka_source;
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // Iceberg Streaming Source
@@ -1796,6 +1822,7 @@ SELECT * FROM kafka_orders;
 **Delta Lake Sink**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Delta Lake Sink
 DeltaSink<Row> deltaSink = DeltaSink
     .forRowData(
@@ -1866,6 +1893,7 @@ CREATE TABLE realtime_events (
 **MySQL CDC Source**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // MySQL CDC Source
 MySqlSource<String> mySqlSource = MySqlSource.<String>builder()
     .hostname("mysql-host")
@@ -2327,6 +2355,7 @@ stateDiagram-v2
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.CheckpointingMode;
 
 // Checkpoint 配置
@@ -2345,6 +2374,7 @@ env.getCheckpointConfig().setCheckpointStorage("s3://bucket/checkpoints");
 **网络与序列化配置**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 网络缓冲配置
 Configuration conf = new Configuration();
 conf.setInteger("taskmanager.memory.network.max", 256 << 20); // 256MB

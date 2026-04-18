@@ -66,6 +66,7 @@ After completing this exercise, you will be able to:
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.CheckpointingMode;
 
 // Checkpoint configuration example
@@ -387,6 +388,7 @@ flink run -s <checkpointPath> <jarFile>
 3. Write configuration to enable Unaligned Checkpoint (3 points)
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // ========== Configure Unaligned Checkpoint ==========
 
 // Import statements (place at top of file):

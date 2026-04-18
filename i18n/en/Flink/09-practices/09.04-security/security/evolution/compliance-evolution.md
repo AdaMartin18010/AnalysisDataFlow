@@ -74,6 +74,7 @@ compliance:
 ### 6.1 Data Classification
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 @PII
 private String ssn;
 

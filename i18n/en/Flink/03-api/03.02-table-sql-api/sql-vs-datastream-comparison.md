@@ -273,6 +273,7 @@ GROUP BY
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.api.common.functions.AggregateFunction;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -308,6 +309,7 @@ JOIN payments p
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 orders
@@ -363,6 +365,7 @@ DataStream<EnrichedOrder> enriched = AsyncDataStream.unorderedWait(
 ### 6.4 Hybrid Usage Example
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Register DataStream as SQL table
 tableEnv.createTemporaryView("orders", orderStream);
 

@@ -253,6 +253,7 @@ public interface SnapshotStrategySynchronicityBehavior {
 **证明**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 源码位置: CheckpointCoordinator.java
 private long checkpointIdCounter = 1;
 
@@ -274,6 +275,7 @@ $$
 **论证**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 源码位置: CheckpointBarrierAligner.java
 public void processBarrier(CheckpointBarrier receivedBarrier, int channelIndex) throws IOException {
     long barrierId = receivedBarrier.getId();
@@ -316,6 +318,7 @@ $$
 **推导**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 源码位置: SingleCheckpointBarrierHandler.java
 public void processBarrier(CheckpointBarrier barrier, int channelIndex) {
     // 非对齐模式下,立即触发快照而不阻塞数据
@@ -342,6 +345,7 @@ $$
 **论证**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 源码位置: TwoPhaseCommitSinkFunction.java
 public void snapshotState(FunctionSnapshotContext context) throws Exception {
     // 预提交阶段
@@ -372,6 +376,7 @@ public void notifyCheckpointComplete(long checkpointId) {
 **论证**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 源码位置: IncrementalSnapshotStrategy.java
 public SnapshotResult<StateObject> snapshot(...) {
     // 只保存变更的SST文件
@@ -394,6 +399,7 @@ public SnapshotResult<StateObject> snapshot(...) {
 **命题**: CheckpointCoordinator保证在超时时间内未完成则自动失败。
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 源码位置: PendingCheckpoint.java
 private ScheduledFuture<?> schedulerHandle;
 
@@ -448,6 +454,7 @@ $$
 **源码关联**：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // CheckpointCoordinator构造函数
 public CheckpointCoordinator(
         JobID job,
@@ -525,6 +532,7 @@ public CheckpointCoordinator(
 ### Rel-F-10-04-04: Checkpoint与State Backend的交互关系
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 关系映射:Checkpoint触发时与State Backend的交互
 
 // 1. CheckpointCoordinator触发Checkpoint
@@ -640,6 +648,7 @@ private final class ScheduledTrigger implements TimerTask {
 **触发条件检查**：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 public void triggerCheckpoint(long timestamp) throws CheckpointTriggerException {
     // 检查1: 是否已关闭
     if (shutdown) {
@@ -679,6 +688,7 @@ public void triggerCheckpoint(long timestamp) throws CheckpointTriggerException 
 **论证**: Barrier对齐阻塞策略的边界条件
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 源码位置: CheckpointBarrierAligner.java
 private void blockChannel(int channelIndex) throws IOException {
     if (!isChannelBlocked(channelIndex)) {
@@ -714,6 +724,7 @@ private void startCaching(int channelIndex) throws IOException {
 **边界条件处理**：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 1. 单输入channel优化
 if (totalNumberOfInputChannels == 1) {
     // 只有一个输入,无需对齐,直接触发
@@ -789,6 +800,7 @@ public class AlternatingCheckpointBarrierHandler extends CheckpointBarrierHandle
 **论证**: 同步与异步快照的线程安全保证
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 源码位置: AbstractStreamOperator.java
 public void snapshotState(StateSnapshotContext context) throws Exception {
     // 1. 同步部分 - 在Task线程执行
@@ -847,6 +859,7 @@ public class AsyncSnapshotCallable<T> implements Callable<T> {
 **论证**: 多次恢复同一Checkpoint的幂等性保证
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 源码位置: CheckpointCoordinator.java
 public boolean restoreLatestCheckpointedStateToAll(
         Map<JobVertexID, ExecutionJobVertex> tasks,
@@ -876,6 +889,7 @@ public boolean restoreLatestCheckpointedStateToAll(
 **幂等性保证**：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // StateAssignmentOperation.java
 public void assignStates() {
     for (Map.Entry<OperatorID, OperatorState> entry : operatorStates.entrySet()) {
@@ -909,6 +923,7 @@ public void assignStates() {
 **论证**: 增量Checkpoint如何保证全局一致性
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 源码位置: RocksDBStateBackend.IncrementalSnapshotStrategy.java
 public class IncrementalSnapshotStrategy {
 
@@ -973,6 +988,7 @@ Checkpoint N+1: [SST-A, SST-B, SST-C] + [SST-D] (增量,共享A,B,C)
 **引理 1**: 在对齐完成前，算子不会处理 $S_{\geq k}$ 中的任何事件。
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 源码: CheckpointBarrierAligner.java
 public void processBarrier(CheckpointBarrier barrier, int channelIndex) {
     // 当收到第一个Barrier时,开始阻塞其他channel
@@ -1000,6 +1016,7 @@ $$
 **引理 2**: 对齐完成后，所有channel的Barrier都已到达。
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 源码: CheckpointBarrierAligner.java
 private boolean allBarriersReceived() {
     for (int i = 0; i < numberOfChannels; i++) {
@@ -1048,6 +1065,7 @@ $$
 **引理 1**: 非对齐Checkpoint的in-flight数据被完整捕获。
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 源码: SingleCheckpointBarrierHandler.java
 public void processBarrier(CheckpointBarrier barrier, int channelIndex) {
     // 非对齐模式:立即触发快照
@@ -1076,6 +1094,7 @@ public void processBarrier(CheckpointBarrier barrier, int channelIndex) {
 **引理 2**: 恢复时in-flight数据被重新注入。
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 源码: ChannelStateInputReader.java
 public void readChannelState() {
     // 从Checkpoint读取channel状态
@@ -1124,6 +1143,7 @@ $$
 - 阶段2（Commit）：Coordinator确认后实际提交
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 源码: TwoPhaseCommitSinkFunction.java
 public void snapshotState(FunctionSnapshotContext context) throws Exception {
     long checkpointId = context.getCheckpointId();
@@ -1158,6 +1178,7 @@ $$
 **引理 2**: 仅当Checkpoint成功完成时才执行Commit。
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // notifyCheckpointComplete只在Checkpoint完全确认后调用
 // 如果Checkpoint失败,对应的pending事务会被丢弃
 public void notifyCheckpointAborted(long checkpointId) {
@@ -1184,6 +1205,7 @@ public void notifyCheckpointAborted(long checkpointId) {
 3. **幂等性保证**：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 public void commit(Transaction txn) {
     // 幂等提交:检查事务状态
     if (txn.getStatus() == TransactionStatus.PENDING) {
@@ -1228,6 +1250,7 @@ $$
 **增量Checkpoint分析**：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import java.util.List;
 
 // 增量Checkpoint结构
@@ -1265,6 +1288,7 @@ $$
 **垃圾回收**：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 源码: SharedStateRegistry.java
 public void unregisterUnusedState(long lowestRetainCheckpoint) {
     for (Map.Entry<StateHandleID, SharedStateEntry> entry : registeredStates.entrySet()) {
@@ -1294,6 +1318,7 @@ $$
 **场景**: 手动触发一个周期性Checkpoint
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 源码路径: org.apache.flink.runtime.checkpoint.CheckpointCoordinator
 // 方法: triggerCheckpoint(long timestamp)
 
@@ -1468,6 +1493,7 @@ private CompletableFuture<CompletedCheckpoint> triggerCheckpoint(
 **场景**: 双输入流的Barrier对齐处理
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 源码路径: org.apache.flink.streaming.runtime.io.CheckpointBarrierAligner
 // 方法: processBarrier(CheckpointBarrier, int)
 
@@ -1587,6 +1613,7 @@ Channel 1:  [Record] [Record] [Record] [Record] [Barrier:ID=5] ...
 **场景**: 有状态算子的状态快照
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 源码路径: org.apache.flink.streaming.api.operators.AbstractStreamOperator
 // 方法: snapshotState(StateSnapshotContext)
 
@@ -1703,6 +1730,7 @@ public class CountFunction extends RichFlatMapFunction<String, Tuple2<String, In
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.CheckpointingMode;
 
@@ -1803,6 +1831,7 @@ env.getCheckpointConfig().setAlignmentTimeout(Duration.ofSeconds(30));
 **同步快照实现 - MemoryStateBackend**：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 源码路径: org.apache.flink.runtime.state.memory.MemoryStateBackend
 public class MemoryStateBackend extends AbstractStateBackend {
 
@@ -1842,6 +1871,7 @@ public class HeapKeyedStateBackend<K> implements CheckpointableKeyedStateBackend
 **异步快照实现 - RocksDBStateBackend**：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 源码路径: org.apache.flink.contrib.streaming.state.RocksDBStateBackend
 public class RocksDBStateBackend extends AbstractStateBackend {
 
@@ -2440,6 +2470,7 @@ logger.rocksdb.level = DEBUG
 #### 技巧1: 追踪Checkpoint ID
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 在日志中查找特定Checkpoint ID的完整生命周期
 grep "checkpointId=12345" flink-*.log
 
@@ -2452,6 +2483,7 @@ MDC.remove("checkpointId");
 #### 技巧2: 分析Checkpoint超时
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 在PendingCheckpoint构造函数中设置断点
 public PendingCheckpoint(...) {
     // 断点条件: checkpointId == 目标ID
@@ -2469,6 +2501,7 @@ private void onTriggerFailure(...) {
 #### 技巧3: 监控Barrier对齐时间
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 在CheckpointBarrierAligner中添加计时
 private long alignmentStartNanos;
 

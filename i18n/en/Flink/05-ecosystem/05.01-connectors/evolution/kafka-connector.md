@@ -60,6 +60,7 @@ $$
 ### 5.1 Kafka Source
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 KafkaSource<String> source = KafkaSource.<String>builder()
     .setBootstrapServers("kafka:9092")
     .setTopics("input-topic")
@@ -74,6 +75,7 @@ KafkaSource<String> source = KafkaSource.<String>builder()
 ### 6.1 Exactly-Once Sink
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 KafkaSink<String> sink = KafkaSink.<String>builder()
     .setBootstrapServers("kafka:9092")
     .setRecordSerializer(KafkaRecordSerializationSchema.builder()

@@ -357,6 +357,7 @@ $$\text{DynamicAllocation} = \langle \text{borrow}(n), \text{return}(m) \rangle,
 **定义 1.3.3 (内存页管理)**: 内存页管理是将大块内存划分为固定大小页(Page)的策略，Flink默认页大小为32KB，通过`pageSize`参数控制。
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 源码位置: flink-runtime/src/main/java/org/apache/flink/runtime/memory/MemoryManager.java
 public static final int DEFAULT_PAGE_SIZE = 32768;  // 32KB
 ```
@@ -512,6 +513,7 @@ $$\sum_{i} \text{LocalBufferPool}_i + \text{availableInGlobal} = \text{totalNumb
 由`LocalBufferPool.recycle`实现：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 if (currentNumberOfMemorySegments > numberOfRequiredMemorySegments) {
     networkBufferPool.recycle(segment);  // 归还全局
 } else {
@@ -528,6 +530,7 @@ if (currentNumberOfMemorySegments > numberOfRequiredMemorySegments) {
 **证明**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 private MemorySegment requestMemorySegmentInternal() {
     // 本地无可用
     if (segment == null && currentNumberOfMemorySegments < maxNumberOfMemorySegments) {
@@ -550,6 +553,7 @@ private MemorySegment requestMemorySegmentInternal() {
 **证明**: 以`getInt`为例：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 public int getInt(int index) {
     final long pos = address + index;
     if (index >= 0 && pos <= addressLimit - 4) {
@@ -568,6 +572,7 @@ public int getInt(int index) {
 **证明**: `HybridMemorySegment.free()`实现：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 public void free() {
     if (offHeapBuffer != null) {
         MemoryUtils.getUnsafe().invokeCleaner(offHeapBuffer);
@@ -884,6 +889,7 @@ Flink混合策略: `numberOfRequiredMemorySegments`预分配 + `maxNumberOfMemor
 **Flink实现**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // MemorySegmentFactory.allocateOffHeapUnsafeMemory
 long address = MemoryUtils.allocateUnsafe(size);
 // Unsafe分配已保证8字节对齐
@@ -905,6 +911,7 @@ long address = MemoryUtils.allocateUnsafe(size);
 **构造**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 CompletableFuture<Buffer> future = new CompletableFuture<>();
 requestedBuffers.add(future);
 return future;  // 上游等待此Future完成
@@ -931,6 +938,7 @@ $$addr < 0 \lor addr + size > seg.size \implies \text{抛出IndexOutOfBoundsExce
 基例：考虑`getInt(int index)`操作
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 public int getInt(int index) {
     final long pos = address + index;
     if (index >= 0 && pos <= addressLimit - 4) {
@@ -1013,6 +1021,7 @@ $$recycle(seg) \iff refCount(t) = 0 \land release() \text{ invoked}$$
 `NetworkBuffer`继承Netty的`AbstractReferenceCountedByteBuf`：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 @Override
 public Buffer retain() {
     super.retain();  // refCount++
@@ -1292,6 +1301,7 @@ taskmanager.network.memory.type: HEAP
 **示例 6.6.1 (内存泄漏检测)**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 启用Flink内存追踪
 Configuration conf = new Configuration();
 conf.setString("taskmanager.memory.framework.off-heap.batch-allocations", "true");

@@ -307,6 +307,7 @@ Let load vary over time as $\lambda(t)$, and parallelism be $P(t)$.
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 // Flink 1.0 - 1.4 default scheduler
@@ -326,6 +327,7 @@ env.setParallelism(4);  // Requires 4 Slots
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 // Flink 1.5+ LegacyScheduler
@@ -345,6 +347,7 @@ cluster.evenly-spread-out-slots: true
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 // Flink 1.11+ DeclarativeScheduler
@@ -368,6 +371,7 @@ cluster.evenly-spread-out-slots: true
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 // Flink 1.17+ AdaptiveScheduler
@@ -398,6 +402,7 @@ scheduler.adaptive.scale-down.cooldown: 300s
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 // Flink 2.0+ AdaptiveScheduler V2

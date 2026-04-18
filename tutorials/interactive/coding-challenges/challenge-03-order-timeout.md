@@ -103,6 +103,7 @@ public class InventoryReleaseEvent {
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // 定义Side Output Tag
@@ -662,6 +663,7 @@ public class InventoryReleaseResult {
 ### 测试用例
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 @Test
 public void testOrderTimeout() throws Exception {
     // 创建测试 harness

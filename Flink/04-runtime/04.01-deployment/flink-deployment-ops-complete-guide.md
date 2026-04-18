@@ -1093,32 +1093,40 @@ spec:
 **DataStream API 中使用**：
 
 ```java
-
+import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-// Java API 配置资源
-DataStream<Event> stream = env
-    .addSource(new KafkaSource<>())
-    .slotSharingGroup("source-group")
-    .setResourceProfile(ResourceProfile.newBuilder()
-        .setCpuCores(0.5)
-        .setTaskHeapMemory(MemorySize.ofMebiBytes(512))
-        .build())
-    .map(new EnrichmentFunction())
-    .slotSharingGroup("processing-group")
-    .setResourceProfile(ResourceProfile.newBuilder()
-        .setCpuCores(1.0)
-        .setTaskHeapMemory(MemorySize.ofMebiBytes(1024))
-        .build())
-    .keyBy(Event::getKey)
-    .window(TumblingEventTimeWindows.of(Time.minutes(5)))
-    .aggregate(new WindowAggregate())
-    .slotSharingGroup("window-group")
-    .setResourceProfile(ResourceProfile.newBuilder()
-        .setCpuCores(2.0)
-        .setTaskHeapMemory(MemorySize.ofMebiBytes(2048))
-        .build());
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+
+        // Java API 配置资源
+        DataStream<Event> stream = env
+            .addSource(new KafkaSource<>())
+            .slotSharingGroup("source-group")
+            .setResourceProfile(ResourceProfile.newBuilder()
+                .setCpuCores(0.5)
+                .setTaskHeapMemory(MemorySize.ofMebiBytes(512))
+                .build())
+            .map(new EnrichmentFunction())
+            .slotSharingGroup("processing-group")
+            .setResourceProfile(ResourceProfile.newBuilder()
+                .setCpuCores(1.0)
+                .setTaskHeapMemory(MemorySize.ofMebiBytes(1024))
+                .build())
+            .keyBy(Event::getKey)
+            .window(TumblingEventTimeWindows.of(Time.minutes(5)))
+            .aggregate(new WindowAggregate())
+            .slotSharingGroup("window-group")
+            .setResourceProfile(ResourceProfile.newBuilder()
+                .setCpuCores(2.0)
+                .setTaskHeapMemory(MemorySize.ofMebiBytes(2048))
+                .build());
+
+    }
+}
 ```
 
 ---

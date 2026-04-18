@@ -89,6 +89,7 @@ public class CheckpointCoordinator {
 #### 2.1.1 triggerCheckpoint() - 触发检查点
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 public CompletableFuture<CompletedCheckpoint> triggerCheckpoint(
         boolean isPeriodic,
         long timestamp) {
@@ -178,6 +179,7 @@ private void triggerTasks(
 #### 2.1.2 receiveAcknowledgeMessage() - 接收确认
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 public boolean receiveAcknowledgeMessage(
         AcknowledgeCheckpoint message,
         TaskManagerLocation taskManagerLocation) {

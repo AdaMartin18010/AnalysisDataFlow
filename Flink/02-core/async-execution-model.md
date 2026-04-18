@@ -433,6 +433,7 @@ $$
 AEC 的回调队列按 (Key, Seq) 排序：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 伪代码
 class OrderedCallback {
     Key key;
@@ -485,6 +486,7 @@ $$
 **场景**: 用户在异步回调中再次发起同步状态访问。
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 错误示例
 state.getAsync(key)
     .thenApply(value -> {
@@ -503,6 +505,7 @@ state.getAsync(key)
 **正确模式**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 正确示例:链式异步操作
 state.getAsync(key)
     .thenCompose(value ->
@@ -727,6 +730,7 @@ public class AsyncCounter extends AsyncKeyedProcessFunction<String, Event, Resul
 **场景**: 需要同时访问多个状态的高效模式。
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 public void processElement(Event event, Context ctx, ResultFuture<Result> resultFuture) {
     // 批量并行获取多个状态
     CompletableFuture<Long> counterFuture = counterState.getAsync(event.getKey());
@@ -766,6 +770,7 @@ public void processElement(Event event, Context ctx, ResultFuture<Result> result
 **模式 1: 重试模式**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 state.getAsync(key)
     .thenApply(this::process)
     .exceptionally(throwable -> {
@@ -780,6 +785,7 @@ state.getAsync(key)
 **模式 2: 降级模式**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 state.getAsync(key)
     .thenApply(this::process)
     .exceptionally(throwable -> {
@@ -1174,6 +1180,7 @@ aec.max-concurrent-per-key: 2
 **回调执行流程**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // AEC 内部回调处理 (简化)
 class AECCallbackProcessor {
 

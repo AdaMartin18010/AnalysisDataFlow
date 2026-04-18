@@ -244,6 +244,7 @@ graph TB
 ### 6.2 DataStream API - Source 示例
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.connector.mongodb.source.MongoSource;
 import org.apache.flink.connector.mongodb.source.reader.deserializer.MongoDeserializationSchema;
 import org.bson.BsonDocument;
@@ -280,6 +281,7 @@ env.fromSource(mongoSource, WatermarkStrategy.noWatermarks(), "MongoDB Source")
 ### 6.3 DataStream API - Change Streams 示例
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.connector.mongodb.source.MongoSource;
 import org.apache.flink.connector.mongodb.source.enumerator.splitter.MongoSplitters;
 
@@ -313,6 +315,7 @@ env.fromSource(
 ### 6.4 DataStream API - Sink 示例
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.connector.mongodb.sink.MongoSink;
 import org.apache.flink.connector.mongodb.sink.writer.context.MongoSinkContext;
 import org.bson.Document;

@@ -153,6 +153,7 @@ public class KafkaConnectorDemo {
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // 带高级配置的 Kafka Source
@@ -185,6 +186,7 @@ DataStream<Event> eventStream = env.fromSource(
 #### 1.4 Kafka Sink
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.connector.kafka.sink.KafkaSink;
 import org.apache.flink.connector.kafka.sink.KafkaRecordSerializationSchema;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -205,6 +207,7 @@ stream.sinkTo(sink);
 #### 1.5 高级 Kafka Sink 配置
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 带高级配置的 Kafka Sink
 KafkaSink<Event> advancedSink = KafkaSink.<Event>builder()
     .setBootstrapServers("localhost:9092")
@@ -241,6 +244,7 @@ processedStream.sinkTo(advancedSink);
 #### 1.6 SQL API - Kafka Connector
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
 import org.apache.flink.table.api.TableEnvironment;
@@ -320,6 +324,7 @@ tableEnv.executeSql("""
 #### 2.2 JDBC Source（Lookup Join）
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.connector.jdbc.JdbcConnectionOptions;
 import org.apache.flink.connector.jdbc.JdbcExecutionOptions;
 import org.apache.flink.connector.jdbc.JdbcSink;
@@ -363,6 +368,7 @@ tableEnv.executeSql("""
 #### 2.3 JDBC Sink
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // DataStream API JDBC Sink
 JdbcExecutionOptions execOptions = JdbcExecutionOptions.builder()
     .withBatchSize(1000)              // 批量写入大小
@@ -398,6 +404,7 @@ stream.addSink(JdbcSink.sink(
 #### 2.4 JDBC SQL Connector
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 创建 JDBC Sink 表
 tableEnv.executeSql("""
     CREATE TABLE event_sink (
@@ -506,6 +513,7 @@ public class ElasticsearchConnectorDemo {
 #### 3.3 SQL API - Elasticsearch Connector
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 需要先添加依赖 flink-sql-connector-elasticsearch
 // 创建 Elasticsearch Sink 表
 tableEnv.executeSql("""
@@ -560,6 +568,7 @@ tableEnv.executeSql("""
 #### 4.1 支持的格式
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // JSON 格式
 tableEnv.executeSql("""
     CREATE TABLE json_table (...) WITH (
@@ -606,6 +615,7 @@ tableEnv.executeSql("""
 #### 4.2 文件系统 Source/Sink
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 创建文件 Source 表
 tableEnv.executeSql("""
     CREATE TABLE file_source (
@@ -650,6 +660,7 @@ tableEnv.executeSql("""
 #### 4.3 分区文件 Sink
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 按时间分区
 tableEnv.executeSql("""
     CREATE TABLE partitioned_sink (
@@ -898,6 +909,7 @@ graph LR
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 // 同一数据输出到多个目标
@@ -927,6 +939,7 @@ result.addSink(esSink);
 ```
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // MySQL CDC Source
 MySqlSource<String> mySqlSource = MySqlSource.<String>builder()
     .hostname("localhost")
@@ -951,6 +964,7 @@ env.fromSource(mySqlSource, WatermarkStrategy.noWatermarks(), "MySQL CDC")
 **解决**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 增加连接超时设置
 .setProperty("connections.max.idle.ms", "540000")
 .setProperty("request.timeout.ms", "30000")
@@ -967,6 +981,7 @@ docker exec jobmanager ping kafka
 **解决**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 配置连接池大小
 JdbcConnectionOptions.builder()
     .withUrl("jdbc:mysql://localhost:3306/flinkdb")
@@ -986,6 +1001,7 @@ JdbcConnectionOptions.builder()
 **解决**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 调整批量写入参数
 new Elasticsearch7SinkBuilder<Event>()
     .setBulkFlushMaxActions(500)      // 减少批量大小
@@ -1018,6 +1034,7 @@ env.enableCheckpointing(60000);
 ## 性能优化建议
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 1. 批量写入
 JdbcExecutionOptions.builder()
     .withBatchSize(5000)

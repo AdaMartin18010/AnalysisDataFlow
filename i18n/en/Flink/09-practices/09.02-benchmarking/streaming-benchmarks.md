@@ -301,6 +301,7 @@ $$C_{pm} = \frac{\text{Hourly infrastructure cost} \times 1000}{\Theta \times 36
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 // Nexmark q8: Monitor New Users

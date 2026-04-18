@@ -256,6 +256,7 @@ $$\frac{d|buf|}{dt} \geq 0 \quad \text{(仅当批次触发时重置为 0)}$$
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // SQL: SELECT * FROM ML_PREDICT(TABLE events, MODEL gpt4, PASSING (message))
@@ -815,26 +816,36 @@ Flink 2.2 (2025-12-04 发布) 正式将 ML_PREDICT 标记为 GA 状态[^1]：
 ### 8.1.1 Table API 异步模型推断示例 (Flink 2.2 GA)
 
 ```java
-// Java Table API - 异步 ML_PREDICT
 import org.apache.flink.table.api.Table;
+import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
+import static org.apache.flink.table.api.Expressions.$;
+import static org.apache.flink.table.api.Expressions.lit;
 
-StreamTableEnvironment tEnv = StreamTableEnvironment.create(env);
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        // Java Table API - 异步 ML_PREDICT
 
-Table events = tEnv.from("user_logs");
+        StreamTableEnvironment tEnv = StreamTableEnvironment.create(env);
 
-// Table API 异步预测调用
-Table classified = events
-    .select(
-        $("user_id"),
-        $("log_message"),
-        call("ML_PREDICT",
-            lit("log_classifier"),
-            $("log_message")
-        ).as("prediction")
-    );
+        Table events = tEnv.from("user_logs");
 
-tEnv.createTemporaryView("classified_logs", classified);
+        // Table API 异步预测调用
+        Table classified = events
+            .select(
+                $("user_id"),
+                $("log_message"),
+                call("ML_PREDICT",
+                    lit("log_classifier"),
+                    $("log_message")
+                ).as("prediction")
+            );
+
+        tEnv.createTemporaryView("classified_logs", classified);
+
+    }
+}
 ```
 
 ```python

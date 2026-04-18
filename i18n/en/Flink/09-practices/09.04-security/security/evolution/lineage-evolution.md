@@ -59,6 +59,7 @@ $$
 ### 5.1 Lineage Collection
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 LineageContext ctx = LineageContext.current();
 ctx.recordRelation("users.id", "orders.user_id");
 ```

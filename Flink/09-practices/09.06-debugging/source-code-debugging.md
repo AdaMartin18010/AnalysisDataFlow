@@ -534,6 +534,7 @@ public class LocalDebugJob {
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 Configuration conf = new Configuration();
@@ -603,6 +604,7 @@ public class MiniClusterDebugTest {
 **MiniCluster 配置详解**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 MiniClusterResourceConfiguration config =
     new MiniClusterResourceConfiguration.Builder()
         // TaskManager 数量
@@ -633,6 +635,7 @@ MiniClusterResourceConfiguration config =
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.api.common.typeinfo.Types;
 
 @Test
@@ -843,6 +846,7 @@ spec:
 **作业提交流程**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Dispatcher.java
 public CompletableFuture<Acknowledge> submitJob(
         JobGraph jobGraph, // ← 断点 1: 检查 JobGraph 结构
@@ -867,6 +871,7 @@ public JobManagerRunner createJobManagerRunner(
 **作业调度流程**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // SchedulerBase.java
 public void startScheduling() {
     // ← 断点: 调度开始
@@ -886,6 +891,7 @@ protected void scheduleVertices() {
 **Checkpoint 协调**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // CheckpointCoordinator.java
 public CompletableFuture<CompletedCheckpoint> triggerCheckpoint(
         CheckpointTriggerRequest request) {
@@ -919,6 +925,7 @@ public void receiveAcknowledgeMessage(
 **Task 生命周期**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Task.java
 public void run() {
     // ← 断点 1: Task 开始执行
@@ -937,6 +944,7 @@ public void run() {
 **Slot 管理**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // TaskSlotTable.java
 public boolean allocateSlot(
         int index,
@@ -970,6 +978,7 @@ public void recycle(MemorySegment segment) {
 **Barrier 注入**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // CheckpointBarrierHandler.java
 public void processBarrier(
         CheckpointBarrier barrier,
@@ -1003,6 +1012,7 @@ public void run() {
 **状态恢复**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // StreamTask.java
 private void restoreState() throws Exception {
     // ← 断点: 从 Checkpoint 恢复
@@ -1017,6 +1027,7 @@ private void restoreState() throws Exception {
 **数据写入**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // RecordWriter.java
 public void emit(T record) throws IOException {
     // ← 断点 1: 数据写出
@@ -1028,6 +1039,7 @@ public void emit(T record) throws IOException {
 **信用值系统**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // CreditBasedPartitionRequestClientHandler.java
 public void notifyCreditAvailable(InputChannelID inputChannelId) {
     // ← 断点: 通知有可用的 buffer 信用值
@@ -1041,6 +1053,7 @@ public void channelRead(ChannelHandlerContext ctx, Object msg) {
 **背压检测**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // LocalInputChannel.java
 public void checkAndWaitForBuffers() throws IOException {
     // ← 断点: 检查 buffer 可用性

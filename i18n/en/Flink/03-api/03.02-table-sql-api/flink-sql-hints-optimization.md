@@ -329,6 +329,7 @@ GROUP BY user_id
 #### Example 3: Combined with Table API
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Use JSON functions in Table API
 tableEnv.createTemporaryFunction("ExtractJson", JsonPathFunction.class);
 

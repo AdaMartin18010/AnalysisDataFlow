@@ -281,6 +281,7 @@ public class AuditEntry {
 ### Flink行级安全策略
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 创建带行级安全的表
 tEnv.executeSql("""
     CREATE TABLE user_events (

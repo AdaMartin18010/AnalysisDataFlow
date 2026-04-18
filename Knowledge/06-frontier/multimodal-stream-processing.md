@@ -117,6 +117,7 @@ graph TB
 ### 6.1 Flink 多模态对齐作业
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 DataStream<TextEvent> textStream = env
     .addSource(new KafkaSource<>())
     .assignTimestampsAndWatermarks(

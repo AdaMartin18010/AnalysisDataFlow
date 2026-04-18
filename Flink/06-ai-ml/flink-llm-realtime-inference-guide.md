@@ -236,12 +236,14 @@ Request → [Router] → [GPT-3.5] → Response (简单)
 **反模式1: 同步阻塞调用**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // ❌ 错误: 阻塞等待LLM响应
 String response = llmClient.complete(prompt);  // 阻塞!
 out.collect(response);
 ```
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // ✅ 正确: 异步非阻塞
 CompletableFuture<String> future = llmClient.completeAsync(prompt);
 future.thenAccept(response -> resultFuture.complete(
@@ -252,6 +254,7 @@ future.thenAccept(response -> resultFuture.complete(
 **反模式2: 无状态设计**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // ❌ 错误: 每请求独立,丢失会话上下文
 public void processElement(Request req) {
     String response = callLLM(req.getMessage());  // 无历史
@@ -259,6 +262,7 @@ public void processElement(Request req) {
 ```
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // ✅ 正确: 使用KeyedState维护会话状态
 private ListState<Message> conversationHistory;
 
@@ -275,11 +279,13 @@ public void processElement(Request req) {
 **反模式3: 忽略错误处理**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // ❌ 错误: 无重试机制
 String response = llmClient.complete(prompt);
 ```
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // ✅ 正确: 指数退避重试
 RetryPolicy<String> retryPolicy = RetryPolicy.<String>builder()
     .withBackoff(Duration.ofMillis(100), Duration.ofSeconds(5))

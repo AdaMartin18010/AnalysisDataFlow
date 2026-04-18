@@ -46,6 +46,7 @@
 大量内部链接"失效"实际上是代码片段被误识别为Markdown链接，例如：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 原代码
 state.get(Transaction("first"))
 // 被识别为链接 [Transaction]("first")

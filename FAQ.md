@@ -434,6 +434,7 @@ public class AIAgentExample {
 **4. 故障处理配置**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 配置故障转移策略
 AIAgentConfig config = AIAgentConfig.builder()
     .setFallbackStrategy(FallbackStrategy.CIRCUIT_BREAKER)
@@ -501,6 +502,7 @@ spec:
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
@@ -557,6 +559,7 @@ Serverless (按量计费):
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 StreamExecutionEnvironment env =
@@ -625,6 +628,7 @@ state:
 **监控指标**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 获取智能检查点指标
 SmartCheckpointMetrics metrics = checkpointConfig.getSmartMetrics();
 
@@ -771,6 +775,7 @@ execution:
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.datastream.DataStream;
 
@@ -1052,6 +1057,7 @@ wasm-opt -O3 -o udf-optimized.wasm target/wasm32-wasi/release/my_flink_udf.wasm
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.table.api.TableEnvironment;
 
@@ -1271,6 +1277,7 @@ if __name__ == '__main__':
 **Java 代码兼容性调整**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Flink 2.3 代码
 env.setStateBackend(new RocksDBStateBackend("hdfs://checkpoints", true));
 
@@ -1324,6 +1331,7 @@ $FLINK_HOME/bin/flink run \
 **主要变更点**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 2.4: 旧方式设置 GPU 资源
 GPUResource resource = new GPUResource(1, 16);
 
@@ -1459,6 +1467,7 @@ public class CompatibilityCheck {
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -1633,6 +1642,7 @@ flink-migrate-3.0 \
 **性能优化详解**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 1. 智能检查点带来的提升
 // 2.3: 固定间隔检查点 (资源浪费)
 env.enableCheckpointing(5000);  // 每5秒，无论负载
@@ -1738,6 +1748,7 @@ cost_savings:
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 // 启用 2.4 所有优化
@@ -1931,6 +1942,7 @@ benchmark:
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 

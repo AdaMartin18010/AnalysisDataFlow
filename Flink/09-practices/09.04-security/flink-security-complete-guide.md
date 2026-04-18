@@ -498,6 +498,7 @@ zookeeper.sasl.login-context-name: Client
 ```
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 代码中使用 Kerberos 认证
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;

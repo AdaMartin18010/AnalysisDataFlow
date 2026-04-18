@@ -368,6 +368,7 @@ public class RealtimeUserFeatureJob {
 以下示例使用 Flink CEP 识别"浏览商品详情页后 30 分钟内加购"的购买意向特征：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 Pattern<UserBehaviorEvent, ?> purchaseIntent = Pattern
     .<UserBehaviorEvent>begin("detail_view")
     .where(evt -> "detail_enter".equals(evt.getEventType()))
@@ -403,6 +404,7 @@ DataStream<PurchaseIntentFeature> intentFeatures = CEP.pattern(
 将用户行为流与商品实时价格变动流进行 Interval Join，构建"用户对降价商品的点击意愿"特征：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 DataStream<PriceSensitiveFeature> priceSensitiveFeatures = behaviorStream
     .keyBy(UserBehaviorEvent::getItemId)
     .intervalJoin(priceStream.keyBy(PriceChangeEvent::getItemId))

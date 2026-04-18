@@ -421,6 +421,7 @@ public class MemberActivityTask implements WindowTask {
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -436,6 +437,7 @@ DataStream<MemberActivity> activityStream = events
 **Samza's Stream-Table Duality Application**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Store member info as a "table" in RocksDB
 KeyValueStore<String, MemberProfile> profileStore =
     (KeyValueStore<String, MemberProfile>) context.getStore("member-profile");
@@ -453,6 +455,7 @@ public void processActivity(MemberEvent event, MessageCollector collector) {
 **Flink Equivalent Implementation (using Temporal Table Join)**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 Table memberProfile = tableEnv.fromDataStream(profileStream)
     .createTemporalTableFunction("updateTime", "memberId");
 

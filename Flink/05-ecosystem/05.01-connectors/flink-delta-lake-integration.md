@@ -412,6 +412,7 @@ Exactly-Once 条件:
 **工程实现要点**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // DeltaSink 提交逻辑
 public void notifyCheckpointComplete(long checkpointId) {
     // 1. 获取 pending 文件列表
@@ -513,6 +514,7 @@ public void notifyCheckpointComplete(long checkpointId) {
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 DeltaSource<RowData> deltaSource = DeltaSource
@@ -532,6 +534,7 @@ DataStream<RowData> stream = env.fromSource(
 **流式增量读取**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 DeltaSource<RowData> streamingSource = DeltaSource
     .forContinuousRowData(
         new Path("s3://bucket/delta-table"),
@@ -548,6 +551,7 @@ DeltaSource<RowData> streamingSource = DeltaSource
 **DataStream API 写入**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 DeltaSink<RowData> deltaSink = DeltaSink
     .forRowData(
         new Path("s3://bucket/output-table"),
@@ -565,6 +569,7 @@ stream.sinkTo(deltaSink);
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.CheckpointingMode;
 
 env.enableCheckpointing(60000);
@@ -632,6 +637,7 @@ public class MySqlCdcToDelta {
 ### 6.4 PostgreSQL CDC -> Delta Lake 实现
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 PostgresSource<String> pgSource = PostgresSource.<String>builder()
     .hostname("postgres-host")
     .port(5432)
@@ -827,6 +833,7 @@ Delta Lake ←──────────────────────
 **元数据缓存**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 conf.set("delta.logRetentionDuration", "interval 30 days");
 conf.set("delta.cacheMetadata", "true");
 ```

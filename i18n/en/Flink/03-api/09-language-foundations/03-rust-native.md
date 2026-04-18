@@ -456,6 +456,7 @@ impl UdfService for RustUdfService {
 **Flink Invocation** (Async I/O):
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 AsyncDataStream.unorderedWait(
     stream,
     new AsyncFunction<String, Result>() {

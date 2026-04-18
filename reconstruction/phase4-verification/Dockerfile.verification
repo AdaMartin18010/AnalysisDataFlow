@@ -1,0 +1,39 @@
+# AnalysisDataFlow 形式化验证环境
+# 包含 Coq 8.18+ 和 TLA+ Toolbox
+
+FROM ubuntu:24.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV COQ_VERSION=8.18.0
+ENV TLA_VERSION=1.8.0
+
+# 安装基础依赖
+RUN apt-get update && apt-get install -y \
+    opam \
+    gcc \
+    make \
+    git \
+    wget \
+    unzip \
+    openjdk-21-jre-headless \
+    && rm -rf /var/lib/apt/lists/*
+
+# 安装 Coq
+RUN opam init --disable-sandboxing --bare -y \
+    && opam switch create coq-${COQ_VERSION} ocaml-base-compiler.4.14.1 \
+    && eval $(opam env --switch=coq-${COQ_VERSION}) \
+    && opam install -y coq.${COQ_VERSION} \
+    && echo 'eval $(opam env --switch=coq-'${COQ_VERSION}')' >> /root/.bashrc
+
+# 安装 TLA+ Tools
+RUN wget -q https://github.com/tlaplus/tlaplus/releases/download/v${TLA_VERSION}/tla2tools.jar \
+    -O /usr/local/lib/tla2tools.jar \
+    && chmod +r /usr/local/lib/tla2tools.jar
+
+ENV PATH="/root/.opam/coq-${COQ_VERSION}/bin:${PATH}"
+ENV TLA_TOOLS=/usr/local/lib/tla2tools.jar
+
+WORKDIR /workspace
+
+# 默认命令
+CMD ["make", "verify"]

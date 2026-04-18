@@ -27,6 +27,7 @@
 ### 算子链优化
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 允许算子链（默认）
 env.disableOperatorChaining(); // 仅调试时使用
 
@@ -43,6 +44,7 @@ stream.map(...).startNewChain().filter(...);
 ### 资源管理
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 配置网络缓冲区
 env.getConfig().setAutoWatermarkInterval(200);
 

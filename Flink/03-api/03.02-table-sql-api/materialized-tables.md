@@ -699,32 +699,40 @@ ON o.user_id = p.user_id;
 ### 6.7 DataStream 集成示例
 
 ```java
-
 import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableEnvironment;
+import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
-// 物化表转换为 DataStream 作业
-StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-// 注册物化表
-tableEnv.executeSql("""
-    CREATE MATERIALIZED TABLE page_view_stats
-    WITH ('refresh-interval' = '10min')
-    AS SELECT page_id, COUNT(*) FROM page_views GROUP BY page_id
-""");
+        // 物化表转换为 DataStream 作业
+        StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
 
-// 获取底层的 DataStream 进行自定义处理
-DataStream<Row> materializedStream = tableEnv
-    .toDataStream(tableEnv.from("page_view_stats"));
+        // 注册物化表
+        tableEnv.executeSql("""
+            CREATE MATERIALIZED TABLE page_view_stats
+            WITH ('refresh-interval' = '10min')
+            AS SELECT page_id, COUNT(*) FROM page_views GROUP BY page_id
+        """);
 
-// 添加监控或二次处理
-materializedStream
-    .map(row -> {
-        // 自定义监控逻辑
-        MetricsCollector.record("mt.refresh", row);
-        return row;
-    })
-    .sinkTo(customSink);
+        // 获取底层的 DataStream 进行自定义处理
+        DataStream<Row> materializedStream = tableEnv
+            .toDataStream(tableEnv.from("page_view_stats"));
+
+        // 添加监控或二次处理
+        materializedStream
+            .map(row -> {
+                // 自定义监控逻辑
+                MetricsCollector.record("mt.refresh", row);
+                return row;
+            })
+            .sinkTo(customSink);
+
+    }
+}
 ```
 
 ### 6.8 SHOW MATERIALIZED TABLES 使用示例

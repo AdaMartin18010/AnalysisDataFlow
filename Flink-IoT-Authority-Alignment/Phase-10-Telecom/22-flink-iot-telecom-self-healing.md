@@ -413,6 +413,7 @@ $$Score(r_i) = PR(r_i) \cdot Evidence(r_i)$$
 **Flink实现**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 迭代图处理（使用Flink Gelly或Table API自定义UDF）
 DataSet<Vertex<String, Double>> rootCauseScores = faultGraph
     .run(new PageRankAlgorithm<>(0.85, 20))

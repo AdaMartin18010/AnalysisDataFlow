@@ -53,6 +53,7 @@ $$
 ### 5.1 REST API
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 GET /jobs/{jobid}/vertices
 GET /jobs/{jobid}/metrics
 ```

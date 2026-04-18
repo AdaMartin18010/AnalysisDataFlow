@@ -46,6 +46,7 @@ $$
 ### 5.1 TF推理
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 SavedModelBundle model = SavedModelBundle.load("/path/to/model");
 Tensor output = model.function("serving_default").call(input);
 ```
@@ -55,6 +56,7 @@ Tensor output = model.function("serving_default").call(input);
 ### 6.1 批量推理
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 stream.map(new ModelInferenceFunction(model))
     .setParallelism(gpuCount);
 ```

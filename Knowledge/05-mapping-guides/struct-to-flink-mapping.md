@@ -204,6 +204,7 @@ $$
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
@@ -262,6 +263,7 @@ $$
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 
@@ -309,6 +311,7 @@ $$
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.CheckpointingMode;
 
 // 理论: Def-S-17-01 Barrier 语义 + Def-S-17-03 对齐机制
@@ -359,6 +362,7 @@ $$
 **状态后端映射**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 理论: s_v ∈ 𝒮, 状态快照原子性 Def-S-17-04
 // 实现: StateBackend 选择
 
@@ -401,6 +405,7 @@ $$
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 // 理论: Def-S-18-01 Exactly-Once + Def-S-18-03 2PC
@@ -710,6 +715,7 @@ $$
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.CheckpointingMode;
@@ -776,6 +782,7 @@ $$
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.streaming.api.windowing.time.Time;
@@ -823,6 +830,7 @@ lateData.addSink(new LateDataHandler());
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.CheckpointingMode;
 
 // 启用 Checkpoint (对应 Def-S-17-01 Barrier 注入)

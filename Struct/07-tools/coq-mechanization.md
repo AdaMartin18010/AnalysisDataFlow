@@ -1300,7 +1300,7 @@ classDiagram
 
 [^2]: Benjamin C. Pierce et al., "Software Foundations", https://softwarefoundations.cis.upenn.edu/
 
-[^3]: Adam Chlipala, "Certified Programming with Dependent Types", MIT Press, 2013. http://adam.chlipala.net/cpdt/
+[^3]: Adam Chlipala, "Certified Programming with Dependent Types", MIT Press, 2013. https://adam.chlipala.net/cpdt/
 
 [^4]: INRIA Coq Team, "The Coq Proof Assistant", https://coq.inria.fr/
 

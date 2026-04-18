@@ -468,6 +468,7 @@ NFA 表示:
 **示例 1: 金融欺诈检测** [^5][^8]
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.cep.CEP;
 import org.apache.flink.cep.PatternStream;
 import org.apache.flink.cep.pattern.Pattern;
@@ -540,6 +541,7 @@ DataStream<AlertEvent> alerts = patternStream
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -599,6 +601,7 @@ DataStream<FailureAlert> failures = patternStream
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 // 模式:连续3次登录失败,然后成功登录(可能是暴力破解)
@@ -634,6 +637,7 @@ Pattern<DeviceEvent, ?> networkGlitchPattern = Pattern
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 // 模式:A 后跟 B,但 A 可能有多个后续 B 候选(贪婪匹配)
@@ -655,6 +659,7 @@ Pattern<Event, ?> greedyPattern = Pattern
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 // 复合条件:同一设备上温度高 或 压力高,然后停机
@@ -682,6 +687,7 @@ Pattern<AlarmEvent, ?> shutdownPattern = Pattern
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // 定义输出标签用于捕获超时事件
@@ -768,6 +774,7 @@ HAVING count(*) > 10 AND avg(amount) > 5000;
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // 优化前:所有事件都进入 CEP 引擎
@@ -793,6 +800,7 @@ Pattern<Event, ?> optimized = Pattern
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 // 窗口过小:可能错过有效匹配
@@ -809,6 +817,7 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 // 大状态 CEP 作业必须使用 RocksDB
@@ -826,6 +835,7 @@ StateTtlConfig ttlConfig = StateTtlConfig
 **优化 4: 模式去重减少 NFA 分支** [^8]
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 低效:模糊的后续条件导致 NFA 爆炸
 Pattern<Event, ?> inefficient = Pattern
     .<Event>begin("a")

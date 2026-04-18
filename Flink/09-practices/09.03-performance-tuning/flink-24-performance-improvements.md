@@ -468,6 +468,7 @@ taskmanager.network.netty.zero-copy: true
 **配置示例 6.2：POJO序列化器启用**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 定义POJO类
 public class UserEvent {
     public long userId;
@@ -538,6 +539,7 @@ taskmanager.memory.task.off-heap.size: 512m
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.CheckpointingMode;
 
 // 创建ForSt StateBackend
@@ -618,6 +620,7 @@ GROUP BY TUMBLE(rowtime, INTERVAL '1' MINUTE), u.user_id;
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.table.api.TableEnvironment;
 
 // 创建分区表

@@ -234,6 +234,7 @@ graph TB
 ### 6.2 Fraud Detection Pattern Example
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.cep.Pattern;
 import org.apache.flink.cep.CEP;
 import org.apache.flink.cep.pattern.conditions.SimpleCondition;
@@ -291,6 +292,7 @@ DataStream<Alert> alerts = patternStream
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 // 5 failed logins within 3 minutes followed by 1 successful login
@@ -336,6 +338,7 @@ patternStream
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 // Continuous temperature rise then exceeds threshold

@@ -398,6 +398,7 @@ StreamInputProcessor.processInput() [Deserialize and process]
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.datastream.DataStream;
 
@@ -422,6 +423,7 @@ env.execute("WordCount");
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 // StreamExecutionEnvironment.java
@@ -438,6 +440,7 @@ public static StreamExecutionEnvironment getExecutionEnvironment() {
 **Step 2: DataStream Transformation**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // DataStream.java
 public <R> SingleOutputStreamOperator<R> flatMap(
         FlatMapFunction<T, R> flatMapper) {
@@ -455,6 +458,7 @@ public <R> SingleOutputStreamOperator<R> flatMap(
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 // StreamExecutionEnvironment.java
@@ -481,6 +485,7 @@ protected <T> SingleOutputStreamOperator<T> addOperator(
 **Step 4: Execution Plan Generation**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // StreamGraphGenerator.java
 public StreamGraph generate() {
     streamGraph = new StreamGraph(executionConfig, checkpointConfig, savepointRestoreSettings);
@@ -500,6 +505,7 @@ public StreamGraph generate() {
 **Step 5: JobGraph Construction**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // StreamingJobGraphGenerator.java
 public JobGraph createJobGraph(StreamGraph streamGraph) {
     // Set scheduling mode
@@ -521,6 +527,7 @@ public JobGraph createJobGraph(StreamGraph streamGraph) {
 **Step 6: ExecutionGraph Construction**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // ExecutionGraphBuilder.java
 public static ExecutionGraph buildGraph(...)
     throws JobExecutionException {
@@ -777,6 +784,7 @@ flowchart TD
 **Scenario**: Break only on a specific Job ID
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Set conditional breakpoint in Dispatcher.submitJob()
 jobGraph.getJobID().toString().equals("your-job-id")
 ```
@@ -784,6 +792,7 @@ jobGraph.getJobID().toString().equals("your-job-id")
 **Scenario**: Break only on a specific Task
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Set conditional breakpoint in TaskExecutor.submitTask()
 taskDeploymentDescriptor.getJobID().toString().equals("your-job-id") &&
 taskDeploymentDescriptor.getTaskInfo().getTaskName().contains("Map")

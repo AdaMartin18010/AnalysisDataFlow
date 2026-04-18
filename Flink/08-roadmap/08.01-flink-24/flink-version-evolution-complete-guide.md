@@ -1,4 +1,11 @@
-# Flink 版本演进与路线图完整指南
+﻿> **⚠️ 前瞻性内容风险声明**
+>
+> 本文档描述的技术特性处于早期规划或社区讨论阶段，**不代表 Apache Flink 官方承诺**。
+> - 相关 FLIP 可能尚未进入正式投票，或可能在实现过程中发生显著变更
+> - 预计发布时间基于社区讨论趋势分析，存在延迟或取消的风险
+> - 生产环境选型请以 Apache Flink 官方发布为准
+> - **最后核实日期**: 2026-04-19 | **信息来源**: 社区邮件列表/FLIP/官方博客
+>\n# Flink 版本演进与路线图完整指南
 
 > **状态**: 前瞻 | **预计发布时间**: 2026-Q3 起 | **最后更新**: 2026-04-12
 >
@@ -857,6 +864,7 @@ Java支持演进:
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.api.common.typeinfo.Types;
 
 // DataSet API (1.x - 已废弃)
@@ -880,6 +888,7 @@ env.execute("WordCount");
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.api.common.typeinfo.Types;

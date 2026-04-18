@@ -296,6 +296,7 @@ public class HotItemsJob {
 ### 测试用例
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 @Test
 public void testHotItems() throws Exception {
     // 创建测试数据
@@ -346,6 +347,7 @@ docker-compose logs -f jobmanager
 ### 扩展 1: 按类别统计
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 每个类别输出独立的Top 10
 behaviorStream
     .keyBy(behavior -> behavior.category)  // 按类别分组
@@ -358,6 +360,7 @@ behaviorStream
 ### 扩展 2: 输出到 Redis
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 使用 Flink-Redis Connector 或自定义 Sink
 windowedCounts.addSink(new RedisSink<>(
     new FlinkJedisPoolConfig.Builder().setHost("redis").build(),

@@ -246,6 +246,7 @@ $$Event\_Lag = t_{current} - t_{last\_event}$$
 **Flink计算方式**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 内置指标: currentOutputWatermark - lastEmittedEventTime
 long eventLag = System.currentTimeMillis() -
                 watermarkStrategy.getCurrentWatermark();
@@ -283,9 +284,10 @@ $$Checkpoint\_Duration = t_{end} - t_{start}$$
 
 ```java
 // 关键指标
-- lastCheckpointDuration
-- lastCheckpointFullSize
-- numberOfFailedCheckpoints
+// - lastCheckpointDuration
+// - lastCheckpointFullSize
+// - numberOfFailedCheckpoints
+
 ```
 
 **性能目标**:
@@ -356,9 +358,10 @@ $$Watermark\_Progress = timestamp_{watermark}$$
 
 ```java
 // Flink Watermark指标
-- currentInputWatermark
-- currentOutputWatermark
-- watermarkLag
+// - currentInputWatermark
+// - currentOutputWatermark
+// - watermarkLag
+
 ```
 
 **Watermark停滞检测**:

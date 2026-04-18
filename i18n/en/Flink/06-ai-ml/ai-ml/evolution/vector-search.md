@@ -59,6 +59,7 @@ $$
 ### 5.1 Vector Index
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 VectorIndex index = new HNSWIndex.Builder()
     .withDimension(768)
     .withM(16)
@@ -70,6 +71,7 @@ VectorIndex index = new HNSWIndex.Builder()
 ### 6.1 Vector Query
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 List<Vector> results = index.search(queryVector, 10);
 ```
 

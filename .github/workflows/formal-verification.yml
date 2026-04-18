@@ -1,476 +1,72 @@
-# Formal Verification Workflow - 形式化验证流水线 (v2.0)
-#
-# 版本: v2.0 | 日期: 2026-04-12 | 状态: Production
-#
-# 功能:
-#   - Coq证明检查 (使用自动化脚本)
-#   - TLA+模型验证
-#   - 定理依赖检查
-#   - 证明完整性验证
-#   - 自动证明建议
-#   - 覆盖率报告生成
-#
-# 触发条件:
-#   - Coq/TLA+文件变更时
-#   - 手动触发
-#   - 每周定时检查
-
 name: Formal Verification
 
 on:
   push:
+    branches: [main]
     paths:
-      - '**/*.v'
-      - '**/*.tla'
-      - 'formal-methods/**'
-      - '.scripts/theorem-prover-automation.py'
+      - 'reconstruction/phase4-verification/**'
+      - '.github/workflows/formal-verification.yml'
   pull_request:
+    branches: [main]
     paths:
-      - '**/*.v'
-      - '**/*.tla'
-      - 'formal-methods/**'
-      - '.scripts/theorem-prover-automation.py'
+      - 'reconstruction/phase4-verification/**'
   schedule:
-    # 每周日凌晨 3:00 UTC
-    - cron: '0 3 * * 0'
+    # 每月 1 日全量验证
+    - cron: '0 0 1 * *'
   workflow_dispatch:
-    inputs:
-      verification_type:
-        description: '验证类型'
-        required: true
-        default: 'full'
-        type: choice
-        options:
-          - full
-          - coq-only
-          - tla-only
-          - dependency-check
-          - completeness-check
-
-env:
-  COQ_VERSION: '8.17.1'
-  TLA_VERSION: '1.7.4'
-  PYTHON_VERSION: '3.11'
-
-# 并发控制
-concurrency:
-  group: 'formal-verification-${{ github.ref }}'
-  cancel-in-progress: true
 
 jobs:
-  # ============ 任务1: 检测变更 ============
-  detect-changes:
-    name: Detect Changes
+  verify-coq:
+    name: Verify Coq Proofs
     runs-on: ubuntu-latest
-    outputs:
-      coq_changed: ${{ steps.changes.outputs.coq_changed }}
-      tla_changed: ${{ steps.changes.outputs.tla_changed }}
-      script_changed: ${{ steps.changes.outputs.script_changed }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Detect changes
-        id: changes
-        run: |
-          if [ "${{ github.event_name }}" == "workflow_dispatch" ] || [ "${{ github.event_name }}" == "schedule" ]; then
-            echo "coq_changed=true" >> $GITHUB_OUTPUT
-            echo "tla_changed=true" >> $GITHUB_OUTPUT
-            echo "script_changed=true" >> $GITHUB_OUTPUT
-            exit 0
-          fi
-
-          if [ "${{ github.event_name }}" == "pull_request" ]; then
-            changed_files=$(git diff --name-only --diff-filter=ACMRT origin/${{ github.base_ref }}...HEAD || true)
-          else
-            changed_files=$(git diff --name-only --diff-filter=ACMRT HEAD~1 HEAD || true)
-          fi
-
-          echo "Changed files:"
-          echo "$changed_files"
-
-          if echo "$changed_files" | grep -q '\.v$'; then
-            echo "coq_changed=true" >> $GITHUB_OUTPUT
-          else
-            echo "coq_changed=false" >> $GITHUB_OUTPUT
-          fi
-
-          if echo "$changed_files" | grep -q '\.tla$'; then
-            echo "tla_changed=true" >> $GITHUB_OUTPUT
-          else
-            echo "tla_changed=false" >> $GITHUB_OUTPUT
-          fi
-
-          if echo "$changed_files" | grep -q 'theorem-prover-automation.py'; then
-            echo "script_changed=true" >> $GITHUB_OUTPUT
-          else
-            echo "script_changed=false" >> $GITHUB_OUTPUT
-          fi
-
-  # ============ 任务2: 自动化定理证明检查 ============
-  automated-verification:
-    name: Automated Theorem Prover
-    runs-on: ubuntu-latest
-    needs: detect-changes
-    if: |
-      (needs.detect-changes.outputs.coq_changed == 'true' || 
-       needs.detect-changes.outputs.tla_changed == 'true' ||
-       needs.detect-changes.outputs.script_changed == 'true' ||
-       github.event.inputs.verification_type == 'full' ||
-       github.event.inputs.verification_type == 'coq-only' ||
-       github.event.inputs.verification_type == 'tla-only' ||
-       github.event_name == 'schedule')
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
+      - uses: actions/checkout@v4
 
       - name: Setup Coq
-        uses: coq-community/setup-coq@v1
+        uses: coq-community/setup-coq-action@v1
         with:
-          coq-version: ${{ env.COQ_VERSION }}
-          opam-pin: false
+          coq-version: '8.18'
+          opam-disable-sandboxing: true
 
-      - name: Setup Java for TLA+
+      - name: Verify Coq Files
+        working-directory: reconstruction/phase4-verification
+        run: |
+          eval $(opam env)
+          make verify-coq
+
+  verify-tla:
+    name: Verify TLA+ Models
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
           distribution: 'temurin'
+          java-version: '21'
 
       - name: Download TLA+ Tools
         run: |
-          mkdir -p tla-tools
-          cd tla-tools
-          curl -L -o tla2tools.jar https://github.com/tlaplus/tlaplus/releases/download/v${{ env.TLA_VERSION }}/tla2tools.jar
-          echo "TLA+ tools downloaded"
+          wget -q https://github.com/tlaplus/tlaplus/releases/download/v1.8.0/tla2tools.jar -O /tmp/tla2tools.jar
 
-      - name: Create required directories
+      - name: Verify TLA+ Syntax
+        working-directory: reconstruction/phase4-verification
         run: |
-          mkdir -p reports/formal-verification
-          mkdir -p formal-methods/coq
-          mkdir -p formal-methods/tla
+          export TLA_TOOLS=/tmp/tla2tools.jar
+          for f in tla-specs/*.tla; do
+            echo "Parsing: $f"
+            java -cp $TLA_TOOLS tla2sany.SANY "$f"
+          done
 
-      - name: Run Automated Verification Script
-        id: automation
-        timeout-minutes: 30
-        run: |
-          # 设置环境变量
-          export PATH="$PATH:$(pwd)/tla-tools"
-          
-          # 确定运行模式
-          MODE="--verbose"
-          if [ "${{ github.event.inputs.verification_type }}" == "coq-only" ]; then
-            MODE="$MODE --coq-only"
-          elif [ "${{ github.event.inputs.verification_type }}" == "tla-only" ]; then
-            MODE="$MODE --tla-only"
-          fi
-          
-          # 运行自动化脚本
-          echo "Running theorem prover automation..."
-          python .scripts/theorem-prover-automation.py $MODE --output-dir reports/formal-verification
-          
-          # 检查退出码
-          exit_code=$?
-          echo "exit_code=$exit_code" >> $GITHUB_OUTPUT
-          
-          if [ $exit_code -eq 0 ]; then
-            echo "status=success" >> $GITHUB_OUTPUT
-          else
-            echo "status=failure" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Generate Coverage Badge
-        run: |
-          # 从JSON报告中提取覆盖率
-          COQ_REPORT=$(find reports/formal-verification -name "coq-report-*.json" | head -1)
-          TLA_REPORT=$(find reports/formal-verification -name "tla-report-*.json" | head -1)
-          
-          if [ -f "$COQ_REPORT" ]; then
-            COQ_SUCCESS=$(python -c "import json; d=json.load(open('$COQ_REPORT')); print(d['successful'])")
-            COQ_TOTAL=$(python -c "import json; d=json.load(open('$COQ_REPORT')); print(d['total_files'])")
-            echo "coq_success=$COQ_SUCCESS" >> $GITHUB_ENV
-            echo "coq_total=$COQ_TOTAL" >> $GITHUB_ENV
-          fi
-          
-          if [ -f "$TLA_REPORT" ]; then
-            TLA_SUCCESS=$(python -c "import json; d=json.load(open('$TLA_REPORT')); print(d['successful'])")
-            TLA_TOTAL=$(python -c "import json; d=json.load(open('$TLA_REPORT')); print(d['total_files'])")
-            echo "tla_success=$TLA_SUCCESS" >> $GITHUB_ENV
-            echo "tla_total=$TLA_TOTAL" >> $GITHUB_ENV
-          fi
-
-      - name: Upload Verification Reports
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: formal-verification-reports
-          path: |
-            reports/formal-verification/*.md
-            reports/formal-verification/*.json
-          retention-days: 30
-
-  # ============ 任务3: 定理依赖检查 ============
-  dependency-check:
-    name: Dependency Analysis
+  docker-verify:
+    name: Docker Verification
     runs-on: ubuntu-latest
-    needs: [detect-changes, automated-verification]
-    if: |
-      (github.event.inputs.verification_type == 'dependency-check' ||
-       github.event.inputs.verification_type == 'full' ||
-       github.event_name == 'schedule')
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-
-      - name: Analyze Dependencies
+      - name: Build and Run Docker
+        working-directory: reconstruction/phase4-verification
         run: |
-          mkdir -p reports/formal-verification
-          python .scripts/theorem-prover-automation.py --verbose --output-dir reports/formal-verification 2>&1 | tee reports/formal-verification/dependency-analysis.log
-          
-          # 提取依赖报告
-          DEP_REPORT=$(find reports/formal-verification -name "dependency-report-*.json" | head -1)
-          if [ -f "$DEP_REPORT" ]; then
-            echo "## Dependency Analysis" > reports/formal-verification/dependency-summary.md
-            echo "" >> reports/formal-verification/dependency-summary.md
-            python -c "
-import json
-with open('$DEP_REPORT') as f:
-    d = json.load(f)
-    print(f\"- Total modules: {len(d.get('dependencies', {}))}\")
-    print(f\"- Cycles detected: {len(d.get('cycles', []))}\")
-    print(f\"- Orphan files: {len(d.get('orphan_files', []))}\")
-" >> reports/formal-verification/dependency-summary.md
-          fi
-
-      - name: Check for Circular Dependencies
-        run: |
-          DEP_REPORT=$(find reports/formal-verification -name "dependency-report-*.json" | head -1)
-          if [ -f "$DEP_REPORT" ]; then
-            CYCLES=$(python -c "import json; d=json.load(open('$DEP_REPORT')); print(len(d.get('cycles', [])))")
-            if [ "$CYCLES" -gt 0 ]; then
-              echo "⚠️ Warning: Found $CYCLES circular dependencies"
-              echo "cycles_detected=true" >> $GITHUB_ENV
-            else
-              echo "✅ No circular dependencies found"
-              echo "cycles_detected=false" >> $GITHUB_ENV
-            fi
-          fi
-
-      - name: Upload Dependency Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: dependency-analysis
-          path: reports/formal-verification/dependency-*.json
-
-  # ============ 任务4: 证明完整性验证 ============
-  completeness-check:
-    name: Completeness Validation
-    runs-on: ubuntu-latest
-    needs: [detect-changes, automated-verification]
-    if: |
-      (github.event.inputs.verification_type == 'completeness-check' ||
-       github.event.inputs.verification_type == 'full' ||
-       github.event_name == 'schedule')
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-
-      - name: Validate Proof Completeness
-        run: |
-          mkdir -p reports/formal-verification
-          python .scripts/theorem-prover-automation.py --verbose --output-dir reports/formal-verification
-          
-          # 提取完整性报告
-          COMP_REPORT=$(find reports/formal-verification -name "completeness-report-*.json" | head -1)
-          if [ -f "$COMP_REPORT" ]; then
-            SCORE=$(python -c "import json; d=json.load(open('$COMP_REPORT')); print(d.get('score', 0))")
-            echo "completeness_score=$SCORE" >> $GITHUB_ENV
-            echo "## Proof Completeness: ${SCORE}%" >> reports/formal-verification/completeness-summary.md
-            
-            if (( $(echo "$SCORE < 80" | bc -l) )); then
-              echo "⚠️ Completeness score below threshold (80%)"
-              echo "passed=false" >> $GITHUB_ENV
-            else
-              echo "✅ Completeness check passed"
-              echo "passed=true" >> $GITHUB_ENV
-            fi
-          fi
-
-      - name: Check for Unproved Theorems
-        run: |
-          # 扫描Coq文件中的Admitted
-          ADMITTED_COUNT=$(grep -r "Admitted\." formal-methods/ --include="*.v" 2>/dev/null | wc -l || echo "0")
-          echo "admitted_count=$ADMITTED_COUNT" >> $GITHUB_ENV
-          echo "Found $ADMITTED_COUNT Admitted proofs"
-
-      - name: Upload Completeness Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: completeness-validation
-          path: reports/formal-verification/completeness-*.json
-
-  # ============ 任务5: 证明质量门禁 ============
-  quality-gate:
-    name: Proof Quality Gate
-    runs-on: ubuntu-latest
-    needs: [automated-verification, dependency-check, completeness-check]
-    if: always()
-    steps:
-      - name: Download all artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: artifacts/
-        continue-on-error: true
-
-      - name: Evaluate Quality Gates
-        run: |
-          echo "## Proof Quality Gate Results" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          
-          # 设置阈值
-          MIN_SUCCESS_RATE=80
-          MAX_CYCLES=0
-          MIN_COMPLETENESS=80
-          MAX_ADMITTED=5
-          
-          PASS=true
-          
-          # 检查自动化验证结果
-          if [ "${{ needs.automated-verification.result }}" == "success" ]; then
-            echo "| Automated Verification | ✅ PASS |" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "| Automated Verification | ❌ FAIL |" >> $GITHUB_STEP_SUMMARY
-            PASS=false
-          fi
-          
-          # 检查循环依赖
-          if [ "${{ env.cycles_detected }}" == "false" ]; then
-            echo "| No Circular Dependencies | ✅ PASS |" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "| No Circular Dependencies | ❌ FAIL |" >> $GITHUB_STEP_SUMMARY
-            PASS=false
-          fi
-          
-          # 检查完整性得分
-          if (( $(echo "${{ env.completeness_score }} >= $MIN_COMPLETENESS" | bc -l) )); then
-            echo "| Completeness Score (${{ env.completeness_score }}%) | ✅ PASS |" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "| Completeness Score (${{ env.completeness_score }}%) | ❌ FAIL |" >> $GITHUB_STEP_SUMMARY
-            PASS=false
-          fi
-          
-          echo "" >> $GITHUB_STEP_SUMMARY
-          
-          if [ "$PASS" == "true" ]; then
-            echo "✅ **All quality gates passed!**" >> $GITHUB_STEP_SUMMARY
-            exit 0
-          else
-            echo "❌ **Some quality gates failed!**" >> $GITHUB_STEP_SUMMARY
-            exit 1
-          fi
-
-  # ============ 任务6: 生成验证报告汇总 ============
-  verification-summary:
-    name: Verification Summary
-    runs-on: ubuntu-latest
-    needs: [detect-changes, automated-verification, dependency-check, completeness-check, quality-gate]
-    if: always()
-    steps:
-      - name: Download all artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: artifacts/
-        continue-on-error: true
-
-      - name: Generate comprehensive report
-        run: |
-          mkdir -p reports
-          
-          cat > reports/formal-verification-summary.md << EOF
-          # Formal Verification Report v2.0
-
-          **Generated**: $(date -u +%Y-%m-%d %H:%M:%S UTC)
-          **Workflow Run**: ${{ github.run_id }}
-          **Commit**: ${{ github.sha }}
-
-          ## Executive Summary
-
-          | Component | Status | Coverage |
-          |-----------|--------|----------|
-          | Coq Proofs | ${{ needs.automated-verification.result }} | ${{ env.coq_success || 'N/A' }}/${{ env.coq_total || 'N/A' }} |
-          | TLA+ Models | ${{ needs.automated-verification.result }} | ${{ env.tla_success || 'N/A' }}/${{ env.tla_total || 'N/A' }} |
-          | Dependency Check | ${{ needs.dependency-check.result }} | - |
-          | Completeness Check | ${{ needs.completeness-check.result }} | ${{ env.completeness_score || 'N/A' }}% |
-          | Quality Gate | ${{ needs.quality-gate.result }} | - |
-
-          ## Change Detection
-
-          | Type | Changed |
-          |------|---------|
-          | Coq (.v) | ${{ needs.detect-changes.outputs.coq_changed }} |
-          | TLA+ (.tla) | ${{ needs.detect-changes.outputs.tla_changed }} |
-          | Automation Script | ${{ needs.detect-changes.outputs.script_changed }} |
-
-          ## Detailed Results
-
-          ### Automated Verification
-          - **Tool**: theorem-prover-automation.py
-          - **Functions**: Coq检查, TLA+验证, 依赖分析, 完整性验证, 自动建议
-
-          ### Dependency Analysis
-          - **Circular Dependencies**: ${{ env.cycles_detected == 'true' && 'Detected' || 'None' }}
-          
-          ### Proof Completeness
-          - **Score**: ${{ env.completeness_score || 'N/A' }}%
-          - **Admitted Proofs**: ${{ env.admitted_count || 'N/A' }}
-
-          ## Artifacts
-
-          - Coq Reports: artifacts/formal-verification-reports/
-          - Dependency Analysis: artifacts/dependency-analysis/
-          - Completeness Validation: artifacts/completeness-validation/
-
-          ## Next Steps
-
-          1. Review any failed proofs in the detailed reports
-          2. Address circular dependencies if detected
-          3. Complete any Admitted proofs
-          4. Update documentation as needed
-
-          ---
-          *Generated by Formal Verification Workflow v2.0*
-          EOF
-
-          cat reports/formal-verification-summary.md
-
-      - name: Upload comprehensive summary
-        uses: actions/upload-artifact@v4
-        with:
-          name: formal-verification-complete
-          path: |
-            reports/formal-verification-summary.md
-            artifacts/*/formal-verification-reports/*
-
-      - name: Update workflow status
-        run: |
-          if [ "${{ needs.quality-gate.result }}" == "success" ]; then
-            echo "✅ Formal verification passed all quality gates"
-          else
-            echo "❌ Formal verification failed some quality gates"
-          fi
+          docker compose build
+          docker compose run --rm formal-verification

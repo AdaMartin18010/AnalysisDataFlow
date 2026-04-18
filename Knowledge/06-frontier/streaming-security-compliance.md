@@ -439,6 +439,7 @@ log.retention.hours=168
 **JAAS配置 - Kerberos集成**：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 KafkaServer {
     com.sun.security.auth.module.Krb5LoginModule required
     useKeyTab=true

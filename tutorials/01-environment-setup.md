@@ -657,6 +657,7 @@ stop-cluster.sh
 **步骤 5: 实时模板配置**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 创建 Live Template: flink-main
 
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;

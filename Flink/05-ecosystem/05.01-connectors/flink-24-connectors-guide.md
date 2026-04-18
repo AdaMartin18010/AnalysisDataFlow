@@ -149,6 +149,7 @@ ConnectorClassification = ⟨维护主体, 版本策略, 质量保证, 支持等
 **Kafka 3.x Source 形式化定义**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 Kafka3Source<T> = ⟨BootstrapServers, TopicPattern, ConsumerProtocol,
                    OffsetReset, IsolationLevel, PartitionDiscovery⟩
 
@@ -1128,6 +1129,7 @@ Phase 2 (Commit) 扩展性:
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // Kafka 3.x Source with KRaft mode
@@ -1154,6 +1156,7 @@ DataStream<String> stream = env.fromSource(
 **Kafka 3.x Sink (Exactly-Once)**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Kafka 3.x Sink with KRaft optimization
 KafkaSink<String> sink = KafkaSink.<String>builder()
     .setBootstrapServers("kafka-1:9092,kafka-2:9092,kafka-3:9092")
@@ -1483,6 +1486,7 @@ CREATE TABLE mysql_sink (
 **异步 JDBC Lookup**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // JDBC Async Lookup Join (JDBC 4.0 新特性)
 TableResult result = tableEnv.executeSql(""
     + "SELECT "
@@ -1504,6 +1508,7 @@ TableResult result = tableEnv.executeSql(""
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // AWS Kinesis 4.x Source with Auto-Scaling

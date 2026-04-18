@@ -255,6 +255,7 @@ Late data refers to data with event time less than current Watermark but physica
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 .window(TumblingEventTimeWindows.of(Time.minutes(1)))
@@ -265,6 +266,7 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 .window(TumblingEventTimeWindows.of(Time.minutes(1)))
@@ -275,6 +277,7 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 OutputTag<Event> lateDataTag = new OutputTag<Event>("late-data"){};
@@ -374,6 +377,7 @@ Where $L$ is Allowed Lateness.
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 DataStream<Event> stream = env.fromSource(kafkaSource,
@@ -386,6 +390,7 @@ DataStream<Event> stream = env.fromSource(kafkaSource,
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 DataStream<Transaction> stream = env.fromSource(kafkaSource,
@@ -402,6 +407,7 @@ DataStream<Transaction> stream = env.fromSource(kafkaSource,
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 stream.keyBy(Event::getPageId)
@@ -413,6 +419,7 @@ stream.keyBy(Event::getPageId)
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 stream.keyBy(SensorReading::getSensorId)
@@ -424,6 +431,7 @@ stream.keyBy(SensorReading::getSensorId)
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 stream.keyBy(ClickEvent::getUserId)
@@ -438,6 +446,7 @@ stream.keyBy(ClickEvent::getUserId)
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 

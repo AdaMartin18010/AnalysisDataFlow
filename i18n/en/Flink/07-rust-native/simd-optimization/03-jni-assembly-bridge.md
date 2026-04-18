@@ -49,6 +49,7 @@ As $n \to \infty$, efficiency approaches $T(1) / (T(n)/n)$, i.e., the vectorizat
 Vector API is Java's standard SIMD programming interface, providing the following abstractions:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // VectorSpecies defines vector shape
 VectorSpecies<Float> SPECIES = FloatVector.SPECIES_256;
 
@@ -141,6 +142,7 @@ JVM array columnar layouts satisfy SIMD load alignment conditions:
 Using `sun.misc.Unsafe` or `MemorySegment` can allocate SIMD-aligned memory:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 32-byte aligned allocation
 long address = unsafe.allocateMemory(size + 32);
 long aligned = (address + 31) & ~31;

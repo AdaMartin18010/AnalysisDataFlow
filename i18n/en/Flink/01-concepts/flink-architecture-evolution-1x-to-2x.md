@@ -255,6 +255,7 @@ $$
 1. **Ordered Callback Guarantee**:
 
    ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
    // State operations for the same key maintain order
    state.getAsync(key)
        .thenApply(v -> { /* processing 1 */ })

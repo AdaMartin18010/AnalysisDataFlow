@@ -378,6 +378,7 @@ CREATE TABLE user_events (
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.api.common.typeinfo.Types;
 
 // Java Table API
@@ -589,6 +590,7 @@ GROUP BY DATE_FORMAT(event_time, 'yyyy-MM-dd');
 **Table API Equivalent**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Java Table API
 Table result = tableEnv.from("orders")
     .groupBy($("user_id"))
@@ -683,6 +685,7 @@ SELECT * FROM users WHERE email REGEXP '^[a-z]+@[a-z]+\.com$';
 **Table API Equivalent**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Java
 Table result = tableEnv.from("user_events")
     .select($("user_id"), $("event_type"), $("event_time"), $("event_date"))
@@ -819,6 +822,7 @@ Rank(strategy=[RetractStrategy], rankType=[ROW_NUMBER],
 **Table API Equivalent**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Java Table API
 Table topN = tableEnv.from("product_sales")
     .window(Tumble.over(lit(1).hours()).on($("sale_time")).as("w"))
@@ -967,6 +971,7 @@ GROUP BY user_id, window_start, window_end, window_time;
 **Table API Equivalent**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Java Table API
 Table windowed = tableEnv.from("user_events")
     .window(Tumble.over(lit(1).hours()).on($("event_time")).as("w"))
@@ -1075,6 +1080,7 @@ LEFT JOIN exchange_rates FOR SYSTEM_TIME AS OF o.order_time e
 **Table API Equivalent**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Java Table API
 Table result = tableEnv.from("orders")
     .join(
@@ -1381,6 +1387,7 @@ WHERE location_count >= 3;
 **Table API Equivalent**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Java Table API (Flink 1.17+)
 Pattern<Row, Row> pattern = Pattern.<Row>begin("A")
     .next("B").where(new SimpleCondition<Row>() {
@@ -1658,6 +1665,7 @@ DROP MATERIALIZED TABLE hourly_sales_summary;
 **Table API Equivalent**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Java Table API (Flink 2.2+)
 tableEnv.executeSql(
     "CREATE MATERIALIZED TABLE hourly_sales_summary " +

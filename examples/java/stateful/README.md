@@ -60,6 +60,7 @@ java -jar target/flink-stateful-1.0.0.jar
 ## 状态后端配置
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // MemoryStateBackend - 开发测试
 env.setStateBackend(new HashMapStateBackend()  // MemoryStateBackend已弃用，使用HashMapStateBackend
 // ));
@@ -75,6 +76,7 @@ env.setStateBackend(new EmbeddedRocksDBStateBackend());
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 StateTtlConfig ttlConfig = StateTtlConfig

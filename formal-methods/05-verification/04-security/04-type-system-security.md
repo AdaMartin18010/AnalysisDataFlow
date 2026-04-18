@@ -447,6 +447,7 @@ Java通过字节码验证和类型检查提供运行时类型安全。
 **类型层次**：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Def-V-04-07: 类型层次结构
 Object
 ├── String
@@ -459,6 +460,7 @@ Object
 **泛型类型安全**：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 编译期类型检查
 List<String> strings = new ArrayList<>();
 strings.add("hello");
@@ -497,6 +499,7 @@ fn safe_buffer() {
 ```
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Java - 安全(运行时检查)
 void safeBufferJava() {
     byte[] buf = new byte[10];

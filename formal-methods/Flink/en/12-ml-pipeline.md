@@ -357,6 +357,7 @@ public class MLPipelineExample {
 ### 6.2 Online Learning Configuration
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Online learning with periodic model updates
 OnlineLogisticRegression onlineLearner = new OnlineLogisticRegression()
     .setLearningRate(0.01)

@@ -364,6 +364,7 @@ Flink 技术栈采用五层架构设计，遵循计算机系统经典的"抽象-
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.CheckpointingMode;
 
@@ -389,6 +390,7 @@ env.setStateBackend(new RocksDBStateBackend("hdfs://..."));
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.table.api.TableEnvironment;
 
 // Table API 代码示例
@@ -424,6 +426,7 @@ tableEnv.executeSql("INSERT INTO sink SELECT * FROM source");
 **实例**：Kafka Connector 实践经验指导 IoT 案例实现
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 来自 case-iot-stream-processing.md 的最佳实践
 // 基于 flink-connectors-ecosystem-complete-guide.md 的指导
 

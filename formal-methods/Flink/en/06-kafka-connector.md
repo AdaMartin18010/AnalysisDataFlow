@@ -272,6 +272,7 @@ linger.ms=0
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // Modern FLIP-27 Source API
@@ -294,6 +295,7 @@ DataStream<String> stream = env.fromSource(
 ### 6.2 Exactly-Once Kafka Sink
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 KafkaSink<String> sink = KafkaSink.<String>builder()
     .setBootstrapServers("kafka:9092")
     .setRecordSerializer(KafkaRecordSerializationSchema.builder()
@@ -310,6 +312,7 @@ stream.sinkTo(sink);
 ### 6.3 Custom Partitioner for Keyed Data
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 FlinkKafkaProducer<String> producer = new FlinkKafkaProducer<>(
     "output-topic",
     new KeyedSerializationSchemaWrapper<>(new SimpleStringSchema()),

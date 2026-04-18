@@ -494,6 +494,7 @@ $$
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // 按用户ID分区,确保同一用户的事件路由到同一分区
@@ -506,6 +507,7 @@ DataStream<Transaction> partitioned = transactions
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 StateTtlConfig ttlConfig = StateTtlConfig
@@ -556,6 +558,7 @@ state.backend.rocksdb.memory.high-prio-pool-ratio: 0.1
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -589,6 +592,7 @@ DataStream<ScoredTransaction> scored = AsyncDataStream.unorderedWait(
 **2. 内存缓存**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Caffeine本地缓存热点用户画像
 LoadingCache<String, UserProfile> profileCache = Caffeine.newBuilder()
     .maximumSize(100_000)
@@ -1774,6 +1778,7 @@ xychart-beta
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.api.common.state.ValueState;
 import org.apache.flink.api.common.state.ValueStateDescriptor;
 import org.apache.flink.streaming.api.windowing.time.Time;
@@ -1801,6 +1806,7 @@ ValueState<AggregatedStats> statsState = getRuntimeContext().getState(statsDesc)
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 // 使用简化的模式条件,避免复杂计算
@@ -1828,6 +1834,7 @@ Pattern<Transaction, ?> pattern = Pattern
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -1886,6 +1893,7 @@ Layer 5 (批处理): 事后分析 - 模式发现
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.api.common.state.ValueState;
 
 // 在线特征 - 毫秒级延迟
@@ -1904,6 +1912,7 @@ HistoricalFeatureService offlineFeatures;
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 

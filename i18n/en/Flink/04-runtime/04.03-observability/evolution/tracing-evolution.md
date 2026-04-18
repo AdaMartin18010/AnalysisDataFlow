@@ -68,6 +68,7 @@ tracing.otlp.endpoint: http://otel-collector:4317
 ### 6.1 Custom Span
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 Span span = tracer.spanBuilder("process").startSpan();
 try (Scope scope = span.makeCurrent()) {
     // Processing logic

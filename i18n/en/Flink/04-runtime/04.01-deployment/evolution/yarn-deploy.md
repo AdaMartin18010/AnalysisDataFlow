@@ -63,6 +63,7 @@ yarn.application-attempt-failures-validity-interval: 3600000
 ### 6.1 Dynamic Resources
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 env.getConfig().setAutoWatermarkInterval(200);
 ```
 

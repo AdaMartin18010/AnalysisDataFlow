@@ -65,6 +65,7 @@ $$
 ### 5.1 Paimon Sink
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 FlinkSink.forRowData()
     .withTable(table)
     .withOverwritePartition(partition)

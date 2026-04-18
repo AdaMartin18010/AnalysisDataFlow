@@ -303,6 +303,7 @@ public class AuditEntry {
 ### Flink Row-Level Security Policy
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Create table with row-level security
 tEnv.executeSql("""
     CREATE TABLE user_events (

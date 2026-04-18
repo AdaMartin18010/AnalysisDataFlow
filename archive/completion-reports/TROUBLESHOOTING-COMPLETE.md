@@ -552,6 +552,7 @@ graph TB
 **预防措施**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 1. 启用Buffer Debloating（Flink 1.14+）
 env.getConfig().setBufferDebloatingEnabled(true);
 env.getConfig().setBufferDebloatTarget(1000); // 目标1秒缓冲
@@ -901,6 +902,7 @@ flowchart TD
 **Kafka连接器配置优化**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Kafka Source配置
 KafkaSource<String> source = KafkaSource.<String>builder()
     .setBootstrapServers("kafka:9092")

@@ -667,6 +667,7 @@ kafka-acls --add --deny-principal User:'*' \
 **血缘追踪优化**：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 伪代码:采样血缘追踪
 class LineageTracker {
 

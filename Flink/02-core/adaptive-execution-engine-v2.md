@@ -1125,52 +1125,63 @@ Throughput
 **实践 1: 电商实时推荐系统**
 
 ```java
-
+import java.time.Duration;
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.assigners.EventTimeSessionWindows;
+import org.apache.flink.streaming.api.windowing.time.Time;
 
-// 电商场景:流量波动大,存在热点商品
-StreamExecutionEnvironment env =
-    StreamExecutionEnvironment.getExecutionEnvironment();
+public class Example {
+    public static void main(String[] args) throws Exception {
 
-// 启用 AEE V2
-Configuration config = new Configuration();
+        // 电商场景:流量波动大,存在热点商品
+        StreamExecutionEnvironment env =
+            StreamExecutionEnvironment.getExecutionEnvironment();
 
-// 1. 自适应调度器配置
-config.setString("jobmanager.scheduler", "Adaptive");
-config.setInteger("adaptive-scheduler.min-parallelism", 4);
-config.setInteger("adaptive-scheduler.max-parallelism", 64);
-config.setDouble("adaptive-scheduler.target-utilization", 0.70);
+        // 启用 AEE V2
+        Configuration config = new Configuration();
 
-// 2. 数据倾斜处理(电商常见热点商品)
-config.setBoolean("skew-detection.enabled", true);
-config.setDouble("skew-detection.hot-key.threshold", 0.03); // 3% 为热点
-config.setString("skew-detection.strategy", "LOCAL_AGG");
+        // 1. 自适应调度器配置
+        config.setString("jobmanager.scheduler", "Adaptive");
+        config.setInteger("adaptive-scheduler.min-parallelism", 4);
+        config.setInteger("adaptive-scheduler.max-parallelism", 64);
+        config.setDouble("adaptive-scheduler.target-utilization", 0.70);
 
-// 3. 背压响应(大促期间流量激增)
-config.setBoolean("backpressure-adaptive.enabled", true);
-config.setString("backpressure-adaptive.response", "SCALE_UP");
+        // 2. 数据倾斜处理(电商常见热点商品)
+        config.setBoolean("skew-detection.enabled", true);
+        config.setDouble("skew-detection.hot-key.threshold", 0.03); // 3% 为热点
+        config.setString("skew-detection.strategy", "LOCAL_AGG");
 
-// 4. 快速响应配置
-config.setLong("adaptive-scheduler.scaling-interval.min", 30000); // 30s
+        // 3. 背压响应(大促期间流量激增)
+        config.setBoolean("backpressure-adaptive.enabled", true);
+        config.setString("backpressure-adaptive.response", "SCALE_UP");
 
-env.configure(config);
+        // 4. 快速响应配置
+        config.setLong("adaptive-scheduler.scaling-interval.min", 30000); // 30s
 
-// 应用代码:用户行为流处理
-dataStream
-    .assignTimestampsAndWatermarks(
-        WatermarkStrategy.<UserEvent>forBoundedOutOfOrderness(
-            Duration.ofSeconds(5)
-        )
-    )
-    .keyBy(UserEvent::getProductId)
-    .window(EventTimeSessionWindows.withGap(Duration.ofMinutes(10)))
-    .aggregate(new RecommendationAggregate())
-    .addSink(new RecommendationSink());
+        env.configure(config);
+
+        // 应用代码:用户行为流处理
+        dataStream
+            .assignTimestampsAndWatermarks(
+                WatermarkStrategy.<UserEvent>forBoundedOutOfOrderness(
+                    Duration.ofSeconds(5)
+                )
+            )
+            .keyBy(UserEvent::getProductId)
+            .window(EventTimeSessionWindows.withGap(Duration.ofMinutes(10)))
+            .aggregate(new RecommendationAggregate())
+            .addSink(new RecommendationSink());
+
+    }
+}
 ```
 
 **实践 2: 金融风控实时检测**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 金融场景:低延迟要求,数据分布均匀
 Configuration config = new Configuration();
 

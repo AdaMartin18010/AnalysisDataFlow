@@ -258,6 +258,7 @@ Operator2.0 = (Transform, StateReference, ProcessingLogic)
 **Synchronous state access (Flink 1.x)**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Sync semantics: state transition completes immediately
 CountState current = state.value();  // blocking call
 current.count++;
@@ -269,6 +270,7 @@ Formal semantics: $\delta(s, e) = s'$ -- state transition completes immediately
 **Asynchronous state access (Flink 2.0)**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Async semantics: state transition completes with delay
 state.getAsync(key)
     .thenApply(current -> { current.count++; return current; })
@@ -379,6 +381,7 @@ Time complexity: O(|DirtySet|) << O(|State|)
 **Flink 1.x (synchronous)**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 public void processElement(Event event, Context ctx) {
     CountState current = state.value();  // blocking
     current.increment();
@@ -390,6 +393,7 @@ public void processElement(Event event, Context ctx) {
 **Flink 2.0 (asynchronous)**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 public void processElement(Event event, Context ctx) {
     state.getAsync(event.getKey())
         .thenApply(current -> { current.increment(); return current; })

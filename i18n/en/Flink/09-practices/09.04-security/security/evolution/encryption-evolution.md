@@ -69,6 +69,7 @@ security.ssl.internal.enabled: true
 ### 6.1 Key Management
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 KeyVault vault = KeyVault.create(config);
 SecretKey key = vault.getKey("state-encryption");
 ```

@@ -350,6 +350,7 @@ Compensation = CancelFlight(f).CancelHotel(h)
 ### 6.3 事件网关实现
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import java.util.List;
 
 // 基于事件的排他网关实现

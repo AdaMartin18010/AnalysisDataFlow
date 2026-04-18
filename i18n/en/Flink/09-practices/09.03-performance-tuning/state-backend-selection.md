@@ -343,6 +343,7 @@ $$
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -368,6 +369,7 @@ StateTtlConfig ttlConfig = StateTtlConfig
 ### Example 6.2: RocksDBStateBackend Production Configuration
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Create EmbeddedRocksDBStateBackend (enable incremental Checkpoint)
 EmbeddedRocksDBStateBackend backend =
     new EmbeddedRocksDBStateBackend(true);
@@ -389,6 +391,7 @@ optionsFactory.setRocksDBOptions(
 ### Example 6.3: Incremental Checkpoint Configuration and Monitoring
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Enable incremental checkpointing
 EmbeddedRocksDBStateBackend backend =
     new EmbeddedRocksDBStateBackend(true);
@@ -430,6 +433,7 @@ flink run -s hdfs:///savepoints/savepoint-xxxxx \
 **Incorrect Configuration**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 conf.setString("taskmanager.memory.managed.size", "64mb");  // Too small!
 ```
 
@@ -438,6 +442,7 @@ conf.setString("taskmanager.memory.managed.size", "64mb");  // Too small!
 **Correct Approach**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 conf.setString("taskmanager.memory.managed.fraction", "0.4");
 // Or
 optionsFactory.setRocksDBOptions(

@@ -259,6 +259,7 @@ FROM user_events;
 ### 6.3 Java API 类型使用
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.table.api.DataTypes;
 import org.apache.flink.table.api.Schema;
 

@@ -153,6 +153,7 @@ $$
 **State Backend** is the runtime component responsible for state storage, access, and snapshot persistence:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Source path: org.apache.flink.runtime.state.StateBackend
 interface StateBackend {
     createKeyedStateBackend(env, stateHandles): AbstractKeyedStateBackend<K>
@@ -409,6 +410,7 @@ $$
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.CheckpointingMode;
 
 // Aligned Checkpoint (default)
@@ -427,6 +429,7 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///checkpoints");
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.CheckpointingMode;
 
 // Unaligned Checkpoint for high backpressure scenarios
@@ -444,6 +447,7 @@ env.setStateBackend(new EmbeddedRocksDBStateBackend());
 ### 6.3 Configuration Example: Incremental Checkpoint
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Incremental Checkpoint with RocksDB
 env.setStateBackend(new EmbeddedRocksDBStateBackend(true));  // incremental = true
 

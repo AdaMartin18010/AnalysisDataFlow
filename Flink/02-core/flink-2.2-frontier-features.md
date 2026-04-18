@@ -708,6 +708,7 @@ WHERE o.amount > 100;   -- 过滤条件下推
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.TableEnvironment;
 
@@ -833,30 +834,37 @@ FROM contexts c;
 **Java 代码示例**:
 
 ```java
-
-import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import java.time.Duration;
 import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.time.Time;
 
-// VECTOR_SEARCH DataStream API 使用
-StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+public class Example {
+    public static void main(String[] args) throws Exception {
 
-// 向量搜索配置
-VectorSearchConfig searchConfig = VectorSearchConfig.builder()
-    .setTopK(10)
-    .setMetricType(MetricType.COSINE)
-    .setAsyncMode(true)
-    .setTimeout(Duration.ofSeconds(5))
-    .build();
+        // VECTOR_SEARCH DataStream API 使用
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-// 创建向量搜索流
-DataStream<QueryResult> results = queryStream
-    .map(new EmbeddingMapper("text-embedding-ada-002"))
-    .flatMap(new VectorSearchFunction<>(
-        "milvus://milvus-server:19530/documents",
-        searchConfig
-    ));
+        // 向量搜索配置
+        VectorSearchConfig searchConfig = VectorSearchConfig.builder()
+            .setTopK(10)
+            .setMetricType(MetricType.COSINE)
+            .setAsyncMode(true)
+            .setTimeout(Duration.ofSeconds(5))
+            .build();
 
-env.execute("Vector Search RAG Pipeline");
+        // 创建向量搜索流
+        DataStream<QueryResult> results = queryStream
+            .map(new EmbeddingMapper("text-embedding-ada-002"))
+            .flatMap(new VectorSearchFunction<>(
+                "milvus://milvus-server:19530/documents",
+                searchConfig
+            ));
+
+        env.execute("Vector Search RAG Pipeline");
+
+    }
+}
 ```
 
 ### 6.3 Materialized Table V2 示例
@@ -1032,6 +1040,7 @@ env.execute("Python Async LLM Inference")
 ### 6.5 Source RateLimiter 示例
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // ============================================
 // Flink 2.2 Source RateLimiter 示例
 // 场景:限制 Kafka 消费速率,保护下游服务
@@ -1101,20 +1110,26 @@ RateLimiter customRateLimiter = new RateLimiter() {
 ```
 
 ```java
-
+import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
-// Java 代码配置
-StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+public class Example {
+    public static void main(String[] args) throws Exception {
 
-Configuration configuration = new Configuration();
-configuration.setString("cluster.scheduling.strategy", "BALANCED_TASKS");
-configuration.setString("taskmanager.load-balance.mode", "TASKS");
+        // Java 代码配置
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-// 可选:配置 Slot 请求间隔
-cfg.setString("slot.request.max-interval", "200ms");
+        Configuration configuration = new Configuration();
+        configuration.setString("cluster.scheduling.strategy", "BALANCED_TASKS");
+        configuration.setString("taskmanager.load-balance.mode", "TASKS");
 
-env.configure(configuration);
+        // 可选:配置 Slot 请求间隔
+        cfg.setString("slot.request.max-interval", "200ms");
+
+        env.configure(configuration);
+
+    }
+}
 ```
 
 ```sql

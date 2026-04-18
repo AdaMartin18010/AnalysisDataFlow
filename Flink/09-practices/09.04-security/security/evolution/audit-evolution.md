@@ -62,6 +62,7 @@ audit.sink: kafka
 ### 6.1 审计记录
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 auditLog.record(new AuditEvent()
     .setUser(user)
     .setAction("job.cancel")

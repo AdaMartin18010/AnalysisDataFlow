@@ -988,3 +988,63 @@ flowchart LR
 
 [^1]: Apache Flink Blog, "Apache Flink Agents 0.2.0 Release Announcement", February 6, 2026. https://flink.apache.org/2026/02/06/apache-flink-agents-0.2.0-release-announcement/
 [^2]: Anthropic, "Model Context Protocol Specification", 2025. https://modelcontextprotocol.io/
+
+
+---
+
+## 附录：Flink Agents 0.3 迁移指引与对比
+
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **适用目标版本**: 0.3.0 (预计 2026-06-15)
+
+### MCP 集成在 0.3 中的演进
+
+| 维度 | 0.2.x | 0.3 | 迁移动作 |
+|------|-------|-----|----------|
+| **工具调用** | 硬编码参数映射 | 参数注入 (Argument Injection) | 将参数模板化，声明 `@Inject` 源 |
+| **MCP Server** | Java 实现 | 支持跨语言 Server（Python/Rust） | 可用 Python 快速开发 MCP Server |
+| **传输协议** | stdio / HTTP (实验性) | Streamable HTTP 默认启用 | 确认防火墙规则允许 SSE |
+| **Tool Schema** | 静态 JSON | 动态 Skill Schema + 版本化 | 更新 `list_tools` 返回格式 |
+
+### 参数注入迁移示例
+
+```java
+// 0.2.x：手动构造参数
+Map<String, Object> params = new HashMap<>();
+params.put("sender", agentConfig.getEmail());
+params.put("to", userEmail);
+mcpClient.callTool("send_email", params);
+
+// 0.3：声明式注入
+@Skill(name = "send_email")
+public class EmailSkill {
+    @SkillInput
+    public EmailInput input;
+
+    @SkillExecutor
+    public EmailResult execute(@Inject("sender") String sender,
+                                @Inject("agent_config") AgentConfig cfg) {
+        // sender 自动从 Agent 配置注入
+        return emailApi.send(sender, input.getTo(), input.getBody());
+    }
+}
+```
+
+### 跨语言 MCP Server 示例
+
+```python
+# Python 3.12 MCP Server (0.3+)
+from mcp.server import Server
+from pyflink.agents.mcp import FlinkMcpAdapter
+
+app = Server("python_analysis_server")
+
+@app.tool()
+def analyze_sentiment(text: str) -> dict:
+    result = sentiment_pipeline(text)
+    return {"label": result.label, "score": result.score}
+
+# 通过 Flink 跨语言事件总线注册
+FlinkMcpAdapter.register(app, bus_endpoint="flink-agent-bus:9090")
+```
+
+---

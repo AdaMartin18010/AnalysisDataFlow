@@ -47,6 +47,7 @@ $$
 ### 5.1 Agent实现
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 Agent agent = Agent.newBuilder()
     .setLLM("gpt-4")
     .addTool(new AlertTool())
@@ -58,6 +59,7 @@ Agent agent = Agent.newBuilder()
 ### 6.1 异常检测Agent
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 stream.process(new AgentProcessFunction(agent))
     .addSink(new ActionSink());
 ```

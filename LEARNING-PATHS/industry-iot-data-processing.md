@@ -145,6 +145,7 @@ gantt
 ### 数据摄取流程
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // MQTT 数据源
 MQTTSource.builder()
   .setBrokerUrl("tcp://mqtt.broker:1883")

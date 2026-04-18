@@ -52,6 +52,7 @@ $$
 ### 5.1 血缘收集
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 LineageContext ctx = LineageContext.current();
 ctx.recordRelation("users.id", "orders.user_id");
 ```

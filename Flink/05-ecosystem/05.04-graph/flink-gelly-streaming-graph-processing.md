@@ -261,6 +261,7 @@ $$
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -305,6 +306,7 @@ communities
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -434,6 +436,7 @@ weightedDegrees
 ### 6.4 状态后端配置优化
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // RocksDB 状态后端配置(大状态场景)
 RocksDBStateBackend rocksDbBackend = new RocksDBStateBackend(
     "hdfs://namenode:8020/flink/checkpoints",

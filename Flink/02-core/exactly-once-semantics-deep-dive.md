@@ -255,18 +255,26 @@ Stream B: [b1] ─────────── [b2, barrier]
 **Kafka Source 可重放配置**：
 
 ```java
-// 启用自动提交偏移量到Kafka (仅作为参考)
-properties.setProperty("enable.auto.commit", "false");
+import org.apache.flink.api.common.serialization.SimpleStringSchema;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
 
-// Flink管理偏移量
-FlinkKafkaConsumer<String> source = new FlinkKafkaConsumer<>(
-    "topic",
-    new SimpleStringSchema(),
-    properties
-);
+public class Example {
+    public static void main(String[] args) throws Exception {
+        // 启用自动提交偏移量到Kafka (仅作为参考)
+        properties.setProperty("enable.auto.commit", "false");
 
-// 从最新Checkpoint恢复
-source.setStartFromGroupOffsets();
+        // Flink管理偏移量
+        FlinkKafkaConsumer<String> source = new FlinkKafkaConsumer<>(
+            "topic",
+            new SimpleStringSchema(),
+            properties
+        );
+
+        // 从最新Checkpoint恢复
+        source.setStartFromGroupOffsets();
+
+    }
+}
 ```
 
 **偏移量管理策略对比**：
@@ -283,22 +291,32 @@ source.setStartFromGroupOffsets();
 **Kafka Sink 两阶段提交配置**：
 
 ```java
-Properties props = new Properties();
-props.put("bootstrap.servers", "localhost:9092");
-props.put("transaction.timeout.ms", "900000"); // 15分钟
-props.put("transactional.id", "flink-sink-" + jobId);
+import java.util.Properties;
+import org.apache.flink.api.common.serialization.SimpleStringSchema;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
 
-FlinkKafkaProducer<String> sink = new FlinkKafkaProducer<>(
-    "output-topic",
-    new SimpleStringSchema(),
-    props,
-    FlinkKafkaProducer.Semantic.EXACTLY_ONCE  // 启用Exactly-Once
-);
+public class Example {
+    public static void main(String[] args) throws Exception {
+        Properties props = new Properties();
+        props.put("bootstrap.servers", "localhost:9092");
+        props.put("transaction.timeout.ms", "900000"); // 15分钟
+        props.put("transactional.id", "flink-sink-" + jobId);
+
+        FlinkKafkaProducer<String> sink = new FlinkKafkaProducer<>(
+            "output-topic",
+            new SimpleStringSchema(),
+            props,
+            FlinkKafkaProducer.Semantic.EXACTLY_ONCE  // 启用Exactly-Once
+        );
+
+    }
+}
 ```
 
 **事务ID前缀管理最佳实践**：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 方案1: JobID作为前缀
 String transactionalIdPrefix = jobId + "-" + operatorId;
 
@@ -324,19 +342,26 @@ String transactionalIdPrefix = config.getString("transaction.id.prefix") + subta
 **推荐配置**：
 
 ```java
-
 import org.apache.flink.streaming.api.CheckpointingMode;
+import org.apache.flink.streaming.api.windowing.time.Time;
 
-env.enableCheckpointing(60000); // 60秒
-env.getCheckpointConfig().setCheckpointingMode(
-    CheckpointingMode.EXACTLY_ONCE
-);
-env.getCheckpointConfig().setMinPauseBetweenCheckpoints(30000);
-env.getCheckpointConfig().setCheckpointTimeout(600000);
-env.getCheckpointConfig().setMaxConcurrentCheckpoints(1);
-env.getCheckpointConfig().enableExternalizedCheckpoints(
-    ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION
-);
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+
+        env.enableCheckpointing(60000); // 60秒
+        env.getCheckpointConfig().setCheckpointingMode(
+            CheckpointingMode.EXACTLY_ONCE
+        );
+        env.getCheckpointConfig().setMinPauseBetweenCheckpoints(30000);
+        env.getCheckpointConfig().setCheckpointTimeout(600000);
+        env.getCheckpointConfig().setMaxConcurrentCheckpoints(1);
+        env.getCheckpointConfig().enableExternalizedCheckpoints(
+            ExternalizedCheckpointCleanup.RETAIN_ON_CANCELLATION
+        );
+
+    }
+}
 ```
 
 ### 5.4 故障恢复场景处理

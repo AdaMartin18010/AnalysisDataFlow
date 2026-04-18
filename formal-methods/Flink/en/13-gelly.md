@@ -22,6 +22,7 @@ $$
 **Gelly Representation**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 Graph<K, VV, EV> = (DataSet<Vertex<K, VV>>, DataSet<Edge<K, EV>>)
 ```
 
@@ -251,6 +252,7 @@ $$\square$$
 **Partitioning Optimization**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Use custom partitioner for skewed graphs
 Graph<Long, Double, Double> graph = Graph.fromDataSet(
     vertices,
@@ -354,6 +356,7 @@ public static class SelectMinComponentId
 ### 6.3 Social Network Analysis
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Build bipartite graph for recommendation
 Graph<Long, Double, Double> bipartiteGraph = Graph.fromDataSet(
     users.union(items),        // Vertices: users and items
@@ -377,6 +380,7 @@ DataSet<Vertex<Long, Double>> recommendations = bipartiteGraph
 ### 6.4 Fraud Detection with Label Propagation
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Build transaction graph
 Graph<String, AccountInfo, Transaction> transactionGraph =
     Graph.fromDataSet(accounts, transactions, env);

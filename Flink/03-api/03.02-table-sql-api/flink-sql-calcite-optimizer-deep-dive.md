@@ -650,6 +650,7 @@ $$
 **优化执行流程**：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 1. 创建VolcanoPlanner实例
 VolcanoPlanner planner = new VolcanoPlanner(
     RelOptCostImpl.FACTORY,           // 使用Flink代价工厂
@@ -772,6 +773,7 @@ graph TD
 **分支限界剪枝策略**：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 伪代码:分支限界剪枝逻辑
 void optimizeGroup(Group group, Cost upperBound) {
     for (Expression expr : group.getExpressions()) {
@@ -825,36 +827,43 @@ flowchart TB
 **规则代码示例**（简化）：
 
 ```java
-// PushFilterIntoTableSourceRule
-public void onMatch(RelOptRuleCall call) {
-    LogicalFilter filter = call.rel(0);
-    LogicalTableScan scan = call.rel(1);
+import org.apache.flink.table.api.Table;
 
-    // 提取可下推谓词
-    List<RexNode> predicates = RexUtil.pullFactors(filter.getCondition());
-    List<RexNode> pushable = new ArrayList<>();
+public class Example {
+    public static void main(String[] args) throws Exception {
+        // PushFilterIntoTableSourceRule
+        public void onMatch(RelOptRuleCall call) {
+            LogicalFilter filter = call.rel(0);
+            LogicalTableScan scan = call.rel(1);
 
-    for (RexNode pred : predicates) {
-        if (canPushdown(pred, scan.getTable())) {
-            pushable.add(pred);
+            // 提取可下推谓词
+            List<RexNode> predicates = RexUtil.pullFactors(filter.getCondition());
+            List<RexNode> pushable = new ArrayList<>();
+
+            for (RexNode pred : predicates) {
+                if (canPushdown(pred, scan.getTable())) {
+                    pushable.add(pred);
+                }
+            }
+
+            if (!pushable.isEmpty()) {
+                // 创建下推后的TableScan
+                TableSourceTable newTable = scan.getTable().applyPredicates(pushable);
+                LogicalTableScan newScan = LogicalTableScan.create(
+                    filter.getCluster(), newTable, scan.getHints());
+
+                // 保留不可下推谓词
+                RexNode remaining = RexUtil.pullFactors(
+                    filter.getCondition(), pushable);
+
+                if (remaining.isAlwaysTrue()) {
+                    call.transformTo(newScan);
+                } else {
+                    call.transformTo(LogicalFilter.create(newScan, remaining));
+                }
+            }
         }
-    }
 
-    if (!pushable.isEmpty()) {
-        // 创建下推后的TableScan
-        TableSourceTable newTable = scan.getTable().applyPredicates(pushable);
-        LogicalTableScan newScan = LogicalTableScan.create(
-            filter.getCluster(), newTable, scan.getHints());
-
-        // 保留不可下推谓词
-        RexNode remaining = RexUtil.pullFactors(
-            filter.getCondition(), pushable);
-
-        if (remaining.isAlwaysTrue()) {
-            call.transformTo(newScan);
-        } else {
-            call.transformTo(LogicalFilter.create(newScan, remaining));
-        }
     }
 }
 ```
@@ -904,25 +913,32 @@ graph LR
 **分区裁剪规则**：
 
 ```java
-// PartitionPruneRule
-public void onMatch(RelOptRuleCall call) {
-    LogicalFilter filter = call.rel(0);
-    LogicalTableScan scan = call.rel(1);
+import org.apache.flink.table.api.Table;
 
-    TableSourceTable table = scan.getTable();
-    if (table.getPartitionKeys().isEmpty()) return;
+public class Example {
+    public static void main(String[] args) throws Exception {
+        // PartitionPruneRule
+        public void onMatch(RelOptRuleCall call) {
+            LogicalFilter filter = call.rel(0);
+            LogicalTableScan scan = call.rel(1);
 
-    // 提取分区谓词
-    List<Expression> partitionPredicates = extractPartitionPredicates(
-        filter.getCondition(), table.getPartitionKeys());
+            TableSourceTable table = scan.getTable();
+            if (table.getPartitionKeys().isEmpty()) return;
 
-    if (!partitionPredicates.isEmpty()) {
-        // 计算匹配分区
-        List<Map<String, String>> matchedPartitions =
-            catalog.listPartitionsByFilter(table, partitionPredicates);
+            // 提取分区谓词
+            List<Expression> partitionPredicates = extractPartitionPredicates(
+                filter.getCondition(), table.getPartitionKeys());
 
-        // 生成裁剪后的扫描
-        call.transformTo(createPrunedScan(scan, matchedPartitions));
+            if (!partitionPredicates.isEmpty()) {
+                // 计算匹配分区
+                List<Map<String, String>> matchedPartitions =
+                    catalog.listPartitionsByFilter(table, partitionPredicates);
+
+                // 生成裁剪后的扫描
+                call.transformTo(createPrunedScan(scan, matchedPartitions));
+            }
+        }
+
     }
 }
 ```
@@ -2512,6 +2528,7 @@ public class StreamExecGroupAggregate extends StreamPhysicalRel {
 **源码位置**: `flink-table/flink-table-planner/src/main/java/org/apache/flink/table/planner/plan/nodes/physical/batch/BatchPhysicalRel.java`
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 /**
  * 批物理算子标记接口
  */

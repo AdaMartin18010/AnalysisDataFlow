@@ -60,6 +60,7 @@ $$
 ### 6.1 Structured Logging
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 LOG.info("Processing event",
     keyValue("eventId", event.getId()),
     keyValue("timestamp", event.getTime()));

@@ -438,6 +438,7 @@ Flink CEP 支持 times(n)（精确n次）、oneOrMore()（一次或多次）、o
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 Pattern<LoginEvent, ?> pattern = Pattern

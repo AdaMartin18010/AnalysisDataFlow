@@ -246,6 +246,7 @@ After failure recovery and replay: a1 and a2 will both Join with b1 and b2 again
 **Kafka Source Replayable Configuration**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Enable auto-commit offset to Kafka (for reference only)
 properties.setProperty("enable.auto.commit", "false");
 
@@ -274,6 +275,7 @@ source.setStartFromGroupOffsets();
 **Kafka Sink Two-Phase Commit Configuration**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 Properties props = new Properties();
 props.put("bootstrap.servers", "localhost:9092");
 props.put("transaction.timeout.ms", "900000"); // 15 minutes
@@ -290,6 +292,7 @@ FlinkKafkaProducer<String> sink = new FlinkKafkaProducer<>(
 **Transaction ID Prefix Management Best Practices**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Option 1: JobID as prefix
 String transactionalIdPrefix = jobId + "-" + operatorId;
 
@@ -316,6 +319,7 @@ String transactionalIdPrefix = config.getString("transaction.id.prefix") + subta
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.CheckpointingMode;
 
 env.enableCheckpointing(60000); // 60 seconds
@@ -353,6 +357,7 @@ env.getCheckpointConfig().enableExternalizedCheckpoints(
 ### 5.5 Consumer read_committed Configuration
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 Properties consumerProps = new Properties();
 consumerProps.put("bootstrap.servers", "localhost:9092");
 consumerProps.put("group.id", "my-consumer-group");
@@ -924,6 +929,7 @@ class Transaction {
 ### 6.3 Unaligned Checkpoint Configuration
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Flink 1.11+ supports unaligned checkpoints
 env.getCheckpointConfig().enableUnalignedCheckpoints(true);
 
@@ -1232,6 +1238,7 @@ public class CheckpointCoordinator {
 #### 8.1.2 Checkpoint Timeout and Exception Handling
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
     /**
      * Checkpoint timeout handling (triggers abort)
      */

@@ -464,6 +464,7 @@ $$
 **示例 1: 滚动窗口统计每5秒交易额** [^3][^6]
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.scala._
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows
 import org.apache.flink.streaming.api.windowing.time.Time
@@ -498,6 +499,7 @@ class SumAggregate extends AggregateFunction[Transaction, Double, Double] {
 **示例 2: 滑动窗口计算过去1分钟每10秒的移动平均** [^3]
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 滑动窗口:窗口大小60秒,滑动步长10秒
 val slidingAgg = sensorStream
   .keyBy(_.sensorId)
@@ -660,6 +662,7 @@ GROUP BY
 **场景：实时Top-N 排行榜，每10秒更新一次，只保留最近100条记录** [^3]
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.triggers.ContinuousTrigger
 import org.apache.flink.streaming.api.windowing.evictors.CountEvictor
 
@@ -714,6 +717,7 @@ class TopNFunction(n: Int) extends ProcessWindowFunction[Score, RankEntry, Strin
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 

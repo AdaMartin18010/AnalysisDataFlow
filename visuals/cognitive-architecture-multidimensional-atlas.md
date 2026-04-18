@@ -1356,6 +1356,7 @@ $$t_1 < t_2 \Rightarrow \mathcal{S}_i(t_1) \sqsubseteq \mathcal{S}_i(t_2)$$
 **认知层次映射**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 感知层: 多传感器数据接入
 DataStream<SensorEvent> sensorStream = env
     .addSource(new SensorSource("mqtt://factory/sensors/#"))
@@ -1385,6 +1386,7 @@ actionStream.addSink(new PLCSink("opc.tcp://factory-plc:4840"));
 **学习范式选择**: 在线监督学习 + 在线强化学习混合
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 用户行为流
 DataStream<UserAction> actionStream = env
     .addSource(new KafkaSource<>("user-behavior"));
@@ -1416,6 +1418,7 @@ DataStream<Reward> rewards = recommendations
 **系统架构**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 感知层: 视频流接入和对象检测
 DataStream<VideoFrame> videoStream = env
     .addSource(new VideoStreamSource("rtsp://traffic-cams/{id}"))
@@ -1444,6 +1447,7 @@ signalCommands.addSink(new TrafficSignalSink());
 **推理类型选择**: 混合推理（演绎+归纳+溯因）
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 感知层: 多渠道输入接入
 DataStream<CustomerQuery> queryStream = env
     .addSource(new MultiChannelSource())

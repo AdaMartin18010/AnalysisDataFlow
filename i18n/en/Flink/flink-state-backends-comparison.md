@@ -225,6 +225,7 @@ flowchart TD
 <!-- TRANSLATE: #### HashMapStateBackend 配置 -->
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Flink 配置
 Configuration config = new Configuration();
 
@@ -252,6 +253,7 @@ config.set(CheckpointingOptions.LOCAL_RECOVERY, true);
 <!-- TRANSLATE: #### EmbeddedRocksDBStateBackend 配置 -->
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 基础配置
 Configuration config = new Configuration();
 config.set(StateBackendOptions.STATE_BACKEND, "rocksdb");
@@ -301,6 +303,7 @@ config.set(RocksDBOptions.BLOOM_FILTER_BITS_PER_KEY, 10.0);
 <!-- TRANSLATE: #### ForStStateBackend 配置 (Flink 2.0+) -->
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 基础配置
 Configuration config = new Configuration();
 config.set(StateBackendOptions.STATE_BACKEND, "forst");
@@ -457,6 +460,7 @@ def analyze_rocksdb_metrics(metrics):
 ```
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 限制 RocksDB 内存使用
 config.set(RocksDBOptions.BLOCK_CACHE_SIZE, MemorySize.ofMebiBytes(256));
 config.set(RocksDBOptions.MEMTABLE_SIZE, MemorySize.ofMebiBytes(32));
@@ -474,6 +478,7 @@ config.set(TaskManagerOptions.MANAGED_MEMORY_FRACTION, 0.3);
 ```
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 config.set(CheckpointingOptions.INCREMENTAL_CHECKPOINTS, true);
 config.set(CheckpointingOptions.CHECKPOINTING_INTERVAL, Duration.ofMinutes(5));
 ```
@@ -484,6 +489,7 @@ config.set(CheckpointingOptions.CHECKPOINTING_INTERVAL, Duration.ofMinutes(5));
 ```
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 config.set(CheckpointingOptions.MAX_CONCURRENT_CHECKPOINTS, 1);
 config.set(CheckpointingOptions.CHECKPOINT_TIMEOUT, Duration.ofMinutes(30));
 ```
@@ -497,6 +503,7 @@ config.set(CheckpointingOptions.CHECKPOINT_TIMEOUT, Duration.ofMinutes(30));
 ```
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 本地恢复
 config.set(CheckpointingOptions.LOCAL_RECOVERY, true);
 

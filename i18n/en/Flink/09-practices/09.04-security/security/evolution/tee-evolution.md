@@ -63,6 +63,7 @@ $$
 ### 5.1 SGX Execution
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 Enclave enclave = EnclaveLoader.load("enclave.so");
 byte[] result = enclave.execute(input);
 ```
@@ -72,6 +73,7 @@ byte[] result = enclave.execute(input);
 ### 6.1 Sensitive Computation
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Process sensitive data in TEE
 EnclaveResult result = teeExecutor.execute(() -> {
     return processSensitiveData(data);

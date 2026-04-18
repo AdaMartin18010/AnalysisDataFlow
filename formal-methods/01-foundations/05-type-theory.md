@@ -531,6 +531,7 @@ F-有界子类型：$\forall \alpha <: \tau.\sigma$ 要求类型参数 $\alpha$ 
 
 用于表达：
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 <T extends Comparable<T>> T max(T a, T b)
 ```
 

@@ -374,6 +374,7 @@ $$\tau(e) < \min_i w_{in}^{(i)} \Rightarrow \forall i: \tau(e) < w_{in}^{(i)}$$
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -398,6 +399,7 @@ Program = Sink ∘ Window(5min, avg) ∘ KeyBy(key) ∘ Filter(>0) ∘ Map(trans
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.CheckpointingMode;
 
 // 检查点配置
@@ -426,6 +428,7 @@ RocksDBBackend   ⟹  增量检查点 + 大状态支持
 ### 6.3 Watermark策略实现
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 固定延迟Watermark
 WatermarkStrategy.<Event>forBoundedOutOfOrderness(
     Duration.ofSeconds(5))

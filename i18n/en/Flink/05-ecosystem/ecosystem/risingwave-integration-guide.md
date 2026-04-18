@@ -85,6 +85,7 @@ graph LR
 **Configuration**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Flink JDBC Sink to RisingWave
 JdbcSink.sink(
     "INSERT INTO user_events (user_id, event_type, event_time, payload) " +
@@ -129,6 +130,7 @@ JdbcSink.sink(
 **Flink Producer**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Configure Kafka producer
 Properties props = new Properties();
 props.put("bootstrap.servers", "kafka:9092");
@@ -246,6 +248,7 @@ CREATE TABLE flink_sink_events_partitioned (
 **Transaction Support**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Two-phase commit for exactly-once
 TwoPhaseCommitSinkFunction<Event, JdbcConnection, Void> exactlyOnceSink =
     new TwoPhaseCommitSinkFunction<Event, JdbcConnection, Void>(
@@ -283,6 +286,7 @@ TwoPhaseCommitSinkFunction<Event, JdbcConnection, Void> exactlyOnceSink =
 **Batching Configuration**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Optimal batch settings for RisingWave
 JdbcExecutionOptions executionOptions = JdbcExecutionOptions.builder()
     .withBatchSize(5000)        // Larger batches for high throughput

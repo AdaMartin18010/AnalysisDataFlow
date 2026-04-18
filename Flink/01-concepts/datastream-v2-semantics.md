@@ -495,6 +495,7 @@ env.fromSource(source, WatermarkStrategy.forBoundedOutOfOrderness(Duration.ofSec
 ### 示例 6.2: Record Attributes 的使用
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 RecordAttributes attrs = RecordAttributes.builder()
     .set(AttributeKey.sourcePartition, record.topic() + "-" + record.partition())
     .set(AttributeKey.sourceOffset, record.offset())

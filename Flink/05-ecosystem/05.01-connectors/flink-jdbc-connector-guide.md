@@ -389,6 +389,7 @@ $$R = \frac{N}{T_{batch}} \approx \frac{N}{L} \text{ (当 N 较大时)}$$
 ### 6.2 DataStream API 完整示例
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.connector.jdbc.*;
 
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -434,6 +435,7 @@ aggregatedOrders.addSink(sinkBuilder.build());
 ### 6.3 Table API / SQL 配置
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 注册 JDBC Catalog
 tableEnv.executeSql("""
     CREATE CATALOG my_jdbc_catalog WITH (
@@ -539,6 +541,7 @@ public class CustomJdbcSink {
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.CheckpointingMode;
 
 // 启用 Exactly-Once 语义
@@ -688,6 +691,7 @@ java.sql.SQLException: Connection pool is exhausted
 **解决方案**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 1. 确保连接池大小 ≥ Sink 并行度
 config.setMaximumPoolSize(sinkParallelism + 5);
 
@@ -717,6 +721,7 @@ com.mysql.cj.jdbc.exceptions.MySQLTransactionRollbackException:
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // 1. 使用分区策略避免热点
@@ -757,6 +762,7 @@ javax.transaction.xa.XAException: XAER_RMFAIL:
 **解决方案**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 1. 缩短 Checkpoint 间隔
 env.enableCheckpointing(30000); // 30秒
 

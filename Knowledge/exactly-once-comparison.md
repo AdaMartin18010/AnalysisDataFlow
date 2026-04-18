@@ -247,6 +247,7 @@ $$
 **幂等生产者（Idempotent Producer）**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 Properties props = new Properties();
 props.put("bootstrap.servers", "kafka:9092");
 props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");

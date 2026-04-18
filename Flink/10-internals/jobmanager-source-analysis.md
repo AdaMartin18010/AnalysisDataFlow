@@ -151,6 +151,7 @@ JobMaster 遵循严格的生命周期状态转换：
 **状态转换源码分析** (`JobMaster.java`):
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 状态转换核心方法
 private void handleJobMasterError(Throwable cause) {
     if (ExecutionState.RUNNING.equals(executionGraph.getState())) {
@@ -170,6 +171,7 @@ public CompletableFuture<JobResult> getResultFuture() {
 **引理**: 对于 JobGraph 中的每个 JobVertex，ExecutionGraph 会展开为 `parallelism` 个 ExecutionVertex，每个 ExecutionVertex 对应一个 Execution 实例。
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 源码位置: ExecutionGraphBuilder.buildGraph()
 for (JobVertex vertex : jobGraph.getVertices()) {
     // 创建 ExecutionJobVertex
@@ -204,6 +206,7 @@ Barrier 对齐条件:
 **对齐源码** (`CheckpointBarrierHandler.java`):
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 单输入对齐
 public void processBarrier(CheckpointBarrier barrier, InputChannelInfo channelInfo) {
     // 1. 标记该 channel 已收到 barrier
@@ -225,6 +228,7 @@ public void processBarrier(CheckpointBarrier barrier, InputChannelInfo channelIn
 **引理**: Slot 分配通过两阶段提交保证原子性：申请 (Request) → 分配 (Allocate) → 确认 (Ack)。
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 两阶段提交流程
 Phase 1 (Request):  JobMaster ──requestSlot──▶ ResourceManager
 Phase 2 (Allocate): ResourceManager ──allocate──▶ TaskManager
@@ -383,6 +387,7 @@ public class JobMaster extends FencedRpcEndpoint<JobMasterId> {
 **源码分析** (`AlternatingCheckpointBarrierHandler.java`):
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 /**
  * 反压期间的处理策略:
  * 1. Barrier 优先: barrier 可以跳过 buffered records 的阻塞
@@ -441,6 +446,7 @@ public void processBarrier(CheckpointBarrier barrier, InputChannelInfo channelIn
 **关键源码** (`ExecutionGraphBuilder.java`):
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 public static ExecutionGraph buildGraph(
         JobGraph jobGraph,
         Configuration jobManagerConfig,
@@ -621,6 +627,7 @@ public class CheckpointCoordinator {
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 // 1. 用户代码构建 StreamGraph
@@ -650,6 +657,7 @@ client.submitJob(jobGraph);
 **执行流程源码追踪**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Step 1: Dispatcher 接收提交
 // 源码: Dispatcher.submitJob(JobGraph)
 public CompletableFuture<Acknowledge> submitJob(
@@ -738,6 +746,7 @@ Map 算子需求:
 ```
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 源码追踪
 public Collection<SlotExecutionVertexAssignment> allocateSlots(
         Set<ExecutionVertexID> executionVertexIds) {
@@ -840,6 +849,7 @@ public class CheckpointCoordinator {
 ```
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 源码追踪
 // Step 1: ResourceManager 检测超时
 // HeartbeatManagerImpl.java
@@ -1278,6 +1288,7 @@ flink-runtime/                          # JobManager 核心模块
 ### A.4 调试配置建议
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // IDEA 调试配置 VM Options
 // 用于本地启动 JobManager 调试
 
@@ -1303,6 +1314,7 @@ flink-runtime/                          # JobManager 核心模块
 ### A.5 关键日志位置
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 启用 DEBUG 日志的配置 (log4j2-debug.properties)
 
 // JobMaster 日志

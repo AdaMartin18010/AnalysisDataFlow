@@ -164,6 +164,7 @@ $$
 **场景**: 基于用户-物品交互图，实时计算 Personalized PageRank 进行推荐。
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 构建用户-物品二分图
 Graph<Long, Double, Double> bipartiteGraph = Graph.fromDataSet(
     users.union(items),  // 顶点 DataSet
@@ -195,6 +196,7 @@ DataSet<Tuple2<Long, Double>> topItems = recommendations
 **场景**: 金融交易网络中，通过社区发现识别异常资金聚集模式。
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 构建交易图:顶点=账户,边=交易(带金额和时间戳)
 Graph<String, AccountInfo, Transaction> transactionGraph = ...;
 
@@ -217,6 +219,7 @@ DataSet<Community> suspiciousCommunities = communities
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 

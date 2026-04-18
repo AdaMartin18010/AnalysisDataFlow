@@ -1142,3 +1142,31 @@ sequenceDiagram
 | Thm-F-12-30 | Exactly-Once 语义保证 | 核心容错定理 |
 | Thm-F-12-31 | 记忆检索准确性下界 | 语义检索分析 |
 | Thm-F-12-32 | 多 Agent 协作死锁避免 | 并发安全定理 |
+
+
+---
+
+## 附录：Flink Agents 0.3 迁移指引与对比
+
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **适用目标版本**: 0.3.0 (预计 2026-06-15)
+
+### FLIP-531 与 Agents 0.3 的关系
+
+FLIP-531 定义了 Flink Agent 的**运行时抽象**（Def-F-12-30）。Agents 0.3 是在该抽象之上的**能力扩展层**，不修改核心状态机语义，但引入新的扩展点：
+
+| FLIP-531 组件 | 0.2.x 实现 | 0.3 扩展 |
+|---------------|-----------|----------|
+| $S_{state}$ (状态空间) | Flink Keyed State | + Mem0 后端接口 |
+| $P_{perception}$ (感知) | DataStream 输入 | + 跨语言事件反序列化 |
+| $D_{decision}$ (决策) | 规则 + LLM | + Skill 注册表查询作为决策输入 |
+| $A_{action}$ (行动) | Java 方法 / MCP Client | + 跨语言 Action 代理 + 参数注入 |
+| $M_{memory}$ (记忆) | Flink State TTL | + Mem0 语义检索 |
+| $G_{goal}$ (目标) | 用户定义 | 无变更 |
+
+### 迁移要点
+
+- **API 兼容性**: 0.3 保持 FLIP-531 核心六元组 API 稳定；扩展通过新接口（`SkillAwareAgent`、`Mem0BackedState`）实现，不影响现有代码
+- **状态后端**: 若要从纯 Flink State 迁移到 Mem0，需实现 `MemoryBackendFactory` 接口，并在 Agent 配置中声明
+- **建议路径**: 先升级运行时到 0.3（保持现有逻辑），再逐步引入 Skill 与 Mem0 特性
+
+---

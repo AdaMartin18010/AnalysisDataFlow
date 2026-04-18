@@ -1039,9 +1039,9 @@ graph TB
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink Documentation, "FLIP-27: Refactor Source Interface", https://cwiki.apache.org/confluence/display/FLINK/FLIP-27%3A+Refactor+Source+Interface
-[^2]: Apache Flink Documentation, "FLIP-143: Unified Sink API", https://cwiki.apache.org/confluence/display/FLINK/FLIP-143%3A+Unified+Sink+API
-[^3]: Apache Flink Documentation, "FLIP-191: Extend Unified Sink API to Support Two-phase Commit", https://cwiki.apache.org/confluence/display/FLINK/FLIP-191%3A+Extend+unified+Sink+API+to+support+two+phase+commit
+[^1]: Apache Flink Documentation, "FLIP-27: Refactor Source Interface", https://github.com/apache/flink/tree/master/flink-docs/docs/flips/
+[^2]: Apache Flink Documentation, "FLIP-143: Unified Sink API", https://github.com/apache/flink/tree/master/flink-docs/docs/flips/
+[^3]: Apache Flink Documentation, "FLIP-191: Extend Unified Sink API to Support Two-phase Commit", https://github.com/apache/flink/tree/master/flink-docs/docs/flips/
 [^4]: Apache Flink Documentation, "Flink 2.2 Release Notes - Connector Framework Enhancements", https://nightlies.apache.org/flink/flink-docs-release-2.2/
 [^5]: Apache Kafka Documentation, "Transactions in Kafka", https://kafka.apache.org/documentation/#transactions
 [^6]: TestContainers Project, "TestContainers for Java", https://www.testcontainers.org/

@@ -609,6 +609,7 @@ $$
 Flink 的三层图转换保持了 Dataflow 图的形式语义：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // StreamGraph: 逻辑层 Dataflow 图
 StreamGraph streamGraph = env.getStreamGraph();
 
@@ -634,6 +635,7 @@ ExecutionGraph executionGraph = scheduler.createExecutionGraph(jobGraph);
 Flink 的 Checkpoint 机制实现了 Dataflow 确定性定理的工程保证：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Checkpoint 触发,捕获确定的状态快照
 CheckpointCoordinator.triggerCheckpoint(timestamp);
 
@@ -646,6 +648,7 @@ KeyedStateBackend.snapshot(checkpointId, timestamp);
 算子链化是组合确定性的典型应用：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 逻辑上独立的算子在物理上链化执行,保持语义
 env.addSource(source)
     .map(mapFunction)      // 链化为一个任务
@@ -705,6 +708,7 @@ stream.keyBy(Event::getKey)
 **确定性验证测试用例**：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 @Test
 public void testDeterminism() {
     // 相同输入多次执行

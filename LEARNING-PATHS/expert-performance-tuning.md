@@ -77,6 +77,7 @@ gantt
 1. **背压诊断实验**
 
    ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
    // 模拟慢速 Sink 产生背压
    env.addSource(new FastSource())
       .map(new NormalMap())
@@ -140,6 +141,7 @@ gantt
 1. **网络优化配置**
 
    ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
    // 缓冲区配置
    env.getConfig().setBufferTimeout(0);  // 零缓冲延迟
 
@@ -249,6 +251,7 @@ gantt
 ### 2. 存储成本优化
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 增量 Checkpoint
 env.getCheckpointConfig().enableUnalignedCheckpoints();
 
@@ -292,6 +295,7 @@ kubernetes.operator.job.autoscaler.target.utilization: 0.7
 2. **优化措施**
 
    ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
    // 1. 优化 Sink - 使用批量写入
    ElasticsearchSink.Builder<LogEvent> builder =
        new ElasticsearchSink.Builder<>(

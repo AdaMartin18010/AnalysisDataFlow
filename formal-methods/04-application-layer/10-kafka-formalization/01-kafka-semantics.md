@@ -796,6 +796,7 @@ Thm-Kafka-05-05: Exactly-Once 语义保证
 **示例 6.1.1 (At-Most-Once 生产者)**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 Properties props = new Properties();
 props.put("bootstrap.servers", "kafka:9092");
 props.put("acks", "0");              // 无确认
@@ -820,6 +821,7 @@ $$acks=0 \land retries=0 \Rightarrow AtMostOnce$$
 **示例 6.1.2 (At-Least-Once 生产者)**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 Properties props = new Properties();
 props.put("bootstrap.servers", "kafka:9092");
 props.put("acks", "all");            // 等待所有 ISR
@@ -839,6 +841,7 @@ $$acks=all \land retries>0 \land \neg idempotent \Rightarrow AtLeastOnce$$
 **示例 6.1.3 (Exactly-Once 生产者)**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 Properties props = new Properties();
 props.put("bootstrap.servers", "kafka:9092");
 props.put("acks", "all");
@@ -874,6 +877,7 @@ $$idempotent=true \land transactional.id \neq \bot \Rightarrow ExactlyOnce_{prod
 **示例 6.2.1 (At-Most-Once 消费者)**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 Properties props = new Properties();
 props.put("bootstrap.servers", "kafka:9092");
 props.put("group.id", "my-group");
@@ -902,6 +906,7 @@ $$auto\_commit \land commit\_before\_process \Rightarrow AtMostOnce_{consumer}$$
 **示例 6.2.2 (At-Least-Once 消费者)**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 Properties props = new Properties();
 props.put("bootstrap.servers", "kafka:9092");
 props.put("group.id", "my-group");
@@ -928,6 +933,7 @@ $$manual\_commit \land process\_before\_commit \Rightarrow AtLeastOnce_{consumer
 **示例 6.2.3 (Exactly-Once 消费者 - 事务性)**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 Properties consumerProps = new Properties();
 consumerProps.put("bootstrap.servers", "kafka:9092");
 consumerProps.put("group.id", "my-group");
@@ -979,6 +985,7 @@ $$transactional\_consume\_produce \land isolation.level=read\_committed \Rightar
 **示例 6.3.1 (Kafka Streams EOS)**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 Properties props = new Properties();
 props.put(StreamsConfig.APPLICATION_ID_CONFIG, "eos-app");
 props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:9092");

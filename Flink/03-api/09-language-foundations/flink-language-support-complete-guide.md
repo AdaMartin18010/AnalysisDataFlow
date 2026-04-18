@@ -194,6 +194,7 @@ $$L^* = \arg\min_{L \in \{Java,Scala,Python,SQL\}} \alpha \cdot \text{DevCost}(L
 **Java泛型擦除问题**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 擦除后无法区分
 List<Integer> vs List<String> → 都是 List
 ```

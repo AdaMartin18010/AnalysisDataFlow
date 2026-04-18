@@ -64,6 +64,7 @@ flowchart TD
 <!-- TRANSLATE: **Kafka Streams 代码**: -->
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 KStream<String, Order> orders = builder.stream("orders");
 
 orders.filter((key, order) -> order.getAmount() > 100)
@@ -78,6 +79,7 @@ orders.filter((key, order) -> order.getAmount() > 100)
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // DataStream API
@@ -104,6 +106,7 @@ tableEnv.executeSql(
 <!-- TRANSLATE: **Kafka Streams 代码**: -->
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 KTable<Windowed<String>, Long> counts = orders
     .groupByKey()
     .windowedBy(TimeWindows.of(Duration.ofMinutes(5)))

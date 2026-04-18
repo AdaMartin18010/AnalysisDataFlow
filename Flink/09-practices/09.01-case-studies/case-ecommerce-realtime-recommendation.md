@@ -1838,6 +1838,7 @@ L3: 冷特征 (Data Warehouse, 秒级, 全量历史)
 - **多维度画像**: 兴趣、偏好、购买力、生命周期阶段独立建模
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 实时画像更新核心逻辑
 public UserProfile updateProfile(UserProfile current, BehaviorEvent event) {
     double decayFactor = Math.pow(DECAY_RATE,

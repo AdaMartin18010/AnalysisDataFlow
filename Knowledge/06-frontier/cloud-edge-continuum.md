@@ -449,6 +449,7 @@ Vehicle (Device) ──→ RSU (Edge) ──→ Traffic Cloud
 **自适应放置示例**：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 伪代码:自适应放置决策
 class AdaptivePlacement {
 

@@ -370,26 +370,36 @@ CREATE TABLE user_events (
 **Table API 等效代码**：
 
 ```java
-
 import org.apache.flink.api.common.typeinfo.Types;
+import org.apache.flink.table.api.DataTypes;
+import org.apache.flink.table.api.Table;
 
-// Java Table API
-TableDescriptor sourceDescriptor = TableDescriptor.forConnector("kafka")
-    .schema(Schema.newBuilder()
-        .column("user_id", DataTypes.STRING())
-        .column("event_type", DataTypes.STRING())
-        .column("event_time", DataTypes.TIMESTAMP(3))
-        .columnByExpression("event_date", "DATE_FORMAT(event_time, 'yyyy-MM-dd')")
-        .columnByExpression("proc_time", "PROCTIME()")
-        .watermark("event_time", "event_time - INTERVAL '5' SECOND")
-        .build())
-    .option("topic", "user-events")
-    .option("properties.bootstrap.servers", "kafka:9092")
-    .option("scan.startup.mode", "earliest-offset")
-    .format("json")
-    .build();
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
 
-tableEnv.createTable("user_events", sourceDescriptor);
+        // Java Table API
+        TableDescriptor sourceDescriptor = TableDescriptor.forConnector("kafka")
+            .schema(Schema.newBuilder()
+                .column("user_id", DataTypes.STRING())
+                .column("event_type", DataTypes.STRING())
+                .column("event_time", DataTypes.TIMESTAMP(3))
+                .columnByExpression("event_date", "DATE_FORMAT(event_time, 'yyyy-MM-dd')")
+                .columnByExpression("proc_time", "PROCTIME()")
+                .watermark("event_time", "event_time - INTERVAL '5' SECOND")
+                .build())
+            .option("topic", "user-events")
+            .option("properties.bootstrap.servers", "kafka:9092")
+            .option("scan.startup.mode", "earliest-offset")
+            .format("json")
+            .build();
+
+        tableEnv.createTable("user_events", sourceDescriptor);
+
+    }
+}
+
 ```
 
 ```python
@@ -581,17 +591,28 @@ GROUP BY DATE_FORMAT(event_time, 'yyyy-MM-dd');
 **Table API 等效代码**：
 
 ```java
-// Java Table API
-Table result = tableEnv.from("orders")
-    .groupBy($("user_id"))
-    .select(
-        $("user_id"),
-        $("order_id").count().as("order_count"),
-        $("amount").sum().as("total_amount")
-    );
+import org.apache.flink.table.api.Table;
+import static org.apache.flink.table.api.Expressions.$;
 
-// 执行插入
-result.executeInsert("order_summary");
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
+        // Java Table API
+        Table result = tableEnv.from("orders")
+            .groupBy($("user_id"))
+            .select(
+                $("user_id"),
+                $("order_id").count().as("order_count"),
+                $("amount").sum().as("total_amount")
+            );
+
+        // 执行插入
+        result.executeInsert("order_summary");
+
+    }
+}
+
 ```
 
 ```python
@@ -673,13 +694,27 @@ SELECT * FROM users WHERE email REGEXP '^[a-z]+@[a-z]+\.com$';
 **Table API 等效代码**：
 
 ```java
-// Java
-Table result = tableEnv.from("user_events")
-    .select($("user_id"), $("event_type"), $("event_time"), $("event_date"))
-    .where($("event_type").in("click", "purchase"))
-    .where($("event_time").isGreaterOrEqual(
-        currentTimestamp().minus(lit(1).days())
-    ));
+import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.table.api.Table;
+import static org.apache.flink.table.api.Expressions.$;
+import static org.apache.flink.table.api.Expressions.currentTimestamp;
+import static org.apache.flink.table.api.Expressions.lit;
+
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
+        // Java
+        Table result = tableEnv.from("user_events")
+            .select($("user_id"), $("event_type"), $("event_time"), $("event_date"))
+            .where($("event_type").in("click", "purchase"))
+            .where($("event_time").isGreaterOrEqual(
+                currentTimestamp().minus(lit(1).days())
+            ));
+
+    }
+}
+
 ```
 
 ```python
@@ -808,24 +843,36 @@ Rank(strategy=[RetractStrategy], rankType=[ROW_NUMBER],
 **Table API 等效代码**：
 
 ```java
-// Java Table API
-Table topN = tableEnv.from("product_sales")
-    .window(Tumble.over(lit(1).hours()).on($("sale_time")).as("w"))
-    .groupBy($("category"), $("product_id"), $("w"))
-    .select(
-        $("category"),
-        $("product_id"),
-        $("sales").sum().as("total_sales"),
-        $("w").start().as("window_start"),
-        $("w").end().as("window_end")
-    )
-    .addColumns(
-        rowNumber().over(
-            PartitionBy($("category"), $("window_start"), $("window_end"))
-                .orderBy($("total_sales").desc())
-        ).as("rn")
-    )
-    .where($("rn").isLessOrEqual(5));
+import org.apache.flink.table.api.Table;
+import static org.apache.flink.table.api.Expressions.$;
+import static org.apache.flink.table.api.Expressions.lit;
+
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
+        // Java Table API
+        Table topN = tableEnv.from("product_sales")
+            .window(Tumble.over(lit(1).hours()).on($("sale_time")).as("w"))
+            .groupBy($("category"), $("product_id"), $("w"))
+            .select(
+                $("category"),
+                $("product_id"),
+                $("sales").sum().as("total_sales"),
+                $("w").start().as("window_start"),
+                $("w").end().as("window_end")
+            )
+            .addColumns(
+                rowNumber().over(
+                    PartitionBy($("category"), $("window_start"), $("window_end"))
+                        .orderBy($("total_sales").desc())
+                ).as("rn")
+            )
+            .where($("rn").isLessOrEqual(5));
+
+    }
+}
+
 ```
 
 #### 6.3.5 去重查询 (Deduplication)
@@ -956,16 +1003,28 @@ GROUP BY user_id, window_start, window_end, window_time;
 **Table API 等效代码**：
 
 ```java
-// Java Table API
-Table windowed = tableEnv.from("user_events")
-    .window(Tumble.over(lit(1).hours()).on($("event_time")).as("w"))
-    .groupBy($("user_id"), $("w"))
-    .select(
-        $("user_id"),
-        $("w").start().as("window_start"),
-        $("w").end().as("window_end"),
-        $("event_type").count().as("event_count")
-    );
+import org.apache.flink.table.api.Table;
+import static org.apache.flink.table.api.Expressions.$;
+import static org.apache.flink.table.api.Expressions.lit;
+
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
+        // Java Table API
+        Table windowed = tableEnv.from("user_events")
+            .window(Tumble.over(lit(1).hours()).on($("event_time")).as("w"))
+            .groupBy($("user_id"), $("w"))
+            .select(
+                $("user_id"),
+                $("w").start().as("window_start"),
+                $("w").end().as("window_end"),
+                $("event_type").count().as("event_count")
+            );
+
+    }
+}
+
 ```
 
 ```python
@@ -1064,21 +1123,32 @@ LEFT JOIN exchange_rates FOR SYSTEM_TIME AS OF o.order_time e
 **Table API 等效代码**：
 
 ```java
-// Java Table API
-Table result = tableEnv.from("orders")
-    .join(
-        tableEnv.from("exchange_rates"),
-        JoinHint.of(JoinHint.JoinType.LEFT_OUTER, List.of("currency")),
-        $("currency").isEqual($("currency"))
-            .and($("update_time").isLessOrEqual($("order_time")))
-    )
-    .select(
-        $("order_id"),
-        $("currency"),
-        $("amount"),
-        $("rate"),
-        $("amount").times($("rate")).as("amount_usd")
-    );
+import org.apache.flink.table.api.Table;
+import static org.apache.flink.table.api.Expressions.$;
+
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
+        // Java Table API
+        Table result = tableEnv.from("orders")
+            .join(
+                tableEnv.from("exchange_rates"),
+                JoinHint.of(JoinHint.JoinType.LEFT_OUTER, List.of("currency")),
+                $("currency").isEqual($("currency"))
+                    .and($("update_time").isLessOrEqual($("order_time")))
+            )
+            .select(
+                $("order_id"),
+                $("currency"),
+                $("amount"),
+                $("rate"),
+                $("amount").times($("rate")).as("amount_usd")
+            );
+
+    }
+}
+
 ```
 
 #### 6.5.4 Lookup Join
@@ -1369,6 +1439,7 @@ WHERE location_count >= 3;
 **Table API 等效代码**：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Java Table API (Flink 1.17+)
 Pattern<Row, Row> pattern = Pattern.<Row>begin("A")
     .next("B").where(new SimpleCondition<Row>() {
@@ -1642,13 +1713,23 @@ DROP MATERIALIZED TABLE hourly_sales_summary;
 **Table API 等效代码**：
 
 ```java
-// Java Table API (Flink 2.2+)
-tableEnv.executeSql(
-    "CREATE MATERIALIZED TABLE hourly_sales_summary " +
-    "DISTRIBUTED BY HASH(category) INTO 8 BUCKETS " +
-    "FRESHNESS = INTERVAL '5' MINUTE " +
-    "AS SELECT ..."
-);
+import org.apache.flink.table.api.Table;
+
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
+        // Java Table API (Flink 2.2+)
+        tableEnv.executeSql(
+            "CREATE MATERIALIZED TABLE hourly_sales_summary " +
+            "DISTRIBUTED BY HASH(category) INTO 8 BUCKETS " +
+            "FRESHNESS = INTERVAL '5' MINUTE " +
+            "AS SELECT ..."
+        );
+
+    }
+}
+
 ```
 
 ### 6.11 向量搜索 (VECTOR_SEARCH)（规划中）

@@ -528,6 +528,7 @@ server {
 **RocksDB状态后端加密**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 配置加密的状态后端
 public class EncryptedRocksDBStateBackend extends RocksDBStateBackend {
 
@@ -602,6 +603,7 @@ fs.azure.encryption.key: ${AZURE_ENCRYPTION_KEY}
 **连接器加密配置**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Kafka连接器SSL配置
 Properties kafkaProps = new Properties();
 kafkaProps.setProperty("bootstrap.servers", "kafka1:9093,kafka2:9093");
@@ -623,6 +625,7 @@ FlinkKafkaConsumer<String> consumer = new FlinkKafkaConsumer<>(
 **JDBC连接加密**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // PostgreSQL SSL连接
 String url = "jdbc:postgresql://postgres:5432/flink_db?" +
     "sslmode=require&" +
@@ -644,6 +647,7 @@ JDBCInputFormat jdbcInput = JDBCInputFormat.buildJDBCInputFormat()
 **Flink 1.17+ 状态加密API**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.runtime.state.encryption.EncryptionOptions;
 import org.apache.flink.runtime.state.encryption.CipherTransformation;
 

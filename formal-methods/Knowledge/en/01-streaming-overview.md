@@ -294,6 +294,7 @@ joined = joinByKey streamA streamB 300  -- 300 second window
 ### 6.3 Exactly-Once Checkpoint Implementation
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Flink-style Barrier processing
 class ExactlyOnceOperator {
     void processElement(Element e) {

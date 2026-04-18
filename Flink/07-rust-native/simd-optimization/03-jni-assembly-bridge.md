@@ -42,6 +42,7 @@ $$\text{Efficiency}(n) = \frac{n \cdot C + n \cdot T(1)}{C + T(n)}$$
 Vector API 是 Java 标准的 SIMD 编程接口，提供以下抽象：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // VectorSpecies 定义向量形状
 VectorSpecies<Float> SPECIES = FloatVector.SPECIES_256;
 
@@ -134,6 +135,7 @@ JVM 数组的列式布局满足 SIMD 加载对齐条件：
 使用 `sun.misc.Unsafe` 或 `MemorySegment` 可分配 SIMD 对齐内存：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 32-byte 对齐分配
 long address = unsafe.allocateMemory(size + 32);
 long aligned = (address + 31) & ~31;

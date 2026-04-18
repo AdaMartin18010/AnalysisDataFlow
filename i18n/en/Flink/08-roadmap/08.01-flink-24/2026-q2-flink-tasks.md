@@ -478,6 +478,7 @@ Impact: Job recovery time extends from expected 60s to 10 minutes
 **Fix**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Before: serial loading
 for (KeyGroup kg : keyGroups) {
     loadKeyGroup(kg);  // serial, slow

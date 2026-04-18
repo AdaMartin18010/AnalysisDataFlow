@@ -265,19 +265,27 @@ GROUP BY
 **DataStream**：
 
 ```java
-
+import java.time.Duration;
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-orders
-    .assignTimestampsAndWatermarks(
-        WatermarkStrategy.<Order>forBoundedOutOfOrderness(Duration.ofSeconds(30))
-            .withTimestampAssigner((order, ts) -> order.getEventTime())
-    )
-    .keyBy(Order::getUserId)
-    .window(TumblingEventTimeWindows.of(Time.minutes(5)))
-    .aggregate(new OrderAggregateFunction())
-    .print();
+public class Example {
+    public static void main(String[] args) throws Exception {
+
+        orders
+            .assignTimestampsAndWatermarks(
+                WatermarkStrategy.<Order>forBoundedOutOfOrderness(Duration.ofSeconds(30))
+                    .withTimestampAssigner((order, ts) -> order.getEventTime())
+            )
+            .keyBy(Order::getUserId)
+            .window(TumblingEventTimeWindows.of(Time.minutes(5)))
+            .aggregate(new OrderAggregateFunction())
+            .print();
+
+    }
+}
 ```
 
 **对比**：SQL 7 行 vs DataStream ~20 行；SQL 自动两阶段优化，DataStream 需手动实现[^10]。
@@ -301,6 +309,7 @@ JOIN payments p
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 orders
@@ -356,20 +365,32 @@ DataStream<EnrichedOrder> enriched = AsyncDataStream.unorderedWait(
 ### 6.4 混合使用示例
 
 ```java
-// 注册 DataStream 为 SQL 表
-tableEnv.createTemporaryView("orders", orderStream);
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.table.api.Table;
 
-// 注册 DataStream UDF
-tableEnv.createTemporarySystemFunction("CalculateScore", new CalculateScoreUDF());
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
+        // 注册 DataStream 为 SQL 表
+        tableEnv.createTemporaryView("orders", orderStream);
 
-// SQL 处理主要逻辑
-Table result = tableEnv.sqlQuery(
-    "SELECT userId, SUM(amount) as total, CalculateScore(userId, SUM(amount)) as score " +
-    "FROM orders GROUP BY userId, TUMBLE(eventTime, INTERVAL '5' MINUTES)"
-);
+        // 注册 DataStream UDF
+        tableEnv.createTemporarySystemFunction("CalculateScore", new CalculateScoreUDF());
 
-// 转回 DataStream
-tableEnv.toDataStream(result).addSink(new CustomSink());
+        // SQL 处理主要逻辑
+        Table result = tableEnv.sqlQuery(
+            "SELECT userId, SUM(amount) as total, CalculateScore(userId, SUM(amount)) as score " +
+            "FROM orders GROUP BY userId, TUMBLE(eventTime, INTERVAL '5' MINUTES)"
+        );
+
+        // 转回 DataStream
+        tableEnv.toDataStream(result).addSink(new CustomSink());
+
+    }
+}
+
 ```
 
 ---

@@ -371,6 +371,7 @@ Since all core capabilities of stream computing systems find corresponding imple
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.CheckpointingMode;
 
@@ -396,6 +397,7 @@ env.setStateBackend(new RocksDBStateBackend("hdfs://..."));
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.table.api.TableEnvironment;
 
 // Table API code example
@@ -432,6 +434,7 @@ spec:
 **Example**: Kafka Connector practical experience guides IoT case implementation
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // From case-iot-stream-processing.md best practices
 // Based on guidance from flink-connectors-ecosystem-complete-guide.md
 

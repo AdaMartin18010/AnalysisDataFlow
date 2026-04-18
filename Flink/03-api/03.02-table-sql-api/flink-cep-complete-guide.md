@@ -350,6 +350,7 @@ Pattern<LoginEvent, ?> pattern = Pattern
 ### 6.2 连续策略详解
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.cep.pattern.Pattern;
 import static org.apache.flink.cep.pattern.Quantifiers.*;
 
@@ -385,6 +386,7 @@ Pattern.begin("a").where(evt -> evt.type.equals("A"))
 ### 6.3 量词使用
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 1. times(n) - 精确重复n次
 Pattern.<Event>begin("login").where(evt -> evt.type.equals("LOGIN"))
     .times(3);  // 恰好3次登录
@@ -422,6 +424,7 @@ Pattern.<Event>begin("a").where(evt -> evt.value > 10)
 ### 6.4 条件定义
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.cep.pattern.conditions.IterativeCondition;
 import org.apache.flink.cep.pattern.conditions.SimpleCondition;
 
@@ -473,6 +476,7 @@ Pattern.<Event>begin("start")
 ### 6.5 结果处理
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.cep.CEP;
 import org.apache.flink.cep.PatternStream;
 import org.apache.flink.cep.PatternSelectFunction;
@@ -983,6 +987,7 @@ public class PurchaseIntentAnalysis {
 ### 7.1 状态清理策略
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.cep.nfa.aftermatch.AfterMatchSkipStrategy;
 
 // 1. 选择合适的消耗策略
@@ -1006,46 +1011,62 @@ AfterMatchSkipStrategy.skipToLast("start");  // 跳到指定模式的最后一�
 ### 7.2 时间窗口优化
 
 ```java
-
+import java.time.Duration;
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.cep.Pattern;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-// 1. 使用严格的时间窗口限制状态增长
-Pattern<Event, ?> pattern = Pattern
-    .<Event>begin("start")
-    .where(...)
-    .within(Time.seconds(10));  // 严格限制10秒
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-// 2. 使用事件时间而非处理时间
-// 使用WatermarkStrategy替代已弃用的setStreamTimeCharacteristic
-env.getConfig().setAutoWatermarkInterval(200);
-// 3. 合理设置水印延迟
-stream.assignTimestampsAndWatermarks(
-    WatermarkStrategy
-        .<Event>forBoundedOutOfOrderness(Duration.ofSeconds(5))
-        .withIdleness(Duration.ofMinutes(1))  // 空闲超时清理
-);
+        // 1. 使用严格的时间窗口限制状态增长
+        Pattern<Event, ?> pattern = Pattern
+            .<Event>begin("start")
+            .where(...)
+            .within(Time.seconds(10));  // 严格限制10秒
+
+        // 2. 使用事件时间而非处理时间
+        // 使用WatermarkStrategy替代已弃用的setStreamTimeCharacteristic
+        env.getConfig().setAutoWatermarkInterval(200);
+        // 3. 合理设置水印延迟
+        stream.assignTimestampsAndWatermarks(
+            WatermarkStrategy
+                .<Event>forBoundedOutOfOrderness(Duration.ofSeconds(5))
+                .withIdleness(Duration.ofMinutes(1))  // 空闲超时清理
+        );
+
+    }
+}
 ```
 
 ### 7.3 序列化优化
 
 ```java
-// 1. 使用高效的序列化器
-env.getConfig().registerTypeWithKryoSerializer(
-    MyEvent.class,
-    new MyEventSerializer()
-);
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        // 1. 使用高效的序列化器
+        env.getConfig().registerTypeWithKryoSerializer(
+            MyEvent.class,
+            new MyEventSerializer()
+        );
 
-// 2. 禁用自动类型注册(如果类型已知)
-env.getConfig().disableAutoTypeRegistration();
+        // 2. 禁用自动类型注册(如果类型已知)
+        env.getConfig().disableAutoTypeRegistration();
 
-// 3. 使用Avro/Protobuf序列化
-env.getConfig().enableForceAvro();
+        // 3. 使用Avro/Protobuf序列化
+        env.getConfig().enableForceAvro();
+
+    }
+}
 ```
 
 ### 7.4 模式设计最佳实践
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 // 1. 尽早过滤减少状态

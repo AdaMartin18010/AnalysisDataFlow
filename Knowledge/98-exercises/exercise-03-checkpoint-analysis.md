@@ -59,6 +59,7 @@
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.CheckpointingMode;
 
 // Checkpoint 配置示例
@@ -378,6 +379,7 @@ env.getCheckpointConfig().setAlignmentTimeout(Duration.ofSeconds(30));
 3. 编写配置启用非对齐 Checkpoint (3分)
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // ========== 配置非对齐 Checkpoint (Unaligned Checkpoint) ==========
 
 // 导入语句(放在文件顶部):

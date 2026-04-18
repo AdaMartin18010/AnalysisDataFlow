@@ -266,6 +266,7 @@ graph LR
 修改 `Tokenizer`，只输出长度 >= 3 的单词：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 if (word.length() >= 3) {
     out.collect(new Tuple2<>(word, 1));
 }

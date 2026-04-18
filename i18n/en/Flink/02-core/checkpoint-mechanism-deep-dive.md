@@ -186,6 +186,7 @@ $$
 A **State Backend** is the runtime component responsible for state storage, access, and snapshot persistence:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Source path: org.apache.flink.runtime.state.StateBackend
 interface StateBackend {
     createKeyedStateBackend(env, stateHandles): AbstractKeyedStateBackend<K>
@@ -549,6 +550,7 @@ $$
 #### Configuration Parameters
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Enable incremental Checkpoint
 EmbeddedRocksDBStateBackend rocksDbBackend = new EmbeddedRocksDBStateBackend(true);
 env.setStateBackend(rocksDbBackend);
@@ -716,6 +718,7 @@ RocksDB's manifest file records metadata for all active SST files. Incremental C
 **Source code verification**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // CheckpointCoordinator.java (lines 850-920)
 public boolean restoreSavepoint(
         SavepointRestoreSettings savepointRestoreSettings,
@@ -894,6 +897,7 @@ public class RocksDBStateUploader extends StateUploader {
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.CheckpointingMode;
 
@@ -928,6 +932,7 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
@@ -955,6 +960,7 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
@@ -976,6 +982,7 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
@@ -1012,6 +1019,7 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
 ### 6.5 Fault Recovery Case Study
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Use RocksDB State Backend, enable incremental Checkpoint
 // The second parameter true enables incrementality
 EmbeddedRocksDBStateBackend rocksDbBackend = new EmbeddedRocksDBStateBackend(true);
@@ -1280,12 +1288,14 @@ graph TB
 1. **Enable incremental Checkpoint** (required)
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
    new EmbeddedRocksDBStateBackend(true)  // true enables incremental
 ```
 
 1. **Tune RocksDB parameters**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
    DefaultConfigurableStateBackend backend = new EmbeddedRocksDBStateBackend(true);
    Configuration config = new Configuration();
    config.setString("state.backend.rocksdb.predefined-options", "FLASH_SSD_OPTIMIZED");
@@ -1295,12 +1305,14 @@ graph TB
 1. **Increase Checkpoint interval**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
    env.enableCheckpointing(60000);  // 1 minute, reduce frequency
 ```
 
 1. **Use local recovery**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
    env.getCheckpointConfig().setPreferCheckpointForRecovery(true);
 ```
 
@@ -1313,6 +1325,7 @@ graph TB
 1. **Enable Unaligned Checkpoint**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
    env.getCheckpointConfig().enableUnalignedCheckpoints();
    env.getCheckpointConfig().setAlignmentTimeout(Duration.ofSeconds(1));
 ```
@@ -1325,6 +1338,7 @@ graph TB
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.CheckpointingMode;
 
    env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.AT_LEAST_ONCE);

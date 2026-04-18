@@ -1163,7 +1163,7 @@ graph TD
 
 [^5]: "CockroachDB: The Resilient Geo-Distributed SQL Database", Spencer Kimball et al., SIGMOD 2020. https://dl.acm.org/doi/10.1145/3318464.3386134
 
-[^6]: "FaunaDB: An Architectural Overview", Evan Weaver, CIDR 2021. http://cidrdb.org/cidr2021/papers/cidr2021_paper15.pdf
+[^6]: "FaunaDB: An Architectural Overview", Evan Weaver, CIDR 2021. https://www.cidrdb.org/cidr2021/papers/cidr2021_paper15.pdf
 
 [^7]: James C. Corbett et al., "Spanner: Google's Globally-Distributed Database", OSDI 2012. https://www.usenix.org/system/files/conference/osdi12/osdi12-final-16.pdf
 

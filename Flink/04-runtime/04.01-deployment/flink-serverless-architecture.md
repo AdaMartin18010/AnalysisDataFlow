@@ -250,6 +250,7 @@ $$
 **反模式2: 忽视冷启动**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // ❌ 错误:用户-facing API无预置并发
 @Function
 public Response handle(Request req) {

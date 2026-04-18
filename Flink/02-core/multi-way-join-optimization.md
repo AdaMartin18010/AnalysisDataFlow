@@ -352,27 +352,33 @@ LogicalProject(...)
 - Key基数: 100万
 
 ```java
-
 import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-// Join链实现
-DataStream<Result> result = orders
-    .join(orderItems)
-    .where(o -> o.orderId)
-    .equalTo(oi -> oi.orderId)
-    .window(TumblingEventTimeWindows.of(Time.minutes(10)))
-    .apply((o, oi) -> new PartialResult1(o, oi))
-    .join(products)
-    .where(p1 -> p1.productId)
-    .equalTo(p -> p.productId)
-    .window(TumblingEventTimeWindows.of(Time.minutes(10)))
-    .apply((p1, p) -> new PartialResult2(p1, p))
-    .join(inventory)
-    .where(p2 -> p2.productId)
-    .equalTo(i -> i.productId)
-    .window(TumblingEventTimeWindows.of(Time.minutes(10)))
-    .apply((p2, i) -> new FinalResult(p2, i));
+public class Example {
+    public static void main(String[] args) throws Exception {
+
+        // Join链实现
+        DataStream<Result> result = orders
+            .join(orderItems)
+            .where(o -> o.orderId)
+            .equalTo(oi -> oi.orderId)
+            .window(TumblingEventTimeWindows.of(Time.minutes(10)))
+            .apply((o, oi) -> new PartialResult1(o, oi))
+            .join(products)
+            .where(p1 -> p1.productId)
+            .equalTo(p -> p.productId)
+            .window(TumblingEventTimeWindows.of(Time.minutes(10)))
+            .apply((p1, p) -> new PartialResult2(p1, p))
+            .join(inventory)
+            .where(p2 -> p2.productId)
+            .equalTo(i -> i.productId)
+            .window(TumblingEventTimeWindows.of(Time.minutes(10)))
+            .apply((p2, i) -> new FinalResult(p2, i));
+
+    }
+}
 ```
 
 **状态监控指标**:
@@ -387,17 +393,22 @@ DataStream<Result> result = orders
 #### 5.2.2 DataStream MultiStreamJoin
 
 ```java
-
 import org.apache.flink.streaming.api.datastream.DataStream;
 
-// MultiJoin风格实现(自定义Processor)
-DataStream<UnifiedResult> result =
-    orders.connect(orderItems)
-          .connect(products)
-          .connect(inventory)
-          .keyBy(o -> o.orderId, oi -> oi.orderId,
-                 p -> p.productId, i -> i.productId)
-          .process(new MultiStreamJoinFunction<>());
+public class Example {
+    public static void main(String[] args) throws Exception {
+
+        // MultiJoin风格实现(自定义Processor)
+        DataStream<UnifiedResult> result =
+            orders.connect(orderItems)
+                  .connect(products)
+                  .connect(inventory)
+                  .keyBy(o -> o.orderId, oi -> oi.orderId,
+                         p -> p.productId, i -> i.productId)
+                  .process(new MultiStreamJoinFunction<>());
+
+    }
+}
 ```
 
 **状态监控指标**:

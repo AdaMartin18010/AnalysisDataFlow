@@ -237,6 +237,7 @@ $$\begin{aligned}
 Apache Beam/Dataflow的窗口语义实现：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 窗口策略定义
 Window.into(FixedWindows.of(Duration.standardMinutes(1)))
     .triggering(

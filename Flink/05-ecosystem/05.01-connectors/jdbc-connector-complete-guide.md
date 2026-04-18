@@ -391,6 +391,7 @@ CREATE TABLE mysql_sink (
 **方言特定配置**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // MySQL 特定配置
 .setProperty("useSSL", "false")
 .setProperty("serverTimezone", "Asia/Shanghai")
@@ -661,6 +662,7 @@ Checkpoint 触发:
 **基本 Source 配置**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.connector.jdbc.source.JdbcSource;
 import org.apache.flink.connector.jdbc.source.reader.extractor.ResultExtractor;
 
@@ -696,6 +698,7 @@ DataStream<MyRecord> stream = env.fromSource(
 **分区读取配置**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.connector.jdbc.source.JdbcSource;
 import org.apache.flink.connector.jdbc.source.reader.extractor.ResultExtractor;
 import org.apache.flink.connector.jdbc.split.JdbcSplit;
@@ -738,6 +741,7 @@ DataStream<MyRecord> stream = env.fromSource(
 **增量 CDC 读取**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 基于时间戳的增量读取
 JdbcSource<MyRecord> incrementalSource = JdbcSource.<MyRecord>builder()
     .setUrl("jdbc:mysql://localhost:3306/mydb")
@@ -762,6 +766,7 @@ JdbcSource<MyRecord> incrementalSource = JdbcSource.<MyRecord>builder()
 **基本 Sink 配置**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.connector.jdbc.JdbcSink;
 import org.apache.flink.connector.jdbc.JdbcStatementBuilder;
 
@@ -797,6 +802,7 @@ stream.addSink(jdbcSink);
 **UPSERT 模式配置**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // MySQL UPSERT
 SinkFunction<MyRecord> upsertSink = JdbcSink.sink(
     "INSERT INTO users (id, name, update_time) VALUES (?, ?, ?) " +
@@ -829,6 +835,7 @@ SinkFunction<MyRecord> pgUpsertSink = JdbcSink.sink(
 **Exactly-Once 配置 (XA 事务)**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.connector.jdbc.JdbcExactlyOnceOptions;
 import org.apache.flink.connector.jdbc.JdbcExecutionOptions;
 import org.apache.flink.connector.jdbc.JdbcSink;
@@ -868,6 +875,7 @@ stream.addSink(exactlyOnceSink);
 **MySQL 优化配置**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // MySQL 连接属性
 Properties props = new Properties();
 props.setProperty("useSSL", "false");
@@ -890,6 +898,7 @@ JdbcConnectionOptions connectionOptions = new JdbcConnectionOptions.JdbcConnecti
 **PostgreSQL 优化配置**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // PostgreSQL 连接属性
 Properties props = new Properties();
 props.setProperty("reWriteBatchedInserts", "true");  // 批量插入优化
@@ -909,6 +918,7 @@ String upsertSql = "INSERT INTO users (id, name, update_time) VALUES (?, ?, ?) "
 **Oracle 配置**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Oracle 连接属性
 Properties props = new Properties();
 props.setProperty("defaultRowPrefetch", "1000");
@@ -929,6 +939,7 @@ String mergeSql = "MERGE INTO users t " +
 **SQL Server 配置**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // SQL Server 连接属性
 Properties props = new Properties();
 props.setProperty("sendStringParametersAsUnicode", "false");  // 性能优化
@@ -964,6 +975,7 @@ String mergeSql = "MERGE INTO users AS target " +
 **动态批量调整策略**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 根据处理延迟动态调整批量大小
 JdbcExecutionOptions executionOptions = JdbcExecutionOptions.builder()
     .withBatchSize(1000)  // 初始批量大小
@@ -1024,6 +1036,7 @@ JdbcExecutionOptions executionOptions = JdbcExecutionOptions.builder()
 **超时配置示例**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // MySQL 超时配置
 String url = "jdbc:mysql://localhost:3306/mydb" +
     "?connectTimeout=10000" +           // 10s
@@ -1054,6 +1067,7 @@ String url = "jdbc:postgresql://localhost:5432/mydb" +
 **自定义重试策略**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.connector.jdbc.JdbcExecutionOptions;
 
 // 配置重试
@@ -1116,6 +1130,7 @@ SELECT sid, serial#, username, status FROM v$session WHERE type != 'BACKGROUND';
 **解决方案**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 1. 启用连接泄漏检测
 HikariConfig config = new HikariConfig();
 config.setLeakDetectionThreshold(60000);  // 60秒泄漏检测
@@ -1147,6 +1162,7 @@ config.setIdleTimeout(600000);   // 10分钟
 **大表读取配置**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 1. 游标读取配置(MySQL)
 String url = "jdbc:mysql://localhost:3306/mydb" +
     "?useCursorFetch=true" +      // 启用游标
@@ -1184,6 +1200,7 @@ String incrementalQuery = "SELECT * FROM large_table " +
 **超时配置检查清单**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 1. Checkpoint 配置
 env.enableCheckpointing(60000);  // 1分钟,不要太短
 env.getCheckpointConfig().setTimeout(600000);  // 10分钟超时

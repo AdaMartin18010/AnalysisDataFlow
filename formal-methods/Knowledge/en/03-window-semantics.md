@@ -237,6 +237,7 @@ Through extension of Thompson's construction, can handle lookback of length $k$.
 Apache Beam/Dataflow window semantics implementation:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Window policy definition
 Window.into(FixedWindows.of(Duration.standardMinutes(1)))
     .triggering(

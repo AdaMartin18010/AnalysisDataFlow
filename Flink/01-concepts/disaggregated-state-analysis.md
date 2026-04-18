@@ -363,6 +363,7 @@ $$
 **迁移配置**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 DisaggregatedStateBackend stateBackend = new DisaggregatedStateBackend(
     "s3://flink-state/uv-job",
     DisaggregatedStateBackendOptions.builder()
@@ -392,6 +393,7 @@ env.getCheckpointConfig().enableIncrementalCheckpointing(true);
 **需求**: 每笔交易风控判断延迟 < 200ms，强一致性要求。
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 DisaggregatedStateBackendOptions.builder()
     .setSyncPolicy(SyncPolicy.SYNC)
     .setConsistencyLevel(ConsistencyLevel.STRONG)

@@ -121,6 +121,7 @@ public class BasicCEPExample {
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 // 使用量词简化模式定义
@@ -163,6 +164,7 @@ Pattern<Event, ?> greedyPattern = Pattern
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 // 严格连续 (next): 事件必须紧邻
@@ -195,6 +197,7 @@ Pattern<Event, ?> absencePattern = Pattern
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 // 使用迭代条件检测上升趋势
@@ -240,6 +243,7 @@ Pattern<StockPrice, ?> risingPattern = Pattern
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -361,6 +365,7 @@ public class FraudDetectionCEP {
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 @Test
@@ -394,6 +399,7 @@ public void testLoginFailurePattern() throws Exception {
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 // 购物车放弃检测
@@ -420,6 +426,7 @@ Pattern<UserAction, ?> couponPattern = Pattern
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 // 设备故障模式:温度持续上升后突然停止报告

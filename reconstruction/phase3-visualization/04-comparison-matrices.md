@@ -197,6 +197,7 @@ case class SourceActor(next: ActorRef) extends Actor {
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.CheckpointingMode;
 
 env.enableCheckpointing(60000);
@@ -208,6 +209,7 @@ env.getCheckpointConfig().setMinPauseBetweenCheckpoints(30000);
 **Kafka Streams At-Least-Once 配置**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 props.put(StreamsConfig.PROCESSING_GUARANTEE_CONFIG,
           StreamsConfig.AT_LEAST_ONCE);
 ```

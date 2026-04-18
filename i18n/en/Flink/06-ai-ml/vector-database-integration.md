@@ -31,6 +31,7 @@ Where:
 **Interface Specification:**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Vector write interface
 interface VectorSink<T> extends RichSinkFunction<T> {
     void write(VectorRecord<T> record);
@@ -271,6 +272,7 @@ LIMIT 10;
 **Strategy B - Post-filtering:**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Milvus example
 // 1. Execute ANN search first
 List<VectorRecord> candidates = milvus.search(queryVector, topK=100);
@@ -348,6 +350,7 @@ graph LR
 PgVector, as a PostgreSQL extension, can directly leverage the Flink JDBC Connector:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Table definition mapping
 CREATE TABLE vector_items (
     id STRING,
@@ -538,6 +541,7 @@ graph TB
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 

@@ -259,6 +259,7 @@ flowchart TD
 **Compaction Configuration**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 FileSink.forRowFormat(new Path("s3://bucket/output"), new SimpleStringEncoder())
     .enableCompact(
         FileCompactStrategy.builder()
@@ -305,6 +306,7 @@ $$\square$$
 **HDFS Optimization**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Increase block size for large files
 Configuration conf = new Configuration();
 conf.set("dfs.blocksize", "268435456");  // 256MB
@@ -316,6 +318,7 @@ conf.set("dfs.client.read.shortcircuit", "true");
 **S3 Optimization**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Multipart upload for large files
 FileSink.forBulkFormat(
     new Path("s3://bucket/output"),
@@ -333,6 +336,7 @@ FileSink.forBulkFormat(
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // Continuous file discovery for streaming
@@ -355,6 +359,7 @@ DataStream<String> stream = env.fromSource(
 ### 6.2 Parquet Sink with Partitioning
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Parquet sink with time-based bucketing
 FileSink<GenericRecord> sink = FileSink
     .forBulkFormat(
@@ -380,6 +385,7 @@ stream.sinkTo(sink);
 ### 6.3 Avro Sink with Schema Evolution
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Avro format supports schema evolution
 Schema evolvedSchema = new Schema.Parser().parse(
     new File("user-v2.avsc")

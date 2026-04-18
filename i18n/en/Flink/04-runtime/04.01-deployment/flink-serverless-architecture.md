@@ -260,6 +260,7 @@ platform: confluent-cloud-flink  # No time limit
 **Anti-pattern 2: Ignoring cold start**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // ❌ Wrong: User-facing API without provisioned concurrency
 @Function
 public Response handle(Request req) {

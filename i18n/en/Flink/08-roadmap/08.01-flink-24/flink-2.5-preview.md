@@ -438,6 +438,7 @@ state.backend.forst.incremental-recovery: true  # 2.5 new feature
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.TableEnvironment;
 
@@ -521,6 +522,7 @@ pub extern "C" fn geo_distance(lat1: f64, lon1: f64, lat2: f64, lon2: f64) -> f6
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.table.api.TableEnvironment;
 
 // Flink job registering WASM UDF (2.5 GA API)

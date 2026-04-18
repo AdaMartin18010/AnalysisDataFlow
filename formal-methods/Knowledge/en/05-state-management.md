@@ -317,6 +317,7 @@ $$\forall w: Output(w) \text{ committed} \iff \forall s \in S_A(w) \cup S_B(w): 
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -342,6 +343,7 @@ Join_{Tumbling(5min)}(Orders, Shipments, key = userId)
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -389,6 +391,7 @@ Join_{temporal}(Orders, Rates, key = currency, time = order_time)
 ### 6.4 Stream-Table Join
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Implement dimension table join using broadcast state
 MapStateDescriptor<String, UserInfo> descriptor =
     new MapStateDescriptor<>("users", String.class, UserInfo.class);

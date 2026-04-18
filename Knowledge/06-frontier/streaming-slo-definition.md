@@ -295,6 +295,7 @@ P2 (优化): 吞吐量
 **Step 4: 实施监控**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Prometheus 指标示例
 Counter slo_violations_total = Counter.build()
     .name("streaming_slo_violations_total")

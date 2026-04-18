@@ -104,6 +104,7 @@ graph TB
 **配置要点**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Diskless Kafka 优化的 Flink Kafka Source
 KafkaSource<String> source = KafkaSource.<String>builder()
     .setBootstrapServers("warpstream.kafka.svc:9092")
@@ -134,6 +135,7 @@ KafkaSource<String> source = KafkaSource.<String>builder()
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.CheckpointingMode;
 
@@ -228,6 +230,7 @@ restart-strategy.fixed-delay.delay: 30s
 ### 6.2 Kafka Consumer 配置
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 Properties props = new Properties();
 props.put("bootstrap.servers", "warpstream.kafka.svc:9092");
 props.put("group.id", "flink-diskless-consumer");

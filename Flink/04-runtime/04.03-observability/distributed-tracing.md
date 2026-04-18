@@ -86,6 +86,7 @@
 2. **Inject（注入）**: 函数 $Inject: Context \times Carrier \rightarrow Carrier'$
 
    ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
    // W3C Trace Context格式
    traceparent: 00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01
    //          │  │                           │                │  │

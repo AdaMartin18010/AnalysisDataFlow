@@ -153,15 +153,21 @@ IsStateless(App) ⇔ ∀op ∈ App.operators:
 无状态流应用在处理事件时不需要记住之前的事件。每个事件的处理完全独立于其他事件。这类应用在 Blue/Green 切换时无需状态迁移，可实现秒级切换。
 
 ```java
-
 import org.apache.flink.streaming.api.datastream.DataStream;
 
-// 无状态流应用示例
-DataStream<Event> stream = env
-    .addSource(kafkaConsumer)      // 从 Kafka 读取
-    .filter(event -> event.isValid())  // 无状态过滤
-    .map(event -> transform(event))    // 无状态转换
-    .addSink(kinesisProducer);      // 输出到 Kinesis
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+
+        // 无状态流应用示例
+        DataStream<Event> stream = env
+            .addSource(kafkaConsumer)      // 从 Kafka 读取
+            .filter(event -> event.isValid())  // 无状态过滤
+            .map(event -> transform(event))    // 无状态转换
+            .addSink(kinesisProducer);      // 输出到 Kinesis
+
+    }
+}
 ```
 
 ---
@@ -601,28 +607,34 @@ FlinkBlueGreenDeployment
 **代码模式识别**：
 
 ```java
-
-import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-// 无状态应用特征 - 无 keyed state
-DataStream<Result> process(DataStream<Event> input) {
-    return input
-        .filter(e -> e.isValid())           // 无状态
-        .map(e -> transform(e))              // 无状态
-        .windowAll(TumblingEventTimeWindows.of(Time.minutes(1)))
-        .aggregate(new CountAggregate());    // 可从源重放
-}
+public class Example {
+    public static void main(String[] args) throws Exception {
 
-// 有状态应用特征 - 使用 keyed state
-DataStream<Result> statefulProcess(DataStream<Event> input) {
-    return input
-        .keyBy(e -> e.getUserId())
-        .process(new KeyedProcessFunction() {
-            private ValueState<Session> sessionState;  // 有状态！
-            // ...
-        });
+        // 无状态应用特征 - 无 keyed state
+        DataStream<Result> process(DataStream<Event> input) {
+            return input
+                .filter(e -> e.isValid())           // 无状态
+                .map(e -> transform(e))              // 无状态
+                .windowAll(TumblingEventTimeWindows.of(Time.minutes(1)))
+                .aggregate(new CountAggregate());    // 可从源重放
+        }
+
+        // 有状态应用特征 - 使用 keyed state
+        DataStream<Result> statefulProcess(DataStream<Event> input) {
+            return input
+                .keyBy(e -> e.getUserId())
+                .process(new KeyedProcessFunction() {
+                    private ValueState<Session> sessionState;  // 有状态！
+                    // ...
+                });
+        }
+
+    }
 }
 ```
 

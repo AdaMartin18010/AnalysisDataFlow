@@ -152,6 +152,7 @@ graph TB
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 DataStream<OrderEvent> orderStream = env
@@ -184,6 +185,7 @@ DataStream<OrderEvent> orderStream = env
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.api.common.functions.AggregateFunction;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -219,6 +221,7 @@ orderStream
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 orderStream
@@ -277,6 +280,7 @@ public class UvPvAggregate extends AggregateFunction<UserEvent, UvPvAcc, UvPvRes
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 // 大额订单检测
@@ -309,6 +313,7 @@ Pattern<OrderEvent, ?> pattern = Pattern
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.CheckpointingMode;
 
 env.enableCheckpointing(30000);

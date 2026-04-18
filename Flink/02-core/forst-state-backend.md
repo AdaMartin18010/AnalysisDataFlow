@@ -454,25 +454,30 @@ state.backend.forst.restore.preload.hot-keys: true
 **编程方式配置**:
 
 ```java
-
-import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.CheckpointingMode;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
-StreamExecutionEnvironment env =
-    StreamExecutionEnvironment.getExecutionEnvironment();
+public class Example {
+    public static void main(String[] args) throws Exception {
 
-// 配置 ForSt State Backend
-ForStStateBackend forstBackend = new ForStStateBackend();
-forstBackend.setUFSStoragePath("s3://flink-state-bucket/jobs/job-001");
-forstBackend.setLocalCacheSize("10 gb");
-forstBackend.setLazyRestoreEnabled(true);
+        StreamExecutionEnvironment env =
+            StreamExecutionEnvironment.getExecutionEnvironment();
 
-env.setStateBackend(forstBackend);
+        // 配置 ForSt State Backend
+        ForStStateBackend forstBackend = new ForStStateBackend();
+        forstBackend.setUFSStoragePath("s3://flink-state-bucket/jobs/job-001");
+        forstBackend.setLocalCacheSize("10 gb");
+        forstBackend.setLazyRestoreEnabled(true);
 
-// 启用 Checkpoint
-env.enableCheckpointing(60000);  // 60s
-env.getCheckpointConfig().setCheckpointingMode(
-    CheckpointingMode.EXACTLY_ONCE);
+        env.setStateBackend(forstBackend);
+
+        // 启用 Checkpoint
+        env.enableCheckpointing(60000);  // 60s
+        env.getCheckpointConfig().setCheckpointingMode(
+            CheckpointingMode.EXACTLY_ONCE);
+
+    }
+}
 ```
 
 ### 6.3 远程 Compaction 配置

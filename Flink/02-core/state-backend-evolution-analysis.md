@@ -282,24 +282,30 @@ $$
 ### 6.1 MemoryStateBackend 配置 (历史版本)
 
 ```java
-// 伪代码示意,非完整可编译代码
-
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
-// Flink 1.12 及之前
-StreamExecutionEnvironment env =
-    StreamExecutionEnvironment.getExecutionEnvironment();
+public class Example {
+    public static void main(String[] args) throws Exception {
+        // 伪代码示意,非完整可编译代码
 
-// 配置 MemoryStateBackend (已弃用)
-MemoryStateBackend memoryBackend = new MemoryStateBackend(
-    "hdfs://checkpoints",  // Checkpoint 存储路径
-    true                    // 异步快照
-);
-env.setStateBackend(memoryBackend);
 
-// 关键限制
-// - 状态必须小于 100MB
-// - 不适合生产环境
+        // Flink 1.12 及之前
+        StreamExecutionEnvironment env =
+            StreamExecutionEnvironment.getExecutionEnvironment();
+
+        // 配置 MemoryStateBackend (已弃用)
+        MemoryStateBackend memoryBackend = new MemoryStateBackend(
+            "hdfs://checkpoints",  // Checkpoint 存储路径
+            true                    // 异步快照
+        );
+        env.setStateBackend(memoryBackend);
+
+        // 关键限制
+        // - 状态必须小于 100MB
+        // - 不适合生产环境
+
+    }
+}
 ```
 
 ---
@@ -307,43 +313,49 @@ env.setStateBackend(memoryBackend);
 ### 6.2 RocksDBStateBackend 配置
 
 ```java
-
+import org.apache.flink.contrib.streaming.state.EmbeddedRocksDBStateBackend;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
-// Flink 1.13+ (EmbeddedRocksDBStateBackend)
-StreamExecutionEnvironment env =
-    StreamExecutionEnvironment.getExecutionEnvironment();
+public class Example {
+    public static void main(String[] args) throws Exception {
 
-// 启用增量 Checkpoint
-EmbeddedRocksDBStateBackend rocksDbBackend =
-    new EmbeddedRocksDBStateBackend(true);
-env.setStateBackend(rocksDbBackend);
+        // Flink 1.13+ (EmbeddedRocksDBStateBackend)
+        StreamExecutionEnvironment env =
+            StreamExecutionEnvironment.getExecutionEnvironment();
 
-// Checkpoint 存储配置
-env.getCheckpointConfig().setCheckpointStorage("hdfs:///checkpoints");
+        // 启用增量 Checkpoint
+        EmbeddedRocksDBStateBackend rocksDbBackend =
+            new EmbeddedRocksDBStateBackend(true);
+        env.setStateBackend(rocksDbBackend);
 
-// RocksDB 精细化配置
-DefaultConfigurableOptionsFactory optionsFactory =
-    new DefaultConfigurableOptionsFactory();
+        // Checkpoint 存储配置
+        env.getCheckpointConfig().setCheckpointStorage("hdfs:///checkpoints");
 
-// 内存配置
-optionsFactory.setRocksDBOptions(
-    "state.backend.rocksdb.memory.managed", "true");
-optionsFactory.setRocksDBOptions(
-    "state.backend.rocksdb.memory.fixed-per-slot", "512mb");
+        // RocksDB 精细化配置
+        DefaultConfigurableOptionsFactory optionsFactory =
+            new DefaultConfigurableOptionsFactory();
 
-// 写缓冲区配置
-optionsFactory.setRocksDBOptions("write_buffer_size", "64MB");
-optionsFactory.setRocksDBOptions("max_write_buffer_number", "4");
+        // 内存配置
+        optionsFactory.setRocksDBOptions(
+            "state.backend.rocksdb.memory.managed", "true");
+        optionsFactory.setRocksDBOptions(
+            "state.backend.rocksdb.memory.fixed-per-slot", "512mb");
 
-// SST 文件配置
-optionsFactory.setRocksDBOptions("target_file_size_base", "32MB");
-optionsFactory.setRocksDBOptions("max_bytes_for_level_base", "256MB");
+        // 写缓冲区配置
+        optionsFactory.setRocksDBOptions("write_buffer_size", "64MB");
+        optionsFactory.setRocksDBOptions("max_write_buffer_number", "4");
 
-// 压缩配置
-optionsFactory.setRocksDBOptions("compression_per_level", "LZ4:LZ4:ZSTD");
+        // SST 文件配置
+        optionsFactory.setRocksDBOptions("target_file_size_base", "32MB");
+        optionsFactory.setRocksDBOptions("max_bytes_for_level_base", "256MB");
 
-env.setRocksDBStateBackend(rocksDbBackend, optionsFactory);
+        // 压缩配置
+        optionsFactory.setRocksDBOptions("compression_per_level", "LZ4:LZ4:ZSTD");
+
+        env.setRocksDBStateBackend(rocksDbBackend, optionsFactory);
+
+    }
+}
 ```
 
 **flink-conf.yaml 配置**:
@@ -365,29 +377,35 @@ state.backend.rocksdb.threads.threads-number: 4
 ### 6.3 ForStStateBackend 配置 (Flink 2.0+)
 
 ```java
-// Flink 2.0+ ForStStateBackend
-ForStStateBackend forstBackend = new ForStStateBackend();
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        // Flink 2.0+ ForStStateBackend
+        ForStStateBackend forstBackend = new ForStStateBackend();
 
-// UFS 存储配置
-forstBackend.setUFSStoragePath("s3://flink-state-bucket/jobs/job-001");
-forstBackend.setUFSType(UFSType.S3);
+        // UFS 存储配置
+        forstBackend.setUFSStoragePath("s3://flink-state-bucket/jobs/job-001");
+        forstBackend.setUFSType(UFSType.S3);
 
-// 本地缓存配置
-forstBackend.setLocalCacheSize("10gb");
-forstBackend.setCachePolicy(CachePolicy.SLRU);
+        // 本地缓存配置
+        forstBackend.setLocalCacheSize("10gb");
+        forstBackend.setCachePolicy(CachePolicy.SLRU);
 
-// 恢复配置
-forstBackend.setLazyRestoreEnabled(true);
-forstBackend.setRestoreMode(RestoreMode.LAZY);
+        // 恢复配置
+        forstBackend.setLazyRestoreEnabled(true);
+        forstBackend.setRestoreMode(RestoreMode.LAZY);
 
-// 远程 Compaction 配置
-forstBackend.setRemoteCompactionEnabled(true);
-forstBackend.setRemoteCompactionEndpoint("compaction-service:9090");
+        // 远程 Compaction 配置
+        forstBackend.setRemoteCompactionEnabled(true);
+        forstBackend.setRemoteCompactionEndpoint("compaction-service:9090");
 
-env.setStateBackend(forstBackend);
+        env.setStateBackend(forstBackend);
 
-// ForSt 推荐较长 Checkpoint 间隔
-env.enableCheckpointing(120000);  // 2分钟
+        // ForSt 推荐较长 Checkpoint 间隔
+        env.enableCheckpointing(120000);  // 2分钟
+
+    }
+}
 ```
 
 **flink-conf.yaml 完整配置**:

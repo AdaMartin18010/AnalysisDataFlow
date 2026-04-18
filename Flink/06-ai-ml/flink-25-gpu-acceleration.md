@@ -485,6 +485,7 @@ $$\forall D: |\text{Reduce}_{GPU}(D) - \text{Reduce}_{CPU}(D)| \leq \epsilon \cd
 **工程验证：**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 精度验证测试
 @Test
 public void testGPUSumAccuracy() {

@@ -894,3 +894,59 @@ sequenceDiagram
 ## 8. 引用参考 (References)
 
 [^1]: Apache Flink Blog, "Apache Flink Agents 0.2.0 Release Announcement", February 6, 2026. <https://flink.apache.org/2026/02/06/apache-flink-agents-0.2.0-release-announcement/>
+
+
+---
+
+## 附录：Flink Agents 0.3 迁移指引与对比
+
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **适用目标版本**: 0.3.0 (预计 2026-06-15)
+
+### 架构演进：0.2.x → 0.3
+
+| 架构层次 | 0.2.x 设计 | 0.3 设计 | 迁移注意点 |
+|----------|------------|----------|------------|
+| **API 层** | Agent Runtime API (0.2.x) | Agent Runtime API + Skill API | 新增 Skill 注册与发现端点 |
+| **核心运行时** | Core Runtime Layer | Core Runtime + Durable Execution V2 | 外部调用状态纳入 Checkpoint |
+| **记忆管理** | Hot/Warm/Cold 三级 Flink State | 双轨制：Flink State + Mem0 后端 | Mem0 作为冷记忆层异步挂载 |
+| **协议层** | MCP Client/Server + A2A | 同上，新增跨语言事件总线 | Protobuf Schema 需在编译期生成 |
+| **执行层** | Java 异步执行器 | Java + Python 3.12 + Rust 跨语言执行器 | 语言运行时资源隔离需重新评估 |
+
+### 状态模型扩展
+
+0.3 在原有 $\mathcal{P}_{state}$（Def-P2-03）基础上增加 Mem0 冷记忆层：
+
+$$
+\mathcal{P}_{state}^{0.3} = \langle \mathcal{S}_{hot}, \mathcal{S}_{warm}, \mathcal{S}_{cold}, \mathcal{M}_{mem0}, \phi_{migrate}, \psi_{recover}, \phi_{sync} \rangle
+$$
+
+- $\phi_{sync}: \mathcal{S}_{warm} \rightarrow \mathcal{M}_{mem0}$ 为后台异步同步线程
+- 运维影响：需监控 Mem0 后端延迟与 Flink TaskManager 的堆外内存占用
+
+### 配置迁移示例
+
+```yaml
+# 0.2.x 配置
+agent:
+  memory:
+    hot_fraction: 0.4
+    warm_backend: rocksdb
+
+# 0.3 配置
+agent:
+  memory:
+    hot_fraction: 0.3          # 建议下调，为 Mem0 同步预留资源
+    warm_backend: rocksdb
+    cold_backend:
+      type: mem0
+      uri: http://mem0:8000
+      sync_batch_size: 100
+```
+
+### 性能影响预期
+
+- **Skill Discovery**: 首次调用延迟增加 ~5 ms（注册表查询），后续命中本地缓存后消除
+- **Mem0 同步**: 对 Checkpoint 间隔无影响（异步），但会增加网络 I/O
+- **跨语言序列化**: Protobuf 序列化开销约 0.1–0.3 ms/事件，建议在批处理场景使用 Arrow
+
+---

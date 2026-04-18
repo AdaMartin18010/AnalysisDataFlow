@@ -30,7 +30,7 @@
     - [4.2 迟到数据处理机制](#42-迟到数据处理机制)
     - [4.3 窗口触发时机分析](#43-窗口触发时机分析)
     - [Lemma-F-02-01 源码验证](#lemma-f-02-01-源码验证)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-F-02-01: Event Time 结果确定性定理](#thm-f-02-01-event-time-结果确定性定理)
     - [Thm-F-02-02: Allowed Lateness 不破坏 Exactly-Once 语义](#thm-f-02-02-allowed-lateness-不破坏-exactly-once-语义)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
@@ -299,6 +299,7 @@ $$
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 .window(TumblingEventTimeWindows.of(Time.minutes(1)))
@@ -309,6 +310,7 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 .window(TumblingEventTimeWindows.of(Time.minutes(1)))
@@ -319,6 +321,7 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 OutputTag<Event> lateDataTag = new OutputTag<Event>("late-data"){};
@@ -548,25 +551,42 @@ public class BoundedOutOfOrdernessWatermarks<T> implements WatermarkGenerator<T>
 **实例 1: 有序日志流**
 
 ```java
-
+import java.time.Duration;
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.time.Time;
 
-DataStream<Event> stream = env.fromSource(kafkaSource,
-    WatermarkStrategy.<Event>forMonotonousTimestamps()
-        .withIdleness(Duration.ofMinutes(5)),
-    "Ordered Kafka Source");
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+
+        DataStream<Event> stream = env.fromSource(kafkaSource,
+            WatermarkStrategy.<Event>forMonotonousTimestamps()
+                .withIdleness(Duration.ofMinutes(5)),
+            "Ordered Kafka Source");
+
+    }
+}
 ```
 
 **实例 2: 乱序交易流（常用配置）**
 
 ```java
-
+import java.time.Duration;
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.streaming.api.datastream.DataStream;
 
-DataStream<Transaction> stream = env.fromSource(kafkaSource,
-    WatermarkStrategy.<Transaction>forBoundedOutOfOrderness(Duration.ofSeconds(10))
-        .withIdleness(Duration.ofMinutes(1)),
-    "Transaction Source");
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+
+        DataStream<Transaction> stream = env.fromSource(kafkaSource,
+            WatermarkStrategy.<Transaction>forBoundedOutOfOrderness(Duration.ofSeconds(10))
+                .withIdleness(Duration.ofMinutes(1)),
+            "Transaction Source");
+
+    }
+}
 ```
 
 ---
@@ -576,35 +596,53 @@ DataStream<Transaction> stream = env.fromSource(kafkaSource,
 **Tumbling Window - 每小时 PV 统计**
 
 ```java
-
+import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-stream.keyBy(Event::getPageId)
-    .window(TumblingEventTimeWindows.of(Time.hours(1)))
-    .aggregate(new CountAggregate());
+public class Example {
+    public static void main(String[] args) throws Exception {
+
+        stream.keyBy(Event::getPageId)
+            .window(TumblingEventTimeWindows.of(Time.hours(1)))
+            .aggregate(new CountAggregate());
+
+    }
+}
 ```
 
 **Sliding Window - 5 分钟滑动平均**
 
 ```java
-
+import org.apache.flink.streaming.api.windowing.assigners.SlidingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-stream.keyBy(SensorReading::getSensorId)
-    .window(SlidingEventTimeWindows.of(Time.minutes(5), Time.minutes(1)))
-    .aggregate(new AverageAggregate());
+public class Example {
+    public static void main(String[] args) throws Exception {
+
+        stream.keyBy(SensorReading::getSensorId)
+            .window(SlidingEventTimeWindows.of(Time.minutes(5), Time.minutes(1)))
+            .aggregate(new AverageAggregate());
+
+    }
+}
 ```
 
 **Session Window - 用户行为分析**
 
 ```java
-
+import org.apache.flink.streaming.api.windowing.assigners.EventTimeSessionWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-stream.keyBy(ClickEvent::getUserId)
-    .window(EventTimeSessionWindows.withGap(Time.minutes(30)))
-    .allowedLateness(Time.minutes(10))
-    .aggregate(new SessionAggregate());
+public class Example {
+    public static void main(String[] args) throws Exception {
+
+        stream.keyBy(ClickEvent::getUserId)
+            .window(EventTimeSessionWindows.withGap(Time.minutes(30)))
+            .allowedLateness(Time.minutes(10))
+            .aggregate(new SessionAggregate());
+
+    }
+}
 ```
 
 ---
@@ -612,23 +650,32 @@ stream.keyBy(ClickEvent::getUserId)
 ### 6.4 迟到数据处理实例
 
 ```java
-
+import java.time.Duration;
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.util.OutputTag;
 
-OutputTag<Event> lateDataTag = new OutputTag<Event>("late-data"){};
+public class Example {
+    public static void main(String[] args) throws Exception {
 
-SingleOutputStreamOperator<Result> mainResult = stream
-    .assignTimestampsAndWatermarks(
-        WatermarkStrategy.<Event>forBoundedOutOfOrderness(Duration.ofSeconds(5)))
-    .keyBy(Event::getKey)
-    .window(TumblingEventTimeWindows.of(Time.minutes(1)))
-    .allowedLateness(Time.minutes(10))
-    .sideOutputLateData(lateDataTag)
-    .aggregate(new MyAggregate());
+        OutputTag<Event> lateDataTag = new OutputTag<Event>("late-data"){};
 
-DataStream<Event> lateData = mainResult.getSideOutput(lateDataTag);
-lateData.addSink(new LateDataLogger());
+        SingleOutputStreamOperator<Result> mainResult = stream
+            .assignTimestampsAndWatermarks(
+                WatermarkStrategy.<Event>forBoundedOutOfOrderness(Duration.ofSeconds(5)))
+            .keyBy(Event::getKey)
+            .window(TumblingEventTimeWindows.of(Time.minutes(1)))
+            .allowedLateness(Time.minutes(10))
+            .sideOutputLateData(lateDataTag)
+            .aggregate(new MyAggregate());
+
+        DataStream<Event> lateData = mainResult.getSideOutput(lateDataTag);
+        lateData.addSink(new LateDataLogger());
+
+    }
+}
 ```
 
 ---

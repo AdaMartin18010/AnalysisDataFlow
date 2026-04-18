@@ -370,6 +370,7 @@ Need to prove the three conditions of eventual consistency:
 **Migration Configuration**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 DisaggregatedStateBackend stateBackend = new DisaggregatedStateBackend(
     "s3://flink-state/uv-job",
     DisaggregatedStateBackendOptions.builder()
@@ -399,6 +400,7 @@ env.getCheckpointConfig().enableIncrementalCheckpointing(true);
 **Requirement**: Risk control judgment latency per transaction < 200ms, strong consistency required.
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 DisaggregatedStateBackendOptions.builder()
     .setSyncPolicy(SyncPolicy.SYNC)
     .setConsistencyLevel(ConsistencyLevel.STRONG)

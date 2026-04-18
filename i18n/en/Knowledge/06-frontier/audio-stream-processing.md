@@ -101,6 +101,7 @@ graph TB
 ### 6.1 Flink Audio Feature Extraction Job
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 DataStream<AudioFrame> audioStream = env
     .addSource(new MicrophoneSource(16000, 1024))
     .assignTimestampsAndWatermarks(

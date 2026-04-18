@@ -70,6 +70,7 @@ slos:
 ### 6.1 Error Budget
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 double errorBudget = 1 - slo.getTarget();
 boolean burnRate = currentErrors / errorBudget;
 ```

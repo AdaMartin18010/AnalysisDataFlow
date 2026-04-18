@@ -548,28 +548,38 @@ $$
 #### 4.3.2 Checkpoint 配置参数
 
 ```java
-
+import java.time.Duration;
+import org.apache.flink.configuration.Configuration;
+import org.apache.flink.contrib.streaming.state.EmbeddedRocksDBStateBackend;
 import org.apache.flink.streaming.api.CheckpointingMode;
+import org.apache.flink.streaming.api.windowing.time.Time;
 
-// 基础配置
-env.enableCheckpointing(60000);  // 60秒间隔
-env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);
-env.getCheckpointConfig().setCheckpointTimeout(600000);  // 10分钟超时
-env.getCheckpointConfig().setMaxConcurrentCheckpoints(1);
-env.getCheckpointConfig().setMinPauseBetweenCheckpoints(30000);
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-// 增量 Checkpoint(RocksDB)
-env.setStateBackend(new EmbeddedRocksDBStateBackend(true));
+        // 基础配置
+        env.enableCheckpointing(60000);  // 60秒间隔
+        env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);
+        env.getCheckpointConfig().setCheckpointTimeout(600000);  // 10分钟超时
+        env.getCheckpointConfig().setMaxConcurrentCheckpoints(1);
+        env.getCheckpointConfig().setMinPauseBetweenCheckpoints(30000);
 
-// Unaligned Checkpoint
-env.getCheckpointConfig().enableUnalignedCheckpoints();
-env.getCheckpointConfig().setAlignmentTimeout(Duration.ofSeconds(30));
+        // 增量 Checkpoint(RocksDB)
+        env.setStateBackend(new EmbeddedRocksDBStateBackend(true));
 
-// Changelog State Backend (Flink 1.15+)
-Configuration config = new Configuration();
-config.setBoolean("state.backend.changelog.enabled", true);
-config.setString("state.backend.changelog.storage", "filesystem");
-env.configure(config);
+        // Unaligned Checkpoint
+        env.getCheckpointConfig().enableUnalignedCheckpoints();
+        env.getCheckpointConfig().setAlignmentTimeout(Duration.ofSeconds(30));
+
+        // Changelog State Backend (Flink 1.15+)
+        Configuration config = new Configuration();
+        config.setBoolean("state.backend.changelog.enabled", true);
+        config.setString("state.backend.changelog.storage", "filesystem");
+        env.configure(config);
+
+    }
+}
 ```
 
 ---
@@ -1343,32 +1353,48 @@ graph TB
 **小状态、低延迟模板**:
 
 ```java
-// 堆内存配置
-env.setStateBackend(new HashMapStateBackend());
-env.enableCheckpointing(10000);
-env.getCheckpointConfig().setCheckpointStorage("file:///tmp/checkpoints");
+import org.apache.flink.runtime.state.hashmap.HashMapStateBackend;
 
-// flink-conf.yaml
-taskmanager.memory.framework.heap.size: 512mb
-taskmanager.memory.task.heap.size: 2gb
-taskmanager.memory.managed.size: 256mb
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        // 堆内存配置
+        env.setStateBackend(new HashMapStateBackend());
+        env.enableCheckpointing(10000);
+        env.getCheckpointConfig().setCheckpointStorage("file:///tmp/checkpoints");
+
+        // flink-conf.yaml
+        taskmanager.memory.framework.heap.size: 512mb
+        taskmanager.memory.task.heap.size: 2gb
+        taskmanager.memory.managed.size: 256mb
+
+    }
+}
 ```
 
 **大状态、高吞吐模板**:
 
 ```java
-// RocksDB 增量 Checkpoint
-EmbeddedRocksDBStateBackend rocksDb = new EmbeddedRocksDBStateBackend(true);
-env.setStateBackend(rocksDb);
-env.enableCheckpointing(60000);
-env.getCheckpointConfig().setCheckpointStorage("hdfs:///checkpoints");
+import org.apache.flink.contrib.streaming.state.EmbeddedRocksDBStateBackend;
 
-// 调优参数
-DefaultConfigurableOptionsFactory factory = new DefaultConfigurableOptionsFactory();
-factory.setRocksDBOptions("write_buffer_size", "64MB");
-factory.setRocksDBOptions("max_write_buffer_number", "4");
-factory.setRocksDBOptions("target_file_size_base", "32MB");
-factory.setRocksDBOptions("max_bytes_for_level_base", "256MB");
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        // RocksDB 增量 Checkpoint
+        EmbeddedRocksDBStateBackend rocksDb = new EmbeddedRocksDBStateBackend(true);
+        env.setStateBackend(rocksDb);
+        env.enableCheckpointing(60000);
+        env.getCheckpointConfig().setCheckpointStorage("hdfs:///checkpoints");
+
+        // 调优参数
+        DefaultConfigurableOptionsFactory factory = new DefaultConfigurableOptionsFactory();
+        factory.setRocksDBOptions("write_buffer_size", "64MB");
+        factory.setRocksDBOptions("max_write_buffer_number", "4");
+        factory.setRocksDBOptions("target_file_size_base", "32MB");
+        factory.setRocksDBOptions("max_bytes_for_level_base", "256MB");
+
+    }
+}
 ```
 
 **云原生、超大规模模板**:
@@ -1390,6 +1416,7 @@ state.backend.forst.restore.mode: LAZY
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.api.common.typeinfo.Types;
 
 // 使用原始类型减少装箱开销
@@ -1412,6 +1439,7 @@ for (Event event : events) {
 #### 8.2.2 MapState 优化
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 批量操作优于单条操作
 // 不推荐
 for (String key : keys) {
@@ -1424,6 +1452,7 @@ for (String key : keys) {
 #### 8.2.3 ListState 优化
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 控制列表大小,避免 OOM
 if (listSize > MAX_LIST_SIZE) {
     flushAndClear();
@@ -1443,34 +1472,51 @@ for (Event event : events) {
 #### 8.3.1 超时与重试配置
 
 ```java
-// Checkpoint 配置
-env.enableCheckpointing(60000);
-env.getCheckpointConfig().setCheckpointTimeout(600000);  // 10分钟超时
-env.getCheckpointConfig().setMaxConcurrentCheckpoints(1);
-env.getCheckpointConfig().setMinPauseBetweenCheckpoints(30000);
+import org.apache.flink.streaming.api.windowing.time.Time;
 
-// 失败重试策略
-env.setRestartStrategy(RestartStrategies.fixedDelayRestart(
-    3,  // 最大重试次数
-    Time.of(10, TimeUnit.SECONDS)  // 重试间隔
-));
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        // Checkpoint 配置
+        env.enableCheckpointing(60000);
+        env.getCheckpointConfig().setCheckpointTimeout(600000);  // 10分钟超时
+        env.getCheckpointConfig().setMaxConcurrentCheckpoints(1);
+        env.getCheckpointConfig().setMinPauseBetweenCheckpoints(30000);
 
-// 失败容忍配置
-env.getCheckpointConfig().setTolerableCheckpointFailureNumber(3);
+        // 失败重试策略
+        env.setRestartStrategy(RestartStrategies.fixedDelayRestart(
+            3,  // 最大重试次数
+            Time.of(10, TimeUnit.SECONDS)  // 重试间隔
+        ));
+
+        // 失败容忍配置
+        env.getCheckpointConfig().setTolerableCheckpointFailureNumber(3);
+
+    }
+}
 ```
 
 #### 8.3.2 Unaligned Checkpoint 配置
 
 ```java
-// 低延迟场景启用 Unaligned Checkpoint
-env.getCheckpointConfig().enableUnalignedCheckpoints();
-env.getCheckpointConfig().setAlignmentTimeout(Duration.ofSeconds(30));
+import java.time.Duration;
+import org.apache.flink.streaming.api.windowing.time.Time;
 
-// 控制 in-flight 数据大小
-env.getCheckpointConfig().setMaxUnalignedCheckpoints(2);
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        // 低延迟场景启用 Unaligned Checkpoint
+        env.getCheckpointConfig().enableUnalignedCheckpoints();
+        env.getCheckpointConfig().setAlignmentTimeout(Duration.ofSeconds(30));
 
-// 启用 aligned checkpoint timeout 自动切换
-env.getCheckpointConfig().setAlignmentTimeout(Duration.ofSeconds(10));
+        // 控制 in-flight 数据大小
+        env.getCheckpointConfig().setMaxUnalignedCheckpoints(2);
+
+        // 启用 aligned checkpoint timeout 自动切换
+        env.getCheckpointConfig().setAlignmentTimeout(Duration.ofSeconds(10));
+
+    }
+}
 ```
 
 ---
@@ -1514,6 +1560,7 @@ $$
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 // 计算示例
@@ -1570,6 +1617,7 @@ free -m     # 内存
 **排查清单**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 1. 检查所有状态是否配置 TTL
 @Override
 public void open(Configuration parameters) {
@@ -1587,21 +1635,29 @@ getRuntimeContext().getMetricGroup().gauge("stateSizeBytes",
 **解决策略**:
 
 ```java
-
+import org.apache.flink.api.common.state.StateTtlConfig;
+import org.apache.flink.contrib.streaming.state.EmbeddedRocksDBStateBackend;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-// 策略 1:启用 TTL
-StateTtlConfig ttlConfig = StateTtlConfig
-    .newBuilder(Time.hours(24))
-    .setUpdateType(StateTtlConfig.UpdateType.OnCreateAndWrite)
-    .cleanupInRocksdbCompactFilter()
-    .build();
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-// 策略 2:切换到 RocksDB
-env.setStateBackend(new EmbeddedRocksDBStateBackend(true));
+        // 策略 1:启用 TTL
+        StateTtlConfig ttlConfig = StateTtlConfig
+            .newBuilder(Time.hours(24))
+            .setUpdateType(StateTtlConfig.UpdateType.OnCreateAndWrite)
+            .cleanupInRocksdbCompactFilter()
+            .build();
 
-// 策略 3:状态分片
-// 使用更细粒度的 key,分散状态到多个 subtask
+        // 策略 2:切换到 RocksDB
+        env.setStateBackend(new EmbeddedRocksDBStateBackend(true));
+
+        // 策略 3:状态分片
+        // 使用更细粒度的 key,分散状态到多个 subtask
+
+    }
+}
 ```
 
 #### 8.5.3 状态访问性能问题
@@ -1609,6 +1665,7 @@ env.setStateBackend(new EmbeddedRocksDBStateBackend(true));
 **诊断指标**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 添加自定义指标监控状态访问延迟
 private transient long lastAccessTime;
 private transient Histogram stateAccessLatency;
@@ -1647,29 +1704,36 @@ public void processElement(Event event, Context ctx, Collector<Result> out) {
 #### 8.6.1 启用 Changelog State Backend
 
 ```java
-
+import org.apache.flink.configuration.Configuration;
+import org.apache.flink.contrib.streaming.state.EmbeddedRocksDBStateBackend;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
-/**
- * Def-F-02-105: Changelog State Backend 生产配置
- * 场景:需要秒级恢复的金融交易处理
- */
-public static void configureChangelogBackend(StreamExecutionEnvironment env) {
-    // 基础状态后端
-    EmbeddedRocksDBStateBackend rocksDbBackend = new EmbeddedRocksDBStateBackend(true);
-    env.setStateBackend(rocksDbBackend);
+public class Example {
+    public static void main(String[] args) throws Exception {
 
-    // 启用 Changelog
-    Configuration config = new Configuration();
-    config.setBoolean("state.backend.changelog.enabled", true);
-    config.setString("state.backend.changelog.storage", "filesystem");
-    config.setString("state.backend.changelog.periodic-materialization.interval", "10min");
-    config.setInteger("state.backend.changelog.materialization.max-concurrent", 1);
-    env.configure(config);
+        /**
+         * Def-F-02-105: Changelog State Backend 生产配置
+         * 场景:需要秒级恢复的金融交易处理
+         */
+        public static void configureChangelogBackend(StreamExecutionEnvironment env) {
+            // 基础状态后端
+            EmbeddedRocksDBStateBackend rocksDbBackend = new EmbeddedRocksDBStateBackend(true);
+            env.setStateBackend(rocksDbBackend);
 
-    // Checkpoint 配置(Changelog 推荐较长间隔)
-    env.enableCheckpointing(120000);  // 2分钟
-    env.getCheckpointConfig().setCheckpointStorage("s3://flink-checkpoints");
+            // 启用 Changelog
+            Configuration config = new Configuration();
+            config.setBoolean("state.backend.changelog.enabled", true);
+            config.setString("state.backend.changelog.storage", "filesystem");
+            config.setString("state.backend.changelog.periodic-materialization.interval", "10min");
+            config.setInteger("state.backend.changelog.materialization.max-concurrent", 1);
+            env.configure(config);
+
+            // Checkpoint 配置(Changelog 推荐较长间隔)
+            env.enableCheckpointing(120000);  // 2分钟
+            env.getCheckpointConfig().setCheckpointStorage("s3://flink-checkpoints");
+        }
+
+    }
 }
 ```
 
@@ -1697,6 +1761,7 @@ public static void configureChangelogBackend(StreamExecutionEnvironment env) {
 #### 8.6.2 状态兼容性规则
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 添加字段(向前兼容)
 public class UserState {
     private String userId;      // 原有字段

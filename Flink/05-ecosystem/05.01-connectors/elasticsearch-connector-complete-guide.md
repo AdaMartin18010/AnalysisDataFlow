@@ -171,6 +171,7 @@ ES Sink 作为 Stateful Sink:
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // ❌ 错误做法:每条记录创建新的 IndexRequest 函数
@@ -187,6 +188,7 @@ stream.addSink(new ElasticsearchSink.Builder<LogEvent>(
 ```
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // ✅ 正确做法:使用 IndexRequest 构建器,让 Sink 批量处理
 ElasticsearchSink.Builder<LogEvent> builder = new ElasticsearchSink.Builder<>(
     config,
@@ -229,6 +231,7 @@ builder.setBulkFlushMaxActions(1000); // 批量刷新
 **工程实现**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 启用 checkpoint 同步
 builder.setFlushOnCheckpoint(true);
 ```
@@ -373,6 +376,7 @@ class UserAction {
 ### 6.3 带认证的 ES Sink 配置
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;

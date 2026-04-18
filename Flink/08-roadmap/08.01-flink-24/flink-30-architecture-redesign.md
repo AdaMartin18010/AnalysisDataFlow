@@ -1,7 +1,11 @@
-> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+﻿> **⚠️ 前瞻性内容风险声明**
 >
-> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
-<!-- 版本状态标记: status=long-term-vision, target=2027-Q1 -->
+> 本文档描述的技术特性处于早期规划或社区讨论阶段，**不代表 Apache Flink 官方承诺**。
+> - 相关 FLIP 可能尚未进入正式投票，或可能在实现过程中发生显著变更
+> - 预计发布时间基于社区讨论趋势分析，存在延迟或取消的风险
+> - 生产环境选型请以 Apache Flink 官方发布为准
+> - **最后核实日期**: 2026-04-19 | **信息来源**: 社区邮件列表/FLIP/官方博客
+><!-- 版本状态标记: status=long-term-vision, target=2027-Q1 -->
 
 # Flink 3.0 架构重大变更完整文档
 
@@ -152,6 +156,7 @@ $$
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 enum ExecutionMode {
@@ -768,6 +773,7 @@ execution.adaptive.max-parallelism: 1000
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;

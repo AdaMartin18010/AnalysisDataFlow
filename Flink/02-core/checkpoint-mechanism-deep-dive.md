@@ -172,6 +172,7 @@ $$
 **State Backend** 是负责状态存储、访问和快照持久化的运行时组件：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 源码路径: org.apache.flink.runtime.state.StateBackend
 interface StateBackend {
     createKeyedStateBackend(env, stateHandles): AbstractKeyedStateBackend<K>
@@ -533,18 +534,26 @@ $$
 #### 配置参数
 
 ```java
-// 启用增量 Checkpoint
-EmbeddedRocksDBStateBackend rocksDbBackend = new EmbeddedRocksDBStateBackend(true);
-env.setStateBackend(rocksDbBackend);
+import org.apache.flink.contrib.streaming.state.EmbeddedRocksDBStateBackend;
 
-// 启用 Unaligned Checkpoint
-env.getCheckpointConfig().enableUnalignedCheckpoints();
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        // 启用增量 Checkpoint
+        EmbeddedRocksDBStateBackend rocksDbBackend = new EmbeddedRocksDBStateBackend(true);
+        env.setStateBackend(rocksDbBackend);
 
-// 配置增量 Checkpoint 周期
-env.getCheckpointConfig().setMinPauseBetweenCheckpoints(500);
+        // 启用 Unaligned Checkpoint
+        env.getCheckpointConfig().enableUnalignedCheckpoints();
 
-// RocksDB 特定配置
-DefaultConfigurableStateBackend stateBackend = new EmbeddedRocksDBStateBackend(true);
+        // 配置增量 Checkpoint 周期
+        env.getCheckpointConfig().setMinPauseBetweenCheckpoints(500);
+
+        // RocksDB 特定配置
+        DefaultConfigurableStateBackend stateBackend = new EmbeddedRocksDBStateBackend(true);
+
+    }
+}
 ```
 
 ---
@@ -700,6 +709,7 @@ RocksDB 的 manifest 文件记录了所有活跃 SST 文件的元数据。增量
 **源码验证**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // CheckpointCoordinator.java (第 850-920 行)
 public boolean restoreSavepoint(
         SavepointRestoreSettings savepointRestoreSettings,
@@ -877,33 +887,40 @@ public class RocksDBStateUploader extends StateUploader {
 ### 6.1 配置示例：Aligned Checkpoint
 
 ```java
-
-import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.contrib.streaming.state.EmbeddedRocksDBStateBackend;
 import org.apache.flink.streaming.api.CheckpointingMode;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.time.Time;
 
-StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+public class Example {
+    public static void main(String[] args) throws Exception {
 
-// 启用 Checkpoint,间隔 10 秒
-env.enableCheckpointing(10000);
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-// 配置为 Aligned Checkpoint(默认)
-env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);
+        // 启用 Checkpoint,间隔 10 秒
+        env.enableCheckpointing(10000);
 
-// 超时时间 60 秒
-env.getCheckpointConfig().setCheckpointTimeout(60000);
+        // 配置为 Aligned Checkpoint(默认)
+        env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);
 
-// 最大并发 Checkpoint 数
-env.getCheckpointConfig().setMaxConcurrentCheckpoints(1);
+        // 超时时间 60 秒
+        env.getCheckpointConfig().setCheckpointTimeout(60000);
 
-// 最小间隔 500ms
-env.getCheckpointConfig().setMinPauseBetweenCheckpoints(500);
+        // 最大并发 Checkpoint 数
+        env.getCheckpointConfig().setMaxConcurrentCheckpoints(1);
 
-// 使用 RocksDB State Backend
-EmbeddedRocksDBStateBackend rocksDbBackend = new EmbeddedRocksDBStateBackend();
-env.setStateBackend(rocksDbBackend);
+        // 最小间隔 500ms
+        env.getCheckpointConfig().setMinPauseBetweenCheckpoints(500);
 
-// Checkpoint 存储路径
-env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
+        // 使用 RocksDB State Backend
+        EmbeddedRocksDBStateBackend rocksDbBackend = new EmbeddedRocksDBStateBackend();
+        env.setStateBackend(rocksDbBackend);
+
+        // Checkpoint 存储路径
+        env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
+
+    }
+}
 ```
 
 ---
@@ -911,26 +928,34 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
 ### 6.2 配置示例：Unaligned Checkpoint
 
 ```java
-
+import java.time.Duration;
+import org.apache.flink.contrib.streaming.state.EmbeddedRocksDBStateBackend;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.time.Time;
 
-StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+public class Example {
+    public static void main(String[] args) throws Exception {
 
-env.enableCheckpointing(10000);
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-// 启用 Unaligned Checkpoint
-env.getCheckpointConfig().enableUnalignedCheckpoints();
+        env.enableCheckpointing(10000);
 
-// 配置 alignment 超时(超过此时间自动切换为 Unaligned)
-env.getCheckpointConfig().setAlignmentTimeout(Duration.ofSeconds(30));
+        // 启用 Unaligned Checkpoint
+        env.getCheckpointConfig().enableUnalignedCheckpoints();
 
-// 配置 in-flight 数据大小阈值
-env.getCheckpointConfig().setMaxUnalignedCheckpoints(2);
+        // 配置 alignment 超时(超过此时间自动切换为 Unaligned)
+        env.getCheckpointConfig().setAlignmentTimeout(Duration.ofSeconds(30));
 
-// 使用 RocksDB State Backend(推荐配合 Unaligned Checkpoint)
-env.setStateBackend(new EmbeddedRocksDBStateBackend());
+        // 配置 in-flight 数据大小阈值
+        env.getCheckpointConfig().setMaxUnalignedCheckpoints(2);
 
-env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
+        // 使用 RocksDB State Backend(推荐配合 Unaligned Checkpoint)
+        env.setStateBackend(new EmbeddedRocksDBStateBackend());
+
+        env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
+
+    }
+}
 ```
 
 ---
@@ -938,20 +963,26 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
 ### 6.3 配置示例：Incremental Checkpoint
 
 ```java
-
+import org.apache.flink.contrib.streaming.state.EmbeddedRocksDBStateBackend;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
-StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+public class Example {
+    public static void main(String[] args) throws Exception {
 
-env.enableCheckpointing(60000); // 增量 Checkpoint 建议间隔稍长
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-// 使用 RocksDB State Backend,启用增量 Checkpoint
-// 第二个参数 true 表示启用增量
-EmbeddedRocksDBStateBackend rocksDbBackend = new EmbeddedRocksDBStateBackend(true);
-env.setStateBackend(rocksDbBackend);
+        env.enableCheckpointing(60000); // 增量 Checkpoint 建议间隔稍长
 
-// Checkpoint 存储路径
-env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
+        // 使用 RocksDB State Backend,启用增量 Checkpoint
+        // 第二个参数 true 表示启用增量
+        EmbeddedRocksDBStateBackend rocksDbBackend = new EmbeddedRocksDBStateBackend(true);
+        env.setStateBackend(rocksDbBackend);
+
+        // Checkpoint 存储路径
+        env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
+
+    }
+}
 ```
 
 ---
@@ -959,27 +990,34 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
 ### 6.4 配置示例：Changelog State Backend
 
 ```java
-
+import org.apache.flink.configuration.Configuration;
+import org.apache.flink.contrib.streaming.state.EmbeddedRocksDBStateBackend;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
-StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+public class Example {
+    public static void main(String[] args) throws Exception {
 
-env.enableCheckpointing(60000);
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-// 启用 Changelog State Backend
-env.setStateBackend(new EmbeddedRocksDBStateBackend());
+        env.enableCheckpointing(60000);
 
-// 在 flink-conf.yaml 中配置:
-// state.backend.changelog.enabled: true
-// state.backend.changelog.storage: filesystem
+        // 启用 Changelog State Backend
+        env.setStateBackend(new EmbeddedRocksDBStateBackend());
 
-// 或使用代码配置
-Configuration config = new Configuration();
-config.setBoolean("state.backend.changelog.enabled", true);
-config.setString("state.backend.changelog.storage", "filesystem");
-env.configure(config);
+        // 在 flink-conf.yaml 中配置:
+        // state.backend.changelog.enabled: true
+        // state.backend.changelog.storage: filesystem
 
-env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
+        // 或使用代码配置
+        Configuration config = new Configuration();
+        config.setBoolean("state.backend.changelog.enabled", true);
+        config.setString("state.backend.changelog.storage", "filesystem");
+        env.configure(config);
+
+        env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
+
+    }
+}
 ```
 
 **关键配置说明**：

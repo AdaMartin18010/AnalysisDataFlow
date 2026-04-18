@@ -723,6 +723,7 @@ public class MongoDBSinkExample {
 **Update 模式示例**：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 配置为 Update 模式 - 只更新指定字段
 MongoSink<Document> updateSink = MongoSink.<Document>builder()
     .setUri("mongodb://user:password@localhost:27017")

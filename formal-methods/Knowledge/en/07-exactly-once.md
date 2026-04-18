@@ -344,6 +344,7 @@ abstract class TwoPhaseCommitSinkFunction[
 ### 5.3 Kafka Exactly-Once Producer
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Flink Kafka sink with exactly-once guarantees
 FlinkKafkaProducer<String> kafkaSink = new FlinkKafkaProducer<>(
     "output-topic",

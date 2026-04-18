@@ -290,6 +290,7 @@ $$
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 // Flink 1.12 and earlier
@@ -314,6 +315,7 @@ env.setStateBackend(memoryBackend);
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 // Flink 1.13+ (EmbeddedRocksDBStateBackend)
@@ -374,6 +376,7 @@ state.backend.rocksdb.threads.threads-number: 4
 ### 6.3 ForStStateBackend Configuration (Flink 2.0+)
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Flink 2.0+ ForStStateBackend
 ForStStateBackend forstBackend = new ForStStateBackend();
 

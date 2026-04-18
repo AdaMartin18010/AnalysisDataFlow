@@ -61,6 +61,7 @@ $$
 ### 5.1 S3 FileSystem
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 env.getConfig().setDefaultFileSystemScheme("s3://");
 
 FileSink<String> sink = FileSink
@@ -73,6 +74,7 @@ FileSink<String> sink = FileSink
 ### 6.1 AWS Kinesis
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 FlinkKinesisConsumer<String> consumer = new FlinkKinesisConsumer<>(
     "stream-name",
     new SimpleStringSchema(),

@@ -179,6 +179,7 @@ $$
 **实现要点**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Flink 配置
 env.disableCheckpointing();  // 禁用 Checkpoint
 
@@ -226,6 +227,7 @@ source.setCommitOffsetsOnCheckpoints(false);  // 立即提交偏移量
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.CheckpointingMode;
 
 // Flink 配置
@@ -287,6 +289,7 @@ $$
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.CheckpointingMode;
 
 // Flink 配置
@@ -440,6 +443,7 @@ restart-strategy.fixed-delay.delay: 10s
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 StreamExecutionEnvironment env =
@@ -460,6 +464,7 @@ stream.addSink(new SimpleHttpSink());
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.CheckpointingMode;
 
@@ -485,6 +490,7 @@ FlinkKafkaProducer<String> sink = new FlinkKafkaProducer<>(
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.CheckpointingMode;
 

@@ -533,6 +533,7 @@ $$\text{SafetyLevel}(T_1 \rightarrow T_2) = \begin{cases}
 #### Java API
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.table.api.DataTypes;
 import org.apache.flink.table.types.DataType;
 
@@ -585,6 +586,7 @@ Flink使用TypeSerializer进行类型序列化：
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.api.common.typeinfo.Types;
 
 // 获取类型的序列化器
@@ -689,31 +691,39 @@ FROM my_table;
 ### 8.3 Table API类型操作
 
 ```java
-
+import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableEnvironment;
+import static org.apache.flink.table.api.Expressions.$;
 
-TableEnvironment tEnv = TableEnvironment.create(...);
+public class Example {
+    public static void main(String[] args) throws Exception {
 
-// 定义带类型的表
-tEnv.executeSql("""
-    CREATE TABLE typed_table (
-        id INT,
-        name STRING,
-        scores ARRAY<INT>,
-        metadata MAP<STRING, STRING>,
-        created_at TIMESTAMP(3)
-    ) WITH (...)
-""");
+        TableEnvironment tEnv = TableEnvironment.create(...);
 
-// 类型安全的数据处理
-Table result = tEnv.from("typed_table")
-    .select(
-        $("id"),
-        $("name"),
-        $("scores").cardinality().as("score_count"),
-        $("metadata").at("source").as("data_source"),
-        $("created_at").plus(1, TimeIntervalUnit.DAY).as("next_day")
-    );
+        // 定义带类型的表
+        tEnv.executeSql("""
+            CREATE TABLE typed_table (
+                id INT,
+                name STRING,
+                scores ARRAY<INT>,
+                metadata MAP<STRING, STRING>,
+                created_at TIMESTAMP(3)
+            ) WITH (...)
+        """);
+
+        // 类型安全的数据处理
+        Table result = tEnv.from("typed_table")
+            .select(
+                $("id"),
+                $("name"),
+                $("scores").cardinality().as("score_count"),
+                $("metadata").at("source").as("data_source"),
+                $("created_at").plus(1, TimeIntervalUnit.DAY).as("next_day")
+            );
+
+    }
+}
 ```
 
 ## 9. 可视化 (Visualizations)

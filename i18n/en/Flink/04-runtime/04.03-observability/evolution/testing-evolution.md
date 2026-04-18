@@ -60,6 +60,7 @@ $$
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.datastream.DataStream;
 
@@ -79,6 +80,7 @@ public void testPipeline() throws Exception {
 ### 6.1 MiniCluster Testing
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 MiniCluster cluster = new MiniCluster(
     new MiniClusterConfiguration.Builder()
         .setNumTaskManagers(1)

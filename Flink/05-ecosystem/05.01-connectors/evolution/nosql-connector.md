@@ -56,6 +56,7 @@ $$
 ### 5.1 HBase Sink
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 HBaseSinkFunction<Row> sink = new HBaseSinkFunction<>(
     "table-name",
     HBaseConfiguration.create(),
@@ -69,6 +70,7 @@ HBaseSinkFunction<Row> sink = new HBaseSinkFunction<>(
 ### 6.1 MongoDB CDC
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 MongoDBSource<String> source = MongoDBSource.<String>builder()
     .setUri("mongodb://localhost:27017")
     .setDatabase("inventory")

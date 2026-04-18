@@ -302,6 +302,7 @@ Effect: RocksDB cache hit rate improved from 65% to 92%, P99 state access latenc
 ### 6.3 Parallelism Tuning Example
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 

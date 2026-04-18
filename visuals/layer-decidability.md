@@ -119,6 +119,7 @@ $$
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 // 时间边界策略：将无限流转化为有限窗口（可判定）

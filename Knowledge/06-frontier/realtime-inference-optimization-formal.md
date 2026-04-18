@@ -1037,6 +1037,7 @@ for episode in range(10000):
 **Flink作业拓扑**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 DataStream<InferenceRequest> requests = env
     .addSource(new KafkaSource<>("inference-requests"))
     .map(new RequestDeserializer())

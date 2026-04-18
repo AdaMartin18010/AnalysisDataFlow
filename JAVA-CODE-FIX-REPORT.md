@@ -44,6 +44,7 @@
 ### 修复前 (缺少import)
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
 DataStream<Event> stream = env.addSource(...);
@@ -52,6 +53,7 @@ DataStream<Event> stream = env.addSource(...);
 ### 修复后 (添加import)
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.datastream.DataStream;
 
@@ -63,6 +65,7 @@ DataStream<Event> stream = env.addSource(...);
 ### 修复前 (使用弃用API)
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 设置事件时间语义
 env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 stream.assignTimestampsAndWatermarks(...);
@@ -71,6 +74,7 @@ stream.assignTimestampsAndWatermarks(...);
 ### 修复后 (使用新API)
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 使用WatermarkStrategy替代已弃用的setStreamTimeCharacteristic
 env.getConfig().setAutoWatermarkInterval(200);
 stream.assignTimestampsAndWatermarks(

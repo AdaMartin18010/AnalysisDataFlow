@@ -246,6 +246,7 @@ THEN throughput = current_rate
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // 标准 WordCount 实现
@@ -294,6 +295,7 @@ wordCounts.addSink(new DiscardingSink<>());
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -355,6 +357,7 @@ DataStream<Event> events = env.addSource(new KafkaSource<>())
 **JMX 指标采集**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 通过 JMX 暴露自定义指标
 MetricGroup metricGroup = getRuntimeContext()
     .getMetricGroup()
@@ -598,6 +601,7 @@ ORDER BY cnt DESC LIMIT 20;
 1. **两阶段聚合**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 先局部聚合,再全局聚合
 stream.keyBy(key)
     .window(...)  // 第一阶段
@@ -610,6 +614,7 @@ stream.keyBy(key)
 1. **随机前缀**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 为热点 key 添加随机前缀
 stream.map(event -> {
     if (isHotKey(event.getKey())) {

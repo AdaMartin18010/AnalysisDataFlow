@@ -698,6 +698,7 @@ WHERE o.status IN ('PAID', 'COMPLETED');  -- 过滤下推
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.TableEnvironment;
 
@@ -1272,6 +1273,7 @@ checklist:
 **自动降级条件**：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 伪代码:自动降级逻辑
 if (errorRate > 0.05 || avgLatency > 1000) {
     // 触发降级

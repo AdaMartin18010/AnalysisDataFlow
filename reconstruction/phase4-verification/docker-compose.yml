@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  formal-verification:
+    build:
+      context: .
+      dockerfile: Dockerfile.verification
+    volumes:
+      - .:/workspace:ro
+      - coq-build-cache:/workspace/coq-proofs/build
+    working_dir: /workspace
+    command: make verify
+    environment:
+      - COQFLAGS=-Q /workspace/coq-proofs ADF
+
+volumes:
+  coq-build-cache:

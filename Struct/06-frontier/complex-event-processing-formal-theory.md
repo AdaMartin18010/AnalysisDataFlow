@@ -1117,6 +1117,7 @@ $$P = (A \; \textbf{WHERE} \; a.val > 100) \; \textbf{SEQ} \; (B \; \textbf{OR} 
 **Flink CEP实现**：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 Pattern<Event, ?> pattern = Pattern
     .<Event>begin("a")
     .where(evt -> evt.getVal() > 100)

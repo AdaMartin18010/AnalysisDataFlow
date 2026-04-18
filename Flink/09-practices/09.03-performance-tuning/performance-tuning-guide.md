@@ -295,6 +295,7 @@ taskmanager.memory.task.heap.size: 4096m
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -358,6 +359,7 @@ state.backend.local-recovery: true
 ```
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 Configuration config = new Configuration();
 config.setString("cluster.scheduling.strategy", "BALANCED_TASKS");
@@ -371,6 +373,7 @@ env.configure(config);
 适用场景：上游数据突发导致下游背压级联、OOM 风险。
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // DataStream API 自定义限流器
 KafkaSource<String> source = KafkaSource.<String>builder()
     .setBootstrapServers("kafka:9092")

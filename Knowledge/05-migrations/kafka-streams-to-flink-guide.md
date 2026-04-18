@@ -468,6 +468,7 @@ public class FlinkWordCount {
 **Kafka Streams - KStream-KStream Join**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 订单流
 KStream<String, Order> orders = builder.stream("orders");
 // 支付流
@@ -485,6 +486,7 @@ KStream<String, EnrichedOrder> enrichedOrders = orders
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -530,6 +532,7 @@ DataStream<EnrichedOrder> enrichedOrders = orders
 **Kafka Streams - KStream-KTable Join**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 订单流
 KStream<String, Order> orders = builder.stream("orders");
 // 客户维度表
@@ -548,6 +551,7 @@ KStream<String, EnrichedOrder> enriched = orders
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // 客户数据作为广播流
@@ -591,6 +595,7 @@ DataStream<EnrichedOrder> enriched = orderStream
 **Kafka Streams - 滚动窗口聚合**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 每5分钟统计一次用户点击数
 KStream<String, Click> clicks = builder.stream("clicks");
 
@@ -604,6 +609,7 @@ KTable<Windowed<String>, Long> clickCounts = clicks
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -616,6 +622,7 @@ DataStream<Tuple2<String, Long>> clickCounts = clicks
 **Kafka Streams - 滑动窗口聚合**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 每1分钟计算过去5分钟的统计
 KTable<Windowed<String>, Long> slidingCounts = clicks
     .groupByKey()
@@ -627,6 +634,7 @@ KTable<Windowed<String>, Long> slidingCounts = clicks
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -639,6 +647,7 @@ DataStream<Tuple2<String, Long>> slidingCounts = clicks
 **Kafka Streams - 会话窗口聚合**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 会话窗口:活动间隔超过10分钟则开启新会话
 KTable<Windowed<String>, Long> sessionCounts = clicks
     .groupByKey()
@@ -650,6 +659,7 @@ KTable<Windowed<String>, Long> sessionCounts = clicks
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -757,6 +767,7 @@ public class FlinkStatefulFunction extends KeyedProcessFunction<String, Event, R
 **Kafka Streams**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 props.put(StreamsConfig.APPLICATION_ID_CONFIG, "my-streams-app");
 props.put(StreamsConfig.CLIENT_ID_CONFIG, "my-client");
 ```
@@ -764,6 +775,7 @@ props.put(StreamsConfig.CLIENT_ID_CONFIG, "my-client");
 **Flink**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 env.execute("my-streams-app");  // 作业名称
 
 // KafkaSource配置
@@ -784,6 +796,7 @@ createKafkaSource()
 **Kafka Streams**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:9092");
 props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 500);
@@ -792,6 +805,7 @@ props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 500);
 **Flink**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 KafkaSource<String> source = KafkaSource.<String>builder()
     .setBootstrapServers("kafka:9092")
     .setStartingOffsets(OffsetsInitializer.earliest())
@@ -812,6 +826,7 @@ KafkaSource<String> source = KafkaSource.<String>builder()
 **Kafka Streams**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 props.put(StreamsConfig.STATE_DIR_CONFIG, "/var/lib/kafka-streams");
 props.put(StreamsConfig.STATE_CLEANUP_DELAY_MS_CONFIG, 60000);
 ```
@@ -819,6 +834,7 @@ props.put(StreamsConfig.STATE_CLEANUP_DELAY_MS_CONFIG, 60000);
 **Flink**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 配置RocksDB状态后端
 EmbeddedRocksDBStateBackend rocksDbBackend =
     new EmbeddedRocksDBStateBackend(true);  // 增量Checkpoint
@@ -833,6 +849,7 @@ env.getCheckpointConfig().setCheckpointStorage("file:///var/lib/flink/checkpoint
 **Kafka Streams**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 启用Exactly-Once语义
 props.put(StreamsConfig.PROCESSING_GUARANTEE_CONFIG, "exactly_once_v2");
 
@@ -844,6 +861,7 @@ props.put(ProducerConfig.TRANSACTION_TIMEOUT_CONFIG, 60000);
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.CheckpointingMode;
 
 // 启用Checkpoint实现Exactly-Once
@@ -866,6 +884,7 @@ KafkaSink<String> sink = KafkaSink.<String>builder()
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.api.common.typeinfo.Types;
 
 // 启动Streams应用
@@ -954,6 +973,7 @@ public class AsyncStateQueryFunction
 **Kafka Streams Exactly-Once 配置**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 启用Exactly-Once语义 (EOS v2)
 props.put(StreamsConfig.PROCESSING_GUARANTEE_CONFIG, "exactly_once_v2");
 
@@ -1026,6 +1046,7 @@ public class FlinkExactlyOnceJob {
 **Kafka Streams - 重新分区**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 通过through()显式重新分区到中间topic
 KStream<String, Event> repartitioned = events
     .selectKey((key, value) -> value.getNewKey())
@@ -1041,6 +1062,7 @@ KGroupedStream<String, Event> grouped = events
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // 1. 通过keyBy重新分区
@@ -1364,6 +1386,7 @@ gantt
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // 1. 启用对象复用
@@ -1463,6 +1486,7 @@ public class CustomProcessFunction extends KeyedProcessFunction<String, String, 
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 DataStream<Event> stream = ...;
@@ -1490,6 +1514,7 @@ stream.partitionCustom(
 **A**: 使用 Flink 的 `OffsetsInitializer` 灵活控制起始位置：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 KafkaSource<String> source = KafkaSource.<String>builder()
     // 从最早偏移量开始(全量迁移)
     .setStartingOffsets(OffsetsInitializer.earliest())

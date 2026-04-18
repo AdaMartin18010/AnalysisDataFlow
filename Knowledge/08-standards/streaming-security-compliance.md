@@ -484,6 +484,7 @@ security.kerberos.login.principal: flink@EXAMPLE.COM
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.table.api.TableEnvironment;
 
 // Flink SQL 行级安全策略示例
@@ -586,6 +587,7 @@ kafka-acls --bootstrap-server kafka:9093 \
 #### Kafka 生产者加密配置
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Kafka Producer SSL + SASL 配置
 Properties props = new Properties();
 props.put("bootstrap.servers", "kafka-1:9093,kafka-2:9093");

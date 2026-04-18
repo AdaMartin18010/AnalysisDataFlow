@@ -55,6 +55,7 @@ $$
 ### 5.1 FileSource
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 FileSource<String> source = FileSource
     .forRecordStreamFormat(
         new TextLineFormat(),
@@ -68,6 +69,7 @@ FileSource<String> source = FileSource
 ### 6.1 Parquet Sink
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 FileSink<GenericRecord> sink = FileSink
     .forBulkFormat(
         new Path("hdfs:///output"),

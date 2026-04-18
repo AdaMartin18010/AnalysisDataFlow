@@ -550,6 +550,7 @@ GROUP BY
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // DataStream 作业(有限兼容)

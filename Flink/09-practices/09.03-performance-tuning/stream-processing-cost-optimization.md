@@ -314,6 +314,7 @@ $$
 4. **中断处理**: 实现优雅关闭钩子，确保状态持久化
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Spot实例中断处理示例
 Runtime.getRuntime().addShutdownHook(new Thread(() -> {
     // 触发紧急Checkpoint
@@ -1103,6 +1104,7 @@ spec:
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 // Flink批流一体作业示例

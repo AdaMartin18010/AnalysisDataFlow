@@ -124,6 +124,7 @@ graph TB
 ### 示例 1: Flink → RisingWave Kafka 集成
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Flink Kafka Producer 配置
 FlinkKafkaProducer<String> kafkaProducer = new FlinkKafkaProducer<>(
     "processed-events",
@@ -180,6 +181,7 @@ CREATE SOURCE user_changes (
 ```
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Flink CDC 消费 RisingWave (通过 Debezium)
 DebeziumSourceFunction<String> source = DebeziumSourceFunction.<String>builder()
     .setBootstrapServers("kafka:9092")
@@ -191,6 +193,7 @@ DebeziumSourceFunction<String> source = DebeziumSourceFunction.<String>builder()
 ### 示例 3: Flink 查询 RisingWave 维表
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Flink JDBC Lookup Join
 Table result = tableEnv.sqlQuery(
     "SELECT " +

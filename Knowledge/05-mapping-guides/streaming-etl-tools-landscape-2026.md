@@ -662,6 +662,7 @@ graph TB
 1. **Flink作业关键代码**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 订单流表
 Table orders = tEnv.fromDataStream(
     env.fromSource(

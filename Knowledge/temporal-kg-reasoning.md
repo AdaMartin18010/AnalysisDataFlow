@@ -294,6 +294,7 @@ for obj, path, interval in results:
 ### 6.3 基于 Flink 的流式时序推理流水线
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 将 TKG 查询转换为 Flink DataStream 处理
 DataStream<TemporalQuery> queries = env.addSource(new QuerySource());
 DataStream<TemporalFact> facts = env.addSource(new KafkaSource<>());

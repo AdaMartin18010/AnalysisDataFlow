@@ -24,6 +24,7 @@ $$C_{vdb}: \mathcal{D}_F \times \mathbb{N}^d \rightarrow \mathcal{VDB} \times \m
 **接口规范：**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 向量写入接口
 interface VectorSink<T> extends RichSinkFunction<T> {
     void write(VectorRecord<T> record);
@@ -264,6 +265,7 @@ LIMIT 10;
 **策略B - 后过滤（Post-filtering）：**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Milvus示例
 // 1. 先执行ANN检索
 List<VectorRecord> candidates = milvus.search(queryVector, topK=100);
@@ -340,6 +342,7 @@ graph LR
 PgVector作为PostgreSQL扩展，可直接利用Flink JDBC Connector：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 表定义映射
 CREATE TABLE vector_items (
     id STRING,
@@ -530,6 +533,7 @@ graph TB
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 

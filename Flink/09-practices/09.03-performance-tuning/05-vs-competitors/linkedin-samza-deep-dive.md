@@ -414,6 +414,7 @@ public class MemberActivityTask implements WindowTask {
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -429,6 +430,7 @@ DataStream<MemberActivity> activityStream = events
 **Samza的流表对偶性应用**：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 将会员信息作为"表"存储在RocksDB
 KeyValueStore<String, MemberProfile> profileStore =
     (KeyValueStore<String, MemberProfile>) context.getStore("member-profile");
@@ -446,6 +448,7 @@ public void processActivity(MemberEvent event, MessageCollector collector) {
 **Flink等价实现（使用Temporal Table Join）**：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 Table memberProfile = tableEnv.fromDataStream(profileStream)
     .createTemporalTableFunction("updateTime", "memberId");
 

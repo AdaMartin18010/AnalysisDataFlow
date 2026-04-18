@@ -238,6 +238,7 @@ graph LR
 ### 6.1 配置示例
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.runtime.state.hashmap.HashMapStateBackend;
 import org.apache.flink.runtime.state.rocksdb.EmbeddedRocksDBStateBackend;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -293,6 +294,7 @@ state.backend.forst.local.dir: /tmp/flink-forst
 ### 6.3 状态监控代码
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 获取状态后端指标
 public void monitorStateBackend(RuntimeContext ctx) {
     // 状态大小

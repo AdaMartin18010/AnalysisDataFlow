@@ -210,6 +210,7 @@ Failed messages will be reprocessed, but will not be counted twice.
 **Batch Consumption Optimization**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Configure batch pull
 PulsarSource<String> source = PulsarSource.builder()
     .setTopics("persistent://public/default/my-topic")
@@ -228,6 +229,7 @@ PulsarSource<String> source = PulsarSource.builder()
 **Compression Configuration**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Producer compression configuration
 PulsarSink<String> sink = PulsarSink.builder()
     .setTopics("persistent://public/default/output-topic")
@@ -407,6 +409,7 @@ public class EnrichedStreamProcessing {
 ### 6.4 Performance Optimization Configuration Example
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Complete optimization configuration
 PulsarSource<String> optimizedSource = PulsarSource.builder()
     .setServiceUrl("pulsar://pulsar-cluster:6650")

@@ -511,6 +511,7 @@ DecisionScore(backend) =
 **Checkpoint Trigger (Thm-F-02-25)**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // CheckpointCoordinator.java
 public void triggerCheckpoint(long timestamp) {
     // Generate Checkpoint ID
@@ -526,6 +527,7 @@ public void triggerCheckpoint(long timestamp) {
 **State Snapshot (Lemma-F-02-77)**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // AbstractStreamOperator.java
 public final void snapshotState(StateSnapshotContext context) {
     // Synchronous phase: acquire state lock
@@ -540,6 +542,7 @@ public final void snapshotState(StateSnapshotContext context) {
 **Async Execution (Thm-F-02-115)**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // AsyncWaitOperator.java
 private void processElement(StreamRecord<IN> element) {
     // Acquire resource quota
@@ -557,6 +560,7 @@ private void processElement(StreamRecord<IN> element) {
 **Ordering Guarantee (Thm-F-02-134)**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // OrderedStreamElementQueue.java
 public void emitCompletedElement() {
     // Only emit when the head element is complete

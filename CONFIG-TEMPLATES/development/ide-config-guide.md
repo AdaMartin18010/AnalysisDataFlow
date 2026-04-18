@@ -80,6 +80,7 @@ File -> Open -> 选择 pom.xml 或 build.gradle
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 // 在 main 方法中设置本地环境

@@ -1474,6 +1474,7 @@ workflow:
 **场景**: 金融交易实时风控
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Java API定义
 WorkflowDefinition riskWorkflow = WorkflowBuilder
     .create("realtime-risk-analysis", "实时风控分析")
@@ -1820,3 +1821,60 @@ graph TB
 ---
 
 *文档版本: v1.0 | 创建日期: 2026-04-08 | 状态: Active*
+
+
+---
+
+## 附录：Flink Agents 0.3 迁移指引与对比
+
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **适用目标版本**: 0.3.0 (预计 2026-06-15)
+
+### 工作流引擎在 0.3 中的扩展
+
+| 能力 | 0.2.x | 0.3 | 对工作流的影响 |
+|------|-------|-----|----------------|
+| **节点类型** | Java 算子、MCP 调用 | + Skill 节点、跨语言节点 | 工作流可直接引用已注册 Skill |
+| **状态持久化** | Flink Checkpoint | + Durable Execution（外部调用恢复） | 长时间等待外部回调的节点可安全恢复 |
+| **参数传递** | 静态映射 | + 参数注入 + Mem0 上下文召回 | 节点输入可自动从 Agent 历史记忆中提取 |
+| **事件驱动** | 内部事件 | + 跨语言事件订阅 | Python 分析结果可作为事件触发下游 Java 节点 |
+
+### Skill 节点使用示例
+
+```java
+// 0.3 工作流定义：在 DAG 中引用 Skill
+Workflow workflow = Workflow.builder()
+    .addNode("ingest", new KafkaSourceNode<>("events"))
+    .addNode("enrich", new SkillNode("weather_query")    // 引用已注册 Skill
+        .withInjection("city", "${event.location.city}")) // 参数注入
+    .addNode("decide", new JavaDecisionNode())
+    .addEdge("ingest", "enrich")
+    .addEdge("enrich", "decide")
+    .build();
+```
+
+### 跨语言工作流节点示例
+
+```java
+// Java 工作流中嵌入 Python 分析节点
+Workflow workflow = Workflow.builder()
+    .addNode("extract", new DataExtractionNode())
+    .addNode("sentiment", new CrossLangNode("python")
+        .withAction("analyze_sentiment")
+        .withSchema(AnalysisResult.class))
+    .addNode("alert", new AlertNode())
+    .addEdge("extract", "sentiment")
+    .addEdge("sentiment", "alert")
+    .build();
+```
+
+### Durable Execution 对工作流恢复的影响
+
+在 0.2.x 中，若工作流节点正在等待外部 HTTP 回调时 Job 崩溃，恢复后该节点会重新发送请求，可能导致重复调用。0.3 的 Durable Execution 通过 `S_pending` 记录挂起调用，恢复后：
+
+1. 检查外部系统状态（或利用幂等键）
+2. 若已执行，直接消费结果
+3. 若未执行，安全重试
+
+**迁移建议**: 对 0.2.x 中涉及外部回调的工作流节点，升级到 0.3 后显式声明 `durable: true` 并配置 `dedup_key`。
+
+---

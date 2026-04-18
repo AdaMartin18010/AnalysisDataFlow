@@ -62,6 +62,7 @@ $$
 ### 5.1 Pulsar Source
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 PulsarSource<String> source = PulsarSource.builder()
     .setServiceUrl("pulsar://localhost:6650")
     .setAdminUrl("http://localhost:8080")
@@ -77,6 +78,7 @@ PulsarSource<String> source = PulsarSource.builder()
 ### 6.1 RabbitMQ Sink
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 RMQSink<String> sink = new RMQSink<>(
     new RMQConnectionConfig.Builder()
         .setHost("localhost")

@@ -3452,6 +3452,7 @@ $$
 
 ```markdown
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 /**
  * Def-F-02-100: 用户行为计数器 - MapState 应用
  */
@@ -3472,6 +3473,7 @@ public class UserBehaviorCounter extends KeyedProcessFunction<String, UserEvent,
 
 ```markdown
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 /**
  * Def-F-02-100: 用户行为计数器 - MapState 应用
  */
@@ -3492,6 +3494,7 @@ public class UserBehaviorCounter extends KeyedProcessFunction<String, UserEvent,
 
 ```markdown
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 /**
  * Def-F-02-100: 用户行为计数器 - MapState 应用
  */
@@ -5167,6 +5170,7 @@ $$V(s) = \begin{cases} \text{NeverReturnExpired} & s \in S_{exp} \Rightarrow \te
 ```markdown
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Def-F-02-84: 异步ListState窗口示例
 
 import org.apache.flink.api.common.functions.AggregateFunction;
@@ -5203,6 +5207,7 @@ public class AsyncSessionWindowFunction extends KeyedProcessFunction<String, Eve
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 // Def-F-02-85: 增量清理配置
@@ -5227,6 +5232,7 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 ```markdown
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Def-F-02-86: RocksDB Compaction Filter 配置
 StateTtlConfig rocksdbCleanup = StateTtlConfig
     .newBuilder(Time.days(7))
@@ -18582,6 +18588,7 @@ OpenTelemetry 2026实现了传统APM三大支柱的深度统一：
 
 ```markdown
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 /**
  * Def-F-15-17: Flink Log Correlation with Traces
  *
@@ -68706,6 +68713,7 @@ public class UserActionCounter extends KeyedProcessFunction<String, Action, Metr
 
 ```markdown
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 /**
  * Thm-F-02-62: 带 TTL 的事件缓冲区
  */

@@ -44,6 +44,7 @@ Flink 2.5 introduces a true unified streaming-batch execution engine, eliminatin
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -146,6 +147,7 @@ serverless.auto-scaling:
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // Dynamic batching configuration
@@ -165,6 +167,7 @@ DataStream<Prediction> predictions = events
 ### 3.2 KV-Cache Sharing
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Enable cross-request KV-Cache sharing
 InferenceConfig config = InferenceConfig.builder()
     .withKvCacheSharing(true)
@@ -270,6 +273,7 @@ func geo_distance(lat1, lon1, lat2, lon2 float64) float64 {
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.table.api.TableEnvironment;
 
 // Register multi-language WASM UDF

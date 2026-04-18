@@ -33,6 +33,7 @@ This document provides runtime environment descriptions and version compatibilit
 ### 1.2 Code Adjustment Suggestions
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Section 3.1 Flink Configuration
 // Adjust parallelism based on actual cluster scale
 env.setParallelism(100);  // Originally 100, adjust based on TaskManager count
@@ -64,6 +65,7 @@ jedisPoolConfig.setMaxTotal(1000);  // Originally 1000, adjust based on concurre
 ### 2.2 MQTT Client Configuration
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Section 3.1 MQTT Configuration
 // Adjust according to network environment in actual deployment
 options.setConnectionTimeout(10);  // Increase when network is unstable
@@ -92,6 +94,7 @@ options.setKeepAliveInterval(20);  // Adjust according to device heartbeat
 ### 3.2 Drools Rule Syntax
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Section 3.2 Drools Rules
 // Rule file path needs adjustment based on actual deployment
 kieFileSystem.write("src/main/resources/rules/fraud-rules.drl", ...)

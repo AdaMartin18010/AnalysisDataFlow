@@ -171,6 +171,7 @@ Converges to the principal eigenvector as $i → ∞$.
 **Scenario**: Based on a user-item interaction graph, compute Personalized PageRank in real time for recommendations.
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Build user-item bipartite graph
 Graph<Long, Double, Double> bipartiteGraph = Graph.fromDataSet(
     users.union(items),  // Vertex DataSet
@@ -202,6 +203,7 @@ DataSet<Tuple2<Long, Double>> topItems = recommendations
 **Scenario**: In a financial transaction network, identify abnormal capital concentration patterns through community detection.
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Build transaction graph: vertices = accounts, edges = transactions (with amount and timestamp)
 Graph<String, AccountInfo, Transaction> transactionGraph = ...;
 
@@ -224,6 +226,7 @@ DataSet<Community> suspiciousCommunities = communities
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 

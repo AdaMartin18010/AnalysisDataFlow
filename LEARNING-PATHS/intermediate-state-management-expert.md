@@ -77,6 +77,7 @@ gantt
 1. **状态后端对比实验**
 
    ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
    // 1. HashMapStateBackend
    env.setStateBackend(new HashMapStateBackend());
    env.getCheckpointConfig().setCheckpointStorage("file:///checkpoints");
@@ -268,6 +269,7 @@ public class SessionAnalyzer extends KeyedProcessFunction<String, Event, Session
 1. **状态分区**
 
    ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
    // 使用 keyBy 进行自然分区
    stream.keyBy(event -> event.getUserId() % 1000)
 
@@ -276,6 +278,7 @@ public class SessionAnalyzer extends KeyedProcessFunction<String, Event, Session
 2. **RocksDB 调优**
 
    ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
    // 配置 RocksDB 参数
    DefaultConfigurableStateBackend stateBackend =
      new EmbeddedRocksDBStateBackend();
@@ -287,6 +290,7 @@ public class SessionAnalyzer extends KeyedProcessFunction<String, Event, Session
 1. **增量 Checkpoint**
 
    ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
    env.getCheckpointConfig().setCheckpointStorage(
      new FileSystemCheckpointStorage("hdfs:///checkpoints")
    );
@@ -320,6 +324,7 @@ public class SessionAnalyzer extends KeyedProcessFunction<String, Event, Session
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.api.common.state.ValueState;
 
 // 避免存储大对象
@@ -336,6 +341,7 @@ env.getConfig().setUseSnapshotCompression(true);
 ### 3. 访问优化
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 批量操作减少状态访问
 public void processBatch(List<Event> events) {
   MapState<Key, Value> state = ...;

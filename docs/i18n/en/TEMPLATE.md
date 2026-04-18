@@ -167,6 +167,7 @@ Present the reasoning process, including:
 **Code**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Example code snippet
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();

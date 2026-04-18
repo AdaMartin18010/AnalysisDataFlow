@@ -54,7 +54,13 @@ yarn.application-attempt-failures-validity-interval: 3600000
 ### 6.1 动态资源
 
 ```java
-env.getConfig().setAutoWatermarkInterval(200);
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        env.getConfig().setAutoWatermarkInterval(200);
+
+    }
+}
 ```
 
 ## 7. 可视化 (Visualizations)

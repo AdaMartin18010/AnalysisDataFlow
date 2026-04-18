@@ -493,6 +493,7 @@ $$
 ### 6.1 Flink ML 在线逻辑回归示例
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.ml.classification.logisticregression;
 import org.apache.flink.ml.feature.standardscaler;
 
@@ -959,6 +960,7 @@ Drift Alert / Continue
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 // 使用 FlinkCEP 进行漂移模式检测

@@ -356,6 +356,7 @@ Change Stream 输出顺序:
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // 使用 Watermark 处理可能的乱序
@@ -404,6 +405,7 @@ DataStream<ChangeEvent> events = env
 **幂等策略**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 策略 1: 使用 _id 作为文档 ID(天然幂等)
 ReplaceOneModel<Document> replace = new ReplaceOneModel<>(
     Filters.eq("_id", event.getId()),
@@ -687,6 +689,7 @@ public class MongoSinkExample {
 ### 6.5 Table API / SQL 配置
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 创建 MongoDB 表
 // 批量读取表
 tableEnv.executeSql("""
@@ -979,6 +982,7 @@ and error message 'E11000 duplicate key error collection: mydb.orders index: _id
 **解决方案**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 1. 使用 Replace 模式(Upsert)
 ReplaceOneModel<Document> replace = new ReplaceOneModel<>(
     Filters.eq("_id", doc.getId()),
@@ -1016,6 +1020,7 @@ Max number of threads (maxWaitQueueSize of 500) has been exceeded.
 **解决方案**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 1. 调整连接池参数
 MongoClientSettings settings = MongoClientSettings.builder()
     .applyConnectionString(new ConnectionString(uri))
@@ -1126,6 +1131,7 @@ db.orders.totalIndexSize()
 | 并行分区 | `splitVector` | 按 _id 范围 | 并行读取 |
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 读取优化示例
 FindIterable<Document> iterable = collection
     .find(Filters.gte("createTime", startTime))
@@ -1148,6 +1154,7 @@ FindIterable<Document> iterable = collection
 | 预分配 | 禁用 | - | 减少碎片 |
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 写入优化配置
 BulkWriteOptions options = new BulkWriteOptions()
     .ordered(false);  // 无序写入,错误继续
@@ -1174,6 +1181,7 @@ MongoClientSettings settings = MongoClientSettings.builder()
 ### 9.3 Change Stream 优化
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Change Stream 优化配置
 MongoChangeStreamSource<ChangeEvent> source =
     MongoChangeStreamSource.<ChangeEvent>builder()

@@ -339,6 +339,7 @@ Therefore $e$ has been processed before the output watermark.
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -363,6 +364,7 @@ Program = Sink ∘ Window(5min, avg) ∘ KeyBy(key) ∘ Filter(>0) ∘ Map(trans
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.CheckpointingMode;
 
 // Checkpoint configuration
@@ -391,6 +393,7 @@ RocksDBBackend   ⟹  Incremental checkpoint + Large state support
 ### 6.3 Watermark Strategy Implementation
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Fixed delay watermark
 WatermarkStrategy.<Event>forBoundedOutOfOrderness(
     Duration.ofSeconds(5))

@@ -518,6 +518,7 @@ curl -X PUT http://schema-registry:8081/config/orders-value \
 **Java Producer with Schema Registry**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 Properties props = new Properties();
 props.put("bootstrap.servers", "kafka:9092");
 props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
@@ -541,6 +542,7 @@ producer.send(new ProducerRecord<>("orders", order.get("orderId").toString(), or
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.api.common.typeinfo.Types;
 
 // Define table with schema evolution support
@@ -564,6 +566,7 @@ tableEnv.createTable("Orders", sourceDescriptor);
 **Handling Schema Changes**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Read with evolved schema
 Table orders = tableEnv.from("Orders");
 

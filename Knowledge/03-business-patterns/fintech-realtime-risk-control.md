@@ -275,6 +275,7 @@ sequenceDiagram
 **协同模式 1: 规则前置 + 模型兜底**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 伪代码示例
 public RiskDecision evaluate(Transaction txn) {
     // 1. 规则引擎快速判定

@@ -697,6 +697,7 @@ HashMapStateBackend 的内存管理依赖 JVM 的垃圾回收机制：
 #### 4.1.4 序列化/反序列化机制
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 源码位置: flink-runtime/src/main/java/org/apache/flink/runtime/state/heap/HeapKeyedStateBackend.java
 
 /**
@@ -2142,6 +2143,7 @@ state.savepoints.dir: hdfs:///flink/savepoints
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -2204,6 +2206,7 @@ execution.checkpointing.timeout: 600s
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 // Java API 配置(高级调优)
@@ -2286,6 +2289,7 @@ execution.checkpointing.mode: EXACTLY_ONCE
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 // Java API 配置

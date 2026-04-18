@@ -497,6 +497,7 @@ W_SQL: 需要 SQL 分析, 高吞吐 (500K/s)
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // Flink Kafka Sink 配置

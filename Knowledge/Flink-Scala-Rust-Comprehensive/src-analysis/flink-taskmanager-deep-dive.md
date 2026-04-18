@@ -95,6 +95,7 @@ public class TaskExecutor extends RpcEndpoint
 #### 2.1.1 submitTask() - 任务提交核心
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 @Override
 public CompletableFuture<Acknowledge> submitTask(
         TaskDeploymentDescriptor tdd,
@@ -175,6 +176,7 @@ public CompletableFuture<Acknowledge> submitTask(
 #### 2.1.2 freeSlot() - Slot 释放与资源回收
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 @Override
 public CompletableFuture<Acknowledge> freeSlot(
         AllocationID allocationId,

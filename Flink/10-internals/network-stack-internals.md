@@ -47,6 +47,7 @@ $$Credit_{avail} = Buffer_{pool} - Buffer_{in\_flight} - Buffer_{pending}$$
 **定义 Def-F-10-06** (网络配置参数集):
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // taskmanager.memory.network.min/max - 网络内存最小/最大值
 taskmanager.memory.network.min: 64mb
 taskmanager.memory.network.max: 1gb
@@ -330,6 +331,7 @@ Flink网络栈采用分层设计，各层职责清晰：
 **命题 Prop-F-10-02** (端到端数据流映射): 上游Task生产与下游Task消费之间的映射关系：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 上游Task配置(生产者)
 ResultPartitionWriter writer = new ResultPartition(
     partitionId,

@@ -90,6 +90,7 @@
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -108,6 +109,7 @@ filtered.addSink(new MqttSink("tcp://cloud-mqtt:1883", "aggregated/"));
 **Lambda架构 - 批处理层 (历史数据):**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 批处理层: 每日全量计算
 ExecutionEnvironment batchEnv = ExecutionEnvironment.getExecutionEnvironment();
 DataSet<HourlyStats> dailyStats = batchEnv
@@ -122,6 +124,7 @@ dailyStats.writeAsText("hdfs://results/daily/" + date);
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -138,6 +141,7 @@ realtimeStats.addSink(new RedisSink<>("realtime-view"));
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -184,6 +188,7 @@ allData.filter(d -> d.isHistorical())
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 Properties mqttProps = new Properties();
@@ -205,6 +210,7 @@ DataStream<SensorReading> mqttStream = env
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // 同时订阅多个主题
@@ -241,6 +247,7 @@ dataStream
 **MQTT连接池与故障恢复:**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 生产级MQTT配置
 Properties prodMqttProps = new Properties();
 prodMqttProps.setProperty("brokerUrl", "ssl://mqtt.secure:8883");
@@ -263,6 +270,7 @@ prodMqttProps.setProperty("ssl.key.path", "/certs/client.key");
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 KafkaSource<SensorReading> kafkaSource = KafkaSource.<SensorReading>builder()
@@ -284,6 +292,7 @@ DataStream<SensorReading> kafkaStream = env.fromSource(
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.CheckpointingMode;
 
 KafkaSource<SensorReading> exactlyOnceSource = KafkaSource.<SensorReading>builder()
@@ -307,6 +316,7 @@ env.enableCheckpointing(60000, CheckpointingMode.EXACTLY_ONCE);
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.api.common.state.ValueState;
 import org.apache.flink.api.common.state.ValueStateDescriptor;
@@ -351,6 +361,7 @@ DataStream<SensorReading> partitionedStream = kafkaStream
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -495,6 +506,7 @@ public static class AverageAggregate implements
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -577,6 +589,7 @@ public static class SessionProcessFunction extends
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -635,6 +648,7 @@ ON s.sensor_id = d.device_id;
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -696,6 +710,7 @@ DataStream<EnrichedEvent> enriched = eventStream
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -831,6 +846,7 @@ public class HeartbeatMonitor extends KeyedProcessFunction<String, DeviceEvent, 
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // InfluxDB 2.x Sink
@@ -906,6 +922,7 @@ public class TDengineSink extends RichSinkFunction<SensorReading> {
 **Apache Iceberg写入:**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Flink SQL写入Iceberg
 String createCatalog = "CREATE CATALOG iceberg_catalog WITH (" +
     "'type'='iceberg'," +
@@ -933,6 +950,7 @@ tableEnv.executeSql("INSERT INTO iceberg_catalog.iot.sensor_data " +
 **Apache Hudi写入 (带Compaction):**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Hudi表配置
 Map<String, String> hudiOptions = new HashMap<>();
 hudiOptions.put(FlinkOptions.PATH.key(), "hdfs://data-lake/hudi/sensor_data");
@@ -956,6 +974,7 @@ tableEnv.executeSql("INSERT INTO hudi_sensor SELECT * FROM sensor_stream");
 **Apache Pinot写入:**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Pinot实时摄取
 PinotSinkFunction<GenericRow> pinotSink = new PinotSinkFunction<>(
     "sensor_data",
@@ -1130,6 +1149,7 @@ metrics.scope.task: "flink.task"
 **结构化日志输出:**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Log4j2 JSON格式配置
 // log4j2.properties
 appender.json.type = RollingFile
@@ -1484,6 +1504,7 @@ grep "Checkpoint" flink-taskmanager-*.log | tail -100
 **解决方案代码:**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 增加Checkpoint超时
 env.enableCheckpointing(60000);
 env.getCheckpointConfig().setCheckpointTimeout(600000);  // 10分钟
@@ -1505,6 +1526,7 @@ configuration.setBoolean(StateBackendOptions.LOCAL_RECOVERY, true);
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 

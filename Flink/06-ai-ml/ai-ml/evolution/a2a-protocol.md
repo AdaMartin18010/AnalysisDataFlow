@@ -45,6 +45,7 @@ $$
 ### 5.1 A2A消息
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 A2AMessage msg = A2AMessage.builder()
     .from(agent1)
     .to(agent2)
@@ -57,6 +58,7 @@ A2AMessage msg = A2AMessage.builder()
 ### 6.1 Agent协作
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 agent1.delegate(task, agent2);
 ```
 

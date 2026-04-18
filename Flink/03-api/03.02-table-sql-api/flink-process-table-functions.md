@@ -560,26 +560,34 @@ public class DeduplicationPTF extends ProcessTableFunction<Row> {
 ### 6.3 PTF注册与SQL调用
 
 ```java
+import java.time.Duration;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
-import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+public class Example {
+    public static void main(String[] args) throws Exception {
 
 
-// 获取Table环境
-StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
 
-// 注册PTF
-tableEnv.createTemporarySystemFunction(
-    "SessionAnalysis",                    // SQL中使用的函数名
-    new SessionAnalysisPTF(Duration.ofMinutes(30))  // 30分钟会话超时
-);
+        // 获取Table环境
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
 
-tableEnv.createTemporarySystemFunction(
-    "Deduplicate",
-    new DeduplicationPTF(Duration.ofHours(24))  // 24小时去重窗口
-);
+        // 注册PTF
+        tableEnv.createTemporarySystemFunction(
+            "SessionAnalysis",                    // SQL中使用的函数名
+            new SessionAnalysisPTF(Duration.ofMinutes(30))  // 30分钟会话超时
+        );
+
+        tableEnv.createTemporarySystemFunction(
+            "Deduplicate",
+            new DeduplicationPTF(Duration.ofHours(24))  // 24小时去重窗口
+        );
+
+    }
+}
 ```
 
 ```sql

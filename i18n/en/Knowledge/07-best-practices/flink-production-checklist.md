@@ -228,6 +228,7 @@ graph TB
 **Configuration Example** [^1]:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // ✅ Recommended configuration template
 env.enableCheckpointing(60000); // 1 minute interval
 env.getCheckpointConfig().setCheckpointTimeout(300000); // 5 minute timeout
@@ -255,6 +256,7 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///checkpoints");
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -379,6 +381,7 @@ groups:
 | **Context Info** | P1 | Code review | Error logs contain sufficient context |
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // ✅ Recommended logging practice
 private static final Logger LOG = LoggerFactory.getLogger(MyFunction.class);
 
@@ -567,6 +570,7 @@ Recommendation: Monitor continuously for the first 48 hours after deployment
 **Template 1: Low-Latency Scenario** (Latency-sensitive)
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // For: risk control, real-time bidding, and other latency-sensitive scenarios
 env.enableCheckpointing(10000);  // 10s interval
 env.getCheckpointConfig().setCheckpointTimeout(60000);
@@ -578,6 +582,7 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///checkpoints");
 **Template 2: Large-State Scenario** (State-intensive)
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // For: long time windows, complex stateful computations
 env.enableCheckpointing(300000);  // 5min interval
 env.getCheckpointConfig().setCheckpointTimeout(600000);

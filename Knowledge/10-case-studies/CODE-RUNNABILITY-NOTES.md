@@ -26,6 +26,7 @@
 ### 1.2 代码调整建议
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 第3.1节 Flink配置
 // 建议根据实际集群规模调整并行度
 env.setParallelism(100);  // 原为100,可根据TaskManager数量调整
@@ -57,6 +58,7 @@ jedisPoolConfig.setMaxTotal(1000);  // 原为1000,可根据并发量调整
 ### 2.2 MQTT客户端配置
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 第3.1节 MQTT配置
 // 实际部署时需根据网络环境调整
 options.setConnectionTimeout(10);  // 网络不稳定时可增大
@@ -85,6 +87,7 @@ options.setKeepAliveInterval(20);  // 根据设备心跳调整
 ### 3.2 Drools规则语法
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 第3.2节 Drools规则
 // 规则文件路径需根据实际部署调整
 kieFileSystem.write("src/main/resources/rules/fraud-rules.drl", ...)

@@ -259,6 +259,7 @@ public class CloudIoTProcessingJob {
 The Watermark configuration in this case study is based on the formalized definition in [Flink Time Semantics and Watermark](../../02-core/time-semantics-and-watermark.md):
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 WatermarkStrategy
     .<SensorEvent>forBoundedOutOfOrderness(Duration.ofSeconds(10))
     .withIdleness(Duration.ofMinutes(1))
@@ -340,6 +341,7 @@ The edge processes 75% of the data, uploading only key events and aggregated res
 **2. IoT-Optimized Watermark Strategy**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 WatermarkStrategy
     .<SensorEvent>forBoundedOutOfOrderness(Duration.ofSeconds(10))
     .withIdleness(Duration.ofMinutes(1));
@@ -368,6 +370,7 @@ WatermarkStrategy
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 StateTtlConfig ttlConfig = StateTtlConfig

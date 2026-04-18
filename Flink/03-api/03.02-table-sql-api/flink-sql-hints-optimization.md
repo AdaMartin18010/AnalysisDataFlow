@@ -322,14 +322,24 @@ GROUP BY user_id
 #### 示例3: 与Table API结合
 
 ```java
-// Table API中使用JSON函数
-tableEnv.createTemporaryFunction("ExtractJson", JsonPathFunction.class);
+import org.apache.flink.table.api.Table;
 
-Table result = tableEnv.sqlQuery(
-    "SELECT ExtractJson(log_data, '$.error.code') as error_code, COUNT(*) " +
-    "FROM application_logs " +
-    "GROUP BY ExtractJson(log_data, '$.error.code')"
-);
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
+        // Table API中使用JSON函数
+        tableEnv.createTemporaryFunction("ExtractJson", JsonPathFunction.class);
+
+        Table result = tableEnv.sqlQuery(
+            "SELECT ExtractJson(log_data, '$.error.code') as error_code, COUNT(*) " +
+            "FROM application_logs " +
+            "GROUP BY ExtractJson(log_data, '$.error.code')"
+        );
+
+    }
+}
+
 ```
 
 ### 6.4 执行计划分析

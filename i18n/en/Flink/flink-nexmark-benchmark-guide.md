@@ -239,6 +239,7 @@ graph TB
 **Deterministic data generation**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Use fixed random seed
 long SEED = 0x12345678L;
 Random random = new Random(SEED);
@@ -247,6 +248,7 @@ Random random = new Random(SEED);
 **Time control**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Use processing time as event time baseline
 long baseTime = System.currentTimeMillis();
 long eventTime = baseTime + (offsetSec * 1000);
@@ -386,6 +388,7 @@ WHERE price > 10000;
 **Optimization Recommendation**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Enable predicate pushdown
 tableEnv.getConfig().getConfiguration()
     .setBoolean("table.optimizer.predicate-pushdown-enabled", true);
@@ -410,6 +413,7 @@ GROUP BY
 **Performance Tuning**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Enable incremental aggregation
 Configuration conf = new Configuration();
 conf.setString("table.exec.mini-batch.enabled", "true");
@@ -464,6 +468,7 @@ LEFT JOIN Person FOR SYSTEM_TIME AS OF B.datetime AS P
 **Lookup Join Optimization**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Async Lookup configuration
 CREATE TABLE Person (
     id BIGINT,
@@ -501,6 +506,7 @@ CREATE TABLE Person (
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;

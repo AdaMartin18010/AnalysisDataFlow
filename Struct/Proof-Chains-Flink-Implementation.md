@@ -504,6 +504,7 @@ DecisionScore(backend) =
 **Checkpoint 触发（Thm-F-02-25）**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // CheckpointCoordinator.java
 public void triggerCheckpoint(long timestamp) {
     // 生成 Checkpoint ID
@@ -519,6 +520,7 @@ public void triggerCheckpoint(long timestamp) {
 **状态快照（Lemma-F-02-77）**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // AbstractStreamOperator.java
 public final void snapshotState(StateSnapshotContext context) {
     // 同步阶段:获取状态锁
@@ -533,6 +535,7 @@ public final void snapshotState(StateSnapshotContext context) {
 **异步执行（Thm-F-02-115）**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // AsyncWaitOperator.java
 private void processElement(StreamRecord<IN> element) {
     // 获取资源配额
@@ -550,6 +553,7 @@ private void processElement(StreamRecord<IN> element) {
 **顺序保证（Thm-F-02-134）**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // OrderedStreamElementQueue.java
 public void emitCompletedElement() {
     // 仅当队首元素完成时才输出

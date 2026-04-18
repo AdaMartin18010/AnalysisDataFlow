@@ -224,39 +224,51 @@ flowchart TD
 ```java
 import org.apache.flink.api.common.state.StateTtlConfig;
 import org.apache.flink.api.common.time.Time;
-
 import org.apache.flink.streaming.api.windowing.time.Time;
 
+public class Example {
+    public static void main(String[] args) throws Exception {
 
-// Def-F-02-84: 标准 TTL 配置模板
-StateTtlConfig ttlConfig = StateTtlConfig
-    .newBuilder(Time.hours(24))           // TTL 时长: 24小时
-    .setUpdateType(                        // 更新类型
-        StateTtlConfig.UpdateType.OnCreateAndWrite  // 创建和写入时更新
-    )
-    .setStateVisibility(                   // 状态可见性
-        StateTtlConfig.StateVisibility.NeverReturnExpired
-    )
-    .cleanupFullSnapshot()                  // Full Snapshot 清理
-    .build();
+
+
+        // Def-F-02-84: 标准 TTL 配置模板
+        StateTtlConfig ttlConfig = StateTtlConfig
+            .newBuilder(Time.hours(24))           // TTL 时长: 24小时
+            .setUpdateType(                        // 更新类型
+                StateTtlConfig.UpdateType.OnCreateAndWrite  // 创建和写入时更新
+            )
+            .setStateVisibility(                   // 状态可见性
+                StateTtlConfig.StateVisibility.NeverReturnExpired
+            )
+            .cleanupFullSnapshot()                  // Full Snapshot 清理
+            .build();
+
+    }
+}
 ```
 
 #### 5.3.2 增量清理配置 (Heap State Backend)
 
 ```java
-
+import org.apache.flink.api.common.state.StateTtlConfig;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-// Def-F-02-85: 增量清理配置
-StateTtlConfig incrementalCleanup = StateTtlConfig
-    .newBuilder(Time.hours(12))
-    .setUpdateType(StateTtlConfig.UpdateType.OnReadAndWrite)
-    .setStateVisibility(StateTtlConfig.StateVisibility.NeverReturnExpired)
-    .cleanupIncrementally(                  // 增量清理
-        10,                                 // 每次访问检查10条记录
-        true                                // 在状态迭代时 also 清理
-    )
-    .build();
+public class Example {
+    public static void main(String[] args) throws Exception {
+
+        // Def-F-02-85: 增量清理配置
+        StateTtlConfig incrementalCleanup = StateTtlConfig
+            .newBuilder(Time.hours(12))
+            .setUpdateType(StateTtlConfig.UpdateType.OnReadAndWrite)
+            .setStateVisibility(StateTtlConfig.StateVisibility.NeverReturnExpired)
+            .cleanupIncrementally(                  // 增量清理
+                10,                                 // 每次访问检查10条记录
+                true                                // 在状态迭代时 also 清理
+            )
+            .build();
+
+    }
+}
 ```
 
 **参数说明**:
@@ -267,15 +279,23 @@ StateTtlConfig incrementalCleanup = StateTtlConfig
 #### 5.3.3 RocksDB Compaction Filter 配置
 
 ```java
-// Def-F-02-86: RocksDB Compaction Filter 配置
-StateTtlConfig rocksdbCleanup = StateTtlConfig
-    .newBuilder(Time.days(7))
-    .setUpdateType(StateTtlConfig.UpdateType.OnCreateAndWrite)
-    .setStateVisibility(StateTtlConfig.StateVisibility.NeverReturnExpired)
-    .cleanupInRocksdbCompactFilter(         // RocksDB Compaction 清理
-        1000                                // 每处理1000个 key 更新一次 TTL 缓存
-    )
-    .build();
+import org.apache.flink.api.common.state.StateTtlConfig;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+public class Example {
+    public static void main(String[] args) throws Exception {
+        // Def-F-02-86: RocksDB Compaction Filter 配置
+        StateTtlConfig rocksdbCleanup = StateTtlConfig
+            .newBuilder(Time.days(7))
+            .setUpdateType(StateTtlConfig.UpdateType.OnCreateAndWrite)
+            .setStateVisibility(StateTtlConfig.StateVisibility.NeverReturnExpired)
+            .cleanupInRocksdbCompactFilter(         // RocksDB Compaction 清理
+                1000                                // 每处理1000个 key 更新一次 TTL 缓存
+            )
+            .build();
+
+    }
+}
 ```
 
 **参数说明**:
@@ -348,37 +368,51 @@ CREATE TABLE user_events (
 **模板 1: 会话状态管理 (30分钟过期)**
 
 ```java
-
+import org.apache.flink.api.common.state.StateTtlConfig;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-/**
- * Def-F-02-87: 生产级会话状态 TTL 配置
- * 场景:用户会话跟踪,30分钟无活动视为会话结束
- */
-public StateTtlConfig createSessionTtlConfig() {
-    return StateTtlConfig
-        .newBuilder(Time.minutes(30))
-        .setUpdateType(StateTtlConfig.UpdateType.OnReadAndWrite)  // 读写都更新 TTL
-        .setStateVisibility(StateTtlConfig.StateVisibility.NeverReturnExpired)
-        .cleanupIncrementally(10, true)  // 增量清理
-        .build();
+public class Example {
+    public static void main(String[] args) throws Exception {
+
+        /**
+         * Def-F-02-87: 生产级会话状态 TTL 配置
+         * 场景:用户会话跟踪,30分钟无活动视为会话结束
+         */
+        public StateTtlConfig createSessionTtlConfig() {
+            return StateTtlConfig
+                .newBuilder(Time.minutes(30))
+                .setUpdateType(StateTtlConfig.UpdateType.OnReadAndWrite)  // 读写都更新 TTL
+                .setStateVisibility(StateTtlConfig.StateVisibility.NeverReturnExpired)
+                .cleanupIncrementally(10, true)  // 增量清理
+                .build();
+        }
+
+    }
 }
 ```
 
 **模板 2: 聚合状态管理 (7天过期)**
 
 ```java
-/**
- * Def-F-02-88: 生产级聚合状态 TTL 配置
- * 场景:日级用户行为聚合,保留 7 天
- */
-public StateTtlConfig createAggregationTtlConfig() {
-    return StateTtlConfig
-        .newBuilder(Time.days(7))
-        .setUpdateType(StateTtlConfig.UpdateType.OnCreateAndWrite)
-        .setStateVisibility(StateTtlConfig.StateVisibility.NeverReturnExpired)
-        .cleanupInRocksdbCompactFilter(1000)  // RocksDB 清理
-        .build();
+import org.apache.flink.api.common.state.StateTtlConfig;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
+public class Example {
+    public static void main(String[] args) throws Exception {
+        /**
+         * Def-F-02-88: 生产级聚合状态 TTL 配置
+         * 场景:日级用户行为聚合,保留 7 天
+         */
+        public StateTtlConfig createAggregationTtlConfig() {
+            return StateTtlConfig
+                .newBuilder(Time.days(7))
+                .setUpdateType(StateTtlConfig.UpdateType.OnCreateAndWrite)
+                .setStateVisibility(StateTtlConfig.StateVisibility.NeverReturnExpired)
+                .cleanupInRocksdbCompactFilter(1000)  // RocksDB 清理
+                .build();
+        }
+
+    }
 }
 ```
 
@@ -889,6 +923,7 @@ graph TB
 **解决方案**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 启用状态指标监控
 getRuntimeContext().getMetricGroup().gauge("stateEntries",
     (Gauge<Long>) () -> {
@@ -906,6 +941,7 @@ getRuntimeContext().getMetricGroup().gauge("stateEntries",
 1. **确认 TTL 配置生效**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 在 open() 中打印配置
 @Override
 public void open(Configuration parameters) {
@@ -923,6 +959,7 @@ public void open(Configuration parameters) {
 1. **调整增量清理参数**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 .cleanupIncrementally(
     100,    // 增加每次检查条目数
     true    // 确保迭代时也清理
@@ -932,7 +969,15 @@ public void open(Configuration parameters) {
 1. **考虑迁移到 RocksDB**:
 
 ```java
-env.setStateBackend(new EmbeddedRocksDBStateBackend());
+import org.apache.flink.contrib.streaming.state.EmbeddedRocksDBStateBackend;
+
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        env.setStateBackend(new EmbeddedRocksDBStateBackend());
+
+    }
+}
 ```
 
 ### Q3: 性能影响优化
@@ -951,16 +996,24 @@ env.setStateBackend(new EmbeddedRocksDBStateBackend());
 **RocksDB 调优示例**:
 
 ```java
-DefaultConfigurableOptionsFactory factory = new DefaultConfigurableOptionsFactory();
-factory.setRocksDBOptions("write_buffer_size", "64MB");
-factory.setRocksDBOptions("target_file_size_base", "32MB");
-factory.setRocksDBOptions("max_bytes_for_level_base", "256MB");
-factory.setRocksDBOptions("table_cache_numshardbits", "6");
+import org.apache.flink.contrib.streaming.state.EmbeddedRocksDBStateBackend;
 
-env.setRocksDBStateBackend(
-    new EmbeddedRocksDBStateBackend(),
-    factory
-);
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        DefaultConfigurableOptionsFactory factory = new DefaultConfigurableOptionsFactory();
+        factory.setRocksDBOptions("write_buffer_size", "64MB");
+        factory.setRocksDBOptions("target_file_size_base", "32MB");
+        factory.setRocksDBOptions("max_bytes_for_level_base", "256MB");
+        factory.setRocksDBOptions("table_cache_numshardbits", "6");
+
+        env.setRocksDBStateBackend(
+            new EmbeddedRocksDBStateBackend(),
+            factory
+        );
+
+    }
+}
 ```
 
 ---

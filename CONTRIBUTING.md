@@ -990,6 +990,7 @@ DataStream<Event> stream = env
 **示例**：
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 
 // 设置 Watermark 生成策略，允许 5 秒乱序

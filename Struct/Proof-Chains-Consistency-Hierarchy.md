@@ -723,6 +723,7 @@ flowchart TD
 **配置**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Flink Watermark 配置示例
 WatermarkStrategy
     .<ClickEvent>forBoundedOutOfOrderness(Duration.ofMinutes(1))
@@ -749,6 +750,7 @@ WatermarkStrategy
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.CheckpointingMode;
 
 // Source: Kafka 可重放

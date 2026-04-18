@@ -50,6 +50,7 @@ Flink → Model Registry → Model Server → Inference
 ### 5.1 Model Routing
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 ModelRouter router = new ModelRouter()
     .addModel("v1", model1, 0.5)
     .addModel("v2", model2, 0.5);
@@ -60,6 +61,7 @@ ModelRouter router = new ModelRouter()
 ### 6.1 Dynamic Loading
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 ModelVersion version = registry.getLatest("fraud-detection");
 Model model = loader.load(version);
 ```

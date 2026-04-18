@@ -184,6 +184,7 @@ class TimestampAwareCache:
 ### 6.2 Flink 状态缓存中的时间感知替换
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 概念性配置：为 RocksDB 块缓存启用时间感知替换
 RocksDBStateBackendConfig config = new RocksDBStateBackendConfig();
 config.setCacheReplacementPolicy(CacheReplacementPolicy.TIME_AWARE_LRU);

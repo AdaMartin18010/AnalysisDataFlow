@@ -320,6 +320,7 @@ Flink 只写入 Hot 阶段的索引
 **迁移建议**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // ES 6.x 映射
 {
   "mappings": {
@@ -553,6 +554,7 @@ public class ElasticsearchSinkExample {
 ### 6.3 Table API / SQL 配置
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 创建 ES 连接器表
 String createTableSQL = """
     CREATE TABLE es_events (
@@ -684,6 +686,7 @@ PUT _ilm/policy/events_policy
 ### 6.5 安全认证配置
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 启用 HTTPS + 基本认证
 ElasticsearchSink.Builder<Event> builder =
     new ElasticsearchSink.Builder<>(httpHosts, sinkFunction);
@@ -867,6 +870,7 @@ reason=rejected execution of processing operation [bulk]...]]
 **解决方案**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 1. 降低批量大小和频率
 builder.setBulkFlushMaxActions(500);   // 从 1000 降低
 builder.setBulkFlushInterval(2000);    // 从 1000ms 增加
@@ -901,6 +905,7 @@ reason=[doc-id]: version conflict, current version [2] is higher than the one pr
 **解决方案**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 1. 确保 _id 稳定且唯一
 String docId = event.getOrderId() + "_" + event.getTimestamp();
 
@@ -973,6 +978,7 @@ MapperParsingException[failed to parse field [count] of type [long]]
 **解决方案**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 1. 数据清洗
 public String sanitizeJson(Event event) {
     Map<String, Object> map = new HashMap<>();
@@ -1048,6 +1054,7 @@ PUT _index_template/my_template
 ### 9.2 Flink 侧优化
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 1. 启用对象复用
 env.getConfig().enableObjectReuse();
 

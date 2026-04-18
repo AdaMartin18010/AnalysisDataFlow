@@ -203,6 +203,7 @@ $$
 **批量消费优化**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 配置批量拉取
 PulsarSource<String> source = PulsarSource.builder()
     .setTopics("persistent://public/default/my-topic")
@@ -221,6 +222,7 @@ PulsarSource<String> source = PulsarSource.builder()
 **压缩配置**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Producer 压缩配置
 PulsarSink<String> sink = PulsarSink.builder()
     .setTopics("persistent://public/default/output-topic")
@@ -400,6 +402,7 @@ public class EnrichedStreamProcessing {
 ### 6.4 性能优化配置示例
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 完整优化配置
 PulsarSource<String> optimizedSource = PulsarSource.builder()
     .setServiceUrl("pulsar://pulsar-cluster:6650")

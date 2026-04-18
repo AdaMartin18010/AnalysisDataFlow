@@ -72,6 +72,7 @@ roles:
 ### 6.1 Permission Check
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 if (authorizer.hasPermission(user, "jobs:cancel", jobId)) {
     cancelJob(jobId);
 }

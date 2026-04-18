@@ -252,6 +252,7 @@ public class CloudIoTProcessingJob {
 本案例的 Watermark 配置基于 [Flink 时间语义与 Watermark](../../02-core/time-semantics-and-watermark.md) 的形式化定义：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 WatermarkStrategy
     .<SensorEvent>forBoundedOutOfOrderness(Duration.ofSeconds(10))
     .withIdleness(Duration.ofMinutes(1))
@@ -333,6 +334,7 @@ Trigger(wid, w) = FIRE iff w >= t_end + F
 **2. 针对 IoT 优化的 Watermark 策略**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 WatermarkStrategy
     .<SensorEvent>forBoundedOutOfOrderness(Duration.ofSeconds(10))
     .withIdleness(Duration.ofMinutes(1));
@@ -361,6 +363,7 @@ WatermarkStrategy
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 StateTtlConfig ttlConfig = StateTtlConfig

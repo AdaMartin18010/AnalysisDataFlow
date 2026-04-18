@@ -227,6 +227,7 @@ graph TB
 ### 6.2 欺诈检测模式示例
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.cep.Pattern;
 import org.apache.flink.cep.CEP;
 import org.apache.flink.cep.pattern.conditions.SimpleCondition;
@@ -284,6 +285,7 @@ DataStream<Alert> alerts = patternStream
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 // 3分钟内 5 次失败登录后 1 次成功登录
@@ -329,6 +331,7 @@ patternStream
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 // 温度持续上升趋势后超过阈值

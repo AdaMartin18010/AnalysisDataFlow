@@ -90,6 +90,7 @@ $$
 **配置示例**：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 0.2.0+ Embedding Model 配置
 EmbeddingConfiguration embedConfig = EmbeddingConfiguration.builder()
     .setProvider(EmbeddingProvider.OPENAI)
@@ -191,6 +192,7 @@ $$
 **0.2.0 异步API示例**：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 异步工具调用
 CompletableFuture<ToolResult> future = agent.executeToolAsync(
     toolCall,
@@ -1278,3 +1280,62 @@ gantt
 [^2]: Anthropic, "Model Context Protocol Specification", 2025. <https://modelcontextprotocol.io/specification>
 
 [^3]: OpenAI, "Text Embedding Models Guide", 2025. <https://platform.openai.com/docs/guides/embeddings>
+
+
+---
+
+## 附录：Flink Agents 0.3 迁移指引与对比
+
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **适用目标版本**: 0.3.0 (预计 2026-06-15)
+
+### 0.2.x vs 0.3 关键特性对比
+
+| 特性维度 | Agents 0.2.1 (当前) | Agents 0.3 (前瞻) | 迁移影响 |
+|----------|---------------------|-------------------|----------|
+| **技能抽象** | 无原生 Skill 概念，工具调用硬编码 | Agent Skills 注册、发现、调用 | 需将工具封装为 Skill |
+| **长期记忆** | Flink State 原生状态（Key/Value） | Mem0 后端 + 原生 State 双轨 | 新增 Mem0 配置与同步逻辑 |
+| **跨语言** | Java 为主，PyFlink 受限包装 | 跨语言 Action/Event 总线 | Python/Rust Action 可独立开发 |
+| **参数注入** | 手动拼接参数后调用 | 运行时上下文自动注入 | 简化调用代码，需更新 Schema |
+| **日志级别** | 全局日志级别 | 按事件类型动态配置 | 需调整日志配置格式 |
+| **耐久执行** | Checkpoint 仅覆盖内部状态 | 外部异步调用纳入恢复 | 需声明外部动作幂等性 |
+| **Python 版本** | Python 3.9 / 3.10 / 3.11 | Python 3.12（含无 GIL 实验） | 建议升级至 3.12 |
+
+### 迁移路径：0.2.1 → 0.3
+
+1. **依赖升级**
+   ```xml
+   <dependency>
+       <groupId>org.apache.flink</groupId>
+       <artifactId>flink-agents</artifactId>
+       <version>0.3.0</version>
+   </dependency>
+   ```
+
+2. **Mem0 后端接入（可选）**
+   - 若需长期记忆跨 Session 保留，配置 `agent.memory.backend=mem0`
+   - 现有 Flink State 无需迁移，自动作为热记忆层
+
+3. **工具 → Skill 迁移**
+   - 将 `@Tool` 注解升级为 `@Skill`
+   - 补充 `description` 与 `inputSchema`，供 LLM 自动发现
+
+4. **Checkpoint 兼容性**
+   - 0.2.x Checkpoint **不兼容** 0.3（因新增 `S_pending` 状态）
+   - 建议：在维护窗口升级，允许状态重建；或使用 0.3 的 State Migration Tool（如有）
+
+5. **Python 运行时**
+   - 若使用 PyFlink Agent，将基础镜像更新至 `flink-agents:0.3-py3.12`
+   - 验证无 GIL 实验构建的兼容性（标记为 preview）
+
+### 已知 0.3 破坏性变更
+
+- `AgentRuntime.create()` 签名变更：新增 `SkillRegistry` 参数
+- `McpClient` 配置项 `streamable_http` 默认值从 `false` 改为 `true`
+- 日志配置格式从 `log4j.properties` 迁移至 `log4j2.yaml`（支持按事件类型路由）
+
+### 回滚策略
+
+- 0.3 引入的 Mem0 数据为**独立存储**，回滚至 0.2.x 不会丢失记忆，但 0.2.x 无法读取 Mem0 格式
+- 建议在 0.3 上线初期保留双版本并行灰度
+
+---

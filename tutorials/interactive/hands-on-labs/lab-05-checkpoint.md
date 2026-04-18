@@ -84,6 +84,7 @@ public class CheckpointExample {
 ### 步骤 2: 状态后端配置
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 伪代码示意,非完整可编译代码
 import org.apache.flink.contrib.streaming.state.RocksDBStateBackend;
 import org.apache.flink.runtime.state.filesystem.FsStateBackend;
@@ -132,6 +133,7 @@ public class StateBackendConfig {
 ### 步骤 3: 增量 Checkpoint
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Flink 1.11+ 增量 Checkpoint 配置
 env.setStateBackend(new RocksDBStateBackend(
     checkpointPath,
@@ -238,6 +240,7 @@ public class SavepointTrigger {
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 @Test
@@ -302,6 +305,7 @@ public class MonitoredFunction extends RichFunction
 ### 练习 2: 实现端到端 Exactly-Once
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Kafka Source 的 Exactly-Once 配置
 FlinkKafkaConsumer<String> kafkaSource = new FlinkKafkaConsumer<>(
     "topic",
@@ -338,6 +342,7 @@ properties.setProperty("transaction.timeout.ms", "900000");
 ### 性能调优
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 大状态优化
 env.getCheckpointConfig().setMaxConcurrentCheckpoints(1);
 env.getCheckpointConfig().setMinPauseBetweenCheckpoints(30000);

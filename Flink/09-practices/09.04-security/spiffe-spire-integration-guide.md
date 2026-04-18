@@ -702,6 +702,7 @@ svid_file_path = "/certs/svid_cert.pem"
 ### 6.3 Kafka mTLS 配置
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Flink Kafka Consumer with SPIFFE mTLS
 Properties kafkaProps = new Properties();
 
@@ -737,6 +738,7 @@ kafkaProps.setProperty("ssl.keystore.reload.interval", "3600000"); // 1小时
 ### 6.4 Elasticsearch mTLS 配置
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Elasticsearch REST client with SPIFFE
 RestClientBuilder builder = RestClient.builder(
     new HttpHost("elasticsearch", 9200, "https")

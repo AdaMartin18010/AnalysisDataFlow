@@ -266,6 +266,7 @@ graph LR
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.streaming.api.windowing.time.Time;
@@ -495,6 +496,7 @@ graph LR
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.api.common.typeinfo.Types;
 
 // Broadcast Stream 实现规则热更新
@@ -613,6 +615,7 @@ graph TB
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -734,6 +737,7 @@ graph TB
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -807,6 +811,7 @@ DataStream<Order> bucketed = orderStream
 **1. Mini-Batch优化**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 开启Mini-Batch聚合
 Configuration config = new Configuration();
 config.setBoolean("table.exec.mini-batch.enabled", true);
@@ -817,6 +822,7 @@ config.setLong("table.exec.mini-batch.size", 5000);
 **2. 状态后端调优**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // RocksDB调优
 RocksDBStateBackend rocksDb = new RocksDBStateBackend("hdfs://checkpoints");
 rocksDb.setPredefinedOptions(PredefinedOptions.FLASH_SSD_OPTIMIZED);
@@ -1445,6 +1451,7 @@ graph LR
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.windowing.time.Time;
 

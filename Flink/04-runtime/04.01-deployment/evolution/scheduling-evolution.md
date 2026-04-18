@@ -299,18 +299,23 @@ DefaultScheduler ───→ LegacyScheduler ───→ DeclarativeScheduler 
 ### 6.1 DefaultScheduler 配置 (历史)
 
 ```java
-
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
-// Flink 1.0 - 1.4 默认调度器
-StreamExecutionEnvironment env =
-    StreamExecutionEnvironment.getExecutionEnvironment();
+public class Example {
+    public static void main(String[] args) throws Exception {
 
-// 静态 Slot 分配
-env.setParallelism(4);  // 需要 4 个 Slot
+        // Flink 1.0 - 1.4 默认调度器
+        StreamExecutionEnvironment env =
+            StreamExecutionEnvironment.getExecutionEnvironment();
 
-// 资源配置 (flink-conf.yaml)
-// taskmanager.numberOfTaskSlots: 4
+        // 静态 Slot 分配
+        env.setParallelism(4);  // 需要 4 个 Slot
+
+        // 资源配置 (flink-conf.yaml)
+        // taskmanager.numberOfTaskSlots: 4
+
+    }
+}
 ```
 
 ---
@@ -319,6 +324,7 @@ env.setParallelism(4);  // 需要 4 个 Slot
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 // Flink 1.5+ LegacyScheduler
@@ -338,6 +344,7 @@ cluster.evenly-spread-out-slots: true
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 // Flink 1.11+ DeclarativeScheduler
@@ -360,27 +367,32 @@ cluster.evenly-spread-out-slots: true
 ### 6.4 AdaptiveScheduler 配置 (Flink 1.17+)
 
 ```java
-
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
-// Flink 1.17+ AdaptiveScheduler
-StreamExecutionEnvironment env =
-    StreamExecutionEnvironment.getExecutionEnvironment();
+public class Example {
+    public static void main(String[] args) throws Exception {
 
-// 启用自适应调度
-env.setScheduler(SchedulerType.ADAPTIVE);
+        // Flink 1.17+ AdaptiveScheduler
+        StreamExecutionEnvironment env =
+            StreamExecutionEnvironment.getExecutionEnvironment();
 
-// flink-conf.yaml 完整配置
-scheduler-mode: adaptive
+        // 启用自适应调度
+        env.setScheduler(SchedulerType.ADAPTIVE);
 
-# 自适应调度配置 scheduler.adaptive.min-parallelism: 2
-scheduler.adaptive.max-parallelism: 100
-scheduler.adaptive.target-utilization: 0.8
+        // flink-conf.yaml 完整配置
+        scheduler-mode: adaptive
 
-# 扩缩容策略 scheduler.adaptive.scale-up.delay: 10s
-scheduler.adaptive.scale-down.delay: 60s
-scheduler.adaptive.scale-up.cooldown: 30s
-scheduler.adaptive.scale-down.cooldown: 300s
+        # 自适应调度配置 scheduler.adaptive.min-parallelism: 2
+        scheduler.adaptive.max-parallelism: 100
+        scheduler.adaptive.target-utilization: 0.8
+
+        # 扩缩容策略 scheduler.adaptive.scale-up.delay: 10s
+        scheduler.adaptive.scale-down.delay: 60s
+        scheduler.adaptive.scale-up.cooldown: 30s
+        scheduler.adaptive.scale-down.cooldown: 300s
+
+    }
+}
 ```
 
 ---
@@ -388,30 +400,35 @@ scheduler.adaptive.scale-down.cooldown: 300s
 ### 6.5 AdaptiveScheduler V2 配置 (Flink 2.0+)
 
 ```java
-
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
-// Flink 2.0+ AdaptiveScheduler V2
-StreamExecutionEnvironment env =
-    StreamExecutionEnvironment.getExecutionEnvironment();
+public class Example {
+    public static void main(String[] args) throws Exception {
 
-// 必须使用存算分离状态后端
-env.setStateBackend(new ForStStateBackend());
+        // Flink 2.0+ AdaptiveScheduler V2
+        StreamExecutionEnvironment env =
+            StreamExecutionEnvironment.getExecutionEnvironment();
 
-// 启用 AdaptiveScheduler V2
-env.setScheduler(SchedulerType.ADAPTIVE_V2);
+        // 必须使用存算分离状态后端
+        env.setStateBackend(new ForStStateBackend());
 
-// flink-conf.yaml 完整配置
-scheduler-mode: adaptive-v2
-state.backend: forst
+        // 启用 AdaptiveScheduler V2
+        env.setScheduler(SchedulerType.ADAPTIVE_V2);
 
-# V2 增强配置 scheduler.adaptive-v2.ml.prediction.enabled: true
-scheduler.adaptive-v2.ml.prediction.window: 5min
-scheduler.adaptive-v2.scale.strategy: predictive  # predictive/reactive
+        // flink-conf.yaml 完整配置
+        scheduler-mode: adaptive-v2
+        state.backend: forst
 
-# 快速扩缩容配置 (依赖存算分离)
-scheduler.adaptive-v2.scale.timeout: 10s
-scheduler.adaptive-v2.state.migration.enabled: false  # 2.0 无需状态迁移
+        # V2 增强配置 scheduler.adaptive-v2.ml.prediction.enabled: true
+        scheduler.adaptive-v2.ml.prediction.window: 5min
+        scheduler.adaptive-v2.scale.strategy: predictive  # predictive/reactive
+
+        # 快速扩缩容配置 (依赖存算分离)
+        scheduler.adaptive-v2.scale.timeout: 10s
+        scheduler.adaptive-v2.state.migration.enabled: false  # 2.0 无需状态迁移
+
+    }
+}
 ```
 
 ---

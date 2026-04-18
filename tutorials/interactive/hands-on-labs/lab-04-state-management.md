@@ -379,6 +379,7 @@ public class CheckpointedCounterSource implements
 ### 测试用例
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 @Test
 public void testTemperatureAlert() throws Exception {
     // 创建测试 harness
@@ -446,6 +447,7 @@ public class OrderStateMachine extends KeyedProcessFunction<String, OrderEvent, 
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.api.common.state.ValueState;
 import org.apache.flink.api.common.state.ValueStateDescriptor;
 

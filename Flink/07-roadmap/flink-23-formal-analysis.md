@@ -625,6 +625,7 @@ $$O(E(SB_1, I, L)) = O(E(SB_2, I, L)) \land F(E(SB_1, I, L)) = F(E(SB_2, I, L))$
 SBA-v2 接口规范要求：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 核心接口契约
 interface StateBackend {
     // 创建 ValueState,返回的 state 对象必须满足:

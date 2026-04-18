@@ -63,6 +63,7 @@ $$
 ### 5.1 MySQL CDC Source
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 MySqlSource<String> mySqlSource = MySqlSource.<String>builder()
     .hostname("mysql")
     .port(3306)
@@ -79,6 +80,7 @@ MySqlSource<String> mySqlSource = MySqlSource.<String>builder()
 ### 6.1 Processing CDC Events
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 stream.process(new ProcessFunction<String, Row>() {
     @Override
     public void processElement(String event, Context ctx, Collector<Row> out) {

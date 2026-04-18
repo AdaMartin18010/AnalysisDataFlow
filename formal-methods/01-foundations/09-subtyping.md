@@ -293,6 +293,7 @@ $$\forall \alpha <: F(\alpha).\ \sigma$$
 **示例**：Java中的 `Comparable` 接口
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 interface Comparable<T> {
     int compareTo(T other);
 }
@@ -592,6 +593,7 @@ $$\tau <: \sigma_1 \lor \sigma_2 \iff \tau <: \sigma_1 \lor \tau <: \sigma_2$$
 **示例：类层次结构**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 class Animal {
     String name;
     void speak() { ... }

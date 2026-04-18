@@ -460,6 +460,7 @@ method node_sum(n: Ref) returns (s: Int)
 **Def-V-06-32** (VerCors并行验证)。VerCors支持异构并行程序的权限验证[^3]：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 /*@
     requires Perm(x, read);
     ensures Perm(x, read) ** x == \old(x);
@@ -491,6 +492,7 @@ void write_value(int x) {
 **Def-V-06-33** (VerCors并行块)。OpenMP/GPU程序的权限验证：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 /*@
     context \pointer(a, n);
     context (\forall* int i; 0 <= i && i < n; Perm(a[i], 1/2));
@@ -757,6 +759,7 @@ method append(lst: Ref, x: Int, vals: Seq[Int])
 **二叉树并行遍历**：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 class TreeNode {
     int value;
     TreeNode left, right;
@@ -795,6 +798,7 @@ class TreeNode {
 **数组分段排序**：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 /*@
     requires Perm(array, 1);
     requires \pointer(array, n);
@@ -883,6 +887,7 @@ method acquire_write(lock: Ref)
 **无锁队列片段**：
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 class LockFreeQueue<T> {
     AtomicReference<Node<T>> head, tail;
 

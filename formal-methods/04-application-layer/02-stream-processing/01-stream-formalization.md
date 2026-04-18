@@ -294,6 +294,7 @@ joined = joinByKey streamA streamB 300  -- 300秒窗口
 ### 6.3 Exactly-Once检查点实现
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Flink风格的Barrier处理
 class ExactlyOnceOperator {
     void processElement(Element e) {

@@ -786,6 +786,7 @@ def analyze_utilization(cluster_id, days=7):
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 // 从 HashMapStateBackend 迁移到 RocksDBStateBackend

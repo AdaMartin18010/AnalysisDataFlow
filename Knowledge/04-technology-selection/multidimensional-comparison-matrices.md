@@ -1674,6 +1674,7 @@ spec:
 ### 模板1: 金融级实时风控
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Flink配置
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
@@ -1702,6 +1703,7 @@ env.configure(config);
 ### 模板2: 大规模日志分析
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 高吞吐配置
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.getExecutionEnvironment();
@@ -1730,6 +1732,7 @@ configurableBackend.setPredefinedOptions(
 ### 模板3: 物联网边缘处理
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 轻量级配置
 StreamExecutionEnvironment env =
     StreamExecutionEnvironment.createLocalEnvironment();
@@ -2005,7 +2008,7 @@ flowchart TD
 
 - [Nexmark Benchmark](https://github.com/nexmark/nexmark)
 - [Yahoo Streaming Benchmark](https://github.com/yahoo/streaming-benchmarks)
-- [TPC-DS Stream](http://www.tpc.org/tpcds/)
+- [TPC-DS Stream](https://www.tpc.org/tpcds/)
 
 ### 学术资源
 

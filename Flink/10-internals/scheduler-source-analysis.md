@@ -661,6 +661,7 @@ public class LocalityAwareSlotSelectionStrategy implements SlotSelectionStrategy
 
 **本地性计算**:
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 private Locality computeLocality(SlotInfo slot, SlotProfile req) {
     TaskManagerLocation slotLoc = slot.getTaskManagerLocation();
 
@@ -684,6 +685,7 @@ private Locality computeLocality(SlotInfo slot, SlotProfile req) {
 #### 5.5.1 Failover 策略架构
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 public interface FailoverStrategy {
     // 获取需要重启的顶点集合
     Set<ExecutionVertexID> getTasksNeedingRestart(
@@ -802,6 +804,7 @@ public class CheckpointCoordinator {
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
@@ -825,6 +828,7 @@ env.setRestartStrategy(RestartStrategies.fixedDelayRestart(
 #### 6.1.2 AdaptiveScheduler 配置
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // flink-conf.yaml
 jobmanager.scheduler: adaptive
 scheduler-mode: reactive
@@ -840,6 +844,7 @@ scheduler.adaptive.max-parallelism: 128
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 // 批处理配置
@@ -860,6 +865,7 @@ config.set(BatchExecutionOptions.ADAPTIVE_AUTO_PARALLELISM_MAX_PARALLELISM, 1000
 #### 6.1.4 SpeculativeScheduler 配置
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // flink-conf.yaml
 jobmanager.scheduler: speculative
 
@@ -875,6 +881,7 @@ speculative.execution.batch-slow-task-detection-threshold: 100
 #### 6.2.1 数据本地性配置
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 强制本地性
 slot.request.timeout: 300000  // 5分钟
 scheduler.locality-recover-on-start: true
@@ -888,6 +895,7 @@ config.setAutoTypeRegistrationEnabled(true);
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 DataStream<Event> source = env.addSource(new KafkaSource<>())
@@ -908,6 +916,7 @@ processed.addSink(new ElasticsearchSink<>())
 #### 6.3.1 区域重启配置
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // flink-conf.yaml
 jobmanager.execution.failover-strategy: region
 restart-strategy: fixed-delay
@@ -924,6 +933,7 @@ execution.checkpointing.max-concurrent-checkpoints: 1
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.time.Time;
 

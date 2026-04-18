@@ -492,6 +492,7 @@ $$
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.CheckpointingMode;
 
@@ -528,6 +529,7 @@ taskmanager.memory.managed.size: 256mb
 ### 6.2 RocksDBStateBackend Production Configuration
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // ========== RocksDBStateBackend Production Configuration ==========
 // Enable incremental Checkpoint
 EmbeddedRocksDBStateBackend rocksDbBackend =
@@ -578,6 +580,7 @@ env.setRocksDBStateBackend(rocksDbBackend, optionsFactory);
 ### 6.3 ForStStateBackend Configuration (Flink 2.0+)
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // ========== ForStStateBackend Configuration (Forward-looking) ==========
 // Flink 2.0+ support
 ForStStateBackend forstBackend = new ForStStateBackend();

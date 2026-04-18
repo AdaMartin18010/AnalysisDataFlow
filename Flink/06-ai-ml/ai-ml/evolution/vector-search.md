@@ -52,6 +52,7 @@ $$
 ### 5.1 向量索引
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 VectorIndex index = new HNSWIndex.Builder()
     .withDimension(768)
     .withM(16)
@@ -63,6 +64,7 @@ VectorIndex index = new HNSWIndex.Builder()
 ### 6.1 向量查询
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 List<Vector> results = index.search(queryVector, 10);
 ```
 

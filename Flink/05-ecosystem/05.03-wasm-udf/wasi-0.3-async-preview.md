@@ -1188,6 +1188,7 @@ impl GuestCancelToken for CancelToken {
 **测试场景**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 取消令牌测试
 @Test
 public void testCancellation() throws Exception {

@@ -1,0 +1,121 @@
+# 文档新鲜度维护指南
+
+> **版本**: v1.0 | **生效日期**: 2026-04-19 | **维护者**: AnalysisDataFlow Team
+
+---
+
+## 1. 为什么需要新鲜度维护
+
+技术知识库的核心价值在于**准确性**和**时效性**。根据 Microsoft 开源团队 2026 年最佳实践（Drasi + AI Agent 模式），文档偏差是开源项目最大的技术债务来源之一。
+
+本项目当前规模：
+- ~900 篇文档
+- ~33 MB 内容
+- 覆盖 Flink、流计算、形式化验证等快速演进领域
+
+**没有自动化新鲜度维护 = 文档快速腐烂**
+
+---
+
+## 2. 自动化机制
+
+### 2.1 月度巡检
+
+`.github/workflows/doc-freshness.yml` 每月 1 日自动运行：
+- 扫描核心目录 (`Struct/`, `Knowledge/`, `Flink/`, `en/`, `formal-methods/`)
+- 标记超过 6 个月未更新的文档
+- 检测已过期的前瞻性预计发布日期
+- 自动生成 `FRESHNESS-REPORT.md`
+- 存在 P0 问题时自动创建 GitHub Issue
+
+### 2.2 本地检查
+
+```bash
+# 生成本地新鲜度报告
+python .scripts/doc-freshness-checker.py --root . --output FRESHNESS-REPORT.md
+```
+
+检查器输出三个等级：
+| 等级 | 条件 | 响应时间 |
+|------|------|----------|
+| 🔴 P0 | 超过 2 年未更新 / 前瞻日期严重过期 | 7 天内处理 |
+| 🟠 P1 | 超过 1 年未更新 / 前瞻日期过期 | 30 天内处理 |
+| 🟡 P2 | 超过 6 个月未更新 / 缺少日期标记 | 下次迭代处理 |
+
+---
+
+## 3. 维护者操作规范
+
+### 3.1 更新文档时必须
+
+在每篇核心文档顶部添加或更新日期标记：
+
+```markdown
+> **最后更新**: 2026-04-19 | **核实状态**: 已确认
+```
+
+对于前瞻内容：
+```markdown
+> **最后核实日期**: 2026-04-19 | **预计发布**: 2026 Q2
+> **风险等级**: 高 | **信息来源**: [官方链接]
+```
+
+### 3.2 内容核实清单
+
+更新文档时，请确认以下事项：
+
+- [ ] 技术参数与官方最新版本一致
+- [ ] 外部链接可访问
+- [ ] 代码示例可运行（或已标注为伪代码）
+- [ ] 前瞻性内容的风险声明完整
+- [ ] 引用来源准确且可验证
+
+### 3.3 前瞻性内容特殊维护
+
+**触发条件**：Apache Flink 新版本发布、竞品重大更新、标准组织发布新规
+
+**响应流程**：
+1. 发布后 7 天内，创建核实 Issue
+2. 对比项目文档与官方 Release Notes
+3. 更新"已发布"特性为确认状态
+4. 删除或重标记已被证伪的前瞻预测
+5. 更新 `最后核实日期`
+
+---
+
+## 4. 批量维护脚本
+
+### 4.1 更新日期标记
+
+```bash
+# 将当前日期批量添加到指定目录的文档头部
+for f in Flink/06-ai-ml/*.md; do
+    sed -i '1s/^/> **最后更新**: 2026-04-19\n>\n/' "$f"
+done
+```
+
+### 4.2 检查失效链接
+
+```bash
+# 使用 lychee 进行链接检查（需安装 lychee）
+lychee --exclude-path release/ --exclude-path archive/ ./**/*.md
+```
+
+---
+
+## 5. 责任分工
+
+| 目录 | 负责人 | 核实周期 |
+|------|--------|----------|
+| `Flink/` | flink-maintainer | 每月 |
+| `Struct/` | formal-maintainer | 每季度 |
+| `Knowledge/` | knowledge-maintainer | 每月 |
+| `en/` | i18n-maintainer | 每季度 |
+| `formal-methods/` | formal-maintainer | 每季度 |
+
+---
+
+## 6. 引用参考
+
+[^1]: Microsoft Open Source Blog, "How Drasi used GitHub Copilot to find documentation bugs", 2026-04. https://opensource.microsoft.com/blog/2026/04/09/how-drasi-used-github-copilot-to-find-documentation-bugs/
+[^2]: HelpDocs, "The Ultimate Guide to Knowledge Base Software in 2026", 2026-02. https://blog.helpdocs.io/the-ultimate-guide-to-knowledge-base-software-in-2025/

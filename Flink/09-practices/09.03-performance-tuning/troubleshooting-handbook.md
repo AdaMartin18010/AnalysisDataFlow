@@ -466,6 +466,7 @@ state.backend.rocksdb.memory.fixed-per-slot: 256mb
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.api.common.state.ValueState;
 
 // 常见内存泄漏模式
@@ -590,6 +591,7 @@ numRecordsInPerSecond: 0 (某些分区)
 **解决**: 启用空闲检测
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 WatermarkStrategy
     .<Event>forBoundedOutOfOrderness(Duration.ofSeconds(30))
     .withIdleness(Duration.ofMinutes(5));
@@ -606,6 +608,7 @@ WatermarkStrategy
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // 确保所有分支都生成 Watermark
@@ -623,6 +626,7 @@ union = stream1.union(stream2);
 **步骤 4: 检查乱序时间设置**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 如果允许乱序时间过长,Watermark 推进会延迟
 WatermarkStrategy.<Event>forBoundedOutOfOrderness(
     Duration.ofHours(1) // 1小时的乱序容忍度
@@ -662,6 +666,7 @@ stateSize: 异常大或无法读取
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.api.common.state.ValueState;
 import org.apache.flink.api.common.state.ValueStateDescriptor;
 
@@ -749,6 +754,7 @@ restart-strategy.exponential-delay.max-backoff: 300s
 **步骤 4: 检查依赖服务健康**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 如果依赖外部服务,确保有重试和降级逻辑
 try {
     externalService.call();

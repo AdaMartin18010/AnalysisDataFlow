@@ -511,22 +511,30 @@ $$
 **Flink CDC 实现**:
 
 ```java
-// MySQL CDC Source 配置
-MySqlSource<String> mySqlSource = MySqlSource.<String>builder()
-    .hostname("mysql-host")
-    .port(3306)
-    .databaseList("inventory")
-    .tableList("inventory.products", "inventory.orders")
-    .username("flink-user")
-    .password("password")
-    .deserializer(new JsonDebeziumDeserializationSchema())
-    // Exactly-Once 配置
-    .startupOptions(StartupOptions.initial())  // 全量 + 增量
-    .build();
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 
-// 构建流
-env.fromSource(mySqlSource, WatermarkStrategy.noWatermarks(), "MySQL CDC")
-   .addSink(kafkaSink);  // 写入 Kafka 或下游处理
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        // MySQL CDC Source 配置
+        MySqlSource<String> mySqlSource = MySqlSource.<String>builder()
+            .hostname("mysql-host")
+            .port(3306)
+            .databaseList("inventory")
+            .tableList("inventory.products", "inventory.orders")
+            .username("flink-user")
+            .password("password")
+            .deserializer(new JsonDebeziumDeserializationSchema())
+            // Exactly-Once 配置
+            .startupOptions(StartupOptions.initial())  // 全量 + 增量
+            .build();
+
+        // 构建流
+        env.fromSource(mySqlSource, WatermarkStrategy.noWatermarks(), "MySQL CDC")
+           .addSink(kafkaSink);  // 写入 Kafka 或下游处理
+
+    }
+}
 ```
 
 **CDC 数据格式 (Debezium)**:
@@ -554,6 +562,7 @@ env.fromSource(mySqlSource, WatermarkStrategy.noWatermarks(), "MySQL CDC")
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.api.common.state.ValueState;
 
 // Kafka Source 配置(事件驱动)
@@ -588,6 +597,7 @@ dataStream
 **适用场景**: 历史数据回溯、大表初始化、低频更新
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 批量读取 JDBC
 JdbcInputFormat jdbcInput = JdbcInputFormat.buildJdbcInputFormat()
     .setDrivername("com.mysql.cj.jdbc.Driver")
@@ -743,6 +753,7 @@ public class DeduplicateFunction extends KeyedProcessFunction<String, Event, Eve
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.api.common.functions.AggregateFunction;
 import org.apache.flink.streaming.api.windowing.time.Time;
@@ -808,6 +819,7 @@ DataStream<Result> result = stream
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 // 订单与支付在 5 分钟内匹配
@@ -923,23 +935,30 @@ $$
 **幂等写入实现**:
 
 ```java
-// Kafka 幂等 Producer(基于序列号)
-Properties props = new Properties();
-props.put("bootstrap.servers", "kafka:9092");
-props.put("acks", "all");
-props.put("enable.idempotence", "true");  // 启用幂等
-props.put("max.in.flight.requests.per.connection", "5");
-props.put("retries", Integer.MAX_VALUE);
+import java.util.Properties;
 
-// Elasticsearch 幂等写入(基于文档ID)
-IndexRequest request = new IndexRequest("index");
-request.id(record.getId());  // 使用业务ID作为文档ID
-request.source(record.toJson());
-request.opType(DocWriteRequest.OpType.CREATE);  // 或 INDEX
+public class Example {
+    public static void main(String[] args) throws Exception {
+        // Kafka 幂等 Producer(基于序列号)
+        Properties props = new Properties();
+        props.put("bootstrap.servers", "kafka:9092");
+        props.put("acks", "all");
+        props.put("enable.idempotence", "true");  // 启用幂等
+        props.put("max.in.flight.requests.per.connection", "5");
+        props.put("retries", Integer.MAX_VALUE);
 
-// 数据库 UPSERT 幂等
-"INSERT INTO table (id, value) VALUES (?, ?) " +
-"ON DUPLICATE KEY UPDATE value = VALUES(value)"
+        // Elasticsearch 幂等写入(基于文档ID)
+        IndexRequest request = new IndexRequest("index");
+        request.id(record.getId());  // 使用业务ID作为文档ID
+        request.source(record.toJson());
+        request.opType(DocWriteRequest.OpType.CREATE);  // 或 INDEX
+
+        // 数据库 UPSERT 幂等
+        "INSERT INTO table (id, value) VALUES (?, ?) " +
+        "ON DUPLICATE KEY UPDATE value = VALUES(value)"
+
+    }
+}
 ```
 
 #### 5.3.2 事务性 Sink
@@ -999,6 +1018,7 @@ public class TwoPhaseCommitSink extends TwoPhaseCommitSinkFunction<Event, Transa
 **时间分区写入**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 按小时分区写入 Parquet
 StreamingFileSink<Record> sink = StreamingFileSink
     .forBulkFormat(
@@ -1171,6 +1191,7 @@ public class SchemaValidationMap implements MapFunction<Row, Row> {
 **Flink Schema 演进配置**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Avro Schema 演进
 AvroDeserializationSchema<Order> schema = AvroDeserializationSchema
     .forSpecific(Order.class);
@@ -1300,15 +1321,24 @@ public class LineageSqlParser implements Parser {
 **动态扩缩容配置**:
 
 ```java
-// 自动扩缩容配置
-env.getConfig().setAutoWatermarkInterval(200L);
+import java.time.Duration;
+import org.apache.flink.configuration.Configuration;
 
-// 自适应调度器(Flink 1.17+)
-Configuration conf = new Configuration();
-conf.set(JobManagerOptions.SCHEDULER, "AdaptiveScheduler");
-conf.set(AdaptiveSchedulerSettings.MAX_PARALLELISM, 128);
-conf.set(AdaptiveSchedulerSettings.MIN_PARALLELISM, 4);
-conf.set(AdaptiveSchedulerSettings.SCALING_INTERVAL, Duration.ofMinutes(1));
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        // 自动扩缩容配置
+        env.getConfig().setAutoWatermarkInterval(200L);
+
+        // 自适应调度器(Flink 1.17+)
+        Configuration conf = new Configuration();
+        conf.set(JobManagerOptions.SCHEDULER, "AdaptiveScheduler");
+        conf.set(AdaptiveSchedulerSettings.MAX_PARALLELISM, 128);
+        conf.set(AdaptiveSchedulerSettings.MIN_PARALLELISM, 4);
+        conf.set(AdaptiveSchedulerSettings.SCALING_INTERVAL, Duration.ofMinutes(1));
+
+    }
+}
 ```
 
 #### 5.5.2 状态管理优化
@@ -1325,18 +1355,24 @@ conf.set(AdaptiveSchedulerSettings.SCALING_INTERVAL, Duration.ofMinutes(1));
 **状态 TTL 优化**:
 
 ```java
-
+import org.apache.flink.api.common.state.StateTtlConfig;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
-StateTtlConfig ttlConfig = StateTtlConfig
-    .newBuilder(Time.hours(24))
-    .setUpdateType(StateTtlConfig.UpdateType.OnCreateAndWrite)
-    .setStateVisibility(StateTtlConfig.StateVisibility.NeverReturnExpired)
-    // 增量清理策略(默认全量扫描)
-    .cleanupIncrementally(10, true)
-    // 或 RocksDB 专用压缩清理
-    .cleanupInRocksdbCompactFilter(1000)
-    .build();
+public class Example {
+    public static void main(String[] args) throws Exception {
+
+        StateTtlConfig ttlConfig = StateTtlConfig
+            .newBuilder(Time.hours(24))
+            .setUpdateType(StateTtlConfig.UpdateType.OnCreateAndWrite)
+            .setStateVisibility(StateTtlConfig.StateVisibility.NeverReturnExpired)
+            // 增量清理策略(默认全量扫描)
+            .cleanupIncrementally(10, true)
+            // 或 RocksDB 专用压缩清理
+            .cleanupInRocksdbCompactFilter(1000)
+            .build();
+
+    }
+}
 ```
 
 #### 5.5.3 序列化优化
@@ -1354,6 +1390,7 @@ StateTtlConfig ttlConfig = StateTtlConfig
 **Avro 优化配置**:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 使用 SpecificRecord 替代 GenericRecord
 SpecificAvroSerde<Order> serde = new SpecificAvroSerde<>();
 serde.configure(Map.of(
@@ -1434,6 +1471,7 @@ public class RetryableAsyncFunction extends RichAsyncFunction<Event, Result> {
 #### 5.6.2 死信队列 (DLQ)
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 侧输出流实现死信队列
 OutputTag<FailedRecord> dlqTag = new OutputTag<FailedRecord>("dlq"){};
 

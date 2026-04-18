@@ -202,9 +202,10 @@ kubectl scale deployment flink-taskmanager --replicas=10
 env.getConfig().setExecutionBufferTimeout(0);
 stream.slotSharingGroup("latency-critical");
 
-# 作业 2: 高吞吐
+// 作业 2: 高吞吐
 env.getConfig().setExecutionBufferTimeout(100);
 stream.slotSharingGroup("throughput-optimized");
+
 ```
 
 ## 7. 监控指标参考

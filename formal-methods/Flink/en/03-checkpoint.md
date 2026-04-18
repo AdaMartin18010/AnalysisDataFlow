@@ -126,6 +126,7 @@ $$
 **State Backend** is the runtime component responsible for state storage, access, and snapshot persistence:
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // Source: org.apache.flink.runtime.state.StateBackend
 interface StateBackend {
     createKeyedStateBackend(env, stateHandles): AbstractKeyedStateBackend<K>
@@ -576,6 +577,7 @@ RocksDB's manifest file records metadata of all active SST files. Incremental Ch
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.CheckpointingMode;
 
@@ -610,6 +612,7 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
@@ -637,6 +640,7 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
@@ -658,6 +662,7 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();

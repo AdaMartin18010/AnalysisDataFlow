@@ -366,6 +366,7 @@ FROM customer_queries;
 **Java API：**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 // 创建 Agent
 Agent agent = Agent.builder()
     .name("sales-assistant")
@@ -598,6 +599,7 @@ GROUP BY event_type;
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 // 配置自适应执行
@@ -708,6 +710,7 @@ GROUP BY category;
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.streaming.api.datastream.DataStream;
 
 // GPU 加速聚合
@@ -790,6 +793,7 @@ pub fn mask_email(email: String) -> String {
 
 ```java
 
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 import org.apache.flink.table.api.TableEnvironment;
 
 // 注册 WASM UDF

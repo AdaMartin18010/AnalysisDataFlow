@@ -564,6 +564,7 @@ class FieldEncryptionFunction extends RichMapFunction[Event, Event] {
 **Pattern 3: Checkpoint Encryption**
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 Configuration conf = new Configuration();
 
 conf.setBoolean(CheckpointingOptions.ENCRYPTION_ENABLED, true);

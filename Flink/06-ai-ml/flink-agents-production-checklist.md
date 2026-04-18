@@ -688,3 +688,72 @@ flowchart TD
 ---
 
 ## 8. 引用参考 (References)
+
+
+---
+
+## 附录：Flink Agents 0.3 迁移指引与对比
+
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **适用目标版本**: 0.3.0 (预计 2026-06-15)
+
+### 0.3 新增生产检查项
+
+在原有检查清单基础上，升级到 Agents 0.3 需补充以下检查：
+
+#### A. Mem0 后端检查
+
+| 检查项 | 通过标准 | 严重级别 |
+|--------|----------|----------|
+| Mem0 集群可用性 | `mem0.health()` 返回 `OK` | P0 |
+| 同步延迟监控 | `mem0.sync_latency_p99 < 500ms` | P1 |
+| API 密钥轮换 | 使用 Vault / K8s Secret，支持动态轮换 | P1 |
+| 数据保留策略 | 已配置 `episodic_ttl` 与 `semantic_ttl` | P2 |
+| 备份与恢复 | Mem0 后端独立备份计划已验证 | P1 |
+
+#### B. 跨语言运行时检查
+
+| 检查项 | 通过标准 | 严重级别 |
+|--------|----------|----------|
+| Protobuf Schema 版本对齐 | 所有语言运行时编译自同一 `.proto` 文件 | P0 |
+| Python 3.12 镜像安全扫描 | 无 CVE Critical 漏洞 | P0 |
+| 语言运行时资源隔离 | Java / Python / Rust 进程 cgroup 限制已配置 | P1 |
+| 跨语言事件序列化兼容性 | 升级测试通过（向后兼容） | P1 |
+
+#### C. Skill Registry 安全
+
+| 检查项 | 通过标准 | 严重级别 |
+|--------|----------|----------|
+| Skill 签名验证 | 仅加载来自可信 Registry 的 Skill | P0 |
+| 动态发现权限 | 非特权 Agent 无法发现管理员 Skill | P1 |
+| Skill 版本锁定 | 生产环境禁止自动拉取 latest Skill | P1 |
+
+### 配置变更速查
+
+```yaml
+# 0.3 新增配置项（生产环境推荐值）
+agent:
+  skill:
+    registry:
+      enabled: true
+      trusted_sources:
+        - "https://internal-skill-registry.company.com"
+      auto_update: false        # 生产关闭自动更新
+  memory:
+    cold_backend:
+      type: mem0
+      connection_timeout: 5s
+      max_retry: 3
+  cross_lang:
+    event_bus:
+      serialization: protobuf   # 生产推荐使用 protobuf（比 JSON 快 3-5x）
+      schema_registry: "http://schema-registry:8081"
+  logging:
+    per_event:
+      AGENT_INIT: INFO
+      TOOL_CALL: DEBUG
+      LLM_REQUEST: DEBUG
+      STATE_PERSIST: WARN       # 高频事件降采样
+      CHECKPOINT: INFO
+```
+
+---

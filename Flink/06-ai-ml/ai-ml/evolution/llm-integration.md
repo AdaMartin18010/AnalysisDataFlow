@@ -52,6 +52,7 @@ $$
 ### 5.1 流式LLM
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 llmClient.completeStream(prompt, token -> {
     output.collect(token);
 });
@@ -62,6 +63,7 @@ llmClient.completeStream(prompt, token -> {
 ### 6.1 批量提示
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 stream.map(new LLMMapFunction("gpt-4", promptTemplate));
 ```
 

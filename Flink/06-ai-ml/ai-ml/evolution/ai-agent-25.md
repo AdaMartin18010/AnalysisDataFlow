@@ -49,6 +49,7 @@ $$
 ### 5.1 Agent协作
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 MultiAgentSystem system = MultiAgentSystem.builder()
     .addAgent("detector", detectorAgent)
     .addAgent("diagnoser", diagnoserAgent)
@@ -60,6 +61,7 @@ MultiAgentSystem system = MultiAgentSystem.builder()
 ### 6.1 协作示例
 
 ```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
 system.coordinate(event, (detector, diagnoser) -> {
     Alert alert = detector.detect(event);
     return diagnoser.diagnose(alert);
