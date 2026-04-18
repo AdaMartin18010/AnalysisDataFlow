@@ -2,14 +2,15 @@
   "metadata": {
     "version": "1.0",
     "build_date": "2026-04-03T19:10:58",
-    "total_documents": 25,
+    "total_documents": 17,
     "total_formal_elements": 42,
-    "total_index_entries": 156,
+    "total_index_entries": 61,
     "category_distribution": {
-      "Struct": 8,
-      "Knowledge": 7,
-      "Flink": 6,
-      "Root": 4
+      "Struct": 13,
+      "Knowledge": 9,
+      "Flink": 9,
+      "Root": 4,
+      "FormalMethods": 2
     },
     "formal_element_types": {
       "theorem": 18,
@@ -62,11 +63,31 @@
         }
       ],
       "headings": [
-        {"level": 1, "text": "Struct/ 形式化理论文档索引", "anchor": "struct-形式化理论文档索引"},
-        {"level": 2, "text": "1. 快速导航", "anchor": "1-快速导航"},
-        {"level": 2, "text": "2. 文档架构概览", "anchor": "2-文档架构概览"},
-        {"level": 2, "text": "3. 定理注册表", "anchor": "3-定理注册表"},
-        {"level": 2, "text": "4. 定义注册表", "anchor": "4-定义注册表"}
+        {
+          "level": 1,
+          "text": "Struct/ 形式化理论文档索引",
+          "anchor": "struct-形式化理论文档索引"
+        },
+        {
+          "level": 2,
+          "text": "1. 快速导航",
+          "anchor": "1-快速导航"
+        },
+        {
+          "level": 2,
+          "text": "2. 文档架构概览",
+          "anchor": "2-文档架构概览"
+        },
+        {
+          "level": 2,
+          "text": "3. 定理注册表",
+          "anchor": "3-定理注册表"
+        },
+        {
+          "level": 2,
+          "text": "4. 定义注册表",
+          "anchor": "4-定义注册表"
+        }
       ],
       "content_hash": "a1b2c3d4e5f6g7h8",
       "last_modified": "2026-04-03T20:26:00",
@@ -125,11 +146,31 @@
         }
       ],
       "headings": [
-        {"level": 1, "text": "Flink Checkpoint 一致性正确性证明", "anchor": "flink-checkpoint-一致性正确性证明"},
-        {"level": 2, "text": "1. 概念定义", "anchor": "1-概念定义"},
-        {"level": 2, "text": "2. 属性推导", "anchor": "2-属性推导"},
-        {"level": 2, "text": "3. 形式证明", "anchor": "3-形式证明"},
-        {"level": 2, "text": "4. 实例验证", "anchor": "4-实例验证"}
+        {
+          "level": 1,
+          "text": "Flink Checkpoint 一致性正确性证明",
+          "anchor": "flink-checkpoint-一致性正确性证明"
+        },
+        {
+          "level": 2,
+          "text": "1. 概念定义",
+          "anchor": "1-概念定义"
+        },
+        {
+          "level": 2,
+          "text": "2. 属性推导",
+          "anchor": "2-属性推导"
+        },
+        {
+          "level": 2,
+          "text": "3. 形式证明",
+          "anchor": "3-形式证明"
+        },
+        {
+          "level": 2,
+          "text": "4. 实例验证",
+          "anchor": "4-实例验证"
+        }
       ],
       "content_hash": "b2c3d4e5f6g7h8i9",
       "last_modified": "2026-04-03T20:26:00",
@@ -164,10 +205,26 @@
         }
       ],
       "headings": [
-        {"level": 1, "text": "Knowledge/ 知识结构索引", "anchor": "knowledge-知识结构索引"},
-        {"level": 2, "text": "1. 概述", "anchor": "1-概述"},
-        {"level": 2, "text": "2. 快速导航", "anchor": "2-快速导航"},
-        {"level": 2, "text": "3. 设计模式快速参考", "anchor": "3-设计模式快速参考"}
+        {
+          "level": 1,
+          "text": "Knowledge/ 知识结构索引",
+          "anchor": "knowledge-知识结构索引"
+        },
+        {
+          "level": 2,
+          "text": "1. 概述",
+          "anchor": "1-概述"
+        },
+        {
+          "level": 2,
+          "text": "2. 快速导航",
+          "anchor": "2-快速导航"
+        },
+        {
+          "level": 2,
+          "text": "3. 设计模式快速参考",
+          "anchor": "3-设计模式快速参考"
+        }
       ],
       "content_hash": "c3d4e5f6g7h8i9j0",
       "last_modified": "2026-04-03T20:26:00",
@@ -205,10 +262,26 @@
         }
       ],
       "headings": [
-        {"level": 1, "text": "Flink/ 技术实现索引", "anchor": "flink-技术实现索引"},
-        {"level": 2, "text": "1. 架构设计", "anchor": "1-架构设计"},
-        {"level": 2, "text": "2. 核心机制", "anchor": "2-核心机制"},
-        {"level": 2, "text": "3. SQL/Table API", "anchor": "3-sqltable-api"}
+        {
+          "level": 1,
+          "text": "Flink/ 技术实现索引",
+          "anchor": "flink-技术实现索引"
+        },
+        {
+          "level": 2,
+          "text": "1. 架构设计",
+          "anchor": "1-架构设计"
+        },
+        {
+          "level": 2,
+          "text": "2. 核心机制",
+          "anchor": "2-核心机制"
+        },
+        {
+          "level": 2,
+          "text": "3. SQL/Table API",
+          "anchor": "3-sqltable-api"
+        }
       ],
       "content_hash": "d4e5f6g7h8i9j0k1",
       "last_modified": "2026-04-03T13:18:00",
@@ -235,15 +308,271 @@
       ],
       "formal_elements": [],
       "headings": [
-        {"level": 1, "text": "全项目定理、定义、引理全局注册表", "anchor": "全项目定理定义引理全局注册表"},
-        {"level": 2, "text": "1. 前言 - 编号体系规则", "anchor": "1-前言---编号体系规则"},
-        {"level": 2, "text": "2. 定理注册表", "anchor": "2-定理注册表"},
-        {"level": 2, "text": "3. 定义注册表", "anchor": "3-定义注册表"}
+        {
+          "level": 1,
+          "text": "全项目定理、定义、引理全局注册表",
+          "anchor": "全项目定理定义引理全局注册表"
+        },
+        {
+          "level": 2,
+          "text": "1. 前言 - 编号体系规则",
+          "anchor": "1-前言---编号体系规则"
+        },
+        {
+          "level": 2,
+          "text": "2. 定理注册表",
+          "anchor": "2-定理注册表"
+        },
+        {
+          "level": 2,
+          "text": "3. 定义注册表",
+          "anchor": "3-定义注册表"
+        }
       ],
       "content_hash": "e5f6g7h8i9j0k1l2",
       "last_modified": "2026-04-03T19:10:58",
       "word_count": 45000,
       "line_count": 1200
+    },
+    "Struct/06-frontier/llm-guided-formal-proof-automation.md": {
+      "path": "Struct/06-frontier/llm-guided-formal-proof-automation.md",
+      "title": "LLM 辅助形式化证明自动化",
+      "summary": "大型语言模型（Large Language Models, LLMs）与形式化证明系统的融合正成为 2025–2026 年形式化方法领域最活跃的交叉方向。本文从理论定义、能力边界、系统映射、工程实践与可验证性五个维度，对 **LLM 辅助形式化证明自动化（LLM-guided Formal Proof Automation, LFPA）** 进行系统性形式化分析。我们建立了 LFPA 的形式化工作流模型，定义了证明生成成功率、策略推荐精确度、证明可验证性等核心度量，并基于 2025–2026 年主流基准测试数据（Claude-3.7-Sonnet 在分布式协议基准上证明率 42.3%，Deep",
+      "category": "Struct",
+      "subcategory": "06-frontier",
+      "keywords": [
+        "LLM",
+        "Formal Verification",
+        "TLA+",
+        "Coq",
+        "Lean 4",
+        "Proof Automation"
+      ],
+      "formal_elements": [],
+      "headings": [],
+      "content_hash": "",
+      "last_modified": "2026-04-18T18:47:15.493324",
+      "word_count": 5662,
+      "line_count": 0
+    },
+    "formal-methods/06-tools/veil-framework-lean4.md": {
+      "path": "formal-methods/06-tools/veil-framework-lean4.md",
+      "title": "Veil Framework — 基于 Lean 4 的新一代迁移系统验证框架",
+      "summary": "Veil 是一个开源的、基础性的（foundational）迁移系统验证框架，于 2025 年 7 月发表于 Springer LNCS (CAV 2025) [^1]。该框架嵌入于 Lean 4 证明助手中，专门为并发与分布式算法的机器辅助证明而设计。Veil 的核心理念是融合\"一键式自动验证\"与\"全功能交互式证明\"的双重能力：对于可判定的一阶逻辑片段，Veil 通过生成验证条件（Verification Conditions, VC）并调用 SMT 求解器（cvc5、Z3）实现完全自动化的安全性验证；当规约超出自动化解算能力或需要高阶逻辑表达时，用户可无缝切换至 Lean 原生的交互式证明",
+      "category": "FormalMethods",
+      "subcategory": "06-tools",
+      "keywords": [
+        "Veil",
+        "Lean 4",
+        "SMT",
+        "Verification Conditions",
+        "Distributed Systems"
+      ],
+      "formal_elements": [],
+      "headings": [],
+      "content_hash": "",
+      "last_modified": "2026-04-18T18:47:15.493543",
+      "word_count": 5815,
+      "line_count": 0
+    },
+    "Struct/01-foundation/minimal-session-types-theory.md": {
+      "path": "Struct/01-foundation/minimal-session-types-theory.md",
+      "title": "最小会话类型理论",
+      "summary": "最小会话类型（Minimal Session Types, MST）是会话类型理论在\"最小化\"与\"简化\"主线上取得的最新突破。2024年1月，arXiv论文 \"Minimal Session Types for the π-calculus\" 系统证明了：π-calculus 中所有标准会话类型均可编译为仅包含输出（$!$）、输入（$?$）和终止（$\\text{end}$）三个构造子的最小会话类型系统，且无需显式的顺序组合算子（sequential composition）——顺序性可通过额外进程同步精确模拟。本文档在 L5-L6 形式化等级下，完整阐述 MST 的语法与语义，建立 MST 与",
+      "category": "Struct",
+      "subcategory": "01-foundation",
+      "keywords": [
+        "Session Types",
+        "π-calculus",
+        "Linear Logic",
+        "Choreographic Programming"
+      ],
+      "formal_elements": [],
+      "headings": [],
+      "content_hash": "",
+      "last_modified": "2026-04-18T18:47:15.493753",
+      "word_count": 5974,
+      "line_count": 0
+    },
+    "Struct/06-frontier/dbsp-theory-framework.md": {
+      "path": "Struct/06-frontier/dbsp-theory-framework.md",
+      "title": "DBSP (Database Stream Processor) 理论框架",
+      "summary": "DBSP (Database Stream Processor) 是由 Frank McSherry、Leonid Ryzhyk 等人于 VLDB'23 / SIGMOD'24 提出的理论框架，旨在为增量视图维护 (Incremental View Maintenance, IVM) 提供严格的数学基础。DBSP 的核心创新在于将数据库查询和流处理统一到一个称为 **Z-set** 的代数结构中，通过引入 **差分算子 ∇** 和 **积分算子 ∇⁻¹**，建立了一套完整的增量计算理论。\n\n本文档从形式化角度系统阐述 DBSP 的理论基础：首先定义 Z-sets、Z-set 转换器、线性算子等",
+      "category": "Struct",
+      "subcategory": "06-frontier",
+      "keywords": [
+        "DBSP",
+        "Z-sets",
+        "Incremental View Maintenance",
+        "Differential Dataflow"
+      ],
+      "formal_elements": [],
+      "headings": [],
+      "content_hash": "",
+      "last_modified": "2026-04-18T18:47:15.494030",
+      "word_count": 5922,
+      "line_count": 0
+    },
+    "Knowledge/06-frontier/cd-raft-cross-domain-consensus.md": {
+      "path": "Knowledge/06-frontier/cd-raft-cross-domain-consensus.md",
+      "title": "CD-Raft: 跨域场景下的Raft共识优化",
+      "summary": "2026年3月，arXiv论文《CD-Raft: Reducing Latency in Cross-Domain Sites》提出了Raft共识算法在跨域（Cross-Domain）场景下的系统性优化方案。该工作针对标准Raft在广域网（WAN）部署时面临的固有延迟瓶颈——即一次日志提交至少需要2次跨域往返时延（Round-Trip Time, RTT）——提出了两项核心优化策略：**Fast Return**与**Optimal Global Leader Position**。Fast Return策略通过重构消息确认机制，使Leader在收到首个跨域Follower的确认后即可向客户端",
+      "category": "Knowledge",
+      "subcategory": "06-frontier",
+      "keywords": [
+        "Raft",
+        "Consensus",
+        "Cross-Domain",
+        "WAN",
+        "Distributed Consensus"
+      ],
+      "formal_elements": [],
+      "headings": [],
+      "content_hash": "",
+      "last_modified": "2026-04-18T18:47:15.494181",
+      "word_count": 3763,
+      "line_count": 0
+    },
+    "Struct/06-frontier/calvin-deterministic-streaming.md": {
+      "path": "Struct/06-frontier/calvin-deterministic-streaming.md",
+      "title": "Calvin 确定性执行模型与流处理状态管理",
+      "summary": "Calvin 是 Thomson 等人在 SIGMOD'12 提出的确定性分布式事务协议，其核心洞见在于：**通过在事务执行前对全局操作序列进行确定性排序，彻底消除分布式事务执行阶段的两阶段提交（2PC）开销**，从而实现跨分区事务的线性扩展。\n与 Spanner 依赖 TrueTime 和 2PC 的传统路径不同，Calvin 将事务处理拆分为三个阶段——**预处理（Preprocessing）、全局排序（Sequencing）、确定性执行（Deterministic Execution）**——其中仅预处理阶段需要获取读写集，执行阶段完全按预定顺序无协调推进。\nFaunaDB 将 Calv",
+      "category": "Struct",
+      "subcategory": "06-frontier",
+      "keywords": [
+        "Calvin",
+        "Deterministic Execution",
+        "State Management",
+        "FaunaDB",
+        "2PC"
+      ],
+      "formal_elements": [],
+      "headings": [],
+      "content_hash": "",
+      "last_modified": "2026-04-18T18:47:15.494343",
+      "word_count": 5328,
+      "line_count": 0
+    },
+    "Flink/05-ecosystem/flink-dynamic-iceberg-sink-guide.md": {
+      "path": "Flink/05-ecosystem/flink-dynamic-iceberg-sink-guide.md",
+      "title": "Flink Dynamic Iceberg Sink 完整指南",
+      "summary": "Apache Flink 于 2025 年 11 月正式发布 **Dynamic Iceberg Sink** 模式，标志着流计算与数据湖集成进入\"无感自动化\"新阶段。该模式允许单个 Flink 作业动态地将数千个 Kafka Topic 的数据自动路由到对应的 Iceberg 表，并在源端 Schema 发生变更时自动完成目标表的 Schema Evolution，无需人工干预或重启作业。\n\n本文档从形式化定义出发，系统阐述 Dynamic Iceberg Sink 的核心概念、架构原理、Schema Evolution 机制、与 Paimon/Delta Lake 的对比矩阵、性能调优策略",
+      "category": "Flink",
+      "subcategory": "05-ecosystem",
+      "keywords": [
+        "Iceberg",
+        "Schema Evolution",
+        "Data Lake",
+        "Streaming ETL",
+        "Table API"
+      ],
+      "formal_elements": [],
+      "headings": [],
+      "content_hash": "",
+      "last_modified": "2026-04-18T18:47:15.494496",
+      "word_count": 4614,
+      "line_count": 0
+    },
+    "formal-methods/08-ai-formal-methods/agent-behavior-contract-verification.md": {
+      "path": "formal-methods/08-ai-formal-methods/agent-behavior-contract-verification.md",
+      "title": "AI Agent 行为契约验证方法",
+      "summary": "2026年是AI Agent形式化验证的爆发之年。随着MCP（Model Context Protocol）生态爆发式增长（18,058+服务器、97M+下载量），AI Agent系统的能力边界急剧扩展，但其安全性与可预测性严重滞后——业界调查显示44%的MCP服务器缺乏任何认证机制直接暴露于公网。\n在此背景下，Agent行为契约验证（Agent Behavior Contract Verification）成为确保AI Agent系统安全、可靠、可解释的核心技术支柱。\n\n本文建立Agent行为契约验证的完整形式化理论体系。首先定义Behavior Contract、Safety/Livene",
+      "category": "FormalMethods",
+      "subcategory": "08-ai-formal-methods",
+      "keywords": [
+        "AI Agent",
+        "Behavior Contract",
+        "MCP",
+        "A2A",
+        "Runtime Verification",
+        "TLA+"
+      ],
+      "formal_elements": [],
+      "headings": [],
+      "content_hash": "",
+      "last_modified": "2026-04-18T18:47:15.494677",
+      "word_count": 6294,
+      "line_count": 0
+    },
+    "Struct/01-foundation/streaming-database-formal-definition.md": {
+      "path": "Struct/01-foundation/streaming-database-formal-definition.md",
+      "title": "Streaming Database 形式化定义与理论体系",
+      "summary": "2025-2026年，Rust原生流处理生态进入爆发期：RisingWave GA v2.8.1标志着生产级流数据库的成熟，Arroyo被Cloudflare收购则彰显了轻量级流处理引擎在边缘场景的商业价值。\n这两大事件不仅是商业里程碑，更在架构层面确立了\"流数据库\"(Streaming Database, SDB)与\"流处理引擎\"(Stream Processing Engine, SPE)的严格分野——前者以物化视图(Materialized View)为一等公民、提供持久化存储与SQL查询能力；后者以数据变换与输出到外部Sink为核心，不保证查询结果的内置持久化与事务一致性。\n\n然而，学",
+      "category": "Struct",
+      "subcategory": "01-foundation",
+      "keywords": [
+        "Streaming Database",
+        "Materialized View",
+        "DBSP",
+        "RisingWave",
+        "Arroyo"
+      ],
+      "formal_elements": [],
+      "headings": [],
+      "content_hash": "",
+      "last_modified": "2026-04-18T18:47:15.494848",
+      "word_count": 5141,
+      "line_count": 0
+    },
+    "Knowledge/06-frontier/nist-caisi-agent-standards.md": {
+      "path": "Knowledge/06-frontier/nist-caisi-agent-standards.md",
+      "title": "NIST CAISI 标准化政策解读",
+      "summary": "2026 年 2 月 17 日，美国国家标准与技术研究院（NIST）正式启动 **AI Agent 标准倡议（Cybersecurity for AI Systems Initiative, CAISI）**，标志着 AI Agent 领域从\"技术野蛮生长\"走向\"产业标准规范\"的历史性转折。\nCAISI 以三大支柱为骨架——产业标准开发、开源协议培育、安全与身份研究——并将 **Model Context Protocol（MCP）指定为\"leading open standard\"优先候选**。\n本文从政策解读、标准生态映射、合规影响分析、企业行动指南四个维度，对 NIST CAISI 进行",
+      "category": "Knowledge",
+      "subcategory": "06-frontier",
+      "keywords": [
+        "NIST",
+        "CAISI",
+        "AI Agent Standards",
+        "MCP",
+        "A2A",
+        "Compliance"
+      ],
+      "formal_elements": [],
+      "headings": [],
+      "content_hash": "",
+      "last_modified": "2026-04-18T18:47:15.494947",
+      "word_count": 3103,
+      "line_count": 0
+    },
+    "Flink/05-ecosystem/05.01-connectors/fluss-integration.md": {
+      "path": "Flink/05-ecosystem/05.01-connectors/fluss-integration.md",
+      "title": "Apache Fluss (Incubating) - 为流分析而生的分布式存储",
+      "summary": "# Apache Fluss (Incubating) - 为流分析而生的分布式存储\n\n> 所属阶段: Flink/ | 前置依赖: [Flink 2.2 Delta Join](../../02-core/delta-join.md) | 形式化等级: L3\n\n## 1. 概念定义 (Definitions)\n\n### Def-F-04-10: Fluss架构\n\n**Fluss** 是 Apache 软件基金会孵化中的分布式流存储系统，专为流分析场景原生设计。其架构由以下核心组件构成：\n\n```\n┌───────────────────────────────────────────────",
+      "category": "Flink",
+      "subcategory": "05-ecosystem",
+      "keywords": [
+        "Fluss",
+        "Connector",
+        "Stream Storage",
+        "Distributed Storage"
+      ],
+      "formal_elements": [],
+      "headings": [],
+      "content_hash": "",
+      "last_modified": "2026-04-18T18:47:15.495049",
+      "word_count": 2633,
+      "line_count": 0
+    },
+    "Flink/05-ecosystem/05.02-lakehouse/flink-paimon-integration.md": {
+      "path": "Flink/05-ecosystem/05.02-lakehouse/flink-paimon-integration.md",
+      "title": "Apache Paimon 与 Flink 深度集成 - 流批统一的湖仓存储",
+      "summary": "﻿# Apache Paimon 与 Flink 深度集成 - 流批统一的湖仓存储\n\n> **状态**: ✅ Released (Flink 2.0 GA, 2.2 增强)\n> **所属阶段**: Flink/14-lakehouse/ | **前置依赖**: [Flink/09-language-foundations/04-streaming-lakehouse.md](../../03-api/09-language-foundations/04-streaming-lakehouse.md), [Flink/02-core/checkpoint-mechanism-deep-dive.",
+      "category": "Flink",
+      "subcategory": "05-ecosystem",
+      "keywords": [
+        "Paimon",
+        "Lakehouse",
+        "Stream-Batch Unification",
+        "LSM",
+        "Connector"
+      ],
+      "formal_elements": [],
+      "headings": [],
+      "content_hash": "",
+      "last_modified": "2026-04-18T18:47:15.495286",
+      "word_count": 7309,
+      "line_count": 0
     }
   },
   "formal_elements": {
@@ -417,6 +746,558 @@
       "tf_scores": {
         "Struct/04-proofs/04.01-flink-checkpoint-correctness.md": 0.95,
         "Struct/00-INDEX.md": 0.15
+      }
+    },
+    "llm": {
+      "keyword": "llm",
+      "doc_paths": [
+        "Struct/06-frontier/llm-guided-formal-proof-automation.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Struct/06-frontier/llm-guided-formal-proof-automation.md": 0.8
+      }
+    },
+    "formal verification": {
+      "keyword": "formal verification",
+      "doc_paths": [
+        "Struct/06-frontier/llm-guided-formal-proof-automation.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Struct/06-frontier/llm-guided-formal-proof-automation.md": 0.8
+      }
+    },
+    "tla+": {
+      "keyword": "tla+",
+      "doc_paths": [
+        "Struct/06-frontier/llm-guided-formal-proof-automation.md",
+        "formal-methods/08-ai-formal-methods/agent-behavior-contract-verification.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Struct/06-frontier/llm-guided-formal-proof-automation.md": 0.8,
+        "formal-methods/08-ai-formal-methods/agent-behavior-contract-verification.md": 0.8
+      }
+    },
+    "coq": {
+      "keyword": "coq",
+      "doc_paths": [
+        "Struct/06-frontier/llm-guided-formal-proof-automation.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Struct/06-frontier/llm-guided-formal-proof-automation.md": 0.8
+      }
+    },
+    "lean 4": {
+      "keyword": "lean 4",
+      "doc_paths": [
+        "Struct/06-frontier/llm-guided-formal-proof-automation.md",
+        "formal-methods/06-tools/veil-framework-lean4.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Struct/06-frontier/llm-guided-formal-proof-automation.md": 0.8,
+        "formal-methods/06-tools/veil-framework-lean4.md": 0.8
+      }
+    },
+    "proof automation": {
+      "keyword": "proof automation",
+      "doc_paths": [
+        "Struct/06-frontier/llm-guided-formal-proof-automation.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Struct/06-frontier/llm-guided-formal-proof-automation.md": 0.8
+      }
+    },
+    "veil": {
+      "keyword": "veil",
+      "doc_paths": [
+        "formal-methods/06-tools/veil-framework-lean4.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "formal-methods/06-tools/veil-framework-lean4.md": 0.8
+      }
+    },
+    "smt": {
+      "keyword": "smt",
+      "doc_paths": [
+        "formal-methods/06-tools/veil-framework-lean4.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "formal-methods/06-tools/veil-framework-lean4.md": 0.8
+      }
+    },
+    "verification conditions": {
+      "keyword": "verification conditions",
+      "doc_paths": [
+        "formal-methods/06-tools/veil-framework-lean4.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "formal-methods/06-tools/veil-framework-lean4.md": 0.8
+      }
+    },
+    "distributed systems": {
+      "keyword": "distributed systems",
+      "doc_paths": [
+        "formal-methods/06-tools/veil-framework-lean4.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "formal-methods/06-tools/veil-framework-lean4.md": 0.8
+      }
+    },
+    "session types": {
+      "keyword": "session types",
+      "doc_paths": [
+        "Struct/01-foundation/minimal-session-types-theory.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Struct/01-foundation/minimal-session-types-theory.md": 0.8
+      }
+    },
+    "π-calculus": {
+      "keyword": "π-calculus",
+      "doc_paths": [
+        "Struct/01-foundation/minimal-session-types-theory.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Struct/01-foundation/minimal-session-types-theory.md": 0.8
+      }
+    },
+    "linear logic": {
+      "keyword": "linear logic",
+      "doc_paths": [
+        "Struct/01-foundation/minimal-session-types-theory.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Struct/01-foundation/minimal-session-types-theory.md": 0.8
+      }
+    },
+    "choreographic programming": {
+      "keyword": "choreographic programming",
+      "doc_paths": [
+        "Struct/01-foundation/minimal-session-types-theory.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Struct/01-foundation/minimal-session-types-theory.md": 0.8
+      }
+    },
+    "dbsp": {
+      "keyword": "dbsp",
+      "doc_paths": [
+        "Struct/06-frontier/dbsp-theory-framework.md",
+        "Struct/01-foundation/streaming-database-formal-definition.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Struct/06-frontier/dbsp-theory-framework.md": 0.8,
+        "Struct/01-foundation/streaming-database-formal-definition.md": 0.8
+      }
+    },
+    "z-sets": {
+      "keyword": "z-sets",
+      "doc_paths": [
+        "Struct/06-frontier/dbsp-theory-framework.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Struct/06-frontier/dbsp-theory-framework.md": 0.8
+      }
+    },
+    "incremental view maintenance": {
+      "keyword": "incremental view maintenance",
+      "doc_paths": [
+        "Struct/06-frontier/dbsp-theory-framework.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Struct/06-frontier/dbsp-theory-framework.md": 0.8
+      }
+    },
+    "differential dataflow": {
+      "keyword": "differential dataflow",
+      "doc_paths": [
+        "Struct/06-frontier/dbsp-theory-framework.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Struct/06-frontier/dbsp-theory-framework.md": 0.8
+      }
+    },
+    "raft": {
+      "keyword": "raft",
+      "doc_paths": [
+        "Knowledge/06-frontier/cd-raft-cross-domain-consensus.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Knowledge/06-frontier/cd-raft-cross-domain-consensus.md": 0.8
+      }
+    },
+    "consensus": {
+      "keyword": "consensus",
+      "doc_paths": [
+        "Knowledge/06-frontier/cd-raft-cross-domain-consensus.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Knowledge/06-frontier/cd-raft-cross-domain-consensus.md": 0.8
+      }
+    },
+    "cross-domain": {
+      "keyword": "cross-domain",
+      "doc_paths": [
+        "Knowledge/06-frontier/cd-raft-cross-domain-consensus.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Knowledge/06-frontier/cd-raft-cross-domain-consensus.md": 0.8
+      }
+    },
+    "wan": {
+      "keyword": "wan",
+      "doc_paths": [
+        "Knowledge/06-frontier/cd-raft-cross-domain-consensus.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Knowledge/06-frontier/cd-raft-cross-domain-consensus.md": 0.8
+      }
+    },
+    "distributed consensus": {
+      "keyword": "distributed consensus",
+      "doc_paths": [
+        "Knowledge/06-frontier/cd-raft-cross-domain-consensus.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Knowledge/06-frontier/cd-raft-cross-domain-consensus.md": 0.8
+      }
+    },
+    "calvin": {
+      "keyword": "calvin",
+      "doc_paths": [
+        "Struct/06-frontier/calvin-deterministic-streaming.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Struct/06-frontier/calvin-deterministic-streaming.md": 0.8
+      }
+    },
+    "deterministic execution": {
+      "keyword": "deterministic execution",
+      "doc_paths": [
+        "Struct/06-frontier/calvin-deterministic-streaming.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Struct/06-frontier/calvin-deterministic-streaming.md": 0.8
+      }
+    },
+    "state management": {
+      "keyword": "state management",
+      "doc_paths": [
+        "Struct/06-frontier/calvin-deterministic-streaming.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Struct/06-frontier/calvin-deterministic-streaming.md": 0.8
+      }
+    },
+    "faunadb": {
+      "keyword": "faunadb",
+      "doc_paths": [
+        "Struct/06-frontier/calvin-deterministic-streaming.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Struct/06-frontier/calvin-deterministic-streaming.md": 0.8
+      }
+    },
+    "2pc": {
+      "keyword": "2pc",
+      "doc_paths": [
+        "Struct/06-frontier/calvin-deterministic-streaming.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Struct/06-frontier/calvin-deterministic-streaming.md": 0.8
+      }
+    },
+    "iceberg": {
+      "keyword": "iceberg",
+      "doc_paths": [
+        "Flink/05-ecosystem/flink-dynamic-iceberg-sink-guide.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Flink/05-ecosystem/flink-dynamic-iceberg-sink-guide.md": 0.8
+      }
+    },
+    "schema evolution": {
+      "keyword": "schema evolution",
+      "doc_paths": [
+        "Flink/05-ecosystem/flink-dynamic-iceberg-sink-guide.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Flink/05-ecosystem/flink-dynamic-iceberg-sink-guide.md": 0.8
+      }
+    },
+    "data lake": {
+      "keyword": "data lake",
+      "doc_paths": [
+        "Flink/05-ecosystem/flink-dynamic-iceberg-sink-guide.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Flink/05-ecosystem/flink-dynamic-iceberg-sink-guide.md": 0.8
+      }
+    },
+    "streaming etl": {
+      "keyword": "streaming etl",
+      "doc_paths": [
+        "Flink/05-ecosystem/flink-dynamic-iceberg-sink-guide.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Flink/05-ecosystem/flink-dynamic-iceberg-sink-guide.md": 0.8
+      }
+    },
+    "table api": {
+      "keyword": "table api",
+      "doc_paths": [
+        "Flink/05-ecosystem/flink-dynamic-iceberg-sink-guide.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Flink/05-ecosystem/flink-dynamic-iceberg-sink-guide.md": 0.8
+      }
+    },
+    "ai agent": {
+      "keyword": "ai agent",
+      "doc_paths": [
+        "formal-methods/08-ai-formal-methods/agent-behavior-contract-verification.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "formal-methods/08-ai-formal-methods/agent-behavior-contract-verification.md": 0.8
+      }
+    },
+    "behavior contract": {
+      "keyword": "behavior contract",
+      "doc_paths": [
+        "formal-methods/08-ai-formal-methods/agent-behavior-contract-verification.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "formal-methods/08-ai-formal-methods/agent-behavior-contract-verification.md": 0.8
+      }
+    },
+    "mcp": {
+      "keyword": "mcp",
+      "doc_paths": [
+        "formal-methods/08-ai-formal-methods/agent-behavior-contract-verification.md",
+        "Knowledge/06-frontier/nist-caisi-agent-standards.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "formal-methods/08-ai-formal-methods/agent-behavior-contract-verification.md": 0.8,
+        "Knowledge/06-frontier/nist-caisi-agent-standards.md": 0.8
+      }
+    },
+    "a2a": {
+      "keyword": "a2a",
+      "doc_paths": [
+        "formal-methods/08-ai-formal-methods/agent-behavior-contract-verification.md",
+        "Knowledge/06-frontier/nist-caisi-agent-standards.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "formal-methods/08-ai-formal-methods/agent-behavior-contract-verification.md": 0.8,
+        "Knowledge/06-frontier/nist-caisi-agent-standards.md": 0.8
+      }
+    },
+    "runtime verification": {
+      "keyword": "runtime verification",
+      "doc_paths": [
+        "formal-methods/08-ai-formal-methods/agent-behavior-contract-verification.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "formal-methods/08-ai-formal-methods/agent-behavior-contract-verification.md": 0.8
+      }
+    },
+    "streaming database": {
+      "keyword": "streaming database",
+      "doc_paths": [
+        "Struct/01-foundation/streaming-database-formal-definition.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Struct/01-foundation/streaming-database-formal-definition.md": 0.8
+      }
+    },
+    "materialized view": {
+      "keyword": "materialized view",
+      "doc_paths": [
+        "Struct/01-foundation/streaming-database-formal-definition.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Struct/01-foundation/streaming-database-formal-definition.md": 0.8
+      }
+    },
+    "risingwave": {
+      "keyword": "risingwave",
+      "doc_paths": [
+        "Struct/01-foundation/streaming-database-formal-definition.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Struct/01-foundation/streaming-database-formal-definition.md": 0.8
+      }
+    },
+    "arroyo": {
+      "keyword": "arroyo",
+      "doc_paths": [
+        "Struct/01-foundation/streaming-database-formal-definition.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Struct/01-foundation/streaming-database-formal-definition.md": 0.8
+      }
+    },
+    "nist": {
+      "keyword": "nist",
+      "doc_paths": [
+        "Knowledge/06-frontier/nist-caisi-agent-standards.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Knowledge/06-frontier/nist-caisi-agent-standards.md": 0.8
+      }
+    },
+    "caisi": {
+      "keyword": "caisi",
+      "doc_paths": [
+        "Knowledge/06-frontier/nist-caisi-agent-standards.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Knowledge/06-frontier/nist-caisi-agent-standards.md": 0.8
+      }
+    },
+    "ai agent standards": {
+      "keyword": "ai agent standards",
+      "doc_paths": [
+        "Knowledge/06-frontier/nist-caisi-agent-standards.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Knowledge/06-frontier/nist-caisi-agent-standards.md": 0.8
+      }
+    },
+    "compliance": {
+      "keyword": "compliance",
+      "doc_paths": [
+        "Knowledge/06-frontier/nist-caisi-agent-standards.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Knowledge/06-frontier/nist-caisi-agent-standards.md": 0.8
+      }
+    },
+    "fluss": {
+      "keyword": "fluss",
+      "doc_paths": [
+        "Flink/05-ecosystem/05.01-connectors/fluss-integration.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Flink/05-ecosystem/05.01-connectors/fluss-integration.md": 0.8
+      }
+    },
+    "connector": {
+      "keyword": "connector",
+      "doc_paths": [
+        "Flink/05-ecosystem/05.01-connectors/fluss-integration.md",
+        "Flink/05-ecosystem/05.02-lakehouse/flink-paimon-integration.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Flink/05-ecosystem/05.01-connectors/fluss-integration.md": 0.8,
+        "Flink/05-ecosystem/05.02-lakehouse/flink-paimon-integration.md": 0.8
+      }
+    },
+    "stream storage": {
+      "keyword": "stream storage",
+      "doc_paths": [
+        "Flink/05-ecosystem/05.01-connectors/fluss-integration.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Flink/05-ecosystem/05.01-connectors/fluss-integration.md": 0.8
+      }
+    },
+    "distributed storage": {
+      "keyword": "distributed storage",
+      "doc_paths": [
+        "Flink/05-ecosystem/05.01-connectors/fluss-integration.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Flink/05-ecosystem/05.01-connectors/fluss-integration.md": 0.8
+      }
+    },
+    "paimon": {
+      "keyword": "paimon",
+      "doc_paths": [
+        "Flink/05-ecosystem/05.02-lakehouse/flink-paimon-integration.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Flink/05-ecosystem/05.02-lakehouse/flink-paimon-integration.md": 0.8
+      }
+    },
+    "lakehouse": {
+      "keyword": "lakehouse",
+      "doc_paths": [
+        "Flink/05-ecosystem/05.02-lakehouse/flink-paimon-integration.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Flink/05-ecosystem/05.02-lakehouse/flink-paimon-integration.md": 0.8
+      }
+    },
+    "stream-batch unification": {
+      "keyword": "stream-batch unification",
+      "doc_paths": [
+        "Flink/05-ecosystem/05.02-lakehouse/flink-paimon-integration.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Flink/05-ecosystem/05.02-lakehouse/flink-paimon-integration.md": 0.8
+      }
+    },
+    "lsm": {
+      "keyword": "lsm",
+      "doc_paths": [
+        "Flink/05-ecosystem/05.02-lakehouse/flink-paimon-integration.md"
+      ],
+      "formal_ids": [],
+      "tf_scores": {
+        "Flink/05-ecosystem/05.02-lakehouse/flink-paimon-integration.md": 0.8
       }
     }
   }

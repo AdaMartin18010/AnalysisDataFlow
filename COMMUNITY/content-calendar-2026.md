@@ -1,6 +1,8 @@
 # AnalysisDataFlow 2026年内容日历
 
-> **周期**: 2026年4月-12月 | **状态**: 已发布 | **版本**: v1.0
+> **周期**: 2026年4月-12月 | **状态**: 已发布 | **版本**: v1.1
+>
+> **v4.3更新**: 已纳入10篇前沿新文档的Q2-Q3推广计划 | **更新日期**: 2026-04-18
 
 ---
 
@@ -175,6 +177,142 @@ gantt
 
 ---
 
+## v4.3 前沿内容推广计划 (2026 Q2-Q3)
+
+> **背景**: v4.3前沿补全已于2026-04-18完成，新增10篇新文档 + 2篇现有文档更新 + 188个形式化元素
+> **推广目标**: 提升前沿技术内容的社区认知度，引导技术雷达ASSESS→TRIAL阶段迁移
+> **核心受众**: 研究员路径、架构师路径、专家贡献者路径学习者
+
+### v4.3 新文档清单
+
+| 序号 | 文档标题 | 路径 | 技术雷达定位 | 学习路径对齐 |
+|------|---------|------|-------------|-------------|
+| 1 | LLM辅助形式化证明自动化 | `Struct/06-frontier/llm-guided-formal-proof-automation.md` | ASSESS — AI+形式化 | 研究员路径 L5 |
+| 2 | Veil Framework (Lean 4) | `formal-methods/06-tools/veil-framework-lean4.md` | ASSESS — 验证工具 | 研究员路径 L5-L6 |
+| 3 | 最小会话类型理论 | `Struct/01-foundation/minimal-session-types-theory.md` | ASSESS — 类型理论 | 研究员路径 阶段1 |
+| 4 | DBSP理论框架 | `Struct/06-frontier/dbsp-theory-framework.md` | ASSESS — 流数据库 | 研究员路径 L6 |
+| 5 | Calvin确定性执行与流处理 | `Struct/06-frontier/calvin-deterministic-streaming.md` | ASSESS — 确定性执行 | 架构师路径 第2周 |
+| 6 | CD-Raft跨域共识 | `Knowledge/06-frontier/cd-raft-cross-domain-consensus.md` | TRIAL — 共识算法 | 架构师路径 第2周 |
+| 7 | NIST CAISI Agent标准 | `Knowledge/06-frontier/nist-caisi-agent-standards.md` | ASSESS — AI治理 | 专家贡献者路径 |
+| 8 | Flink Dynamic Iceberg Sink | `Flink/05-ecosystem/flink-dynamic-iceberg-sink-guide.md` | TRIAL — Lakehouse集成 | 数据工程师路径 |
+| 9 | Agent行为契约验证 | `formal-methods/08-ai-formal-methods/agent-behavior-contract-verification.md` | ASSESS — AI安全 | 研究员路径 L5-L6 |
+| 10 | Streaming Database形式化定义 | `Struct/01-foundation/streaming-database-formal-definition.md` | ASSESS — 流数据库 | 研究员路径 L6 |
+| 11 | Fluss 0.8集成更新 | `Flink/05-ecosystem/fluss-integration.md` | TRIAL — 流存储 | 数据工程师路径 |
+| 12 | Paimon 1.0集成更新 | `Flink/05-ecosystem/flink-paimon-integration.md` | ADOPT — 数据湖 | 数据工程师路径 |
+
+---
+
+### 📅 5月：形式化验证专题月（v4.3特别推广）
+
+**主题描述**: 聚焦LLM与形式化方法的交叉前沿，推广v4.3形式化验证新文档
+
+| 周次 | 主题 | 内容类型 | 发布渠道 | 对应v4.3文档 |
+|-----|------|---------|---------|-------------|
+| W1 | LLM辅助形式化证明：从理论到实践 | 技术深度 | GitHub, 知乎 | #1 LLM形式化证明 |
+| W2 | Veil Framework：用Lean 4验证分布式系统 | 工具教程 | GitHub, B站 | #2 Veil Framework |
+| W3 | 最小会话类型：流通信的类型安全保证 | 概念讲解 | 知乎, 公众号 | #3 最小会话类型 |
+| W4 | v4.3形式化验证专题综述 | 专题汇总 | GitHub Discussion | #1-#3综合 |
+
+**技术演讲/网络研讨会**:
+
+- **主题**: "LLM × 形式化验证：自动化证明的新范式"
+- **时间**: 5月第3周 周四 20:00
+- **讲师**: 形式化验证领域贡献者
+- **平台**: B站直播 + Zoom
+
+---
+
+### 📅 6月：分布式共识与确定性执行月（v4.3特别推广）
+
+**主题描述**: 深入分布式系统前沿，探索确定性执行与跨域共识在流处理中的应用
+
+| 周次 | 主题 | 内容类型 | 发布渠道 | 对应v4.3文档 |
+|-----|------|---------|---------|-------------|
+| W1 | Calvin模型：确定性流处理的状态管理新范式 | 技术深度 | GitHub, 知乎 | #5 Calvin确定性执行 |
+| W2 | CD-Raft：跨域场景下的共识优化实践 | 架构分析 | GitHub, 掘金 | #6 CD-Raft跨域共识 |
+| W3 | v4.3分布式系统前沿综述 | 综述文章 | 知乎, 公众号 | #5-#6综合 |
+| W4 | 6月v4.3推广月报 & 社区问答 | 社区周报 | GitHub Discussion | - |
+
+**技术演讲/网络研讨会**:
+
+- **主题**: "确定性执行：从Calvin到现代流处理引擎"
+- **时间**: 6月第2周 周四 20:00
+- **讲师**: 分布式系统架构师
+- **平台**: B站直播 + Zoom
+
+**案例研究发布**:
+
+- **主题**: "跨地域Flink集群的共识优化案例"
+- **发布日期**: 6月第3周
+- **对齐**: 架构师路径 + 专家性能调优路径
+
+---
+
+### 📅 7月：AI Agent治理与标准化月（v4.3特别推广）
+
+**主题描述**: 解读NIST CAISI政策，探索AI Agent在流计算系统中的行为契约验证
+
+| 周次 | 主题 | 内容类型 | 发布渠道 | 对应v4.3文档 |
+|-----|------|---------|---------|-------------|
+| W1 | NIST CAISI解读：AI Agent从"Wild West"到产业规范 | 政策解读 | GitHub, 知乎 | #7 NIST CAISI标准 |
+| W2 | Agent行为契约：构建可验证的AI流处理系统 | 技术深度 | GitHub, 掘金 | #9 Agent行为契约验证 |
+| W3 | AI Agent安全治理：标准落地实践指南 | 实践指南 | 公众号, B站 | #7-#9综合 |
+| W4 | v4.3 AI Agent专题网络研讨会 | 网络研讨会 | 全渠道 | #7-#9综合 |
+
+**技术演讲/网络研讨会**:
+
+- **主题**: "AI Agent标准化之路：NIST CAISI与流计算系统的安全治理"
+- **时间**: 7月第4周 周四 20:00
+- **讲师**: AI安全与政策专家
+- **平台**: B站直播 + Zoom + Twitter Spaces
+
+**社交媒体推广时间线**:
+
+- 7/1: Twitter/X 发布NIST政策解读Thread (英文)
+- 7/8: LinkedIn 发布Agent治理专业文章
+- 7/15: 知乎发布"AI Agent行为契约"深度问答
+- 7/22: 公众号发布安全治理实践长文
+
+---
+
+### 📅 8月：流数据库与Lakehouse工程月（v4.3特别推广）
+
+**主题描述**: 从DBSP理论到Flink Dynamic Iceberg Sink实战，打通流数据库的理论与工程
+
+| 周次 | 主题 | 内容类型 | 发布渠道 | 对应v4.3文档 |
+|-----|------|---------|---------|-------------|
+| W1 | DBSP理论：流即数据库的数学基础 | 技术深度 | GitHub, 知乎 | #4 DBSP理论框架 |
+| W2 | Flink Dynamic Iceberg Sink完整实战 | 代码实践 | GitHub, B站 | #8 Flink Iceberg Sink |
+| W3 | Streaming Database：形式化定义与产业落地 | 架构分析 | 知乎, 公众号 | #10 Streaming Database定义 |
+| W4 | Fluss 0.8 + Paimon 1.0：流存储新选择 | 工具评测 | GitHub, 掘金 | #11 Fluss / #12 Paimon |
+
+**技术演讲/网络研讨会**:
+
+- **主题**: "流数据库时代：DBSP理论与Flink Lakehouse实践"
+- **时间**: 8月第3周 周四 20:00
+- **讲师**: 数据平台架构师
+- **平台**: B站直播 + Zoom
+
+**案例研究发布节奏**:
+
+- 8/15: 发布《基于Flink Dynamic Iceberg Sink的实时数仓改造案例》
+- 8/22: 发布《Streaming Database在电商场景的形式化验证实践》
+- 对齐: 行业电商推荐路径 + 数据工程师路径
+
+---
+
+### v4.3 推广效果评估指标
+
+| 指标 | 目标值 | 评估周期 |
+|------|--------|---------|
+| v4.3文档页面浏览量 | 单篇≥500次 | 发布后30天 |
+| 技术研讨会参与人数 | ≥200人在线 | 单场活动 |
+| 社交媒体互动量 | 单篇≥50转发/点赞 | 发布后7天 |
+| 学习路径完成率提升 | 研究员路径+15% | Q3末 |
+| GitHub Discussion讨论数 | v4.3专题≥20条 | Q3末 |
+
+---
+
 ## 重要日期标记
 
 ### 技术节日与活动
@@ -201,6 +339,7 @@ gantt
 | v3.11 | 2026-07-20 | 夏季功能更新 |
 | v4.0-beta | 2026-09-30 | 重大版本预览 |
 | v4.0 | 2026-11-15 | 年度大版本发布 |
+| **v4.3** | **2026-07-15** | **前沿内容深化 — 10篇新文档 + 150+形式化元素** |
 
 ---
 
@@ -284,6 +423,6 @@ graph TD
 
 ---
 
-*最后更新: 2026-04-12*
+*最后更新: 2026-04-18 (v4.3推广计划已纳入)*
 
 *本日历将根据实际运营情况进行动态调整*

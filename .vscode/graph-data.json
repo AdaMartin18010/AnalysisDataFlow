@@ -8797,6 +8797,174 @@
         "document": "Flink_15-observability_opentelemetry-streaming-observability",
         "path": "Flink/15-observability/opentelemetry-streaming-observability.md"
       }
+    },
+    {
+      "id": "Struct_06-frontier_llm-guided-formal-proof-automation",
+      "label": "LLM 辅助形式化证明自动化",
+      "type": "document",
+      "group": "Struct",
+      "size": 5.662,
+      "color": "#4A90D9",
+      "metadata": {
+        "path": "Struct/06-frontier/llm-guided-formal-proof-automation.md",
+        "formality_level": "L5-L6",
+        "category": "06-frontier",
+        "word_count": 5662
+      }
+    },
+    {
+      "id": "FormalMethods_06-tools_veil-framework-lean4",
+      "label": "Veil Framework — 基于 Lean 4 的新一代迁移系统验证框架",
+      "type": "document",
+      "group": "FormalMethods",
+      "size": 5.815,
+      "color": "#8E44AD",
+      "metadata": {
+        "path": "formal-methods/06-tools/veil-framework-lean4.md",
+        "formality_level": "L5-L6",
+        "category": "06-tools",
+        "word_count": 5815
+      }
+    },
+    {
+      "id": "Struct_01-foundation_minimal-session-types-theory",
+      "label": "最小会话类型理论",
+      "type": "document",
+      "group": "Struct",
+      "size": 5.974,
+      "color": "#4A90D9",
+      "metadata": {
+        "path": "Struct/01-foundation/minimal-session-types-theory.md",
+        "formality_level": "L5-L6",
+        "category": "01-foundation",
+        "word_count": 5974
+      }
+    },
+    {
+      "id": "Struct_06-frontier_dbsp-theory-framework",
+      "label": "DBSP (Database Stream Processor) 理论框架",
+      "type": "document",
+      "group": "Struct",
+      "size": 5.922,
+      "color": "#4A90D9",
+      "metadata": {
+        "path": "Struct/06-frontier/dbsp-theory-framework.md",
+        "formality_level": "L5-L6",
+        "category": "06-frontier",
+        "word_count": 5922
+      }
+    },
+    {
+      "id": "Knowledge_06-frontier_cd-raft-cross-domain-consensus",
+      "label": "CD-Raft: 跨域场景下的Raft共识优化",
+      "type": "document",
+      "group": "Knowledge",
+      "size": 3.763,
+      "color": "#5CB85C",
+      "metadata": {
+        "path": "Knowledge/06-frontier/cd-raft-cross-domain-consensus.md",
+        "formality_level": "L4-L5",
+        "category": "06-frontier",
+        "word_count": 3763
+      }
+    },
+    {
+      "id": "Struct_06-frontier_calvin-deterministic-streaming",
+      "label": "Calvin 确定性执行模型与流处理状态管理",
+      "type": "document",
+      "group": "Struct",
+      "size": 5.328,
+      "color": "#4A90D9",
+      "metadata": {
+        "path": "Struct/06-frontier/calvin-deterministic-streaming.md",
+        "formality_level": "L5-L6",
+        "category": "06-frontier",
+        "word_count": 5328
+      }
+    },
+    {
+      "id": "Flink_05-ecosystem_flink-dynamic-iceberg-sink-guide",
+      "label": "Flink Dynamic Iceberg Sink 完整指南",
+      "type": "document",
+      "group": "Flink",
+      "size": 4.614,
+      "color": "#F0AD4E",
+      "metadata": {
+        "path": "Flink/05-ecosystem/flink-dynamic-iceberg-sink-guide.md",
+        "formality_level": "L3-L4",
+        "category": "05-ecosystem",
+        "word_count": 4614
+      }
+    },
+    {
+      "id": "FormalMethods_08-ai-formal-methods_agent-behavior-contract-verification",
+      "label": "AI Agent 行为契约验证方法",
+      "type": "document",
+      "group": "FormalMethods",
+      "size": 6.294,
+      "color": "#8E44AD",
+      "metadata": {
+        "path": "formal-methods/08-ai-formal-methods/agent-behavior-contract-verification.md",
+        "formality_level": "L5-L6",
+        "category": "08-ai-formal-methods",
+        "word_count": 6294
+      }
+    },
+    {
+      "id": "Struct_01-foundation_streaming-database-formal-definition",
+      "label": "Streaming Database 形式化定义与理论体系",
+      "type": "document",
+      "group": "Struct",
+      "size": 5.141,
+      "color": "#4A90D9",
+      "metadata": {
+        "path": "Struct/01-foundation/streaming-database-formal-definition.md",
+        "formality_level": "L5-L6",
+        "category": "01-foundation",
+        "word_count": 5141
+      }
+    },
+    {
+      "id": "Knowledge_06-frontier_nist-caisi-agent-standards",
+      "label": "NIST CAISI 标准化政策解读",
+      "type": "document",
+      "group": "Knowledge",
+      "size": 3.103,
+      "color": "#5CB85C",
+      "metadata": {
+        "path": "Knowledge/06-frontier/nist-caisi-agent-standards.md",
+        "formality_level": "L3-L4",
+        "category": "06-frontier",
+        "word_count": 3103
+      }
+    },
+    {
+      "id": "Flink_05-ecosystem_fluss-integration",
+      "label": "Apache Fluss (Incubating) - 为流分析而生的分布式存储",
+      "type": "document",
+      "group": "Flink",
+      "size": 2.633,
+      "color": "#F0AD4E",
+      "metadata": {
+        "path": "Flink/05-ecosystem/05.01-connectors/fluss-integration.md",
+        "formality_level": "L3",
+        "category": "05-ecosystem",
+        "word_count": 2633
+      }
+    },
+    {
+      "id": "Flink_05-ecosystem_flink-paimon-integration",
+      "label": "Apache Paimon 与 Flink 深度集成 - 流批统一的湖仓存储",
+      "type": "document",
+      "group": "Flink",
+      "size": 7.309,
+      "color": "#F0AD4E",
+      "metadata": {
+        "path": "Flink/05-ecosystem/05.02-lakehouse/flink-paimon-integration.md",
+        "formality_level": "L4-L5",
+        "category": "05-ecosystem",
+        "word_count": 7309
+      }
     }
   ],
   "edges": [
@@ -10809,18 +10977,120 @@
       "target": "Flink_02-core-mechanisms_forst-state-backend",
       "type": "citation",
       "weight": 1
+    },
+    {
+      "source": "Struct_06-frontier_llm-guided-formal-proof-automation",
+      "target": "Struct_06-frontier_06.01-open-problems-streaming-verification",
+      "type": "citation",
+      "weight": 1
+    },
+    {
+      "source": "FormalMethods_06-tools_veil-framework-lean4",
+      "target": "Struct_06-frontier_06.01-open-problems-streaming-verification",
+      "type": "citation",
+      "weight": 1
+    },
+    {
+      "source": "Struct_01-foundation_minimal-session-types-theory",
+      "target": "Struct_01-foundation_01.07-session-types",
+      "type": "citation",
+      "weight": 1
+    },
+    {
+      "source": "Struct_01-foundation_minimal-session-types-theory",
+      "target": "Struct_01-foundation_01.02-process-calculus-primer",
+      "type": "citation",
+      "weight": 1
+    },
+    {
+      "source": "Struct_06-frontier_dbsp-theory-framework",
+      "target": "Struct_01-foundation_01.04-dataflow-model-formalization",
+      "type": "citation",
+      "weight": 1
+    },
+    {
+      "source": "Struct_06-frontier_dbsp-theory-framework",
+      "target": "Knowledge_06-frontier_streaming-lakehouse-iceberg-delta",
+      "type": "citation",
+      "weight": 1
+    },
+    {
+      "source": "Struct_06-frontier_calvin-deterministic-streaming",
+      "target": "Struct_01-foundation_01.04-dataflow-model-formalization",
+      "type": "citation",
+      "weight": 1
+    },
+    {
+      "source": "Flink_05-ecosystem_flink-dynamic-iceberg-sink-guide",
+      "target": "Flink_14-lakehouse_flink-iceberg-integration",
+      "type": "citation",
+      "weight": 1
+    },
+    {
+      "source": "Flink_05-ecosystem_flink-dynamic-iceberg-sink-guide",
+      "target": "Knowledge_06-frontier_streaming-lakehouse-iceberg-delta",
+      "type": "citation",
+      "weight": 1
+    },
+    {
+      "source": "FormalMethods_08-ai-formal-methods_agent-behavior-contract-verification",
+      "target": "Knowledge_06-frontier_a2a-protocol-agent-communication",
+      "type": "citation",
+      "weight": 1
+    },
+    {
+      "source": "FormalMethods_08-ai-formal-methods_agent-behavior-contract-verification",
+      "target": "Struct_06-frontier_06.03-ai-agent-session-types",
+      "type": "citation",
+      "weight": 1
+    },
+    {
+      "source": "Struct_01-foundation_streaming-database-formal-definition",
+      "target": "Knowledge_06-frontier_streaming-databases",
+      "type": "citation",
+      "weight": 1
+    },
+    {
+      "source": "Struct_01-foundation_streaming-database-formal-definition",
+      "target": "Knowledge_04-technology-selection_streaming-database-guide",
+      "type": "citation",
+      "weight": 1
+    },
+    {
+      "source": "Knowledge_06-frontier_nist-caisi-agent-standards",
+      "target": "Knowledge_06-frontier_a2a-protocol-agent-communication",
+      "type": "citation",
+      "weight": 1
+    },
+    {
+      "source": "Flink_05-ecosystem_fluss-integration",
+      "target": "Flink_04-connectors_fluss-integration",
+      "type": "citation",
+      "weight": 1
+    },
+    {
+      "source": "Flink_05-ecosystem_flink-paimon-integration",
+      "target": "Flink_04-connectors_flink-paimon-integration",
+      "type": "citation",
+      "weight": 1
+    },
+    {
+      "source": "Flink_05-ecosystem_flink-paimon-integration",
+      "target": "Flink_14-lakehouse_flink-paimon-integration",
+      "type": "citation",
+      "weight": 1
     }
   ],
   "stats": {
-    "total_nodes": 646,
-    "total_edges": 335,
-    "documents": 400,
+    "total_nodes": 658,
+    "total_edges": 352,
+    "documents": 412,
     "theorems": 20,
     "definitions": 151,
     "lemmas": 53,
     "propositions": 22,
     "corollaries": 0,
     "isolated_documents": 270,
-    "generated_at": "2026-04-04T18:02:26.182361"
+    "generated_at": "2026-04-18T18:47:15.482942"
   }
 }

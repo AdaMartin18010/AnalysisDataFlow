@@ -2,124 +2,770 @@
   "name": "学习路径图谱",
   "description": "AnalysisDataFlow项目的结构化学习路径",
   "version": "1.0",
-  "lastUpdated": "2026-04-04",
+  "lastUpdated": "2026-04-18",
   "nodes": [
-    {"id": "start", "label": "开始学习", "type": "milestone", "stage": 0, "category": "start"},
-    {"id": "streaming-fundamentals", "label": "流计算基础", "type": "module", "stage": 1, "category": "foundation", "duration": "2周", "prerequisites": []},
-    {"id": "batch-vs-streaming", "label": "批处理vs流处理", "type": "topic", "stage": 1, "category": "foundation", "duration": "2天"},
-    {"id": "unbounded-streams", "label": "无界流概念", "type": "topic", "stage": 1, "category": "foundation", "duration": "2天"},
-    {"id": "time-concepts", "label": "时间概念", "type": "topic", "stage": 1, "category": "foundation", "duration": "3天"},
-    {"id": "window-concepts", "label": "窗口概念", "type": "topic", "stage": 1, "category": "foundation", "duration": "3天"},
-    {"id": "dataflow-model-learning", "label": "Dataflow模型", "type": "module", "stage": 2, "category": "model", "duration": "1周", "prerequisites": ["streaming-fundamentals"]},
-    {"id": "dag-abstraction", "label": "DAG抽象", "type": "topic", "stage": 2, "category": "model", "duration": "2天"},
-    {"id": "operator-model", "label": "算子模型", "type": "topic", "stage": 2, "category": "model", "duration": "3天"},
-    {"id": "source-sink-model", "label": "Source/Sink模型", "type": "topic", "stage": 2, "category": "model", "duration": "2天"},
-    {"id": "consistency-learning", "label": "一致性语义", "type": "module", "stage": 3, "category": "consistency", "duration": "1周", "prerequisites": ["dataflow-model-learning"]},
-    {"id": "exactly-once-learning", "label": "Exactly-Once语义", "type": "topic", "stage": 3, "category": "consistency", "duration": "3天"},
-    {"id": "at-least-once-learning", "label": "At-Least-Once语义", "type": "topic", "stage": 3, "category": "consistency", "duration": "2天"},
-    {"id": "idempotency-learning", "label": "幂等性理解", "type": "topic", "stage": 3, "category": "consistency", "duration": "2天"},
-    {"id": "state-management-learning", "label": "状态管理", "type": "module", "stage": 4, "category": "state", "duration": "1.5周", "prerequisites": ["consistency-learning"]},
-    {"id": "state-types", "label": "状态类型", "type": "topic", "stage": 4, "category": "state", "duration": "3天"},
-    {"id": "state-backends", "label": "状态后端", "type": "topic", "stage": 4, "category": "state", "duration": "3天"},
-    {"id": "ttl-management", "label": "TTL管理", "type": "topic", "stage": 4, "category": "state", "duration": "2天"},
-    {"id": "fault-tolerance-learning", "label": "容错机制", "type": "module", "stage": 5, "category": "fault-tolerance", "duration": "1.5周", "prerequisites": ["state-management-learning"]},
-    {"id": "checkpoint-mechanism", "label": "Checkpoint机制", "type": "topic", "stage": 5, "category": "fault-tolerance", "duration": "4天"},
-    {"id": "savepoint-learning", "label": "Savepoint理解", "type": "topic", "stage": 5, "category": "fault-tolerance", "duration": "2天"},
-    {"id": "recovery-learning", "label": "故障恢复", "type": "topic", "stage": 5, "category": "fault-tolerance", "duration": "3天"},
-    {"id": "flink-basics", "label": "Flink基础", "type": "module", "stage": 6, "category": "flink", "duration": "2周", "prerequisites": ["fault-tolerance-learning"]},
-    {"id": "flink-architecture", "label": "Flink架构", "type": "topic", "stage": 6, "category": "flink", "duration": "3天"},
-    {"id": "datastream-api-learning", "label": "DataStream API", "type": "topic", "stage": 6, "category": "flink", "duration": "4天"},
-    {"id": "table-api-learning", "label": "Table API", "type": "topic", "stage": 6, "category": "flink", "duration": "3天"},
-    {"id": "flink-sql-learning", "label": "Flink SQL", "type": "topic", "stage": 6, "category": "flink", "duration": "4天"},
-    {"id": "flink-advanced", "label": "Flink进阶", "type": "module", "stage": 7, "category": "flink-advanced", "duration": "2周", "prerequisites": ["flink-basics"]},
-    {"id": "process-function-learning", "label": "ProcessFunction", "type": "topic", "stage": 7, "category": "flink-advanced", "duration": "3天"},
-    {"id": "async-io-learning", "label": "异步IO", "type": "topic", "stage": 7, "category": "flink-advanced", "duration": "2天"},
-    {"id": "broadcast-state-learning", "label": "广播状态", "type": "topic", "stage": 7, "category": "flink-advanced", "duration": "2天"},
-    {"id": "cep-learning", "label": "CEP复杂事件处理", "type": "topic", "stage": 7, "category": "flink-advanced", "duration": "3天"},
-    {"id": "flink-ops", "label": "Flink运维", "type": "module", "stage": 8, "category": "operations", "duration": "1周", "prerequisites": ["flink-advanced"]},
-    {"id": "deployment-learning", "label": "部署模式", "type": "topic", "stage": 8, "category": "operations", "duration": "2天"},
-    {"id": "monitoring-learning", "label": "监控告警", "type": "topic", "stage": 8, "category": "operations", "duration": "2天"},
-    {"id": "tuning-learning", "label": "性能调优", "type": "topic", "stage": 8, "category": "operations", "duration": "3天"},
-    {"id": "advanced-topics", "label": "高级主题", "type": "module", "stage": 9, "category": "advanced", "duration": "2周", "prerequisites": ["flink-ops"]},
-    {"id": "formal-methods", "label": "形式化方法", "type": "topic", "stage": 9, "category": "advanced", "duration": "3天"},
-    {"id": "actor-csp-learning", "label": "Actor/CSP模型", "type": "topic", "stage": 9, "category": "advanced", "duration": "3天"},
-    {"id": "distributed-systems-deep", "label": "分布式系统深入", "type": "topic", "stage": 9, "category": "advanced", "duration": "4天"},
-    {"id": "design-patterns-learning", "label": "设计模式", "type": "topic", "stage": 9, "category": "advanced", "duration": "4天"},
-    {"id": "expert", "label": "成为专家", "type": "milestone", "stage": 10, "category": "goal"}
+    {
+      "id": "start",
+      "label": "开始学习",
+      "type": "milestone",
+      "stage": 0,
+      "category": "start"
+    },
+    {
+      "id": "streaming-fundamentals",
+      "label": "流计算基础",
+      "type": "module",
+      "stage": 1,
+      "category": "foundation",
+      "duration": "2周",
+      "prerequisites": []
+    },
+    {
+      "id": "batch-vs-streaming",
+      "label": "批处理vs流处理",
+      "type": "topic",
+      "stage": 1,
+      "category": "foundation",
+      "duration": "2天"
+    },
+    {
+      "id": "unbounded-streams",
+      "label": "无界流概念",
+      "type": "topic",
+      "stage": 1,
+      "category": "foundation",
+      "duration": "2天"
+    },
+    {
+      "id": "time-concepts",
+      "label": "时间概念",
+      "type": "topic",
+      "stage": 1,
+      "category": "foundation",
+      "duration": "3天"
+    },
+    {
+      "id": "window-concepts",
+      "label": "窗口概念",
+      "type": "topic",
+      "stage": 1,
+      "category": "foundation",
+      "duration": "3天"
+    },
+    {
+      "id": "dataflow-model-learning",
+      "label": "Dataflow模型",
+      "type": "module",
+      "stage": 2,
+      "category": "model",
+      "duration": "1周",
+      "prerequisites": [
+        "streaming-fundamentals"
+      ]
+    },
+    {
+      "id": "dag-abstraction",
+      "label": "DAG抽象",
+      "type": "topic",
+      "stage": 2,
+      "category": "model",
+      "duration": "2天"
+    },
+    {
+      "id": "operator-model",
+      "label": "算子模型",
+      "type": "topic",
+      "stage": 2,
+      "category": "model",
+      "duration": "3天"
+    },
+    {
+      "id": "source-sink-model",
+      "label": "Source/Sink模型",
+      "type": "topic",
+      "stage": 2,
+      "category": "model",
+      "duration": "2天"
+    },
+    {
+      "id": "consistency-learning",
+      "label": "一致性语义",
+      "type": "module",
+      "stage": 3,
+      "category": "consistency",
+      "duration": "1周",
+      "prerequisites": [
+        "dataflow-model-learning"
+      ]
+    },
+    {
+      "id": "exactly-once-learning",
+      "label": "Exactly-Once语义",
+      "type": "topic",
+      "stage": 3,
+      "category": "consistency",
+      "duration": "3天"
+    },
+    {
+      "id": "at-least-once-learning",
+      "label": "At-Least-Once语义",
+      "type": "topic",
+      "stage": 3,
+      "category": "consistency",
+      "duration": "2天"
+    },
+    {
+      "id": "idempotency-learning",
+      "label": "幂等性理解",
+      "type": "topic",
+      "stage": 3,
+      "category": "consistency",
+      "duration": "2天"
+    },
+    {
+      "id": "state-management-learning",
+      "label": "状态管理",
+      "type": "module",
+      "stage": 4,
+      "category": "state",
+      "duration": "1.5周",
+      "prerequisites": [
+        "consistency-learning"
+      ]
+    },
+    {
+      "id": "state-types",
+      "label": "状态类型",
+      "type": "topic",
+      "stage": 4,
+      "category": "state",
+      "duration": "3天"
+    },
+    {
+      "id": "state-backends",
+      "label": "状态后端",
+      "type": "topic",
+      "stage": 4,
+      "category": "state",
+      "duration": "3天"
+    },
+    {
+      "id": "ttl-management",
+      "label": "TTL管理",
+      "type": "topic",
+      "stage": 4,
+      "category": "state",
+      "duration": "2天"
+    },
+    {
+      "id": "fault-tolerance-learning",
+      "label": "容错机制",
+      "type": "module",
+      "stage": 5,
+      "category": "fault-tolerance",
+      "duration": "1.5周",
+      "prerequisites": [
+        "state-management-learning"
+      ]
+    },
+    {
+      "id": "checkpoint-mechanism",
+      "label": "Checkpoint机制",
+      "type": "topic",
+      "stage": 5,
+      "category": "fault-tolerance",
+      "duration": "4天"
+    },
+    {
+      "id": "savepoint-learning",
+      "label": "Savepoint理解",
+      "type": "topic",
+      "stage": 5,
+      "category": "fault-tolerance",
+      "duration": "2天"
+    },
+    {
+      "id": "recovery-learning",
+      "label": "故障恢复",
+      "type": "topic",
+      "stage": 5,
+      "category": "fault-tolerance",
+      "duration": "3天"
+    },
+    {
+      "id": "flink-basics",
+      "label": "Flink基础",
+      "type": "module",
+      "stage": 6,
+      "category": "flink",
+      "duration": "2周",
+      "prerequisites": [
+        "fault-tolerance-learning"
+      ]
+    },
+    {
+      "id": "flink-architecture",
+      "label": "Flink架构",
+      "type": "topic",
+      "stage": 6,
+      "category": "flink",
+      "duration": "3天"
+    },
+    {
+      "id": "datastream-api-learning",
+      "label": "DataStream API",
+      "type": "topic",
+      "stage": 6,
+      "category": "flink",
+      "duration": "4天"
+    },
+    {
+      "id": "table-api-learning",
+      "label": "Table API",
+      "type": "topic",
+      "stage": 6,
+      "category": "flink",
+      "duration": "3天"
+    },
+    {
+      "id": "flink-sql-learning",
+      "label": "Flink SQL",
+      "type": "topic",
+      "stage": 6,
+      "category": "flink",
+      "duration": "4天"
+    },
+    {
+      "id": "flink-advanced",
+      "label": "Flink进阶",
+      "type": "module",
+      "stage": 7,
+      "category": "flink-advanced",
+      "duration": "2周",
+      "prerequisites": [
+        "flink-basics"
+      ]
+    },
+    {
+      "id": "process-function-learning",
+      "label": "ProcessFunction",
+      "type": "topic",
+      "stage": 7,
+      "category": "flink-advanced",
+      "duration": "3天"
+    },
+    {
+      "id": "async-io-learning",
+      "label": "异步IO",
+      "type": "topic",
+      "stage": 7,
+      "category": "flink-advanced",
+      "duration": "2天"
+    },
+    {
+      "id": "broadcast-state-learning",
+      "label": "广播状态",
+      "type": "topic",
+      "stage": 7,
+      "category": "flink-advanced",
+      "duration": "2天"
+    },
+    {
+      "id": "cep-learning",
+      "label": "CEP复杂事件处理",
+      "type": "topic",
+      "stage": 7,
+      "category": "flink-advanced",
+      "duration": "3天"
+    },
+    {
+      "id": "flink-ops",
+      "label": "Flink运维",
+      "type": "module",
+      "stage": 8,
+      "category": "operations",
+      "duration": "1周",
+      "prerequisites": [
+        "flink-advanced"
+      ]
+    },
+    {
+      "id": "deployment-learning",
+      "label": "部署模式",
+      "type": "topic",
+      "stage": 8,
+      "category": "operations",
+      "duration": "2天"
+    },
+    {
+      "id": "monitoring-learning",
+      "label": "监控告警",
+      "type": "topic",
+      "stage": 8,
+      "category": "operations",
+      "duration": "2天"
+    },
+    {
+      "id": "tuning-learning",
+      "label": "性能调优",
+      "type": "topic",
+      "stage": 8,
+      "category": "operations",
+      "duration": "3天"
+    },
+    {
+      "id": "advanced-topics",
+      "label": "高级主题",
+      "type": "module",
+      "stage": 9,
+      "category": "advanced",
+      "duration": "2周",
+      "prerequisites": [
+        "flink-ops"
+      ]
+    },
+    {
+      "id": "formal-methods",
+      "label": "形式化方法",
+      "type": "topic",
+      "stage": 9,
+      "category": "advanced",
+      "duration": "3天"
+    },
+    {
+      "id": "actor-csp-learning",
+      "label": "Actor/CSP模型",
+      "type": "topic",
+      "stage": 9,
+      "category": "advanced",
+      "duration": "3天"
+    },
+    {
+      "id": "distributed-systems-deep",
+      "label": "分布式系统深入",
+      "type": "topic",
+      "stage": 9,
+      "category": "advanced",
+      "duration": "4天"
+    },
+    {
+      "id": "design-patterns-learning",
+      "label": "设计模式",
+      "type": "topic",
+      "stage": 9,
+      "category": "advanced",
+      "duration": "4天"
+    },
+    {
+      "id": "expert",
+      "label": "成为专家",
+      "type": "milestone",
+      "stage": 10,
+      "category": "goal"
+    },
+    {
+      "id": "llm-formal-methods-learning",
+      "label": "LLM形式化方法",
+      "type": "topic",
+      "stage": 9,
+      "category": "advanced",
+      "duration": "3天"
+    },
+    {
+      "id": "streaming-database-learning",
+      "label": "流数据库理论",
+      "type": "topic",
+      "stage": 9,
+      "category": "advanced",
+      "duration": "3天"
+    },
+    {
+      "id": "lakehouse-integration-learning",
+      "label": "湖仓集成实践",
+      "type": "topic",
+      "stage": 9,
+      "category": "advanced",
+      "duration": "3天"
+    }
   ],
   "edges": [
-    {"source": "start", "target": "streaming-fundamentals", "type": "starts", "label": "开始"},
-    {"source": "streaming-fundamentals", "target": "batch-vs-streaming", "type": "includes", "label": "包含"},
-    {"source": "streaming-fundamentals", "target": "unbounded-streams", "type": "includes", "label": "包含"},
-    {"source": "streaming-fundamentals", "target": "time-concepts", "type": "includes", "label": "包含"},
-    {"source": "streaming-fundamentals", "target": "window-concepts", "type": "includes", "label": "包含"},
-    {"source": "streaming-fundamentals", "target": "dataflow-model-learning", "type": "leads-to", "label": "导向"},
-    {"source": "dataflow-model-learning", "target": "dag-abstraction", "type": "includes", "label": "包含"},
-    {"source": "dataflow-model-learning", "target": "operator-model", "type": "includes", "label": "包含"},
-    {"source": "dataflow-model-learning", "target": "source-sink-model", "type": "includes", "label": "包含"},
-    {"source": "dataflow-model-learning", "target": "consistency-learning", "type": "leads-to", "label": "导向"},
-    {"source": "consistency-learning", "target": "exactly-once-learning", "type": "includes", "label": "包含"},
-    {"source": "consistency-learning", "target": "at-least-once-learning", "type": "includes", "label": "包含"},
-    {"source": "consistency-learning", "target": "idempotency-learning", "type": "includes", "label": "包含"},
-    {"source": "consistency-learning", "target": "state-management-learning", "type": "leads-to", "label": "导向"},
-    {"source": "state-management-learning", "target": "state-types", "type": "includes", "label": "包含"},
-    {"source": "state-management-learning", "target": "state-backends", "type": "includes", "label": "包含"},
-    {"source": "state-management-learning", "target": "ttl-management", "type": "includes", "label": "包含"},
-    {"source": "state-management-learning", "target": "fault-tolerance-learning", "type": "leads-to", "label": "导向"},
-    {"source": "fault-tolerance-learning", "target": "checkpoint-mechanism", "type": "includes", "label": "包含"},
-    {"source": "fault-tolerance-learning", "target": "savepoint-learning", "type": "includes", "label": "包含"},
-    {"source": "fault-tolerance-learning", "target": "recovery-learning", "type": "includes", "label": "包含"},
-    {"source": "fault-tolerance-learning", "target": "flink-basics", "type": "leads-to", "label": "导向"},
-    {"source": "flink-basics", "target": "flink-architecture", "type": "includes", "label": "包含"},
-    {"source": "flink-basics", "target": "datastream-api-learning", "type": "includes", "label": "包含"},
-    {"source": "flink-basics", "target": "table-api-learning", "type": "includes", "label": "包含"},
-    {"source": "flink-basics", "target": "flink-sql-learning", "type": "includes", "label": "包含"},
-    {"source": "flink-basics", "target": "flink-advanced", "type": "leads-to", "label": "导向"},
-    {"source": "flink-advanced", "target": "process-function-learning", "type": "includes", "label": "包含"},
-    {"source": "flink-advanced", "target": "async-io-learning", "type": "includes", "label": "包含"},
-    {"source": "flink-advanced", "target": "broadcast-state-learning", "type": "includes", "label": "包含"},
-    {"source": "flink-advanced", "target": "cep-learning", "type": "includes", "label": "包含"},
-    {"source": "flink-advanced", "target": "flink-ops", "type": "leads-to", "label": "导向"},
-    {"source": "flink-ops", "target": "deployment-learning", "type": "includes", "label": "包含"},
-    {"source": "flink-ops", "target": "monitoring-learning", "type": "includes", "label": "包含"},
-    {"source": "flink-ops", "target": "tuning-learning", "type": "includes", "label": "包含"},
-    {"source": "flink-ops", "target": "advanced-topics", "type": "leads-to", "label": "导向"},
-    {"source": "advanced-topics", "target": "formal-methods", "type": "includes", "label": "包含"},
-    {"source": "advanced-topics", "target": "actor-csp-learning", "type": "includes", "label": "包含"},
-    {"source": "advanced-topics", "target": "distributed-systems-deep", "type": "includes", "label": "包含"},
-    {"source": "advanced-topics", "target": "design-patterns-learning", "type": "includes", "label": "包含"},
-    {"source": "advanced-topics", "target": "expert", "type": "completes", "label": "完成"}
+    {
+      "source": "start",
+      "target": "streaming-fundamentals",
+      "type": "starts",
+      "label": "开始"
+    },
+    {
+      "source": "streaming-fundamentals",
+      "target": "batch-vs-streaming",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "streaming-fundamentals",
+      "target": "unbounded-streams",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "streaming-fundamentals",
+      "target": "time-concepts",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "streaming-fundamentals",
+      "target": "window-concepts",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "streaming-fundamentals",
+      "target": "dataflow-model-learning",
+      "type": "leads-to",
+      "label": "导向"
+    },
+    {
+      "source": "dataflow-model-learning",
+      "target": "dag-abstraction",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "dataflow-model-learning",
+      "target": "operator-model",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "dataflow-model-learning",
+      "target": "source-sink-model",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "dataflow-model-learning",
+      "target": "consistency-learning",
+      "type": "leads-to",
+      "label": "导向"
+    },
+    {
+      "source": "consistency-learning",
+      "target": "exactly-once-learning",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "consistency-learning",
+      "target": "at-least-once-learning",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "consistency-learning",
+      "target": "idempotency-learning",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "consistency-learning",
+      "target": "state-management-learning",
+      "type": "leads-to",
+      "label": "导向"
+    },
+    {
+      "source": "state-management-learning",
+      "target": "state-types",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "state-management-learning",
+      "target": "state-backends",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "state-management-learning",
+      "target": "ttl-management",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "state-management-learning",
+      "target": "fault-tolerance-learning",
+      "type": "leads-to",
+      "label": "导向"
+    },
+    {
+      "source": "fault-tolerance-learning",
+      "target": "checkpoint-mechanism",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "fault-tolerance-learning",
+      "target": "savepoint-learning",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "fault-tolerance-learning",
+      "target": "recovery-learning",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "fault-tolerance-learning",
+      "target": "flink-basics",
+      "type": "leads-to",
+      "label": "导向"
+    },
+    {
+      "source": "flink-basics",
+      "target": "flink-architecture",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "flink-basics",
+      "target": "datastream-api-learning",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "flink-basics",
+      "target": "table-api-learning",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "flink-basics",
+      "target": "flink-sql-learning",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "flink-basics",
+      "target": "flink-advanced",
+      "type": "leads-to",
+      "label": "导向"
+    },
+    {
+      "source": "flink-advanced",
+      "target": "process-function-learning",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "flink-advanced",
+      "target": "async-io-learning",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "flink-advanced",
+      "target": "broadcast-state-learning",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "flink-advanced",
+      "target": "cep-learning",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "flink-advanced",
+      "target": "flink-ops",
+      "type": "leads-to",
+      "label": "导向"
+    },
+    {
+      "source": "flink-ops",
+      "target": "deployment-learning",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "flink-ops",
+      "target": "monitoring-learning",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "flink-ops",
+      "target": "tuning-learning",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "flink-ops",
+      "target": "advanced-topics",
+      "type": "leads-to",
+      "label": "导向"
+    },
+    {
+      "source": "advanced-topics",
+      "target": "formal-methods",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "advanced-topics",
+      "target": "actor-csp-learning",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "advanced-topics",
+      "target": "distributed-systems-deep",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "advanced-topics",
+      "target": "design-patterns-learning",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "advanced-topics",
+      "target": "expert",
+      "type": "completes",
+      "label": "完成"
+    },
+    {
+      "source": "formal-methods",
+      "target": "llm-formal-methods-learning",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "advanced-topics",
+      "target": "streaming-database-learning",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "advanced-topics",
+      "target": "lakehouse-integration-learning",
+      "type": "includes",
+      "label": "包含"
+    }
   ],
   "stages": {
-    "0": {"label": "起点", "color": "#27AE60"},
-    "1": {"label": "基础", "color": "#3498DB"},
-    "2": {"label": "模型", "color": "#9B59B6"},
-    "3": {"label": "一致性", "color": "#E74C3C"},
-    "4": {"label": "状态", "color": "#1ABC9C"},
-    "5": {"label": "容错", "color": "#F39C12"},
-    "6": {"label": "Flink基础", "color": "#E67E22"},
-    "7": {"label": "Flink进阶", "color": "#16A085"},
-    "8": {"label": "运维", "color": "#D35400"},
-    "9": {"label": "高级", "color": "#8E44AD"},
-    "10": {"label": "专家", "color": "#C0392B"}
+    "0": {
+      "label": "起点",
+      "color": "#27AE60"
+    },
+    "1": {
+      "label": "基础",
+      "color": "#3498DB"
+    },
+    "2": {
+      "label": "模型",
+      "color": "#9B59B6"
+    },
+    "3": {
+      "label": "一致性",
+      "color": "#E74C3C"
+    },
+    "4": {
+      "label": "状态",
+      "color": "#1ABC9C"
+    },
+    "5": {
+      "label": "容错",
+      "color": "#F39C12"
+    },
+    "6": {
+      "label": "Flink基础",
+      "color": "#E67E22"
+    },
+    "7": {
+      "label": "Flink进阶",
+      "color": "#16A085"
+    },
+    "8": {
+      "label": "运维",
+      "color": "#D35400"
+    },
+    "9": {
+      "label": "高级",
+      "color": "#8E44AD"
+    },
+    "10": {
+      "label": "专家",
+      "color": "#C0392B"
+    }
   },
   "categories": {
-    "start": {"label": "起点", "color": "#2ECC71"},
-    "foundation": {"label": "基础", "color": "#3498DB"},
-    "model": {"label": "模型", "color": "#9B59B6"},
-    "consistency": {"label": "一致性", "color": "#E74C3C"},
-    "state": {"label": "状态", "color": "#1ABC9C"},
-    "fault-tolerance": {"label": "容错", "color": "#F39C12"},
-    "flink": {"label": "Flink", "color": "#E67E22"},
-    "flink-advanced": {"label": "Flink进阶", "color": "#16A085"},
-    "operations": {"label": "运维", "color": "#D35400"},
-    "advanced": {"label": "高级", "color": "#8E44AD"},
-    "goal": {"label": "目标", "color": "#C0392B"}
+    "start": {
+      "label": "起点",
+      "color": "#2ECC71"
+    },
+    "foundation": {
+      "label": "基础",
+      "color": "#3498DB"
+    },
+    "model": {
+      "label": "模型",
+      "color": "#9B59B6"
+    },
+    "consistency": {
+      "label": "一致性",
+      "color": "#E74C3C"
+    },
+    "state": {
+      "label": "状态",
+      "color": "#1ABC9C"
+    },
+    "fault-tolerance": {
+      "label": "容错",
+      "color": "#F39C12"
+    },
+    "flink": {
+      "label": "Flink",
+      "color": "#E67E22"
+    },
+    "flink-advanced": {
+      "label": "Flink进阶",
+      "color": "#16A085"
+    },
+    "operations": {
+      "label": "运维",
+      "color": "#D35400"
+    },
+    "advanced": {
+      "label": "高级",
+      "color": "#8E44AD"
+    },
+    "goal": {
+      "label": "目标",
+      "color": "#C0392B"
+    }
   },
   "relationTypes": {
-    "starts": {"label": "开始", "color": "#27AE60", "style": "solid"},
-    "includes": {"label": "包含", "color": "#7F8C8D", "style": "solid"},
-    "leads-to": {"label": "导向", "color": "#3498DB", "style": "solid"},
-    "completes": {"label": "完成", "color": "#E74C3C", "style": "solid"}
+    "starts": {
+      "label": "开始",
+      "color": "#27AE60",
+      "style": "solid"
+    },
+    "includes": {
+      "label": "包含",
+      "color": "#7F8C8D",
+      "style": "solid"
+    },
+    "leads-to": {
+      "label": "导向",
+      "color": "#3498DB",
+      "style": "solid"
+    },
+    "completes": {
+      "label": "完成",
+      "color": "#E74C3C",
+      "style": "solid"
+    }
   }
 }

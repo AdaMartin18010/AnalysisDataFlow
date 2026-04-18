@@ -1,0 +1,586 @@
+{
+  "_meta": {
+    "version": "v4.3",
+    "generated_at": "2026-04-18T18:17:21+08:00",
+    "schema": "https://schema.org/TechArticle",
+    "total_documents": 10,
+    "language": "zh-CN"
+  },
+  "documents": [
+    {
+      "doc_path": "Struct/06-frontier/dbsp-theory-framework.md",
+      "title": "DBSP (Database Stream Processor) 理论框架 — 增量视图维护的形式化基础 | AnalysisDataFlow",
+      "meta_description": "系统阐述DBSP理论框架：Z-sets代数结构、差分算子∇与积分算子∇⁻¹的代数性质、增量视图维护正确性定理，以及与Differential Dataflow、Timely Dataflow、Materialize、Feldera的严格关系映射。涵盖VLDB'23 / SIGMOD'24最新研究成果。",
+      "keywords": [
+        "DBSP",
+        "Z-sets",
+        "增量视图维护",
+        "IVM",
+        "Differential Dataflow",
+        "Timely Dataflow",
+        "流处理形式化理论",
+        "增量计算",
+        "Materialize",
+        "Feldera",
+        "差分算子",
+        "流数据库代数"
+      ],
+      "open_graph": {
+        "og:title": "DBSP 理论框架：增量视图维护的严格数学基础",
+        "og:description": "从Z-sets形式化定义到增量视图维护正确性定理，完整解析DBSP计算模型的代数结构与工业实现映射。",
+        "og:type": "article",
+        "og:site_name": "AnalysisDataFlow",
+        "article:section": "Struct / 前沿理论",
+        "article:tag": "DBSP, 增量视图维护, 流处理形式化, Differential Dataflow"
+      },
+      "json_ld": {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "DBSP (Database Stream Processor) 理论框架",
+        "description": "DBSP是由Frank McSherry等人提出的为增量视图维护提供严格数学基础的理论框架，核心创新在于将数据库查询和流处理统一到Z-set代数结构中。",
+        "author": {
+          "@type": "Organization",
+          "name": "AnalysisDataFlow Project"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "AnalysisDataFlow"
+        },
+        "about": [
+          {
+            "@type": "Thing",
+            "name": "DBSP",
+            "sameAs": "https://github.com/vmware/database-stream-processor"
+          },
+          {
+            "@type": "Thing",
+            "name": "增量视图维护"
+          },
+          {
+            "@type": "Thing",
+            "name": "Differential Dataflow"
+          }
+        ],
+        "proficiencyLevel": "Expert",
+        "dependencies": "Dataflow Model形式化, Streaming Lakehouse形式化理论"
+      }
+    },
+    {
+      "doc_path": "Struct/06-frontier/calvin-deterministic-streaming.md",
+      "title": "Calvin 确定性执行模型与流处理状态管理 — 分布式事务形式化分析 | AnalysisDataFlow",
+      "meta_description": "形式化解析Calvin确定性分布式事务协议：六元组系统模型、确定性执行定理、与2PC/Raft/Paxos/Flink Checkpoint的严格映射，以及Calvin哲学对流处理确定性重放与状态一致性机制的深层启示。",
+      "keywords": [
+        "Calvin",
+        "确定性事务",
+        "确定性执行",
+        "分布式事务",
+        "流处理状态一致性",
+        "确定性重放",
+        "FaunaDB",
+        "两阶段提交替代",
+        "Sequencer",
+        "State Machine Replication",
+        "Flink Checkpoint"
+      ],
+      "open_graph": {
+        "og:title": "Calvin 确定性执行模型：消除2PC的分布式事务新范式",
+        "og:description": "SIGMOD'12 Calvin协议的形式化深度分析——通过前置排序+无副作用重放实现跨分区事务线性扩展，及其对流处理状态管理的启示。",
+        "og:type": "article",
+        "og:site_name": "AnalysisDataFlow",
+        "article:section": "Struct / 前沿理论",
+        "article:tag": "Calvin, 确定性事务, 分布式系统, 流处理一致性"
+      },
+      "json_ld": {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Calvin 确定性执行模型与流处理状态管理",
+        "description": "将Calvin建模为六元组分布式系统，严格证明确定性执行核心定理，并建立与Flink Checkpoint等形式化映射，揭示其对下一代流处理状态一致性机制的启示。",
+        "author": {
+          "@type": "Organization",
+          "name": "AnalysisDataFlow Project"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "AnalysisDataFlow"
+        },
+        "about": [
+          {
+            "@type": "Thing",
+            "name": "Calvin",
+            "sameAs": "https://db.cs.cmu.edu/papers/2012/calvin-cidr12.pdf"
+          },
+          {
+            "@type": "Thing",
+            "name": "确定性分布式事务"
+          },
+          {
+            "@type": "Thing",
+            "name": "FaunaDB"
+          }
+        ],
+        "proficiencyLevel": "Expert",
+        "dependencies": "Dataflow Model形式化, Flink Exactly-Once语义深度解析"
+      }
+    },
+    {
+      "doc_path": "formal-methods/08-ai-formal-methods/agent-behavior-contract-verification.md",
+      "title": "AI Agent 行为契约验证方法 — MCP/A2A 安全形式化框架 | AnalysisDataFlow",
+      "meta_description": "建立AI Agent行为契约验证的完整形式化理论体系：Behavior Contract定义、AgentAssert/AgentAssay框架、与TLA+/Session Types/Design-by-Contract的数学映射、MCP工具调用安全验证与A2A Agent Cards契约检查实例。",
+      "keywords": [
+        "AI Agent 验证",
+        "行为契约验证",
+        "Agent Behavior Contract",
+        "MCP 安全",
+        "A2A 协议",
+        "AgentAssert",
+        "AgentAssay",
+        "TLA+",
+        "Session Types",
+        "运行时监控",
+        "多Agent死锁检测",
+        "工具调用安全性"
+      ],
+      "open_graph": {
+        "og:title": "AI Agent 行为契约验证：MCP生态爆发下的安全核心技术支柱",
+        "og:description": "44%的MCP服务器缺乏认证机制——本文建立Agent行为契约验证的完整形式化理论体系，涵盖TLA+规约、Session Types映射与运行时监控协同方法论。",
+        "og:type": "article",
+        "og:site_name": "AnalysisDataFlow",
+        "article:section": "Formal Methods / AI形式化方法",
+        "article:tag": "AI Agent, 行为契约, MCP安全, A2A, 形式化验证"
+      },
+      "json_ld": {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "AI Agent 行为契约验证方法 (Agent Behavior Contract Verification)",
+        "description": "在MCP生态爆发式增长背景下，建立Agent行为契约验证的完整形式化理论体系，包含12个核心定义、8个关键引理、6个核心命题、3个主要定理及完整TLA+规约示例。",
+        "author": {
+          "@type": "Organization",
+          "name": "AnalysisDataFlow Project"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "AnalysisDataFlow"
+        },
+        "about": [
+          {
+            "@type": "Thing",
+            "name": "AI Agent"
+          },
+          {
+            "@type": "Thing",
+            "name": "Model Context Protocol",
+            "sameAs": "https://modelcontextprotocol.io/"
+          },
+          {
+            "@type": "Thing",
+            "name": "形式化验证"
+          }
+        ],
+        "proficiencyLevel": "Expert",
+        "dependencies": "MCP形式化验证, AI Agent流形式化理论"
+      }
+    },
+    {
+      "doc_path": "Struct/01-foundation/streaming-database-formal-definition.md",
+      "title": "Streaming Database 形式化定义与理论体系 — SDB vs SPE 严格区分 | AnalysisDataFlow",
+      "meta_description": "建立Streaming Database的严格八元组形式化模型，与Stream Processing Engine七元组模型对比；解析物化视图、增量更新、SQL兼容性、持久化存储的形式化内涵；建立与关系代数、Dataflow模型、DBSP的数学关系；RisingWave与Arroyo架构差异的形式化表达。",
+      "keywords": [
+        "Streaming Database",
+        "Stream Processing Engine",
+        "物化视图",
+        "增量视图维护",
+        "DBSP",
+        "RisingWave",
+        "Arroyo",
+        "快照语义",
+        "流语义",
+        "SQL兼容性",
+        "形式化理论",
+        "流数据库定义"
+      ],
+      "open_graph": {
+        "og:title": "Streaming Database 严格形式化定义：填补学术界与工业界的理论空白",
+        "og:description": "Rust原生流处理生态爆发期，本文建立Streaming Database作为独立计算范式的统一数学模型，严格区分SDB与SPE的架构本质。",
+        "og:type": "article",
+        "og:site_name": "AnalysisDataFlow",
+        "article:section": "Struct / 基础理论",
+        "article:tag": "Streaming Database, 流数据库, 物化视图, RisingWave, Arroyo"
+      },
+      "json_ld": {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Streaming Database 形式化定义与理论体系",
+        "description": "建立Streaming Database的严格八元组形式化模型，并与Stream Processing Engine对比；详细解析四大核心特征的形式化内涵及RisingWave/Arroyo架构差异。",
+        "author": {
+          "@type": "Organization",
+          "name": "AnalysisDataFlow Project"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "AnalysisDataFlow"
+        },
+        "about": [
+          {
+            "@type": "Thing",
+            "name": "Streaming Database"
+          },
+          {
+            "@type": "Thing",
+            "name": "RisingWave",
+            "sameAs": "https://risingwave.com/"
+          },
+          {
+            "@type": "Thing",
+            "name": "Materialize"
+          }
+        ],
+        "proficiencyLevel": "Expert",
+        "dependencies": "流数据库形式化, DBSP理论框架"
+      }
+    },
+    {
+      "doc_path": "Struct/01-foundation/minimal-session-types-theory.md",
+      "title": "最小会话类型理论 (MST) — π-calculus 会话类型最小化证明 | AnalysisDataFlow",
+      "meta_description": "完整阐述最小会话类型(MST)的语法与语义：仅含输出、输入、终止三构造子即可表达所有标准会话协议；建立与π-calculus、线性逻辑、Choreographic Programming的形式化关系；严格证明MST表达能力等价性定理及ℱ*变体对递归类型的支持。",
+      "keywords": [
+        "最小会话类型",
+        "Minimal Session Types",
+        "MST",
+        "π-calculus",
+        "会话类型",
+        "线性逻辑",
+        "Choreographic Programming",
+        "类型安全性",
+        "编译映射",
+        "观察等价",
+        "进程演算"
+      ],
+      "open_graph": {
+        "og:title": "最小会话类型理论：三个构造子撑起全部会话协议的形式化证明",
+        "og:description": "arXiv 2024最新突破——π-calculus中所有标准会话类型均可编译为仅含!、?、end三构造子的最小系统，无需显式顺序组合算子。",
+        "og:type": "article",
+        "og:site_name": "AnalysisDataFlow",
+        "article:section": "Struct / 基础理论",
+        "article:tag": "会话类型, π-calculus, 线性逻辑, 最小化理论"
+      },
+      "json_ld": {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "最小会话类型理论 (Minimal Session Types Theory)",
+        "description": "在L5-L6形式化等级下完整阐述MST的语法与语义，建立与标准会话类型、π-calculus、线性逻辑及Choreographic Programming之间的形式化关系，严格证明表达能力等价性定理。",
+        "author": {
+          "@type": "Organization",
+          "name": "AnalysisDataFlow Project"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "AnalysisDataFlow"
+        },
+        "about": [
+          {
+            "@type": "Thing",
+            "name": "Session Types"
+          },
+          {
+            "@type": "Thing",
+            "name": "π-calculus"
+          },
+          {
+            "@type": "Thing",
+            "name": "Choreographic Programming"
+          }
+        ],
+        "proficiencyLevel": "Expert",
+        "dependencies": "进程演算入门, 会话类型基础"
+      }
+    },
+    {
+      "doc_path": "formal-methods/06-tools/veil-framework-lean4.md",
+      "title": "Veil Framework — 基于 Lean 4 的迁移系统验证框架深度解析 | AnalysisDataFlow",
+      "meta_description": "系统解析Veil Framework：嵌入Lean 4的并发与分布式算法验证框架，融合一键式自动验证(SMT/cvc5/Z3)与交互式证明；VC生成器具备机器检验的可靠性证明；覆盖Ring Leader Election、Two-Phase Commit等完整实例。",
+      "keywords": [
+        "Veil Framework",
+        "Lean 4",
+        "迁移系统验证",
+        "SMT求解器",
+        "验证条件生成",
+        "分布式算法验证",
+        "cvc5",
+        "Z3",
+        "Ivy",
+        "有界模型检测",
+        "形式化验证工具",
+        "CAV 2025"
+      ],
+      "open_graph": {
+        "og:title": "Veil Framework：机器检验可靠性的Lean 4分布式系统验证新范式",
+        "og:description": "CAV'25发表——Veil的VC生成器具备Lean内核中的机器检验可靠性证明，融合自动化SMT求解与交互式证明，为分布式协议验证提供可信赖的方法论。",
+        "og:type": "article",
+        "og:site_name": "AnalysisDataFlow",
+        "article:section": "Formal Methods / 验证工具",
+        "article:tag": "Veil, Lean 4, 形式化验证, 分布式系统, SMT"
+      },
+      "json_ld": {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Veil Framework — 基于 Lean 4 的新一代迁移系统验证框架",
+        "description": "嵌入Lean 4证明助手的多模态迁移系统验证框架，融合自动验证与交互式证明双重能力，VC生成器具备机器检验的可靠性证明。",
+        "author": {
+          "@type": "Organization",
+          "name": "AnalysisDataFlow Project"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "AnalysisDataFlow"
+        },
+        "about": [
+          {
+            "@type": "Thing",
+            "name": "Veil Framework"
+          },
+          {
+            "@type": "Thing",
+            "name": "Lean 4",
+            "sameAs": "https://lean-lang.org/"
+          },
+          {
+            "@type": "Thing",
+            "name": "形式化验证"
+          }
+        ],
+        "proficiencyLevel": "Expert",
+        "dependencies": "TLA+工具箱, Ivy验证工具, 形式化验证工具对比"
+      }
+    },
+    {
+      "doc_path": "Knowledge/06-frontier/cd-raft-cross-domain-consensus.md",
+      "title": "CD-Raft: 跨域场景下的 Raft 共识优化 — Fast Return 与全局最优 Leader | AnalysisDataFlow",
+      "meta_description": "系统解析CD-Raft跨域共识优化：Fast Return策略将跨域RTT从2次削减至1次；Optimal Global Leader Position动态计算最优Leader部署位置；三域部署下平均延迟降低34-41%、P99降低42-53%；探讨对Flink Checkpoint JobManager高可用的启示。",
+      "keywords": [
+        "CD-Raft",
+        "跨域共识",
+        "Raft优化",
+        "Fast Return",
+        "广域网部署",
+        "分布式共识",
+        "跨域RTT",
+        "Leader位置优化",
+        "Flink高可用",
+        "JobManager",
+        "EPaxos对比",
+        "状态一致性"
+      ],
+      "open_graph": {
+        "og:title": "CD-Raft：跨域Raft共识的34-41%延迟优化与Fast Return策略",
+        "og:description": "arXiv 2026年3月最新工作——CD-Raft通过Fast Return和全局最优Leader位置策略，在三域部署中实现平均延迟降低34-41%，同时保持Raft的可理解性优势。",
+        "og:type": "article",
+        "og:site_name": "AnalysisDataFlow",
+        "article:section": "Knowledge / 前沿技术",
+        "article:tag": "CD-Raft, Raft, 跨域共识, 分布式系统, Flink高可用"
+      },
+      "json_ld": {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "CD-Raft: 跨域场景下的Raft共识优化",
+        "description": "针对标准Raft在WAN部署时的延迟瓶颈，提出Fast Return与Optimal Global Leader Position两项核心优化，实验验证显著延迟降低效果。",
+        "author": {
+          "@type": "Organization",
+          "name": "AnalysisDataFlow Project"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "AnalysisDataFlow"
+        },
+        "about": [
+          {
+            "@type": "Thing",
+            "name": "Raft",
+            "sameAs": "https://raft.github.io/"
+          },
+          {
+            "@type": "Thing",
+            "name": "分布式共识"
+          },
+          {
+            "@type": "Thing",
+            "name": "跨域部署"
+          }
+        ],
+        "proficiencyLevel": "Advanced",
+        "dependencies": "Flink Checkpoint机制深度解析, 分布式共识形式化证明"
+      }
+    },
+    {
+      "doc_path": "Flink/05-ecosystem/flink-dynamic-iceberg-sink-guide.md",
+      "title": "Flink Dynamic Iceberg Sink 完整指南 — 无感自动化流数据入湖 | AnalysisDataFlow",
+      "meta_description": "Apache Flink Dynamic Iceberg Sink深度指南：Topic-to-Table自动路由、运行时Schema Evolution、Auto-Table Creation、与Paimon/Delta Lake对比矩阵；包含Flink SQL/Table API/DataStream API完整配置及生产故障排查。",
+      "keywords": [
+        "Flink Dynamic Iceberg Sink",
+        "Apache Flink",
+        "Iceberg",
+        "数据湖",
+        "Schema Evolution",
+        "Topic-to-Table Routing",
+        "Auto-Table Creation",
+        "流数据入湖",
+        "Paimon",
+        "Delta Lake",
+        "Streaming ETL",
+        "Flink Table API"
+      ],
+      "open_graph": {
+        "og:title": "Flink Dynamic Iceberg Sink：2025年流计算与数据湖的无感自动化集成",
+        "og:description": "单个Flink作业动态路由数千Kafka Topic到Iceberg表，Schema变更自动演化无需重启——完整配置示例与生产最佳实践。",
+        "og:type": "article",
+        "og:site_name": "AnalysisDataFlow",
+        "article:section": "Flink / 生态系统",
+        "article:tag": "Flink, Iceberg, 数据湖, Schema Evolution, Dynamic Sink"
+      },
+      "json_ld": {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Flink Dynamic Iceberg Sink 完整指南",
+        "description": "Apache Flink于2025年11月发布的Dynamic Iceberg Sink模式，允许单个作业动态地将数千个Kafka Topic数据自动路由到对应Iceberg表，并在Schema变更时自动完成目标表Schema Evolution。",
+        "author": {
+          "@type": "Organization",
+          "name": "AnalysisDataFlow Project"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "AnalysisDataFlow"
+        },
+        "about": [
+          {
+            "@type": "Thing",
+            "name": "Apache Flink",
+            "sameAs": "https://flink.apache.org/"
+          },
+          {
+            "@type": "Thing",
+            "name": "Apache Iceberg",
+            "sameAs": "https://iceberg.apache.org/"
+          },
+          {
+            "@type": "Thing",
+            "name": "Schema Evolution"
+          }
+        ],
+        "proficiencyLevel": "Advanced",
+        "dependencies": "Flink Streaming ETL最佳实践, Flink Data-AI平台"
+      }
+    },
+    {
+      "doc_path": "Knowledge/06-frontier/streaming-data-mesh-architecture.md",
+      "title": "流处理 Data Mesh 架构与实时数据产品 — 去中心化流数据治理 | AnalysisDataFlow",
+      "meta_description": "流处理Data Mesh架构深度解析：域所有权、数据即产品、自服务平台、联邦治理四原则形式化；实时数据产品定义与数据契约；流数据域边界、Schema版本控制、SLA承诺的工程实践与架构决策。",
+      "keywords": [
+        "Data Mesh",
+        "实时数据产品",
+        "流处理架构",
+        "去中心化数据治理",
+        "数据契约",
+        "域所有权",
+        "联邦治理",
+        "自服务平台",
+        "Schema版本控制",
+        "数据血缘",
+        "流数据域"
+      ],
+      "open_graph": {
+        "og:title": "流处理Data Mesh架构：实时数据产品的去中心化治理范式",
+        "og:description": "将Data Mesh四原则形式化应用于流处理场景，建立实时数据产品与数据契约的严格定义，提供域自治与全局一致性的权衡框架。",
+        "og:type": "article",
+        "og:site_name": "AnalysisDataFlow",
+        "article:section": "Knowledge / 前沿技术",
+        "article:tag": "Data Mesh, 实时数据产品, 数据契约, 流处理架构"
+      },
+      "json_ld": {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "流处理Data Mesh架构与实时数据产品",
+        "description": "Data Mesh是一种去中心化的数据架构范式，将数据视为由独立域团队拥有和运营的产品。本文建立流处理场景下Data Mesh的形式化定义与实时数据产品的严格模型。",
+        "author": {
+          "@type": "Organization",
+          "name": "AnalysisDataFlow Project"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "AnalysisDataFlow"
+        },
+        "about": [
+          {
+            "@type": "Thing",
+            "name": "Data Mesh"
+          },
+          {
+            "@type": "Thing",
+            "name": "实时数据产品"
+          },
+          {
+            "@type": "Thing",
+            "name": "数据契约"
+          }
+        ],
+        "proficiencyLevel": "Advanced",
+        "dependencies": "Dataflow模型, 流处理设计模式"
+      }
+    },
+    {
+      "doc_path": "Struct/06-frontier/llm-guided-formal-proof-automation.md",
+      "title": "LLM 辅助形式化证明自动化 — TLA+/Coq/Lean 4 集成与可验证性框架 | AnalysisDataFlow",
+      "meta_description": "系统性形式化分析LLM辅助形式化证明自动化(LFPA)：证明生成成功率PGSR、策略推荐精确度、证明可验证性度量；覆盖Claude-3.7/DeepSeek-V3.2基准数据；建立与ATP的精确关系映射；TLA+/Lean 4/Coq工程实例。",
+      "keywords": [
+        "LLM辅助证明",
+        "形式化证明自动化",
+        "LFPA",
+        "TLA+",
+        "Coq",
+        "Lean 4",
+        "TLAPS",
+        "自动定理证明",
+        "证明合成",
+        "验证安全",
+        "神经定理证明",
+        "分布式协议验证"
+      ],
+      "open_graph": {
+        "og:title": "LLM辅助形式化证明自动化：42-50%证明率背后的理论与工程实践",
+        "og:description": "2025-2026形式化方法最活跃交叉方向——建立LFPA七元组工作流模型，量化分析Claude-3.7与DeepSeek-V3.2的证明生成能力，提出LLM生成证明的可验证性安全框架。",
+        "og:type": "article",
+        "og:site_name": "AnalysisDataFlow",
+        "article:section": "Struct / 前沿理论",
+        "article:tag": "LLM, 形式化验证, 自动定理证明, TLA+, Coq, Lean 4"
+      },
+      "json_ld": {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "LLM 辅助形式化证明自动化",
+        "description": "大型语言模型与形式化证明系统的融合正成为2025-2026年形式化方法领域最活跃的交叉方向。本文建立LFPA的形式化工作流模型与核心度量，基于主流基准测试数据进行量化分析。",
+        "author": {
+          "@type": "Organization",
+          "name": "AnalysisDataFlow Project"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "AnalysisDataFlow"
+        },
+        "about": [
+          {
+            "@type": "Thing",
+            "name": "Large Language Model"
+          },
+          {
+            "@type": "Thing",
+            "name": "Formal Verification"
+          },
+          {
+            "@type": "Thing",
+            "name": "Automated Theorem Proving"
+          }
+        ],
+        "proficiencyLevel": "Expert",
+        "dependencies": "形式化验证方法对比, 分布式快照形式化证明, AI Agent形式化方法"
+      }
+    }
+  ]
+}

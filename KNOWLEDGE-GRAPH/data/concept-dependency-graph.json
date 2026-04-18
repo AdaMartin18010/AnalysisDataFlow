@@ -2,123 +2,769 @@
   "name": "概念依赖关系图谱",
   "description": "AnalysisDataFlow项目概念之间的依赖关系网络",
   "version": "1.0",
-  "lastUpdated": "2026-04-04",
+  "lastUpdated": "2026-04-18",
   "nodes": [
-    {"id": "streaming-basics", "label": "流计算基础", "type": "foundation", "layer": 0, "importance": 10},
-    {"id": "batch-vs-stream", "label": "批流差异", "type": "foundation", "layer": 0, "importance": 8},
-    {"id": "unbounded-data", "label": "无界数据", "type": "concept", "layer": 1, "importance": 9},
-    {"id": "time-semantics", "label": "时间语义", "type": "foundation", "layer": 1, "importance": 10},
-    {"id": "event-time-concept", "label": "事件时间概念", "type": "concept", "layer": 2, "importance": 9},
-    {"id": "processing-time-concept", "label": "处理时间概念", "type": "concept", "layer": 2, "importance": 7},
-    {"id": "windowing-concept", "label": "窗口概念", "type": "concept", "layer": 2, "importance": 9},
-    {"id": "watermark-concept", "label": "Watermark概念", "type": "concept", "layer": 3, "importance": 9},
-    {"id": "trigger-concept", "label": "触发器概念", "type": "concept", "layer": 3, "importance": 8},
-    {"id": "consistency-model", "label": "一致性模型", "type": "foundation", "layer": 1, "importance": 10},
-    {"id": "exactly-once-concept", "label": "Exactly-Once概念", "type": "concept", "layer": 2, "importance": 10},
-    {"id": "at-least-once-concept", "label": "At-Least-Once概念", "type": "concept", "layer": 2, "importance": 8},
-    {"id": "idempotency", "label": "幂等性", "type": "concept", "layer": 3, "importance": 9},
-    {"id": "transaction-concept", "label": "事务概念", "type": "concept", "layer": 3, "importance": 8},
-    {"id": "state-concept", "label": "状态概念", "type": "foundation", "layer": 1, "importance": 9},
-    {"id": "stateful-processing", "label": "有状态处理", "type": "concept", "layer": 2, "importance": 9},
-    {"id": "state-backend-concept", "label": "状态后端概念", "type": "concept", "layer": 3, "importance": 8},
-    {"id": "fault-tolerance-concept", "label": "容错概念", "type": "foundation", "layer": 1, "importance": 10},
-    {"id": "checkpoint-concept", "label": "Checkpoint概念", "type": "concept", "layer": 2, "importance": 10},
-    {"id": "snapshot-concept", "label": "快照概念", "type": "concept", "layer": 3, "importance": 8},
-    {"id": "recovery-concept", "label": "恢复概念", "type": "concept", "layer": 3, "importance": 8},
-    {"id": "distributed-systems", "label": "分布式系统", "type": "foundation", "layer": 0, "importance": 9},
-    {"id": "parallelism-concept", "label": "并行度概念", "type": "concept", "layer": 1, "importance": 8},
-    {"id": "partitioning-concept", "label": "分区概念", "type": "concept", "layer": 2, "importance": 8},
-    {"id": "shuffle-concept", "label": "Shuffle概念", "type": "concept", "layer": 3, "importance": 7},
-    {"id": "keyby-concept", "label": "KeyBy概念", "type": "concept", "layer": 3, "importance": 8},
-    {"id": "backpressure-concept", "label": "背压概念", "type": "concept", "layer": 2, "importance": 8},
-    {"id": "resource-management", "label": "资源管理", "type": "concept", "layer": 2, "importance": 7},
-    {"id": "dataflow-model-concept", "label": "Dataflow模型", "type": "model", "layer": 1, "importance": 10},
-    {"id": "dag-concept", "label": "DAG概念", "type": "concept", "layer": 2, "importance": 8},
-    {"id": "operator-concept", "label": "算子概念", "type": "concept", "layer": 2, "importance": 9},
-    {"id": "source-sink", "label": "Source/Sink", "type": "concept", "layer": 2, "importance": 8},
-    {"id": "transformation-concept", "label": "转换概念", "type": "concept", "layer": 3, "importance": 8},
-    {"id": "actor-model-concept", "label": "Actor模型概念", "type": "model", "layer": 1, "importance": 7},
-    {"id": "csp-model-concept", "label": "CSP模型概念", "type": "model", "layer": 1, "importance": 7},
-    {"id": "pi-calculus-concept", "label": "π演算概念", "type": "model", "layer": 2, "importance": 6},
-    {"id": "lambda-arch-concept", "label": "Lambda架构概念", "type": "architecture", "layer": 2, "importance": 7},
-    {"id": "kappa-arch-concept", "label": "Kappa架构概念", "type": "architecture", "layer": 2, "importance": 8},
-    {"id": "streaming-join", "label": "流Join概念", "type": "concept", "layer": 3, "importance": 8},
-    {"id": "stream-table-join-concept", "label": "流表Join概念", "type": "concept", "layer": 4, "importance": 7},
-    {"id": "temporal-join-concept", "label": "时态Join概念", "type": "concept", "layer": 4, "importance": 7},
-    {"id": "lookup-join-concept", "label": "Lookup Join概念", "type": "concept", "layer": 4, "importance": 6},
-    {"id": "cep-concept", "label": "CEP概念", "type": "concept", "layer": 3, "importance": 7},
-    {"id": "pattern-matching", "label": "模式匹配", "type": "concept", "layer": 4, "importance": 6},
-    {"id": "sql-streaming", "label": "流SQL概念", "type": "concept", "layer": 3, "importance": 8},
-    {"id": "dynamic-table-concept", "label": "动态表概念", "type": "concept", "layer": 4, "importance": 7},
-    {"id": "changelog-concept", "label": "变更日志", "type": "concept", "layer": 4, "importance": 6},
-    {"id": "upsert-concept", "label": "Upsert概念", "type": "concept", "layer": 4, "importance": 6},
-    {"id": "retraction-concept", "label": "回撤概念", "type": "concept", "layer": 4, "importance": 6}
+    {
+      "id": "streaming-basics",
+      "label": "流计算基础",
+      "type": "foundation",
+      "layer": 0,
+      "importance": 10
+    },
+    {
+      "id": "batch-vs-stream",
+      "label": "批流差异",
+      "type": "foundation",
+      "layer": 0,
+      "importance": 8
+    },
+    {
+      "id": "unbounded-data",
+      "label": "无界数据",
+      "type": "concept",
+      "layer": 1,
+      "importance": 9
+    },
+    {
+      "id": "time-semantics",
+      "label": "时间语义",
+      "type": "foundation",
+      "layer": 1,
+      "importance": 10
+    },
+    {
+      "id": "event-time-concept",
+      "label": "事件时间概念",
+      "type": "concept",
+      "layer": 2,
+      "importance": 9
+    },
+    {
+      "id": "processing-time-concept",
+      "label": "处理时间概念",
+      "type": "concept",
+      "layer": 2,
+      "importance": 7
+    },
+    {
+      "id": "windowing-concept",
+      "label": "窗口概念",
+      "type": "concept",
+      "layer": 2,
+      "importance": 9
+    },
+    {
+      "id": "watermark-concept",
+      "label": "Watermark概念",
+      "type": "concept",
+      "layer": 3,
+      "importance": 9
+    },
+    {
+      "id": "trigger-concept",
+      "label": "触发器概念",
+      "type": "concept",
+      "layer": 3,
+      "importance": 8
+    },
+    {
+      "id": "consistency-model",
+      "label": "一致性模型",
+      "type": "foundation",
+      "layer": 1,
+      "importance": 10
+    },
+    {
+      "id": "exactly-once-concept",
+      "label": "Exactly-Once概念",
+      "type": "concept",
+      "layer": 2,
+      "importance": 10
+    },
+    {
+      "id": "at-least-once-concept",
+      "label": "At-Least-Once概念",
+      "type": "concept",
+      "layer": 2,
+      "importance": 8
+    },
+    {
+      "id": "idempotency",
+      "label": "幂等性",
+      "type": "concept",
+      "layer": 3,
+      "importance": 9
+    },
+    {
+      "id": "transaction-concept",
+      "label": "事务概念",
+      "type": "concept",
+      "layer": 3,
+      "importance": 8
+    },
+    {
+      "id": "state-concept",
+      "label": "状态概念",
+      "type": "foundation",
+      "layer": 1,
+      "importance": 9
+    },
+    {
+      "id": "stateful-processing",
+      "label": "有状态处理",
+      "type": "concept",
+      "layer": 2,
+      "importance": 9
+    },
+    {
+      "id": "state-backend-concept",
+      "label": "状态后端概念",
+      "type": "concept",
+      "layer": 3,
+      "importance": 8
+    },
+    {
+      "id": "fault-tolerance-concept",
+      "label": "容错概念",
+      "type": "foundation",
+      "layer": 1,
+      "importance": 10
+    },
+    {
+      "id": "checkpoint-concept",
+      "label": "Checkpoint概念",
+      "type": "concept",
+      "layer": 2,
+      "importance": 10
+    },
+    {
+      "id": "snapshot-concept",
+      "label": "快照概念",
+      "type": "concept",
+      "layer": 3,
+      "importance": 8
+    },
+    {
+      "id": "recovery-concept",
+      "label": "恢复概念",
+      "type": "concept",
+      "layer": 3,
+      "importance": 8
+    },
+    {
+      "id": "distributed-systems",
+      "label": "分布式系统",
+      "type": "foundation",
+      "layer": 0,
+      "importance": 9
+    },
+    {
+      "id": "parallelism-concept",
+      "label": "并行度概念",
+      "type": "concept",
+      "layer": 1,
+      "importance": 8
+    },
+    {
+      "id": "partitioning-concept",
+      "label": "分区概念",
+      "type": "concept",
+      "layer": 2,
+      "importance": 8
+    },
+    {
+      "id": "shuffle-concept",
+      "label": "Shuffle概念",
+      "type": "concept",
+      "layer": 3,
+      "importance": 7
+    },
+    {
+      "id": "keyby-concept",
+      "label": "KeyBy概念",
+      "type": "concept",
+      "layer": 3,
+      "importance": 8
+    },
+    {
+      "id": "backpressure-concept",
+      "label": "背压概念",
+      "type": "concept",
+      "layer": 2,
+      "importance": 8
+    },
+    {
+      "id": "resource-management",
+      "label": "资源管理",
+      "type": "concept",
+      "layer": 2,
+      "importance": 7
+    },
+    {
+      "id": "dataflow-model-concept",
+      "label": "Dataflow模型",
+      "type": "model",
+      "layer": 1,
+      "importance": 10
+    },
+    {
+      "id": "dag-concept",
+      "label": "DAG概念",
+      "type": "concept",
+      "layer": 2,
+      "importance": 8
+    },
+    {
+      "id": "operator-concept",
+      "label": "算子概念",
+      "type": "concept",
+      "layer": 2,
+      "importance": 9
+    },
+    {
+      "id": "source-sink",
+      "label": "Source/Sink",
+      "type": "concept",
+      "layer": 2,
+      "importance": 8
+    },
+    {
+      "id": "transformation-concept",
+      "label": "转换概念",
+      "type": "concept",
+      "layer": 3,
+      "importance": 8
+    },
+    {
+      "id": "actor-model-concept",
+      "label": "Actor模型概念",
+      "type": "model",
+      "layer": 1,
+      "importance": 7
+    },
+    {
+      "id": "csp-model-concept",
+      "label": "CSP模型概念",
+      "type": "model",
+      "layer": 1,
+      "importance": 7
+    },
+    {
+      "id": "pi-calculus-concept",
+      "label": "π演算概念",
+      "type": "model",
+      "layer": 2,
+      "importance": 6
+    },
+    {
+      "id": "lambda-arch-concept",
+      "label": "Lambda架构概念",
+      "type": "architecture",
+      "layer": 2,
+      "importance": 7
+    },
+    {
+      "id": "kappa-arch-concept",
+      "label": "Kappa架构概念",
+      "type": "architecture",
+      "layer": 2,
+      "importance": 8
+    },
+    {
+      "id": "streaming-join",
+      "label": "流Join概念",
+      "type": "concept",
+      "layer": 3,
+      "importance": 8
+    },
+    {
+      "id": "stream-table-join-concept",
+      "label": "流表Join概念",
+      "type": "concept",
+      "layer": 4,
+      "importance": 7
+    },
+    {
+      "id": "temporal-join-concept",
+      "label": "时态Join概念",
+      "type": "concept",
+      "layer": 4,
+      "importance": 7
+    },
+    {
+      "id": "lookup-join-concept",
+      "label": "Lookup Join概念",
+      "type": "concept",
+      "layer": 4,
+      "importance": 6
+    },
+    {
+      "id": "cep-concept",
+      "label": "CEP概念",
+      "type": "concept",
+      "layer": 3,
+      "importance": 7
+    },
+    {
+      "id": "pattern-matching",
+      "label": "模式匹配",
+      "type": "concept",
+      "layer": 4,
+      "importance": 6
+    },
+    {
+      "id": "sql-streaming",
+      "label": "流SQL概念",
+      "type": "concept",
+      "layer": 3,
+      "importance": 8
+    },
+    {
+      "id": "dynamic-table-concept",
+      "label": "动态表概念",
+      "type": "concept",
+      "layer": 4,
+      "importance": 7
+    },
+    {
+      "id": "changelog-concept",
+      "label": "变更日志",
+      "type": "concept",
+      "layer": 4,
+      "importance": 6
+    },
+    {
+      "id": "upsert-concept",
+      "label": "Upsert概念",
+      "type": "concept",
+      "layer": 4,
+      "importance": 6
+    },
+    {
+      "id": "retraction-concept",
+      "label": "回撤概念",
+      "type": "concept",
+      "layer": 4,
+      "importance": 6
+    },
+    {
+      "id": "llm-formal-proof",
+      "label": "LLM辅助形式化证明",
+      "type": "concept",
+      "layer": 4,
+      "importance": 7
+    },
+    {
+      "id": "veil-framework",
+      "label": "Veil验证框架",
+      "type": "tool",
+      "layer": 4,
+      "importance": 7
+    },
+    {
+      "id": "agent-contract",
+      "label": "Agent行为契约",
+      "type": "concept",
+      "layer": 4,
+      "importance": 8
+    },
+    {
+      "id": "nist-caisi",
+      "label": "NIST CAISI标准",
+      "type": "standard",
+      "layer": 3,
+      "importance": 7
+    },
+    {
+      "id": "cd-raft",
+      "label": "CD-Raft跨域共识",
+      "type": "concept",
+      "layer": 4,
+      "importance": 8
+    }
   ],
   "edges": [
-    {"source": "streaming-basics", "target": "batch-vs-stream", "type": "depends", "weight": 1},
-    {"source": "streaming-basics", "target": "unbounded-data", "type": "depends", "weight": 2},
-    {"source": "streaming-basics", "target": "time-semantics", "type": "depends", "weight": 2},
-    {"source": "time-semantics", "target": "event-time-concept", "type": "requires", "weight": 3},
-    {"source": "time-semantics", "target": "processing-time-concept", "type": "requires", "weight": 2},
-    {"source": "time-semantics", "target": "windowing-concept", "type": "requires", "weight": 3},
-    {"source": "event-time-concept", "target": "watermark-concept", "type": "requires", "weight": 3},
-    {"source": "windowing-concept", "target": "trigger-concept", "type": "requires", "weight": 2},
-    {"source": "streaming-basics", "target": "consistency-model", "type": "depends", "weight": 2},
-    {"source": "consistency-model", "target": "exactly-once-concept", "type": "requires", "weight": 3},
-    {"source": "consistency-model", "target": "at-least-once-concept", "type": "requires", "weight": 2},
-    {"source": "exactly-once-concept", "target": "idempotency", "type": "requires", "weight": 2},
-    {"source": "exactly-once-concept", "target": "transaction-concept", "type": "requires", "weight": 2},
-    {"source": "streaming-basics", "target": "state-concept", "type": "depends", "weight": 2},
-    {"source": "state-concept", "target": "stateful-processing", "type": "requires", "weight": 3},
-    {"source": "stateful-processing", "target": "state-backend-concept", "type": "requires", "weight": 2},
-    {"source": "state-concept", "target": "fault-tolerance-concept", "type": "requires", "weight": 2},
-    {"source": "fault-tolerance-concept", "target": "checkpoint-concept", "type": "requires", "weight": 3},
-    {"source": "checkpoint-concept", "target": "snapshot-concept", "type": "requires", "weight": 2},
-    {"source": "checkpoint-concept", "target": "recovery-concept", "type": "enables", "weight": 2},
-    {"source": "distributed-systems", "target": "streaming-basics", "type": "supports", "weight": 1},
-    {"source": "distributed-systems", "target": "parallelism-concept", "type": "requires", "weight": 2},
-    {"source": "parallelism-concept", "target": "partitioning-concept", "type": "requires", "weight": 3},
-    {"source": "partitioning-concept", "target": "shuffle-concept", "type": "requires", "weight": 2},
-    {"source": "partitioning-concept", "target": "keyby-concept", "type": "requires", "weight": 3},
-    {"source": "distributed-systems", "target": "backpressure-concept", "type": "requires", "weight": 2},
-    {"source": "distributed-systems", "target": "resource-management", "type": "requires", "weight": 2},
-    {"source": "streaming-basics", "target": "dataflow-model-concept", "type": "uses", "weight": 1},
-    {"source": "dataflow-model-concept", "target": "dag-concept", "type": "uses", "weight": 2},
-    {"source": "dataflow-model-concept", "target": "operator-concept", "type": "uses", "weight": 3},
-    {"source": "dataflow-model-concept", "target": "source-sink", "type": "uses", "weight": 3},
-    {"source": "operator-concept", "target": "transformation-concept", "type": "includes", "weight": 2},
-    {"source": "streaming-basics", "target": "actor-model-concept", "type": "alternative", "weight": 1},
-    {"source": "streaming-basics", "target": "csp-model-concept", "type": "alternative", "weight": 1},
-    {"source": "actor-model-concept", "target": "pi-calculus-concept", "type": "extends", "weight": 2},
-    {"source": "streaming-basics", "target": "lambda-arch-concept", "type": "uses", "weight": 1},
-    {"source": "streaming-basics", "target": "kappa-arch-concept", "type": "uses", "weight": 2},
-    {"source": "dataflow-model-concept", "target": "streaming-join", "type": "supports", "weight": 2},
-    {"source": "streaming-join", "target": "stream-table-join-concept", "type": "includes", "weight": 2},
-    {"source": "streaming-join", "target": "temporal-join-concept", "type": "includes", "weight": 2},
-    {"source": "streaming-join", "target": "lookup-join-concept", "type": "includes", "weight": 1},
-    {"source": "dataflow-model-concept", "target": "cep-concept", "type": "supports", "weight": 2},
-    {"source": "cep-concept", "target": "pattern-matching", "type": "requires", "weight": 3},
-    {"source": "dataflow-model-concept", "target": "sql-streaming", "type": "supports", "weight": 2},
-    {"source": "sql-streaming", "target": "dynamic-table-concept", "type": "requires", "weight": 3},
-    {"source": "dynamic-table-concept", "target": "changelog-concept", "type": "requires", "weight": 2},
-    {"source": "changelog-concept", "target": "upsert-concept", "type": "uses", "weight": 2},
-    {"source": "changelog-concept", "target": "retraction-concept", "type": "uses", "weight": 2}
+    {
+      "source": "streaming-basics",
+      "target": "batch-vs-stream",
+      "type": "depends",
+      "weight": 1
+    },
+    {
+      "source": "streaming-basics",
+      "target": "unbounded-data",
+      "type": "depends",
+      "weight": 2
+    },
+    {
+      "source": "streaming-basics",
+      "target": "time-semantics",
+      "type": "depends",
+      "weight": 2
+    },
+    {
+      "source": "time-semantics",
+      "target": "event-time-concept",
+      "type": "requires",
+      "weight": 3
+    },
+    {
+      "source": "time-semantics",
+      "target": "processing-time-concept",
+      "type": "requires",
+      "weight": 2
+    },
+    {
+      "source": "time-semantics",
+      "target": "windowing-concept",
+      "type": "requires",
+      "weight": 3
+    },
+    {
+      "source": "event-time-concept",
+      "target": "watermark-concept",
+      "type": "requires",
+      "weight": 3
+    },
+    {
+      "source": "windowing-concept",
+      "target": "trigger-concept",
+      "type": "requires",
+      "weight": 2
+    },
+    {
+      "source": "streaming-basics",
+      "target": "consistency-model",
+      "type": "depends",
+      "weight": 2
+    },
+    {
+      "source": "consistency-model",
+      "target": "exactly-once-concept",
+      "type": "requires",
+      "weight": 3
+    },
+    {
+      "source": "consistency-model",
+      "target": "at-least-once-concept",
+      "type": "requires",
+      "weight": 2
+    },
+    {
+      "source": "exactly-once-concept",
+      "target": "idempotency",
+      "type": "requires",
+      "weight": 2
+    },
+    {
+      "source": "exactly-once-concept",
+      "target": "transaction-concept",
+      "type": "requires",
+      "weight": 2
+    },
+    {
+      "source": "streaming-basics",
+      "target": "state-concept",
+      "type": "depends",
+      "weight": 2
+    },
+    {
+      "source": "state-concept",
+      "target": "stateful-processing",
+      "type": "requires",
+      "weight": 3
+    },
+    {
+      "source": "stateful-processing",
+      "target": "state-backend-concept",
+      "type": "requires",
+      "weight": 2
+    },
+    {
+      "source": "state-concept",
+      "target": "fault-tolerance-concept",
+      "type": "requires",
+      "weight": 2
+    },
+    {
+      "source": "fault-tolerance-concept",
+      "target": "checkpoint-concept",
+      "type": "requires",
+      "weight": 3
+    },
+    {
+      "source": "checkpoint-concept",
+      "target": "snapshot-concept",
+      "type": "requires",
+      "weight": 2
+    },
+    {
+      "source": "checkpoint-concept",
+      "target": "recovery-concept",
+      "type": "enables",
+      "weight": 2
+    },
+    {
+      "source": "distributed-systems",
+      "target": "streaming-basics",
+      "type": "supports",
+      "weight": 1
+    },
+    {
+      "source": "distributed-systems",
+      "target": "parallelism-concept",
+      "type": "requires",
+      "weight": 2
+    },
+    {
+      "source": "parallelism-concept",
+      "target": "partitioning-concept",
+      "type": "requires",
+      "weight": 3
+    },
+    {
+      "source": "partitioning-concept",
+      "target": "shuffle-concept",
+      "type": "requires",
+      "weight": 2
+    },
+    {
+      "source": "partitioning-concept",
+      "target": "keyby-concept",
+      "type": "requires",
+      "weight": 3
+    },
+    {
+      "source": "distributed-systems",
+      "target": "backpressure-concept",
+      "type": "requires",
+      "weight": 2
+    },
+    {
+      "source": "distributed-systems",
+      "target": "resource-management",
+      "type": "requires",
+      "weight": 2
+    },
+    {
+      "source": "streaming-basics",
+      "target": "dataflow-model-concept",
+      "type": "uses",
+      "weight": 1
+    },
+    {
+      "source": "dataflow-model-concept",
+      "target": "dag-concept",
+      "type": "uses",
+      "weight": 2
+    },
+    {
+      "source": "dataflow-model-concept",
+      "target": "operator-concept",
+      "type": "uses",
+      "weight": 3
+    },
+    {
+      "source": "dataflow-model-concept",
+      "target": "source-sink",
+      "type": "uses",
+      "weight": 3
+    },
+    {
+      "source": "operator-concept",
+      "target": "transformation-concept",
+      "type": "includes",
+      "weight": 2
+    },
+    {
+      "source": "streaming-basics",
+      "target": "actor-model-concept",
+      "type": "alternative",
+      "weight": 1
+    },
+    {
+      "source": "streaming-basics",
+      "target": "csp-model-concept",
+      "type": "alternative",
+      "weight": 1
+    },
+    {
+      "source": "actor-model-concept",
+      "target": "pi-calculus-concept",
+      "type": "extends",
+      "weight": 2
+    },
+    {
+      "source": "streaming-basics",
+      "target": "lambda-arch-concept",
+      "type": "uses",
+      "weight": 1
+    },
+    {
+      "source": "streaming-basics",
+      "target": "kappa-arch-concept",
+      "type": "uses",
+      "weight": 2
+    },
+    {
+      "source": "dataflow-model-concept",
+      "target": "streaming-join",
+      "type": "supports",
+      "weight": 2
+    },
+    {
+      "source": "streaming-join",
+      "target": "stream-table-join-concept",
+      "type": "includes",
+      "weight": 2
+    },
+    {
+      "source": "streaming-join",
+      "target": "temporal-join-concept",
+      "type": "includes",
+      "weight": 2
+    },
+    {
+      "source": "streaming-join",
+      "target": "lookup-join-concept",
+      "type": "includes",
+      "weight": 1
+    },
+    {
+      "source": "dataflow-model-concept",
+      "target": "cep-concept",
+      "type": "supports",
+      "weight": 2
+    },
+    {
+      "source": "cep-concept",
+      "target": "pattern-matching",
+      "type": "requires",
+      "weight": 3
+    },
+    {
+      "source": "dataflow-model-concept",
+      "target": "sql-streaming",
+      "type": "supports",
+      "weight": 2
+    },
+    {
+      "source": "sql-streaming",
+      "target": "dynamic-table-concept",
+      "type": "requires",
+      "weight": 3
+    },
+    {
+      "source": "dynamic-table-concept",
+      "target": "changelog-concept",
+      "type": "requires",
+      "weight": 2
+    },
+    {
+      "source": "changelog-concept",
+      "target": "upsert-concept",
+      "type": "uses",
+      "weight": 2
+    },
+    {
+      "source": "changelog-concept",
+      "target": "retraction-concept",
+      "type": "uses",
+      "weight": 2
+    },
+    {
+      "source": "llm-formal-proof",
+      "target": "temporal-logic",
+      "type": "requires",
+      "weight": 2
+    },
+    {
+      "source": "veil-framework",
+      "target": "distributed-systems",
+      "type": "applies-to",
+      "weight": 2
+    },
+    {
+      "source": "agent-contract",
+      "target": "consistency-model",
+      "type": "requires",
+      "weight": 2
+    },
+    {
+      "source": "nist-caisi",
+      "target": "distributed-systems",
+      "type": "governs",
+      "weight": 2
+    },
+    {
+      "source": "cd-raft",
+      "target": "consistency-model",
+      "type": "requires",
+      "weight": 3
+    }
   ],
   "layers": {
-    "0": {"label": "基础层", "color": "#2ECC71"},
-    "1": {"label": "核心概念层", "color": "#3498DB"},
-    "2": {"label": "语义层", "color": "#9B59B6"},
-    "3": {"label": "机制层", "color": "#E67E22"},
-    "4": {"label": "应用层", "color": "#E74C3C"}
+    "0": {
+      "label": "基础层",
+      "color": "#2ECC71"
+    },
+    "1": {
+      "label": "核心概念层",
+      "color": "#3498DB"
+    },
+    "2": {
+      "label": "语义层",
+      "color": "#9B59B6"
+    },
+    "3": {
+      "label": "机制层",
+      "color": "#E67E22"
+    },
+    "4": {
+      "label": "应用层",
+      "color": "#E74C3C"
+    }
   },
   "relationTypes": {
-    "depends": {"label": "依赖", "color": "#E74C3C", "style": "solid"},
-    "requires": {"label": "需要", "color": "#F39C12", "style": "solid"},
-    "supports": {"label": "支持", "color": "#27AE60", "style": "solid"},
-    "enables": {"label": "启用", "color": "#16A085", "style": "solid"},
-    "uses": {"label": "使用", "color": "#3498DB", "style": "solid"},
-    "includes": {"label": "包含", "color": "#7F8C8D", "style": "solid"},
-    "extends": {"label": "扩展", "color": "#9B59B6", "style": "dashed"},
-    "alternative": {"label": "替代", "color": "#95A5A6", "style": "dotted"}
+    "depends": {
+      "label": "依赖",
+      "color": "#E74C3C",
+      "style": "solid"
+    },
+    "requires": {
+      "label": "需要",
+      "color": "#F39C12",
+      "style": "solid"
+    },
+    "supports": {
+      "label": "支持",
+      "color": "#27AE60",
+      "style": "solid"
+    },
+    "enables": {
+      "label": "启用",
+      "color": "#16A085",
+      "style": "solid"
+    },
+    "uses": {
+      "label": "使用",
+      "color": "#3498DB",
+      "style": "solid"
+    },
+    "includes": {
+      "label": "包含",
+      "color": "#7F8C8D",
+      "style": "solid"
+    },
+    "extends": {
+      "label": "扩展",
+      "color": "#9B59B6",
+      "style": "dashed"
+    },
+    "alternative": {
+      "label": "替代",
+      "color": "#95A5A6",
+      "style": "dotted"
+    }
   }
 }

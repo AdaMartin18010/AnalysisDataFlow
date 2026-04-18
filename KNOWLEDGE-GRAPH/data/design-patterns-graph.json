@@ -2,168 +2,1061 @@
   "name": "流计算设计模式图谱",
   "description": "流计算系统设计模式与最佳实践知识图谱",
   "version": "1.0",
-  "lastUpdated": "2026-04-04",
+  "lastUpdated": "2026-04-18",
   "nodes": [
-    {"id": "event-sourcing", "label": "事件溯源", "type": "pattern", "category": "architecture", "level": 5, "description": "以事件为事实来源的架构模式"},
-    {"id": "cqrs", "label": "CQRS", "type": "pattern", "category": "architecture", "level": 5, "description": "命令查询职责分离"},
-    {"id": "materialized-view-pattern", "label": "物化视图模式", "type": "pattern", "category": "architecture", "level": 4, "description": "预计算查询视图"},
-    {"id": "lambda-architecture", "label": "Lambda架构", "type": "pattern", "category": "architecture", "level": 4, "description": "批流分离架构"},
-    {"id": "kappa-architecture", "label": "Kappa架构", "type": "pattern", "category": "architecture", "level": 5, "description": "纯流式架构"},
-    {"id": "microservices-streaming", "label": "流式微服务", "type": "pattern", "category": "architecture", "level": 4, "description": "事件驱动的微服务"},
-    {"id": "saga-pattern", "label": "Saga模式", "type": "pattern", "category": "transaction", "level": 5, "description": "长事务补偿模式"},
-    {"id": "outbox-pattern", "label": "Outbox模式", "type": "pattern", "category": "integration", "level": 5, "description": "可靠事件发布"},
-    {"id": "transactional-outbox", "label": "事务Outbox", "type": "pattern", "category": "integration", "level": 5, "description": "事务性消息发布"},
-    {"id": "idempotent-consumer", "label": "幂等消费者", "type": "pattern", "category": "messaging", "level": 5, "description": "幂等消息处理"},
-    {"id": "competing-consumers", "label": "竞争消费者", "type": "pattern", "category": "messaging", "level": 4, "description": "多实例消费"},
-    {"id": "message-router", "label": "消息路由", "type": "pattern", "category": "messaging", "level": 4, "description": "动态消息分发"},
-    {"id": "content-based-router", "label": "基于内容路由", "type": "pattern", "category": "messaging", "level": 4, "description": "消息内容路由"},
-    {"id": "splitter", "label": "消息拆分", "type": "pattern", "category": "messaging", "level": 4, "description": "批量消息拆分"},
-    {"id": "aggregator", "label": "消息聚合", "type": "pattern", "category": "messaging", "level": 4, "description": "相关消息聚合"},
-    {"id": "scatter-gather", "label": "Scatter-Gather", "type": "pattern", "category": "messaging", "level": 4, "description": "分发-收集模式"},
-    {"id": "claim-check", "label": "Claim Check", "type": "pattern", "category": "messaging", "level": 3, "description": "大消息存储引用"},
-    {"id": "dead-letter-queue", "label": "死信队列", "type": "pattern", "category": "messaging", "level": 5, "description": "错误消息处理"},
-    {"id": "circuit-breaker", "label": "熔断器", "type": "pattern", "category": "resilience", "level": 5, "description": "故障快速失败"},
-    {"id": "bulkhead", "label": "舱壁隔离", "type": "pattern", "category": "resilience", "level": 4, "description": "资源隔离保护"},
-    {"id": "timeout", "label": "超时", "type": "pattern", "category": "resilience", "level": 4, "description": "调用超时控制"},
-    {"id": "retry", "label": "重试", "type": "pattern", "category": "resilience", "level": 4, "description": "失败重试机制"},
-    {"id": "fallback", "label": "降级", "type": "pattern", "category": "resilience", "level": 4, "description": "优雅降级"},
-    {"id": "rate-limiter", "label": "限流", "type": "pattern", "category": "resilience", "level": 4, "description": "流量控制"},
-    {"id": "load-shedding", "label": "负载削减", "type": "pattern", "category": "resilience", "level": 3, "description": "过载丢弃"},
-    {"id": "priority-queue", "label": "优先级队列", "type": "pattern", "category": "queue", "level": 4, "description": "基于优先级处理"},
-    {"id": "throttling", "label": "节流", "type": "pattern", "category": "flow-control", "level": 4, "description": "请求速率限制"},
-    {"id": "buffering", "label": "缓冲", "type": "pattern", "category": "flow-control", "level": 4, "description": "数据缓冲暂存"},
-    {"id": "debouncing", "label": "防抖", "type": "pattern", "category": "stream-processing", "level": 4, "description": "快速事件去抖"},
-    {"id": "throttling-stream", "label": "流节流", "type": "pattern", "category": "stream-processing", "level": 4, "description": "流速率控制"},
-    {"id": "deduplication-pattern", "label": "去重模式", "type": "pattern", "category": "stream-processing", "level": 5, "description": "重复数据消除"},
-    {"id": "event-enrichment", "label": "事件增强", "type": "pattern", "category": "stream-processing", "level": 4, "description": "事件数据增强"},
-    {"id": "event-filtering", "label": "事件过滤", "type": "pattern", "category": "stream-processing", "level": 4, "description": "条件事件过滤"},
-    {"id": "event-transformation", "label": "事件转换", "type": "pattern", "category": "stream-processing", "level": 4, "description": "事件格式转换"},
-    {"id": "event-splitting", "label": "事件拆分", "type": "pattern", "category": "stream-processing", "level": 4, "description": "复合事件拆分"},
-    {"id": "stream-join-pattern", "label": "流关联模式", "type": "pattern", "category": "stream-processing", "level": 5, "description": "多流关联"},
-    {"id": "stream-windowing", "label": "流窗口模式", "type": "pattern", "category": "stream-processing", "level": 5, "description": "流数据窗口化"},
-    {"id": "sessionization", "label": "会话化", "type": "pattern", "category": "stream-processing", "level": 4, "description": "用户会话识别"},
-    {"id": "pattern-detection", "label": "模式检测", "type": "pattern", "category": "cep", "level": 5, "description": "复杂事件模式"},
-    {"id": "sequence-detection", "label": "序列检测", "type": "pattern", "category": "cep", "level": 4, "description": "事件序列识别"},
-    {"id": "correlation-detection", "label": "关联检测", "type": "pattern", "category": "cep", "level": 4, "description": "事件关联识别"},
-    {"id": "absence-detection", "label": "缺失检测", "type": "pattern", "category": "cep", "level": 4, "description": "事件缺失检测"},
-    {"id": "temporal-constraint", "label": "时序约束", "type": "pattern", "category": "cep", "level": 4, "description": "时间窗口约束"},
-    {"id": "master-data-cache", "label": "主数据缓存", "type": "pattern", "category": "data", "level": 4, "description": "维表缓存"},
-    {"id": "local-cache", "label": "本地缓存", "type": "pattern", "category": "data", "level": 4, "description": "进程内缓存"},
-    {"id": "distributed-cache", "label": "分布式缓存", "type": "pattern", "category": "data", "level": 4, "description": "分布式缓存"},
-    {"id": "cache-aside", "label": "旁路缓存", "type": "pattern", "category": "data", "level": 4, "description": "读时回填缓存"},
-    {"id": "write-through", "label": "直写缓存", "type": "pattern", "category": "data", "level": 3, "description": "同步写缓存"},
-    {"id": "write-behind", "label": "后写缓存", "type": "pattern", "category": "data", "level": 3, "description": "异步写缓存"},
-    {"id": "multi-tenant", "label": "多租户", "type": "pattern", "category": "deployment", "level": 4, "description": "租户隔离"},
-    {"id": "blue-green", "label": "蓝绿部署", "type": "pattern", "category": "deployment", "level": 4, "description": "零停机部署"},
-    {"id": "canary-release", "label": "金丝雀发布", "type": "pattern", "category": "deployment", "level": 4, "description": "灰度发布"},
-    {"id": "feature-toggle", "label": "特性开关", "type": "pattern", "category": "deployment", "level": 3, "description": "运行时特性控制"},
-    {"id": "schema-registry", "label": "Schema注册", "type": "pattern", "category": "data", "level": 5, "description": "数据Schema管理"},
-    {"id": "schema-evolution", "label": "Schema演进", "type": "pattern", "category": "data", "level": 4, "description": "向后兼容演进"},
-    {"id": "data-quality", "label": "数据质量", "type": "pattern", "category": "governance", "level": 4, "description": "数据质量监控"},
-    {"id": "data-lineage", "label": "数据血缘", "type": "pattern", "category": "governance", "level": 4, "description": "数据流转追踪"},
-    {"id": "data-catalog", "label": "数据目录", "type": "pattern", "category": "governance", "level": 3, "description": "元数据管理"},
-    {"id": "alerting", "label": "告警", "type": "pattern", "category": "observability", "level": 4, "description": "异常告警"},
-    {"id": "monitoring-dashboard", "label": "监控大屏", "type": "pattern", "category": "observability", "level": 4, "description": "可视化监控"},
-    {"id": "distributed-tracing", "label": "分布式追踪", "type": "pattern", "category": "observability", "level": 5, "description": "请求链路追踪"},
-    {"id": "structured-logging", "label": "结构化日志", "type": "pattern", "category": "observability", "level": 4, "description": "结构化日志记录"},
-    {"id": "metric-collection", "label": "指标收集", "type": "pattern", "category": "observability", "level": 4, "description": "运行时指标"}
+    {
+      "id": "event-sourcing",
+      "label": "事件溯源",
+      "type": "pattern",
+      "category": "architecture",
+      "level": 5,
+      "description": "以事件为事实来源的架构模式"
+    },
+    {
+      "id": "cqrs",
+      "label": "CQRS",
+      "type": "pattern",
+      "category": "architecture",
+      "level": 5,
+      "description": "命令查询职责分离"
+    },
+    {
+      "id": "materialized-view-pattern",
+      "label": "物化视图模式",
+      "type": "pattern",
+      "category": "architecture",
+      "level": 4,
+      "description": "预计算查询视图"
+    },
+    {
+      "id": "lambda-architecture",
+      "label": "Lambda架构",
+      "type": "pattern",
+      "category": "architecture",
+      "level": 4,
+      "description": "批流分离架构"
+    },
+    {
+      "id": "kappa-architecture",
+      "label": "Kappa架构",
+      "type": "pattern",
+      "category": "architecture",
+      "level": 5,
+      "description": "纯流式架构"
+    },
+    {
+      "id": "microservices-streaming",
+      "label": "流式微服务",
+      "type": "pattern",
+      "category": "architecture",
+      "level": 4,
+      "description": "事件驱动的微服务"
+    },
+    {
+      "id": "saga-pattern",
+      "label": "Saga模式",
+      "type": "pattern",
+      "category": "transaction",
+      "level": 5,
+      "description": "长事务补偿模式"
+    },
+    {
+      "id": "outbox-pattern",
+      "label": "Outbox模式",
+      "type": "pattern",
+      "category": "integration",
+      "level": 5,
+      "description": "可靠事件发布"
+    },
+    {
+      "id": "transactional-outbox",
+      "label": "事务Outbox",
+      "type": "pattern",
+      "category": "integration",
+      "level": 5,
+      "description": "事务性消息发布"
+    },
+    {
+      "id": "idempotent-consumer",
+      "label": "幂等消费者",
+      "type": "pattern",
+      "category": "messaging",
+      "level": 5,
+      "description": "幂等消息处理"
+    },
+    {
+      "id": "competing-consumers",
+      "label": "竞争消费者",
+      "type": "pattern",
+      "category": "messaging",
+      "level": 4,
+      "description": "多实例消费"
+    },
+    {
+      "id": "message-router",
+      "label": "消息路由",
+      "type": "pattern",
+      "category": "messaging",
+      "level": 4,
+      "description": "动态消息分发"
+    },
+    {
+      "id": "content-based-router",
+      "label": "基于内容路由",
+      "type": "pattern",
+      "category": "messaging",
+      "level": 4,
+      "description": "消息内容路由"
+    },
+    {
+      "id": "splitter",
+      "label": "消息拆分",
+      "type": "pattern",
+      "category": "messaging",
+      "level": 4,
+      "description": "批量消息拆分"
+    },
+    {
+      "id": "aggregator",
+      "label": "消息聚合",
+      "type": "pattern",
+      "category": "messaging",
+      "level": 4,
+      "description": "相关消息聚合"
+    },
+    {
+      "id": "scatter-gather",
+      "label": "Scatter-Gather",
+      "type": "pattern",
+      "category": "messaging",
+      "level": 4,
+      "description": "分发-收集模式"
+    },
+    {
+      "id": "claim-check",
+      "label": "Claim Check",
+      "type": "pattern",
+      "category": "messaging",
+      "level": 3,
+      "description": "大消息存储引用"
+    },
+    {
+      "id": "dead-letter-queue",
+      "label": "死信队列",
+      "type": "pattern",
+      "category": "messaging",
+      "level": 5,
+      "description": "错误消息处理"
+    },
+    {
+      "id": "circuit-breaker",
+      "label": "熔断器",
+      "type": "pattern",
+      "category": "resilience",
+      "level": 5,
+      "description": "故障快速失败"
+    },
+    {
+      "id": "bulkhead",
+      "label": "舱壁隔离",
+      "type": "pattern",
+      "category": "resilience",
+      "level": 4,
+      "description": "资源隔离保护"
+    },
+    {
+      "id": "timeout",
+      "label": "超时",
+      "type": "pattern",
+      "category": "resilience",
+      "level": 4,
+      "description": "调用超时控制"
+    },
+    {
+      "id": "retry",
+      "label": "重试",
+      "type": "pattern",
+      "category": "resilience",
+      "level": 4,
+      "description": "失败重试机制"
+    },
+    {
+      "id": "fallback",
+      "label": "降级",
+      "type": "pattern",
+      "category": "resilience",
+      "level": 4,
+      "description": "优雅降级"
+    },
+    {
+      "id": "rate-limiter",
+      "label": "限流",
+      "type": "pattern",
+      "category": "resilience",
+      "level": 4,
+      "description": "流量控制"
+    },
+    {
+      "id": "load-shedding",
+      "label": "负载削减",
+      "type": "pattern",
+      "category": "resilience",
+      "level": 3,
+      "description": "过载丢弃"
+    },
+    {
+      "id": "priority-queue",
+      "label": "优先级队列",
+      "type": "pattern",
+      "category": "queue",
+      "level": 4,
+      "description": "基于优先级处理"
+    },
+    {
+      "id": "throttling",
+      "label": "节流",
+      "type": "pattern",
+      "category": "flow-control",
+      "level": 4,
+      "description": "请求速率限制"
+    },
+    {
+      "id": "buffering",
+      "label": "缓冲",
+      "type": "pattern",
+      "category": "flow-control",
+      "level": 4,
+      "description": "数据缓冲暂存"
+    },
+    {
+      "id": "debouncing",
+      "label": "防抖",
+      "type": "pattern",
+      "category": "stream-processing",
+      "level": 4,
+      "description": "快速事件去抖"
+    },
+    {
+      "id": "throttling-stream",
+      "label": "流节流",
+      "type": "pattern",
+      "category": "stream-processing",
+      "level": 4,
+      "description": "流速率控制"
+    },
+    {
+      "id": "deduplication-pattern",
+      "label": "去重模式",
+      "type": "pattern",
+      "category": "stream-processing",
+      "level": 5,
+      "description": "重复数据消除"
+    },
+    {
+      "id": "event-enrichment",
+      "label": "事件增强",
+      "type": "pattern",
+      "category": "stream-processing",
+      "level": 4,
+      "description": "事件数据增强"
+    },
+    {
+      "id": "event-filtering",
+      "label": "事件过滤",
+      "type": "pattern",
+      "category": "stream-processing",
+      "level": 4,
+      "description": "条件事件过滤"
+    },
+    {
+      "id": "event-transformation",
+      "label": "事件转换",
+      "type": "pattern",
+      "category": "stream-processing",
+      "level": 4,
+      "description": "事件格式转换"
+    },
+    {
+      "id": "event-splitting",
+      "label": "事件拆分",
+      "type": "pattern",
+      "category": "stream-processing",
+      "level": 4,
+      "description": "复合事件拆分"
+    },
+    {
+      "id": "stream-join-pattern",
+      "label": "流关联模式",
+      "type": "pattern",
+      "category": "stream-processing",
+      "level": 5,
+      "description": "多流关联"
+    },
+    {
+      "id": "stream-windowing",
+      "label": "流窗口模式",
+      "type": "pattern",
+      "category": "stream-processing",
+      "level": 5,
+      "description": "流数据窗口化"
+    },
+    {
+      "id": "sessionization",
+      "label": "会话化",
+      "type": "pattern",
+      "category": "stream-processing",
+      "level": 4,
+      "description": "用户会话识别"
+    },
+    {
+      "id": "pattern-detection",
+      "label": "模式检测",
+      "type": "pattern",
+      "category": "cep",
+      "level": 5,
+      "description": "复杂事件模式"
+    },
+    {
+      "id": "sequence-detection",
+      "label": "序列检测",
+      "type": "pattern",
+      "category": "cep",
+      "level": 4,
+      "description": "事件序列识别"
+    },
+    {
+      "id": "correlation-detection",
+      "label": "关联检测",
+      "type": "pattern",
+      "category": "cep",
+      "level": 4,
+      "description": "事件关联识别"
+    },
+    {
+      "id": "absence-detection",
+      "label": "缺失检测",
+      "type": "pattern",
+      "category": "cep",
+      "level": 4,
+      "description": "事件缺失检测"
+    },
+    {
+      "id": "temporal-constraint",
+      "label": "时序约束",
+      "type": "pattern",
+      "category": "cep",
+      "level": 4,
+      "description": "时间窗口约束"
+    },
+    {
+      "id": "master-data-cache",
+      "label": "主数据缓存",
+      "type": "pattern",
+      "category": "data",
+      "level": 4,
+      "description": "维表缓存"
+    },
+    {
+      "id": "local-cache",
+      "label": "本地缓存",
+      "type": "pattern",
+      "category": "data",
+      "level": 4,
+      "description": "进程内缓存"
+    },
+    {
+      "id": "distributed-cache",
+      "label": "分布式缓存",
+      "type": "pattern",
+      "category": "data",
+      "level": 4,
+      "description": "分布式缓存"
+    },
+    {
+      "id": "cache-aside",
+      "label": "旁路缓存",
+      "type": "pattern",
+      "category": "data",
+      "level": 4,
+      "description": "读时回填缓存"
+    },
+    {
+      "id": "write-through",
+      "label": "直写缓存",
+      "type": "pattern",
+      "category": "data",
+      "level": 3,
+      "description": "同步写缓存"
+    },
+    {
+      "id": "write-behind",
+      "label": "后写缓存",
+      "type": "pattern",
+      "category": "data",
+      "level": 3,
+      "description": "异步写缓存"
+    },
+    {
+      "id": "multi-tenant",
+      "label": "多租户",
+      "type": "pattern",
+      "category": "deployment",
+      "level": 4,
+      "description": "租户隔离"
+    },
+    {
+      "id": "blue-green",
+      "label": "蓝绿部署",
+      "type": "pattern",
+      "category": "deployment",
+      "level": 4,
+      "description": "零停机部署"
+    },
+    {
+      "id": "canary-release",
+      "label": "金丝雀发布",
+      "type": "pattern",
+      "category": "deployment",
+      "level": 4,
+      "description": "灰度发布"
+    },
+    {
+      "id": "feature-toggle",
+      "label": "特性开关",
+      "type": "pattern",
+      "category": "deployment",
+      "level": 3,
+      "description": "运行时特性控制"
+    },
+    {
+      "id": "schema-registry",
+      "label": "Schema注册",
+      "type": "pattern",
+      "category": "data",
+      "level": 5,
+      "description": "数据Schema管理"
+    },
+    {
+      "id": "schema-evolution",
+      "label": "Schema演进",
+      "type": "pattern",
+      "category": "data",
+      "level": 4,
+      "description": "向后兼容演进"
+    },
+    {
+      "id": "data-quality",
+      "label": "数据质量",
+      "type": "pattern",
+      "category": "governance",
+      "level": 4,
+      "description": "数据质量监控"
+    },
+    {
+      "id": "data-lineage",
+      "label": "数据血缘",
+      "type": "pattern",
+      "category": "governance",
+      "level": 4,
+      "description": "数据流转追踪"
+    },
+    {
+      "id": "data-catalog",
+      "label": "数据目录",
+      "type": "pattern",
+      "category": "governance",
+      "level": 3,
+      "description": "元数据管理"
+    },
+    {
+      "id": "alerting",
+      "label": "告警",
+      "type": "pattern",
+      "category": "observability",
+      "level": 4,
+      "description": "异常告警"
+    },
+    {
+      "id": "monitoring-dashboard",
+      "label": "监控大屏",
+      "type": "pattern",
+      "category": "observability",
+      "level": 4,
+      "description": "可视化监控"
+    },
+    {
+      "id": "distributed-tracing",
+      "label": "分布式追踪",
+      "type": "pattern",
+      "category": "observability",
+      "level": 5,
+      "description": "请求链路追踪"
+    },
+    {
+      "id": "structured-logging",
+      "label": "结构化日志",
+      "type": "pattern",
+      "category": "observability",
+      "level": 4,
+      "description": "结构化日志记录"
+    },
+    {
+      "id": "metric-collection",
+      "label": "指标收集",
+      "type": "pattern",
+      "category": "observability",
+      "level": 4,
+      "description": "运行时指标"
+    },
+    {
+      "id": "dynamic-routing-pattern",
+      "label": "动态路由模式",
+      "type": "pattern",
+      "category": "integration",
+      "level": 4,
+      "description": "动态消息路由到目标系统"
+    },
+    {
+      "id": "schema-evolution-pattern",
+      "label": "Schema演进模式",
+      "type": "pattern",
+      "category": "data",
+      "level": 4,
+      "description": "运行时Schema变更兼容"
+    }
   ],
   "edges": [
-    {"source": "event-sourcing", "target": "cqrs", "type": "enables", "label": "支持"},
-    {"source": "cqrs", "target": "materialized-view-pattern", "type": "uses", "label": "使用"},
-    {"source": "lambda-architecture", "target": "kappa-architecture", "type": "evolves-to", "label": "演进为"},
-    {"source": "kappa-architecture", "target": "event-sourcing", "type": "uses", "label": "使用"},
-    {"source": "microservices-streaming", "target": "event-sourcing", "type": "uses", "label": "使用"},
-    {"source": "microservices-streaming", "target": "cqrs", "type": "uses", "label": "使用"},
-    {"source": "saga-pattern", "target": "event-sourcing", "type": "uses", "label": "使用"},
-    {"source": "outbox-pattern", "target": "transactional-outbox", "type": "includes", "label": "包括"},
-    {"source": "transactional-outbox", "target": "event-sourcing", "type": "supports", "label": "支持"},
-    {"source": "messaging", "target": "idempotent-consumer", "type": "requires", "label": "需要"},
-    {"source": "messaging", "target": "competing-consumers", "type": "uses", "label": "使用"},
-    {"source": "message-router", "target": "content-based-router", "type": "includes", "label": "包括"},
-    {"source": "messaging", "target": "splitter", "type": "uses", "label": "使用"},
-    {"source": "messaging", "target": "aggregator", "type": "uses", "label": "使用"},
-    {"source": "messaging", "target": "scatter-gather", "type": "uses", "label": "使用"},
-    {"source": "messaging", "target": "claim-check", "type": "uses", "label": "使用"},
-    {"source": "messaging", "target": "dead-letter-queue", "type": "uses", "label": "使用"},
-    {"source": "resilience", "target": "circuit-breaker", "type": "includes", "label": "包括"},
-    {"source": "resilience", "target": "bulkhead", "type": "includes", "label": "包括"},
-    {"source": "resilience", "target": "timeout", "type": "includes", "label": "包括"},
-    {"source": "resilience", "target": "retry", "type": "includes", "label": "包括"},
-    {"source": "resilience", "target": "fallback", "type": "includes", "label": "包括"},
-    {"source": "resilience", "target": "rate-limiter", "type": "includes", "label": "包括"},
-    {"source": "resilience", "target": "load-shedding", "type": "includes", "label": "包括"},
-    {"source": "circuit-breaker", "target": "retry", "type": "combines-with", "label": "结合"},
-    {"source": "circuit-breaker", "target": "fallback", "type": "combines-with", "label": "结合"},
-    {"source": "rate-limiter", "target": "throttling", "type": "similar-to", "label": "相似"},
-    {"source": "queue", "target": "priority-queue", "type": "includes", "label": "包括"},
-    {"source": "flow-control", "target": "throttling", "type": "includes", "label": "包括"},
-    {"source": "flow-control", "target": "buffering", "type": "includes", "label": "包括"},
-    {"source": "buffering", "target": "debouncing", "type": "enables", "label": "支持"},
-    {"source": "stream-processing", "target": "deduplication-pattern", "type": "includes", "label": "包括"},
-    {"source": "stream-processing", "target": "event-enrichment", "type": "includes", "label": "包括"},
-    {"source": "stream-processing", "target": "event-filtering", "type": "includes", "label": "包括"},
-    {"source": "stream-processing", "target": "event-transformation", "type": "includes", "label": "包括"},
-    {"source": "stream-processing", "target": "event-splitting", "type": "includes", "label": "包括"},
-    {"source": "stream-processing", "target": "stream-join-pattern", "type": "includes", "label": "包括"},
-    {"source": "stream-processing", "target": "stream-windowing", "type": "includes", "label": "包括"},
-    {"source": "stream-processing", "target": "sessionization", "type": "includes", "label": "包括"},
-    {"source": "sessionization", "target": "windowing", "type": "uses", "label": "使用"},
-    {"source": "cep", "target": "pattern-detection", "type": "includes", "label": "包括"},
-    {"source": "cep", "target": "sequence-detection", "type": "includes", "label": "包括"},
-    {"source": "cep", "target": "correlation-detection", "type": "includes", "label": "包括"},
-    {"source": "cep", "target": "absence-detection", "type": "includes", "label": "包括"},
-    {"source": "cep", "target": "temporal-constraint", "type": "includes", "label": "包括"},
-    {"source": "event-enrichment", "target": "master-data-cache", "type": "uses", "label": "使用"},
-    {"source": "data", "target": "master-data-cache", "type": "includes", "label": "包括"},
-    {"source": "data", "target": "local-cache", "type": "includes", "label": "包括"},
-    {"source": "data", "target": "distributed-cache", "type": "includes", "label": "包括"},
-    {"source": "caching", "target": "cache-aside", "type": "includes", "label": "包括"},
-    {"source": "caching", "target": "write-through", "type": "includes", "label": "包括"},
-    {"source": "caching", "target": "write-behind", "type": "includes", "label": "包括"},
-    {"source": "master-data-cache", "target": "cache-aside", "type": "uses", "label": "使用"},
-    {"source": "deployment", "target": "multi-tenant", "type": "includes", "label": "包括"},
-    {"source": "deployment", "target": "blue-green", "type": "includes", "label": "包括"},
-    {"source": "deployment", "target": "canary-release", "type": "includes", "label": "包括"},
-    {"source": "deployment", "target": "feature-toggle", "type": "includes", "label": "包括"},
-    {"source": "schema-registry", "target": "schema-evolution", "type": "supports", "label": "支持"},
-    {"source": "data", "target": "schema-registry", "type": "includes", "label": "包括"},
-    {"source": "governance", "target": "data-quality", "type": "includes", "label": "包括"},
-    {"source": "governance", "target": "data-lineage", "type": "includes", "label": "包括"},
-    {"source": "governance", "target": "data-catalog", "type": "includes", "label": "包括"},
-    {"source": "observability", "target": "alerting", "type": "includes", "label": "包括"},
-    {"source": "observability", "target": "monitoring-dashboard", "type": "includes", "label": "包括"},
-    {"source": "observability", "target": "distributed-tracing", "type": "includes", "label": "包括"},
-    {"source": "observability", "target": "structured-logging", "type": "includes", "label": "包括"},
-    {"source": "observability", "target": "metric-collection", "type": "includes", "label": "包括"},
-    {"source": "distributed-tracing", "target": "event-sourcing", "type": "complements", "label": "补充"},
-    {"source": "data-lineage", "target": "event-sourcing", "type": "benefits-from", "label": "受益于"}
+    {
+      "source": "event-sourcing",
+      "target": "cqrs",
+      "type": "enables",
+      "label": "支持"
+    },
+    {
+      "source": "cqrs",
+      "target": "materialized-view-pattern",
+      "type": "uses",
+      "label": "使用"
+    },
+    {
+      "source": "lambda-architecture",
+      "target": "kappa-architecture",
+      "type": "evolves-to",
+      "label": "演进为"
+    },
+    {
+      "source": "kappa-architecture",
+      "target": "event-sourcing",
+      "type": "uses",
+      "label": "使用"
+    },
+    {
+      "source": "microservices-streaming",
+      "target": "event-sourcing",
+      "type": "uses",
+      "label": "使用"
+    },
+    {
+      "source": "microservices-streaming",
+      "target": "cqrs",
+      "type": "uses",
+      "label": "使用"
+    },
+    {
+      "source": "saga-pattern",
+      "target": "event-sourcing",
+      "type": "uses",
+      "label": "使用"
+    },
+    {
+      "source": "outbox-pattern",
+      "target": "transactional-outbox",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "transactional-outbox",
+      "target": "event-sourcing",
+      "type": "supports",
+      "label": "支持"
+    },
+    {
+      "source": "messaging",
+      "target": "idempotent-consumer",
+      "type": "requires",
+      "label": "需要"
+    },
+    {
+      "source": "messaging",
+      "target": "competing-consumers",
+      "type": "uses",
+      "label": "使用"
+    },
+    {
+      "source": "message-router",
+      "target": "content-based-router",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "messaging",
+      "target": "splitter",
+      "type": "uses",
+      "label": "使用"
+    },
+    {
+      "source": "messaging",
+      "target": "aggregator",
+      "type": "uses",
+      "label": "使用"
+    },
+    {
+      "source": "messaging",
+      "target": "scatter-gather",
+      "type": "uses",
+      "label": "使用"
+    },
+    {
+      "source": "messaging",
+      "target": "claim-check",
+      "type": "uses",
+      "label": "使用"
+    },
+    {
+      "source": "messaging",
+      "target": "dead-letter-queue",
+      "type": "uses",
+      "label": "使用"
+    },
+    {
+      "source": "resilience",
+      "target": "circuit-breaker",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "resilience",
+      "target": "bulkhead",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "resilience",
+      "target": "timeout",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "resilience",
+      "target": "retry",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "resilience",
+      "target": "fallback",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "resilience",
+      "target": "rate-limiter",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "resilience",
+      "target": "load-shedding",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "circuit-breaker",
+      "target": "retry",
+      "type": "combines-with",
+      "label": "结合"
+    },
+    {
+      "source": "circuit-breaker",
+      "target": "fallback",
+      "type": "combines-with",
+      "label": "结合"
+    },
+    {
+      "source": "rate-limiter",
+      "target": "throttling",
+      "type": "similar-to",
+      "label": "相似"
+    },
+    {
+      "source": "queue",
+      "target": "priority-queue",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "flow-control",
+      "target": "throttling",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "flow-control",
+      "target": "buffering",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "buffering",
+      "target": "debouncing",
+      "type": "enables",
+      "label": "支持"
+    },
+    {
+      "source": "stream-processing",
+      "target": "deduplication-pattern",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "stream-processing",
+      "target": "event-enrichment",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "stream-processing",
+      "target": "event-filtering",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "stream-processing",
+      "target": "event-transformation",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "stream-processing",
+      "target": "event-splitting",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "stream-processing",
+      "target": "stream-join-pattern",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "stream-processing",
+      "target": "stream-windowing",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "stream-processing",
+      "target": "sessionization",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "sessionization",
+      "target": "windowing",
+      "type": "uses",
+      "label": "使用"
+    },
+    {
+      "source": "cep",
+      "target": "pattern-detection",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "cep",
+      "target": "sequence-detection",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "cep",
+      "target": "correlation-detection",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "cep",
+      "target": "absence-detection",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "cep",
+      "target": "temporal-constraint",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "event-enrichment",
+      "target": "master-data-cache",
+      "type": "uses",
+      "label": "使用"
+    },
+    {
+      "source": "data",
+      "target": "master-data-cache",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "data",
+      "target": "local-cache",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "data",
+      "target": "distributed-cache",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "caching",
+      "target": "cache-aside",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "caching",
+      "target": "write-through",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "caching",
+      "target": "write-behind",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "master-data-cache",
+      "target": "cache-aside",
+      "type": "uses",
+      "label": "使用"
+    },
+    {
+      "source": "deployment",
+      "target": "multi-tenant",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "deployment",
+      "target": "blue-green",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "deployment",
+      "target": "canary-release",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "deployment",
+      "target": "feature-toggle",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "schema-registry",
+      "target": "schema-evolution",
+      "type": "supports",
+      "label": "支持"
+    },
+    {
+      "source": "data",
+      "target": "schema-registry",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "governance",
+      "target": "data-quality",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "governance",
+      "target": "data-lineage",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "governance",
+      "target": "data-catalog",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "observability",
+      "target": "alerting",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "observability",
+      "target": "monitoring-dashboard",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "observability",
+      "target": "distributed-tracing",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "observability",
+      "target": "structured-logging",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "observability",
+      "target": "metric-collection",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "distributed-tracing",
+      "target": "event-sourcing",
+      "type": "complements",
+      "label": "补充"
+    },
+    {
+      "source": "data-lineage",
+      "target": "event-sourcing",
+      "type": "benefits-from",
+      "label": "受益于"
+    },
+    {
+      "source": "dynamic-routing-pattern",
+      "target": "message-router",
+      "type": "extends",
+      "label": "扩展"
+    },
+    {
+      "source": "schema-evolution-pattern",
+      "target": "schema-registry",
+      "type": "requires",
+      "label": "需要"
+    }
   ],
   "categories": {
-    "architecture": {"label": "架构模式", "color": "#4A90D9"},
-    "transaction": {"label": "事务模式", "color": "#5CB85C"},
-    "integration": {"label": "集成模式", "color": "#F0AD4E"},
-    "messaging": {"label": "消息模式", "color": "#D9534F"},
-    "resilience": {"label": "弹性模式", "color": "#9B59B6"},
-    "queue": {"label": "队列模式", "color": "#1ABC9C"},
-    "flow-control": {"label": "流控模式", "color": "#E74C3C"},
-    "stream-processing": {"label": "流处理模式", "color": "#3498DB"},
-    "cep": {"label": "CEP模式", "color": "#34495E"},
-    "data": {"label": "数据模式", "color": "#E67E22"},
-    "deployment": {"label": "部署模式", "color": "#16A085"},
-    "governance": {"label": "治理模式", "color": "#27AE60"},
-    "observability": {"label": "可观测性", "color": "#2980B9"}
+    "architecture": {
+      "label": "架构模式",
+      "color": "#4A90D9"
+    },
+    "transaction": {
+      "label": "事务模式",
+      "color": "#5CB85C"
+    },
+    "integration": {
+      "label": "集成模式",
+      "color": "#F0AD4E"
+    },
+    "messaging": {
+      "label": "消息模式",
+      "color": "#D9534F"
+    },
+    "resilience": {
+      "label": "弹性模式",
+      "color": "#9B59B6"
+    },
+    "queue": {
+      "label": "队列模式",
+      "color": "#1ABC9C"
+    },
+    "flow-control": {
+      "label": "流控模式",
+      "color": "#E74C3C"
+    },
+    "stream-processing": {
+      "label": "流处理模式",
+      "color": "#3498DB"
+    },
+    "cep": {
+      "label": "CEP模式",
+      "color": "#34495E"
+    },
+    "data": {
+      "label": "数据模式",
+      "color": "#E67E22"
+    },
+    "deployment": {
+      "label": "部署模式",
+      "color": "#16A085"
+    },
+    "governance": {
+      "label": "治理模式",
+      "color": "#27AE60"
+    },
+    "observability": {
+      "label": "可观测性",
+      "color": "#2980B9"
+    }
   },
   "relationTypes": {
-    "enables": {"label": "支持", "color": "#27AE60", "style": "solid"},
-    "uses": {"label": "使用", "color": "#7F8C8D", "style": "solid"},
-    "evolves-to": {"label": "演进为", "color": "#3498DB", "style": "dashed"},
-    "includes": {"label": "包括", "color": "#666", "style": "solid"},
-    "requires": {"label": "需要", "color": "#E74C3C", "style": "dashed"},
-    "combines-with": {"label": "结合", "color": "#9B59B6", "style": "dashed"},
-    "similar-to": {"label": "相似", "color": "#95A5A6", "style": "dotted"},
-    "supports": {"label": "支持", "color": "#16A085", "style": "solid"},
-    "complements": {"label": "补充", "color": "#1ABC9C", "style": "dashed"},
-    "benefits-from": {"label": "受益于", "color": "#F39C12", "style": "dashed"}
+    "enables": {
+      "label": "支持",
+      "color": "#27AE60",
+      "style": "solid"
+    },
+    "uses": {
+      "label": "使用",
+      "color": "#7F8C8D",
+      "style": "solid"
+    },
+    "evolves-to": {
+      "label": "演进为",
+      "color": "#3498DB",
+      "style": "dashed"
+    },
+    "includes": {
+      "label": "包括",
+      "color": "#666",
+      "style": "solid"
+    },
+    "requires": {
+      "label": "需要",
+      "color": "#E74C3C",
+      "style": "dashed"
+    },
+    "combines-with": {
+      "label": "结合",
+      "color": "#9B59B6",
+      "style": "dashed"
+    },
+    "similar-to": {
+      "label": "相似",
+      "color": "#95A5A6",
+      "style": "dotted"
+    },
+    "supports": {
+      "label": "支持",
+      "color": "#16A085",
+      "style": "solid"
+    },
+    "complements": {
+      "label": "补充",
+      "color": "#1ABC9C",
+      "style": "dashed"
+    },
+    "benefits-from": {
+      "label": "受益于",
+      "color": "#F39C12",
+      "style": "dashed"
+    }
   }
 }

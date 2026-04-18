@@ -1,23 +1,23 @@
 # Formal Element Integrity Check Report
 
-**Generated**: 2026-04-16T00:01:39.960237
+**Generated**: 2026-04-18T18:41:48.274073
 
 ## Summary
 
 | Metric | Count |
 |--------|-------|
-| Files Checked | 379 |
+| Files Checked | 384 |
 | Files with Issues | 0 |
 
 ## Formal Elements Found
 
 | Type | Count |
 |------|-------|
-| Corollary (推论) | 60 |
-| Definition (定义) | 3341 |
-| Lemma (引理) | 1211 |
-| Proposition (命题) | 889 |
-| Theorem (定理) | 1136 |
+| Corollary (推论) | 64 |
+| Definition (定义) | 3473 |
+| Lemma (引理) | 1252 |
+| Proposition (命题) | 920 |
+| Theorem (定理) | 1173 |
 
 ## ⚠️ Files with Warnings Only
 
@@ -108,11 +108,11 @@
 | Flink/05-ecosystem/05.01-connectors/flink-delta-lake-integration.md | 32 |
 | Flink/05-ecosystem/05.01-connectors/flink-iceberg-integration.md | 17 |
 | Flink/05-ecosystem/05.01-connectors/flink-paimon-integration.md | 16 |
-| Flink/05-ecosystem/05.01-connectors/fluss-integration.md | 6 |
+| Flink/05-ecosystem/05.01-connectors/fluss-integration.md | 16 |
 | Flink/05-ecosystem/05.01-connectors/kafka-integration-patterns.md | 22 |
 | Flink/05-ecosystem/05.01-connectors/pulsar-integration-guide.md | 9 |
 | Flink/05-ecosystem/05.02-lakehouse/flink-iceberg-integration.md | 12 |
-| Flink/05-ecosystem/05.02-lakehouse/flink-paimon-integration.md | 13 |
+| Flink/05-ecosystem/05.02-lakehouse/flink-paimon-integration.md | 29 |
 | Flink/05-ecosystem/05.02-lakehouse/streaming-lakehouse-deep-dive-2026.md | 13 |
 | Flink/05-ecosystem/05.03-wasm-udf/wasi-0.3-async-preview.md | 22 |
 | Flink/05-ecosystem/05.03-wasm-udf/wasm-streaming.md | 8 |
@@ -337,7 +337,9 @@
 | Struct/01-foundation/01.08-streaming-database-formalization.md | 28 |
 | Struct/01-foundation/01.09-edge-streaming-semantics.md | 65 |
 | Struct/01-foundation/01.10-schema-evolution-formalization.md | 38 |
+| Struct/01-foundation/minimal-session-types-theory.md | 130 |
 | Struct/01-foundation/stream-processing-semantics-formalization.md | 46 |
+| Struct/01-foundation/streaming-database-formal-definition.md | 44 |
 | Struct/02-properties/02.01-determinism-in-streaming.md | 137 |
 | Struct/02-properties/02.02-consistency-hierarchy.md | 81 |
 | Struct/02-properties/02.03-watermark-monotonicity.md | 41 |
@@ -367,7 +369,10 @@
 | Struct/06-frontier/06.04-pdot-path-dependent-types.md | 22 |
 | Struct/06-frontier/06.05-ai-agent-streaming-formalization.md | 24 |
 | Struct/06-frontier/06.10-transactional-cloud-dataflow-actor.md | 30 |
+| Struct/06-frontier/calvin-deterministic-streaming.md | 51 |
+| Struct/06-frontier/dbsp-theory-framework.md | 42 |
 | Struct/06-frontier/first-person-choreographies.md | 11 |
+| Struct/06-frontier/llm-guided-formal-proof-automation.md | 38 |
 | Struct/07-tools/coq-mechanization.md | 15 |
 | Struct/07-tools/iris-separation-logic.md | 3 |
 | Struct/07-tools/model-checking-guided-testing.md | 11 |
@@ -399,7 +404,7 @@
 
 ## Compliance Rate
 
-**100.0%** (379/379)
+**100.0%** (384/384)
 
 ## Recommendations
 

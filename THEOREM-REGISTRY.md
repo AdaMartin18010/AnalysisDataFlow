@@ -4,9 +4,11 @@
 >
 # 全项目定理、定义、引理全局注册表
 
-> **版本**: v2.9.9 | **更新日期**: 2026-04-12 | **范围**: AnalysisDataFlow 全项目
+> **版本**: v3.0.0 | **更新日期**: 2026-04-18 | **范围**: AnalysisDataFlow 全项目
 >
 > 本文档是 Struct/、Knowledge/ 和 Flink/ 目录下所有形式化定理、定义、引理的全局注册表，提供统一编号索引和快速导航。
+>
+> **更新说明 (v3.0.0)**: v4.3前沿补全 - LLM形式化证明/Veil/DBSP/Calvin/会话类型/流数据库/CD-Raft/NIST CAISI/Fluss/Paimon/Dynamic Iceberg Sink，新增188个形式化元素
 >
 > **更新说明 (v2.9.9)**: 2025-04扩展 - Go/Rust/AI生态，新增131个形式化元素
 >
@@ -31,6 +33,8 @@
     - [2.4 证明层定理 (04-proofs)](#24-证明层定理-04-proofs)
     - [2.5 对比层定理 (05-comparative)](#25-对比层定理-05-comparative)
     - [2.5.1 Smart Casual Verification定理 (Struct/07)](#251-smart-casual-verification定理-struct07)
+    - [2.5.2 Struct前沿扩展定理 (Struct/06-frontier)](#252-struct前沿扩展定理-struct06-frontier)
+    - [2.5.3 formal-methods AI形式化方法定理 (formal-methods/08-ai-formal-methods)](#253-formal-methods-ai形式化方法定理-formal-methods08-ai-formal-methods)
     - [2.6 知识层定理 (Knowledge)](#26-知识层定理-knowledge)
     - [2.7 Rust流系统定理 (Knowledge/06-rust-streaming)](#27-rust流系统定理-knowledge06-rust-streaming)
     - [2.8 GPU TEE属性定理 (Knowledge/07-gpu-tee)](#28-gpu-tee属性定理-knowledge07-gpu-tee)
@@ -45,6 +49,7 @@
     - [2.15 Flink案例研究定理 (Flink/07-case-studies)](#215-flink案例研究定理-flink07-case-studies)
     - [2.16 Flink观测性定理 (Flink/15-observability)](#216-flink观测性定理-flink15-observability)
     - [2.17 Flink连接器定理 (Flink/04-connectors)](#217-flink连接器定理-flink04-connectors)
+    - [2.17.1 Flink生态扩展定理 (Flink/05-ecosystem)](#2171-flink生态扩展定理-flink05-ecosystem)
     - [2.18 Flink部署定理 (Flink/10-deployment)](#218-flink部署定理-flink10-deployment)
     - [2.19 Knowledge前沿扩展定理 (Knowledge/06-frontier)](#219-knowledge前沿扩展定理-knowledge06-frontier)
   - [3. 定义注册表 (Def-S-XX-XX / Def-K-XX-XX / Def-F-XX-XX)](#3-定义注册表-def-s-xx-xx--def-k-xx-xx--def-f-xx-xx)
@@ -52,6 +57,9 @@
     - [3.2 性质层定义 (02-properties)](#32-性质层定义-02-properties)
     - [3.3 关系层定义 (03-relationships)](#33-关系层定义-03-relationships)
     - [3.4 证明层定义 (04-proofs)](#34-证明层定义-04-proofs)
+    - [3.4.1 formal-methods工具定义 (formal-methods/06-tools)](#341-formal-methods工具定义-formal-methods06-tools)
+    - [3.4.2 formal-methods AI形式化方法定义 (formal-methods/08-ai-formal-methods)](#342-formal-methods-ai形式化方法定义-formal-methods08-ai-formal-methods)
+    - [3.4.3 Struct前沿扩展定义 (Struct/06-frontier)](#343-struct前沿扩展定义-struct06-frontier)
     - [3.5 知识层定义 (Knowledge)](#35-知识层定义-knowledge)
     - [3.6 Flink扩展定义 (Flink/02-core-mechanisms)](#36-flink扩展定义-flink02-core-mechanisms)
     - [3.6.1 Flink SQL/Table API扩展定义 (Flink/03-sql-table-api)](#361-flink-sqltable-api扩展定义-flink03-sql-table-api)
@@ -62,6 +70,7 @@
     - [3.10 Flink案例研究定义 (Flink/07-case-studies)](#310-flink案例研究定义-flink07-case-studies)
     - [3.11 Flink观测性定义 (Flink/15-observability)](#311-flink观测性定义-flink15-observability)
     - [3.12 Flink连接器定义 (Flink/04-connectors)](#312-flink连接器定义-flink04-connectors)
+    - [3.12.1 Flink生态扩展定义 (Flink/05-ecosystem)](#3121-flink生态扩展定义-flink05-ecosystem)
     - [3.13 Flink部署定义 (Flink/10-deployment)](#313-flink部署定义-flink10-deployment)
     - [3.13.1 Flink性能基准测试定义 (Flink/11-benchmarking)](#3131-flink性能基准测试定义-flink11-benchmarking)
     - [3.14 Knowledge前沿扩展定义 (Knowledge/06-frontier)](#314-knowledge前沿扩展定义-knowledge06-frontier)
@@ -70,6 +79,9 @@
     - [4.2 性质层引理 (02-properties)](#42-性质层引理-02-properties)
     - [4.3 关系层引理 (03-relationships)](#43-关系层引理-03-relationships)
     - [4.4 证明层引理 (04-proofs)](#44-证明层引理-04-proofs)
+    - [4.4.1 formal-methods工具引理 (formal-methods/06-tools)](#441-formal-methods工具引理-formal-methods06-tools)
+    - [4.4.2 formal-methods AI形式化方法引理 (formal-methods/08-ai-formal-methods)](#442-formal-methods-ai形式化方法引理-formal-methods08-ai-formal-methods)
+    - [4.4.3 Struct前沿扩展引理 (Struct/06-frontier)](#443-struct前沿扩展引理-struct06-frontier)
     - [4.5 知识层引理 (Knowledge)](#45-知识层引理-knowledge)
     - [4.6 Flink扩展引理 (Flink/09-language-foundations)](#46-flink扩展引理-flink09-language-foundations)
     - [4.7 Flink扩展引理 (Flink/13-wasm)](#47-flink扩展引理-flink13-wasm)
@@ -79,6 +91,7 @@
     - [4.10.1 Flink SQL/Table API扩展引理 (Flink/03-sql-table-api)](#4101-flink-sqltable-api扩展引理-flink03-sql-table-api)
     - [4.10.2 Flink工程实践扩展引理 (Flink/06-engineering)](#4102-flink工程实践扩展引理-flink06-engineering)
     - [4.11 Flink连接器引理 (Flink/04-connectors)](#411-flink连接器引理-flink04-connectors)
+    - [4.11.1 Flink生态扩展引理 (Flink/05-ecosystem)](#4111-flink生态扩展引理-flink05-ecosystem)
     - [4.12 Flink部署引理 (Flink/10-deployment)](#412-flink部署引理-flink10-deployment)
     - [4.12.1 Flink性能基准测试引理 (Flink/11-benchmarking)](#4121-flink性能基准测试引理-flink11-benchmarking)
     - [4.13 Knowledge前沿扩展引理 (Knowledge/06-frontier)](#413-knowledge前沿扩展引理-knowledge06-frontier)
@@ -96,8 +109,9 @@
     - [8.3 新增引理 (192个)](#83-新增引理-192个)
     - [8.4 新增命题 (194个)](#84-新增命题-194个)
     - [8.5 新增推论 (16个)](#85-新增推论-16个)
-    - [8.6 本次补充统计](#86-本次补充统计)
-    - [8.7 v2.9.2 批量补充注册 (2026-04-04)](#87-v292-批量补充注册-2026-04-04)
+    - [8.6 v2.9.8 批量注册 - 2025前沿技术文档 (2026-04-12)](#86-v298-批量注册---2025前沿技术文档-2026-04-12)
+    - [8.7 本次补充统计](#87-本次补充统计)
+    - [8.8 v2.9.2 批量补充注册 (2026-04-04)](#88-v292-批量补充注册-2026-04-04)
       - [新增定理 (7个)](#新增定理-7个)
       - [新增定义 (70个)](#新增定义-70个)
       - [新增引理 (4个)](#新增引理-4个)
@@ -128,14 +142,58 @@
     - [8.12 v2.9.7 P6未完成内容修复 (2026-04-06)](#812-v297-p6未完成内容修复-2026-04-06)
       - [新增定义 (15个)](#新增定义-15个)
       - [v2.9.7 补充统计](#v297-补充统计)
+  - [引用参考](#引用参考)
     - [8.13 v2.9.9 2025-04扩展: Go/Rust/AI生态 (2026-04-12)](#813-v299-2025-04扩展-gorustai生态-2026-04-12)
       - [Go生态 (阶段一)](#go生态-阶段一)
+        - [Go流处理器定义 (Def-G-01-01 ~ Def-G-01-10)](#go流处理器定义-def-g-01-01--def-g-01-10)
+        - [Go迭代器/版本特性定义 (Def-G-02-01 ~ Def-G-02-08)](#go迭代器版本特性定义-def-g-02-01--def-g-02-08)
+        - [Go Channel语义定理 (Thm-G-01-01 ~ Thm-G-01-05)](#go-channel语义定理-thm-g-01-01--thm-g-01-05)
+        - [Range Over Function定理 (Thm-G-02-01 ~ Thm-G-02-03)](#range-over-function定理-thm-g-02-01--thm-g-02-03)
+        - [Go生态引理 (Lemma-G-01-01 ~ Lemma-G-01-03)](#go生态引理-lemma-g-01-01--lemma-g-01-03)
+        - [Go生态命题 (Prop-G-01-01 ~ Prop-G-01-03)](#go生态命题-prop-g-01-01--prop-g-01-03)
       - [Rust生态 (阶段二)](#rust生态-阶段二)
+        - [Rust流平台定义 (Def-R-01-01 ~ Def-R-01-10)](#rust流平台定义-def-r-01-01--def-r-01-10)
+        - [Rust 2024 Edition定义 (Def-R-02-01 ~ Def-R-02-06)](#rust-2024-edition定义-def-r-02-01--def-r-02-06)
+        - [Rust工业案例定义 (Def-K-06-\*)](#rust工业案例定义-def-k-06-)
+        - [Rust流系统定理 (Thm-R-01-01 ~ Thm-R-01-05)](#rust流系统定理-thm-r-01-01--thm-r-01-05)
+        - [Rust 2024 Edition定理 (Thm-R-02-01 ~ Thm-R-02-04)](#rust-2024-edition定理-thm-r-02-01--thm-r-02-04)
+        - [Rust生态引理 (Lemma-R-01-01 ~ Lemma-R-01-04)](#rust生态引理-lemma-r-01-01--lemma-r-01-04)
+        - [Rust生态命题 (Prop-R-01-01 ~ Prop-R-01-03)](#rust生态命题-prop-r-01-01--prop-r-01-03)
       - [AI生态 (阶段三)](#ai生态-阶段三)
+        - [Flink 2.2 Data+AI定义 (Def-A-01-01 ~ Def-A-01-12)](#flink-22-dataai定义-def-a-01-01--def-a-01-12)
+        - [流式ML定义 (Def-A-02-01 ~ Def-A-02-17)](#流式ml定义-def-a-02-01--def-a-02-17)
+        - [边缘AI定义 (Def-A-04-01 ~ Def-A-04-10)](#边缘ai定义-def-a-04-01--def-a-04-10)
+        - [AI Agent定义 (Def-A-05-01 ~ Def-A-05-12)](#ai-agent定义-def-a-05-01--def-a-05-12)
+        - [AI生态定理 (Thm-A-01-01 ~ Thm-A-01-06)](#ai生态定理-thm-a-01-01--thm-a-01-06)
+        - [流式ML定理 (Thm-A-02-01 ~ Thm-A-02-08)](#流式ml定理-thm-a-02-01--thm-a-02-08)
+        - [边缘AI定理 (Thm-A-04-01 ~ Thm-A-04-05)](#边缘ai定理-thm-a-04-01--thm-a-04-05)
+        - [AI Agent定理 (Thm-A-05-01 ~ Thm-A-05-06)](#ai-agent定理-thm-a-05-01--thm-a-05-06)
+        - [AI生态引理 (阶段三)](#ai生态引理-阶段三)
       - [跨语言 (阶段四)](#跨语言-阶段四)
+        - [语言生态定义 (Def-C-01-01 ~ Def-C-01-08)](#语言生态定义-def-c-01-01--def-c-01-08)
+        - [混合架构定义 (Def-C-02-01 ~ Def-C-02-10)](#混合架构定义-def-c-02-01--def-c-02-10)
+        - [跨语言定理 (Thm-C-01-01 ~ Thm-C-01-04)](#跨语言定理-thm-c-01-01--thm-c-01-04)
+        - [混合架构定理 (Thm-C-02-01 ~ Thm-C-02-05)](#混合架构定理-thm-c-02-01--thm-c-02-05)
+        - [跨语言引理 (Lemma-C-01-01 ~ Lemma-C-01-02, Lemma-C-02-01 ~ Lemma-C-02-03)](#跨语言引理-lemma-c-01-01--lemma-c-01-02-lemma-c-02-01--lemma-c-02-03)
       - [并发模型对比](#并发模型对比)
+        - [并发模型定义 (Def-S-05-04-01 ~ Def-S-05-04-12)](#并发模型定义-def-s-05-04-01--def-s-05-04-12)
+        - [并发模型定理 (Thm-S-05-04-01 ~ Thm-S-05-04-10)](#并发模型定理-thm-s-05-04-01--thm-s-05-04-10)
+        - [并发模型引理 (Lemma-S-05-04-01 ~ Lemma-S-05-04-04)](#并发模型引理-lemma-s-05-04-01--lemma-s-05-04-04)
+        - [并发模型命题 (Prop-S-05-04-01 ~ Prop-S-05-04-05)](#并发模型命题-prop-s-05-04-01--prop-s-05-04-05)
       - [v2.9.9 补充统计](#v299-补充统计)
-  - [引用参考](#引用参考)
+    - [8.14 v4.3 前沿补全 (2026-04-18)](#814-v43-前沿补全-2026-04-18)
+      - [新增定理 (26个)](#新增定理-26个)
+      - [新增定义 (93个)](#新增定义-93个)
+      - [新增引理 (37个)](#新增引理-37个)
+      - [新增命题 (31个)](#新增命题-31个)
+      - [新增推论 (1个)](#新增推论-1个)
+      - [v4.3 补充统计](#v43-补充统计)
+  - [引用参考](#引用参考-1)
+  - [9. 自动化扫描统计 (v3.0.0) - 2026-04-18](#9-自动化扫描统计-v300---2026-04-18)
+    - [9.1 扫描概览](#91-扫描概览)
+    - [9.2 实际分布统计](#92-实际分布统计)
+    - [9.3 问题统计](#93-问题统计)
+    - [9.4 验证工具](#94-验证工具)
 
 ---
 
@@ -208,6 +266,18 @@
 | **A-01** | Flink/06-ai-ml/flink-22-data-ai-platform.md | Flink 2.2 Data+AI平台 |
 | **A-02** | Flink/06-ai-ml/streaming-ml-libraries-landscape.md | 流式ML库全景 |
 | **A-05** | Flink/06-ai-ml/ai-agent-frameworks-ecosystem-2025.md | AI Agent框架生态2025 |
+| **S-11** | Struct/01-foundation/minimal-session-types-theory.md | 最小会话类型理论 |
+| **S-01-12** | Struct/01-foundation/streaming-database-formal-definition.md | 流数据库形式化定义 |
+| **S-06-18** | Struct/06-frontier/llm-guided-formal-proof-automation.md | LLM辅助形式化证明自动化 |
+| **S-06-19** | Struct/06-frontier/dbsp-theory-framework.md | DBSP理论框架 |
+| **S-06-20** | Struct/06-frontier/calvin-deterministic-streaming.md | Calvin确定性流处理 |
+| **FM-06** | formal-methods/06-tools/veil-framework-lean4.md | Veil Framework (Lean 4) |
+| **FM-08** | formal-methods/08-ai-formal-methods/agent-behavior-contract-verification.md | Agent行为契约验证 |
+| **K-CDR** | Knowledge/06-frontier/cd-raft-cross-domain-consensus.md | CD-Raft跨域共识 |
+| **K-NIST** | Knowledge/06-frontier/nist-caisi-agent-standards.md | NIST CAISI Agent标准 |
+| **F-DIS** | Flink/05-ecosystem/flink-dynamic-iceberg-sink-guide.md | Flink Dynamic Iceberg Sink |
+| **F-04-Fluss** | Flink/05-ecosystem/05.01-connectors/fluss-integration.md | Fluss集成 |
+| **F-14-Paimon** | Flink/05-ecosystem/05.02-lakehouse/flink-paimon-integration.md | Paimon集成 |
 
 ---
 
@@ -228,6 +298,14 @@
 | Thm-S-01-03 | 会话类型安全性 (Type Safety) | Struct/01.07 | L4-L5 | - | ✅ |
 | Thm-S-01-04 | 会话类型无死锁性 (Deadlock Freedom) | Struct/01.07 | L4-L5 | - | ✅ |
 | Thm-S-01-05 | 协议合规性 (Protocol Compliance) | Struct/01.07 | L4-L5 | - | ✅ |
+| **v4.3 新增 - 流数据库形式化定义** | | | | |
+| Thm-S-01-12-01 | 流数据库架构等价定理 | Struct/01-foundation | L4-L5 | - | ✅ |
+| Thm-S-01-12-02 | 查询语义一致性定理 | Struct/01-foundation | L4 | - | ✅ |
+| Thm-S-01-12-03 | 增量维护复杂度下界定理 | Struct/01-foundation | L4 | - | ✅ |
+| **v4.3 新增 - 最小会话类型理论** | | | | |
+| Thm-S-11-01 | MST 与标准会话类型的表达能力等价性 | Struct/01-foundation | L5 | - | ✅ |
+| Thm-S-11-02 | ℱ* 变体的递归类型完备性 | Struct/01-foundation | L5 | - | ✅ |
+| Thm-S-11-03 | 编译映射的语义保持性 | Struct/01-foundation | L5 | - | ✅ |
 
 ### 2.2 性质层定理 (02-properties)
 
@@ -284,6 +362,30 @@
 | Thm-S-07-03 | Smart Casual Verification有效性 | Struct/07 | L4-L5 | - | ✅ |
 | Thm-S-07-04 | CCF共识安全性质 | Struct/07 | L5 | - | ✅ |
 | Thm-S-07-05 | Trace验证搜索优化 | Struct/07 | L4 | - | ✅ |
+
+### 2.5.2 Struct前沿扩展定理 (Struct/06-frontier)
+
+| 编号 | 名称 | 位置 | 形式化等级 | **依赖元素** | 状态 |
+|------|------|------|-----------|-------------|------|
+| **LLM辅助形式化证明自动化** | | | | |
+| Thm-S-06-18-01 | LFPA 可靠性归约定理 | Struct/06-frontier | L5 | - | ✅ |
+| **DBSP理论框架** | | | | |
+| Thm-S-06-19-01 | DBSP 增量视图维护正确性定理 | Struct/06-frontier | L4-L5 | - | ✅ |
+| Thm-S-06-19-02 | DBSP 表达能力定理 | Struct/06-frontier | L4 | - | ✅ |
+| Thm-S-06-19-03 | DBSP 增量维护复杂度定理 | Struct/06-frontier | L4 | - | ✅ |
+| **Calvin确定性流处理** | | | | |
+| Thm-S-06-20-01 | Calvin 确定性执行定理 | Struct/06-frontier | L4-L5 | - | ✅ |
+| Thm-S-06-20-02 | Calvin-流处理状态一致性映射定理 | Struct/06-frontier | L4 | - | ✅ |
+| Thm-S-06-20-03 | 确定性重放下界延迟定理 | Struct/06-frontier | L4 | - | ✅ |
+
+### 2.5.3 formal-methods AI形式化方法定理 (formal-methods/08-ai-formal-methods)
+
+| 编号 | 名称 | 位置 | 形式化等级 | **依赖元素** | 状态 |
+|------|------|------|-----------|-------------|------|
+| **Agent行为契约验证** | | | | |
+| Thm-FM-08-01 | 单Agent行为契约满足性 | formal-methods/08-ai-formal-methods | L4-L5 | - | ✅ |
+| Thm-FM-08-02 | 多Agent协作无死锁 | formal-methods/08-ai-formal-methods | L4 | - | ✅ |
+| Thm-FM-08-03 | 运行时监控可靠性 | formal-methods/08-ai-formal-methods | L4 | - | ✅ |
 
 ### 2.6 知识层定理 (Knowledge)
 
@@ -516,6 +618,21 @@
 | Thm-F-04-60 | CDC端到端一致性定理 | Flink/04-connectors | L4-L5 | - | ✅ |
 | Thm-F-04-61 | Schema变更传播正确性定理 | Flink/04-connectors | L4 | - | ✅ |
 
+### 2.17.1 Flink生态扩展定理 (Flink/05-ecosystem)
+
+| 编号 | 名称 | 位置 | 形式化等级 | **依赖元素** | 状态 |
+|------|------|------|-----------|-------------|------|
+| **Fluss集成** | | | | |
+| Thm-F-04-01 | Fluss 在流分析场景的成本效率定理 | Flink/05-ecosystem | L4 | - | ✅ |
+| Thm-F-04-02 | 分层湖仓 Union Read 一致性定理 | Flink/05-ecosystem | L4-L5 | - | ✅ |
+| **Paimon集成 (v4.3更新)** | | | | |
+| Thm-F-14-01 | Paimon Exactly-Once 语义定理 | Flink/05-ecosystem | L4-L5 | - | ✅ |
+| Thm-F-14-02 | 增量消费完备性定理 | Flink/05-ecosystem | L4 | - | ✅ |
+| Thm-F-14-03 | 流批查询一致性定理 | Flink/05-ecosystem | L4 | - | ✅ |
+| Thm-F-14-04 | Paimon-Iceberg 跨引擎查询一致性定理 | Flink/05-ecosystem | L4 | - | ✅ |
+| **Dynamic Iceberg Sink** | | | | |
+| Thm-F-DIS-01 | Dynamic Iceberg Sink 的端到端一致性定理 | Flink/05-ecosystem | L4 | - | ✅ |
+
 ### 2.18 Flink部署定理 (Flink/10-deployment)
 
 | 编号 | 名称 | 位置 | 形式化等级 | **依赖元素** | 状态 |
@@ -720,6 +837,11 @@
 | Thm-K-02-03 | 控制/数据平面分离可扩展性 | Knowledge/02-design-patterns | L4 | Def-K-02-09 | ✅ |
 | Thm-K-02-04 | 跨语言UDF最优隔离级别 | Knowledge/02-design-patterns | L4 | Def-K-02-06 | ✅ |
 | Thm-K-02-05 | 多语言系统最优组件粒度 | Knowledge/02-design-patterns | L4 | Def-K-02-01 | ✅ |
+| **v4.3 新增 - CD-Raft跨域共识** | | | | |
+| Thm-K-CDR-01 | CD-Raft安全性定理 | Knowledge/06-frontier | L4-L5 | - | ✅ |
+| **v4.3 新增 - NIST CAISI Agent标准** | | | | |
+| Thm-K-NIST-01 | CAISI 标准收敛定理 | Knowledge/06-frontier | L4 | - | ✅ |
+| Thm-K-NIST-02 | AIP 跨协议身份不可伪造性定理 | Knowledge/06-frontier | L4 | - | ✅ |
 
 ---
 
@@ -761,6 +883,27 @@
 | Def-S-06-04 | 着色Petri网(CPN) | Struct/01.06 | 带数据抽象的Petri网 |
 | Def-S-06-05 | 时间Petri网(TPN) | Struct/01.06 | 带时序约束的Petri网 |
 | Def-S-06-06 | Petri网层次结构 | Struct/01.06 | P/T⊂CPN⊂TPN |
+| **v4.3 新增 - 流数据库形式化定义** | | | |
+| Def-S-01-12-01 | 流数据库核心模型 | Struct/01-foundation | 流数据库核心模型 |
+| Def-S-01-12-02 | 流处理引擎核心模型 | Struct/01-foundation | 流处理引擎核心模型 |
+| Def-S-01-12-03 | 物化视图严格定义 | Struct/01-foundation | 物化视图严格定义 |
+| Def-S-01-12-04 | 增量更新算子族 | Struct/01-foundation | 增量更新算子族 |
+| Def-S-01-12-05 | SQL兼容性级别 | Struct/01-foundation | SQL兼容性级别 |
+| Def-S-01-12-06 | 持久化存储模型 | Struct/01-foundation | 持久化存储模型 |
+| Def-S-01-12-07 | 快照语义 | Struct/01-foundation | 快照语义 |
+| Def-S-01-12-08 | 流语义 | Struct/01-foundation | 流语义 |
+| Def-S-01-12-09 | 查询可增量性 | Struct/01-foundation | 查询可增量性 |
+| **v4.3 新增 - 最小会话类型理论** | | | |
+| Def-S-11-01 | 最小会话类型语法 | Struct/01-foundation | MST语法 |
+| Def-S-11-02 | 标准会话类型语法 | Struct/01-foundation | 标准会话类型语法 |
+| Def-S-11-03 | MST 类型环境 | Struct/01-foundation | MST类型环境 |
+| Def-S-11-04 | π-calculus 核心语法 | Struct/01-foundation | π-calculus核心语法 |
+| Def-S-11-05 | MST 对偶函数 | Struct/01-foundation | MST对偶函数 |
+| Def-S-11-06 | 顺序性模拟同步协议 | Struct/01-foundation | 顺序性模拟同步协议 |
+| Def-S-11-07 | ℱ*优化变体语法 | Struct/01-foundation | ℱ*优化变体语法 |
+| Def-S-11-08 | 递归类型展开 | Struct/01-foundation | 递归类型展开 |
+| Def-S-11-09 | 编译映射 ⟦·⟧ | Struct/01-foundation | 编译映射 |
+| Def-S-11-10 | 观察等价 | Struct/01-foundation | 观察等价 |
 
 ### 3.2 性质层定义 (02-properties)
 
@@ -849,6 +992,69 @@
 | Def-S-23-04 | Deadlock Freedom | Struct/04.07 | 死锁自由 |
 | Def-S-23-05 | Choral Language | Struct/04.07 | Choral语言 |
 | Def-S-23-06 | MultiChor扩展 | Struct/04.07 | 多角色扩展 |
+
+### 3.4.1 formal-methods工具定义 (formal-methods/06-tools)
+
+| 编号 | 名称 | 位置 | 说明 |
+|------|------|------|------|
+| **Veil Framework (Lean 4)** | | | |
+| Def-FM-06-01 | Veil Framework 的定义 | formal-methods/06-tools | Veil形式化验证框架 |
+| Def-FM-06-02 | 迁移系统建模语言 | formal-methods/06-tools | Veil规约语言 |
+| Def-FM-06-03 | 动作语义与双态关系 | formal-methods/06-tools | 动作语义形式化 |
+| Def-FM-06-04 | 验证条件生成器 | formal-methods/06-tools | VC Generator |
+| Def-FM-06-05 | 有界模型检测 | formal-methods/06-tools | BMC定义 |
+| Def-FM-06-06 | Lean 4 依赖类型与元编程底座 | formal-methods/06-tools | Lean 4基础 |
+| Def-FM-06-07 | 证明重构与信任计算基 | formal-methods/06-tools | TCB定义 |
+| Def-FM-06-08 | Veil 2.0 与 Loom 的多模态语义基础 | formal-methods/06-tools | 多模态语义 |
+| Def-FM-06-09 | 动作精化与协议组合 | formal-methods/06-tools | 动作精化 |
+
+### 3.4.2 formal-methods AI形式化方法定义 (formal-methods/08-ai-formal-methods)
+
+| 编号 | 名称 | 位置 | 说明 |
+|------|------|------|------|
+| **Agent行为契约验证** | | | |
+| Def-FM-08-01 | Agent行为契约 | formal-methods/08-ai-formal-methods | 四元组契约定义 |
+| Def-FM-08-02 | 安全性性质 | formal-methods/08-ai-formal-methods | Safety Property |
+| Def-FM-08-03 | 活性性质 | formal-methods/08-ai-formal-methods | Liveness Property |
+| Def-FM-08-04 | Agent认知状态 | formal-methods/08-ai-formal-methods | 七元组认知状态 |
+| Def-FM-08-05 | 工具调用前置条件 | formal-methods/08-ai-formal-methods | Precondition定义 |
+| Def-FM-08-06 | 工具调用后置条件 | formal-methods/08-ai-formal-methods | Postcondition定义 |
+| Def-FM-08-07 | 工具调用安全性断言 | formal-methods/08-ai-formal-methods | Safety Assertion |
+| Def-FM-08-08 | AgentAssert 断言语义 | formal-methods/08-ai-formal-methods | 断言语言 |
+| Def-FM-08-09 | AgentAssay 运行时验证器 | formal-methods/08-ai-formal-methods | 运行时验证引擎 |
+| Def-FM-08-10 | 行为契约可满足性 | formal-methods/08-ai-formal-methods | Contract Satisfiability |
+| Def-FM-08-11 | 多Agent协作契约 | formal-methods/08-ai-formal-methods | 六元组协作契约 |
+| Def-FM-08-12 | 工具冲突检测 | formal-methods/08-ai-formal-methods | 工具冲突关系 |
+
+### 3.4.3 Struct前沿扩展定义 (Struct/06-frontier)
+
+| 编号 | 名称 | 位置 | 说明 |
+|------|------|------|------|
+| **LLM辅助形式化证明自动化** | | | |
+| Def-S-06-18-01 | LLM 辅助形式化证明自动化 | Struct/06-frontier | LFPA定义 |
+| Def-S-06-18-02 | 证明生成成功率 | Struct/06-frontier | PGSR定义 |
+| Def-S-06-18-03 | 证明策略推荐精确度 | Struct/06-frontier | PTRP定义 |
+| Def-S-06-18-04 | LLM 证明幻觉 | Struct/06-frontier | Proof Hallucination |
+| Def-S-06-18-05 | 可验证生成 | Struct/06-frontier | Verifiable Generation |
+| Def-S-06-18-06 | 证明搜索树与 LLM 引导启发式 | Struct/06-frontier | 证明搜索树 |
+| Def-S-06-18-07 | 人机协同证明工作流 | Struct/06-frontier | HILPW定义 |
+| **DBSP理论框架** | | | |
+| Def-S-06-19-01 | Z-sets 形式化定义 | Struct/06-frontier | Z-set定义 |
+| Def-S-06-19-02 | Z-set 转换器 | Struct/06-frontier | Z-set Transformer |
+| Def-S-06-19-03 | 差分算子 ∇ | Struct/06-frontier | 差分算子 |
+| Def-S-06-19-04 | 积分算子 ∇⁻¹ | Struct/06-frontier | 积分算子 |
+| Def-S-06-19-05 | DBSP 计算模型 | Struct/06-frontier | DBSP程序定义 |
+| Def-S-06-19-06 | 线性算子与可增量性 | Struct/06-frontier | 线性算子 |
+| Def-S-06-19-07 | 嵌套 Z-sets | Struct/06-frontier | 嵌套Z-set |
+| Def-S-06-19-08 | 循环算子 | Struct/06-frontier | LOOP算子 |
+| Def-S-06-19-09 | 带事件时间的 Z-set | Struct/06-frontier | 事件时间Z-set |
+| **Calvin确定性流处理** | | | |
+| Def-S-06-20-01 | Calvin 分布式确定性事务系统 | Struct/06-frontier | Calvin系统定义 |
+| Def-S-06-20-02 | Sequencer（序列器）与全局排序 | Struct/06-frontier | Sequencer定义 |
+| Def-S-06-20-03 | Scheduler（调度器）与确定性锁协议 | Struct/06-frontier | Scheduler定义 |
+| Def-S-06-20-04 | Storage Layer 与无协调执行语义 | Struct/06-frontier | Storage Layer |
+| Def-S-06-20-05 | 确定性重放 | Struct/06-frontier | Deterministic Replay |
+| Def-S-06-20-06 | 流处理状态一致性框架 | Struct/06-frontier | 状态一致性框架 |
 
 ### 3.5 知识层定义 (Knowledge)
 
@@ -1220,6 +1426,34 @@
 | Def-F-04-71 | 数据管道同步语义 | Flink/04-connectors | Pipeline Synchronization |
 | Def-F-04-72 | Schema Registry集成 | Flink/04-connectors | 模式注册中心接口 |
 | Def-F-04-73 | 端到端数据一致性 | Flink/04-connectors | End-to-End Consistency |
+| **v4.3 新增 - Fluss集成** | | | |
+| Def-F-04-10 | Fluss架构 | Flink/05-ecosystem | Fluss架构定义 |
+| Def-F-04-11 | 流式存储语义 | Flink/05-ecosystem | 流式存储语义 |
+| Def-F-04-12 | 实时分析优化 | Flink/05-ecosystem | 实时分析优化 |
+| Def-F-04-13 | Apache Fluss 0.8 (Incubating) 里程碑 | Flink/05-ecosystem | Fluss 0.8里程碑 |
+| Def-F-04-14 | 分层 Streaming Lakehouse 架构 | Flink/05-ecosystem | 分层Lakehouse架构 |
+| Def-F-04-15 | Delta Join 状态外置语义 | Flink/05-ecosystem | Delta Join状态外置 |
+| **v4.3 新增 - Dynamic Iceberg Sink** | | | |
+| Def-F-DIS-01 | Dynamic Table Sink (动态表输出) | Flink/05-ecosystem | 动态表输出定义 |
+| Def-F-DIS-02 | Topic-to-Table Routing (主题到表的路由) | Flink/05-ecosystem | 主题到表路由 |
+| Def-F-DIS-03 | Auto-Schema Evolution (自动模式演化) | Flink/05-ecosystem | 自动模式演化 |
+| Def-F-DIS-04 | Table Loader & Catalog Resolver | Flink/05-ecosystem | 表加载器与目录解析器 |
+
+### 3.12.1 Flink生态扩展定义 (Flink/05-ecosystem)
+
+| 编号 | 名称 | 位置 | 说明 |
+|------|------|------|------|
+| **Paimon集成 (v4.3更新)** | | | |
+| Def-F-14-01 | Apache Paimon 形式化定义 | Flink/05-ecosystem | Paimon形式化定义 |
+| Def-F-14-02 | 流批统一存储语义 | Flink/05-ecosystem | 流批统一存储语义 |
+| Def-F-14-03 | LSM-Tree 增量日志模型 | Flink/05-ecosystem | LSM-Tree增量日志 |
+| Def-F-14-04 | 快照与版本管理 | Flink/05-ecosystem | 快照与版本管理 |
+| Def-F-14-05 | Changelog Producer 类型详解 | Flink/05-ecosystem | Changelog Producer |
+| Def-F-14-06 | Compaction 策略形式化定义 | Flink/05-ecosystem | Compaction策略 |
+| Def-F-14-07 | Apache Paimon 1.0 里程碑定义 | Flink/05-ecosystem | Paimon 1.0里程碑 |
+| Def-F-14-08 | Object Table 与多模态数据支持 | Flink/05-ecosystem | Object Table与多模态 |
+| Def-F-14-09 | Iceberg 兼容性接口 | Flink/05-ecosystem | Iceberg兼容性接口 |
+| Def-F-14-10 | Python API (PyPaimon) 形式化定义 | Flink/05-ecosystem | PyPaimon形式化定义 |
 
 ### 3.13 Flink部署定义 (Flink/10-deployment)
 
@@ -1490,6 +1724,19 @@
 | Def-F-13-17 | 数据安全控制 | Flink/13-security | 静态/传输/使用三态数据保护 |
 | Def-F-13-18 | 可信执行环境(TEE) | Flink/13-security | SGX/TDX/SEV-SNP/TrustZone对比 |
 | Def-F-13-19 | 密钥管理生命周期 | Flink/13-security | 生成/分发/存储/轮换/归档/使用/销毁 |
+| **v4.3 新增 - CD-Raft跨域共识** | | | |
+| Def-K-CDR-01 | 跨域站点（Cross-Domain Site） | Knowledge/06-frontier | 跨域站点定义 |
+| Def-K-CDR-02 | 跨域往返时延（Cross-Domain RTT） | Knowledge/06-frontier | 跨域RTT定义 |
+| Def-K-CDR-03 | Fast Return策略 | Knowledge/06-frontier | Fast Return策略 |
+| Def-K-CDR-04 | 最优全局Leader位置 | Knowledge/06-frontier | 最优全局Leader位置 |
+| Def-K-CDR-05 | CD-Raft协议 | Knowledge/06-frontier | CD-Raft协议定义 |
+| Def-K-CDR-06 | 跨域多数派（Cross-Domain Quorum） | Knowledge/06-frontier | 跨域多数派定义 |
+| **v4.3 新增 - NIST CAISI Agent标准** | | | |
+| Def-K-NIST-01 | NIST CAISI 政策框架 | Knowledge/06-frontier | CAISI政策框架 |
+| Def-K-NIST-02 | 标准成熟度生命周期 | Knowledge/06-frontier | 标准成熟度生命周期 |
+| Def-K-NIST-03 | AI Agent 合规风险分级 | Knowledge/06-frontier | AI Agent合规风险分级 |
+| Def-K-NIST-04 | 跨协议身份互操作框架 (AIP 映射) | Knowledge/06-frontier | AIP映射框架 |
+| Def-K-NIST-05 | 开源协议培育成熟度指数 (OSPMI) | Knowledge/06-frontier | OSPMI定义 |
 
 ---
 
@@ -1509,6 +1756,15 @@
 | Lemma-S-05-02 | CSP同步并行下迹前缀保持性 | Struct/01.05 | Thm-S-05-01支撑 |
 | Lemma-S-06-01 | Karp-Miller树有限性 | Struct/01.06 | 覆盖性可判定 |
 | Lemma-S-06-02 | Petri网触发规则单调性 | Struct/01.06 | 状态空间分析 |
+| **v4.3 新增 - 流数据库形式化定义** | | | |
+| Lemma-S-01-12-01 | 物化视图状态单调性 | Struct/01-foundation | 状态单调性引理 |
+| Lemma-S-01-12-02 | 增量更新算子的局部性 | Struct/01-foundation | 局部性引理 |
+| Lemma-S-01-12-03 | 快照语义与流语义的时序一致性 | Struct/01-foundation | 时序一致性引理 |
+| **v4.3 新增 - 最小会话类型理论** | | | |
+| Lemma-S-11-01 | MST 线性使用保持性 | Struct/01-foundation | 线性使用保持性 |
+| Lemma-S-11-02 | 编译映射下的类型保持性 | Struct/01-foundation | 类型保持性 |
+| Lemma-S-11-03 | ℱ* 变体的递归类型正规化 | Struct/01-foundation | 递归类型正规化 |
+| Lemma-S-11-04 | 顺序性模拟的进程数上界 | Struct/01-foundation | 进程数上界 |
 
 ### 4.2 性质层引理 (02-properties)
 
@@ -1561,6 +1817,48 @@
 | Lemma-S-23-01 | EPP保持通信结构 | Struct/04.07 | Thm-S-23-01基础 |
 | Lemma-S-23-02 | 投影合成还原 | Struct/04.07 | Thm-S-23-01基础 |
 | Lemma-S-23-03 | 类型保持性 | Struct/04.07 | Thm-S-23-01基础 |
+
+### 4.4.1 formal-methods工具引理 (formal-methods/06-tools)
+
+| 编号 | 名称 | 位置 | 关键作用 |
+|------|------|------|----------|
+| **Veil Framework (Lean 4)** | | | |
+| Lemma-FM-06-01 | VC 生成器的可靠性 | formal-methods/06-tools | Soundness of VCG |
+| Lemma-FM-06-02 | 自动化与交互式验证的完备性边界 | formal-methods/06-tools | 完备性边界 |
+| Lemma-FM-06-03 | SMT 查询消解的策略终止性 | formal-methods/06-tools | 策略终止性 |
+| Lemma-FM-06-04 | 不变式合取的单调保持性 | formal-methods/06-tools | 单调保持性 |
+| Lemma-FM-06-05 | BMC 深度与反例完备性的权衡 | formal-methods/06-tools | BMC权衡 |
+
+### 4.4.2 formal-methods AI形式化方法引理 (formal-methods/08-ai-formal-methods)
+
+| 编号 | 名称 | 位置 | 关键作用 |
+|------|------|------|----------|
+| **Agent行为契约验证** | | | |
+| Lemma-FM-08-01 | 个体契约可满足性下界 | formal-methods/08-ai-formal-methods | 有限时间可满足性 |
+| Lemma-FM-08-02 | 活性性质引入不可判定性 | formal-methods/08-ai-formal-methods | 不可判定性 |
+| Lemma-FM-08-03 | 工具调用白名单完备性 | formal-methods/08-ai-formal-methods | 多项式时间验证 |
+| Lemma-FM-08-04 | 前置条件传播的单调性 | formal-methods/08-ai-formal-methods | 单调传播 |
+| Lemma-FM-08-05 | AgentAssay 安全性监控完备性 | formal-methods/08-ai-formal-methods | 安全性监控完备 |
+| Lemma-FM-08-06 | AgentAssay 活性监控不完备性 | formal-methods/08-ai-formal-methods | 活性监控不完备 |
+| Lemma-FM-08-07 | 并行组合契约交集 | formal-methods/08-ai-formal-methods | 契约交集 |
+| Lemma-FM-08-08 | 共享工具下的契约合成 | formal-methods/08-ai-formal-methods | 契约合成 |
+
+### 4.4.3 Struct前沿扩展引理 (Struct/06-frontier)
+
+| 编号 | 名称 | 位置 | 关键作用 |
+|------|------|------|----------|
+| **LLM辅助形式化证明自动化** | | | |
+| Lemma-S-06-18-01 | 可验证生成的可靠性传递 | Struct/06-frontier | 可靠性传递 |
+| Lemma-S-06-18-02 | 策略推荐精确度的上界 | Struct/06-frontier | 精确度上界 |
+| Lemma-S-06-18-03 | 语法幻觉的完全可消除性 | Struct/06-frontier | 幻觉可消除性 |
+| **DBSP理论框架** | | | |
+| Lemma-S-06-19-01 | ∇ 算子的线性性 | Struct/06-frontier | 差分算子线性性 |
+| Lemma-S-06-19-02 | ∇ 的核与像 | Struct/06-frontier | 核与像 |
+| Lemma-S-06-19-03 | DBSP 链式法则 | Struct/06-frontier | 链式法则 |
+| Lemma-S-06-19-04 | 线性算子的增量封闭性 | Struct/06-frontier | 增量封闭性 |
+| **Calvin确定性流处理** | | | |
+| Lemma-S-06-20-01 | Sequencer 排序的线性一致性 | Struct/06-frontier | 线性一致性 |
+| Lemma-S-06-20-02 | 确定性锁的互斥与无死锁性 | Struct/06-frontier | 互斥无死锁 |
 
 ### 4.5 知识层引理 (Knowledge)
 
@@ -1737,6 +2035,18 @@
 | Lemma-F-15-40 | 指标采样一致性引理 | Flink/15-observability | Thm-F-15-35基础 |
 | Lemma-F-15-41 | 背压与延迟关联性引理 | Flink/15-observability | Thm-F-15-36基础 |
 | Lemma-F-15-42 | Checkpoint可恢复性引理 | Flink/15-observability | Thm-F-15-37基础 |
+| **v4.3 新增 - Fluss集成** | | | |
+| (暂无新增引理) | | | |
+| **v4.3 新增 - Dynamic Iceberg Sink** | | | |
+| Lemma-F-DIS-01 | Schema Evolution 的向下读取兼容性 | Flink/05-ecosystem | 向下读取兼容性 |
+
+### 4.11.1 Flink生态扩展引理 (Flink/05-ecosystem)
+
+| 编号 | 名称 | 位置 | 关键作用 |
+|------|------|------|----------|
+| **Paimon集成 (v4.3更新)** | | | |
+| Lemma-F-14-01 | LSM 写入放大与读优化权衡 | Flink/05-ecosystem | 写入放大权衡 |
+| Lemma-F-14-02 | 增量日志的完备性保证 | Flink/05-ecosystem | 增量日志完备性 |
 
 ### 4.12 Flink部署引理 (Flink/10-deployment)
 
@@ -1843,6 +2153,13 @@
 | **Flink安全完整指南 (新增 v2.9.3)** | | | |
 | Lemma-F-13-03 | 加密性能开销上界 | Flink/13-security | AES-GCM-256吞吐量影响<3% |
 | Lemma-F-13-04 | 审计日志完整性 | Flink/13-security | 不可抵赖性三条件 |
+| **v4.3 新增 - CD-Raft跨域共识** | | | |
+| Lemma-K-CDR-01 | Fast Return的安全性保证 | Knowledge/06-frontier | Fast Return安全性 |
+| Lemma-K-CDR-02 | Optimal Leader Position的延迟下界 | Knowledge/06-frontier | 延迟下界 |
+| Lemma-K-CDR-03 | CD-Raft在Leader故障时的恢复延迟 | Knowledge/06-frontier | 恢复延迟 |
+| **v4.3 新增 - NIST CAISI Agent标准** | | | |
+| Lemma-K-NIST-01 | 标准竞争中的锁定效应下界 | Knowledge/06-frontier | 锁定效应下界 |
+| Lemma-K-NIST-02 | 跨协议身份绑定的传递安全性 | Knowledge/06-frontier | 传递安全性 |
 
 ---
 
@@ -2058,6 +2375,49 @@
 | **Flink安全完整指南 (新增 v2.9.3)** | | | |
 | Prop-F-13-07 | 最小权限传递性 | Flink/13-security | 组合组件有效权限=P_1∩P_2 |
 | Prop-F-13-08 | 纵深防御完备性 | Flink/13-security | Security_total=1-∏(1-p_i) |
+| **v4.3 新增 - 流数据库形式化定义** | | | |
+| Prop-S-01-12-01 | SQL兼容性蕴含查询封闭性 | Struct/01-foundation | 查询封闭性 |
+| Prop-S-01-12-02 | 持久化存储的 exactly-once 语义保证 | Struct/01-foundation | exactly-once语义 |
+| **v4.3 新增 - 最小会话类型理论** | | | |
+| Prop-S-11-01 | 最小构造子的必要性 | Struct/01-foundation | 最小构造子必要性 |
+| Prop-S-11-02 | 对偶性在编译映射下的保持 | Struct/01-foundation | 对偶性保持 |
+| **v4.3 新增 - LLM辅助形式化证明自动化** | | | |
+| Prop-S-06-18-01 | LLM 证明成功率的形式化分解 | Struct/06-frontier | 证明成功率分解 |
+| Prop-S-06-18-02 | 人机协同的不完备性保持 | Struct/06-frontier | 不完备性保持 |
+| **v4.3 新增 - DBSP理论框架** | | | |
+| Prop-S-06-19-01 | ∇ 与 ∇⁻¹ 的互逆性 | Struct/06-frontier | 互逆性 |
+| Prop-S-06-19-02 | 循环算子的增量化 | Struct/06-frontier | 循环算子增量化 |
+| Prop-S-06-19-03 | 传递闭包增量收敛性 | Struct/06-frontier | 增量收敛性 |
+| **v4.3 新增 - Calvin确定性流处理** | | | |
+| Prop-S-06-20-01 | Calvin 串行化等价性 | Struct/06-frontier | 串行化等价性 |
+| Prop-S-06-20-02 | 确定性重放的状态收敛性 | Struct/06-frontier | 状态收敛性 |
+| **v4.3 新增 - formal-methods工具** | | | |
+| Prop-FM-06-01 | Veil 与 Ivy 语言表达能力的等价性 | formal-methods/06-tools | 表达能力等价 |
+| Prop-FM-06-02 | Veil 证明目标与 Lean 逻辑的一致性 | formal-methods/06-tools | 逻辑一致性 |
+| **v4.3 新增 - formal-methods AI形式化方法** | | | |
+| Prop-FM-08-01 | 有界契约可满足性 | formal-methods/08-ai-formal-methods | 有界可满足性 |
+| Prop-FM-08-02 | 后置条件验证的NP难度 | formal-methods/08-ai-formal-methods | NP难度 |
+| Prop-FM-08-03 | 运行时监控与静态验证的互补性 | formal-methods/08-ai-formal-methods | 互补性 |
+| Prop-FM-08-04 | 委托链契约传递性 | formal-methods/08-ai-formal-methods | 契约传递性 |
+| Prop-FM-08-05 | 契约精化的单调性 | formal-methods/08-ai-formal-methods | 单调性 |
+| Prop-FM-08-06 | MCP生态安全等级传递 | formal-methods/08-ai-formal-methods | 安全等级传递 |
+| **v4.3 新增 - CD-Raft跨域共识** | | | |
+| Prop-K-CDR-01 | CD-Raft的Commit延迟上界 | Knowledge/06-frontier | Commit延迟上界 |
+| Prop-K-CDR-02 | 跨域Quorum的最小规模 | Knowledge/06-frontier | Quorum最小规模 |
+| **v4.3 新增 - NIST CAISI Agent标准** | | | |
+| Prop-K-NIST-01 | CAISI 标准加速效应 | Knowledge/06-frontier | 标准加速效应 |
+| Prop-K-NIST-02 | MCP 安全缺口与合规需求的互补性 | Knowledge/06-frontier | 互补性 |
+| **v4.3 新增 - Fluss集成** | | | |
+| Prop-F-04-01 | 分层存储成本优化 | Flink/05-ecosystem | 成本优化 |
+| Prop-F-04-02 | Kafka协议兼容性保证 | Flink/05-ecosystem | 兼容性保证 |
+| Prop-F-04-03 | Fluss + Paimon 分层存储成本优化命题 | Flink/05-ecosystem | 分层存储成本优化 |
+| **v4.3 新增 - Dynamic Iceberg Sink** | | | |
+| Prop-F-DIS-01 | Dynamic Sink 的幂等路由性质 | Flink/05-ecosystem | 幂等路由性质 |
+| Prop-F-DIS-02 | Checkpoint 一致性保证 | Flink/05-ecosystem | Checkpoint一致性 |
+| **v4.3 新增 - Paimon集成** | | | |
+| Prop-F-14-01 | 流批读写隔离性 | Flink/05-ecosystem | 读写隔离性 |
+| Prop-F-14-02 | 主键表的幂等写入 | Flink/05-ecosystem | 幂等写入 |
+| Prop-F-14-03 | Paimon 1.0 多模态存储完备性命题 | Flink/05-ecosystem | 多模态存储完备性 |
 
 ### 5.2 推论 (Cor-S-XX-XX / Cor-K-XX-XX / Cor-F-XX-XX)
 
@@ -2073,6 +2433,8 @@
 | Cor-K-06-05 | 智能合约事件驱动活性推论 | Knowledge/06-frontier | Thm-K-06-51直接推论 |
 | **智能制造IoT** | | | |
 | Cor-F-07-05 | 预测性维护误报率边界推论 | Flink/07-case-studies | Thm-F-07-32直接推论 |
+| **v4.3 新增 - 最小会话类型理论** | | | |
+| Cor-S-11-01 | MST 类型安全性 | Struct/01-foundation | MST类型安全性推论 |
 
 ---
 
@@ -2101,14 +2463,14 @@
 
 ### 7.1 总体统计
 
-| 类别 | Struct/ | Knowledge/ | Flink/ | **Unified** | 总计 |
-|------|---------|------------|--------|-------------|------|
-| **定理** | 32 | 56 | 165 | 1 | **254** |
-| **定义** | 79 | 131 | 385 | 5 | **600** |
-| **引理** | 35 | 61 | 128 | 0 | **224** |
-| **命题** | 24 | 45 | 122 | 3 | **194** |
-| **推论** | 4 | 1 | 1 | 0 | **6** |
-| **合计** | 170 | 268 | 785 | 9 | **1,232** |
+| 类别 | Struct/ | Knowledge/ | Flink/ | formal-methods/ | **Unified** | 总计 |
+|------|---------|------------|--------|-----------------|-------------|------|
+| **定理** | 45 | 59 | 172 | 3 | 1 | **280** |
+| **定义** | 120 | 142 | 405 | 21 | 5 | **693** |
+| **引理** | 51 | 66 | 131 | 13 | 0 | **261** |
+| **命题** | 35 | 49 | 130 | 8 | 3 | **225** |
+| **推论** | 5 | 1 | 1 | 0 | 0 | **7** |
+| **合计** | 252 | 291 | 823 | 45 | 9 | **1,420** |
 
 ### 7.2 按文档统计
 
@@ -2198,6 +2560,19 @@
 | Knowledge (06) Temporal+Flink | 0 | 4 | 0 | 3 | 0 |
 | Knowledge (04) Flink vs RisingWave | 1 | 3 | 2 | 1 | 0 |
 | Struct (07) Smart Casual验证 | 3 | 4 | 2 | 1 | 0 |
+| **v4.3 新增文档** | | | | | |
+| Struct (01) 流数据库形式化定义 | 3 | 9 | 3 | 2 | 0 |
+| Struct (01) 最小会话类型理论 | 3 | 10 | 4 | 2 | 1 |
+| Struct (06) LLM辅助形式化证明 | 1 | 7 | 3 | 2 | 0 |
+| Struct (06) DBSP理论框架 | 3 | 9 | 4 | 3 | 0 |
+| Struct (06) Calvin确定性流处理 | 3 | 6 | 2 | 2 | 0 |
+| formal-methods (06) Veil Framework | 0 | 9 | 5 | 2 | 0 |
+| formal-methods (08) Agent行为契约 | 3 | 12 | 8 | 6 | 0 |
+| Knowledge (06) CD-Raft跨域共识 | 1 | 6 | 3 | 2 | 0 |
+| Knowledge (06) NIST CAISI标准 | 2 | 5 | 2 | 2 | 0 |
+| Flink (05) Dynamic Iceberg Sink | 1 | 4 | 1 | 2 | 0 |
+| Flink (04) Fluss集成 | 2 | 6 | 0 | 3 | 0 |
+| Flink (05) Paimon集成 | 4 | 10 | 2 | 3 | 0 |
 
 ### 7.3 形式化等级分布
 
@@ -3919,17 +4294,14 @@
 | 推论 (Cor) | 0 | 121 |
 | **总计** | **15** | **9,325** |
 
-## 引用参考
-
-
 ---
 
 *注册表创建时间: 2026-04-02*
-*最后更新时间: 2026-04-12 (v2.9.9: 2025-04扩展 - Go/Rust/AI生态，新增131个形式化元素)*
-*本次新增文档: Go-Ecosystem-Research-2024-2025.md, Rust-Streaming-Ecosystem-Research.md, AI-Streaming-Integration-Guide.md, Cross-Language-Streaming-Architecture.md, Concurrent-Model-Comparison.md*
+*最后更新时间: 2026-04-18 (v3.0.0: v4.3前沿补全，新增188个形式化元素)*
+*本次新增文档: llm-guided-formal-proof-automation.md, veil-framework-lean4.md, minimal-session-types-theory.md, dbsp-theory-framework.md, calvin-deterministic-streaming.md, cd-raft-cross-domain-consensus.md, nist-caisi-agent-standards.md, flink-dynamic-iceberg-sink-guide.md, agent-behavior-contract-verification.md, streaming-database-formal-definition.md, fluss-integration.md, flink-paimon-integration.md*
 *适用范围: AnalysisDataFlow 全项目*
 *维护建议: 新增文档后更新本注册表*
-*当前注册表统计: 9,467个形式化元素 (定理1,953/定义4,647/引理1,594/命题1,208/推论121)*
+*当前注册表统计: 9,655个形式化元素 (定理1,979/定义4,740/引理1,631/命题1,239/推论122)*
 
 ### 8.13 v2.9.9 2025-04扩展: Go/Rust/AI生态 (2026-04-12)
 
@@ -4347,6 +4719,125 @@
 
 **说明**: 本次实际新增131个形式化元素（不含重复计数），上表统计包含部分边界元素的重分类。
 
+### 8.14 v4.3 前沿补全 (2026-04-18)
+
+**背景**: v4.3前沿补全任务 - 新增LLM形式化证明自动化、Veil Framework (Lean 4)、最小会话类型理论、DBSP理论框架、Calvin确定性流处理、CD-Raft跨域共识、NIST CAISI Agent标准、Flink Dynamic Iceberg Sink、Agent行为契约验证、流数据库形式化定义、Fluss集成、Paimon集成等形式化元素
+
+**涉及文档**:
+
+- Struct/06-frontier/llm-guided-formal-proof-automation.md (13个元素)
+- formal-methods/06-tools/veil-framework-lean4.md (16个元素)
+- Struct/01-foundation/minimal-session-types-theory.md (20个元素)
+- Struct/06-frontier/dbsp-theory-framework.md (19个元素)
+- Struct/06-frontier/calvin-deterministic-streaming.md (13个元素)
+- Knowledge/06-frontier/cd-raft-cross-domain-consensus.md (10个元素)
+- Knowledge/06-frontier/nist-caisi-agent-standards.md (11个元素)
+- Flink/05-ecosystem/flink-dynamic-iceberg-sink-guide.md (8个元素)
+- formal-methods/08-ai-formal-methods/agent-behavior-contract-verification.md (29个元素)
+- Struct/01-foundation/streaming-database-formal-definition.md (17个元素)
+- Flink/05-ecosystem/05.01-connectors/fluss-integration.md (11个元素)
+- Flink/05-ecosystem/05.02-lakehouse/flink-paimon-integration.md (19个元素)
+
+#### 新增定理 (26个)
+
+| 编号 | 位置 | 状态 |
+|------|------|------|
+| Thm-S-01-12-01 | Struct/01-foundation/streaming-database-formal-definition.md | ✅ |
+| Thm-S-01-12-02 | Struct/01-foundation/streaming-database-formal-definition.md | ✅ |
+| Thm-S-01-12-03 | Struct/01-foundation/streaming-database-formal-definition.md | ✅ |
+| Thm-S-11-01 | Struct/01-foundation/minimal-session-types-theory.md | ✅ |
+| Thm-S-11-02 | Struct/01-foundation/minimal-session-types-theory.md | ✅ |
+| Thm-S-11-03 | Struct/01-foundation/minimal-session-types-theory.md | ✅ |
+| Thm-S-06-18-01 | Struct/06-frontier/llm-guided-formal-proof-automation.md | ✅ |
+| Thm-S-06-19-01 | Struct/06-frontier/dbsp-theory-framework.md | ✅ |
+| Thm-S-06-19-02 | Struct/06-frontier/dbsp-theory-framework.md | ✅ |
+| Thm-S-06-19-03 | Struct/06-frontier/dbsp-theory-framework.md | ✅ |
+| Thm-S-06-20-01 | Struct/06-frontier/calvin-deterministic-streaming.md | ✅ |
+| Thm-S-06-20-02 | Struct/06-frontier/calvin-deterministic-streaming.md | ✅ |
+| Thm-S-06-20-03 | Struct/06-frontier/calvin-deterministic-streaming.md | ✅ |
+| Thm-K-CDR-01 | Knowledge/06-frontier/cd-raft-cross-domain-consensus.md | ✅ |
+| Thm-K-NIST-01 | Knowledge/06-frontier/nist-caisi-agent-standards.md | ✅ |
+| Thm-K-NIST-02 | Knowledge/06-frontier/nist-caisi-agent-standards.md | ✅ |
+| Thm-F-DIS-01 | Flink/05-ecosystem/flink-dynamic-iceberg-sink-guide.md | ✅ |
+| Thm-FM-08-01 | formal-methods/08-ai-formal-methods/agent-behavior-contract-verification.md | ✅ |
+| Thm-FM-08-02 | formal-methods/08-ai-formal-methods/agent-behavior-contract-verification.md | ✅ |
+| Thm-FM-08-03 | formal-methods/08-ai-formal-methods/agent-behavior-contract-verification.md | ✅ |
+| Thm-F-04-01 | Flink/05-ecosystem/05.01-connectors/fluss-integration.md | ✅ |
+| Thm-F-04-02 | Flink/05-ecosystem/05.01-connectors/fluss-integration.md | ✅ |
+| Thm-F-14-01 | Flink/05-ecosystem/05.02-lakehouse/flink-paimon-integration.md | ✅ |
+| Thm-F-14-02 | Flink/05-ecosystem/05.02-lakehouse/flink-paimon-integration.md | ✅ |
+| Thm-F-14-03 | Flink/05-ecosystem/05.02-lakehouse/flink-paimon-integration.md | ✅ |
+| Thm-F-14-04 | Flink/05-ecosystem/05.02-lakehouse/flink-paimon-integration.md | ✅ |
+
+#### 新增定义 (93个)
+
+| 编号 | 位置 | 状态 |
+|------|------|------|
+| Def-S-01-12-01 ~ Def-S-01-12-09 | Struct/01-foundation/streaming-database-formal-definition.md | ✅ |
+| Def-S-11-01 ~ Def-S-11-10 | Struct/01-foundation/minimal-session-types-theory.md | ✅ |
+| Def-S-06-18-01 ~ Def-S-06-18-07 | Struct/06-frontier/llm-guided-formal-proof-automation.md | ✅ |
+| Def-S-06-19-01 ~ Def-S-06-19-09 | Struct/06-frontier/dbsp-theory-framework.md | ✅ |
+| Def-S-06-20-01 ~ Def-S-06-20-06 | Struct/06-frontier/calvin-deterministic-streaming.md | ✅ |
+| Def-K-CDR-01 ~ Def-K-CDR-06 | Knowledge/06-frontier/cd-raft-cross-domain-consensus.md | ✅ |
+| Def-K-NIST-01 ~ Def-K-NIST-05 | Knowledge/06-frontier/nist-caisi-agent-standards.md | ✅ |
+| Def-F-DIS-01 ~ Def-F-DIS-04 | Flink/05-ecosystem/flink-dynamic-iceberg-sink-guide.md | ✅ |
+| Def-FM-06-01 ~ Def-FM-06-09 | formal-methods/06-tools/veil-framework-lean4.md | ✅ |
+| Def-FM-08-01 ~ Def-FM-08-12 | formal-methods/08-ai-formal-methods/agent-behavior-contract-verification.md | ✅ |
+| Def-F-04-10 ~ Def-F-04-15 | Flink/05-ecosystem/05.01-connectors/fluss-integration.md | ✅ |
+| Def-F-14-01 ~ Def-F-14-10 | Flink/05-ecosystem/05.02-lakehouse/flink-paimon-integration.md | ✅ |
+
+#### 新增引理 (37个)
+
+| 编号 | 位置 | 状态 |
+|------|------|------|
+| Lemma-S-01-12-01 ~ Lemma-S-01-12-03 | Struct/01-foundation/streaming-database-formal-definition.md | ✅ |
+| Lemma-S-11-01 ~ Lemma-S-11-04 | Struct/01-foundation/minimal-session-types-theory.md | ✅ |
+| Lemma-S-06-18-01 ~ Lemma-S-06-18-03 | Struct/06-frontier/llm-guided-formal-proof-automation.md | ✅ |
+| Lemma-S-06-19-01 ~ Lemma-S-06-19-04 | Struct/06-frontier/dbsp-theory-framework.md | ✅ |
+| Lemma-S-06-20-01 ~ Lemma-S-06-20-02 | Struct/06-frontier/calvin-deterministic-streaming.md | ✅ |
+| Lemma-K-CDR-01 ~ Lemma-K-CDR-03 | Knowledge/06-frontier/cd-raft-cross-domain-consensus.md | ✅ |
+| Lemma-K-NIST-01 ~ Lemma-K-NIST-02 | Knowledge/06-frontier/nist-caisi-agent-standards.md | ✅ |
+| Lemma-F-DIS-01 | Flink/05-ecosystem/flink-dynamic-iceberg-sink-guide.md | ✅ |
+| Lemma-FM-06-01 ~ Lemma-FM-06-05 | formal-methods/06-tools/veil-framework-lean4.md | ✅ |
+| Lemma-FM-08-01 ~ Lemma-FM-08-08 | formal-methods/08-ai-formal-methods/agent-behavior-contract-verification.md | ✅ |
+| Lemma-F-14-01 ~ Lemma-F-14-02 | Flink/05-ecosystem/05.02-lakehouse/flink-paimon-integration.md | ✅ |
+
+#### 新增命题 (31个)
+
+| 编号 | 位置 | 状态 |
+|------|------|------|
+| Prop-S-01-12-01 ~ Prop-S-01-12-02 | Struct/01-foundation/streaming-database-formal-definition.md | ✅ |
+| Prop-S-11-01 ~ Prop-S-11-02 | Struct/01-foundation/minimal-session-types-theory.md | ✅ |
+| Prop-S-06-18-01 ~ Prop-S-06-18-02 | Struct/06-frontier/llm-guided-formal-proof-automation.md | ✅ |
+| Prop-S-06-19-01 ~ Prop-S-06-19-03 | Struct/06-frontier/dbsp-theory-framework.md | ✅ |
+| Prop-S-06-20-01 ~ Prop-S-06-20-02 | Struct/06-frontier/calvin-deterministic-streaming.md | ✅ |
+| Prop-K-CDR-01 ~ Prop-K-CDR-02 | Knowledge/06-frontier/cd-raft-cross-domain-consensus.md | ✅ |
+| Prop-K-NIST-01 ~ Prop-K-NIST-02 | Knowledge/06-frontier/nist-caisi-agent-standards.md | ✅ |
+| Prop-F-DIS-01 ~ Prop-F-DIS-02 | Flink/05-ecosystem/flink-dynamic-iceberg-sink-guide.md | ✅ |
+| Prop-FM-06-01 ~ Prop-FM-06-02 | formal-methods/06-tools/veil-framework-lean4.md | ✅ |
+| Prop-FM-08-01 ~ Prop-FM-08-06 | formal-methods/08-ai-formal-methods/agent-behavior-contract-verification.md | ✅ |
+| Prop-F-04-01 ~ Prop-F-04-03 | Flink/05-ecosystem/05.01-connectors/fluss-integration.md | ✅ |
+| Prop-F-14-01 ~ Prop-F-14-03 | Flink/05-ecosystem/05.02-lakehouse/flink-paimon-integration.md | ✅ |
+
+#### 新增推论 (1个)
+
+| 编号 | 位置 | 状态 |
+|------|------|------|
+| Cor-S-11-01 | Struct/01-foundation/minimal-session-types-theory.md | ✅ |
+
+#### v4.3 补充统计
+
+| 类型 | 新增数量 | 累计总计 |
+|------|----------|----------|
+| 定理 (Thm) | 26 | 1,979 |
+| 定义 (Def) | 93 | 4,740 |
+| 引理 (Lemma) | 37 | 1,631 |
+| 命题 (Prop) | 31 | 1,239 |
+| 推论 (Cor) | 1 | 122 |
+| **总计** | **188** | **9,655** |
+
+**说明**: 本次实际新增188个形式化元素，涵盖Struct前沿、formal-methods工具与AI形式化方法、Knowledge前沿、Flink生态扩展四大领域。
+
 
 ## 引用参考
 
@@ -4354,15 +4845,15 @@
 ---
 
 *注册表创建时间: 2026-04-02*
-*最后更新时间: 2026-04-12 (v2.9.9: 2025-04扩展 - Go/Rust/AI生态，新增131个形式化元素)*
-*本次新增文档: Go-Ecosystem-Research-2024-2025.md, Rust-Streaming-Ecosystem-Research.md, AI-Streaming-Integration-Guide.md, Cross-Language-Streaming-Architecture.md, Concurrent-Model-Comparison.md*
+*最后更新时间: 2026-04-18 (v3.0.0: v4.3前沿补全，新增188个形式化元素)*
+*本次新增文档: llm-guided-formal-proof-automation.md, veil-framework-lean4.md, minimal-session-types-theory.md, dbsp-theory-framework.md, calvin-deterministic-streaming.md, cd-raft-cross-domain-consensus.md, nist-caisi-agent-standards.md, flink-dynamic-iceberg-sink-guide.md, agent-behavior-contract-verification.md, streaming-database-formal-definition.md, fluss-integration.md, flink-paimon-integration.md*
 *适用范围: AnalysisDataFlow 全项目*
 *维护建议: 新增文档后更新本注册表*
-*当前注册表统计: 9,467个形式化元素 (定理1,953/定义4,647/引理1,594/命题1,208/推论121)*
+*当前注册表统计: 9,655个形式化元素 (定理1,979/定义4,740/引理1,631/命题1,239/推论122)*
 
 ---
 
-## 9. 自动化扫描统计 (v3.0.0) - 2026-04-12
+## 9. 自动化扫描统计 (v3.0.0) - 2026-04-18
 
 > 以下统计由 theorem-validator.py 自动扫描生成
 

@@ -2,151 +2,972 @@
   "name": "流计算理论图谱",
   "description": "流计算核心理论与形式化模型的知识图谱",
   "version": "1.0",
-  "lastUpdated": "2026-04-04",
+  "lastUpdated": "2026-04-18",
   "nodes": [
-    {"id": "ustm", "label": "USTM统一流计算理论", "type": "theory", "category": "foundation", "level": 5, "description": "统一流计算理论模型"},
-    {"id": "dataflow-model", "label": "Dataflow模型", "type": "model", "category": "foundation", "level": 5, "description": "数据流计算模型形式化定义"},
-    {"id": "actor-model", "label": "Actor模型", "type": "model", "category": "foundation", "level": 4, "description": "Actor并发计算模型"},
-    {"id": "csp-model", "label": "CSP模型", "type": "model", "category": "foundation", "level": 4, "description": "通信顺序进程模型"},
-    {"id": "pi-calculus", "label": "π演算", "type": "formalism", "category": "foundation", "level": 5, "description": "移动进程演算"},
-    {"id": "event-time", "label": "事件时间语义", "type": "concept", "category": "semantics", "level": 4, "description": "基于事件发生时间的处理语义"},
-    {"id": "processing-time", "label": "处理时间语义", "type": "concept", "category": "semantics", "level": 3, "description": "基于处理时间的语义"},
-    {"id": "ingestion-time", "label": "摄取时间语义", "type": "concept", "category": "semantics", "level": 3, "description": "数据进入系统的时间语义"},
-    {"id": "windowing", "label": "窗口机制", "type": "concept", "category": "operation", "level": 4, "description": "无界流的有限切分"},
-    {"id": "tumbling-window", "label": "滚动窗口", "type": "window", "category": "operation", "level": 3, "description": "固定大小不重叠窗口"},
-    {"id": "sliding-window", "label": "滑动窗口", "type": "window", "category": "operation", "level": 3, "description": "固定大小可重叠窗口"},
-    {"id": "session-window", "label": "会话窗口", "type": "window", "category": "operation", "level": 3, "description": "活动间隙触发的动态窗口"},
-    {"id": "watermark", "label": "Watermark机制", "type": "concept", "category": "mechanism", "level": 4, "description": "处理乱序事件的时间进度标记"},
-    {"id": "lateness", "label": "延迟数据处理", "type": "concept", "category": "mechanism", "level": 3, "description": "迟到数据的处理策略"},
-    {"id": "determinism", "label": "确定性", "type": "property", "category": "correctness", "level": 5, "description": "相同输入产生相同输出的性质"},
-    {"id": "consistency", "label": "一致性模型", "type": "concept", "category": "correctness", "level": 5, "description": "分布式系统的一致性保证"},
-    {"id": "exactly-once", "label": "Exactly-Once语义", "type": "semantics", "category": "correctness", "level": 5, "description": "每条记录恰好处理一次"},
-    {"id": "at-least-once", "label": "At-Least-Once语义", "type": "semantics", "category": "correctness", "level": 4, "description": "每条记录至少处理一次"},
-    {"id": "at-most-once", "label": "At-Most-Once语义", "type": "semantics", "category": "correctness", "level": 3, "description": "每条记录最多处理一次"},
-    {"id": "state-management", "label": "状态管理", "type": "concept", "category": "mechanism", "level": 4, "description": "有状态计算的状态维护"},
-    {"id": "state-backend", "label": "状态后端", "type": "concept", "category": "mechanism", "level": 3, "description": "状态存储的实现后端"},
-    {"id": "checkpoint", "label": "Checkpoint机制", "type": "concept", "category": "fault-tolerance", "level": 5, "description": "分布式快照容错机制"},
-    {"id": "savepoint", "label": "Savepoint", "type": "concept", "category": "fault-tolerance", "level": 4, "description": "手动触发的应用程序快照"},
-    {"id": "backpressure", "label": "背压机制", "type": "concept", "category": "flow-control", "level": 4, "description": "反压流量控制机制"},
-    {"id": "crdt", "label": "CRDT", "type": "data-structure", "category": "state", "level": 4, "description": "无冲突复制数据类型"},
-    {"id": "calm-theorem", "label": "CALM定理", "type": "theorem", "category": "theory", "level": 5, "description": " consistency as logical monotonicity"},
-    {"id": "chandy-lamport", "label": "Chandy-Lamport算法", "type": "algorithm", "category": "fault-tolerance", "level": 5, "description": "分布式快照算法"},
-    {"id": "lamport-timestamp", "label": "Lamport时间戳", "type": "concept", "category": "ordering", "level": 4, "description": "逻辑时钟排序"},
-    {"id": "vector-clock", "label": "向量时钟", "type": "concept", "category": "ordering", "level": 4, "description": "并发事件检测机制"},
-    {"id": "happens-before", "label": "Happens-Before关系", "type": "relation", "category": "ordering", "level": 4, "description": "事件偏序关系"},
-    {"id": "causality", "label": "因果一致性", "type": "consistency", "category": "correctness", "level": 4, "description": "因果关系的保持"},
-    {"id": "lineage", "label": "数据血缘", "type": "concept", "category": "data-management", "level": 3, "description": "数据来源与转换追踪"},
-    {"id": "provenance", "label": "数据溯源", "type": "concept", "category": "data-management", "level": 3, "description": "数据起源追踪"},
-    {"id": "temporal-logic", "label": "时序逻辑", "type": "formalism", "category": "verification", "level": 5, "description": "时间性质的形式化描述"},
-    {"id": "buchi-automaton", "label": "Büchi自动机", "type": "automaton", "category": "verification", "level": 5, "description": "无限字上的自动机"},
-    {"id": "monitoring", "label": "运行时监控", "type": "technique", "category": "verification", "level": 4, "description": "在线性质验证"},
-    {"id": "ceps", "label": "复杂事件处理", "type": "paradigm", "category": "processing", "level": 4, "description": "CEP模式匹配"},
-    {"id": "stream-sql", "label": "流SQL", "type": "language", "category": "interface", "level": 3, "description": "流数据的SQL查询"},
-    {"id": "dynamic-tables", "label": "动态表", "type": "concept", "category": "interface", "level": 3, "description": "流和表的统一视图"},
-    {"id": "materialized-view", "label": "物化视图", "type": "concept", "category": "optimization", "level": 3, "description": "预计算查询结果"},
-    {"id": "incremental-computation", "label": "增量计算", "type": "technique", "category": "optimization", "level": 4, "description": "基于变更的计算优化"},
-    {"id": "retraction", "label": "回撤机制", "type": "concept", "category": "operation", "level": 4, "description": "更新流的处理方式"},
-    {"id": "deduplication", "label": "去重机制", "type": "concept", "category": "operation", "level": 3, "description": "重复数据消除"},
-    {"id": "join-semantics", "label": "流Join语义", "type": "concept", "category": "operation", "level": 4, "description": "流数据关联操作"},
-    {"id": "stream-stream-join", "label": "双流Join", "type": "operation", "category": "operation", "level": 4, "description": "两个流的窗口关联"},
-    {"id": "stream-table-join", "label": "流表Join", "type": "operation", "category": "operation", "level": 3, "description": "流与维表的关联"},
-    {"id": "temporal-join", "label": "时态Join", "type": "operation", "category": "operation", "level": 4, "description": "版本表的时态关联"},
-    {"id": "lookup-join", "label": "Lookup Join", "type": "operation", "category": "operation", "level": 3, "description": "外部系统查询关联"},
-    {"id": "async-lookup", "label": "异步Lookup", "type": "optimization", "category": "optimization", "level": 3, "description": "异步外部查询优化"},
-    {"id": "broadcast-state", "label": "广播状态", "type": "pattern", "category": "pattern", "level": 4, "description": "小流广播到大流处理"},
-    {"id": "async-io", "label": "异步IO", "type": "pattern", "category": "pattern", "level": 4, "description": "非阻塞外部访问"},
-    {"id": "side-output", "label": "旁路输出", "type": "pattern", "category": "pattern", "level": 3, "description": "多路分流输出"},
-    {"id": "process-function", "label": "ProcessFunction", "type": "api", "category": "interface", "level": 4, "description": "底层处理API"},
-    {"id": "co-process", "label": "CoProcess", "type": "api", "category": "interface", "level": 4, "description": "双流底层处理API"}
+    {
+      "id": "ustm",
+      "label": "USTM统一流计算理论",
+      "type": "theory",
+      "category": "foundation",
+      "level": 5,
+      "description": "统一流计算理论模型"
+    },
+    {
+      "id": "dataflow-model",
+      "label": "Dataflow模型",
+      "type": "model",
+      "category": "foundation",
+      "level": 5,
+      "description": "数据流计算模型形式化定义"
+    },
+    {
+      "id": "actor-model",
+      "label": "Actor模型",
+      "type": "model",
+      "category": "foundation",
+      "level": 4,
+      "description": "Actor并发计算模型"
+    },
+    {
+      "id": "csp-model",
+      "label": "CSP模型",
+      "type": "model",
+      "category": "foundation",
+      "level": 4,
+      "description": "通信顺序进程模型"
+    },
+    {
+      "id": "pi-calculus",
+      "label": "π演算",
+      "type": "formalism",
+      "category": "foundation",
+      "level": 5,
+      "description": "移动进程演算"
+    },
+    {
+      "id": "event-time",
+      "label": "事件时间语义",
+      "type": "concept",
+      "category": "semantics",
+      "level": 4,
+      "description": "基于事件发生时间的处理语义"
+    },
+    {
+      "id": "processing-time",
+      "label": "处理时间语义",
+      "type": "concept",
+      "category": "semantics",
+      "level": 3,
+      "description": "基于处理时间的语义"
+    },
+    {
+      "id": "ingestion-time",
+      "label": "摄取时间语义",
+      "type": "concept",
+      "category": "semantics",
+      "level": 3,
+      "description": "数据进入系统的时间语义"
+    },
+    {
+      "id": "windowing",
+      "label": "窗口机制",
+      "type": "concept",
+      "category": "operation",
+      "level": 4,
+      "description": "无界流的有限切分"
+    },
+    {
+      "id": "tumbling-window",
+      "label": "滚动窗口",
+      "type": "window",
+      "category": "operation",
+      "level": 3,
+      "description": "固定大小不重叠窗口"
+    },
+    {
+      "id": "sliding-window",
+      "label": "滑动窗口",
+      "type": "window",
+      "category": "operation",
+      "level": 3,
+      "description": "固定大小可重叠窗口"
+    },
+    {
+      "id": "session-window",
+      "label": "会话窗口",
+      "type": "window",
+      "category": "operation",
+      "level": 3,
+      "description": "活动间隙触发的动态窗口"
+    },
+    {
+      "id": "watermark",
+      "label": "Watermark机制",
+      "type": "concept",
+      "category": "mechanism",
+      "level": 4,
+      "description": "处理乱序事件的时间进度标记"
+    },
+    {
+      "id": "lateness",
+      "label": "延迟数据处理",
+      "type": "concept",
+      "category": "mechanism",
+      "level": 3,
+      "description": "迟到数据的处理策略"
+    },
+    {
+      "id": "determinism",
+      "label": "确定性",
+      "type": "property",
+      "category": "correctness",
+      "level": 5,
+      "description": "相同输入产生相同输出的性质"
+    },
+    {
+      "id": "consistency",
+      "label": "一致性模型",
+      "type": "concept",
+      "category": "correctness",
+      "level": 5,
+      "description": "分布式系统的一致性保证"
+    },
+    {
+      "id": "exactly-once",
+      "label": "Exactly-Once语义",
+      "type": "semantics",
+      "category": "correctness",
+      "level": 5,
+      "description": "每条记录恰好处理一次"
+    },
+    {
+      "id": "at-least-once",
+      "label": "At-Least-Once语义",
+      "type": "semantics",
+      "category": "correctness",
+      "level": 4,
+      "description": "每条记录至少处理一次"
+    },
+    {
+      "id": "at-most-once",
+      "label": "At-Most-Once语义",
+      "type": "semantics",
+      "category": "correctness",
+      "level": 3,
+      "description": "每条记录最多处理一次"
+    },
+    {
+      "id": "state-management",
+      "label": "状态管理",
+      "type": "concept",
+      "category": "mechanism",
+      "level": 4,
+      "description": "有状态计算的状态维护"
+    },
+    {
+      "id": "state-backend",
+      "label": "状态后端",
+      "type": "concept",
+      "category": "mechanism",
+      "level": 3,
+      "description": "状态存储的实现后端"
+    },
+    {
+      "id": "checkpoint",
+      "label": "Checkpoint机制",
+      "type": "concept",
+      "category": "fault-tolerance",
+      "level": 5,
+      "description": "分布式快照容错机制"
+    },
+    {
+      "id": "savepoint",
+      "label": "Savepoint",
+      "type": "concept",
+      "category": "fault-tolerance",
+      "level": 4,
+      "description": "手动触发的应用程序快照"
+    },
+    {
+      "id": "backpressure",
+      "label": "背压机制",
+      "type": "concept",
+      "category": "flow-control",
+      "level": 4,
+      "description": "反压流量控制机制"
+    },
+    {
+      "id": "crdt",
+      "label": "CRDT",
+      "type": "data-structure",
+      "category": "state",
+      "level": 4,
+      "description": "无冲突复制数据类型"
+    },
+    {
+      "id": "calm-theorem",
+      "label": "CALM定理",
+      "type": "theorem",
+      "category": "theory",
+      "level": 5,
+      "description": " consistency as logical monotonicity"
+    },
+    {
+      "id": "chandy-lamport",
+      "label": "Chandy-Lamport算法",
+      "type": "algorithm",
+      "category": "fault-tolerance",
+      "level": 5,
+      "description": "分布式快照算法"
+    },
+    {
+      "id": "lamport-timestamp",
+      "label": "Lamport时间戳",
+      "type": "concept",
+      "category": "ordering",
+      "level": 4,
+      "description": "逻辑时钟排序"
+    },
+    {
+      "id": "vector-clock",
+      "label": "向量时钟",
+      "type": "concept",
+      "category": "ordering",
+      "level": 4,
+      "description": "并发事件检测机制"
+    },
+    {
+      "id": "happens-before",
+      "label": "Happens-Before关系",
+      "type": "relation",
+      "category": "ordering",
+      "level": 4,
+      "description": "事件偏序关系"
+    },
+    {
+      "id": "causality",
+      "label": "因果一致性",
+      "type": "consistency",
+      "category": "correctness",
+      "level": 4,
+      "description": "因果关系的保持"
+    },
+    {
+      "id": "lineage",
+      "label": "数据血缘",
+      "type": "concept",
+      "category": "data-management",
+      "level": 3,
+      "description": "数据来源与转换追踪"
+    },
+    {
+      "id": "provenance",
+      "label": "数据溯源",
+      "type": "concept",
+      "category": "data-management",
+      "level": 3,
+      "description": "数据起源追踪"
+    },
+    {
+      "id": "temporal-logic",
+      "label": "时序逻辑",
+      "type": "formalism",
+      "category": "verification",
+      "level": 5,
+      "description": "时间性质的形式化描述"
+    },
+    {
+      "id": "buchi-automaton",
+      "label": "Büchi自动机",
+      "type": "automaton",
+      "category": "verification",
+      "level": 5,
+      "description": "无限字上的自动机"
+    },
+    {
+      "id": "monitoring",
+      "label": "运行时监控",
+      "type": "technique",
+      "category": "verification",
+      "level": 4,
+      "description": "在线性质验证"
+    },
+    {
+      "id": "ceps",
+      "label": "复杂事件处理",
+      "type": "paradigm",
+      "category": "processing",
+      "level": 4,
+      "description": "CEP模式匹配"
+    },
+    {
+      "id": "stream-sql",
+      "label": "流SQL",
+      "type": "language",
+      "category": "interface",
+      "level": 3,
+      "description": "流数据的SQL查询"
+    },
+    {
+      "id": "dynamic-tables",
+      "label": "动态表",
+      "type": "concept",
+      "category": "interface",
+      "level": 3,
+      "description": "流和表的统一视图"
+    },
+    {
+      "id": "materialized-view",
+      "label": "物化视图",
+      "type": "concept",
+      "category": "optimization",
+      "level": 3,
+      "description": "预计算查询结果"
+    },
+    {
+      "id": "incremental-computation",
+      "label": "增量计算",
+      "type": "technique",
+      "category": "optimization",
+      "level": 4,
+      "description": "基于变更的计算优化"
+    },
+    {
+      "id": "retraction",
+      "label": "回撤机制",
+      "type": "concept",
+      "category": "operation",
+      "level": 4,
+      "description": "更新流的处理方式"
+    },
+    {
+      "id": "deduplication",
+      "label": "去重机制",
+      "type": "concept",
+      "category": "operation",
+      "level": 3,
+      "description": "重复数据消除"
+    },
+    {
+      "id": "join-semantics",
+      "label": "流Join语义",
+      "type": "concept",
+      "category": "operation",
+      "level": 4,
+      "description": "流数据关联操作"
+    },
+    {
+      "id": "stream-stream-join",
+      "label": "双流Join",
+      "type": "operation",
+      "category": "operation",
+      "level": 4,
+      "description": "两个流的窗口关联"
+    },
+    {
+      "id": "stream-table-join",
+      "label": "流表Join",
+      "type": "operation",
+      "category": "operation",
+      "level": 3,
+      "description": "流与维表的关联"
+    },
+    {
+      "id": "temporal-join",
+      "label": "时态Join",
+      "type": "operation",
+      "category": "operation",
+      "level": 4,
+      "description": "版本表的时态关联"
+    },
+    {
+      "id": "lookup-join",
+      "label": "Lookup Join",
+      "type": "operation",
+      "category": "operation",
+      "level": 3,
+      "description": "外部系统查询关联"
+    },
+    {
+      "id": "async-lookup",
+      "label": "异步Lookup",
+      "type": "optimization",
+      "category": "optimization",
+      "level": 3,
+      "description": "异步外部查询优化"
+    },
+    {
+      "id": "broadcast-state",
+      "label": "广播状态",
+      "type": "pattern",
+      "category": "pattern",
+      "level": 4,
+      "description": "小流广播到大流处理"
+    },
+    {
+      "id": "async-io",
+      "label": "异步IO",
+      "type": "pattern",
+      "category": "pattern",
+      "level": 4,
+      "description": "非阻塞外部访问"
+    },
+    {
+      "id": "side-output",
+      "label": "旁路输出",
+      "type": "pattern",
+      "category": "pattern",
+      "level": 3,
+      "description": "多路分流输出"
+    },
+    {
+      "id": "process-function",
+      "label": "ProcessFunction",
+      "type": "api",
+      "category": "interface",
+      "level": 4,
+      "description": "底层处理API"
+    },
+    {
+      "id": "co-process",
+      "label": "CoProcess",
+      "type": "api",
+      "category": "interface",
+      "level": 4,
+      "description": "双流底层处理API"
+    },
+    {
+      "id": "dbsp",
+      "label": "DBSP理论框架",
+      "type": "theory",
+      "category": "foundation",
+      "level": 5,
+      "description": "基于Z-set的增量视图维护理论"
+    },
+    {
+      "id": "calvin",
+      "label": "Calvin确定性执行",
+      "type": "protocol",
+      "category": "consistency",
+      "level": 5,
+      "description": "确定性分布式事务协议"
+    },
+    {
+      "id": "minimal-session-types",
+      "label": "最小会话类型",
+      "type": "formalism",
+      "category": "foundation",
+      "level": 5,
+      "description": "仅含输入输出终止三构造子的会话类型"
+    },
+    {
+      "id": "streaming-database",
+      "label": "流数据库",
+      "type": "concept",
+      "category": "data-management",
+      "level": 4,
+      "description": "以物化视图为一等公民的流处理系统"
+    }
   ],
   "edges": [
-    {"source": "ustm", "target": "dataflow-model", "type": "includes", "label": "包含"},
-    {"source": "ustm", "target": "actor-model", "type": "includes", "label": "包含"},
-    {"source": "ustm", "target": "csp-model", "type": "includes", "label": "包含"},
-    {"source": "actor-model", "target": "pi-calculus", "type": "extends", "label": "扩展"},
-    {"source": "dataflow-model", "target": "event-time", "type": "defines", "label": "定义"},
-    {"source": "dataflow-model", "target": "processing-time", "type": "defines", "label": "定义"},
-    {"source": "dataflow-model", "target": "ingestion-time", "type": "defines", "label": "定义"},
-    {"source": "event-time", "target": "watermark", "type": "requires", "label": "需要"},
-    {"source": "watermark", "target": "lateness", "type": "handles", "label": "处理"},
-    {"source": "dataflow-model", "target": "windowing", "type": "supports", "label": "支持"},
-    {"source": "windowing", "target": "tumbling-window", "type": "includes", "label": "包括"},
-    {"source": "windowing", "target": "sliding-window", "type": "includes", "label": "包括"},
-    {"source": "windowing", "target": "session-window", "type": "includes", "label": "包括"},
-    {"source": "dataflow-model", "target": "determinism", "type": "guarantees", "label": "保证"},
-    {"source": "determinism", "target": "consistency", "type": "implies", "label": "蕴含"},
-    {"source": "consistency", "target": "exactly-once", "type": "includes", "label": "包括"},
-    {"source": "consistency", "target": "at-least-once", "type": "includes", "label": "包括"},
-    {"source": "consistency", "target": "at-most-once", "type": "includes", "label": "包括"},
-    {"source": "exactly-once", "target": "checkpoint", "type": "requires", "label": "需要"},
-    {"source": "checkpoint", "target": "chandy-lamport", "type": "implements", "label": "实现"},
-    {"source": "checkpoint", "target": "state-management", "type": "uses", "label": "使用"},
-    {"source": "state-management", "target": "state-backend", "type": "uses", "label": "使用"},
-    {"source": "checkpoint", "target": "savepoint", "type": "extends", "label": "扩展为"},
-    {"source": "dataflow-model", "target": "backpressure", "type": "supports", "label": "支持"},
-    {"source": "state-management", "target": "crdt", "type": "uses", "label": "使用"},
-    {"source": "consistency", "target": "calm-theorem", "type": "relates-to", "label": "关联"},
-    {"source": "event-time", "target": "lamport-timestamp", "type": "based-on", "label": "基于"},
-    {"source": "event-time", "target": "vector-clock", "type": "based-on", "label": "基于"},
-    {"source": "happens-before", "target": "vector-clock", "type": "detected-by", "label": "被检测"},
-    {"source": "happens-before", "target": "causality", "type": "defines", "label": "定义"},
-    {"source": "dataflow-model", "target": "lineage", "type": "supports", "label": "支持"},
-    {"source": "lineage", "target": "provenance", "type": "similar-to", "label": "相似"},
-    {"source": "verification", "target": "temporal-logic", "type": "uses", "label": "使用"},
-    {"source": "temporal-logic", "target": "buchi-automaton", "type": "uses", "label": "使用"},
-    {"source": "verification", "target": "monitoring", "type": "includes", "label": "包括"},
-    {"source": "dataflow-model", "target": "ceps", "type": "supports", "label": "支持"},
-    {"source": "dataflow-model", "target": "stream-sql", "type": "supports", "label": "支持"},
-    {"source": "stream-sql", "target": "dynamic-tables", "type": "uses", "label": "使用"},
-    {"source": "dynamic-tables", "target": "materialized-view", "type": "similar-to", "label": "相似"},
-    {"source": "stream-sql", "target": "incremental-computation", "type": "uses", "label": "使用"},
-    {"source": "incremental-computation", "target": "retraction", "type": "uses", "label": "使用"},
-    {"source": "stream-sql", "target": "deduplication", "type": "supports", "label": "支持"},
-    {"source": "stream-sql", "target": "join-semantics", "type": "defines", "label": "定义"},
-    {"source": "join-semantics", "target": "stream-stream-join", "type": "includes", "label": "包括"},
-    {"source": "join-semantics", "target": "stream-table-join", "type": "includes", "label": "包括"},
-    {"source": "join-semantics", "target": "temporal-join", "type": "includes", "label": "包括"},
-    {"source": "join-semantics", "target": "lookup-join", "type": "includes", "label": "包括"},
-    {"source": "lookup-join", "target": "async-lookup", "type": "optimized-by", "label": "优化"},
-    {"source": "broadcast-state", "target": "stream-table-join", "type": "implements", "label": "实现"},
-    {"source": "async-io", "target": "async-lookup", "type": "implements", "label": "实现"},
-    {"source": "process-function", "target": "side-output", "type": "supports", "label": "支持"},
-    {"source": "process-function", "target": "state-management", "type": "supports", "label": "支持"},
-    {"source": "co-process", "target": "process-function", "type": "extends", "label": "扩展"},
-    {"source": "co-process", "target": "broadcast-state", "type": "uses", "label": "使用"}
+    {
+      "source": "ustm",
+      "target": "dataflow-model",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "ustm",
+      "target": "actor-model",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "ustm",
+      "target": "csp-model",
+      "type": "includes",
+      "label": "包含"
+    },
+    {
+      "source": "actor-model",
+      "target": "pi-calculus",
+      "type": "extends",
+      "label": "扩展"
+    },
+    {
+      "source": "dataflow-model",
+      "target": "event-time",
+      "type": "defines",
+      "label": "定义"
+    },
+    {
+      "source": "dataflow-model",
+      "target": "processing-time",
+      "type": "defines",
+      "label": "定义"
+    },
+    {
+      "source": "dataflow-model",
+      "target": "ingestion-time",
+      "type": "defines",
+      "label": "定义"
+    },
+    {
+      "source": "event-time",
+      "target": "watermark",
+      "type": "requires",
+      "label": "需要"
+    },
+    {
+      "source": "watermark",
+      "target": "lateness",
+      "type": "handles",
+      "label": "处理"
+    },
+    {
+      "source": "dataflow-model",
+      "target": "windowing",
+      "type": "supports",
+      "label": "支持"
+    },
+    {
+      "source": "windowing",
+      "target": "tumbling-window",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "windowing",
+      "target": "sliding-window",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "windowing",
+      "target": "session-window",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "dataflow-model",
+      "target": "determinism",
+      "type": "guarantees",
+      "label": "保证"
+    },
+    {
+      "source": "determinism",
+      "target": "consistency",
+      "type": "implies",
+      "label": "蕴含"
+    },
+    {
+      "source": "consistency",
+      "target": "exactly-once",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "consistency",
+      "target": "at-least-once",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "consistency",
+      "target": "at-most-once",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "exactly-once",
+      "target": "checkpoint",
+      "type": "requires",
+      "label": "需要"
+    },
+    {
+      "source": "checkpoint",
+      "target": "chandy-lamport",
+      "type": "implements",
+      "label": "实现"
+    },
+    {
+      "source": "checkpoint",
+      "target": "state-management",
+      "type": "uses",
+      "label": "使用"
+    },
+    {
+      "source": "state-management",
+      "target": "state-backend",
+      "type": "uses",
+      "label": "使用"
+    },
+    {
+      "source": "checkpoint",
+      "target": "savepoint",
+      "type": "extends",
+      "label": "扩展为"
+    },
+    {
+      "source": "dataflow-model",
+      "target": "backpressure",
+      "type": "supports",
+      "label": "支持"
+    },
+    {
+      "source": "state-management",
+      "target": "crdt",
+      "type": "uses",
+      "label": "使用"
+    },
+    {
+      "source": "consistency",
+      "target": "calm-theorem",
+      "type": "relates-to",
+      "label": "关联"
+    },
+    {
+      "source": "event-time",
+      "target": "lamport-timestamp",
+      "type": "based-on",
+      "label": "基于"
+    },
+    {
+      "source": "event-time",
+      "target": "vector-clock",
+      "type": "based-on",
+      "label": "基于"
+    },
+    {
+      "source": "happens-before",
+      "target": "vector-clock",
+      "type": "detected-by",
+      "label": "被检测"
+    },
+    {
+      "source": "happens-before",
+      "target": "causality",
+      "type": "defines",
+      "label": "定义"
+    },
+    {
+      "source": "dataflow-model",
+      "target": "lineage",
+      "type": "supports",
+      "label": "支持"
+    },
+    {
+      "source": "lineage",
+      "target": "provenance",
+      "type": "similar-to",
+      "label": "相似"
+    },
+    {
+      "source": "verification",
+      "target": "temporal-logic",
+      "type": "uses",
+      "label": "使用"
+    },
+    {
+      "source": "temporal-logic",
+      "target": "buchi-automaton",
+      "type": "uses",
+      "label": "使用"
+    },
+    {
+      "source": "verification",
+      "target": "monitoring",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "dataflow-model",
+      "target": "ceps",
+      "type": "supports",
+      "label": "支持"
+    },
+    {
+      "source": "dataflow-model",
+      "target": "stream-sql",
+      "type": "supports",
+      "label": "支持"
+    },
+    {
+      "source": "stream-sql",
+      "target": "dynamic-tables",
+      "type": "uses",
+      "label": "使用"
+    },
+    {
+      "source": "dynamic-tables",
+      "target": "materialized-view",
+      "type": "similar-to",
+      "label": "相似"
+    },
+    {
+      "source": "stream-sql",
+      "target": "incremental-computation",
+      "type": "uses",
+      "label": "使用"
+    },
+    {
+      "source": "incremental-computation",
+      "target": "retraction",
+      "type": "uses",
+      "label": "使用"
+    },
+    {
+      "source": "stream-sql",
+      "target": "deduplication",
+      "type": "supports",
+      "label": "支持"
+    },
+    {
+      "source": "stream-sql",
+      "target": "join-semantics",
+      "type": "defines",
+      "label": "定义"
+    },
+    {
+      "source": "join-semantics",
+      "target": "stream-stream-join",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "join-semantics",
+      "target": "stream-table-join",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "join-semantics",
+      "target": "temporal-join",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "join-semantics",
+      "target": "lookup-join",
+      "type": "includes",
+      "label": "包括"
+    },
+    {
+      "source": "lookup-join",
+      "target": "async-lookup",
+      "type": "optimized-by",
+      "label": "优化"
+    },
+    {
+      "source": "broadcast-state",
+      "target": "stream-table-join",
+      "type": "implements",
+      "label": "实现"
+    },
+    {
+      "source": "async-io",
+      "target": "async-lookup",
+      "type": "implements",
+      "label": "实现"
+    },
+    {
+      "source": "process-function",
+      "target": "side-output",
+      "type": "supports",
+      "label": "支持"
+    },
+    {
+      "source": "process-function",
+      "target": "state-management",
+      "type": "supports",
+      "label": "支持"
+    },
+    {
+      "source": "co-process",
+      "target": "process-function",
+      "type": "extends",
+      "label": "扩展"
+    },
+    {
+      "source": "co-process",
+      "target": "broadcast-state",
+      "type": "uses",
+      "label": "使用"
+    },
+    {
+      "source": "dbsp",
+      "target": "incremental-computation",
+      "type": "enables",
+      "label": "支持"
+    },
+    {
+      "source": "dbsp",
+      "target": "materialized-view",
+      "type": "enables",
+      "label": "支持"
+    },
+    {
+      "source": "calvin",
+      "target": "determinism",
+      "type": "guarantees",
+      "label": "保证"
+    },
+    {
+      "source": "calvin",
+      "target": "consistency",
+      "type": "implies",
+      "label": "蕴含"
+    },
+    {
+      "source": "minimal-session-types",
+      "target": "pi-calculus",
+      "type": "extends",
+      "label": "扩展"
+    },
+    {
+      "source": "streaming-database",
+      "target": "dataflow-model",
+      "type": "based-on",
+      "label": "基于"
+    }
   ],
   "categories": {
-    "foundation": {"label": "理论基础", "color": "#4A90D9"},
-    "semantics": {"label": "语义模型", "color": "#5CB85C"},
-    "operation": {"label": "操作语义", "color": "#F0AD4E"},
-    "mechanism": {"label": "机制实现", "color": "#D9534F"},
-    "correctness": {"label": "正确性保证", "color": "#9B59B6"},
-    "fault-tolerance": {"label": "容错机制", "color": "#E74C3C"},
-    "flow-control": {"label": "流量控制", "color": "#3498DB"},
-    "state": {"label": "状态管理", "color": "#1ABC9C"},
-    "ordering": {"label": "顺序与因果", "color": "#E67E22"},
-    "data-management": {"label": "数据管理", "color": "#95A5A6"},
-    "verification": {"label": "形式化验证", "color": "#34495E"},
-    "processing": {"label": "处理范式", "color": "#16A085"},
-    "interface": {"label": "编程接口", "color": "#27AE60"},
-    "optimization": {"label": "优化技术", "color": "#2980B9"},
-    "pattern": {"label": "设计模式", "color": "#8E44AD"}
+    "foundation": {
+      "label": "理论基础",
+      "color": "#4A90D9"
+    },
+    "semantics": {
+      "label": "语义模型",
+      "color": "#5CB85C"
+    },
+    "operation": {
+      "label": "操作语义",
+      "color": "#F0AD4E"
+    },
+    "mechanism": {
+      "label": "机制实现",
+      "color": "#D9534F"
+    },
+    "correctness": {
+      "label": "正确性保证",
+      "color": "#9B59B6"
+    },
+    "fault-tolerance": {
+      "label": "容错机制",
+      "color": "#E74C3C"
+    },
+    "flow-control": {
+      "label": "流量控制",
+      "color": "#3498DB"
+    },
+    "state": {
+      "label": "状态管理",
+      "color": "#1ABC9C"
+    },
+    "ordering": {
+      "label": "顺序与因果",
+      "color": "#E67E22"
+    },
+    "data-management": {
+      "label": "数据管理",
+      "color": "#95A5A6"
+    },
+    "verification": {
+      "label": "形式化验证",
+      "color": "#34495E"
+    },
+    "processing": {
+      "label": "处理范式",
+      "color": "#16A085"
+    },
+    "interface": {
+      "label": "编程接口",
+      "color": "#27AE60"
+    },
+    "optimization": {
+      "label": "优化技术",
+      "color": "#2980B9"
+    },
+    "pattern": {
+      "label": "设计模式",
+      "color": "#8E44AD"
+    }
   },
   "relationTypes": {
-    "includes": {"label": "包含", "color": "#666", "style": "solid"},
-    "extends": {"label": "扩展", "color": "#3498DB", "style": "dashed"},
-    "defines": {"label": "定义", "color": "#27AE60", "style": "solid"},
-    "requires": {"label": "需要", "color": "#E74C3C", "style": "dashed"},
-    "handles": {"label": "处理", "color": "#F39C12", "style": "solid"},
-    "supports": {"label": "支持", "color": "#16A085", "style": "solid"},
-    "guarantees": {"label": "保证", "color": "#9B59B6", "style": "solid"},
-    "implies": {"label": "蕴含", "color": "#8E44AD", "style": "dashed"},
-    "implements": {"label": "实现", "color": "#2980B9", "style": "solid"},
-    "uses": {"label": "使用", "color": "#7F8C8D", "style": "solid"},
-    "based-on": {"label": "基于", "color": "#2ECC71", "style": "dashed"},
-    "detected-by": {"label": "被检测", "color": "#E67E22", "style": "dashed"},
-    "similar-to": {"label": "相似", "color": "#95A5A6", "style": "dotted"},
-    "relates-to": {"label": "关联", "color": "#BDC3C7", "style": "dotted"},
-    "optimized-by": {"label": "被优化", "color": "#1ABC9C", "style": "dashed"}
+    "includes": {
+      "label": "包含",
+      "color": "#666",
+      "style": "solid"
+    },
+    "extends": {
+      "label": "扩展",
+      "color": "#3498DB",
+      "style": "dashed"
+    },
+    "defines": {
+      "label": "定义",
+      "color": "#27AE60",
+      "style": "solid"
+    },
+    "requires": {
+      "label": "需要",
+      "color": "#E74C3C",
+      "style": "dashed"
+    },
+    "handles": {
+      "label": "处理",
+      "color": "#F39C12",
+      "style": "solid"
+    },
+    "supports": {
+      "label": "支持",
+      "color": "#16A085",
+      "style": "solid"
+    },
+    "guarantees": {
+      "label": "保证",
+      "color": "#9B59B6",
+      "style": "solid"
+    },
+    "implies": {
+      "label": "蕴含",
+      "color": "#8E44AD",
+      "style": "dashed"
+    },
+    "implements": {
+      "label": "实现",
+      "color": "#2980B9",
+      "style": "solid"
+    },
+    "uses": {
+      "label": "使用",
+      "color": "#7F8C8D",
+      "style": "solid"
+    },
+    "based-on": {
+      "label": "基于",
+      "color": "#2ECC71",
+      "style": "dashed"
+    },
+    "detected-by": {
+      "label": "被检测",
+      "color": "#E67E22",
+      "style": "dashed"
+    },
+    "similar-to": {
+      "label": "相似",
+      "color": "#95A5A6",
+      "style": "dotted"
+    },
+    "relates-to": {
+      "label": "关联",
+      "color": "#BDC3C7",
+      "style": "dotted"
+    },
+    "optimized-by": {
+      "label": "被优化",
+      "color": "#1ABC9C",
+      "style": "dashed"
+    }
   }
 }
