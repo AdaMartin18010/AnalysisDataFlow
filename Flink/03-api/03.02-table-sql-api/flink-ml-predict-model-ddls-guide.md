@@ -851,7 +851,7 @@ CREATE TABLE inference_errors (
 
 -- 执行推理并分离错误
 INSERT INTO anomaly_results
-SELECT 
+SELECT
     event_id,
     sensor_data,
     CAST(JSON_VALUE(prediction, '$.is_anomaly') AS BOOLEAN) AS is_anomaly,
@@ -866,7 +866,7 @@ WHERE prediction_error IS NULL;
 
 -- 错误记录写入 Side Output
 INSERT INTO inference_errors
-SELECT 
+SELECT
     event_id,
     sensor_data,
     prediction_error AS error_message,
@@ -1158,7 +1158,7 @@ WITH (
 
 -- 步骤 2: 生成查询向量
 CREATE VIEW query_embeddings AS
-SELECT 
+SELECT
     q.question_id,
     q.question_text,
     prediction AS embedding
@@ -1170,7 +1170,7 @@ FROM ML_PREDICT(
 
 -- 步骤 3: 向量搜索检索相关文档
 CREATE VIEW relevant_docs AS
-SELECT 
+SELECT
     q.question_id,
     q.question_text,
     d.doc_id,
@@ -1195,13 +1195,13 @@ WITH (
     'system-prompt' = 'Answer based on the provided context.'
 );
 
-SELECT 
+SELECT
     question_id,
     question_text,
     prediction AS answer
 FROM ML_PREDICT(
     TABLE (
-        SELECT 
+        SELECT
             question_id,
             question_text,
             STRING_AGG(content, '\n') AS context
@@ -1213,7 +1213,187 @@ FROM ML_PREDICT(
 );
 ```
 
-### 8.8 流式推理模式对比
+### 8.8 CREATE / DROP / DESCRIBE MODEL 完整 DDL 参考
+
+```sql
+-- ============================================
+-- Model DDL 完整语法参考
+-- ============================================
+
+-- 创建模型
+CREATE MODEL [IF NOT EXISTS] model_name
+[ INPUT ( column_definition [, ...] ) ]
+[ OUTPUT ( column_definition [, ...] ) ]
+WITH (
+  'provider' = 'provider_type',
+  'key' = 'value',
+  ...
+);
+
+-- 创建或替换模型
+CREATE OR REPLACE MODEL model_name
+[ INPUT ... ]
+[ OUTPUT ... ]
+WITH (...);
+
+-- 删除模型
+DROP MODEL [IF EXISTS] model_name;
+
+-- 查看模型定义
+DESCRIBE MODEL model_name;
+
+-- 查看所有模型
+SHOW MODELS;
+
+-- 查看模型详细属性
+SHOW CREATE MODEL model_name;
+```
+
+**权限控制**：
+
+```sql
+-- 模型级别权限（取决于 Catalog 实现）
+GRANT USAGE ON MODEL model_name TO USER 'analyst';
+GRANT ALL PRIVILEGES ON MODEL model_name TO USER 'data_engineer';
+```
+
+### 8.9 模型版本管理与 A/B 测试
+
+Model DDL 支持通过 Catalog 进行模型版本管理，实现生产环境的 A/B 测试：
+
+```sql
+-- ============================================
+-- 模型 A/B 测试配置
+-- ============================================
+
+-- 创建生产模型 v1
+CREATE MODEL sentiment_v1
+INPUT (text STRING)
+OUTPUT (sentiment STRING, score DOUBLE)
+WITH (
+    'provider' = 'openai',
+    'model' = 'gpt-3.5-turbo',
+    'system-prompt' = 'Classify sentiment: positive, negative, neutral'
+);
+
+-- 创建实验模型 v2（新模型）
+CREATE MODEL sentiment_v2
+INPUT (text STRING)
+OUTPUT (sentiment STRING, score DOUBLE)
+WITH (
+    'provider' = 'openai',
+    'model' = 'gpt-4o-mini',
+    'system-prompt' = 'Classify sentiment: positive, negative, neutral. Provide confidence score.'
+);
+
+-- A/B 测试：按比例路由到不同模型
+CREATE VIEW ab_test_split AS
+SELECT
+    text,
+    event_id,
+    CASE
+        WHEN MOD(HASH(event_id), 100) < 90 THEN 'v1'  -- 90% 流量到 v1
+        ELSE 'v2'                                       -- 10% 流量到 v2
+    END AS model_version
+FROM social_media_stream;
+
+-- v1 推理结果
+INSERT INTO sentiment_results
+SELECT
+    event_id,
+    text,
+    prediction AS sentiment,
+    CAST(JSON_VALUE(prediction, '$.score') AS DOUBLE) AS score,
+    'v1' AS model_version
+FROM ML_PREDICT(
+    TABLE (SELECT * FROM ab_test_split WHERE model_version = 'v1'),
+    MODEL sentiment_v1,
+    DESCRIPTOR(text)
+);
+
+-- v2 推理结果
+INSERT INTO sentiment_results
+SELECT
+    event_id,
+    text,
+    prediction AS sentiment,
+    CAST(JSON_VALUE(prediction, '$.score') AS DOUBLE) AS score,
+    'v2' AS model_version
+FROM ML_PREDICT(
+    TABLE (SELECT * FROM ab_test_split WHERE model_version = 'v2'),
+    MODEL sentiment_v2,
+    DESCRIPTOR(text)
+);
+```
+
+### 8.10 ML_PREDICT 执行引擎架构
+
+```mermaid
+graph TB
+    subgraph "SQL 层"
+        SQL[ML_PREDICT TVF]
+        PLAN[执行计划优化]
+    end
+
+    subgraph "Table API 层"
+        TAPI[model.predict]
+        DESC[ModelDescriptor]
+    end
+
+    subgraph "运行时层"
+        OP[ModelInferenceOperator]
+        ASYNC[Async Inference]
+        SYNC[Sync Inference]
+        BATCH[Batch Buffer]
+    end
+
+    subgraph "Provider 层"
+        P1[OpenAI Provider]
+        P2[HF Provider]
+        P3[Custom Provider]
+    end
+
+    subgraph "外部服务"
+        S1[OpenAI API]
+        S2[HuggingFace]
+        S3[本地模型]
+    end
+
+    SQL --> PLAN --> OP
+    TAPI --> DESC --> OP
+    OP --> ASYNC
+    OP --> SYNC
+    OP --> BATCH
+    ASYNC --> P1 --> S1
+    ASYNC --> P2 --> S2
+    SYNC --> P3 --> S3
+    BATCH --> P1
+
+    style OP fill:#90EE90,stroke:#333
+    style ASYNC fill:#87CEEB,stroke:#333
+    style P1 fill:#FFD700,stroke:#333
+```
+
+**执行流程**：
+
+1. **解析阶段**：SQL 解析器识别 `ML_PREDICT` TVF，提取 MODEL 引用和输入列
+2. **优化阶段**：规划器将 ML_PREDICT 转换为 `ModelInference` 物理算子
+3. **代码生成**：根据 INPUT/OUTPUT Schema 生成序列化/反序列化代码
+4. **运行时**：`ModelInferenceOperator` 逐行或批量调用 Provider
+5. **Provider 调用**：HTTP/gRPC 请求发送至外部模型服务
+6. **结果解析**：响应解析为 OUTPUT Schema 定义的列结构
+
+**性能优化点**：
+
+| 优化点 | 机制 | 效果 |
+|--------|------|------|
+| 连接池复用 | Provider 内部维护 HTTP 连接池 | 减少 TCP 握手开销 |
+| 批量请求 | 多条记录合并为单个 API 请求 | 提升吞吐 3-10x |
+| 异步非阻塞 | asyncio / CompletableFuture | 消除等待延迟 |
+| 结果缓存 | 相同输入缓存推理结果 | 减少重复调用 |
+| 自适应超时 | 根据历史延迟动态调整 | 平衡成功率与延迟 |
+
+### 8.11 流式推理模式对比
 
 | 模式 | 延迟 | 吞吐量 | 资源占用 | 适用场景 |
 |------|------|--------|---------|---------|
@@ -1248,6 +1428,7 @@ gpt-4o-mini 日成本: 43.2B × $0.15 / 1M = $6,480
 **成本优化策略**：
 
 1. **采样处理**：仅对关键记录调用模型
+
    ```sql
    SELECT * FROM ML_PREDICT(
        TABLE (SELECT * FROM logs WHERE log_level = 'ERROR'),

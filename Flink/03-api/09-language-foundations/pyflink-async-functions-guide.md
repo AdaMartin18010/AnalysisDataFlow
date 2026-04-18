@@ -905,13 +905,13 @@ class BatchAsyncLLM(AsyncFunction[Row, Row]):
     async def async_invoke(self, value: Row) -> List[Row]:
         async with self._buffer_lock:
             self._buffer.append(value)
-            
+
             # 当缓冲区满时，执行批量请求
             if len(self._buffer) >= self._batch_size:
                 batch = self._buffer[:self._batch_size]
                 self._buffer = self._buffer[self._batch_size:]
                 return await self._process_batch(batch)
-            
+
             # 缓冲区未满，返回空（或实现定时刷新）
             return []
 
@@ -921,21 +921,21 @@ class BatchAsyncLLM(AsyncFunction[Row, Row]):
             "model": "gpt-4o-mini",
             "messages": [{"role": "user", "content": r.question}]
         } for r in batch]
-        
+
         # 并发发送批量请求
         tasks = [self._session.post(
             f"{self._endpoint}/v1/chat/completions",
             json=payload
         ) for payload in payloads]
-        
+
         responses = await asyncio.gather(*tasks)
         results = []
-        
+
         for i, resp in enumerate(responses):
             data = await resp.json()
             answer = data["choices"][0]["message"]["content"]
             results.append(Row(batch[i].id, batch[i].question, answer))
-        
+
         return results
 
     def timeout(self, value: Row) -> List[Row]:
@@ -1044,7 +1044,73 @@ timeout=Time.seconds(10)  # Checkpoint 间隔为 30s
 AsyncDataStream.unordered_wait(...)
 ```
 
-### 8.7 与 Java AsyncFunction 的功能对比
+### 8.7 本地开发与测试
+
+PyFlink AsyncFunction 的本地测试策略：
+
+```python
+# ============================================
+-- PyFlink AsyncFunction 本地单元测试
+# ============================================
+
+import asyncio
+import unittest
+from pyflink.datastream import AsyncFunction, RuntimeContext
+from pyflink.common import Row
+
+class TestAsyncLLMRequest(unittest.TestCase):
+
+    def setUp(self):
+        self.func = AsyncLLMRequest(
+            endpoint="https://api.openai.com",
+            api_key="test-key",
+            model="gpt-4o"
+        )
+        self.func.open(MockRuntimeContext())
+
+    def test_async_invoke(self):
+        async def run_test():
+            result = await self.func.async_invoke(
+                Row(id=1, question="Hello")
+            )
+            self.assertIsInstance(result, list)
+            self.assertEqual(len(result), 1)
+
+        asyncio.get_event_loop().run_until_complete(run_test())
+
+    def test_timeout_fallback(self):
+        result = self.func.timeout(Row(id=1, question="Hello"))
+        self.assertIn("TIMEOUT", result[0])
+
+class MockRuntimeContext(RuntimeContext):
+    def get_task_name(self):
+        return "test-task"
+    def get_parallelism(self):
+        return 1
+```
+
+**本地运行调试**：
+
+```python
+# 使用 LocalStreamEnvironment 本地调试
+from pyflink.datastream import StreamExecutionEnvironment
+
+env = StreamExecutionEnvironment.get_execution_environment()
+env.set_parallelism(1)  # 本地单并行度
+
+# 添加你的 AsyncFunction 调试代码
+ds = env.from_collection([...])
+result = AsyncDataStream.unordered_wait(
+    ds, AsyncLLMRequest(...),
+    timeout=Time.seconds(10),
+    capacity=5,
+    output_type=Types.STRING()
+)
+result.print()
+env.execute("Local Debug")
+```
+
+### 8.8 与 Java AsyncFunction 的功能对比
 
 | 功能 | Java AsyncFunction | PyFlink AsyncFunction (2.2) |
 |------|-------------------|----------------------------|

@@ -902,7 +902,7 @@ StreamingMultiJoinOperator 支持多路 LEFT JOIN，但需要注意 NULL 值传�
 
 ```sql
 -- 4 路 Join，包含 LEFT JOIN
-SELECT 
+SELECT
     o.order_id,
     u.user_name,           -- 可能为 NULL
     p.product_name,        -- 可能为 NULL
@@ -932,7 +932,7 @@ StreamingMultiJoinOperator 可与 Temporal Join 在同一作业中混合使用�
 -- MultiJoin 处理实时流关联
 -- Temporal Join 处理历史版本关联
 WITH enriched AS (
-    SELECT 
+    SELECT
         o.order_id,
         o.user_id,
         o.product_id,
@@ -942,7 +942,7 @@ WITH enriched AS (
     INNER JOIN users u ON o.user_id = u.user_id
     INNER JOIN products p ON o.product_id = p.product_id
 )
-SELECT 
+SELECT
     e.*,
     r.region_name,
     r.tax_rate
@@ -1074,7 +1074,7 @@ FlinkLogicalJoin(condition=[=($1, $4)])
 +- LogicalTableScan(table=[[products]])
 
 # 优化后（MultiJoin）
-StreamingMultiJoin(joinType=[InnerJoin, InnerJoin], 
+StreamingMultiJoin(joinType=[InnerJoin, InnerJoin],
                    condition=[=($0, $2), =($1, $3)])
 :- LogicalTableScan(table=[[orders]])
 :- LogicalTableScan(table=[[users]])
@@ -1102,6 +1102,33 @@ StreamingMultiJoinOperator 暴露以下关键指标，用于生产监控：
 | Checkpoint 耗时 | > 60s | > 180s | 启用增量 Checkpoint |
 | 处理延迟 (p99) | > 1s | > 5s | 检查背压或扩容 |
 | Join 命中率 | < 10% | < 1% | 检查 Join 条件或数据质量 |
+
+---
+
+### 9.8 与其他优化的协同
+
+StreamingMultiJoinOperator 可与 Flink 的其他优化协同工作：
+
+| 优化技术 | 协同效果 | 版本 |
+|---------|---------|------|
+| Delta Join | MultiJoin 处理流端，Delta Join 处理 Lookup 端 | 2.1+ |
+| MiniBatch | 减少状态访问次数 | 2.0+ |
+| Local-Global | 减少网络 Shuffle | 2.0+ |
+| Distinct Aggregation | 共享状态存储 | 2.0+ |
+| Sink Reuse | 减少下游写入次数 | 2.1+ |
+
+**协同示例**：
+
+```sql
+-- MultiJoin + Delta Join + Sink Reuse 协同
+SET 'table.optimizer.multi-join.enabled' = 'true';
+SET 'table.optimizer.delta-join.enabled' = 'true';
+
+-- 此查询中：
+-- 1. orders JOIN users 可能被优化为 Delta Join（如果 users 是维表）
+-- 2. 剩余的流 Join 被优化为 StreamingMultiJoinOperator
+-- 3. 多个 INSERT INTO 可能触发 Sink Reuse
+```
 
 ---
 
