@@ -104,8 +104,7 @@ EnhancedOperator = ⟨ R, C, L, A, H, W, S ⟩
 Operator 1.12在原有基础上增加了声明式热更新、部署策略编排和增强状态管理。通过引入工作流引擎，支持蓝绿部署、金丝雀发布等高级部署模式。
 
 ```yaml
-# Operator 1.12 增强配置
-apiVersion: flink.apache.org/v1beta1
+# Operator 1.12 增强配置 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: enhanced-pipeline
@@ -163,8 +162,7 @@ ChartV2 = ⟨ M, T, V, D, H, C ⟩
 | 多租户 | 无 | 命名空间隔离模板 |
 
 ```yaml
-# Chart.yaml - Helm v2 示例
-apiVersion: v2
+# Chart.yaml - Helm v2 示例 apiVersion: v2
 name: flink-deployment
 description: Production-grade Flink deployment chart
 type: application
@@ -214,8 +212,7 @@ HotReload: Config_t × ΔConfig → Config_{t+1} × State_preserved
 | `pipeline.auto-watermark-interval` | ✅ L1 | < 5s | 否 |
 
 ```yaml
-# 热更新配置示例
-apiVersion: flink.apache.org/v1beta1
+# 热更新配置示例 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: hot-reload-pipeline
@@ -265,8 +262,7 @@ RollingUpgrade: Cluster × NewSpec × Strategy → Cluster' × Downtime ≈ 0
 | 升级总时长 | 线性增长 | 亚线性增长 |
 
 ```yaml
-# 优化滚动升级配置
-apiVersion: flink.apache.org/v1beta1
+# 优化滚动升级配置 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 spec:
   podTemplate:
@@ -326,8 +322,7 @@ Transitions:
 3. **双活检查点**: 两个环境独立检查点，支持快速回滚
 
 ```yaml
-# 蓝绿部署配置
-apiVersion: flink.apache.org/v1beta1
+# 蓝绿部署配置 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: fraud-detection-bluegreen
@@ -443,8 +438,7 @@ L5安全隔离: RBAC + PodSecurityPolicy
 | 完全隔离 | 独立K8s集群 | 合规要求 |
 
 ```yaml
-# 多租户命名空间模板
-apiVersion: v1
+# 多租户命名空间模板 apiVersion: v1
 kind: Namespace
 metadata:
   name: flink-tenant-alpha
@@ -512,8 +506,7 @@ QuotaManager: Requests × Limits × Usage × Policies → Allocation
 **Flink 2.4配额体系**：
 
 ```yaml
-# 分层配额配置
-apiVersion: flink.apache.org/v1beta1
+# 分层配额配置 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: quota-managed-job
@@ -578,8 +571,7 @@ SecurityGate: Config × Policies × Scanners → {Pass, Warn, Block}
 4. **运行时安全**: 特权容器、Capabilities
 
 ```yaml
-# 安全检查策略配置
-apiVersion: flink.apache.org/v1beta1
+# 安全检查策略配置 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: secured-deployment
@@ -638,8 +630,7 @@ DesiredState = ⟨ Version, Config, Status, History ⟩
 - **History**: 配置变更历史（保留最近50个版本）
 
 ```yaml
-# 声明式配置状态追踪
-apiVersion: flink.apache.org/v1beta1
+# 声明式配置状态追踪 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: declarative-config
@@ -695,8 +686,7 @@ status:
 3. **健康检查**: 提交前验证所有组件健康
 
 ```yaml
-# 原子性配置示例
-apiVersion: flink.apache.org/v1beta1
+# 原子性配置示例 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 spec:
   hotUpdate:
@@ -779,8 +769,7 @@ StorageAccess_A ∩ StorageAccess_B = ∅
 **验证命令**:
 
 ```bash
-# 验证资源隔离
-kubectl describe quota -n flink-tenant-alpha
+# 验证资源隔离 kubectl describe quota -n flink-tenant-alpha
 kubectl get networkpolicy -n flink-tenant-alpha
 kubectl auth can-i list pods --as=system:serviceaccount:flink-tenant-alpha:default -n flink-tenant-beta
 ```
@@ -922,8 +911,7 @@ else:
 **声明式热更新优势**：
 
 ```yaml
-# 声明式:版本可控、可审计、可回滚
-apiVersion: flink.apache.org/v1beta1
+# 声明式:版本可控、可审计、可回滚 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   annotations:
@@ -944,8 +932,7 @@ status:
 **场景**：运维人员直接修改TaskManager内存配置
 
 ```bash
-# ❌ 错误做法:直接修改容器
-kubectl exec flink-taskmanager-0 -- sed -i 's/4g/8g/' /opt/flink/conf/flink-conf.yaml
+# ❌ 错误做法:直接修改容器 kubectl exec flink-taskmanager-0 -- sed -i 's/4g/8g/' /opt/flink/conf/flink-conf.yaml
 kubectl exec flink-taskmanager-0 -- kill -HUP 1
 ```
 
@@ -961,8 +948,7 @@ kubectl exec flink-taskmanager-0 -- kill -HUP 1
 **正确做法**：
 
 ```bash
-# ✅ 正确做法:通过Operator声明式更新
-kubectl patch flinkdeployment my-job --type merge -p '
+# ✅ 正确做法:通过Operator声明式更新 kubectl patch flinkdeployment my-job --type merge -p '
 {
   "spec": {
     "taskManager": {
@@ -973,8 +959,7 @@ kubectl patch flinkdeployment my-job --type merge -p '
   }
 }'
 
-# 监控更新进度
-kubectl wait flinkdeployment/my-job --for=condition=Ready --timeout=300s
+# 监控更新进度 kubectl wait flinkdeployment/my-job --for=condition=Ready --timeout=300s
 ```
 
 ---
@@ -1058,8 +1043,7 @@ State_Green = Restore(Savepoint_Blue_latest)
 **工程实现**：
 
 ```yaml
-# 蓝绿部署配置验证
-apiVersion: flink.apache.org/v1beta1
+# 蓝绿部署配置验证 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: bluegreen-app
@@ -1182,8 +1166,7 @@ T4: All components report V2, status = Applied
 **冲突解决**:
 
 ```yaml
-# 配置更新冲突处理
-apiVersion: flink.apache.org/v1beta1
+# 配置更新冲突处理 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 spec:
   hotUpdate:
@@ -1212,8 +1195,7 @@ image:
   tag: 1.12.0
   pullPolicy: IfNotPresent
 
-# 增强控制器配置
-operatorConfiguration:
+# 增强控制器配置 operatorConfiguration:
   kubernetes:
     # 并行协调配置
     parallelism: 10
@@ -1245,13 +1227,11 @@ webhook:
   cert:
     create: true
 
-# RBAC配置
-rbac:
+# RBAC配置 rbac:
   create: true
   scope: Cluster  # 或 Namespaced
 
-# 多租户支持
-tenantIsolation:
+# 多租户支持 tenantIsolation:
   enabled: true
   namespaceLabels:
     - flink.apache.org/tenant
@@ -1269,8 +1249,7 @@ global:
   flinkVersion: "2.4.0"
   imageRegistry: "registry.internal/flink"
 
-# Flink Operator配置
-operator:
+# Flink Operator配置 operator:
   enabled: true
   version: "1.12.0"
 
@@ -1282,8 +1261,7 @@ operator:
       cpu: 1000m
       memory: 2Gi
 
-# Flink集群配置
-flinkCluster:
+# Flink集群配置 flinkCluster:
   name: production-pipeline
   namespace: flink-production
 
@@ -1333,18 +1311,15 @@ flinkCluster:
 部署命令：
 
 ```bash
-# 添加Helm仓库
-helm repo add flink-operator https://downloads.apache.org/flink/flink-kubernetes-operator-1.14.0/
+# 添加Helm仓库 helm repo add flink-operator https://downloads.apache.org/flink/flink-kubernetes-operator-1.14.0/
 helm repo update
 
-# 安装Operator
-helm upgrade --install flink-operator flink-operator/flink-kubernetes-operator \
+# 安装Operator helm upgrade --install flink-operator flink-operator/flink-kubernetes-operator \
   --values values-production.yaml \
   --namespace flink-operator \
   --create-namespace
 
-# 验证安装
-kubectl get pods -n flink-operator
+# 验证安装 kubectl get pods -n flink-operator
 kubectl get crd | grep flink
 ```
 
@@ -1353,8 +1328,7 @@ kubectl get crd | grep flink
 ### 6.3 配置热更新YAML示例
 
 ```yaml
-# hot-update-config.yaml
-apiVersion: flink.apache.org/v1beta1
+# hot-update-config.yaml apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: streaming-etl
@@ -1446,8 +1420,7 @@ data:
 ### 6.4 蓝绿部署完整流程
 
 ```yaml
-# bluegreen-deployment.yaml
-apiVersion: flink.apache.org/v1beta1
+# bluegreen-deployment.yaml apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: payment-processor
@@ -1499,8 +1472,7 @@ NEW_JAR="payment-processor-2.4.jar"
 
 echo "=== 蓝绿部署开始 ==="
 
-# 1. 获取当前环境颜色
-CURRENT_COLOR=$(kubectl get flinkdeployment ${APP_NAME} -n ${NAMESPACE} -o jsonpath='{.metadata.labels.deployment\.color}')
+# 1. 获取当前环境颜色 CURRENT_COLOR=$(kubectl get flinkdeployment ${APP_NAME} -n ${NAMESPACE} -o jsonpath='{.metadata.labels.deployment\.color}')
 if [ "$CURRENT_COLOR" == "blue" ]; then
     NEW_COLOR="green"
 else
@@ -1544,15 +1516,13 @@ spec:
     state: running
 EOF
 
-# 3. 等待Green环境就绪
-echo "等待 ${NEW_COLOR} 环境就绪..."
+# 3. 等待Green环境就绪 echo "等待 ${NEW_COLOR} 环境就绪..."
 kubectl wait flinkdeployment/${APP_NAME}-${NEW_COLOR} \
   -n ${NAMESPACE} \
   --for=condition=Ready \
   --timeout=600s
 
-# 4. 健康检查
-echo "执行健康检查..."
+# 4. 健康检查 echo "执行健康检查..."
 JM_POD=$(kubectl get pods -n ${NAMESPACE} -l app=${APP_NAME},deployment.color=${NEW_COLOR} -o jsonpath='{.items[0].metadata.name}')
 kubectl port-forward -n ${NAMESPACE} ${JM_POD} 8081:8081 &
 PF_PID=$!
@@ -1587,8 +1557,7 @@ echo "=== 蓝绿部署完成 ==="
 ### 6.5 金丝雀发布配置
 
 ```yaml
-# canary-deployment.yaml
-apiVersion: flink.apache.org/v1beta1
+# canary-deployment.yaml apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: recommendation-engine
@@ -1684,8 +1653,7 @@ spec:
 金丝雀流量切分实现（Istio + Flink）：
 
 ```yaml
-# istio-canary.yaml
-apiVersion: networking.istio.io/v1beta1
+# istio-canary.yaml apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   name: recommendation-engine
@@ -1741,8 +1709,7 @@ spec:
 # 多租户隔离完整配置模板
 
 ---
-# 租户命名空间
-apiVersion: v1
+# 租户命名空间 apiVersion: v1
 kind: Namespace
 metadata:
   name: flink-tenant-alpha
@@ -1756,8 +1723,7 @@ metadata:
     pod-security.kubernetes.io/warn: restricted
 
 ---
-# 资源配额
-apiVersion: v1
+# 资源配额 apiVersion: v1
 kind: ResourceQuota
 metadata:
   name: flink-alpha-quota
@@ -1786,8 +1752,7 @@ spec:
     services.nodeports: "10"
 
 ---
-# 限制范围
-apiVersion: v1
+# 限制范围 apiVersion: v1
 kind: LimitRange
 metadata:
   name: flink-alpha-limits
@@ -1814,8 +1779,7 @@ spec:
       type: PersistentVolumeClaim
 
 ---
-# 网络隔离
-apiVersion: networking.k8s.io/v1
+# 网络隔离 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: flink-alpha-deny-all
@@ -1864,8 +1828,7 @@ spec:
           port: 53
 
 ---
-# RBAC - 租户管理员角色
-apiVersion: rbac.authorization.k8s.io/v1
+# RBAC - 租户管理员角色 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: flink-alpha-admin
@@ -1897,8 +1860,7 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 
 ---
-# ServiceAccount
-apiVersion: v1
+# ServiceAccount apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: flink-alpha-sa
@@ -1909,8 +1871,7 @@ automountServiceAccountToken: false
 租户部署示例：
 
 ```yaml
-# tenant-alpha-deployment.yaml
-apiVersion: flink.apache.org/v1beta1
+# tenant-alpha-deployment.yaml apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: alpha-etl-pipeline
@@ -2005,8 +1966,7 @@ spec:
           periodSeconds: 60
 
 ---
-# Flink部署中的资源限制
-apiVersion: flink.apache.org/v1beta1
+# Flink部署中的资源限制 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: quota-managed-job
@@ -2052,8 +2012,7 @@ spec:
                 command: ["/opt/flink/bin/taskmanager.sh", "stop"]
 
 ---
-# 突发配额配置
-apiVersion: flink.apache.org/v1beta1
+# 突发配额配置 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: burst-capable-job
@@ -2088,14 +2047,11 @@ spec:
 配额监控Dashboard查询：
 
 ```promql
-# 租户资源使用率
-flink_kubernetes_operator_resource_quota_usage{namespace=~"flink-tenant-.*"}
+# 租户资源使用率 flink_kubernetes_operator_resource_quota_usage{namespace=~"flink-tenant-.*"}
 
-# 配额饱和度
-(flink_kubernetes_operator_resource_usage / flink_kubernetes_operator_resource_quota) * 100
+# 配额饱和度 (flink_kubernetes_operator_resource_usage / flink_kubernetes_operator_resource_quota) * 100
 
-# 预测配额耗尽时间
-predict_linear(flink_kubernetes_operator_resource_quota_usage[1h], 3600)
+# 预测配额耗尽时间 predict_linear(flink_kubernetes_operator_resource_quota_usage[1h], 3600)
 ```
 
 ---
@@ -2120,8 +2076,7 @@ echo ""
 
 EXIT_CODE=0
 
-# 1. 镜像安全检查
-echo "[1/8] 镜像安全扫描..."
+# 1. 镜像安全检查 echo "[1/8] 镜像安全扫描..."
 scan_image() {
     local image="$1"
     echo "扫描镜像: ${image}"
@@ -2144,14 +2099,12 @@ scan_image() {
     echo "✅ 镜像安全检查通过"
 }
 
-# 获取部署中的镜像
-IMAGES=$(kubectl get flinkdeployment ${DEPLOYMENT_NAME} -n ${NAMESPACE} -o jsonpath='{..image}' 2>/dev/null | tr ' ' '\n' | sort -u)
+# 获取部署中的镜像 IMAGES=$(kubectl get flinkdeployment ${DEPLOYMENT_NAME} -n ${NAMESPACE} -o jsonpath='{..image}' 2>/dev/null | tr ' ' '\n' | sort -u)
 for img in ${IMAGES}; do
     scan_image ${img} || EXIT_CODE=1
 done
 
-# 2. 配置安全检查
-echo ""
+# 2. 配置安全检查 echo ""
 echo "[2/8] 配置安全检查..."
 
 check_security_context() {
@@ -2190,8 +2143,7 @@ if [ -n "${DEPLOYMENT_NAME}" ]; then
     check_security_context ${DEPLOYMENT_NAME} || EXIT_CODE=1
 fi
 
-# 3. 敏感信息检测
-echo ""
+# 3. 敏感信息检测 echo ""
 echo "[3/8] 敏感信息检测..."
 
 check_secrets() {
@@ -2221,8 +2173,7 @@ if [ -n "${DEPLOYMENT_NAME}" ]; then
     check_secrets ${DEPLOYMENT_NAME}
 fi
 
-# 4. 网络安全检查
-echo ""
+# 4. 网络安全检查 echo ""
 echo "[4/8] 网络安全检查..."
 
 check_network_policy() {
@@ -2239,8 +2190,7 @@ check_network_policy() {
 
 check_network_policy ${NAMESPACE}
 
-# 5. 资源限制检查
-echo ""
+# 5. 资源限制检查 echo ""
 echo "[5/8] 资源限制检查..."
 
 check_resource_limits() {
@@ -2270,8 +2220,7 @@ if [ -n "${DEPLOYMENT_NAME}" ]; then
     check_resource_limits ${DEPLOYMENT_NAME} || EXIT_CODE=1
 fi
 
-# 6. 存储安全检查
-echo ""
+# 6. 存储安全检查 echo ""
 echo "[6/8] 存储安全检查..."
 
 check_storage() {
@@ -2296,8 +2245,7 @@ if [ -n "${DEPLOYMENT_NAME}" ]; then
     check_storage ${DEPLOYMENT_NAME}
 fi
 
-# 7. RBAC权限检查
-echo ""
+# 7. RBAC权限检查 echo ""
 echo "[7/8] RBAC权限检查..."
 
 check_rbac() {
@@ -2319,8 +2267,7 @@ check_rbac() {
 
 check_rbac ${NAMESPACE}
 
-# 8. 合规性检查
-echo ""
+# 8. 合规性检查 echo ""
 echo "[8/8] 合规性检查..."
 
 check_compliance() {
@@ -2350,8 +2297,7 @@ if [ -n "${DEPLOYMENT_NAME}" ]; then
     check_compliance ${DEPLOYMENT_NAME}
 fi
 
-# 总结
-echo ""
+# 总结 echo ""
 echo "=== 安全检查总结 ==="
 if [ ${EXIT_CODE} -eq 0 ]; then
     echo "✅ 所有安全检查通过,允许部署"
@@ -2365,8 +2311,7 @@ exit ${EXIT_CODE}
 使用示例：
 
 ```bash
-# 执行部署前安全检查
-chmod +x security-gate-check.sh
+# 执行部署前安全检查 chmod +x security-gate-check.sh
 ./security-gate-check.sh flink-production payment-processor HIGH
 
 # 在CI/CD中集成
@@ -2909,8 +2854,7 @@ spec:
 ### 9.2 升级策略最佳实践
 
 ```yaml
-# 升级策略决策矩阵
-upgrade_strategy_selection:
+# 升级策略决策矩阵 upgrade_strategy_selection:
   rolling_upgrade:
     when:
       - "配置变更(L2级别)"
@@ -2957,8 +2901,7 @@ upgrade_strategy_selection:
 ### 9.3 多租户最佳实践
 
 ```yaml
-# 多租户资源分配策略
-multi_tenant_allocation:
+# 多租户资源分配策略 multi_tenant_allocation:
   # 基于业务优先级
   tier_premium:
     resource_quota:
@@ -2987,8 +2930,7 @@ multi_tenant_allocation:
       availability_sla: "99%"
       support_response: "next_business_day"
 
-# 租户命名空间模板
-namespace_template:
+# 租户命名空间模板 namespace_template:
   required_labels:
     - tenant.name
     - tenant.tier
@@ -3013,8 +2955,7 @@ namespace_template:
 ### 9.4 安全加固最佳实践
 
 ```yaml
-# Pod安全加固配置
-apiVersion: flink.apache.org/v1beta1
+# Pod安全加固配置 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: secured-flink-job

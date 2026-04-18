@@ -785,8 +785,7 @@ if __name__ == '__main__':
 #### GitHub Actions 工作流
 
 ```yaml
-# .github/workflows/flip-tracker.yml
-name: FLIP Status Tracker
+# .github/workflows/flip-tracker.yml name: FLIP Status Tracker
 
 on:
   schedule:

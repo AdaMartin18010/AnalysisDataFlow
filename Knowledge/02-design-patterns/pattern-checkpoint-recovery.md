@@ -699,20 +699,16 @@ env.setRestartStrategy(RestartStrategies.fixedDelayRestart(3, Time.seconds(10)))
 // ========== 保存点操作(命令行/API)==========
 
 /*
-# 触发保存点
-flink savepoint <jobId> hdfs:///savepoints
+# 触发保存点 flink savepoint <jobId> hdfs:///savepoints
 
-# 从保存点恢复
-flink run -s hdfs:///savepoints/savepoint-xxx \
+# 从保存点恢复 flink run -s hdfs:///savepoints/savepoint-xxx \
   -c com.example.Job target/job.jar
 
-# 从保存点恢复并允许跳过无法映射的状态
-flink run -s hdfs:///savepoints/savepoint-xxx \
+# 从保存点恢复并允许跳过无法映射的状态 flink run -s hdfs:///savepoints/savepoint-xxx \
   --allowNonRestoredState \
   -c com.example.Job target/job.jar
 
-# 取消作业并触发保存点
-flink stop --savepointPath hdfs:///savepoints <jobId>
+# 取消作业并触发保存点 flink stop --savepointPath hdfs:///savepoints <jobId>
 */
 ```
 

@@ -275,13 +275,11 @@ flowchart TD
 ### 6.1 标量函数实现
 
 ```python
-# scalar_udf_example.py
-from pyflink.table import DataTypes
+# scalar_udf_example.py from pyflink.table import DataTypes
 from pyflink.table.udf import udf
 import hashlib
 
-# 定义标量函数:计算字符串的SHA256哈希
-@udf(result_type=DataTypes.STRING(),
+# 定义标量函数:计算字符串的SHA256哈希 @udf(result_type=DataTypes.STRING(),
      func_type='general')  # 'general' 或 'pandas'
 def sha256_hash(input_str: str) -> str:
     """
@@ -313,8 +311,7 @@ def sha256_hash_vectorized(input_series: pd.Series) -> pd.Series:
 ### 6.2 表值函数实现
 
 ```python
-# table_udf_example.py
-from pyflink.table import DataTypes
+# table_udf_example.py from pyflink.table import DataTypes
 from pyflink.table.udf import udtf, TableFunction
 from pyflink.table.types import Row
 
@@ -351,8 +348,7 @@ class ParseJsonArray(TableFunction):
 ### 6.3 聚合函数实现
 
 ```python
-# aggregate_udf_example.py
-from pyflink.table import DataTypes
+# aggregate_udf_example.py from pyflink.table import DataTypes
 from pyflink.table.udf import udaf, AggregateFunction
 
 class WeightedAverage(AggregateFunction):
@@ -413,8 +409,7 @@ class WeightedAverage(AggregateFunction):
 ### 6.4 异步函数实现 (Confluent Cloud特性)
 
 ```python
-# async_udf_example.py
-from pyflink.table import DataTypes
+# async_udf_example.py from pyflink.table import DataTypes
 from pyflink.table.udf import udf
 import aiohttp
 import asyncio
@@ -522,8 +517,7 @@ pyflink==1.20.0
 apache-beam==2.50.0
 pyarrow==14.0.0
 
-# 常用数据处理
-pandas==2.1.4
+# 常用数据处理 pandas==2.1.4
 numpy==1.26.0
 
 # ML/AI库(按需添加)
@@ -535,8 +529,7 @@ transformers==4.35.0
 aiohttp==3.9.0
 requests==2.31.0
 
-# 工具库
-python-dateutil==2.8.2
+# 工具库 python-dateutil==2.8.2
 pydantic==2.5.0
 ```
 
@@ -547,12 +540,10 @@ pydantic==2.5.0
 VENV_NAME="flink_udf_env"
 PYTHON_VERSION="3.11"
 
-# 1. 创建虚拟环境
-conda create -n $VENV_NAME python=$PYTHON_VERSION -y
+# 1. 创建虚拟环境 conda create -n $VENV_NAME python=$PYTHON_VERSION -y
 source activate $VENV_NAME
 
-# 2. 安装依赖
-pip install -r requirements.txt
+# 2. 安装依赖 pip install -r requirements.txt
 
 # 3. 打包虚拟环境(用于上传到Flink)
 zip -r ${VENV_NAME}.zip $CONDA_PREFIX/lib/python${PYTHON_VERSION}/site-packages/
@@ -707,14 +698,12 @@ graph LR
 ### 8.1 错误处理与重试
 
 ```python
-# robust_udf_example.py
-from pyflink.table import DataTypes
+# robust_udf_example.py from pyflink.table import DataTypes
 from pyflink.table.udf import udf
 import logging
 from functools import wraps
 
-# 配置日志
-logger = logging.getLogger('flink_udf')
+# 配置日志 logger = logging.getLogger('flink_udf')
 
 def retry_on_exception(max_retries=3, exceptions=(Exception,)):
     """UDF重试装饰器"""
@@ -755,29 +744,24 @@ def robust_external_call(input_data: str) -> str:
 ```yaml
 # flink-conf.yaml Python UDF相关配置
 
-# Python Worker配置
-python.fn-execution.bundle.size: 10000          # 批处理大小
+# Python Worker配置 python.fn-execution.bundle.size: 10000          # 批处理大小
 python.fn-execution.bundle.time: 1000           # 批处理超时(ms)
 python.fn-execution.memory.managed: true        # 使用托管内存
 
-# Arrow配置
-python.fn-execution.arrow.batch.size: 10000     # Arrow批大小
+# Arrow配置 python.fn-execution.arrow.batch.size: 10000     # Arrow批大小
 python.fn-execution.streaming.enabled: true     # 启用流式传输
 
-# 日志配置
-python.log.level: INFO
+# 日志配置 python.log.level: INFO
 python.log.redirect-to-sysout: true
 
-# 故障恢复
-python.fn-execution.max-retries: 3
+# 故障恢复 python.fn-execution.max-retries: 3
 python.fn-execution.retry-delay: 1000
 ```
 
 ### 8.3 安全配置
 
 ```python
-# secure_udf_example.py
-import os
+# secure_udf_example.py import os
 from pyflink.table import DataTypes
 from pyflink.table.udf import udf
 

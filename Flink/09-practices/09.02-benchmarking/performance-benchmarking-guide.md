@@ -130,14 +130,12 @@ $$T(\Delta t_{cp}) = T_0 - \frac{C_{cp}}{\Delta t_{cp}}$$
 **Standalone 模式基准配置**:
 
 ```yaml
-# flink-conf.yaml
-jobmanager.memory.process.size: 4096m
+# flink-conf.yaml jobmanager.memory.process.size: 4096m
 taskmanager.memory.process.size: 16384m
 taskmanager.numberOfTaskSlots: 8
 parallelism.default: 16
 
-# Checkpoint 配置
-execution.checkpointing.interval: 10s
+# Checkpoint 配置 execution.checkpointing.interval: 10s
 execution.checkpointing.min-pause: 5s
 state.backend.incremental: true
 ```
@@ -162,13 +160,11 @@ spec:
 #### 网络配置优化
 
 ```properties
-# 网络缓冲区优化
-taskmanager.memory.network.fraction: 0.15
+# 网络缓冲区优化 taskmanager.memory.network.fraction: 0.15
 taskmanager.memory.network.min: 128mb
 taskmanager.memory.network.max: 512mb
 
-# TCP 参数
-akka.ask.timeout: 30s
+# TCP 参数 akka.ask.timeout: 30s
 akka.lookup.timeout: 30s
 ```
 
@@ -374,8 +370,7 @@ Histogram latencyHistogram = metricGroup.histogram("eventLatency",
 **Prometheus 集成**:
 
 ```yaml
-# 启用 Prometheus  reporter
-metrics.reporters: prometheus
+# 启用 Prometheus  reporter metrics.reporters: prometheus
 metrics.reporter.prometheus.port: 9249
 ```
 
@@ -398,8 +393,7 @@ $$CI = \bar{x} \pm t_{0.025, n-1} \cdot \frac{s}{\sqrt{n}}$$
 **吞吐量趋势图**:
 
 ```python
-# Python 可视化示例
-import matplotlib.pyplot as plt
+# Python 可视化示例 import matplotlib.pyplot as plt
 import pandas as pd
 
 df = pd.read_csv('throughput_metrics.csv')
@@ -593,8 +587,7 @@ gantt
 **诊断命令**:
 
 ```bash
-# 使用 Flink SQL 分析数据分布
-SELECT key, COUNT(*) as cnt
+# 使用 Flink SQL 分析数据分布 SELECT key, COUNT(*) as cnt
 FROM source_table
 GROUP BY key
 ORDER BY cnt DESC LIMIT 20;
@@ -698,12 +691,10 @@ flowchart LR
 
 ```yaml
 # flink-conf.yaml 网络优化
-# 增加网络缓冲区
-taskmanager.memory.network.fraction: 0.2
+# 增加网络缓冲区 taskmanager.memory.network.fraction: 0.2
 taskmanager.memory.network.min: 256mb
 
-# 启用网络压缩
-taskmanager.network.memory.buffer-debloat.enabled: true
+# 启用网络压缩 taskmanager.network.memory.buffer-debloat.enabled: true
 taskmanager.network.memory.buffer-debloat.target: 1000
 ```
 

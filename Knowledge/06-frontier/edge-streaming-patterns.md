@@ -179,8 +179,7 @@ $$\forall task \in CriticalTasks: T_{proc}(task) + T_{net}(task) + T_{queue}(tas
 **资源约束配置**：
 
 ```yaml
-# flink-edge-conf.yaml
-jobmanager.memory.process.size: 512m
+# flink-edge-conf.yaml jobmanager.memory.process.size: 512m
 taskmanager.memory.process.size: 1536m
 taskmanager.numberOfTaskSlots: 2
 state.backend: rocksdb
@@ -478,11 +477,9 @@ $$R = \frac{B_{raw}}{B_{agg}} = \frac{T \cdot s}{A}$$
 **AOT 编译示例**：
 
 ```bash
-# WasmTime AOT 编译
-wasmtime compile module.wasm -o module.cwasm
+# WasmTime AOT 编译 wasmtime compile module.wasm -o module.cwasm
 
-# 运行时直接加载
-wasmtime run --allow-precompiled module.cwasm
+# 运行时直接加载 wasmtime run --allow-precompiled module.cwasm
 ```
 
 ### 5.3 离线-在线混合调度正确性

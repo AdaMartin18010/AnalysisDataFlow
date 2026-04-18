@@ -646,8 +646,7 @@ $$
 3. **ACL 配置示例**：
 
 ```bash
-# 基本 Topic 访问
-kafka-acls --add --allow-principal User:flink-app \
+# 基本 Topic 访问 kafka-acls --add --allow-principal User:flink-app \
            --operation Read --topic user_events
 
 # 拒绝直接访问敏感 Topic(必须通过策略引擎)
@@ -712,31 +711,26 @@ class LineageTracker {
 **ABAC 策略**：
 
 ```rego
-# OPA Rego 策略示例
-package transaction.access
+# OPA Rego 策略示例 package transaction.access
 
 import future.keywords.if
 import future.keywords.in
 
-# 默认拒绝
-default allow := false
+# 默认拒绝 default allow := false
 
-# 低风险用户可访问完整交易数据
-allow if {
+# 低风险用户可访问完整交易数据 allow if {
     input.user.risk_level == "low"
     input.action == "read"
     input.resource.sensitivity == "transaction"
 }
 
-# 中风险用户 - 脱敏访问
-allow if {
+# 中风险用户 - 脱敏访问 allow if {
     input.user.risk_level == "medium"
     input.action == "read"
     input.masking_required == true
 }
 
-# 高风险用户 - 仅聚合访问
-allow if {
+# 高风险用户 - 仅聚合访问 allow if {
     input.user.risk_level == "high"
     input.action == "aggregate"
     input.resource.type == "summary"

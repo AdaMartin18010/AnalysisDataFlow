@@ -53,8 +53,7 @@ SELECT variant_column['nested']['deep'] FROM events;
 **CDC YAML** 在 VVR 11.6.0 中正式退出 Public Preview，成为 GA 功能[^1]。
 
 ```yaml
-# VVR 11.6.0 GA 标准 CDC YAML 语法
-source:
+# VVR 11.6.0 GA 标准 CDC YAML 语法 source:
   type: mysql
   hostname: ${MYSQL_HOST}
   port: 3306
@@ -239,8 +238,7 @@ FROM uploaded_images;
 ### 6.3 PolarDB-X CDC 完整示例
 
 ```yaml
-# VVR 11.6.0 PolarDB-X CDC YAML
-source:
+# VVR 11.6.0 PolarDB-X CDC YAML source:
   type: polardb-x
   name: polardbx-source
   hostname: ${POLARDBX_HOST}

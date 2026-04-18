@@ -753,8 +753,7 @@ $$\forall i: t_i = t_{global}$$
 **场景**：电商订单表的增量更新
 
 ```python
-# 初始表创建
-spark.sql("""
+# 初始表创建 spark.sql("""
 CREATE TABLE orders (
     order_id STRING,
     customer_id STRING,
@@ -764,20 +763,17 @@ CREATE TABLE orders (
 PARTITIONED BY (DATE(order_time))
 """)
 
-# 增量写入 - 模拟流式摄入
-spark.writeStream \
+# 增量写入 - 模拟流式摄入 spark.writeStream \
     .format("delta") \
     .outputMode("append") \
     .option("checkpointLocation", "/delta/checkpoints/orders") \
     .start("/delta/tables/orders")
 
-# 时间旅行查询
-spark.sql("""
+# 时间旅行查询 spark.sql("""
 SELECT COUNT(*) FROM orders TIMESTAMP AS OF '2024-01-01T00:00:00Z'
 """)
 
-# 版本回滚
-spark.sql("""
+# 版本回滚 spark.sql("""
 RESTORE TABLE orders TO VERSION AS OF 10
 """)
 ```
@@ -926,11 +922,9 @@ GROUP BY
 **场景**：多作业并发写入同一表
 
 ```python
-# Delta Lake 乐观并发控制配置
-spark.conf.set("spark.databricks.delta.optimisticConcurrency.enabled", "true")
+# Delta Lake 乐观并发控制配置 spark.conf.set("spark.databricks.delta.optimisticConcurrency.enabled", "true")
 
-# 事务重试逻辑
-def write_with_retry(df, table_path, max_retries=3):
+# 事务重试逻辑 def write_with_retry(df, table_path, max_retries=3):
     for attempt in range(max_retries):
         try:
             df.write.format("delta").mode("append").save(table_path)
@@ -942,12 +936,10 @@ def write_with_retry(df, table_path, max_retries=3):
             raise
     return False
 
-# MVCC 读示例 - 一致性快照
-df_v1 = spark.read.format("delta").option("versionAsOf", 1).load(table_path)
+# MVCC 读示例 - 一致性快照 df_v1 = spark.read.format("delta").option("versionAsOf", 1).load(table_path)
 df_v2 = spark.read.format("delta").option("versionAsOf", 10).load(table_path)
 
-# 比较两个版本差异
-changed_records = df_v2.join(
+# 比较两个版本差异 changed_records = df_v2.join(
     df_v1,
     on="id",
     how="left_anti"
@@ -1675,14 +1667,12 @@ $$ExactlyOnce = AtLeastOnce \land IdempotentOutput$$
 **关键配置**：
 
 ```properties
-# Delta Lake 配置
-spark.databricks.delta.optimizeWrite.enabled=true
+# Delta Lake 配置 spark.databricks.delta.optimizeWrite.enabled=true
 spark.databricks.delta.autoCompact.enabled=true
 spark.databricks.delta.retentionDurationCheck.enabled=true
 spark.databricks.delta.properties.defaults.retentionDuration=interval 7 days
 
-# 流处理配置
-spark.sql.streaming.checkpointLocation=/delta/checkpoints/orders
+# 流处理配置 spark.sql.streaming.checkpointLocation=/delta/checkpoints/orders
 ```
 
 **性能指标**：

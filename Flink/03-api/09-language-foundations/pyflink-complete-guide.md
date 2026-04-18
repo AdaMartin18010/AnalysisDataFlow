@@ -98,8 +98,7 @@ PyFlink 环境配置定义为五元组 $\mathcal{E}_{py} = (P_{ver}, F_{ver}, V_
 **版本检查命令**
 
 ```bash
-# 检查 Python 版本
-python --version  # 要求 3.9+
+# 检查 Python 版本 python --version  # 要求 3.9+
 
 # 检查 Java 版本 (PyFlink 依赖 Java 运行时)
 java -version     # 要求 11+ for Flink 1.x, 17+ for Flink 2.x
@@ -116,11 +115,9 @@ python -c "import platform; print(platform.machine())"
 # 基础安装 (包含 Table API 和 DataStream API)
 pip install apache-flink
 
-# 指定版本安装
-pip install apache-flink==1.20.0
+# 指定版本安装 pip install apache-flink==1.20.0
 
-# 安装 SQL Kafka 连接器支持
-pip install apache-flink-libraries
+# 安装 SQL Kafka 连接器支持 pip install apache-flink-libraries
 
 # 完整安装 (包含所有可选依赖)
 pip install apache-flink[all]
@@ -129,8 +126,7 @@ pip install apache-flink[all]
 **依赖验证**
 
 ```python
-# 验证安装
-def verify_pyflink_installation():
+# 验证安装 def verify_pyflink_installation():
     """验证 PyFlink 安装完整性"""
     import pyflink
     from pyflink.version import __version__
@@ -158,8 +154,7 @@ def verify_pyflink_installation():
     except Exception as e:
         print(f"✗ Java Gateway 连接失败: {e}")
 
-# 执行验证
-verify_pyflink_installation()
+# 执行验证 verify_pyflink_installation()
 ```
 
 ### 1.3 虚拟环境配置
@@ -167,41 +162,33 @@ verify_pyflink_installation()
 **venv 配置 (推荐)**
 
 ```bash
-# 创建虚拟环境
-python -m venv pyflink-env
+# 创建虚拟环境 python -m venv pyflink-env
 
 # 激活虚拟环境
-# Linux/macOS
-source pyflink-env/bin/activate
-# Windows
-pyflink-env\Scripts\activate
+# Linux/macOS source pyflink-env/bin/activate
+# Windows pyflink-env\Scripts\activate
 
-# 升级基础工具
-pip install --upgrade pip setuptools wheel
+# 升级基础工具 pip install --upgrade pip setuptools wheel
 
-# 安装 PyFlink
-pip install apache-flink==1.20.0
+# 安装 PyFlink pip install apache-flink==1.20.0
 ```
 
 **Conda 配置 (数据科学习惯)**
 
 ```bash
-# 创建 Conda 环境
-conda create -n pyflink python=3.11
+# 创建 Conda 环境 conda create -n pyflink python=3.11
 conda activate pyflink
 
 # 安装 PyFlink (从 conda-forge)
 conda install -c conda-forge pyflink
 
-# 或混合使用 pip
-pip install apache-flink
+# 或混合使用 pip pip install apache-flink
 ```
 
 **Poetry 配置 (现代 Python 项目)**
 
 ```toml
-# pyproject.toml
-[tool.poetry]
+# pyproject.toml [tool.poetry]
 name = "pyflink-project"
 version = "0.1.0"
 description = "PyFlink Streaming Application"
@@ -225,14 +212,11 @@ build-backend = "poetry.core.masonry.api"
 **Jupyter Notebook 环境**
 
 ```bash
-# 安装 Jupyter 支持
-pip install jupyter ipykernel
+# 安装 Jupyter 支持 pip install jupyter ipykernel
 
-# 注册 PyFlink 内核
-python -m ipykernel install --user --name pyflink --display-name "PyFlink"
+# 注册 PyFlink 内核 python -m ipykernel install --user --name pyflink --display-name "PyFlink"
 
-# 启动 Jupyter
-jupyter notebook
+# 启动 Jupyter jupyter notebook
 ```
 
 ### 1.4 IDE 配置
@@ -321,8 +305,7 @@ def create_streaming_environment():
 
     return t_env
 
-# 批处理模式
-def create_batch_environment():
+# 批处理模式 def create_batch_environment():
     """创建批处理 Table Environment"""
     settings = EnvironmentSettings.new_instance() \
         .in_batch_mode() \
@@ -897,22 +880,19 @@ class ParseJsonFunction(ScalarFunction):
         except (json.JSONDecodeError, TypeError):
             return None
 
-# 注册函数
-parse_json = udf(
+# 注册函数 parse_json = udf(
     ParseJsonFunction(),
     result_type=DataTypes.STRING()
 )
 
-# 使用装饰器方式
-@udf(result_type=DataTypes.DOUBLE())
+# 使用装饰器方式 @udf(result_type=DataTypes.DOUBLE())
 def calculate_discount(price: float, discount_rate: float) -> float:
     """计算折扣后价格"""
     if price is None or discount_rate is None:
         return None
     return price * (1 - discount_rate)
 
-# 在 SQL 中使用
-def use_scalar_functions(t_env):
+# 在 SQL 中使用 def use_scalar_functions(t_env):
     """使用标量函数"""
     t_env.create_temporary_function("parse_json", parse_json)
     t_env.create_temporary_function("calc_discount", calculate_discount)
@@ -954,8 +934,7 @@ class RateLimiterFunction(ScalarFunction):
         self.request_count[key] = count + 1
         return True
 
-# 注册带参数的函数
-rate_limiter = udf(
+# 注册带参数的函数 rate_limiter = udf(
     RateLimiterFunction(max_requests=1000),
     result_type=DataTypes.BOOLEAN()
 )
@@ -1013,14 +992,12 @@ class SplitFunction(TableFunction):
         for word in text.split(delimiter):
             yield Row(word.strip(), len(word.strip()))
 
-# 注册表函数
-split_words = udtf(
+# 注册表函数 split_words = udtf(
     SplitFunction(),
     result_types=[DataTypes.STRING(), DataTypes.INT()]
 )
 
-# 装饰器方式
-@udtf(result_types=[DataTypes.STRING(), DataTypes.STRING()])
+# 装饰器方式 @udtf(result_types=[DataTypes.STRING(), DataTypes.STRING()])
 def parse_key_value_pairs(properties: str):
     """解析 key=value 格式字符串"""
     if not properties:
@@ -1030,8 +1007,7 @@ def parse_key_value_pairs(properties: str):
             key, value = pair.split("=", 1)
             yield key.strip(), value.strip()
 
-# 使用表函数
-def use_table_functions(t_env):
+# 使用表函数 def use_table_functions(t_env):
     """使用表函数"""
     t_env.create_temporary_function("split_words", split_words)
     t_env.create_temporary_function("parse_props", parse_key_value_pairs)
@@ -1157,15 +1133,13 @@ class WeightedAverageFunction(AggregateFunction):
             return None
         return accumulator[0] / accumulator[1]
 
-# 注册聚合函数
-weighted_avg = udaf(
+# 注册聚合函数 weighted_avg = udaf(
     WeightedAverageFunction(),
     result_type=DataTypes.DOUBLE(),
     accumulator_type=DataTypes.ARRAY(DataTypes.DOUBLE())
 )
 
-# 使用聚合函数
-def use_aggregate_functions(t_env):
+# 使用聚合函数 def use_aggregate_functions(t_env):
     """使用聚合函数"""
     t_env.create_temporary_function("weighted_avg", weighted_avg)
 
@@ -1217,8 +1191,7 @@ class PercentileFunction(AggregateFunction):
         idx = int(len(sorted_values) * self.percentile)
         return sorted_values[min(idx, len(sorted_values) - 1)]
 
-# 创建不同百分位数的函数
-median = udaf(
+# 创建不同百分位数的函数 median = udaf(
     PercentileFunction(0.5),
     result_type=DataTypes.DOUBLE(),
     accumulator_type=DataTypes.ARRAY(DataTypes.DOUBLE())
@@ -1291,14 +1264,12 @@ class TopNFunction(TableAggregateFunction):
         for rank, (value, others) in enumerate(sorted_items, 1):
             yield Row(rank, value, *others)
 
-# 注册表值聚合函数
-top3 = udtaf(
+# 注册表值聚合函数 top3 = udtaf(
     TopNFunction(n=3),
     result_types=[DataTypes.INT(), DataTypes.DOUBLE(), DataTypes.STRING()]
 )
 
-# 使用表值聚合函数
-def use_table_aggregate_functions(t_env):
+# 使用表值聚合函数 def use_table_aggregate_functions(t_env):
     """使用表值聚合函数"""
     t_env.create_temporary_function("top3", top3)
 
@@ -1503,8 +1474,7 @@ def pandas_categorize_risk(scores: pd.Series) -> pd.Series:
 
     return scores.apply(get_risk_level)
 
-# 在 Flink SQL 中使用
-def use_pandas_udfs(t_env):
+# 在 Flink SQL 中使用 def use_pandas_udfs(t_env):
     """使用 Pandas UDF"""
     t_env.create_temporary_function("normalize_name", pandas_normalize_name)
     t_env.create_temporary_function("calc_bmi", pandas_calculate_bmi)
@@ -1565,8 +1535,7 @@ def pandas_correlation(x: pd.Series, y: pd.Series) -> float:
 性能提升: 通常 10x - 100x
 """
 
-# 配置向量化执行参数
-def configure_vectorized_execution(t_env):
+# 配置向量化执行参数 def configure_vectorized_execution(t_env):
     """配置向量化执行参数"""
     configuration = t_env.get_config()
 
@@ -1593,8 +1562,7 @@ from pyflink.table import DataTypes
 from pyflink.table.udf import udf
 import pyarrow as pa
 
-# 使用 Arrow 类型的 UDF
-@udf(result_type=DataTypes.ARRAY(DataTypes.DOUBLE()), udf_type="pandas")
+# 使用 Arrow 类型的 UDF @udf(result_type=DataTypes.ARRAY(DataTypes.DOUBLE()), udf_type="pandas")
 def arrow_process_batch(data: pd.Series) -> pd.Series:
     """使用 Arrow 后端进行批量处理"""
     # PyArrow 加速数据处理
@@ -1803,8 +1771,7 @@ class OnlineLearnerFunction(ScalarFunction):
             with open(self.model_path, 'wb') as f:
                 pickle.dump(self.model, f)
 
-# 注册在线学习函数
-online_predictor = udf(
+# 注册在线学习函数 online_predictor = udf(
     OnlineLearnerFunction("/models/current_model.pkl"),
     result_type=DataTypes.DOUBLE()
 )
@@ -1892,14 +1859,12 @@ class ModelServingFunction(ScalarFunction):
             "version": version
         }
 
-# 注册模型服务函数
-model_server = udf(
+# 注册模型服务函数 model_server = udf(
     ModelServingFunction("v1"),
     result_type=DataTypes.MAP(DataTypes.STRING(), DataTypes.STRING())
 )
 
-# 使用模型服务
-def use_model_serving(t_env):
+# 使用模型服务 def use_model_serving(t_env):
     """使用模型服务进行预测"""
     t_env.create_temporary_function("model_predict", model_server)
 
@@ -2034,24 +1999,19 @@ def local_debugging_techniques():
 **Standalone 集群部署**
 
 ```bash
-# 1. 下载并解压 Flink
-wget https://archive.apache.org/dist/flink/flink-1.20.0/flink-1.20.0-bin-scala_2.12.tgz
+# 1. 下载并解压 Flink wget https://archive.apache.org/dist/flink/flink-1.20.0/flink-1.20.0-bin-scala_2.12.tgz
 tar -xzf flink-1.20.0-bin-scala_2.12.tgz
 cd flink-1.20.0
 
-# 2. 配置 Python 环境
-echo "python.executable: /path/to/pyflink-env/bin/python" >> conf/flink-conf.yaml
+# 2. 配置 Python 环境 echo "python.executable: /path/to/pyflink-env/bin/python" >> conf/flink-conf.yaml
 
-# 3. 启动 Standalone 集群
-./bin/start-cluster.sh
+# 3. 启动 Standalone 集群 ./bin/start-cluster.sh
 
-# 4. 提交 PyFlink 作业
-./bin/flink run -py /path/to/your_job.py \
+# 4. 提交 PyFlink 作业 ./bin/flink run -py /path/to/your_job.py \
     -pyexec /path/to/pyflink-env/bin/python \
     -pyrequirements /path/to/requirements.txt
 
-# 5. 停止集群
-./bin/stop-cluster.sh
+# 5. 停止集群 ./bin/stop-cluster.sh
 ```
 
 **YARN 部署**
@@ -2077,20 +2037,16 @@ echo "python.executable: /path/to/pyflink-env/bin/python" >> conf/flink-conf.yam
 **Python 环境打包**
 
 ```bash
-# 1. 创建虚拟环境
-python -m venv pyflink-env
+# 1. 创建虚拟环境 python -m venv pyflink-env
 source pyflink-env/bin/activate
 
-# 2. 安装依赖
-pip install apache-flink==1.20.0 pandas numpy scikit-learn
+# 2. 安装依赖 pip install apache-flink==1.20.0 pandas numpy scikit-learn
 
 # 3. 打包虚拟环境
-# 方式1: 使用 venv-pack
-pip install venv-pack
+# 方式1: 使用 venv-pack pip install venv-pack
 venv-pack -o pyflink-env.tar.gz
 
-# 方式2: 手动打包
-cd pyflink-env
+# 方式2: 手动打包 cd pyflink-env
 zip -r ../pyflink-env.zip .
 
 # 4. 提交时引用
@@ -2120,16 +2076,14 @@ zip -r ../pyflink-env.zip .
 **Session 模式部署**
 
 ```bash
-# 1. 启动 Flink Session
-./bin/kubernetes-session.sh \
+# 1. 启动 Flink Session ./bin/kubernetes-session.sh \
     -Dkubernetes.cluster-id=pyflink-session \
     -Dkubernetes.container.image=flink:1.20.0-scala_2.12-java11 \
     -Dkubernetes.namespace=flink \
     -Dkubernetes.taskmanager.cpu=2 \
     -Dtaskmanager.memory.process.size=4096m
 
-# 2. 提交作业到 Session
-./bin/flink run \
+# 2. 提交作业到 Session ./bin/flink run \
     --target kubernetes-session \
     -Dkubernetes.cluster-id=pyflink-session \
     -py /path/to/job.py \
@@ -2140,37 +2094,29 @@ zip -r ../pyflink-env.zip .
 **Docker 镜像构建**
 
 ```dockerfile
-# Dockerfile
-FROM flink:1.20.0-scala_2.12-java11
+# Dockerfile FROM flink:1.20.0-scala_2.12-java11
 
-# 安装 Python
-RUN apt-get update && apt-get install -y \
+# 安装 Python RUN apt-get update && apt-get install -y \
     python3.11 \
     python3-pip \
     python3.11-venv \
     && rm -rf /var/lib/apt/lists/*
 
-# 创建虚拟环境并安装依赖
-RUN python3.11 -m venv /opt/flink/venv
+# 创建虚拟环境并安装依赖 RUN python3.11 -m venv /opt/flink/venv
 ENV PATH="/opt/flink/venv/bin:$PATH"
 
-# 安装 PyFlink 和依赖
-COPY requirements.txt /tmp/
+# 安装 PyFlink 和依赖 COPY requirements.txt /tmp/
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
-# 复制作业代码
-COPY job/ /opt/flink/job/
+# 复制作业代码 COPY job/ /opt/flink/job/
 
-# 设置环境变量
-ENV PYFLINK_PYTHON=/opt/flink/venv/bin/python
+# 设置环境变量 ENV PYFLINK_PYTHON=/opt/flink/venv/bin/python
 
-# 入口点
-ENTRYPOINT ["/docker-entrypoint.sh"]
+# 入口点 ENTRYPOINT ["/docker-entrypoint.sh"]
 ```
 
 ```yaml
-# requirements.txt
-apache-flink==1.20.0
+# requirements.txt apache-flink==1.20.0
 pandas>=2.0.0
 numpy>=1.24.0
 scikit-learn>=1.3.0
@@ -2180,8 +2126,7 @@ requests>=2.31.0
 **Kubernetes Job 定义**
 
 ```yaml
-# flink-job.yaml
-apiVersion: flink.apache.org/v1beta1
+# flink-job.yaml apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: pyflink-application
@@ -2278,8 +2223,7 @@ def configure_batch_processing(t_env):
 
     return t_env
 
-# 不同场景的推荐配置
-BATCH_CONFIGS = {
+# 不同场景的推荐配置 BATCH_CONFIGS = {
     "high_throughput": {
         "python.fn-execution.bundle.size": "10000",
         "python.fn-execution.bundle.time": "5000",
@@ -2303,29 +2247,25 @@ from pyflink.table import DataTypes
 import pandas as pd
 import numpy as np
 
-# ✅ 推荐:使用内置向量化操作
-@udf(result_type=DataTypes.DOUBLE(), udf_type="pandas")
+# ✅ 推荐:使用内置向量化操作 @udf(result_type=DataTypes.DOUBLE(), udf_type="pandas")
 def optimized_calculation(values: pd.Series) -> pd.Series:
     """使用 NumPy/Pandas 向量化操作"""
     # 快:向量化操作
     return np.where(values > 0, np.log(values), 0)
 
-# ❌ 避免:逐行循环
-@udf(result_type=DataTypes.DOUBLE(), udf_type="pandas")
+# ❌ 避免:逐行循环 @udf(result_type=DataTypes.DOUBLE(), udf_type="pandas")
 def slow_calculation(values: pd.Series) -> pd.Series:
     """避免使用 apply 进行逐行处理"""
     # 慢:逐行处理
     return values.apply(lambda x: np.log(x) if x > 0 else 0)
 
-# ✅ 推荐:批量处理字符串
-@udf(result_type=DataTypes.STRING(), udf_type="pandas")
+# ✅ 推荐:批量处理字符串 @udf(result_type=DataTypes.STRING(), udf_type="pandas")
 def optimized_string_process(texts: pd.Series) -> pd.Series:
     """批量字符串处理"""
     # 快:使用 Pandas 字符串方法
     return texts.str.lower().str.strip().str.replace("old", "new")
 
-# ✅ 推荐:批量日期处理
-@udf(result_type=DataTypes.TIMESTAMP_LTZ(3), udf_type="pandas")
+# ✅ 推荐:批量日期处理 @udf(result_type=DataTypes.TIMESTAMP_LTZ(3), udf_type="pandas")
 def optimized_date_process(dates: pd.Series) -> pd.Series:
     """批量日期处理"""
     # 使用 Pandas datetime 方法
@@ -2338,8 +2278,7 @@ def optimized_date_process(dates: pd.Series) -> pd.Series:
 
 ```python
 # 创建 Cython 扩展加速关键计算
-# setup.py
-from setuptools import setup, Extension
+# setup.py from setuptools import setup, Extension
 from Cython.Build import cythonize
 import numpy as np
 
@@ -2359,8 +2298,7 @@ setup(
 ```
 
 ```cython
-# fast_compute.pyx
-cimport numpy as np
+# fast_compute.pyx cimport numpy as np
 import numpy as np
 from libc.math cimport log, exp, sqrt
 
@@ -2403,8 +2341,7 @@ from pyflink.table.udf import udf
 from pyflink.table import DataTypes
 import numpy as np
 
-# 导入编译后的 Cython 模块
-try:
+# 导入编译后的 Cython 模块 try:
     import fast_compute
     CYTHON_AVAILABLE = True
 except ImportError:
@@ -2459,16 +2396,14 @@ from pyflink.table import DataTypes
 from pyflink.table.udf import udf
 
 # 使用简单类型而非复杂对象
-# ✅ 推荐:使用原生类型
-@udf(result_type=DataTypes.ROW([
+# ✅ 推荐:使用原生类型 @udf(result_type=DataTypes.ROW([
     DataTypes.FIELD("id", DataTypes.STRING()),
     DataTypes.FIELD("score", DataTypes.DOUBLE())
 ]))
 def optimized_return(user_id: str, score: float):
     return {"id": user_id, "score": score}
 
-# ❌ 避免:返回复杂对象
-@udf(result_type=DataTypes.STRING())
+# ❌ 避免:返回复杂对象 @udf(result_type=DataTypes.STRING())
 def avoid_complex_return(user_data: dict):
     import json
     return json.dumps(user_data)  # 需要序列化/反序列化
@@ -2570,27 +2505,22 @@ def diagnose_dependency_issues():
 **依赖冲突解决**
 
 ```bash
-# 1. 使用独立的虚拟环境
-python -m venv pyflink-isolated
+# 1. 使用独立的虚拟环境 python -m venv pyflink-isolated
 cd pyflink-isolated
 source bin/activate  # Windows: Scripts\activate
 
-# 2. 安装特定兼容版本的依赖
-pip install apache-flink==1.20.0
+# 2. 安装特定兼容版本的依赖 pip install apache-flink==1.20.0
 pip install pandas==2.0.3
 pip install numpy==1.24.3
 
-# 3. 导出精确依赖
-pip freeze > requirements-frozen.txt
+# 3. 导出精确依赖 pip freeze > requirements-frozen.txt
 
-# 4. 使用约束文件安装
-pip install -c constraints.txt apache-flink
+# 4. 使用约束文件安装 pip install -c constraints.txt apache-flink
 ```
 
 ```
 # constraints.txt 示例
-# PyFlink 1.20 兼容依赖
-pandas>=1.3.0,<2.1.0
+# PyFlink 1.20 兼容依赖 pandas>=1.3.0,<2.1.0
 numpy>=1.21.0,<1.25.0
 pyarrow>=5.0.0,<13.0.0
 py4j==0.10.9.7
@@ -2614,8 +2544,7 @@ def setup_monitoring(t_env):
 
     return t_env
 
-# 自定义指标
-from pyflink.table import ScalarFunction
+# 自定义指标 from pyflink.table import ScalarFunction
 from pyflink.metrics import Counter, Histogram
 
 class MonitoredFunction(ScalarFunction):

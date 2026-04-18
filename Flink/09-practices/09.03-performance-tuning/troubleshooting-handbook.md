@@ -312,8 +312,7 @@ checkpointStartDelay: > 1min
 **步骤 1: 检查对齐时间**
 
 ```bash
-# 通过 Flink REST API 获取 Checkpoint 详情
-curl http://flink-jobmanager:8081/jobs/{job-id}/checkpoints
+# 通过 Flink REST API 获取 Checkpoint 详情 curl http://flink-jobmanager:8081/jobs/{job-id}/checkpoints
 ```
 
 如果 `checkpointAlignmentTime` > 总时间的 50%：
@@ -340,8 +339,7 @@ execution.checkpointing.min-pause-between-checkpoints: 30s
 **步骤 3: 检查状态大小**
 
 ```bash
-# 查看各 Task 的状态大小
-curl http://flink-jobmanager:8081/jobs/{job-id}/checkpoints/config
+# 查看各 Task 的状态大小 curl http://flink-jobmanager:8081/jobs/{job-id}/checkpoints/config
 ```
 
 如果某些 Task 状态远大于其他 Task：
@@ -378,8 +376,7 @@ numRecordsInPerSecond (上游) >> numRecordsOutPerSecond (下游)
 
 ```bash
 # 使用 Flink Web UI Backpressure 标签
-# 或使用命令行
-flink list -r
+# 或使用命令行 flink list -r
 flink backpressure <job-id>
 ```
 
@@ -399,8 +396,7 @@ taskmanager.network.memory.buffer-debloat.target: 500ms
 **步骤 4: 调整网络缓冲区**
 
 ```yaml
-# 如果禁用 Debloat,手动调整
-taskmanager.memory.network.fraction: 0.15
+# 如果禁用 Debloat,手动调整 taskmanager.memory.network.fraction: 0.15
 taskmanager.network.memory.buffer-size: 32kb
 ```
 
@@ -435,14 +431,11 @@ containerMemoryUsage: > limit
 **步骤 1: 确定 OOM 类型**
 
 ```
-# Java Heap OOM
-java.lang.OutOfMemoryError: Java heap space
+# Java Heap OOM java.lang.OutOfMemoryError: Java heap space
 
-# Direct Memory OOM
-java.lang.OutOfMemoryError: Direct buffer memory
+# Direct Memory OOM java.lang.OutOfMemoryError: Direct buffer memory
 
-# Metaspace OOM
-java.lang.OutOfMemoryError: Metaspace
+# Metaspace OOM java.lang.OutOfMemoryError: Metaspace
 ```
 
 **步骤 2: Heap OOM 处理**
@@ -463,11 +456,9 @@ state.backend.rocksdb.memory.managed: true
 - **解决**:
 
 ```yaml
-# 限制网络内存
-taskmanager.memory.network.fraction: 0.1
+# 限制网络内存 taskmanager.memory.network.fraction: 0.1
 
-# 启用 RocksDB 托管内存
-state.backend.rocksdb.memory.managed: true
+# 启用 RocksDB 托管内存 state.backend.rocksdb.memory.managed: true
 state.backend.rocksdb.memory.fixed-per-slot: 256mb
 ```
 
@@ -492,11 +483,9 @@ byte[] largeBuffer = new byte[100 * 1024 * 1024];
 **步骤 5: 内存调优**
 
 ```yaml
-# 增加 TaskManager 内存
-taskmanager.memory.process.size: 8gb
+# 增加 TaskManager 内存 taskmanager.memory.process.size: 8gb
 
-# 调整各区域比例
-taskmanager.memory.managed.fraction: 0.4
+# 调整各区域比例 taskmanager.memory.managed.fraction: 0.4
 taskmanager.memory.network.fraction: 0.1
 taskmanager.memory.jvm-heap.fraction: 0.4
 ```
@@ -546,13 +535,11 @@ int flinkParallelism = 16; // 应 <= 32
 **步骤 3: 调整 Kafka Consumer 配置**
 
 ```yaml
-# 增加每次拉取的数据量
-properties.fetch.min.bytes: 1
+# 增加每次拉取的数据量 properties.fetch.min.bytes: 1
 properties.fetch.max.wait.ms: 500
 properties.max.poll.records: 500
 
-# 增加网络缓冲区
-properties.receive.buffer.bytes: 65536
+# 增加网络缓冲区 properties.receive.buffer.bytes: 65536
 properties.send.buffer.bytes: 65536
 ```
 
@@ -570,8 +557,7 @@ properties.send.buffer.bytes: 65536
 # 增加 Source 并行度(不超过 Kafka 分区数)
 parallelism.default: 32
 
-# 或增加 TaskManager 资源
-taskmanager.numberOfTaskSlots: 8
+# 或增加 TaskManager 资源 taskmanager.numberOfTaskSlots: 8
 ```
 
 ---
@@ -613,8 +599,7 @@ WatermarkStrategy
 
 ```bash
 # 验证上游数据源是否持续产生数据
-# 检查 Kafka Topic 是否有新消息
-kafka-consumer-groups --bootstrap-server localhost:9092 --describe --group flink-group
+# 检查 Kafka Topic 是否有新消息 kafka-consumer-groups --bootstrap-server localhost:9092 --describe --group flink-group
 ```
 
 **步骤 3: 检查 Watermark 生成策略**
@@ -668,11 +653,9 @@ stateSize: 异常大或无法读取
 **步骤 1: 检查 Checkpoint 完整性**
 
 ```bash
-# 验证 Checkpoint 文件是否存在
-hdfs dfs -ls /flink/checkpoints/{job-id}/chk-{checkpoint-id}
+# 验证 Checkpoint 文件是否存在 hdfs dfs -ls /flink/checkpoints/{job-id}/chk-{checkpoint-id}
 
-# 检查元数据文件
-hdfs dfs -cat /flink/checkpoints/{job-id}/chk-{checkpoint-id}/_metadata
+# 检查元数据文件 hdfs dfs -cat /flink/checkpoints/{job-id}/chk-{checkpoint-id}/_metadata
 ```
 
 **步骤 2: 检查状态兼容性**
@@ -707,8 +690,7 @@ new ValueStateDescriptor<>("newName", ...); // 名称变更会导致状态找不
 
 ```yaml
 # 如果增量 Checkpoint 损坏,可能无法恢复
-# 解决:切换到全量 Checkpoint 或从更早版本恢复
-state.backend.incremental: false
+# 解决:切换到全量 Checkpoint 或从更早版本恢复 state.backend.incremental: false
 ```
 
 ---
@@ -734,8 +716,7 @@ lastCheckpointSize: 可能为 0
 **步骤 1: 查看异常日志**
 
 ```bash
-# 找出每次重启的根本原因
-grep "Exception" flink-taskmanager-*.log | tail -100
+# 找出每次重启的根本原因 grep "Exception" flink-taskmanager-*.log | tail -100
 ```
 
 常见根因：
@@ -747,13 +728,11 @@ grep "Exception" flink-taskmanager-*.log | tail -100
 **步骤 2: 调整重启策略**
 
 ```yaml
-# 增加重启延迟,避免频繁重启
-restart-strategy: fixed-delay
+# 增加重启延迟,避免频繁重启 restart-strategy: fixed-delay
 restart-strategy.fixed-delay.attempts: 10
 restart-strategy.fixed-delay.delay: 30s
 
-# 或使用指数退避
-restart-strategy: exponential-delay
+# 或使用指数退避 restart-strategy: exponential-delay
 restart-strategy.exponential-delay.initial-backoff: 10s
 restart-strategy.exponential-delay.max-backoff: 300s
 ```
@@ -762,8 +741,7 @@ restart-strategy.exponential-delay.max-backoff: 300s
 
 ```bash
 # 如果 TaskManager 频繁被 K8s 驱逐
-# 可能是内存或 CPU 资源不足
-describe pod <taskmanager-pod>
+# 可能是内存或 CPU 资源不足 describe pod <taskmanager-pod>
 ```
 
 **解决**: 增加资源配额或优化内存使用

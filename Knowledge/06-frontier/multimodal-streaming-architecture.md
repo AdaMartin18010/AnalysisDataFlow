@@ -306,34 +306,28 @@ $$
 **反模式1: 忽视模态同步**
 
 ```python
-# ❌ 错误:独立处理各模态
-audio_result = process_audio(audio_stream)
+# ❌ 错误:独立处理各模态 audio_result = process_audio(audio_stream)
 video_result = process_video(video_stream)
 # 可能相差数秒！
 
-# ✅ 正确:时间窗口对齐
-aligned = align_by_timestamp(audio_stream, video_stream, window=1.0)
+# ✅ 正确:时间窗口对齐 aligned = align_by_timestamp(audio_stream, video_stream, window=1.0)
 result = process_multimodal(aligned)
 ```
 
 **反模式2: 过高的视频帧率**
 
 ```python
-# ❌ 错误:30 FPS视频流
-video_stream = capture_video(fps=30)  # 冗余！
+# ❌ 错误:30 FPS视频流 video_stream = capture_video(fps=30)  # 冗余！
 
-# ✅ 正确:1 FPS足够
-video_stream = capture_video(fps=1)   # 满足LLM需求
+# ✅ 正确:1 FPS足够 video_stream = capture_video(fps=1)   # 满足LLM需求
 ```
 
 **反模式3: 忽视带宽成本**
 
 ```python
-# ❌ 错误:原始音频流
-audio = pcm_16bit_48khz_stereo()  # 1.5 Mbps
+# ❌ 错误:原始音频流 audio = pcm_16bit_48khz_stereo()  # 1.5 Mbps
 
-# ✅ 正确:压缩编码
-audio = opus_20kbps_mono()        # 20 Kbps
+# ✅ 正确:压缩编码 audio = opus_20kbps_mono()        # 20 Kbps
 ```
 
 ## 5. 形式证明 / 工程论证
@@ -395,8 +389,7 @@ import asyncio
 import websockets
 import json
 
-# Gemini Live API 客户端
-class GeminiLiveClient:
+# Gemini Live API 客户端 class GeminiLiveClient:
     def __init__(self, api_key):
         self.api_key = api_key
         self.ws = None
@@ -466,8 +459,7 @@ class GeminiLiveClient:
             if "server_content" in data and "interrupted" in data["server_content"]:
                 yield {"type": "interrupted"}
 
-# Flink处理函数
-class MultimodalProcess(AsyncFunction):
+# Flink处理函数 class MultimodalProcess(AsyncFunction):
     def __init__(self, gemini_api_key):
         self.api_key = gemini_api_key
         self.client = None
@@ -495,17 +487,14 @@ class MultimodalProcess(AsyncFunction):
 
         result_future.complete(responses)
 
-# Flink作业
-env = StreamExecutionEnvironment.get_execution_environment()
+# Flink作业 env = StreamExecutionEnvironment.get_execution_environment()
 
-# 多模态输入流
-multimodal_stream = env.add_source(MultimodalSource(
+# 多模态输入流 multimodal_stream = env.add_source(MultimodalSource(
     audio_config={"sample_rate": 16000, "format": "pcm_16bit"},
     video_config={"fps": 1, "format": "jpeg"}
 ))
 
-# 时间窗口对齐
-windowed = multimodal_stream
+# 时间窗口对齐 windowed = multimodal_stream
     .assign_timestamps_and_watermarks(
         WatermarkStrategy
             .for_bounded_out_of_orderness(Duration.of_millis(100))
@@ -514,16 +503,14 @@ windowed = multimodal_stream
     .window(TumblingEventTimeWindows.of(Duration.of_seconds(1)))
     .aggregate(MultimodalAggregator())
 
-# 调用Gemini Live API
-results = AsyncDataStream.unordered_wait(
+# 调用Gemini Live API results = AsyncDataStream.unordered_wait(
     windowed,
     MultimodalProcess(gemini_api_key="YOUR_API_KEY"),
     timeout=5000,  # 5秒超时
     capacity=100
 )
 
-# 输出
-results.add_sink(OutputSink())
+# 输出 results.add_sink(OutputSink())
 
 env.execute("Multimodal Streaming with Gemini")
 ```
@@ -596,8 +583,7 @@ public class VideoAnalyticsAgent {
 ### 6.3 实时翻译服务
 
 ```text
-# 多模态实时翻译
-class RealtimeTranslator:
+# 多模态实时翻译 class RealtimeTranslator:
     def __init__(self, source_lang, target_lang):
         self.gemini = GeminiLiveClient(api_key)
         self.source_lang = source_lang
@@ -638,18 +624,15 @@ class RealtimeTranslator:
                         "lang": self.target_lang
                     }
 
-# Flink作业
-env = StreamExecutionEnvironment.get_execution_environment()
+# Flink作业 env = StreamExecutionEnvironment.get_execution_environment()
 
-# 多语言输入流
-input_streams = env.add_source(MultilingualAudioSource([
+# 多语言输入流 input_streams = env.add_source(MultilingualAudioSource([
     ("channel_1", "en"),
     ("channel_2", "zh"),
     ("channel_3", "es")
 ]))
 
-# 动态路由到对应翻译器
-translated = input_streams
+# 动态路由到对应翻译器 translated = input_streams
     .key_by(lambda x: x["channel"])
     .process(TranslationRouter({
         "en": RealtimeTranslator("en", "zh"),
@@ -657,8 +640,7 @@ translated = input_streams
         "es": RealtimeTranslator("es", "en")
     }))
 
-# 输出到不同频道
-translated.add_sink(MultilingualOutputSink())
+# 输出到不同频道 translated.add_sink(MultilingualOutputSink())
 
 env.execute("Realtime Multimodal Translation")
 ```

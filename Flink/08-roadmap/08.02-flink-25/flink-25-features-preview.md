@@ -79,8 +79,7 @@ WHERE s.event_type = 'PURCHASE'
 ### 2.1 Scale-to-Zero
 
 ```yaml
-# flink-conf.yaml
-kubernetes.operator.job.autoscaler.enabled: true
+# flink-conf.yaml kubernetes.operator.job.autoscaler.enabled: true
 kubernetes.operator.job.autoscaler.scale-to-zero.enabled: true
 kubernetes.operator.job.autoscaler.scale-to-zero.grace-period: 300s
 kubernetes.operator.job.autoscaler.scale-to-zero.idle-timeout: 600s
@@ -96,8 +95,7 @@ kubernetes.operator.job.autoscaler.scale-to-zero.idle-timeout: 600s
 ### 2.2 快速冷启动
 
 ```yaml
-# 快速启动优化配置
-serverless.cold-start:
+# 快速启动优化配置 serverless.cold-start:
   mode: warmup-pool          # 预热池模式
   warmup-pool-size: 2        # 保持2个预热实例
   max-concurrent-startups: 10
@@ -170,8 +168,7 @@ InferenceConfig config = InferenceConfig.builder()
 ### 3.3 模型服务配置
 
 ```yaml
-# AI 推理服务配置
-ai.inference:
+# AI 推理服务配置 ai.inference:
   enabled: true
 
   models:
@@ -340,37 +337,32 @@ String sql = """
 
 # ==========================================
 # 执行引擎配置
-# ==========================================
-execution.mode: adaptive
+# ========================================== execution.mode: adaptive
 execution.adaptive.optimizer: unified
 execution.adaptive.mode-detection: auto
 
 # ==========================================
 # Serverless 配置
-# ==========================================
-kubernetes.operator.job.autoscaler.enabled: true
+# ========================================== kubernetes.operator.job.autoscaler.enabled: true
 kubernetes.operator.job.autoscaler.scale-to-zero.enabled: true
 serverless.cold-start.mode: warmup-pool
 serverless.cold-start.warmup-pool-size: 2
 
 # ==========================================
 # 状态后端配置
-# ==========================================
-state.backend: forst
+# ========================================== state.backend: forst
 state.backend.forst.remote.path: s3://flink-state/{job-id}
 state.backend.forst.cache.capacity: 10GB
 
 # ==========================================
 # AI 推理配置
-# ==========================================
-ai.inference.enabled: true
+# ========================================== ai.inference.enabled: true
 ai.inference.optimization.batching: true
 ai.inference.optimization.kv-cache-sharing: true
 
 # ==========================================
 # WASM UDF 配置
-# ==========================================
-wasm.udf.enabled: true
+# ========================================== wasm.udf.enabled: true
 wasm.udf.wasi-version: preview2
 wasm.udf.sandbox: strict
 ```

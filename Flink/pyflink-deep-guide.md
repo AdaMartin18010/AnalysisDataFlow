@@ -215,15 +215,12 @@ graph TB
 ### 6.1 环境安装
 
 ```bash
-# 创建虚拟环境
-python -m venv pyflink_env
+# 创建虚拟环境 python -m venv pyflink_env
 source pyflink_env/bin/activate  # Windows: pyflink_env\Scripts\activate
 
-# 安装 PyFlink
-pip install apache-flink==1.20.0
+# 安装 PyFlink pip install apache-flink==1.20.0
 
-# 验证安装
-python -c "from pyflink.table import TableEnvironment; print('PyFlink installed')"
+# 验证安装 python -c "from pyflink.table import TableEnvironment; print('PyFlink installed')"
 ```
 
 ### 6.2 Table API 示例
@@ -232,12 +229,10 @@ python -c "from pyflink.table import TableEnvironment; print('PyFlink installed'
 from pyflink.table import TableEnvironment, EnvironmentSettings
 from pyflink.table.expressions import col
 
-# 创建执行环境
-env_settings = EnvironmentSettings.in_streaming_mode()
+# 创建执行环境 env_settings = EnvironmentSettings.in_streaming_mode()
 t_env = TableEnvironment.create(env_settings)
 
-# 创建源表
-t_env.execute_sql("""
+# 创建源表 t_env.execute_sql("""
     CREATE TABLE user_events (
         user_id STRING,
         event_type STRING,
@@ -252,8 +247,7 @@ t_env.execute_sql("""
     )
 """)
 
-# 创建结果表
-t_env.execute_sql("""
+# 创建结果表 t_env.execute_sql("""
     CREATE TABLE event_stats (
         event_type STRING PRIMARY KEY NOT ENFORCED,
         total_amount DOUBLE,
@@ -267,8 +261,7 @@ t_env.execute_sql("""
     )
 """)
 
-# 定义处理逻辑
-result = t_env.from_path("user_events") \
+# 定义处理逻辑 result = t_env.from_path("user_events") \
     .group_by(col("event_type")) \
     .select(
         col("event_type"),
@@ -276,8 +269,7 @@ result = t_env.from_path("user_events") \
         col("user_id").count.alias("event_count")
     )
 
-# 写入结果
-result.execute_insert("event_stats").wait()
+# 写入结果 result.execute_insert("event_stats").wait()
 ```
 
 ### 6.3 Python UDF 示例
@@ -287,17 +279,14 @@ from pyflink.table import DataTypes
 from pyflink.table.udf import udf
 import hashlib
 
-# 标量 UDF
-@udf(result_type=DataTypes.STRING())
+# 标量 UDF @udf(result_type=DataTypes.STRING())
 def hash_user_id(user_id: str) -> str:
     """为用户 ID 生成哈希值"""
     return hashlib.md5(user_id.encode()).hexdigest()[:8]
 
-# 注册 UDF
-t_env.create_temporary_function("hash_user_id", hash_user_id)
+# 注册 UDF t_env.create_temporary_function("hash_user_id", hash_user_id)
 
-# 使用 UDF
-result = t_env.from_path("user_events") \
+# 使用 UDF result = t_env.from_path("user_events") \
     .select(
         col("user_id"),
         call("hash_user_id", col("user_id")).alias("user_hash"),
@@ -337,8 +326,7 @@ def calculate_quantiles(amount: pd.Series) -> pd.DataFrame:
         "value": values
     })
 
-# 注册并使用
-t_env.create_temporary_function("normalize_amount", normalize_amount)
+# 注册并使用 t_env.create_temporary_function("normalize_amount", normalize_amount)
 
 result = t_env.from_path("user_events") \
     .select(
@@ -354,14 +342,11 @@ result = t_env.from_path("user_events") \
 from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.datastream.functions import MapFunction
 
-# 创建环境
-env = StreamExecutionEnvironment.get_execution_environment()
+# 创建环境 env = StreamExecutionEnvironment.get_execution_environment()
 
-# 添加 Kafka 连接器
-env.add_jars("file:///path/to/flink-connector-kafka.jar")
+# 添加 Kafka 连接器 env.add_jars("file:///path/to/flink-connector-kafka.jar")
 
-# 自定义 MapFunction
-class ParseEvent(MapFunction):
+# 自定义 MapFunction class ParseEvent(MapFunction):
     def map(self, value):
         import json
         event = json.loads(value)
@@ -371,34 +356,29 @@ class ParseEvent(MapFunction):
             event['timestamp']
         )
 
-# 构建流处理作业
-dstream = env \
+# 构建流处理作业 dstream = env \
     .add_source(...) \
     .map(ParseEvent()) \
     .filter(lambda x: x[1] == 'purchase') \
     .key_by(lambda x: x[0]) \
     .reduce(lambda a, b: (a[0], a[1], a[2] + b[2]))
 
-# 执行
-env.execute("PyFlink DataStream Job")
+# 执行 env.execute("PyFlink DataStream Job")
 ```
 
 ### 6.6 依赖管理示例
 
 ```text
-# requirements.txt
-apache-flink==1.20.0
+# requirements.txt apache-flink==1.20.0
 pandas==2.0.3
 numpy==1.24.3
 scikit-learn==1.3.0
 
-# 作业提交时指定依赖
-from pyflink.table import TableEnvironment
+# 作业提交时指定依赖 from pyflink.table import TableEnvironment
 
 t_env = TableEnvironment.create(...)
 
-# 添加 Python 文件
-t_env.add_python_file("/path/to/my_udf.py")
+# 添加 Python 文件 t_env.add_python_file("/path/to/my_udf.py")
 t_env.add_python_file("/path/to/requirements.txt")
 
 # 或使用 conda 环境

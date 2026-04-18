@@ -451,8 +451,7 @@ $$
 **场景**: 智慧城市交通监控
 
 ```python
-# 基于 PyTorch + DeepStream 的视频流处理
-import torch
+# 基于 PyTorch + DeepStream 的视频流处理 import torch
 import torch.nn as nn
 from torchvision import transforms
 
@@ -515,8 +514,7 @@ pipeline_description = """
 **场景**: 实时语音转文字 + 情感分析
 
 ```python
-# 流式 ASR + 情感识别
-import numpy as np
+# 流式 ASR + 情感识别 import numpy as np
 import torch
 from transformers import Wav2Vec2ForCTC, Wav2Vec2Processor
 

@@ -451,8 +451,7 @@ $$
 #### Flink SSL/TLS 配置
 
 ```yaml
-# flink-conf.yaml - 安全传输配置
-security.ssl.internal.enabled: true
+# flink-conf.yaml - 安全传输配置 security.ssl.internal.enabled: true
 security.ssl.rest.enabled: true
 
 # 内部通信加密 (TaskManager <-> JobManager)
@@ -462,30 +461,25 @@ security.ssl.internal.key-password: ${KEY_PASSWORD}
 security.ssl.internal.truststore: /path/to/internal.truststore
 security.ssl.internal.truststore-password: ${TRUSTSTORE_PASSWORD}
 
-# REST API HTTPS
-security.ssl.rest.keystore: /path/to/rest.keystore
+# REST API HTTPS security.ssl.rest.keystore: /path/to/rest.keystore
 security.ssl.rest.keystore-password: ${REST_KEYSTORE_PASSWORD}
 security.ssl.rest.truststore: /path/to/rest.truststore
 
-# 证书验证模式
-security.ssl.internal.cert-fingerprint: SHA256:aa:bb:cc:dd:...
+# 证书验证模式 security.ssl.internal.cert-fingerprint: SHA256:aa:bb:cc:dd:...
 security.ssl.rest.verify-hostname: true
 
-# 启用强密码套件
-security.ssl.algorithms: TLS_AES_256_GCM_SHA384,TLS_CHACHA20_POLY1305_SHA256
+# 启用强密码套件 security.ssl.algorithms: TLS_AES_256_GCM_SHA384,TLS_CHACHA20_POLY1305_SHA256
 security.ssl.protocol: TLSv1.3
 ```
 
 #### Flink 认证与授权配置
 
 ```yaml
-# flink-conf.yaml - Kerberos 认证
-security.kerberos.login.use-ticket-cache: false
+# flink-conf.yaml - Kerberos 认证 security.kerberos.login.use-ticket-cache: false
 security.kerberos.login.keytab: /etc/security/keytabs/flink.keytab
 security.kerberos.login.principal: flink@EXAMPLE.COM
 
-# 启用基于角色的授权
-security.module.factory.classes: org.apache.flink.runtime.security.modules.HadoopModuleFactory
+# 启用基于角色的授权 security.module.factory.classes: org.apache.flink.runtime.security.modules.HadoopModuleFactory
 ```
 
 ```java
@@ -532,26 +526,21 @@ tEnv.executeSql("""
 
 ```properties
 # server.properties - Kafka 安全传输
-# 启用 SASL_SSL 监听器
-listeners=SASL_SSL://:9093
+# 启用 SASL_SSL 监听器 listeners=SASL_SSL://:9093
 security.inter.broker.protocol=SASL_SSL
 
-# SSL 配置
-ssl.keystore.location=/var/private/ssl/kafka.server.keystore.jks
+# SSL 配置 ssl.keystore.location=/var/private/ssl/kafka.server.keystore.jks
 ssl.keystore.password=${KEYSTORE_PASSWORD}
 ssl.key.password=${KEY_PASSWORD}
 ssl.truststore.location=/var/private/ssl/kafka.server.truststore.jks
 ssl.truststore.password=${TRUSTSTORE_PASSWORD}
 
-# 客户端认证要求
-ssl.client.auth=required
+# 客户端认证要求 ssl.client.auth=required
 
-# 启用强密码套件
-ssl.enabled.protocols=TLSv1.3
+# 启用强密码套件 ssl.enabled.protocols=TLSv1.3
 ssl.cipher.suites=TLS_AES_256_GCM_SHA384,TLS_CHACHA20_POLY1305_SHA256
 
-# SASL 配置
-sasl.enabled.mechanisms=GSSAPI,PLAIN
+# SASL 配置 sasl.enabled.mechanisms=GSSAPI,PLAIN
 sasl.mechanism.inter.broker.protocol=GSSAPI
 ```
 
@@ -561,14 +550,12 @@ sasl.mechanism.inter.broker.protocol=GSSAPI
 #!/bin/bash
 # Kafka ACL 管理脚本
 
-# 1. 创建超级用户权限
-kafka-acls --bootstrap-server kafka:9093 \
+# 1. 创建超级用户权限 kafka-acls --bootstrap-server kafka:9093 \
   --command-config admin.properties \
   --add --allow-principal User:kafka-admin \
   --operation All --topic '*' --group '*' --cluster
 
-# 2. 数据生产者权限
-kafka-acls --bootstrap-server kafka:9093 \
+# 2. 数据生产者权限 kafka-acls --bootstrap-server kafka:9093 \
   --command-config admin.properties \
   --add --allow-principal User:order-service \
   --producer --topic orders --topic order-events
@@ -586,14 +573,12 @@ kafka-acls --bootstrap-server kafka:9093 \
   --add --allow-principal User:readonly-analyst \
   --operation Read --topic-prefix 'raw.' --topic-prefix 'enriched.'
 
-# 5. 拒绝特定用户访问敏感 Topic
-kafka-acls --bootstrap-server kafka:9093 \
+# 5. 拒绝特定用户访问敏感 Topic kafka-acls --bootstrap-server kafka:9093 \
   --command-config admin.properties \
   --add --deny-principal User:temp-contractor \
   --operation All --topic pii-data --topic sensitive-events
 
-# 6. 查看 ACL 列表
-kafka-acls --bootstrap-server kafka:9093 \
+# 6. 查看 ACL 列表 kafka-acls --bootstrap-server kafka:9093 \
   --command-config admin.properties \
   --list --topic orders
 ```

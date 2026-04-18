@@ -81,8 +81,7 @@ $$\mathcal{F} = \langle \mathcal{G}, \mathcal{T}, \mathcal{S}, \mathcal{H} \rang
 > 基于图状态机的Agent编排框架，核心理念是将Agent工作流建模为有向状态图。
 
 ```python
-# LangGraph 核心抽象示意
-from langgraph.graph import StateGraph, END
+# LangGraph 核心抽象示意 from langgraph.graph import StateGraph, END
 
 # Def-K-05-54: LangGraph状态机
 # StateGraph<S>: 状态类型参数化的有向图
@@ -373,21 +372,17 @@ graph TB
 **LangGraph优化**:
 
 ```python
-# 1. 使用编译优化
-from langgraph.graph import StateGraph
+# 1. 使用编译优化 from langgraph.graph import StateGraph
 from langgraph.prebuilt import ToolNode
 
-# 启用图编译缓存
-graph = builder.compile(checkpointer=checkpointer)
+# 启用图编译缓存 graph = builder.compile(checkpointer=checkpointer)
 
-# 2. 异步节点
-async def async_node(state):
+# 2. 异步节点 async def async_node(state):
     # 支持异步I/O
     result = await llm.ainvoke(prompt)
     return {"output": result}
 
-# 3. 状态裁剪
-class State(TypedDict):
+# 3. 状态裁剪 class State(TypedDict):
     # 仅保留必要字段
     messages: Annotated[list, add_messages]
     # 大对象存储外部
@@ -397,17 +392,14 @@ class State(TypedDict):
 **CrewAI优化**:
 
 ```python
-# 1. 任务批处理
-from crewai import Task, Crew
+# 1. 任务批处理 from crewai import Task, Crew
 
-# 合并小任务减少LLM调用
-task = Task(
+# 合并小任务减少LLM调用 task = Task(
     description="批量处理: " + "\n".join(items),
     # ...
 )
 
-# 2. 缓存策略
-from langchain.cache import SQLiteCache
+# 2. 缓存策略 from langchain.cache import SQLiteCache
 import langchain
 
 langchain.llm_cache = SQLiteCache(database_path=".langchain.db")
@@ -424,8 +416,7 @@ crew = Crew(
 **AutoGen优化**:
 
 ```python
-# 1. 选择性对话
-from autogen import GroupChat
+# 1. 选择性对话 from autogen import GroupChat
 
 groupchat = GroupChat(
     agents=[agent1, agent2, agent3],
@@ -434,14 +425,12 @@ groupchat = GroupChat(
     speaker_selection_method="round_robin"  # 确定性路由
 )
 
-# 2. 缓存LLM响应
-config_list = [{
+# 2. 缓存LLM响应 config_list = [{
     "model": "gpt-4",
     "cache_seed": 42,  # 启用缓存
 }]
 
-# 3. 代码执行隔离
-from autogen.coding import DockerCommandLineCodeExecutor
+# 3. 代码执行隔离 from autogen.coding import DockerCommandLineCodeExecutor
 
 executor = DockerCommandLineCodeExecutor(
     image="python:3.11",
@@ -463,49 +452,41 @@ executor = DockerCommandLineCodeExecutor(
 **LangGraph实现**:
 
 ```python
-# Def-K-05-58: LangGraph研究管道实现
-from typing import Annotated, TypedDict
+# Def-K-05-58: LangGraph研究管道实现 from typing import Annotated, TypedDict
 from langgraph.graph import StateGraph, END
 from langgraph.checkpoint.memory import MemorySaver
 from langchain_openai import ChatOpenAI
 
-# 状态定义
-class ResearchState(TypedDict):
+# 状态定义 class ResearchState(TypedDict):
     topic: str
     search_results: list
     analysis: str
     report: str
     iteration: int
 
-# LLM
-llm = ChatOpenAI(model="gpt-4")
+# LLM llm = ChatOpenAI(model="gpt-4")
 
-# 节点1: 搜索
-def search_node(state: ResearchState):
+# 节点1: 搜索 def search_node(state: ResearchState):
     # 模拟搜索工具调用
     results = [f"Result {i} for {state['topic']}" for i in range(3)]
     return {"search_results": results}
 
-# 节点2: 分析
-def analyze_node(state: ResearchState):
+# 节点2: 分析 def analyze_node(state: ResearchState):
     prompt = f"Analyze: {state['search_results']}"
     analysis = llm.invoke(prompt).content
     return {"analysis": analysis, "iteration": state.get("iteration", 0) + 1}
 
-# 节点3: 撰写
-def write_node(state: ResearchState):
+# 节点3: 撰写 def write_node(state: ResearchState):
     prompt = f"Write report based on: {state['analysis']}"
     report = llm.invoke(prompt).content
     return {"report": report}
 
-# 条件边: 是否重写
-def should_rewrite(state: ResearchState):
+# 条件边: 是否重写 def should_rewrite(state: ResearchState):
     if state["iteration"] < 2:
         return "analyze"
     return END
 
-# 构建图
-builder = StateGraph(ResearchState)
+# 构建图 builder = StateGraph(ResearchState)
 builder.add_node("search", search_node)
 builder.add_node("analyze", analyze_node)
 builder.add_node("write", write_node)
@@ -516,11 +497,9 @@ builder.add_conditional_edges("analyze", should_rewrite)
 builder.add_edge("analyze", "write")
 builder.add_edge("write", END)
 
-# 编译
-graph = builder.compile(checkpointer=MemorySaver())
+# 编译 graph = builder.compile(checkpointer=MemorySaver())
 
-# 执行
-result = graph.invoke({"topic": "AI Safety"}, config={"configurable": {"thread_id": "1"}})
+# 执行 result = graph.invoke({"topic": "AI Safety"}, config={"configurable": {"thread_id": "1"}})
 ```
 
 **特点**: 显式控制流，可循环，状态完全可追踪
@@ -530,14 +509,12 @@ result = graph.invoke({"topic": "AI Safety"}, config={"configurable": {"thread_i
 **CrewAI实现**:
 
 ```python
-# Def-K-05-59: CrewAI研究管道实现
-from crewai import Agent, Task, Crew, Process
+# Def-K-05-59: CrewAI研究管道实现 from crewai import Agent, Task, Crew, Process
 from langchain_openai import ChatOpenAI
 
 llm = ChatOpenAI(model="gpt-4")
 
-# 定义角色
-researcher = Agent(
+# 定义角色 researcher = Agent(
     role="Senior Researcher",
     goal="Find comprehensive information on any topic",
     backstory="Expert researcher with 20 years of experience",
@@ -562,8 +539,7 @@ writer = Agent(
     allow_delegation=False
 )
 
-# 定义任务
-search_task = Task(
+# 定义任务 search_task = Task(
     description="Research the topic: {topic}. Find at least 5 key sources.",
     expected_output="List of findings with sources",
     agent=researcher
@@ -583,16 +559,14 @@ writing_task = Task(
     context=[analysis_task]
 )
 
-# 组建团队
-crew = Crew(
+# 组建团队 crew = Crew(
     agents=[researcher, analyst, writer],
     tasks=[search_task, analysis_task, writing_task],
     process=Process.sequential,  # 顺序执行
     verbose=True
 )
 
-# 执行
-result = crew.kickoff(inputs={"topic": "AI Safety"})
+# 执行 result = crew.kickoff(inputs={"topic": "AI Safety"})
 ```
 
 **特点**: 角色驱动，代码简洁，隐式任务编排
@@ -602,20 +576,17 @@ result = crew.kickoff(inputs={"topic": "AI Safety"})
 **AutoGen实现**:
 
 ```python
-# Def-K-05-60: AutoGen研究管道实现
-import autogen
+# Def-K-05-60: AutoGen研究管道实现 import autogen
 from autogen import ConversableAgent, GroupChat, GroupChatManager
 
-# 配置
-config_list = [{
+# 配置 config_list = [{
     "model": "gpt-4",
     "api_key": "sk-..."
 }]
 
 llm_config = {"config_list": config_list, "seed": 42}
 
-# 创建Agent
-researcher = ConversableAgent(
+# 创建Agent researcher = ConversableAgent(
     name="researcher",
     system_message="""You are a senior researcher. Your task is to search for
     information on given topics and report findings. Use available tools.
@@ -648,15 +619,13 @@ user_proxy = autogen.UserProxyAgent(
     is_termination_msg=lambda x: "REPORT_COMPLETE" in x.get("content", "")
 )
 
-# 注册工具
-@user_proxy.register_for_execution()
+# 注册工具 @user_proxy.register_for_execution()
 @researcher.register_for_llm(description="Search for information")
 def search_tool(query: str) -> str:
     # 模拟搜索
     return f"Search results for '{query}': [Result 1, Result 2, Result 3]"
 
-# 群聊设置
-groupchat = GroupChat(
+# 群聊设置 groupchat = GroupChat(
     agents=[user_proxy, researcher, analyst, writer],
     messages=[],
     max_round=12,
@@ -665,8 +634,7 @@ groupchat = GroupChat(
 
 manager = GroupChatManager(groupchat=groupchat, llm_config=llm_config)
 
-# 启动对话
-user_proxy.initiate_chat(
+# 启动对话 user_proxy.initiate_chat(
     manager,
     message="Research the topic: AI Safety. Start with search, then analyze, then write report."
 )

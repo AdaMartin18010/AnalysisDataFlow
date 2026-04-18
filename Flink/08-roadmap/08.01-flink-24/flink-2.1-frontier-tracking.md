@@ -373,8 +373,7 @@ public class FraudDetectionJob {
 ### 6.2 云原生部署配置实例
 
 ```yaml
-# flink-deployment-cloud.yaml
-apiVersion: flink.apache.org/v1beta2
+# flink-deployment-cloud.yaml apiVersion: flink.apache.org/v1beta2
 kind: FlinkDeployment
 metadata:
   name: realtime-analytics

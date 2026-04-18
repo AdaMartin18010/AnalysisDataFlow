@@ -107,7 +107,7 @@ flowchart LR
 
 相关文档:
 
-- [Flink 2.3 跟踪](./Flink/08-roadmap/08.02-flink-23/flink-2.3-tracking.md)
+- [Flink 2.3 跟踪]
 
 #### Flink 2.4.0 (规划中)
 
@@ -262,7 +262,7 @@ gantt
 - 部分配置项废弃
 - Checkpoint格式变更
 
-**迁移指南**: [Flink 2.0 Migration Guide](./Flink/migration/flink-2.0-migration-guide.md)
+**迁移指南**: [Flink 2.0 Migration Guide]
 
 #### 2.1 → 2.2 升级
 

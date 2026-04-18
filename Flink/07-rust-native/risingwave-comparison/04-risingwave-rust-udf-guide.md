@@ -260,8 +260,7 @@ $$;
 **场景 1：需要外部 crates**
 
 ```toml
-# Cargo.toml - WASM UDF 可使用完整依赖
-[dependencies]
+# Cargo.toml - WASM UDF 可使用完整依赖 [dependencies]
 serde_json = "1.0"
 regex = "1.10"
 chrono = "0.4"

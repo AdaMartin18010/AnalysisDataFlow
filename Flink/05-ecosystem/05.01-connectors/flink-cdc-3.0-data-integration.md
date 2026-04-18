@@ -42,8 +42,7 @@
 **Pipeline API** 是Flink CDC 3.0引入的声明式数据集成DSL，使用YAML描述端到端的数据同步管道。
 
 ```yaml
-# Pipeline API 结构形式化
-Pipeline ::= SourceConfig + SinkConfig + [Transform] + [Route] + [Option]
+# Pipeline API 结构形式化 Pipeline ::= SourceConfig + SinkConfig + [Transform] + [Route] + [Option]
 SourceConfig ::= (connector-type, hostname, port, database, table)
 SinkConfig ::= (connector-type, endpoints, database, table)
 Transform ::= (source-table, projection, filter)
@@ -370,11 +369,9 @@ pipeline:
 ```yaml
 ################################################################################
 # CDC Pipeline Definition: MySQL to Doris Data Synchronization
-# Version: Flink CDC 3.0
-################################################################################
+# Version: Flink CDC 3.0 ################################################################################
 
-# Pipeline基本配置
-pipeline:
+# Pipeline基本配置 pipeline:
   name: mysql-to-doris-sync
   parallelism: 4
   local-time-zone: Asia/Shanghai
@@ -387,8 +384,7 @@ pipeline:
   # 错误处理策略
   error-handle.mode: CONTINUE
 
-# Source配置:MySQL
-source:
+# Source配置:MySQL source:
   type: mysql
   name: mysql-source
   hostname: mysql.example.com
@@ -417,8 +413,7 @@ source:
   # Schema变更捕获
   include.schema.changes: true
 
-# Sink配置:Doris
-sink:
+# Sink配置:Doris sink:
   type: doris
   name: doris-sink
   fenodes: doris-fe:8030

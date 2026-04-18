@@ -143,7 +143,7 @@ flowchart LR
 ### 4.2 ナビゲーションインデックス
 
 - [NAVIGATION-INDEX.md](../../../NAVIGATION-INDEX.md) - 完全なナビゲーション索引
-- [knowledge-graph.html](../../knowledge-graph.html) - インタラクティブ知識グラフ
+- [knowledge-graph.html] - インタラクティブ知識グラフ
 - [QUICK-START.md](QUICK-START-ja.md) - クイックスタートガイド
 
 ---

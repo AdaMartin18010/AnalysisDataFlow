@@ -943,8 +943,7 @@ import asyncio
 import aiohttp
 from typing import List, Collection
 
-# 异步 LLM 调用函数
-class AsyncLLMFunction(AsyncFunction):
+# 异步 LLM 调用函数 class AsyncLLMFunction(AsyncFunction):
     """
     异步调用部署在 GPU 集群的大语言模型
 
@@ -1005,8 +1004,7 @@ class AsyncLLMFunction(AsyncFunction):
 
         return ""
 
-# 主程序
-env = StreamExecutionEnvironment.get_execution_environment()
+# 主程序 env = StreamExecutionEnvironment.get_execution_environment()
 
 # 创建输入流(用户问题)
 input_stream = env.from_collection([
@@ -1015,8 +1013,7 @@ input_stream = env.from_collection([
     "如何进行流式机器学习?",
 ])
 
-# 应用异步 LLM 函数
-result_stream = AsyncDataStream.unordered_wait(
+# 应用异步 LLM 函数 result_stream = AsyncDataStream.unordered_wait(
     input_stream,
     AsyncLLMFunction(
         endpoint="https://api.openai.com/v1/chat/completions",
@@ -1027,8 +1024,7 @@ result_stream = AsyncDataStream.unordered_wait(
     capacity=1000   # 缓冲区容量
 )
 
-# 输出结果
-result_stream.print()
+# 输出结果 result_stream.print()
 
 env.execute("Python Async LLM Inference")
 ```
@@ -1099,8 +1095,7 @@ RateLimiter customRateLimiter = new RateLimiter() {
 
 # flink-conf.yaml
 
-# 启用均衡任务调度
-cluster.scheduling.strategy: BALANCED_TASKS
+# 启用均衡任务调度 cluster.scheduling.strategy: BALANCED_TASKS
 
 # 或针对特定作业通过代码启用
 ```
@@ -1187,16 +1182,14 @@ public class MonitoredFunction extends RichFlatMapFunction<String, String> {
 ```yaml
 # flink-conf.yaml - Event Reporter 配置
 
-# 启用 OpenTelemetry Event Reporter
-events.reporters: otel
+# 启用 OpenTelemetry Event Reporter events.reporters: otel
 
 events.reporter.otel.factory.class: org.apache.flink.events.otel.OpenTelemetryEventReporterFactory
 events.reporter.otel.exporter.endpoint: http://otel-collector:4317
 events.reporter.otel.exporter.protocol: gRPC
 events.reporter.otel.service.name: flink-job
 
-# 事件过滤
-events.reporter.otel.filter.includes: "*.job:ProcessingSuccess,ProcessingFailure"
+# 事件过滤 events.reporter.otel.filter.includes: "*.job:ProcessingSuccess,ProcessingFailure"
 ```
 
 ## 7. 可视化 (Visualizations)

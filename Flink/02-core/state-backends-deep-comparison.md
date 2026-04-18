@@ -565,8 +565,7 @@ env.getCheckpointConfig().setCheckpointTimeout(60000);
 **flink-conf.yaml 配置**:
 
 ```yaml
-# 状态后端配置
-state.backend: hashmap
+# 状态后端配置 state.backend: hashmap
 
 # 内存配置(关键！)
 taskmanager.memory.task.heap.size: 2gb
@@ -645,26 +644,21 @@ env.enableCheckpointing(120000);  // 2分钟
 **flink-conf.yaml 完整配置**:
 
 ```yaml
-# ========== ForSt State Backend 核心配置 ==========
-state.backend: forst
+# ========== ForSt State Backend 核心配置 ========== state.backend: forst
 
-# UFS 配置
-state.backend.forst.ufs.type: s3
+# UFS 配置 state.backend.forst.ufs.type: s3
 state.backend.forst.ufs.s3.bucket: flink-state-bucket
 state.backend.forst.ufs.s3.region: us-east-1
 state.backend.forst.ufs.s3.credentials.provider: IAM_ROLE
 
-# 本地缓存配置
-state.backend.forst.cache.memory.size: 4gb
+# 本地缓存配置 state.backend.forst.cache.memory.size: 4gb
 state.backend.forst.cache.disk.size: 100gb
 state.backend.forst.cache.policy: SLRU
 
-# 恢复配置
-state.backend.forst.restore.mode: LAZY
+# 恢复配置 state.backend.forst.restore.mode: LAZY
 state.backend.forst.restore.preload.keys: 10000
 
-# 远程 Compaction 配置
-state.backend.forst.compaction.remote.enabled: true
+# 远程 Compaction 配置 state.backend.forst.compaction.remote.enabled: true
 state.backend.forst.compaction.remote.endpoint: compaction-service:9090
 ```
 

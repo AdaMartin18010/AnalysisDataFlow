@@ -140,17 +140,13 @@ gantt
 ### 使用脚本
 
 ```bash
-# 运行完整跟踪检查
-python .scripts/flink-version-tracking/check-new-releases.py
+# 运行完整跟踪检查 python .scripts/flink-version-tracking/check-new-releases.py
 
-# 仅检查新版本
-python .scripts/flink-version-tracking/check-new-releases.py --check-only
+# 仅检查新版本 python .scripts/flink-version-tracking/check-new-releases.py --check-only
 
-# 生成报告
-python .scripts/flink-version-tracking/check-new-releases.py --report
+# 生成报告 python .scripts/flink-version-tracking/check-new-releases.py --report
 
-# 更新文档
-python .scripts/flink-version-tracking/check-new-releases.py --update-docs
+# 更新文档 python .scripts/flink-version-tracking/check-new-releases.py --update-docs
 ```
 
 ### 监控数据源

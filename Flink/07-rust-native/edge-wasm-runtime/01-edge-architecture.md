@@ -432,8 +432,7 @@ panic = "abort"      # 禁用 panic 处理
 strip = true         # 去除符号表
 
 [dependencies]
-# 使用 no_std 兼容库
-serde = { version = "1.0", default-features = false }
+# 使用 no_std 兼容库 serde = { version = "1.0", default-features = false }
 ```
 
 **启动优化**:
@@ -547,8 +546,7 @@ $$
 **边缘网关配置**:
 
 ```yaml
-# edge-gateway-config.yaml
-device_profile:
+# edge-gateway-config.yaml device_profile:
   cpu: 4 cores ARM64
   memory: 8GB
   storage: 128GB SSD

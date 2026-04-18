@@ -615,8 +615,7 @@ pub fn process_string(input: &str) -> String {
 ### 6.3 完整: 编译与部署配置
 
 ```toml
-# Cargo.toml - WebAssembly 3.0 编译配置
-[package]
+# Cargo.toml - WebAssembly 3.0 编译配置 [package]
 name = "flink-wasm-udf"
 version = "0.1.0"
 edition = "2021"
@@ -638,8 +637,7 @@ js-sys = "0.3.72"
 serde = { version = "1.0", features = ["derive"] }
 serde-wasm-bindgen = "0.6"
 
-# SIMD 支持
-packed_simd = { version = "0.3.9", optional = true }
+# SIMD 支持 packed_simd = { version = "0.3.9", optional = true }
 
 [dependencies.web-sys]
 version = "0.3.72"
@@ -648,15 +646,13 @@ features = [
 ]
 
 [profile.release]
-# WebAssembly 3.0 优化选项
-opt-level = 3
+# WebAssembly 3.0 优化选项 opt-level = 3
 lto = true
 panic = "abort"
 codegen-units = 1
 strip = true
 
-# 针对 wasm32-unknown-unknown 的特定优化
-[profile.release.build-override]
+# 针对 wasm32-unknown-unknown 的特定优化 [profile.release.build-override]
 opt-level = 3
 ```
 

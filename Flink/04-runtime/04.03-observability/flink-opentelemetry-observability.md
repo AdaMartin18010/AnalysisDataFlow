@@ -312,14 +312,12 @@ $$\text{Latency}(r) = S_{sink}.end - S_{source}.start = \sum_{i} (S_i.end - S_i.
 **flink-conf.yaml - Metrics Reporter 配置**:
 
 ```yaml
-# OpenTelemetry Metrics Reporter
-metrics.reporters: otel
+# OpenTelemetry Metrics Reporter metrics.reporters: otel
 metrics.reporter.otel.class: org.apache.flink.metrics.opentelemetry.OpenTelemetryReporter
 metrics.reporter.otel.endpoint: http://otel-collector:4317
 metrics.reporter.otel.interval: 60 SECONDS
 
-# 标签配置
-metrics.scope.jm: jobmanager
+# 标签配置 metrics.scope.jm: jobmanager
 metrics.scope.tm: taskmanager
 metrics.scope.task: task
 metrics.scope.operator: operator

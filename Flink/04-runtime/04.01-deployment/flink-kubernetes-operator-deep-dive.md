@@ -79,8 +79,7 @@ Operator = ⟨ R, C, L, A ⟩
 Operator 是运行在 Kubernetes 集群中的智能控制器，它将 Flink 集群的生命周期管理知识编码为软件。与手动管理相比，Operator 提供了声明式 API、自动化运维和高级功能（如自动扩缩容、有状态升级）。
 
 ```yaml
-# Operator 核心组件示意
-apiVersion: apps/v1
+# Operator 核心组件示意 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: flink-kubernetes-operator
@@ -402,8 +401,7 @@ FlinkDeployment (Root)
 3. **声明式 API 优势**：
 
 ```yaml
-# 用户只需声明期望状态
-spec:
+# 用户只需声明期望状态 spec:
   taskManager:
     resource:
       memory: "4g"
@@ -459,28 +457,23 @@ spec:
 
 ```bash
 # 传统方式:手动升级
-# 1. 手动触发 Savepoint
-$ flink savepoint <job-id> <savepoint-path>
+# 1. 手动触发 Savepoint $ flink savepoint <job-id> <savepoint-path>
 # 风险:用户可能忘记触发 Savepoint
 
-# 2. 删除旧 Deployment
-$ kubectl delete deployment flink-job
+# 2. 删除旧 Deployment $ kubectl delete deployment flink-job
 # 风险:状态可能丢失
 
-# 3. 创建新 Deployment
-$ kubectl apply -f new-deployment.yaml
+# 3. 创建新 Deployment $ kubectl apply -f new-deployment.yaml
 # 风险:配置错误导致无法启动
 
-# 4. 从 Savepoint 恢复
-$ flink run -s <savepoint-path> new-job.jar
+# 4. 从 Savepoint 恢复 $ flink run -s <savepoint-path> new-job.jar
 # 风险:版本不兼容导致恢复失败
 ```
 
 **Operator 方式**：
 
 ```yaml
-# 只需修改 image 字段
-spec:
+# 只需修改 image 字段 spec:
   image: flink:1.20.0-scala_2.12-java11
 # Operator 自动处理:
 # 1. 触发 Savepoint
@@ -601,8 +594,7 @@ Operator 通过 OwnerReference 确保级联删除。
 ### 6.1 Application Mode 完整配置
 
 ```yaml
-# flink-production-application.yaml
-apiVersion: flink.apache.org/v1beta1
+# flink-production-application.yaml apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: realtime-etl-pipeline
@@ -774,8 +766,7 @@ spec:
 ### 6.2 Session Mode 配置
 
 ```yaml
-# flink-session-cluster.yaml
-apiVersion: flink.apache.org/v1beta1
+# flink-session-cluster.yaml apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: shared-flink-session
@@ -802,8 +793,7 @@ spec:
     execution.checkpointing.interval: 120s
 
 ---
-# 提交作业到 Session 集群
-apiVersion: flink.apache.org/v1beta1
+# 提交作业到 Session 集群 apiVersion: flink.apache.org/v1beta1
 kind: FlinkSessionJob
 metadata:
   name: ad-hoc-analytics-job
@@ -822,8 +812,7 @@ spec:
 ### 6.3 自动扩缩容配置
 
 ```yaml
-# 启用 Operator 自动扩缩容
-apiVersion: flink.apache.org/v1beta1
+# 启用 Operator 自动扩缩容 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: auto-scaling-pipeline
@@ -908,8 +897,7 @@ spec:
 ### 6.4 GitOps 集成 (Flux CD)
 
 ```yaml
-# GitRepository 配置
-apiVersion: source.toolkit.fluxcd.io/v1
+# GitRepository 配置 apiVersion: source.toolkit.fluxcd.io/v1
 kind: GitRepository
 metadata:
   name: flink-jobs-repo
@@ -923,8 +911,7 @@ spec:
     name: github-token
 
 ---
-# Kustomization 配置
-apiVersion: kustomize.toolkit.fluxcd.io/v1
+# Kustomization 配置 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: flink-production-apps
@@ -1230,8 +1217,7 @@ DRM-Integration = (ExistingDeployment, ResourceProfileRef, MigrationPath)
 **集成示例**：
 
 ```yaml
-# 原有 1.13 配置
-apiVersion: flink.apache.org/v1beta1
+# 原有 1.13 配置 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: existing-job
@@ -1245,8 +1231,7 @@ spec:
     replicas: 8  # 静态配置
 
 ---
-# 迁移到 1.14 声明式配置
-apiVersion: flink.apache.org/v1beta1
+# 迁移到 1.14 声明式配置 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: existing-job
@@ -1430,33 +1415,25 @@ graph TB
 **前置检查**：
 
 ```bash
-# 1. 验证当前版本
-helm list -n flink-operator
+# 1. 验证当前版本 helm list -n flink-operator
 
-# 2. 备份配置
-kubectl get flinkdeployments -A -o yaml > backup/flinkdeployments.yaml
+# 2. 备份配置 kubectl get flinkdeployments -A -o yaml > backup/flinkdeployments.yaml
 
-# 3. 检查作业健康状态
-kubectl get flinkdeployments -A -o json | jq '.items[] | {name: .metadata.name, state: .status.jobStatus.state}'
+# 3. 检查作业健康状态 kubectl get flinkdeployments -A -o json | jq '.items[] | {name: .metadata.name, state: .status.jobStatus.state}'
 
-# 4. 验证 Checkpoint 配置
-kubectl get flinkdeployments -A -o yaml | grep "execution.checkpointing.interval"
+# 4. 验证 Checkpoint 配置 kubectl get flinkdeployments -A -o yaml | grep "execution.checkpointing.interval"
 ```
 
 **升级后验证**：
 
 ```bash
-# 1. 验证 Operator 版本
-kubectl get deployment flink-kubernetes-operator -n flink-operator -o jsonpath='{.spec.template.spec.containers[0].image}'
+# 1. 验证 Operator 版本 kubectl get deployment flink-kubernetes-operator -n flink-operator -o jsonpath='{.spec.template.spec.containers[0].image}'
 
-# 2. 验证新特性可用
-kubectl get crd flinkdeployments.flink.apache.org -o yaml | grep "v1beta2"
+# 2. 验证新特性可用 kubectl get crd flinkdeployments.flink.apache.org -o yaml | grep "v1beta2"
 
-# 3. 验证 DRM 启用
-kubectl logs -n flink-operator -l app.kubernetes.io/name=flink-kubernetes-operator | grep "declarative.resource.management"
+# 3. 验证 DRM 启用 kubectl logs -n flink-operator -l app.kubernetes.io/name=flink-kubernetes-operator | grep "declarative.resource.management"
 
-# 4. 验证 Autoscaler V2
-kubectl logs -n flink-operator -l app.kubernetes.io/name=flink-kubernetes-operator | grep "autoscaler.algorithm.version.*v2"
+# 4. 验证 Autoscaler V2 kubectl logs -n flink-operator -l app.kubernetes.io/name=flink-kubernetes-operator | grep "autoscaler.algorithm.version.*v2"
 ```
 
 ---

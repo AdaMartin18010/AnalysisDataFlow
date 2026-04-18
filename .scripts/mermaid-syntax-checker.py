@@ -67,6 +67,12 @@ class MermaidSyntaxChecker:
         'C4Context': [],
         'mindmap': [],
         'timeline': [],
+        'xychart-beta': [],
+        'quadrantChart': [],
+        'radar': [],
+        'radarChart': [],
+        'block-beta': [],
+        'sankey-beta': [],
     }
     
     # 节点定义模式
@@ -209,17 +215,18 @@ class MermaidSyntaxChecker:
                     if brackets[stack.pop()] != char:
                         return False, f"括号不匹配"
                         
-        # 3. 检查常见错误
-        error_patterns = [
-            (r'\[\s*\]', "空矩形节点"),
-            (r'\(\s*\)', "空圆形节点"),
-            (r'\{\s*\}', "空菱形节点"),
-            (r'\|\s*\|', "空记录节点"),
-        ]
-        
-        for pattern, desc in error_patterns:
-            if re.search(pattern, content):
-                return False, f"发现{desc}"
+        # 3. 检查常见错误（仅在 graph/flowchart 中检测空节点）
+        if diagram_type in ['graph', 'flowchart']:
+            error_patterns = [
+                (r'\[\s*\]', "空矩形节点"),
+                (r'\(\s*\)', "空圆形节点"),
+                (r'\{\s*\}', "空菱形节点"),
+                (r'\|\s*\|', "空记录节点"),
+            ]
+            
+            for pattern, desc in error_patterns:
+                if re.search(pattern, content):
+                    return False, f"发现{desc}"
                 
         return True, None
     

@@ -232,16 +232,16 @@ flowchart TD
 
 | Resource | Type | Description |
 |----------|------|-------------|
-| [Link to related doc](../../path) | Document | Brief description |
+| [Link to related doc] | Document | Brief description |
 | `https://example.com` | External | Brief description |
 
 ---
 
 ## Cross-References
 
-- **Previous**: [Link to prerequisite document](../../path)
-- **Next**: [Link to follow-up document](../../path)
-- **Related**: [Link to related document](../../path)
+- **Previous**: [Link to prerequisite document]
+- **Next**: [Link to follow-up document]
+- **Related**: [Link to related document]
 
 ---
 
@@ -256,7 +256,7 @@ flowchart TD
 
 ---
 
-> **Document Standard**: This document follows the [AGENTS.md](../../AGENTS.md) six-section template.
+> **Document Standard**: This document follows the [AGENTS.md] six-section template.
 >
 > **Theorem Numbering**: Uses `{Type}-{Stage}-{DocNum}-{SeqNum}` format (e.g., `Thm-S-01-01`)
 >

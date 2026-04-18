@@ -373,8 +373,7 @@ flowchart TD
 ### 6.1 基础向量化 UDF（Python + Pandas）
 
 ```text
-# vectorized_udf_basic.py
-from pyflink.table import DataTypes, EnvironmentSettings, TableEnvironment
+# vectorized_udf_basic.py from pyflink.table import DataTypes, EnvironmentSettings, TableEnvironment
 from pyflink.table.udf import udf
 import pandas as pd
 import numpy as np
@@ -698,8 +697,7 @@ mod tests {
 ### 6.3 完整性能基准测试
 
 ```python
-# benchmark_vectorized_udf.py
-"""
+# benchmark_vectorized_udf.py """
 向量化 UDF 性能基准测试
 对比:标量 UDF vs 向量化 UDF vs 原生 SIMD UDF
 """
@@ -958,8 +956,7 @@ class VectorizedUDFBenchmark:
         plt.show()
 
 
-# 运行基准测试
-if __name__ == '__main__':
+# 运行基准测试 if __name__ == '__main__':
     benchmark = VectorizedUDFBenchmark(
         data_sizes=[1000, 10000, 100000, 500000]
     )

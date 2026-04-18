@@ -10,15 +10,15 @@
 |------|------|----------|------|
 | [Checkpoint 机制深度解析](../../../../Flink/02-core/checkpoint-mechanism-deep-dive.md) | ★★★★☆ | 2h | Barrier、对齐、增量 |
 | [Exactly-Once 语义深度解析](../../../../Flink/02-core/exactly-once-semantics-deep-dive.md) | ★★★★☆ | 2h | 2PC、幂等性 |
-| [状态后端配置指南](../../../../Flink/08-operations/state-backends-configuration.md) | ★★★☆☆ | 1h | RocksDB 调优 |
-| [Exactly-Once 形式化语义](../../../../Struct/02-properties/02.01-exactly-once-semantics.md) | ★★★★★ | 2h | 形式化定义 |
+| 状态后端配置指南 | ★★★☆☆ | 1h | RocksDB 调优 |
+| Exactly-Once 形式化语义 | ★★★★★ | 2h | 形式化定义 |
 
 ### 运行时架构
 
 | 文档 | 难度 | 预计时间 | 重点 |
 |------|------|----------|------|
-| [作业提交流程](../../../../Flink/05-internals/job-submission-flow.md) | ★★★☆☆ | 1.5h | 图转换、调度 |
-| [网络栈深度解析](../../../../Flink/05-internals/network-stack-deep-dive.md) | ★★★★☆ | 2h | Netty、信用值 |
+| 作业提交流程 | ★★★☆☆ | 1.5h | 图转换、调度 |
+| 网络栈深度解析 | ★★★★☆ | 2h | Netty、信用值 |
 | [背压与流控](../../../../Flink/02-core/backpressure-and-flow-control.md) | ★★★☆☆ | 1h | 背压传播 |
 
 ### 时间语义
@@ -48,7 +48,7 @@
 
 ### 案例研究
 
-- [Flink/07-case-studies/](../../../../Flink/07-case-studies/)
+- Flink/07-case-studies/
   - case-fraud-detection.md
   - case-realtime-ml-feature.md
 
@@ -56,7 +56,7 @@
 
 - [生产检查清单](../../../../Knowledge/production-checklist.md)
 - [性能调优指南](../../../../Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md)
-- [监控配置指南](../../../../Flink/08-operations/monitoring-basics.md)
+- 监控配置指南
 - [部署架构指南](../../../../DEPLOYMENT-ARCHITECTURES.md)
 
 ## 推荐书籍

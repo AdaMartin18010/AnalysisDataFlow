@@ -567,8 +567,7 @@ graph TB
 **典型使用模式**：
 
 ```python
-# 模式 1: 单一 Agent,MCP 增强能力
-class SingleAgentWithTools:
+# 模式 1: 单一 Agent,MCP 增强能力 class SingleAgentWithTools:
     """客服 Agent:使用 MCP 访问工具,不使用 A2A"""
 
     async def handle(self, query: str):
@@ -580,8 +579,7 @@ class SingleAgentWithTools:
         response = await self.llm.generate(query, context=docs + user_data)
         return response
 
-# 模式 2: 多 Agent 协作,A2A + MCP
-class MultiAgentOrchestrator:
+# 模式 2: 多 Agent 协作,A2A + MCP class MultiAgentOrchestrator:
     """招聘流程 Agent:A2A 协调多 Agent,每个 Agent 使用 MCP"""
 
     async def process_hiring(self, job_req: str):
@@ -1009,8 +1007,7 @@ class ArtifactReassembler:
 **场景**: 实时销售数据分析 Agent，支持流式推送分析结果
 
 ```python
-# flink_a2a_analytics_agent.py
-from flask import Flask, request, jsonify, Response
+# flink_a2a_analytics_agent.py from flask import Flask, request, jsonify, Response
 from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.table import StreamTableEnvironment
 import json
@@ -1022,8 +1019,7 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-# ============ Agent Card ============
-AGENT_CARD = {
+# ============ Agent Card ============ AGENT_CARD = {
     "name": "FlinkRealtimeAnalyticsAgent",
     "description": "基于 Apache Flink 的实时流数据分析 Agent,支持窗口聚合、异常检测、趋势预测",
     "url": "https://analytics.example.com/a2a",
@@ -1297,8 +1293,7 @@ def format_sse(data: Dict) -> str:
     """格式化 SSE 事件"""
     return f"data: {json.dumps(data)}\n\n"
 
-# ============ 启动 ============
-if __name__ == "__main__":
+# ============ 启动 ============ if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, threaded=True)
 ```
 
@@ -1307,8 +1302,7 @@ if __name__ == "__main__":
 ### 6.2 A2A Client Agent 实现（支持多 Agent 编排）
 
 ```python
-# multi_agent_orchestrator.py
-import httpx
+# multi_agent_orchestrator.py import httpx
 import json
 import asyncio
 from typing import List, Dict, Any, AsyncIterator, Optional
@@ -1560,8 +1554,7 @@ class SalesAnalyticsOrchestrator:
             "generated_at": "2025-04-03T12:00:00Z"
         }
 
-# 使用示例
-async def main():
+# 使用示例 async def main():
     orchestrator = SalesAnalyticsOrchestrator()
 
     report = await orchestrator.comprehensive_sales_report(
@@ -1781,7 +1774,7 @@ sequenceDiagram
 
 ## 8. 引用参考 (References)
 
-[^7]: Linux Foundation, "A2A Protocol Surpasses 150 Organizations, Lands in Major Cloud Platforms", 2026-04-09. https://www.linuxfoundation.org/press/a2a-protocol-surpasses-150-organizations-lands-in-major-cloud-platforms-and-sees-enterprise-production-use-in-first-year
+[^7]: Linux Foundation, "A2A Protocol Surpasses 150 Organizations, Lands in Major Cloud Platforms", 2026-04-09. <https://www.linuxfoundation.org/press/a2a-protocol-surpasses-150-organizations-lands-in-major-cloud-platforms-and-sees-enterprise-production-use-in-first-year>
 
 ---
 

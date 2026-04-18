@@ -435,15 +435,13 @@ $$
 **反模式 1: 过度细粒度 Agent**
 
 ```python
-# ❌ 错误:每个函数都是独立 Agent
-class CalculatorAgent:
+# ❌ 错误:每个函数都是独立 Agent class CalculatorAgent:
     def add(self, a, b): return a + b
 
 class SubtractAgent:
     def sub(self, a, b): return a - b
 
-# 正确:相关功能聚合为一个 Agent
-class MathAgent:
+# 正确:相关功能聚合为一个 Agent class MathAgent:
     def calculate(self, expression: str) -> float:
         # 处理多种数学运算
         pass
@@ -452,14 +450,12 @@ class MathAgent:
 **反模式 2: 同步阻塞调用**
 
 ```text
-# ❌ 错误:阻塞等待长时任务
-result = a2a_client.send_task_sync(
+# ❌ 错误:阻塞等待长时任务 result = a2a_client.send_task_sync(
     agent_url,
     {"query": "深度市场分析"}  # 可能需要数小时
 )
 
-# 正确:使用异步 + 回调/SSE
-async for event in a2a_client.send_subscribe(agent_url, task):
+# 正确:使用异步 + 回调/SSE async for event in a2a_client.send_subscribe(agent_url, task):
     if event.type == "status_update":
         update_ui(event.status)
     elif event.type == "artifact":
@@ -469,11 +465,9 @@ async for event in a2a_client.send_subscribe(agent_url, task):
 **反模式 3: 忽视状态持久化**
 
 ```python
-# ❌ 错误:内存中存储 Task 状态
-task_states = {}  # 服务重启丢失
+# ❌ 错误:内存中存储 Task 状态 task_states = {}  # 服务重启丢失
 
-# 正确:使用持久化状态存储
-class PersistentTaskStore:
+# 正确:使用持久化状态存储 class PersistentTaskStore:
     def save(self, task_id: str, state: TaskState):
         self.redis.setex(f"a2a:task:{task_id}", 86400, state.json())
 
@@ -573,8 +567,7 @@ $$
 ### 6.1 Flink 作为 A2A Remote Agent
 
 ```python
-# flink_a2a_agent.py
-from flask import Flask, request, jsonify, Response
+# flink_a2a_agent.py from flask import Flask, request, jsonify, Response
 import json
 import asyncio
 from pyflink.datastream import StreamExecutionEnvironment
@@ -582,8 +575,7 @@ from pyflink.table import StreamTableEnvironment
 
 app = Flask(__name__)
 
-# Agent Card endpoint
-@app.route("/.well-known/agent.json", methods=["GET"])
+# Agent Card endpoint @app.route("/.well-known/agent.json", methods=["GET"])
 def agent_card():
     return jsonify({
         "name": "FlinkAnalyticsAgent",
@@ -612,8 +604,7 @@ def agent_card():
         ]
     })
 
-# Task 提交端点
-@app.route("/a2a/tasks/send", methods=["POST"])
+# Task 提交端点 @app.route("/a2a/tasks/send", methods=["POST"])
 def send_task():
     """同步任务提交"""
     data = request.json
@@ -633,8 +624,7 @@ def send_task():
 
     return jsonify({"id": task_id, "status": "failed"}), 400
 
-# 流式任务订阅端点
-@app.route("/a2a/tasks/sendSubscribe", methods=["POST"])
+# 流式任务订阅端点 @app.route("/a2a/tasks/sendSubscribe", methods=["POST"])
 def send_subscribe():
     """流式任务提交(SSE)"""
     data = request.json
@@ -703,8 +693,7 @@ if __name__ == "__main__":
 ### 6.2 A2A Client Agent 实现
 
 ```python
-# a2a_client_agent.py
-import httpx
+# a2a_client_agent.py import httpx
 import json
 from typing import AsyncIterator, Dict, Any
 
@@ -827,8 +816,7 @@ class AnalyticsOrchestratorAgent:
             "recommendations": self._rank_candidates(candidates, insights)
         }
 
-# 辅助函数
-def generate_uuid() -> str:
+# 辅助函数 def generate_uuid() -> str:
     import uuid
     return str(uuid.uuid4())
 
@@ -840,8 +828,7 @@ def now_iso() -> str:
 ### 6.3 A2A + Flink CEP 异常检测场景
 
 ```python
-# a2a_flink_cep_example.py
-from pyflink.datastream import StreamExecutionEnvironment
+# a2a_flink_cep_example.py from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.table import StreamTableEnvironment
 from pyflink.cep import Pattern, PatternSelectFunction
 
@@ -901,8 +888,7 @@ class A2AAlertAgent:
             }
         )
 
-# Flink CEP 作业:检测异常模式
-def create_flink_cep_job():
+# Flink CEP 作业:检测异常模式 def create_flink_cep_job():
     env = StreamExecutionEnvironment.get_execution_environment()
     table_env = StreamTableEnvironment.create(env)
 

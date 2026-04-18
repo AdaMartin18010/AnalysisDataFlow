@@ -27,8 +27,7 @@
 ## 目录结构导航
 
 ```
-# 伪代码示意，非完整可编译代码
-06-ai-ml/
+# 伪代码示意，非完整可编译代码 06-ai-ml/
 ├── README.md                          # 本文件 - AI/ML 生态概览
 ├── flink-ai-agents-flip-531.md        # FLIP-531 AI Agents 核心
 ├── flink-agents-architecture-deep-dive.md
@@ -289,14 +288,12 @@ graph TB
 ### 4.3 特征工程最佳实践
 
 ```python
-# PyFlink 特征工程示例
-from pyflink.table import StreamTableEnvironment
+# PyFlink 特征工程示例 from pyflink.table import StreamTableEnvironment
 from pyflink.table.window import Tumble
 
 t_env = StreamTableEnvironment.create(...)
 
-# 实时特征计算:用户最近1小时行为统计
-feature_sql = """
+# 实时特征计算:用户最近1小时行为统计 feature_sql = """
 CREATE VIEW user_features AS
 SELECT
     user_id,

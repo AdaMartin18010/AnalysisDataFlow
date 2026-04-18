@@ -407,8 +407,7 @@ graph TB
 **关键流数据产品**:
 
 ```yaml
-# user-profile-stream.yaml
-data_product:
+# user-profile-stream.yaml data_product:
   name: user-profile-realtime
   domain: user-behavior
   owner: team-user-platform@company.com
@@ -633,8 +632,7 @@ flowchart TB
 ## 附录 A: 流数据产品模板
 
 ```yaml
-# data-product-template.yaml
-apiVersion: datamesh.io/v1
+# data-product-template.yaml apiVersion: datamesh.io/v1
 kind: StreamingDataProduct
 metadata:
   name: {product-name}

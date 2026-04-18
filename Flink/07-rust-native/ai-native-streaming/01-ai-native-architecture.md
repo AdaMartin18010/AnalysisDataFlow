@@ -148,16 +148,13 @@ ConsistencyError → 0 (当系统稳定运行时)
 **工程实现要点**：
 
 ```python
-# Flink 特征一致性保障
-from pyflink.datastream import StreamExecutionEnvironment
+# Flink 特征一致性保障 from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.table import StreamTableEnvironment
 
-# 统一事件时间定义
-env = StreamExecutionEnvironment.get_execution_environment()
+# 统一事件时间定义 env = StreamExecutionEnvironment.get_execution_environment()
 env.set_stream_time_characteristic(TimeCharacteristic.EventTime)
 
-# 特征算子使用确定性UDF
-@udf(result_type=DataTypes.ARRAY(DataTypes.FLOAT()))
+# 特征算子使用确定性UDF @udf(result_type=DataTypes.ARRAY(DataTypes.FLOAT()))
 def extract_features(event):
     # 纯函数实现,无外部依赖
     return deterministic_feature_extract(event)
@@ -795,19 +792,16 @@ impl RagMetrics {
 ### 6.2 实时特征工程：电商用户行为特征
 
 ```python
-# PyFlink 实时特征工程示例
-from pyflink.datastream import StreamExecutionEnvironment
+# PyFlink 实时特征工程示例 from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.table import StreamTableEnvironment, EnvironmentSettings
 from pyflink.table.window import Tumble
 from pyflink.table.expressions import col, lit
 
-# 执行环境
-env = StreamExecutionEnvironment.get_execution_environment()
+# 执行环境 env = StreamExecutionEnvironment.get_execution_environment()
 settings = EnvironmentSettings.new_instance().in_streaming_mode().build()
 t_env = StreamTableEnvironment.create(env, settings)
 
-# 定义用户行为事件表
-t_env.execute_sql("""
+# 定义用户行为事件表 t_env.execute_sql("""
 CREATE TABLE user_events (
     user_id STRING,
     event_type STRING,
@@ -824,8 +818,7 @@ CREATE TABLE user_events (
 )
 """)
 
-# ===== 特征 1:实时点击率 (CTR) =====
-t_env.execute_sql("""
+# ===== 特征 1:实时点击率 (CTR) ===== t_env.execute_sql("""
 CREATE TABLE user_ctr_features AS
 SELECT
     user_id,
@@ -840,8 +833,7 @@ GROUP BY
     TUMBLE(event_time, INTERVAL '5' MINUTE)
 """)
 
-# ===== 特征 2:用户偏好向量 (实时嵌入聚合) =====
-t_env.create_temporary_function("embedding_agg", EmbeddingAggregateFunction())
+# ===== 特征 2:用户偏好向量 (实时嵌入聚合) ===== t_env.create_temporary_function("embedding_agg", EmbeddingAggregateFunction())
 
 t_env.execute_sql("""
 CREATE TABLE user_preference_embedding AS
@@ -854,8 +846,7 @@ WHERE event_time > NOW() - INTERVAL '1' HOUR
 GROUP BY user_id
 """)
 
-# ===== 特征 3:会话级特征 =====
-t_env.execute_sql("""
+# ===== 特征 3:会话级特征 ===== t_env.execute_sql("""
 CREATE TABLE session_features AS
 SELECT
     user_id,
@@ -870,8 +861,7 @@ GROUP BY
     SESSION(event_time, INTERVAL '30' MINUTE)
 """)
 
-# 输出到特征存储
-t_env.execute_sql("""
+# 输出到特征存储 t_env.execute_sql("""
 INSERT INTO feature_store
 SELECT * FROM user_ctr_features
 UNION ALL

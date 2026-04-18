@@ -969,8 +969,7 @@ state.backend: forst
 state.backend.incremental: true
 state.backend.forst.memory.fixed-per-slot: 256mb
 
-# 分离状态存储配置
-state.backend.forst.disaggregated: true
+# 分离状态存储配置 state.backend.forst.disaggregated: true
 state.backend.forst.remote.uri: s3://flink-state-bucket
 
 state.checkpoints.dir: s3://flink-checkpoints

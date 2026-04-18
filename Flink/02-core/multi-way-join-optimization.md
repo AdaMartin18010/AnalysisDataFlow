@@ -481,8 +481,7 @@ INNER JOIN users u
 
 ```bash
 # 伪代码示意，非完整可编译代码
-# 查看优化后的执行计划
-./bin/sql-client.sh
+# 查看优化后的执行计划 ./bin/sql-client.sh
 Flink SQL> EXPLAIN SELECT /*+ MULTI_JOIN() */ ...
 ```
 

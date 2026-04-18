@@ -369,8 +369,7 @@ $$
 ### 6.1 实时行情数据定价
 
 ```python
-# 金融行情数据定价引擎
-class MarketDataPricingEngine:
+# 金融行情数据定价引擎 class MarketDataPricingEngine:
     def __init__(self):
         self.base_prices = {
             'level1': 0.001,      # 最佳买卖价
@@ -425,19 +424,16 @@ class MarketDataPricingEngine:
         else:
             return 0
 
-# 使用示例
-engine = MarketDataPricingEngine()
+# 使用示例 engine = MarketDataPricingEngine()
 
-# 高频交易客户
-hft_quote = engine.calculate_price(
+# 高频交易客户 hft_quote = engine.calculate_price(
     data_level='level2',
     latency_tier='ultra',
     volume_estimate=50e9  # 500亿事件/月
 )
 print(f"HFT客户价格: ${hft_quote['monthly_estimate']:,.0f}/月")
 
-# 普通量化基金
-quant_quote = engine.calculate_price(
+# 普通量化基金 quant_quote = engine.calculate_price(
     data_level='level2',
     latency_tier='premium',
     volume_estimate=500e6  # 5亿事件/月
@@ -546,8 +542,7 @@ class StreamingDataROI:
 
         return recommendations
 
-# 使用示例
-roi_calculator = StreamingDataROI()
+# 使用示例 roi_calculator = StreamingDataROI()
 
 realtime_behavior_product = {
     'name': 'User Behavior Stream',
@@ -569,8 +564,7 @@ print(f"ROI: {report['roi']:.1%}")
 ### 6.3 数据市场平台实现
 
 ```python
-# 数据市场平台核心
-class DataMarketplace:
+# 数据市场平台核心 class DataMarketplace:
     def __init__(self):
         self.products = {}
         self.transactions = []

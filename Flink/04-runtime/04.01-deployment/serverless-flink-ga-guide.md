@@ -98,8 +98,7 @@ $$
 **快照启动 (Snapshot Start) 机制**：
 
 ```yaml
-# flink-conf.yaml
-checkpointing.snapshot-start.enabled: true
+# flink-conf.yaml checkpointing.snapshot-start.enabled: true
 checkpointing.snapshot-start.path: s3://bucket/latest-checkpoint/
 checkpointing.snapshot-start.preload: true  # 预加载状态元数据
 ```
@@ -442,8 +441,7 @@ GA优化方案: 延迟加载 (Lazy Loading)
 # ❌ 错误: 用Lambda实现带窗口的聚合
 # 问题: Lambda无状态,无法实现会话窗口
 
-# ✅ 正确: 使用Serverless Flink
-apiVersion: flink.apache.org/v1beta1
+# ✅ 正确: 使用Serverless Flink apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: session-window-job
@@ -460,13 +458,11 @@ spec:
 **反模式2: 忽视冷启动延迟**
 
 ```yaml
-# ❌ 错误: API-facing服务使用默认冷启动
-spec:
+# ❌ 错误: API-facing服务使用默认冷启动 spec:
   job:
     parallelism: 1  # 缩容到1,但仍有延迟
 
-# ✅ 正确: 预置并发
-spec:
+# ✅ 正确: 预置并发 spec:
   flinkConfiguration:
     kubernetes.operator.job.autoscaler.min-parallelism: "4"
     kubernetes.operator.job.autoscaler.scale-down.cooldown: "30m"
@@ -475,11 +471,9 @@ spec:
 **反模式3: 状态存储配置不当**
 
 ```yaml
-# ❌ 错误: 使用本地状态,无法Scale-to-Zero
-state.backend: hashmap  # 内存状态,重启丢失
+# ❌ 错误: 使用本地状态,无法Scale-to-Zero state.backend: hashmap  # 内存状态,重启丢失
 
-# ✅ 正确: 使用分离式状态存储
-state.backend: forst
+# ✅ 正确: 使用分离式状态存储 state.backend: forst
 state.backend.incremental: true
 state.backend.remote.directory: s3://bucket/state
 state.checkpoint-storage: filesystem
@@ -588,8 +582,7 @@ $$
 ### 6.1 Kubernetes Serverless部署 (KEDA + Flink Operator)
 
 ```yaml
-# flink-serverless-deployment.yaml
-apiVersion: flink.apache.org/v1beta1
+# flink-serverless-deployment.yaml apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: serverless-etl-job
@@ -640,8 +633,7 @@ spec:
     kubernetes.operator.job.snapshot-start.path: s3://flink-states/etl-job/latest
 
 ---
-# keda-scaled-object.yaml
-apiVersion: keda.sh/v1alpha1
+# keda-scaled-object.yaml apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
   name: flink-kafka-scaler
@@ -666,8 +658,7 @@ spec:
 ### 6.2 AWS Serverless Flink (Amazon Managed Flink)
 
 ```python
-# aws_serverless_flink.py
-import boto3
+# aws_serverless_flink.py import boto3
 import json
 
 def create_serverless_flink_application():
@@ -759,8 +750,7 @@ def calculate_serverless_cost(kpu_hours, processing_hours):
         'total_cost': round(compute_cost + storage_cost, 2)
     }
 
-# 使用示例
-if __name__ == '__main__':
+# 使用示例 if __name__ == '__main__':
     # 创建应用
     app_arn = create_serverless_flink_application()
     print(f"Created application: {app_arn}")
@@ -773,8 +763,7 @@ if __name__ == '__main__':
 ### 6.3 Azure Container Apps + Flink
 
 ```yaml
-# azure-flink-containerapp.yaml
-apiVersion: app.k8s.io/v1beta1
+# azure-flink-containerapp.yaml apiVersion: app.k8s.io/v1beta1
 kind: Application
 metadata:
   name: flink-serverless-app
@@ -790,8 +779,7 @@ spec:
       kind: ScaledObject
 
 ---
-# flink-deployment.yaml
-apiVersion: apps/v1
+# flink-deployment.yaml apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: flink-jobmanager
@@ -835,8 +823,7 @@ spec:
               cpu: "1000m"
 
 ---
-# flink-taskmanager-scaledobject.yaml
-apiVersion: keda.sh/v1alpha1
+# flink-taskmanager-scaledobject.yaml apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
   name: flink-taskmanager-scaler
@@ -952,8 +939,7 @@ export const appUrl = flinkApp.configuration.apply(c => c?.ingress?.fqdn);
 ### 6.4 成本监控与优化脚本
 
 ```python
-# serverless_cost_optimizer.py
-import boto3
+# serverless_cost_optimizer.py import boto3
 import json
 from datetime import datetime, timedelta
 from dataclasses import dataclass
@@ -1142,8 +1128,7 @@ class ServerlessCostOptimizer:
 
         return report
 
-# 使用示例
-if __name__ == '__main__':
+# 使用示例 if __name__ == '__main__':
     optimizer = ServerlessCostOptimizer(cloud_provider='aws')
     report = optimizer.generate_cost_report('serverless-etl-app')
     print(report)
@@ -1152,8 +1137,7 @@ if __name__ == '__main__':
 ### 6.5 有状态作业迁移脚本
 
 ```python
-# migrate_to_serverless.py
-"""
+# migrate_to_serverless.py """
 将传统Flink作业迁移到Serverless模式的工具
 """
 
@@ -1319,8 +1303,7 @@ class ServerlessMigrationTool:
 
         return plan
 
-# CLI入口
-def main():
+# CLI入口 def main():
     parser = argparse.ArgumentParser(description='Flink Serverless迁移工具')
     parser.add_argument('--job-name', required=True, help='作业名称')
     parser.add_argument('--config', required=True, help='当前配置文件路径')
@@ -1591,8 +1574,7 @@ sequenceDiagram
 
 # ============================================================================
 # 状态后端配置 (必须)
-# ============================================================================
-state.backend: forst
+# ============================================================================ state.backend: forst
 state.backend.incremental: true
 state.backend.remote.directory: s3://bucket/state
 state.checkpoint-storage: filesystem
@@ -1600,8 +1582,7 @@ checkpoints.dir: s3://bucket/checkpoints
 
 # ============================================================================
 # 检查点配置
-# ============================================================================
-execution.checkpointing.interval: 30s
+# ============================================================================ execution.checkpointing.interval: 30s
 execution.checkpointing.min-pause: 10s
 execution.checkpointing.timeout: 10min
 execution.checkpointing.max-concurrent-checkpoints: 1
@@ -1609,39 +1590,33 @@ execution.checkpointing.externalized-checkpoint-retention: RETAIN_ON_CANCELLATIO
 
 # ============================================================================
 # 快照启动配置 (GA特性)
-# ============================================================================
-kubernetes.operator.job.snapshot-start.enabled: true
+# ============================================================================ kubernetes.operator.job.snapshot-start.enabled: true
 kubernetes.operator.job.snapshot-start.path: s3://bucket/latest-checkpoint/
 kubernetes.operator.job.snapshot-start.preload: true
 
 # ============================================================================
 # Autoscaler配置
-# ============================================================================
-kubernetes.operator.job.autoscaler.enabled: true
+# ============================================================================ kubernetes.operator.job.autoscaler.enabled: true
 kubernetes.operator.job.autoscaler.target.utilization: "0.7"
 kubernetes.operator.job.autoscaler.limits.min-parallelism: "0"
 kubernetes.operator.job.autoscaler.limits.max-parallelism: "32"
 
-# Scale-to-Zero配置
-kubernetes.operator.job.autoscaler.scale-down.grace-period: "5m"
+# Scale-to-Zero配置 kubernetes.operator.job.autoscaler.scale-down.grace-period: "5m"
 kubernetes.operator.job.autoscaler.scale-down.cooldown: "10m"
 kubernetes.operator.job.autoscaler.scale-up.grace-period: "1m"
 kubernetes.operator.job.autoscaler.scale-up.cooldown: "2m"
 
-# 顶点级别扩缩容
-kubernetes.operator.job.autoscaler.vertex-parallelism.enabled: true
+# 顶点级别扩缩容 kubernetes.operator.job.autoscaler.vertex-parallelism.enabled: true
 
 # ============================================================================
 # 网络与性能优化
-# ============================================================================
-taskmanager.memory.network.fraction: 0.15
+# ============================================================================ taskmanager.memory.network.fraction: 0.15
 taskmanager.network.memory.buffers-per-channel: 2
 taskmanager.network.memory.buffer-debloat.enabled: true
 
 # ============================================================================
 # JVM优化 (冷启动)
-# ============================================================================
-env.java.opts: >
+# ============================================================================ env.java.opts: >
   -XX: +UseG1GC
   -XX: MaxGCPauseMillis=20
   -XX: +UseStringDeduplication
@@ -1706,8 +1681,7 @@ spec:
 ### A.3 成本告警配置
 
 ```yaml
-# prometheus-rules.yaml
-apiVersion: monitoring.coreos.com/v1
+# prometheus-rules.yaml apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
   name: flink-cost-alerts

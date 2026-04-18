@@ -299,8 +299,7 @@ State: Cost = 0
 **设计原则 3: 速率限制与成本防护**
 
 ```yaml
-# Neon Agent Plan 资源限制示例
-rate_limits:
+# Neon Agent Plan 资源限制示例 rate_limits:
   databases_per_minute: 100
   compute_hours_per_day: 1000
   storage_gb_max: 100

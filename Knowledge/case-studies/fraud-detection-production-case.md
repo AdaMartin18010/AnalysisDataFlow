@@ -602,17 +602,14 @@ public class HighPerformanceFeatureStore {
 **Flink集群配置**:
 
 ```yaml
-# 高性能反欺诈作业配置
-job.name: AntiFraud-Realtime-Engine
+# 高性能反欺诈作业配置 job.name: AntiFraud-Realtime-Engine
 parallelism.default: 600
 
-# 低延迟优化
-execution.buffer-timeout: 0ms
+# 低延迟优化 execution.buffer-timeout: 0ms
 pipeline.object-reuse: true
 execution.sort-shuffle.min-parallelism: 100
 
-# RocksDB调优
-state.backend.rocksdb.memory.managed: true
+# RocksDB调优 state.backend.rocksdb.memory.managed: true
 state.backend.rocksdb.memory.fixed-per-slot: 512mb
 state.backend.rocksdb.threads.threads-number: 4
 state.backend.rocksdb.predefined-options: FLASH_SSD_OPTIMIZED

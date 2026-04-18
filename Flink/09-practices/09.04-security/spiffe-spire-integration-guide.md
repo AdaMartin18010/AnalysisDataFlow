@@ -142,8 +142,7 @@ $$\text{Attest}: \text{Evidence} \times \text{Policy} \rightarrow \text{SPIFFE-I
 **Kubernetes 证明示例**:
 
 ```hcl
-# SPIRE 注册条目
-registration_entry {
+# SPIRE 注册条目 registration_entry {
   spiffe_id = "spiffe://flink.example.com/ns/processing/sa/job-manager"
   selectors = [
     "k8s:ns:processing",
@@ -411,14 +410,12 @@ $$
 **Flink 作业影响测试**:
 
 ```yaml
-# 基准测试配置
-job: 
+# 基准测试配置 job:
   parallelism: 100
   source: Kafka (100K events/sec)
   sink: Elasticsearch
 
-# 结果对比
-results: 
+# 结果对比 results:
   without_spire: 
     throughput: 100000 eps
     latency_p99: 120ms
@@ -439,8 +436,7 @@ results:
 #### 6.1.1 SPIRE Server 部署
 
 ```yaml
-# spire-server.yaml
-apiVersion: apps/v1
+# spire-server.yaml apiVersion: apps/v1
 kind: StatefulSet
 metadata: 
   name: spire-server
@@ -485,8 +481,7 @@ spec:
         requests: 
           storage: 10Gi
 ---
-# server.conf
-apiVersion: v1
+# server.conf apiVersion: v1
 kind: ConfigMap
 metadata: 
   name: spire-server-config
@@ -539,8 +534,7 @@ data:
 #### 6.1.2 SPIRE Agent DaemonSet
 
 ```yaml
-# spire-agent.yaml
-apiVersion: apps/v1
+# spire-agent.yaml apiVersion: apps/v1
 kind: DaemonSet
 metadata: 
   name: spire-agent
@@ -601,8 +595,7 @@ spec:
 
 ```yaml
 # flink-registration.yaml
-# JobManager 注册
-apiVersion: spire.spiffe.io/v1alpha1
+# JobManager 注册 apiVersion: spire.spiffe.io/v1alpha1
 kind: ClusterSPIFFEID
 metadata: 
   name: flink-jobmanager
@@ -616,8 +609,7 @@ spec:
     - "flink-jobmanager.{{ .PodMeta.Namespace }}.svc.cluster.local"
   ttl: 3600  # 1小时
 ---
-# TaskManager 注册
-apiVersion: spire.spiffe.io/v1alpha1
+# TaskManager 注册 apiVersion: spire.spiffe.io/v1alpha1
 kind: ClusterSPIFFEID
 metadata: 
   name: flink-taskmanager
@@ -634,8 +626,7 @@ spec:
 #### 6.2.1 使用 SPIFFE Helper Sidecar
 
 ```yaml
-# flink-deployment-with-spiffe.yaml
-apiVersion: flink.apache.org/v1beta1
+# flink-deployment-with-spiffe.yaml apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata: 
   name: flink-job
@@ -691,8 +682,7 @@ spec:
 #### 6.2.2 SPIFFE Helper 配置
 
 ```hcl
-# helper-config.conf
-agent_address = "/spiffe-socket/agent.sock"
+# helper-config.conf agent_address = "/spiffe-socket/agent.sock"
 cmd = "/opt/flink/bin/jobmanager.sh start-foreground"
 cmd_args = ""
 renew_signal = "SIGUSR1"
@@ -701,8 +691,7 @@ svid_bundle_file_path = "/certs/svid_bundle.pem"
 svid_key_file_path = "/certs/svid_key.pem"
 svid_file_path = "/certs/svid_cert.pem"
 
-# 转换为 Java KeyStore
-jks {
+# 转换为 Java KeyStore jks {
   keystore_path = "/certs/keystore.jks"
   keystore_password = "changeit"
   key_password = "changeit"
@@ -784,8 +773,7 @@ RestHighLevelClient client = new RestHighLevelClient(builder);
 #### 6.5.1 Istio 使用 SPIRE 作为 CA
 
 ```yaml
-# istio-spire-config.yaml
-apiVersion: install.istio.io/v1alpha1
+# istio-spire-config.yaml apiVersion: install.istio.io/v1alpha1
 kind: IstioOperator
 metadata: 
   name: istio-with-spire
@@ -814,8 +802,7 @@ spec:
             - name: spire-socket
               mountPath: /run/spire/sockets
 ---
-# PeerAuthentication 强制 mTLS
-apiVersion: security.istio.io/v1beta1
+# PeerAuthentication 强制 mTLS apiVersion: security.istio.io/v1beta1
 kind: PeerAuthentication
 metadata: 
   name: flink-mtls
@@ -831,8 +818,7 @@ spec:
 #### 6.5.2 细粒度授权策略
 
 ```yaml
-# authorization-policy.yaml
-apiVersion: security.istio.io/v1beta1
+# authorization-policy.yaml apiVersion: security.istio.io/v1beta1
 kind: AuthorizationPolicy
 metadata: 
   name: flink-jobmanager-access
@@ -1042,8 +1028,7 @@ server.conf: |
 ### 8.2 审计与监控
 
 ```yaml
-# Prometheus ServiceMonitor
-apiVersion: monitoring.coreos.com/v1
+# Prometheus ServiceMonitor apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata: 
   name: spire-metrics
@@ -1060,8 +1045,7 @@ spec:
     path: /agent_metrics
     interval: 30s
 ---
-# 关键告警规则
-alerting_rules: 
+# 关键告警规则 alerting_rules:
   - alert: SPIRESVIDExpiry
     expr: spire_server_svid_ttl_hours < 2
     for: 5m
@@ -1091,24 +1075,19 @@ alerting_rules:
 ### 8.4 故障排查指南
 
 ```bash
-# 1. 验证 SVID 是否正确颁发
-kubectl exec -it flink-jobmanager-0 -c spiffe-helper -- \
+# 1. 验证 SVID 是否正确颁发 kubectl exec -it flink-jobmanager-0 -c spiffe-helper -- \
   /opt/spire/bin/spire-agent api fetch -socketPath /spiffe-socket/agent.sock
 
-# 2. 检查注册条目
-kubectl exec -it spire-server-0 -n spire -- \
+# 2. 检查注册条目 kubectl exec -it spire-server-0 -n spire -- \
   /opt/spire/bin/spire-server entry show -spiffeID spiffe://flink.example.com/ns/processing/sa/flink-jm
 
-# 3. 验证 mTLS 连接
-openssl s_client -connect jobmanager:6123 \
+# 3. 验证 mTLS 连接 openssl s_client -connect jobmanager:6123 \
   -cert /certs/svid_cert.pem -key /certs/svid_key.pem \
   -CAfile /certs/svid_bundle.pem
 
-# 4. 查看 Agent 日志
-gkubectl logs -n spire -l app=spire-agent --tail=100 | grep -i error
+# 4. 查看 Agent 日志 gkubectl logs -n spire -l app=spire-agent --tail=100 | grep -i error
 
-# 5. 检查证书有效期
-openssl x509 -in /certs/svid_cert.pem -text -noout | grep -A2 "Validity"
+# 5. 检查证书有效期 openssl x509 -in /certs/svid_cert.pem -text -noout | grep -A2 "Validity"
 ```
 
 ---

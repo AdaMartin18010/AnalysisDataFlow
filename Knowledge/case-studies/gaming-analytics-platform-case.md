@@ -609,14 +609,12 @@ GROUP BY experiment_id, variant_id;
 **Flink集群配置**:
 
 ```yaml
-# 游戏分析专用配置
-jobmanager.memory.process.size: 16384m
+# 游戏分析专用配置 jobmanager.memory.process.size: 16384m
 taskmanager.memory.process.size: 65536m
 taskmanager.numberOfTaskSlots: 16
 parallelism.default: 800
 
-# 网络优化
-taskmanager.memory.network.fraction: 0.2
+# 网络优化 taskmanager.memory.network.fraction: 0.2
 taskmanager.memory.network.min: 2gb
 taskmanager.memory.network.max: 8gb
 
@@ -627,8 +625,7 @@ state.backend.rocksdb.memory.managed: true
 state.backend.rocksdb.threads.threads-number: 8
 state.backend.rocksdb.predefined-options: FLASH_SSD_OPTIMIZED
 
-# Checkpoint
-execution.checkpointing.interval: 60s
+# Checkpoint execution.checkpointing.interval: 60s
 execution.checkpointing.timeout: 10min
 state.checkpoints.num-retained: 10
 ```

@@ -336,8 +336,7 @@ graph TB
 **Terraform 配置**:
 
 ```hcl
-# main.tf - EMR on EKS Flink Deployment
-terraform {
+# main.tf - EMR on EKS Flink Deployment terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -354,8 +353,7 @@ provider "aws" {
   region = var.aws_region
 }
 
-# VPC and Networking
-module "vpc" {
+# VPC and Networking module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "~> 5.0"
 
@@ -376,8 +374,7 @@ module "vpc" {
   }
 }
 
-# EKS Cluster
-module "eks" {
+# EKS Cluster module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 19.0"
 
@@ -423,8 +420,7 @@ module "eks" {
   }
 }
 
-# EMR on EKS Virtual Cluster
-resource "aws_emrcontainers_virtual_cluster" "flink" {
+# EMR on EKS Virtual Cluster resource "aws_emrcontainers_virtual_cluster" "flink" {
   name = "flink-virtual-cluster"
 
   container_provider {
@@ -439,8 +435,7 @@ resource "aws_emrcontainers_virtual_cluster" "flink" {
   }
 }
 
-# S3 Bucket for Flink Checkpoints and Savepoints
-resource "aws_s3_bucket" "flink_storage" {
+# S3 Bucket for Flink Checkpoints and Savepoints resource "aws_s3_bucket" "flink_storage" {
   bucket = "${var.project_name}-flink-storage-${var.aws_account_id}"
 }
 
@@ -451,8 +446,7 @@ resource "aws_s3_bucket_versioning" "flink_storage" {
   }
 }
 
-# IAM Role for Flink Jobs
-resource "aws_iam_role" "flink_job_role" {
+# IAM Role for Flink Jobs resource "aws_iam_role" "flink_job_role" {
   name = "flink-job-execution-role"
 
   assume_role_policy = jsonencode({
@@ -531,8 +525,7 @@ resource "aws_iam_role_policy" "flink_job_policy" {
   })
 }
 
-# Kinesis Data Streams
-resource "aws_kinesis_stream" "flink_input" {
+# Kinesis Data Streams resource "aws_kinesis_stream" "flink_input" {
   name             = "flink-input-stream"
   shard_count      = 4
   retention_period = 24
@@ -556,8 +549,7 @@ resource "aws_kinesis_stream" "flink_output" {
   }
 }
 
-# MSK Kafka Cluster
-resource "aws_msk_cluster" "flink_kafka" {
+# MSK Kafka Cluster resource "aws_msk_cluster" "flink_kafka" {
   cluster_name           = "flink-msk-cluster"
   kafka_version          = "3.6.0"
   number_of_broker_nodes = 3
@@ -598,8 +590,7 @@ resource "aws_msk_cluster" "flink_kafka" {
   }
 }
 
-# Security Group for MSK
-resource "aws_security_group" "msk" {
+# Security Group for MSK resource "aws_security_group" "msk" {
   name_prefix = "msk-"
   vpc_id      = module.vpc.vpc_id
 
@@ -615,19 +606,16 @@ resource "aws_security_group" "msk" {
   }
 }
 
-# KMS Key for MSK
-resource "aws_kms_key" "msk" {
+# KMS Key for MSK resource "aws_kms_key" "msk" {
   description = "MSK encryption key"
 }
 
-# CloudWatch Log Group for Flink
-resource "aws_cloudwatch_log_group" "flink" {
+# CloudWatch Log Group for Flink resource "aws_cloudwatch_log_group" "flink" {
   name              = "/aws/emr-flink/${var.environment}"
   retention_in_days = 7
 }
 
-# CloudWatch Dashboard
-resource "aws_cloudwatch_dashboard" "flink" {
+# CloudWatch Dashboard resource "aws_cloudwatch_dashboard" "flink" {
   dashboard_name = "Flink-EMR-EKS-Dashboard"
 
   dashboard_body = jsonencode({
@@ -708,8 +696,7 @@ resource "aws_cloudwatch_dashboard" "flink" {
   })
 }
 
-# CloudWatch Alarms
-resource "aws_cloudwatch_metric_alarm" "high_cpu" {
+# CloudWatch Alarms resource "aws_cloudwatch_metric_alarm" "high_cpu" {
   alarm_name          = "flink-high-cpu"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "2"
@@ -819,29 +806,21 @@ output "cloudwatch_dashboard" {
 **部署命令**:
 
 ```bash
-# 1. 初始化 Terraform
-terraform init
+# 1. 初始化 Terraform terraform init
 
-# 2. 验证配置
-terraform validate
+# 2. 验证配置 terraform validate
 
-# 3. 查看执行计划
-terraform plan -var="aws_account_id=123456789012"
+# 3. 查看执行计划 terraform plan -var="aws_account_id=123456789012"
 
-# 4. 应用配置
-terraform apply -var="aws_account_id=123456789012" --auto-approve
+# 4. 应用配置 terraform apply -var="aws_account_id=123456789012" --auto-approve
 
-# 5. 配置 kubectl
-aws eks update-kubeconfig --region us-west-2 --name flink-eks-cluster
+# 5. 配置 kubectl aws eks update-kubeconfig --region us-west-2 --name flink-eks-cluster
 
-# 6. 创建 Flink 命名空间
-kubectl create namespace flink
+# 6. 创建 Flink 命名空间 kubectl create namespace flink
 
-# 7. 创建 Service Account
-kubectl create serviceaccount flink-job-sa -n flink
+# 7. 创建 Service Account kubectl create serviceaccount flink-job-sa -n flink
 
-# 8. 提交 Flink 作业到 EMR on EKS
-aws emr-containers start-job-run \
+# 8. 提交 Flink 作业到 EMR on EKS aws emr-containers start-job-run \
   --virtual-cluster-id $(terraform output -raw emr_virtual_cluster_id) \
   --name flink-streaming-job \
   --execution-role-arn $(terraform output -raw flink_job_role_arn) \
@@ -910,8 +889,7 @@ graph TB
 **CloudFormation 模板**:
 
 ```yaml
-# kinesis-data-analytics.yaml
-AWSTemplateFormatVersion: '2010-09-09'
+# kinesis-data-analytics.yaml AWSTemplateFormatVersion: '2010-09-09'
 Description: 'Kinesis Data Analytics for Apache Flink'
 
 Parameters:
@@ -1225,8 +1203,7 @@ Outputs:
 **部署命令**:
 
 ```bash
-# 1. 创建 CloudFormation Stack
-aws cloudformation create-stack \
+# 1. 创建 CloudFormation Stack aws cloudformation create-stack \
   --stack-name flink-kda-app \
   --template-body file://kinesis-data-analytics.yaml \
   --parameters \
@@ -1236,32 +1213,27 @@ aws cloudformation create-stack \
     ParameterKey=KPU,ParameterValue=2 \
   --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND
 
-# 2. 等待 Stack 创建完成
-aws cloudformation wait stack-create-complete --stack-name flink-kda-app
+# 2. 等待 Stack 创建完成 aws cloudformation wait stack-create-complete --stack-name flink-kda-app
 
-# 3. 上传 Flink 应用 JAR 到 S3
-aws s3 cp flink-application.jar s3://$(aws cloudformation describe-stacks \
+# 3. 上传 Flink 应用 JAR 到 S3 aws s3 cp flink-application.jar s3://$(aws cloudformation describe-stacks \
   --stack-name flink-kda-app \
   --query 'Stacks[0].Outputs[?OutputKey==`S3Bucket`].OutputValue' \
   --output text)/flink-application.jar
 
-# 4. 启动应用
-aws kinesisanalyticsv2 start-application \
+# 4. 启动应用 aws kinesisanalyticsv2 start-application \
   --application-name $(aws cloudformation describe-stacks \
     --stack-name flink-kda-app \
     --query 'Stacks[0].Outputs[?OutputKey==`ApplicationName`].OutputValue' \
     --output text) \
   --run-configuration "{\"FlinkRunConfiguration\": {\"AllowNonRestoredState\": false}}"
 
-# 5. 查看应用状态
-aws kinesisanalyticsv2 describe-application \
+# 5. 查看应用状态 aws kinesisanalyticsv2 describe-application \
   --application-name $(aws cloudformation describe-stacks \
     --stack-name flink-kda-app \
     --query 'Stacks[0].Outputs[?OutputKey==`ApplicationName`].OutputValue' \
     --output text)
 
-# 6. 发送测试数据到输入流
-aws kinesis put-record \
+# 6. 发送测试数据到输入流 aws kinesis put-record \
   --stream-name $(aws cloudformation describe-stacks \
     --stack-name flink-kda-app \
     --query 'Stacks[0].Outputs[?OutputKey==`InputStreamName`].OutputValue' \
@@ -1758,34 +1730,27 @@ output eventHubConnectionString string = listKeys(eventHubNamespace.id, '2024-01
 **部署命令**:
 
 ```bash
-# 1. 登录 Azure
-az login
+# 1. 登录 Azure az login
 
-# 2. 设置订阅
-az account set --subscription "Your Subscription Name"
+# 2. 设置订阅 az account set --subscription "Your Subscription Name"
 
-# 3. 创建资源组
-az group create \
+# 3. 创建资源组 az group create \
   --name flink-hdi-rg \
   --location eastus
 
-# 4. 部署 Bicep 模板
-az deployment group create \
+# 4. 部署 Bicep 模板 az deployment group create \
   --resource-group flink-hdi-rg \
   --template-file main.bicep \
   --parameters @parameters.json
 
-# 5. 获取 SSH 连接信息
-az hdinsight show \
+# 5. 获取 SSH 连接信息 az hdinsight show \
   --name flink-hdi-prod \
   --resource-group flink-hdi-rg \
   --query '{sshEndpoint:properties.connectivityProfile.sshEndpoint, user:properties.osProfile.linuxOperatingSystemProfile.username}'
 
-# 6. SSH 连接到 Head Node
-ssh hdiadmin@flink-hdi-prod-ssh.azurehdinsight.net
+# 6. SSH 连接到 Head Node ssh hdiadmin@flink-hdi-prod-ssh.azurehdinsight.net
 
-# 7. 提交 Flink 作业
-flink run \
+# 7. 提交 Flink 作业 flink run \
   --class com.example.StreamingJob \
   --parallelism 4 \
   /home/sshuser/flink-job.jar \
@@ -1794,12 +1759,10 @@ flink run \
   --checkpoint.dir wasbs://hdicluster@${STORAGE_ACCOUNT}.blob.core.windows.net/checkpoints
 
 # 8. 查看 Flink Web UI
-# 在本地建立 SSH 隧道
-ssh -L 8081:headnode0:8081 hdiadmin@flink-hdi-prod-ssh.azurehdinsight.net
+# 在本地建立 SSH 隧道 ssh -L 8081:headnode0:8081 hdiadmin@flink-hdi-prod-ssh.azurehdinsight.net
 # 然后访问 http://localhost:8081
 
-# 9. 查看日志
-az monitor log-analytics query \
+# 9. 查看日志 az monitor log-analytics query \
   --workspace $(az deployment group show \
     --resource-group flink-hdi-rg \
     --name main \
@@ -2052,8 +2015,7 @@ output keyVaultUri string = keyVault.properties.vaultUri
 **Flink Kubernetes 部署 YAML**:
 
 ```yaml
-# flink-deployment.yaml
-apiVersion: v1
+# flink-deployment.yaml apiVersion: v1
 kind: Namespace
 metadata:
   name: flink
@@ -2347,52 +2309,41 @@ spec:
 **部署命令**:
 
 ```bash
-# 1. 部署 AKS 基础设施
-az deployment group create \
+# 1. 部署 AKS 基础设施 az deployment group create \
   --resource-group flink-aks-rg \
   --template-file aks-flink.bicep
 
-# 2. 获取 AKS 凭证
-az aks get-credentials \
+# 2. 获取 AKS 凭证 az aks get-credentials \
   --name flink-aks-{{uniqueId}} \
   --resource-group flink-aks-rg \
   --overwrite-existing
 
-# 3. 构建并推送 Flink 镜像
-az acr build \
+# 3. 构建并推送 Flink 镜像 az acr build \
   --registry flink{{uniqueId}} \
   --image flink:1.19-scala_2.12 \
   --file Dockerfile .
 
-# 4. 安装 Secrets Store CSI Driver
-helm repo add secrets-store-csi-driver https://kubernetes-sigs.github.io/secrets-store-csi-driver/charts
+# 4. 安装 Secrets Store CSI Driver helm repo add secrets-store-csi-driver https://kubernetes-sigs.github.io/secrets-store-csi-driver/charts
 helm install csi-secrets-store secrets-store-csi-driver/secrets-store-csi-driver \
   --namespace kube-system
 
-# 5. 安装 Azure Key Vault Provider
-helm repo add azure-keyvault-provider https://azure.github.io/secrets-store-csi-driver-provider-azure/charts
+# 5. 安装 Azure Key Vault Provider helm repo add azure-keyvault-provider https://azure.github.io/secrets-store-csi-driver-provider-azure/charts
 helm install azure-keyvault-provider azure-keyvault-provider/csi-secrets-store-provider-azure \
   --namespace kube-system
 
-# 6. 部署 Flink
-kubectl apply -f flink-deployment.yaml
+# 6. 部署 Flink kubectl apply -f flink-deployment.yaml
 
-# 7. 查看部署状态
-kubectl get pods -n flink -w
+# 7. 查看部署状态 kubectl get pods -n flink -w
 
-# 8. 获取 Flink Web UI 地址
-kubectl get svc flink-jobmanager-rest -n flink
+# 8. 获取 Flink Web UI 地址 kubectl get svc flink-jobmanager-rest -n flink
 
-# 9. 提交 Flink 作业
-kubectl exec -it flink-jobmanager-xxxxx -n flink -- \
+# 9. 提交 Flink 作业 kubectl exec -it flink-jobmanager-xxxxx -n flink -- \
   flink run /opt/flink/examples/streaming/StateMachineExample.jar
 
-# 10. 查看日志
-kubectl logs -f -l app=flink,component=jobmanager -n flink
+# 10. 查看日志 kubectl logs -f -l app=flink,component=jobmanager -n flink
 kubectl logs -f -l app=flink,component=taskmanager -n flink
 
-# 11. 监控 - 使用 Azure Monitor
-az monitor metrics list \
+# 11. 监控 - 使用 Azure Monitor az monitor metrics list \
   --resource $(az aks show --name flink-aks-{{uniqueId}} --resource-group flink-aks-rg --query id -o tsv) \
   --metric "node_cpu_usage_percentage" \
   --interval PT1M
@@ -2451,8 +2402,7 @@ graph TB
 **Deployment Manager 模板**:
 
 ```yaml
-# dataproc-flink.yaml
-imports:
+# dataproc-flink.yaml imports:
 - path: flink-cluster.jinja
 
 resources:
@@ -2552,8 +2502,7 @@ resources:
 **Terraform 配置 (推荐)**:
 
 ```hcl
-# main.tf - GCP Dataproc Flink
-terraform {
+# main.tf - GCP Dataproc Flink terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
@@ -2568,8 +2517,7 @@ provider "google" {
   zone    = var.zone
 }
 
-# VPC Network
-resource "google_compute_network" "flink_vpc" {
+# VPC Network resource "google_compute_network" "flink_vpc" {
   name                    = "flink-vpc"
   auto_create_subnetworks = false
 }
@@ -2589,8 +2537,7 @@ resource "google_compute_subnetwork" "flink_subnet" {
   }
 }
 
-# Firewall Rules
-resource "google_compute_firewall" "flink_internal" {
+# Firewall Rules resource "google_compute_firewall" "flink_internal" {
   name    = "flink-internal"
   network = google_compute_network.flink_vpc.name
 
@@ -2623,8 +2570,7 @@ resource "google_compute_firewall" "flink_webui" {
   source_ranges = [var.allowed_source_ranges]
 }
 
-# Cloud Storage Buckets
-resource "google_storage_bucket" "flink_checkpoints" {
+# Cloud Storage Buckets resource "google_storage_bucket" "flink_checkpoints" {
   name          = "${var.project_id}-flink-checkpoints"
   location      = var.region
   storage_class = "STANDARD"
@@ -2653,8 +2599,7 @@ resource "google_storage_bucket" "dataproc_staging" {
   storage_class = "STANDARD"
 }
 
-# KMS Key
-resource "google_kms_key_ring" "flink" {
+# KMS Key resource "google_kms_key_ring" "flink" {
   name     = "flink-keyring"
   location = var.region
 }
@@ -2670,8 +2615,7 @@ resource "google_kms_crypto_key" "flink_key" {
   }
 }
 
-# Service Account
-resource "google_service_account" "dataproc_sa" {
+# Service Account resource "google_service_account" "dataproc_sa" {
   account_id   = "dataproc-flink"
   display_name = "Dataproc Flink Service Account"
 }
@@ -2693,8 +2637,7 @@ resource "google_project_iam_member" "dataproc_roles" {
   member  = "serviceAccount:${google_service_account.dataproc_sa.email}"
 }
 
-# Pub/Sub Topics
-resource "google_pubsub_topic" "flink_input" {
+# Pub/Sub Topics resource "google_pubsub_topic" "flink_input" {
   name = "flink-input"
 
   message_retention_duration = "86600s"
@@ -2726,8 +2669,7 @@ resource "google_pubsub_subscription" "flink_input_sub" {
   }
 }
 
-# Dataproc Cluster
-resource "google_dataproc_cluster" "flink" {
+# Dataproc Cluster resource "google_dataproc_cluster" "flink" {
   name   = "flink-dataproc-cluster"
   region = var.region
 
@@ -2799,8 +2741,7 @@ resource "google_dataproc_cluster" "flink" {
   }
 }
 
-# Cloud Monitoring Dashboard
-resource "google_monitoring_dashboard" "flink_dashboard" {
+# Cloud Monitoring Dashboard resource "google_monitoring_dashboard" "flink_dashboard" {
   dashboard_json = jsonencode({
     displayName = "Flink Dataproc Dashboard"
     gridLayout = {
@@ -2875,8 +2816,7 @@ resource "google_monitoring_dashboard" "flink_dashboard" {
   })
 }
 
-# Alerting Policies
-resource "google_monitoring_alert_policy" "high_cpu" {
+# Alerting Policies resource "google_monitoring_alert_policy" "high_cpu" {
   display_name = "Flink High CPU"
   combiner     = "OR"
   conditions {
@@ -2938,11 +2878,9 @@ resource "google_monitoring_notification_channel" "email" {
 **部署命令**:
 
 ```bash
-# 1. 设置 GCP 项目
-gcloud config set project YOUR_PROJECT_ID
+# 1. 设置 GCP 项目 gcloud config set project YOUR_PROJECT_ID
 
-# 2. 启用必要 API
-gcloud services enable dataproc.googleapis.com
+# 2. 启用必要 API gcloud services enable dataproc.googleapis.com
 
 gcloud services enable compute.googleapis.com
 
@@ -2954,23 +2892,19 @@ gcloud services enable pubsub.googleapis.com
 
 gcloud services enable cloudkms.googleapis.com
 
-# 3. 使用 Deployment Manager 部署
-gcloud deployment-manager deployments create flink-dataproc \
+# 3. 使用 Deployment Manager 部署 gcloud deployment-manager deployments create flink-dataproc \
   --config dataproc-flink.yaml \
   --properties zone=us-central1-a
 
-# 4. 使用 Terraform 部署
-cd terraform/
+# 4. 使用 Terraform 部署 cd terraform/
 terraform init
 terraform plan -var="project_id=YOUR_PROJECT_ID"
 terraform apply -var="project_id=YOUR_PROJECT_ID" --auto-approve
 
-# 5. SSH 到 Master Node
-gcloud compute ssh flink-dataproc-cluster-m \
+# 5. SSH 到 Master Node gcloud compute ssh flink-dataproc-cluster-m \
   --zone=us-central1-a
 
-# 6. 提交 Flink 作业
-flink run \
+# 6. 提交 Flink 作业 flink run \
   --class com.example.StreamingJob \
   --parallelism 4 \
   gs://your-bucket/flink-job.jar \
@@ -2979,27 +2913,21 @@ flink run \
   --checkpoint.dir gs://${PROJECT_ID}-flink-checkpoints/checkpoints
 
 # 7. 查看 Flink Web UI
-# 在本地建立隧道
-gcloud compute ssh flink-dataproc-cluster-m \
+# 在本地建立隧道 gcloud compute ssh flink-dataproc-cluster-m \
   --zone=us-central1-a \
   -- -L 8081:localhost:8081
 # 访问 http://localhost:8081
 
-# 8. 查看日志
-gcloud logging read "resource.type=cloud_dataproc_cluster AND jsonPayload.cluster_name=flink-dataproc-cluster" --limit=50
+# 8. 查看日志 gcloud logging read "resource.type=cloud_dataproc_cluster AND jsonPayload.cluster_name=flink-dataproc-cluster" --limit=50
 
-# 9. 监控 - 使用 Cloud Monitoring Console
-gcloud monitoring dashboards list
+# 9. 监控 - 使用 Cloud Monitoring Console gcloud monitoring dashboards list
 gcloud monitoring metrics list --filter="metric.type:yarn"
 
-# 10. 发布测试消息到 Pub/Sub
-gcloud pubsub topics publish flink-input \
+# 10. 发布测试消息到 Pub/Sub gcloud pubsub topics publish flink-input \
   --message='{"user_id": "123", "event": "click", "timestamp": 1234567890}'
 
-# 11. 清理资源
-gcloud deployment-manager deployments delete flink-dataproc --quiet
-# 或
-cd terraform/
+# 11. 清理资源 gcloud deployment-manager deployments delete flink-dataproc --quiet
+# 或 cd terraform/
 terraform destroy --auto-approve
 ```
 
@@ -3056,8 +2984,7 @@ graph TB
 **ROS (Resource Orchestration Service) 模板**:
 
 ```yaml
-# flink-ververica-ros.yaml
-ROSTemplateFormatVersion: '2015-09-01'
+# flink-ververica-ros.yaml ROSTemplateFormatVersion: '2015-09-01'
 Description: Ververica Platform (Alibaba Cloud Flink) Deployment
 
 Parameters:
@@ -3478,22 +3405,19 @@ provider "alicloud" {
   region = var.region
 }
 
-# VPC
-resource "alicloud_vpc" "flink" {
+# VPC resource "alicloud_vpc" "flink" {
   vpc_name   = "flink-vpc"
   cidr_block = "10.0.0.0/16"
 }
 
-# VSwitch
-resource "alicloud_vswitch" "flink" {
+# VSwitch resource "alicloud_vswitch" "flink" {
   vswitch_name = "flink-vswitch"
   vpc_id       = alicloud_vpc.flink.id
   cidr_block   = "10.0.1.0/24"
   zone_id      = var.zone_id
 }
 
-# Security Group
-resource "alicloud_security_group" "flink" {
+# Security Group resource "alicloud_security_group" "flink" {
   name   = "flink-sg"
   vpc_id = alicloud_vpc.flink.id
 }
@@ -3509,8 +3433,7 @@ resource "alicloud_security_group_rule" "flink_internal" {
   cidr_ip           = "10.0.0.0/16"
 }
 
-# OSS Bucket
-resource "alicloud_oss_bucket" "flink" {
+# OSS Bucket resource "alicloud_oss_bucket" "flink" {
   bucket = var.oss_bucket_name
   acl    = "private"
 
@@ -3529,15 +3452,13 @@ resource "alicloud_oss_bucket" "flink" {
   }
 }
 
-# KMS Key
-resource "alicloud_kms_key" "flink" {
+# KMS Key resource "alicloud_kms_key" "flink" {
   description            = "Flink encryption key"
   pending_window_in_days = 7
   status                 = "Enabled"
 }
 
-# RAM Role
-resource "alicloud_ram_role" "flink" {
+# RAM Role resource "alicloud_ram_role" "flink" {
   name     = "FlinkServiceRole"
   document = jsonencode({
     Statement = [{
@@ -3599,14 +3520,12 @@ resource "alicloud_ram_role_policy_attachment" "flink" {
   role_name   = alicloud_ram_role.flink.name
 }
 
-# DataHub Project
-resource "alicloud_datahub_project" "flink" {
+# DataHub Project resource "alicloud_datahub_project" "flink" {
   name    = "flink-datahub"
   comment = "Flink DataHub Project"
 }
 
-# DataHub Topic - Input
-resource "alicloud_datahub_topic" "input" {
+# DataHub Topic - Input resource "alicloud_datahub_topic" "input" {
   project_name = alicloud_datahub_project.flink.name
   name         = "flink_input"
   record_type  = "TUPLE"
@@ -3621,8 +3540,7 @@ resource "alicloud_datahub_topic" "input" {
   }
 }
 
-# DataHub Topic - Output
-resource "alicloud_datahub_topic" "output" {
+# DataHub Topic - Output resource "alicloud_datahub_topic" "output" {
   project_name = alicloud_datahub_project.flink.name
   name         = "flink_output"
   record_type  = "TUPLE"
@@ -3637,8 +3555,7 @@ resource "alicloud_datahub_topic" "output" {
   }
 }
 
-# SLS Project
-resource "alicloud_log_project" "flink" {
+# SLS Project resource "alicloud_log_project" "flink" {
   name        = var.sls_project_name
   description = "Flink Logs"
 }
@@ -3650,8 +3567,7 @@ resource "alicloud_log_store" "flink" {
   shard_count  = 2
 }
 
-# Ververica Namespace
-resource "alicloud_ververica_namespace" "flink" {
+# Ververica Namespace resource "alicloud_ververica_namespace" "flink" {
   namespace = "flink-namespace"
   vpc_id    = alicloud_vpc.flink.id
   vswitch_id = alicloud_vswitch.flink.id
@@ -3668,14 +3584,12 @@ resource "alicloud_ververica_namespace" "flink" {
   }
 }
 
-# Cloud Monitor Contact Group
-resource "alicloud_cms_alarm_contact_group" "flink" {
+# Cloud Monitor Contact Group resource "alicloud_cms_alarm_contact_group" "flink" {
   alarm_contact_group_name = "FlinkAdmins"
   contacts = var.alert_contacts
 }
 
-# Cloud Monitor Alarm - CPU
-resource "alicloud_cms_alarm" "cpu" {
+# Cloud Monitor Alarm - CPU resource "alicloud_cms_alarm" "cpu" {
   name    = "FlinkHighCPU"
   project = "acs_stream"
   metric  = "cpu_usage"
@@ -3691,8 +3605,7 @@ resource "alicloud_cms_alarm" "cpu" {
   silence_time        = 3600
 }
 
-# Cloud Monitor Alarm - Memory
-resource "alicloud_cms_alarm" "memory" {
+# Cloud Monitor Alarm - Memory resource "alicloud_cms_alarm" "memory" {
   name    = "FlinkHighMemory"
   project = "acs_stream"
   metric  = "memory_usage"
@@ -3708,8 +3621,7 @@ resource "alicloud_cms_alarm" "memory" {
   silence_time        = 3600
 }
 
-# Outputs
-output "vpc_id" {
+# Outputs output "vpc_id" {
   value = alicloud_vpc.flink.id
 }
 
@@ -3733,29 +3645,24 @@ output "ververica_namespace" {
 **部署命令**:
 
 ```bash
-# 1. 使用 ROS 控制台或 CLI 部署
-aliyun ros CreateStack \
+# 1. 使用 ROS 控制台或 CLI 部署 aliyun ros CreateStack \
   --StackName flink-ververica-stack \
   --TemplateURL oss://your-bucket/flink-ververica-ros.yaml \
   --Parameters '[{"ParameterKey":"VpcId","ParameterValue":"vpc-xxxxx"},{"ParameterKey":"VSwitchId","ParameterValue":"vsw-xxxxx"},{"ParameterKey":"OssBucketName","ParameterValue":"flink-checkpoints"}]' \
   --RegionId cn-hangzhou
 
-# 2. 使用 Terraform 部署
-cd terraform/
+# 2. 使用 Terraform 部署 cd terraform/
 terraform init
 terraform plan -var="region=cn-hangzhou" -var="oss_bucket_name=flink-checkpoints"
 terraform apply -var="region=cn-hangzhou" -var="oss_bucket_name=flink-checkpoints" --auto-approve
 
-# 3. 上传 Flink 作业 JAR 到 OSS
-ossutil cp flink-job.jar oss://flink-checkpoints/jobs/
+# 3. 上传 Flink 作业 JAR 到 OSS ossutil cp flink-job.jar oss://flink-checkpoints/jobs/
 
-# 4. 配置 Ververica Platform CLI
-vvpctl config set-context default \
+# 4. 配置 Ververica Platform CLI vvpctl config set-context default \
   --base-url https://vvp-cn-hangzhou.ververica.cn \
   --api-token YOUR_API_TOKEN
 
-# 5. 创建 Deployment
-vvpctl create deployment \
+# 5. 创建 Deployment vvpctl create deployment \
   --namespace flink-namespace \
   --name flink-streaming-job \
   --spec '{
@@ -3782,36 +3689,29 @@ vvpctl create deployment \
     }
   }'
 
-# 6. 启动作业
-vvpctl apply deployment \
+# 6. 启动作业 vvpctl apply deployment \
   --namespace flink-namespace \
   --name flink-streaming-job
 
-# 7. 查看作业状态
-vvpctl get deployments --namespace flink-namespace
+# 7. 查看作业状态 vvpctl get deployments --namespace flink-namespace
 vvpctl get jobs --namespace flink-namespace
 
-# 8. 查看日志
-aliyun log GetLogs \
+# 8. 查看日志 aliyun log GetLogs \
   --project=flink-logs \
   --logstore=flink-job-logs \
   --from=$(date -d '1 hour ago' +%s) \
   --to=$(date +%s) \
   --query="*"
 
-# 9. 发送测试数据到 DataHub
-aliyun datahub PutRecords \
+# 9. 发送测试数据到 DataHub aliyun datahub PutRecords \
   --ProjectName flink-datahub \
   --TopicName flink_input \
   --Records '[{"user_id":"123","event_type":"click","timestamp":1234567890,"data":"{}"}]'
 
-# 10. 监控 - 使用阿里云控制台
-open https://stream.console.aliyun.com/
+# 10. 监控 - 使用阿里云控制台 open https://stream.console.aliyun.com/
 
-# 11. 清理资源
-aliyun ros DeleteStack --StackName flink-ververica-stack --RegionId cn-hangzhou
-# 或
-cd terraform/
+# 11. 清理资源 aliyun ros DeleteStack --StackName flink-ververica-stack --RegionId cn-hangzhou
+# 或 cd terraform/
 terraform destroy --auto-approve
 ```
 
@@ -3934,8 +3834,7 @@ graph TB
 **灾备配置示例**:
 
 ```yaml
-# dr-config.yaml - 灾备配置文件
-primary:
+# dr-config.yaml - 灾备配置文件 primary:
   provider: aws
   region: us-west-2
   cluster:

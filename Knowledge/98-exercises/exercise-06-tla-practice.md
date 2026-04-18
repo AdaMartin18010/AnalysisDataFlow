@@ -51,8 +51,7 @@
 ### 2.1 TLA+ 工具安装
 
 ```bash
-# 方式1: 官方 Toolbox
-download: https://lamport.azurewebsites.net/tla/toolbox.html
+# 方式1: 官方 Toolbox download: https://lamport.azurewebsites.net/tla/toolbox.html
 
 # 方式2: VS Code + TLA+ Extension
 # 安装插件: TLA+ Nightly

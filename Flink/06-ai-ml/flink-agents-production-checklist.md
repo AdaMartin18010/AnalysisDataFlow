@@ -160,8 +160,7 @@ $$
 **配置模板**:
 
 ```yaml
-# infrastructure-config.yaml
-flink:
+# infrastructure-config.yaml flink:
   version: "1.20.0"
 
   jobmanager:
@@ -349,8 +348,7 @@ public class ProductionReadyAgent extends KeyedProcessFunction<String, Event, Re
 **LLM 配置模板**:
 
 ```yaml
-# llm-production-config.yaml
-llm:
+# llm-production-config.yaml llm:
   # 主模型配置
   primary:
     provider: openai
@@ -445,8 +443,7 @@ llm:
 **MCP 安全配置模板**:
 
 ```yaml
-# mcp-security-config.yaml
-mcp:
+# mcp-security-config.yaml mcp:
   servers:
     - name: analytics-server
       endpoint: https://mcp-analytics.internal:8080
@@ -519,8 +516,7 @@ mcp:
 **监控配置模板**:
 
 ```yaml
-# monitoring-config.yaml
-monitoring:
+# monitoring-config.yaml monitoring:
   # Prometheus 指标
   metrics:
     enabled: true

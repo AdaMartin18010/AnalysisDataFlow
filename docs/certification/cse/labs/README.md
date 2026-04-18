@@ -11,25 +11,25 @@
 
 | 编号 | 课题 | 难度 | 形式化工具 |
 |------|------|------|------------|
-| R1.1 | [CSP 建模 Flink 调度器](./research-01-csp-modeling.md) | ★★★★☆ | FDR4 |
-| R1.2 | [π-calculus 建模动态扩缩容](./research-02-pi-scaling.md) | ★★★★★ | 手工证明 |
-| R2.1 | [会话类型设计流算子](./research-03-operator-session-types.md) | ★★★★★ | 类型检查器 |
-| R2.2 | [类型驱动窗口算子设计](./research-04-typed-windows.md) | ★★★★☆ | Coq |
-| R3.1 | [一致性协议正确性证明](./research-05-consistency-proof.md) | ★★★★★ | TLA+/Isabelle |
-| R3.2 | [Watermark 形式化验证](./research-06-watermark-verification.md) | ★★★★☆ | Coq |
-| R4.1 | [TLA+ 规约 Checkpoint 协议](./research-07-tla-checkpoint.md) | ★★★★☆ | TLC |
-| R4.2 | [Exactly-Once Sink 正确性验证](./research-08-verify-sink.md) | ★★★★★ | Iris |
-| R6.1 | [自适应调度算法设计](./research-09-adaptive-scheduler.md) | ★★★★☆ | 仿真+证明 |
-| R6.2 | [状态压缩算法理论分析](./research-10-state-compression.md) | ★★★★★ | 复杂度分析 |
+| R1.1 | CSP 建模 Flink 调度器 | ★★★★☆ | FDR4 |
+| R1.2 | π-calculus 建模动态扩缩容 | ★★★★★ | 手工证明 |
+| R2.1 | 会话类型设计流算子 | ★★★★★ | 类型检查器 |
+| R2.2 | 类型驱动窗口算子设计 | ★★★★☆ | Coq |
+| R3.1 | 一致性协议正确性证明 | ★★★★★ | TLA+/Isabelle |
+| R3.2 | Watermark 形式化验证 | ★★★★☆ | Coq |
+| R4.1 | TLA+ 规约 Checkpoint 协议 | ★★★★☆ | TLC |
+| R4.2 | Exactly-Once Sink 正确性验证 | ★★★★★ | Iris |
+| R6.1 | 自适应调度算法设计 | ★★★★☆ | 仿真+证明 |
+| R6.2 | 状态压缩算法理论分析 | ★★★★★ | 复杂度分析 |
 
 ### 架构设计项目
 
 | 编号 | 课题 | 难度 | 产出要求 |
 |------|------|------|----------|
-| D5.1 | [跨地域多活流平台设计](./design-01-multi-region.md) | ★★★★☆ | 架构文档+原型 |
-| D5.2 | [亿级事件处理架构设计](./design-02-billion-scale.md) | ★★★★★ | 架构文档+POC |
-| D5.3 | [边缘-云协同流处理架构](./design-03-edge-cloud.md) | ★★★★☆ | 架构文档+Demo |
-| D5.4 | [金融级实时风控平台](./design-04-finance-risk.md) | ★★★★★ | 完整系统设计 |
+| D5.1 | 跨地域多活流平台设计 | ★★★★☆ | 架构文档+原型 |
+| D5.2 | 亿级事件处理架构设计 | ★★★★★ | 架构文档+POC |
+| D5.3 | 边缘-云协同流处理架构 | ★★★★☆ | 架构文档+Demo |
+| D5.4 | 金融级实时风控平台 | ★★★★★ | 完整系统设计 |
 
 ## 研究方法论
 

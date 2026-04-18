@@ -881,23 +881,19 @@ FROM similar_items;
 ```yaml
 # flink-conf.yaml - 实时推荐专用配置
 
-# Delta Join V2 高并发配置
-table.exec.delta-join.cache-enabled: true
+# Delta Join V2 高并发配置 table.exec.delta-join.cache-enabled: true
 table.exec.delta-join.left.cache-size: 100000
 table.exec.delta-join.right.cache-size: 50000
 table.exec.delta-join.cache-ttl: 30s
 
-# 异步IO高并发
-table.exec.async-lookup.buffer-capacity: 5000
+# 异步IO高并发 table.exec.async-lookup.buffer-capacity: 5000
 table.exec.async-lookup.timeout: 100ms
 
-# 低延迟 Checkpoint
-execution.checkpointing.interval: 10s
+# 低延迟 Checkpoint execution.checkpointing.interval: 10s
 execution.checkpointing.mode: AT_LEAST_ONCE  # 推荐场景可用
 execution.checkpointing.max-concurrent-checkpoints: 2
 
-# 网络缓冲区优化
-taskmanager.memory.network.max: 256mb
+# 网络缓冲区优化 taskmanager.memory.network.max: 256mb
 taskmanager.memory.network.min: 128mb
 
 # JVM GC优化(G1GC低延迟)

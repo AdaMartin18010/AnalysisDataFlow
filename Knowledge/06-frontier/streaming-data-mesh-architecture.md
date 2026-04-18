@@ -287,8 +287,7 @@ stateDiagram-v2
 **Schema兼容性规则**：
 
 ```yaml
-# Confluent Schema Registry 配置示例
-compatibility:
+# Confluent Schema Registry 配置示例 compatibility:
   BACKWARD: # 新消费者可读旧数据
     - 允许: 添加可选字段、删除字段
     - 禁止: 修改字段类型、添加必填字段

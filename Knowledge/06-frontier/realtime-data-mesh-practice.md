@@ -289,8 +289,7 @@ flowchart TD
 设兼容性检查函数为 `validate(schema_old, schema_new, policy)`，返回布尔值表示是否允许注册。
 
 ```python
-# 伪代码:兼容性验证算法
-def validate(old_schema, new_schema, policy):
+# 伪代码:兼容性验证算法 def validate(old_schema, new_schema, policy):
     if policy == "BACKWARD":
         # 新 schema 必须能读取旧数据
         return can_read(new_schema, old_schema)
@@ -368,8 +367,7 @@ SELECT * FROM lineage;
 ### 6.1 技术实现：端到端数据产品流水线
 
 ```yaml
-# data-product-definition.yaml
-apiVersion: datamesh.company.io/v1
+# data-product-definition.yaml apiVersion: datamesh.company.io/v1
 kind: DataProduct
 metadata:
   name: user-behavior-stream

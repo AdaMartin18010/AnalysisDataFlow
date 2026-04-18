@@ -195,8 +195,7 @@ graph TB
 ### 3.2 Separate Clusters with Replication
 
 ```yaml
-# Pulsar geo-replication
-replication:
+# Pulsar geo-replication replication:
   clusters:
     - edge-us-west
     - edge-us-east
@@ -206,8 +205,7 @@ replication:
     - pattern: "persistent://tenant/app/.*"
       replication: [edge-us-west, central]
 
-# Flink reads from central cluster
-flink:
+# Flink reads from central cluster flink:
   source:
     service_url: "pulsar://central.pulsar.svc:6650"
     topics: ["persistent://tenant/app/aggregated"]
@@ -377,8 +375,7 @@ public class TenantAwareProcessor {
 ### 6.2 Unified Monitoring
 
 ```yaml
-# Prometheus scrape configuration
-scrape_configs:
+# Prometheus scrape configuration scrape_configs:
   - job_name: 'pulsar-functions'
     static_configs:
       - targets: ['pulsar-broker:8080']

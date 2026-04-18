@@ -261,8 +261,7 @@ class StreamingApproximateCount:
         margin = z * std
         return n_hat, margin
 
-# 示例
-estimator = StreamingApproximateCount(sampling_rate=0.05)
+# 示例 estimator = StreamingApproximateCount(sampling_rate=0.05)
 for i in range(10000):
     estimator.ingest({"id": i})
 

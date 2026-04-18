@@ -498,8 +498,7 @@ ResourceAdjustment:
 **云连接器弹性配置**:
 
 ```yaml
-# AWS Kinesis Connector 弹性配置
-connector:
+# AWS Kinesis Connector 弹性配置 connector:
   type: kinesis
   stream: input-stream
 
@@ -1596,8 +1595,7 @@ CREATE TABLE bigquery_sink (
 **MySQL → Paimon 整库同步**:
 
 ```yaml
-# mysql-to-paimon.yaml
-pipeline:
+# mysql-to-paimon.yaml pipeline:
   name: MySQL to Paimon Sync
   parallelism: 4
 
@@ -1667,8 +1665,7 @@ n      projection: id, name, email, created_at, updated_at
 **CDC 3.0 多目标路由**:
 
 ```yaml
-# multi-sink-pipeline.yaml
-pipeline:
+# multi-sink-pipeline.yaml pipeline:
   name: CDC Multi-Sink Pipeline
 
   source:

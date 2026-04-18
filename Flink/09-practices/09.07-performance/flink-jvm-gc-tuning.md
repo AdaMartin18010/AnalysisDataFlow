@@ -102,8 +102,7 @@ flowchart TD
 ### 6.1 推荐 G1 GC 配置（32GB Heap）
 
 ```bash
-# flink-conf.yaml 中通过 env.java.opts.taskmanager 传入
-env.java.opts.taskmanager: >
+# flink-conf.yaml 中通过 env.java.opts.taskmanager 传入 env.java.opts.taskmanager: >
   -XX:+UseG1GC
   -Xms32g -Xmx32g
   -XX:MaxGCPauseMillis=100
@@ -127,8 +126,7 @@ env.java.opts.taskmanager: >
 ### 6.3 GC 日志分析命令
 
 ```bash
-# 使用 jvm-tools 或 gcviewer 分析
-java -jar gcviewer.jar gc.log
+# 使用 jvm-tools 或 gcviewer 分析 java -jar gcviewer.jar gc.log
 
 # 关键输出指标
 # Throughput:     > 95% 为优秀

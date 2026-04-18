@@ -469,30 +469,24 @@ $$
 **单节点快速启动：**
 
 ```bash
-# 安装Fluvio CLI
-curl -fsS https://hub.infinyon.cloud/install/install.sh | bash
+# 安装Fluvio CLI curl -fsS https://hub.infinyon.cloud/install/install.sh | bash
 
-# 启动本地集群
-fluvio cluster start --local
+# 启动本地集群 fluvio cluster start --local
 
-# 创建主题
-fluvio topic create events --partitions 3 --replicas 1
+# 创建主题 fluvio topic create events --partitions 3 --replicas 1
 
-# 生产者
-fluvio produce events << EOF
+# 生产者 fluvio produce events << EOF
 {"user_id": "u001", "event": "click", "ts": 1712345678}
 {"user_id": "u002", "event": "view", "ts": 1712345680}
 EOF
 
-# 消费者
-fluvio consume events --beginning
+# 消费者 fluvio consume events --beginning
 ```
 
 **Kubernetes部署：**
 
 ```yaml
-# fluvio-cluster.yaml
-apiVersion: v1
+# fluvio-cluster.yaml apiVersion: v1
 kind: Namespace
 metadata:
   name: fluvio
@@ -545,14 +539,11 @@ pub fn enrich(record: &Record) -> Result<(Option<RecordData>, RecordData)> {
 编译和部署：
 
 ```bash
-# 编译为WASM
-cargo build --target wasm32-unknown-unknown --release
+# 编译为WASM cargo build --target wasm32-unknown-unknown --release
 
-# 部署到Fluvio
-fluvio smartmodule create enrich --wasm-file target/wasm32-unknown-unknown/release/transform.wasm
+# 部署到Fluvio fluvio smartmodule create enrich --wasm-file target/wasm32-unknown-unknown/release/transform.wasm
 
-# 应用转换
-fluvio consume events --smartmodule enrich --beginning
+# 应用转换 fluvio consume events --smartmodule enrich --beginning
 ```
 
 ### 6.2 Bytewax部署示例
@@ -560,39 +551,33 @@ fluvio consume events --smartmodule enrich --beginning
 **基础Dataflow：**
 
 ```python
-# basic_flow.py
-from bytewax.dataflow import Dataflow
+# basic_flow.py from bytewax.dataflow import Dataflow
 from bytewax.connectors.kafka import KafkaSource, KafkaSink
 from bytewax.window import TumblingWindow, SystemClockConfig
 import json
 
-# 定义Dataflow
-flow = Dataflow()
+# 定义Dataflow flow = Dataflow()
 
-# 输入: Kafka source
-source = KafkaSource(
+# 输入: Kafka source source = KafkaSource(
     brokers=["localhost:9092"],
     topics=["raw-events"],
     starting_offset="beginning"
 )
 flow.input("kafka-in", source)
 
-# 解析JSON
-def parse_json(msg):
+# 解析JSON def parse_json(msg):
     key, value = msg
     return key, json.loads(value)
 
 flow.map(parse_json)
 
-# 过滤有效事件
-def filter_valid(item):
+# 过滤有效事件 def filter_valid(item):
     key, data = item
     return data.get("event_type") in ["click", "purchase", "view"]
 
 flow.filter(filter_valid)
 
-# 窗口聚合: 每10秒统计事件数
-clock = SystemClockConfig()
+# 窗口聚合: 每10秒统计事件数 clock = SystemClockConfig()
 window = TumblingWindow(length=timedelta(seconds=10), align_to=datetime(2024, 1, 1))
 
 def count_events(key__data):
@@ -602,8 +587,7 @@ def count_events(key__data):
 flow.map(count_events)
 flow.reduce_window("count", clock, window, lambda x, y: x + y)
 
-# 输出: Kafka sink
-def format_output(key_count):
+# 输出: Kafka sink def format_output(key_count):
     key, count = key_count
     return key, json.dumps({
         "event_type": key,
@@ -619,8 +603,7 @@ sink = KafkaSink(
 )
 flow.output("kafka-out", sink)
 
-# 运行
-if __name__ == "__main__":
+# 运行 if __name__ == "__main__":
     from bytewax.run import run_flow
     run_flow(flow)
 ```
@@ -628,8 +611,7 @@ if __name__ == "__main__":
 **ML特征工程管道：**
 
 ```python
-# ml_features.py
-from bytewax.dataflow import Dataflow
+# ml_features.py from bytewax.dataflow import Dataflow
 from bytewax.connectors.kafka import KafkaSource
 from bytewax.window import SlidingWindow, EventClockConfig
 import numpy as np
@@ -640,15 +622,13 @@ model = SentenceTransformer('all-MiniLM-L6-v2')
 
 flow = Dataflow()
 
-# 输入: 用户行为流
-source = KafkaSource(
+# 输入: 用户行为流 source = KafkaSource(
     brokers=["kafka:9092"],
     topics=["user-actions"],
 )
 flow.input("actions", source)
 
-# 解析并提取文本
-def extract_text(msg):
+# 解析并提取文本 def extract_text(msg):
     key, value = msg
     data = json.loads(value)
     return (
@@ -662,8 +642,7 @@ def extract_text(msg):
 
 flow.map(extract_text)
 
-# 生成实时Embedding
-def compute_embedding(user_id__data):
+# 生成实时Embedding def compute_embedding(user_id__data):
     user_id, data = user_id__data
     if data["text"]:
         embedding = model.encode(data["text"]).tolist()
@@ -727,8 +706,7 @@ def store_features(user_id__features):
 
 flow.map(store_features)
 
-# 运行集群
-if __name__ == "__main__":
+# 运行集群 if __name__ == "__main__":
     from bytewax.run import cluster_main
     cluster_main(flow, [], 0)
 ```
@@ -736,8 +714,7 @@ if __name__ == "__main__":
 **Docker Compose部署：**
 
 ```yaml
-# docker-compose.yml
-version: '3.8'
+# docker-compose.yml version: '3.8'
 services:
   kafka:
     image: confluentinc/cp-kafka:7.5.0

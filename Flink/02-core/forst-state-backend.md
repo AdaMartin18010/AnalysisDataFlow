@@ -436,12 +436,10 @@ $$\frac{T_{RB}^{recovery}}{T_{FS}^{recovery}} \approx \frac{|S|}{0.01 \cdot |S|}
 **启用 ForSt State Backend**:
 
 ```yaml
-# flink-conf.yaml
-state.backend: forst
+# flink-conf.yaml state.backend: forst
 state.backend.forst.ufs.type: s3  # 或 hdfs, gcs, azure
 
-# S3 配置
-state.backend.forst.ufs.s3.bucket: flink-state-bucket
+# S3 配置 state.backend.forst.ufs.s3.bucket: flink-state-bucket
 state.backend.forst.ufs.s3.region: us-east-1
 state.backend.forst.ufs.s3.credentials.provider: IAM_ROLE
 
@@ -449,8 +447,7 @@ state.backend.forst.ufs.s3.credentials.provider: IAM_ROLE
 state.backend.forst.local.cache.size: 10gb
 state.backend.forst.local.cache.policy: SLRU
 
-# LazyRestore 配置
-state.backend.forst.restore.mode: LAZY  # 或 EAGER
+# LazyRestore 配置 state.backend.forst.restore.mode: LAZY  # 或 EAGER
 state.backend.forst.restore.preload.hot-keys: true
 ```
 
@@ -481,14 +478,12 @@ env.getCheckpointConfig().setCheckpointingMode(
 ### 6.3 远程 Compaction 配置
 
 ```yaml
-# 远程 Compaction 服务配置
-state.backend.forst.compaction.remote.enabled: true
+# 远程 Compaction 服务配置 state.backend.forst.compaction.remote.enabled: true
 state.backend.forst.compaction.remote.endpoint:
   compaction-service.flink.svc.cluster.local:9090
 state.backend.compaction.remote.parallelism: 4
 
-# 触发策略
-state.backend.forst.compaction.trigger.interval: 300s
+# 触发策略 state.backend.forst.compaction.trigger.interval: 300s
 state.backend.forst.compaction.trigger.size-ratio: 1.1
 ```
 

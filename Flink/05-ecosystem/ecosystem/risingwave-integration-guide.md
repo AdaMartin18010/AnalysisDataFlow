@@ -409,8 +409,7 @@ processed.executeInsert("risingwave_sink");
 ### 5.2 Grafana Dashboard
 
 ```yaml
-# Sample Prometheus queries
-queries:
+# Sample Prometheus queries queries:
   throughput: |
     rate(flink_taskmanager_job_task_operator_numRecordsIn[1m])
 

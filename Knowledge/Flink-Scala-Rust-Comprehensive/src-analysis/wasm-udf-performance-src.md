@@ -703,8 +703,7 @@ CPU 火焰图示意(时间占比)
 ### 4.1 编译时优化
 
 ```toml
-# Cargo.toml
-[profile.wasm-release]
+# Cargo.toml [profile.wasm-release]
 inherits = "release"
 opt-level = 3
 lto = true
@@ -712,8 +711,7 @@ codegen-units = 1
 panic = "abort"
 strip = true
 
-# WASM 大小优化
-[profile.wasm-release-opt]
+# WASM 大小优化 [profile.wasm-release-opt]
 inherits = "wasm-release"
 opt-level = "z"      # 优化体积而非速度
 ```

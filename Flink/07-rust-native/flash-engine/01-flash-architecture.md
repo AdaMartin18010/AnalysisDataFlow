@@ -348,8 +348,7 @@ Throughput → SIMD_width / T_per_row  (理论上限)
 ### 6.1 Nexmark 基准测试配置
 
 ```yaml
-# Nexmark 测试环境配置
-测试环境:
+# Nexmark 测试环境配置 测试环境:
   平台: 阿里云 ECS / 全托管 Serverless
   Flink版本: Apache Flink 1.19
   Flash版本: Flash 1.0

@@ -87,8 +87,8 @@ pie title CSE 课程时间分配
 
 **研究任务**:
 
-- [Research 1.1: 用 CSP 建模 Flink 调度器](./labs/research-01-csp-modeling.md)
-- [Research 1.2: π-calculus 建模动态扩缩容](./labs/research-02-pi-scaling.md)
+- Research 1.1: 用 CSP 建模 Flink 调度器
+- Research 1.2: π-calculus 建模动态扩缩容
 
 ---
 
@@ -128,8 +128,8 @@ pie title CSE 课程时间分配
 
 **研究任务**:
 
-- [Research 2.1: 为流算子设计会话类型](./labs/research-03-operator-session-types.md)
-- [Research 2.2: 类型驱动的窗口算子设计](./labs/research-04-typed-windows.md)
+- Research 2.1: 为流算子设计会话类型
+- Research 2.2: 类型驱动的窗口算子设计
 
 ---
 
@@ -172,8 +172,8 @@ pie title CSE 课程时间分配
 
 **研究任务**:
 
-- [Research 3.1: 证明自定义一致性协议的正确性](./labs/research-05-consistency-proof.md)
-- [Research 3.2: Watermark 策略的形式化验证](./labs/research-06-watermark-verification.md)
+- Research 3.1: 证明自定义一致性协议的正确性
+- Research 3.2: Watermark 策略的形式化验证
 
 ---
 
@@ -214,8 +214,8 @@ pie title CSE 课程时间分配
 
 **研究任务**:
 
-- [Research 4.1: 用 TLA+ 规约 Checkpoint 协议](./labs/research-07-tla-checkpoint.md)
-- [Research 4.2: 验证 Exactly-Once Sink 的正确性](./labs/research-08-verify-sink.md)
+- Research 4.1: 用 TLA+ 规约 Checkpoint 协议
+- Research 4.2: 验证 Exactly-Once Sink 的正确性
 
 ---
 
@@ -257,8 +257,8 @@ pie title CSE 课程时间分配
 
 **设计任务**:
 
-- [Design 5.1: 设计跨地域多活流平台](./labs/design-01-multi-region.md)
-- [Design 5.2: 设计每秒亿级事件处理架构](./labs/design-02-billion-scale.md)
+- Design 5.1: 设计跨地域多活流平台
+- Design 5.2: 设计每秒亿级事件处理架构
 
 ---
 
@@ -294,8 +294,8 @@ pie title CSE 课程时间分配
 
 **研究任务**:
 
-- [Research 6.1: 设计自适应调度算法](./labs/research-09-adaptive-scheduler.md)
-- [Research 6.2: 状态压缩算法的理论分析](./labs/research-10-state-compression.md)
+- Research 6.1: 设计自适应调度算法
+- Research 6.2: 状态压缩算法的理论分析
 
 ---
 

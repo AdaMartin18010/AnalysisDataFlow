@@ -283,8 +283,7 @@ $$
 ### 6.2 内存配置实例
 
 ```yaml
-# flink-conf.yaml - 电商实时推荐系统,状态约 10GB
-taskmanager.memory.process.size: 16384m
+# flink-conf.yaml - 电商实时推荐系统,状态约 10GB taskmanager.memory.process.size: 16384m
 taskmanager.memory.managed.fraction: 0.4
 taskmanager.memory.network.fraction: 0.1
 taskmanager.memory.task.heap.size: 4096m
@@ -316,14 +315,12 @@ DataStream<Order> orders = env
 ### 6.4 检查点调优实例
 
 ```yaml
-# 金融交易系统 - 低延迟
-execution.checkpointing.unaligned.enabled: true
+# 金融交易系统 - 低延迟 execution.checkpointing.unaligned.enabled: true
 execution.checkpointing.interval: 100ms
 execution.checkpointing.timeout: 30s
 state.backend: hashmap
 
-# 用户行为分析 - 大状态
-state.backend.incremental: true
+# 用户行为分析 - 大状态 state.backend.incremental: true
 execution.checkpointing.interval: 600s
 execution.checkpointing.timeout: 3600s
 state.backend.local-recovery: true
@@ -357,8 +354,7 @@ state.backend.local-recovery: true
 
 ```yaml
 # flink-conf.yaml
-# 启用均衡任务调度
-cluster.scheduling.strategy: BALANCED_TASKS
+# 启用均衡任务调度 cluster.scheduling.strategy: BALANCED_TASKS
 ```
 
 ```java

@@ -347,4 +347,4 @@ stream
 
 ---
 
-[返回课程大纲 →](../syllabus-csa.md) | [下一实验: 窗口计算实践 →](./lab-02-window-basics.md)
+[返回课程大纲 →](../syllabus-csa.md) | [下一实验: 窗口计算实践 →]

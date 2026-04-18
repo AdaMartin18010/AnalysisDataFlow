@@ -368,8 +368,7 @@ DataStream<Event> events = env
 **RisingWave 云原生部署** (Kubernetes):
 
 ```yaml
-# risingwave-compute.yaml
-apiVersion: apps/v1
+# risingwave-compute.yaml apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: risingwave-compute
@@ -389,8 +388,7 @@ spec:
             memory: "8Gi"
             cpu: "4"
 ---
-# risingwave-meta.yaml - 元数据服务
-apiVersion: apps/v1
+# risingwave-meta.yaml - 元数据服务 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: risingwave-meta

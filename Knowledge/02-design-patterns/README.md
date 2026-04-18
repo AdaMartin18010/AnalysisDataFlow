@@ -234,7 +234,7 @@ flowchart TD
 
 ### 形式化理论
 
-- [Struct/01-foundation/](../../Struct/01-foundation/00-INDEX.md) - 流计算理论基础
+- [Struct/01-foundation/] - 流计算理论基础
 - [Struct/00-INDEX.md](../../Struct/00-INDEX.md) - 分布式一致性
 
 ---

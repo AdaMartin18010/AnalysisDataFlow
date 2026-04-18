@@ -129,8 +129,7 @@ $$
 **成本分摊标签策略**：
 
 ```yaml
-# 推荐标签体系
-Mandatory Tags:
+# 推荐标签体系 Mandatory Tags:
   - Environment: [prod|staging|dev]
   - Team: [platform|data|ml|product]
   - Project: [realtime-rec|fraud-detection|log-pipeline]
@@ -200,8 +199,7 @@ spec:
     upgradeMode: stateful
     state: running
 ---
-# HPA配置
-apiVersion: autoscaling/v2
+# HPA配置 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: flink-taskmanager-hpa
@@ -545,8 +543,7 @@ $$
 **最优Checkpoint策略**：
 
 ```yaml
-# Flink Checkpoint优化配置
-state:
+# Flink Checkpoint优化配置 state:
   backend: rocksdb
   checkpoints.dir: s3://flink-checkpoints/production
   savepoints.dir: s3://flink-savepoints/production
@@ -589,8 +586,7 @@ execution:
 **Spot实例安全实践**：
 
 ```python
-# Spot中断处理示例
-import requests
+# Spot中断处理示例 import requests
 import time
 
 def handle_spot_interruption():
@@ -652,8 +648,7 @@ $$
 4. **背压协调**: 利用Flink背压信号提前触发
 
 ```yaml
-# 分层扩缩容策略
-autoscaling:
+# 分层扩缩容策略 autoscaling:
   # 快速响应层 - 垂直扩缩(调整TM资源)
   fast_layer:
     trigger: cpu > 80% or kafka_lag > 1000
@@ -850,16 +845,14 @@ Month 9-12: 智能化 (Sprint)
 **阶段1: 资源配置优化**
 
 ```yaml
-# 优化前
-spec:
+# 优化前 spec:
   taskManager:
     resource:
       memory: "64Gi"
       cpu: 16
     replicas: 20
 
-# 优化后 - 右调优
-spec:
+# 优化后 - 右调优 spec:
   taskManager:
     resource:
       memory: "32Gi"  # 内存利用率仅35%
@@ -896,12 +889,10 @@ spec:
 **阶段3: 网络优化**
 
 ```yaml
-# 启用数据压缩和本地化处理
-flink-conf.yaml:
+# 启用数据压缩和本地化处理 flink-conf.yaml:
   pipeline.compression: "LZ4"  # 减少网络传输
 
-# 同区域部署,消除跨区域流量
-spec:
+# 同区域部署,消除跨区域流量 spec:
   jobManager:
     affinity:
       nodeAffinity:
@@ -940,8 +931,7 @@ spec:
 **成本优化方案**：
 
 ```yaml
-# 分层可用性策略
-architecture:
+# 分层可用性策略 architecture:
   # 热路径 - 关键决策(预留实例)
   hot_path:
     instance_type: on_demand
@@ -967,8 +957,7 @@ architecture:
 **成本分摊标签实施**：
 
 ```python
-# 成本归因计算脚本
-import boto3
+# 成本归因计算脚本 import boto3
 
 def calculate_unit_economics():
     """计算风控系统单位成本"""
@@ -1033,8 +1022,7 @@ def calculate_unit_economics():
 **自动关闭实现**：
 
 ```yaml
-# Kubernetes CronJob - 开发环境自动关闭
-apiVersion: batch/v1
+# Kubernetes CronJob - 开发环境自动关闭 apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: dev-env-auto-shutdown
@@ -1060,8 +1048,7 @@ spec:
                 done
           restartPolicy: OnFailure
 ---
-# 工作日早上自动启动
-apiVersion: batch/v1
+# 工作日早上自动启动 apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: dev-env-auto-start
@@ -1073,8 +1060,7 @@ spec:
 **成本配额管理**：
 
 ```yaml
-# ResourceQuota - 开发环境资源限制
-apiVersion: v1
+# ResourceQuota - 开发环境资源限制 apiVersion: v1
 kind: ResourceQuota
 metadata:
   name: dev-env-quota

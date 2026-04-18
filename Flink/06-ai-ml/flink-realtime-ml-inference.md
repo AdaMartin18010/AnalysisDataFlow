@@ -324,8 +324,7 @@ $$\mathbf{x}_{\text{train}} = \phi(\mathbf{x}_{\text{raw}}) \equiv \mathbf{x}_{\
 **方案A: 特征存储中心化**
 
 ```python
-# 训练时
-features = feast.get_historical_features(
+# 训练时 features = feast.get_historical_features(
     entity_df=training_events,
     features=["user:age", "user:click_count_7d"]
 )
@@ -394,8 +393,7 @@ class DriftDetectionFunction extends ProcessFunction<Prediction, Alert> {
 **服务端部署**:
 
 ```yaml
-# tf-serving-deployment.yaml
-apiVersion: apps/v1
+# tf-serving-deployment.yaml apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: tensorflow-serving
@@ -667,8 +665,7 @@ public class DriftMonitoringFunction
 ### 6.5 Feast特征存储集成
 
 ```python
-# feature_view.py - 特征定义
-from feast import Entity, Feature, FeatureView, ValueType, FileSource
+# feature_view.py - 特征定义 from feast import Entity, Feature, FeatureView, ValueType, FileSource
 from datetime import timedelta
 
 user = Entity(name="user_id", value_type=ValueType.STRING)

@@ -456,8 +456,7 @@ class StreamingClient:
             return True
         return False
 
-# 系统启动流程
-def run_federated_stream_learning():
+# 系统启动流程 def run_federated_stream_learning():
     # 初始化全局模型
     model = AnomalyDetectionModel(input_dim=100, hidden_dim=64)
 
@@ -514,8 +513,7 @@ def evaluate_privacy_guarantees(updates: List[torch.Tensor],
         )
     }
 
-# 不同隐私预算下的性能
-privacy_results = []
+# 不同隐私预算下的性能 privacy_results = []
 for eps in [0.1, 0.5, 1.0, 2.0, 4.0, 8.0]:
     result = evaluate_privacy_guarantees(updates, eps, 1e-5)
     privacy_results.append(result)

@@ -700,22 +700,19 @@ $$
 **架构配置**:
 
 ```yaml
-# 计算资源配置
-taskmanagers:
+# 计算资源配置 taskmanagers:
   count: 12
   resources:
     cpu: 8
     memory: 32GB
     disk: 500GB SSD
 
-# Checkpoint配置
-checkpoint:
+# Checkpoint配置 checkpoint:
   interval: 30s
   mode: incremental
   state_backend: rocksdb
 
-# 状态存储
-state:
+# 状态存储 state:
   backend: rocksdb
   checkpoints_dir: s3://flink-checkpoints/risk-control/
   savepoints_dir: s3://flink-savepoints/risk-control/
@@ -760,8 +757,7 @@ state:
 **阶段 1: 资源右调优 (Right-sizing)**
 
 ```python
-# 利用率分析脚本
-import boto3
+# 利用率分析脚本 import boto3
 
 def analyze_utilization(cluster_id, days=7):
     """分析 Flink 集群资源利用率"""
@@ -814,8 +810,7 @@ env.configure(config);
 **阶段 3: Checkpoint 优化**
 
 ```yaml
-# flink-conf.yaml 优化
-state.backend.incremental: true
+# flink-conf.yaml 优化 state.backend.incremental: true
 state.checkpoint-storage: filesystem
 state.checkpoints.dir: s3://company-flink/checkpoints
 
@@ -824,16 +819,14 @@ execution.checkpointing.interval: 60s
 execution.checkpointing.min-pause-between-checkpoints: 30s
 execution.checkpointing.max-concurrent-checkpoints: 1
 
-# 启用压缩减少 SST 文件数量
-state.backend.rocksdb.compression: LZ4
+# 启用压缩减少 SST 文件数量 state.backend.rocksdb.compression: LZ4
 state.backend.rocksdb.predefined-options: FLASH_SSD_OPTIMIZED
 ```
 
 **阶段 4: 自动扩缩容**
 
 ```yaml
-# Kubernetes HPA 配置
-apiVersion: autoscaling/v2
+# Kubernetes HPA 配置 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: flink-recommendation-hpa
@@ -912,8 +905,7 @@ spec:
 **AWS EMR on EKS + Flink Operator**:
 
 ```yaml
-# emr-flink-values.yaml
-flinkVersion: v1.18
+# emr-flink-values.yaml flinkVersion: v1.18
 
 jobManager:
   resource:
@@ -927,8 +919,7 @@ taskManager:
     cpu: 8
   replicas: 10
 
-# 使用 Spot 实例降低计算成本
-nodeSelector:
+# 使用 Spot 实例降低计算成本 nodeSelector:
   node-type: spot
 
 tolerations:
@@ -945,8 +936,7 @@ tolerations:
 **GCP Dataflow**:
 
 ```python
-# dataflow_pipeline.py
-import apache_beam as beam
+# dataflow_pipeline.py import apache_beam as beam
 from apache_beam.options.pipeline_options import PipelineOptions
 
 options = PipelineOptions([

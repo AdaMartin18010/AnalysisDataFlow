@@ -46,14 +46,11 @@ $$
 ### 5.1 滚动升级
 
 ```bash
-# 创建保存点
-flink savepoint $JOB_ID
+# 创建保存点 flink savepoint $JOB_ID
 
-# 停止作业
-flink cancel -s $JOB_ID
+# 停止作业 flink cancel -s $JOB_ID
 
-# 启动新版本
-flink run -s $SAVEPOINT_PATH new-job.jar
+# 启动新版本 flink run -s $SAVEPOINT_PATH new-job.jar
 ```
 
 ## 6. 实例验证 (Examples)

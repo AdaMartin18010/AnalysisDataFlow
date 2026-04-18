@@ -188,8 +188,7 @@ Source → Map1 → KeyBy → Window → Sink
 **参考格式**：
 
 ```
-# 伪代码示意，非完整可编译代码
-Init ==
+# 伪代码示意，非完整可编译代码 Init ==
     ∧ orderStatus = [i ∈ OrderIDs ↦ "PENDING"]
     ∧ inventory = [i ∈ ProductIDs ↦ 100]
     ∧ ...

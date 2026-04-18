@@ -630,22 +630,19 @@ class ResponseFormattingFunction extends ProcessFunction<
 **配置参数**:
 
 ```yaml
-# flink-conf.yaml
-jobmanager.memory.process.size: 2048m
+# flink-conf.yaml jobmanager.memory.process.size: 2048m
 taskmanager.memory.process.size: 8192m
 taskmanager.numberOfTaskSlots: 4
 parallelism.default: 4
 
-# 检查点配置
-state.backend: rocksdb
+# 检查点配置 state.backend: rocksdb
 state.backend.incremental: true
 state.checkpoint-storage: filesystem
 state.checkpoints.dir: s3://flink-checkpoints/customer-service
 execution.checkpointing.interval: 60s
 execution.checkpointing.mode: EXACTLY_ONCE
 
-# 网络配置
-akka.ask.timeout: 30s
+# 网络配置 akka.ask.timeout: 30s
 web.timeout: 60000
 ```
 
@@ -1226,8 +1223,7 @@ spec:
 ### 监控配置
 
 ```yaml
-# prometheus.yml
-scrape_configs:
+# prometheus.yml scrape_configs:
   - job_name: 'flink-jobmanager'
     static_configs:
       - targets: ['jobmanager:9249']

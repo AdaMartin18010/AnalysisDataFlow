@@ -22,7 +22,7 @@
 
 ### Step 1: 理解流计算 (5分钟)
 
-- **阅读**: [Struct/00-INDEX.md](../Struct/00-INDEX.md)
+- **阅读**: [Struct/00-INDEX.md]
 - **目标**: 建立基本概念，了解形式化等级(L1-L6)
 - **产出**: 知道流计算涉及的四大范式(Actor/CSP/Dataflow/Petri网)
 
@@ -137,10 +137,10 @@
 
 1. [Struct/01-foundation/01.01-unified-streaming-theory.md](Struct/01-foundation/01.01-unified-streaming-theory.md) - 统一流理论
 2. [Struct/01-foundation/01.02-process-calculus-primer.md](Struct/01-foundation/01.02-process-calculus-primer.md) - 进程演算入门
-3. [Struct/01-foundation/01.03-actor-model-formalization.md](../01-foundation/01.03-actor-model-formalization.md) - Actor模型形式化
+3. [Struct/01-foundation/01.03-actor-model-formalization.md] - Actor模型形式化
 
 **阶段2 - 性质与证明** (2-3天):
-4. [Struct/02-properties/02.02-consistency-hierarchy.md](../02-properties/02.02-consistency-hierarchy.md) - 一致性层级
+4. [Struct/02-properties/02.02-consistency-hierarchy.md] - 一致性层级
 5. [Struct/04-proofs/04.01-flink-checkpoint-correctness.md](Struct/04-proofs/04.01-flink-checkpoint-correctness.md) - Checkpoint正确性证明
 
 **阶段3 - 前沿探索** (持续):
@@ -186,7 +186,7 @@
 **阶段2 - 架构设计** (1-2天):
 4. [Flink/01-concepts/deployment-architectures.md](Flink/01-concepts/deployment-architectures.md) - 部署架构
 5. [Knowledge/03-business-patterns/data-mesh-streaming-architecture-2026.md](Knowledge/03-business-patterns/data-mesh-streaming-architecture-2026.md) - 数据网格
-6. [Struct/02-properties/02.02-consistency-hierarchy.md](../02-properties/02.02-consistency-hierarchy.md) - 一致性选型
+6. [Struct/02-properties/02.02-consistency-hierarchy.md] - 一致性选型
 
 **阶段3 - 深度对比** (1天):
 7. [Knowledge/04-technology-selection/flink-vs-risingwave.md](Knowledge/04-technology-selection/flink-vs-risingwave.md) - Flink vs RisingWave

@@ -310,8 +310,7 @@ import tensorflow as tf
 from pyflink.table.udf import udf
 from pyflink.table.types import DataTypes
 
-# 加载 INT8 量化的 TFLite 模型
-interpreter = tf.lite.Interpreter(model_path="/opt/models/anomaly_autoencoder_int8.tflite")
+# 加载 INT8 量化的 TFLite 模型 interpreter = tf.lite.Interpreter(model_path="/opt/models/anomaly_autoencoder_int8.tflite")
 interpreter.allocate_tensors()
 input_details = interpreter.get_input_details()
 output_details = interpreter.get_output_details()
@@ -345,8 +344,7 @@ def tflite_anomaly_detect(vibration_array: list) -> dict:
     return {"anomaly_score": anomaly_score, "is_anomaly": is_anomaly}
 
 # Flink SQL 注册与使用
-# CREATE TEMPORARY SYSTEM FUNCTION TfliteAnomalyDetect AS 'tflite_anomaly_detect';
-#
+# CREATE TEMPORARY SYSTEM FUNCTION TfliteAnomalyDetect AS 'tflite_anomaly_detect'; #
 # SELECT device_id, TfliteAnomalyDetect(features) AS result
 # FROM sensor_stream;
 ```

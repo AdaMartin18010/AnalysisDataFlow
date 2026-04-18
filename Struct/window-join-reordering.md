@@ -321,8 +321,7 @@ def dpsize_optimizer(streams, selectivities):
     full_mask = (1 << n) - 1
     return best_plan(full_mask)
 
-# 示例
-streams = {"A": 1000, "B": 500, "C": 2000}
+# 示例 streams = {"A": 1000, "B": 500, "C": 2000}
 selectivities = {("A", "B"): 0.05, ("B", "C"): 0.1, ("A", "C"): 0.02}
 cost, plan = dpsize_optimizer(streams, selectivities)
 print(f"最优计划: {plan}, 代价: {cost}")

@@ -277,28 +277,24 @@ $$\frac{C^*}{S} \approx \left( \frac{L_{remote} - L_{local}}{\lambda \cdot \text
 # Flink 2.3 核心特性启用配置
 # ============================================
 
-# --- Adaptive Scheduler 2.0 ---
-scheduler: adaptive-v2
+# --- Adaptive Scheduler 2.0 --- scheduler: adaptive-v2
 adaptive-scheduler.v2.enabled: true
 adaptive-scheduler.resize.interval: 5min
 adaptive-scheduler.resize.step.max: 0.2
 adaptive-scheduler.metric.window: 10min
 
-# --- Cloud-Native State Backend ---
-state.backend: forst
+# --- Cloud-Native State Backend --- state.backend: forst
 state.backend.forst.local.dir: /data/flink/state
 state.backend.forst.remote.dir: s3://my-bucket/flink-state
 state.backend.forst.cache.size: 20gb
 state.backend.forst.async-upload: true
 
-# --- AI Agent Runtime ---
-ai.agent.enabled: true
+# --- AI Agent Runtime --- ai.agent.enabled: true
 ai.agent.checkpoint.interval: 30s
 ai.agent.state.backend: forst
 ai.agent.mcp.servers: http://mcp-server:8080
 
-# --- Kafka 3.x Connector ---
-connector.kafka.version: 3.4.0
+# --- Kafka 3.x Connector --- connector.kafka.version: 3.4.0
 sink.kafka.2pc.enabled: true
 ```
 

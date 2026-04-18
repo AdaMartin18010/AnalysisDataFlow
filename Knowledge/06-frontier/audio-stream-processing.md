@@ -130,8 +130,7 @@ def extract_mel_features(audio_bytes, sample_rate=16000):
 ### 6.3 语音活动检测 (VAD) 配置
 
 ```yaml
-# WebRTC VAD 配置示例
-vad:
+# WebRTC VAD 配置示例 vad:
   mode: 3  # 0=Normal, 1=LowBitRate, 2=Aggressive, 3=VeryAggressive
   frame_duration_ms: 30
   sample_rate: 16000
@@ -178,8 +177,7 @@ flowchart TD
 - **多通道波束成形**：麦克风阵列利用空间信息增强目标方向信号。
 
 ```python
-# 基于谱减法的轻量降噪示例
-import numpy as np
+# 基于谱减法的轻量降噪示例 import numpy as np
 
 def spectral_subtraction(signal, noise_estimate, alpha=1.5):
     """

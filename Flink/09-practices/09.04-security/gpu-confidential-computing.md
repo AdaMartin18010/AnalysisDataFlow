@@ -949,8 +949,7 @@ flowchart TB
 **场景**: 跨机构联邦学习，在 GPU TEE 内执行安全聚合协议。
 
 ```python
-# 伪代码:Flink GPU TEE 联邦学习
-class SecureAggregation:
+# 伪代码:Flink GPU TEE 联邦学习 class SecureAggregation:
     def __init__(self, gpu_tee_context):
         self.tee = gpu_tee_context
 
@@ -1212,11 +1211,9 @@ graph TB
 **Intel TDX 配置 (Ubuntu 24.04)**:
 
 ```bash
-# 1. 安装 TDX 驱动和工具
-sudo apt install -y tdx-tools qemu-system-x86
+# 1. 安装 TDX 驱动和工具 sudo apt install -y tdx-tools qemu-system-x86
 
-# 2. 创建 TDX 机密 VM
-qemu-system-x86_64 \
+# 2. 创建 TDX 机密 VM qemu-system-x86_64 \
     -enable-kvm \
     -cpu host,+tdx_guest \
     -object tdx-guest,id=tdx \
@@ -1226,8 +1223,7 @@ qemu-system-x86_64 \
     -hda tdx-vm-image.qcow2 \
     -device vfio-pci,host=01:00.0  # GPU passthrough
 
-# 3. 验证 TDX 激活
-tdvmcheck
+# 3. 验证 TDX 激活 tdvmcheck
 ```
 
 **AMD SEV-SNP 配置**:
@@ -1236,12 +1232,10 @@ tdvmcheck
 # 1. 启用 SEV-SNP BIOS 设置
 # AMD CBS -> CPU Common Options -> SEV-SNP = Enabled
 
-# 2. 验证 SEV-SNP 可用
-cat /sys/module/kvm_amd/parameters/sev_snp
+# 2. 验证 SEV-SNP 可用 cat /sys/module/kvm_amd/parameters/sev_snp
 # 输出: 1
 
-# 3. 启动 SEV-SNP VM
-qemu-system-x86_64 \
+# 3. 启动 SEV-SNP VM qemu-system-x86_64 \
     -enable-kvm \
     -cpu EPYC-v4,host-phys-bits=true,sev-snp=on \
     -machine q35,memory-backend=ram1,vmport=off \
@@ -1256,8 +1250,7 @@ qemu-system-x86_64 \
 **flink-conf.yaml 配置**:
 
 ```yaml
-# GPU TEE 安全配置
-security.gpu.tee.enabled: true
+# GPU TEE 安全配置 security.gpu.tee.enabled: true
 security.gpu.tee.type: NVIDIA_H100_CC
 security.gpu.attestation.service: https://nras.attestation.nvidia.com
 
@@ -1265,12 +1258,10 @@ security.gpu.attestation.service: https://nras.attestation.nvidia.com
 security.cpu.tee.type: INTEL_TDX
 security.cpu.attestation.service: https://trustauthority.intel.com
 
-# 复合证明配置
-security.composite.attestation.enabled: true
+# 复合证明配置 security.composite.attestation.enabled: true
 security.composite.policy: BOTH_REQUIRED
 
-# GPU 资源配置
-kubernetes.gpu.enabled: true
+# GPU 资源配置 kubernetes.gpu.enabled: true
 kubernetes.gpu.resource-type: nvidia.com/gpu
 kubernetes.gpu.cc-mode: true
 ```
@@ -1278,8 +1269,7 @@ kubernetes.gpu.cc-mode: true
 **Flink GPU TEE 作业提交**:
 
 ```bash
-# 提交 GPU TEE 作业
-flink run \
+# 提交 GPU TEE 作业 flink run \
     -t kubernetes-application \
     # 注: GPU TEE为实验性功能
     -Dkubernetes.cluster-id=flink-gpu-tee \

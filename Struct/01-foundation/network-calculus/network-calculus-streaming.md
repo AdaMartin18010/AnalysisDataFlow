@@ -230,8 +230,7 @@ $$
 **流处理流水线影响**:
 
 ```
-# 伪代码示意，非完整可编译代码
-流水线: Source → Map → Filter → Window → Sink
+# 伪代码示意，非完整可编译代码 流水线: Source → Map → Filter → Window → Sink
 
 到达曲线变换:
 α0 (Source输出)

@@ -87,12 +87,31 @@ class SixSectionValidator:
             "Flink/**/*.md",
         ]
         
+        # 非核心文档排除模式（不应强制六段式）
+        SKIP_PATTERNS = [
+            'README', 'CHANGELOG', 'CONTRIBUTING', 'LICENSE',
+            'QUICK-START', 'FAQ', 'GLOSSARY', 'ROADMAP',
+            'INDEX', 'NAVIGATION', 'PROJECT-TRACKING', 'BEST-PRACTICES',
+            'CHEATSHEET', 'CHECKLIST', 'COMPLETION-REPORT',
+            'AGENT-', 'COMPLETION-REPORT', 'AUDIT-REPORT',
+            'QUARTERLY-REVIEWS', 'verify-examples',
+            'TASK-ASSIGNMENTS', 'THEOREM-INDEX',
+            '00-meta', 'version-tracking', 'status-report',
+            '_in-progress', 'archive', 'deprecated',
+            'Flink-Scala-Rust-Comprehensive', '98-exercises',
+            'docs/', 'i18n/',
+        ]
+        
         for pattern in patterns:
             files = glob.glob(str(self.base_path / pattern), recursive=True)
             for f in files:
                 path = Path(f).resolve()
+                path_str = str(path).replace('\\', '/')
+                # 排除非核心文档
+                if any(x in path_str for x in SKIP_PATTERNS):
+                    continue
                 # 排除模板文件、索引文件等
-                if not any(x in str(path) for x in ['TEMPLATE', '_TEMPLATE', '00-INDEX']):
+                if not any(x in path_str for x in ['TEMPLATE', '_TEMPLATE', '00-INDEX']):
                     md_files.append(path)
                     
         return list(set(md_files))

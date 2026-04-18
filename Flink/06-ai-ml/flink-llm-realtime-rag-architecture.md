@@ -1090,8 +1090,7 @@ sequenceDiagram
 ```python
 from pymilvus import FieldSchema, CollectionSchema, DataType, Collection
 
-# 定义字段
-fields = [
+# 定义字段 fields = [
     FieldSchema(name="id", dtype=DataType.VARCHAR, is_primary=True, max_length=64),
     FieldSchema(name="doc_id", dtype=DataType.VARCHAR, max_length=64),
     FieldSchema(name="chunk_index", dtype=DataType.INT32),
@@ -1102,12 +1101,10 @@ fields = [
     FieldSchema(name="version", dtype=DataType.INT32),     # 版本号,用于并发控制
 ]
 
-# 创建 Collection
-schema = CollectionSchema(fields, "Enterprise KB Collection")
+# 创建 Collection schema = CollectionSchema(fields, "Enterprise KB Collection")
 collection = Collection("enterprise_kb", schema)
 
-# 创建索引
-index_params = {
+# 创建索引 index_params = {
     "index_type": "HNSW",
     "metric_type": "COSINE",
     "params": {"M": 16, "efConstruction": 200}

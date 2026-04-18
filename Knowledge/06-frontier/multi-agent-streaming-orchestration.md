@@ -907,8 +907,7 @@ public class MultiAgentMemorySync {
 ### 5.5 生产级部署架构
 
 ```yaml
-# multi-agent-orchestration-deployment.yaml
-apiVersion: flink.apache.org/v1beta1
+# multi-agent-orchestration-deployment.yaml apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: multi-agent-orchestrator

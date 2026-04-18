@@ -406,11 +406,9 @@ env.getCheckpointConfig().setCheckpointTimeout(600000);
 ### 示例 6.4: 状态后端动态切换
 
 ```bash
-# 创建 Savepoint
-flink stop --savepointPath hdfs:///savepoints <job-id>
+# 创建 Savepoint flink stop --savepointPath hdfs:///savepoints <job-id>
 
-# 修改代码切换后端后,从 Savepoint 恢复
-flink run -s hdfs:///savepoints/savepoint-xxxxx \
+# 修改代码切换后端后,从 Savepoint 恢复 flink run -s hdfs:///savepoints/savepoint-xxxxx \
   -c com.example.MyJob my-job.jar
 ```
 

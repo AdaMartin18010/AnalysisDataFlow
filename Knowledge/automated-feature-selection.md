@@ -213,24 +213,20 @@ import shap
 import xgboost as xgb
 from sklearn.datasets import make_regression
 
-# 训练性能预测模型（示例）
-model = xgb.XGBRegressor(n_estimators=100, max_depth=5)
+# 训练性能预测模型（示例） model = xgb.XGBRegressor(n_estimators=100, max_depth=5)
 model.fit(X_train, y_train)
 
-# 计算 SHAP 值
-explainer = shap.Explainer(model)
+# 计算 SHAP 值 explainer = shap.Explainer(model)
 shap_values = explainer(X_train)
 
-# 按平均绝对 SHAP 值排序特征
-importance = np.abs(shap_values.values).mean(axis=0)
+# 按平均绝对 SHAP 值排序特征 importance = np.abs(shap_values.values).mean(axis=0)
 feature_importance = sorted(
     zip(feature_names, importance),
     key=lambda x: x[1],
     reverse=True
 )
 
-# 选择累积贡献达 95% 的最小特征子集
-cumulative = 0
+# 选择累积贡献达 95% 的最小特征子集 cumulative = 0
 total = sum(importance)
 selected_features = []
 for name, score in feature_importance:
@@ -248,12 +244,10 @@ print(f"Selected {len(selected_features)} out of {len(feature_names)} features")
 from sklearn.feature_selection import mutual_info_regression
 import pandas as pd
 
-# 计算每个特征与目标变量的互信息
-mi_scores = mutual_info_regression(X_train, y_train, random_state=42)
+# 计算每个特征与目标变量的互信息 mi_scores = mutual_info_regression(X_train, y_train, random_state=42)
 mi_series = pd.Series(mi_scores, index=feature_names).sort_values(ascending=False)
 
-# 保留 Top-30% 特征
-top_features = mi_series[mi_series > mi_series.quantile(0.7)].index.tolist()
+# 保留 Top-30% 特征 top_features = mi_series[mi_series > mi_series.quantile(0.7)].index.tolist()
 print(f"Top features by MI: {top_features}")
 ```
 

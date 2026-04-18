@@ -147,17 +147,14 @@ s.t. ∀j: Backpressure(Vⱼ) < threshold ∧
 **算法核心公式**：
 
 ```text
-# 目标并行度计算
-TargetParallelism(V) = ceil(
+# 目标并行度计算 TargetParallelism(V) = ceil(
     IncomingRate(V) × ProcessingTime(V) /
     (TargetUtilization × SlotCapacity)
 )
 
-# 成本效益评分
-CostBenefitScore = α × PerformanceGain - β × ResourceCost - γ × ScalingFrequency
+# 成本效益评分 CostBenefitScore = α × PerformanceGain - β × ResourceCost - γ × ScalingFrequency
 
-# 自适应冷却期
-CoolingPeriod(t) = BasePeriod × (1 + ErrorRate(t) × PenaltyFactor)
+# 自适应冷却期 CoolingPeriod(t) = BasePeriod × (1 + ErrorRate(t) × PenaltyFactor)
 ```
 
 **V2 算法特性**：
@@ -297,8 +294,7 @@ HelmValuesSchema = ⟨ Version, Image, Operator, WatchNamespaces, RBAC, Resource
 **Schema 版本化**：
 
 ```yaml
-# Chart.yaml
-apiVersion: v2
+# Chart.yaml apiVersion: v2
 name: flink-kubernetes-operator
 description: A Helm chart for the Apache Flink Kubernetes Operator
 version: 1.14.0
@@ -335,8 +331,7 @@ appVersion: "1.14.0"
 
 ```yaml
 # values.yaml (1.14 优化版)
-# 全局镜像配置
-image:
+# 全局镜像配置 image:
   registry: "docker.io"
   repository: "apache/flink-kubernetes-operator"
   tag: "1.14.0"
@@ -375,8 +370,7 @@ rbac:
   scope: cluster  # cluster | namespace
   additionalRules: []
 
-# 资源限制
-resources:
+# 资源限制 resources:
   limits:
     cpu: 2000m
     memory: 2Gi
@@ -384,8 +378,7 @@ resources:
     cpu: 500m
     memory: 512Mi
 
-# 高可用配置
-highAvailability:
+# 高可用配置 highAvailability:
   enabled: true
   replicas: 2
   leaderElection:
@@ -697,16 +690,14 @@ Declarative Resource Management
 1. **抽象层次提升**
 
 ```yaml
-# 命令式(1.13 及之前)- 关注具体数值
-spec:
+# 命令式(1.13 及之前)- 关注具体数值 spec:
   taskManager:
     resource:
       memory: "8192m"
       cpu: 4
     replicas: 8
 
-# 声明式(1.14)- 关注业务需求
-spec:
+# 声明式(1.14)- 关注业务需求 spec:
   resourceProfile:
     tier: large
     autoScaling:
@@ -738,8 +729,7 @@ spec:
 **V2 算法核心优势**：
 
 ```python
-# V2 预测模型伪代码
-class AutoscalingV2:
+# V2 预测模型伪代码 class AutoscalingV2:
     def predict_load(self, metrics_history, horizon):
         # 1. 季节性分解
         trend, seasonal, residual = decompose(metrics_history)
@@ -769,8 +759,7 @@ class AutoscalingV2:
 **场景：峰值负载下的资源不足**
 
 ```yaml
-# 手动配置的问题:固定资源配置
-spec:
+# 手动配置的问题:固定资源配置 spec:
   taskManager:
     replicas: 10  # 按峰值配置,平时浪费
 
@@ -782,8 +771,7 @@ spec:
 **声明式解决方案**：
 
 ```yaml
-# 自动扩缩容
-spec:
+# 自动扩缩容 spec:
   resourceProfile:
     autoScaling:
       enabled: true
@@ -1116,8 +1104,7 @@ spec:
 ### 6.3 Session Cluster 增强配置
 
 ```yaml
-# ========== 增强型 Session Cluster ==========
-apiVersion: flink.apache.org/v1beta1
+# ========== 增强型 Session Cluster ========== apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: enhanced-session-cluster
@@ -1261,8 +1248,7 @@ spec:
     execution.checkpointing.interval: 120s
 
 ---
-# ========== 提交作业到增强 Session Cluster ==========
-apiVersion: flink.apache.org/v1beta1
+# ========== 提交作业到增强 Session Cluster ========== apiVersion: flink.apache.org/v1beta1
 kind: FlinkSessionJob
 metadata:
   name: critical-analytics-job
@@ -1294,22 +1280,19 @@ spec:
 # ========== values-production.yaml ==========
 # Flink Kubernetes Operator 1.14 Helm Chart 生产配置
 
-# 镜像配置
-image:
+# 镜像配置 image:
   registry: "docker.io"
   repository: "apache/flink-kubernetes-operator"
   tag: "1.14.0"
   pullPolicy: IfNotPresent
 
-# 镜像仓库密钥
-imagePullSecrets:
+# 镜像仓库密钥 imagePullSecrets:
   - name: regcred
 
 # 部署副本数(高可用)
 replicaCount: 2
 
-# ========== Operator 核心配置 ==========
-operatorConfiguration:
+# ========== Operator 核心配置 ========== operatorConfiguration:
   # 基础配置
   kubernetes.operator.namespace: "flink-operator"
   kubernetes.operator.reconcile.interval: 60s
@@ -1344,8 +1327,7 @@ operatorConfiguration:
   kubernetes.operator.leader-election.renew-deadline: 10s
   kubernetes.operator.leader-election.retry-period: 2s
 
-# ========== 监控命名空间 ==========
-watchNamespaces:
+# ========== 监控命名空间 ========== watchNamespaces:
   - "flink-jobs"
   - "flink-production"
   - "flink-staging"
@@ -1354,8 +1336,7 @@ watchNamespaces:
 # 排除命名空间(正则表达式)
 excludedNamespaces: "kube-.*,istio-.*"
 
-# ========== RBAC 配置 ==========
-rbac:
+# ========== RBAC 配置 ========== rbac:
   create: true
   scope: cluster  # cluster | namespace
 
@@ -1368,8 +1349,7 @@ rbac:
       resources: ["horizontalpodautoscalers"]
       verbs: ["*"]
 
-# ========== 资源限制 ==========
-resources:
+# ========== 资源限制 ========== resources:
   limits:
     cpu: 2000m
     memory: 2Gi
@@ -1377,16 +1357,14 @@ resources:
     cpu: 500m
     memory: 512Mi
 
-# ========== 高可用配置 ==========
-highAvailability:
+# ========== 高可用配置 ========== highAvailability:
   enabled: true
   replicas: 2
   podDisruptionBudget:
     enabled: true
     minAvailable: 1
 
-# ========== 网络配置 ==========
-networkPolicy:
+# ========== 网络配置 ========== networkPolicy:
   enabled: true
   ingress:
     - from:
@@ -1397,8 +1375,7 @@ networkPolicy:
         - protocol: TCP
           port: 8081
 
-# ========== 指标与监控 ==========
-metrics:
+# ========== 指标与监控 ========== metrics:
   enabled: true
   port: 9249
   serviceMonitor:
@@ -1415,8 +1392,7 @@ metrics:
         labels:
           severity: critical
 
-# ========== 日志配置 ==========
-logConfiguration:
+# ========== 日志配置 ========== logConfiguration:
   log4j-operator.properties: |
     rootLogger.level = INFO
     rootLogger.appenderRef.rolling.ref = RollingAppender
@@ -1428,8 +1404,7 @@ logConfiguration:
     appender.rolling.layout.type = PatternLayout
     appender.rolling.layout.pattern = %d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %-60c %x - %m%n
 
-# ========== 持久化存储 ==========
-volumes:
+# ========== 持久化存储 ========== volumes:
   - name: flink-operator-logs
     emptyDir:
       sizeLimit: 1Gi
@@ -1443,8 +1418,7 @@ volumeMounts:
   - name: flink-operator-state
     mountPath: /opt/flink/operator-state
 
-# ========== 节点亲和性 ==========
-nodeSelector:
+# ========== 节点亲和性 ========== nodeSelector:
   workload-type: platform
 
 tolerations:
@@ -1463,8 +1437,7 @@ affinity:
               app.kubernetes.io/name: flink-kubernetes-operator
           topologyKey: kubernetes.io/hostname
 
-# ========== Webhook 配置 ==========
-webhook:
+# ========== Webhook 配置 ========== webhook:
   enabled: true
   certManager:
     enabled: true
@@ -1477,11 +1450,9 @@ webhook:
   validating:
     enabled: true
 
-# ========== 默认 Flink 版本 ==========
-defaultFlinkVersion: "v1_20"
+# ========== 默认 Flink 版本 ========== defaultFlinkVersion: "v1_20"
 
-# ========== 资源模板(声明式管理) ==========
-resourceProfiles:
+# ========== 资源模板(声明式管理) ========== resourceProfiles:
   - name: "small"
     jobManager:
       memory: "2g"
@@ -1672,8 +1643,7 @@ spec:
 ### 6.6 GitOps 完整工作流
 
 ```yaml
-# ========== 目录结构 ==========
-#
+# ========== 目录结构 ========== #
 # flink-gitops/
 # ├── base/
 # │   ├── kustomization.yaml
@@ -1694,8 +1664,7 @@ spec:
 # └── apps/
 #     └── flink-pipeline-app.yaml
 
-# ========== base/kustomization.yaml ==========
-apiVersion: kustomize.config.k8s.io/v1beta1
+# ========== base/kustomization.yaml ========== apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
@@ -1706,8 +1675,7 @@ commonLabels:
   app.kubernetes.io/name: flink-etl-pipeline
   app.kubernetes.io/managed-by: kustomize
 
-# ========== base/flink-deployment.yaml ==========
-apiVersion: flink.apache.org/v1beta1
+# ========== base/flink-deployment.yaml ========== apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: etl-pipeline
@@ -1729,8 +1697,7 @@ spec:
     parallelism: 8
     upgradeMode: stateful
 
-# ========== overlays/production/kustomization.yaml ==========
-apiVersion: kustomize.config.k8s.io/v1beta1
+# ========== overlays/production/kustomization.yaml ========== apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 namespace: flink-production
@@ -1748,8 +1715,7 @@ patchesStrategicMerge:
   - patches/resource-scale.yaml
   - patches/ha-config.yaml
 
-# ========== overlays/production/patches/resource-scale.yaml ==========
-apiVersion: flink.apache.org/v1beta1
+# ========== overlays/production/patches/resource-scale.yaml ========== apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: etl-pipeline
@@ -1773,8 +1739,7 @@ spec:
       cpu: 8
     slots: 4
 
-# ========== apps/flink-pipeline-app.yaml (ArgoCD Application) ==========
-apiVersion: argoproj.io/v1alpha1
+# ========== apps/flink-pipeline-app.yaml (ArgoCD Application) ========== apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: flink-etl-pipeline

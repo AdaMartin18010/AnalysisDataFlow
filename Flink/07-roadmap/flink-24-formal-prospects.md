@@ -1267,18 +1267,15 @@ register_udf!(intent_classifier);
 **WASM资源限制配置**:
 
 ```yaml
-# flink-conf.yaml
-wasm.udf.enabled: true
+# flink-conf.yaml wasm.udf.enabled: true
 wasm.runtime: wasmer  # 或 wasmtime
 
-# 资源限制
-wasm.memory.max: 128mb
+# 资源限制 wasm.memory.max: 128mb
 wasm.cpu.time.limit: 100ms
 wasm.call.depth.max: 1024
 wasm.io.timeout: 5s
 
-# 预编译缓存
-wasm.precompile.enabled: true
+# 预编译缓存 wasm.precompile.enabled: true
 wasm.precompile.cache.dir: /tmp/flink/wasm-cache
 wasm.precompile.parallelism: 4
 ```

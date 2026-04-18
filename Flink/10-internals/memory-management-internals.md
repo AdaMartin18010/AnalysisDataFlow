@@ -1136,8 +1136,7 @@ taskmanager.network.memory.buffer-size: 32768
 # 内存类型 (OFF_HEAP推荐,HEAP用于调试)
 taskmanager.network.memory.type: OFF_HEAP
 
-# 批处理请求优化
-taskmanager.network.memory.max-allocations-per-batch: 1024
+# 批处理请求优化 taskmanager.network.memory.max-allocations-per-batch: 1024
 ```
 
 **计算验证**:
@@ -1243,36 +1242,29 @@ public class BufferPoolDemo {
 # flink-conf.yaml - 高吞吐大状态场景
 
 # ========== 总内存框架 ==========
-# 任务管理器总内存
- taskmanager.memory.process.size: 8192mb
+# 任务管理器总内存 taskmanager.memory.process.size: 8192mb
 
 # ========== 网络内存调优 ==========
-# 增大网络内存,减少反压
-taskmanager.memory.network.fraction: 0.2
+# 增大网络内存,减少反压 taskmanager.memory.network.fraction: 0.2
 taskmanager.memory.network.min: 512mb
 taskmanager.memory.network.max: 1024mb
 
 # 增大Buffer大小 (适用于大记录)
 taskmanager.network.memory.buffer-size: 65536  # 64KB
 
-# 强制Off-Heap
-taskmanager.network.memory.type: OFF_HEAP
+# 强制Off-Heap taskmanager.network.memory.type: OFF_HEAP
 
 # ========== Managed内存调优 ==========
-# 用于RocksDB StateBackend
-taskmanager.memory.managed.fraction: 0.5
+# 用于RocksDB StateBackend taskmanager.memory.managed.fraction: 0.5
 taskmanager.memory.managed.size: 2048mb
 
-# RocksDB内存调优
-state.backend.rocksdb.memory.managed: true
+# RocksDB内存调优 state.backend.rocksdb.memory.managed: true
 state.backend.rocksdb.memory.fixed-per-slot: 512mb
 state.backend.rocksdb.memory.high-prio-pool-ratio: 0.1
 
-# ========== JVM堆内存 ==========
-taskmanager.memory.task.heap.size: 1536mb
+# ========== JVM堆内存 ========== taskmanager.memory.task.heap.size: 1536mb
 
-# ========== 直接内存 ==========
-taskmanager.memory.jvm-metaspace.size: 256mb
+# ========== 直接内存 ========== taskmanager.memory.jvm-metaspace.size: 256mb
 taskmanager.memory.jvm-overhead.fraction: 0.1
 taskmanager.memory.jvm-overhead.min: 192mb
 ```
@@ -1284,18 +1276,15 @@ taskmanager.memory.jvm-overhead.min: 192mb
 
 taskmanager.memory.process.size: 1024mb
 
-# 最小化网络内存
-taskmanager.memory.network.fraction: 0.05
+# 最小化网络内存 taskmanager.memory.network.fraction: 0.05
 taskmanager.memory.network.min: 32mb
 
-# 减小Buffer大小
-taskmanager.network.memory.buffer-size: 16384  # 16KB
+# 减小Buffer大小 taskmanager.network.memory.buffer-size: 16384  # 16KB
 
 # 使用堆内内存 (某些嵌入式JVM不支持Off-Heap)
 taskmanager.network.memory.type: HEAP
 
-# 减少Managed内存
-taskmanager.memory.managed.fraction: 0.2
+# 减少Managed内存 taskmanager.memory.managed.fraction: 0.2
 ```
 
 ### 6.6 内存问题诊断示例
@@ -1320,8 +1309,7 @@ conf.setString("taskmanager.network.memory.max-allocations-per-batch", "100");
 **诊断命令**:
 
 ```bash
-# 查看Flink内存使用
-jcmd <taskmanager_pid> VM.native_memory summary
+# 查看Flink内存使用 jcmd <taskmanager_pid> VM.native_memory summary
 
 # 查看Flink特定指标 (通过REST API)
 curl http://taskmanager:9249/metrics | grep memory

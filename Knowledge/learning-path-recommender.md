@@ -321,14 +321,11 @@ flowchart TD
 ### 命令行使用
 
 ```bash
-# 交互式模式
-python .scripts/learning-path-recommender.py
+# 交互式模式 python .scripts/learning-path-recommender.py
 
-# 从配置文件生成路径
-python .scripts/learning-path-recommender.py --config profile.json --output my-path.md
+# 从配置文件生成路径 python .scripts/learning-path-recommender.py --config profile.json --output my-path.md
 
-# 生成热门推荐
-python .scripts/learning-path-recommender.py --recommend popular --output recommendations.md
+# 生成热门推荐 python .scripts/learning-path-recommender.py --recommend popular --output recommendations.md
 ```
 
 ### 配置文件示例

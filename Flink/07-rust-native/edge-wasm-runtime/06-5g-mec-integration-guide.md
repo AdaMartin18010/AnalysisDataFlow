@@ -548,8 +548,7 @@ appDNSRule:
 ### 6.2 私有 5G 专网 MEC 部署
 
 ```yaml
-# private-5g-mec-deployment.yaml
-network:
+# private-5g-mec-deployment.yaml network:
   # 5G 专网配置
   spectrum:
     band: n78  # 3.5GHz

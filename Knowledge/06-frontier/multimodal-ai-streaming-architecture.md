@@ -158,12 +158,10 @@ Video ──►   │  (原生多模态)  │
 **设计原则1: 流式处理优先 (Streaming-First)**
 
 ```text
-# 反模式: 批处理导致高延迟
-video_chunks = capture_video(duration=5s)  # 等待5秒
+# 反模式: 批处理导致高延迟 video_chunks = capture_video(duration=5s)  # 等待5秒
 results = model.infer(video_chunks)        # 再处理
 
-# 正模式: 流式低延迟处理
-for frame in stream_video():
+# 正模式: 流式低延迟处理 for frame in stream_video():
     result = model.infer_stream(frame)     # 每帧即时处理
     yield result
 ```
@@ -303,8 +301,7 @@ graph TB
 **关键代码实现**:
 
 ```text
-# multimodal_security_pipeline.py
-from pyflink.datastream import StreamExecutionEnvironment
+# multimodal_security_pipeline.py from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.table import StreamTableEnvironment
 from pyflink.datastream.functions import AsyncFunction
 
@@ -345,11 +342,9 @@ class SecurityAnalyzer(AsyncFunction):
             timestamp=event.ts
         )])
 
-# Flink流定义
-env = StreamExecutionEnvironment.get_execution_environment()
+# Flink流定义 env = StreamExecutionEnvironment.get_execution_environment()
 
-# 配置Kafka多模态数据源
-video_stream = env.add_source(KafkaSource[
+# 配置Kafka多模态数据源 video_stream = env.add_source(KafkaSource[
     VideoFrame
 ]("security-video-topic"))
 
@@ -357,23 +352,20 @@ audio_stream = env.add_source(KafkaSource[
     AudioChunk
 ]("security-audio-topic"))
 
-# 基于Watermark的流对齐
-aligned_stream = video_stream
+# 基于Watermark的流对齐 aligned_stream = video_stream
     .connect(audio_stream)
     .key_by(lambda x: x.camera_id)
     .window(TumblingEventTimeWindows.of(Time.seconds(1)))
     .apply(MultimodalJoinFunction())
 
-# 异步推理
-results = AsyncDataStream.unordered_wait(
+# 异步推理 results = AsyncDataStream.unordered_wait(
     aligned_stream,
     SecurityAnalyzer(),
     timeout=500,  # 500ms超时
     capacity=100  # 并发请求数
 )
 
-# 结果分流
-results.add_sink(AlertSink())  # 实时告警
+# 结果分流 results.add_sink(AlertSink())  # 实时告警
 results.add_sink(LogSink())    # 日志存储
 ```
 
@@ -390,8 +382,7 @@ results.add_sink(LogSink())    # 日志存储
 ### 6.2 会议助手实时实现
 
 ```python
-# 实时会议助手:音频+视频+屏幕共享
-class MeetingAssistantPipeline:
+# 实时会议助手:音频+视频+屏幕共享 class MeetingAssistantPipeline:
     """
     多模态会议助手
     - 音频: 实时转录+说话人分离

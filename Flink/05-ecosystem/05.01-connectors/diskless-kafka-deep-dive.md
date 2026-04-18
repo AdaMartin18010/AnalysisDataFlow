@@ -213,17 +213,14 @@ env.getCheckpointConfig().enableUnalignedCheckpoints();
 # flink-conf.yaml
 # 针对 Diskless Kafka 的优化配置
 
-# 增加网络缓冲区
-taskmanager.memory.network.fraction: 0.2
+# 增加网络缓冲区 taskmanager.memory.network.fraction: 0.2
 taskmanager.memory.network.max: 2gb
 
-# 检查点优化
-execution.checkpointing.interval: 60s
+# 检查点优化 execution.checkpointing.interval: 60s
 execution.checkpointing.timeout: 10min
 state.backend.incremental: true
 
-# 重启策略
-restart-strategy: fixed-delay
+# 重启策略 restart-strategy: fixed-delay
 restart-strategy.fixed-delay.attempts: 10
 restart-strategy.fixed-delay.delay: 30s
 ```

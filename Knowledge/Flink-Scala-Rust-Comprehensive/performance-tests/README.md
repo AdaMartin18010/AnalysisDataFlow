@@ -49,8 +49,7 @@ performance-tests/
 cd nexmark/flink
 mvn clean package
 
-# 运行 Q5 测试
-flink run -p 4 target/nexmark-flink-1.0-SNAPSHOT.jar \
+# 运行 Q5 测试 flink run -p 4 target/nexmark-flink-1.0-SNAPSHOT.jar \
   --query Q5 \
   --parallelism 4 \
   --max-events 10000000 \
@@ -63,19 +62,16 @@ flink run -p 4 target/nexmark-flink-1.0-SNAPSHOT.jar \
 cd simd/rust
 cargo bench
 
-# 查看报告
-target/criterion/report/index.html
+# 查看报告 target/criterion/report/index.html
 ```
 
 ### 4. 运行 WASM 测试
 
 ```bash
 cd wasm/rust
-# 编译 WASM
-cargo build --target wasm32-unknown-unknown --release
+# 编译 WASM cargo build --target wasm32-unknown-unknown --release
 
-# 运行基准测试
-cargo bench
+# 运行基准测试 cargo bench
 ```
 
 ## 主要发现

@@ -467,8 +467,7 @@ AR/VR    工业控制  视频流    IoT聚合   云存储    批处理
 **MEC 集成配置**:
 
 ```yaml
-# mec-app-descriptor.yaml
-appDId: "ar-inference-v1"
+# mec-app-descriptor.yaml appDId: "ar-inference-v1"
 appName: "AR Real-time Inference"
 appProvider: "WasmEdge"
 appSoftVersion: "1.0.0"
@@ -615,8 +614,7 @@ Data Flow at T1-T2:
 **架构**:
 
 ```yaml
-# ar-mec-deployment.yaml
-mecHost:
+# ar-mec-deployment.yaml mecHost:
   location: "BaseStation-Site-001"
   resources:
     cpu: 8 cores
@@ -837,8 +835,7 @@ fn calculate_collision_risk(a: &BsmMessage, b: &BsmMessage) -> (RiskLevel, Optio
 **部署架构**:
 
 ```yaml
-# industrial-mec.yaml
-mecPlatform:
+# industrial-mec.yaml mecPlatform:
   name: "SmartFactory-MEC"
 
   networkSlices:

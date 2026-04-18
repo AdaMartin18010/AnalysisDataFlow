@@ -358,11 +358,9 @@ env.getCheckpointConfig().setAlignmentTimeout(Duration.ofSeconds(30));
 **参考命令**：
 
 ```bash
-# 保存 Checkpoint
-flink savepoint <jobId> <targetPath>
+# 保存 Checkpoint flink savepoint <jobId> <targetPath>
 
-# 从 Checkpoint 恢复
-flink run -s <checkpointPath> <jarFile>
+# 从 Checkpoint 恢复 flink run -s <checkpointPath> <jarFile>
 ```
 
 ---
@@ -430,8 +428,7 @@ try {
 
 // ==================== flink-conf.yaml 完整配置 ====================
 /*
-# 启用非对齐 Checkpoint
-execution.checkpointing.unaligned.enabled: true
+# 启用非对齐 Checkpoint execution.checkpointing.unaligned.enabled: true
 
 # 对齐超时时间(默认30秒)
 execution.checkpointing.alignment-timeout: 30s
@@ -442,8 +439,7 @@ execution.checkpointing.max-aligned-checkpoint-size: 1mb
 # 压缩对齐数据(减少网络传输)
 execution.checkpointing.unaligned.compression.enabled: true
 
-# 基础 Checkpoint 配置
-execution.checkpointing.interval: 60s
+# 基础 Checkpoint 配置 execution.checkpointing.interval: 60s
 execution.checkpointing.timeout: 10m
 execution.checkpointing.max-concurrent-checkpoints: 1
 */
@@ -528,8 +524,7 @@ env.getCheckpointConfig().setAlignmentTimeout(Duration.ofSeconds(30));
 // 非对齐Checkpoint的高级配置
 // 通过flink-conf.yaml配置:
 /*
-# 启用非对齐Checkpoint
-execution.checkpointing.unaligned.enabled: true
+# 启用非对齐Checkpoint execution.checkpointing.unaligned.enabled: true
 
 # 对齐超时时间(默认30秒)
 execution.checkpointing.alignment-timeout: 30s

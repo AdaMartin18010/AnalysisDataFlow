@@ -69,8 +69,7 @@ public class AgentState {
 **Agent工具** 定义了Agent可调用的能力：
 
 ```yaml
-# 工具定义 schema
-tool:
+# 工具定义 schema tool:
   name: "query_sales_data"
   description: "查询实时销售数据"
   parameters:
@@ -431,15 +430,13 @@ public class SalesAnalyticsAgent {
 ```python
 from pyflink.agent import Agent, Tool, ModelEndpoint
 
-# 定义Agent
-sales_agent = Agent.builder() \
+# 定义Agent sales_agent = Agent.builder() \
     .name("sales-agent") \
     .model(ModelEndpoint.anthropic("claude-3-opus")) \
     .system_prompt("你是一个销售分析助手") \
     .build()
 
-# SQL工具
-@sales_agent.tool(
+# SQL工具 @sales_agent.tool(
     name="get_sales_summary",
     description="获取销售汇总数据"
 )
@@ -455,8 +452,7 @@ def get_sales_summary(time_range: str) -> dict:
     """
     return flink_table_env.execute_sql(sql).fetch_one()
 
-# Python函数工具
-@sales_agent.tool(
+# Python函数工具 @sales_agent.tool(
     name="analyze_trend",
     description="分析销售趋势"
 )
@@ -472,8 +468,7 @@ def analyze_trend(data: list) -> str:
     else:
         return f"下降趋势 (斜率: {trend:.2f})"
 
-# Agent事件处理
-@sales_agent.on_event("user_query")
+# Agent事件处理 @sales_agent.on_event("user_query")
 def handle_query(query: str, context: AgentContext):
     # 访问工作记忆
     history = context.working_memory.get_conversation_history()
@@ -500,8 +495,7 @@ def handle_query(query: str, context: AgentContext):
 
     return final_response
 
-# 启动Agent
-sales_agent.execute()
+# 启动Agent sales_agent.execute()
 ```
 
 ### 6.3 SQL API (Table API Agent)

@@ -521,8 +521,7 @@ impl CheckpointCoordinator {
 **场景：实时日志分析管道**
 
 ```toml
-# wrangler.toml - Cloudflare Workers 配置
-name = "log-pipeline"
+# wrangler.toml - Cloudflare Workers 配置 name = "log-pipeline"
 main = "src/index.ts"
 compatibility_date = "2025-04-01"
 
@@ -530,8 +529,7 @@ compatibility_date = "2025-04-01"
 binding = "LOG_PIPELINE"
 pipeline = "log-analytics"
 
-# 创建管道
-curl -X POST "https://api.cloudflare.com/client/v4/accounts/{account_id}/pipelines" \
+# 创建管道 curl -X POST "https://api.cloudflare.com/client/v4/accounts/{account_id}/pipelines" \
   -H "Authorization: Bearer {token}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -595,8 +593,7 @@ GROUP BY
 **Docker Compose 部署：**
 
 ```yaml
-# docker-compose.yml
-version: '3.8'
+# docker-compose.yml version: '3.8'
 
 services:
   arroyo-controller:
@@ -634,8 +631,7 @@ volumes:
 **Kubernetes 部署：**
 
 ```yaml
-# arroyo-deployment.yaml
-apiVersion: apps/v1
+# arroyo-deployment.yaml apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: arroyo-controller

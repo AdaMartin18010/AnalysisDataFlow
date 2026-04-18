@@ -76,8 +76,8 @@ pie title CSP 课程时间分配
 
 **实验任务**:
 
-- [Lab 1.1: 作业图分析](./labs/lab-01-jobgraph-analysis.md)
-- [Lab 1.2: 背压诊断与优化](./labs/lab-02-backpressure-tuning.md)
+- Lab 1.1: 作业图分析
+- Lab 1.2: 背压诊断与优化
 
 ---
 
@@ -112,8 +112,8 @@ pie title CSP 课程时间分配
 
 **实验任务**:
 
-- [Lab 2.1: 状态后端性能对比](./labs/lab-03-state-backend-benchmark.md)
-- [Lab 2.2: Checkpoint 调优实战](./labs/lab-04-checkpoint-tuning.md)
+- Lab 2.1: 状态后端性能对比
+- Lab 2.2: Checkpoint 调优实战
 
 ---
 
@@ -146,8 +146,8 @@ pie title CSP 课程时间分配
 
 **实验任务**:
 
-- [Lab 3.1: 端到端 Exactly-Once 实现](./labs/lab-05-exactly-once.md)
-- [Lab 3.2: 故障场景测试](./labs/lab-06-fault-tolerance-test.md)
+- Lab 3.1: 端到端 Exactly-Once 实现
+- Lab 3.2: 故障场景测试
 
 ---
 
@@ -180,8 +180,8 @@ pie title CSP 课程时间分配
 
 **实验任务**:
 
-- [Lab 4.1: 自定义 Watermark 生成器](./labs/lab-07-custom-watermark.md)
-- [Lab 4.2: 复杂时间窗口实现](./labs/lab-08-complex-time-windows.md)
+- Lab 4.1: 自定义 Watermark 生成器
+- Lab 4.2: 复杂时间窗口实现
 
 ---
 
@@ -214,8 +214,8 @@ pie title CSP 课程时间分配
 
 **实验任务**:
 
-- [Lab 5.1: 大状态优化实践](./labs/lab-09-large-state.md)
-- [Lab 5.2: Broadcast State 配置中心](./labs/lab-10-broadcast-config.md)
+- Lab 5.1: 大状态优化实践
+- Lab 5.2: Broadcast State 配置中心
 
 ---
 
@@ -248,8 +248,8 @@ pie title CSP 课程时间分配
 
 **实验任务**:
 
-- [Lab 6.1: SQL 执行计划分析](./labs/lab-11-sql-plan.md)
-- [Lab 6.2: CDC 实时同步](./labs/lab-12-cdc-sync.md)
+- Lab 6.1: SQL 执行计划分析
+- Lab 6.2: CDC 实时同步
 
 ---
 
@@ -282,8 +282,8 @@ pie title CSP 课程时间分配
 
 **实验任务**:
 
-- [Lab 7.1: 登录异常检测](./labs/lab-13-login-anomaly.md)
-- [Lab 7.2: 营销路径分析](./labs/lab-14-marketing-path.md)
+- Lab 7.1: 登录异常检测
+- Lab 7.2: 营销路径分析
 
 ---
 
@@ -316,8 +316,8 @@ pie title CSP 课程时间分配
 
 **实验任务**:
 
-- [Lab 8.1: K8s 部署实战](./labs/lab-15-k8s-deployment.md)
-- [Lab 8.2: 监控告警配置](./labs/lab-16-monitoring-setup.md)
+- Lab 8.1: K8s 部署实战
+- Lab 8.2: 监控告警配置
 
 ---
 
@@ -350,8 +350,8 @@ pie title CSP 课程时间分配
 
 **实验任务**:
 
-- [Lab 9.1: 数据倾斜优化](./labs/lab-17-skew-optimization.md)
-- [Lab 9.2: 故障排查演练](./labs/lab-18-troubleshooting.md)
+- Lab 9.1: 数据倾斜优化
+- Lab 9.2: 故障排查演练
 
 ---
 
@@ -384,8 +384,8 @@ pie title CSP 课程时间分配
 
 **实验任务**:
 
-- [Lab 10.1: 异步 IO 优化](./labs/lab-19-async-io.md)
-- [Lab 10.2: 综合架构设计](./labs/lab-20-architecture-design.md)
+- Lab 10.1: 异步 IO 优化
+- Lab 10.2: 综合架构设计
 
 ---
 

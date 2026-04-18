@@ -697,8 +697,7 @@ public class QualityPipeline {
 #### Great Expectations 期望配置
 
 ```yaml
-# expectations/order_expectations.yaml
-expectation_suite_name: order_quality_suite
+# expectations/order_expectations.yaml expectation_suite_name: order_quality_suite
 
 expectations:
   # 完整性检查
@@ -789,8 +788,7 @@ public class SodaQualityCheck implements QualityChecker {
 
 ```yaml
 # soda_checks.yaml
-# 检查定义
-checks for orders:
+# 检查定义 checks for orders:
   # 完整性
   - missing_count(order_id) = 0
   - missing_percent(customer_email) < 1

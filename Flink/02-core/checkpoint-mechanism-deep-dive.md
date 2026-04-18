@@ -232,12 +232,10 @@ $$
 **官方配置** (flink-conf.yaml):
 
 ```yaml
-# 启用 Changelog State Backend
-state.backend.changelog.enabled: true
+# 启用 Changelog State Backend state.backend.changelog.enabled: true
 state.backend.changelog.storage: filesystem
 
-# 物化配置
-execution.checkpointing.max-concurrent-checkpoints: 1
+# 物化配置 execution.checkpointing.max-concurrent-checkpoints: 1
 state.backend.changelog.periodic-materialization.interval: 10min
 state.backend.changelog.materialization.max-concurrent: 1
 ```

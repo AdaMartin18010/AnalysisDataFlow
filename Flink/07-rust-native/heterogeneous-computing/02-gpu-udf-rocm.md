@@ -339,8 +339,7 @@ graph TB
 # include <hip/hip_runtime.h>
 
 // 条件编译处理平台差异
-# ifdef __HIP_PLATFORM_AMD__
-    #define WARP_SIZE 64
+# ifdef __HIP_PLATFORM_AMD__ #define WARP_SIZE 64
     #include <hip/hip_cooperative_groups.h>
 # elif defined(__HIP_PLATFORM_NVIDIA__)
     #define WARP_SIZE 32
@@ -497,11 +496,9 @@ $$0.78 \leq \frac{Perf_{AMD}}{Perf_{NVIDIA}} \leq 1.16$$
 # include <math.h>
 
 // 平台检测宏
-# ifdef __HIP_PLATFORM_AMD__
-    #define WARP_SIZE 64
+# ifdef __HIP_PLATFORM_AMD__ #define WARP_SIZE 64
     #define GPU_ARCH "AMD"
-# else
-    #define WARP_SIZE 32
+# else #define WARP_SIZE 32
     #define GPU_ARCH "NVIDIA"
 # endif
 
@@ -668,8 +665,7 @@ void matmulRocBLAS(
 # include <memory>
 
 // 错误检查宏
-# define HIP_CHECK(call) \
-    do { \
+# define HIP_CHECK(call) \ do { \
         hipError_t err = call; \
         if (err != hipSuccess) { \
             fprintf(stderr, "HIP error at %s:%d: %s\n", \
@@ -890,20 +886,17 @@ Java_com_flink_gpu_udf_GpuBatchProcessor_processBatchRocm(
 # !/bin/bash
 # build_rocm_bridge.sh
 
-# 设置 ROCm 路径
-export ROCM_HOME=/opt/rocm
+# 设置 ROCm 路径 export ROCM_HOME=/opt/rocm
 export PATH=$ROCM_HOME/bin:$PATH
 export LD_LIBRARY_PATH=$ROCM_HOME/lib:$LD_LIBRARY_PATH
 
-# 编译 HIP Kernel
-hipcc -c -o vector_ops.o vector_ops.hip \
+# 编译 HIP Kernel hipcc -c -o vector_ops.o vector_ops.hip \
     -O3 \
     --offload-arch=gfx90a \
     -fPIC \
     -D__HIP_PLATFORM_AMD__
 
-# 编译 JNI Bridge
-g++ -shared -o libflink_gpu_rocm.so \
+# 编译 JNI Bridge g++ -shared -o libflink_gpu_rocm.so \
     flink_gpu_bridge_rocm.cpp \
     vector_ops.o \
     -I${JAVA_HOME}/include \
@@ -916,8 +909,7 @@ g++ -shared -o libflink_gpu_rocm.so \
     -fPIC \
     -O3
 
-# 验证库
-ldd libflink_gpu_rocm.so
+# 验证库 ldd libflink_gpu_rocm.so
 echo "Build complete: libflink_gpu_rocm.so"
 ```
 
@@ -946,8 +938,7 @@ void launchSaxpy(int n, float a, float *d_x, float *d_y) {
 #### 6.2.2 hipify 转换命令
 
 ```bash
-# 使用 hipify-perl 进行自动转换
-hipify-perl original_cuda.cu > converted_hip.hip
+# 使用 hipify-perl 进行自动转换 hipify-perl original_cuda.cu > converted_hip.hip
 
 # 或使用 hipify-clang(更精确)
 hipify-clang original_cuda.cu \
@@ -984,14 +975,12 @@ void launchSaxpy(int n, float a, float *d_x, float *d_y) {
 # include <hip/hip_runtime.h>
 
 // 条件编译处理差异
-# ifdef __HIP_PLATFORM_AMD__
-    #define WARP_SIZE 64
+# ifdef __HIP_PLATFORM_AMD__ #define WARP_SIZE 64
     #include <rocblas.h>
     #define BLAS_HANDLE rocblas_handle
     #define BLAS_CREATE rocblas_create_handle
     #define BLAS_SGEMV rocblas_sgemv
-# else
-    #define WARP_SIZE 32
+# else #define WARP_SIZE 32
     #include <cublas_v2.h>
     #define BLAS_HANDLE cublasHandle_t
     #define BLAS_CREATE cublasCreate
@@ -1211,27 +1200,23 @@ graph TB
 ### A.1 安装 ROCm
 
 ```bash
-# Ubuntu 22.04 安装步骤
-sudo apt update
+# Ubuntu 22.04 安装步骤 sudo apt update
 sudo apt install -y amdgpu-install
 sudo amdgpu-install -y --usecase=rocm
 
-# 验证安装
-rocm-smi
+# 验证安装 rocm-smi
 rocminfo
 ```
 
 ### A.2 环境变量配置
 
 ```bash
-# ~/.bashrc 添加
-export ROCM_HOME=/opt/rocm
+# ~/.bashrc 添加 export ROCM_HOME=/opt/rocm
 export PATH=$ROCM_HOME/bin:$PATH
 export LD_LIBRARY_PATH=$ROCM_HOME/lib:$LD_LIBRARY_PATH
 export HIP_PLATFORM=amd
 
-# 验证 hipcc
-hipcc --version
+# 验证 hipcc hipcc --version
 ```
 
 ### A.3 Flink ROCm 配置
@@ -1239,17 +1224,14 @@ hipcc --version
 ```yaml
 # flink-conf.yaml
 
-# ROCm GPU 资源配置
-kubernetes.taskmanager.gpu.amount: 1
+# ROCm GPU 资源配置 kubernetes.taskmanager.gpu.amount: 1
 kubernetes.taskmanager.gpu.type: amd.com/gpu
 
-# ROCm 特定配置
-gpu.backend.type: rocm
+# ROCm 特定配置 gpu.backend.type: rocm
 gpu.rocm.home: /opt/rocm
 gpu.rocm.library.path: /opt/flink/native/libflink_gpu_rocm.so
 
-# 运行时检测
-gpu.auto.detect: true
+# 运行时检测 gpu.auto.detect: true
 gpu.fallback.cpu: true  # GPU 不可用时回退到 CPU
 ```
 

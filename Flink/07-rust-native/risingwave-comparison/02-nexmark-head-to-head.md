@@ -443,8 +443,7 @@ env.getCheckpointConfig().setCheckpointInterval(60000);
 ### 6.3 性能测试报告模板
 
 ```yaml
-# nexmark_benchmark_report.yaml
-benchmark_info:
+# nexmark_benchmark_report.yaml benchmark_info:
   date: "2026-04-04"
   risingwave_version: "v1.7.0"
   flink_version: "1.18.0"
@@ -607,8 +606,7 @@ radar
 ### RisingWave 配置
 
 ```yaml
-# risingwave.yaml
-compute_nodes: 8
+# risingwave.yaml compute_nodes: 8
   resources:
     cpu: 8
     memory: 32Gi
@@ -626,8 +624,7 @@ checkpoint_interval_sec: 5
 ### Flink 配置
 
 ```yaml
-# flink-conf.yaml
-parallelism.default: 8
+# flink-conf.yaml parallelism.default: 8
 taskmanager.memory.process.size: 32g
 taskmanager.memory.flink.size: 24g
 taskmanager.memory.managed.size: 20g

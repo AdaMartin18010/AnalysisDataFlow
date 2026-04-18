@@ -266,8 +266,7 @@ $$
 **配置示例**:
 
 ```yaml
-# flink-conf.yaml
-state.backend.changelog.enabled: true
+# flink-conf.yaml state.backend.changelog.enabled: true
 state.backend.changelog.storage: filesystem
 state.backend.changelog.periodic-materialization.interval: 10min
 ```
@@ -1549,11 +1548,9 @@ Time ttl = Time.milliseconds(Math.max(
 # 1. 检查 Checkpoint 持续时间趋势
 # Flink Web UI → Job → Checkpoints → History
 
-# 2. 检查 State 大小增长
-curl http://jobmanager:8081/jobs/<job-id>/checkpoints/stats
+# 2. 检查 State 大小增长 curl http://jobmanager:8081/jobs/<job-id>/checkpoints/stats
 
-# 3. 检查 TM 资源使用
-top / htop  # CPU
+# 3. 检查 TM 资源使用 top / htop  # CPU
 df -h       # 磁盘
 free -m     # 内存
 ```
@@ -1719,11 +1716,9 @@ env.getConfig().registerTypeWithKryoSerializer(UserState.class, new CompatibleSe
 #### 8.6.3 升级操作流程
 
 ```bash
-# 1. 触发 Savepoint
-flink savepoint <job-id> <target-path>
+# 1. 触发 Savepoint flink savepoint <job-id> <target-path>
 
-# 2. 停止旧作业
-flink cancel <job-id>
+# 2. 停止旧作业 flink cancel <job-id>
 
 # 3. 部署新作业(使用 Savepoint 恢复)
 flink run -s <savepoint-path> -c <main-class> <jar-file>

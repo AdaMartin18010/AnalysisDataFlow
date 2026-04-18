@@ -142,8 +142,7 @@ textStream
 ### 6.2 视频帧预处理配置
 
 ```python
-# Flink Python UDF 进行视频帧预处理
-from pyflink.table.udf import udf
+# Flink Python UDF 进行视频帧预处理 from pyflink.table.udf import udf
 from pyflink.table import DataTypes
 import cv2
 import numpy as np
@@ -159,8 +158,7 @@ def extract_video_features(frame_bytes):
 ### 6.3 跨模态融合模型服务配置
 
 ```yaml
-# Triton Inference Server 多模态模型配置
-name: "multimodal_fusion"
+# Triton Inference Server 多模态模型配置 name: "multimodal_fusion"
 platform: "onnxruntime_onnx"
 max_batch_size: 8
 input:

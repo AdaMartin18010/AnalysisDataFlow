@@ -279,8 +279,7 @@ $$
 **步骤 1: 下载 YCSB**
 
 ```bash
-# 下载 YCSB 0.17.0
-curl -O --location https://github.com/brianfrankcooper/YCSB/releases/download/0.17.0/ycsb-0.17.0.tar.gz
+# 下载 YCSB 0.17.0 curl -O --location https://github.com/brianfrankcooper/YCSB/releases/download/0.17.0/ycsb-0.17.0.tar.gz
 tar xfvz ycsb-0.17.0.tar.gz
 cd ycsb-0.17.0
 ```
@@ -438,8 +437,7 @@ public class YcsbStateFunction extends KeyedProcessFunction<
 **Workload A (Update Heavy)**:
 
 ```properties
-# ycsb-workload-a.conf
-recordcount=10000000
+# ycsb-workload-a.conf recordcount=10000000
 operationcount=10000000
 workload=site.ycsb.workloads.CoreWorkload
 
@@ -456,8 +454,7 @@ zipfian.constant=1.0
 **Workload B (Read Heavy)**:
 
 ```properties
-# ycsb-workload-b.conf
-recordcount=10000000
+# ycsb-workload-b.conf recordcount=10000000
 operationcount=10000000
 
 readproportion=0.95
@@ -471,8 +468,7 @@ requestdistribution=zipfian
 **Workload F (Read-Modify-Write)**:
 
 ```properties
-# ycsb-workload-f.conf
-recordcount=10000000
+# ycsb-workload-f.conf recordcount=10000000
 operationcount=10000000
 
 readproportion=0.5
@@ -595,8 +591,7 @@ for backend in "${STATE_BACKENDS[@]}"; do
     done
 done
 
-# 生成对比报告
-python generate-ycsb-report.py --results-dir $RESULTS_DIR
+# 生成对比报告 python generate-ycsb-report.py --results-dir $RESULTS_DIR
 ```
 
 **典型对比结果**:

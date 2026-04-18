@@ -769,17 +769,14 @@ bindings::export!(SensorProcessor with_types_in bindings);
 **步骤 3: 编译为 Wasm 组件**
 
 ```bash
-# 安装 cargo-component
-cargo install cargo-component
+# 安装 cargo-component cargo install cargo-component
 
-# 构建组件
-cargo component build --release
+# 构建组件 cargo component build --release
 
 # 产物位置
 # target/wasm32-wasi/release/sensor_processor.wasm
 
-# 验证组件结构
-wasm-tools component wit target/wasm32-wasi/release/sensor_processor.wasm
+# 验证组件结构 wasm-tools component wit target/wasm32-wasi/release/sensor_processor.wasm
 ```
 
 ---
@@ -1028,8 +1025,7 @@ world data-pipeline {
 **组合命令**:
 
 ```bash
-# 使用 wasm-tools 组合多个组件
-wasm-tools compose \
+# 使用 wasm-tools 组合多个组件 wasm-tools compose \
     -o pipeline-composed.wasm \
     --config pipeline-config.yaml \
     pipeline-wrapper.wasm
@@ -1048,21 +1044,17 @@ wasm-tools compose \
 ```bash
 # 使用 wasmtime 进行组件测试
 
-# 1. 运行组件
-wasmtime run sensor_processor.wasm \
+# 1. 运行组件 wasmtime run sensor_processor.wasm \
     --wasm component-model \
     --env FLINK_CONFIG='{"min_temp":-40,"max_temp":85}'
 
-# 2. 使用 wasm-tools 验证接口
-wasm-tools component wit sensor_processor.wasm
+# 2. 使用 wasm-tools 验证接口 wasm-tools component wit sensor_processor.wasm
 
-# 3. 性能基准测试
-wasmtime run --profile=guest \
+# 3. 性能基准测试 wasmtime run --profile=guest \
     sensor_processor.wasm \
     --invoke process-batch
 
-# 4. 与 Java 集成测试
-mvn test -Dtest=WasiComponentOperatorTest
+# 4. 与 Java 集成测试 mvn test -Dtest=WasiComponentOperatorTest
 ```
 
 ---

@@ -806,8 +806,7 @@ class CheckpointChecker:
 **使用示例**:
 
 ```python
-# 从Flink日志提取的trace片段
-trace = [
+# 从Flink日志提取的trace片段 trace = [
     # (pre_state, post_state, action, params)
     ({
         'cp_id': 0,
@@ -910,8 +909,7 @@ class CCFConsensusTest:
 
         return True, self.trace
 
-# 运行测试
-test = CCFConsensusTest(['NodeA', 'NodeB', 'NodeC'])
+# 运行测试 test = CCFConsensusTest(['NodeA', 'NodeB', 'NodeC'])
 passed, trace = asyncio.run(test.run_scenario())
 ```
 
@@ -1017,8 +1015,7 @@ class FlinkLogParser:
 
         return states
 
-# 使用示例
-parser = FlinkLogParser()
+# 使用示例 parser = FlinkLogParser()
 states = parser.parse_log('flink-jobmanager.log')
 checker = CheckpointChecker(config)
 result = checker.verify_state_sequence(states)
@@ -1262,8 +1259,7 @@ CONSTRAINT Len(log[1]) <= 5
 ### 8.3 Trace验证集成到CI/CD
 
 ```yaml
-# .github/workflows/scv-check.yml
-name: Smart Casual Verification
+# .github/workflows/scv-check.yml name: Smart Casual Verification
 
 on: [push, pull_request]
 

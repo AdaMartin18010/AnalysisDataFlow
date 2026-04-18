@@ -359,8 +359,7 @@ public class SensorDataGenerator implements SourceFunction<SensorEvent> {
 ### 6.3 Prometheus + Grafana监控配置
 
 ```yaml
-# prometheus.yml 抓取配置
-scrape_configs:
+# prometheus.yml 抓取配置 scrape_configs:
   - job_name: 'flink-jobmanager'
     static_configs:
       - targets: ['jobmanager:9249']
@@ -375,16 +374,14 @@ scrape_configs:
 # 关键Grafana查询
 
 ```promql
-# 吞吐量
-rate(flink_taskmanager_job_task_numRecordsIn[1m])
+# 吞吐量 rate(flink_taskmanager_job_task_numRecordsIn[1m])
 
 # 延迟 (Operator级别)
 histogram_quantile(0.99,
   rate(flink_taskmanager_job_latency_histogram_latency[5m])
 )
 
-# Checkpoint持续时间
-flink_jobmanager_job_checkpoint_duration_time
+# Checkpoint持续时间 flink_jobmanager_job_checkpoint_duration_time
 ```
 
 ### 6.4 性能测试报告模板

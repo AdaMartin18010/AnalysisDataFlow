@@ -331,8 +331,7 @@ AsyncDataStream.unorderedWait(
 # 总进程内存 (根据设备调整)
 taskmanager.memory.process.size: 2048m
 
-# 堆内存配置
-taskmanager.memory.task.heap.size: 600m
+# 堆内存配置 taskmanager.memory.task.heap.size: 600m
 taskmanager.memory.framework.heap.size: 256m
 
 # 托管内存 (小状态场景减少)
@@ -343,8 +342,7 @@ taskmanager.memory.network.size: 153m
 taskmanager.memory.network.min: 64m
 taskmanager.memory.network.max: 256m
 
-# JVM参数优化
-env.java.opts.taskmanager: >
+# JVM参数优化 env.java.opts.taskmanager: >
   -XX: +UseG1GC
   -XX: MaxRAMPercentage=75.0
   -XX: +UseContainerSupport
@@ -621,8 +619,7 @@ $$
 taskmanager.numberOfTaskSlots: 2
 parallelism.default: 2
 
-# CPU限制配置
-taskmanager.cpu.cores: 2.0
+# CPU限制配置 taskmanager.cpu.cores: 2.0
 taskmanager.cpu.load-threshold: 0.8
 
 # 算子链优化 (减少线程开销)
@@ -641,8 +638,7 @@ taskmanager.network.memory.buffers-per-channel: 2
 **cgroup CPU限制 (Docker/K8s)**：
 
 ```yaml
-# Docker Compose
-services:
+# Docker Compose services:
   flink-taskmanager:
     deploy:
       resources:
@@ -653,8 +649,7 @@ services:
           cpus: '1.0'
           memory: 1G
 
-# Kubernetes
-resources:
+# Kubernetes resources:
   requests:
     cpu: "1000m"
     memory: "1536Mi"
@@ -673,26 +668,21 @@ resources:
 # 系统保留: 512MB
 # Flink可用: 2GB
 
-# flink-conf.yaml
-jobmanager.memory.process.size: 512m
+# flink-conf.yaml jobmanager.memory.process.size: 512m
 taskmanager.memory.process.size: 2048m
 
-# 精细内存分配
-taskmanager.memory.jvm-heap.size: 768m
+# 精细内存分配 taskmanager.memory.jvm-heap.size: 768m
 taskmanager.memory.managed.size: 512m
 taskmanager.memory.network.size: 200m
 taskmanager.memory.jvm-overhead.size: 568m
 
-# 框架内存
-taskmanager.memory.framework.heap.size: 256m
+# 框架内存 taskmanager.memory.framework.heap.size: 256m
 taskmanager.memory.framework.off-heap.size: 128m
 
-# 任务内存
-taskmanager.memory.task.heap.size: 512m
+# 任务内存 taskmanager.memory.task.heap.size: 512m
 taskmanager.memory.task.off-heap.size: 128m
 
-# GC优化
-taskmanager.memory.jvm-exclude-metaspace: true
+# GC优化 taskmanager.memory.jvm-exclude-metaspace: true
 ```
 
 **内存监控代码**：
@@ -829,15 +819,13 @@ public class PowerAwareSource<T> extends RichSourceFunction<T> {
 #!/bin/bash
 # edge-jvm-config.sh - 边缘设备JVM配置
 
-# 获取设备信息
-TOTAL_MEM=$(free -m | awk '/^Mem:/{print $2}')
+# 获取设备信息 TOTAL_MEM=$(free -m | awk '/^Mem:/{print $2}')
 AVAILABLE_MEM=$(free -m | awk '/^Mem:/{print $7}')
 CPU_CORES=$(nproc)
 
 echo "Device Info: ${TOTAL_MEM}MB RAM, ${CPU_CORES} Cores"
 
-# 根据内存大小选择配置
-case $TOTAL_MEM in
+# 根据内存大小选择配置 case $TOTAL_MEM in
     [0-2047])
         # 2GB以下 (Raspberry Pi等)
         FLINK_MEM="1536m"
@@ -880,8 +868,7 @@ case $TOTAL_MEM in
         ;;
 esac
 
-# 构建JVM参数
-export JVM_ARGS="
+# 构建JVM参数 export JVM_ARGS="
   -Xms${HEAP_MEM}
   -Xmx${HEAP_MEM}
   ${GC_OPTS}
@@ -897,8 +884,7 @@ export JVM_ARGS="
   -XX:ErrorFile=/data/flink/logs/hs_err_pid%p.log
 "
 
-# Flink内存配置
-export FLINK_JM_MEM="${HEAP_MEM}"
+# Flink内存配置 export FLINK_JM_MEM="${HEAP_MEM}"
 export FLINK_TM_MEM="${FLINK_MEM}"
 export FLINK_TM_MANAGED_MEM="${MANAGED_MEM}"
 

@@ -686,8 +686,7 @@ $$E_{serverless} \leq E_{reserved} \cdot \frac{\bar{\lambda}}{\mu} + E_{overhead
 **抽象层设计**：
 
 ```python
-# 可移植Serverless函数接口
-class PortableFunction:
+# 可移植Serverless函数接口 class PortableFunction:
     def __init__(self, config):
         self.state_store = StateStoreFactory.create(config.store_type)
         self.event_source = EventSourceFactory.create(config.source_type)
@@ -934,8 +933,7 @@ $$P_{cold} = \frac{1/300}{10 + 1/300} \approx 0.00033 = 0.033\%$$
 **配置**：
 
 ```yaml
-# serverless.yml
-service: click-stream-processor
+# serverless.yml service: click-stream-processor
 
 provider:
   name: aws
@@ -974,8 +972,7 @@ functions:
 **场景**：IoT设备数据实时分析
 
 ```python
-# handler.py
-import json
+# handler.py import json
 import logging
 from aliyun.log import LogClient
 
@@ -1039,20 +1036,16 @@ def handler(event, context):
 ```python
 import time
 
-# 分段测量
-start = time.time()
+# 分段测量 start = time.time()
 
-# 阶段1: 导入依赖
-import heavy_library_1  # ~500ms
+# 阶段1: 导入依赖 import heavy_library_1  # ~500ms
 import heavy_library_2  # ~300ms
 import_time = time.time()
 
-# 阶段2: 全局初始化
-client = create_client()  # ~800ms
+# 阶段2: 全局初始化 client = create_client()  # ~800ms
 init_time = time.time()
 
-# 阶段3: 处理请求
-result = process(event)  # ~200ms
+# 阶段3: 处理请求 result = process(event)  # ~200ms
 process_time = time.time()
 
 logger.info(f"Import: {import_time-start}ms, Init: {init_time-import_time}ms, Process: {process_time-init_time}ms")
@@ -1062,10 +1055,8 @@ logger.info(f"Import: {import_time-start}ms, Init: {init_time-import_time}ms, Pr
 
 1. **精简依赖**：仅导入必要模块
    ```python
-# 优化前
-import pandas as pd  # 300MB
-# 优化后
-import csv  # 内置,轻量
+# 优化前 import pandas as pd  # 300MB
+# 优化后 import csv  # 内置,轻量
    ```
 
 2. **延迟初始化**：按需创建客户端
@@ -1163,8 +1154,7 @@ def stream_processor(params):
 **部署配置**：
 
 ```yaml
-# manifest.yaml
-packages:
+# manifest.yaml packages:
   streaming-analytics:
     version: 1.0.0
     actions:
@@ -1529,11 +1519,9 @@ graph LR
 
 1. **请求打包**：合并小请求，减少调用次数
    ```python
-# 优化前: 1000次独立调用
-for record in records:
+# 优化前: 1000次独立调用 for record in records:
     invoke_lambda(record)  # $0.0000002 x 1000 = $0.0002
-# 优化后: 1次批量调用
-invoke_lambda_batch(records)  # $0.0000002 x 1 = $0.0000002
+# 优化后: 1次批量调用 invoke_lambda_batch(records)  # $0.0000002 x 1 = $0.0000002
    ```
 
 2. **内存调优**：找到成本和性能的平衡点

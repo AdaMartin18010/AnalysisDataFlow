@@ -810,14 +810,11 @@ Delta Lake ←──────────────────────
 ### 8.3 压缩策略
 
 ```python
-# Spark OPTIMIZE
-spark.sql("OPTIMIZE delta_table")
+# Spark OPTIMIZE spark.sql("OPTIMIZE delta_table")
 
-# 按分区优化
-spark.sql("OPTIMIZE delta_table WHERE date >= '2024-01-01'")
+# 按分区优化 spark.sql("OPTIMIZE delta_table WHERE date >= '2024-01-01'")
 
-# 自动优化
-spark.sql("""
+# 自动优化 spark.sql("""
     ALTER TABLE delta_table SET TBLPROPERTIES (
         'delta.autoOptimize.optimizeWrite' = 'true',
         'delta.autoOptimize.autoCompact' = 'true'

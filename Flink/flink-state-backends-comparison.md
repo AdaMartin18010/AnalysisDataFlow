@@ -401,8 +401,7 @@ flowchart LR
 #### 基准测试环境
 
 ```yaml
-# 测试集群配置
-TaskManager: 3 nodes × 16 cores × 64GB RAM
+# 测试集群配置 TaskManager: 3 nodes × 16 cores × 64GB RAM
 CPU: Intel Xeon Gold 6248 @ 2.5GHz
 Disk: NVMe SSD 2TB (RocksDB), RAM (HashMap)
 Network: 25Gbps
@@ -616,8 +615,7 @@ config.set(ForStOptions.RECOVERY_THREADS, 16);
 # Total Memory = block-cache-size + (memtable-size × write-buffer-number)
 # write-buffer-number = column-family-count × 2 (通常默认)
 
-# 推荐配置 (32GB RAM TaskManager):
-block-cache-size: 8GB              # 25% of TM memory
+# 推荐配置 (32GB RAM TaskManager): block-cache-size: 8GB              # 25% of TM memory
 memtable-size: 128MB               # 默认 64MB
 write-buffer-number: 4             # 根据 CF 数量调整
 managed-memory-fraction: 0.4       # 40% 给 RocksDB
@@ -632,8 +630,7 @@ managed-memory-fraction: 0.4       # 40% 给 RocksDB
 # 点查多 → 启用 Bloom Filter
 # 范围查多 → 禁用 Bloom Filter (节省内存)
 
-# 5. 检查点优化
-incremental-checkpoint: true       # 必须启用
+# 5. 检查点优化 incremental-checkpoint: true       # 必须启用
 min-pause-between-checkpoints: 30s # 避免过于频繁
 timeout: 10min                     # 根据状态大小调整
 ```

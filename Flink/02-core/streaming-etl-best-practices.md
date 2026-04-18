@@ -1381,8 +1381,7 @@ RocksDB 内存 = 写缓冲区 (64MB × 列族数) + 块缓存 (总内存 × 0.3)
 **资源配置示例**:
 
 ```yaml
-# flink-conf.yaml
-jobmanager.memory.process.size: 2048mb
+# flink-conf.yaml jobmanager.memory.process.size: 2048mb
 taskmanager.memory.process.size: 8192mb
 taskmanager.memory.flink.size: 6144mb
 taskmanager.memory.managed.size: 2048mb  # RocksDB 使用
@@ -1390,8 +1389,7 @@ taskmanager.memory.managed.size: 2048mb  # RocksDB 使用
 taskmanager.memory.network.min: 128mb
 taskmanager.memory.network.max: 256mb
 
-# RocksDB 调优
-state.backend.rocksdb.memory.fixed-per-slot: 512mb
+# RocksDB 调优 state.backend.rocksdb.memory.fixed-per-slot: 512mb
 state.backend.rocksdb.memory.high-prio-pool-ratio: 0.1
 state.backend.rocksdb.threads.threads-number: 4
 state.backend.incremental: true

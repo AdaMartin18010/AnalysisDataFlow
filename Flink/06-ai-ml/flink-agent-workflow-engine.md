@@ -37,8 +37,7 @@ $$
 **定义**: Agent工作流是可执行的业务流程定义，采用声明式DSL描述：
 
 ```yaml
-# 工作流定义Schema
-workflow:
+# 工作流定义Schema workflow:
   id: string                    # 工作流标识
   name: string                  # 显示名称
   version: string               # 语义化版本
@@ -1223,8 +1222,7 @@ WorkflowDefinition workflow = WorkflowBuilder
 ### 5.5 生产部署配置
 
 ```yaml
-# flink-agent-workflow-deployment.yaml
-apiVersion: flink.apache.org/v1beta1
+# flink-agent-workflow-deployment.yaml apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: agent-workflow-engine
@@ -1295,8 +1293,7 @@ spec:
     taskmanager.memory.network.max: 512mb
 
 ---
-# Service配置
-apiVersion: v1
+# Service配置 apiVersion: v1
 kind: Service
 metadata:
   name: agent-workflow-api
@@ -1309,8 +1306,7 @@ spec:
   type: LoadBalancer
 
 ---
-# 工作流配置ConfigMap
-apiVersion: v1
+# 工作流配置ConfigMap apiVersion: v1
 kind: ConfigMap
 metadata:
   name: workflow-definitions

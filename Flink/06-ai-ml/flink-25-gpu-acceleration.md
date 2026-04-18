@@ -1010,44 +1010,35 @@ public class TensorRTInferenceOperator
 # Flink-CUDA GPU加速配置
 # ========================================
 
-# 启用GPU支持
-gpu.enabled: true  # 前瞻性配置: Flink 2.5规划中
+# 启用GPU支持 gpu.enabled: true  # 前瞻性配置: Flink 2.5规划中
 
-# 每个TaskManager可用的GPU设备
-gpu.devices.per-taskmanager: 1  # 前瞻性配置: Flink 2.5规划中
+# 每个TaskManager可用的GPU设备 gpu.devices.per-taskmanager: 1  # 前瞻性配置: Flink 2.5规划中
 
-# GPU内存池配置
-gpu.memory.pool.size: 4gb  # 前瞻性配置: Flink 2.5规划中
+# GPU内存池配置 gpu.memory.pool.size: 4gb  # 前瞻性配置: Flink 2.5规划中
 gpu.memory.pool.preallocate: true  # 前瞻性配置: Flink 2.5规划中
 
-# CUDA流配置
-gpu.cuda.streams: 4  # 前瞻性配置: Flink 2.5规划中
+# CUDA流配置 gpu.cuda.streams: 4  # 前瞻性配置: Flink 2.5规划中
 gpu.cuda.stream-priority: high  # 前瞻性配置: Flink 2.5规划中
 
-# 批处理阈值
-gpu.batch.min-size: 1000  # 前瞻性配置: Flink 2.5规划中
+# 批处理阈值 gpu.batch.min-size: 1000  # 前瞻性配置: Flink 2.5规划中
 gpu.batch.max-size: 100000  # 前瞻性配置: Flink 2.5规划中
 gpu.batch.timeout-ms: 50  # 前瞻性配置: Flink 2.5规划中
 
-# 算子自动卸载策略
-gpu.offload.policy: adaptive  # 前瞻性配置: Flink 2.5规划中
+# 算子自动卸载策略 gpu.offload.policy: adaptive  # 前瞻性配置: Flink 2.5规划中
 gpu.offload.threshold.cpu-gpu-ratio: 5.0  # 前瞻性配置: Flink 2.5规划中
 
-# 数据传输优化
-gpu.memory.use-unified: true  # 前瞻性配置: Flink 2.5规划中
+# 数据传输优化 gpu.memory.use-unified: true  # 前瞻性配置: Flink 2.5规划中
 gpu.memory.use-pinned: true  # 前瞻性配置: Flink 2.5规划中
 gpu.transfer.async: true  # 前瞻性配置: Flink 2.5规划中
 
-# 故障恢复
-gpu.checkpoint.sync-before: true  # 前瞻性配置: Flink 2.5规划中
+# 故障恢复 gpu.checkpoint.sync-before: true  # 前瞻性配置: Flink 2.5规划中
 gpu.recovery.reuse-context: true  # 前瞻性配置: Flink 2.5规划中
 ```
 
 **Kubernetes GPU调度配置：**
 
 ```yaml
-# flink-deployment-gpu.yaml
-apiVersion: flink.apache.org/v1beta1
+# flink-deployment-gpu.yaml apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: flink-gpu-job

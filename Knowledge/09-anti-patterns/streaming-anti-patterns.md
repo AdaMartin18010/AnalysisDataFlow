@@ -305,8 +305,7 @@ val kafkaSource = KafkaSource.builder()
 **2. 自动扩缩容** [^6]：
 
 ```yaml
-# Flink Kubernetes Operator 自动伸缩配置
-spec:
+# Flink Kubernetes Operator 自动伸缩配置 spec:
   autoScaler:
     enabled: true
     targetUtilization: 0.7

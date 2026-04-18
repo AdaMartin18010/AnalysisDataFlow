@@ -1380,14 +1380,11 @@ SQL 可表达 → RisingWave
 
 ```yaml
 # RisingWave 扩容(热扩容,无需停服务)
-# 计算节点扩容
-kubectl scale deployment risingwave-compute --replicas=8
+# 计算节点扩容 kubectl scale deployment risingwave-compute --replicas=8
 
 # Flink 扩容(需保存点重启)
-# 1. 触发保存点
-flink savepoint <job-id>
-# 2. 修改并行度
-flink run -s <savepoint-path> -p 16 <jar>
+# 1. 触发保存点 flink savepoint <job-id>
+# 2. 修改并行度 flink run -s <savepoint-path> -p 16 <jar>
 ```
 
 **故障恢复**：

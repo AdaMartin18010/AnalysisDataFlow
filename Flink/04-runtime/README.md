@@ -353,8 +353,7 @@ flowchart TD
 ### 7.1 部署架构建议
 
 ```yaml
-# 生产级 K8s 部署配置示例
-apiVersion: flink.apache.org/v1beta1
+# 生产级 K8s 部署配置示例 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: production-job

@@ -323,8 +323,7 @@ class StreamingLLMKGReasoner:
 ### 6.3 提示工程模板：事实冲突处理
 
 ```markdown
-# Role
-你是一个基于时序知识图谱的推理助手。
+# Role 你是一个基于时序知识图谱的推理助手。
 
 # Rules
 1. 优先信任"已知事实"部分提供的信息，即使它与你的先验知识冲突。
@@ -332,14 +331,11 @@ class StreamingLLMKGReasoner:
 3. 每个结论都必须引用对应的已知事实编号。
 4. 注意事实的时间有效性，只在查询时间范围内成立的事实才能作为证据。
 
-# Known Facts
-{context}
+# Known Facts {context}
 
-# Question
-{query}
+# Question {query}
 
-# Answer Format
-结论: [你的答案]
+# Answer Format 结论: [你的答案]
 证据: [事实编号列表]
 解释: [推理过程的简短说明]
 ```

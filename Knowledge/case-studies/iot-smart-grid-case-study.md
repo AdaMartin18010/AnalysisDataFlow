@@ -515,19 +515,16 @@ WHERE ABS(m.avg_power - h.historical_avg) / h.historical_std > 3.0;
 **Flink作业配置**:
 
 ```yaml
-# 实时数据处理作业
-job.name: SmartGrid-Realtime-Processing
+# 实时数据处理作业 job.name: SmartGrid-Realtime-Processing
 parallelism.default: 320
 
-# 状态后端配置
-state.backend: rocksdb
+# 状态后端配置 state.backend: rocksdb
 state.backend.incremental: true
 state.checkpoints.dir: hdfs:///checkpoints/smartgrid
 execution.checkpointing.interval: 60s
 execution.checkpointing.externalized-checkpoint-retention: RETAIN_ON_CANCELLATION
 
-# 网络缓冲
-taskmanager.memory.network.fraction: 0.15
+# 网络缓冲 taskmanager.memory.network.fraction: 0.15
 taskmanager.memory.network.max: 256mb
 ```
 
@@ -557,14 +554,11 @@ taskmanager.memory.network.max: 256mb
 
 ```bash
 # 主备切换检查清单
-# 1. 数据同步延迟检查
-influx -database smartgrid -execute "SELECT count(*) FROM meter_data WHERE time > now() - 1m"
+# 1. 数据同步延迟检查 influx -database smartgrid -execute "SELECT count(*) FROM meter_data WHERE time > now() - 1m"
 
-# 2. Flink Checkpoint验证
-hdfs dfs -ls /checkpoints/smartgrid/
+# 2. Flink Checkpoint验证 hdfs dfs -ls /checkpoints/smartgrid/
 
-# 3. 网络连通性验证
-ping -c 10 backup-datacenter.example.com
+# 3. 网络连通性验证 ping -c 10 backup-datacenter.example.com
 ```
 
 ---

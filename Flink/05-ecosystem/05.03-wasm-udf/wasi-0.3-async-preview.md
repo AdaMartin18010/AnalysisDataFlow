@@ -987,29 +987,25 @@ rustup component add rust-src --toolchain nightly
 cargo install cargo-component --version "^0.20" --locked
 
 # 3. 安装 Wasmtime 37+ (实验性版本)
-# macOS/Linux
-curl https://wasmtime.dev/install.sh -sSf | bash -s -- --version 37.0.0
+# macOS/Linux curl https://wasmtime.dev/install.sh -sSf | bash -s -- --version 37.0.0
 
 # Windows
 # 从 GitHub Releases 下载 wasmtime-v37.0.0-x86_64-windows.zip
 
-# 4. 验证安装
-wasmtime --version
+# 4. 验证安装 wasmtime --version
 # 期望输出: wasmtime-cli 37.0.0
 ```
 
 **创建 WASI 0.3 项目**:
 
 ```bash
-# 创建组件项目
-cargo component new --lib async-demo
+# 创建组件项目 cargo component new --lib async-demo
 cd async-demo
 
 # 更新 Cargo.toml 使用 WASI 0.3 目标
 # 见上文 6.2 节配置
 
-# 添加 WIT 文件
-mkdir -p wit
+# 添加 WIT 文件 mkdir -p wit
 cat > wit/world.wit << 'EOF'
 package example:async-demo@0.1.0;
 
@@ -1026,14 +1022,11 @@ EOF
 **构建和测试**:
 
 ```bash
-# 构建 WASI 0.3 组件
-RUSTFLAGS="--cfg wasi_preview3" cargo component build --release
+# 构建 WASI 0.3 组件 RUSTFLAGS="--cfg wasi_preview3" cargo component build --release
 
-# 验证组件结构
-wasm-tools component wit target/wasm32-wasi/release/async_demo.wasm
+# 验证组件结构 wasm-tools component wit target/wasm32-wasi/release/async_demo.wasm
 
-# 使用 Wasmtime 37+ 运行测试
-wasmtime run \
+# 使用 Wasmtime 37+ 运行测试 wasmtime run \
     --wasm-features component-model,async \
     --wasi-modules experimental-wasi-0-3 \
     target/wasm32-wasi/release/async_demo.wasm

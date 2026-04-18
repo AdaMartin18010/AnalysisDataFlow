@@ -838,16 +838,14 @@ tEnv.createTemporaryView("classified_logs", classified);
 ```
 
 ```python
-# Python Table API - 异步 ML_PREDICT
-from pyflink.table import StreamTableEnvironment
+# Python Table API - 异步 ML_PREDICT from pyflink.table import StreamTableEnvironment
 from pyflink.table.expressions import col, lit, call
 
 t_env = StreamTableEnvironment.create(env)
 
 events = t_env.from_path("user_logs")
 
-# Table API 异步预测
-classified = events.select(
+# Table API 异步预测 classified = events.select(
     col("user_id"),
     col("log_message"),
     call("ML_PREDICT", lit("log_classifier"), col("log_message")).alias("prediction")

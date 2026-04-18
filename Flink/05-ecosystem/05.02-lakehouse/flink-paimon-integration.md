@@ -1582,8 +1582,7 @@ public class PaimonCompactionJob {
 # 通过 Flink Metrics Reporter 收集
 
 # 表级别指标
-# paimon.table.<table_name>.snapshot.latest
-curl http://flink-jobmanager:9241/metrics
+# paimon.table.<table_name>.snapshot.latest curl http://flink-jobmanager:9241/metrics
 
 # 或使用 Prometheus 集成
 ```
@@ -2125,31 +2124,25 @@ $$
 from pypaimon import CatalogFactory
 from pypaimon.common.core_options import CoreOptions
 
-# 1. 连接 Catalog
-catalog = CatalogFactory.create({
+# 1. 连接 Catalog catalog = CatalogFactory.create({
     'warehouse': 'oss://my-bucket/paimon-warehouse',
     'metastore': 'hive',
     'uri': 'thrift://hive-metastore:9083'
 })
 
-# 2. 获取表
-table = catalog.get_table('default.user_events')
+# 2. 获取表 table = catalog.get_table('default.user_events')
 
-# 3. 投影 + 谓词下推
-read_builder = (table.new_read_builder()
+# 3. 投影 + 谓词下推 read_builder = (table.new_read_builder()
     .with_projection(['user_id', 'event_type', 'amount'])
     .with_filter(predicate_builder.greater_than('amount', 100)))
 
-# 4. 读取为 Arrow
-splits = read_builder.new_scan().plan().splits()
+# 4. 读取为 Arrow splits = read_builder.new_scan().plan().splits()
 arrow_table = read_builder.new_read().to_arrow(splits)
 
-# 5. 转换为 pandas 进行 AI 特征工程
-df = arrow_table.to_pandas()
+# 5. 转换为 pandas 进行 AI 特征工程 df = arrow_table.to_pandas()
 features = df.groupby('user_id').agg({'amount': 'sum'})
 
-# 6. 增量读取（用于在线学习）
-table_inc = table.copy({
+# 6. 增量读取（用于在线学习） table_inc = table.copy({
     CoreOptions.INCREMENTAL_BETWEEN_TIMESTAMP: f"{t1},{t2}"
 })
 ```

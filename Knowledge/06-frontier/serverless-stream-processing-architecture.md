@@ -453,8 +453,7 @@ flowchart TB
 **Lambda函数实现**:
 
 ```python
-# 风控评分Lambda
-import json
+# 风控评分Lambda import json
 import boto3
 import redis
 from datetime import datetime, timedelta

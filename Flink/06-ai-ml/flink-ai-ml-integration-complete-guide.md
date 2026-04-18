@@ -1156,12 +1156,10 @@ import json
 # 智能销售分析Agent - PyFlink实现
 # ============================================
 
-# 创建Agent环境
-env = StreamExecutionEnvironment.get_execution_environment()
+# 创建Agent环境 env = StreamExecutionEnvironment.get_execution_environment()
 env.set_parallelism(2)
 
-# 定义Agent
-sales_agent = Agent.builder() \
+# 定义Agent sales_agent = Agent.builder() \
     .name("sales-analytics-agent") \
     .model(ModelEndpoint.anthropic("claude-3-opus")) \
     .system_prompt("""
@@ -1175,8 +1173,7 @@ sales_agent = Agent.builder() \
 
 # ============================================
 # 注册SQL工具
-# ============================================
-@sales_agent.tool(
+# ============================================ @sales_agent.tool(
     name="query_sales",
     description="查询指定时间范围的销售数据",
     parameters={
@@ -1215,8 +1212,7 @@ def query_sales(time_range: str, product_category: str = None, region: str = Non
 
 # ============================================
 # 注册Python工具 - 趋势分析
-# ============================================
-@sales_agent.tool(
+# ============================================ @sales_agent.tool(
     name="forecast_trend",
     description="基于历史数据预测销售趋势"
 )
@@ -1254,8 +1250,7 @@ def forecast_trend(data_points: list) -> str:
 
 # ============================================
 # 注册MCP工具
-# ============================================
-@sales_agent.tool(
+# ============================================ @sales_agent.tool(
     name="search_competitor_info",
     description="搜索竞争对手信息",
     mcp_server="market-intelligence",
@@ -1268,8 +1263,7 @@ def search_competitor_info(company_name: str) -> dict:
 
 # ============================================
 # Agent事件处理
-# ============================================
-@sales_agent.on_event("sales_query")
+# ============================================ @sales_agent.on_event("sales_query")
 def handle_sales_query(query: str, context: AgentContext):
     # 访问工作记忆
     conversation_history = context.working_memory.get_conversation_history(limit=5)
@@ -1315,8 +1309,7 @@ def handle_sales_query(query: str, context: AgentContext):
 
 # ============================================
 # A2A协作 - 与市场分析Agent通信
-# ============================================
-@sales_agent.on_event("market_analysis_needed")
+# ============================================ @sales_agent.on_event("market_analysis_needed")
 def request_market_analysis(query: str, context: AgentContext):
     # 发送A2A消息给市场分析Agent
     response = sales_agent.send_a2a(
@@ -1333,8 +1326,7 @@ def request_market_analysis(query: str, context: AgentContext):
 
 # ============================================
 # 启动Agent
-# ============================================
-if __name__ == "__main__":
+# ============================================ if __name__ == "__main__":
     sales_agent.execute(env)
 ```
 
@@ -2197,44 +2189,37 @@ GROUP BY
 # ============================================
 # 1. Agent运行时配置
 # ============================================
-# Agent状态后端
-flink.agent.state.backend: rocksdb
+# Agent状态后端 flink.agent.state.backend: rocksdb
 flink.agent.state.backend.incremental: true
 flink.agent.state.backend.rocksdb.memory.managed: true
 flink.agent.state.backend.rocksdb.predefined-options: FLASH_SSD_OPTIMIZED
 
-# Agent Checkpoint配置
-flink.agent.checkpoint.interval: 60000
+# Agent Checkpoint配置 flink.agent.checkpoint.interval: 60000
 flink.agent.checkpoint.min-pause-between-checkpoints: 30000
 flink.agent.checkpoint.timeout: 600000
 flink.agent.checkpoint.max-concurrent: 1
 
-# Agent内存配置
-flink.agent.memory.process.size: 4096m
+# Agent内存配置 flink.agent.memory.process.size: 4096m
 flink.agent.memory.managed.fraction: 0.3
 flink.agent.memory.network.fraction: 0.15
 
 # ============================================
 # 2. LLM集成配置
 # ============================================
-# 异步推理配置
-flink.ml.async.timeout: 30s
+# 异步推理配置 flink.ml.async.timeout: 30s
 flink.ml.async.capacity: 100
 flink.ml.async.retry.max-attempts: 3
 flink.ml.async.retry.delay: 1s
 
-# 批处理优化
-flink.ml.batch.size: 50
+# 批处理优化 flink.ml.batch.size: 50
 flink.ml.batch.timeout: 100ms
 
-# 连接池配置
-flink.ml.connection.pool.max-size: 20
+# 连接池配置 flink.ml.connection.pool.max-size: 20
 flink.ml.connection.keep-alive: 60s
 
 # ============================================
 # 3. A2A通信配置
-# ============================================
-flink.agent.a2a.transport: kafka
+# ============================================ flink.agent.a2a.transport: kafka
 flink.agent.a2a.kafka.topic.prefix: flink.a2a
 flink.agent.a2a.kafka.retries: 3
 flink.agent.a2a.message.timeout: 30s
@@ -2242,16 +2227,14 @@ flink.agent.a2a.delivery.semantic: exactly-once
 
 # ============================================
 # 4. MCP协议配置
-# ============================================
-flink.agent.mcp.enabled: true
+# ============================================ flink.agent.mcp.enabled: true
 flink.agent.mcp.server.timeout: 10s
 flink.agent.mcp.cache.size: 1000
 flink.agent.mcp.cache.ttl: 300s
 
 # ============================================
 # 5. 向量搜索配置
-# ============================================
-flink.sql.vector.search.default.metric: COSINE
+# ============================================ flink.sql.vector.search.default.metric: COSINE
 flink.sql.vector.search.default.top-k: 5
 flink.sql.vector.search.batch.size: 100
 flink.sql.vector.search.cache.enabled: true
@@ -2259,8 +2242,7 @@ flink.sql.vector.search.cache.size: 10000
 
 # ============================================
 # 6. 成本控制配置
-# ============================================
-flink.ml.cost.budget.enabled: true
+# ============================================ flink.ml.cost.budget.enabled: true
 flink.ml.cost.budget.daily.limit: 100.0
 flink.ml.cost.budget.alert.threshold: 0.8
 flink.ml.cost.cache.enabled: true
@@ -2268,8 +2250,7 @@ flink.ml.cost.cache.similarity.threshold: 0.95
 
 # ============================================
 # 7. 监控配置
-# ============================================
-flink.metrics.reporters: prom
+# ============================================ flink.metrics.reporters: prom
 flink.metrics.reporter.prom.class: org.apache.flink.metrics.prometheus.PrometheusReporter
 flink.metrics.reporter.prom.port: 9249
 flink.metrics.scope.agent: <host>.agent.<agent_name>

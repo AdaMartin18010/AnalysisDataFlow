@@ -953,15 +953,13 @@ graph TB
 ```python
 from auto_gptq import AutoGPTQForCausalLM, BaseQuantizeConfig
 
-# 配置量化参数
-quantize_config = BaseQuantizeConfig(
+# 配置量化参数 quantize_config = BaseQuantizeConfig(
     bits=4,
     group_size=128,
     desc_act=False,
 )
 
-# 加载模型并量化
-model = AutoGPTQForCausalLM.from_pretrained(
+# 加载模型并量化 model = AutoGPTQForCausalLM.from_pretrained(
     model_name,
     quantize_config=quantize_config,
 )
@@ -972,14 +970,11 @@ model.save_quantized(output_dir)
 ### B.2 llama.cpp转换示例
 
 ```bash
-# 下载并转换模型
-python convert-hf-to-gguf.py models/Qwen2.5-7B/
+# 下载并转换模型 python convert-hf-to-gguf.py models/Qwen2.5-7B/
 
-# 量化模型
-./quantize models/Qwen2.5-7B-f16.gguf models/Qwen2.5-7B-Q4_K_M.gguf Q4_K_M
+# 量化模型 ./quantize models/Qwen2.5-7B-f16.gguf models/Qwen2.5-7B-Q4_K_M.gguf Q4_K_M
 
-# 推理测试
-./main -m models/Qwen2.5-7B-Q4_K_M.gguf -p "你好" -n 100
+# 推理测试 ./main -m models/Qwen2.5-7B-Q4_K_M.gguf -p "你好" -n 100
 ```
 
 ### B.3 TensorRT-LLM构建示例
@@ -987,16 +982,14 @@ python convert-hf-to-gguf.py models/Qwen2.5-7B/
 ```python
 from tensorrt_llm import Builder
 
-# 构建引擎
-builder = Builder()
+# 构建引擎 builder = Builder()
 builder_config = builder.create_builder_config(
     name='qwen',
     precision='fp16',
     use_fp8=True,
 )
 
-# 编译模型
-engine = builder.build_engine(network, builder_config)
+# 编译模型 engine = builder.build_engine(network, builder_config)
 engine.save('qwen_7b_fp8.engine')
 ```
 

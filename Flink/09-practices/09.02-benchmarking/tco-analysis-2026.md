@@ -695,8 +695,7 @@ class TCOCalculator:
 - 单位成本: ${tco_result['cost_per_million_events']:.3f}/M events
 - 效率等级: {tco_result['cost_efficiency_grade']}
 
-## 优化建议
-"""
+## 优化建议 """
         if tco_result['cost_per_million_events'] > 0.25:
             report += """
 1. 启用自动扩缩容 (预期节省20-30%)
@@ -705,8 +704,7 @@ class TCOCalculator:
 """
         return report
 
-# 使用示例
-if __name__ == '__main__':
+# 使用示例 if __name__ == '__main__':
     calculator = TCOCalculator('aws')
 
     # 配置资源

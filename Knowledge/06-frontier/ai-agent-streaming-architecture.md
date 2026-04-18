@@ -888,8 +888,7 @@ sequenceDiagram
 **护栏与边界 (Guardrails)**:
 
 ```yaml
-# Guardrails配置示例
-guardrails:
+# Guardrails配置示例 guardrails:
   input:
     - type: toxicity_filter
       threshold: 0.8

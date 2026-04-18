@@ -1823,8 +1823,7 @@ enum StateSyncMsg {
 **技术1：AOT 预编译**
 
 ```bash
-# WasmTime AOT 编译
-wasmtime compile module.wasm -o module.cwasm
+# WasmTime AOT 编译 wasmtime compile module.wasm -o module.cwasm
 
 # 运行时直接加载预编译模块 (启动时间 < 1ms)
 wasmtime run --allow-precompiled module.cwasm
@@ -2083,14 +2082,12 @@ func main() {}
 **构建命令**：
 
 ```bash
-# Rust 构建
-wasm-pack build --target web --release
+# Rust 构建 wasm-pack build --target web --release
 
 # TinyGo 构建 (最小体积)
 tinygo build -o processor.wasm -target wasm -no-debug -gc=leaking -scheduler=none .
 
-# 使用 wasm-opt 优化
-wasm-opt -O4 -o processor.opt.wasm processor.wasm
+# 使用 wasm-opt 优化 wasm-opt -O4 -o processor.opt.wasm processor.wasm
 ```
 
 **性能对比 (Rust vs TinyGo vs AssemblyScript)**：
@@ -2378,8 +2375,7 @@ class WasmUDF extends UserDefinedFunction {
 **场景**：事件驱动的无服务器流处理，按需扩容，按调用计费。
 
 ```yaml
-# serverless-wasm.yaml
-apiVersion: serving.knative.dev/v1
+# serverless-wasm.yaml apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
   name: wasm-stream-processor
@@ -2547,8 +2543,7 @@ impl GuestSource for RedisSource {
 **部署配置**：
 
 ```yaml
-# wasm-function.yaml
-apiVersion: wasm.cloud/v1
+# wasm-function.yaml apiVersion: wasm.cloud/v1
 kind: WasmFunction
 metadata:
   name: stream-processor

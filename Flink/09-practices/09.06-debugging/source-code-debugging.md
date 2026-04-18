@@ -688,22 +688,19 @@ CheckpointCoordinator
 **JobManager 远程调试配置**:
 
 ```bash
-# flink-conf.yaml
-env.java.opts.jobmanager: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
+# flink-conf.yaml env.java.opts.jobmanager: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
 ```
 
 **TaskManager 远程调试配置**:
 
 ```bash
-# flink-conf.yaml
-env.java.opts.taskmanager: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006"
+# flink-conf.yaml env.java.opts.taskmanager: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006"
 ```
 
 **启动脚本修改** (`bin/jobmanager.sh` / `bin/taskmanager.sh`):
 
 ```bash
-# 添加 DEBUG 模式
-if [ "${FLINK_DEBUG}" = "true" ]; then
+# 添加 DEBUG 模式 if [ "${FLINK_DEBUG}" = "true" ]; then
     JVM_ARGS="${JVM_ARGS} -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:${DEBUG_PORT}"
 fi
 ```
@@ -724,22 +721,19 @@ Command line arguments: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,ad
 **YARN Session 模式调试**:
 
 ```bash
-# 启动 YARN Session,开启 JM 调试
-./bin/yarn-session.sh \
+# 启动 YARN Session,开启 JM 调试 ./bin/yarn-session.sh \
     -jm 1024 \
     -tm 2048 \
     -Denv.java.opts.jobmanager="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
 
-# 获取 Application ID 并查看日志
-yarn application -list
+# 获取 Application ID 并查看日志 yarn application -list
 yarn logs -applicationId <application_id>
 ```
 
 **Per-Job 模式调试**:
 
 ```bash
-# 提交作业时开启调试
-./bin/flink run \
+# 提交作业时开启调试 ./bin/flink run \
     -m yarn-cluster \
     -yjm 1024 \
     -ytm 2048 \
@@ -751,21 +745,17 @@ yarn logs -applicationId <application_id>
 **查找 Container 主机**:
 
 ```bash
-# 获取 Container 列表
-yarn container -list <application_id>
+# 获取 Container 列表 yarn container -list <application_id>
 
-# 获取 Container 日志
-yarn logs -applicationId <app_id> -containerId <container_id>
+# 获取 Container 日志 yarn logs -applicationId <app_id> -containerId <container_id>
 
-# 通过 SSH 登录到 NodeManager 节点
-ssh <nodemanager-host>
+# 通过 SSH 登录到 NodeManager 节点 ssh <nodemanager-host>
 ```
 
 **YARN 调试隧道建立**:
 
 ```bash
-# 建立端口转发,将远程调试端口映射到本地
-ssh -L 5005:<container-host>:5005 -L 5006:<container-host>:5006 <gateway-host>
+# 建立端口转发,将远程调试端口映射到本地 ssh -L 5005:<container-host>:5005 -L 5006:<container-host>:5006 <gateway-host>
 
 # IDEA 配置连接 localhost:5005
 ```
@@ -825,27 +815,21 @@ spec:
 **端口转发建立**:
 
 ```bash
-# JobManager 调试端口
-kubectl port-forward deployment/flink-jobmanager 5005:5005
+# JobManager 调试端口 kubectl port-forward deployment/flink-jobmanager 5005:5005
 
-# 特定 TaskManager Pod 调试端口
-kubectl port-forward pod/flink-taskmanager-xxx 5006:5006
+# 特定 TaskManager Pod 调试端口 kubectl port-forward pod/flink-taskmanager-xxx 5006:5006
 
-# 或使用 kubectl debug 创建临时调试容器
-kubectl debug pod/flink-taskmanager-xxx -it --image=busybox --target=taskmanager
+# 或使用 kubectl debug 创建临时调试容器 kubectl debug pod/flink-taskmanager-xxx -it --image=busybox --target=taskmanager
 ```
 
 **使用 Telepresence 进行调试**:
 
 ```bash
-# 安装 Telepresence
-brew install telepresence
+# 安装 Telepresence brew install telepresence
 
-# 连接到 K8s 集群
-telepresence connect
+# 连接到 K8s 集群 telepresence connect
 
-# 拦截 JobManager 服务进行调试
-telepresence intercept flink-jobmanager --port 5005:5005
+# 拦截 JobManager 服务进行调试 telepresence intercept flink-jobmanager --port 5005:5005
 
 # 现在本地 IDEA 可以直接连接到集群内服务
 ```
@@ -1076,8 +1060,7 @@ public void checkAndWaitForBuffers() throws IOException {
 # 启动 Flink 时添加 JProfiler agent
 -agentpath:/path/to/libjprofilertier.so=port=8849,nowait
 
-# 或通过 Attach API 连接到运行中的进程
-jpenable --pid=<flink_pid> --port=8849
+# 或通过 Attach API 连接到运行中的进程 jpenable --pid=<flink_pid> --port=8849
 ```
 
 **CPU Profiling 配置**:
@@ -1115,51 +1098,40 @@ jpenable --pid=<flink_pid> --port=8849
 **基本使用**:
 
 ```bash
-# 下载 async-profiler
-wget https://github.com/jvm-profiling-tools/async-profiler/releases/download/v3.0/async-profiler-3.0-linux-x64.tar.gz
+# 下载 async-profiler wget https://github.com/jvm-profiling-tools/async-profiler/releases/download/v3.0/async-profiler-3.0-linux-x64.tar.gz
 tar -xzf async-profiler-3.0-linux-x64.tar.gz
 
-# 获取 Flink 进程 PID
-jps -lvm | grep flink
+# 获取 Flink 进程 PID jps -lvm | grep flink
 
 # CPU 分析(生成火焰图)
 ./profiler.sh -d 60 -f /tmp/flamegraph.html <flink_pid>
 
-# 内存分配分析
-./profiler.sh -e alloc -d 60 -f /tmp/alloc.html <flink_pid>
+# 内存分配分析 ./profiler.sh -e alloc -d 60 -f /tmp/alloc.html <flink_pid>
 
-# 锁竞争分析
-./profiler.sh -e lock -d 60 -f /tmp/lock.html <flink_pid>
+# 锁竞争分析 ./profiler.sh -e lock -d 60 -f /tmp/lock.html <flink_pid>
 ```
 
 **与 Flink 容器集成**:
 
 ```dockerfile
-# Dockerfile
-FROM flink:1.18
+# Dockerfile FROM flink:1.18
 
-# 复制 async-profiler
-COPY async-profiler /opt/async-profiler
+# 复制 async-profiler COPY async-profiler /opt/async-profiler
 
-# 添加 capability 以使用 perf_events
-USER root
+# 添加 capability 以使用 perf_events USER root
 RUN apt-get update && apt-get install -y linux-perf
 
-# 以特权模式运行或使用 CAP_PERFMON
-USER flink
+# 以特权模式运行或使用 CAP_PERFMON USER flink
 ```
 
 **Kubernetes Profiling**:
 
 ```bash
-# 进入 Flink Pod
-kubectl exec -it flink-taskmanager-xxx -- /bin/bash
+# 进入 Flink Pod kubectl exec -it flink-taskmanager-xxx -- /bin/bash
 
-# 运行 async-profiler
-/opt/async-profiler/profiler.sh -d 120 -f /tmp/profile.html 1
+# 运行 async-profiler /opt/async-profiler/profiler.sh -d 120 -f /tmp/profile.html 1
 
-# 复制结果到本地
-kubectl cp flink-taskmanager-xxx:/tmp/profile.html ./profile.html
+# 复制结果到本地 kubectl cp flink-taskmanager-xxx:/tmp/profile.html ./profile.html
 ```
 
 #### 火焰图分析
@@ -1208,14 +1180,12 @@ kubectl cp flink-taskmanager-xxx:/tmp/profile.html ./profile.html
 **Heap Dump 获取**:
 
 ```bash
-# 通过 jmap
-jmap -dump:format=b,file=/tmp/heap.hprof <flink_pid>
+# 通过 jmap jmap -dump:format=b,file=/tmp/heap.hprof <flink_pid>
 
 # 通过 Flink Web UI
 # Jobs → <Job> → Task Managers → <TM> → Thread Dump / Heap Dump
 
-# 通过 JMX
-jcmd <flink_pid> GC.heap_dump /tmp/heap.hprof
+# 通过 JMX jcmd <flink_pid> GC.heap_dump /tmp/heap.hprof
 ```
 
 **MAT (Memory Analyzer Tool) 分析**:
@@ -1249,15 +1219,13 @@ jcmd <flink_pid> GC.heap_dump /tmp/heap.hprof
 # 通过 Flink Web UI 查看 Backpressure 状态
 # Job → Task Metrics → backPressuredTimeMsPerSecond
 
-# 或通过 REST API
-curl http://jobmanager:8081/jobs/<job_id>/vertices/<vertex_id>/metrics?get=backPressuredTimeMsPerSecond
+# 或通过 REST API curl http://jobmanager:8081/jobs/<job_id>/vertices/<vertex_id>/metrics?get=backPressuredTimeMsPerSecond
 ```
 
 **步骤 2: 采样分析**
 
 ```bash
-# 定位到瓶颈 TaskManager
-./profiler.sh -d 60 -f cpu.html <tm_pid>
+# 定位到瓶颈 TaskManager ./profiler.sh -d 60 -f cpu.html <tm_pid>
 
 # 分析热点方法
 # 1. 打开 cpu.html
@@ -1297,14 +1265,11 @@ public class OptimizedMap extends RichMapFunction<...> {
 **排查步骤**:
 
 ```bash
-# 1. 启用 Native Memory Tracking
-env.java.opts.taskmanager: "-XX:NativeMemoryTracking=summary"
+# 1. 启用 Native Memory Tracking env.java.opts.taskmanager: "-XX:NativeMemoryTracking=summary"
 
-# 2. 定期获取内存报告
-jcmd <pid> VM.native_memory summary
+# 2. 定期获取内存报告 jcmd <pid> VM.native_memory summary
 
-# 3. 获取 Heap Dump
-jmap -dump:format=b,file=heap.hprof <pid>
+# 3. 获取 Heap Dump jmap -dump:format=b,file=heap.hprof <pid>
 ```
 
 **MAT 分析**:
@@ -1349,8 +1314,7 @@ public class UDFWithStaticCache extends RichFunction {
 **线程 Dump 获取**:
 
 ```bash
-# 获取线程状态
-jstack -l <flink_pid> > thread_dump.txt
+# 获取线程状态 jstack -l <flink_pid> > thread_dump.txt
 
 # 或通过 Flink Web UI
 # Task Managers → <TM> → Thread Dump

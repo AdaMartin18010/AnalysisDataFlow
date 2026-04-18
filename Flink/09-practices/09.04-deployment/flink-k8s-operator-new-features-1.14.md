@@ -620,8 +620,7 @@ spec:
 ### 6.4 Helm Chart Schema 配置
 
 ```yaml
-# values-production-with-schema.yaml
-image:
+# values-production-with-schema.yaml image:
   registry: "docker.io"
   repository: "apache/flink-kubernetes-operator"
   tag: "1.14.0"

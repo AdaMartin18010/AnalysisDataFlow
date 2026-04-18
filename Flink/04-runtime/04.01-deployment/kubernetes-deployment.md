@@ -386,8 +386,7 @@ stateDiagram-v2
 ### 6.1 Application Mode 完整部署 YAML
 
 ```yaml
-# flink-deployment-application.yaml
-apiVersion: flink.apache.org/v1beta1
+# flink-deployment-application.yaml apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: realtime-etl-pipeline
@@ -490,8 +489,7 @@ spec:
 ### 6.2 Session Mode 部署配置
 
 ```yaml
-# flink-deployment-session.yaml
-apiVersion: flink.apache.org/v1beta1
+# flink-deployment-session.yaml apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: flink-session-cluster
@@ -516,8 +514,7 @@ spec:
 
   # Session Mode: 不配置 job 字段
 ---
-# 向 Session 集群提交作业
-apiVersion: flink.apache.org/v1beta1
+# 向 Session 集群提交作业 apiVersion: flink.apache.org/v1beta1
 kind: FlinkSessionJob
 metadata:
   name: ad-hoc-query-job
@@ -536,8 +533,7 @@ spec:
 ### 6.3 Helm Chart 部署示例
 
 ```yaml
-# values.yaml - Helm 部署配置
-replicaCount: 3
+# values.yaml - Helm 部署配置 replicaCount: 3
 
 image:
   repository: flink
@@ -584,8 +580,7 @@ flink:
     parallelism: 12
     upgradeMode: stateful
 
-# 亲和性配置
-affinity:
+# 亲和性配置 affinity:
   podAntiAffinity:
     preferredDuringSchedulingIgnoredDuringExecution:
       - weight: 100
@@ -598,8 +593,7 @@ affinity:
                   - flink
           topologyKey: kubernetes.io/hostname
 
-# 资源限制
-resources:
+# 资源限制 resources:
   taskManager:
     limits:
       memory: "10Gi"
@@ -608,8 +602,7 @@ resources:
       memory: "8Gi"
       cpu: 4
 
-# 监控集成
-metrics:
+# 监控集成 metrics:
   enabled: true
   reporter: prometheus
   port: 9249
@@ -618,15 +611,12 @@ metrics:
 安装命令:
 
 ```bash
-# 添加 Helm 仓库
-helm repo add flink-operator-repo https://downloads.apache.org/flink/flink-kubernetes-operator-1.14.0/
+# 添加 Helm 仓库 helm repo add flink-operator-repo https://downloads.apache.org/flink/flink-kubernetes-operator-1.14.0/
 helm repo update
 
-# 安装 Operator
-helm install flink-kubernetes-operator flink-operator-repo/flink-kubernetes-operator
+# 安装 Operator helm install flink-kubernetes-operator flink-operator-repo/flink-kubernetes-operator
 
-# 部署 Flink 应用
-helm install realtime-etl ./flink-chart -f values.yaml \
+# 部署 Flink 应用 helm install realtime-etl ./flink-chart -f values.yaml \
   --set job.jarPath=s3://my-bucket/jobs/app.jar
 ```
 
@@ -797,8 +787,7 @@ spec:
 ### 8.3 日志聚合配置
 
 ```yaml
-# 使用 Fluent Bit 采集日志
-apiVersion: v1
+# 使用 Fluent Bit 采集日志 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: fluent-bit-config
@@ -890,8 +879,7 @@ spec:
 ### 10.1 高可用配置清单
 
 ```yaml
-# 高可用配置
-spec:
+# 高可用配置 spec:
   flinkConfiguration:
     # HA 模式
     "high-availability": "kubernetes"
@@ -1011,8 +999,7 @@ spec:
 ### 11.2 金丝雀发布配置
 
 ```yaml
-# 金丝雀版本
-apiVersion: flink.apache.org/v1beta1
+# 金丝雀版本 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: realtime-etl-canary
@@ -1041,17 +1028,13 @@ spec:
 ### 12.2 诊断命令
 
 ```bash
-# 查看 Operator 日志
-kubectl logs -n flink-operator deployment/flink-kubernetes-operator
+# 查看 Operator 日志 kubectl logs -n flink-operator deployment/flink-kubernetes-operator
 
-# 查看 Flink 作业状态
-kubectl get flinkdeployment -n flink-jobs
+# 查看 Flink 作业状态 kubectl get flinkdeployment -n flink-jobs
 
-# 进入 TaskManager 调试
-kubectl exec -it taskmanager-pod -- /bin/bash
+# 进入 TaskManager 调试 kubectl exec -it taskmanager-pod -- /bin/bash
 
-# 获取 Checkpoint 信息
-kubectl exec jobmanager-pod -- flink list -r
+# 获取 Checkpoint 信息 kubectl exec jobmanager-pod -- flink list -r
 kubectl exec jobmanager-pod -- flink checkpoint -job <job-id>
 ```
 

@@ -687,8 +687,7 @@ class AgentLifecycleController:
         # 恢复
         return await self.resume_agent(agent_id)
 
-# 使用示例
-async def main():
+# 使用示例 async def main():
     env = StreamExecutionEnvironment.get_execution_environment()
 
     # 创建状态管理器
@@ -785,8 +784,7 @@ agent:
     max-retry-attempts: 3
     retry-backoff: exponential
 
-# 扩缩容配置
-scaling:
+# 扩缩容配置 scaling:
   enabled: true
   metric-window: 60s
 

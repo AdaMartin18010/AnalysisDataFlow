@@ -253,12 +253,10 @@ class DisorderedWindowJoin:
             del self.buffers[win_id]
         return results
 
-# 示例
-joiner = DisorderedWindowJoin(window_size=60, allowed_lateness=30)
+# 示例 joiner = DisorderedWindowJoin(window_size=60, allowed_lateness=30)
 joiner.ingest("A", {"key": "x", "ts": 50})
 joiner.ingest("B", {"key": "x", "ts": 55})
-# 假设 Watermark 推进到 100
-results = joiner.advance_watermark(100)
+# 假设 Watermark 推进到 100 results = joiner.advance_watermark(100)
 print(f"JOIN 结果: {results}")
 ```
 

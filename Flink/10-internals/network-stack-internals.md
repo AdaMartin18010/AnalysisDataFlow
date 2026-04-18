@@ -1016,22 +1016,17 @@ taskmanager.network.netty.client.num-threads: 8
 # TCP发送/接收缓冲区(0=系统默认)
 taskmanager.network.netty.send.receive.bufferSize: 0
 
-# 连接超时
-taskmanager.network.connections.tcp.connectionTimeout: 20000
+# 连接超时 taskmanager.network.connections.tcp.connectionTimeout: 20000
 
-# 重连策略
-taskmanager.network.retries: 10
+# 重连策略 taskmanager.network.retries: 10
 taskmanager.network.delay: 100ms
 
 # ========== 高级配置 ==========
-# 每个ResultPartition的最小Buffer数
-taskmanager.network.memory.min-buffers-per-partition: 16
+# 每个ResultPartition的最小Buffer数 taskmanager.network.memory.min-buffers-per-partition: 16
 
-# 每个InputGate的最小Buffer数
-taskmanager.network.memory.min-buffers-per-gate: 16
+# 每个InputGate的最小Buffer数 taskmanager.network.memory.min-buffers-per-gate: 16
 
-# 请求Buffer超时时间
-taskmanager.network.memory.buffer-request-timeout: 30000ms
+# 请求Buffer超时时间 taskmanager.network.memory.buffer-request-timeout: 30000ms
 ```
 
 ---

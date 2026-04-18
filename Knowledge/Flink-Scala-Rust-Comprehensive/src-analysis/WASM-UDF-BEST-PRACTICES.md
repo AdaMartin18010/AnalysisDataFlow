@@ -330,8 +330,7 @@ graph TB
 ### 6.2 云原生部署
 
 ```yaml
-# Kubernetes 配置示例
-apiVersion: apps/v1
+# Kubernetes 配置示例 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: wasm-udf-service

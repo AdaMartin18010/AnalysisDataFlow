@@ -1153,14 +1153,11 @@ aec.thread-pool.size: 16
 # 每个 Key 的最大并发操作数 (默认: 1,严格 FIFO)
 aec.max-concurrent-per-key: 2
 
-# 异步操作超时时间
-aec.operation.timeout: 30s
+# 异步操作超时时间 aec.operation.timeout: 30s
 
-# 回调队列容量
-aec.callback-queue.capacity: 10000
+# 回调队列容量 aec.callback-queue.capacity: 10000
 
-# 批量回调处理大小
-aec.callback.batch-size: 100
+# 批量回调处理大小 aec.callback.batch-size: 100
 ```
 
 **配置建议**:

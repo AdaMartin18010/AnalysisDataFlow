@@ -359,18 +359,14 @@ public class OnlineLearningExample {
 ```yaml
 # flink-conf.yaml - PS相关配置
 
-# 参数服务器分区数
-flink.ml.ps.partition-num: 4
+# 参数服务器分区数 flink.ml.ps.partition-num: 4
 
-# 同步模式: BSP / ASP / SSP
-flink.ml.ps.sync-mode: SSP
+# 同步模式: BSP / ASP / SSP flink.ml.ps.sync-mode: SSP
 flink.ml.ps.staleness: 10
 
-# 通信超时
-flink.ml.ps.rpc-timeout: 30s
+# 通信超时 flink.ml.ps.rpc-timeout: 30s
 
-# 参数内存限制
-flink.ml.ps.memory.limit: 2g
+# 参数内存限制 flink.ml.ps.memory.limit: 2g
 ```
 
 ---

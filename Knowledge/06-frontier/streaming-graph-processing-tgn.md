@@ -258,13 +258,11 @@ $$
 **反模式1: 全量重计算**
 
 ```python
-# ❌ 错误:每条边到达都重新计算所有节点
-for edge in stream:
+# ❌ 错误:每条边到达都重新计算所有节点 for edge in stream:
     for v in all_nodes:
         recompute_embedding(v)  # O(|V|) 每边！
 
-# ✅ 正确:增量更新受影响节点
-for edge in stream:
+# ✅ 正确:增量更新受影响节点 for edge in stream:
     affected = get_affected_nodes(edge)
     for v in affected:
         incremental_update(v)  # O(|A|) << O(|V|)
@@ -273,23 +271,18 @@ for edge in stream:
 **反模式2: 无界记忆增长**
 
 ```python
-# ❌ 错误:存储所有历史记忆
-memory[v].append(new_state)  # 无限增长！
+# ❌ 错误:存储所有历史记忆 memory[v].append(new_state)  # 无限增长！
 
-# ✅ 正确:使用滑动窗口或摘要
-memory[v].slide_window(new_state, window_size=100)
-# 或使用可学习的记忆压缩
-memory[v] = compress(memory[v], new_state)
+# ✅ 正确:使用滑动窗口或摘要 memory[v].slide_window(new_state, window_size=100)
+# 或使用可学习的记忆压缩 memory[v] = compress(memory[v], new_state)
 ```
 
 **反模式3: 忽视时序因果性**
 
 ```python
-# ❌ 错误:乱序事件直接更新
-process_event(event)  # 可能使用未来信息！
+# ❌ 错误:乱序事件直接更新 process_event(event)  # 可能使用未来信息！
 
-# ✅ 正确:使用Watermark确保因果性
-watermark = current_time - max_out_of_orderness
+# ✅ 正确:使用Watermark确保因果性 watermark = current_time - max_out_of_orderness
 if event.time <= watermark:
     process_event(event)
 else:
@@ -432,14 +425,11 @@ class TGN(nn.Module):
     def update_memory(self, memory, messages):
         return self.memory_updater(messages, memory)
 
-# Flink流处理集成
-env = StreamExecutionEnvironment.get_execution_environment()
+# Flink流处理集成 env = StreamExecutionEnvironment.get_execution_environment()
 
-# 读取图流
-edges = env.add_source(KafkaSource("graph-events"))
+# 读取图流 edges = env.add_source(KafkaSource("graph-events"))
 
-# 定义处理函数
-class TGNInferenceProcess(KeyedProcessFunction):
+# 定义处理函数 class TGNInferenceProcess(KeyedProcessFunction):
     def __init__(self):
         self.model = TGN(memory_dim=100, node_feat_dim=50, edge_feat_dim=10)
         self.memory = ValueStateDescriptor("memory", Types.LIST(Types.FLOAT()))
@@ -459,13 +449,11 @@ class TGNInferenceProcess(KeyedProcessFunction):
         # 输出嵌入
         yield NodeEmbedding(node_id, ctx.timestamp(), embedding)
 
-# 应用处理
-embeddings = edges
+# 应用处理 embeddings = edges
     .key_by(lambda e: e.target)
     .process(TGNInferenceProcess())
 
-# 链接预测
-predictions = embeddings
+# 链接预测 predictions = embeddings
     .key_by(lambda e: e.node_id)
     .window(SlidingEventTimeWindows.of(Time.minutes(5), Time.minutes(1)))
     .apply(LinkPredictionFunction())
@@ -480,8 +468,7 @@ env.execute("Streaming TGN with PyFlink")
 ```python
 from streamtgn import StreamTGN, PersistentMemoryPool, RebuildScheduler
 
-# 配置StreamTGN运行时
-config = {
+# 配置StreamTGN运行时 config = {
     # 持久化内存池
     "memory_pool": {
         "type": "persistent",
@@ -518,11 +505,9 @@ config = {
     }
 }
 
-# 初始化StreamTGN
-stream_tgn = StreamTGN(model_path="tgn_model.pt", config=config)
+# 初始化StreamTGN stream_tgn = StreamTGN(model_path="tgn_model.pt", config=config)
 
-# 启动推理服务
-stream_tgn.serve(
+# 启动推理服务 stream_tgn.serve(
     input_stream=kafka_consumer("graph-edges"),
     output_stream=kafka_producer("embeddings"),
     batch_size=600,

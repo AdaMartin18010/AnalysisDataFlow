@@ -970,11 +970,9 @@ $$\rho_{after} \leq 1 + \epsilon' \leq \theta_{threshold}$$
 # Flink 自适应执行引擎 v2 配置
 # ============================================================
 
-# ---------- 1. 自适应调度器基础配置 ----------
-jobmanager.scheduler: Adaptive
+# ---------- 1. 自适应调度器基础配置 ---------- jobmanager.scheduler: Adaptive
 
-# 最小/最大并行度限制
-adaptive-scheduler.min-parallelism: 1
+# 最小/最大并行度限制 adaptive-scheduler.min-parallelism: 1
 adaptive-scheduler.max-parallelism: 128
 
 # 目标资源利用率(触发扩缩容的阈值)
@@ -985,8 +983,7 @@ adaptive-scheduler.scaling-interval.min: 60000
 adaptive-scheduler.scaling-interval.max: 300000
 
 # ---------- 2. 数据倾斜检测配置 ----------
-# 启用倾斜检测
-skew-detection.enabled: true  <!-- [Flink 2.4 前瞻] 配置参数可能变动 -->
+# 启用倾斜检测 skew-detection.enabled: true  <!-- [Flink 2.4 前瞻] 配置参数可能变动 -->
 
 # 倾斜检测窗口大小(秒)
 skew-detection.window.size: 60
@@ -997,53 +994,42 @@ skew-detection.coefficient.threshold: 1.5
 # 热点 Key 检测阈值(占总量比例)
 skew-detection.hot-key.threshold: 0.05
 
-# 热点 Key 处理策略: SPLIT | REPARTITION | LOCAL_AGG
-skew-detection.strategy: SPLIT
+# 热点 Key 处理策略: SPLIT | REPARTITION | LOCAL_AGG skew-detection.strategy: SPLIT
 
 # ---------- 3. 资源自适应配置 ----------
-# 启用资源自适应分配
-resource-adaptive.enabled: true  <!-- [Flink 2.4 前瞻] 配置参数可能变动 -->
+# 启用资源自适应分配 resource-adaptive.enabled: true  <!-- [Flink 2.4 前瞻] 配置参数可能变动 -->
 
-# CPU 利用率目标
-resource-adaptive.target.cpu.utilization: 0.70
+# CPU 利用率目标 resource-adaptive.target.cpu.utilization: 0.70
 
-# 内存利用率目标
-resource-adaptive.target.memory.utilization: 0.75
+# 内存利用率目标 resource-adaptive.target.memory.utilization: 0.75
 
 # 资源调整步长(百分比)
 resource-adaptive.adjustment.step: 0.20
 
-# 资源预测模型: PID | LSTM | RULE_BASED
-resource-adaptive.predictor.type: PID
+# 资源预测模型: PID | LSTM | RULE_BASED resource-adaptive.predictor.type: PID
 
 # ---------- 4. 执行计划优化配置 ----------
-# 启用运行时计划重优化
-execution-plan-optimization.enabled: true  <!-- [Flink 2.4 前瞻] 配置参数可能变动 -->
+# 启用运行时计划重优化 execution-plan-optimization.enabled: true  <!-- [Flink 2.4 前瞻] 配置参数可能变动 -->
 
 # 优化触发间隔(秒)
 execution-plan-optimization.interval: 300
 
-# 优化策略: PARALLELISM | CHAINING | JOIN_STRATEGY
-execution-plan-optimization.strategies: PARALLELISM,CHAINING
+# 优化策略: PARALLELISM | CHAINING | JOIN_STRATEGY execution-plan-optimization.strategies: PARALLELISM,CHAINING
 
-# ---------- 5. 背压响应配置 ----------
-backpressure-adaptive.enabled: true
+# ---------- 5. 背压响应配置 ---------- backpressure-adaptive.enabled: true
 
 # 背压检测阈值(0-1)
 backpressure-adaptive.threshold: 0.8
 
-# 背压响应策略: SCALE_UP | BUFFER_INCREASE | BATCH_SIZE
-backpressure-adaptive.response: SCALE_UP
+# 背压响应策略: SCALE_UP | BUFFER_INCREASE | BATCH_SIZE backpressure-adaptive.response: SCALE_UP
 
 # ---------- 6. Checkpoint 与自适应协调 ----------
-# 自适应调整前等待 Checkpoint
-adaptive.checkpoint-coordination.enabled: true
+# 自适应调整前等待 Checkpoint adaptive.checkpoint-coordination.enabled: true
 
 # 最长等待时间(秒)
 #adaptive.checkpoint-coordination.timeout: 120
 
-# 调整模式: GRACEFUL | IMMEDIATE | INCREMENTAL
-adaptive.adjustment.mode: GRACEFUL
+# 调整模式: GRACEFUL | IMMEDIATE | INCREMENTAL adaptive.adjustment.mode: GRACEFUL
 ```
 
 **参数调优建议**:
@@ -1209,12 +1195,10 @@ config.setDouble("resource-adaptive.target.memory.utilization", 0.60);
 # IoT 场景:设备数量大,流量模式可预测
 # 配置文件: flink-conf.yaml
 
-# 大量设备,高并行度
-adaptive-scheduler.min-parallelism: 20
+# 大量设备,高并行度 adaptive-scheduler.min-parallelism: 20
 adaptive-scheduler.max-parallelism: 200
 
-# 设备离线/上线导致的流量波动
-resource-adaptive.predictor.type: LSTM
+# 设备离线/上线导致的流量波动 resource-adaptive.predictor.type: LSTM
 resource-adaptive.prediction.horizon: 10min
 
 # 设备消息可能倾斜(某些设备上报频繁)
@@ -1222,8 +1206,7 @@ skew-detection.enabled: true
 skew-detection.coefficient.threshold: 2.0
 skew-detection.strategy: REPARTITION
 
-# 批量处理提升吞吐
-execution-plan-optimization.strategies: BATCH_SIZE
+# 批量处理提升吞吐 execution-plan-optimization.strategies: BATCH_SIZE
 ```
 
 ---

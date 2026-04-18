@@ -1011,8 +1011,7 @@ gantt
 - **解决**: 触发式局部重建 + 背景全量重建
 
 ```python
-# 自适应重建策略
-if graph_quality_score() < REBUILD_THRESHOLD:
+# 自适应重建策略 if graph_quality_score() < REBUILD_THRESHOLD:
     if incremental_ratio() < 0.1:
         schedule_background_rebuild()
     else:

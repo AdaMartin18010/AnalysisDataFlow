@@ -350,14 +350,11 @@ $$\forall c \in \text{Flink CDC}, \text{version}(c) \geq 3.6.0 \Rightarrow \text
 **运行时检查**:
 
 ```bash
-# 检查 JVM 参数兼容性
-java -XX:+PrintFlagsFinal -version | grep -E "(G1|Parallel|CMS)"
+# 检查 JVM 参数兼容性 java -XX:+PrintFlagsFinal -version | grep -E "(G1|Parallel|CMS)"
 
-# 检查模块加载
-java --list-modules | grep -E "(java.xml.bind|java.activation)"
+# 检查模块加载 java --list-modules | grep -E "(java.xml.bind|java.activation)"
 
-# 运行 Flink 本地模式测试
-./bin/start-cluster.sh
+# 运行 Flink 本地模式测试 ./bin/start-cluster.sh
 ./bin/flink run -c com.example.Job your-job.jar
 ```
 
@@ -395,8 +392,7 @@ java --list-modules | grep -E "(java.xml.bind|java.activation)"
 # 1. 停止当前作业 (保留最后一个检查点)
 flink stop --savepointPath hdfs:///savepoints/jdk11-upgrade <job-id>
 
-# 2. 启动 JDK 8 版本的作业
-export JAVA_HOME=/usr/lib/jvm/java-8-openjdk
+# 2. 启动 JDK 8 版本的作业 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk
 flink run -s hdfs:///savepoints/jdk11-upgrade/savepoint-xxxxx \
   -c com.example.Job your-job-jdk8.jar
 ```
@@ -424,8 +420,7 @@ spec:
     upgradeMode: savepoint
     state: running
 ---
-# 保留 JDK 8 版本作为后备
-apiVersion: flink.apache.org/v1beta1
+# 保留 JDK 8 版本作为后备 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: flink-job-jdk8-backup

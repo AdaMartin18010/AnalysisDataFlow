@@ -830,11 +830,9 @@ strip = true
 **编译命令**:
 
 ```bash
-# 添加 WASM 目标
-rustup target add wasm32-wasi
+# 添加 WASM 目标 rustup target add wasm32-wasi
 
-# 编译发布版本
-cargo build --target wasm32-wasi --release
+# 编译发布版本 cargo build --target wasm32-wasi --release
 
 # 产物: target/wasm32-wasi/release/anomaly_detector.wasm
 ```
@@ -1019,8 +1017,7 @@ func main() {}
 # 使用 TinyGo 编译 (更小的 WASM 体积)
 tinygo build -target=wasi -o log_classifier.wasm -gc=leaking -opt=z .
 
-# 或使用标准 Go
-go build -o log_classifier.wasm -target=wasi
+# 或使用标准 Go go build -o log_classifier.wasm -target=wasi
 ```
 
 **Flink 集成 (Java)**:

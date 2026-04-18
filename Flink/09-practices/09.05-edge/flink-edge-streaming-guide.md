@@ -441,8 +441,7 @@ $$
 **典型工业IoT边缘部署**：
 
 ```yaml
-# 边缘节点配置
-edge_nodes:
+# 边缘节点配置 edge_nodes:
   - name: edge-gateway-01
     device: NVIDIA Jetson Nano
     cpu: 4_cores
@@ -457,8 +456,7 @@ edge_nodes:
     storage: 32GB_SD
     network: WiFi_Ethernet
 
-# 云端集群
-cloud_cluster:
+# 云端集群 cloud_cluster:
   flink_version: 1.18
   taskmanagers: 10
   slots_per_tm: 4
@@ -476,50 +474,43 @@ cloud_cluster:
 
 # -----------------------------------------------------------------------------
 # 1. 基础资源限制
-# -----------------------------------------------------------------------------
-jobmanager.memory.process.size: 512m
+# ----------------------------------------------------------------------------- jobmanager.memory.process.size: 512m
 taskmanager.memory.process.size: 2048m
 taskmanager.numberOfTaskSlots: 2
 parallelism.default: 2
 
 # -----------------------------------------------------------------------------
 # 2. 内存精细调优 (边缘设备内存有限)
-# -----------------------------------------------------------------------------
-taskmanager.memory.managed.fraction: 0.2
+# ----------------------------------------------------------------------------- taskmanager.memory.managed.fraction: 0.2
 taskmanager.memory.network.fraction: 0.1
 taskmanager.memory.task.heap.size: 1024m
 taskmanager.memory.framework.heap.size: 256m
 
 # -----------------------------------------------------------------------------
 # 3. 检查点配置 (适应间歇性网络)
-# -----------------------------------------------------------------------------
-execution.checkpointing.interval: 60s
+# ----------------------------------------------------------------------------- execution.checkpointing.interval: 60s
 execution.checkpointing.min-pause-between-checkpoints: 30s
 execution.checkpointing.max-concurrent-checkpoints: 1
 execution.checkpointing.externalized-checkpoint-retention: RETAIN_ON_CANCELLATION
 
-# 小状态使用内存状态后端,避免RocksDB开销
-state.backend: hashmap
+# 小状态使用内存状态后端,避免RocksDB开销 state.backend: hashmap
 state.checkpoints.dir: file:///opt/flink/checkpoints
 
 # -----------------------------------------------------------------------------
 # 4. 网络优化
-# -----------------------------------------------------------------------------
-taskmanager.network.memory.buffer-size: 4096
+# ----------------------------------------------------------------------------- taskmanager.network.memory.buffer-size: 4096
 taskmanager.network.memory.buffers-per-channel: 2
 taskmanager.network.memory.floating-buffers-per-gate: 4
 
 # -----------------------------------------------------------------------------
 # 5. 重启策略 (适应资源受限)
-# -----------------------------------------------------------------------------
-restart-strategy: fixed-delay
+# ----------------------------------------------------------------------------- restart-strategy: fixed-delay
 restart-strategy.fixed-delay.attempts: 3
 restart-strategy.fixed-delay.delay: 10s
 
 # -----------------------------------------------------------------------------
 # 6. 日志优化 (减少存储占用)
-# -----------------------------------------------------------------------------
-log4j.rootLogger: WARN, console
+# ----------------------------------------------------------------------------- log4j.rootLogger: WARN, console
 log4j.logger.org.apache.flink: WARN
 log4j.logger.org.apache.flink.runtime.checkpoint: INFO
 ```

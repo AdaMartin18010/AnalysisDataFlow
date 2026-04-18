@@ -346,20 +346,17 @@ $$
 以下是一个完整的实时欺诈检测特征工程实现：
 
 ```python
-# feast/feature_definitions.py
-from feast import Entity, Feature, FeatureView, ValueType
+# feast/feature_definitions.py from feast import Entity, Feature, FeatureView, ValueType
 from feast.types import Int64, Float64, String
 from datetime import timedelta
 
-# 定义实体
-user = Entity(
+# 定义实体 user = Entity(
     name="user_id",
     value_type=ValueType.STRING,
     description="用户唯一标识"
 )
 
-# 实时特征视图 - 基于 Flink 计算结果
-user_transaction_stats = FeatureView(
+# 实时特征视图 - 基于 Flink 计算结果 user_transaction_stats = FeatureView(
     name="user_transaction_stats",
     entities=["user_id"],
     ttl=timedelta(hours=24),
@@ -681,11 +678,9 @@ class StatsProcessFunction extends KeyedProcessFunction<String, Transaction, Use
 ### 6.4 推荐系统实时用户画像
 
 ```python
-# 实时用户画像特征定义
-from feast import FeatureService
+# 实时用户画像特征定义 from feast import FeatureService
 
-# 特征服务:推荐系统用用户画像
-user_profile_service = FeatureService(
+# 特征服务:推荐系统用用户画像 user_profile_service = FeatureService(
     name="user_profile_v1",
     features=[
         # 实时行为特征 (Flink 计算)

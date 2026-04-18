@@ -655,8 +655,7 @@ $$\Pr[\text{conflict}] \leq \frac{\mu \cdot \lambda \cdot (\Delta_m + \Delta_d)^
 **实现方案**：
 
 ```python
-# 流式RAG系统伪代码
-class StreamingRAG:
+# 流式RAG系统伪代码 class StreamingRAG:
     def __init__(self):
         self.memory_index = HNSWIndex(dim=384, capacity=10000)  # 热数据
         self.disk_index = FaissIndex(dim=384)                    # 全量数据
@@ -864,11 +863,9 @@ class IncrementalHNSW:
 ### 6.3 配置示例：Milvus流式索引配置
 
 ```yaml
-# Milvus流式RAG索引配置
-collection_name: streaming_rag
+# Milvus流式RAG索引配置 collection_name: streaming_rag
 
-# 字段定义
-fields:
+# 字段定义 fields:
   - name: id
     dtype: INT64
     is_primary: true
@@ -890,20 +887,17 @@ fields:
     dtype: INT64
     description: "文档版本号"
 
-# 索引配置
-index_params:
+# 索引配置 index_params:
   index_type: HNSW
   metric_type: COSINE
   params:
     M: 16              # 每层最大连接数
     efConstruction: 200  # 构建时搜索深度
 
-# 搜索参数
-search_params:
+# 搜索参数 search_params:
   ef: 128            # 查询时搜索深度
 
-# 流式更新配置
-streaming_config:
+# 流式更新配置 streaming_config:
   # 内存层配置
   memory_segment:
     max_size: 10000    # 单段最大文档数

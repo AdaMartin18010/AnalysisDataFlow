@@ -421,16 +421,12 @@ GROUP BY TUMBLE(event_time, INTERVAL '1' MINUTE), user_id;
 Standalone 本身不支持 Per-Job 模式，但可以通过为每个作业分配独立的 Flink 配置文件和端口范围，实现逻辑上的 Per-Job 隔离。
 
 ```bash
-# 产线 A
-export FLINK_CONF_DIR=/opt/flink/line-a-conf/
-# line-a-conf: jobmanager.rpc.port=6123, rest.port=8081
-/opt/flink/bin/start-cluster.sh
+# 产线 A export FLINK_CONF_DIR=/opt/flink/line-a-conf/
+# line-a-conf: jobmanager.rpc.port=6123, rest.port=8081 /opt/flink/bin/start-cluster.sh
 /opt/flink/bin/flink run /opt/jobs/line-a-monitoring.jar
 
-# 产线 B
-export FLINK_CONF_DIR=/opt/flink/line-b-conf/
-# line-b-conf: jobmanager.rpc.port=6124, rest.port=8082
-/opt/flink/bin/start-cluster.sh
+# 产线 B export FLINK_CONF_DIR=/opt/flink/line-b-conf/
+# line-b-conf: jobmanager.rpc.port=6124, rest.port=8082 /opt/flink/bin/start-cluster.sh
 /opt/flink/bin/flink run /opt/jobs/line-b-monitoring.jar
 ```
 

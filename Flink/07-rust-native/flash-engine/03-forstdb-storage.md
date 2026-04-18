@@ -441,8 +441,7 @@ T_block: 1ms → 1ms → 1ms
 **Mini 版本配置**:
 
 ```yaml
-# ForStDB Mini 配置
-state.backend: forstdb-mini
+# ForStDB Mini 配置 state.backend: forstdb-mini
 forstdb.mini.memory.limit: 4g
 forstdb.mini.cache.size: 1g
 forstdb.mini.snapshot.interval: 30s
@@ -456,8 +455,7 @@ forstdb.mini.snapshot.interval: 30s
 **Pro 版本配置**:
 
 ```yaml
-# ForStDB Pro 配置
-state.backend: forstdb-pro
+# ForStDB Pro 配置 state.backend: forstdb-pro
 forstdb.pro.memory.buffer: 8g
 forstdb.pro.disk.path: /data/forstdb
 forstdb.pro.spill.threshold: 0.8

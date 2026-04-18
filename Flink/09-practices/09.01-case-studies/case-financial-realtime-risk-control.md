@@ -519,8 +519,7 @@ StateTtlConfig ttlConfig = StateTtlConfig
 **3. 异步检查点**:
 
 ```yaml
-# flink-conf.yaml
-state.backend: rocksdb
+# flink-conf.yaml state.backend: rocksdb
 state.backend.incremental: true
 state.checkpoints.dir: s3://risk-checkpoints/flink
 execution.checkpointing.interval: 30s
@@ -1143,32 +1142,27 @@ public class RealtimeRiskEngine {
 **Kafka配置** (`kafka-config.properties`):
 
 ```properties
-# Producer配置
-bootstrap.servers=kafka.eurobank.internal:9092
+# Producer配置 bootstrap.servers=kafka.eurobank.internal:9092
 security.protocol=SASL_SSL
 sasl.mechanism=SCRAM-SHA-512
 sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required \
     username="risk-engine" \
     password="${KAFKA_PASSWORD}";
 
-# 序列化
-key.serializer=org.apache.kafka.common.serialization.StringSerializer
+# 序列化 key.serializer=org.apache.kafka.common.serialization.StringSerializer
 value.serializer=org.apache.kafka.common.serialization.ByteArraySerializer
 
-# 性能优化
-acks=1
+# 性能优化 acks=1
 retries=3
 batch.size=32768
 linger.ms=5
 buffer.memory=67108864
 compression.type=lz4
 
-# Exactly-once语义
-enable.idempotence=true
+# Exactly-once语义 enable.idempotence=true
 transactional.id=risk-engine-${TASK_ID}
 
-# Consumer配置
-group.id=risk-engine-group
+# Consumer配置 group.id=risk-engine-group
 auto.offset.reset=latest
 enable.auto.commit=false
 max.poll.records=1000
@@ -1177,8 +1171,7 @@ heartbeat.interval.ms=3000
 session.timeout.ms=10000
 isolation.level=read_committed
 
-# Schema Registry
-schema.registry.url=https://schema-registry.eurobank.internal:8081
+# Schema Registry schema.registry.url=https://schema-registry.eurobank.internal:8081
 schema.registry.ssl.truststore.location=/certs/truststore.jks
 schema.registry.ssl.truststore.password=${TRUSTSTORE_PASSWORD}
 ```
@@ -1851,8 +1844,7 @@ DataStream<Result> result = AsyncDataStream.unorderedWait(
 **4. 监控和可观测性**
 
 ```yaml
-# 关键指标监控
-metrics:
+# 关键指标监控 metrics:
   - name: checkpoint_duration
     threshold: "> 60s"
     alert: critical

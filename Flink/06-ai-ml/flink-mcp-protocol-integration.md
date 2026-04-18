@@ -179,8 +179,7 @@ $$
 **定义**: MCP v2.0 引入的 OAuth 2.1 认证框架，支持 PKCE (Proof Key for Code Exchange) 和设备授权流程。
 
 ```yaml
-# MCP v2.0 OAuth 2.1 配置示例
-oauth2_1:
+# MCP v2.0 OAuth 2.1 配置示例 oauth2_1:
   grant_types:
     - authorization_code
     - client_credentials
@@ -1399,8 +1398,7 @@ services:
 **Kubernetes 部署 (独立服务模式)**:
 
 ```yaml
-# flink-mcp-deployment.yaml
-apiVersion: apps/v1
+# flink-mcp-deployment.yaml apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: flink-mcp-server
@@ -1854,8 +1852,7 @@ public class AccessControlledMcpServer {
 ### B.3 资源限制
 
 ```yaml
-# 资源限制配置
-mcp:
+# 资源限制配置 mcp:
   server:
     limits:
       max_query_timeout_ms: 30000

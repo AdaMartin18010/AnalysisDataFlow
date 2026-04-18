@@ -229,8 +229,7 @@ Choose(Application) ⟺
 **关键参数**:
 
 ```yaml
-# TaskManager 内存配置
-taskmanager.memory.process.size: 8192m
+# TaskManager 内存配置 taskmanager.memory.process.size: 8192m
 taskmanager.memory.flink.size: 6144m
 taskmanager.memory.network.min: 256m
 taskmanager.memory.network.max: 512m
@@ -972,8 +971,7 @@ spec:
 # 依赖配置
 # ============================================================================
 
-# ServiceAccount与RBAC
-apiVersion: v1
+# ServiceAccount与RBAC apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: flink-production-sa
@@ -1015,8 +1013,7 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 
 ---
-# RocksDB PVC模板
-apiVersion: v1
+# RocksDB PVC模板 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: rocksdb-pvc-template
@@ -1030,8 +1027,7 @@ spec:
       storage: 100Gi
 
 ---
-# 应用库PVC
-apiVersion: v1
+# 应用库PVC apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: flink-usrlib-pvc
@@ -1045,8 +1041,7 @@ spec:
       storage: 10Gi
 
 ---
-# ConfigMap
-apiVersion: v1
+# ConfigMap apiVersion: v1
 kind: ConfigMap
 metadata:
   name: flink-production-config
@@ -1065,8 +1060,7 @@ data:
     logger.netty.level=OFF
 
 ---
-# NetworkPolicy
-apiVersion: networking.k8s.io/v1
+# NetworkPolicy apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: flink-production-network-policy
@@ -1131,8 +1125,7 @@ spec:
           port: 53
 
 ---
-# ServiceMonitor for Prometheus
-apiVersion: monitoring.coreos.com/v1
+# ServiceMonitor for Prometheus apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: flink-production-metrics
@@ -1237,8 +1230,7 @@ spec:
     replicas: 3
 
 ---
-# Session Job提交示例
-apiVersion: flink.apache.org/v1beta1
+# Session Job提交示例 apiVersion: flink.apache.org/v1beta1
 kind: FlinkSessionJob
 metadata:
   name: ad-hoc-sql-query
@@ -1459,8 +1451,7 @@ spec:
   revisionHistoryLimit: 10
 
 ---
-# AppProject定义
-apiVersion: argoproj.io/v1alpha1
+# AppProject定义 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
   name: flink-production
@@ -1526,8 +1517,7 @@ gitops-flink/
 #### Kustomize配置
 
 ```yaml
-# environments/production/kustomization.yaml
-apiVersion: kustomize.config.k8s.io/v1beta1
+# environments/production/kustomization.yaml apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 namespace: flink-production
@@ -1557,8 +1547,7 @@ configMapGenerator:
 #### CI/CD Pipeline (GitHub Actions)
 
 ```yaml
-# .github/workflows/deploy-flink.yaml
-name: Deploy Flink Applications
+# .github/workflows/deploy-flink.yaml name: Deploy Flink Applications
 
 on:
   push:

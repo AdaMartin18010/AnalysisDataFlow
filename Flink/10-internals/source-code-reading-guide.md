@@ -787,48 +787,40 @@ taskDeploymentDescriptor.getTaskInfo().getTaskName().contains("Map")
 #### 日志级别配置
 
 ```yaml
-# conf/log4j.properties
-rootLogger.level = INFO
+# conf/log4j.properties rootLogger.level = INFO
 
-# 关键组件DEBUG级别
-logger.runtime.name = org.apache.flink.runtime
+# 关键组件DEBUG级别 logger.runtime.name = org.apache.flink.runtime
 logger.runtime.level = DEBUG
 
 logger.streaming.name = org.apache.flink.streaming
 logger.streaming.level = DEBUG
 
-# Checkpoint详细跟踪
-logger.checkpoint.name = org.apache.flink.runtime.checkpoint
+# Checkpoint详细跟踪 logger.checkpoint.name = org.apache.flink.runtime.checkpoint
 logger.checkpoint.level = TRACE
 
-# 网络层跟踪
-logger.network.name = org.apache.flink.runtime.io.network
+# 网络层跟踪 logger.network.name = org.apache.flink.runtime.io.network
 logger.network.level = DEBUG
 ```
 
 #### 关键日志模式
 
 ```
-# Job生命周期
-[JobID] Created JobManagerRunner for job
+# Job生命周期 [JobID] Created JobManagerRunner for job
 [JobID] Starting JobMaster
 [JobID] Successfully created execution graph from job graph
 [JobID] Starting scheduling with scheduling strategy
 
-# Task生命周期
-[JobID] Deploying [task name] to [task manager]
+# Task生命周期 [JobID] Deploying [task name] to [task manager]
 [JobID] Received task [task name] at [task manager]
 [JobID] [task name] switched from CREATED to DEPLOYING
 [JobID] [task name] switched from DEPLOYING to RUNNING
 
-# Checkpoint生命周期
-[JobID] Triggering checkpoint [checkpointID]
+# Checkpoint生命周期 [JobID] Triggering checkpoint [checkpointID]
 [JobID] Received acknowledge message for checkpoint [checkpointID]
 [JobID] Completed checkpoint [checkpointID]
 [JobID] Notifying task [task name] of checkpoint [checkpointID] completion
 
-# 故障恢复
-[JobID] Restarting failed job with restart strategy
+# 故障恢复 [JobID] Restarting failed job with restart strategy
 [JobID] Cancelling job because of [failure cause]
 [JobID] Failed job because of [failure cause]
 ```
@@ -865,15 +857,13 @@ export JVM_ARGS="$JVM_ARGS -agentlib:jdwp=transport=dt_socket,server=y,suspend=n
 #### TaskManager远程调试
 
 ```bash
-# bin/taskmanager.sh
-export JVM_ARGS="$JVM_ARGS -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5006"
+# bin/taskmanager.sh export JVM_ARGS="$JVM_ARGS -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5006"
 ```
 
 **多TaskManager调试技巧**:
 
 ```bash
-# 使用不同端口启动多个TM
-TM1: address=5006
+# 使用不同端口启动多个TM TM1: address=5006
 TM2: address=5007
 TM3: address=5008
 ```
@@ -883,8 +873,7 @@ TM3: address=5008
 #### 堆内存分析
 
 ```bash
-# 生成堆转储
-jmap -dump:format=b,file=flink.hprof <pid>
+# 生成堆转储 jmap -dump:format=b,file=flink.hprof <pid>
 
 # 使用Eclipse MAT或VisualVM分析
 # 重点关注:
@@ -896,11 +885,9 @@ jmap -dump:format=b,file=flink.hprof <pid>
 #### 线程Dump分析
 
 ```bash
-# 获取线程Dump
-jstack <pid> > thread-dump.txt
+# 获取线程Dump jstack <pid> > thread-dump.txt
 
-# 关键线程模式
-"flink-akka.actor.default-dispatcher" - Akka消息处理
+# 关键线程模式 "flink-akka.actor.default-dispatcher" - Akka消息处理
 "Checkpoint Timer" - Checkpoint定时器
 "AsyncCheckpointRunnable" - 异步Checkpoint线程
 "Flink-MetricRegistry" - 指标收集
@@ -981,14 +968,11 @@ Week 5-6: 性能优化与调优
 **A**: 使用以下搜索策略：
 
 ```bash
-# 1. 按类名搜索
-grep -r "class.*CheckpointCoordinator" --include="*.java" flink-runtime/
+# 1. 按类名搜索 grep -r "class.*CheckpointCoordinator" --include="*.java" flink-runtime/
 
-# 2. 按方法名搜索
-grep -r "triggerCheckpoint" --include="*.java" flink-runtime/
+# 2. 按方法名搜索 grep -r "triggerCheckpoint" --include="*.java" flink-runtime/
 
-# 3. 按注释关键词搜索
-grep -r "TODO.*checkpoint" --include="*.java" flink-runtime/
+# 3. 按注释关键词搜索 grep -r "TODO.*checkpoint" --include="*.java" flink-runtime/
 
 # 4. IntelliJ中双击Shift使用Search Everywhere
 ```

@@ -427,8 +427,7 @@ public class CustomerServiceAgent {
 **优化策略**:
 
 ```python
-# 延迟优化架构
-class CodeCompletionService:
+# 延迟优化架构 class CodeCompletionService:
     def __init__(self):
         self.cache = LRUCache(maxsize=10000)  # 语义缓存
         self.model_pool = ModelPool()          # 多模型池

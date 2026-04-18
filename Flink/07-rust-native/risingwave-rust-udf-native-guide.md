@@ -564,11 +564,9 @@ fn date_range(start: chrono::NaiveDateTime, end: chrono::NaiveDateTime, step: ch
 **步骤 4: 编译为 WASM**
 
 ```bash
-# 安装 wasm32-wasip1 目标
-rustup target add wasm32-wasip1
+# 安装 wasm32-wasip1 目标 rustup target add wasm32-wasip1
 
-# 编译发布版本
-cargo build --target wasm32-wasip1 --release
+# 编译发布版本 cargo build --target wasm32-wasip1 --release
 
 # 生成 base64 编码(用于 SQL 嵌入)
 base64 -w 0 target/wasm32-wasip1/release/risingwave_udf_example.wasm > udf.wasm.b64

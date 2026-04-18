@@ -192,13 +192,11 @@ graph TB
 ### 6.1 完整上线检查清单
 
 ```yaml
-# Flink 生产检查清单
-job_name: "user-behavior-analytics"
+# Flink 生产检查清单 job_name: "user-behavior-analytics"
 version: "1.0.0"
 check_date: "2026-04-04"
 
-# ========== P0 阻塞性检查 ==========
-p0_checks:
+# ========== P0 阻塞性检查 ========== p0_checks:
   checkpoint:
     - item: "Checkpoint 已启用"
       status: PASS
@@ -226,8 +224,7 @@ p0_checks:
       status: PASS
       value: "security.ssl.internal.enabled: true"
 
-# ========== P1 严重性检查 ==========
-p1_checks:
+# ========== P1 严重性检查 ========== p1_checks:
   monitoring:
     - item: "指标上报配置"
       status: PASS
@@ -242,8 +239,7 @@ p1_checks:
       status: PASS
       value: "forBoundedOutOfOrderness(Duration.ofSeconds(30))"
 
-# ========== P2 建议性检查 ==========
-p2_checks:
+# ========== P2 建议性检查 ========== p2_checks:
   optimization:
     - item: "对象重用"
       status: WARN
@@ -387,35 +383,29 @@ if __name__ == '__main__':
 ```properties
 # ===== 生产环境推荐配置 =====
 
-# --- Checkpoint 配置 ---
-execution.checkpointing.interval: 300s
+# --- Checkpoint 配置 --- execution.checkpointing.interval: 300s
 execution.checkpointing.timeout: 600s
 execution.checkpointing.min-pause: 300s
 execution.checkpointing.max-concurrent-checkpoints: 1
 execution.checkpointing.externalized-checkpoint-retention: RETAIN_ON_CANCELLATION
 
-# --- 状态后端配置 ---
-state.backend: rocksdb
+# --- 状态后端配置 --- state.backend: rocksdb
 state.backend.incremental: true
 state.backend.rocksdb.memory.fixed-per-slot: 256mb
 state.backend.rocksdb.predefined-options: FLASH_SSD_OPTIMIZED
 
-# --- 内存配置 ---
-taskmanager.memory.process.size: 8gb
+# --- 内存配置 --- taskmanager.memory.process.size: 8gb
 taskmanager.memory.flink.size: 6gb
 taskmanager.memory.managed.size: 2gb
 
-# --- 网络配置 ---
-taskmanager.memory.network.max: 256mb
+# --- 网络配置 --- taskmanager.memory.network.max: 256mb
 taskmanager.numberOfTaskSlots: 4
 
-# --- 高可用配置 ---
-high-availability: zookeeper
+# --- 高可用配置 --- high-availability: zookeeper
 high-availability.storageDir: hdfs:///flink/ha
 high-availability.zookeeper.quorum: zk1:2181,zk2:2181,zk3:2181
 
-# --- 监控配置 ---
-metrics.reporters: prometheus
+# --- 监控配置 --- metrics.reporters: prometheus
 metrics.reporter.prometheus.port: 9249
 metrics.reporter.prometheus.filter.includes: "*checkpoint*,*records*,*latency*"
 ```

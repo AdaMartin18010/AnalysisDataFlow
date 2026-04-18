@@ -4,13 +4,13 @@
 >
 # 案例研究集索引 (Case Studies Index)
 
-> **版本**: v1.1 | **更新日期**: 2026-04-09 | **案例总数**: 17个
+> **版本**: v1.4 | **更新日期**: 2026-04-18 | **案例总数**: 24个
 
 ---
 
 ## 概述
 
-本目录包含 AnalysisDataFlow 项目的详细行业案例研究，覆盖金融、电商、物联网、社交媒体和游戏五大行业。每个案例遵循项目六段式模板，包含完整的架构设计、Flink实现代码、性能指标和经验总结。
+本目录包含 AnalysisDataFlow 项目的详细行业案例研究，覆盖金融、电商、物联网、社交媒体、游戏、数据基础设施和数据平台七大行业。每个案例遵循项目六段式模板，包含完整的架构设计、Flink实现代码、性能指标和经验总结。
 
 ---
 
@@ -25,6 +25,11 @@
 | **物联网** | 5 | < 1s | 千万设备 | L3-L4 |
 | **社交媒体** | 1 | < 100ms | 百亿级事件 | L4 |
 | **游戏** | 1 | < 50ms | 千万并发 | L4 |
+| **数据基础设施** | 1 | < 100ms | 十亿级事件 | L4 |
+| **数据平台** | 1 | < 2s | 2PB/天 | L4 |
+| **跨云联邦** | 1 | < 100ms | 百亿级事件 | L4 |
+| **AI治理** | 1 | < 50ms | 万级Agent | L4 |
+| **形式化验证** | 1 | — | 协议级 | L5 |
 
 ---
 
@@ -48,8 +53,12 @@
 │   └── 10.3.5-smart-manufacturing-iot.md       # 智能制造IoT实时分析
 ├── social-media/                            # 社交媒体案例
 │   └── 10.4.1-content-recommendation.md        # 实时内容推荐
-└── gaming/                                  # 游戏行业案例
-    └── 10.5.1-realtime-battle-analytics.md     # 实时对战数据处理
+├── gaming/                                  # 游戏行业案例
+│   └── 10.5.1-realtime-battle-analytics.md     # 实时对战数据处理
+├── data-infrastructure/                     # 数据基础设施案例
+│   └── case-streaming-database-migration-risingwave-arroyo.md  # 流数据库迁移
+└── data-platform/                           # 数据平台案例
+    └── case-flink-dynamic-iceberg-sink-lakehouse.md  # 实时数据湖入湖
 ```
 
 ---
@@ -223,9 +232,24 @@
   - 内容热度衰减计算
   - 实时特征融合
 
-### 5. 游戏行业 (Gaming)
+### 5. 数据基础设施 (Data Infrastructure)
 
-#### 5.1 实时对战数据处理
+#### 5.1 流数据库架构迁移 — Streaming Database形式化选型与迁移实践
+
+- **文件**: `data-infrastructure/case-streaming-database-migration-risingwave-arroyo.md`
+- **业务场景**: 实时广告平台从Flink+MySQL迁移至Streaming Database
+- **技术亮点**: USTM-F形式化选型框架、RisingWave+Arroyo混合架构、零停机迁移
+- **核心指标**: P99延迟从185ms降至72ms，成本降低43%，数据新鲜度<500ms
+- **关键技术**:
+  - Streaming Database八元组形式化定义
+  - RisingWave物化视图与Hummock调优
+  - Arroyo边缘预聚合
+  - CDC同步与语义等价性验证
+  - 双写验证切换策略
+
+### 6. 游戏行业 (Gaming)
+
+#### 6.1 实时对战数据处理
 
 - **文件**: `gaming/10.5.1-realtime-battle-analytics.md`
 - **业务场景**: MOBA手游实时数据处理
@@ -235,6 +259,65 @@
   - 游戏事件窗口聚合
   - CEP反作弊模式
   - 实时排行榜计算
+
+### 7. 数据平台 (Data Platform)
+
+#### 7.1 实时数据湖入湖 — Flink Dynamic Iceberg Sink 大规模集成
+
+- **文件**: `data-platform/case-flink-dynamic-iceberg-sink-lakehouse.md`
+- **业务场景**: 互联网巨头日均 2PB 数据实时入湖
+- **技术亮点**: Flink 2.2 Dynamic Iceberg Sink + Paimon + Fluss 分层存储
+- **核心指标**: P50 延迟 192ms，P99 延迟 815ms，峰值吞吐 35 GB/s，存储成本降低 83%
+- **关键技术**:
+  - Dynamic Iceberg Sink 自动 Topic 路由
+  - Schema Evolution 零停机自动适配
+  - 分层存储 (Fluss/S3 Standard/S3 Glacier)
+  - TCO 优化（年节省 $10M+）
+
+### 8. 跨云联邦 (Cross-Cloud)
+
+#### 8.1 CD-Raft 跨云多集群 Flink 联邦
+
+- **文件**: `cross-cloud/case-cd-raft-multi-cloud-flink.md`
+- **业务场景**: 跨国电商 4.2 亿 DAU 三域部署（美/欧/亚太）
+- **技术亮点**: CD-Raft 跨域共识 + 零 RPO + 数据主权隔离 + Fast Return 优化
+- **核心指标**: P99 延迟 187ms→89ms，零 RPO 故障恢复，100% 合规
+- **关键技术**:
+  - CD-Raft 七元组形式化定义 (CDRTAP)
+  - CROC 分级一致性模型
+  - K8s Operator 多集群联邦部署
+  - Istio 服务网格跨云通信
+  - DSIZ 数据主权隔离域
+
+### 9. AI Agent 治理 (AI Governance)
+
+#### 9.1 NIST CAISI + Agent 行为契约合规平台
+
+- **文件**: `ai-governance/case-nist-caisi-agent-compliance-platform.md`
+- **业务场景**: 金融科技公司 200+ 内部 AI Agent 治理与合规
+- **技术亮点**: NIST CAISI 三大支柱映射 + AgentAssert 契约拦截 + TLA+ 形式化规约 + MCP/A2A 安全治理
+- **核心指标**: Agent 行为违规拦截率 99.7%，NIST 三大支柱 100% 映射，多 Agent 死锁零发生，审计报告 72h→15min
+- **关键技术**:
+  - Agent 行为契约形式化定义 (φ_safe, φ_fair, φ_secure)
+  - AgentAssert 运行时契约检查
+  - MCP 工具白名单 + A2A Agent Cards 验证
+  - TLA+ 模型检验 (AgentToolSafety)
+  - 资源全序分配死锁预防协议
+
+### 10. 形式化验证驱动开发 (Formal Verification)
+
+#### 10.1 Veil + LLM 辅助形式化验证驱动开发
+
+- **文件**: `formal-verification/case-veil-llm-formal-verification-driven-dev.md`
+- **业务场景**: ConsensusDB 公司分布式共识协议的形式化验证
+- **技术亮点**: Veil (Lean 4) + LLM 策略生成 + TLA+ 模型检验 + Iris 分离逻辑
+- **核心指标**: 验证周期 -54.5%，验证费用 -88.2%，5.4×–7.1× 按难度分层加速比
+- **关键技术**:
+  - Veil 迁移系统框架规约 (96 个证明义务)
+  - LLM Lean 4 策略生成-修复轨迹
+  - TLA+ TLC 模型检验
+  - Iris 分离逻辑 Hoare 三元组
+  - 边界条件遗漏检测 (BCO-1/2/3)
 
 ---
 
@@ -251,6 +334,7 @@
 | 风控平台 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | 实时推荐 | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ |
 | 大促大屏 | ✅ | ❌ | ❌ | ✅ | ✅ | ❌ |
+| 流数据库迁移 | ✅ | ❌ | ✅ | ✅ | ✅ | ❌ |
 | 库存同步 | ❌ | ❌ | ❌ | ✅ | ❌ | ✅ |
 | 智能制造 | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ |
 | 车联网 | ✅ | ❌ | ❌ | ✅ | ✅ | ❌ |
@@ -259,6 +343,7 @@
 | IoT分析 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | 内容推荐 | ❌ | ❌ | ✅ | ✅ | ✅ | ❌ |
 | 游戏对战 | ✅ | ✅ | ❌ | ✅ | ✅ | ❌ |
+| 数据湖入湖 | ✅ | ❌ | ❌ | ✅ | ✅ | ❌ |
 
 ### Flink API使用情况
 
@@ -309,6 +394,7 @@ graph LR
 | 预测性维护 | 15TB/天 | 10TB/天 |
 | IoT分析 | 10TB/天 | 6TB/天 |
 | 游戏对战 | 8,000万事件/秒 | 5,000万事件/秒 |
+| 数据湖入湖 | 35 GB/s | 22 GB/s |
 
 ---
 
@@ -362,6 +448,11 @@ graph LR
 | 实时异常检测 | 反欺诈 + 智能制造 |
 | 实时同步 | 库存同步 |
 | 实时分析 | 交易监控 + 游戏对战 |
+| 实时入湖 | 数据平台案例 |
+| 跨云联邦 | 跨云案例 |
+| Agent 治理 | AI 治理案例 |
+| 形式化验证 | 形式化验证案例 |
+| 流数据库迁移 | 数据基础设施案例 |
 
 ---
 
@@ -371,6 +462,8 @@ graph LR
 |------|------|---------|
 | v1.1 | 2026-04-04 | 新增预测性维护案例，共10个案例 |
 | v1.2 | 2026-04-09 | 新增实时风控平台(金融)、智能制造IoT(物联网)，共17个案例 |
+| v1.3 | 2026-04-18 | 新增流数据库架构迁移(数据基础设施)，共18个案例 |
+| v1.4 | 2026-04-18 | 新增 v4.3 前瞻案例：Calvin 实时风控(B1)、CD-Raft 跨云联邦(B2)、NIST CAISI Agent 合规(B3)、Dynamic Iceberg Sink 大规模集成(B4)、Veil+LLM 形式化验证(B5)、流数据库迁移(B6)，共 24 个案例 |
 
 ---
 
@@ -383,4 +476,4 @@ graph LR
 
 ---
 
-*文档版本: v1.1 | 维护者: AnalysisDataFlow Team | 最后更新: 2026-04-09*
+*文档版本: v1.4 | 维护者: AnalysisDataFlow Team | 最后更新: 2026-04-18*

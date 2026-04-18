@@ -431,14 +431,12 @@ $$
 **优化方案**：
 
 ```python
-# 优化前:直接传出
-import requests
+# 优化前:直接传出 import requests
 def process_event(event):
     result = transform(event)
     requests.post(THIRD_PARTY_API, json=result)  # 产生传出费用
 
-# 优化后:批量聚合后传出
-def process_batch(events):
+# 优化后:批量聚合后传出 def process_batch(events):
     results = [transform(e) for e in events]
     # 批量压缩上传
     compressed = gzip.compress(json.dumps(results).encode())
@@ -569,8 +567,7 @@ $$
 
 ```python
 # 优化1: 批处理大小调优
-# 优化前:单条处理
-lambda_event_batch_size = 1  # 触发次数 = 5亿/月
+# 优化前:单条处理 lambda_event_batch_size = 1  # 触发次数 = 5亿/月
 
 # 优化后:批量处理 (最大10,000条)
 lambda_event_batch_size = 1000  # 触发次数 = 50万/月
@@ -609,8 +606,7 @@ lambda_event_batch_size = 1000  # 触发次数 = 50万/月
 **最优配置**：
 
 ```yaml
-# host.json - Azure Functions优化配置
-{
+# host.json - Azure Functions优化配置 {
   "functionTimeout": "00:10:00",
   "extensions": {
     "eventHubs": {

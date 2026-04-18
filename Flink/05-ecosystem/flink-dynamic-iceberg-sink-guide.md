@@ -957,8 +957,7 @@ SELECT * FROM iceberg_catalog.cdc_db.users; -- 当前 Schema (自动 Projection)
 -- 用于监控 Dynamic Iceberg Sink 作业健康度
 -- ============================================================
 
-# prometheus-rules.yml
-groups:
+# prometheus-rules.yml groups:
   - name: dynamic-iceberg-sink-alerts
     rules:
       - alert: DynamicIcebergSinkCheckpointTimeout

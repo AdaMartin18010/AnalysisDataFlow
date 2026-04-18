@@ -386,8 +386,7 @@ public class OnnxScoringUdf extends TableFunction<Row> {
 ### 实例3: 模型版本路由配置
 
 ```yaml
-# model-routing-config.yaml
-model_registry:
+# model-routing-config.yaml model_registry:
   models:
     - name: fraud_detection
       versions:

@@ -13,8 +13,8 @@ last_sync: "2026-04-04T10:00:00Z"
 [![中文](https://img.shields.io/badge/中文-🇨🇳-red)](./README.md) [![English](https://img.shields.io/badge/English-🇬🇧-blue)](./README-EN.md)
 
 [![Validate Project](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/validate.yml/badge.svg)](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/validate.yml)
-[![Update Statistics]([内部CI Badge - 需手动验证])](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/update-stats.yml)
-[![Check Links]([内部CI Badge - 需手动验证])](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/check-links.yml)
+[![Update Statistics]](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/update-stats.yml)
+[![Check Links]](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/check-links.yml)
 
 > **Unified Stream Computing Theory and Practice Knowledge Base**
 >
@@ -62,7 +62,7 @@ AnalysisDataFlow is a comprehensive knowledge system for the stream computing do
 
 ### Navigation by Topic
 
-- **Theoretical Foundation**: [Struct/ Unified Stream Computing Theory](../Struct/00-INDEX.md)
+- **Theoretical Foundation**: [Struct/ Unified Stream Computing Theory]
 - **Design Patterns**: [Knowledge/ Core Stream Processing Patterns](Knowledge/02-design-patterns/)
 - **Flink Core**: [Flink/ Checkpoint Mechanism](Flink/02-core/checkpoint-mechanism-deep-dive.md)
 - **Frontier Tech**: [Knowledge/06-frontier/ AI-Native Database](Knowledge/06-frontier/vector-search-streaming-convergence.md)

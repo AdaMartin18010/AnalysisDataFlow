@@ -360,8 +360,7 @@ def time_aware_sample(neighbors, k, current_time, decay_factor):
 
 1. **预计算邻居缓存**
    ```python
-# 缓存高频访问节点的邻居
-neighbor_cache = LRUCache(maxsize=100000)
+# 缓存高频访问节点的邻居 neighbor_cache = LRUCache(maxsize=100000)
 def get_neighbors(node_id, timestamp):
     key = (node_id, timestamp // CACHE_WINDOW)
     if key in neighbor_cache:
@@ -373,8 +372,7 @@ def get_neighbors(node_id, timestamp):
 
 2. **异步内存更新**
    ```python
-# 预测与内存更新解耦
-async def process_batch(batch):
+# 预测与内存更新解耦 async def process_batch(batch):
     # 同步推理
     embeddings = tgn.compute_embeddings(batch)
     predictions = decoder(embeddings)
@@ -467,8 +465,7 @@ class RealtimeFraudDetector:
         # 基于历史行为和当前概率的综合评分
         return 0.6 * prob.item() + 0.4 * self.anomaly_score(src_history, dst_history)
 
-# 实时处理流水线
-def streaming_fraud_detection():
+# 实时处理流水线 def streaming_fraud_detection():
     detector = RealtimeFraudDetector(
         num_nodes=10_000_000,  # 1000万账户
         edge_dim=50            # 交易特征维度
@@ -497,8 +494,7 @@ def streaming_fraud_detection():
 ### 6.2 动态图嵌入可视化
 
 ```python
-# 实时嵌入可视化和监控
-import numpy as np
+# 实时嵌入可视化和监控 import numpy as np
 from sklearn.manifold import TSNE
 import matplotlib.pyplot as plt
 

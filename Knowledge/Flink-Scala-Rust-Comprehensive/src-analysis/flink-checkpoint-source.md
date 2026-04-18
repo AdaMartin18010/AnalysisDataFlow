@@ -799,8 +799,7 @@ execution.checkpointing.interval: 10s
 execution.checkpointing.min-pause-between-checkpoints: 5s
 execution.checkpointing.timeout: 10min
 
-# 高吞吐场景
-execution.checkpointing.interval: 30s
+# 高吞吐场景 execution.checkpointing.interval: 30s
 execution.checkpointing.max-concurrent-checkpoints: 1
 execution.checkpointing.unaligned.enabled: true
 ```
@@ -816,8 +815,7 @@ execution.checkpointing.unaligned.enabled: true
 ### 6.3 增量检查点优化
 
 ```yaml
-# RocksDB 增量检查点配置
-state.backend.incremental: true
+# RocksDB 增量检查点配置 state.backend.incremental: true
 state.backend.rocksdb.memory.managed: true
 state.backend.rocksdb.predefined-options: FLASH_SSD_OPTIMIZED
 ```

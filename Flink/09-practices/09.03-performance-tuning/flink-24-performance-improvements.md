@@ -442,13 +442,11 @@ public class AdaptiveJoinSelector {
 
 ```yaml
 # flink-conf.yaml
-# 网络缓冲区配置
-taskmanager.memory.network.fraction: 0.15
+# 网络缓冲区配置 taskmanager.memory.network.fraction: 0.15
 taskmanager.memory.network.min: 256mb
 taskmanager.memory.network.max: 512mb
 
-# 信用值流控优化
-akka.ask.timeout: 30s
+# 信用值流控优化 akka.ask.timeout: 30s
 taskmanager.network.memory.buffer-size: 32768
 taskmanager.network.memory.floating-buffers-per-gate: 16
 
@@ -503,24 +501,19 @@ xychart-beta
 
 ```yaml
 # flink-conf.yaml
-# JVM内存配置
-jobmanager.memory.process.size: 2048m
+# JVM内存配置 jobmanager.memory.process.size: 2048m
 taskmanager.memory.process.size: 8192m
 
-# 托管内存配置
-taskmanager.memory.managed.fraction: 0.4
+# 托管内存配置 taskmanager.memory.managed.fraction: 0.4
 taskmanager.memory.managed.size: 2048m
 
-# 框架内存
-taskmanager.memory.framework.heap.size: 256m
+# 框架内存 taskmanager.memory.framework.heap.size: 256m
 taskmanager.memory.framework.off-heap.size: 256m
 
-# 任务内存
-taskmanager.memory.task.heap.size: 3072m
+# 任务内存 taskmanager.memory.task.heap.size: 3072m
 taskmanager.memory.task.off-heap.size: 512m
 
-# JVM GC参数
-env.java.opts.taskmanager: >
+# JVM GC参数 env.java.opts.taskmanager: >
   -XX: +UseG1GC
   -XX: MaxGCPauseMillis=100
   -XX: G1HeapRegionSize=16m
@@ -673,21 +666,17 @@ Table result = tableEnv.sqlQuery("""
 
 ```yaml
 # flink-conf.yaml
-# 并行类加载
-classloader.resolve-order: parent-first
+# 并行类加载 classloader.resolve-order: parent-first
 classloader.parent-first-patterns.additional: org.apache.flink.,com.google.
 
-# JM/TM配置优化
-jobmanager.memory.process.size: 2048m
+# JM/TM配置优化 jobmanager.memory.process.size: 2048m
 jobmanager.memory.jvm-heap.size: 1536m
 jobmanager.memory.off-heap.size: 384m
 
-# 网络配置减少连接建立时间
-akka.tcp.timeout: 20s
+# 网络配置减少连接建立时间 akka.tcp.timeout: 20s
 akka.lookup.timeout: 10s
 
-# 任务调度优化
-scheduler-mode: REACTIVE
+# 任务调度优化 scheduler-mode: REACTIVE
 cluster.evenly-spread-out-slots: true
 ```
 
@@ -967,34 +956,26 @@ xychart-beta
 
 echo "开始迁移 Flink 2.3 -> 2.4 配置..."
 
-# 备份旧配置
-cp flink-conf.yaml flink-conf.yaml.23.backup
+# 备份旧配置 cp flink-conf.yaml flink-conf.yaml.23.backup
 
-# 更新内存配置参数
-sed -i 's/taskmanager.memory.fraction/taskmanager.memory.managed.fraction/g' flink-conf.yaml
+# 更新内存配置参数 sed -i 's/taskmanager.memory.fraction/taskmanager.memory.managed.fraction/g' flink-conf.yaml
 sed -i 's/taskmanager.memory.size/taskmanager.memory.managed.size/g' flink-conf.yaml
 
-# 添加2.4新配置参数
-cat >> flink-conf.yaml << EOF
+# 添加2.4新配置参数 cat >> flink-conf.yaml << EOF
 
 # === Flink 2.4 新增优化配置 ===
-# 启用ForSt StateBackend
-taskmanager.state.backend.forst.enabled: true  <!-- [Flink 2.4 前瞻] 配置参数可能变动 -->
+# 启用ForSt StateBackend taskmanager.state.backend.forst.enabled: true  <!-- [Flink 2.4 前瞻] 配置参数可能变动 -->
 taskmanager.state.backend.forst.async-io-threads: 8  <!-- [Flink 2.4 前瞻] 配置参数可能变动 -->
 
-# 启用自适应Join
-table.optimizer.adaptive-join.enabled: true  <!-- [Flink 2.4 前瞻] 配置参数可能变动 -->
+# 启用自适应Join table.optimizer.adaptive-join.enabled: true  <!-- [Flink 2.4 前瞻] 配置参数可能变动 -->
 table.optimizer.adaptive-join.broadcast-threshold: 10485760
 
-# 启用动态分区裁剪
-table.optimizer.dynamic-partition-pruning.enabled: true
+# 启用动态分区裁剪 table.optimizer.dynamic-partition-pruning.enabled: true
 
-# 向量化执行
-table.exec.vectorized-reader.enabled: true  <!-- [Flink 2.4 前瞻] 配置参数可能变动 -->
+# 向量化执行 table.exec.vectorized-reader.enabled: true  <!-- [Flink 2.4 前瞻] 配置参数可能变动 -->
 table.exec.vectorized.batch-size: 2048
 
-# 并行类加载优化
-classloader.resolve-order: parent-first
+# 并行类加载优化 classloader.resolve-order: parent-first
 EOF
 
 echo "配置迁移完成！"

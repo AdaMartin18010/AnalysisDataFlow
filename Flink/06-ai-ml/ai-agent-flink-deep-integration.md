@@ -783,8 +783,7 @@ public class CustomerSupportAgent {
 #### Python 实现 (PyFlink)
 
 ```text
-# ai_agent_flink_pyflink.py
-from pyflink.datastream import StreamExecutionEnvironment, CheckpointingMode
+# ai_agent_flink_pyflink.py from pyflink.datastream import StreamExecutionEnvironment, CheckpointingMode
 from pyflink.datastream.state import ValueStateDescriptor, StateTtlConfig
 from pyflink.datastream.functions import KeyedProcessFunction, AsyncFunction
 from pyflink.common.time import Time
@@ -1672,13 +1671,11 @@ stateDiagram-v2
 ### A.1 Flink 配置
 
 ```yaml
-# flink-conf.yaml
-jobmanager.memory.process.size: 4096m
+# flink-conf.yaml jobmanager.memory.process.size: 4096m
 taskmanager.memory.process.size: 8192m
 taskmanager.numberOfTaskSlots: 4
 
-# 检查点配置
-state.backend: rocksdb
+# 检查点配置 state.backend: rocksdb
 state.checkpoint-storage: filesystem
 state.checkpoints.dir: s3://flink-checkpoints/agent-job
 state.checkpoints.num-retained: 10
@@ -1686,8 +1683,7 @@ execution.checkpointing.interval: 60s
 execution.checkpointing.mode: EXACTLY_ONCE
 execution.checkpointing.timeout: 10min
 
-# RocksDB 调优
-state.backend.incremental: true
+# RocksDB 调优 state.backend.incremental: true
 state.backend.rocksdb.memory.managed: true
 state.backend.rocksdb.threads.threads-number: 4
 state.backend.rocksdb.predefined-options: FLASH_SSD_OPTIMIZED
@@ -1696,8 +1692,7 @@ state.backend.rocksdb.predefined-options: FLASH_SSD_OPTIMIZED
 ### A.2 Agent 配置
 
 ```yaml
-# agent-config.yaml
-agent:
+# agent-config.yaml agent:
   max_concurrent_requests: 100
   request_timeout_ms: 30000
   retry_attempts: 3
@@ -1739,18 +1734,15 @@ memory:
 ### B.2 监控指标
 
 ```promql
-# Agent 延迟
-histogram_quantile(0.99,
+# Agent 延迟 histogram_quantile(0.99,
   rate(agent_response_duration_seconds_bucket[5m])
 )
 
-# LLM 调用成功率
-sum(rate(agent_llm_calls_total{status="success"}[5m]))
+# LLM 调用成功率 sum(rate(agent_llm_calls_total{status="success"}[5m]))
 /
 sum(rate(agent_llm_calls_total[5m]))
 
-# 状态大小
-avg(flink_taskmanager_job_task_operator_state_size_bytes)
+# 状态大小 avg(flink_taskmanager_job_task_operator_state_size_bytes)
 ```
 
 ---

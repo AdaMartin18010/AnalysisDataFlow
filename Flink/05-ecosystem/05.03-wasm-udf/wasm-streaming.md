@@ -343,8 +343,7 @@ graph TB
 适用场景：IoT网关、工业边缘设备
 
 ```yaml
-# flink-edge.yaml
-mode: edge-standalone
+# flink-edge.yaml mode: edge-standalone
 runtime:
   wasm_engine: wasmedge
   memory_limit: 128MB
@@ -360,8 +359,7 @@ modules:
 适用场景：CDN边缘节点
 
 ```yaml
-# flink-edge-cloud.yaml
-mode: edge-cloud-hybrid
+# flink-edge-cloud.yaml mode: edge-cloud-hybrid
 edge:
   functions: [preprocess, filter]
   buffer_size: 1000
@@ -603,8 +601,7 @@ Cloudflare Workers是最早大规模生产化部署Wasm的平台之一：
 Fastly基于Wasmtime构建的边缘计算平台：
 
 ```yaml
-# fastly-compute.toml
-name = "flink-edge-processor"
+# fastly-compute.toml name = "flink-edge-processor"
 description = "Flink-compatible edge processor"
 language = "rust"
 manifest_version = 3
@@ -733,8 +730,7 @@ pub extern "C" fn calculate_anomaly_score(readings: &[f64]) -> f64 {
 **编译为Wasm**:
 
 ```bash
-# 使用wasm32-wasi目标编译
-rustup target add wasm32-wasi
+# 使用wasm32-wasi目标编译 rustup target add wasm32-wasi
 cargo build --target wasm32-wasi --release
 
 # 产物: target/wasm32-wasi/release/sensor_filter.wasm
@@ -897,8 +893,7 @@ flowchart LR
 **Wasm数据清洗链配置**:
 
 ```yaml
-# edge-pipeline.yaml
-pipeline:
+# edge-pipeline.yaml pipeline:
   name: iot_data_cleaning
 
   sources:
@@ -996,18 +991,15 @@ pub async fn run_wasi03_component(component_path: &str) -> Result<(), Box<dyn Er
 **完整开发工作流**:
 
 ```bash
-# 1. 安装工具链
-cargo install cargo-component wit-bindgen-cli wasm-tools
+# 1. 安装工具链 cargo install cargo-component wit-bindgen-cli wasm-tools
 
-# 2. 创建组件项目
-cargo component new sensor-processor --lib
+# 2. 创建组件项目 cargo component new sensor-processor --lib
 
 # 3. 定义WIT接口
 # wit/sensor-processor.wit (见5.4.2节)
 
 # 4. 实现组件逻辑
-# src/lib.rs
-use bindings::exports::flink::edge::data_processing::{Guest, SensorReading, FilterResult};
+# src/lib.rs use bindings::exports::flink::edge::data_processing::{Guest, SensorReading, FilterResult};
 
 struct Component;
 
@@ -1023,8 +1015,7 @@ impl Guest for Component {
 
 bindings::export!(Component with_types_in bindings);
 
-# 5. 构建组件
-cargo component build --release
+# 5. 构建组件 cargo component build --release
 
 # 6. 发布到注册表 (warg)
 warg publish target/wasm32-wasi/release/sensor_processor.wasm \
@@ -1106,8 +1097,7 @@ graph TB
 **组件组合配置**:
 
 ```yaml
-# flink-wasm-component.yaml
-runtime:
+# flink-wasm-component.yaml runtime:
   engine: wasmtime
   wasi_version: "0.3"
   async_support: true

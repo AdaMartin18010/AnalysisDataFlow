@@ -277,8 +277,7 @@ class TemporalReasoner:
 
         return results[:top_k]
 
-# 示例使用
-facts = [
+# 示例使用 facts = [
     TemporalFact("Alice", "worksAt", "TechCorp", 2020, 2023),
     TemporalFact("TechCorp", "acquires", "StartUp", 2021, 2025),
     TemporalFact("StartUp", "produces", "AIChip", 2022, 2026),

@@ -2,7 +2,7 @@
 
 > **用途**: 为 AnalysisDataFlow 文档站点部署提供 MkDocs Material + i18n 插件的配置参考
 >
-> **关联文档**: [ARCHITECTURE.md](./ARCHITECTURE.md)、[../i18n/TRANSLATION-STRATEGY.md](../i18n/TRANSLATION-STRATEGY.md)
+> **关联文档**: [ARCHITECTURE.md](./ARCHITECTURE.md)、[../i18n/TRANSLATION-STRATEGY.md]
 
 ---
 

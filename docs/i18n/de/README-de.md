@@ -57,10 +57,10 @@ Dieses Projekt ist eine umfassende Zusammenstellung und Systematisierung von **T
 ### Themenbasierte Navigation
 
 - **Theoretische Grundlagen**: [Struct/ Unified Streaming Theory](../../../en/00-INDEX.md)
-- **Designmuster**: [Knowledge/ Stream Processing Core Patterns](../../Knowledge/02-design-patterns/)
+- **Designmuster**: [Knowledge/ Stream Processing Core Patterns]
 - **Flink Core**: [Flink/ Checkpoint-Mechanismus](../../../Flink/02-core/checkpoint-mechanism-deep-dive.md)
 - **Cutting-Edge**: [Knowledge/06-frontier/ AI-Native Datenbanken](../../../Knowledge/06-frontier/vector-search-streaming-convergence.md)
-- **Antipatterns**: [Knowledge/09-anti-patterns/ Stream Processing Antipatterns](../../Knowledge/09-anti-patterns/)
+- **Antipatterns**: [Knowledge/09-anti-patterns/ Stream Processing Antipatterns]
 
 ---
 
@@ -104,7 +104,7 @@ Wenn Sie zu diesem Projekt beitragen möchten, konsultieren Sie bitte [CONTRIBUT
 
 ## Lizenz
 
-[Apache License 2.0](../../LICENSE)
+[Apache License 2.0]
 
 ---
 

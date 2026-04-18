@@ -450,8 +450,7 @@ public class DataTypeExample {
 from pyflink.table import DataTypes, Schema, TableDescriptor
 from pyflink.table.table_environment import StreamTableEnvironment
 
-# 定义 Schema
-schema = Schema.new_builder() \
+# 定义 Schema schema = Schema.new_builder() \
     .column("user_id", DataTypes.BIGINT().not_null()) \
     .column("username", DataTypes.STRING()) \
     .column("score", DataTypes.DECIMAL(10, 4)) \
@@ -465,8 +464,7 @@ schema = Schema.new_builder() \
     .watermark("event_time", "SOURCE_WATERMARK()") \
     .build()
 
-# 创建表
-descriptor = TableDescriptor.for_connector("kafka") \
+# 创建表 descriptor = TableDescriptor.for_connector("kafka") \
     .schema(schema) \
     .option("topic", "events") \
     .option("properties.bootstrap.servers", "kafka:9092") \

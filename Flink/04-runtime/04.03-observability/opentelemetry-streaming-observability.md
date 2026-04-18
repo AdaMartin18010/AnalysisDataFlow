@@ -449,8 +449,7 @@ graph TB
 **Collector Pipeline配置**：
 
 ```yaml
-# otel-collector-config.yaml
-receivers:
+# otel-collector-config.yaml receivers:
   otlp:
     protocols:
       grpc:
@@ -884,15 +883,13 @@ public class TracingLogAppender extends AppenderBase<ILoggingEvent> {
 # OpenTelemetry Integration Configuration
 # =============================================================================
 
-# --- Metrics Reporter Configuration ---
-metrics.reporters: otel
+# --- Metrics Reporter Configuration --- metrics.reporters: otel
 metrics.reporter.otel.class: org.apache.flink.metrics.opentelemetry.OpenTelemetryReporter
 metrics.reporter.otel.endpoint: http://otel-collector:4317
 metrics.reporter.otel.interval: 30 SECONDS
 metrics.reporter.otel.service.name: flink-streaming-job
 
-# --- OpenTelemetry Tracing Configuration ---
-env.java.opts.taskmanager: >
+# --- OpenTelemetry Tracing Configuration --- env.java.opts.taskmanager: >
   -javaagent:/opt/flink/plugins/opentelemetry-javaagent.jar
   -Dotel.service.name=flink-taskmanager
   -Dotel.exporter.otlp.endpoint=http://otel-collector:4317
@@ -905,16 +902,14 @@ env.java.opts.jobmanager: >
   -Dotel.service.name=flink-jobmanager
   -Dotel.exporter.otlp.endpoint=http://otel-collector:4317
 
-# --- Flink Specific OTel Settings ---
-flink.otel.trace.source.enabled: true
+# --- Flink Specific OTel Settings --- flink.otel.trace.source.enabled: true
 flink.otel.trace.sink.enabled: true
 flink.otel.trace.checkpoint.enabled: true
 flink.otel.trace.state-access.enabled: false  # 高吞吐场景建议关闭
 flink.otel.trace.watermark.enabled: true
 flink.otel.trace.latency-markers.enabled: true
 
-# --- Log Correlation ---
-logging.pattern.console: "%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - trace_id=%X{trace_id} span_id=%X{span_id} - %msg%n"
+# --- Log Correlation --- logging.pattern.console: "%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - trace_id=%X{trace_id} span_id=%X{span_id} - %msg%n"
 ```
 
 **作业代码示例**：
@@ -1068,8 +1063,7 @@ processors:
 **Prometheus Alertmanager 规则**：
 
 ```yaml
-# flink-otel-alerts.yaml
-groups:
+# flink-otel-alerts.yaml groups:
   - name: flink-streaming-alerts
     interval: 30s
     rules:

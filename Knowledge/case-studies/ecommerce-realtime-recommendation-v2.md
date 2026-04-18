@@ -453,14 +453,12 @@ public class MultiLevelFeatureCache {
 **Flink集群配置**:
 
 ```yaml
-# flink-conf.yaml
-jobmanager.memory.process.size: 8192m
+# flink-conf.yaml jobmanager.memory.process.size: 8192m
 taskmanager.memory.process.size: 32768m
 taskmanager.numberOfTaskSlots: 8
 parallelism.default: 400
 
-# Checkpoint配置
-state.backend: rocksdb
+# Checkpoint配置 state.backend: rocksdb
 state.checkpoints.dir: hdfs:///checkpoints/recommendation
 execution.checkpointing.interval: 30s
 execution.checkpointing.max-concurrent-checkpoints: 1

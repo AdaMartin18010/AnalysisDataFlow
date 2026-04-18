@@ -1,6 +1,6 @@
 # 流处理决策树系统
 
-> **所属阶段**: Knowledge | **前置依赖**: [Flink/01-concepts/](../../Flink/01-concepts/README.md), [flink-state-management-complete-guide.md](../../Flink/02-core/flink-state-management-complete-guide.md) | **形式化等级**: L4 | **最后更新**: 2026-04-12
+> **所属阶段**: Knowledge | **前置依赖**: [Flink/01-concepts/], [flink-state-management-complete-guide.md](../../Flink/02-core/flink-state-management-complete-guide.md) | **形式化等级**: L4 | **最后更新**: 2026-04-12
 
 ## 目录
 

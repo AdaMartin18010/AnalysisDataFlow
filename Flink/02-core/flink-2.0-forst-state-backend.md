@@ -708,8 +708,7 @@ $$
 # ForSt State Backend 核心配置
 # ========================================
 
-# 启用 ForSt 状态后端
-state.backend: forst
+# 启用 ForSt 状态后端 state.backend: forst
 
 # 远程存储配置 (UFS)
 state.backend.forst.ufs.type: s3  # 可选: s3, gcs, azure, hdfs
@@ -717,8 +716,7 @@ state.backend.forst.ufs.s3.bucket: flink-state-bucket
 state.backend.forst.ufs.s3.region: us-east-1
 state.backend.forst.ufs.s3.credentials.provider: IAM_ROLE
 
-# 状态存储路径
-state.backend.forst.state.dir: s3://flink-state-bucket/flink-jobs/${job.name}
+# 状态存储路径 state.backend.forst.state.dir: s3://flink-state-bucket/flink-jobs/${job.name}
 
 # ========================================
 # 本地缓存配置
@@ -731,8 +729,7 @@ state.backend.forst.cache.memory.size: 4gb
 state.backend.forst.cache.disk.size: 100gb
 state.backend.forst.cache.disk.path: /mnt/flink-forst-cache
 
-# 缓存替换策略: LRU | SLRU | W_TINY_LFU
-state.backend.forst.cache.policy: SLRU
+# 缓存替换策略: LRU | SLRU | W_TINY_LFU state.backend.forst.cache.policy: SLRU
 
 # ========================================
 # 即时恢复配置
@@ -744,8 +741,7 @@ state.backend.forst.restore.mode: LAZY
 # 预加载热键数量 (恢复时主动加载)
 state.backend.forst.restore.preload.keys: 10000
 
-# 预加载线程数
-state.backend.forst.restore.preload.threads: 4
+# 预加载线程数 state.backend.forst.restore.preload.threads: 4
 
 # ========================================
 # 远程 Compaction 配置
@@ -755,8 +751,7 @@ state.backend.forst.compaction.remote.enabled: true
 state.backend.forst.compaction.remote.endpoint: compaction-service.flink.svc.cluster.local:9090
 state.backend.forst.compaction.remote.parallelism: 8
 
-# Compaction 触发策略
-state.backend.forst.compaction.trigger.interval: 300s
+# Compaction 触发策略 state.backend.forst.compaction.trigger.interval: 300s
 state.backend.forst.compaction.trigger.size-ratio: 1.1
 
 # ========================================
@@ -768,8 +763,7 @@ execution.checkpointing.mode: EXACTLY_ONCE
 execution.checkpointing.max-concurrent-checkpoints: 1
 execution.checkpointing.externalized-checkpoint-retention: RETAIN_ON_CANCELLATION
 
-# ForSt 特有: 异步刷新间隔
-state.backend.forst.async-flush-interval: 100ms
+# ForSt 特有: 异步刷新间隔 state.backend.forst.async-flush-interval: 100ms
 ```
 
 ### 6.4 Java API 完整示例
@@ -930,8 +924,7 @@ public class ForStStateBackendExample {
 ### 6.5 Kubernetes 部署配置
 
 ```yaml
-# flink-forst-deployment.yaml
-apiVersion: flink.apache.org/v1beta1
+# flink-forst-deployment.yaml apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: forst-job

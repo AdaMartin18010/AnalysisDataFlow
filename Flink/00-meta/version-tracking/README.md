@@ -9,14 +9,11 @@
 ### 运行跟踪检查
 
 ```bash
-# 检查版本状态
-python .scripts/flink-release-tracker-v2.py --check
+# 检查版本状态 python .scripts/flink-release-tracker-v2.py --check
 
-# 生成完整报告
-python .scripts/flink-release-tracker-v2.py --report
+# 生成完整报告 python .scripts/flink-release-tracker-v2.py --report
 
-# 发送测试通知
-python .scripts/notify-flink-updates.py --test
+# 发送测试通知 python .scripts/notify-flink-updates.py --test
 ```
 
 ### 查看跟踪文档
@@ -214,11 +211,9 @@ flowchart LR
 # 每日检查版本状态(早上9点)
 0 9 * * * cd /path/to/project && python .scripts/flink-release-tracker-v2.py --report
 
-# 每周一生成周报告
-0 9 * * 1 cd /path/to/project && python .scripts/notify-flink-updates.py --digest
+# 每周一生成周报告 0 9 * * 1 cd /path/to/project && python .scripts/notify-flink-updates.py --digest
 
-# 每日检查并发送通知
-0 */6 * * * cd /path/to/project && python .scripts/notify-flink-updates.py --check
+# 每日检查并发送通知 0 */6 * * * cd /path/to/project && python .scripts/notify-flink-updates.py --check
 ```
 
 ### GitHub Actions 示例
@@ -278,14 +273,11 @@ jobs:
 #### 脚本运行失败
 
 ```bash
-# 检查 Python 版本
-python --version  # 需要 3.8+
+# 检查 Python 版本 python --version  # 需要 3.8+
 
-# 检查网络连接
-curl -I https://api.github.com/repos/apache/flink/releases
+# 检查网络连接 curl -I https://api.github.com/repos/apache/flink/releases
 
-# 查看详细日志
-tail -f .scripts/flink-tracker-v2.log
+# 查看详细日志 tail -f .scripts/flink-tracker-v2.log
 ```
 
 #### 通知未发送
@@ -297,8 +289,7 @@ tail -f .scripts/flink-tracker-v2.log
 #### 状态文件损坏
 
 ```bash
-# 备份并重置状态
-mv .scripts/flink-tracker-state-v2.json .scripts/flink-tracker-state-v2.json.bak
+# 备份并重置状态 mv .scripts/flink-tracker-state-v2.json .scripts/flink-tracker-state-v2.json.bak
 python .scripts/flink-release-tracker-v2.py --check
 ```
 

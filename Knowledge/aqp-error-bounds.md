@@ -240,8 +240,7 @@ def allocate_error_budget(budget, num_operators, costs):
         epsilons.append(eps)
     return epsilons
 
-# 示例
-budget = 0.1
+# 示例 budget = 0.1
 costs = [1.0, 4.0, 1.0]  # 中间算子成本更高
 allocations = allocate_error_budget(budget, 3, costs)
 print(f"误差分配: {allocations}")
@@ -268,8 +267,7 @@ def propagate_division(r1, r2, e1, e2, d1, d2):
     delta = d1 + d2
     return eps, delta
 
-# 示例：A/B 比率的误差
-r1, e1, d1 = 1000, 100, 0.01
+# 示例：A/B 比率的误差 r1, e1, d1 = 1000, 100, 0.01
 r2, e2, d2 = 500, 50, 0.01
 ratio_error, ratio_delta = propagate_division(r1, r2, e1, e2, d1, d2)
 print(f"A/B 比率误差: ±{ratio_error:.2f} (δ={ratio_delta:.2f})")

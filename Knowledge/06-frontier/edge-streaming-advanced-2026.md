@@ -482,8 +482,7 @@ $$
 **场景**: 智能制造工厂的质量检测系统
 
 ```yaml
-# NebulaStream 部署配置示例
-query: |
+# NebulaStream 部署配置示例 query: |
   SELECT
     sensor_id,
     AVG(temperature) as avg_temp,
@@ -543,15 +542,13 @@ mec_integration:
 # MEC 流处理应用示例 (基于 NebulaStream Python API)
 from nebulastream import Stream, Operator, MECContext
 
-# 初始化 MEC 上下文
-mec = MECContext(
+# 初始化 MEC 上下文 mec = MECContext(
     af_endpoint="http://af.traffic.mec.local",
     mep_id="intersection_001",
     dnn="traffic-safety"
 )
 
-# 定义 V2X 数据流
-v2x_stream = Stream("v2x_messages") \
+# 定义 V2X 数据流 v2x_stream = Stream("v2x_messages") \
     .source(
         protocol="mqtt",
         broker="mec-broker.local:1883",
@@ -565,8 +562,7 @@ v2x_stream = Stream("v2x_messages") \
         "timestamp": msg["ts"]
     })
 
-# 碰撞预测算子
-def predict_collision(vehicles_window):
+# 碰撞预测算子 def predict_collision(vehicles_window):
     """基于相对位置和速度向量预测碰撞风险"""
     risks = []
     for v1, v2 in combinations(vehicles_window, 2):
@@ -580,8 +576,7 @@ def predict_collision(vehicles_window):
             })
     return risks
 
-# 构建处理管道
-pipeline = v2x_stream \
+# 构建处理管道 pipeline = v2x_stream \
     .window(
         type="sliding",
         size="500ms",  # 超低延迟窗口

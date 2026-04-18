@@ -1015,23 +1015,17 @@ PUT _index_template/my_template
 ### 8.2 诊断命令
 
 ```bash
-# 查看集群健康
-curl -X GET "localhost:9200/_cluster/health?pretty"
+# 查看集群健康 curl -X GET "localhost:9200/_cluster/health?pretty"
 
-# 查看索引统计
-curl -X GET "localhost:9200/_stats/indexing?pretty"
+# 查看索引统计 curl -X GET "localhost:9200/_stats/indexing?pretty"
 
-# 查看 Task 状态
-curl -X GET "localhost:9200/_cat/tasks?v&actions=*bulk*&detailed"
+# 查看 Task 状态 curl -X GET "localhost:9200/_cat/tasks?v&actions=*bulk*&detailed"
 
-# 查看慢查询日志
-curl -X GET "localhost:9200/_cluster/settings?include_defaults=true&filter_path=**.search"
+# 查看慢查询日志 curl -X GET "localhost:9200/_cluster/settings?include_defaults=true&filter_path=**.search"
 
-# 查看节点资源
-curl -X GET "localhost:9200/_cat/nodes?v&h=name,heap.percent,ram.percent,cpu,load_1m,disk.avail"
+# 查看节点资源 curl -X GET "localhost:9200/_cat/nodes?v&h=name,heap.percent,ram.percent,cpu,load_1m,disk.avail"
 
-# 查看索引分配
-curl -X GET "localhost:9200/_cat/shards/events-*?v"
+# 查看索引分配 curl -X GET "localhost:9200/_cat/shards/events-*?v"
 ```
 
 ---

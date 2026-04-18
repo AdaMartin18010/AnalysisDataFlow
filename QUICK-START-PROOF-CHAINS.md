@@ -177,7 +177,7 @@ graph BT
 
 | 阶段 | 时长 | 内容 | 文档链接 |
 |------|------|------|----------|
-| **第1周** | 10min | Flink vs Spark对比 | [Flink/05-vs-competitors/flink-vs-spark-streaming.md](./Flink/05-vs-competitors/flink-vs-spark-streaming.md) |
+| **第1周** | 10min | Flink vs Spark对比 | [Flink/05-vs-competitors/flink-vs-spark-streaming.md] |
 | **第2周** | 10min | 事件时间与Watermark | [Flink/02-core/time-semantics-and-watermark.md](./Flink/02-core/time-semantics-and-watermark.md) |
 | **第3周** | 10min | Checkpoint机制 | [Flink/02-core/checkpoint-mechanism-deep-dive.md](./Flink/02-core/checkpoint-mechanism-deep-dive.md) |
 
@@ -360,7 +360,7 @@ graph TB
 |------|------|------|
 | 快速理解 | [Flink/02-core/exactly-once-end-to-end.md](./Flink/02-core/exactly-once-end-to-end.md) | 20min |
 | 深入原理 | [Struct/Proof-Chains-Exactly-Once-Correctness.md](./Struct/Proof-Chains-Exactly-Once-Correctness.md) | 40min |
-| 完整证明 | [Struct/04-proofs/04.03-exactly-once-correctness.md](./Struct/04-proofs/04.03-exactly-once-correctness.md) | 2h |
+| 完整证明 | [Struct/04-proofs/04.03-exactly-once-correctness.md] | 2h |
 
 **核心概念**: Source可重放 + Checkpoint一致性 + Sink原子性
 
@@ -371,7 +371,7 @@ graph TB
 | 主题 | 文档 | 时间 |
 |------|------|------|
 | Actor→CSP编码 | [Struct/Proof-Chains-Cross-Model-Encoding.md](./Struct/Proof-Chains-Cross-Model-Encoding.md) | 1h |
-| Flink→π-Calculus | [Struct/03-relationships/03.01-flink-to-pi-calculus-encoding.md](./Struct/03-relationships/03.01-flink-to-pi-calculus-encoding.md) | 1.5h |
+| Flink→π-Calculus | [Struct/03-relationships/03.01-flink-to-pi-calculus-encoding.md] | 1.5h |
 | 进程演算基础 | [Struct/Proof-Chains-Process-Calculus-Foundation.md](./Struct/Proof-Chains-Process-Calculus-Foundation.md) | 2h |
 
 **核心概念**: 语义保持编码 → 双模拟关系 → 表达能力等价

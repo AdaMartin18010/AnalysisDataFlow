@@ -519,8 +519,7 @@ execution:
       timeout-ms: 30000
       graceful-shutdown: true
 
-# UDF 定义
-udfs:
+# UDF 定义 udfs:
   - name: async-enrich
     type: wasm
     path: "wasms/flink_wasi_async_udf.wasm"
@@ -545,8 +544,7 @@ udfs:
         output-buffer-size: 500
         max-in-flight-records: 2000
 
-# 边缘部署配置
-edge:
+# 边缘部署配置 edge:
   runtime: wasmedge
   wasi-version: "0.3.0"
 

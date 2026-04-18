@@ -488,28 +488,23 @@ $$
 **阶段一：环境准备**
 
 ```bash
-# 1. 边缘节点初始化
-#!/bin/bash
+# 1. 边缘节点初始化 #!/bin/bash
 # edge-node-init.sh
 
 # 安装 K3s (轻量 Kubernetes)
 curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--disable traefik" sh -
 
-# 安装 WasmEdge
-curl -sSf https://raw.githubusercontent.com/WasmEdge/WasmEdge/master/utils/install.sh | bash
+# 安装 WasmEdge curl -sSf https://raw.githubusercontent.com/WasmEdge/WasmEdge/master/utils/install.sh | bash
 
-# 配置节点标签
-kubectl label node $(hostname) node-type=edge zone=asia-east-1
+# 配置节点标签 kubectl label node $(hostname) node-type=edge zone=asia-east-1
 
-# 安装边缘监控
-kubectl apply -f edge-monitoring-stack.yaml
+# 安装边缘监控 kubectl apply -f edge-monitoring-stack.yaml
 ```
 
 **阶段二：GitOps 配置**
 
 ```yaml
-# argocd-application.yaml
-apiVersion: argoproj.io/v1alpha1
+# argocd-application.yaml apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: edge-streaming-platform
@@ -540,8 +535,7 @@ spec:
 **阶段三：部署流水线**
 
 ```yaml
-# .github/workflows/edge-deploy.yaml
-name: Edge Production Deploy
+# .github/workflows/edge-deploy.yaml name: Edge Production Deploy
 
 on:
   push:
@@ -596,8 +590,7 @@ jobs:
 ### 6.2 Kubernetes Edge 部署模板
 
 ```yaml
-# base/flink-edge-deployment.yaml
-apiVersion: apps/v1
+# base/flink-edge-deployment.yaml apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: flink-edge-runtime
@@ -719,8 +712,7 @@ data:
 ### 6.3 Docker Compose 边缘部署
 
 ```yaml
-# docker-compose.edge.yaml
-version: '3.8'
+# docker-compose.edge.yaml version: '3.8'
 
 services:
   flink-edge:
@@ -835,8 +827,7 @@ networks:
 ### 6.4 监控告警配置
 
 ```yaml
-# prometheus-rules.yaml
-groups:
+# prometheus-rules.yaml groups:
   - name: edge-streaming-alerts
     interval: 30s
     rules:
@@ -936,8 +927,7 @@ groups:
           description: "Current P99 latency: {{ $value }}ms"
 
 ---
-# alertmanager-config.yaml
-global:
+# alertmanager-config.yaml global:
   smtp_smarthost: 'smtp.company.com:587'
   smtp_from: 'alerts@company.com'
   smtp_auth_username: 'alerts@company.com'

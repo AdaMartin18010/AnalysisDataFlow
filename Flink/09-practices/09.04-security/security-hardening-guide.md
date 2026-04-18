@@ -157,8 +157,7 @@ Flink安全控制按OSI层次映射：
 **配置步骤**:
 
 ```yaml
-# flink-conf.yaml
-security.kerberos.login.use-ticket-cache: true
+# flink-conf.yaml security.kerberos.login.use-ticket-cache: true
 security.kerberos.login.keytab: /etc/flink/conf/flink.keytab
 security.kerberos.login.principal: flink/_HOST@EXAMPLE.COM
 security.kerberos.krb5-conf.path: /etc/krb5.conf
@@ -178,12 +177,10 @@ security.kerberos.login.contexts: Client,KafkaClient
 **验证命令**:
 
 ```bash
-# 测试Kerberos认证
-kinit -kt /etc/flink/conf/flink.keytab flink/$(hostname -f)@EXAMPLE.COM
+# 测试Kerberos认证 kinit -kt /etc/flink/conf/flink.keytab flink/$(hostname -f)@EXAMPLE.COM
 klist  # 验证ticket已获取
 
-# Flink集成验证
-./bin/flink run -d examples/streaming/WordCount.jar \
+# Flink集成验证 ./bin/flink run -d examples/streaming/WordCount.jar \
   -Dsecurity.kerberos.login.principal=flink/_HOST@EXAMPLE.COM
 ```
 
@@ -194,8 +191,7 @@ Flink本身不直接支持LDAP，需通过以下方式集成：
 **方案A: 通过Web Proxy（Nginx/Apache）**
 
 ```nginx
-# nginx.conf
-server {
+# nginx.conf server {
     listen 443 ssl;
     server_name flink-ui.example.com;
 
@@ -209,8 +205,7 @@ server {
     }
 }
 
-# LDAP配置
-ldap_server ad_server {
+# LDAP配置 ldap_server ad_server {
     url ldaps://ad.example.com:636/DC=example,DC=com?sAMAccountName?sub?(objectClass=person);
     binddn "CN=flink-service,OU=Service,DC=example,DC=com";
     binddn_passwd "${LDAP_BIND_PASSWORD}";
@@ -223,8 +218,7 @@ ldap_server ad_server {
 **方案B: Flink 1.17+ 内置基本认证**
 
 ```yaml
-# flink-conf.yaml
-security.ssl.rest.enabled: true
+# flink-conf.yaml security.ssl.rest.enabled: true
 security.ssl.rest.authentication.enabled: true
 security.ssl.rest.authentication.username: ${FLINK_REST_USER}
 security.ssl.rest.authentication.password: ${FLINK_REST_PASS}
@@ -269,8 +263,7 @@ public class OAuth2SecurityHandler implements SecurityHandler {
 **Kubernetes环境使用OAuth2 Proxy**:
 
 ```yaml
-# oauth2-proxy-deployment.yaml
-apiVersion: apps/v1
+# oauth2-proxy-deployment.yaml apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: flink-oauth2-proxy
@@ -307,16 +300,14 @@ spec:
 ```yaml
 # flink-conf.yaml - mTLS配置
 
-# 启用内部通信SSL
-security.ssl.internal.enabled: true
+# 启用内部通信SSL security.ssl.internal.enabled: true
 security.ssl.internal.keystore: /etc/flink/ssl/flink.keystore
 security.ssl.internal.keystore-password: ${KEYSTORE_PASSWORD}
 security.ssl.internal.key-password: ${KEY_PASSWORD}
 security.ssl.internal.truststore: /etc/flink/ssl/flink.truststore
 security.ssl.internal.truststore-password: ${TRUSTSTORE_PASSWORD}
 
-# 启用REST API SSL
-security.ssl.rest.enabled: true
+# 启用REST API SSL security.ssl.rest.enabled: true
 security.ssl.rest.keystore: /etc/flink/ssl/rest.keystore
 security.ssl.rest.keystore-password: ${KEYSTORE_PASSWORD}
 security.ssl.rest.key-password: ${KEY_PASSWORD}
@@ -336,13 +327,11 @@ security.ssl.rest.cert-fingerprint.enabled: true
 FLINK_SSL_DIR="/etc/flink/ssl"
 mkdir -p $FLINK_SSL_DIR
 
-# 生成CA证书
-openssl req -new -x509 -keyout $FLINK_SSL_DIR/ca.key \
+# 生成CA证书 openssl req -new -x509 -keyout $FLINK_SSL_DIR/ca.key \
     -out $FLINK_SSL_DIR/ca.crt -days 365 \
     -subj "/CN=Flink-CA/O=YourOrg/C=US"
 
-# 生成JobManager证书
-cat > $FLINK_SSL_DIR/jobmanager.cnf <<EOF
+# 生成JobManager证书 cat > $FLINK_SSL_DIR/jobmanager.cnf <<EOF
 [req]
 distinguished_name = req_distinguished_name
 req_extensions = v3_req
@@ -368,8 +357,7 @@ openssl x509 -req -in $FLINK_SSL_DIR/jobmanager.csr \
     -CAcreateserial -out $FLINK_SSL_DIR/jobmanager.crt \
     -days 365 -extfile $FLINK_SSL_DIR/jobmanager.cnf -extensions v3_req
 
-# 生成PKCS12 keystore
-openssl pkcs12 -export \
+# 生成PKCS12 keystore openssl pkcs12 -export \
     -in $FLINK_SSL_DIR/jobmanager.crt \
     -inkey $FLINK_SSL_DIR/jobmanager.key \
     -certfile $FLINK_SSL_DIR/ca.crt \
@@ -377,8 +365,7 @@ openssl pkcs12 -export \
     -name flink-jobmanager \
     -password pass:${KEYSTORE_PASSWORD}
 
-# 转换为JKS
-keytool -importkeystore \
+# 转换为JKS keytool -importkeystore \
     -srckeystore $FLINK_SSL_DIR/jobmanager.p12 \
     -srcstoretype PKCS12 \
     -destkeystore $FLINK_SSL_DIR/flink.keystore \
@@ -386,8 +373,7 @@ keytool -importkeystore \
     -srcstorepass ${KEYSTORE_PASSWORD} \
     -deststorepass ${KEYSTORE_PASSWORD}
 
-# 生成truststore
-keytool -import -v -trustcacerts \
+# 生成truststore keytool -import -v -trustcacerts \
     -alias flink-ca \
     -file $FLINK_SSL_DIR/ca.crt \
     -keystore $FLINK_SSL_DIR/flink.truststore \
@@ -459,8 +445,7 @@ security.ssl.internal.truststore: /etc/flink/ssl/internal.truststore
 security.ssl.internal.truststore-password: ${INTERNAL_TRUSTSTORE_PASS}
 security.ssl.internal.cert.fingerprint: SHA256
 
-# 禁用不安全的协议
-security.ssl.internal.protocol: TLSv1.2
+# 禁用不安全的协议 security.ssl.internal.protocol: TLSv1.2
 security.ssl.internal.algorithms: TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 ```
 
@@ -471,8 +456,7 @@ security.ssl.internal.algorithms: TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 ```yaml
 # flink-conf.yaml
 
-# REST API SSL配置
-security.ssl.rest.enabled: true
+# REST API SSL配置 security.ssl.rest.enabled: true
 security.ssl.rest.keystore: /etc/flink/ssl/rest.keystore
 security.ssl.rest.keystore-password: ${REST_KEYSTORE_PASS}
 security.ssl.rest.key-password: ${REST_KEY_PASS}
@@ -594,12 +578,10 @@ state.savepoints.dir: hdfs:///flink-savepoints
 # HDFS加密区设置
 # hdfs crypto -createZone -keyName flink-checkpoint-key -path /flink-checkpoints
 
-# 或使用S3服务器端加密
-s3.access-key: ${AWS_ACCESS_KEY}
+# 或使用S3服务器端加密 s3.access-key: ${AWS_ACCESS_KEY}
 s3.secret-key: ${AWS_SECRET_KEY}
 s3.server-side-encryption: AES256
-# 或使用KMS
-s3.server-side-encryption: aws:kms
+# 或使用KMS s3.server-side-encryption: aws:kms
 s3.server-side-encryption-kms-key-id: arn:aws:kms:region:account:key/key-id
 ```
 
@@ -611,8 +593,7 @@ s3.server-side-encryption-kms-key-id: arn:aws:kms:region:account:key/key-id
 fs.azure.account.key.<account>.blob.core.windows.net: ${AZURE_STORAGE_KEY}
 fs.azure.sas.<container>.<account>.blob.core.windows.net: ${AZURE_SAS_TOKEN}
 
-# 启用客户端加密
-fs.azure.encryption.enabled: true
+# 启用客户端加密 fs.azure.encryption.enabled: true
 fs.azure.encryption.key: ${AZURE_ENCRYPTION_KEY}
 ```
 
@@ -810,12 +791,10 @@ public class RangerFlinkAuthorizer implements FlinkAuthorizer {
 ```yaml
 # flink-conf.yaml
 
-# 启用RBAC
-security.rbac.enabled: true
+# 启用RBAC security.rbac.enabled: true
 security.rbac.policy-file: /etc/flink/rbac/policy.json
 
-# Web UI权限控制
-web.upload.dir: /tmp/flink-uploads
+# Web UI权限控制 web.upload.dir: /tmp/flink-uploads
 web.access-control-allow-credentials: true
 ```
 
@@ -948,17 +927,14 @@ public class ColumnMaskingMapper implements MapFunction<UserEvent, UserEvent> {
 ```yaml
 # flink-conf.yaml
 
-# 启用审计日志
-security.audit.enabled: true
+# 启用审计日志 security.audit.enabled: true
 security.audit.log.path: /var/log/flink/audit
 security.audit.log.retention.days: 90
 
-# 审计事件过滤
-security.audit.events.include: AUTH, JOB_MANAGEMENT, CONFIG_CHANGE
+# 审计事件过滤 security.audit.events.include: AUTH, JOB_MANAGEMENT, CONFIG_CHANGE
 security.audit.events.exclude: HEARTBEAT, METRICS
 
-# 审计日志格式
-security.audit.format: JSON
+# 审计日志格式 security.audit.format: JSON
 ```
 
 **自定义审计记录器**:
@@ -1071,8 +1047,7 @@ class AuditingSourceContext<T> implements SourceContext<T> {
 **自动化清理策略**:
 
 ```yaml
-# log-retention-policy.yaml
-apiVersion: batch/v1
+# log-retention-policy.yaml apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: flink-audit-log-cleanup
@@ -1139,8 +1114,7 @@ spec:
 **CI/CD集成**:
 
 ```yaml
-# .github/workflows/security-scan.yml
-name: Security Scan
+# .github/workflows/security-scan.yml name: Security Scan
 
 on:
   push:
@@ -1183,8 +1157,7 @@ jobs:
 **Snyk集成**:
 
 ```yaml
-# .snyk配置文件
-version: v1.25.0
+# .snyk配置文件 version: v1.25.0
 ignore:
   'SNYK-JAVA-COMMONSCODEC-561518':
     - '* > commons-codec:commons-codec@1.10':
@@ -1198,34 +1171,28 @@ patch: {}
 **Trivy扫描配置**:
 
 ```dockerfile
-# Dockerfile - 多阶段构建,包含安全扫描
-FROM flink:1.18-scala_2.12-java11 AS base
+# Dockerfile - 多阶段构建,包含安全扫描 FROM flink:1.18-scala_2.12-java11 AS base
 
-# 构建阶段
-FROM base AS builder
+# 构建阶段 FROM base AS builder
 COPY . /app
 WORKDIR /app
 RUN mvn clean package -DskipTests
 
-# 扫描阶段
-FROM aquasec/trivy:latest AS scanner
+# 扫描阶段 FROM aquasec/trivy:latest AS scanner
 COPY --from=builder /app/target/*.jar /scan/
 RUN trivy filesystem --exit-code 1 --severity HIGH,CRITICAL /scan/
 
-# 最终镜像
-FROM base
+# 最终镜像 FROM base
 COPY --from=builder /app/target/*.jar /opt/flink/usrlib/
 
-# 运行时安全配置
-RUN addgroup -S flinkgroup && adduser -S flinkuser -G flinkgroup
+# 运行时安全配置 RUN addgroup -S flinkgroup && adduser -S flinkuser -G flinkgroup
 USER flinkuser
 ```
 
 **Kubernetes准入控制**:
 
 ```yaml
-# k8s-image-scanner-webhook.yaml
-apiVersion: admissionregistration.k8s.io/v1
+# k8s-image-scanner-webhook.yaml apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
 metadata:
   name: image-security-webhook
@@ -1259,8 +1226,7 @@ webhooks:
 HARBOR_URL="https://harbor.example.com"
 PROJECT="flink"
 
-# 扫描所有Flink镜像
-for tag in $(curl -s "${HARBOR_URL}/api/v2.0/projects/${PROJECT}/repositories" | jq -r '.[].name'); do
+# 扫描所有Flink镜像 for tag in $(curl -s "${HARBOR_URL}/api/v2.0/projects/${PROJECT}/repositories" | jq -r '.[].name'); do
     echo "Scanning: ${tag}"
 
     # 触发扫描
@@ -1287,8 +1253,7 @@ done
 **CIS基准检查**:
 
 ```yaml
-# cis-flink-benchmark.yaml
-benchmark:
+# cis-flink-benchmark.yaml benchmark:
   version: "1.0"
   name: "CIS Apache Flink Benchmark"
 
@@ -1515,8 +1480,7 @@ security.kerberos.krb5-conf.path: /etc/krb5.conf
 # 2. SSL/TLS配置
 # -----------------------------------------------------------------------------
 
-# 全局SSL设置
-security.ssl.protocol: TLSv1.3
+# 全局SSL设置 security.ssl.protocol: TLSv1.3
 security.ssl.algorithms: TLS_AES_256_GCM_SHA384,TLS_CHACHA20_POLY1305_SHA256
 
 # 内部通信SSL(TaskManager ↔ JobManager)
@@ -1528,16 +1492,14 @@ security.ssl.internal.truststore: /etc/flink/ssl/internal.truststore
 security.ssl.internal.truststore-password: ${INTERNAL_TRUSTSTORE_PASSWORD}
 security.ssl.internal.cert.fingerprint: SHA256
 
-# REST API SSL
-security.ssl.rest.enabled: true
+# REST API SSL security.ssl.rest.enabled: true
 security.ssl.rest.keystore: /etc/flink/ssl/rest.keystore
 security.ssl.rest.keystore-password: ${REST_KEYSTORE_PASSWORD}
 security.ssl.rest.key-password: ${REST_KEY_PASSWORD}
 security.ssl.rest.truststore: /etc/flink/ssl/rest.truststore
 security.ssl.rest.truststore-password: ${REST_TRUSTSTORE_PASSWORD}
 
-# 启用REST认证
-security.ssl.rest.authentication.enabled: true
+# 启用REST认证 security.ssl.rest.authentication.enabled: true
 
 # -----------------------------------------------------------------------------
 # 3. 网络配置
@@ -1548,14 +1510,12 @@ rest.bind-address: 10.0.1.10
 rest.port: 8443
 rest.address: flink-jobmanager.production.svc.cluster.local
 
-# TaskManager RPC配置
-taskmanager.bind-host: 0.0.0.0
+# TaskManager RPC配置 taskmanager.bind-host: 0.0.0.0
 taskmanager.host: ${POD_IP}
 taskmanager.rpc.port: 6122
 taskmanager.data.port: 6121
 
-# JobManager RPC配置
-jobmanager.bind-host: 0.0.0.0
+# JobManager RPC配置 jobmanager.bind-host: 0.0.0.0
 jobmanager.rpc.address: flink-jobmanager.production.svc.cluster.local
 jobmanager.rpc.port: 6123
 
@@ -1578,8 +1538,7 @@ state.backend.rocksdb.memory.managed: true
 state.checkpoints.dir: s3p://flink-production-checkpoints/
 state.savepoints.dir: s3p://flink-production-savepoints/
 
-# S3加密配置
-s3.access-key: ${AWS_ACCESS_KEY_ID}
+# S3加密配置 s3.access-key: ${AWS_ACCESS_KEY_ID}
 s3.secret-key: ${AWS_SECRET_ACCESS_KEY}
 s3.server-side-encryption: aws:kms
 s3.server-side-encryption-kms-key-id: arn:aws:kms:us-east-1:123456789:key/flink-production-key
@@ -1588,11 +1547,9 @@ s3.server-side-encryption-kms-key-id: arn:aws:kms:us-east-1:123456789:key/flink-
 # 6. 资源隔离与配额
 # -----------------------------------------------------------------------------
 
-# Slot隔离
-cluster.evenly-spread-out-slots: true
+# Slot隔离 cluster.evenly-spread-out-slots: true
 
-# 网络内存隔离
-taskmanager.memory.network.fraction: 0.15
+# 网络内存隔离 taskmanager.memory.network.fraction: 0.15
 taskmanager.memory.network.min: 128mb
 taskmanager.memory.network.max: 512mb
 
@@ -1622,8 +1579,7 @@ classloader.check-leaked-classloader: true
 ### 6.2 Kubernetes部署安全配置
 
 ```yaml
-# flink-security-deployment.yaml
-apiVersion: flink.apache.org/v1beta1
+# flink-security-deployment.yaml apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: production-flink-cluster
@@ -1737,8 +1693,7 @@ spec:
     high-availability: zookeeper
     high-availability.zookeeper.quorum: zk1:2181,zk2:2181,zk3:2181
 ---
-# Network Policy - 限制Pod间通信
-apiVersion: networking.k8s.io/v1
+# Network Policy - 限制Pod间通信 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: flink-network-policy
@@ -2053,8 +2008,7 @@ graph LR
 ### 使用cert-manager自动管理
 
 ```yaml
-# flink-certificate.yaml
-apiVersion: cert-manager.io/v1
+# flink-certificate.yaml apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: flink-internal-tls
@@ -2078,8 +2032,7 @@ spec:
   - server auth
   - client auth
 ---
-# 自动重启触发器
-apiVersion: apps/v1
+# 自动重启触发器 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: flink-cert-reloader

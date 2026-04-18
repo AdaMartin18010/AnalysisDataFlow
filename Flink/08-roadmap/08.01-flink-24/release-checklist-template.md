@@ -287,14 +287,11 @@ Week 5 (周一): 发布后验证完成
 **详细说明**:
 
 ```bash
-# 检查未关闭的FLIP
-./tools/check_unclosed_flips.sh --target-branch release-X.Y
+# 检查未关闭的FLIP ./tools/check_unclosed_flips.sh --target-branch release-X.Y
 
-# 检查依赖版本
-mvn versions:display-dependency-updates | grep -E "(jackson|netty|akka|rocksdb)"
+# 检查依赖版本 mvn versions:display-dependency-updates | grep -E "(jackson|netty|akka|rocksdb)"
 
-# 检查API兼容性
-mvn japicmp:cmp -pl flink-core
+# 检查API兼容性 mvn japicmp:cmp -pl flink-core
 ```
 
 #### 7.1.2 测试覆盖率检查
@@ -311,17 +308,13 @@ mvn japicmp:cmp -pl flink-core
 **测试执行命令**:
 
 ```bash
-# 核心单元测试
-mvn test -pl flink-core,flink-runtime,flink-streaming-java
+# 核心单元测试 mvn test -pl flink-core,flink-runtime,flink-streaming-java
 
-# 集成测试
-mvn verify -Pintegration-tests -pl flink-tests
+# 集成测试 mvn verify -Pintegration-tests -pl flink-tests
 
-# E2E测试
-mvn verify -Pe2e-tests -pl flink-end-to-end-tests
+# E2E测试 mvn verify -Pe2e-tests -pl flink-end-to-end-tests
 
-# 生成覆盖率报告
-mvn jacoco:report -Djacoco.dataFile=target/jacoco.exec
+# 生成覆盖率报告 mvn jacoco:report -Djacoco.dataFile=target/jacoco.exec
 ```
 
 #### 7.1.3 文档完整性检查
@@ -348,14 +341,11 @@ mvn jacoco:report -Djacoco.dataFile=target/jacoco.exec
 **性能测试基准**:
 
 ```bash
-# 运行Nexmark基准测试
-./flink-benchmarks/run-nexmark.sh --version X.Y.0 --baseline X.(Y-1).0
+# 运行Nexmark基准测试 ./flink-benchmarks/run-nexmark.sh --version X.Y.0 --baseline X.(Y-1).0
 
-# 运行TPC-DS
-./flink-benchmarks/run-tpcds.sh --scale 100 --version X.Y.0
+# 运行TPC-DS ./flink-benchmarks/run-tpcds.sh --scale 100 --version X.Y.0
 
-# 检查回归
-./flink-benchmarks/compare-results.sh --current X.Y.0 --baseline X.(Y-1).0
+# 检查回归 ./flink-benchmarks/compare-results.sh --current X.Y.0 --baseline X.(Y-1).0
 ```
 
 ---
@@ -395,21 +385,17 @@ FULL_VERSION="${VERSION}-${RC}"
 
 echo "=== Building Flink ${FULL_VERSION} ==="
 
-# 1. 更新版本
-mvn versions:set -DnewVersion="${FULL_VERSION}"
+# 1. 更新版本 mvn versions:set -DnewVersion="${FULL_VERSION}"
 
-# 2. 许可证检查
-mvn apache-rat:check || exit 1
+# 2. 许可证检查 mvn apache-rat:check || exit 1
 
-# 3. 完整构建
-mvn clean deploy \
+# 3. 完整构建 mvn clean deploy \
     -DskipTests \
     -Papache-release \
     -Dgpg.keyname="${GPG_KEY}" \
     -Dgpg.passphrase="${GPG_PASSPHRASE}"
 
-# 4. 生成校验和
-cd target
+# 4. 生成校验和 cd target
 for f in apache-flink-*.tgz; do
     sha512sum "${f}" > "${f}.sha512"
     gpg --armor --output "${f}.asc" --detach-sig "${f}"
@@ -630,17 +616,14 @@ MIRROR="https://downloads.apache.org/flink"
 
 echo "=== Verifying Flink ${VERSION} Downloads ==="
 
-# 下载源码包
-wget "${MIRROR}/flink-${VERSION}/apache-flink-${VERSION}-src.tgz" -O /tmp/flink-src.tgz
+# 下载源码包 wget "${MIRROR}/flink-${VERSION}/apache-flink-${VERSION}-src.tgz" -O /tmp/flink-src.tgz
 wget "${MIRROR}/flink-${VERSION}/apache-flink-${VERSION}-src.tgz.sha512" -O /tmp/flink-src.tgz.sha512
 wget "${MIRROR}/flink-${VERSION}/apache-flink-${VERSION}-src.tgz.asc" -O /tmp/flink-src.tgz.asc
 
-# 验证SHA512
-cd /tmp
+# 验证SHA512 cd /tmp
 sha512sum -c flink-src.tgz.sha512 || echo "SHA512 verification FAILED"
 
-# 验证GPG签名
-gpg --verify flink-src.tgz.asc flink-src.tgz || echo "GPG verification FAILED"
+# 验证GPG签名 gpg --verify flink-src.tgz.asc flink-src.tgz || echo "GPG verification FAILED"
 
 echo "=== Download verification completed ==="
 ```
@@ -658,18 +641,14 @@ echo "=== Download verification completed ==="
 **Docker验证命令**:
 
 ```bash
-# 拉取并验证
-VERSION="X.Y.0"
+# 拉取并验证 VERSION="X.Y.0"
 docker pull flink:${VERSION}
 
-# 验证运行
-docker run --rm flink:${VERSION} flink --version
+# 验证运行 docker run --rm flink:${VERSION} flink --version
 
-# 验证多架构
-docker manifest inspect flink:${VERSION} | grep architecture
+# 验证多架构 docker manifest inspect flink:${VERSION} | grep architecture
 
-# 安全扫描
-docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+# 安全扫描 docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
     aquasec/trivy image flink:${VERSION}
 ```
 
@@ -732,29 +711,22 @@ DOWNLOAD_DIR="/tmp/flink-test-${VERSION}"
 
 echo "=== Flink Quickstart Verification ==="
 
-# 下载并解压
-cd /tmp
+# 下载并解压 cd /tmp
 wget "https://downloads.apache.org/flink/flink-${VERSION}/apache-flink-${VERSION}-bin-scala_2.12.tgz"  # 404 as of 2026-04: use actual substituted version
 tar -xzf "apache-flink-${VERSION}-bin-scala_2.12.tgz"
 cd "flink-${VERSION}"
 
-# 启动本地集群
-./bin/start-cluster.sh
+# 启动本地集群 ./bin/start-cluster.sh
 
-# 等待启动
-sleep 5
+# 等待启动 sleep 5
 
-# 验证REST API
-curl -s http://localhost:8081/overview | jq . || echo "REST API check failed"
+# 验证REST API curl -s http://localhost:8081/overview | jq . || echo "REST API check failed"
 
-# 运行WordCount
-./bin/flink run ./examples/streaming/WordCount.jar --input /etc/passwd --output /tmp/wordcount-output
+# 运行WordCount ./bin/flink run ./examples/streaming/WordCount.jar --input /etc/passwd --output /tmp/wordcount-output
 
-# 检查输出
-cat /tmp/wordcount-output-* | head -20
+# 检查输出 cat /tmp/wordcount-output-* | head -20
 
-# 停止集群
-./bin/stop-cluster.sh
+# 停止集群 ./bin/stop-cluster.sh
 
 echo "=== Quickstart verification completed ==="
 ```
@@ -967,28 +939,22 @@ flowchart TD
 ### 9.2 常用命令速查
 
 ```bash
-# 版本号批量更新
-find . -name "pom.xml" -exec sed -i 's/1.17-SNAPSHOT/1.18.0/g' {} \;
+# 版本号批量更新 find . -name "pom.xml" -exec sed -i 's/1.17-SNAPSHOT/1.18.0/g' {} \;
 
-# GPG签名所有制品
-for f in *.tgz; do gpg --armor --output "${f}.asc" --detach-sig "${f}"; done
+# GPG签名所有制品 for f in *.tgz; do gpg --armor --output "${f}.asc" --detach-sig "${f}"; done
 
-# 生成SHA512校验和
-sha512sum *.tgz > checksums.sha512
+# 生成SHA512校验和 sha512sum *.tgz > checksums.sha512
 
-# SVN上传制品
-cd svn-dev/flink-X.Y.0-RC1
+# SVN上传制品 cd svn-dev/flink-X.Y.0-RC1
 cp /path/to/artifacts/* .
 svn add *
 svn commit -m "Add Flink X.Y.0 RC1"
 
-# Maven发布
-mvn deploy -Papache-release -DskipTests \
+# Maven发布 mvn deploy -Papache-release -DskipTests \
     -Dgpg.keyname=${KEY} \
     -Dgpg.passphrase=${PASS}
 
-# 快速验证构建
-docker run --rm -it flink:X.Y.0 flink --version
+# 快速验证构建 docker run --rm -it flink:X.Y.0 flink --version
 ```
 
 ### 9.3 角色缩写说明

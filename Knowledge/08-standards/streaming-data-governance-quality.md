@@ -596,8 +596,7 @@ class StreamingAnomalyDetector(KeyedProcessFunction):
             # 样本不足,直接放行
             yield value
 
-# 使用示例
-env = StreamExecutionEnvironment.get_execution_environment()
+# 使用示例 env = StreamExecutionEnvironment.get_execution_environment()
 
 orders = env.from_collection([...])  # 源数据
 

@@ -76,8 +76,7 @@ $$\text{TLS}_{1.3} = (H_{handshake}, C_{cipher}, E_{extensions}, R_{resumption})
 **Flink 2.4 TLS 1.3 配置参数**:
 
 ```yaml
-# flink-conf.yaml - TLS 1.3 配置
-security.ssl.protocol: TLSv1.3  <!-- [Flink 2.4 前瞻] 配置参数可能变动 -->
+# flink-conf.yaml - TLS 1.3 配置 security.ssl.protocol: TLSv1.3  <!-- [Flink 2.4 前瞻] 配置参数可能变动 -->
 security.ssl.algorithms: TLS_AES_256_GCM_SHA384,TLS_CHACHA20_POLY1305_SHA256
 security.ssl.engine.provider: JDK  # 或 OPENSSL (需 native 库)
 
@@ -160,37 +159,30 @@ $$\text{OAuth}_{2.1} = (G_{grant}, P_{pkce}, S_{state}, R_{redirect}, T_{token})
 **Flink Web UI OAuth 2.1 配置**:
 
 ```yaml
-# flink-conf.yaml
-security.oauth.enabled: true
+# flink-conf.yaml security.oauth.enabled: true
 security.oauth.version: "2.1"  # [Flink 2.4 前瞻] 配置参数可能变动
 security.oauth.provider: keycloak  # 或 auth0, azure-ad, okta
 
-# PKCE 配置
-security.oauth.pkce.enabled: true
+# PKCE 配置 security.oauth.pkce.enabled: true
 security.oauth.pkce.method: S256  # 或 plain (不推荐)
 
-# 令牌配置
-security.oauth.token.type: access_token  # 或 dpop
+# 令牌配置 security.oauth.token.type: access_token  # 或 dpop
 security.oauth.token.jwt.validation: true
 security.oauth.token.signature.algorithm: RS256
 
-# 授权服务器端点
-security.oauth.authorization.endpoint: https://auth.example.com/oauth2/authorize
+# 授权服务器端点 security.oauth.authorization.endpoint: https://auth.example.com/oauth2/authorize
 security.oauth.token.endpoint: https://auth.example.com/oauth2/token
 security.oauth.introspection.endpoint: https://auth.example.com/oauth2/introspect
 security.oauth.jwks.uri: https://auth.example.com/.well-known/jwks.json
 
-# 客户端配置
-security.oauth.client.id: flink-web-ui
+# 客户端配置 security.oauth.client.id: flink-web-ui
 security.oauth.client.secret: ${OAUTH_CLIENT_SECRET}
 security.oauth.client.auth.method: client_secret_post
 
-# 重定向配置
-security.oauth.redirect.uri: https://flink.example.com/oauth2/callback
+# 重定向配置 security.oauth.redirect.uri: https://flink.example.com/oauth2/callback
 security.oauth.redirect.uri.strict.match: true
 
-# 作用域
-security.oauth.scopes: openid,profile,email,flink:read,flink:write
+# 作用域 security.oauth.scopes: openid,profile,email,flink:read,flink:write
 ```
 
 ---
@@ -215,8 +207,7 @@ security.oidc.registration.endpoint: https://auth.example.com/connect/register
 1. **声明映射与转换**:
 
 ```yaml
-# 用户属性映射
-security.oidc.claims.mapping: |
+# 用户属性映射 security.oidc.claims.mapping: |
   {
     "sub": "user.id",
     "preferred_username": "user.name",
@@ -225,8 +216,7 @@ security.oidc.claims.mapping: |
     "flink_permissions": "user.permissions"
   }
 
-# 角色提取
-security.oidc.roles.claim: groups
+# 角色提取 security.oidc.roles.claim: groups
 security.oidc.roles.prefix: flink-
 security.oidc.roles.transform: uppercase
 ```
@@ -234,14 +224,11 @@ security.oidc.roles.transform: uppercase
 1. **会话管理** (RFC 7009, RFC 7662):
 
 ```yaml
-# 令牌撤销
-security.oidc.revocation.enabled: true
+# 令牌撤销 security.oidc.revocation.enabled: true
 
-# 令牌内省
-security.oidc.introspection.enabled: true
+# 令牌内省 security.oidc.introspection.enabled: true
 
-# 前端登出
-security.oidc.frontchannel.logout.enabled: true
+# 前端登出 security.oidc.frontchannel.logout.enabled: true
 security.oidc.backchannel.logout.enabled: true
 ```
 
@@ -276,8 +263,7 @@ $$\mathcal{L}_{audit} = \{e \mid e \in \text{Events} \land \text{SecurityRelevan
 **审计事件分类**:
 
 ```yaml
-# 事件分类定义
-audit.events.categories:
+# 事件分类定义 audit.events.categories:
   AUTHENTICATION:    # 认证事件
     - LOGIN_SUCCESS
     - LOGIN_FAILURE
@@ -309,28 +295,23 @@ audit.events.categories:
 **审计日志配置**:
 
 ```yaml
-# flink-conf.yaml
-audit.logging.enabled: true  <!-- [Flink 2.4 前瞻] 配置参数可能变动 -->
+# flink-conf.yaml audit.logging.enabled: true  <!-- [Flink 2.4 前瞻] 配置参数可能变动 -->
 audit.logging.format: json  # 或 cef, parquet
 
-# 输出配置
-audit.logging.output: kafka  # 或 file, elasticsearch
+# 输出配置 audit.logging.output: kafka  # 或 file, elasticsearch
 audit.logging.kafka.topic: flink-security-audit
 audit.logging.kafka.bootstrap.servers: kafka:9092
 
-# 内容配置
-audit.logging.include.request.body: false  # 隐私保护
+# 内容配置 audit.logging.include.request.body: false  # 隐私保护
 audit.logging.include.response.status: true
 audit.logging.include.client.ip: true
 audit.logging.include.user.agent: true
 
-# 完整性保护
-audit.logging.integrity.enabled: true
+# 完整性保护 audit.logging.integrity.enabled: true
 audit.logging.integrity.algorithm: SHA-256
 audit.logging.integrity.key.id: audit-signing-key
 
-# 保留策略
-audit.logging.retention.days: 365
+# 保留策略 audit.logging.retention.days: 365
 audit.logging.archival.enabled: true
 audit.logging.archival.storage: s3
 ```
@@ -444,16 +425,13 @@ $$E_{field}: (col, key_{col}, algo) \rightarrow ciphertext$$
 **Flink 2.4 字段级加密配置**:
 
 ```yaml
-# flink-conf.yaml
-field.encryption.enabled: true  <!-- [Flink 2.4 前瞻] 配置参数可能变动 -->
+# flink-conf.yaml field.encryption.enabled: true  <!-- [Flink 2.4 前瞻] 配置参数可能变动 -->
 field.encryption.provider: aws-kms  # 或 azure-keyvault, gcp-kms, hashicorp-vault
 
-# 默认加密配置
-field.encryption.default.algorithm: AES-256-GCM
+# 默认加密配置 field.encryption.default.algorithm: AES-256-GCM
 field.encryption.default.key.rotation.days: 90
 
-# 列级加密配置
-field.encryption.columns:
+# 列级加密配置 field.encryption.columns:
   - table: users
     column: ssn
     algorithm: AES-256-GCM-DETERMINISTIC
@@ -520,8 +498,7 @@ $$\mathcal{P} = \{(C, A, E) \mid C \in \text{Conditions}, A \in \text{Actions}, 
 **Flink 2.4 安全策略模板**:
 
 ```yaml
-# 策略模板定义
-security.policies:
+# 策略模板定义 security.policies:
   # 模板 1: 数据分类策略
   - name: data-classification-policy
     type: classification
@@ -1080,8 +1057,7 @@ $$\text{ComplianceScore} = \frac{\sum_{i=1}^{n} w_i \cdot \text{Compliance}(cont
 
 # ============================================
 # 1. 基础 SSL/TLS 配置
-# ============================================
-security.ssl.enabled: true
+# ============================================ security.ssl.enabled: true
 security.ssl.protocol: TLSv1.3
 
 # 严格密码套件 (按优先级排序)
@@ -1090,26 +1066,22 @@ security.ssl.algorithms: |
   TLS_CHACHA20_POLY1305_SHA256,
   TLS_AES_128_GCM_SHA256
 
-# 禁用旧版本
-security.ssl.protocols.disabled: TLSv1,TLSv1.1,TLSv1.2
+# 禁用旧版本 security.ssl.protocols.disabled: TLSv1,TLSv1.1,TLSv1.2
 
-# 引擎选择
-security.ssl.engine.provider: OPENSSL  # 比 JDK 快 30%
+# 引擎选择 security.ssl.engine.provider: OPENSSL  # 比 JDK 快 30%
 security.ssl.engine.openssl.path: /usr/lib/libssl.so
 
 # ============================================
 # 2. 证书配置 (mTLS)
 # ============================================
-# 内部通信证书
-security.ssl.internal.enabled: true
+# 内部通信证书 security.ssl.internal.enabled: true
 security.ssl.internal.keystore: /opt/flink/certs/internal-keystore.p12
 security.ssl.internal.keystore.password: ${INTERNAL_KEYSTORE_PASSWORD}
 security.ssl.internal.keystore.type: PKCS12
 security.ssl.internal.truststore: /opt/flink/certs/internal-truststore.p12
 security.ssl.internal.truststore.password: ${INTERNAL_TRUSTSTORE_PASSWORD}
 
-# 外部通信证书
-security.ssl.rest.enabled: true
+# 外部通信证书 security.ssl.rest.enabled: true
 security.ssl.rest.keystore: /opt/flink/certs/rest-keystore.p12
 security.ssl.rest.keystore.password: ${REST_KEYSTORE_PASSWORD}
 security.ssl.rest.truststore: /opt/flink/certs/rest-truststore.p12
@@ -1120,8 +1092,7 @@ security.ssl.rest.client-auth: REQUIRE
 
 # ============================================
 # 3. 会话恢复配置
-# ============================================
-security.ssl.session.timeout: 86400  # 24小时
+# ============================================ security.ssl.session.timeout: 86400  # 24小时
 security.ssl.session.cache.size: 2048
 
 # 0-RTT 配置 (谨慎启用)
@@ -1131,18 +1102,15 @@ security.ssl.0rtt.accept-only-idempotent: true  # 仅幂等操作
 
 # ============================================
 # 4. 证书热加载
-# ============================================
-security.ssl.certificate.reload.enabled: true
+# ============================================ security.ssl.certificate.reload.enabled: true
 security.ssl.certificate.reload.interval: 60000  # 60秒检查
 
 # ============================================
 # 5. 高级安全设置
 # ============================================
-# 禁用不安全重协商
-security.ssl.secure-renegotiation: true
+# 禁用不安全重协商 security.ssl.secure-renegotiation: true
 
-# OCSP Stapling
-security.ssl.ocsp.stapling.enabled: true
+# OCSP Stapling security.ssl.ocsp.stapling.enabled: true
 
 # 证书固定 (HPKP 替代方案)
 security.ssl.certificate.pins:
@@ -1159,31 +1127,26 @@ security.ssl.certificate.pins:
 
 # ============================================
 # 1. 基础 OAuth 2.1 配置
-# ============================================
-security.oauth.enabled: true
+# ============================================ security.oauth.enabled: true
 security.oauth.version: "2.1"  # 强制 OAuth 2.1 模式
 
-# 授权服务器发现
-security.oauth.issuer.uri: https://auth.company.com
+# 授权服务器发现 security.oauth.issuer.uri: https://auth.company.com
 security.oauth.discovery.enabled: true
 
 # ============================================
 # 2. 客户端配置
-# ============================================
-security.oauth.client.id: flink-production
+# ============================================ security.oauth.client.id: flink-production
 security.oauth.client.secret: ${OAUTH_CLIENT_SECRET}
 security.oauth.client.auth.method: client_secret_post
 
 # ============================================
 # 3. PKCE 配置 (强制)
-# ============================================
-security.oauth.pkce.enabled: true
+# ============================================ security.oauth.pkce.enabled: true
 security.oauth.pkce.method: S256
 
 # ============================================
 # 4. 端点配置 (自动发现优先)
-# ============================================
-security.oauth.authorization.endpoint: https://auth.company.com/oauth2/authorize
+# ============================================ security.oauth.authorization.endpoint: https://auth.company.com/oauth2/authorize
 security.oauth.token.endpoint: https://auth.company.com/oauth2/token
 security.oauth.introspection.endpoint: https://auth.company.com/oauth2/introspect
 security.oauth.revocation.endpoint: https://auth.company.com/oauth2/revoke
@@ -1192,8 +1155,7 @@ security.oauth.jwks.uri: https://auth.company.com/.well-known/jwks.json
 # ============================================
 # 5. OIDC 配置
 # ============================================
-# 用户属性映射
-security.oidc.claims.mapping: |
+# 用户属性映射 security.oidc.claims.mapping: |
   {
     "sub": "user.id",
     "preferred_username": "user.username",
@@ -1205,14 +1167,12 @@ security.oidc.claims.mapping: |
     "flink_permissions": "user.customPermissions"
   }
 
-# 角色提取
-security.oidc.roles.claim: groups
+# 角色提取 security.oidc.roles.claim: groups
 security.oidc.roles.prefix: flink-
 security.oidc.roles.transform: uppercase
 security.oidc.roles.filter: flink-.*
 
-# 声明验证
-security.oidc.claims.required:
+# 声明验证 security.oidc.claims.required:
   - sub
   - preferred_username
 security.oidc.claims.issuer.validation: true
@@ -1220,29 +1180,23 @@ security.oidc.claims.audience.validation: true
 
 # ============================================
 # 6. 会话管理
-# ============================================
-security.oidc.session.timeout: 3600  # 1小时
+# ============================================ security.oidc.session.timeout: 3600  # 1小时
 security.oidc.session.idle.timeout: 1800  # 30分钟空闲
 
-# 前端登出
-security.oidc.frontchannel.logout.enabled: true
+# 前端登出 security.oidc.frontchannel.logout.enabled: true
 security.oidc.frontchannel.logout.uri: https://auth.company.com/logout
 
-# 后端登出
-security.oidc.backchannel.logout.enabled: true
+# 后端登出 security.oidc.backchannel.logout.enabled: true
 
 # ============================================
 # 7. 高级配置
 # ============================================
-# 令牌验证
-security.oauth.token.validation.type: introspection  # 或 local (JWT)
+# 令牌验证 security.oauth.token.validation.type: introspection  # 或 local (JWT)
 security.oauth.token.validation.cache.duration: 300  # 5分钟缓存
 
-# 作用域
-security.oauth.scopes: openid,profile,email,flink:read,flink:write
+# 作用域 security.oauth.scopes: openid,profile,email,flink:read,flink:write
 
-# 精确重定向 URI
-security.oauth.redirect.uri: https://flink.company.com/oauth2/callback
+# 精确重定向 URI security.oauth.redirect.uri: https://flink.company.com/oauth2/callback
 security.oauth.redirect.uri.strict.match: true
 
 # 多租户 (可选)
@@ -1488,8 +1442,7 @@ CREATE MASKING POLICY context_aware_mask AS
 
 # ============================================
 # 1. 基础审计配置
-# ============================================
-audit.logging.enabled: true
+# ============================================ audit.logging.enabled: true
 audit.logging.format: json
 audit.logging.schema.version: "2.0"
 
@@ -1514,8 +1467,7 @@ audit.logging.s3.compression: zstd
 
 # ============================================
 # 3. 事件过滤与分类
-# ============================================
-audit.logging.events.include:
+# ============================================ audit.logging.events.include:
   # 认证事件
   - AUTHENTICATION.LOGIN_SUCCESS
   - AUTHENTICATION.LOGIN_FAILURE
@@ -1544,8 +1496,7 @@ audit.logging.events.exclude:
 
 # ============================================
 # 4. 内容控制 (隐私保护)
-# ============================================
-audit.logging.include:
+# ============================================ audit.logging.include:
   request.id: true
   request.method: true
   request.path: true
@@ -1570,8 +1521,7 @@ audit.logging.include:
 
 # ============================================
 # 5. 完整性保护
-# ============================================
-audit.logging.integrity.enabled: true
+# ============================================ audit.logging.integrity.enabled: true
 audit.logging.integrity.algorithm: SHA-256
 audit.logging.integrity.key.provider: aws-kms
 audit.logging.integrity.key.id: alias/flink-audit-signing-key
@@ -1582,8 +1532,7 @@ audit.logging.chain.previous.hash.header: X-Audit-Previous-Hash
 
 # ============================================
 # 6. 保留与归档
-# ============================================
-audit.logging.retention:
+# ============================================ audit.logging.retention:
   hot.storage.days: 30
   warm.storage.days: 90
   cold.storage.days: 2555  # 7年 (合规要求)
@@ -1905,8 +1854,7 @@ compliance:
 # 安全级别: 金融级 (PCI-DSS / SOC2 Type II)
 # ============================================
 
-# --- TLS 1.3 全栈加密 ---
-security.ssl.enabled: true
+# --- TLS 1.3 全栈加密 --- security.ssl.enabled: true
 security.ssl.protocol: TLSv1.3
 security.ssl.algorithms: TLS_AES_256_GCM_SHA384
 security.ssl.engine.provider: OPENSSL
@@ -1917,38 +1865,32 @@ security.ssl.internal.keystore: ${INTERNAL_KEYSTORE_PATH}
 security.ssl.internal.keystore.password: ${INTERNAL_KEYSTORE_PASSWORD}
 security.ssl.internal.truststore: ${INTERNAL_TRUSTSTORE_PATH}
 
-# REST API / Web UI
-security.ssl.rest.enabled: true
+# REST API / Web UI security.ssl.rest.enabled: true
 security.ssl.rest.keystore: ${REST_KEYSTORE_PATH}
 security.ssl.rest.keystore.password: ${REST_KEYSTORE_PASSWORD}
 security.ssl.rest.client-auth: REQUIRE
 
-# 会话恢复
-security.ssl.session.timeout: 3600
+# 会话恢复 security.ssl.session.timeout: 3600
 security.ssl.0rtt.enabled: false  # 金融级禁用
 
-# --- OAuth 2.1 认证 ---
-security.oauth.enabled: true
+# --- OAuth 2.1 认证 --- security.oauth.enabled: true
 security.oauth.version: "2.1"
 security.oauth.pkce.enabled: true
 security.oauth.pkce.method: S256
 security.oauth.client.auth.method: client_secret_jwt
 
-# --- 审计日志 ---
-audit.logging.enabled: true
+# --- 审计日志 --- audit.logging.enabled: true
 audit.logging.format: json
 audit.logging.output: kafka
 audit.logging.integrity.enabled: true
 audit.logging.retention.days: 2555
 
-# --- 字段级加密 ---
-field.encryption.enabled: true
+# --- 字段级加密 --- field.encryption.enabled: true
 field.encryption.provider: aws-kms
 field.encryption.default.algorithm: AES-256-GCM
 field.encryption.default.key.rotation.days: 90
 
-# --- 数据脱敏 ---
-security.masking.enabled: true
+# --- 数据脱敏 --- security.masking.enabled: true
 security.masking.default.policy: pci_dss_compliant
 ```
 

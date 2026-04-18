@@ -1323,8 +1323,7 @@ flowchart TD
 cd nexmark/flink
 mvn clean package
 
-# 运行 Q5 测试
-flink run -p 4 target/nexmark-flink-1.0-SNAPSHOT.jar \
+# 运行 Q5 测试 flink run -p 4 target/nexmark-flink-1.0-SNAPSHOT.jar \
   --query Q5 \
   --parallelism 4 \
   --max-events 10000000 \
@@ -1334,24 +1333,19 @@ flink run -p 4 target/nexmark-flink-1.0-SNAPSHOT.jar \
 ### RisingWave 运行命令
 
 ```bash
-# 启动 RisingWave
-risedev dev
+# 启动 RisingWave risedev dev
 
-# 执行测试
-psql -h localhost -p 4566 -d dev -f q5-hot-items.sql
+# 执行测试 psql -h localhost -p 4566 -d dev -f q5-hot-items.sql
 
-# 监控性能
-watch -n 1 "psql -h localhost -p 4566 -d dev -c 'SELECT * FROM rw_catalog.rw_ddl_progress'"
+# 监控性能 watch -n 1 "psql -h localhost -p 4566 -d dev -c 'SELECT * FROM rw_catalog.rw_ddl_progress'"
 ```
 
 ### Materialize 运行命令
 
 ```bash
-# 启动 Materialize
-bin/materialized --workers 4
+# 启动 Materialize bin/materialized --workers 4
 
-# 执行测试
-psql -h localhost -p 6875 -d materialize -f q5-hot-items.sql
+# 执行测试 psql -h localhost -p 6875 -d materialize -f q5-hot-items.sql
 ```
 
 ---

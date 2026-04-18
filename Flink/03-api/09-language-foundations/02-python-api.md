@@ -219,18 +219,15 @@ graph TB
 PyFlink 支持在同一作业中混合使用 Python 和 Java 算子：
 
 ```python
-# Python DataStream
-stream = env.from_collection([1, 2, 3])
+# Python DataStream stream = env.from_collection([1, 2, 3])
 
 # Java 算子 (通过 JVM 调用)
 stream = stream.map(lambda x: x * 2)  # Python UDF
 
-# 切回 Java 生态
-stream = stream.key_by(lambda x: x % 2)  # Java 分组
+# 切回 Java 生态 stream = stream.key_by(lambda x: x % 2)  # Java 分组
 stream = stream.sum(0)  # Java 聚合
 
-# 再切到 Python
-stream = stream.map(lambda x: f"result: {x}")  # Python UDF
+# 再切到 Python stream = stream.map(lambda x: f"result: {x}")  # Python UDF
 ```
 
 **执行位置决策矩阵**
@@ -290,16 +287,14 @@ PyFlink 的性能损失主要来自以下环节：
 **场景 1: 高频低延迟处理**
 
 ```python
-# 反例:微秒级延迟要求的金融交易
-env.from_collection(ticks) \
+# 反例:微秒级延迟要求的金融交易 env.from_collection(ticks) \
     .map(lambda tick: calc_spread(tick))  # 延迟不可接受
 ```
 
 **场景 2: 纯数据管道无 ML 需求**
 
 ```python
-# 反例:简单的 ETL 转换
-stream.map(lambda row: transform(row)) \
+# 反例:简单的 ETL 转换 stream.map(lambda row: transform(row)) \
       .filter(lambda row: row.value > 0) \
       .add_sink(kafka_producer)
 # 应使用 Java 或 SQL API
@@ -308,8 +303,7 @@ stream.map(lambda row: transform(row)) \
 **场景 3: 复杂状态操作**
 
 ```python
-# 反例:大规模状态访问
-class MyUDF(MapFunction):
+# 反例:大规模状态访问 class MyUDF(MapFunction):
     def map(self, value):
         # Python UDF 状态 API 有限
         state = self.get_runtime_context().get_state(...)
@@ -348,8 +342,7 @@ from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.table import StreamTableEnvironment
 import pandas as pd
 
-# 使用 Pandas UDF 进行向量化计算
-@udf(result_type=DataTypes.FLOAT(), func_type="pandas")
+# 使用 Pandas UDF 进行向量化计算 @udf(result_type=DataTypes.FLOAT(), func_type="pandas")
 def vectorized_normalize(df: pd.Series) -> pd.Series:
     """
     批量处理而非逐条处理
@@ -400,19 +393,16 @@ env.get_config().get_configuration().set_string(
 
 ```text
 # 1. 基础依赖 (所有作业共享)
-# Dockerfile
-FROM flink:1.18-scala_2.12
+# Dockerfile FROM flink:1.18-scala_2.12
 RUN pip install numpy pandas pyarrow
 
 # 2. 作业级依赖
-# requirements.txt
-scikit-learn==1.3.0
+# requirements.txt scikit-learn==1.3.0
 transformers==4.30.0
 torch==2.0.1
 
 # 3. 动态依赖 (运行时加载)
-# pyflink 配置
-env.add_python_file("/path/to/custom_lib.py")
+# pyflink 配置 env.add_python_file("/path/to/custom_lib.py")
 env.set_python_requirements("/path/to/requirements.txt")
 ```
 
@@ -420,8 +410,7 @@ env.set_python_requirements("/path/to/requirements.txt")
 
 ```python
 # 创建隔离的 Conda 环境
-# conda-pack 打包后上传到 DFS
-env.set_python_archive(
+# conda-pack 打包后上传到 DFS env.set_python_archive(
     "hdfs:///envs/ml_env.tar.gz#ml_env",
     target_dir="ml_env"
 )
@@ -515,18 +504,15 @@ class ModelInference(MapFunction):
         return results
 
 
-# 构建 Pipeline
-env = StreamExecutionEnvironment.get_execution_environment()
+# 构建 Pipeline env = StreamExecutionEnvironment.get_execution_environment()
 
-# 配置 Python 环境
-env.add_python_file("/app/feature_utils.py")
+# 配置 Python 环境 env.add_python_file("/app/feature_utils.py")
 env.set_python_requirements("/app/requirements.txt")
 
 # 数据源 (Kafka)
 stream = env.add_source(KafkaSource(...))
 
-# 特征工程
-features = stream.map(FeatureExtractor())
+# 特征工程 features = stream.map(FeatureExtractor())
 
 # 模型推理 (Python UDF)
 predictions = features.map(ModelInference()).flat_map(
@@ -534,8 +520,7 @@ predictions = features.map(ModelInference()).flat_map(
     result_type=Types.MAP(Types.STRING(), Types.PICKLED_BYTE_ARRAY())
 )
 
-# 结果输出
-predictions.add_sink(KafkaSink(...))
+# 结果输出 predictions.add_sink(KafkaSink(...))
 
 env.execute("Real-time ML Inference")
 ```
@@ -593,20 +578,17 @@ class StreamingStatsAggregate(AggregateFunction):
         return a + b
 
 
-# 数据科学工作流
-env = StreamExecutionEnvironment.get_execution_environment()
+# 数据科学工作流 env = StreamExecutionEnvironment.get_execution_environment()
 
 sensor_stream = env.add_source(IoTSensorSource())
 
-# 窗口统计 + 异常检测
-stats_stream = sensor_stream \
+# 窗口统计 + 异常检测 stats_stream = sensor_stream \
     .key_by(lambda x: x['sensor_id']) \
     .window(TumblingProcessingTimeWindows.of(Time.minutes(1))) \
     .aggregate(StreamingStatsAggregate()) \
     .filter(lambda x: x['zscore_max'] > 3)  # 异常窗口
 
-# 输出到告警系统
-stats_stream.add_sink(AlertSink())
+# 输出到告警系统 stats_stream.add_sink(AlertSink())
 
 env.execute("Streaming Data Science")
 ```
@@ -804,8 +786,7 @@ async def query_llm_async(record):
         )
         return await response.json()
 
-# 应用到 DataStream
-result_stream = input_stream.map_async(query_llm_async)
+# 应用到 DataStream result_stream = input_stream.map_async(query_llm_async)
 ```
 
 ---
@@ -1018,8 +999,7 @@ graph TB
 **反例分析**:
 
 ```text
-# 危险配置:无并发限制
-@async_func(capacity=10000)  # 过高并发
+# 危险配置:无并发限制 @async_func(capacity=10000)  # 过高并发
 def query_external_service(record):
     return await http_client.get(url)
 ```
@@ -1033,8 +1013,7 @@ def query_external_service(record):
 **最佳实践**:
 
 ```text
-# 合理配置
-@async_func(
+# 合理配置 @async_func(
     capacity=min(external_service_max_conns, 100),
     timeout=5000,
     retry_strategy=AsyncRetryStrategy(max_attempts=3)
@@ -1208,27 +1187,22 @@ class OpenAIAsyncCaller(AsyncFunction):
             await self.session.close()
 
 
-# 构建 Pipeline
-env = StreamExecutionEnvironment.get_execution_environment()
+# 构建 Pipeline env = StreamExecutionEnvironment.get_execution_environment()
 
-# 配置异步函数参数
-async_config = {
+# 配置异步函数参数 async_config = {
     "capacity": 50,           # 最大并发50
     "timeout": 30000,         # 30秒超时
     "output_mode": "ordered"  # 保持顺序
 }
 
-# 数据源:用户查询流
-user_queries = env.add_source(KafkaSource(...))
+# 数据源:用户查询流 user_queries = env.add_source(KafkaSource(...))
 
-# 异步调用大模型
-responses = user_queries.map_async(
+# 异步调用大模型 responses = user_queries.map_async(
     OpenAIAsyncCaller(api_key="${OPENAI_API_KEY}"),
     **async_config
 )
 
-# 结果输出到 Kafka
-responses.add_sink(KafkaSink(...))
+# 结果输出到 Kafka responses.add_sink(KafkaSink(...))
 
 env.execute("Async OpenAI Inference")
 ```
@@ -1302,8 +1276,7 @@ class AsyncPostgresLookup(AsyncFunction):
             await self.pool.close()
 
 
-# 使用装饰器简化
-@async_func(capacity=100, timeout=5000)
+# 使用装饰器简化 @async_func(capacity=100, timeout=5000)
 async def enrich_with_user_profile(event):
     """异步用户画像补全"""
     async with aiohttp.ClientSession() as session:

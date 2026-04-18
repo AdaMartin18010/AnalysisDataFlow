@@ -92,8 +92,7 @@ T(s) = { (1, 0)  if s = BLUE_ACTIVE   # 100% Blue, 0% Green
 Blue/Green 部署维护两个完全相同的生产环境（Blue 和 Green）。Blue 处理当前流量，Green 部署新版本。通过流量切换机制将流量从 Blue 迁移到 Green，实现零停机升级。如果 Green 出现问题，可立即回滚到 Blue。
 
 ```yaml
-# Blue/Green 部署示意
-apiVersion: flink.apache.org/v1beta1
+# Blue/Green 部署示意 apiVersion: flink.apache.org/v1beta1
 kind: FlinkBlueGreenDeployment
 metadata:
   name: streaming-etl-pipeline
@@ -342,8 +341,7 @@ AB_TEST:    T(t) = (0.5, 0.5)  # A/B 测试
 **渐进式切换调度**：
 
 ```python
-# 渐进式流量切换算法
-def gradual_switch(duration_minutes=10, steps=10):
+# 渐进式流量切换算法 def gradual_switch(duration_minutes=10, steps=10):
     for step in range(steps):
         green_ratio = (step + 1) / steps
         blue_ratio = 1 - green_ratio
@@ -983,8 +981,7 @@ spec:
 ### 6.3 流量切换配置示例
 
 ```yaml
-# 渐进式切换配置
-apiVersion: flink.apache.org/v1beta1
+# 渐进式切换配置 apiVersion: flink.apache.org/v1beta1
 kind: FlinkBlueGreenDeployment
 metadata:
   name: gradual-rollout-example
@@ -1007,8 +1004,7 @@ spec:
       validationInterval: "1m"
 
 ---
-# 金丝雀发布配置
-apiVersion: flink.apache.org/v1beta1
+# 金丝雀发布配置 apiVersion: flink.apache.org/v1beta1
 kind: FlinkBlueGreenDeployment
 metadata:
   name: canary-release-example
@@ -1110,8 +1106,7 @@ spec:
 ### 6.5 GitOps 集成 (ArgoCD Rollouts)
 
 ```yaml
-# ArgoCD Application 配置
-apiVersion: argoproj.io/v1alpha1
+# ArgoCD Application 配置 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: flink-bluegreen-apps
@@ -1159,8 +1154,7 @@ spec:
 
 ---
 # 使用 Kustomize 管理多环境
-# kustomization.yaml
-apiVersion: kustomize.config.k8s.io/v1beta1
+# kustomization.yaml apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: flink-apps
 
@@ -1184,8 +1178,7 @@ images:
     newTag: v2.4.0
 
 ---
-# GitHub Actions CI/CD Pipeline
-name: Flink Blue/Green Deploy
+# GitHub Actions CI/CD Pipeline name: Flink Blue/Green Deploy
 
 on:
   push:

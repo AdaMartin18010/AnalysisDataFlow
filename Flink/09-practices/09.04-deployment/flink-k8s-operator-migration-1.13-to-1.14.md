@@ -162,8 +162,7 @@ ConversionStrategy = { None, Webhook }
 **版本转换策略**：
 
 ```yaml
-# CRD 定义中的版本管理
-apiVersion: apiextensions.k8s.io/v1
+# CRD 定义中的版本管理 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 spec:
   group: flink.apache.org
@@ -510,20 +509,15 @@ VERSION_BACKUP="/backup/operator-version.txt"
 HELM_RELEASE="flink-kubernetes-operator"
 NAMESPACE="flink-operator"
 
-# 1. 获取备份版本
-PREVIOUS_VERSION=$(cat $VERSION_BACKUP)
+# 1. 获取备份版本 PREVIOUS_VERSION=$(cat $VERSION_BACKUP)
 
-# 2. 回滚 Helm Release
-helm rollback $HELM_RELEASE 0 -n $NAMESPACE
+# 2. 回滚 Helm Release helm rollback $HELM_RELEASE 0 -n $NAMESPACE
 
-# 3. 回滚 CRD
-kubectl apply -f "https://github.com/apache/flink-kubernetes-operator/releases/download/release-$PREVIOUS_VERSION/flinkdeployments.flink.apache.org-v1beta1.yml"
+# 3. 回滚 CRD kubectl apply -f "https://github.com/apache/flink-kubernetes-operator/releases/download/release-$PREVIOUS_VERSION/flinkdeployments.flink.apache.org-v1beta1.yml"
 
-# 4. 验证回滚
-kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=flink-kubernetes-operator -n $NAMESPACE --timeout=300s
+# 4. 验证回滚 kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=flink-kubernetes-operator -n $NAMESPACE --timeout=300s
 
-# 5. 验证作业状态
-kubectl get flinkdeployments -A -o json | jq '.items[] | select(.status.jobStatus.state != "RUNNING") | .metadata.name'
+# 5. 验证作业状态 kubectl get flinkdeployments -A -o json | jq '.items[] | select(.status.jobStatus.state != "RUNNING") | .metadata.name'
 ```
 
 ### 4.3 生产环境迁移最佳实践
@@ -899,14 +893,12 @@ if __name__ == '__main__':
 **使用示例**：
 
 ```bash
-# 迁移单个配置
-python migrate_113_to_114.py \
+# 迁移单个配置 python migrate_113_to_114.py \
     -i flink-deployment-113.yaml \
     -o flink-deployment-114.yaml \
     --dry-run
 
-# 批量迁移
-for file in configs/*.yaml; do
+# 批量迁移 for file in configs/*.yaml; do
     python migrate_113_to_114.py \
         -i "$file" \
         -o "migrated/$(basename $file)"
@@ -918,8 +910,7 @@ done
 ### 6.2 Helm Values 迁移
 
 ```yaml
-# ========== values-1.13.yaml (旧配置) ==========
-image:
+# ========== values-1.13.yaml (旧配置) ========== image:
   repository: apache/flink-kubernetes-operator
   tag: "1.13.0"
 
@@ -941,15 +932,13 @@ resources:
 replicaCount: 1
 
 ---
-# ========== values-1.14.yaml (迁移后) ==========
-image:
+# ========== values-1.14.yaml (迁移后) ========== image:
   registry: "docker.io"  # 新增:支持私有镜像仓库
   repository: "apache/flink-kubernetes-operator"
   tag: "1.14.0"
   pullPolicy: IfNotPresent
 
-# 新增:结构化配置
-operatorConfiguration:
+# 新增:结构化配置 operatorConfiguration:
   # 基础配置
   core:
     reconcileInterval: 60s
@@ -990,8 +979,7 @@ watchNamespaces:
   - "flink-jobs"
   - "flink-production"  # 新增监控命名空间
 
-# 新增:RBAC 范围控制
-rbac:
+# 新增:RBAC 范围控制 rbac:
   create: true
   scope: cluster  # cluster | namespace
 
@@ -1003,8 +991,7 @@ resources:
     cpu: 500m
     memory: 512Mi
 
-# 新增:高可用配置
-highAvailability:
+# 新增:高可用配置 highAvailability:
   enabled: true
   replicas: 2
   podDisruptionBudget:
@@ -1039,11 +1026,9 @@ resourceProfiles:
 **Helm 升级命令**：
 
 ```bash
-# 1. 备份当前配置
-helm get values flink-kubernetes-operator -n flink-operator > backup-values.yaml
+# 1. 备份当前配置 helm get values flink-kubernetes-operator -n flink-operator > backup-values.yaml
 
-# 2. 下载新 Chart
-helm pull apache/flink-kubernetes-operator --version 1.14.0
+# 2. 下载新 Chart helm pull apache/flink-kubernetes-operator --version 1.14.0
 
 # 3. 升级(先 dry-run 验证)
 helm upgrade flink-kubernetes-operator apache/flink-kubernetes-operator \
@@ -1052,15 +1037,13 @@ helm upgrade flink-kubernetes-operator apache/flink-kubernetes-operator \
     -f values-1.14.yaml \
     --dry-run
 
-# 4. 实际升级
-helm upgrade flink-kubernetes-operator apache/flink-kubernetes-operator \
+# 4. 实际升级 helm upgrade flink-kubernetes-operator apache/flink-kubernetes-operator \
     --version 1.14.0 \
     -n flink-operator \
     -f values-1.14.yaml \
     --wait
 
-# 5. 验证升级
-helm list -n flink-operator
+# 5. 验证升级 helm list -n flink-operator
 kubectl get pods -n flink-operator
 ```
 
@@ -1069,8 +1052,7 @@ kubectl get pods -n flink-operator
 ### 6.3 分环境迁移计划
 
 ```yaml
-# ========== migration-plan.yaml ==========
-apiVersion: flink.apache.org/v1beta1
+# ========== migration-plan.yaml ========== apiVersion: flink.apache.org/v1beta1
 kind: MigrationPlan
 metadata:
   name: operator-113-to-114
@@ -1251,8 +1233,7 @@ spec:
 ### 6.4 自动迁移 CI/CD 流程
 
 ```yaml
-# ========== .github/workflows/operator-migration.yml ==========
-name: Flink Operator Migration 1.13 to 1.14
+# ========== .github/workflows/operator-migration.yml ========== name: Flink Operator Migration 1.13 to 1.14
 
 on:
   workflow_dispatch:
@@ -1479,15 +1460,13 @@ echo "Namespace: $NAMESPACE"
 echo "Backup Directory: $BACKUP_DIR"
 echo ""
 
-# 确认
-read -p "Are you sure you want to rollback? (yes/no): " CONFIRM
+# 确认 read -p "Are you sure you want to rollback? (yes/no): " CONFIRM
 if [[ "$CONFIRM" != "yes" ]]; then
     echo "Rollback cancelled"
     exit 0
 fi
 
-# 步骤 1: 检查备份存在
-echo "[1/6] Checking backup files..."
+# 步骤 1: 检查备份存在 echo "[1/6] Checking backup files..."
 if [[ ! -f "$BACKUP_DIR/values-backup.yaml" ]]; then
     echo "ERROR: Backup file not found: $BACKUP_DIR/values-backup.yaml"
     exit 1
@@ -1500,32 +1479,27 @@ fi
 
 echo "✓ Backup files found"
 
-# 步骤 2: 停止新作业提交
-echo "[2/6] Preventing new job submissions..."
+# 步骤 2: 停止新作业提交 echo "[2/6] Preventing new job submissions..."
 kubectl patch deployment flink-kubernetes-operator -n $NAMESPACE \
     --type merge \
     -p '{"spec":{"replicas":0}}' 2>/dev/null || true
 
 echo "✓ Operator scaled down"
 
-# 步骤 3: 回滚 Helm Release
-echo "[3/6] Rolling back Helm release..."
+# 步骤 3: 回滚 Helm Release echo "[3/6] Rolling back Helm release..."
 helm rollback flink-kubernetes-operator $ROLLBACK_REVISION -n $NAMESPACE --wait --timeout 300s
 
 echo "✓ Helm rollback completed"
 
-# 步骤 4: 回滚 CRDs
-echo "[4/6] Rolling back CRDs..."
+# 步骤 4: 回滚 CRDs echo "[4/6] Rolling back CRDs..."
 kubectl apply -f "$BACKUP_DIR/crds-backup.yaml"
 
-# 等待 CRD 就绪
-echo "Waiting for CRDs to be established..."
+# 等待 CRD 就绪 echo "Waiting for CRDs to be established..."
 kubectl wait --for=condition=established crd --all --timeout=60s
 
 echo "✓ CRDs rolled back"
 
-# 步骤 5: 恢复 Operator
-echo "[5/6] Restoring operator..."
+# 步骤 5: 恢复 Operator echo "[5/6] Restoring operator..."
 kubectl patch deployment flink-kubernetes-operator -n $NAMESPACE \
     --type merge \
     -p '{"spec":{"replicas":1}}' 2>/dev/null || true
@@ -1535,24 +1509,20 @@ kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=flink-kubernete
 
 echo "✓ Operator restored"
 
-# 步骤 6: 验证回滚
-echo "[6/6] Verifying rollback..."
+# 步骤 6: 验证回滚 echo "[6/6] Verifying rollback..."
 
-# 检查 Operator 版本
-CURRENT_VERSION=$(helm list -n $NAMESPACE -o json | jq -r '.[0].app_version')
+# 检查 Operator 版本 CURRENT_VERSION=$(helm list -n $NAMESPACE -o json | jq -r '.[0].app_version')
 echo "Current Operator version: $CURRENT_VERSION"
 
 if [[ "$CURRENT_VERSION" != 1.13.* ]]; then
     echo "WARNING: Current version ($CURRENT_VERSION) is not 1.13.x"
 fi
 
-# 检查 FlinkDeployments
-echo ""
+# 检查 FlinkDeployments echo ""
 echo "FlinkDeployment status:"
 kubectl get flinkdeployments -A
 
-# 检查失败的作业
-FAILED_JOBS=$(kubectl get flinkdeployments -A -o json 2>/dev/null | jq '[.items[] | select(.status.jobStatus.state == "FAILED")] | length' || echo "0")
+# 检查失败的作业 FAILED_JOBS=$(kubectl get flinkdeployments -A -o json 2>/dev/null | jq '[.items[] | select(.status.jobStatus.state == "FAILED")] | length' || echo "0")
 if [[ "$FAILED_JOBS" -gt 0 ]]; then
     echo ""
     echo "WARNING: $FAILED_JOBS jobs are in FAILED state"

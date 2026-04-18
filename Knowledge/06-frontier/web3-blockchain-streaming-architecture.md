@@ -530,8 +530,7 @@ DataStream<TrendSignal> trendStream = nftEventStream
 ### 6.4 完整架构配置示例
 
 ```yaml
-# flink-conf.yaml 区块链源配置
-blockchain:
+# flink-conf.yaml 区块链源配置 blockchain:
   source:
     type: websocket
     endpoint: wss://mainnet.infura.io/ws/v3/${INFURA_KEY}

@@ -3,7 +3,6 @@
 > **状态**: 已发布 (持续演进) | **预计发布时间**: 2026-06 | **最后更新**: 2026-04-15
 >
 > ⚠️ 本文档描述的安全态势基于2026年公开发布的安全研究报告，相关政策与标准仍在快速演进中。
-
 > **所属阶段**: Knowledge/06-frontier | **前置依赖**: [ai-agent-streaming-architecture.md](ai-agent-streaming-architecture.md), [ai-agent-a2a-protocol.md](ai-agent-a2a-protocol.md) | **形式化等级**: L3-L4
 
 ---
@@ -601,8 +600,7 @@ async def batch_scan(urls: List[str]) -> Dict:
         "l0_percentage": level_counts[SecurityLevel.L0] / len(results) * 100
     }
 
-# 示例运行
-if __name__ == "__main__":
+# 示例运行 if __name__ == "__main__":
     sample_urls = [
         "https://mcp-files.example.com",
         "https://mcp-db.example.com",

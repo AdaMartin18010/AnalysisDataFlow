@@ -252,8 +252,7 @@ graph LR
 ### 5.2 混合架构最佳实践
 
 ```yaml
-# 架构分层设计
-architecture:
+# 架构分层设计 architecture:
   edge_layer:
     platform: Cloudflare Pipelines
     purpose: |

@@ -477,8 +477,7 @@ $$
 
 # -----------------------------------------------------------------
 # 基础网络配置
-# -----------------------------------------------------------------
-bind_address 0.0.0.0
+# ----------------------------------------------------------------- bind_address 0.0.0.0
 port 1883
 
 # 启用WebSocket (可选)
@@ -499,8 +498,7 @@ persistence false
 
 # -----------------------------------------------------------------
 # 日志配置 (最小化存储占用)
-# -----------------------------------------------------------------
-log_dest stdout
+# ----------------------------------------------------------------- log_dest stdout
 log_type error
 log_type warning
 # log_type information  # 生产环境禁用
@@ -528,8 +526,7 @@ allow_anonymous true
 # -----------------------------------------------------------------
 # 性能优化 (边缘资源受限)
 # -----------------------------------------------------------------
-# 最大连接数
-max_connections 1000
+# 最大连接数 max_connections 1000
 
 # 消息大小限制 (1KB)
 max_packet_size 1024
@@ -542,27 +539,22 @@ message_expiry_interval 3600
 
 # -----------------------------------------------------------------
 # 桥接配置 (连接到云端MQTT)
-# -----------------------------------------------------------------
-connection cloud-bridge
+# ----------------------------------------------------------------- connection cloud-bridge
 address cloud-mqtt-broker.example.com:8883
 bridge_protocol_version mqttv50
 bridge_insecure false
 
-# TLS配置
-bridge_cafile /etc/mosquitto/ca.crt
+# TLS配置 bridge_cafile /etc/mosquitto/ca.crt
 bridge_certfile /etc/mosquitto/client.crt
 bridge_keyfile /etc/mosquitto/client.key
 
 # 主题桥接
-# 本地主题 -> 远程主题
-topic sensors/+/data out 1 cloud/ factory/
+# 本地主题 -> 远程主题 topic sensors/+/data out 1 cloud/ factory/
 topic alerts/+ out 2 cloud/ factory/
 
-# 远程主题 -> 本地主题
-topic commands/# in 1 cloud/factory/ factory/
+# 远程主题 -> 本地主题 topic commands/# in 1 cloud/factory/ factory/
 
-# 桥接连接重试
-restart_timeout 10 30
+# 桥接连接重试 restart_timeout 10 30
 start_type automatic
 try_private true
 
@@ -961,8 +953,7 @@ public class CoAPIntegrationExample {
 **动态路由规则配置**：
 
 ```yaml
-# routing-rules.yaml
-routing_rules:
+# routing-rules.yaml routing_rules:
   # 规则1: 温度传感器数据路由
   - name: temperature-routing
     condition:

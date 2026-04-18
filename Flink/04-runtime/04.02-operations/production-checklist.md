@@ -468,8 +468,7 @@ graph TB
 **场景**: 检查TaskManager内存配置是否合理
 
 ```yaml
-# flink-conf.yaml
-taskmanager.memory.process.size: 8192m
+# flink-conf.yaml taskmanager.memory.process.size: 8192m
 taskmanager.memory.flink.size: 6656m
 taskmanager.memory.managed.fraction: 0.4
 state.backend.rocksdb.memory.managed: true
@@ -478,14 +477,11 @@ state.backend.rocksdb.memory.managed: true
 **检查方法**:
 
 ```bash
-# 1. 查看Flink配置
-cat flink-conf.yaml | grep taskmanager.memory
+# 1. 查看Flink配置 cat flink-conf.yaml | grep taskmanager.memory
 
-# 2. 查看实际内存使用
-kubectl top pod -l app=flink-taskmanager
+# 2. 查看实际内存使用 kubectl top pod -l app=flink-taskmanager
 
-# 3. 查看GC日志
-tail -f gc.log | grep "Pause"
+# 3. 查看GC日志 tail -f gc.log | grep "Pause"
 ```
 
 **预期结果**:
@@ -514,11 +510,9 @@ state.checkpoints.dir: s3p://flink-checkpoints/prod/
 **检查方法**:
 
 ```bash
-# 1. 查看Checkpoint历史
-curl http://flink-jm:8081/jobs/<job-id>/checkpoints
+# 1. 查看Checkpoint历史 curl http://flink-jm:8081/jobs/<job-id>/checkpoints
 
-# 2. 验证S3存储访问
-aws s3 ls s3://flink-checkpoints/prod/
+# 2. 验证S3存储访问 aws s3 ls s3://flink-checkpoints/prod/
 
 # 3. 检查Checkpoint指标
 # 在Flink Web UI查看Checkpoint Duration、Size

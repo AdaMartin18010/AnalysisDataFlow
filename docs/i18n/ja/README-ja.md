@@ -57,10 +57,10 @@
 ### テーマ別ナビゲーション
 
 - **理論基盤**: [Struct/ 統一流コンピューティング理論](../../../en/00-INDEX.md)
-- **デザインパターン**: [Knowledge/ ストリーム処理核心パターン](../../Knowledge/02-design-patterns/)
+- **デザインパターン**: [Knowledge/ ストリーム処理核心パターン]
 - **Flink 核心**: [Flink/ Checkpointメカニズム](../../../Flink/02-core/checkpoint-mechanism-deep-dive.md)
 - **最先端技術**: [Knowledge/06-frontier/ AI-Nativeデータベース](../../../Knowledge/06-frontier/vector-search-streaming-convergence.md)
-- **アンチパターン**: [Knowledge/09-anti-patterns/ ストリーム処理アンチパターン](../../Knowledge/09-anti-patterns/)
+- **アンチパターン**: [Knowledge/09-anti-patterns/ ストリーム処理アンチパターン]
 
 ---
 
@@ -104,7 +104,7 @@
 
 ## ライセンス
 
-[Apache License 2.0](../../LICENSE)
+[Apache License 2.0]
 
 ---
 

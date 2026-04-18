@@ -929,8 +929,7 @@ flowchart LR
 **PyFlink + 外部模型服务**
 
 ```python
-# Python ML UDF with batching optimization
-import tensorflow as tf
+# Python ML UDF with batching optimization import tensorflow as tf
 from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.table import StreamTableEnvironment
 import pyarrow as pa
@@ -1029,8 +1028,7 @@ class OptimizedBatchInference:
 **模型预热与缓存**
 
 ```python
-# 模型预热
-def warmup_model(model, input_shape, iterations=10):
+# 模型预热 def warmup_model(model, input_shape, iterations=10):
     dummy_input = np.random.randn(*input_shape).astype(np.float32)
     for _ in range(iterations):
         _ = model.predict(dummy_input, verbose=0)

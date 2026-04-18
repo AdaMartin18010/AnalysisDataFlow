@@ -249,8 +249,7 @@ $$
 
 # -----------------------------------------------------------------------------
 # Checkpoint 配置 - 高频短间隔确保快速恢复
-# -----------------------------------------------------------------------------
-execution.checkpointing.interval: 5s
+# ----------------------------------------------------------------------------- execution.checkpointing.interval: 5s
 execution.checkpointing.mode: EXACTLY_ONCE
 execution.checkpointing.timeout: 2min
 execution.checkpointing.max-concurrent-checkpoints: 1
@@ -259,23 +258,20 @@ execution.checkpointing.unaligned.max-subsummed-bytes: 16mb
 
 # -----------------------------------------------------------------------------
 # 状态后端配置 - RocksDB 支持大状态 + 增量优化 I/O
-# -----------------------------------------------------------------------------
-state.backend: rocksdb
+# ----------------------------------------------------------------------------- state.backend: rocksdb
 state.backend.incremental: true
 state.backend.changelog.enabled: true
 state.checkpoint-storage: filesystem
 
 # -----------------------------------------------------------------------------
 # 网络配置 - Buffer Debloat 自动优化网络延迟
-# -----------------------------------------------------------------------------
-taskmanager.network.memory.buffer-debloat.enabled: true
+# ----------------------------------------------------------------------------- taskmanager.network.memory.buffer-debloat.enabled: true
 taskmanager.network.memory.buffer-debloat.target: 500ms
 taskmanager.network.memory.buffer-debloat.threshold-percentages: 50,100
 
 # -----------------------------------------------------------------------------
 # 资源分配 - 充足的托管内存给 RocksDB
-# -----------------------------------------------------------------------------
-taskmanager.memory.managed.fraction: 0.4
+# ----------------------------------------------------------------------------- taskmanager.memory.managed.fraction: 0.4
 taskmanager.memory.network.fraction: 0.1
 ```
 
@@ -302,27 +298,23 @@ taskmanager.memory.network.fraction: 0.1
 
 # -----------------------------------------------------------------------------
 # Checkpoint 配置 - 较低频减少处理干扰
-# -----------------------------------------------------------------------------
-execution.checkpointing.interval: 30s
+# ----------------------------------------------------------------------------- execution.checkpointing.interval: 30s
 execution.checkpointing.mode: AT_LEAST_ONCE
 execution.checkpointing.timeout: 5min
 
 # -----------------------------------------------------------------------------
 # 状态后端配置 - HashMap 提供最低状态访问延迟
-# -----------------------------------------------------------------------------
-state.backend: hashmap
+# ----------------------------------------------------------------------------- state.backend: hashmap
 state.checkpoint-storage: filesystem
 
 # -----------------------------------------------------------------------------
 # 网络配置 - 更大的网络缓冲区提升吞吐
-# -----------------------------------------------------------------------------
-taskmanager.network.memory.fraction: 0.2
+# ----------------------------------------------------------------------------- taskmanager.network.memory.fraction: 0.2
 taskmanager.network.memory.buffer-size: 64kb
 
 # -----------------------------------------------------------------------------
 # 执行配置 - 允许短暂延迟以换取更高吞吐
-# -----------------------------------------------------------------------------
-execution.buffer-timeout: 100ms
+# ----------------------------------------------------------------------------- execution.buffer-timeout: 100ms
 pipeline.object-reuse: true
 ```
 
@@ -349,8 +341,7 @@ pipeline.object-reuse: true
 
 # -----------------------------------------------------------------------------
 # 状态后端配置 - RocksDB + 增量 + Changelog 三重优化
-# -----------------------------------------------------------------------------
-state.backend: rocksdb
+# ----------------------------------------------------------------------------- state.backend: rocksdb
 state.backend.incremental: true
 state.backend.changelog.enabled: true
 state.backend.changelog.periodic-materialize.interval: 10min
@@ -358,8 +349,7 @@ state.checkpoint-storage: filesystem
 
 # -----------------------------------------------------------------------------
 # RocksDB 深度调优 - 针对 SSD 优化
-# -----------------------------------------------------------------------------
-state.backend.rocksdb.predefined-options: FLASH_SSD_OPTIMIZED
+# ----------------------------------------------------------------------------- state.backend.rocksdb.predefined-options: FLASH_SSD_OPTIMIZED
 state.backend.rocksdb.memory.managed: true
 state.backend.rocksdb.memory.fixed-per-slot: 512mb
 state.backend.rocksdb.memory.high-prio-pool-ratio: 0.1
@@ -367,15 +357,13 @@ state.backend.rocksdb.threads.threads-number: 8
 
 # -----------------------------------------------------------------------------
 # 文件系统配置 - 大状态需要更大的上传并发
-# -----------------------------------------------------------------------------
-state.backend.fs.memory-threshold: 20mb
+# ----------------------------------------------------------------------------- state.backend.fs.memory-threshold: 20mb
 state.backend.fs.write-buffer-size: 16mb
 state.backend.incremental.ttl.min-file-creation-threshold: 1h
 
 # -----------------------------------------------------------------------------
 # Checkpoint 配置 - 低频但稳定
-# -----------------------------------------------------------------------------
-execution.checkpointing.interval: 60s
+# ----------------------------------------------------------------------------- execution.checkpointing.interval: 60s
 execution.checkpointing.timeout: 30min
 execution.checkpointing.max-concurrent-checkpoints: 1
 ```
@@ -403,35 +391,30 @@ execution.checkpointing.max-concurrent-checkpoints: 1
 
 # -----------------------------------------------------------------------------
 # 并行度配置 - 高并发需要足够的并行度
-# -----------------------------------------------------------------------------
-parallelism.default: 128
+# ----------------------------------------------------------------------------- parallelism.default: 128
 pipeline.max-parallelism: 256
 
 # -----------------------------------------------------------------------------
 # Checkpoint 配置 - 中频平衡恢复与性能
-# -----------------------------------------------------------------------------
-execution.checkpointing.interval: 10s
+# ----------------------------------------------------------------------------- execution.checkpointing.interval: 10s
 execution.checkpointing.mode: AT_LEAST_ONCE
 execution.checkpointing.max-concurrent-checkpoints: 2
 execution.checkpointing.min-pause-between-checkpoints: 5s
 
 # -----------------------------------------------------------------------------
 # 状态后端配置 - HashMap 适合小状态场景
-# -----------------------------------------------------------------------------
-state.backend: hashmap
+# ----------------------------------------------------------------------------- state.backend: hashmap
 state.checkpoint-storage: filesystem
 
 # -----------------------------------------------------------------------------
 # 网络配置 - 高并发需要稳定的网络缓冲区
-# -----------------------------------------------------------------------------
-taskmanager.network.memory.buffer-debloat.enabled: false
+# ----------------------------------------------------------------------------- taskmanager.network.memory.buffer-debloat.enabled: false
 taskmanager.memory.network.fraction: 0.15
 taskmanager.network.memory.buffer-size: 32kb
 
 # -----------------------------------------------------------------------------
 # 连接配置 - 优化下游系统连接复用
-# -----------------------------------------------------------------------------
-rest.connection.timeout: 30000
+# ----------------------------------------------------------------------------- rest.connection.timeout: 30000
 rest.idleness.timeout: 60000
 ```
 
@@ -458,36 +441,31 @@ rest.idleness.timeout: 60000
 
 # -----------------------------------------------------------------------------
 # 状态后端配置 - CDC 需要记录 Binlog 位置
-# -----------------------------------------------------------------------------
-state.backend: rocksdb
+# ----------------------------------------------------------------------------- state.backend: rocksdb
 state.backend.incremental: true
 state.checkpoint-storage: filesystem
 
 # -----------------------------------------------------------------------------
 # Checkpoint 配置 - 平衡一致性与性能
-# -----------------------------------------------------------------------------
-execution.checkpointing.interval: 30s
+# ----------------------------------------------------------------------------- execution.checkpointing.interval: 30s
 execution.checkpointing.mode: EXACTLY_ONCE
 execution.checkpointing.timeout: 10min
 execution.checkpointing.tolerable-failed-checkpoints: 3
 
 # -----------------------------------------------------------------------------
 # 网络配置 - CDC 数据可能有突发峰值
-# -----------------------------------------------------------------------------
-taskmanager.network.memory.buffer-debloat.enabled: true
+# ----------------------------------------------------------------------------- taskmanager.network.memory.buffer-debloat.enabled: true
 taskmanager.network.memory.buffer-debloat.target: 1000ms
 
 # -----------------------------------------------------------------------------
 # Source 配置 - MySQL CDC 连接器特定配置
-# -----------------------------------------------------------------------------
-debezium.snapshot.mode: initial
+# ----------------------------------------------------------------------------- debezium.snapshot.mode: initial
 debezium.poll.interval.ms: 1000
 scan.startup.mode: latest-offset
 
 # -----------------------------------------------------------------------------
 # Sink 配置 - Kafka Sink 两阶段提交
-# -----------------------------------------------------------------------------
-sink.delivery-guarantee: exactly-once
+# ----------------------------------------------------------------------------- sink.delivery-guarantee: exactly-once
 sink.transactional-id-prefix: flink-cdc-
 ```
 
@@ -514,34 +492,29 @@ sink.transactional-id-prefix: flink-cdc-
 
 # -----------------------------------------------------------------------------
 # 调度配置 - 公平调度器平衡批流资源
-# -----------------------------------------------------------------------------
-cluster.evenly-spread-out-slots: true
+# ----------------------------------------------------------------------------- cluster.evenly-spread-out-slots: true
 taskmanager.numberOfTaskSlots: 4
 
 # -----------------------------------------------------------------------------
 # 状态后端配置 - 根据子任务动态选择
-# -----------------------------------------------------------------------------
-state.backend: rocksdb
+# ----------------------------------------------------------------------------- state.backend: rocksdb
 state.backend.incremental: true
 state.backend.changelog.enabled: true
 
 # -----------------------------------------------------------------------------
 # Checkpoint 配置 - 批任务可禁用,流任务启用
-# -----------------------------------------------------------------------------
-execution.checkpointing.interval: 30s
+# ----------------------------------------------------------------------------- execution.checkpointing.interval: 30s
 execution.checkpointing.mode: EXACTLY_ONCE
 
 # -----------------------------------------------------------------------------
 # 内存配置 - 为批处理预留更多托管内存
-# -----------------------------------------------------------------------------
-taskmanager.memory.managed.fraction: 0.5
+# ----------------------------------------------------------------------------- taskmanager.memory.managed.fraction: 0.5
 taskmanager.memory.network.fraction: 0.15
 taskmanager.memory.framework.heap.size: 256mb
 
 # -----------------------------------------------------------------------------
 # 自适应调度 - 根据负载动态调整
-# -----------------------------------------------------------------------------
-scheduler-mode: REACTIVE
+# ----------------------------------------------------------------------------- scheduler-mode: REACTIVE
 jobmanager.scheduler: Adaptive
 ```
 

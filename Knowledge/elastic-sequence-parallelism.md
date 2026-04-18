@@ -75,6 +75,7 @@ $$
 ### 4.1 LoongServe 的核心思想
 
 LoongServe 提出两项关键机制：
+
 1. **按需拆分**: 仅在序列长度超过阈值时才启用序列并行
 2. **动态负载均衡**: 根据各 GPU 的实时负载动态调整子序列边界
 3. **流式 KV 缓存共享**: 在多轮对话中，历史 KV 缓存在并行单元间共享，避免重复计算
@@ -82,6 +83,7 @@ LoongServe 提出两项关键机制：
 ### 4.2 反例：过度拆分导致的通信瓶颈
 
 某系统将 512 tokens 的短序列拆分到 8 个 GPU 上处理：
+
 - 计算时间仅 2ms，但 All-Gather 通信耗时 8ms
 - 总延迟反而比单 GPU 处理（5ms）更高
 
@@ -110,8 +112,7 @@ $$
 ### 6.1 Megatron-LM 的序列并行概念
 
 ```python
-# 伪代码：序列并行中的 Ring Attention
-class SequenceParallelAttention:
+# 伪代码：序列并行中的 Ring Attention class SequenceParallelAttention:
     def forward(self, hidden_states, seq_parallel_group):
         # hidden_states: [batch, local_seq_len, hidden_dim]
         local_q = self.q_proj(hidden_states)
@@ -146,7 +147,3 @@ graph TB
 ---
 
 ## 8. 引用参考 (References)
-
-[^1]: LoongServe (SOSP 2024), "Efficient and Elastic Long-Context LLM Serving".
-[^2]: Korthikanti V. et al., "Reducing Activation Recomputation in Large Transformer Models", MLSys 2023.
-[^3]: Liu Z. et al., "Ring Attention with Blockwise Transformers for Near-Infinite Context", NeurIPS 2023.

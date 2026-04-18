@@ -485,8 +485,7 @@ DataStream<LLMResponse> responses = AsyncDataStream.unorderedWait(
 ### 示例2: vLLM批量推理集成
 
 ```python
-# vllm_inference_sink.py
-import asyncio
+# vllm_inference_sink.py import asyncio
 from typing import List, Dict
 from vllm import LLM, SamplingParams
 from pyflink.datastream import SinkFunction
@@ -590,18 +589,15 @@ class VLLMBatchInferenceSink(SinkFunction):
         if self.llm:
             del self.llm
 
-# Flink作业中使用
-from pyflink.datastream import StreamExecutionEnvironment
+# Flink作业中使用 from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.table import StreamTableEnvironment
 
 env = StreamExecutionEnvironment.get_execution_environment()
 env.set_parallelism(4)
 
-# 假设从Kafka读取提示
-prompts = env.add_source(KafkaSource(...))
+# 假设从Kafka读取提示 prompts = env.add_source(KafkaSource(...))
 
-# 批量推理Sink
-prompts.add_sink(
+# 批量推理Sink prompts.add_sink(
     VLLMBatchInferenceSink(
         model_path="/models/llama-2-7b",
         tensor_parallel_size=2,

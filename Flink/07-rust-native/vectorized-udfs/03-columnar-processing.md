@@ -1063,8 +1063,7 @@ public class PredicatePushdownOptimizer {
 ### 6.3 性能调优检查清单工具
 
 ```python
-# columnar_performance_checklist.py
-"""
+# columnar_performance_checklist.py """
 列式处理性能调优检查清单工具
 自动生成优化建议和配置
 """

@@ -26,15 +26,15 @@ quizzes/
 
 | 章节 | 题目数 | 难度 | 考点 |
 |------|--------|------|------|
-| [运行时架构](./runtime-architecture.md) | 60 | ★★★☆☆ | JobGraph、调度、网络栈 |
-| [Checkpoint与状态](./checkpoint-state.md) | 80 | ★★★★☆ | Barrier、状态后端、增量 |
-| [Exactly-Once](./exactly-once.md) | 60 | ★★★★☆ | 2PC、幂等性、事务 |
-| [时间语义高级](./time-watermark.md) | 50 | ★★★☆☆ | Watermark策略、延迟处理 |
-| [状态管理高级](./state-management.md) | 50 | ★★★★☆ | 大状态优化、Broadcast |
-| [Table API/SQL](./table-api-sql.md) | 60 | ★★★☆☆ | SQL优化、CDC |
-| [CEP](./cep.md) | 40 | ★★★★☆ | 模式匹配、超时处理 |
-| [部署运维](./deployment-ops.md) | 50 | ★★★☆☆ | K8s部署、监控告警 |
-| [性能调优](./performance-tuning.md) | 50 | ★★★★☆ | 背压、数据倾斜、GC |
+| 运行时架构 | 60 | ★★★☆☆ | JobGraph、调度、网络栈 |
+| Checkpoint与状态 | 80 | ★★★★☆ | Barrier、状态后端、增量 |
+| Exactly-Once | 60 | ★★★★☆ | 2PC、幂等性、事务 |
+| 时间语义高级 | 50 | ★★★☆☆ | Watermark策略、延迟处理 |
+| 状态管理高级 | 50 | ★★★★☆ | 大状态优化、Broadcast |
+| Table API/SQL | 60 | ★★★☆☆ | SQL优化、CDC |
+| CEP | 40 | ★★★★☆ | 模式匹配、超时处理 |
+| 部署运维 | 50 | ★★★☆☆ | K8s部署、监控告警 |
+| 性能调优 | 50 | ★★★★☆ | 背压、数据倾斜、GC |
 
 ## 备考建议
 
@@ -150,4 +150,4 @@ E. Checkpoint 间隔小于事务超时时间
 
 ---
 
-[返回课程大纲 →](../syllabus-csp.md) | [开始练习: 运行时架构 →](./runtime-architecture.md)
+[返回课程大纲 →](../syllabus-csp.md) | 开始练习: 运行时架构 →

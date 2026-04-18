@@ -1449,42 +1449,35 @@ public class ABTestFramework {
 # Flink实时推荐引擎作业配置 (flink-conf.yaml)
 # =============================================================================
 
-# 基础配置
-jobmanager.memory.process.size: 4096m
+# 基础配置 jobmanager.memory.process.size: 4096m
 taskmanager.memory.process.size: 16384m
 taskmanager.numberOfTaskSlots: 8
 parallelism.default: 8
 
-# Checkpoint配置
-checkpointing.interval: 60s
+# Checkpoint配置 checkpointing.interval: 60s
 checkpointing.min-pause-between-checkpoints: 30s
 checkpointing.timeout: 10min
 checkpointing.max-concurrent-checkpoints: 1
 checkpointing.externalized-checkpoint-retention: RETAIN_ON_CANCELLATION
 
-# 状态后端配置
-state.backend: rocksdb
+# 状态后端配置 state.backend: rocksdb
 state.backend.incremental: true
 state.backend.rocksdb.memory.managed: true
 state.backend.rocksdb.predefined-options: FLASH_SSD_OPTIMIZED
 state.backend.rocksdb.threads.threads-number: 4
 state.checkpoints.dir: hdfs://namenode:8020/flink/checkpoints
 
-# 网络配置
-taskmanager.memory.network.fraction: 0.15
+# 网络配置 taskmanager.memory.network.fraction: 0.15
 taskmanager.memory.network.min: 256mb
 taskmanager.memory.network.max: 512mb
 
-# 序列化配置
-pipeline.serialization-fallback: kryo
+# 序列化配置 pipeline.serialization-fallback: kryo
 
-# 故障恢复配置
-restart-strategy: fixed-delay
+# 故障恢复配置 restart-strategy: fixed-delay
 restart-strategy.fixed-delay.attempts: 10
 restart-strategy.fixed-delay.delay: 10s
 
-# 指标配置
-metrics.reporters: prom
+# 指标配置 metrics.reporters: prom
 metrics.reporter.prom.class: org.apache.flink.metrics.prometheus.PrometheusReporter
 metrics.reporter.prom.port: 9249
 ```
@@ -1907,8 +1900,7 @@ public UserProfile updateProfile(UserProfile current, BehaviorEvent event) {
 - **序列化优化**: 使用Protobuf替代JSON，减少传输开销
 
 ```yaml
-# 推荐API服务配置
-recommendation:
+# 推荐API服务配置 recommendation:
   cache:
     caffeine:
       max-size: 100000

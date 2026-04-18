@@ -479,15 +479,13 @@ graph TB
 ### 6.3 Rollback Plan
 
 ```yaml
-# Rollback triggers
-triggers:
+# Rollback triggers triggers:
   - error_rate > 1%
   - latency_p99 > threshold * 2
   - data_mismatch_detected: true
   - manual_override: true
 
-# Rollback procedure
-rollback_steps:
+# Rollback procedure rollback_steps:
   1: Stop Flink job with savepoint
   2: Verify Kafka Streams consumer group is ready
   3: Resume Kafka Streams application

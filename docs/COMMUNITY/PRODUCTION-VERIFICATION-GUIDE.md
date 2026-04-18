@@ -233,7 +233,7 @@ https://github.com/luyanfeng/AnalysisDataFlow/issues/new?template=production-ver
 
 ## 快速开始
 
-👉 **立即提交您的验证案例**: [创建新 Issue](../../issues/new?template=production-verification.md)
+👉 **立即提交您的验证案例**: [创建新 Issue]
 
 📧 **有疑问?** 欢迎通过 Issue 或邮件联系我们
 

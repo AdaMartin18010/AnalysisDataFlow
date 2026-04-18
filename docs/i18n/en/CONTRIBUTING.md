@@ -289,7 +289,7 @@ The `en/` directory provides English versions of core project documents. Transla
 
 ### 8.1 Code of Conduct
 
-All contributors are expected to adhere to the [Code of Conduct](../docs/contributing/code-of-conduct.md). Be respectful, constructive, and inclusive in all interactions.
+All contributors are expected to adhere to the [Code of Conduct]. Be respectful, constructive, and inclusive in all interactions.
 
 ### 8.2 Communication Channels
 

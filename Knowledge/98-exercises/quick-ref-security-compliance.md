@@ -57,31 +57,24 @@
 ### Kafka安全清单
 
 ```bash
-# □ 1. 启用SSL/TLS传输加密
-listeners=SASL_SSL://:9093
+# □ 1. 启用SSL/TLS传输加密 listeners=SASL_SSL://:9093
 security.inter.broker.protocol=SASL_SSL
 ssl.enabled.protocols=TLSv1.3
 
-# □ 2. 配置客户端证书认证
-ssl.client.auth=required
+# □ 2. 配置客户端证书认证 ssl.client.auth=required
 
-# □ 3. 启用强密码套件
-ssl.cipher.suites=TLS_AES_256_GCM_SHA384,TLS_CHACHA20_POLY1305_SHA256
+# □ 3. 启用强密码套件 ssl.cipher.suites=TLS_AES_256_GCM_SHA384,TLS_CHACHA20_POLY1305_SHA256
 
-# □ 4. 配置SASL认证
-sasl.enabled.mechanisms=GSSAPI,PLAIN,SCRAM-SHA-512
+# □ 4. 配置SASL认证 sasl.enabled.mechanisms=GSSAPI,PLAIN,SCRAM-SHA-512
 
 # □ 5. 设置ACL
-# 生产者权限
-kafka-acls --add --allow-principal User:service \
+# 生产者权限 kafka-acls --add --allow-principal User:service \
   --producer --topic orders
 
-# 消费者权限
-kafka-acls --add --allow-principal User:consumer \
+# 消费者权限 kafka-acls --add --allow-principal User:consumer \
   --consumer --topic orders --group analytics
 
-# □ 6. 启用审计日志
-log4j.logger.kafka.authorizer.logger=INFO, authorizerAppender
+# □ 6. 启用审计日志 log4j.logger.kafka.authorizer.logger=INFO, authorizerAppender
 ```
 
 ### Flink安全清单
@@ -89,29 +82,23 @@ log4j.logger.kafka.authorizer.logger=INFO, authorizerAppender
 ```yaml
 # flink-conf.yaml
 
-# □ 1. 启用内部SSL
-security.ssl.internal.enabled: true
+# □ 1. 启用内部SSL security.ssl.internal.enabled: true
 security.ssl.rest.enabled: true
 
-# □ 2. 配置密钥库
-security.ssl.internal.keystore: /path/to/internal.keystore
+# □ 2. 配置密钥库 security.ssl.internal.keystore: /path/to/internal.keystore
 security.ssl.internal.keystore-password: ${KEYSTORE_PASSWORD}
 security.ssl.internal.truststore: /path/to/internal.truststore
 
-# □ 3. 启用强密码套件
-security.ssl.algorithms: TLS_AES_256_GCM_SHA384,TLS_CHACHA20_POLY1305_SHA256
+# □ 3. 启用强密码套件 security.ssl.algorithms: TLS_AES_256_GCM_SHA384,TLS_CHACHA20_POLY1305_SHA256
 security.ssl.protocol: TLSv1.3
 
-# □ 4. 启用Kerberos认证
-security.kerberos.login.use-ticket-cache: false
+# □ 4. 启用Kerberos认证 security.kerberos.login.use-ticket-cache: false
 security.kerberos.login.keytab: /etc/security/keytabs/flink.keytab
 security.kerberos.login.principal: flink@EXAMPLE.COM
 
-# □ 5. 启用主机名验证
-security.ssl.rest.verify-hostname: true
+# □ 5. 启用主机名验证 security.ssl.rest.verify-hostname: true
 
-# □ 6. 配置ZooKeeper安全
-high-availability.zookeeper.client.acl: creator
+# □ 6. 配置ZooKeeper安全 high-availability.zookeeper.client.acl: creator
 ```
 
 ### 数据加密层次清单

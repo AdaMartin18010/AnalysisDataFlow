@@ -275,14 +275,12 @@ Flink Record (Output)
 #### 安装 ironfun CLI
 
 ```bash
-# 方式一:使用官方安装脚本
-curl -s https://irontools.dev/ironfun-cli-install.sh | sh
+# 方式一:使用官方安装脚本 curl -s https://irontools.dev/ironfun-cli-install.sh | sh
 
 # 方式二:从源码安装 (Rust 环境)
 cargo install ironfun-cli
 
-# 验证安装
-ironfun --version
+# 验证安装 ironfun --version
 # 输出: ironfun 0.5.0
 ```
 
@@ -292,11 +290,9 @@ ironfun --version
 # 安装 Rust (如果尚未安装)
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
-# 添加 WASM 编译目标
-rustup target add wasm32-wasi
+# 添加 WASM 编译目标 rustup target add wasm32-wasi
 
-# 验证
-rustc --version
+# 验证 rustc --version
 cargo --version
 ```
 
@@ -416,11 +412,9 @@ crate-type = ["cdylib"]
 #### 步骤 4: 编译 WASM
 
 ```bash
-# 编译为 WASM
-cargo build --target wasm32-wasi --release
+# 编译为 WASM cargo build --target wasm32-wasi --release
 
-# 输出文件
-ls -lh target/wasm32-wasi/release/*.wasm
+# 输出文件 ls -lh target/wasm32-wasi/release/*.wasm
 # my_first_udf.wasm (约 50-200KB)
 ```
 
@@ -1050,17 +1044,14 @@ class = "EthLogDecoderUdf"
 **Q: 编译时提示 `linking with cc failed`**
 
 ```bash
-# 安装 WASI SDK
-rustup target add wasm32-wasi
-# 或者使用 wasm32-unknown-unknown
-rustup target add wasm32-unknown-unknown
+# 安装 WASI SDK rustup target add wasm32-wasi
+# 或者使用 wasm32-unknown-unknown rustup target add wasm32-unknown-unknown
 ```
 
 **Q: WASM 文件过大**
 
 ```toml
-# Cargo.toml 中添加优化
-[profile.release]
+# Cargo.toml 中添加优化 [profile.release]
 opt-level = 3
 lto = true
 strip = true

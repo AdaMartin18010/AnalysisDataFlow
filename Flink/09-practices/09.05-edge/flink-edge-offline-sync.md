@@ -1030,22 +1030,19 @@ execution.checkpointing.interval: 60s
 execution.checkpointing.min-pause-between-checkpoints: 30s
 execution.checkpointing.max-concurrent-checkpoints: 1
 
-# 检查点模式
-execution.checkpointing.mode: EXACTLY_ONCE
+# 检查点模式 execution.checkpointing.mode: EXACTLY_ONCE
 
 # 本地检查点存储 (支持离线)
 state.backend: hashmap
 state.checkpoints.dir: file:///data/flink/checkpoints
 state.savepoints.dir: file:///data/flink/savepoints
 
-# 本地恢复配置
-state.backend.local-recovery: true
+# 本地恢复配置 state.backend.local-recovery: true
 
 # 增量检查点 (减少存储占用)
 state.backend.incremental: true
 
-# 检查点保留策略
-execution.checkpointing.externalized-checkpoint-retention: RETAIN_ON_CANCELLATION
+# 检查点保留策略 execution.checkpointing.externalized-checkpoint-retention: RETAIN_ON_CANCELLATION
 
 # 重启策略 (适应间歇性故障)
 restart-strategy: exponential-delay

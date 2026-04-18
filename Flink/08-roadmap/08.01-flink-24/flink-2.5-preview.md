@@ -400,11 +400,9 @@ $$
 ```yaml
 # flink-conf.yaml - Serverless模式配置 (2.5 GA)
 
-# 执行模式: Serverless
-execution.mode: serverless
+# 执行模式: Serverless execution.mode: serverless
 
-# 自动扩缩容配置
-kubernetes.operator.job.autoscaler.enabled: true
+# 自动扩缩容配置 kubernetes.operator.job.autoscaler.enabled: true
 kubernetes.operator.job.autoscaler.scale-down.delay: 60s
 kubernetes.operator.job.autoscaler.scale-to-zero.enabled: true
 kubernetes.operator.job.autoscaler.scale-to-zero.grace-period: 300s
@@ -414,8 +412,7 @@ serverless.cold-start.mode: warmup-pool
 serverless.cold-start.warmup-pool-size: 2
 serverless.cold-start.max-concurrent-startups: 10
 
-# 远程状态后端
-state.backend: forst
+# 远程状态后端 state.backend: forst
 state.backend.forst.remote.path: s3://flink-state-bucket/{job-id}
 state.checkpoint-storage: filesystem
 state.checkpoints.dir: s3://flink-checkpoints/{job-id}

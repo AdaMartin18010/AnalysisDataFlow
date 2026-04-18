@@ -67,11 +67,9 @@ gantt
 ### 2.2 自动化跟踪脚本
 
 ```bash
-# 运行跟踪检查
-python .scripts/flink-release-tracker-v2.py --check
+# 运行跟踪检查 python .scripts/flink-release-tracker-v2.py --check
 
-# 生成更新报告
-python .scripts/flink-release-tracker-v2.py --report
+# 生成更新报告 python .scripts/flink-release-tracker-v2.py --report
 
 # 发送通知(配置Slack/邮件后)
 python .scripts/notify-flink-updates.py --notify

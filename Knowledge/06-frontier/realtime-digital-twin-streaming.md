@@ -255,8 +255,7 @@ $$
 **反模式1: 过度建模**
 
 ```text
-# ❌ 错误:追求100%物理精度
-model = CFD_Model(mesh_size=1mm, turbulence=k-epsilon)
+# ❌ 错误:追求100%物理精度 model = CFD_Model(mesh_size=1mm, turbulence=k-epsilon)
 # 计算耗时数小时,无法实时
 
 # ✅ 正确:降阶模型 (ROM)
@@ -267,12 +266,10 @@ model = ReducedOrderModel(physics_constraints)
 **反模式2: 忽视数据质量**
 
 ```text
-# ❌ 错误:直接使用原始传感器数据
-prediction = model.predict(raw_sensor_data)
+# ❌ 错误:直接使用原始传感器数据 prediction = model.predict(raw_sensor_data)
 # 噪声导致误报
 
-# ✅ 正确:数据预处理流水线
-clean_data = pipeline(raw_sensor_data)
+# ✅ 正确:数据预处理流水线 clean_data = pipeline(raw_sensor_data)
     .kalman_filter()
     .outlier_detection()
     .feature_engineering()
@@ -282,11 +279,9 @@ prediction = model.predict(clean_data)
 **反模式3: 单点故障**
 
 ```yaml
-# ❌ 错误:集中式孪生服务
-twin_service: single_instance  # 故障即失联
+# ❌ 错误:集中式孪生服务 twin_service: single_instance  # 故障即失联
 
-# ✅ 正确:分布式孪生
-edge_twins:
+# ✅ 正确:分布式孪生 edge_twins:
   - location: factory_a
     autonomy: high  # 离线自治
   - location: factory_b
@@ -412,12 +407,10 @@ public class WindTurbineTwin {
 from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.table import StreamTableEnvironment
 
-# 创建表环境
-env = StreamExecutionEnvironment.get_execution_environment()
+# 创建表环境 env = StreamExecutionEnvironment.get_execution_environment()
 t_env = StreamTableEnvironment.create(env)
 
-# 定义数字孪生表
-t_env.execute_sql("""
+# 定义数字孪生表 t_env.execute_sql("""
 CREATE TABLE production_line_twin (
     line_id STRING,
     station_id STRING,
@@ -441,8 +434,7 @@ CREATE TABLE production_line_twin (
 );
 """)
 
-# 创建预测性维护视图
-t_env.execute_sql("""
+# 创建预测性维护视图 t_env.execute_sql("""
 CREATE TABLE maintenance_predictions (
     line_id STRING,
     station_id STRING,
@@ -462,8 +454,7 @@ CREATE TABLE maintenance_predictions (
 );
 """)
 
-# 预测性维护SQL
-t_env.execute_sql("""
+# 预测性维护SQL t_env.execute_sql("""
 INSERT INTO maintenance_predictions
 SELECT
     line_id,
@@ -504,8 +495,7 @@ GROUP BY line_id, station_id,
          TUMBLE(event_time, INTERVAL '1' HOUR);
 """)
 
-# 实时优化控制
-t_env.execute_sql("""
+# 实时优化控制 t_env.execute_sql("""
 CREATE TABLE control_commands (
     line_id STRING,
     station_id STRING,
@@ -547,8 +537,7 @@ FROM production_line_twin;
 ### 6.3 城市级数字孪生 (新加坡案例)
 
 ```python
-# 新加坡全国数字孪生架构
-class CityDigitalTwin:
+# 新加坡全国数字孪生架构 class CityDigitalTwin:
     def __init__(self):
         self.districts = {}  # 区域级孪生
         self.systems = {}    # 系统级孪生
@@ -631,8 +620,7 @@ class FloodSimulationFunction(ProcessFunction):
 ### 6.4 数字孪生性能优化
 
 ```python
-# 降阶模型 (ROM) 实现
-class ReducedOrderModel:
+# 降阶模型 (ROM) 实现 class ReducedOrderModel:
     """
     使用POD (Proper Orthogonal Decomposition) 降阶
     将CFD模型从小时级降到毫秒级
@@ -682,12 +670,10 @@ class ReducedOrderModel:
             self.project_input(input_params)
         )
 
-# 使用示例
-rom = ReducedOrderModel(full_cfd_model, n_modes=50)
+# 使用示例 rom = ReducedOrderModel(full_cfd_model, n_modes=50)
 rom.offline_training(training_dataset)
 
-# 在线实时预测
-while True:
+# 在线实时预测 while True:
     current_conditions = get_sensor_data()
     # 全阶模型需要2小时,ROM只需要50ms
     prediction = rom.online_predict(current_conditions)

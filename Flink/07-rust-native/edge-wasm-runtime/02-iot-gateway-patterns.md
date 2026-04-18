@@ -666,8 +666,7 @@ fn transform(mqtt_msg: rumqttc::Publish) -> KafkaMessage {
 **配置**:
 
 ```yaml
-# gateway-config.yaml
-mqtt:
+# gateway-config.yaml mqtt:
   broker: "tcp://localhost:1883"
   client_id: "gateway-001"
   keep_alive: 60

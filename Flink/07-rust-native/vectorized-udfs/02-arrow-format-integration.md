@@ -453,8 +453,7 @@ xychart-beta
 ### 6.1 Arrow 格式基础操作（Python）
 
 ```python
-# arrow_format_basics.py
-"""
+# arrow_format_basics.py """
 Apache Arrow 格式基础操作示例
 展示 Arrow 的核心数据结构和使用方式
 """
@@ -1116,8 +1115,7 @@ mod tests {
 ### 6.4 Arrow Flight 客户端/服务端示例
 
 ```python
-# arrow_flight_example.py
-"""
+# arrow_flight_example.py """
 Arrow Flight 协议示例
 展示高性能数据传输
 """

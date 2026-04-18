@@ -457,20 +457,17 @@ serverless.scale-to-zero.delay: 5min  <!-- [Flink 2.4 前瞻] 该配置为规划
 serverless.cold-start.pool-size: 10
 serverless.state.remote.uri: s3://flink-serverless-state/
 
-# 快速恢复配置
-state.backend: forst
+# 快速恢复配置 state.backend: forst
 state.backend.forst.disaggregated: true
 state.backend.incremental: true
 state.checkpoint-storage: filesystem
 state.checkpoints.dir: s3://flink-serverless-state/checkpoints
 
-# 自适应执行引擎
-execution.adaptive.enabled: true
+# 自适应执行引擎 execution.adaptive.enabled: true
 execution.adaptive.model: ml-based  <!-- [Flink 2.4 前瞻] 该配置为规划特性,可能变动 -->
 execution.adaptive.learning-rate: 0.1
 
-# 智能检查点
-checkpointing.mode: intelligent  <!-- [Flink 2.4 前瞻] 该配置为规划特性,可能变动 -->
+# 智能检查点 checkpointing.mode: intelligent  <!-- [Flink 2.4 前瞻] 该配置为规划特性,可能变动 -->
 checkpointing.intelligent.strategy: cost-based  <!-- [Flink 2.4 前瞻] 该配置为规划特性,可能变动 -->
 checkpointing.intelligent.min-interval: 30s
 checkpointing.intelligent.max-interval: 10min
@@ -826,8 +823,7 @@ execution.adaptive.mode: legacy    # 请使用 execution.adaptive.model
 # 新增配置 (2.4推荐)
 execution.adaptive.model: ml-based          # ML驱动优化
 # 注意: 以下配置为预测/规划,实际版本可能不同
-# serverless.enabled: true  (尚未确定)       # Serverless模式
-checkpointing.mode: intelligent              # 智能检查点模式
+# serverless.enabled: true  (尚未确定)       # Serverless模式 checkpointing.mode: intelligent              # 智能检查点模式
 ai.agent.version.management.enabled: true    # Agent版本管理
 ```
 
@@ -847,21 +843,18 @@ ai.agent.version.management.enabled: true    # Agent版本管理
 ### 10.1 从 2.3 升级到 2.4 的步骤
 
 ```bash
-# Step 1: 备份当前配置
-cp $FLINK_HOME/conf/flink-conf.yaml $FLINK_HOME/conf/flink-conf.yaml.2.3.backup
+# Step 1: 备份当前配置 cp $FLINK_HOME/conf/flink-conf.yaml $FLINK_HOME/conf/flink-conf.yaml.2.3.backup
 
 # Step 2: 更新Flink版本
 # Maven: 更新pom.xml中的flink.version为2.4.0
 # Docker: 更新镜像标签为 flink:2.4.0
 
-# Step 3: 兼容性检查
-./bin/flink-migrate.sh --source-version 2.3 --target-version 2.4 --check-only
+# Step 3: 兼容性检查 ./bin/flink-migrate.sh --source-version 2.3 --target-version 2.4 --check-only
 
 # Step 4: 更新配置 (自动生成补丁)
 ./bin/flink-migrate.sh --source-version 2.3 --target-version 2.4 --generate-patch
 
-# Step 5: 测试环境验证
-./bin/flink run -d -c com.example.MyJob my-job.jar
+# Step 5: 测试环境验证 ./bin/flink run -d -c com.example.MyJob my-job.jar
 
 # Step 6: 生产环境滚动升级 (使用Savepoint)
 ./bin/flink stop --savepointPath hdfs:///savepoints <job-id>
@@ -904,8 +897,7 @@ cp $FLINK_HOME/conf/flink-conf.yaml $FLINK_HOME/conf/flink-conf.yaml.2.3.backup
 ### 10.3 回滚策略
 
 ```yaml
-# 回滚条件检查
-自动触发回滚条件:
+# 回滚条件检查 自动触发回滚条件:
   - 作业失败率 > 5%
   - Checkpoint成功率 < 95%
   - 延迟超过SLA 2倍
@@ -1358,18 +1350,15 @@ graph TB
 ```yaml
 # flink-conf.yaml - 存算分离配置
 
-# 启用存算分离 v2
-state.backend: forst
+# 启用存算分离 v2 state.backend: forst
 state.backend.forst.disaggregated: true
 state.backend.forst.remote.uri: s3://flink-state-service/
 
-# 本地缓存配置
-state.backend.forst.cache.enabled: true
+# 本地缓存配置 state.backend.forst.cache.enabled: true
 state.backend.forst.cache.capacity: 512mb
 state.backend.forst.cache.policy: lru
 
-# 远程状态服务
-state.backend.remote.host: state-service.flink.svc.cluster.local
+# 远程状态服务 state.backend.remote.host: state-service.flink.svc.cluster.local
 state.backend.remote.port: 8080
 state.backend.remote.threads.client: 4
 
@@ -1378,8 +1367,7 @@ state.backend.async-write: true
 state.backend.async-write.batch-size: 1000
 state.backend.async-write.flush-interval: 10ms
 
-# 分层存储策略
-state.tiered-storage.l1.enabled: true   # DRAM缓存
+# 分层存储策略 state.tiered-storage.l1.enabled: true   # DRAM缓存
 state.tiered-storage.l2.enabled: true   # 本地SSD
 state.tiered-storage.l3.enabled: true   # 远程KV服务
 state.tiered-storage.l4.enabled: true   # 对象存储

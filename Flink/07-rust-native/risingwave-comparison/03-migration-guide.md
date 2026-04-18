@@ -490,8 +490,7 @@ WHERE s.ship_time BETWEEN o.order_time AND o.order_time + INTERVAL '7' DAY;
 **双写迁移配置**:
 
 ```python
-# dual_write_migration.py
-from datetime import datetime, timedelta
+# dual_write_migration.py from datetime import datetime, timedelta
 import time
 
 class DualWriteMigration:
@@ -550,37 +549,36 @@ class DualWriteMigration:
 **CDC 回放迁移配置**:
 
 ```yaml
-# cdc_replay_migration.yaml
-migration_config: 
+# cdc_replay_migration.yaml migration_config:
   strategy: cdc_replay
   source: mysql_cdc
 
-  phases: 
-    phase_1_capture: 
+  phases:
+    phase_1_capture:
       action: capture_flink_state
       description: 记录 Flink 当前消费位点
 
-    phase_2_deploy_rw: 
+    phase_2_deploy_rw:
       action: deploy_risingwave
-      config: 
-        source: 
+      config:
+        source:
           type: mysql-cdc
           server_id: 5701
           snapshot: initial  # 从初始快照开始
 
-    phase_3_sync_wait: 
+    phase_3_sync_wait:
       action: wait_for_catchup
       # 等待 RW 消费进度追上 Flink
       catchup_threshold_seconds: 60
 
-    phase_4_verify: 
+    phase_4_verify:
       action: verify_data_quality
-      checks: 
+      checks:
         - row_count_match
         - aggregate_consistency
         - sample_comparison
 
-    phase_5_switchover: 
+    phase_5_switchover:
       action: switch_application
       rollback_plan: enabled
 ```
@@ -943,19 +941,19 @@ quadrantChart
 ### 手动检查清单
 
 ```yaml
-migration_checklist: 
-  pre_migration: 
+migration_checklist:
+  pre_migration:
     - 确认所有连接器支持
     - 评估 UDF 重写工作量
     - 制定回滚方案
     - 准备测试数据集
 
-  during_migration: 
+  during_migration:
     - 监控双写延迟
     - 校验数据一致性
     - 记录性能指标
 
-  post_migration: 
+  post_migration:
     - 验证业务功能
     - 对比性能 SLA
     - 更新运维文档

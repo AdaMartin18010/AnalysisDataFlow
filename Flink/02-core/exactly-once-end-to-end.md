@@ -312,14 +312,12 @@ env.fromSource(source, WatermarkStrategy.noWatermarks(), "Kafka Source")
 **flink-conf.yaml 关键配置**：
 
 ```yaml
-# Checkpoint 配置
-execution.checkpointing.mode: EXACTLY_ONCE
+# Checkpoint 配置 execution.checkpointing.mode: EXACTLY_ONCE
 execution.checkpointing.interval: 60s
 execution.checkpointing.timeout: 10m
 execution.checkpointing.max-concurrent-checkpoints: 1
 
-# 重启策略
-restart-strategy: fixed-delay
+# 重启策略 restart-strategy: fixed-delay
 restart-strategy.fixed-delay.attempts: 10
 restart-strategy.fixed-delay.delay: 10s
 ```
@@ -328,13 +326,11 @@ restart-strategy.fixed-delay.delay: 10s
 
 ```properties
 # broker.properties
-# 事务相关配置
-transaction.state.log.replication.factor=3
+# 事务相关配置 transaction.state.log.replication.factor=3
 transaction.state.log.min.isr=2
 transaction.max.timeout.ms=900000  # 匹配 Flink Checkpoint 超时
 
-# 幂等性配置
-enable.idempotence=true
+# 幂等性配置 enable.idempotence=true
 ```
 
 **事务围栏 (Transaction Fencing)**: Kafka 通过 epoch 机制防止僵尸任务写入。新生产者注册后，旧 epoch 的事务自动中止。
@@ -529,22 +525,19 @@ sequenceDiagram
 ### 8.1 Flink 核心配置 (flink-conf.yaml)
 
 ```yaml
-# Checkpoint 配置
-execution.checkpointing.mode: EXACTLY_ONCE
+# Checkpoint 配置 execution.checkpointing.mode: EXACTLY_ONCE
 execution.checkpointing.interval: 60s
 execution.checkpointing.min-pause-between-checkpoints: 30s
 execution.checkpointing.timeout: 10m
 execution.checkpointing.max-concurrent-checkpoints: 1
 execution.checkpointing.externalized-checkpoint-retention: RETAIN_ON_CANCELLATION
 
-# 状态后端配置
-state.backend: rocksdb
+# 状态后端配置 state.backend: rocksdb
 state.backend.incremental: true
 state.backend.rocksdb.memory.managed: true
 state.checkpoints.dir: s3://my-bucket/flink-checkpoints
 
-# 重启策略
-restart-strategy: fixed-delay
+# 重启策略 restart-strategy: fixed-delay
 restart-strategy.fixed-delay.attempts: 10
 restart-strategy.fixed-delay.delay: 10s
 ```

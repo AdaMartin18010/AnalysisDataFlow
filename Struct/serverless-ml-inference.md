@@ -140,8 +140,7 @@ $$
 ### 6.1 AWS Lambda 上的推理函数配置
 
 ```python
-# serverless.yml 概念配置
-functions:
+# serverless.yml 概念配置 functions:
   inference:
     handler: handler.inference
     timeout: 30

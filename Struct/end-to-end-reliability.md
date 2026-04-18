@@ -313,8 +313,7 @@ def find_bottleneck(path_components):
     bottlenecks = [name for name, r in path_components.items() if r == min_r]
     return bottlenecks, min_r
 
-# 示例
-components = {
+# 示例 components = {
     "Kafka Source": 0.9999,
     "JobManager": 0.9999,
     "TaskManager": 0.995,

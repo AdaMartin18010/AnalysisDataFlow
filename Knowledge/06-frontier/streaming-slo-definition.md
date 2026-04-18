@@ -380,15 +380,13 @@ Histogram event_latency = Histogram.build()
 **SLI 计算示例**：
 
 ```text
-# 延迟 SLI 计算
-def calculate_latency_sli(events: List[Event], slo_threshold_ms: int) -> float:
+# 延迟 SLI 计算 def calculate_latency_sli(events: List[Event], slo_threshold_ms: int) -> float:
     """计算满足延迟 SLO 的事件比例"""
     compliant = sum(1 for e in events
                    if e.processed_at - e.event_time <= slo_threshold_ms):
     return compliant / len(events)
 
-# 可用性 SLI 计算
-def calculate_availability_sli(:
+# 可用性 SLI 计算 def calculate_availability_sli(:
     job_uptime_ms: int,
     total_time_ms: int
 ) -> float:

@@ -45,7 +45,7 @@
 
 使用专门的 Issue 模板：
 
-1. 访问 [GitHub Issues](../../issues/new/choose)
+1. 访问 [GitHub Issues]
 2. 选择 **🏭 工业案例征集** 模板
 3. 按照模板指引填写完整信息
 4. 提交 Issue
@@ -394,8 +394,8 @@ GitHub Issue 模板：[链接]
 
 如有任何问题或建议：
 
-- GitHub Issues: [提交 Issue](../../issues/new/choose)
-- GitHub Discussions: [参与讨论](../../discussions)
+- GitHub Issues: [提交 Issue]
+- GitHub Discussions: [参与讨论]
 - 案例审核进度查询: 在对应 Issue 中评论
 
 ---

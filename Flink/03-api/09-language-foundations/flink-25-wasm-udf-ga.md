@@ -774,8 +774,7 @@ flowchart TD
 **推荐组合策略**:
 
 ```yaml
-# flink-wasm-config.yaml
-optimization:
+# flink-wasm-config.yaml optimization:
   # 生产环境推荐
   production:
     aot: true              # 必开
@@ -952,11 +951,9 @@ $$
 **项目初始化**:
 
 ```bash
-# 安装 Flink Rust SDK
-cargo install cargo-flink  # 前瞻性工具: Flink 2.5规划中
+# 安装 Flink Rust SDK cargo install cargo-flink  # 前瞻性工具: Flink 2.5规划中
 
-# 创建新的 UDF 项目
-cargo flink new --scalar udf-example  # 前瞻性工具: Flink 2.5规划中
+# 创建新的 UDF 项目 cargo flink new --scalar udf-example  # 前瞻性工具: Flink 2.5规划中
 cd udf-example
 ```
 
@@ -1092,31 +1089,25 @@ codegen-units = 1
 **编译构建**:
 
 ```bash
-# 安装 wasm32-wasi 目标
-rustup target add wasm32-wasi
+# 安装 wasm32-wasi 目标 rustup target add wasm32-wasi
 
-# 安装 cargo-component
-cargo install cargo-component
+# 安装 cargo-component cargo install cargo-component
 
 # 构建组件(Release 模式)
 cargo component build --release
 
-# 产物位置
-ls -la target/wasm32-wasi/release/udf_example.wasm
+# 产物位置 ls -la target/wasm32-wasi/release/udf_example.wasm
 
-# 验证组件结构
-wasm-tools component wit target/wasm32-wasi/release/udf_example.wasm
+# 验证组件结构 wasm-tools component wit target/wasm32-wasi/release/udf_example.wasm
 ```
 
 **AOT 预编译** (可选优化):
 
 ```bash
-# 使用 WasmEdge AOT 编译
-wasmedgec target/wasm32-wasi/release/udf_example.wasm \
+# 使用 WasmEdge AOT 编译 wasmedgec target/wasm32-wasi/release/udf_example.wasm \
     target/wasm32-wasi/release/udf_example_aot.wasm
 
-# 或使用 Wasmtime AOT 编译
-wasmtime compile target/wasm32-wasi/release/udf_example.wasm \
+# 或使用 Wasmtime AOT 编译 wasmtime compile target/wasm32-wasi/release/udf_example.wasm \
     -o target/wasm32-wasi/release/udf_example.cwasm
 ```
 
@@ -1127,8 +1118,7 @@ wasmtime compile target/wasm32-wasi/release/udf_example.wasm \
 **项目初始化**:
 
 ```bash
-# 创建项目目录
-mkdir flink-go-udf && cd flink-go-udf
+# 创建项目目录 mkdir flink-go-udf && cd flink-go-udf
 go mod init github.com/example/flink-go-udf
 
 # 安装 TinyGo(Go 的 WASM 编译器)
@@ -1223,24 +1213,19 @@ func main() {}
 **编译构建**:
 
 ```bash
-# 使用 TinyGo 编译为 WASM
-tinygo build -o udf_go.wasm -target wasi -gc= leaking -opt=2 .
+# 使用 TinyGo 编译为 WASM tinygo build -o udf_go.wasm -target wasi -gc= leaking -opt=2 .
 
-# 优化 WASM 文件大小
-wasm-opt -O3 udf_go.wasm -o udf_go_optimized.wasm
+# 优化 WASM 文件大小 wasm-opt -O3 udf_go.wasm -o udf_go_optimized.wasm
 
-# 检查产物大小
-ls -lh *.wasm
+# 检查产物大小 ls -lh *.wasm
 ```
 
 **WIT 适配层** (Go + Component Model):
 
 ```bash
-# 使用 wit-bindgen-go 生成绑定
-go install github.com/bytecodealliance/wasm-tools-go/cmd/wit-bindgen-go@latest
+# 使用 wit-bindgen-go 生成绑定 go install github.com/bytecodealliance/wasm-tools-go/cmd/wit-bindgen-go@latest
 
-# 生成 Go 绑定
-wit-bindgen-go generate --world math-udf --out-dir ./bindings ./wit
+# 生成 Go 绑定 wit-bindgen-go generate --world math-udf --out-dir ./bindings ./wit
 ```
 
 ---
@@ -1360,8 +1345,7 @@ $WASI_SDK/bin/clang++ \
     -o math_ops.wasm \
     math_ops.cpp
 
-# 优化 WASM
-wasm-opt -O3 math_ops.wasm -o math_ops_optimized.wasm
+# 优化 WASM wasm-opt -O3 math_ops.wasm -o math_ops_optimized.wasm
 ```
 
 **CMake 配置** (`CMakeLists.txt`):
@@ -1373,13 +1357,11 @@ project(flink_cpp_udf)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# WASI 目标
-set(CMAKE_SYSTEM_NAME WASI)
+# WASI 目标 set(CMAKE_SYSTEM_NAME WASI)
 set(CMAKE_SYSTEM_VERSION 1)
 set(CMAKE_SYSTEM_PROCESSOR wasm32)
 
-# 编译选项
-add_compile_options(
+# 编译选项 add_compile_options(
     -O3
     -flto
     -fno-exceptions
@@ -1388,8 +1370,7 @@ add_compile_options(
     -Wextra
 )
 
-# 链接选项
-add_link_options(
+# 链接选项 add_link_options(
     -Wl,--export-dynamic
     -Wl,--allow-undefined
     -Wl,--lto-O3
@@ -1976,8 +1957,7 @@ wasm:
 **模式三: 混合部署 (Hybrid)**
 
 ```yaml
-# 云-边协同部署
-wasm:
+# 云-边协同部署 wasm:
   # 云端配置
   cloud:
     runtime: wasmtime
@@ -2021,8 +2001,7 @@ wasm:
 **CPU 配置**:
 
 ```yaml
-# 任务槽与 WASM 实例映射
-taskmanager:
+# 任务槽与 WASM 实例映射 taskmanager:
   numberOfTaskSlots: 4
 
 wasm:
@@ -2036,8 +2015,7 @@ wasm:
 **网络配置**:
 
 ```yaml
-# 模块下载配置
-wasm:
+# 模块下载配置 wasm:
   registry:
     # 连接超时
     connect-timeout: 10s
@@ -2056,8 +2034,7 @@ wasm:
 **关键指标**:
 
 ```yaml
-# 监控指标配置
-metrics:
+# 监控指标配置 metrics:
   wasm:
     # 性能指标
     - name: wasm.execution.latency
@@ -2097,8 +2074,7 @@ metrics:
 **告警规则**:
 
 ```yaml
-# 告警规则
-alerts:
+# 告警规则 alerts:
   - name: WASMHighLatency
     condition: wasm.execution.latency.p99 > 100ms
     duration: 5m
@@ -2261,20 +2237,15 @@ wasm:
 **调试工具链**:
 
 ```bash
-# 1. 模块验证
-wasm-tools validate udf.wasm
+# 1. 模块验证 wasm-tools validate udf.wasm
 
-# 2. 模块反汇编
-wasm-tools print udf.wasm > udf.wat
+# 2. 模块反汇编 wasm-tools print udf.wasm > udf.wat
 
-# 3. 性能分析
-wasmtime run --profile=guest udf.wasm
+# 3. 性能分析 wasmtime run --profile=guest udf.wasm
 
-# 4. 内存分析
-wasmedge --mem-limit 32M udf.wasm
+# 4. 内存分析 wasmedge --mem-limit 32M udf.wasm
 
-# 5. 调试信息
-wasm-tools strip udf.wasm -o udf_stripped.wasm  # 移除调试信息
+# 5. 调试信息 wasm-tools strip udf.wasm -o udf_stripped.wasm  # 移除调试信息
 wasm-tools demangle udf.wasm                     # 还原符号名
 ```
 
@@ -2291,8 +2262,7 @@ wasm-tools demangle udf.wasm                     # 还原符号名
 **日志配置**:
 
 ```yaml
-# 调试日志配置
-logger:
+# 调试日志配置 logger:
   wasm:
     level: DEBUG
     appenders:

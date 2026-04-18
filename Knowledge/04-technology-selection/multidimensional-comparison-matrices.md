@@ -1587,8 +1587,7 @@ Checkpoint机制:
 #### Kubernetes部署详解
 
 ```yaml
-# Flink on K8s 典型配置
-apiVersion: flink.apache.org/v1beta1
+# Flink on K8s 典型配置 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: streaming-job

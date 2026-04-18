@@ -251,8 +251,7 @@ TCP-based Backpressure  ───→ Credit-based Flow Control ───→ + Bu
 **配置建议**:
 
 ```yaml
-# 启用 Buffer Debloating
-taskmanager.network.memory.buffer-debloat.enabled: true
+# 启用 Buffer Debloating taskmanager.network.memory.buffer-debloat.enabled: true
 taskmanager.network.memory.buffer-debloat.target: 1s
 taskmanager.network.memory.buffer-debloat.samples: 20
 ```

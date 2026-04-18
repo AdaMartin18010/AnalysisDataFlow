@@ -415,8 +415,7 @@ $$N_{in\_flight} = \lambda \times T_{overlap}$$
 **server.properties - 安全配置示例**：
 
 ```properties
-# === 监听配置 ===
-listeners=SASL_SSL://:9092
+# === 监听配置 === listeners=SASL_SSL://:9092
 security.inter.broker.protocol=SASL_SSL
 ssl.enabled.protocols=TLSv1.3
 ssl.truststore.location=/etc/kafka/truststore.jks
@@ -425,20 +424,16 @@ ssl.keystore.location=/etc/kafka/keystore.jks
 ssl.keystore.password=${KEYSTORE_PASSWORD}
 ssl.key.password=${KEY_PASSWORD}
 
-# === SASL配置 ===
-sasl.enabled.mechanisms=GSSAPI,SCRAM-SHA-512
+# === SASL配置 === sasl.enabled.mechanisms=GSSAPI,SCRAM-SHA-512
 sasl.mechanism.inter.broker.protocol=GSSAPI
 
-# === ACL配置 ===
-authorizer.class.name=kafka.security.authorizer.AclAuthorizer
+# === ACL配置 === authorizer.class.name=kafka.security.authorizer.AclAuthorizer
 allow.everyone.if.no.acl.found=false
 super.users=User:admin;User:kafka
 
-# === 静态加密 ===
-log.segment.bytes=1073741824
+# === 静态加密 === log.segment.bytes=1073741824
 log.retention.hours=168
-# 使用KMS进行密钥管理
-log.cleaner.enable=true
+# 使用KMS进行密钥管理 log.cleaner.enable=true
 ```
 
 **JAAS配置 - Kerberos集成**：
@@ -466,33 +461,28 @@ Client {
 **flink-conf.yaml - SSL配置**：
 
 ```yaml
-# === SSL配置 ===
-security.ssl.enabled: true
+# === SSL配置 === security.ssl.enabled: true
 security.ssl.algorithms: TLSv1.3
 security.ssl.internal.enabled: true
 security.ssl.rest.enabled: true
 
-# === 内部通信SSL ===
-security.ssl.internal.keystore: /opt/flink/ssl/flink.keystore
+# === 内部通信SSL === security.ssl.internal.keystore: /opt/flink/ssl/flink.keystore
 security.ssl.internal.keystore-password: ${KEYSTORE_PASS}
 security.ssl.internal.key-password: ${KEY_PASS}
 security.ssl.internal.truststore: /opt/flink/ssl/flink.truststore
 security.ssl.internal.truststore-password: ${TRUSTSTORE_PASS}
 
-# === REST API SSL ===
-security.ssl.rest.keystore: /opt/flink/ssl/rest.keystore
+# === REST API SSL === security.ssl.rest.keystore: /opt/flink/ssl/rest.keystore
 security.ssl.rest.keystore-password: ${KEYSTORE_PASS}
 security.ssl.rest.key-password: ${KEY_PASS}
 security.ssl.rest.truststore: /opt/flink/ssl/rest.truststore
 security.ssl.rest.truststore-password: ${TRUSTSTORE_PASS}
 
-# === Kerberos配置 ===
-security.kerberos.login.use-ticket-cache: false
+# === Kerberos配置 === security.kerberos.login.use-ticket-cache: false
 security.kerberos.login.keytab: /opt/flink/keytabs/flink.keytab
 security.kerberos.login.principal: flink@EXAMPLE.COM
 
-# === 审计日志 ===
-audit.log.enabled: true
+# === 审计日志 === audit.log.enabled: true
 audit.log.destination: kafka
 audit.log.topic: flink-audit-logs
 ```

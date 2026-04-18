@@ -1131,11 +1131,9 @@ class StreamingLinearRegression:
         """预测"""
         return np.dot(self.w, x)
 
-# 使用示例
-model = StreamingLinearRegression(n_features=10)
+# 使用示例 model = StreamingLinearRegression(n_features=10)
 
-# 模拟数据流
-for t in range(1000):
+# 模拟数据流 for t in range(1000):
     x_t = np.random.randn(10)
     y_t = np.dot(true_w, x_t) + np.random.randn() * 0.1
     loss = model.partial_fit(x_t, y_t)
@@ -1208,11 +1206,9 @@ class ADWIN:
 
         return False
 
-# 使用示例
-detector = ADWIN(delta=0.001)
+# 使用示例 detector = ADWIN(delta=0.001)
 
-# 模拟带漂移的数据流
-data_stream = []
+# 模拟带漂移的数据流 data_stream = []
 for t in range(1000):
     if t < 500:
         # 第一个概念
@@ -1407,15 +1403,13 @@ class StreamingFeaturePipeline:
             x = transformer.fit_transform(x)
         return x
 
-# 使用示例
-pipeline = StreamingFeaturePipeline()
+# 使用示例 pipeline = StreamingFeaturePipeline()
 pipeline.add_transformer(StreamingNormalizer("temperature")) \
         .add_transformer(StreamingNormalizer("pressure")) \
         .add_transformer(StreamingOneHotEncoder("device_type")) \
         .add_transformer(StreamingWindowAggregator("temperature", window_size=50))
 
-# 处理数据流
-sensor_data = [
+# 处理数据流 sensor_data = [
     {"temperature": 25.0, "pressure": 1013.0, "device_type": "A"},
     {"temperature": 25.5, "pressure": 1012.5, "device_type": "B"},
     # ... 更多数据

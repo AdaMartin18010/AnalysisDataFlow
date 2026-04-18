@@ -578,8 +578,7 @@ Fluss 0.8 引入对 **Lance** 列式向量数据格式的原生支持[^24]，使
 | **架构简化** | 消除流式系统与向量数据库之间的复杂 ETL |
 
 ```yaml
-# server.yaml: 启用 Lance Lakehouse
- datalake.format: lance
+# server.yaml: 启用 Lance Lakehouse datalake.format: lance
  datalake.lance.warehouse: s3://<bucket>
  datalake.lance.endpoint: <endpoint>
  datalake.lance.allow_http: true

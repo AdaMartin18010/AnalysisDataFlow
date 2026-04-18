@@ -347,8 +347,7 @@ Flink 的 Adaptive Scheduler 将从可选特性变为默认调度器。作业能
 # 2027 年典型 Flink 生产部署配置
 # ============================================
 
-# 存算分离 + Serverless 的 Flink 部署
-apiVersion: flink.apache.org/v1beta1
+# 存算分离 + Serverless 的 Flink 部署 apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: streaming-lakehouse-pipeline
@@ -538,11 +537,3 @@ graph TB
 ---
 
 ## 8. 引用参考 (References)
-
-[^1]: Apache Flink Community, "FLIP-188: Paimon Integration", 2024. https://github.com/apache/flink/blob/main/flink-docs/docs/flips/FLIP-188.md
-[^2]: Apache Flink Community, "FLIP-320: ForSt State Backend", 2024. https://issues.apache.org/jira/browse/FLINK-320
-[^3]: Apache Flink Community, "FLIP-531: Flink Agents", 2025. https://github.com/apache/flink/blob/main/flink-docs/docs/flips/FLIP-531.md
-[^4]: Confluent, "2024 Kafka Summit: The Rise of SQL in Stream Processing", 2024.
-[^5]: Databricks, "Delta Streaming Tables GA Announcement", 2024.
-[^6]: J. Li et al., "Incremental View Maintenance over Lakehouse", VLDB 2025.
-[^7]: EU Commission, "Energy Efficiency Directive: Data Center Requirements", 2024.

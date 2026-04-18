@@ -314,17 +314,14 @@ AWS us-east-1 到 eu-west-1 距离 ≈ 6,400 km
 **关键配置**:
 
 ```yaml
-# MirrorMaker2 双向复制配置
-clusters: source, target
+# MirrorMaker2 双向复制配置 clusters: source, target
 source.bootstrap.servers: source-kafka:9092
 target.bootstrap.servers: target-kafka:9092
 
-# 双向复制
-source->target.enabled: true
+# 双向复制 source->target.enabled: true
 target->source.enabled: true
 
-# 冲突解决: 按时间戳
-conflict.resolution: timestamp
+# 冲突解决: 按时间戳 conflict.resolution: timestamp
 ```
 
 **效果**:
@@ -396,14 +393,12 @@ conflict.resolution: timestamp
 **边缘配置**:
 
 ```yaml
-# Flink边缘模式
-jobmanager.memory.process.size: 512mb
+# Flink边缘模式 jobmanager.memory.process.size: 512mb
 taskmanager.memory.process.size: 1gb
 taskmanager.numberOfTaskSlots: 2
 parallelism.default: 2
 
-# 仅保留聚合后的指标
-checkpoint.interval: 5min
+# 仅保留聚合后的指标 checkpoint.interval: 5min
 checkpoint.mode: AT_LEAST_ONCE
 ```
 

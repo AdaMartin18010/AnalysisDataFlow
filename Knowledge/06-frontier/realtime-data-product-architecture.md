@@ -401,8 +401,7 @@ graph TB
 **完整定义文档**:
 
 ```yaml
-# data-product-definition.yaml
-apiVersion: datamesh.io/v1
+# data-product-definition.yaml apiVersion: datamesh.io/v1
 kind: DataProduct
 metadata:
   name: realtime-fraud-signals
@@ -485,15 +484,13 @@ spec:
 # 消费者接入代码示例 (Python + Kafka)
 from dataproduct_sdk import DataProductConsumer
 
-# 初始化数据产品消费者
-consumer = DataProductConsumer(
+# 初始化数据产品消费者 consumer = DataProductConsumer(
     product="com.finance.risk.realtime-fraud-signals.v1",
     consumer_group="fraud-engine-prod",
     credentials=CredentialLoader.from_env()
 )
 
-# 自动发现Schema并反序列化
-for event in consumer.stream():
+# 自动发现Schema并反序列化 for event in consumer.stream():
     # event 已根据数据产品Schema自动解析为类型化对象
     risk_score = event.risk_score
     user_id = event.user_id

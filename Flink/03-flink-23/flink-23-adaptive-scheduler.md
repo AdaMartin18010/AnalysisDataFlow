@@ -265,11 +265,9 @@ $$\frac{p_i^*}{p_j^*} \approx \frac{\text{CPU}_i}{\text{CPU}_j}$$
 # Flink 2.3 Adaptive Scheduler 2.0 配置示例
 # ============================================
 
-# 基础调度器配置
-scheduler: adaptive-v2
+# 基础调度器配置 scheduler: adaptive-v2
 
-# --- 监控与预测层 ---
-adaptive-scheduler.metrics.window: 5min
+# --- 监控与预测层 --- adaptive-scheduler.metrics.window: 5min
 adaptive-scheduler.metrics.sources:
   - task-backpressure
   - task-latency
@@ -280,26 +278,22 @@ adaptive-scheduler.prediction.enabled: true
 adaptive-scheduler.prediction.horizon: 10min
 adaptive-scheduler.prediction.model: hybrid
 
-# --- 决策层 ---
-adaptive-scheduler.scaling.policy: throughput-latency-balanced
+# --- 决策层 --- adaptive-scheduler.scaling.policy: throughput-latency-balanced
 adaptive-scheduler.scaling.weights:
   throughput: 0.4
   latency: 0.4
   cost: 0.2
 
-# 关键阈值
-adaptive-scheduler.latency.target: 500ms
+# 关键阈值 adaptive-scheduler.latency.target: 500ms
 adaptive-scheduler.latency.max: 2000ms
 adaptive-scheduler.throughput.min-utilization: 0.7
 
-# --- 执行层 ---
-adaptive-scheduler.parallelism.min: 4
+# --- 执行层 --- adaptive-scheduler.parallelism.min: 4
 adaptive-scheduler.parallelism.max: 128
 adaptive-scheduler.resize.step.max: 0.25
 adaptive-scheduler.resize.cooldown: 10min
 
-# 状态迁移配置
-adaptive-scheduler.migration.strategy: checkpoint-triggered
+# 状态迁移配置 adaptive-scheduler.migration.strategy: checkpoint-triggered
 adaptive-scheduler.migration.async-preload: true
 adaptive-scheduler.migration.max-state-per-task: 2gb
 ```
@@ -359,8 +353,7 @@ public class AdaptiveSchedulerDemo {
 ### 6.3 Kubernetes 协同弹性配置
 
 ```yaml
-# FlinkDeployment with Adaptive Scheduler + K8s HPA
-apiVersion: flink.apache.org/v1beta1
+# FlinkDeployment with Adaptive Scheduler + K8s HPA apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: adaptive-streaming-job

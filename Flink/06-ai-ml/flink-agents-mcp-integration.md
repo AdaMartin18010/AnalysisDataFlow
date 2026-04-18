@@ -683,8 +683,7 @@ class MCPAsyncFunction(AsyncFunction):
                 calls.append(ToolCall("calculate", {"expression": input_data.get("metric")}))
         return calls
 
-# Usage in PyFlink job
-def create_mcp_integration_job():
+# Usage in PyFlink job def create_mcp_integration_job():
     env = StreamExecutionEnvironment.get_execution_environment()
 
     # Input stream
@@ -757,8 +756,7 @@ class MCPResourcePublisher:
 ### 6.3 Configuration Template
 
 ```yaml
-# mcp-flink-integration.yaml
-mcp:
+# mcp-flink-integration.yaml mcp:
   client:
     # Connection settings
     endpoint: https://mcp-server.internal:8080

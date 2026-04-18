@@ -255,11 +255,9 @@ $$
 ### 6.1 GPTuner 的提示工程模板
 
 ```markdown
-# Role
-你是一位 Apache Flink 性能调优专家。
+# Role 你是一位 Apache Flink 性能调优专家。
 
-# Context
-当前作业是一个 Kafka-to-Elasticsearch 的日志处理管道。
+# Context 当前作业是一个 Kafka-to-Elasticsearch 的日志处理管道。
 工作负载特征：
 - 峰值吞吐量: 500K events/s
 - 平均事件大小: 2KB
@@ -267,14 +265,12 @@ $$
 - 集群资源: 20 台 8 核 32GB 节点
 - 当前问题: Backpressure 严重，延迟波动大
 
-# Task
-请推荐 3 组 Flink 配置调整方案，每组方案针对不同的优化侧重点：
+# Task 请推荐 3 组 Flink 配置调整方案，每组方案针对不同的优化侧重点：
 1. 优先降低延迟
 2. 优先提升吞吐
 3. 平衡延迟与资源利用率
 
-# Output Format
-每组方案以 JSON 格式输出，包含调整的参数和预期效果说明。
+# Output Format 每组方案以 JSON 格式输出，包含调整的参数和预期效果说明。
 ```
 
 ### 6.2 ZERO-TUNE 的轻量级反馈循环

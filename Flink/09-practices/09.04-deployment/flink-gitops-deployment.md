@@ -134,16 +134,14 @@ spec:
 ### 6.3 Kustomize 多环境 overlay
 
 ```yaml
-# overlays/prod/kustomization.yaml
-resources:
+# overlays/prod/kustomization.yaml resources:
   - ../../base
 patchesStrategicMerge:
   - resources-patch.yaml
 ```
 
 ```yaml
-# overlays/prod/resources-patch.yaml
-spec:
+# overlays/prod/resources-patch.yaml spec:
   taskManager:
     resource:
       memory: "16Gi"

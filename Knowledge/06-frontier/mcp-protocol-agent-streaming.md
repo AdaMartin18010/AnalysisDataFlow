@@ -278,8 +278,7 @@ $$
 **反模式 1: 过度暴露内部状态**
 
 ```python
-# ❌ 错误:暴露原始状态句柄
-@app.resource("state://internal")
+# ❌ 错误:暴露原始状态句柄 @app.resource("state://internal")
 def get_internal_state():
     return flink_state_backend.get_raw()  # 危险！
 ```
@@ -287,8 +286,7 @@ def get_internal_state():
 **反模式 2: 阻塞式 Tool 实现**
 
 ```python
-# ❌ 错误:同步等待 Flink 结果
-@app.tool()
+# ❌ 错误:同步等待 Flink 结果 @app.tool()
 def analyze_trend_blocking(params):
     result = flink_client.execute_sync(sql)  # 阻塞！
     return result
@@ -297,8 +295,7 @@ def analyze_trend_blocking(params):
 **反模式 3: 无界状态增长**
 
 ```python
-# ❌ 错误:无 TTL 的状态
-class StatefulTool:
+# ❌ 错误:无 TTL 的状态 class StatefulTool:
     def __init__(self):
         self.cache = {}  # 持续增长！
 ```
@@ -354,15 +351,13 @@ $$
 ### 6.1 Flink MCP Server 实现
 
 ```python
-# mcp_flink_server.py
-from mcp.server.fastmcp import FastMCP
+# mcp_flink_server.py from mcp.server.fastmcp import FastMCP
 from pyflink.datastream import StreamExecutionEnvironment
 import json
 
 mcp = FastMCP("FlinkAnalytics")
 
-# 定义实时指标 Resource
-@mcp.resource("metrics://realtime/sales")
+# 定义实时指标 Resource @mcp.resource("metrics://realtime/sales")
 def get_realtime_sales() -> str:
     """获取实时销售指标"""
     # 从 Flink 查询当前指标视图
@@ -376,8 +371,7 @@ def get_realtime_sales() -> str:
     """)
     return json.dumps(result)
 
-# 定义趋势分析 Tool
-@mcp.tool()
+# 定义趋势分析 Tool @mcp.tool()
 def analyze_sales_trend(time_range: str) -> dict:
     """
     分析销售趋势
@@ -398,16 +392,14 @@ def analyze_sales_trend(time_range: str) -> dict:
     """
     return flink_table_env.execute_sql(sql).fetch_all()
 
-# 启动 Server
-if __name__ == "__main__":
+# 启动 Server if __name__ == "__main__":
     mcp.run(transport='sse')  # Server-Sent Events
 ```
 
 ### 6.2 MCP Client 使用示例
 
 ```python
-# agent_client.py
-from mcp import ClientSession, StdioServerParameters
+# agent_client.py from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
 async def run_agent():
@@ -445,8 +437,7 @@ async def run_agent():
 ### 6.3 流式数据订阅
 
 ```python
-# streaming_subscription.py
-@mcp.resource("stream://events/user_activity")
+# streaming_subscription.py @mcp.resource("stream://events/user_activity")
 async def subscribe_user_activity():
     """实时用户活动流"""
     # 创建 Flink DataStream
@@ -473,8 +464,7 @@ async def subscribe_user_activity():
 ### 6.4 完整 Agent 工作流
 
 ```python
-# agent_workflow.py
-class StreamingAnalyticsAgent:
+# agent_workflow.py class StreamingAnalyticsAgent:
     def __init__(self):
         self.mcp_client = MCPClient()
         self.llm = OpenAIChatModel()
@@ -511,8 +501,7 @@ class StreamingAnalyticsAgent:
 
         return answer, subscription
 
-# 使用示例
-async def main():
+# 使用示例 async def main():
     agent = StreamingAnalyticsAgent()
     answer, live_feed = await agent.handle_user_query(
         "过去24小时销售趋势如何？有哪些异常？"

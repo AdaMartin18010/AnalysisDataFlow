@@ -949,17 +949,14 @@ com.mongodb.MongoCommandException: Command failed with error 280 (ChangeStreamFa
 **解决方案**:
 
 ```bash
-# 1. 检查 oplog 大小和保留时间
-rs.printReplicationInfo()
+# 1. 检查 oplog 大小和保留时间 rs.printReplicationInfo()
 
 # 2. 增加 oplog 大小(需要重启)
 # 停止 MongoDB
 # 删除 local/oplog.rs
-# 以更大大小重新创建
-mongod --replSet rs0 --oplogSize 10240  # 10GB
+# 以更大大小重新创建 mongod --replSet rs0 --oplogSize 10240  # 10GB
 
-# 3. Flink 侧配置
-// 缩短 Checkpoint 间隔
+# 3. Flink 侧配置 // 缩短 Checkpoint 间隔
 env.enableCheckpointing(30000);  // 30秒
 
 // 监控 Checkpoint 成功率
@@ -1097,26 +1094,20 @@ MongoClientSettings settings = MongoClientSettings.builder()
 ### 8.2 诊断命令
 
 ```bash
-# 查看副本集状态
-rs.status()
+# 查看副本集状态 rs.status()
 
-# 查看 oplog 统计
-rs.printReplicationInfo()
+# 查看 oplog 统计 rs.printReplicationInfo()
 rs.printSlaveReplicationInfo()
 
-# 查看当前操作
-db.currentOp()
+# 查看当前操作 db.currentOp()
 
-# 查看慢查询
-db.setProfilingLevel(2)  # 记录所有操作
+# 查看慢查询 db.setProfilingLevel(2)  # 记录所有操作
 db.system.profile.find().sort({$natural: -1}).limit(10)
 
-# 查看集合统计
-db.orders.stats()
+# 查看集合统计 db.orders.stats()
 db.orders.totalIndexSize()
 
-# 查看 Change Stream 状态
-db.adminCommand({aggregate: 1, pipeline: [{ $changeStream: {} }], cursor: {}})
+# 查看 Change Stream 状态 db.adminCommand({aggregate: 1, pipeline: [{ $changeStream: {} }], cursor: {}})
 ```
 
 ---

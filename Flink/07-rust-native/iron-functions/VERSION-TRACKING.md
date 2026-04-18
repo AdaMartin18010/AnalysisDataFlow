@@ -58,14 +58,11 @@
 ## 自动化检查
 
 ```bash
-# 手动运行版本检查
-python .scripts/iron-functions-tracker.py --check
+# 手动运行版本检查 python .scripts/iron-functions-tracker.py --check
 
-# 生成同步建议
-python .scripts/iron-functions-tracker.py --sync-advice
+# 生成同步建议 python .scripts/iron-functions-tracker.py --sync-advice
 
-# 更新版本记录
-python .scripts/iron-functions-tracker.py --update
+# 更新版本记录 python .scripts/iron-functions-tracker.py --update
 ```
 
 ## 变更通知

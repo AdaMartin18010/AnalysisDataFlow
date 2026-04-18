@@ -194,26 +194,22 @@ if __name__ == "__main__":
 以下脚本展示了如何通过 Savepoint 实现 Flink 流作业的零停机升级：
 
 ```bash
-# !/bin/bash
-set -e
+# !/bin/bash set -e
 
 FLINK_22_HOME=/opt/flink-2.2.4
 FLINK_23_HOME=/opt/flink-2.3.0
 JOB_JAR=/apps/my-streaming-job-2.3.jar
 JOB_MAIN=com.example.StreamingJob
 
-# Step 1: Trigger savepoint on Flink 2.2
-SAVEPOINT_PATH=$($FLINK_22_HOME/bin/flink savepoint \
+# Step 1: Trigger savepoint on Flink 2.2 SAVEPOINT_PATH=$($FLINK_22_HOME/bin/flink savepoint \
     <job-id> \
     hdfs:///flink/savepoints/upgrade-$(date +%s))
 
 echo "Savepoint created at: $SAVEPOINT_PATH"
 
-# Step 2: Stop the 2.2 job with savepoint
-$FLINK_22_HOME/bin/flink stop <job-id> --savepointPath $SAVEPOINT_PATH
+# Step 2: Stop the 2.2 job with savepoint $FLINK_22_HOME/bin/flink stop <job-id> --savepointPath $SAVEPOINT_PATH
 
-# Step 3: Resume on Flink 2.3
-$FLINK_23_HOME/bin/flink run \
+# Step 3: Resume on Flink 2.3 $FLINK_23_HOME/bin/flink run \
     -s $SAVEPOINT_PATH \
     -c $JOB_MAIN \
     $JOB_JAR \
@@ -267,8 +263,7 @@ flowchart TD
 在生产升级前，必须在测试环境完整演练回退流程。以下脚本演示了从 Flink 2.3 回退到 2.2 的自动化流程：
 
 ```bash
-# !/bin/bash
-set -e
+# !/bin/bash set -e
 
 FLINK_23_HOME=/opt/flink-2.3.0
 FLINK_22_HOME=/opt/flink-2.2.4
@@ -281,14 +276,12 @@ echo "=== Starting rollback from Flink 2.3 to 2.2 ==="
 # Step 1: Cancel 2.3 job (do NOT take savepoint if 2.2 cannot read it)
 $FLINK_23_HOME/bin/flink cancel <job-id-23>
 
-# Step 2: Validate rollback savepoint format
-$FLINK_22_HOME/bin/flink run \
+# Step 2: Validate rollback savepoint format $FLINK_22_HOME/bin/flink run \
     --mode verify-savepoint \
     -s $ROLLBACK_SAVEPOINT \
     /dev/null
 
-# Step 3: Restore on Flink 2.2 using the pre-upgrade savepoint
-$FLINK_22_HOME/bin/flink run \
+# Step 3: Restore on Flink 2.2 using the pre-upgrade savepoint $FLINK_22_HOME/bin/flink run \
     -s $ROLLBACK_SAVEPOINT \
     -c $JOB_MAIN \
     $JOB_JAR_22 \

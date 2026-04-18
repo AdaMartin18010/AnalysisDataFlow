@@ -1156,19 +1156,16 @@ public class FaultTolerantOnlineLearning {
 
 ```yaml
 # flink-conf.yaml
-# 在线学习场景推荐配置
-state.backend: rocksdb
+# 在线学习场景推荐配置 state.backend: rocksdb
 state.backend.incremental: true
 state.checkpoint-storage: filesystem
 state.checkpoints.dir: s3://bucket/checkpoints
 
-# 更频繁的 checkpoint 以减少恢复损失
-execution.checkpointing.interval: 30s
+# 更频繁的 checkpoint 以减少恢复损失 execution.checkpointing.interval: 30s
 execution.checkpointing.timeout: 10min
 execution.checkpointing.max-concurrent-checkpoints: 1
 
-# 启用增量 savepoint 用于模型版本归档
-state.savepoints.dir: s3://bucket/savepoints
+# 启用增量 savepoint 用于模型版本归档 state.savepoints.dir: s3://bucket/savepoints
 ```
 
 ---

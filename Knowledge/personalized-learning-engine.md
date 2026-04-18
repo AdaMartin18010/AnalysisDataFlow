@@ -216,8 +216,7 @@ graph LR
 ### 5.3 User Model
 
 ```yaml
-# User Profile Schema
-user_profile:
+# User Profile Schema user_profile:
   id: string
   created_at: timestamp
 
@@ -540,8 +539,7 @@ paths:
 #### 6.3 Configuration
 
 ```yaml
-# personalized-learning-config.yaml
-learning_engine:
+# personalized-learning-config.yaml learning_engine:
   # Scoring weights
   weights:
     concept_coverage: 0.40
@@ -621,8 +619,7 @@ sequenceDiagram
 **Scenario**: User struggling with content
 
 ```python
-# Detect struggle
-if quiz_score < 0.5 and time_spent > estimated_time * 1.5:
+# Detect struggle if quiz_score < 0.5 and time_spent > estimated_time * 1.5:
     # Insert prerequisite content
     prerequisites = find_prerequisites(current_doc)
     insert_before_next(prerequisites)
@@ -731,6 +728,7 @@ radarChart
 | Version | Date | Changes |
 |---------|------|---------|
 | v1.0 | 2026-04-04 | Initial version |
+
 ## 8. 引用参考 (References)
 
 - [LEARNING-PATHS-DYNAMIC.md](../LEARNING-PATHS/00-INDEX.md) - Dynamic learning paths
@@ -738,4 +736,3 @@ radarChart
 - [QUICK-START.md](../QUICK-START.md) - Quick start guide
 
 ---
-

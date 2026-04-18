@@ -287,8 +287,7 @@ def model_check(initial_states, transition_fn, property_fn, max_depth=10):
 
     return len(counterexamples) == 0, counterexamples
 
-# 示例：检查"confirmedOperators 数量从不超过总数"
-ALL_OPS = {"Source", "Map", "Sink"}
+# 示例：检查"confirmedOperators 数量从不超过总数" ALL_OPS = {"Source", "Map", "Sink"}
 
 def safety_property(state):
     return len(state.get("confirmed", set())) <= len(ALL_OPS)

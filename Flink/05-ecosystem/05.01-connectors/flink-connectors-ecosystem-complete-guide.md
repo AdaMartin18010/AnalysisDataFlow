@@ -1929,8 +1929,7 @@ CREATE TABLE pg_users (
 **MySQL → Doris 同步**:
 
 ```yaml
-# pipeline.yaml
-pipeline:
+# pipeline.yaml pipeline:
   name: mysql-to-doris-pipeline
   parallelism: 4
 

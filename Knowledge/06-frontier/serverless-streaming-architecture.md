@@ -311,16 +311,14 @@ EC2费用 = 10 × $0.096/h × 720h = $691.20
 ### 6.1 AWS Lambda + MSK 事件处理
 
 ```python
-# 消费MSK事件并处理
-import json
+# 消费MSK事件并处理 import json
 import boto3
 from aws_lambda_powertools import Logger, Tracer
 
 logger = Logger()
 tracer = Tracer()
 
-# 状态外置到DynamoDB
-dynamodb = boto3.resource('dynamodb')
+# 状态外置到DynamoDB dynamodb = boto3.resource('dynamodb')
 state_table = dynamodb.Table('event-processing-state')
 
 @logger.inject_lambda_context
@@ -431,8 +429,7 @@ public class EventProcessor
 ### 6.3 混合架构：API Gateway + Lambda + Flink
 
 ```yaml
-# 架构示意:Serverless处理边缘,Flink处理核心计算
-#
+# 架构示意:Serverless处理边缘,Flink处理核心计算 #
 # 用户请求 → API Gateway → Lambda (认证/限流/路由)
 #                              ↓
 #                        Kafka/Event Hub (缓冲)

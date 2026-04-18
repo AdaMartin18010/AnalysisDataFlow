@@ -600,8 +600,7 @@ DataStream<Event> stream = env
 ### 6.3 兼容性测试报告模板
 
 ```yaml
-# Flash 兼容性测试报告
-test_job:
+# Flash 兼容性测试报告 test_job:
   name: "user_behavior_analysis"
   type: "SQL"
 

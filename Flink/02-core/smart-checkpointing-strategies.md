@@ -1209,26 +1209,22 @@ $$
 # 智能检查点 - 自适应间隔配置
 # ============================================================
 
-# 启用自适应检查点
-execution.checkpointing.mode: SMART  <!-- [Flink 2.4 前瞻] 智能检查点模式为规划特性,可能变动 -->
+# 启用自适应检查点 execution.checkpointing.mode: SMART  <!-- [Flink 2.4 前瞻] 智能检查点模式为规划特性,可能变动 -->
 
 # 基础检查点间隔 (10分钟)
 execution.checkpointing.interval: 10min
 
-# 自适应策略配置
-execution.checkpointing.adaptive.enabled: true
+# 自适应策略配置 execution.checkpointing.adaptive.enabled: true
 execution.checkpointing.adaptive.min-interval: 1min
 execution.checkpointing.adaptive.max-interval: 30min
 execution.checkpointing.adaptive.target-cpu-usage: 0.70
 execution.checkpointing.adaptive.target-memory-usage: 0.75
 
-# PID 控制器参数
-execution.checkpointing.adaptive.kp: 0.5
+# PID 控制器参数 execution.checkpointing.adaptive.kp: 0.5
 execution.checkpointing.adaptive.ki: 0.1
 execution.checkpointing.adaptive.kd: 0.05
 
-# 背压感知
-execution.checkpointing.adaptive.backpressure-aware: true
+# 背压感知 execution.checkpointing.adaptive.backpressure-aware: true
 execution.checkpointing.adaptive.backpressure-threshold: 0.3
 ```
 
@@ -1266,25 +1262,19 @@ env.enableSmartCheckpointing(
 # 智能检查点 - 增量优化配置
 # ============================================================
 
-# 启用增量检查点
-state.backend.incremental: true
+# 启用增量检查点 state.backend.incremental: true
 
-# 增量检查点优化
-state.backend.incremental.optimization: AGGRESSIVE
+# 增量检查点优化 state.backend.incremental.optimization: AGGRESSIVE
 
-# SST 文件级别增量检测
-state.backend.rocksdb.incremental.sst-level: true
+# SST 文件级别增量检测 state.backend.rocksdb.incremental.sst-level: true
 
-# 变更文件压缩
-state.backend.rocksdb.incremental.compression: ZSTD
+# 变更文件压缩 state.backend.rocksdb.incremental.compression: ZSTD
 state.backend.rocksdb.incremental.compression-level: 3
 
-# 增量合并策略
-execution.checkpointing.incremental.merge-strategy: LAZY
+# 增量合并策略 execution.checkpointing.incremental.merge-strategy: LAZY
 execution.checkpointing.incremental.merge-threshold: 10
 
-# 垃圾回收配置
-execution.checkpointing.incremental.gc.enabled: true
+# 垃圾回收配置 execution.checkpointing.incremental.gc.enabled: true
 execution.checkpointing.incremental.gc.retention: 24h
 ```
 
@@ -1320,22 +1310,17 @@ env.setStateBackend(rocksDbBackend);
 # 智能检查点 - 局部检查点配置
 # ============================================================
 
-# 启用局部检查点
-execution.checkpointing.partial.enabled: true
+# 启用局部检查点 execution.checkpointing.partial.enabled: true
 
-# 故障域划分策略
-execution.checkpointing.partial.partition-strategy: PIPELINE
+# 故障域划分策略 execution.checkpointing.partial.partition-strategy: PIPELINE
 
-# 局部检查点触发条件
-execution.checkpointing.partial.trigger-on-failure: true
+# 局部检查点触发条件 execution.checkpointing.partial.trigger-on-failure: true
 execution.checkpointing.partial.failure-threshold: 0.3
 
-# 级联恢复配置
-execution.checkpointing.partial.cascade-recovery: true
+# 级联恢复配置 execution.checkpointing.partial.cascade-recovery: true
 execution.checkpointing.partial.max-cascade-depth: 3
 
-# 跨域边界同步
-execution.checkpointing.partial.boundary-sync: true
+# 跨域边界同步 execution.checkpointing.partial.boundary-sync: true
 execution.checkpointing.partial.boundary-timeout: 30s
 ```
 
@@ -1379,23 +1364,18 @@ env.enablePartialCheckpointing(
 # 智能检查点 - 并行度优化配置
 # ============================================================
 
-# 动态并行度
-execution.checkpointing.parallelism.mode: DYNAMIC
+# 动态并行度 execution.checkpointing.parallelism.mode: DYNAMIC
 
-# 最小/最大并行度
-execution.checkpointing.parallelism.min: 1
+# 最小/最大并行度 execution.checkpointing.parallelism.min: 1
 execution.checkpointing.parallelism.max: 32
 
-# 并行度计算参数
-execution.checkpointing.parallelism.coordination-cost: 50ms
+# 并行度计算参数 execution.checkpointing.parallelism.coordination-cost: 50ms
 execution.checkpointing.parallelism.io-rate: 100MB/s
 
-# 运行时调整
-execution.checkpointing.parallelism.runtime-adjust: true
+# 运行时调整 execution.checkpointing.parallelism.runtime-adjust: true
 execution.checkpointing.parallelism.adjust-threshold: 0.3
 
-# 资源感知
-execution.checkpointing.parallelism.resource-aware: true
+# 资源感知 execution.checkpointing.parallelism.resource-aware: true
 ```
 
 ```java

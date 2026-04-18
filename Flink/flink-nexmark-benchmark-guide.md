@@ -295,12 +295,10 @@ $$
 **步骤 1: 下载 Flink Nexmark 实现**
 
 ```bash
-# 克隆 Flink 源码
-git clone https://github.com/apache/flink.git
+# 克隆 Flink 源码 git clone https://github.com/apache/flink.git
 cd flink/flink-examples/flink-examples-streaming
 
-# 编译 Nexmark
-mvn clean package -DskipTests \
+# 编译 Nexmark mvn clean package -DskipTests \
   -pl flink-examples-streaming \
   -am
 ```
@@ -313,8 +311,7 @@ docker run -d --name kafka-nexmark \
   -p 9092:9092 \
   apache/kafka:3.5.0
 
-# 创建 Topic
-kafka-topics.sh --create \
+# 创建 Topic kafka-topics.sh --create \
   --topic nexmark-events \
   --bootstrap-server localhost:9092 \
   --partitions 16 \

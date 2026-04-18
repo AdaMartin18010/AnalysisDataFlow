@@ -208,14 +208,12 @@ $$
 
 ```yaml
 # kafka-server.properties
-# TLS 1.3 配置
-listeners=SASL_SSL://:9093
+# TLS 1.3 配置 listeners=SASL_SSL://:9093
 security.inter.broker.protocol=SASL_SSL
 ssl.enabled.protocols=TLSv1.3
 ssl.protocol=TLS
 
-# 证书配置
-ssl.keystore.location=/etc/kafka/keystore.p12
+# 证书配置 ssl.keystore.location=/etc/kafka/keystore.p12
 ssl.keystore.password=${KAFKA_SSL_KEYSTORE_PASSWORD}
 ssl.key.password=${KAFKA_SSL_KEY_PASSWORD}
 ssl.truststore.location=/etc/kafka/truststore.p12
@@ -224,8 +222,7 @@ ssl.truststore.password=${KAFKA_SSL_TRUSTSTORE_PASSWORD}
 # 客户端认证(双向 TLS)
 ssl.client.auth=required
 
-# SASL 配置
-sasl.enabled.mechanisms=SCRAM-SHA-512
+# SASL 配置 sasl.enabled.mechanisms=SCRAM-SHA-512
 sasl.mechanism.inter.broker.protocol=SCRAM-SHA-512
 ```
 
@@ -233,8 +230,7 @@ sasl.mechanism.inter.broker.protocol=SCRAM-SHA-512
 
 ```yaml
 # flink-conf.yaml
-# 内部通信加密
-security.ssl.internal.enabled: true
+# 内部通信加密 security.ssl.internal.enabled: true
 security.ssl.internal.keystore: /opt/flink/ssl/flink.keystore
 security.ssl.internal.keystore-password: ${FLINK_KEYSTORE_PASSWORD}
 security.ssl.internal.key-password: ${FLINK_KEY_PASSWORD}
@@ -245,8 +241,7 @@ security.ssl.internal.truststore-password: ${FLINK_TRUSTSTORE_PASSWORD}
 security.ssl.internal.protocol: TLSv1.3
 security.ssl.internal.algorithms: TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256
 
-# REST API HTTPS
-security.ssl.rest.enabled: true
+# REST API HTTPS security.ssl.rest.enabled: true
 security.ssl.rest.keystore: /opt/flink/ssl/rest.keystore
 security.ssl.rest.keystore-password: ${REST_KEYSTORE_PASSWORD}
 ```
@@ -254,19 +249,16 @@ security.ssl.rest.keystore-password: ${REST_KEYSTORE_PASSWORD}
 ### 6.3 Kafka ACL 配置示例
 
 ```bash
-# 创建 SASL/SCRAM 用户
-kafka-configs.sh --bootstrap-server kafka:9093 \
+# 创建 SASL/SCRAM 用户 kafka-configs.sh --bootstrap-server kafka:9093 \
   --alter --add-config 'SCRAM-SHA-512=[password=secure-password]' \
   --entity-type users --entity-name flink-producer
 
-# 设置 Topic ACL - 生产者权限
-kafka-acls.sh --bootstrap-server kafka:9093 \
+# 设置 Topic ACL - 生产者权限 kafka-acls.sh --bootstrap-server kafka:9093 \
   --add --allow-principal User:flink-producer \
   --operation Write --operation Describe \
   --topic 'events.*'
 
-# 设置 Topic ACL - 消费者权限
-kafka-acls.sh --bootstrap-server kafka:9093 \
+# 设置 Topic ACL - 消费者权限 kafka-acls.sh --bootstrap-server kafka:9093 \
   --add --allow-principal User:flink-consumer \
   --operation Read --operation Describe \
   --topic 'events.input' --group 'flink-consumer-group'
@@ -280,8 +272,7 @@ kafka-acls.sh --bootstrap-server kafka:9093 \
 ### 6.4 Kubernetes RBAC 配置
 
 ```yaml
-# flink-operator-rbac.yaml
-apiVersion: v1
+# flink-operator-rbac.yaml apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: flink-operator
@@ -352,8 +343,7 @@ checkpointConfig.setExternalizedCheckpointCleanup(
 ### 6.6 NetworkPolicy 网络隔离
 
 ```yaml
-# flink-network-policy.yaml
-apiVersion: networking.k8s.io/v1
+# flink-network-policy.yaml apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: flink-jobmanager-policy
@@ -432,8 +422,7 @@ spec:
 ### 6.7 金融级安全配置清单
 
 ```yaml
-# production-security-checklist.yaml
-security_profile: financial_grade
+# production-security-checklist.yaml security_profile: financial_grade
 compliance: [PCI-DSS, SOC2, ISO27001]
 
 transport_security:

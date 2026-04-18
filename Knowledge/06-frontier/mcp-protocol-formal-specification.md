@@ -914,8 +914,7 @@ $$
 **工程实现**：
 
 ```yaml
-# MCP Server沙箱配置示例
-sandbox:
+# MCP Server沙箱配置示例 sandbox:
   filesystem:
     read_only:
       - /data/readonly/*
@@ -1173,8 +1172,7 @@ $$
 以下是一个使用Python实现的简单MCP服务器示例：
 
 ```python
-# !/usr/bin/env python3
-"""
+# !/usr/bin/env python3 """
 MCP Server Example - Calculator
 A simple MCP server providing calculator tools
 """

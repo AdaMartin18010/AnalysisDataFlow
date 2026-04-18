@@ -754,8 +754,7 @@ result.executeInsert("result_sink");
 ```yaml
 # flink-conf.yaml - 统一容错配置
 
-# 统一容错后端
-state.backend: unified  # 前瞻性配置: Flink 2.5规划中
+# 统一容错后端 state.backend: unified  # 前瞻性配置: Flink 2.5规划中
 state.backend.unified.storage: forst  # 前瞻性配置: Flink 2.5规划中
 
 # 流模式容错配置 (适用于流子图)
@@ -768,18 +767,15 @@ execution.batch.fault-tolerance.strategy: RESTART_ALL  # 前瞻性配置: Flink 
 execution.batch.fault-tolerance.max-attempts: 3  # 前瞻性配置: Flink 2.5规划中
 execution.batch.shuffle-mode: ALL_EXCHANGES_BLOCKING  # 前瞻性配置: Flink 2.5规划中
 
-# 混合执行容错
-execution.mixed.checkpoint-boundary: WATERMARK_ALIGNED  # 前瞻性配置: Flink 2.5规划中
+# 混合执行容错 execution.mixed.checkpoint-boundary: WATERMARK_ALIGNED  # 前瞻性配置: Flink 2.5规划中
 execution.mixed.state-sharing: true  # 前瞻性配置: Flink 2.5规划中
 execution.mixed.auto-scaling: true  # 前瞻性配置: Flink 2.5规划中
 
-# 统一存储配置
-state.backend.forst.remote.path: s3://flink-state/{job-id}
+# 统一存储配置 state.backend.forst.remote.path: s3://flink-state/{job-id}
 state.backend.forst.cache.path: /tmp/flink-cache
 state.backend.forst.cache.capacity: 20GB
 
-# 快速恢复配置
-execution.recovery.snapshot-download.parallelism: 10
+# 快速恢复配置 execution.recovery.snapshot-download.parallelism: 10
 execution.recovery.snapshot-download.timeout: 5min
 ```
 
@@ -1211,8 +1207,7 @@ env.execute();
 **自动迁移工具**:
 
 ```bash
-# 使用Flink迁移工具
-flink-migrate --input ./old-job.jar \
+# 使用Flink迁移工具 flink-migrate --input ./old-job.jar \
     --output ./new-job.jar \
     --target-version 2.5 \
     --migrate-dataset-api \
@@ -1229,13 +1224,11 @@ flink stop --savepointPath hdfs:///savepoints/job-123
 
 # 2. 升级Flink到2.5
 # 3. 修改配置
-# flink-conf.yaml
-state.backend: unified
+# flink-conf.yaml state.backend: unified
 state.backend.unified.storage: forst
 state.backend.unified.remote.path: s3://flink-state/
 
-# 4. 从Savepoint恢复
-flink run -s hdfs:///savepoints/job-123 \
+# 4. 从Savepoint恢复 flink run -s hdfs:///savepoints/job-123 \
     -c com.example.Job \
     ./job-2.5.jar
 ```
@@ -1272,39 +1265,33 @@ flink run -s hdfs:///savepoints/job-123 \
 **批处理优化**:
 
 ```yaml
-# 批处理专用配置
-execution.batch.shuffle-mode: ALL_EXCHANGES_BLOCKING
+# 批处理专用配置 execution.batch.shuffle-mode: ALL_EXCHANGES_BLOCKING
 execution.batch.fault-tolerance.max-attempts: 3
 pipeline.object-reuse: true
 
-# 内存配置
-taskmanager.memory.framework.off-heap.batch-allocations: true
+# 内存配置 taskmanager.memory.framework.off-heap.batch-allocations: true
 taskmanager.memory.batch-allocator.type: POOLED
 ```
 
 **流处理优化**:
 
 ```yaml
-# 流处理专用配置
-execution.checkpointing.interval: 30s
+# 流处理专用配置 execution.checkpointing.interval: 30s
 execution.checkpointing.min-pause-between-checkpoints: 30s
 state.backend.incremental: true
 
-# 延迟优化
-execution.buffer-timeout: 0ms
+# 延迟优化 execution.buffer-timeout: 0ms
 execution.max-parallelism: 128
 ```
 
 **混合执行优化**:
 
 ```yaml
-# 混合执行配置
-execution.mixed.checkpoint-boundary: WATERMARK_ALIGNED
+# 混合执行配置 execution.mixed.checkpoint-boundary: WATERMARK_ALIGNED
 execution.mixed.state-sharing: true
 execution.mixed.stream-buffer-size: 1000
 
-# 资源分配
-execution.mixed.batch-resource-ratio: 0.6
+# 资源分配 execution.mixed.batch-resource-ratio: 0.6
 execution.mixed.streaming-resource-ratio: 0.4
 ```
 
@@ -1323,13 +1310,11 @@ execution.mixed.streaming-resource-ratio: 0.4
 **Prometheus查询示例**:
 
 ```promql
-# 自适应模式选择成功率
-rate(flink_jobmanager_adaptive_mode_selection_total{status="success"}[5m])
+# 自适应模式选择成功率 rate(flink_jobmanager_adaptive_mode_selection_total{status="success"}[5m])
 /
 rate(flink_jobmanager_adaptive_mode_selection_total[5m])
 
-# 存储层各Tier访问延迟
-histogram_quantile(0.99,
+# 存储层各Tier访问延迟 histogram_quantile(0.99,
     flink_taskmanager_storage_access_latency_bucket{tier=~"memory|local|remote"}
 )
 ```

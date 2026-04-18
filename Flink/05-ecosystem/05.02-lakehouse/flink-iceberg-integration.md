@@ -1919,20 +1919,16 @@ spark = SparkSession.builder \
     .appName("Migration Validation") \
     .getOrCreate()
 
-# 读取 Hive 表
-hive_df = spark.table("hive_db.orders")
+# 读取 Hive 表 hive_df = spark.table("hive_db.orders")
 
-# 读取 Iceberg 表
-iceberg_df = spark.table("iceberg_catalog.iceberg_db.orders")
+# 读取 Iceberg 表 iceberg_df = spark.table("iceberg_catalog.iceberg_db.orders")
 
-# 记录数对比
-hive_count = hive_df.count()
+# 记录数对比 hive_count = hive_df.count()
 iceberg_count = iceberg_df.count()
 print(f"Hive count: {hive_count}, Iceberg count: {iceberg_count}")
 assert hive_count == iceberg_count, "Record count mismatch!"
 
-# 关键指标对比
-hive_metrics = hive_df.groupBy("dt").agg(
+# 关键指标对比 hive_metrics = hive_df.groupBy("dt").agg(
     count("*").alias("hive_cnt"),
     sum("amount").alias("hive_gmv")
 )
@@ -1942,8 +1938,7 @@ iceberg_metrics = iceberg_df.groupBy("dt").agg(
     sum("amount").alias("iceberg_gmv")
 )
 
-# 对比结果
-comparison = hive_metrics.join(
+# 对比结果 comparison = hive_metrics.join(
     iceberg_metrics,
     on="dt",
     how="outer"
@@ -1955,8 +1950,7 @@ comparison = hive_metrics.join(
 
 comparison.show()
 
-# 抽样验证
-sample_diff = hive_df.sample(0.001).exceptAll(
+# 抽样验证 sample_diff = hive_df.sample(0.001).exceptAll(
     iceberg_df.sample(0.001)
 )
 assert sample_diff.count() == 0, "Sample data mismatch!"

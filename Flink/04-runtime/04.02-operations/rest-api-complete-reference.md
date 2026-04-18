@@ -987,48 +987,37 @@ Flink REST API 版本历史：
 ### 8.1 完整操作示例：作业监控流程
 
 ```bash
-# 1. 获取集群概览
-curl http://localhost:8081/overview
+# 1. 获取集群概览 curl http://localhost:8081/overview
 
-# 2. 获取运行中作业列表
-curl http://localhost:8081/jobs
+# 2. 获取运行中作业列表 curl http://localhost:8081/jobs
 
-# 3. 获取特定作业详情
-JOB_ID="f98dc763e00a6dc0e1e6e92b8e2f9c8a"
+# 3. 获取特定作业详情 JOB_ID="f98dc763e00a6dc0e1e6e92b8e2f9c8a"
 curl http://localhost:8081/jobs/${JOB_ID}
 
-# 4. 获取作业检查点信息
-curl http://localhost:8081/jobs/${JOB_ID}/checkpoints
+# 4. 获取作业检查点信息 curl http://localhost:8081/jobs/${JOB_ID}/checkpoints
 
-# 5. 获取作业指标
-curl "http://localhost:8081/jobs/${JOB_ID}/metrics?get=read-records,write-records"
+# 5. 获取作业指标 curl "http://localhost:8081/jobs/${JOB_ID}/metrics?get=read-records,write-records"
 
-# 6. 触发 savepoint
-curl -X POST \
+# 6. 触发 savepoint curl -X POST \
   -H "Content-Type: application/json" \
   -d '{"cancel-job":false,"target-directory":"hdfs:///savepoints"}' \
   http://localhost:8081/jobs/${JOB_ID}/savepoints
 
-# 7. 查询 savepoint 状态
-TRIGGER_ID="d7a8f7b3e9c245d1a6b8c9d0e1f2a3b4"
+# 7. 查询 savepoint 状态 TRIGGER_ID="d7a8f7b3e9c245d1a6b8c9d0e1f2a3b4"
 curl http://localhost:8081/jobs/${JOB_ID}/savepoints/${TRIGGER_ID}
 ```
 
 ### 8.2 完整操作示例：TaskManager 监控
 
 ```bash
-# 1. 获取所有 TaskManager
-curl http://localhost:8081/taskmanagers
+# 1. 获取所有 TaskManager curl http://localhost:8081/taskmanagers
 
-# 2. 获取 TaskManager 指标
-TM_ID="tm-001-192.168.1.10-6122"
+# 2. 获取 TaskManager 指标 TM_ID="tm-001-192.168.1.10-6122"
 curl "http://localhost:8081/taskmanagers/${TM_ID}/metrics?get=Status.JVM.Memory.Heap.Used,Status.JVM.CPU.Load"
 
-# 3. 获取日志列表
-curl http://localhost:8081/taskmanagers/${TM_ID}/logs
+# 3. 获取日志列表 curl http://localhost:8081/taskmanagers/${TM_ID}/logs
 
-# 4. 获取日志内容
-curl http://localhost:8081/taskmanagers/${TM_ID}/logs/flink-taskmanager.log
+# 4. 获取日志内容 curl http://localhost:8081/taskmanagers/${TM_ID}/logs/flink-taskmanager.log
 ```
 
 ### 8.3 Python 客户端示例
@@ -1086,16 +1075,13 @@ class FlinkRestClient:
         )
         return resp.json()
 
-# 使用示例
-client = FlinkRestClient()
+# 使用示例 client = FlinkRestClient()
 
-# 获取集群状态
-overview = client.get_overview()
+# 获取集群状态 overview = client.get_overview()
 print(f"运行中作业数: {overview['jobs-running']}")
 print(f"可用 slots: {overview['slots-available']}/{overview['slots-total']}")
 
-# 监控特定作业
-jobs = client.list_jobs()
+# 监控特定作业 jobs = client.list_jobs()
 for job in jobs.get('jobs', []):
     if job['status'] == 'RUNNING':
         job_id = job['id']

@@ -1507,12 +1507,10 @@ $$e_1 \prec e_2 \Rightarrow order'(e_1) < order'(e_2)$$
 # Flink 2.3 Adaptive Scheduler 完整配置
 # ============================================================
 
-# ---------- 1. 调度器类型选择 ----------
-jobmanager.scheduler: Adaptive
+# ---------- 1. 调度器类型选择 ---------- jobmanager.scheduler: Adaptive
 
 # ---------- 2. 并行度边界配置 ----------
-# 全局最小/最大并行度限制
-adaptive-scheduler.min-parallelism: 1
+# 全局最小/最大并行度限制 adaptive-scheduler.min-parallelism: 1
 adaptive-scheduler.max-parallelism: 128
 
 # 默认并行度(初始值)
@@ -1536,36 +1534,30 @@ adaptive-scheduler.scaling-interval.max: 600000
 adaptive-scheduler.adaptive-cooldown.enabled: true
 
 # ---------- 5. 预测配置 ----------
-# 启用预测性扩缩容
-adaptive-scheduler.prediction.enabled: true
+# 启用预测性扩缩容 adaptive-scheduler.prediction.enabled: true
 
 # 预测窗口大小(分钟)
 adaptive-scheduler.prediction.window: 5
 
-# 预测模型类型: EXPONENTIAL_SMOOTHING | ARIMA | ENSEMBLE
-adaptive-scheduler.prediction.model: EXPONENTIAL_SMOOTHING
+# 预测模型类型: EXPONENTIAL_SMOOTHING | ARIMA | ENSEMBLE adaptive-scheduler.prediction.model: EXPONENTIAL_SMOOTHING
 
 # ---------- 6. 状态迁移优化 ----------
-# 启用增量状态迁移
-adaptive-scheduler.incremental-rescaling.enabled: true
+# 启用增量状态迁移 adaptive-scheduler.incremental-rescaling.enabled: true
 
-# 状态迁移并发度
-adaptive-scheduler.rescaling.parallelism: 4
+# 状态迁移并发度 adaptive-scheduler.rescaling.parallelism: 4
 
 # 状态迁移超时(毫秒)
 adaptive-scheduler.rescaling.timeout: 300000
 
 # ---------- 7. 资源分配策略 ----------
-# 分配策略: FAIR | DOMINANT_RESOURCE | PRIORITY
-scheduler.policy: FAIR
+# 分配策略: FAIR | DOMINANT_RESOURCE | PRIORITY scheduler.policy: FAIR
 
 # 优先级权重(当策略为 PRIORITY 时)
 scheduler.priority.default: 5
 scheduler.priority.range: [1, 10]
 
 # ---------- 8. 死锁避免 ----------
-# 启用银行家算法进行安全检测
-scheduler.deadlock-avoidance.enabled: true
+# 启用银行家算法进行安全检测 scheduler.deadlock-avoidance.enabled: true
 
 # 资源申请超时(毫秒)
 scheduler.resource-request.timeout: 30000
@@ -1576,61 +1568,47 @@ scheduler.resource-request.timeout: 30000
 ```yaml
 # ============================================================
 # 场景 A: 电商实时推荐(流量波动大)
-# ============================================================
-jobmanager.scheduler: Adaptive
+# ============================================================ jobmanager.scheduler: Adaptive
 
-# 较宽的并行度范围应对 10x 流量波动
-adaptive-scheduler.min-parallelism: 2
+# 较宽的并行度范围应对 10x 流量波动 adaptive-scheduler.min-parallelism: 2
 adaptive-scheduler.max-parallelism: 100
 
-# 较低的利用率目标,保留缓冲应对突发
-adaptive-scheduler.target-utilization: 0.60
+# 较低的利用率目标,保留缓冲应对突发 adaptive-scheduler.target-utilization: 0.60
 
-# 快速响应
-adaptive-scheduler.scaling-interval.min: 30000
+# 快速响应 adaptive-scheduler.scaling-interval.min: 30000
 adaptive-scheduler.adaptive-cooldown.enabled: true
 
-# 预测性扩容
-adaptive-scheduler.prediction.enabled: true
+# 预测性扩容 adaptive-scheduler.prediction.enabled: true
 adaptive-scheduler.prediction.model: ENSEMBLE
 
 # ============================================================
 # 场景 B: 金融风控(稳定优先)
-# ============================================================
-jobmanager.scheduler: Adaptive
+# ============================================================ jobmanager.scheduler: Adaptive
 
-# 较窄的范围,稳定运行
-adaptive-scheduler.min-parallelism: 10
+# 较窄的范围,稳定运行 adaptive-scheduler.min-parallelism: 10
 adaptive-scheduler.max-parallelism: 20
 
-# 较高的利用率,但保守调整
-adaptive-scheduler.target-utilization: 0.75
+# 较高的利用率,但保守调整 adaptive-scheduler.target-utilization: 0.75
 adaptive-scheduler.utilization-boundary: 0.15
 
-# 长冷却期,避免震荡
-adaptive-scheduler.scaling-interval.min: 300000
+# 长冷却期,避免震荡 adaptive-scheduler.scaling-interval.min: 300000
 adaptive-scheduler.scaling-interval.max: 600000
 
-# 关闭预测,基于实际负载
-adaptive-scheduler.prediction.enabled: false
+# 关闭预测,基于实际负载 adaptive-scheduler.prediction.enabled: false
 
 # ============================================================
 # 场景 C: IoT 数据处理(潮汐模式)
-# ============================================================
-jobmanager.scheduler: Adaptive
+# ============================================================ jobmanager.scheduler: Adaptive
 
-# 大范围应对设备上线/下线潮汐
-adaptive-scheduler.min-parallelism: 1
+# 大范围应对设备上线/下线潮汐 adaptive-scheduler.min-parallelism: 1
 adaptive-scheduler.max-parallelism: 50
 
-# 中等利用率
-adaptive-scheduler.target-utilization: 0.70
+# 中等利用率 adaptive-scheduler.target-utilization: 0.70
 
 # 启用水印对齐优化(IoT 场景常有乱序)
 adaptive-scheduler.watermark-alignment.enabled: true
 
-# 针对 IoT 场景优化预测窗口
-adaptive-scheduler.prediction.window: 15
+# 针对 IoT 场景优化预测窗口 adaptive-scheduler.prediction.window: 15
 adaptive-scheduler.prediction.model: ARIMA
 ```
 
@@ -1641,21 +1619,17 @@ adaptive-scheduler.prediction.model: ARIMA
 **Kubernetes 环境下的动态资源分配**:
 
 ```yaml
-# flink-conf.yaml
-jobmanager.scheduler: Adaptive
+# flink-conf.yaml jobmanager.scheduler: Adaptive
 
-# K8s 特定配置
-kubernetes.cluster-id: flink-adaptive-demo
+# K8s 特定配置 kubernetes.cluster-id: flink-adaptive-demo
 kubernetes.namespace: flink-jobs
 
-# 动态 TaskManager 配置
-kubernetes.taskmanager.cpu: 2.0
+# 动态 TaskManager 配置 kubernetes.taskmanager.cpu: 2.0
 kubernetes.taskmanager.memory: 4096m
 kubernetes.taskmanager.replicas.min: 2
 kubernetes.taskmanager.replicas.max: 20
 
-# 自动扩缩容触发器
-adaptive-scheduler.scale-up.trigger: CPU_USAGE > 0.75 FOR 60s
+# 自动扩缩容触发器 adaptive-scheduler.scale-up.trigger: CPU_USAGE > 0.75 FOR 60s
 adaptive-scheduler.scale-down.trigger: CPU_USAGE < 0.30 FOR 300s
 ```
 
@@ -1825,8 +1799,7 @@ public class AdaptiveResourceDemo {
 # 案例: 某电商大促场景调优过程
 
 # ===== 初始配置 (存在问题) =====
-# 问题: 并行度调整频繁,系统震荡
-initial_config:
+# 问题: 并行度调整频繁,系统震荡 initial_config:
   target-utilization: 0.85      # 过高
   scaling-interval.min: 10000   # 过短 (10秒)
   utilization-boundary: 0.05    # 过小
@@ -1837,8 +1810,7 @@ initial_config:
 # - Checkpoint 频繁失败
 # - 端到端延迟不稳定
 
-# ===== 调优后配置 =====
-optimized_config:
+# ===== 调优后配置 ===== optimized_config:
   target-utilization: 0.70      # 降低,预留缓冲
   scaling-interval.min: 60000   # 延长到 60秒
   scaling-interval.max: 300000  # 增加最大间隔

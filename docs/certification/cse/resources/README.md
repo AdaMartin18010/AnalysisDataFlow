@@ -8,21 +8,21 @@
 
 | 文档 | 难度 | 预计时间 | 重点 |
 |------|------|----------|------|
-| [进程演算入门](../../../../Struct/01-foundations/01.01-process-calculus-intro.md) | ★★★★☆ | 4h | CCS/CSP/π-calculus |
-| [Actor vs 进程演算](../../../../Struct/01-foundations/01.02-actor-vs-process-calculus.md) | ★★★★☆ | 3h | 模型对比 |
+| 进程演算入门 | ★★★★☆ | 4h | CCS/CSP/π-calculus |
+| Actor vs 进程演算 | ★★★★☆ | 3h | 模型对比 |
 
 ### 类型理论
 
 | 文档 | 难度 | 预计时间 | 重点 |
 |------|------|----------|------|
-| [流计算的会话类型](../../../../Struct/01-foundations/01.03-session-types-for-streaming.md) | ★★★★★ | 5h | Session Types |
-| [状态管理的线性类型](../../../../Struct/01-foundations/01.04-linear-types-state-management.md) | ★★★★★ | 4h | Linear Types |
+| 流计算的会话类型 | ★★★★★ | 5h | Session Types |
+| 状态管理的线性类型 | ★★★★★ | 4h | Linear Types |
 
 ### 一致性理论
 
 | 文档 | 难度 | 预计时间 | 重点 |
 |------|------|----------|------|
-| [Exactly-Once 形式化语义](../../../../Struct/02-properties/02.01-exactly-once-semantics.md) | ★★★★★ | 4h | 语义定义 |
+| Exactly-Once 形式化语义 | ★★★★★ | 4h | 语义定义 |
 | [一致性层次](../../../../Struct/02-properties/02.02-consistency-hierarchy.md) | ★★★★☆ | 3h | 层次模型 |
 | [Watermark 单调性](../../../../Struct/02-properties/02.03-watermark-monotonicity.md) | ★★★★★ | 3h | 定理证明 |
 
@@ -30,8 +30,8 @@
 
 | 文档 | 难度 | 预计时间 | 重点 |
 |------|------|----------|------|
-| [TLA+ for Flink](../../../../Struct/06-verification/06.01-tla-plus-for-flink.md) | ★★★★☆ | 4h | TLA+ 应用 |
-| [Checkpoint 模型检测](../../../../Struct/06-verification/06.02-model-checking-checkpoint.md) | ★★★★★ | 4h | 模型检测 |
+| TLA+ for Flink | ★★★★☆ | 4h | TLA+ 应用 |
+| Checkpoint 模型检测 | ★★★★★ | 4h | 模型检测 |
 
 ## 经典文献
 
@@ -168,7 +168,7 @@ git clone https://github.com/tlaplus/CommunityModules.git
 
 ### 设计模式
 
-- [Knowledge/05-architecture-patterns/](../../../../Knowledge/05-architecture-patterns/)
+- Knowledge/05-architecture-patterns/
 - [DEPLOYMENT-ARCHITECTURES.md](../../../../DEPLOYMENT-ARCHITECTURES.md)
 
 ## 论文选题建议

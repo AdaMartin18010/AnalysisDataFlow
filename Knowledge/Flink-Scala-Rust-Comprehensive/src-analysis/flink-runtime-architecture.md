@@ -820,12 +820,10 @@ class PipelinedRegionScheduler {
 
 ```yaml
 # flink-conf.yaml
-# 减少心跳频率,降低网络开销
-heartbeat.interval: 10000  # 默认 10000ms
+# 减少心跳频率,降低网络开销 heartbeat.interval: 10000  # 默认 10000ms
 heartbeat.timeout: 50000   # 默认 50000ms
 
-# 针对大规模集群调优
-resourcemanager.heartbeat.interval: 3000
+# 针对大规模集群调优 resourcemanager.heartbeat.interval: 3000
 jobmanager.heartbeat.interval: 10000
 taskmanager.heartbeat.interval: 10000
 ```

@@ -34,8 +34,7 @@
 > - $C_{conn}$: 连接配置（PDB/CDB架构支持）
 
 ```yaml
-# Oracle Source Pipeline 配置示例
-source:
+# Oracle Source Pipeline 配置示例 source:
   type: oracle
   hostname: oracle.example.com
   port: 1521
@@ -65,8 +64,7 @@ source:
 > - $M_{merge}$: 合并策略（基于事件时间或处理时间）
 
 ```yaml
-# Hudi Sink Pipeline 配置示例
-sink:
+# Hudi Sink Pipeline 配置示例 sink:
   type: hudi
   name: hudi-sink
 
@@ -132,8 +130,7 @@ sink:
 > | 添加约束 | `ALTER TABLE ... ADD CONSTRAINT` | `ADD_CONSTRAINT` |
 
 ```yaml
-# PostgreSQL Schema Evolution配置
-source:
+# PostgreSQL Schema Evolution配置 source:
   type: postgres
   hostname: postgres.example.com
   port: 5432
@@ -159,8 +156,7 @@ source:
 > JSON解析函数集合 $\mathcal{F}_{json} = \{json\_extract, json\_query, json\_value, json\_array\_agg, json\_object\_agg\}$
 
 ```yaml
-# Transform VARIANT类型和JSON解析示例
-transform:
+# Transform VARIANT类型和JSON解析示例 transform:
   - source-table: events\..*
     projection: |
       id,
@@ -187,8 +183,7 @@ transform:
 > - $F_{filter}$: 可选的过滤器表达式
 
 ```yaml
-# 路由配置正则表达式示例
-route:
+# 路由配置正则表达式示例 route:
   # 示例1: 分库分表合并(使用捕获组)
   - source-table: order_db_(\d+)\.order_(\d+)
     sink-table: ods.orders_all
@@ -419,8 +414,7 @@ VARIANT类型层级:
 **使用场景论证**：
 
 ```yaml
-# 场景1: 事件表JSON列处理
-transform:
+# 场景1: 事件表JSON列处理 transform:
   - source-table: user_events
     projection: |
       event_id,
@@ -433,8 +427,7 @@ transform:
       -- 数组展开
       JSON_QUERY(payload, '$.tags[*]') AS tags_array
 
-# 场景2: 条件类型转换
-transform:
+# 场景2: 条件类型转换 transform:
   - source-table: metrics
     projection: |
       metric_id,
@@ -555,8 +548,7 @@ CDC 3.0的简单通配符路由无法处理复杂的分库分表场景：
 **Oracle CDC生产配置模板**：
 
 ```yaml
-# Oracle CDC 生产级配置
-source:
+# Oracle CDC 生产级配置 source:
   type: oracle
   name: oracle-production-source
 
@@ -642,8 +634,7 @@ sink:
 ```yaml
 ################################################################################
 # Flink CDC 3.6.0 Pipeline: Oracle to Apache Hudi
-# 场景: 企业ERP数据实时入湖
-################################################################################
+# 场景: 企业ERP数据实时入湖 ################################################################################
 
 pipeline:
   name: oracle-erp-to-hudi
@@ -1163,8 +1154,7 @@ graph LR
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink Blog, "Apache Flink CDC 3.6.0 Release Announcement", March 30, 2026. https://flink.apache.org/2026/03/30/apache-flink-cdc-3.6.0-release-announcement/
-[^2]: Apache Flink CDC Documentation, "Flink CDC 3.6.0", 2026. https://nightlies.apache.org/flink/flink-cdc-docs-stable/docs/quickstart/
+[^1]: Apache Flink Blog, "Apache Flink CDC 3.6.0 Release Announcement", March 30, 2026. <https://flink.apache.org/2026/03/30/apache-flink-cdc-3.6.0-release-announcement/>
 
 ---
 

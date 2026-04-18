@@ -919,8 +919,7 @@ WHERE p.txn_time > NOW() - INTERVAL '1' HOUR;
 **场景**: 旅行预订系统，涉及航班、酒店、租车多个服务。
 
 ```python
-# SFaaS Saga 实现示例
-@saga_transaction
+# SFaaS Saga 实现示例 @saga_transaction
 async def book_trip(ctx: SagaContext, request: TripRequest):
     # Saga 步骤1: 预订航班
     flight_reservation = await ctx.step(
@@ -946,8 +945,7 @@ async def book_trip(ctx: SagaContext, request: TripRequest):
         car=car_reservation
     )
 
-# 事务协调器处理故障
-@event_handler
+# 事务协调器处理故障 @event_handler
 async def on_step_failure(event: StepFailureEvent):
     saga = await load_saga(event.saga_id)
 

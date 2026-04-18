@@ -413,36 +413,30 @@ flowchart TD
 **反模式 1: Slot 数量与 CPU 核心数不匹配**
 
 ```yaml
-# 错误配置
- taskmanager.numberOfTaskSlots: 8
+# 错误配置 taskmanager.numberOfTaskSlots: 8
  taskmanager.resource.cpu: 2    # 严重超售
 
-# 正确配置
- taskmanager.numberOfTaskSlots: 4
+# 正确配置 taskmanager.numberOfTaskSlots: 4
  taskmanager.resource.cpu: 4    # 1:1 或 2:1 比例
 ```
 
 **反模式 2: 网络内存配置不足**
 
 ```yaml
-# 错误配置
-taskmanager.memory.network.min: 64mb
+# 错误配置 taskmanager.memory.network.min: 64mb
 taskmanager.memory.network.max: 128mb   # 高并发场景下严重瓶颈
 
-# 正确配置
-taskmanager.memory.network.min: 256mb
+# 正确配置 taskmanager.memory.network.min: 256mb
 taskmanager.memory.network.max: 512mb
 ```
 
 **反模式 3: Checkpoint 间隔与处理延迟不匹配**
 
 ```yaml
-# 错误配置
-execution.checkpointing.interval: 1s    # 过于频繁,影响吞吐
+# 错误配置 execution.checkpointing.interval: 1s    # 过于频繁,影响吞吐
 execution.checkpointing.timeout: 10min  # 与间隔不匹配
 
-# 正确配置
-execution.checkpointing.interval: 30s   # 平衡一致性和性能
+# 正确配置 execution.checkpointing.interval: 30s   # 平衡一致性和性能
 execution.checkpointing.timeout: 60s    # 2倍间隔合理
 ```
 
@@ -600,46 +594,36 @@ sequenceDiagram
 **单节点 Standalone 部署**：
 
 ```bash
-# 1. 下载 Flink
-curl -LO https://dlcdn.apache.org/flink/flink-2.0.0/flink-2.0.0-bin-scala_2.12.tgz
+# 1. 下载 Flink curl -LO https://dlcdn.apache.org/flink/flink-2.0.0/flink-2.0.0-bin-scala_2.12.tgz
 tar -xzf flink-2.0.0-bin-scala_2.12.tgz
 cd flink-2.0.0
 
-# 2. 配置 flink-conf.yaml
-cat > conf/flink-conf.yaml << 'EOF'
-# 基础配置
-jobmanager.rpc.address: localhost
+# 2. 配置 flink-conf.yaml cat > conf/flink-conf.yaml << 'EOF'
+# 基础配置 jobmanager.rpc.address: localhost
 jobmanager.rpc.port: 6123
 jobmanager.memory.process.size: 1600m
 
-# TaskManager 配置
-taskmanager.memory.process.size: 4096m
+# TaskManager 配置 taskmanager.memory.process.size: 4096m
 taskmanager.numberOfTaskSlots: 4
 
-# Checkpoint 配置
-state.backend: rocksdb
+# Checkpoint 配置 state.backend: rocksdb
 state.checkpoints.dir: file:///tmp/flink-checkpoints
 execution.checkpointing.interval: 30s
 
-# Web UI
-rest.port: 8081
+# Web UI rest.port: 8081
 EOF
 
-# 3. 启动集群
-./bin/start-cluster.sh
+# 3. 启动集群 ./bin/start-cluster.sh
 
-# 4. 提交作业
-./bin/flink run -d examples/streaming/StateMachineExample.jar
+# 4. 提交作业 ./bin/flink run -d examples/streaming/StateMachineExample.jar
 
-# 5. 查看状态
-./bin/flink list
+# 5. 查看状态 ./bin/flink list
 ```
 
 **多节点 Standalone 部署**：
 
 ```yaml
-# conf/flink-conf.yaml
-jobmanager.rpc.address: flink-master
+# conf/flink-conf.yaml jobmanager.rpc.address: flink-master
 jobmanager.rpc.port: 6123
 jobmanager.memory.process.size: 4096m
 
@@ -653,13 +637,11 @@ jobmanager.high-availability.mode: embedded-journal
 ```
 
 ```bash
-# conf/workers
-flink-worker-1
+# conf/workers flink-worker-1
 flink-worker-2
 flink-worker-3
 
-# 启动多节点集群
-./bin/start-cluster.sh
+# 启动多节点集群 ./bin/start-cluster.sh
 ```
 
 ---
@@ -669,8 +651,7 @@ flink-worker-3
 **Session Mode on YARN**：
 
 ```bash
-# 1. 启动 YARN Session
-./bin/yarn-session.sh \
+# 1. 启动 YARN Session ./bin/yarn-session.sh \
     -d \
     -nm flink-session \
     -Dyarn.application-master.memory=4096 \
@@ -679,18 +660,15 @@ flink-worker-3
     -Dstate.backend=rocksdb \
     -Dstate.checkpoints.dir=hdfs:///flink/checkpoints
 
-# 2. 提交作业到 Session
-./bin/flink run -d -t yarn-session examples/streaming/WordCount.jar
+# 2. 提交作业到 Session ./bin/flink run -d -t yarn-session examples/streaming/WordCount.jar
 
-# 3. 停止 Session
-yarn application -kill <application_id>
+# 3. 停止 Session yarn application -kill <application_id>
 ```
 
 **Application Mode on YARN**：
 
 ```bash
-# 直接提交应用到 YARN
-./bin/flink run-application -t yarn-application \
+# 直接提交应用到 YARN ./bin/flink run-application -t yarn-application \
     -Dyarn.application.name=realtime-etl \
     -Djobmanager.memory.process.size=4096m \
     -Dtaskmanager.memory.process.size=8192m \
@@ -707,14 +685,12 @@ yarn application -kill <application_id>
 **YARN 高可用配置**：
 
 ```yaml
-# flink-conf.yaml
-high-availability: zookeeper
+# flink-conf.yaml high-availability: zookeeper
 high-availability.zookeeper.quorum: zk1:2181,zk2:2181,zk3:2181
 high-availability.zookeeper.path.root: /flink
 high-availability.storageDir: hdfs:///flink/ha
 
-# YARN 资源配置
-yarn.application-attempts: 3
+# YARN 资源配置 yarn.application-attempts: 3
 yarn.application-attempt-failures-validity-interval: 3600000
 ```
 
@@ -725,8 +701,7 @@ yarn.application-attempt-failures-validity-interval: 3600000
 **Application Mode on Kubernetes**：
 
 ```bash
-# 1. 构建镜像
-cat > Dockerfile << 'EOF'
+# 1. 构建镜像 cat > Dockerfile << 'EOF'
 FROM flink:2.0.0-scala_2.12-java17
 COPY target/my-flink-job.jar /opt/flink/usrlib/job.jar
 EOF
@@ -734,14 +709,12 @@ EOF
 docker build -t my-registry/flink-job:v1.0 .
 docker push my-registry/flink-job:v1.0
 
-# 2. 创建 RBAC
-kubectl create serviceaccount flink-service-account
+# 2. 创建 RBAC kubectl create serviceaccount flink-service-account
 kubectl create clusterrolebinding flink-role-binding \
     --clusterrole=edit \
     --serviceaccount=default:flink-service-account
 
-# 3. 提交作业
-./bin/flink run-application \
+# 3. 提交作业 ./bin/flink run-application \
     --target kubernetes-application \
     -Dkubernetes.cluster-id=flink-app-1 \
     -Dkubernetes.container.image=my-registry/flink-job:v1.0 \
@@ -763,46 +736,39 @@ kubectl create clusterrolebinding flink-role-binding \
 ```yaml
 # Kubernetes 原生部署配置
 
-# Kubernetes 配置
-kubernetes.cluster-id: flink-production
+# Kubernetes 配置 kubernetes.cluster-id: flink-production
 kubernetes.namespace: flink-jobs
 kubernetes.service-account: flink-service-account
 kubernetes.container.image: flink:2.0.0-scala_2.12-java17
 kubernetes.container.image.pull-policy: IfNotPresent
 
-# 资源配置
-kubernetes.jobmanager.cpu: 2
+# 资源配置 kubernetes.jobmanager.cpu: 2
 kubernetes.taskmanager.cpu: 4
 jobmanager.memory.process.size: 4096m
 taskmanager.memory.process.size: 8192m
 taskmanager.numberOfTaskSlots: 4
 
-# 高可用配置
-high-availability: kubernetes
+# 高可用配置 high-availability: kubernetes
 high-availability.storageDir: s3://flink-ha/
 high-availability.kubernetes.leader-election.lease-duration: 15s
 high-availability.kubernetes.leader-election.renew-deadline: 10s
 
-# Checkpoint 配置
-state.backend: rocksdb
+# Checkpoint 配置 state.backend: rocksdb
 state.backend.incremental: true
 state.checkpoints.dir: s3://flink-checkpoints/
 state.savepoints.dir: s3://flink-savepoints/
 execution.checkpointing.interval: 30s
 execution.checkpointing.timeout: 600s
 
-# 网络配置
-taskmanager.memory.network.min: 256m
+# 网络配置 taskmanager.memory.network.min: 256m
 taskmanager.memory.network.max: 512m
 taskmanager.memory.network.fraction: 0.15
 
-# 重启策略
-restart-strategy: exponential-delay
+# 重启策略 restart-strategy: exponential-delay
 restart-strategy.exponential-delay.initial-backoff: 10s
 restart-strategy.exponential-delay.max-backoff: 60s
 
-# 指标配置
-metrics.reporters: prom
+# 指标配置 metrics.reporters: prom
 metrics.reporter.prom.class: org.apache.flink.metrics.prometheus.PrometheusReporter
 metrics.reporter.prom.port: 9249
 ```
@@ -814,8 +780,7 @@ metrics.reporter.prom.port: 9249
 **安装 Operator**：
 
 ```bash
-# 使用 Helm 安装 Operator
-helm repo add flink-operator-repo https://downloads.apache.org/flink/flink-kubernetes-operator-1.14.0/
+# 使用 Helm 安装 Operator helm repo add flink-operator-repo https://downloads.apache.org/flink/flink-kubernetes-operator-1.14.0/
 helm repo update
 
 helm install flink-kubernetes-operator flink-operator-repo/flink-kubernetes-operator \
@@ -823,8 +788,7 @@ helm install flink-kubernetes-operator flink-operator-repo/flink-kubernetes-oper
     --set image.repository=apache/flink-kubernetes-operator \
     --set image.tag=1.10.0
 
-# 验证安装
-kubectl get pods -n default
+# 验证安装 kubectl get pods -n default
 kubectl get crds | grep flink
 ```
 
@@ -910,8 +874,7 @@ spec:
     state.backend: rocksdb
 
 ---
-# 提交作业到 Session 集群
-apiVersion: flink.apache.org/v1beta1
+# 提交作业到 Session 集群 apiVersion: flink.apache.org/v1beta1
 kind: FlinkSessionJob
 metadata:
   name: ad-hoc-query
@@ -931,8 +894,7 @@ spec:
 **Docker Compose 部署**：
 
 ```yaml
-# docker-compose.yml
-version: '3.8'
+# docker-compose.yml version: '3.8'
 
 services:
   jobmanager:
@@ -966,43 +928,33 @@ services:
 ```
 
 ```bash
-# 启动 Docker Compose 集群
-docker-compose up -d
+# 启动 Docker Compose 集群 docker-compose up -d
 
-# 查看状态
-docker-compose ps
+# 查看状态 docker-compose ps
 
-# 提交作业
-docker exec -it flink_jobmanager_1 \
+# 提交作业 docker exec -it flink_jobmanager_1 \
     flink run /opt/flink/examples/streaming/WordCount.jar
 
-# 停止集群
-docker-compose down
+# 停止集群 docker-compose down
 ```
 
 **自定义 Dockerfile**：
 
 ```dockerfile
-# Dockerfile
-FROM flink:2.0.0-scala_2.12-java17
+# Dockerfile FROM flink:2.0.0-scala_2.12-java17
 
-# 安装依赖
-RUN apt-get update && apt-get install -y \
+# 安装依赖 RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
     && rm -rf /var/lib/apt/lists/*
 
-# 复制作业 JAR
-COPY target/my-flink-job.jar /opt/flink/usrlib/job.jar
+# 复制作业 JAR COPY target/my-flink-job.jar /opt/flink/usrlib/job.jar
 
-# 复制配置文件
-COPY conf/flink-conf.yaml /opt/flink/conf/flink-conf.yaml
+# 复制配置文件 COPY conf/flink-conf.yaml /opt/flink/conf/flink-conf.yaml
 
-# 设置环境变量
-ENV FLINK_PROPERTIES="jobmanager.rpc.address=localhost"
+# 设置环境变量 ENV FLINK_PROPERTIES="jobmanager.rpc.address=localhost"
 
-# 健康检查
-HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+# 健康检查 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
     CMD curl -f http://localhost:8081/ || exit 1
 
 EXPOSE 8081 6123
@@ -1015,8 +967,7 @@ EXPOSE 8081 6123
 **AWS EMR Serverless Flink**：
 
 ```bash
-# 创建 EMR Serverless 应用
-aws emr-serverless create-application \
+# 创建 EMR Serverless 应用 aws emr-serverless create-application \
     --type FLINK \
     --name realtime-etl \
     --release-label emr-7.2.0-flink-1.18.0 \
@@ -1044,8 +995,7 @@ aws emr-serverless create-application \
         "disk": "1000 GB"
     }'
 
-# 启动作业运行
-aws emr-serverless start-job-run \
+# 启动作业运行 aws emr-serverless start-job-run \
     --application-id <application-id> \
     --execution-role-arn arn:aws:iam::123456789012:role/EMRServerlessRole \
     --job-driver '{
@@ -1068,8 +1018,7 @@ aws emr-serverless start-job-run \
 **阿里云实时计算 (Ververica)**：
 
 ```yaml
-# ververica-deployment.yaml
-apiVersion: v1
+# ververica-deployment.yaml apiVersion: v1
 kind: Deployment
 metadata:
   name: flink-etl-job
@@ -1107,18 +1056,15 @@ spec:
 
 ```yaml
 # flink-conf.yaml
-# 启用细粒度资源管理
-cluster.fine-grained-resource-management.enabled: true
+# 启用细粒度资源管理 cluster.fine-grained-resource-management.enabled: true
 
-# 定义资源配置文件
-kubernetes.slot.resource.config-file: /opt/flink/conf/resource-profiles.yaml
+# 定义资源配置文件 kubernetes.slot.resource.config-file: /opt/flink/conf/resource-profiles.yaml
 ```
 
 **资源配置文件**：
 
 ```yaml
-# resource-profiles.yaml
-resourceProfiles:
+# resource-profiles.yaml resourceProfiles:
   # 小资源 Profile (用于 Filter/Map)
   small:
     cpu: 0.5
@@ -1183,16 +1129,14 @@ DataStream<Event> stream = env
 
 ```yaml
 # flink-conf.yaml
-# 启用 Reactive 模式
-scheduler-mode: REACTIVE
+# 启用 Reactive 模式 scheduler-mode: REACTIVE
 cluster.declarative-resource-management.enabled: true
 
 # TaskManager 资源 (Reactive 模式下 TM 数量动态调整)
 taskmanager.memory.process.size: 4096m
 taskmanager.numberOfTaskSlots: 4
 
-# 配合 HPA 使用
-kubernetes.cluster-id: reactive-flink-job
+# 配合 HPA 使用 kubernetes.cluster-id: reactive-flink-job
 ```
 
 **HPA 配置**：
@@ -1242,16 +1186,13 @@ spec:
 **Adaptive Scheduler 配置 (Flink 1.18+)**：
 
 ```yaml
-# flink-conf.yaml
-scheduler: adaptive
+# flink-conf.yaml scheduler: adaptive
 
-# 自适应调度器配置
-adaptive-scheduler.min-parallelism: 2
+# 自适应调度器配置 adaptive-scheduler.min-parallelism: 2
 adaptive-scheduler.max-parallelism: 128
 adaptive-scheduler.default-parallelism: 16
 
-# 资源调整策略
-adaptive-scheduler.resource-scaling-period: 1m
+# 资源调整策略 adaptive-scheduler.resource-scaling-period: 1m
 adaptive-scheduler.resource-scaling-policy: THROUGHPUT_BASED
 ```
 
@@ -1356,25 +1297,20 @@ spec:
 **ZooKeeper HA 配置 (YARN 环境)**：
 
 ```yaml
-# flink-conf.yaml for YARN HA
-high-availability: zookeeper
+# flink-conf.yaml for YARN HA high-availability: zookeeper
 high-availability.zookeeper.quorum: zk1:2181,zk2:2181,zk3:2181
 high-availability.zookeeper.path.root: /flink
 high-availability.zookeeper.client.session-timeout: 60000
 high-availability.zookeeper.client.connection-timeout: 15000
 
-# ZK 高可用存储
-high-availability.storageDir: hdfs:///flink/ha
+# ZK 高可用存储 high-availability.storageDir: hdfs:///flink/ha
 
-# YARN 应用尝试次数
-yarn.application-attempts: 10
+# YARN 应用尝试次数 yarn.application-attempts: 10
 yarn.application-attempt-failures-validity-interval: 3600000
 
-# JM 内存
-jobmanager.memory.process.size: 4096m
+# JM 内存 jobmanager.memory.process.size: 4096m
 
-# Checkpoint
-state.backend: rocksdb
+# Checkpoint state.backend: rocksdb
 state.checkpoints.dir: hdfs:///flink/checkpoints
 ```
 
@@ -1387,45 +1323,37 @@ state.checkpoints.dir: hdfs:///flink/checkpoints
 **Savepoint 管理命令**：
 
 ```bash
-# 手动触发 Savepoint
-./bin/flink savepoint <job-id> hdfs:///flink/savepoints
+# 手动触发 Savepoint ./bin/flink savepoint <job-id> hdfs:///flink/savepoints
 
-# 指定自定义属性触发 Savepoint
-./bin/flink savepoint <job-id> \
+# 指定自定义属性触发 Savepoint ./bin/flink savepoint <job-id> \
     -yid <yarn-app-id> \
     hdfs:///flink/savepoints \
     --cancel  # 触发 Savepoint 并取消作业
 
-# 从 Savepoint 恢复作业
-./bin/flink run -d \
+# 从 Savepoint 恢复作业 ./bin/flink run -d \
     -s hdfs:///flink/savepoints/savepoint-123 \
     -n \  # 允许跳过无法映射的状态
     examples/streaming/StateMachineExample.jar
 
-# 列出所有 Savepoint
-hdfs dfs -ls /flink/savepoints/
+# 列出所有 Savepoint hdfs dfs -ls /flink/savepoints/
 
-# 删除过期 Savepoint
-hdfs dfs -rm -r /flink/savepoints/savepoint-old
+# 删除过期 Savepoint hdfs dfs -rm -r /flink/savepoints/savepoint-old
 ```
 
 **自动触发 Savepoint 配置**：
 
 ```yaml
 # flink-conf.yaml
-# 周期性自动触发 Savepoint
-execution.savepoint.interval: 1h
+# 周期性自动触发 Savepoint execution.savepoint.interval: 1h
 execution.savepoint.dir: s3://flink-savepoints/auto/
 
-# 保留策略
-execution.savepoint.max-retained: 10
+# 保留策略 execution.savepoint.max-retained: 10
 ```
 
 **蓝绿部署示例**：
 
 ```yaml
-# blue-deployment.yaml
-apiVersion: flink.apache.org/v1beta1
+# blue-deployment.yaml apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: etl-pipeline-blue
@@ -1444,8 +1372,7 @@ spec:
     state: running
 
 ---
-# green-deployment.yaml
-apiVersion: flink.apache.org/v1beta1
+# green-deployment.yaml apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: etl-pipeline-green
@@ -1479,8 +1406,7 @@ spec:
 # 1. 创建金丝雀环境 (10% 流量)
 kubectl apply -f flink-canary-deployment.yaml
 
-# 2. 等待金丝雀稳定
-kubectl wait --for=condition=Ready flinkdeployment/flink-canary --timeout=300s
+# 2. 等待金丝雀稳定 kubectl wait --for=condition=Ready flinkdeployment/flink-canary --timeout=300s
 
 # 3. 检查指标 (延迟、错误率)
 sleep 300
@@ -1718,8 +1644,7 @@ stateDiagram-v2
 **环境变量配置**：
 
 ```yaml
-# Kubernetes Pod 模板
-spec:
+# Kubernetes Pod 模板 spec:
   containers:
   - name: flink-main-container
     env:

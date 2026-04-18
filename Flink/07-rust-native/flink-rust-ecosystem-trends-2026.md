@@ -402,11 +402,9 @@ pub fn session_analytics(
 **编译与部署**:
 
 ```bash
-# 编译为 WASM 模块
-cargo build --target wasm32-wasi --release
+# 编译为 WASM 模块 cargo build --target wasm32-wasi --release
 
-# 注册到 Flink
-flink sql -e "
+# 注册到 Flink flink sql -e "
   CREATE FUNCTION parse_events
   AS 'wasm:file:///opt/udfs/libjson_parser.wasm'
   LANGUAGE RUST;
@@ -436,8 +434,7 @@ flink sql -e "
 ### 6.3 Cloudflare Pipelines + Arroyo 集成
 
 ```toml
-# wrangler.toml - Cloudflare Workers 配置
-name = "realtime-analytics"
+# wrangler.toml - Cloudflare Workers 配置 name = "realtime-analytics"
 main = "src/index.ts"
 
 [pipelines]

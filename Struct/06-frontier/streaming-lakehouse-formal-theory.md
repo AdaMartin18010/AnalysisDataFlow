@@ -876,8 +876,7 @@ TIMESTAMP AS OF '2024-01-15T09:00:00Z';
 stream_env = StreamExecutionEnvironment.get_execution_environment()
 stream_env.set_stream_time_characteristic(TimeCharacteristic.EventTime)
 
-# 从Kafka读取流数据
-stream_orders = stream_env \
+# 从Kafka读取流数据 stream_orders = stream_env \
     .add_source(KafkaSource(...)) \
     .map(parse_order) \
     .key_by(lambda x: x.dt) \
@@ -1286,8 +1285,7 @@ graph LR
 ### D.1 流式写入优化
 
 ```python
-# Delta Lake 流式写入优化配置
-(
+# Delta Lake 流式写入优化配置 (
     streaming_df.writeStream
     .format("delta")
     .option("checkpointLocation", "/checkpoints/orders")

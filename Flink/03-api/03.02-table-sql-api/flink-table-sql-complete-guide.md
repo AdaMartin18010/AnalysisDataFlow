@@ -393,8 +393,7 @@ tableEnv.createTable("user_events", sourceDescriptor);
 ```
 
 ```python
-# Python Table API
-from pyflink.table import TableDescriptor, Schema, DataTypes
+# Python Table API from pyflink.table import TableDescriptor, Schema, DataTypes
 from pyflink.table.expressions import col, lit
 
 source_descriptor = TableDescriptor.for_connector('kafka') \
@@ -596,8 +595,7 @@ result.executeInsert("order_summary");
 ```
 
 ```python
-# Python Table API
-from pyflink.table.expressions import col
+# Python Table API from pyflink.table.expressions import col
 
 result = table_env.from_path('orders') \
     .group_by(col('user_id')) \
@@ -607,8 +605,7 @@ result = table_env.from_path('orders') \
         col('amount').sum.alias('total_amount')
     )
 
-# 执行插入
-result.execute_insert('order_summary')
+# 执行插入 result.execute_insert('order_summary')
 ```
 
 #### 6.2.2 UPDATE - 数据更新
@@ -686,8 +683,7 @@ Table result = tableEnv.from("user_events")
 ```
 
 ```python
-# Python
-from pyflink.table.expressions import col, lit
+# Python from pyflink.table.expressions import col, lit
 
 result = table_env.from_path('user_events') \
     .select(col('user_id'), col('event_type'), col('event_time')) \
@@ -973,8 +969,7 @@ Table windowed = tableEnv.from("user_events")
 ```
 
 ```python
-# Python Table API
-from pyflink.table.window import Tumble
+# Python Table API from pyflink.table.window import Tumble
 from pyflink.table.expressions import lit, col
 
 windowed = table_env.from_path('user_events') \
@@ -1287,8 +1282,7 @@ class WeightedAvg(AggregateFunction):
             return None
         return accumulator[0] / accumulator[1]
 
-# 注册 UDAF
-weighted_avg = udaf(WeightedAvg(),
+# 注册 UDAF weighted_avg = udaf(WeightedAvg(),
                     result_type=DataTypes.DOUBLE(),
                     func_type='pandas')  # pandas UDAF 性能更高
 
@@ -1517,16 +1511,14 @@ LATERAL TABLE(JsonArrayExplode(o.product_ids)) AS t(element, index);
 from pyflink.table import ScalarFunction, DataTypes
 from pyflink.table.udf import udf
 
-# 方式1: 装饰器
-@udf(result_type=DataTypes.STRING())
+# 方式1: 装饰器 @udf(result_type=DataTypes.STRING())
 def normalize_url(url: str) -> str:
     """标准化 URL"""
     if url is None:
         return None
     return url.lower().strip().rstrip('/')
 
-# 方式2: 类实现
-class NormalizeUrl(ScalarFunction):
+# 方式2: 类实现 class NormalizeUrl(ScalarFunction):
     def eval(self, url):
         if url is None:
             return None
@@ -1534,11 +1526,9 @@ class NormalizeUrl(ScalarFunction):
 
 normalize_url_udf = udf(NormalizeUrl(), result_type=DataTypes.STRING())
 
-# 注册
- table_env.create_temporary_function("normalize_url", normalize_url_udf)
+# 注册 table_env.create_temporary_function("normalize_url", normalize_url_udf)
 
-# 使用
- table_env.sql_query("""
+# 使用 table_env.sql_query("""
      SELECT normalize_url(url) AS normalized_url, COUNT(*)
      FROM events
      GROUP BY normalize_url(url)

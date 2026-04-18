@@ -350,8 +350,7 @@ runtime:
       timeout: 30s
       pool-size: 100
 
-# 日志配置
-logging:
+# 日志配置 logging:
   level: info
   output: /var/log/wasmedge/flink-edge.log
   format: json
@@ -649,8 +648,7 @@ spec:
       runtime: wasmedge
       # ... 类似配置
 
-# 作业配置
-job:
+# 作业配置 job:
   jarURI: local:///opt/flink/examples/streaming/SensorAggregation.jar
   parallelism: 4
   upgradeMode: savepoint
@@ -694,8 +692,7 @@ OUTPUT_WASM=$2
 
 echo "=== Optimizing $INPUT_WASM for edge deployment ==="
 
-# 1. 代码体积优化
-echo "Step 1: Code size optimization"
+# 1. 代码体积优化 echo "Step 1: Code size optimization"
 wasm-opt \
     -Oz \
     --strip-debug \
@@ -704,8 +701,7 @@ wasm-opt \
     -o "${OUTPUT_WASM}.opt" \
     "$INPUT_WASM"
 
-# 2. 死代码消除
-echo "Step 2: Dead code elimination"
+# 2. 死代码消除 echo "Step 2: Dead code elimination"
 wasm-metadce \
     --graph meta-dce-graph.json \
     -o "${OUTPUT_WASM}.dce" \
@@ -718,19 +714,16 @@ wasmedge compile \
     "${OUTPUT_WASM}.dce" \
     "${OUTPUT_WASM}.so"
 
-# 4. 压缩
-echo "Step 4: Compression"
+# 4. 压缩 echo "Step 4: Compression"
 zstd -19 -o "${OUTPUT_WASM}.so.zst" "${OUTPUT_WASM}.so"
 
-# 5. 生成部署包
-echo "Step 5: Creating deployment package"
+# 5. 生成部署包 echo "Step 5: Creating deployment package"
 mkdir -p "${OUTPUT_WASM}.deploy"
 cp "${OUTPUT_WASM}.so.zst" "${OUTPUT_WASM}.deploy/module.so.zst"
 cp config.yaml "${OUTPUT_WASM}.deploy/"
 tar czf "${OUTPUT_WASM}.deploy.tar.gz" "${OUTPUT_WASM}.deploy"
 
-# 输出统计
-echo ""
+# 输出统计 echo ""
 echo "=== Optimization Results ==="
 echo "Original size:  $(stat -c%s "$INPUT_WASM") bytes"
 echo "Optimized size: $(stat -c%s "${OUTPUT_WASM}.opt") bytes"
@@ -749,21 +742,18 @@ echo "=== Ready for edge deployment ==="
 
 FROM wasmedge/wasmedge:latest
 
-# 安装运行时依赖
-RUN apt-get update && apt-get install -y \
+# 安装运行时依赖 RUN apt-get update && apt-get install -y \
     ca-certificates \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# 复制优化后的 WASM 模块
-COPY --chmod=755 edge-sensor-processor.so.zst /app/
+# 复制优化后的 WASM 模块 COPY --chmod=755 edge-sensor-processor.so.zst /app/
 COPY wasmedge-config.yaml /app/config.yaml
 COPY entrypoint.sh /app/
 
 WORKDIR /app
 
-# 解压并运行
-ENTRYPOINT ["/app/entrypoint.sh"]
+# 解压并运行 ENTRYPOINT ["/app/entrypoint.sh"]
 ```
 
 ```bash
@@ -774,11 +764,9 @@ set -e
 
 echo "Starting Flink Edge Node..."
 
-# 解压模块
-zstd -d edge-sensor-processor.so.zst -o edge-sensor-processor.so
+# 解压模块 zstd -d edge-sensor-processor.so.zst -o edge-sensor-processor.so
 
-# 启动 WasmEdge 运行时
-exec wasmedge \
+# 启动 WasmEdge 运行时 exec wasmedge \
     --dir /data:/data \
     --env FLINK_EDGE_NODE_ID="${NODE_ID}" \
     --env FLINK_CLUSTER_ENDPOINT="${CLUSTER_ENDPOINT}" \

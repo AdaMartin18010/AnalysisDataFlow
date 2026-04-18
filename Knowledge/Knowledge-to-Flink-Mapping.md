@@ -157,8 +157,7 @@ $$\forall k \in Knowledge, f = \mathcal{M}(k) \Rightarrow semantics(k) \approx s
 ### 关系 1: 知识结构层 ↔ Flink工程实现层
 
 ```
-# 伪代码示意，非完整可编译代码
-Knowledge/                    Flink/
+# 伪代码示意，非完整可编译代码 Knowledge/                    Flink/
 ├── 02-design-patterns/  ───→ ├── 02-core/
 │   ├── pattern-checkpoint-   │   ├── checkpoint-mechanism-
 │   │   recovery.md       ───→│   │   deep-dive.md

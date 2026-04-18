@@ -273,23 +273,19 @@ env.setStateBackend(forstBackend);
 ```yaml
 # flink-conf.yaml
 
-# --- HashMapStateBackend 配置 ---
-state.backend: hashmap
+# --- HashMapStateBackend 配置 --- state.backend: hashmap
 state.checkpoint-storage: filesystem
 state.checkpoints.dir: hdfs://namenode:8020/flink/checkpoints
 
-# --- RocksDBStateBackend 配置 ---
-state.backend: rocksdb
+# --- RocksDBStateBackend 配置 --- state.backend: rocksdb
 state.backend.incremental: true
 state.backend.rocksdb.memory.fixed-per-slot: 256mb
 state.backend.rocksdb.predefined-options: FLASH_SSD_OPTIMIZED
 
-# RocksDB 调优参数
-state.backend.rocksdb.threads.threads-number: 4
+# RocksDB 调优参数 state.backend.rocksdb.threads.threads-number: 4
 state.backend.rocksdb.timer-service.factory: ROCKSDB
 
-# --- ForSt State Backend 配置 (Flink 2.0+) ---
-state.backend: forst
+# --- ForSt State Backend 配置 (Flink 2.0+) --- state.backend: forst
 state.backend.forst.remote.uri: s3://my-flink-state/
 state.backend.forst.local.dir: /tmp/flink-forst
 ```

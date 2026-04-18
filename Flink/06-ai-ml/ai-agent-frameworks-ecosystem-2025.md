@@ -788,8 +788,7 @@ $$
 **场景：实时客服Agent**
 
 ```python
-# Confluent Agent定义示例
-from confluent_kafka import Consumer, Producer
+# Confluent Agent定义示例 from confluent_kafka import Consumer, Producer
 from confluent_kafka.schema_registry import SchemaRegistryClient
 
 class CustomerServiceAgent:
@@ -836,8 +835,7 @@ class RiskState(TypedDict):
     alerts: Annotated[list, operator.add]
     decision: str
 
-# 定义节点
-def analyze_transaction(state: RiskState):
+# 定义节点 def analyze_transaction(state: RiskState):
     """交易分析Agent"""
     tx = state["transaction"]
     features = extract_features(tx)
@@ -858,8 +856,7 @@ def human_review(state: RiskState):
     # 等待人工决策(通过Flink流处理消费)
     return {"decision": "PENDING_REVIEW"}
 
-# 构建工作流
-workflow = StateGraph(RiskState)
+# 构建工作流 workflow = StateGraph(RiskState)
 workflow.add_node("analyze", analyze_transaction)
 workflow.add_node("rules", check_rules)
 workflow.add_node("review", human_review)
@@ -867,8 +864,7 @@ workflow.add_node("review", human_review)
 workflow.set_entry_point("analyze")
 workflow.add_edge("analyze", "rules")
 
-# 条件边
-workflow.add_conditional_edges(
+# 条件边 workflow.add_conditional_edges(
     "rules",
     lambda s: "review" if s["decision"] == "REVIEW" else END,
     {"review": "review", END: END}
@@ -876,8 +872,7 @@ workflow.add_conditional_edges(
 
 app = workflow.compile()
 
-# 与Flink集成:作为ProcessFunction调用
-class RiskAgentFunction(ProcessFunction):
+# 与Flink集成:作为ProcessFunction调用 class RiskAgentFunction(ProcessFunction):
     def process_element(self, transaction, ctx):
         state = {"transaction": transaction, "risk_score": 0.0, "alerts": [], "decision": ""}
         result = app.invoke(state)
@@ -894,8 +889,7 @@ class RiskAgentFunction(ProcessFunction):
 import autogen
 from autogen import ConversableAgent, GroupChat
 
-# 定义Agent角色
-data_agent = ConversableAgent(
+# 定义Agent角色 data_agent = ConversableAgent(
     name="data_collector",
     system_message="""你是数据收集Agent。从流数据源获取实时数据,
     提取关键指标并格式化为结构化输出。""",
@@ -917,8 +911,7 @@ action_agent = ConversableAgent(
     function_map={"send_alert": send_alert, "update_dashboard": update_dashboard}
 )
 
-# 创建群聊
-group_chat = GroupChat(
+# 创建群聊 group_chat = GroupChat(
     agents=[data_agent, analysis_agent, action_agent],
     messages=[],
     max_round=10
@@ -926,8 +919,7 @@ group_chat = GroupChat(
 
 manager = autogen.GroupChatManager(groupchat=group_chat)
 
-# 与Flink集成:作为AsyncFunction
-class AutoGenAgentFunction(AsyncFunction):
+# 与Flink集成:作为AsyncFunction class AutoGenAgentFunction(AsyncFunction):
     async def async_invoke(self, input_data):
         # 触发多Agent对话
         result = await manager.a_initiate_chat(
@@ -946,8 +938,7 @@ class AutoGenAgentFunction(AsyncFunction):
 ```python
 from crewai import Agent, Task, Crew, Process
 
-# 定义角色
-researcher = Agent(
+# 定义角色 researcher = Agent(
     role="数据研究员",
     goal="从流数据中识别趋势和异常",
     backstory="你是一位经验丰富的数据分析师,擅长实时数据分析",
@@ -971,8 +962,7 @@ reviewer = Agent(
     allow_delegation=False
 )
 
-# 定义任务
-research_task = Task(
+# 定义任务 research_task = Task(
     description="分析过去1小时的流数据,识别关键指标变化",
     agent=researcher,
     expected_output="结构化分析报告,包含关键发现"
@@ -992,16 +982,14 @@ review_task = Task(
     expected_output="审查意见和最终报告"
 )
 
-# 创建工作流
-crew = Crew(
+# 创建工作流 crew = Crew(
     agents=[researcher, writer, reviewer],
     tasks=[research_task, writing_task, review_task],
     process=Process.sequential,
     verbose=True
 )
 
-# 执行
-result = crew.kickoff()
+# 执行 result = crew.kickoff()
 ```
 
 ---

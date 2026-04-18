@@ -858,23 +858,20 @@ $$B^* = 64 \text{ (从表格插值)}$$
 ```python
 from vllm import LLM, SamplingParams
 
-# 初始化模型,启用动态批处理
-llm = LLM(
+# 初始化模型,启用动态批处理 llm = LLM(
     model="meta-llama/Llama-2-70b",
     tensor_parallel_size=8,
     max_num_seqs=256,  # B_max
     max_model_len=4096
 )
 
-# 配置采样参数
-sampling_params = SamplingParams(
+# 配置采样参数 sampling_params = SamplingParams(
     temperature=0.7,
     top_p=0.95,
     max_tokens=512
 )
 
-# 连续批处理推理
-outputs = llm.generate(prompts, sampling_params)
+# 连续批处理推理 outputs = llm.generate(prompts, sampling_params)
 ```
 
 ### 6.2 多级缓存策略实例
@@ -1013,8 +1010,7 @@ class BatchSizeController(nn.Module):
     def forward(self, state):
         return self.network(state)
 
-# 训练循环
-controller = BatchSizeController(state_dim=5, action_dim=5)
+# 训练循环 controller = BatchSizeController(state_dim=5, action_dim=5)
 optimizer = torch.optim.Adam(controller.parameters(), lr=1e-4)
 
 for episode in range(10000):

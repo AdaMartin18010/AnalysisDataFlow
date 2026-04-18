@@ -326,28 +326,23 @@ $$
 #### Flink配置 (基准)
 
 ```yaml
-# flink-conf.yaml - Nexmark基准配置
-jobmanager.memory.process.size: 8192m
+# flink-conf.yaml - Nexmark基准配置 jobmanager.memory.process.size: 8192m
 taskmanager.memory.process.size: 32768m
 taskmanager.numberOfTaskSlots: 8
 parallelism.default: 64
 
-# 状态后端
-state.backend: forst
+# 状态后端 state.backend: forst
 state.backend.incremental: true
 state.backend.forst.memory.managed: true
 state.backend.forst.predefined-options: FLASH_SSD_OPTIMIZED
 
-# Checkpoint
-execution.checkpointing.interval: 60s
+# Checkpoint execution.checkpointing.interval: 60s
 execution.checkpointing.mode: EXACTLY_ONCE
 
-# 自适应执行
-execution.adaptive.enabled: true
+# 自适应执行 execution.adaptive.enabled: true
 execution.adaptive.model: ml-based
 
-# 网络优化
-taskmanager.memory.network.min: 2g
+# 网络优化 taskmanager.memory.network.min: 2g
 taskmanager.memory.network.max: 4g
 pipeline.object-reuse: true
 ```
@@ -355,39 +350,32 @@ pipeline.object-reuse: true
 #### RisingWave配置
 
 ```yaml
-# risingwave.yaml - Nexmark基准配置
-compute_nodes: 8
+# risingwave.yaml - Nexmark基准配置 compute_nodes: 8
 cpu_per_node: 32
 memory_per_node: 256GB
 
-# 存储配置
-state_store: hummock
+# 存储配置 state_store: hummock
 hummock.sstable_size: 256MB
 hummock.block_size: 64KB
 
-# Checkpoint
-checkpoint_interval_sec: 60
+# Checkpoint checkpoint_interval_sec: 60
 min_sst_size_for_streaming_upload: 32MB
 
-# 压缩
-compression_algorithm: lz4
+# 压缩 compression_algorithm: lz4
 ```
 
 #### Spark Streaming配置
 
 ```properties
-# spark-defaults.conf - Nexmark基准配置
-spark.executor.instances=8
+# spark-defaults.conf - Nexmark基准配置 spark.executor.instances=8
 spark.executor.cores=4
 spark.executor.memory=64g
 spark.sql.shuffle.partitions=200
 
-# 状态存储
-spark.sql.streaming.stateStore.providerClass=\org.apache.spark.sql.execution.streaming.state.RocksDBStateStoreProvider
+# 状态存储 spark.sql.streaming.stateStore.providerClass=\org.apache.spark.sql.execution.streaming.state.RocksDBStateStoreProvider
 spark.sql.streaming.stateStore.rocksdb.changelogCheckpointing.enabled=true
 
-# 微批处理
-spark.sql.streaming.microBatchDuration=100ms
+# 微批处理 spark.sql.streaming.microBatchDuration=100ms
 ```
 
 ### 6.2 Q0-Q23完整性能数据
@@ -450,16 +438,14 @@ SKEW_FACTORS=(0.0 0.8 1.2 1.5)
 RESULTS_DIR="./results/$(date +%Y%m%d-%H%M%S)"
 mkdir -p $RESULTS_DIR
 
-# 预热集群
-function warmup() {
+# 预热集群 function warmup() {
     local engine=$1
     echo "Warming up $engine..."
     # 执行5分钟预热
     ./run-nexmark.sh --engine=$engine --query=q0 --duration=300 --events-per-sec=100000
 }
 
-# 运行单次测试
-function run_test() {
+# 运行单次测试 function run_test() {
     local engine=$1
     local query=$2
     local rate=$3
@@ -478,8 +464,7 @@ function run_test() {
         --output=$RESULTS_DIR/${engine}_q${query}_r${rate}_s${skew}_run${run}.json
 }
 
-# 主测试循环
-for engine in "${ENGINES[@]}"; do
+# 主测试循环 for engine in "${ENGINES[@]}"; do
     warmup $engine
 
     for query in "${QUERIES[@]}"; do
@@ -493,8 +478,7 @@ for engine in "${ENGINES[@]}"; do
     done
 done
 
-# 生成报告
-echo "Generating benchmark report..."
+# 生成报告 echo "Generating benchmark report..."
 python3 generate-report.py --input=$RESULTS_DIR --output=$RESULTS_DIR/report.html
 
 echo "Benchmark complete. Results: $RESULTS_DIR"

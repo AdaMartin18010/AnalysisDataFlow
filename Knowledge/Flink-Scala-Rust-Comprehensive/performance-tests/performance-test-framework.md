@@ -48,8 +48,7 @@ graph TB
 ### 3.1 测试配置 DSL
 
 ```yaml
-# performance-tests/config/nexmark-q5.yaml
-benchmark:
+# performance-tests/config/nexmark-q5.yaml benchmark:
   name: "Nexmark Q5 Hot Items"
   version: "1.0"
   description: "滑动窗口 Top-N 查询性能测试"
@@ -429,8 +428,7 @@ class MetricsCollector(env: StreamExecutionEnvironment) {
 ### 3.5 统计分析与可视化
 
 ```python
-# performance-tests/framework/src/main/python/analyze.py
-import pandas as pd
+# performance-tests/framework/src/main/python/analyze.py import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import json
@@ -633,25 +631,20 @@ if __name__ == '__main__':
 ### 4.1 运行完整测试
 
 ```bash
-# 1. 准备环境
-cd performance-tests
+# 1. 准备环境 cd performance-tests
 ./setup.sh
 
-# 2. 运行测试
-./run-benchmark.sh --config config/nexmark-q5.yaml --output results/q5/
+# 2. 运行测试 ./run-benchmark.sh --config config/nexmark-q5.yaml --output results/q5/
 
-# 3. 生成报告
-python framework/src/main/python/analyze.py results/q5/metrics.csv
+# 3. 生成报告 python framework/src/main/python/analyze.py results/q5/metrics.csv
 
-# 4. 查看报告
-open results/q5/report.html
+# 4. 查看报告 open results/q5/report.html
 ```
 
 ### 4.2 CI/CD 集成
 
 ```yaml
-# .github/workflows/benchmark.yml
-name: Performance Benchmark
+# .github/workflows/benchmark.yml name: Performance Benchmark
 
 on:
   push:

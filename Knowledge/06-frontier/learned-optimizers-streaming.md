@@ -755,8 +755,7 @@ CREATE TABLE query_execution_log (
 #### 步骤2: 特征工程Pipeline
 
 ```python
-# feature_engineering.py
-import numpy as np
+# feature_engineering.py import numpy as np
 from sklearn.preprocessing import StandardScaler
 
 class QueryFeatureExtractor:
@@ -799,8 +798,7 @@ class PlanEncoder:
 #### 步骤3: 学习型代价模型实现
 
 ```python
-# learned_cost_model.py
-import torch
+# learned_cost_model.py import torch
 import torch.nn as nn
 
 class LearnedCostModel(nn.Module):
@@ -937,8 +935,7 @@ public class LearnedOptimizerPlugin implements OptimizerPlugin {
 **学习型优化方案**:
 
 ```python
-# 针对金融场景的特殊处理
-class FinancialCostModel(LearnedCostModel):
+# 针对金融场景的特殊处理 class FinancialCostModel(LearnedCostModel):
     """金融场景特化的代价模型"""
 
     def __init__(self):

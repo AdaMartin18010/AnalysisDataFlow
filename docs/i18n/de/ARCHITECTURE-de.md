@@ -143,7 +143,7 @@ flowchart LR
 ### 4.2 Navigationsindex
 
 - [NAVIGATION-INDEX.md](../../../NAVIGATION-INDEX.md) - Vollständiger Navigationsindex
-- [knowledge-graph.html](../../knowledge-graph.html) - Interaktiver Wissensgraph
+- [knowledge-graph.html] - Interaktiver Wissensgraph
 - [QUICK-START.md](../../../i18n/de/QUICK-START-de.md) - Schnellstartanleitung
 
 ---

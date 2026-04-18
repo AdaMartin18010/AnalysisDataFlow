@@ -844,16 +844,14 @@ sequenceDiagram
 ### 4.2 编译优化
 
 ```bash
-# Cargo.toml 优化配置
-[profile.release]
+# Cargo.toml 优化配置 [profile.release]
 opt-level = 3          # 最高优化级别
 lto = true             # 链接时优化
 codegen-units = 1      # 单 codegen unit 以获得更好优化
 panic = 'abort'        # 移除 panic 处理代码
 strip = true           # 移除调试符号
 
-# WASM 特定优化
-[profile.release.wasm]
+# WASM 特定优化 [profile.release.wasm]
 opt-level = 'z'        # 优化体积
 # 或使用 's' 平衡体积和性能
 ```

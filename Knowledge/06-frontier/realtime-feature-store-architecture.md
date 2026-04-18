@@ -610,12 +610,10 @@ flowchart TD
 **场景**: 电商实时推荐系统
 
 ```yaml
-# feature_store_config.yaml
-project: ecommerce_recommendation
+# feature_store_config.yaml project: ecommerce_recommendation
 provider: aws
 
-# 数据源定义
-entities:
+# 数据源定义 entities:
   - name: user
     join_keys: [user_id]
     description: 用户实体
@@ -623,8 +621,7 @@ entities:
     join_keys: [item_id]
     description: 商品实体
 
-# 实时特征视图
-feature_views:
+# 实时特征视图 feature_views:
   - name: user_behavior_features
     entities: [user]
     ttl: 3600  # 1小时过期
@@ -664,8 +661,7 @@ feature_views:
         dtype: INT64
         description: 实时库存
 
-# 存储配置
-online_store:
+# 存储配置 online_store:
   type: redis
   connection_string: redis://cluster:6379
 
@@ -673,8 +669,7 @@ offline_store:
   type: iceberg
   warehouse: s3://data-lake/feature-store/
 
-# 特征服务配置
-feature_service:
+# 特征服务配置 feature_service:
   name: recommendation_service
   features:
     - user_behavior_features:click_count_5m
@@ -769,8 +764,7 @@ FROM user_features_online;
 ### 6.3 特征服务API实现 (Python)
 
 ```python
-# feature_service.py
-from typing import List, Dict, Optional
+# feature_service.py from typing import List, Dict, Optional
 import redis
 import pandas as pd
 from dataclasses import dataclass
@@ -886,8 +880,7 @@ class FeatureStoreClient:
         pass
 
 
-# 使用示例
-if __name__ == "__main__":
+# 使用示例 if __name__ == "__main__":
     client = FeatureStoreClient(
         redis_client=redis.Redis(host='localhost', port=6379),
         offline_store=IcebergStore("s3://data-lake/feature-store/")
@@ -916,8 +909,7 @@ if __name__ == "__main__":
 ### 6.4 特征监控与告警配置
 
 ```yaml
-# feature_monitoring.yaml
-monitoring:
+# feature_monitoring.yaml monitoring:
   # 特征质量检查
   quality_checks:
     - name: null_rate_check

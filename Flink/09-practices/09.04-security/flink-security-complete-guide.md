@@ -487,16 +487,13 @@ $$\text{NeverTrust} \land \text{AlwaysVerify} \land \text{LeastPrivilege}$$
 
 ```yaml
 # flink-conf.yaml
-# Kerberos 认证配置
-security.kerberos.login.use-ticket-cache: false
+# Kerberos 认证配置 security.kerberos.login.use-ticket-cache: false
 security.kerberos.login.keytab: /etc/flink/flink.keytab
 security.kerberos.login.principal: flink/_HOST@EXAMPLE.COM
 
-# Kafka 集成 Kerberos
-security.kerberos.krb5-conf.path: /etc/krb5.conf
+# Kafka 集成 Kerberos security.kerberos.krb5-conf.path: /etc/krb5.conf
 
-# ZooKeeper Kerberos
-zookeeper.sasl.service-name: zookeeper
+# ZooKeeper Kerberos zookeeper.sasl.service-name: zookeeper
 zookeeper.sasl.login-context-name: Client
 ```
 
@@ -524,8 +521,7 @@ FlinkKafkaConsumer<String> consumer = new FlinkKafkaConsumer<>(
 
 ```yaml
 # flink-conf.yaml
-# OAuth 2.0 配置
-security.authentication.type: oauth2
+# OAuth 2.0 配置 security.authentication.type: oauth2
 security.authentication.oauth2.client-id: flink-client
 security.authentication.oauth2.client-secret: ${OAUTH_CLIENT_SECRET}
 security.authentication.oauth2.token-endpoint: https://auth.example.com/oauth2/token
@@ -533,14 +529,12 @@ security.authentication.oauth2.authorization-endpoint: https://auth.example.com/
 security.authentication.oauth2.userinfo-endpoint: https://auth.example.com/oauth2/userinfo
 security.authentication.oauth2.scopes: openid,profile,email,flink:read,flink:write
 
-# OIDC 配置
-security.authentication.oidc.issuer: https://auth.example.com
+# OIDC 配置 security.authentication.oidc.issuer: https://auth.example.com
 security.authentication.oidc.jwks-endpoint: https://auth.example.com/.well-known/jwks.json
 ```
 
 ```yaml
-# Kubernetes Ingress + OAuth2 Proxy
-apiVersion: networking.k8s.io/v1
+# Kubernetes Ingress + OAuth2 Proxy apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata: 
   name: flink-oauth-ingress
@@ -575,16 +569,14 @@ metadata:
     environment: production
     security-tier: high
 ---
-# ServiceAccount
-apiVersion: v1
+# ServiceAccount apiVersion: v1
 kind: ServiceAccount
 metadata: 
   name: flink-job-operator
   namespace: flink-production
 automountServiceAccountToken: false
 ---
-# Role - 最小权限
-apiVersion: rbac.authorization.k8s.io/v1
+# Role - 最小权限 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata: 
   name: flink-job-role
@@ -616,8 +608,7 @@ rules:
 #   resources: ["secrets"]
 #   verbs: ["*"]
 ---
-# RoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
+# RoleBinding apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata: 
   name: flink-job-binding
@@ -641,8 +632,7 @@ rules:
   resources: ["nodes"]
   verbs: ["get", "list", "watch"]
 ---
-# ClusterRoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
+# ClusterRoleBinding apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata: 
   name: flink-node-reader-binding
@@ -660,8 +650,7 @@ roleRef:
 
 ```yaml
 # flink-tls-complete.yaml
-# Flink TLS 1.3 内部通信配置
-security.ssl.internal.enabled: true
+# Flink TLS 1.3 内部通信配置 security.ssl.internal.enabled: true
 security.ssl.internal.keystore: /opt/flink/ssl/internal.keystore.p12
 security.ssl.internal.keystore-password: ${INTERNAL_KEYSTORE_PASSWORD}
 security.ssl.internal.key-password: ${INTERNAL_KEY_PASSWORD}
@@ -670,8 +659,7 @@ security.ssl.internal.truststore-password: ${INTERNAL_TRUSTSTORE_PASSWORD}
 security.ssl.internal.protocol: TLSv1.3
 security.ssl.internal.algorithms: TLS_AES_256_GCM_SHA384:TLS_AES_128_GCM_SHA256
 
-# REST API HTTPS
-security.ssl.rest.enabled: true
+# REST API HTTPS security.ssl.rest.enabled: true
 security.ssl.rest.keystore: /opt/flink/ssl/rest.keystore.p12
 security.ssl.rest.keystore-password: ${REST_KEYSTORE_PASSWORD}
 security.ssl.rest.truststore: /opt/flink/ssl/rest.truststore.p12
@@ -681,12 +669,10 @@ security.ssl.rest.protocol: TLSv1.3
 # 客户端认证 (mTLS)
 security.ssl.rest.client-auth: REQUIRE
 
-# 算法配置
-security.ssl.algorithms: TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256,ECDHE_RSA_WITH_AES_256_GCM_SHA384
+# 算法配置 security.ssl.algorithms: TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256,ECDHE_RSA_WITH_AES_256_GCM_SHA384
 security.ssl.protocol: TLSv1.3
 
-# 证书轮换
-security.ssl.certificate.update-interval: 24h
+# 证书轮换 security.ssl.certificate.update-interval: 24h
 ```
 
 ```bash
@@ -697,14 +683,12 @@ set -e
 FLINK_SSL_DIR="/opt/flink/ssl"
 mkdir -p $FLINK_SSL_DIR
 
-# 生成 CA 私钥和证书
-openssl genrsa -out $FLINK_SSL_DIR/ca.key 4096
+# 生成 CA 私钥和证书 openssl genrsa -out $FLINK_SSL_DIR/ca.key 4096
 openssl req -x509 -new -nodes -key $FLINK_SSL_DIR/ca.key \
     -sha256 -days 365 -out $FLINK_SSL_DIR/ca.crt \
     -subj "/CN=Flink-Internal-CA/O=Example-Org"
 
-# 生成内部通信证书
-for component in jobmanager taskmanager; do
+# 生成内部通信证书 for component in jobmanager taskmanager; do
     openssl genrsa -out $FLINK_SSL_DIR/${component}.key 2048
     openssl req -new -key $FLINK_SSL_DIR/${component}.key \
         -out $FLINK_SSL_DIR/${component}.csr \
@@ -725,8 +709,7 @@ for component in jobmanager taskmanager; do
         -password pass:${INTERNAL_KEYSTORE_PASSWORD}
 done
 
-# 生成 Truststore
-keytool -import -v -trustcacerts \
+# 生成 Truststore keytool -import -v -trustcacerts \
     -alias flink-ca \
     -file $FLINK_SSL_DIR/ca.crt \
     -keystore $FLINK_SSL_DIR/internal.truststore.p12 \
@@ -1081,8 +1064,7 @@ public class FlinkAuditLogger {
 # flink-network-policies.yaml
 # 完整的 Flink 网络安全策略
 
-# JobManager 网络策略
-apiVersion: networking.k8s.io/v1
+# JobManager 网络策略 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata: 
   name: flink-jobmanager-policy
@@ -1146,8 +1128,7 @@ spec:
     - protocol: TCP
       port: 2181
 ---
-# TaskManager 网络策略
-apiVersion: networking.k8s.io/v1
+# TaskManager 网络策略 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata: 
   name: flink-taskmanager-policy
@@ -1190,8 +1171,7 @@ spec:
     - protocol: UDP
       port: 53
 ---
-# 默认拒绝策略
-apiVersion: networking.k8s.io/v1
+# 默认拒绝策略 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata: 
   name: default-deny-all

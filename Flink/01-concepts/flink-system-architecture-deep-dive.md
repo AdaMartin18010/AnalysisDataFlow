@@ -1228,13 +1228,11 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 
 taskmanager.numberOfTaskSlots: 4  # 每个TM的Slot数
 
-# 内存配置
-taskmanager.memory.process.size: 4096m
+# 内存配置 taskmanager.memory.process.size: 4096m
 taskmanager.memory.managed.fraction: 0.4
 taskmanager.memory.network.fraction: 0.1
 
-# Slot Sharing Group优化
-// 代码中显式设置
+# Slot Sharing Group优化 // 代码中显式设置
 DataStream<Event> processed = events
     .map(new HeavyComputation())  // CPU密集型
     .slotSharingGroup("compute")
@@ -1247,13 +1245,11 @@ DataStream<Event> processed = events
 ### 10.2 网络缓冲区调优
 
 ```yaml
-# 网络层配置
-taskmanager.memory.network.min: 128mb
+# 网络层配置 taskmanager.memory.network.min: 128mb
 taskmanager.memory.network.max: 256mb
 taskmanager.memory.network.memory.max: 256mb
 
-# 流量控制
-taskmanager.network.memory.buffer-debloat.period: 500
+# 流量控制 taskmanager.network.memory.buffer-debloat.period: 500
 taskmanager.network.memory.buffer-debloat.enabled: true
 ```
 

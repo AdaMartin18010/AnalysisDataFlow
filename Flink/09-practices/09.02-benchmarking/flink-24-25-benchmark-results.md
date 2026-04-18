@@ -411,15 +411,13 @@ jobmanager.memory.process.size: 8192m
 taskmanager.memory.process.size: 32768m
 taskmanager.numberOfTaskSlots: 8
 
-# 状态后端
-state.backend: forst
+# 状态后端 state.backend: forst
 state.backend.incremental: true
 state.backend.forst.memory.managed: true
 state.backend.forst.predefined-options: FLASH_SSD_OPTIMIZED
 state.backend.forst.remote.uri: s3://flink-checkpoints/benchmark
 
-# Checkpoint
-execution.checkpointing.interval: 60s
+# Checkpoint execution.checkpointing.interval: 60s
 execution.checkpointing.mode: EXACTLY_ONCE
 execution.checkpointing.unaligned.enabled: true
 
@@ -428,8 +426,7 @@ execution.adaptive.enabled: true
 execution.adaptive.model: ml-based
 execution.adaptive.predictive-scaling: true
 
-# 网络优化
-taskmanager.memory.network.min: 2g
+# 网络优化 taskmanager.memory.network.min: 2g
 taskmanager.memory.network.max: 4g
 pipeline.object-reuse: true
 taskmanager.network.memory.buffer-debloat.enabled: true
@@ -744,8 +741,7 @@ xychart-beta
 ### A.2 测试执行命令
 
 ```bash
-# Nexmark基准测试执行
-./bin/flink run \
+# Nexmark基准测试执行 ./bin/flink run \
   -c org.apache.beam.sdk.nexmark.NexmarkLauncher \
   lib/nexmark-flink-benchmark.jar \
   --runner=FlinkRunner \
@@ -763,8 +759,7 @@ xychart-beta
   --sdkWorkerParallelism=8 \
   --checkpointingInterval=60000
 
-# AI Agent基准测试
-./bin/flink run \
+# AI Agent基准测试 ./bin/flink run \
   -c org.apache.flink.ai.benchmark.AgentBenchmark \
   lib/flink-ai-benchmark.jar \
   --agent-count=1000 \
@@ -776,14 +771,11 @@ xychart-beta
   --enable-batch-processing=true \
   --enable-response-cache=true
 
-# Serverless冷启动测试
-kubectl apply -f serverless-benchmark-25.yaml
-# 等待缩容到零后触发事件
-./trigger-event.sh --wait-for-zero=true
+# Serverless冷启动测试 kubectl apply -f serverless-benchmark-25.yaml
+# 等待缩容到零后触发事件 ./trigger-event.sh --wait-for-zero=true
 echo "冷启动时间: $(measure_startup --precision=ms)"
 
-# TPC-DS流式测试
-./bin/flink run \
+# TPC-DS流式测试 ./bin/flink run \
   -c org.apache.flink.benchmark.tpcds.TpcdsBenchmark \
   lib/flink-tpcds-benchmark.jar \
   --scale-factor=1000 \

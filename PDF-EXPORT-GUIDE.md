@@ -104,9 +104,9 @@ AnalysisDataFlow/
 
 | 白皮书 | 页数 | 下载 |
 |--------|------|------|
-| 流计算技术趋势白皮书 2026 | 40+ | [下载PDF](./whitepapers/pdf/streaming-technology-trends-2026.pdf) |
-| Flink企业落地指南 | 60+ | [下载PDF](./whitepapers/pdf/flink-enterprise-implementation-guide.pdf) |
-| 实时AI架构实践白皮书 | 50+ | [下载PDF](./whitepapers/pdf/realtime-ai-architecture-practice.pdf) |
+| 流计算技术趋势白皮书 2026 | 40+ | [下载PDF] |
+| Flink企业落地指南 | 60+ | [下载PDF] |
+| 实时AI架构实践白皮书 | 50+ | [下载PDF] |
 
 **在线下载页面**: [whitepapers/pdf/index.html](./whitepapers/pdf/index.html)
 
@@ -225,7 +225,7 @@ sudo apt-get install pandoc texlive-xetex fonts-noto-cjk
 
 ## 📚 相关文档
 
-- [白皮书索引](./whitepapers/WHITEPAPER-INDEX.md)
+- [白皮书索引]
 - [PDF目录说明](./whitepapers/pdf/README.md)
 - [项目架构](./ARCHITECTURE.md)
 

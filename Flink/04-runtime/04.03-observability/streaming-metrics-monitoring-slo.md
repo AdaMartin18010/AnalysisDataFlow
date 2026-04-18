@@ -418,8 +418,7 @@ $$T_{exhaust} = \frac{EB_{remaining}}{\rho} = \frac{target \times T_{window} - \
 **SLO 定义**:
 
 ```yaml
-# SLO 配置示例
-slos:
+# SLO 配置示例 slos:
   - name: fraud_detection_latency
     sli: end_to_end_latency_ms
     threshold: 500  # P99 < 500ms
@@ -508,19 +507,16 @@ flowchart TD
 **PromQL 查询示例**:
 
 ```promql
-# 查询背压比率最高的 Task
-flink_taskmanager_job_task_backPressuredTimeMsPerSecond
+# 查询背压比率最高的 Task flink_taskmanager_job_task_backPressuredTimeMsPerSecond
   / 1000
   * on(task_name) group_left
   flink_taskmanager_job_task_numSubtasks
 
-# 查询延迟增长趋势
-rate(flink_taskmanager_job_task_endToEndLatency_histogram_sum[5m])
+# 查询延迟增长趋势 rate(flink_taskmanager_job_task_endToEndLatency_histogram_sum[5m])
   /
 rate(flink_taskmanager_job_task_endToEndLatency_histogram_count[5m])
 
-# 查询 Checkpoint 持续时间趋势
-flink_jobmanager_checkpoint_duration_time
+# 查询 Checkpoint 持续时间趋势 flink_jobmanager_checkpoint_duration_time
 ```
 
 ### 实例 3: Grafana 仪表板分层实现
@@ -559,8 +555,7 @@ graph LR
 **告警规则配置**:
 
 ```yaml
-# alertmanager.yml 示例
-groups:
+# alertmanager.yml 示例 groups:
   - name: flink_slo_alerts
     rules:
       - alert: HighLatencyViolation

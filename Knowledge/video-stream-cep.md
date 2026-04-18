@@ -92,8 +92,7 @@ $$
 ### 6.1 Flink + OpenCV 的视频 CEP 概念架构
 
 ```python
-# 概念性伪代码
-class VideoCEPFunction(ProcessFunction):
+# 概念性伪代码 class VideoCEPFunction(ProcessFunction):
     def process_element(self, frame_bytes):
         frame = cv2.imdecode(frame_bytes)
         detections = yolo_detector(frame)

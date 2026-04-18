@@ -290,22 +290,18 @@ $$
 **安装依赖**：
 
 ```bash
-# 克隆测试套件
-git clone https://github.com/apache/flink-benchmarks.git
+# 克隆测试套件 git clone https://github.com/apache/flink-benchmarks.git
 cd flink-benchmarks
 
-# 安装 Python 依赖
-pip install -r requirements.txt
+# 安装 Python 依赖 pip install -r requirements.txt
 
-# 配置 K8s 访问
-export KUBECONFIG=~/.kube/benchmark-cluster
+# 配置 K8s 访问 export KUBECONFIG=~/.kube/benchmark-cluster
 ```
 
 **运行单个测试**：
 
 ```bash
-# 吞吐测试
-python flink-benchmark-runner.py \
+# 吞吐测试 python flink-benchmark-runner.py \
   --test-type throughput \
   --flink-versions 2.0.0 \
   --namespace flink-benchmark
@@ -320,8 +316,7 @@ python flink-benchmark-runner.py \
   --checkpoint-interval 300 \
   --flink-versions 2.0.0
 
-# 故障恢复测试
-python flink-benchmark-runner.py \
+# 故障恢复测试 python flink-benchmark-runner.py \
   --failure-type task_failure \
   --flink-versions 2.0.0
 ```
@@ -342,13 +337,11 @@ python flink-benchmark-runner.py \
 ```python
 from flink_benchmark_runner import FlinkBenchmarkRunner, TestType
 
-# 初始化运行器
-runner = FlinkBenchmarkRunner(
+# 初始化运行器 runner = FlinkBenchmarkRunner(
     output_dir="./results"
 )
 
-# 配置测试
-config = {
+# 配置测试 config = {
     "flink_version": "2.0.0",
     "parallelism": 16,
     "state_backend": "rocksdb",
@@ -357,11 +350,9 @@ config = {
     "warmup_sec": 120
 }
 
-# 执行测试
-result = runner.run_throughput_test(config)
+# 执行测试 result = runner.run_throughput_test(config)
 
-# 输出结果
-print(f"吞吐: {result.throughput:,.0f} events/sec")
+# 输出结果 print(f"吞吐: {result.throughput:,.0f} events/sec")
 print(f"P99 延迟: {result.latency_p99} ms")
 print(f"测试状态: {result.status.value}")
 ```
@@ -398,8 +389,7 @@ for size in state_sizes:
         "latency_ms": result.state_access_latency
     })
 
-# 生成对比报告
-report = runner.generate_report(results, format="markdown")
+# 生成对比报告 report = runner.generate_report(results, format="markdown")
 ```
 
 **典型结果**：
@@ -416,18 +406,15 @@ report = runner.generate_report(results, format="markdown")
 **测试不同间隔的 Checkpoint 性能**：
 
 ```bash
-# 60秒间隔
-python flink-benchmark-runner.py \
+# 60秒间隔 python flink-benchmark-runner.py \
   --checkpoint-interval 60 \
   --flink-versions 2.0.0
 
-# 300秒间隔
-python flink-benchmark-runner.py \
+# 300秒间隔 python flink-benchmark-runner.py \
   --checkpoint-interval 300 \
   --flink-versions 2.0.0
 
-# 600秒间隔
-python flink-benchmark-runner.py \
+# 600秒间隔 python flink-benchmark-runner.py \
   --checkpoint-interval 600 \
   --flink-versions 2.0.0
 ```

@@ -2422,20 +2422,16 @@ graph TB
 ```properties
 # log4j.properties 或 log4j2.properties
 
-# CheckpointCoordinator日志
-logger.checkpoint.name = org.apache.flink.runtime.checkpoint
+# CheckpointCoordinator日志 logger.checkpoint.name = org.apache.flink.runtime.checkpoint
 logger.checkpoint.level = DEBUG
 
-# CheckpointBarrierHandler日志
-logger.barrier.name = org.apache.flink.streaming.runtime.io.CheckpointBarrierHandler
+# CheckpointBarrierHandler日志 logger.barrier.name = org.apache.flink.streaming.runtime.io.CheckpointBarrierHandler
 logger.barrier.level = DEBUG
 
-# StateBackend日志
-logger.state.name = org.apache.flink.runtime.state
+# StateBackend日志 logger.state.name = org.apache.flink.runtime.state
 logger.state.level = DEBUG
 
-# 如果用到RocksDB
-logger.rocksdb.name = org.apache.flink.contrib.streaming.state
+# 如果用到RocksDB logger.rocksdb.name = org.apache.flink.contrib.streaming.state
 logger.rocksdb.level = DEBUG
 ```
 

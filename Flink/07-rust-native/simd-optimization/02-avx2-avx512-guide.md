@@ -283,8 +283,7 @@ for each key k:
 
 向量化版本（8-lane 并行）：
 ```
-# 伪代码示意，非完整可编译代码
-for i in 0 to n-1 step 8:
+# 伪代码示意，非完整可编译代码 for i in 0 to n-1 step 8:
     // 并行计算 8 个 hash
     h_vec = hash_vec(keys[i:i+8])
     // 并行 gather bucket 指针
@@ -447,8 +446,7 @@ int avx512_filter_compress(const int* input, int* output, int n, int threshold) 
  * AVX-512 VBMI 字符串查找
  * 模拟 Flink 的 POSITION/LOCATE 函数
  */
-# ifdef __AVX512VBMI__
-int avx512vbmi_find_substring(const char* text, const char* pattern,
+# ifdef __AVX512VBMI__ int avx512vbmi_find_substring(const char* text, const char* pattern,
                                int text_len, int pattern_len) {
     if (pattern_len > 64 || pattern_len == 0) return -1;
 
@@ -516,8 +514,7 @@ int main() {
            avx2_time * 1000.0 / CLOCKS_PER_SEC,
            (double)scalar_time / avx2_time);
 
-# ifdef __AVX512F__
-    start = clock();
+# ifdef __AVX512F__ start = clock();
     for (int iter = 0; iter < 100; iter++) {
         avx512_strlen_batch((const char**)strings, lengths, STRING_COUNT);
     }
@@ -554,8 +551,7 @@ int main() {
     printf("\n");
 
     // 测试 3: filter compress (仅 AVX-512)
-# ifdef __AVX512F__
-    printf("Test 3: Filter + Compress (WHERE clause simulation)\n");
+# ifdef __AVX512F__ printf("Test 3: Filter + Compress (WHERE clause simulation)\n");
     int* numbers = malloc(TEST_SIZE * sizeof(int));
     int* filtered = malloc(TEST_SIZE * sizeof(int));
 

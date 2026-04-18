@@ -268,13 +268,11 @@ $$
 **反模式1: 直接查询节点**
 
 ```python
-# ❌ 错误:高频RPC调用
-for block in range(start, end):
+# ❌ 错误:高频RPC调用 for block in range(start, end):
     txs = web3.eth.get_block(block)['transactions']  # 压垮节点！
     process(txs)
 
-# ✅ 正确:使用索引服务或流式订阅
-subscription = web3.eth.subscribe('logs', {
+# ✅ 正确:使用索引服务或流式订阅 subscription = web3.eth.subscribe('logs', {
     'address': CONTRACT_ADDRESS,
     'topics': [EVENT_SIGNATURE]
 })
@@ -284,12 +282,10 @@ process_stream(subscription)
 **反模式2: 忽视重组风险**
 
 ```python
-# ❌ 错误:1个确认即处理
-if tx['confirmations'] >= 1:
+# ❌ 错误:1个确认即处理 if tx['confirmations'] >= 1:
     execute_trade(tx)  # 可能被重组！
 
-# ✅ 正确:等待足够确认数
-REQUIRED_CONFIRMATIONS = {
+# ✅ 正确:等待足够确认数 REQUIRED_CONFIRMATIONS = {
     'ethereum': 12,
     'polygon': 128,
     'arbitrum': 10
@@ -301,12 +297,10 @@ if tx['confirmations'] >= REQUIRED_CONFIRMATIONS[chain]:
 **反模式3: 忽视Gas成本**
 
 ```python
-# ❌ 错误:频繁小交易
-for swap in small_swaps:
+# ❌ 错误:频繁小交易 for swap in small_swaps:
     execute(swap)  # Gas费可能超过收益！
 
-# ✅ 正确:批处理+成本估算
-batch = aggregate(small_swaps)
+# ✅ 正确:批处理+成本估算 batch = aggregate(small_swaps)
 if estimated_gas_cost < expected_profit * 0.1:  # 成本<10%收益
     execute_batch(batch)
 ```
@@ -470,12 +464,10 @@ from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.table import StreamTableEnvironment
 import json
 
-# 初始化环境
-env = StreamExecutionEnvironment.get_execution_environment()
+# 初始化环境 env = StreamExecutionEnvironment.get_execution_environment()
 t_env = StreamTableEnvironment.create(env)
 
-# 定义以太坊事件表
-t_env.execute_sql("""
+# 定义以太坊事件表 t_env.execute_sql("""
 CREATE TABLE ethereum_events (
     block_number BIGINT,
     block_hash STRING,
@@ -496,8 +488,7 @@ CREATE TABLE ethereum_events (
 );
 """)
 
-# Uniswap Swap事件解析
-t_env.execute_sql("""
+# Uniswap Swap事件解析 t_env.execute_sql("""
 CREATE VIEW uniswap_swaps AS
 SELECT
     transaction_hash,
@@ -514,8 +505,7 @@ FROM ethereum_events
 WHERE topic0 = '0xc42079f94a6350d7e6235f29174924f928cc2ac818eb64fed8004e115fbcca67'  -- Swap事件签名
 """)
 
-# 实时交易量统计
-t_env.execute_sql("""
+# 实时交易量统计 t_env.execute_sql("""
 CREATE TABLE hourly_volume (
     window_start TIMESTAMP(3),
     window_end TIMESTAMP(3),
@@ -546,8 +536,7 @@ GROUP BY
     pool_address;
 """)
 
-# 异常检测:大额交易告警
-t_env.execute_sql("""
+# 异常检测:大额交易告警 t_env.execute_sql("""
 CREATE TABLE whale_alerts (
     alert_time TIMESTAMP(3),
     transaction_hash STRING,
@@ -667,8 +656,7 @@ class CrossChainTracer:
         result = await self.query_subgraph(target_chain, query)
         return result['data']['bridgeEvents'][0]['transaction']['hash']
 
-# Flink集成
-class CrossChainAnalysis(KeyedProcessFunction):
+# Flink集成 class CrossChainAnalysis(KeyedProcessFunction):
     def __init__(self):
         self.tracer = CrossChainTracer()
         self.state = ValueStateDescriptor("trace_state", Types.STRING())
@@ -690,8 +678,7 @@ class CrossChainAnalysis(KeyedProcessFunction):
 ### 6.4 实时风险评估
 
 ```python
-# DeFi协议风险评估
-class DeFiRiskScorer:
+# DeFi协议风险评估 class DeFiRiskScorer:
     def __init__(self):
         self.models = {
             'liquidity_risk': LiquidityRiskModel(),
@@ -745,8 +732,7 @@ class DeFiRiskScorer:
         else:
             return 'CRITICAL'
 
-# Flink风险监控作业
-class RiskMonitoringJob:
+# Flink风险监控作业 class RiskMonitoringJob:
     def __init__(self):
         self.scorer = DeFiRiskScorer()
 

@@ -240,8 +240,7 @@ $$
 ### 5.2 关键指标采集配置
 
 ```yaml
-# flink-conf.yaml 配置示例
-metrics.reporters: prom
+# flink-conf.yaml 配置示例 metrics.reporters: prom
 metrics.reporter.prom.class: org.apache.flink.metrics.prometheus.PrometheusReporter
 metrics.reporter.prom.port: 9249
 metrics.reporter.prom.filter.includes: "*checkpoint*,*records*,*lag*,*latency*"
@@ -275,16 +274,14 @@ P3 (Low):      趋势预警、容量规划提示
 ### 6.1 典型指标PromQL查询
 
 ```promql
-# 每秒输入记录数
-flink_taskmanager_job_task_operator_numRecordsInPerSecond
+# 每秒输入记录数 flink_taskmanager_job_task_operator_numRecordsInPerSecond
 
 # Checkpoint持续时间(分位数)
 histogram_quantile(0.99,
   sum(rate(flink_jobmanager_checkpoint_duration_time[5m])) by (le)
 )
 
-# 消费者延迟
-kafka_consumer_records_lag_max{job="flink-consumer"}
+# 消费者延迟 kafka_consumer_records_lag_max{job="flink-consumer"}
 
 # 端到端延迟(自定义指标)
 flink_taskmanager_job_task_operator_latency_histogram_max

@@ -373,13 +373,11 @@ env.setScheduler(SchedulerType.ADAPTIVE);
 // flink-conf.yaml 完整配置
 scheduler-mode: adaptive
 
-# 自适应调度配置
-scheduler.adaptive.min-parallelism: 2
+# 自适应调度配置 scheduler.adaptive.min-parallelism: 2
 scheduler.adaptive.max-parallelism: 100
 scheduler.adaptive.target-utilization: 0.8
 
-# 扩缩容策略
-scheduler.adaptive.scale-up.delay: 10s
+# 扩缩容策略 scheduler.adaptive.scale-up.delay: 10s
 scheduler.adaptive.scale-down.delay: 60s
 scheduler.adaptive.scale-up.cooldown: 30s
 scheduler.adaptive.scale-down.cooldown: 300s
@@ -407,8 +405,7 @@ env.setScheduler(SchedulerType.ADAPTIVE_V2);
 scheduler-mode: adaptive-v2
 state.backend: forst
 
-# V2 增强配置
-scheduler.adaptive-v2.ml.prediction.enabled: true
+# V2 增强配置 scheduler.adaptive-v2.ml.prediction.enabled: true
 scheduler.adaptive-v2.ml.prediction.window: 5min
 scheduler.adaptive-v2.scale.strategy: predictive  # predictive/reactive
 

@@ -1278,15 +1278,12 @@ AlignmentLiveness ≜
 
 ```bash
 # 1. 编写PlusCal算法(嵌入在.tla文件中)
-# 2. 使用TLA+ Toolbox或命令行转译
-git clone https://github.com/tlaplus/tlaplus.git
+# 2. 使用TLA+ Toolbox或命令行转译 git clone https://github.com/tlaplus/tlaplus.git
 cd tlaplus/tlatools/org.lamport.tlatools
 
-# 转译PlusCal到TLA+
-java -cp . pcal.BarrierAlignmentPlusCal.tla
+# 转译PlusCal到TLA+ java -cp . pcal.BarrierAlignmentPlusCal.tla
 
-# 3. 转译后的TLA+代码可以运行TLC模型检验
-java -cp . tlc2.TLC BarrierAlignmentPlusCal.tla
+# 3. 转译后的TLA+代码可以运行TLC模型检验 java -cp . tlc2.TLC BarrierAlignmentPlusCal.tla
 ```
 
 ### 实例6.3：完整的TLC模型检验流程
@@ -1294,15 +1291,13 @@ java -cp . tlc2.TLC BarrierAlignmentPlusCal.tla
 **步骤1：安装TLA+工具链**
 
 ```bash
-# macOS
-brew install tla-plus-toolbox
+# macOS brew install tla-plus-toolbox
 
 # Linux (Ubuntu/Debian)
 wget https://github.com/tlaplus/tlaplus/releases/download/v1.7.4/TLAToolbox-1.7.4.deb
 sudo dpkg -i TLAToolbox-1.7.4.deb
 
-# 或使用Jar包
-wget https://github.com/tlaplus/tlaplus/releases/download/v1.7.4/tla2tools.jar
+# 或使用Jar包 wget https://github.com/tlaplus/tlaplus/releases/download/v1.7.4/tla2tools.jar
 ```
 
 **步骤2：创建完整配置**
@@ -1352,20 +1347,17 @@ STATE_CONSTRAINT
 **步骤3：运行TLC模型检验**
 
 ```bash
-# 基础运行
-java -cp tla2tools.jar tlc2.TLC FlinkCheckpoint.tla
+# 基础运行 java -cp tla2tools.jar tlc2.TLC FlinkCheckpoint.tla
 
 # 多线程并行(8 workers)
 java -cp tla2tools.jar tlc2.TLC -workers 8 FlinkCheckpoint.tla
 
-# 指定配置文件
-java -cp tla2tools.jar tlc2.TLC -config FlinkCheckpoint.cfg FlinkCheckpoint.tla
+# 指定配置文件 java -cp tla2tools.jar tlc2.TLC -config FlinkCheckpoint.cfg FlinkCheckpoint.tla
 
 # 增加内存(16GB)
 java -Xmx16G -cp tla2tools.jar tlc2.TLC FlinkCheckpoint.tla
 
-# 生成状态图
-java -cp tla2tools.jar tlc2.TLC -dump dot,actionlabels states.dot FlinkCheckpoint.tla
+# 生成状态图 java -cp tla2tools.jar tlc2.TLC -dump dot,actionlabels states.dot FlinkCheckpoint.tla
 ```
 
 **步骤4：结果分析**
@@ -1949,17 +1941,13 @@ Bad:   complex_condition_involving_many_vars
 **TLC运行参数**：
 
 ```bash
-# 使用多个worker并行
-java -cp tla2tools.jar tlc2.TLC -workers 8 MySpec.tla
+# 使用多个worker并行 java -cp tla2tools.jar tlc2.TLC -workers 8 MySpec.tla
 
-# 增加内存限制
-java -Xmx16G -cp tla2tools.jar tlc2.TLC MySpec.tla
+# 增加内存限制 java -Xmx16G -cp tla2tools.jar tlc2.TLC MySpec.tla
 
-# 生成状态图
-java -cp tla2tools.jar tlc2.TLC -dump dot,actionlabels states.dot MySpec.tla
+# 生成状态图 java -cp tla2tools.jar tlc2.TLC -dump dot,actionlabels states.dot MySpec.tla
 
-# 生成详细的覆盖率报告
-java -cp tla2tools.jar tlc2.TLC -coverage 100 MySpec.tla
+# 生成详细的覆盖率报告 java -cp tla2tools.jar tlc2.TLC -coverage 100 MySpec.tla
 
 # 使用检查点(断点续传)
 java -cp tla2tools.jar tlc2.TLC -checkpoint 30 MySpec.tla
@@ -2027,8 +2015,7 @@ end algorithm; *)
 **3. PlusCal转TLA+调试技巧**
 
 ```bash
-# 查看转译后的TLA+代码
-java pcal.trans MyAlgorithm.tla
+# 查看转译后的TLA+代码 java pcal.trans MyAlgorithm.tla
 
 # 转译后的代码在文件末尾,格式为:
 # \* BEGIN TRANSLATION

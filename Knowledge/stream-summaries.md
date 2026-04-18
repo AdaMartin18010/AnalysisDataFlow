@@ -310,8 +310,7 @@ class HyperLogLog:
 ### 6.3 T-Digest 的增量分位数维护
 
 ```python
-# 概念性实现，使用 sortedcontainers 简化
-from sortedcontainers import SortedDict
+# 概念性实现，使用 sortedcontainers 简化 from sortedcontainers import SortedDict
 
 class SimpleTDigest:
     def __init__(self, max_size=100):

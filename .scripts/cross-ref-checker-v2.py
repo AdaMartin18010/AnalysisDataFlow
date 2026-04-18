@@ -74,11 +74,41 @@ class CrossRefCheckerV2:
             "*.md"
         ]
         
+        # 非核心文档排除模式
+        SKIP_PATTERNS = [
+            'README', 'CHANGELOG', 'CONTRIBUTING', 'LICENSE',
+            'QUICK-START', 'FAQ', 'GLOSSARY', 'ROADMAP',
+            'INDEX', 'NAVIGATION', 'PROJECT-TRACKING', 'BEST-PRACTICES',
+            'CHEATSHEET', 'CHECKLIST', 'COMPLETION-REPORT',
+            'AGENT-', 'COMPLETION-REPORT', 'AUDIT-REPORT',
+            'QUARTERLY-REVIEWS', 'verify-examples',
+            'TASK-ASSIGNMENTS', 'THEOREM-INDEX',
+            '00-meta', 'version-tracking', 'status-report',
+            '_in-progress', 'archive', 'deprecated',
+            'Flink-Scala-Rust-Comprehensive', '98-exercises',
+            'docs/', 'i18n/',
+            'THEOREM-REGISTRY', 'SEO-IMPLEMENTATION-GUIDE',
+            'PROJECT-QUICK-REFERENCE', 'CASE-STUDIES',
+            'BENCHMARK-RESULT', 'BENCHMARK-REPORT',
+            'whitepaper-', 'whitepaper_',
+            'ARCHITECTURE', 'PERFORMANCE-MONITORING-GUIDE',
+            'Go-Streaming-Ecosystem-Research',
+            'FINAL-RELEASE-CHECKLIST', 'i18n-quality-report',
+            'EXTERNAL-LINK-HEALTH-REPORT', 'WHITEPAPER-PDF-EXPORT',
+            'USER-FEEDBACK-SYSTEM-GUIDE', 'PDF-EXPORT-GUIDE',
+            'KNOWLEDGE-GRAPH-GUIDE', 'KNOWLEDGE-GRAPH-DATA-GUIDE',
+            'AI-STREAMING-RESEARCH-REPORT',
+        ]
+        
         for pattern in patterns:
             files = glob.glob(str(self.base_path / pattern), recursive=True)
             for f in files:
                 path = Path(f).resolve()
+                path_str = str(path).replace('\\', '/')
                 if not any(part.startswith('.') for part in path.parts):
+                    # 排除非核心文档
+                    if any(x in path_str for x in SKIP_PATTERNS):
+                        continue
                     md_files.append(path)
                     rel_path = str(path.relative_to(self.base_path))
                     self.file_cache[rel_path] = path
@@ -106,6 +136,11 @@ class CrossRefCheckerV2:
         html_anchor_pattern = re.compile(r'<a\s+name=["\']([^"\']+)["\']', re.IGNORECASE)
         for match in html_anchor_pattern.finditer(content):
             anchors.add(match.group(1))
+        
+        # 匹配Markdown自定义锚点 {#anchor}
+        custom_anchor_pattern = re.compile(r'\{\s*#([^}\s]+)\s*\}')
+        for match in custom_anchor_pattern.finditer(content):
+            anchors.add(match.group(1))
             
         return anchors
     
@@ -130,9 +165,44 @@ class CrossRefCheckerV2:
         # 匹配 [text](url) 格式
         link_pattern = re.compile(r'\[([^\]]+)\]\(([^)]+)\)')
         
+        in_code_block = False
+        code_block_fence = None
+        
         for line_num, line in enumerate(lines, 1):
+            stripped = line.strip()
+            
+            # 检测代码块边界
+            if stripped.startswith('```'):
+                if not in_code_block:
+                    in_code_block = True
+                    code_block_fence = '```'
+                elif code_block_fence == '```':
+                    in_code_block = False
+                    code_block_fence = None
+                continue
+            if stripped.startswith('~~~'):
+                if not in_code_block:
+                    in_code_block = True
+                    code_block_fence = '~~~'
+                elif code_block_fence == '~~~':
+                    in_code_block = False
+                    code_block_fence = None
+                continue
+                    
+            # 跳过代码块内的行
+            if in_code_block:
+                continue
+                
             for match in link_pattern.finditer(line):
                 text, url = match.groups()
+                # 跳过行内代码中的链接
+                # 检查匹配位置是否在行内代码中
+                start_pos = match.start()
+                line_before = line[:start_pos]
+                # 简单启发式：如果前面有奇数个反引号，可能在代码中
+                backticks_before = line_before.count('`')
+                if backticks_before % 2 == 1:
+                    continue
                 links.append((line_num, text, url))
                 
         return links

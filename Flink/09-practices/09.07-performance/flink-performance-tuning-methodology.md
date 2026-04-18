@@ -240,8 +240,7 @@ $$\exists P^*: \forall P > P^*, T(P) \leq T(P^*) + \epsilon$$
 # Flink 性能调优工作流模板
 # ============================================
 
-# Phase 1: 建立基线
-tasks:
+# Phase 1: 建立基线 tasks:
   - name: run_baseline_test
     command: flink-benchmark --job=production_etl --duration=30m
     outputs:
@@ -511,8 +510,7 @@ if __name__ == "__main__":
 **场景 A: 金融交易系统（低延迟优先）**
 
 ```yaml
-# 低延迟配置模板
-parallelism.default: 16
+# 低延迟配置模板 parallelism.default: 16
 execution.checkpointing.interval: 100ms
 execution.checkpointing.unaligned.enabled: true
 state.backend: hashmap
@@ -524,8 +522,7 @@ metrics.reporters: prom
 **场景 B: 日志实时分析（高吞吐优先）**
 
 ```yaml
-# 高吞吐配置模板
-parallelism.default: 64
+# 高吞吐配置模板 parallelism.default: 64
 execution.checkpointing.interval: 600s
 execution.checkpointing.unaligned.enabled: false
 state.backend: rocksdb
@@ -538,8 +535,7 @@ pipeline.compression: LZ4
 **场景 C: 大状态用户画像（状态访问优先）**
 
 ```yaml
-# 大状态配置模板
-parallelism.default: 32
+# 大状态配置模板 parallelism.default: 32
 state.backend: forst-cloud-native
 state.backend.forst-cloud-native.cache.local-ssd.size: 100gb
 taskmanager.memory.process.size: 32768m

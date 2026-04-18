@@ -78,8 +78,7 @@ A2A ≜ ⟨ 𝒜, 𝒯, ℳ, 𝒞, 𝒮, 𝒫 ⟩
 ### 状态转换API速查
 
 ```http
-# 提交任务
-POST /a2a/v1/tasks
+# 提交任务 POST /a2a/v1/tasks
 {
   "id": "task-123",
   "skill": "analyze-data",
@@ -95,8 +94,7 @@ POST /a2a/v1/tasks/{task-id}/input
   "parts": [...]
 }
 
-# 取消任务
-POST /a2a/v1/tasks/{task-id}/cancel
+# 取消任务 POST /a2a/v1/tasks/{task-id}/cancel
 ```
 
 ---

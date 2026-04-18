@@ -574,23 +574,18 @@ edition = "2021"
 crate-type = ["cdylib"]
 
 [dependencies]
-# Kafka 客户端
-rdkafka = { version = "0.36", features = ["cmake-build", "ssl"] }
+# Kafka 客户端 rdkafka = { version = "0.36", features = ["cmake-build", "ssl"] }
 tokio = { version = "1", features = ["rt-multi-thread", "sync"] }
 
-# JNI 支持
-jni = "0.21"
+# JNI 支持 jni = "0.21"
 
-# 序列化
-serde = { version = "1.0", features = ["derive"] }
+# 序列化 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 
-# 日志
-log = "0.4"
+# 日志 log = "0.4"
 env_logger = "0.11"
 
-# 错误处理
-thiserror = "1.0"
+# 错误处理 thiserror = "1.0"
 anyhow = "1.0"
 
 [profile.release]
@@ -1798,16 +1793,14 @@ lazy val root = (project in file("."))
 **交叉编译配置**:
 
 ```bash
-# rustup 目标平台
-rustup target add x86_64-unknown-linux-gnu
+# rustup 目标平台 rustup target add x86_64-unknown-linux-gnu
 rustup target add aarch64-unknown-linux-gnu
 rustup target add x86_64-apple-darwin
 rustup target add x86_64-pc-windows-gnu
 
 # Cargo.toml - 多平台构建配置
 # [target.x86_64-unknown-linux-gnu]
-# linker = "x86_64-linux-gnu-gcc"
-#
+# linker = "x86_64-linux-gnu-gcc" #
 # [target.aarch64-unknown-linux-gnu]
 # linker = "aarch64-linux-gnu-gcc"
 ```
@@ -1820,8 +1813,7 @@ rustup target add x86_64-pc-windows-gnu
 RUST_TARGET_DIR := target
 JAVA_TARGET_DIR := java/target
 
-# 默认构建当前平台
-all: build-rust build-java
+# 默认构建当前平台 all: build-rust build-java
 
 # 构建 Rust 库(当前平台)
 build-rust:
@@ -1835,23 +1827,19 @@ build-rust-linux-x64:
 build-rust-linux-arm64:
  cd rust && cargo build --release --target aarch64-unknown-linux-gnu
 
-# 构建 Java 项目
-build-java: build-rust
+# 构建 Java 项目 build-java: build-rust
  cd java && sbt assembly
 
-# 运行测试
-test:
+# 运行测试 test:
  cd rust && cargo test
  cd java && sbt test
 
-# 清理
-clean:
+# 清理 clean:
  cd rust && cargo clean
  cd java && sbt clean
  cd docker && docker-compose down -v
 
-# Docker 多平台构建
-docker-build:
+# Docker 多平台构建 docker-build:
  docker buildx build \
   --platform linux/amd64,linux/arm64 \
   -t flink-rust-connector:latest \
@@ -1863,68 +1851,55 @@ docker-build:
 **docker/Dockerfile.build**:
 
 ```dockerfile
-# 阶段 1: 构建 Rust 库
-FROM rust:1.75-bookworm as rust-builder
+# 阶段 1: 构建 Rust 库 FROM rust:1.75-bookworm as rust-builder
 
 WORKDIR /build
 COPY rust/Cargo.toml rust/Cargo.lock ./
 COPY rust/src ./src
 
-# 安装交叉编译工具链
-RUN apt-get update && apt-get install -y \
+# 安装交叉编译工具链 RUN apt-get update && apt-get install -y \
     gcc-aarch64-linux-gnu \
     libc6-dev-arm64-cross
 
-# 添加目标平台
-RUN rustup target add x86_64-unknown-linux-gnu
+# 添加目标平台 RUN rustup target add x86_64-unknown-linux-gnu
 RUN rustup target add aarch64-unknown-linux-gnu
 
-# 构建 x64 版本
-RUN cargo build --release --target x86_64-unknown-linux-gnu
+# 构建 x64 版本 RUN cargo build --release --target x86_64-unknown-linux-gnu
 
-# 构建 ARM64 版本
-ENV CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc
+# 构建 ARM64 版本 ENV CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc
 RUN cargo build --release --target aarch64-unknown-linux-gnu
 
-# 阶段 2: 构建 Java 项目
-FROM sbtscala/scala-sbt:eclipse-temurin-17.0.9_9_1.9.8_2.12.18 as java-builder
+# 阶段 2: 构建 Java 项目 FROM sbtscala/scala-sbt:eclipse-temurin-17.0.9_9_1.9.8_2.12.18 as java-builder
 
 WORKDIR /build
 COPY java/build.sbt java/project ./
 COPY java/src ./src
 
-# 从 Rust 构建阶段复制 native 库
-COPY --from=rust-builder \
+# 从 Rust 构建阶段复制 native 库 COPY --from=rust-builder \
     /build/target/x86_64-unknown-linux-gnu/release/libflink_rust_kafka_connector.so \
     /build/target/release/libflink_rust_kafka_connector.so
 COPY --from=rust-builder \
     /build/target/aarch64-unknown-linux-gnu/release/libflink_rust_kafka_connector.so \
     /build/target/aarch64-unknown-linux-gnu/release/libflink_rust_kafka_connector.so
 
-# 构建 fat JAR
-RUN sbt assembly
+# 构建 fat JAR RUN sbt assembly
 
-# 阶段 3: 运行时镜像
-FROM flink:2.0.0-scala_2.12-java17
+# 阶段 3: 运行时镜像 FROM flink:2.0.0-scala_2.12-java17
 
-# 复制 native 库到系统路径
-COPY --from=rust-builder \
+# 复制 native 库到系统路径 COPY --from=rust-builder \
     /build/target/x86_64-unknown-linux-gnu/release/libflink_rust_kafka_connector.so \
     /usr/lib/x86_64-linux-gnu/
 COPY --from=rust-builder \
     /build/target/aarch64-unknown-linux-gnu/release/libflink_rust_kafka_connector.so \
     /usr/lib/aarch64-linux-gnu/
 
-# 复制 fat JAR
-COPY --from=java-builder \
+# 复制 fat JAR COPY --from=java-builder \
     /build/target/scala-2.12/flink-rust-kafka-connector-assembly-0.1.0.jar \
     /opt/flink/usrlib/
 
-# 设置库路径
-ENV LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:/usr/lib/aarch64-linux-gnu:$LD_LIBRARY_PATH
+# 设置库路径 ENV LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:/usr/lib/aarch64-linux-gnu:$LD_LIBRARY_PATH
 
-# 运行时配置
-ENV FLINK_PROPERTIES="
+# 运行时配置 ENV FLINK_PROPERTIES="
 jobmanager.rpc.address: jobmanager
 blob.server.port: 6124
 jobmanager.rpc.port: 6123
@@ -2125,18 +2100,15 @@ public class RustKafkaSourceIntegrationTest {
 **启用 JNI 检查**:
 
 ```bash
-# JVM 启动参数
-java -Xcheck:jni -jar application.jar
+# JVM 启动参数 java -Xcheck:jni -jar application.jar
 
-# 详细 JNI 日志
-java -Xcheck:jni:pedantic -jar application.jar
+# 详细 JNI 日志 java -Xcheck:jni:pedantic -jar application.jar
 ```
 
 **Rust 调试符号**:
 
 ```toml
-# Cargo.toml - 调试配置
-[profile.dev]
+# Cargo.toml - 调试配置 [profile.dev]
 debug = true
 opt-level = 0
 
@@ -2148,11 +2120,9 @@ strip = false
 **使用 GDB 调试**:
 
 ```bash
-# 启动 Flink 进程并附加 GDB
-gdb --args java -Xcheck:jni -jar target/assembly.jar
+# 启动 Flink 进程并附加 GDB gdb --args java -Xcheck:jni -jar target/assembly.jar
 
-# 设置 Rust 断点
-(gdb) break rust::kafka::reader::KafkaReader::poll_batch
+# 设置 Rust 断点 (gdb) break rust::kafka::reader::KafkaReader::poll_batch
 (gdb) run
 ```
 
@@ -2170,24 +2140,20 @@ gdb --args java -Xcheck:jni -jar target/assembly.jar
 **Rust 性能分析**:
 
 ```bash
-# 使用 perf
-cargo build --release
+# 使用 perf cargo build --release
 perf record -g ./target/release/libflink_rust_kafka_connector.so
 perf report
 
-# 使用 flamegraph
-cargo install flamegraph
+# 使用 flamegraph cargo install flamegraph
 CARGO_PROFILE_RELEASE_DEBUG=true cargo flamegraph
 ```
 
 **JVM 性能分析**:
 
 ```bash
-# Async-profiler
-./profiler.sh -d 60 -f profile.html <pid>
+# Async-profiler ./profiler.sh -d 60 -f profile.html <pid>
 
-# JFR 记录
-java -XX:StartFlightRecording=settings=profile,filename=recording.jfr -jar app.jar
+# JFR 记录 java -XX:StartFlightRecording=settings=profile,filename=recording.jfr -jar app.jar
 ```
 
 **端到端基准测试**:

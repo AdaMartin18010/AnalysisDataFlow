@@ -172,8 +172,7 @@ sequenceDiagram
 ### 示例 1: Pulsar Function (Python)
 
 ```python
-# 设备数据过滤和转换
-from pulsar import Function
+# 设备数据过滤和转换 from pulsar import Function
 
 class DeviceDataProcessor(Function):
     def process(self, input, context):

@@ -1111,8 +1111,7 @@ $$
 **KServe InferenceService配置**:
 
 ```yaml
-# kserve-bert.yaml
-apiVersion: serving.kserve.io/v1beta1
+# kserve-bert.yaml apiVersion: serving.kserve.io/v1beta1
 kind: InferenceService
 metadata:
   name: bert-sentiment
@@ -1327,8 +1326,7 @@ public class KServeFlinkJob {
 **Seldon Deployment配置**:
 
 ```yaml
-# seldon-ab-test.yaml
-apiVersion: machinelearning.seldon.io/v1
+# seldon-ab-test.yaml apiVersion: machinelearning.seldon.io/v1
 kind: SeldonDeployment
 metadata:
   name: recommender-ab
@@ -1554,8 +1552,7 @@ public class ABTestMetricsAnalysis {
 **监控仪表板配置** (Prometheus + Grafana):
 
 ```yaml
-# prometheus-seldon-metrics.yaml
-apiVersion: v1
+# prometheus-seldon-metrics.yaml apiVersion: v1
 kind: ServiceMonitor
 metadata:
   name: seldon-ab-metrics
@@ -1583,17 +1580,14 @@ spec:
 **BentoML服务定义**:
 
 ```python
-# service.py
-import bentoml
+# service.py import bentoml
 from bentoml.io import JSON, NumpyNdarray
 import numpy as np
 
-# 加载模型
-model_ref = bentoml.sklearn.get("feature_transformer:latest")
+# 加载模型 model_ref = bentoml.sklearn.get("feature_transformer:latest")
 model_runner = model_ref.to_runner()
 
-# Def-F-12-45: BentoML服务定义
-@bentoml.service(
+# Def-F-12-45: BentoML服务定义 @bentoml.service(
     resources={"cpu": "4"},
     traffic={
         "timeout": 30,
@@ -1659,8 +1653,7 @@ class FeatureTransformerService:
 ```
 
 ```yaml
-# bentofile.yaml - 构建配置
-service: "service:FeatureTransformerService"
+# bentofile.yaml - 构建配置 service: "service:FeatureTransformerService"
 labels:
   project: flink-ml-pipeline
   framework: sklearn
@@ -1677,8 +1670,7 @@ python:
 **Flink与BentoML集成** (Python Table API):
 
 ```python
-# flink_bentoml_integration.py
-from pyflink.datastream import StreamExecutionEnvironment
+# flink_bentoml_integration.py from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.datastream.functions import AsyncFunction, ResultFuture
 from pyflink.common.typeinfo import Types
 import aiohttp
@@ -1743,8 +1735,7 @@ class BentoMLAsyncInference(AsyncFunction):
         if self.session:
             await self.session.close()
 
-# Flink作业定义
-def main():
+# Flink作业定义 def main():
     env = StreamExecutionEnvironment.get_execution_environment()
 
     # 配置Checkpoint
@@ -1838,15 +1829,13 @@ output [
   }
 ]
 
-# Def-F-12-46: 动态批处理配置
-dynamic_batching {
+# Def-F-12-46: 动态批处理配置 dynamic_batching {
   preferred_batch_size: [16, 32, 64]
   max_queue_delay_microseconds: 10000  # 10ms等待时间
   preserve_ordering: false
 }
 
-# GPU优化
-optimization {
+# GPU优化 optimization {
   execution_accelerators {
     gpu_execution_accelerator: [
       {
@@ -1980,8 +1969,7 @@ public class TritonStreamingInference implements AsyncFunction<Image, FeatureVec
 使用Triton Model Analyzer进行性能分析:
 
 ```bash
-# model-analyzer命令
-docker run --gpus all --rm -it \
+# model-analyzer命令 docker run --gpus all --rm -it \
   -v $(pwd)/models:/models \
   -v $(pwd)/results:/results \
   nvcr.io/nvidia/tritonserver:24.01-py3-sdk \
@@ -2015,15 +2003,13 @@ docker run --gpus all --rm -it \
 **Ray Serve部署**:
 
 ```python
-# ray_serve_deployment.py
-import ray
+# ray_serve_deployment.py import ray
 from ray import serve
 from starlette.requests import Request
 import numpy as np
 from transformers import pipeline
 
-# Def-F-12-47: Ray Serve可编程服务
-@serve.deployment(
+# Def-F-12-47: Ray Serve可编程服务 @serve.deployment(
     num_replicas=4,
     ray_actor_options={"num_cpus": 2, "num_gpus": 0.5}
 )
@@ -2050,8 +2036,7 @@ class SentimentAnalyzer:
             ]
         }
 
-# 模型组合:情感分析 + 实体识别
-@serve.deployment
+# 模型组合:情感分析 + 实体识别 @serve.deployment
 class EntityExtractor:
     def __init__(self):
         self.ner = pipeline("ner", model="dslim/bert-base-NER")
@@ -2062,8 +2047,7 @@ class EntityExtractor:
         entities = self.ner(texts)
         return {"entities": entities}
 
-# 构建推理图
-with serve.start():
+# 构建推理图 with serve.start():
     sentiment = SentimentAnalyzer.bind()
     entity = EntityExtractor.bind()
 
@@ -2083,8 +2067,7 @@ with serve.start():
 **Ray on Flink集成** (复杂场景):
 
 ```text
-# ray_on_flink_integration.py
-from pyflink.datastream import StreamExecutionEnvironment
+# ray_on_flink_integration.py from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.datastream.functions import MapFunction
 import ray
 import pyarrow as pa
@@ -2131,8 +2114,7 @@ class RayInferenceMapper(MapFunction):
         if ray.is_initialized():
             ray.shutdown()
 
-# 高级:使用Ray Data进行分布式预处理
-import ray.data
+# 高级:使用Ray Data进行分布式预处理 import ray.data
 
 class RayDataPreprocessor:
     """
@@ -2158,8 +2140,7 @@ class RayDataPreprocessor:
         batch['features'] = batch['text'].apply(self._extract_features)
         return batch
 
-# Flink + Ray混合架构作业
-def hybrid_flink_ray_job():
+# Flink + Ray混合架构作业 def hybrid_flink_ray_job():
     env = StreamExecutionEnvironment.get_execution_environment()
 
     # 配置Ray on Flink
@@ -2193,8 +2174,7 @@ def hybrid_flink_ray_job():
 **Ray Serve性能监控**:
 
 ```python
-# 部署监控仪表板
-@serve.deployment
+# 部署监控仪表板 @serve.deployment
 class MetricsExporter:
     def __init__(self):
         self.request_count = 0

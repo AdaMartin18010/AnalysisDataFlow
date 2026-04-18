@@ -144,7 +144,7 @@ Flink production best practices align with Google SRE principles [^3]:
 
 ### 3.3 Anti-patterns Relationship
 
-Every best practice has a corresponding anti-pattern in [Knowledge/09-anti-patterns/](../Knowledge/09-anti-patterns/):
+Every best practice has a corresponding anti-pattern in [Knowledge/09-anti-patterns/]:
 
 | Best Practice | Corresponding Anti-pattern |
 |---------------|---------------------------|

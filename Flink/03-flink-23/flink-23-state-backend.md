@@ -266,36 +266,30 @@ $$C^* \propto \left( \frac{N_{access} \cdot \Delta c_{access}}{c_{local}} \right
 # Flink 2.3 Cloud-Native ForSt 配置示例
 # ============================================
 
-# 启用 CN-ForSt
-state.backend: forst-cloud-native
+# 启用 CN-ForSt state.backend: forst-cloud-native
 state.backend.forst-cloud-native.local.dir: /data/flink/state
 state.backend.forst-cloud-native.remote.dir: s3://my-flink-bucket/state-backends
 
-# --- 本地缓存配置 ---
-state.backend.forst-cloud-native.cache.memory.size: 512mb
+# --- 本地缓存配置 --- state.backend.forst-cloud-native.cache.memory.size: 512mb
 state.backend.forst-cloud-native.cache.local-ssd.size: 50gb
 state.backend.forst-cloud-native.cache.local-ssd.path: /ssd/flink-cache
 
-# --- 缓存策略 ---
-state.backend.forst-cloud-native.cache.eviction-policy: w-tinylfu
+# --- 缓存策略 --- state.backend.forst-cloud-native.cache.eviction-policy: w-tinylfu
 state.backend.forst-cloud-native.cache.promotion.threshold: 0.8
 state.backend.forst-cloud-native.cache.demotion.threshold: 0.2
 
-# --- 同步策略 ---
-state.backend.forst-cloud-native.sync.mode: async
+# --- 同步策略 --- state.backend.forst-cloud-native.sync.mode: async
 state.backend.forst-cloud-native.sync.max-latency: 5min
 
 # 对特定状态启用同步上传(可选)
 state.backend.forst-cloud-native.sync.keys: "payment_txn,account_balance"
 
-# --- 传输优化 ---
-state.backend.forst-cloud-native.upload.threads: 8
+# --- 传输优化 --- state.backend.forst-cloud-native.upload.threads: 8
 state.backend.forst-cloud-native.upload.part-size: 64mb
 state.backend.forst-cloud-native.download.threads: 16
 state.backend.forst-cloud-native.download.prefetch: true
 
-# --- 恢复优化 ---
-state.backend.forst-cloud-native.recovery.parallelism: 8
+# --- 恢复优化 --- state.backend.forst-cloud-native.recovery.parallelism: 8
 state.backend.forst-cloud-native.recovery.prefetch-enabled: true
 state.backend.forst-cloud-native.recovery.prefetch-ratio: 0.3
 ```
@@ -491,8 +485,7 @@ flowchart TD
 
 ```python
 # !/usr/bin/env python3
-# CN-ForSt 缓存预热分析脚本
-import json
+# CN-ForSt 缓存预热分析脚本 import json
 from collections import Counter
 
 def analyze_access_pattern(checkpoint_meta, top_n=10000):

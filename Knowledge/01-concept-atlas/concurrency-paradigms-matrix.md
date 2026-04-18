@@ -1,7 +1,7 @@
 # 并发范式多维对比矩阵 (Concurrency Paradigms Comparison Matrix)
 
 > **文档定位**: 并发计算核心范式的系统性对比与选型指南
-> **形式化等级**: L3-L6 | **前置依赖**: [../../Struct/01-foundation/](../../Struct/01-foundation/00-INDEX.md)
+> **形式化等级**: L3-L6 | **前置依赖**: [../../Struct/01-foundation/]
 > **版本**: 2026.04 | **文档规模**: ~20KB
 
 ---

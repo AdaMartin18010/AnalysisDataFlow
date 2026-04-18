@@ -163,8 +163,7 @@ class SerializationCheck {
 | `allowedLateness` | 窗口是否允许额外延迟 | 根据业务容忍度设置 |
 
 ```yaml
-# 配置检查模板
-watermark:
+# 配置检查模板 watermark:
   bounded_out_of_orderness:
     value: 10s  # 检查: 是否基于实际测量？
     measured_p99: 8s  # 应有测量依据
@@ -185,8 +184,7 @@ watermark:
 | `incrementalCheckpoints` | 大状态（>1GB）是否启用 | 必须启用 |
 
 ```yaml
-# 配置检查模板
-checkpoint:
+# 配置检查模板 checkpoint:
   interval: 60s  # 检查: RTO / 5 < 60s < RTO / 2 ?
   timeout: 300s
   min_pause: 30s  # 检查: > checkpoint_duration ?
@@ -209,8 +207,7 @@ checkpoint:
 | `jvmHeap` | 是否 > max(托管内存×0.5, 2GB) | 2GB - 8GB |
 
 ```yaml
-# 配置检查模板
-memory:
+# 配置检查模板 memory:
   estimated_state_gb: 50
   parallelism: 10
 
@@ -252,8 +249,7 @@ curl -s "http://flink:8081/jobs/${JOB_ID}/vertices/${VERTEX_ID}/subtasks/metrics
 | `checkpointDuration` | 持续增长 | 状态过大或背压 |
 
 ```yaml
-# Prometheus 告警规则
-groups:
+# Prometheus 告警规则 groups:
   - name: flink_backpressure
     rules:
       - alert: FlinkHighBackpressure
@@ -361,8 +357,7 @@ FLINK_URL=${2:-"http://localhost:8081"}
 echo "=== Flink Job Health Check ==="
 echo "Job ID: $JOB_ID"
 
-# 1. 检查背压
-echo -e "\n[1/5] Checking backpressure..."
+# 1. 检查背压 echo -e "\n[1/5] Checking backpressure..."
 BACKPRESSURE=$(curl -s "$FLINK_URL/jobs/$JOB_ID/vertices" | jq '.vertices[] | select(.metrics.backPressuredTimeMsPerSecond > 200) | .name')
 if [ -n "$BACKPRESSURE" ]; then
   echo "⚠️  High backpressure detected in:"
@@ -371,8 +366,7 @@ else
   echo "✓ Backpressure normal"
 fi
 
-# 2. 检查 Checkpoint
-echo -e "\n[2/5] Checking checkpoints..."
+# 2. 检查 Checkpoint echo -e "\n[2/5] Checking checkpoints..."
 CHECKPOINT_STATS=$(curl -s "$FLINK_URL/jobs/$JOB_ID/checkpoints")
 FAILED=$(echo $CHECKPOINT_STATS | jq '.counts.failed')
 if [ "$FAILED" -gt 0 ]; then
@@ -381,8 +375,7 @@ else
   echo "✓ Checkpoints healthy"
 fi
 
-# 3. 检查数据倾斜
-echo -e "\n[3/5] Checking data skew..."
+# 3. 检查数据倾斜 echo -e "\n[3/5] Checking data skew..."
 # 实现类似上述的倾斜检测逻辑
 
 echo -e "\n=== Check Complete ==="

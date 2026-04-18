@@ -148,8 +148,7 @@ public class AdaptiveSamplingFunction extends ProcessFunction<VideoFrame, VideoF
 ### 6.3 GPU 推理批处理配置
 
 ```python
-# Triton Inference Server 视频分析模型配置
-name: "yolov8_video"
+# Triton Inference Server 视频分析模型配置 name: "yolov8_video"
 platform: "onnxruntime_onnx"
 max_batch_size: 16
 input:

@@ -89,8 +89,7 @@ env.getConfig.setAutoWatermarkInterval(200)
 ### 4.2 自动扩缩容
 
 ```yaml
-# Flink Kubernetes Operator 自动伸缩配置
-spec:
+# Flink Kubernetes Operator 自动伸缩配置 spec:
   podTemplate:
     spec:
       containers:

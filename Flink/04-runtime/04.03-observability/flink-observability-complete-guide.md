@@ -383,8 +383,7 @@ $$\forall timeout\_scenario \in \mathcal{T}, \exists (m_1, m_2, cond): cond(m_1,
 **flink-conf.yaml**:
 
 ```yaml
-# Prometheus Reporter 配置
-metrics.reporters: promgateway
+# Prometheus Reporter 配置 metrics.reporters: promgateway
 metrics.reporter.promgateway.class: org.apache.flink.metrics.prometheus.PrometheusPushGatewayReporter
 metrics.reporter.promgateway.host: prometheus-pushgateway.monitoring.svc.cluster.local
 metrics.reporter.promgateway.port: 9091
@@ -393,8 +392,7 @@ metrics.reporter.promgateway.randomJobNameSuffix: true
 metrics.reporter.promgateway.deleteOnShutdown: false
 metrics.reporter.promgateway.interval: 30 SECONDS
 
-# 作用域配置
-metrics.scope.jm: "<host>.jobmanager"
+# 作用域配置 metrics.scope.jm: "<host>.jobmanager"
 metrics.scope.jm.job: "<host>.jobmanager.<job_name>"
 metrics.scope.tm: "<host>.taskmanager.<tm_id>"
 metrics.scope.tm.job: "<host>.taskmanager.<tm_id>.<job_name>"
@@ -516,19 +514,16 @@ public class InstrumentedMapFunction<T, R> extends RichMapFunction<T, R> {
 **log4j2.properties**:
 
 ```properties
-# 根日志级别
-rootLogger.level = INFO
+# 根日志级别 rootLogger.level = INFO
 rootLogger.appenderRef.console.ref = ConsoleAppender
 rootLogger.appenderRef.rolling.ref = RollingFileAppender
 
-# 控制台输出 - JSON 格式
-appender.console.type = Console
+# 控制台输出 - JSON 格式 appender.console.type = Console
 appender.console.name = ConsoleAppender
 appender.console.layout.type = JsonTemplateLayout
 appender.console.layout.eventTemplateUri = classpath:LogstashJsonEventLayoutV1.json
 
-# 滚动文件配置
-appender.rolling.type = RollingFile
+# 滚动文件配置 appender.rolling.type = RollingFile
 appender.rolling.name = RollingFileAppender
 appender.rolling.fileName = ${sys:log.file}
 appender.rolling.filePattern = ${sys:log.file}.%i
@@ -540,16 +535,13 @@ appender.rolling.policies.size.size = 100MB
 appender.rolling.strategy.type = DefaultRolloverStrategy
 appender.rolling.strategy.max = 10
 
-# Flink 特定 Logger
-logger.flink.name = org.apache.flink
+# Flink 特定 Logger logger.flink.name = org.apache.flink
 logger.flink.level = INFO
 
-# Checkpoint 详细日志
-logger.checkpoint.name = org.apache.flink.runtime.checkpoint
+# Checkpoint 详细日志 logger.checkpoint.name = org.apache.flink.runtime.checkpoint
 logger.checkpoint.level = DEBUG
 
-# 网络层日志
-logger.network.name = org.apache.flink.runtime.io.network
+# 网络层日志 logger.network.name = org.apache.flink.runtime.io.network
 logger.network.level = WARN
 ```
 
@@ -1637,8 +1629,7 @@ Checkpoint History (Last 10):
 #### Checkpoint 配置详情
 
 ```yaml
-# 通过 Web UI 查看的 Checkpoint 配置
-Checkpointing Mode: EXACTLY_ONCE
+# 通过 Web UI 查看的 Checkpoint 配置 Checkpointing Mode: EXACTLY_ONCE
 Interval: 60000 ms
 Timeout: 600000 ms
 Min Pause Between Checkpoints: 500 ms
@@ -1671,8 +1662,7 @@ Flink Web UI 通过采样 Task 线程栈来估算背压状态：
 #### 启用与生成
 
 ```bash
-# 1. 在 flink-conf.yaml 中启用 Async Profiler
-env.java.opts.taskmanager: "-agentpath:/opt/async-profiler/lib/libasyncProfiler.so=start,jfr,event=cpu,file=/tmp/profile.jfr"
+# 1. 在 flink-conf.yaml 中启用 Async Profiler env.java.opts.taskmanager: "-agentpath:/opt/async-profiler/lib/libasyncProfiler.so=start,jfr,event=cpu,file=/tmp/profile.jfr"
 
 # 2. 通过 Web UI 触发采样
 # Jobs → [Job Name] → Flame Graph → Generate
@@ -1713,8 +1703,7 @@ env.java.opts.taskmanager: "-agentpath:/opt/async-profiler/lib/libasyncProfiler.
 # 通过 Web UI
 # Task Managers → [TaskManager ID] → Thread Dump
 
-# 或通过 REST API
-curl http://jobmanager:8081/taskmanagers/<tm_id>/thread-dump
+# 或通过 REST API curl http://jobmanager:8081/taskmanagers/<tm_id>/thread-dump
 ```
 
 #### 典型线程状态分析
@@ -1852,8 +1841,7 @@ inhibit_rules:
 ### B.2 Webhook 集成示例
 
 ```python
-# flask_webhook_receiver.py
-from flask import Flask, request, jsonify
+# flask_webhook_receiver.py from flask import Flask, request, jsonify
 import requests
 import json
 
@@ -1945,8 +1933,7 @@ if __name__ == '__main__':
 - **作业名称**: {{ .JobName }}
 - **触发时间**: {{ .StartsAt }}
 
-## 告警详情
-{{ .Annotations.Summary }}
+## 告警详情 {{ .Annotations.Summary }}
 
 {{ .Annotations.Description }}
 
@@ -1959,8 +1946,7 @@ if __name__ == '__main__':
 
 ```
 
-## 建议操作
-{{ if eq .AlertName "FlinkCheckpointFailed" }}
+## 建议操作 {{ if eq .AlertName "FlinkCheckpointFailed" }}
 1. 检查 TaskManager 日志中的错误堆栈
 2. 验证状态后端存储连接状态
 3. 确认 Checkpoint 超时配置是否合理
@@ -1996,42 +1982,31 @@ if __name__ == '__main__':
 ### C.2 常用诊断命令
 
 ```bash
-# 查看 JobManager 日志
-docker logs flink-jobmanager | grep -i error
+# 查看 JobManager 日志 docker logs flink-jobmanager | grep -i error
 
-# 查看 TaskManager 日志
-docker logs flink-taskmanager-1 | grep -A 5 "Checkpoint"
+# 查看 TaskManager 日志 docker logs flink-taskmanager-1 | grep -A 5 "Checkpoint"
 
-# 获取线程 Dump
-curl http://jobmanager:8081/taskmanagers/<id>/thread-dump > thread_dump.txt
+# 获取线程 Dump curl http://jobmanager:8081/taskmanagers/<id>/thread-dump > thread_dump.txt
 
-# 获取 Checkpoint 统计
-curl http://jobmanager:8081/jobs/<job_id>/checkpoints
+# 获取 Checkpoint 统计 curl http://jobmanager:8081/jobs/<job_id>/checkpoints
 
-# 获取 Task 指标
-curl http://jobmanager:8081/jobs/<job_id>/vertices/<vertex_id>/metrics
+# 获取 Task 指标 curl http://jobmanager:8081/jobs/<job_id>/vertices/<vertex_id>/metrics
 
-# 获取背压状态
-curl http://jobmanager:8081/jobs/<job_id>/vertices/<vertex_id>/backpressure
+# 获取背压状态 curl http://jobmanager:8081/jobs/<job_id>/vertices/<vertex_id>/backpressure
 ```
 
 ### C.3 日志查询 KQL 示例 (Kibana)
 
 ```kql
-# 查找 Checkpoint 失败日志
-level:ERROR AND message:"Checkpoint" AND message:"failed"
+# 查找 Checkpoint 失败日志 level:ERROR AND message:"Checkpoint" AND message:"failed"
 
-# 查找特定作业的异常
-job_name:"FraudDetection" AND level:ERROR
+# 查找特定作业的异常 job_name:"FraudDetection" AND level:ERROR
 
-# 查找背压相关日志
-message:"backpressure" AND level:WARN
+# 查找背压相关日志 message:"backpressure" AND level:WARN
 
-# 查找 GC 问题
-message:"GC overhead" OR message:"OutOfMemory"
+# 查找 GC 问题 message:"GC overhead" OR message:"OutOfMemory"
 
-# 查找延迟异常
-message:"latency" AND (message:"high" OR message:"timeout")
+# 查找延迟异常 message:"latency" AND (message:"high" OR message:"timeout")
 ```
 
 ### C.4 Prometheus PromQL 查询示例
@@ -2050,15 +2025,13 @@ histogram_quantile(0.99,
   sum(rate(flink_latency_bucket[5m])) by (le)
 )
 
-# 识别背压最严重的 Task
-topk(5,
+# 识别背压最严重的 Task topk(5,
   avg by (job_name, task_name) (
     flink_taskmanager_job_task_backPressuredTimeMsPerSecond
   )
 )
 
-# 计算 Checkpoint 成功率
-(
+# 计算 Checkpoint 成功率 (
   sum(flink_jobmanager_checkpoint_numberOfCompletedCheckpoints)
   /
   (
@@ -2068,8 +2041,7 @@ topk(5,
   )
 ) * 100
 
-# 状态大小增长趋势
-predict_linear(
+# 状态大小增长趋势 predict_linear(
   flink_jobmanager_checkpoint_stateSize[1h],
   3600 * 24
 ) / 1024 / 1024 / 1024  # 预测24小时后状态大小 (GB)

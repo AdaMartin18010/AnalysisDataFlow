@@ -1215,20 +1215,17 @@ sequenceDiagram
 #!/bin/bash
 # build_flink_gpu_bridge.sh
 
-# 设置 CUDA 路径
-export CUDA_HOME=/usr/local/cuda
+# 设置 CUDA 路径 export CUDA_HOME=/usr/local/cuda
 export PATH=$CUDA_HOME/bin:$PATH
 export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
 
-# 编译 CUDA Kernel
-nvcc -c -o cosine_similarity.o cosine_similarity.cu \
+# 编译 CUDA Kernel nvcc -c -o cosine_similarity.o cosine_similarity.cu \
     -arch=sm_80 \
     -O3 \
     -use_fast_math \
     -Xcompiler -fPIC
 
-# 编译 JNI Bridge
-g++ -shared -o libflink_gpu_bridge.so \
+# 编译 JNI Bridge g++ -shared -o libflink_gpu_bridge.so \
     flink_gpu_bridge.cpp \
     cosine_similarity.o \
     -I${JAVA_HOME}/include \
@@ -1239,8 +1236,7 @@ g++ -shared -o libflink_gpu_bridge.so \
     -fPIC \
     -O3
 
-# 验证库
-ldd libflink_gpu_bridge.so
+# 验证库 ldd libflink_gpu_bridge.so
 ```
 
 ### A.2 Flink 配置
@@ -1248,16 +1244,13 @@ ldd libflink_gpu_bridge.so
 ```yaml
 # flink-conf.yaml
 
-# GPU 资源调度配置
-kubernetes.taskmanager.gpu.amount: 1
+# GPU 资源调度配置 kubernetes.taskmanager.gpu.amount: 1
 kubernetes.taskmanager.gpu.type: nvidia.com/gpu
 
-# TaskManager 资源
-taskmanager.memory.process.size: 8192m
+# TaskManager 资源 taskmanager.memory.process.size: 8192m
 taskmanager.memory.gpu.size: 1024m  # 预留 GPU 内存
 
-# GPU UDF 特定配置
-gpu.udf.enabled: true
+# GPU UDF 特定配置 gpu.udf.enabled: true
 gpu.udf.library.path: /opt/flink/native/libflink_gpu_bridge.so
 gpu.udf.stream.pool.size: 4
 gpu.udf.batch.size: 4096
@@ -1267,11 +1260,9 @@ gpu.udf.memory.cache.size: 536870912  # 512MB 设备内存缓存
 ### A.3 Docker 部署
 
 ```dockerfile
-# Dockerfile.flink-gpu
-FROM flink:1.18-scala_2.12-java11
+# Dockerfile.flink-gpu FROM flink:1.18-scala_2.12-java11
 
-# 安装 NVIDIA CUDA Toolkit
-RUN apt-get update && apt-get install -y \
+# 安装 NVIDIA CUDA Toolkit RUN apt-get update && apt-get install -y \
     gnupg2 \
     curl \
     && rm -rf /var/lib/apt/lists/*
@@ -1287,8 +1278,7 @@ ENV CUDA_HOME=/usr/local/cuda
 ENV PATH=${CUDA_HOME}/bin:${PATH}
 ENV LD_LIBRARY_PATH=${CUDA_HOME}/lib64:${LD_LIBRARY_PATH}
 
-# 复制 native 库
-COPY libflink_gpu_bridge.so /opt/flink/native/
+# 复制 native 库 COPY libflink_gpu_bridge.so /opt/flink/native/
 COPY flink-gpu-udf.jar /opt/flink/usrlib/
 ```
 

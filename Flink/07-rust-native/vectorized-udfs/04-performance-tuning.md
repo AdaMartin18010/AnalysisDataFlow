@@ -361,8 +361,7 @@ $$
 ### 6.1 批大小自动调优（Python）
 
 ```python
-# batch_size_auto_tuning.py
-"""
+# batch_size_auto_tuning.py """
 批大小自动调优工具
 根据系统负载和性能目标动态调整批大小
 """
@@ -683,8 +682,7 @@ class BatchSizeTuner:
             print("matplotlib not installed, skipping plot")
 
 
-# 使用示例
-def example_usage():
+# 使用示例 def example_usage():
     """使用示例"""
     # 模拟向量化处理函数
     def process_batch(data: List[dict]) -> List[dict]:
@@ -1079,8 +1077,7 @@ mod tests {
 ### 6.3 性能分析工具集成
 
 ```python
-# performance_profiler.py
-"""
+# performance_profiler.py """
 向量化 UDF 性能分析工具
 集成 Linux perf、Intel VTune、Arrow Profiler
 """

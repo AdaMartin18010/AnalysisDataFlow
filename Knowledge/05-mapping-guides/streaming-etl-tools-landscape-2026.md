@@ -713,19 +713,15 @@ tEnv.executeSql("""
 #### Bytewax示例代码
 
 ```python
-# 实时用户行为特征工程
-from bytewax.dataflow import Dataflow
+# 实时用户行为特征工程 from bytewax.dataflow import Dataflow
 from bytewax.connectors.kafka import KafkaSource, KafkaSink
 from bytewax.window import TumblingWindow, SystemClockConfig
 
-# 定义数据流
-flow = Dataflow()
+# 定义数据流 flow = Dataflow()
 
-# 从Kafka读取点击流
-flow.input("clickstream", KafkaSource(["localhost:9092"], ["user_clicks"]))
+# 从Kafka读取点击流 flow.input("clickstream", KafkaSource(["localhost:9092"], ["user_clicks"]))
 
-# 解析和转换
-def parse_click(event):
+# 解析和转换 def parse_click(event):
     import json
     data = json.loads(event)
     return (data["user_id"], {
@@ -736,11 +732,9 @@ def parse_click(event):
 
 flow.map(parse_click)
 
-# 按用户ID键控
-flow.key_by(lambda x: x[0])
+# 按用户ID键控 flow.key_by(lambda x: x[0])
 
-# 窗口聚合:每分钟用户行为统计
-def aggregate_actions(window_data):
+# 窗口聚合:每分钟用户行为统计 def aggregate_actions(window_data):
     user_id, events = window_data
     actions = {}
     total_value = 0
@@ -761,8 +755,7 @@ flow.window(
     )
 ).reduce(aggregate_actions)
 
-# 输出到Redis
-class RedisSink:
+# 输出到Redis class RedisSink:
     def __init__(self, redis_host):
         import redis
         self.client = redis.Redis(host=redis_host)
@@ -781,12 +774,10 @@ from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.table import StreamTableEnvironment
 from pyflink.datastream.connectors.kafka import KafkaSource, KafkaOffsetsInitializer
 
-# 创建环境
-env = StreamExecutionEnvironment.get_execution_environment()
+# 创建环境 env = StreamExecutionEnvironment.get_execution_environment()
 t_env = StreamTableEnvironment.create(env)
 
-# 定义Kafka源
-t_env.execute_sql("""
+# 定义Kafka源 t_env.execute_sql("""
     CREATE TABLE user_clicks (
         user_id STRING,
         action STRING,
@@ -801,8 +792,7 @@ t_env.execute_sql("""
     )
 """)
 
-# 特征聚合
-t_env.execute_sql("""
+# 特征聚合 t_env.execute_sql("""
     CREATE TABLE user_features (
         user_id STRING,
         window_start TIMESTAMP(3),
@@ -817,8 +807,7 @@ t_env.execute_sql("""
     )
 """)
 
-# 执行聚合插入
-t_env.execute_sql("""
+# 执行聚合插入 t_env.execute_sql("""
     INSERT INTO user_features
     SELECT
         user_id,

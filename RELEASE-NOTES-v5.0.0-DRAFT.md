@@ -425,9 +425,9 @@ Flink/
 
 如发现bug或有建议，请通过以下方式反馈：
 
-- 🐛 **GitHub Issues**: [提交Issue](../../issues)
+- 🐛 **GitHub Issues**: [提交Issue]
 - 📧 **邮件**: <team@analysisdataflow.org>
-- 💬 **讨论区**: [GitHub Discussions](../../discussions)
+- 💬 **讨论区**: [GitHub Discussions]
 
 ---
 

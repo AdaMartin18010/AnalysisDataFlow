@@ -38,17 +38,13 @@ arroyo-update/
 **用法:**
 
 ```bash
-# 生成 Markdown 报告
-python .scripts/arroyo-news-tracker.py --format markdown
+# 生成 Markdown 报告 python .scripts/arroyo-news-tracker.py --format markdown
 
-# 生成 JSON 报告
-python .scripts/arroyo-news-tracker.py --format json
+# 生成 JSON 报告 python .scripts/arroyo-news-tracker.py --format json
 
-# 生成两种格式
-python .scripts/arroyo-news-tracker.py --format both
+# 生成两种格式 python .scripts/arroyo-news-tracker.py --format both
 
-# 查看帮助
-python .scripts/arroyo-news-tracker.py --help
+# 查看帮助 python .scripts/arroyo-news-tracker.py --help
 ```
 
 **依赖:**
@@ -60,8 +56,7 @@ pip install requests feedparser python-dateutil
 **定时任务设置 (Linux/macOS):**
 
 ```bash
-# 每周一早上9点执行
-crontab -e
+# 每周一早上9点执行 crontab -e
 # 添加: 0 9 * * 1 cd /path/to/project && python .scripts/arroyo-news-tracker.py --format markdown
 ```
 

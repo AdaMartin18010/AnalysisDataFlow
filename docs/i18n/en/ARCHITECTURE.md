@@ -580,9 +580,9 @@ spec:
 
 ### C. Related Documents
 
-- [System Architecture Details](../../ARCHITECTURE.md)
-- [Deployment Guide](../../Flink/10-deployment/)
-- [Flink Architecture Comparison](../../Flink/01-architecture/)
+- [System Architecture Details]
+- [Deployment Guide]
+- [Flink Architecture Comparison]
 
 ---
 

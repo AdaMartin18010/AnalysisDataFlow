@@ -280,8 +280,7 @@ candidates.stream()
 **策略C - 联合索引（Filtered Index）：**
 
 ```python
-# Milvus partition key
-milvus.create_partition("products_electronics")
+# Milvus partition key milvus.create_partition("products_electronics")
 milvus.load_partition("products_electronics")
 ```
 

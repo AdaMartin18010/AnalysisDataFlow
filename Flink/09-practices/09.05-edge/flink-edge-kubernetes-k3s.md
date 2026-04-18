@@ -423,15 +423,13 @@ $$
 sudo swapoff -a
 sudo sed -i '/swap/d' /etc/fstab
 
-# 配置内核参数
-cat <<EOF | sudo tee /etc/sysctl.d/k3s.conf
+# 配置内核参数 cat <<EOF | sudo tee /etc/sysctl.d/k3s.conf
 net.bridge.bridge-nf-call-iptables = 1
 net.ipv4.ip_forward = 1
 EOF
 sudo sysctl --system
 
-# 安装必要工具
-sudo apt-get update
+# 安装必要工具 sudo apt-get update
 sudo apt-get install -y curl
 ```
 
@@ -444,8 +442,7 @@ curl -sfL https://get.k3s.io | \
   INSTALL_K3S_EXEC="server --disable traefik --write-kubeconfig-mode 644" \
   sh -
 
-# 验证安装
-sudo systemctl status k3s
+# 验证安装 sudo systemctl status k3s
 sudo kubectl get nodes
 sudo kubectl get pods -A
 
@@ -459,12 +456,10 @@ export KUBECONFIG=~/.kube/config
 **步骤 3: 添加K3s Agent (多节点场景)**
 
 ```bash
-# 在主节点获取token
-sudo cat /var/lib/rancher/k3s/server/node-token
+# 在主节点获取token sudo cat /var/lib/rancher/k3s/server/node-token
 # 输出示例: K10xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx::server:xxxxxxxx
 
-# 在Agent节点执行
-export K3S_URL="https://<server-ip>:6443"
+# 在Agent节点执行 export K3S_URL="https://<server-ip>:6443"
 export K3S_TOKEN="<node-token>"
 curl -sfL https://get.k3s.io | \
   INSTALL_K3S_VERSION=v1.28.5+k3s1 \
@@ -474,33 +469,27 @@ curl -sfL https://get.k3s.io | \
 **步骤 4: 边缘优化配置**
 
 ```bash
-# 创建K3s配置文件
-sudo mkdir -p /etc/rancher/k3s/
+# 创建K3s配置文件 sudo mkdir -p /etc/rancher/k3s/
 sudo tee /etc/rancher/k3s/config.yaml > /dev/null <<EOF
-# 禁用不必要组件
-disable:
+# 禁用不必要组件 disable:
   - traefik
   - metrics-server
   - servicelb
 
-# 使用SQLite (默认) 或嵌入式etcd
-tls-san:
+# 使用SQLite (默认) 或嵌入式etcd tls-san:
   - edge-k3s-server.local
 
-# 资源限制
-kubelet-arg:
+# 资源限制 kubelet-arg:
   - "eviction-hard=memory.available<100Mi"
   - "eviction-soft=memory.available<200Mi"
   - "eviction-soft-grace-period=memory.available=1m"
   - "system-reserved=cpu=500m,memory=512Mi"
   - "kube-reserved=cpu=500m,memory=512Mi"
 
-# 日志轮转
-log: /var/log/k3s.log
+# 日志轮转 log: /var/log/k3s.log
 EOF
 
-# 重启K3s
-sudo systemctl restart k3s
+# 重启K3s sudo systemctl restart k3s
 ```
 
 ### 6.2 Flink Kubernetes Operator部署
@@ -508,22 +497,18 @@ sudo systemctl restart k3s
 **步骤 1: 安装Cert Manager (依赖)**
 
 ```bash
-# 安装cert-manager
-kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.0/cert-manager.yaml
+# 安装cert-manager kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.0/cert-manager.yaml
 
-# 等待就绪
-kubectl wait --for=condition=ready pod -l app=cert-manager -n cert-manager --timeout=120s
+# 等待就绪 kubectl wait --for=condition=ready pod -l app=cert-manager -n cert-manager --timeout=120s
 ```
 
 **步骤 2: 安装Flink Kubernetes Operator**
 
 ```bash
-# 添加Flink Helm仓库
-helm repo add flink-operator-repo https://downloads.apache.org/flink/flink-kubernetes-operator-1.14.0/
+# 添加Flink Helm仓库 helm repo add flink-operator-repo https://downloads.apache.org/flink/flink-kubernetes-operator-1.14.0/
 helm repo update
 
-# 创建命名空间
-kubectl create namespace flink
+# 创建命名空间 kubectl create namespace flink
 
 # 安装Operator (边缘优化配置)
 helm install flink-kubernetes-operator flink-operator-repo/flink-kubernetes-operator \
@@ -538,16 +523,14 @@ helm install flink-kubernetes-operator flink-operator-repo/flink-kubernetes-oper
   --set defaultConfiguration.flink-conf."state.backend"=hashmap \
   --set defaultConfiguration.flink-conf."execution.checkpointing.interval"=60s
 
-# 验证安装
-kubectl get pods -n flink
+# 验证安装 kubectl get pods -n flink
 kubectl get deployments -n flink
 ```
 
 **步骤 3: 配置RBAC权限**
 
 ```yaml
-# flink-rbac.yaml
-apiVersion: v1
+# flink-rbac.yaml apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: flink-service-account
@@ -590,8 +573,7 @@ kubectl apply -f flink-rbac.yaml
 **边缘流处理作业部署配置**：
 
 ```yaml
-# flink-edge-deployment.yaml
-apiVersion: flink.apache.org/v1beta1
+# flink-edge-deployment.yaml apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: edge-iot-processor
@@ -677,8 +659,7 @@ spec:
 **ConfigMap 配置**：
 
 ```yaml
-# flink-edge-configmap.yaml
-apiVersion: v1
+# flink-edge-configmap.yaml apiVersion: v1
 kind: ConfigMap
 metadata:
   name: flink-edge-config
@@ -727,12 +708,10 @@ data:
 ```
 
 ```bash
-# 应用配置
-kubectl apply -f flink-edge-configmap.yaml
+# 应用配置 kubectl apply -f flink-edge-configmap.yaml
 kubectl apply -f flink-edge-deployment.yaml
 
-# 查看部署状态
-kubectl get flinkdeployments -n flink
+# 查看部署状态 kubectl get flinkdeployments -n flink
 kubectl get pods -n flink
 kubectl logs -n flink deployment/edge-iot-processor
 ```
@@ -790,17 +769,13 @@ spec:
 **资源监控命令**：
 
 ```bash
-# 查看Pod资源使用
-kubectl top pods -n flink
+# 查看Pod资源使用 kubectl top pods -n flink
 
-# 查看节点资源
-kubectl top nodes
+# 查看节点资源 kubectl top nodes
 
-# 查看Pod详细资源
-kubectl describe pod -n flink -l app=edge-iot-processor
+# 查看Pod详细资源 kubectl describe pod -n flink -l app=edge-iot-processor
 
-# 查看cgroups限制
-docker stats $(docker ps -q --filter "name=k8s_flink")
+# 查看cgroups限制 docker stats $(docker ps -q --filter "name=k8s_flink")
 ```
 
 ### 6.5 生产环境检查清单

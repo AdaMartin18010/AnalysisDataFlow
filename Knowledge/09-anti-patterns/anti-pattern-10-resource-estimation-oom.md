@@ -104,8 +104,7 @@ def estimateMemory(
 ### 4.2 配置示例
 
 ```yaml
-# Flink 内存配置
-taskmanager.memory:
+# Flink 内存配置 taskmanager.memory:
   process:
     size: 8gb          # 总进程内存
   managed:
@@ -138,8 +137,7 @@ env.configure(config)
 ### 5.1 错误配置
 
 ```yaml
-# ❌ 错误: 内存配置过小
-taskmanager.memory.process.size: 2gb
+# ❌ 错误: 内存配置过小 taskmanager.memory.process.size: 2gb
 taskmanager.memory.managed.size: 512mb
 
 # 场景: 状态 10GB,并行度 4
@@ -150,8 +148,7 @@ taskmanager.memory.managed.size: 512mb
 ### 5.2 正确配置
 
 ```yaml
-# ✅ 正确: 根据状态大小配置
-taskmanager.memory.process.size: 8gb
+# ✅ 正确: 根据状态大小配置 taskmanager.memory.process.size: 8gb
 taskmanager.memory.managed.size: 3gb
 taskmanager.memory.network.max: 256mb
 

@@ -792,8 +792,7 @@ val alertStream = diagnosisStream
 **Qwen 2.5边缘部署配置**：
 
 ```python
-# vLLM边缘推理服务配置
-from vllm import LLM, SamplingParams
+# vLLM边缘推理服务配置 from vllm import LLM, SamplingParams
 
 llm = LLM(
     model="Qwen/Qwen2.5-7B-Instruct",
@@ -810,8 +809,7 @@ sampling_params = SamplingParams(
     stop=["<|im_end|>"]
 )
 
-# 故障诊断Prompt模板
-DIAGNOSIS_PROMPT = """你是一位工业设备维护专家。
+# 故障诊断Prompt模板 DIAGNOSIS_PROMPT = """你是一位工业设备维护专家。
 根据以下传感器数据诊断设备状态:
 {sensor_data}
 
@@ -851,8 +849,7 @@ DIAGNOSIS_PROMPT = """你是一位工业设备维护专家。
 **部署配置**：
 
 ```bash
-# 在树莓派5上运行llama.cpp
-./main \
+# 在树莓派5上运行llama.cpp ./main \
   -m models/llama-3.1-8b-Q4_K_M.gguf \
   -c 4096 \
   -n 256 \
@@ -895,16 +892,14 @@ DIAGNOSIS_PROMPT = """你是一位工业设备维护专家。
 **Qwen2.5-VL边缘部署**：
 
 ```python
-# MLC LLM部署Qwen2.5-VL
-from mlc_llm import MLCEngine
+# MLC LLM部署Qwen2.5-VL from mlc_llm import MLCEngine
 
 engine = MLCEngine(
     model="qwen2_5_vl_7b_int4",
     device="android:npu",  # 使用高通NPU
 )
 
-# 多模态推理
-response = engine.chat.completions.create(
+# 多模态推理 response = engine.chat.completions.create(
     messages=[{
         "role": "user",
         "content": [
@@ -925,19 +920,16 @@ response = engine.chat.completions.create(
 **GLM-4-9B端侧部署**：
 
 ```python
-# 使用MNN框架在移动端部署
-import MNN.nn as nn
+# 使用MNN框架在移动端部署 import MNN.nn as nn
 import MNN.expr as expr
 
-# 加载量化模型
-config = nn.Config()
+# 加载量化模型 config = nn.Config()
 config.backend = nn.BackendType.CPU  # 或 NNAPI for NPU
 config.thread = 4
 
 net = nn.load_model("glm-4-9b-int4.mnn", config=config)
 
-# 代码生成
-input_ids = tokenizer.encode("// 写一个快速排序算法\ndef quicksort(arr):")
+# 代码生成 input_ids = tokenizer.encode("// 写一个快速排序算法\ndef quicksort(arr):")
 output = net.forward(input_ids)
 generated_code = tokenizer.decode(output)
 ```

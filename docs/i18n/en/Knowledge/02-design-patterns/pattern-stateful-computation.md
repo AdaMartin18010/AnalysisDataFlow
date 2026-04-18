@@ -405,7 +405,7 @@ This section establishes the formal connection between the Stateful Computation 
 
 [^9]: Flink State Backend Selection. [Flink/06-engineering/state-backend-selection.md](../../../../../Flink/09-practices/09.03-performance-tuning/state-backend-selection.md)
 
-[^10]: Flink Time Semantics. [Flink/02-core/time-semantics-and-watermark.md](../../Flink/02-core/time-semantics-and-watermark.md)
+[^10]: Flink Time Semantics. [Flink/02-core/time-semantics-and-watermark.md]
 
 [^11]: Flink Checkpoint Mechanism. [Flink/02-core/checkpoint-mechanism-deep-dive.md](../../Flink/02-core/checkpoint-mechanism-deep-dive.md)
 

@@ -151,7 +151,7 @@ Week 2: 核心メカニズム深化
 
 ### 4.1 ナビゲーションツール
 
-- **知識グラフ**: [knowledge-graph.html](../../knowledge-graph.html)
+- **知識グラフ**: [knowledge-graph.html]
 - **定理依存関係**: [THEOREM-REGISTRY.md](../../../THEOREM-REGISTRY.md)
 - **ナビゲーション索引**: [NAVIGATION-INDEX.md](../../../NAVIGATION-INDEX.md)
 

@@ -43,7 +43,7 @@ cd flink/flink-examples
 
 ### 本项目示例
 
-- [Flink/01-getting-started/](../../../../Flink/01-getting-started/)
+- [Flink/01-getting-started/]
 - [tutorials/interactive/coding-challenges/](../../../../tutorials/interactive/coding-challenges/)
 
 ## 练习题库

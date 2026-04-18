@@ -300,15 +300,13 @@ graph TB
 from feast import Entity, Feature, FeatureView, ValueType, FileSource
 from datetime import timedelta
 
-# 定义实体
-user = Entity(
+# 定义实体 user = Entity(
     name="user_id",
     value_type=ValueType.INT64,
     description="用户唯一标识"
 )
 
-# 定义特征视图
-user_transactions = FeatureView(
+# 定义特征视图 user_transactions = FeatureView(
     name="user_transaction_stats",
     entities=["user_id"],
     ttl=timedelta(hours=24),

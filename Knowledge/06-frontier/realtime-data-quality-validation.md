@@ -499,8 +499,7 @@ public class SchemaRegistryValidation implements
 ### 6.4 实时质量仪表板配置
 
 ```yaml
-# Grafana Dashboard配置片段
-apiVersion: 1
+# Grafana Dashboard配置片段 apiVersion: 1
 datasources:
   - name: QualityMetrics
     type: postgres

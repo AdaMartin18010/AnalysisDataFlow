@@ -671,8 +671,7 @@ from decimal import Decimal
 import json
 from datetime import datetime
 
-# Def-F-09-09: Python DataClass 作为 POJO 类型
-@dataclass
+# Def-F-09-09: Python DataClass 作为 POJO 类型 @dataclass
 class Transaction:
     user_id: str
     transaction_id: str
@@ -784,8 +783,7 @@ import pandas as pd
 import numpy as np
 from typing import Iterator
 
-# Def-F-09-10: Python UDF 类型声明
-@udf(result_type=DataTypes.FLOAT(),
+# Def-F-09-10: Python UDF 类型声明 @udf(result_type=DataTypes.FLOAT(),
      func_type='pandas')  # 向量化UDF
 def calculate_score(features: pd.Series) -> pd.Series:
     """Pandas UDF: 批量处理,性能提升10-100x"""
@@ -820,21 +818,18 @@ class ExplodeCategories(TableFunction):
         for cat in categories.split(","):
             yield cat.strip()
 
-# 主程序
-settings = EnvironmentSettings.new_instance() \
+# 主程序 settings = EnvironmentSettings.new_instance() \
     .in_streaming_mode() \
     .build()
 
 table_env = StreamTableEnvironment.create(settings)
 
-# 注册UDF
-table_env.create_temporary_function("calculate_score", calculate_score)
+# 注册UDF table_env.create_temporary_function("calculate_score", calculate_score)
 table_env.create_temporary_function("assess_risk", assess_risk)
 table_env.create_temporary_function("avg_amount", avg_amount)
 table_env.create_temporary_system_function("explode_categories", ExplodeCategories())
 
-# 创建源表
-table_env.execute_sql("""
+# 创建源表 table_env.execute_sql("""
     CREATE TABLE transactions (
         user_id STRING,
         amount DECIMAL(18,2),
@@ -849,8 +844,7 @@ table_env.execute_sql("""
     )
 """)
 
-# 使用UDF的查询
-result = table_env.sql_query("""
+# 使用UDF的查询 result = table_env.sql_query("""
     SELECT
         user_id,
         amount,
@@ -862,8 +856,7 @@ result = table_env.sql_query("""
     WINDOW w AS (PARTITION BY user_id ORDER BY ts RANGE INTERVAL '1' HOUR PRECEDING)
 """)
 
-# 执行并转换为Pandas DataFrame
-df = result.to_pandas()
+# 执行并转换为Pandas DataFrame df = result.to_pandas()
 print(df.head())
 ```
 
@@ -871,47 +864,37 @@ print(df.head())
 
 ```text
 # requirements.txt 示例
-# Flink 核心依赖
-apache-flink==1.19.0
+# Flink 核心依赖 apache-flink==1.19.0
 apache-flink-libraries==1.19.0
 
-# Python UDF 依赖
-pandas>=1.3.0
+# Python UDF 依赖 pandas>=1.3.0
 numpy>=1.21.0
 pyarrow>=7.0.0  # 必需:用于Java-Python数据传输
 
-# 异步支持
-aiohttp>=3.8.0
+# 异步支持 aiohttp>=3.8.0
 asyncio-mqtt>=0.11.0
 
-# 机器学习
-scikit-learn>=1.0.0
+# 机器学习 scikit-learn>=1.0.0
 lightgbm>=3.3.0
 
-# 数据库连接
-psycopg2-binary>=2.9.0
+# 数据库连接 psycopg2-binary>=2.9.0
 redis>=4.0.0
 ```
 
 ```dockerfile
-# Dockerfile for PyFlink with custom dependencies
-FROM flink:1.19.0-scala_2.12-java11
+# Dockerfile for PyFlink with custom dependencies FROM flink:1.19.0-scala_2.12-java11
 
-# 安装 Python 3.9
-RUN apt-get update && \
+# 安装 Python 3.9 RUN apt-get update && \
     apt-get install -y python3.9 python3.9-distutils python3-pip && \
     ln -s /usr/bin/python3.9 /usr/bin/python
 
-# 安装依赖
-COPY requirements.txt /opt/flink/
+# 安装依赖 COPY requirements.txt /opt/flink/
 RUN pip install --no-cache-dir -r /opt/flink/requirements.txt
 
-# 设置 PyFlink 环境变量
-ENV PYTHONPATH=/opt/flink/opt/python:$PYTHONPATH
+# 设置 PyFlink 环境变量 ENV PYTHONPATH=/opt/flink/opt/python:$PYTHONPATH
 ENV PYFLINK_CLIENT_EXECUTABLE=/usr/bin/python
 
-# 复制作业代码
-COPY fraud_detection.py /opt/flink/jobs/
+# 复制作业代码 COPY fraud_detection.py /opt/flink/jobs/
 
 ENTRYPOINT ["/opt/flink/bin/flink", "run", "-py", "/opt/flink/jobs/fraud_detection.py"]
 ```
@@ -1217,8 +1200,7 @@ from pyflink.table import StreamTableEnvironment
 from pyflink.table.udf import udf
 from pyflink.java_gateway import get_gateway
 
-# 通过Java Gateway调用Java UDF
-def call_java_udf():
+# 通过Java Gateway调用Java UDF def call_java_udf():
     gateway = get_gateway()
 
     # 获取Java类
@@ -1231,8 +1213,7 @@ def call_java_udf():
     result = java_udf.evaluate("input_data")
     return result
 
-# 包装为Python UDF
-@udf(result_type=DataTypes.STRING())
+# 包装为Python UDF @udf(result_type=DataTypes.STRING())
 def hybrid_udf(input_str: str) -> str:
     """Python UDF中调用Java逻辑"""
     # 前置处理:Python

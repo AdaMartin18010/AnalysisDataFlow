@@ -113,7 +113,7 @@
 ## 🤝 社区与贡献
 
 - 💬 [加入讨论](https://github.com/luyanfeng/AnalysisDataFlow/discussions) — 提问、分享经验、展示成果
-- 📝 [贡献指南](./docs/contributing/CONTRIBUTING.md) — 如何提交 Issue 和 PR
+- 📝 [贡献指南] — 如何提交 Issue 和 PR
 - 🚀 [知识图谱 v2.0](https://knowledge-graph.analysisdataflow.github.io/) — 交互式探索 10,000+ 形式化元素
 - 📋 [社区设置指南](./COMMUNITY/SETUP-GUIDE.md) — 维护者运营手册
 - 🏠 [新用户欢迎指南](./COMMUNITY/welcome-guide.md) — 第一次参与必看
@@ -124,7 +124,7 @@
 
 ### 按主题导航
 
-- **理论基础**: [Struct/ 统一流计算理论](../Struct/00-INDEX.md)
+- **理论基础**: [Struct/ 统一流计算理论]
 - **设计模式**: [Knowledge/ 流处理核心模式](Knowledge/02-design-patterns/)
 - **Flink 核心**: [Flink/ Checkpoint机制](Flink/02-core/checkpoint-mechanism-deep-dive.md)
 - **前沿技术**: [Knowledge/06-frontier/ AI-Native数据库](Knowledge/06-frontier/vector-search-streaming-convergence.md)

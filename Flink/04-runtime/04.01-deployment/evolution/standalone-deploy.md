@@ -45,11 +45,9 @@ $$
 ### 5.1 启动脚本
 
 ```bash
-# 启动集群
-./bin/start-cluster.sh
+# 启动集群 ./bin/start-cluster.sh
 
-# 提交作业
-./bin/flink run ./examples/streaming/WordCount.jar
+# 提交作业 ./bin/flink run ./examples/streaming/WordCount.jar
 ```
 
 ## 6. 实例验证 (Examples)

@@ -316,8 +316,7 @@ def union_windows(w1, w2):
         result[k] = result.get(k, []) + v
     return result
 
-# 验证分配律
-S1 = [Event("a", 5, 1.0), Event("b", 15, 2.0)]
+# 验证分配律 S1 = [Event("a", 5, 1.0), Event("b", 15, 2.0)]
 S2 = [Event("c", 8, 3.0), Event("d", 25, 4.0)]
 
 left = tumbling_window(S1 + S2, 10)

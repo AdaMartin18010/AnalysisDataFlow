@@ -94,7 +94,7 @@ graph TB
 | 优先级 | 文档 | 预计时间 | 关键产出 |
 |--------|------|----------|----------|
 | P0 | [统一流计算理论](Struct/01-foundation/01.01-unified-streaming-theory.md) | 4-6h | 理解六层表达能力层次 |
-| P1 | [一致性层级](../02-properties/02.02-consistency-hierarchy.md) | 2-3h | 掌握一致性模型选择 |
+| P1 | [一致性层级] | 2-3h | 掌握一致性模型选择 |
 | P2 | [表达能力层次](Struct/03-relationships/03.03-expressiveness-hierarchy.md) | 2h | 理解模型间的表达能力关系 |
 
 **关键问题清单**:
@@ -234,7 +234,7 @@ gantt
 | 优先级 | 文档 | 预计时间 | 关键产出 |
 |--------|------|----------|----------|
 | P0 | [进程演算入门](Struct/01-foundation/01.02-process-calculus-primer.md) | 6-8h | 掌握 CSP/CCS 基础 |
-| P0 | [Actor 模型形式化](../01-foundation/01.03-actor-model-formalization.md) | 4-6h | 理解 Actor 语义 |
+| P0 | [Actor 模型形式化] | 4-6h | 理解 Actor 语义 |
 | P1 | [CSP 形式化](Struct/01-foundation/01.05-csp-formalization.md) | 4h | 掌握 CSP 代数法则 |
 | P2 | [会话类型](Struct/01-foundation/01.07-session-types.md) | 4h | 理解会话类型理论 |
 

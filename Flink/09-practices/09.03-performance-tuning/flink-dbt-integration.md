@@ -377,8 +377,7 @@ WHERE created_at > (SELECT MAX(created_at) FROM fct_orders);
 **混合架构支持**：
 
 ```yaml
-# dbt_project.yml - 支持批流混合
-default:
+# dbt_project.yml - 支持批流混合 default:
   +materialized: view
 
 models:
@@ -965,8 +964,7 @@ local_flink:
 ### 6.4 GitHub Actions CI/CD 工作流
 
 ```yaml
-# .github/workflows/dbt-ci.yml
-name: dbt CI/CD
+# .github/workflows/dbt-ci.yml name: dbt CI/CD
 
 on:
   push:

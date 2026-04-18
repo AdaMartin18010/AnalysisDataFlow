@@ -262,8 +262,7 @@ $$
 **部署拓扑推荐**：
 
 ```yaml
-# Diskless Kafka 生产配置示例
-diskless_kafka:
+# Diskless Kafka 生产配置示例 diskless_kafka:
   # 存储层配置
   storage:
     type: S3
@@ -346,43 +345,35 @@ diskless_kafka:
 # 核心 KIP-1150 配置
 # ============================================
 
-# 启用分层存储
-tiered.storage.enable=true
+# 启用分层存储 tiered.storage.enable=true
 
-# 远程存储管理器配置
-remote.log.storage.manager.class.name=org.apache.kafka.rlm.storage.s3.S3RemoteStorageManager
+# 远程存储管理器配置 remote.log.storage.manager.class.name=org.apache.kafka.rlm.storage.s3.S3RemoteStorageManager
 
-# S3 连接配置
-remote.log.storage.manager.s3.bucket.name=kafka-tiered-storage-prod
+# S3 连接配置 remote.log.storage.manager.s3.bucket.name=kafka-tiered-storage-prod
 remote.log.storage.manager.s3.region=us-east-1
 remote.log.storage.manager.s3.credentials.provider=com.amazonaws.auth.DefaultAWSCredentialsProviderChain
 
-# 本地保留策略
-log.local.retention.bytes=107374182400      # 100GB 本地保留
+# 本地保留策略 log.local.retention.bytes=107374182400      # 100GB 本地保留
 log.local.retention.ms=3600000               # 1小时本地保留
 
-# 分层迁移策略
-log.remote.copy.max.thread.pool.size=10
+# 分层迁移策略 log.remote.copy.max.thread.pool.size=10
 log.remote.copy.max.batch.size=100
 
 # ============================================
 # 性能优化配置
 # ============================================
 
-# 读取缓存优化
-remote.log.reader.thread.pool.size=20
+# 读取缓存优化 remote.log.reader.thread.pool.size=20
 remote.log.reader.max.pending.reads=100
 
-# 网络优化
-remote.log.storage.transfer.max.network.thread.count=8
+# 网络优化 remote.log.storage.transfer.max.network.thread.count=8
 remote.log.storage.transfer.max.bytes.per.second=536870912  # 512MB/s
 
 # ============================================
 # 监控配置
 # ============================================
 
-# JMX 指标
-remote.log.storage.metrics.enable=true
+# JMX 指标 remote.log.storage.metrics.enable=true
 ```
 
 ### 6.2 Flink 与 Diskless Kafka 集成配置

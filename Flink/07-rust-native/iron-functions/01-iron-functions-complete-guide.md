@@ -281,11 +281,9 @@ Iron Functions 通过以下机制保证安全性：
 #### 步骤 1: 创建项目
 
 ```bash
-# 安装 ironfun CLI
-curl -s https://irontools.dev/ironfun-cli-install.sh | sh
+# 安装 ironfun CLI curl -s https://irontools.dev/ironfun-cli-install.sh | sh
 
-# 生成 Rust 项目模板
-ironfun generate --name ethereum-decoder --language rust --path ./ethereum-decoder
+# 生成 Rust 项目模板 ironfun generate --name ethereum-decoder --language rust --path ./ethereum-decoder
 cd ethereum-decoder
 ```
 
@@ -545,11 +543,9 @@ mod tests {
 # 安装 wasm32 目标(如果尚未安装)
 rustup target add wasm32-unknown-unknown
 
-# 编译为 WASM
-cargo build --release --target wasm32-unknown-unknown
+# 编译为 WASM cargo build --release --target wasm32-unknown-unknown
 
-# 验证输出
-ls -la target/wasm32-unknown-unknown/release/ethereum_decoder.wasm
+# 验证输出 ls -la target/wasm32-unknown-unknown/release/ethereum_decoder.wasm
 ```
 
 #### 步骤 5: 打包为 Flink UDF
@@ -1036,14 +1032,11 @@ Iron Functions 运行时与 Flink 版本的兼容性：
 **手动检查版本状态**:
 
 ```bash
-# 检查当前版本状态
-python .scripts/iron-functions-tracker.py --check
+# 检查当前版本状态 python .scripts/iron-functions-tracker.py --check
 
-# 生成同步建议
-python .scripts/iron-functions-tracker.py --sync-advice
+# 生成同步建议 python .scripts/iron-functions-tracker.py --sync-advice
 
-# 更新版本记录
-python .scripts/iron-functions-tracker.py --update
+# 更新版本记录 python .scripts/iron-functions-tracker.py --update
 ```
 
 ### 9.4 升级指南
@@ -1082,14 +1075,11 @@ description = "Iron Functions UDF for Apache Flink"
 license = "MIT OR Apache-2.0"
 
 [dependencies]
-# Iron Functions SDK
-iron-functions-sdk = "0.2"
+# Iron Functions SDK iron-functions-sdk = "0.2"
 
-# Extism Plugin Development Kit
-extism-pdk = "0.3"
+# Extism Plugin Development Kit extism-pdk = "0.3"
 
-# 序列化
-serde = { version = "1.0", features = ["derive"] }
+# 序列化 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 
 # 日志(在 WASM 中输出到 Flink 日志)
@@ -1107,8 +1097,7 @@ log = "0.4"
 crate-type = ["cdylib"]
 
 [profile.release]
-# WASM 优化配置
-opt-level = 3        # 最大优化
+# WASM 优化配置 opt-level = 3        # 最大优化
 lto = true           # 链接时优化
 strip = true         # 去除符号
 panic = "abort"      # 更小的二进制

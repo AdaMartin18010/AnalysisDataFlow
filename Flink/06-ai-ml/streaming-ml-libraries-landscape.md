@@ -1321,15 +1321,13 @@ $$
 **场景**：实时用户行为分类（点击预测）
 
 ```python
-# river_click_prediction.py
-from river import compose, linear_model, preprocessing, metrics, drift
+# river_click_prediction.py from river import compose, linear_model, preprocessing, metrics, drift
 import json
 from datetime import datetime
 
 # ============================================
 # 1. 定义模型管道
-# ============================================
-def create_model():
+# ============================================ def create_model():
     """创建River在线学习管道"""
     model = compose.Pipeline(
         # 增量预处理
@@ -1342,8 +1340,7 @@ def create_model():
     )
     return model
 
-# 更复杂的管道示例
-def create_advanced_model():
+# 更复杂的管道示例 def create_advanced_model():
     """高级模型:带特征工程和漂移检测"""
     from river import feature_extraction, tree
 
@@ -1363,8 +1360,7 @@ def create_advanced_model():
 
 # ============================================
 # 2. 模拟数据流
-# ============================================
-def generate_stream(n_samples=10000, drift_point=5000):
+# ============================================ def generate_stream(n_samples=10000, drift_point=5000):
     """生成带概念漂移的点击流数据"""
     import random
 
@@ -1391,8 +1387,7 @@ def generate_stream(n_samples=10000, drift_point=5000):
 
 # ============================================
 # 3. 训练与评估循环
-# ============================================
-def train_and_evaluate():
+# ============================================ def train_and_evaluate():
     """完整的训练评估流程"""
 
     model = create_model()
@@ -1455,8 +1450,7 @@ def train_and_evaluate():
 
 # ============================================
 # 4. 模型持久化
-# ============================================
-def save_model(model, filepath='river_model.pkl'):
+# ============================================ def save_model(model, filepath='river_model.pkl'):
     """保存模型到磁盘"""
     import pickle
     with open(filepath, 'wb') as f:
@@ -1482,16 +1476,14 @@ if __name__ == '__main__':
 **场景**：实时广告推荐中的探索-利用权衡
 
 ```python
-# vw_contextual_bandit.py
-import subprocess
+# vw_contextual_bandit.py import subprocess
 import json
 import random
 from datetime import datetime
 
 # ============================================
 # 1. 训练数据生成
-# ============================================
-def generate_vw_cb_data(n_samples=10000, output_file='cb_train.vw'):
+# ============================================ def generate_vw_cb_data(n_samples=10000, output_file='cb_train.vw'):
     """
     生成VW上下文老虎机训练数据
 
@@ -1544,8 +1536,7 @@ def generate_vw_cb_data(n_samples=10000, output_file='cb_train.vw'):
 
 # ============================================
 # 2. VW训练
-# ============================================
-def train_vw_cb(train_file='cb_train.vw', model_file='cb_model.vw'):
+# ============================================ def train_vw_cb(train_file='cb_train.vw', model_file='cb_model.vw'):
     """训练VW上下文老虎机模型"""
 
     cmd = [
@@ -1571,8 +1562,7 @@ def train_vw_cb(train_file='cb_train.vw', model_file='cb_model.vw'):
 
 # ============================================
 # 3. VW预测(实时决策)
-# ============================================
-def predict_vw_cb(model_file, user_features):
+# ============================================ def predict_vw_cb(model_file, user_features):
     """
     使用VW模型进行实时决策
 
@@ -1615,8 +1605,7 @@ def predict_vw_cb(model_file, user_features):
 
 # ============================================
 # 4. Python集成(用于Flink等系统)
-# ============================================
-class VWService:
+# ============================================ class VWService:
     """VW模型服务封装,适合生产环境部署"""
 
     def __init__(self, model_path):
@@ -1660,8 +1649,7 @@ class VWService:
 
 # ============================================
 # 5. 完整示例流程
-# ============================================
-def main():
+# ============================================ def main():
     # 1. 生成训练数据
     generate_vw_cb_data(n_samples=50000)
 
@@ -1696,8 +1684,7 @@ if __name__ == '__main__':
 **场景**：Flink流处理中嵌入River在线学习
 
 ```python
-# pyflink_river_integration.py
-from pyflink.datastream import StreamExecutionEnvironment, RuntimeContext
+# pyflink_river_integration.py from pyflink.datastream import StreamExecutionEnvironment, RuntimeContext
 from pyflink.datastream.state import ValueStateDescriptor
 from pyflink.common.typeinfo import Types
 from pyflink.datastream.functions import KeyedProcessFunction
@@ -1708,8 +1695,7 @@ from river import compose, preprocessing, tree, metrics
 
 # ============================================
 # 1. 序列化工具
-# ============================================
-def serialize_model(model):
+# ============================================ def serialize_model(model):
     """序列化River模型"""
     return pickle.dumps(model)
 
@@ -1719,8 +1705,7 @@ def deserialize_model(model_bytes):
 
 # ============================================
 # 2. River模型工厂
-# ============================================
-def create_river_model():
+# ============================================ def create_river_model():
     """创建River模型管道"""
     return compose.Pipeline(
         ('scale', preprocessing.StandardScaler()),
@@ -1733,8 +1718,7 @@ def create_river_model():
 
 # ============================================
 # 3. KeyedProcessFunction集成
-# ============================================
-class RiverOnlineLearner(KeyedProcessFunction):
+# ============================================ class RiverOnlineLearner(KeyedProcessFunction):
     """
     Flink KeyedProcessFunction + River在线学习
 
@@ -1840,8 +1824,7 @@ class RiverOnlineLearner(KeyedProcessFunction):
 
 # ============================================
 # 4. 广播状态模式(全局模型共享)
-# ============================================
-from pyflink.datastream.functions import BroadcastProcessFunction
+# ============================================ from pyflink.datastream.functions import BroadcastProcessFunction
 
 class GlobalModelBroadcast(BroadcastProcessFunction):
     """
@@ -1885,8 +1868,7 @@ class GlobalModelBroadcast(BroadcastProcessFunction):
 
 # ============================================
 # 5. 主流程
-# ============================================
-def main():
+# ============================================ def main():
     env = StreamExecutionEnvironment.get_execution_environment()
     env.set_parallelism(4)
 
@@ -1941,8 +1923,7 @@ if __name__ == '__main__':
 ### 6.4 概念漂移检测与响应完整实现
 
 ```python
-# drift_detection_production.py
-import river
+# drift_detection_production.py import river
 from river import drift, metrics
 from river.drift import ADWIN, PageHinkley, KSWIN
 import numpy as np
@@ -1955,8 +1936,7 @@ logger = logging.getLogger(__name__)
 
 # ============================================
 # 1. 漂移检测器工厂
-# ============================================
-class DriftDetectorFactory:
+# ============================================ class DriftDetectorFactory:
     """创建和配置漂移检测器"""
 
     @staticmethod
@@ -1991,8 +1971,7 @@ class DriftDetectorFactory:
 
 # ============================================
 # 2. 漂移处理策略
-# ============================================
-class DriftHandlingStrategy:
+# ============================================ class DriftHandlingStrategy:
     """定义漂移发生时的响应策略"""
 
     def on_drift_detected(self, detector_name, context):
@@ -2025,8 +2004,7 @@ class AdaptiveStrategy(DriftHandlingStrategy):
 
 # ============================================
 # 3. 生产级漂移检测管理器
-# ============================================
-class ProductionDriftManager:
+# ============================================ class ProductionDriftManager:
     """
     生产级漂移检测管理器
     支持多检测器、多级响应、指标监控
@@ -2169,8 +2147,7 @@ class ProductionDriftManager:
 
 # ============================================
 # 4. 使用示例
-# ============================================
-def demo():
+# ============================================ def demo():
     """完整使用示例"""
 
     from river import compose, preprocessing, tree
@@ -2240,19 +2217,15 @@ if __name__ == '__main__':
 #### Scikit-multiflow示例
 
 ```python
-# scikit_multiflow_example.py
-from skmultiflow.data import SEAGenerator
+# scikit_multiflow_example.py from skmultiflow.data import SEAGenerator
 from skmultiflow.trees import HoeffdingTreeClassifier
 from skmultiflow.evaluation import EvaluatePrequential
 
-# 创建数据流
-stream = SEAGenerator(random_state=1)
+# 创建数据流 stream = SEAGenerator(random_state=1)
 
-# 创建分类器
-ht = HoeffdingTreeClassifier()
+# 创建分类器 ht = HoeffdingTreeClassifier()
 
-# 预quential评估
-evaluator = EvaluatePrequential(
+# 预quential评估 evaluator = EvaluatePrequential(
     show_plot=False,
     pretrain_size=100,
     max_samples=10000
@@ -2264,11 +2237,9 @@ evaluator.evaluate(stream=stream, model=ht)
 #### LightGBM在线学习
 
 ```python
-# lightgbm_online.py
-import lightgbm as lgb
+# lightgbm_online.py import lightgbm as lgb
 
-# 初始训练
-params = {
+# 初始训练 params = {
     'objective': 'binary',
     'metric': 'auc',
     'learning_rate': 0.05
@@ -2285,15 +2256,12 @@ model = lgb.train(params, new_data, num_boost_round=10, init_model=model)
 #### XGBoost增量学习
 
 ```python
-# xgboost_incremental.py
-import xgboost as xgb
+# xgboost_incremental.py import xgboost as xgb
 
-# 初始模型
-model = xgb.XGBClassifier()
+# 初始模型 model = xgb.XGBClassifier()
 model.fit(X_train, y_train)
 
-# 增量学习
-model.fit(X_new, y_new, xgb_model=model.get_booster())
+# 增量学习 model.fit(X_new, y_new, xgb_model=model.get_booster())
 ```
 
 ---

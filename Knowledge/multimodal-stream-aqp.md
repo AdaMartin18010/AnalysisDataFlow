@@ -98,8 +98,7 @@ $$
 from sentence_transformers import SentenceTransformer
 import faiss
 
-# 假设已有视频帧嵌入和文本查询
-video_embeddings = np.load("video_emb.npy")  # [N, 512]
+# 假设已有视频帧嵌入和文本查询 video_embeddings = np.load("video_emb.npy")  # [N, 512]
 index = faiss.IndexFlatIP(512)
 index.add(video_embeddings)
 

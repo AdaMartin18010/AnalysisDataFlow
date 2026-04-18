@@ -421,14 +421,11 @@ let gen = || {
 **迁移策略**:
 
 ```bash
-# 1. 自动迁移
-cargo fix --edition
+# 1. 自动迁移 cargo fix --edition
 
-# 2. 手动审查关键变更
-cargo clippy --all-targets --all-features
+# 2. 手动审查关键变更 cargo clippy --all-targets --all-features
 
-# 3. 测试回归
-cargo test --workspace
+# 3. 测试回归 cargo test --workspace
 ```
 
 **主要破坏性变更清单**:

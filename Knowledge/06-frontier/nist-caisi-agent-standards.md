@@ -537,8 +537,7 @@ $$
 **AIP 实现架构**:
 
 ```yaml
-# AIP 信任锚配置示例
-trust_anchors:
+# AIP 信任锚配置示例 trust_anchors:
   - name: "Federal-Root-CA"
     type: "HSM-FIPS140-3-L3"
     key_algorithm: "ECDSA-P384"

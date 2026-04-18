@@ -57,8 +57,7 @@
 **步骤 1：创建 Docker Compose 文件**
 
 ```yaml
-# docker-compose.yml
-version: '3.8'
+# docker-compose.yml version: '3.8'
 
 services:
   jobmanager:
@@ -113,14 +112,11 @@ volumes:
 **步骤 2：启动集群**
 
 ```bash
-# 一键启动
-docker-compose up -d
+# 一键启动 docker-compose up -d
 
-# 查看状态
-docker-compose ps
+# 查看状态 docker-compose ps
 
-# 查看日志
-docker-compose logs -f jobmanager
+# 查看日志 docker-compose logs -f jobmanager
 ```
 
 **步骤 3：访问 Web UI**
@@ -141,8 +137,7 @@ docker-compose logs -f jobmanager
 **方式一：SQL 客户端（推荐新手）**
 
 ```bash
-# 进入 Flink SQL 客户端
-docker-compose exec jobmanager ./bin/sql-client.sh
+# 进入 Flink SQL 客户端 docker-compose exec jobmanager ./bin/sql-client.sh
 ```
 
 ```sql
@@ -279,11 +274,9 @@ public class FirstFlinkJob {
 **编译运行：**
 
 ```bash
-# 编译
-mvn clean package
+# 编译 mvn clean package
 
-# 提交到集群
-docker-compose exec jobmanager ./bin/flink run \
+# 提交到集群 docker-compose exec jobmanager ./bin/flink run \
     -c FirstFlinkJob \
     /path/to/your-job.jar
 ```
@@ -295,14 +288,11 @@ docker-compose exec jobmanager ./bin/flink run \
 **检查集群状态：**
 
 ```bash
-# 查看运行的作业
-docker-compose exec jobmanager ./bin/flink list
+# 查看运行的作业 docker-compose exec jobmanager ./bin/flink list
 
-# 查看 TaskManager
-docker-compose exec jobmanager ./bin/flink info
+# 查看 TaskManager docker-compose exec jobmanager ./bin/flink info
 
-# 停止作业
-docker-compose exec jobmanager ./bin/flink cancel <job-id>
+# 停止作业 docker-compose exec jobmanager ./bin/flink cancel <job-id>
 ```
 
 **Web UI 验证点：**
@@ -417,8 +407,7 @@ agent.execute();
 ai.agent.state.backend: rocksdb
 ai.agent.checkpoint.interval: 30s
 
-# LLM 连接池
-ai.llm.connection.pool.size: 10
+# LLM 连接池 ai.llm.connection.pool.size: 10
 ai.llm.connection.timeout: 30s
 ai.llm.retry.max-attempts: 3
 ```
@@ -432,8 +421,7 @@ ai.llm.retry.max-attempts: 3
 **Kubernetes 部署：**
 
 ```yaml
-# flink-serverless.yaml
-apiVersion: flink.apache.org/v1beta1
+# flink-serverless.yaml apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: serverless-etl
@@ -477,8 +465,7 @@ spec:
 **KEDA 自动扩缩容：**
 
 ```yaml
-# keda-scaledobject.yaml
-apiVersion: keda.sh/v1alpha1
+# keda-scaledobject.yaml apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
   name: flink-kafka-scaler
@@ -502,16 +489,13 @@ spec:
 **部署命令：**
 
 ```bash
-# 安装 Flink Kubernetes Operator
-helm repo add flink-operator https://downloads.apache.org/flink/flink-kubernetes-operator-1.14.0/
+# 安装 Flink Kubernetes Operator helm repo add flink-operator https://downloads.apache.org/flink/flink-kubernetes-operator-1.14.0/
 helm install flink-operator flink-operator/flink-kubernetes-operator
 
-# 部署 Serverless 作业
-kubectl apply -f flink-serverless.yaml
+# 部署 Serverless 作业 kubectl apply -f flink-serverless.yaml
 kubectl apply -f keda-scaledobject.yaml
 
-# 查看状态
-kubectl get flinkdeployments
+# 查看状态 kubectl get flinkdeployments
 kubectl get scaledobject
 ```
 
@@ -687,14 +671,12 @@ WHERE e.event_type = 'PURCHASE';
 **配置启用 GPU：**
 
 ```yaml
-# flink-conf.yaml - GPU 配置
-gpu.enabled: true
+# flink-conf.yaml - GPU 配置 gpu.enabled: true
 gpu.device.ids: "0,1,2,3"  # 可用 GPU 列表
 gpu.memory.pool.size: 8GB
 gpu.stream.per-device: 4
 
-# CUDA 特定配置
-cuda.path: /usr/local/cuda
+# CUDA 特定配置 cuda.path: /usr/local/cuda
 cuda.arch: "80;86;89"  # Ampere + Ada
 ```
 
@@ -797,11 +779,9 @@ pub fn mask_email(email: String) -> String {
 **编译为 WASM：**
 
 ```bash
-# 安装工具
-cargo install cargo-flink
+# 安装工具 cargo install cargo-flink
 
-# 编译 UDF
-cargo flink build --release
+# 编译 UDF cargo flink build --release
 
 # 输出: target/wasm32-wasi/release/geo_udf.wasm
 ```
@@ -858,8 +838,7 @@ FROM users;
 **WASM UDF 配置：**
 
 ```yaml
-# flink-conf.yaml - WASM 配置
-wasm.enabled: true
+# flink-conf.yaml - WASM 配置 wasm.enabled: true
 wasm.runtime: wasmtime  # 或 wasmedge
 wasm.aot.enabled: true
 wasm.instance-pool.enabled: true
@@ -894,23 +873,19 @@ wasm.module-cache.memory-size: 256MB
 # 调优配置模板
 # flink-conf.yaml
 
-# 内存配置
-taskmanager.memory.process.size: 4096m
+# 内存配置 taskmanager.memory.process.size: 4096m
 taskmanager.memory.flink.size: 3072m
 taskmanager.memory.managed.fraction: 0.4
 
-# 网络配置
-taskmanager.memory.network.fraction: 0.15
+# 网络配置 taskmanager.memory.network.fraction: 0.15
 taskmanager.network.memory.buffer-debloat.enabled: true
 
-# Checkpoint 配置
-execution.checkpointing.interval: 30s
+# Checkpoint 配置 execution.checkpointing.interval: 30s
 execution.checkpointing.timeout: 10min
 state.backend: rocksdb
 state.backend.incremental: true
 
-# JVM 配置
-env.java.opts.taskmanager: "-XX:+UseG1GC -XX:MaxGCPauseMillis=100"
+# JVM 配置 env.java.opts.taskmanager: "-XX:+UseG1GC -XX:MaxGCPauseMillis=100"
 ```
 
 ### 4.3 SQL 问题
@@ -925,35 +900,27 @@ env.java.opts.taskmanager: "-XX:+UseG1GC -XX:MaxGCPauseMillis=100"
 ### 4.4 检查点问题
 
 ```bash
-# 检查点失败排查
-docker-compose exec jobmanager ./bin/flink list
+# 检查点失败排查 docker-compose exec jobmanager ./bin/flink list
 
-# 查看检查点详情
-curl http://localhost:8081/jobs/<job-id>/checkpoints
+# 查看检查点详情 curl http://localhost:8081/jobs/<job-id>/checkpoints
 
 # 常见修复
-# 1. 增加超时时间
-execution.checkpointing.timeout: 20min
+# 1. 增加超时时间 execution.checkpointing.timeout: 20min
 
-# 2. 启用非对齐检查点
-execution.checkpointing.unaligned.enabled: true
+# 2. 启用非对齐检查点 execution.checkpointing.unaligned.enabled: true
 
-# 3. 减少并发检查点数
-execution.checkpointing.max-concurrent-checkpoints: 1
+# 3. 减少并发检查点数 execution.checkpointing.max-concurrent-checkpoints: 1
 ```
 
 ### 4.5 连接器问题
 
 ```bash
 # Kafka 连接问题排查
-# 1. 检查网络连通性
-docker-compose exec taskmanager nc -zv kafka 9092
+# 1. 检查网络连通性 docker-compose exec taskmanager nc -zv kafka 9092
 
-# 2. 验证 topic 存在
-docker-compose exec kafka kafka-topics --list --bootstrap-server kafka:29092
+# 2. 验证 topic 存在 docker-compose exec kafka kafka-topics --list --bootstrap-server kafka:29092
 
-# 3. 检查消费者组
-docker-compose exec kafka kafka-consumer-groups \
+# 3. 检查消费者组 docker-compose exec kafka kafka-consumer-groups \
     --bootstrap-server kafka:29092 \
     --describe --group flink-consumer-group
 ```

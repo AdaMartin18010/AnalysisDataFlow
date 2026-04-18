@@ -371,8 +371,7 @@ Coq允许在同一框架内完成：
 Coq要求所有函数都是全函数(total function)。部分函数需要通过额外的终止证明或包装类型处理：
 
 ```coq
-# 伪代码示意，非完整可编译代码
-(* 可能不终止的流处理:使用选项类型 *)
+# 伪代码示意，非完整可编译代码 (* 可能不终止的流处理:使用选项类型 *)
 Definition safeHead {A} (s : Stream A) : option A := ...
 ```
 
@@ -988,8 +987,7 @@ End WatermarkExample.
 # 安装Coq(使用opam)
 opam install coq
 
-# 编译Coq文件
-coqc WatermarkProof.v
+# 编译Coq文件 coqc WatermarkProof.v
 
 # 交互式证明(使用CoqIDE或Proof General)
 coqide WatermarkProof.v

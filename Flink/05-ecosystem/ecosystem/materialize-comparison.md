@@ -223,8 +223,7 @@ graph LR
 **Flink**:
 
 ```yaml
-# Cost optimization strategies
-optimization:
+# Cost optimization strategies optimization:
   - Use spot instances for TaskManagers
   - Enable adaptive scheduler
   - Right-size state backends
@@ -234,8 +233,7 @@ optimization:
 **Materialize**:
 
 ```yaml
-# Cost optimization strategies
-optimization:
+# Cost optimization strategies optimization:
   - Index common query patterns
   - Consolidate materialized views
   - Use REFRESH strategies wisely

@@ -677,8 +677,7 @@ if __name__ == '__main__':
 # 适用范围: Flink 1.16+ - 2.5+
 # ============================================
 
-# ========== 内存配置 ==========
-taskmanager.memory.process.size: 8gb
+# ========== 内存配置 ========== taskmanager.memory.process.size: 8gb
 taskmanager.memory.flink.size: 6gb
 taskmanager.memory.managed.size: 2gb
 taskmanager.memory.network.max: 256mb
@@ -686,12 +685,10 @@ taskmanager.numberOfTaskSlots: 4
 
 jobmanager.memory.process.size: 2gb
 
-# JVM 参数
-env.java.opts.taskmanager: "-XX:+UseG1GC -XX:MaxGCPauseMillis=100 -XX:+UnlockExperimentalVMOptions"
+# JVM 参数 env.java.opts.taskmanager: "-XX:+UseG1GC -XX:MaxGCPauseMillis=100 -XX:+UnlockExperimentalVMOptions"
 env.java.opts.jobmanager: "-XX:+UseG1GC -XX:MaxGCPauseMillis=100"
 
-# ========== Checkpoint 配置 ==========
-execution.checkpointing.mode: EXACTLY_ONCE
+# ========== Checkpoint 配置 ========== execution.checkpointing.mode: EXACTLY_ONCE
 execution.checkpointing.interval: 300s
 execution.checkpointing.timeout: 600s
 execution.checkpointing.min-pause: 300s
@@ -699,8 +696,7 @@ execution.checkpointing.max-concurrent-checkpoints: 1
 execution.checkpointing.externalized-checkpoint-retention: RETAIN_ON_CANCELLATION
 execution.checkpointing.unaligned.enabled: false
 
-# ========== 状态后端配置 ==========
-state.backend: rocksdb
+# ========== 状态后端配置 ========== state.backend: rocksdb
 state.backend.incremental: true
 state.backend.local-recovery: true
 state.backend.rocksdb.memory.fixed-per-slot: 256mb
@@ -710,33 +706,28 @@ state.backend.rocksdb.threads.threads-number: 4
 state.checkpoint-storage: filesystem
 state.checkpoints.dir: hdfs:///flink/checkpoints
 
-# ========== 重启策略 ==========
-restart-strategy: exponential-delay
+# ========== 重启策略 ========== restart-strategy: exponential-delay
 restart-strategy.exponential-delay.initial-backoff: 1s
 restart-strategy.exponential-delay.max-backoff: 60s
 restart-strategy.exponential-delay.backoff-multiplier: 2.0
 restart-strategy.exponential-delay.reset-backoff-threshold: 300s
 restart-strategy.exponential-delay.jitter-factor: 0.1
 
-# ========== 网络配置 ==========
-taskmanager.network.memory.fraction: 0.15
+# ========== 网络配置 ========== taskmanager.network.memory.fraction: 0.15
 taskmanager.network.memory.min: 128mb
 taskmanager.network.memory.max: 512mb
 
-# ========== 高可用配置 ==========
-high-availability: zookeeper
+# ========== 高可用配置 ========== high-availability: zookeeper
 high-availability.storageDir: hdfs:///flink/ha
 high-availability.zookeeper.quorum: zk1:2181,zk2:2181,zk3:2181
 high-availability.zookeeper.path.root: /flink
 
-# ========== 监控配置 ==========
-metrics.reporters: prometheus
+# ========== 监控配置 ========== metrics.reporters: prometheus
 metrics.reporter.prometheus.port: 9249
 metrics.reporter.prometheus.filter.includes: "*checkpoint*,*records*,*latency*,*jvm*"
 metrics.latency.interval: 10000
 
-# ========== 安全配置 ==========
-security.ssl.internal.enabled: true
+# ========== 安全配置 ========== security.ssl.internal.enabled: true
 security.ssl.rest.enabled: true
 security.ssl.truststore: /path/to/truststore.jks
 security.ssl.truststore-password: ${TRUSTSTORE_PASSWORD}
@@ -747,12 +738,10 @@ security.ssl.keystore-password: ${KEYSTORE_PASSWORD}
 # security.kerberos.login.keytab: /path/to/keytab
 # security.kerberos.login.principal: flink@EXAMPLE.COM
 
-# ========== Web UI 配置 ==========
-webui.upload.dir: /tmp/flink-upload
+# ========== Web UI 配置 ========== webui.upload.dir: /tmp/flink-upload
 webui.max-file-size: 104857600
 
-# ========== 并行度配置 ==========
-parallelism.default: 4
+# ========== 并行度配置 ========== parallelism.default: 4
 ```
 
 ---

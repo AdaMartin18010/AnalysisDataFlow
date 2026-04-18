@@ -352,8 +352,7 @@ spec:
 # Flink 2.3 三层自动扩缩容配置
 # ============================================
 
-# --- L1: Adaptive Scheduler (作业级) ---
-scheduler: adaptive-v2
+# --- L1: Adaptive Scheduler (作业级) --- scheduler: adaptive-v2
 adaptive-scheduler.v2.enabled: true
 adaptive-scheduler.scaling.policy: latency-target
 adaptive-scheduler.latency.target: 500ms
@@ -362,8 +361,7 @@ adaptive-scheduler.parallelism.min: 8
 adaptive-scheduler.parallelism.max: 128
 adaptive-scheduler.resize.step.max: 0.25
 
-# --- L2: Flink Kubernetes Operator (Pod 级) ---
-kubernetes.operator.podautoscaler.enabled: true
+# --- L2: Flink Kubernetes Operator (Pod 级) --- kubernetes.operator.podautoscaler.enabled: true
 kubernetes.operator.podautoscaler.metric: cpu-utilization
 kubernetes.operator.podautoscaler.target.utilization: 0.7
 kubernetes.operator.podautoscaler.min.replicas: 3
@@ -371,8 +369,7 @@ kubernetes.operator.podautoscaler.max.replicas: 20
 kubernetes.operator.podautoscaler.scale-up.stabilization: 2m
 kubernetes.operator.podautoscaler.scale-down.stabilization: 10m
 
-# --- L3: Cluster Autoscaler 节点标签 ---
-nodeSelector:
+# --- L3: Cluster Autoscaler 节点标签 --- nodeSelector:
   workload-type: flink-streaming
 cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
 ```
@@ -531,8 +528,7 @@ flowchart TD
 NAMESPACE="flink-production"
 DEPLOYMENT="cn-forst-job"
 
-# 模拟 AZ-1 故障:删除该可用区内的所有 TaskManager
-AZ1_NODES=$(kubectl get nodes -l topology.kubernetes.io/zone=az-1 -o jsonpath='{.items[*].metadata.name}')
+# 模拟 AZ-1 故障:删除该可用区内的所有 TaskManager AZ1_NODES=$(kubectl get nodes -l topology.kubernetes.io/zone=az-1 -o jsonpath='{.items[*].metadata.name}')
 
 echo "=== Step 1: 删除 AZ-1 中的 Flink TaskManager Pods ==="
 for node in $AZ1_NODES; do

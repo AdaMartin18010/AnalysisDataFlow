@@ -512,8 +512,7 @@ flinkConfiguration:
 ### 6.4 监控指标示例
 
 ```yaml
-# Prometheus ServiceMonitor 配置
-apiVersion: monitoring.coreos.com/v1
+# Prometheus ServiceMonitor 配置 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: flink-autoscaler-metrics

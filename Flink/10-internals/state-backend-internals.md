@@ -2121,28 +2121,23 @@ $$
 # flink-conf.yaml
 # ==================== HashMapStateBackend 配置 ====================
 
-# 启用 HashMapStateBackend
-state.backend: hashmap
+# 启用 HashMapStateBackend state.backend: hashmap
 
 # TaskManager 内存配置(关键！)
 taskmanager.memory.process.size: 8192m
 taskmanager.memory.flink.size: 6144m
 taskmanager.memory.task.heap.size: 3072m  # 用户代码 + 状态存储
 
-# Checkpoint 配置
-execution.checkpointing.interval: 30s
+# Checkpoint 配置 execution.checkpointing.interval: 30s
 execution.checkpointing.mode: EXACTLY_ONCE
 execution.checkpointing.max-concurrent-checkpoints: 1
 
-# Checkpoint 存储
-state.checkpoints.dir: hdfs:///flink/checkpoints
+# Checkpoint 存储 state.checkpoints.dir: hdfs:///flink/checkpoints
 state.savepoints.dir: hdfs:///flink/savepoints
 
-# 启用异步快照
-state.backend.hashmap.snapshot.async: true
+# 启用异步快照 state.backend.hashmap.snapshot.async: true
 
-# 内存管理
-state.backend.hashmap.memory.managed: true
+# 内存管理 state.backend.hashmap.memory.managed: true
 ```
 
 ```java
@@ -2179,42 +2174,32 @@ StateTtlConfig ttlConfig = StateTtlConfig
 # flink-conf.yaml
 # ==================== RocksDBStateBackend 配置 ====================
 
-# 启用 RocksDBStateBackend
-state.backend: rocksdb
+# 启用 RocksDBStateBackend state.backend: rocksdb
 
-# 启用增量 Checkpoint
-state.backend.incremental: true
+# 启用增量 Checkpoint state.backend.incremental: true
 
-# 预定义选项: DEFAULT, FLASH_SSD_OPTIMIZED, SPINNING_DISK_OPTIMIZED, MEMORY_CONSTRAINED
-state.backend.rocksdb.predefined-options: FLASH_SSD_OPTIMIZED
+# 预定义选项: DEFAULT, FLASH_SSD_OPTIMIZED, SPINNING_DISK_OPTIMIZED, MEMORY_CONSTRAINED state.backend.rocksdb.predefined-options: FLASH_SSD_OPTIMIZED
 
-# 内存配置
-taskmanager.memory.managed.size: 2048m  # RocksDB BlockCache + MemTable
+# 内存配置 taskmanager.memory.managed.size: 2048m  # RocksDB BlockCache + MemTable
 
-# 自定义 RocksDB 选项
-state.backend.rocksdb.options.factory:
+# 自定义 RocksDB 选项 state.backend.rocksdb.options.factory:
     org.apache.flink.state.rocksdb.DefaultConfigurableOptionsFactory
 
-# MemTable 配置
-state.backend.rocksdb.writebuffer.size: 64mb
+# MemTable 配置 state.backend.rocksdb.writebuffer.size: 64mb
 state.backend.rocksdb.writebuffer.count: 4
 state.backend.rocksdb.writebuffer.number-to-merge: 2
 
-# SST 文件配置
-state.backend.rocksdb.target-file-size-base: 64mb
+# SST 文件配置 state.backend.rocksdb.target-file-size-base: 64mb
 state.backend.rocksdb.max-size-level-base: 512mb
 
-# 压缩配置
-state.backend.rocksdb.compression.type: LZ4
+# 压缩配置 state.backend.rocksdb.compression.type: LZ4
 state.backend.rocksdb.compression.per-level: LZ4:LZ4:ZSTD
 
-# Checkpoint 配置
-execution.checkpointing.interval: 60s
+# Checkpoint 配置 execution.checkpointing.interval: 60s
 execution.checkpointing.min-pause-between-checkpoints: 30s
 execution.checkpointing.timeout: 600s
 
-# 线程池配置
-state.backend.rocksdb.thread.num: 4
+# 线程池配置 state.backend.rocksdb.thread.num: 4
 ```
 
 ```java
@@ -2268,8 +2253,7 @@ env.getCheckpointConfig().setMinPauseBetweenCheckpoints(30000);
 # flink-conf.yaml
 # ==================== ForStStateBackend 配置 ====================
 
-# 启用 ForStStateBackend
-state.backend: forst
+# 启用 ForStStateBackend state.backend: forst
 
 # UFS 配置(S3 示例)
 state.backend.forst.ufs.type: s3
@@ -2277,32 +2261,26 @@ state.backend.forst.ufs.s3.bucket: flink-state-bucket
 state.backend.forst.ufs.s3.region: us-east-1
 state.backend.forst.ufs.s3.credentials.provider: IAM_ROLE
 
-# 状态存储路径
-state.backend.forst.state.dir: s3://flink-state-bucket/jobs/${job.name}
+# 状态存储路径 state.backend.forst.state.dir: s3://flink-state-bucket/jobs/${job.name}
 
-# 本地缓存配置
-state.backend.forst.cache.memory.size: 4gb  # L1 内存缓存
+# 本地缓存配置 state.backend.forst.cache.memory.size: 4gb  # L1 内存缓存
 state.backend.forst.cache.disk.size: 100gb  # L2 磁盘缓存
 state.backend.forst.cache.disk.path: /mnt/flink-forst-cache
 state.backend.forst.cache.policy: SLRU  # LRU | SLRU | W_TINY_LFU
 
-# 恢复配置
-state.backend.forst.restore.mode: LAZY  # LAZY | EAGER
+# 恢复配置 state.backend.forst.restore.mode: LAZY  # LAZY | EAGER
 state.backend.forst.restore.preload.keys: 10000
 state.backend.forst.restore.preload.threads: 4
 
-# 远程 Compaction 配置
-state.backend.forst.compaction.remote.enabled: true
+# 远程 Compaction 配置 state.backend.forst.compaction.remote.enabled: true
 state.backend.forst.compaction.remote.endpoint:
     compaction-service.flink.svc.cluster.local:9090
 state.backend.forst.compaction.remote.parallelism: 8
 
-# 同步策略
-state.backend.forst.sync.policy: ASYNC  # SYNC | ASYNC
+# 同步策略 state.backend.forst.sync.policy: ASYNC  # SYNC | ASYNC
 state.backend.forst.async-flush-interval: 100ms
 
-# Checkpoint 配置
-execution.checkpointing.interval: 60s
+# Checkpoint 配置 execution.checkpointing.interval: 60s
 execution.checkpointing.mode: EXACTLY_ONCE
 ```
 

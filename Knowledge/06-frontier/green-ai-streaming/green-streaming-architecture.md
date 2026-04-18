@@ -312,18 +312,15 @@ def renewable_aware_schedule(jobs, solar_forecast):
 **Flink绿色配置**:
 
 ```yaml
-# 启用节能模式
-execution.energy-saving-mode: true
+# 启用节能模式 execution.energy-saving-mode: true
 
-# 动态调整并行度
-execution.auto-parallelism.enabled: true
+# 动态调整并行度 execution.auto-parallelism.enabled: true
 execution.auto-parallelism.target-utilization: 0.7
 
 # 批处理模式(非实时场景)
 execution.runtime-mode: BATCH
 
-# 压缩传输
-taskmanager.memory.network.memory.fraction: 0.15
+# 压缩传输 taskmanager.memory.network.memory.fraction: 0.15
 ```
 
 ---

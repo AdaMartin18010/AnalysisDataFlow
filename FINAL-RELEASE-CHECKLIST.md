@@ -69,9 +69,9 @@
 | # | 检查项 | 路径 | 状态 | 验证 |
 |---|--------|------|------|------|
 | 1 | Flink版本跟踪脚本 | [.scripts/flink-version-tracking/](./.scripts/flink-version-tracking/) | ✅ | 8个文件 |
-| 2 | 链接检查器 | [.scripts/link-checker/](./.scripts/link-checker/) | ✅ | 6个文件 |
+| 2 | 链接检查器 | [.scripts/link-checker/] | ✅ | 6个文件 |
 | 3 | 质量门禁脚本 | [.scripts/quality-gates/](./.scripts/quality-gates/) | ✅ | 8个文件 |
-| 4 | 统计更新脚本 | [.scripts/stats-updater/](./.scripts/stats-updater/) | ✅ | 7个文件 |
+| 4 | 统计更新脚本 | [.scripts/stats-updater/] | ✅ | 7个文件 |
 | 5 | 交叉引用检查 | [.scripts/cross-ref-checker-v2.py](./.scripts/cross-ref-checker-v2.py) | ✅ | 已验证 |
 | 6 | 六段式验证器 | [.scripts/six-section-validator.py](./.scripts/six-section-validator.py) | ✅ | 已验证 |
 | 7 | 形式元素编号 | [.scripts/formal-element-auto-number.py](./.scripts/formal-element-auto-number.py) | ✅ | 已验证 |
@@ -360,4 +360,4 @@ cd AnalysisDataFlow
 *相关文档*:
 - [PROJECT-COMPLETION-MASTER-REPORT.md](./PROJECT-COMPLETION-MASTER-REPORT.md) - 项目完成总报告
 - [PROJECT-TIMELINE.md](./PROJECT-TIMELINE.md) - 项目时间线
-- [RELEASE-NOTES-v3.0.0.md](./release/RELEASE-NOTES-v3.0.0.md) - 历史发布说明参考
+- [RELEASE-NOTES-v3.0.0.md] - 历史发布说明参考

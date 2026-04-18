@@ -1394,8 +1394,7 @@ graph TB
 #### 6.4.2 Kubernetes部署配置
 
 ```yaml
-# GreptimeDB Helm Values 配置 - 生产环境
-cluster:
+# GreptimeDB Helm Values 配置 - 生产环境 cluster:
   meta:
     replicas: 3
     resources:
@@ -1448,8 +1447,7 @@ cluster:
         region: "us-east-1"
         prefix: "timeseries/"
 
-# 自动扩缩容配置
-autoscaling:
+# 自动扩缩容配置 autoscaling:
   enabled: true
   datanode:
     minReplicas: 6
@@ -1459,16 +1457,14 @@ autoscaling:
     scaleUpDelay: 300s
     scaleDownDelay: 600s
 
-# 监控配置
-monitoring:
+# 监控配置 monitoring:
   enabled: true
   serviceMonitor:
     enabled: true
     namespace: monitoring
     interval: 15s
 
-# 备份配置
-backup:
+# 备份配置 backup:
   enabled: true
   schedule: "0 2 * * *"  # 每天凌晨2点
   retentionDays: 30

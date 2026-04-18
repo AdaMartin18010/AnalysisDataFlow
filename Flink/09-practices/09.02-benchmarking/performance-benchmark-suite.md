@@ -810,41 +810,35 @@ class CheckpointStatsListener implements CheckpointListener {
 
 # -----------------------------------------------------------------------------
 # JobManager 配置
-# -----------------------------------------------------------------------------
-jobmanager.memory.process.size: 4096m
+# ----------------------------------------------------------------------------- jobmanager.memory.process.size: 4096m
 jobmanager.memory.jvm-heap.size: 2048m
 jobmanager.memory.off-heap.size: 1024m
 
 # -----------------------------------------------------------------------------
 # TaskManager 配置
-# -----------------------------------------------------------------------------
-taskmanager.memory.process.size: 16384m
+# ----------------------------------------------------------------------------- taskmanager.memory.process.size: 16384m
 taskmanager.memory.flink.size: 12288m
 taskmanager.memory.network.min: 512m
 taskmanager.memory.network.max: 1024m
 
 # -----------------------------------------------------------------------------
 # 网络配置
-# -----------------------------------------------------------------------------
-taskmanager.memory.network.memory.max: 256m
+# ----------------------------------------------------------------------------- taskmanager.memory.network.memory.max: 256m
 taskmanager.memory.network.memory.min: 128m
 taskmanager.memory.network.memory.fraction: 0.15
 
 # 网络缓冲区
-# 计算: numBuffers = (slots^2) * channels * buffers-per-channel
-taskmanager.memory.network.memory.buffers-per-channel: 16
+# 计算: numBuffers = (slots^2) * channels * buffers-per-channel taskmanager.memory.network.memory.buffers-per-channel: 16
 taskmanager.memory.network.memory.floating-buffers-per-gate: 32
 
 # -----------------------------------------------------------------------------
 # Checkpoint 配置
-# -----------------------------------------------------------------------------
-state.backend: rocksdb
+# ----------------------------------------------------------------------------- state.backend: rocksdb
 state.backend.incremental: true
 state.backend.rocksdb.memory.managed: true
 state.backend.rocksdb.predefined-options: FLASH_SSD_OPTIMIZED
 
-# Checkpoint间隔和超时
-execution.checkpointing.interval: 60s
+# Checkpoint间隔和超时 execution.checkpointing.interval: 60s
 execution.checkpointing.timeout: 10min
 execution.checkpointing.min-pause-between-checkpoints: 30s
 execution.checkpointing.max-concurrent-checkpoints: 1
@@ -856,35 +850,30 @@ execution.checkpointing.unaligned.max-aligned-checkpoint-size: 1mb
 
 # -----------------------------------------------------------------------------
 # RocksDB 调优
-# -----------------------------------------------------------------------------
-state.backend.rocksdb.threads.threads-number: 8
+# ----------------------------------------------------------------------------- state.backend.rocksdb.threads.threads-number: 8
 state.backend.rocksdb.memory.fixed-per-slot: 256mb
 state.backend.rocksdb.memory.high-prio-pool-ratio: 0.1
 state.backend.rocksdb.checkpoint.transfer.thread.num: 4
 
-# SST文件大小和压缩
-state.backend.rocksdb.compaction.style: LEVEL
+# SST文件大小和压缩 state.backend.rocksdb.compaction.style: LEVEL
 state.backend.rocksdb.compaction.level.target-file-size-base: 64mb
 state.backend.rocksdb.compaction.level.max-size-level-base: 512mb
 
 # -----------------------------------------------------------------------------
 # 序列化优化
-# -----------------------------------------------------------------------------
-pipeline.object-reuse: true
+# ----------------------------------------------------------------------------- pipeline.object-reuse: true
 pipeline.compression: lz4
 execution.buffer-timeout: 0ms
 
 # -----------------------------------------------------------------------------
 # 并行度和调度
-# -----------------------------------------------------------------------------
-parallelism.default: 4
+# ----------------------------------------------------------------------------- parallelism.default: 4
 taskmanager.numberOfTaskSlots: 4
 cluster.evenly-spread-out-slots: true
 
 # -----------------------------------------------------------------------------
 # JVM 调优
-# -----------------------------------------------------------------------------
-env.java.opts.jobmanager: >
+# ----------------------------------------------------------------------------- env.java.opts.jobmanager: >
   -XX: +UseG1GC
   -XX: MaxGCPauseMillis=100
   -XX: +UnlockDiagnosticVMOptions
@@ -902,8 +891,7 @@ env.java.opts.taskmanager: >
 #### Kubernetes部署配置
 
 ```yaml
-# flink-deployment.yaml
-apiVersion: flink.apache.org/v1beta1
+# flink-deployment.yaml apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: flink-benchmark
@@ -1101,23 +1089,20 @@ flowchart TD
 
 set -e
 
-# 配置
-FLINK_VERSION="1.18.0"
+# 配置 FLINK_VERSION="1.18.0"
 NEXMARK_VERSION="0.2-SNAPSHOT"
 TEST_DURATION=1800  # 30分钟
 WARMUP_DURATION=300 # 5分钟预热
 RESULTS_DIR="./results/$(date +%Y%m%d-%H%M%S)"
 
-# 创建结果目录
-mkdir -p "$RESULTS_DIR"
+# 创建结果目录 mkdir -p "$RESULTS_DIR"
 
 echo "=== Flink性能基准测试套件 ==="
 echo "测试时间: $(date)"
 echo "结果目录: $RESULTS_DIR"
 echo ""
 
-# 函数:运行单个Nexmark查询
-run_nexmark_query() {
+# 函数:运行单个Nexmark查询 run_nexmark_query() {
     local query=$1
     local rate=$2
 
@@ -1137,8 +1122,7 @@ run_nexmark_query() {
     sleep 30  # 冷却时间
 }
 
-# 函数:运行延迟测试
-run_latency_test() {
+# 函数:运行延迟测试 run_latency_test() {
     local target_throughput=$1
 
     echo "运行延迟测试 (目标吞吐: $target_throughput)..."
@@ -1152,8 +1136,7 @@ run_latency_test() {
         --output "$RESULTS_DIR/latency-$(date +%s).json"
 }
 
-# 函数:运行吞吐测试
-run_throughput_test() {
+# 函数:运行吞吐测试 run_throughput_test() {
     echo "运行最大吞吐测试..."
 
     flink run \
@@ -1166,8 +1149,7 @@ run_throughput_test() {
         --output "$RESULTS_DIR/throughput-$(date +%s).json"
 }
 
-# 函数:运行Checkpoint测试
-run_checkpoint_test() {
+# 函数:运行Checkpoint测试 run_checkpoint_test() {
     local state_size_mb=$1
 
     echo "运行Checkpoint测试 (状态大小: ${state_size_mb}MB)..."
@@ -1182,8 +1164,7 @@ run_checkpoint_test() {
         --output "$RESULTS_DIR/checkpoint-${state_size_mb}MB-$(date +%s).json"
 }
 
-# 主测试流程
-main() {
+# 主测试流程 main() {
     echo "步骤1: 环境检查"
     ./scripts/check-environment.sh
 
@@ -1224,8 +1205,7 @@ main() {
     echo "查看报告: $RESULTS_DIR/report.html"
 }
 
-# 执行主流程
-main "$@"
+# 执行主流程 main "$@"
 ```
 
 ### 8.2 结果收集脚本
@@ -1233,8 +1213,7 @@ main "$@"
 ```python
 # 伪代码示意,非完整可编译代码
 # 伪代码示意,非完整可编译代码
-# 伪代码示意,非完整可编译代码
-#!/usr/bin/env python3
+# 伪代码示意,非完整可编译代码 #!/usr/bin/env python3
 # collect-metrics.py - Flink指标收集和分析脚本
 
 import json

@@ -90,8 +90,7 @@ $$
 @prefix ex: <http://example.org/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-# 时间戳标注的三元组流
-ex:sensor001 ssn:observes ex:Temperature ;
+# 时间戳标注的三元组流 ex:sensor001 ssn:observes ex:Temperature ;
     ssn:hasValue "23.5"^^xsd:float ;
     ex:timestamp "2025-01-15T10:30:00Z"^^xsd:dateTime ;
     ex:confidence "0.95"^^xsd:float .
@@ -472,8 +471,7 @@ $$
 **时态查询示例**:
 
 ```sparql
-# 时态SPARQL扩展: 查找"温度持续高直到警报触发"的事件序列
-REGISTER STREAM TemperaturePattern AS
+# 时态SPARQL扩展: 查找"温度持续高直到警报触发"的事件序列 REGISTER STREAM TemperaturePattern AS
 PREFIX ex: <http://example.org/>
 PREFIX t: <http://temporal.org/>
 
@@ -848,8 +846,7 @@ $$
     rdfs:domain :Machine ;
     rdfs:range xsd:float .
 
-# SWRL规则: 高温+高振动 → 过热风险
-:OverheatingRule a swrl:Imp ;
+# SWRL规则: 高温+高振动 → 过热风险 :OverheatingRule a swrl:Imp ;
     swrl:body (
         [ swrl:propertyPredicate :hasTemperature ;
           swrl:argument1 :m ; swrl:argument2 ?t ]
@@ -921,8 +918,7 @@ WHERE {
 **CQELS查询**:
 
 ```sparql
-# 检测: 短时间内多地点交易（可能的信用卡盗刷）
-STREAM FraudulentPattern AS
+# 检测: 短时间内多地点交易（可能的信用卡盗刷） STREAM FraudulentPattern AS
 PREFIX txn: `http://bank.example.org/transaction#`
 PREFIX cust: `http://bank.example.org/customer#`
 
@@ -966,8 +962,7 @@ HAVING (?locCount > 3 && ?timeSpan < 10m)
 **Strider查询**:
 
 ```sparql
-# 时态交通模式: 流速下降直到拥堵
-REGISTER STREAM CongestionPrediction AS
+# 时态交通模式: 流速下降直到拥堵 REGISTER STREAM CongestionPrediction AS
 PREFIX traffic: `http://city.example.org/traffic#`
 PREFIX temporal: `http://temporal.example.org/#`
 

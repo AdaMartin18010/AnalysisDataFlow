@@ -406,8 +406,7 @@ W_SQL: 需要 SQL 分析, 高吞吐 (500K/s)
 **场景**: 电商平台实时风控 + 实时报表
 
 ```yaml
-# hybrid-deployment.yaml
-architecture:
+# hybrid-deployment.yaml architecture:
   name: "E-Commerce Real-time Platform"
 
   components:
@@ -591,8 +590,7 @@ WHERE o.created_at > NOW() - INTERVAL '5' MINUTE;
 ### 6.4 监控 Dashboard 配置
 
 ```yaml
-# monitoring-config.yaml
-dashboards:
+# monitoring-config.yaml dashboards:
   - name: "Hybrid Platform Overview"
     panels:
       # Flink 指标

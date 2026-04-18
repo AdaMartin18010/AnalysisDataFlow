@@ -263,13 +263,11 @@ if (noRecordsFetchedFor(split, idleTimeout)):
 Flink 2.1通过`PrometheusReporter`暴露Split-level指标，配置如下：
 
 ```yaml
-# flink-conf.yaml
-metrics.reporters: prom
+# flink-conf.yaml metrics.reporters: prom
 metrics.reporter.prom.class: org.apache.flink.metrics.prometheus.PrometheusReporter
 metrics.reporter.prom.port: 9249
 
-# 启用Split-level指标采集
-metrics.scope.source.split: "<host>.<job_name>.<source_id>.<split_id>"
+# 启用Split-level指标采集 metrics.scope.source.split: "<host>.<job_name>.<source_id>.<split_id>"
 ```
 
 **暴露的指标格式**:
@@ -347,8 +345,7 @@ flink_taskmanager_job_task_source_split_accumulatedIdleTimeMs{split_id="partitio
 **数据倾斜告警**:
 
 ```yaml
-# Prometheus告警规则
-groups:
+# Prometheus告警规则 groups:
   - name: flink_split_level_alerts
     rules:
       - alert: FlinkSplitHighPausedTime
@@ -414,8 +411,7 @@ groups:
 **PromQL查询**:
 
 ```promql
-# 各Partition的当前Watermark
-flink_taskmanager_job_task_source_split_currentWatermark{job="flink-job", source_id="KafkaSource"}
+# 各Partition的当前Watermark flink_taskmanager_job_task_source_split_currentWatermark{job="flink-job", source_id="KafkaSource"}
 
 # 计算Watermark差距(与最小值之差)
 (
@@ -438,8 +434,7 @@ flink_taskmanager_job_task_source_split_currentWatermark{job="flink-job", source
 **诊断输出示例**:
 
 ```
-# 伪代码示意，非完整可编译代码
-split_id        | currentWatermark | pausedTimeMsPerSecond | skew_score
+# 伪代码示意，非完整可编译代码 split_id        | currentWatermark | pausedTimeMsPerSecond | skew_score
 ----------------|------------------|-----------------------|------------
 partition-0     | 1743580800000    | 50                    | 5%
 partition-1     | 1743580800000    | 45                    | 4%
@@ -494,8 +489,7 @@ flink_taskmanager_job_task_source_split_idleTimeMsPerSecond{split_id="partition-
   flink_taskmanager_job_task_source_split_activeTimeMsPerSecond / 1000
 ) * 100
 
-# 结合读取速率评估效率
-flink_taskmanager_job_task_source_split_activeTimeMsPerSecond
+# 结合读取速率评估效率 flink_taskmanager_job_task_source_split_activeTimeMsPerSecond
 and
 flink_taskmanager_job_task_operator_numRecordsInPerSecond
 ```

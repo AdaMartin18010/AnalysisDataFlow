@@ -414,15 +414,13 @@ class TracingStreamOperator<OUT> extends AbstractStreamOperator<OUT> {
 **Flink配置** (`flink-conf.yaml`)：
 
 ```yaml
-# OpenTelemetry Tracing配置
-tracing.enabled: true
+# OpenTelemetry Tracing配置 tracing.enabled: true
 tracing.exporter.type: otlp
 tracing.exporter.otlp.endpoint: http://jaeger-collector:4317
 tracing.sampler.type: parentbased_traceidratio
 tracing.sampler.arg: 0.1
 
-# Span属性配置
-tracing.span.include-input-records: true
+# Span属性配置 tracing.span.include-input-records: true
 tracing.span.include-output-records: true
 tracing.span.include-backpressure: true
 ```

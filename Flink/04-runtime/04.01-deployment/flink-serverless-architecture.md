@@ -102,8 +102,7 @@ $$
 **事件驱动扩展** 根据输入速率自动调整资源：
 
 ```python
-# 扩展决策函数
-def scaling_decision(current_rate, backlog, latency):
+# 扩展决策函数 def scaling_decision(current_rate, backlog, latency):
     target_parallelism = max(
         MIN_PARALLELISM,
         min(MAX_PARALLELISM,
@@ -243,11 +242,9 @@ $$
 **反模式1: 长运行作业用Serverless**
 
 ```yaml
-# ❌ 错误:Flink SQL连续查询超过15分钟
-execution.timeout: 30min  # 超过AWS Lambda限制！
+# ❌ 错误:Flink SQL连续查询超过15分钟 execution.timeout: 30min  # 超过AWS Lambda限制！
 
-# ✅ 正确:使用托管Flink
-platform: confluent-cloud-flink  # 无时间限制
+# ✅ 正确:使用托管Flink platform: confluent-cloud-flink  # 无时间限制
 ```
 
 **反模式2: 忽视冷启动**
@@ -319,8 +316,7 @@ $$
 ### 6.1 AWS Lambda + Flink 混合架构
 
 ```yaml
-# serverless.yml
-service: flink-lambda-bridge
+# serverless.yml service: flink-lambda-bridge
 
 provider:
   name: aws
@@ -403,21 +399,18 @@ GROUP BY TUMBLE(event_time, INTERVAL '1' HOUR), event_type;
 ### 6.3 Google Cloud Run + Flink
 
 ```dockerfile
-# Dockerfile for Cloud Run
-FROM flink:2.3-scala_2.12-java11
+# Dockerfile for Cloud Run FROM flink:2.3-scala_2.12-java11
 
 COPY target/my-flink-job.jar /opt/flink/usrlib/job.jar
 
-# Cloud Run优化
-ENV FLINK_HEAP_SIZE=512m
+# Cloud Run优化 ENV FLINK_HEAP_SIZE=512m
 ENV FLINK_TM_NET_BUF_FRACTION=0.1
 
 ENTRYPOINT ["/opt/flink/bin/standalone-job.sh", "start-foreground"]
 ```
 
 ```yaml
-# cloudbuild.yaml
-steps:
+# cloudbuild.yaml steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'gcr.io/PROJECT/flink-job', '.']
   - name: 'gcr.io/cloud-builders/docker'
@@ -440,8 +433,7 @@ steps:
 ### 6.4 成本监控与优化
 
 ```python
-# serverless_cost_optimizer.py
-import boto3
+# serverless_cost_optimizer.py import boto3
 from datetime import datetime, timedelta
 
 class ServerlessCostOptimizer:
@@ -547,19 +539,16 @@ class ServerlessCostOptimizer:
 
         return best_config
 
-# 使用示例
-optimizer = ServerlessCostOptimizer()
+# 使用示例 optimizer = ServerlessCostOptimizer()
 
-# 分析Flink预处理器
-rec = optimizer.analyze_usage_patterns('flink-preprocessor')
+# 分析Flink预处理器 rec = optimizer.analyze_usage_patterns('flink-preprocessor')
 print(f"Recommendation: {rec['strategy']}")
 print(f"Reason: {rec['reason']}")
 print("Actions:")
 for action in rec['actions']:
     print(f"  - {action}")
 
-# 优化内存
-best = optimizer.optimize_memory_allocation('flink-preprocessor')
+# 优化内存 best = optimizer.optimize_memory_allocation('flink-preprocessor')
 print(f"\nOptimal memory: {best['memory']}MB")
 print(f"Expected cost: ${best['cost_per_1m_invocations']:.2f} per 1M invocations")
 ```

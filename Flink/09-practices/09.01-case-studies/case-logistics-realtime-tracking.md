@@ -977,8 +977,7 @@ location:
   lat: 31.2304
   lng: 121.4737
 
-# 数据采集配置
-sensors:
+# 数据采集配置 sensors:
   gps:
     enabled: true
     sample_interval_sec: 10
@@ -992,22 +991,19 @@ sensors:
       - id: "dock_02"
         location: "loading_dock_B"
 
-# 边缘计算规则
-edge_processing:
+# 边缘计算规则 edge_processing:
   geofence_local_check: true
   trajectory_compression:
     algorithm: "douglas-peucker"
     epsilon: 10.0  # 米
   emergency_alert_immediate: true
 
-# 网络配置
-connectivity:
+# 网络配置 connectivity:
   primary: 5g
   fallback: lte
   qos_profile: "low_latency"
 
-# 数据上传策略
-upload:
+# 数据上传策略 upload:
   normal_mode:
     interval_sec: 30
     batch_max_size: 1000
@@ -1130,8 +1126,7 @@ def extract_solution(manager, routing, solution, stops):
 
     return {"status": "success", "routes": routes}
 
-# Flink 调用入口
-def handle_route_optimization_request(event: dict) -> dict:
+# Flink 调用入口 def handle_route_optimization_request(event: dict) -> dict:
     """
     处理来自 Flink 的路由优化请求
     通过 Flink Side Output 触发

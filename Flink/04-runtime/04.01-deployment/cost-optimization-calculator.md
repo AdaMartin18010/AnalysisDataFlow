@@ -301,8 +301,7 @@ $$
 ### 6.1 成本计算器输入参数
 
 ```yaml
-# cost-calculator-input.yaml
-workload:
+# cost-calculator-input.yaml workload:
   qps_peak: 100000           # 峰值 QPS
   qps_average: 50000         # 平均 QPS
   event_size_bytes: 1024     # 平均事件大小
@@ -336,8 +335,7 @@ cost_factors:
 ### 6.2 成本计算公式实现
 
 ```python
-# flink_cost_calculator.py
-from dataclasses import dataclass
+# flink_cost_calculator.py from dataclasses import dataclass
 from typing import Optional
 
 @dataclass
@@ -462,8 +460,7 @@ class FlinkCostEstimator:
             "network": network
         }
 
-# 使用示例
-if __name__ == "__main__":
+# 使用示例 if __name__ == "__main__":
     estimator = FlinkCostEstimator(
         qps_peak=100000,
         qps_avg=50000,
@@ -766,8 +763,7 @@ graph LR
 ### 8.1 资源标签策略
 
 ```yaml
-# 强制标签规范
-tags:
+# 强制标签规范 tags:
   # 业务维度
   BusinessUnit: "电商事业部"        # 业务单元
   Project: "实时推荐系统"           # 项目名称
@@ -800,8 +796,7 @@ tags:
 ### 8.3 异常检测规则
 
 ```yaml
-# cost-anomaly-detection.yaml
-rules:
+# cost-anomaly-detection.yaml rules:
   - name: 日成本突增
     condition: daily_cost > avg(daily_cost, 7d) * 1.5
     severity: warning

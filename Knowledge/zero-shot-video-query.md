@@ -93,8 +93,7 @@ import torch
 model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
 processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
 
-# 处理视频帧（示例：取关键帧）
-frames = [frame1, frame2, frame3]  # PIL Images
+# 处理视频帧（示例：取关键帧） frames = [frame1, frame2, frame3]  # PIL Images
 inputs = processor(text=["a car accident"], images=frames, return_tensors="pt", padding=True)
 
 outputs = model(**inputs)

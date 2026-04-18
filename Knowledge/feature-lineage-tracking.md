@@ -267,8 +267,7 @@ user = Entity(
     description="用户唯一标识"
 )
 
-# 版本 V1
-transaction_stats_v1 = FeatureView(
+# 版本 V1 transaction_stats_v1 = FeatureView(
     name="transaction_stats",
     entities=["user_id"],
     ttl=timedelta(hours=24),

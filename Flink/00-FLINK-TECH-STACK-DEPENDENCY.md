@@ -407,8 +407,7 @@ tableEnv.executeSql("INSERT INTO sink SELECT * FROM source");
 **实例**：Deployment 模块与 Kafka Connector 集成
 
 ```yaml
-# Flink Kubernetes 部署配置
-spec:
+# Flink Kubernetes 部署配置 spec:
   job:
     jarURI: local:///opt/flink/examples/streaming/KafkaExample.jar
     parallelism: 4

@@ -820,34 +820,28 @@ public class AgentReplay {
 ```yaml
 # flink-conf.yaml - Agent 相关配置
 
-# Agent 状态后端
-state.backend: rocksdb
+# Agent 状态后端 state.backend: rocksdb
 state.checkpoint-storage: filesystem
 state.checkpoints.dir: hdfs:///flink/checkpoints/agents
 
-# Checkpoint 配置
-execution.checkpointing.interval: 30s
+# Checkpoint 配置 execution.checkpointing.interval: 30s
 execution.checkpointing.min-pause-between-checkpoints: 10s
 execution.checkpointing.timeout: 10min
 
-# Agent 异步调用配置
-agent.async.timeout: 60s
+# Agent 异步调用配置 agent.async.timeout: 60s
 agent.async.capacity: 100
 agent.retry.max-attempts: 3
 agent.retry.backoff: exponential
 
-# LLM 连接池
-llm.connection.pool.size: 50
+# LLM 连接池 llm.connection.pool.size: 50
 llm.connection.max-per-route: 20
 llm.request.timeout: 30s
 
-# MCP 配置
-mcp.tools.auto-discover: true
+# MCP 配置 mcp.tools.auto-discover: true
 mcp.tools.timeout: 10s
 mcp.tools.cache.enabled: true
 
-# A2A 配置
-a2a.server.port: 8080
+# A2A 配置 a2a.server.port: 8080
 a2a.auth.enabled: true
 a2a.auth.type: oauth2
 a2a.task.timeout: 5min

@@ -92,8 +92,7 @@ dependencies {
 **Flink 2.4 配置**:
 
 ```yaml
-# 2.4 配置
-state.backend: rocksdb
+# 2.4 配置 state.backend: rocksdb
 state.backend.incremental: true
 state.checkpoint-storage: filesystem
 state.checkpoints.dir: s3://flink-checkpoints
@@ -109,34 +108,28 @@ state.backend.incremental: true
 state.checkpoint-storage: filesystem
 state.checkpoints.dir: s3://flink-checkpoints
 
-# 可选:分层存储配置
-state.backend.forst.cache.path: /tmp/flink-cache
+# 可选:分层存储配置 state.backend.forst.cache.path: /tmp/flink-cache
 state.backend.forst.cache.capacity: 10GB
 ```
 
 ### 3.2 Serverless 配置 (新增)
 
 ```yaml
-# 启用 Serverless 模式
-execution.mode: serverless
+# 启用 Serverless 模式 execution.mode: serverless
 
-# 自动扩缩容
-kubernetes.operator.job.autoscaler.enabled: true
+# 自动扩缩容 kubernetes.operator.job.autoscaler.enabled: true
 kubernetes.operator.job.autoscaler.scale-to-zero.enabled: true
 kubernetes.operator.job.autoscaler.scale-to-zero.grace-period: 300s
 
-# 快速冷启动
-serverless.cold-start.mode: warmup-pool
+# 快速冷启动 serverless.cold-start.mode: warmup-pool
 serverless.cold-start.warmup-pool-size: 2
 ```
 
 ### 3.3 执行模式配置
 
 ```yaml
-# Flink 2.5 新增自适应执行模式
-execution.runtime-mode: adaptive        # 新增选项
-# 或保持原有设置
-execution.runtime-mode: streaming
+# Flink 2.5 新增自适应执行模式 execution.runtime-mode: adaptive        # 新增选项
+# 或保持原有设置 execution.runtime-mode: streaming
 execution.runtime-mode: batch
 ```
 
@@ -211,8 +204,7 @@ tEnv.executeSql("""
 ### 5.1 从 Checkpoint 恢复
 
 ```bash
-# 使用 2.4 的 Checkpoint 在 2.5 中恢复
-flink run \
+# 使用 2.4 的 Checkpoint 在 2.5 中恢复 flink run \
     -Dexecution.runtime-mode=streaming \
     -s s3://flink-checkpoints/2.4-job/checkpoint-xxxxx \
     ./my-job-2.5.jar
@@ -229,11 +221,9 @@ flink run \
 ### 5.3 Savepoint 迁移
 
 ```bash
-# 1. 从 2.4 作业创建 Savepoint
-flink savepoint <job-id> s3://flink-savepoints/migration
+# 1. 从 2.4 作业创建 Savepoint flink savepoint <job-id> s3://flink-savepoints/migration
 
-# 2. 使用 Savepoint 启动 2.5 作业
-flink run \
+# 2. 使用 Savepoint 启动 2.5 作业 flink run \
     -Dstate.backend=forst \
     -s s3://flink-savepoints/migration/savepoint-xxxxx \
     ./my-job-2.5.jar
@@ -261,26 +251,22 @@ parallelism.default: 4
 # flink-conf.yaml (2.5)
 execution.mode: serverless
 
-# 资源配置改为范围
-kubernetes.operator.job.autoscaler:
+# 资源配置改为范围 kubernetes.operator.job.autoscaler:
   enabled: true
   min-parallelism: 1
   max-parallelism: 100
 
-# TaskManager 资源配置
-taskmanager.memory.process.size: 4gb
+# TaskManager 资源配置 taskmanager.memory.process.size: 4gb
 taskmanager.numberOfTaskSlots: 2
 
-# Serverless 特定配置
-serverless.cold-start.mode: warmup-pool
+# Serverless 特定配置 serverless.cold-start.mode: warmup-pool
 serverless.cold-start.warmup-pool-size: 2
 ```
 
 ### 6.2 Kubernetes 部署更新
 
 ```yaml
-# flink-deployment-2.5.yaml
-apiVersion: flink.apache.org/v1beta1
+# flink-deployment-2.5.yaml apiVersion: flink.apache.org/v1beta1
 kind: FlinkDeployment
 metadata:
   name: my-job
@@ -320,11 +306,9 @@ Caused by: IllegalArgumentException: Unknown configuration key: state.backend.ro
 **解决**: 更新配置键名
 
 ```yaml
-# 旧配置
-state.backend.rocksdb.memory.managed: true
+# 旧配置 state.backend.rocksdb.memory.managed: true
 
-# 新配置
-state.backend.forst.memory.managed: true
+# 新配置 state.backend.forst.memory.managed: true
 ```
 
 ### 7.2 性能下降
@@ -341,12 +325,10 @@ state.backend.forst.memory.managed: true
 **解决**:
 
 ```yaml
-# 调优网络缓冲区
-taskmanager.memory.network.min: 256mb
+# 调优网络缓冲区 taskmanager.memory.network.min: 256mb
 taskmanager.memory.network.max: 512mb
 
-# 调优 Checkpoint
-execution.checkpointing.interval: 30s
+# 调优 Checkpoint execution.checkpointing.interval: 30s
 execution.checkpointing.max-concurrent-checkpoints: 1
 ```
 
@@ -357,12 +339,10 @@ execution.checkpointing.max-concurrent-checkpoints: 1
 **解决**:
 
 ```yaml
-# 启用预热池
-serverless.cold-start.mode: warmup-pool
+# 启用预热池 serverless.cold-start.mode: warmup-pool
 serverless.cold-start.warmup-pool-size: 2
 
-# 优化状态恢复
-state.backend.forst.incremental-recovery: true
+# 优化状态恢复 state.backend.forst.incremental-recovery: true
 state.backend.forst.restore.parallelism: 10
 ```
 
@@ -373,11 +353,9 @@ state.backend.forst.restore.parallelism: 10
 ### 8.1 回滚到 2.4
 
 ```bash
-# 1. 创建 2.5 作业的 Savepoint
-flink savepoint <2.5-job-id> s3://flink-savepoints/rollback
+# 1. 创建 2.5 作业的 Savepoint flink savepoint <2.5-job-id> s3://flink-savepoints/rollback
 
-# 2. 使用 2.4 镜像重新部署
-flink run \
+# 2. 使用 2.4 镜像重新部署 flink run \
     -Dstate.backend=rocksdb \
     -s s3://flink-savepoints/rollback/savepoint-xxxxx \
     ./my-job-2.4.jar
@@ -423,8 +401,7 @@ Week 4: 全量迁移
 ```yaml
 # flink-conf.yaml - Flink 2.5 推荐配置模板
 
-# 执行模式
-execution.mode: adaptive
+# 执行模式 execution.mode: adaptive
 execution.runtime-mode: streaming
 
 # 状态后端 (推荐 ForSt)
@@ -432,8 +409,7 @@ state.backend: forst
 state.backend.forst.remote.path: s3://flink-state/{job-id}
 state.backend.forst.cache.capacity: 10GB
 
-# Checkpoint
-execution.checkpointing.interval: 30s
+# Checkpoint execution.checkpointing.interval: 30s
 execution.checkpointing.mode: EXACTLY_ONCE
 state.checkpoint-storage: filesystem
 state.checkpoints.dir: s3://flink-checkpoints/{job-id}
@@ -442,12 +418,10 @@ state.checkpoints.dir: s3://flink-checkpoints/{job-id}
 kubernetes.operator.job.autoscaler.enabled: true
 kubernetes.operator.job.autoscaler.scale-to-zero.enabled: false  # 谨慎启用
 
-# 网络
-taskmanager.memory.network.min: 256mb
+# 网络 taskmanager.memory.network.min: 256mb
 taskmanager.memory.network.max: 512mb
 
-# 重启策略
-restart-strategy: fixed-delay
+# 重启策略 restart-strategy: fixed-delay
 restart-strategy.fixed-delay.attempts: 10
 restart-strategy.fixed-delay.delay: 10s
 ```

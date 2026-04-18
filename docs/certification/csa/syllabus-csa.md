@@ -69,7 +69,7 @@ pie title CSA 课程时间分配
 **实验任务**:
 
 - [Lab 1.1: 理解不同时间语义](./labs/lab-01-time-semantics.md)
-- [Lab 1.2: 窗口计算实践](./labs/lab-02-window-basics.md)
+- Lab 1.2: 窗口计算实践
 
 **检查点**:
 
@@ -107,8 +107,8 @@ pie title CSA 课程时间分配
 
 **实验任务**:
 
-- [Lab 2.1: 本地环境搭建](./labs/lab-03-setup.md)
-- [Lab 2.2: WordCount 实现](./labs/lab-04-wordcount.md)
+- Lab 2.1: 本地环境搭建
+- Lab 2.2: WordCount 实现
 
 **检查点**:
 
@@ -148,8 +148,8 @@ pie title CSA 课程时间分配
 
 **实验任务**:
 
-- [Lab 3.1: 实时日志分析](./labs/lab-05-log-analysis.md)
-- [Lab 3.2: 数据清洗与转换](./labs/lab-06-data-transform.md)
+- Lab 3.1: 实时日志分析
+- Lab 3.2: 数据清洗与转换
 
 **检查点**:
 
@@ -186,8 +186,8 @@ pie title CSA 课程时间分配
 
 **实验任务**:
 
-- [Lab 4.1: 实时 UV 统计](./labs/lab-07-uv-stats.md)
-- [Lab 4.2: 订单金额聚合](./labs/lab-08-order-agg.md)
+- Lab 4.1: 实时 UV 统计
+- Lab 4.2: 订单金额聚合
 
 **检查点**:
 
@@ -224,8 +224,8 @@ pie title CSA 课程时间分配
 
 **实验任务**:
 
-- [Lab 5.1: 用户行为状态跟踪](./labs/lab-09-user-state.md)
-- [Lab 5.2: 状态 TTL 配置实践](./labs/lab-10-state-ttl.md)
+- Lab 5.1: 用户行为状态跟踪
+- Lab 5.2: 状态 TTL 配置实践
 
 **检查点**:
 
@@ -263,8 +263,8 @@ pie title CSA 课程时间分配
 
 **实验任务**:
 
-- [Lab 6.1: Checkpoint 配置与观察](./labs/lab-11-checkpoint-config.md)
-- [Lab 6.2: 故障恢复测试](./labs/lab-12-failover.md)
+- Lab 6.1: Checkpoint 配置与观察
+- Lab 6.2: 故障恢复测试
 
 **检查点**:
 
@@ -299,8 +299,8 @@ pie title CSA 课程时间分配
 
 **实验任务**:
 
-- [Lab 7.1: SQL 实现实时统计](./labs/lab-13-sql-stats.md)
-- [Lab 7.2: CDC 数据同步基础](./labs/lab-14-cdc-basics.md)
+- Lab 7.1: SQL 实现实时统计
+- Lab 7.2: CDC 数据同步基础
 
 **检查点**:
 
@@ -338,8 +338,8 @@ pie title CSA 课程时间分配
 
 **实验任务**:
 
-- [Lab 8.1: Standalone 集群部署](./labs/lab-15-deployment.md)
-- [Lab 8.2: 作业监控与日志分析](./labs/lab-16-monitoring.md)
+- Lab 8.1: Standalone 集群部署
+- Lab 8.2: 作业监控与日志分析
 
 **检查点**:
 
@@ -484,4 +484,3 @@ pie title CSA 课程时间分配
 ---
 
 [返回认证首页 →](../README.md) | [查看练习题库 →](./quizzes/README.md) | [查看考试说明 →](./exam-guide-csa.md)
-

@@ -321,8 +321,7 @@ class DeterministicMapFunction(MapFunction):
     def _enrich(self, data: str) -> str:
         return f"{data}_{self._static_config}"
 
-# 使用示例
-stream.map(DeterministicMapFunction("config_value"))
+# 使用示例 stream.map(DeterministicMapFunction("config_value"))
 ```
 
 **反模式示例**:
@@ -452,15 +451,13 @@ object WatermarkStrategies {
 from pyflink.datastream import WatermarkStrategy
 from pyflink.common import Duration
 
-# ✅ 正确实现:使用内置策略
-watermark_strategy = (
+# ✅ 正确实现:使用内置策略 watermark_strategy = (
     WatermarkStrategy
     .for_bounded_out_of_orderness(Duration.of_seconds(5))
     .with_timestamp_assigner(lambda event, _: event.timestamp)
 )
 
-# ✅ 正确实现:自定义 Watermark 生成器
-class BoundedOutOfOrdernessGenerator:
+# ✅ 正确实现:自定义 Watermark 生成器 class BoundedOutOfOrdernessGenerator:
     def __init__(self, max_out_of_orderness: int):
         self._max_out_of_orderness = max_out_of_orderness
         self._current_max_timestamp = float('-inf')
@@ -478,8 +475,7 @@ class BoundedOutOfOrdernessGenerator:
         if watermark_timestamp > float('-inf'):
             output.emit_watermark(watermark_timestamp)
 
-# 应用策略
-stream.assign_timestamps_and_watermarks(watermark_strategy)
+# 应用策略 stream.assign_timestamps_and_watermarks(watermark_strategy)
 ```
 
 **反模式示例**:
@@ -717,8 +713,7 @@ class StatefulCounterFunction(KeyedProcessFunction):
             yield Result(event, count)
         self._buffer_state.clear()
 
-# 应用函数
-stream.key_by(lambda e: e.key).process(StatefulCounterFunction())
+# 应用函数 stream.key_by(lambda e: e.key).process(StatefulCounterFunction())
 ```
 
 **反模式示例**:
@@ -963,8 +958,7 @@ class KafkaExactlyOnceSink(TwoPhaseCommitSinkFunction):
         import pickle
         return pickle.dumps(event)
 
-# 应用 Sink
-stream.add_sink(KafkaExactlyOnceSink("output-topic", kafka_config))
+# 应用 Sink stream.add_sink(KafkaExactlyOnceSink("output-topic", kafka_config))
 ```
 
 **反模式示例**:

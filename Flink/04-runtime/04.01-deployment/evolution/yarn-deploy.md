@@ -35,11 +35,9 @@ $$
 ### 4.1 部署命令
 
 ```bash
-# 启动YARN会话
-./bin/yarn-session.sh -nm flink-session -q
+# 启动YARN会话 ./bin/yarn-session.sh -nm flink-session -q
 
-# 提交作业
-./bin/flink run -t yarn-per-job ./examples/streaming/WordCount.jar
+# 提交作业 ./bin/flink run -t yarn-per-job ./examples/streaming/WordCount.jar
 ```
 
 ## 5. 形式证明 / 工程论证

@@ -344,17 +344,14 @@ graph TB
 from pyflink.table import EnvironmentSettings, TableEnvironment, DataTypes
 from pyflink.table.expressions import col, lit
 
-# 创建 Table Environment
-env_settings = EnvironmentSettings.in_streaming_mode()
+# 创建 Table Environment env_settings = EnvironmentSettings.in_streaming_mode()
 table_env = TableEnvironment.create(env_settings)
 
-# 配置 Checkpoint
-table_env.get_config().get_configuration().set_string(
+# 配置 Checkpoint table_env.get_config().get_configuration().set_string(
     "execution.checkpointing.interval", "10s"
 )
 
-# 创建 Kafka Source 表
-table_env.execute_sql("""
+# 创建 Kafka Source 表 table_env.execute_sql("""
 CREATE TABLE user_events (
     user_id STRING,
     event_type STRING,
@@ -370,8 +367,7 @@ CREATE TABLE user_events (
 )
 """)
 
-# 创建 MySQL Sink 表
-table_env.execute_sql("""
+# 创建 MySQL Sink 表 table_env.execute_sql("""
 CREATE TABLE event_stats (
     event_type STRING,
     event_count BIGINT,
@@ -387,8 +383,7 @@ CREATE TABLE event_stats (
 )
 """)
 
-# 定义聚合逻辑
-result = table_env.from_path("user_events") \
+# 定义聚合逻辑 result = table_env.from_path("user_events") \
     .window(
         Tumble.over(lit(1).hours).on(col("event_time")).alias("w")
     ) \
@@ -400,8 +395,7 @@ result = table_env.from_path("user_events") \
         col("w").start.alias("window_start")
     )
 
-# 执行写入
-result.execute_insert("event_stats").wait()
+# 执行写入 result.execute_insert("event_stats").wait()
 ```
 
 #### 窗口操作详解
@@ -438,25 +432,21 @@ from pyflink.datastream import StreamExecutionEnvironment, TimeCharacteristic
 from pyflink.datastream.functions import MapFunction, FlatMapFunction, FilterFunction
 from pyflink.common.typeinfo import Types
 
-# 创建执行环境
-env = StreamExecutionEnvironment.get_execution_environment()
+# 创建执行环境 env = StreamExecutionEnvironment.get_execution_environment()
 env.set_parallelism(4)
 env.set_stream_time_characteristic(TimeCharacteristic.EventTime)
 
-# 启用 Checkpoint
-env.enable_checkpointing(60000)  # 60 seconds
+# 启用 Checkpoint env.enable_checkpointing(60000)  # 60 seconds
 env.get_checkpoint_config().set_checkpointing_mode(
     CheckpointingMode.EXACTLY_ONCE
 )
 
-# 创建数据源
-kafka_props = {
+# 创建数据源 kafka_props = {
     'bootstrap.servers': 'kafka:9092',
     'group.id': 'pyflink-consumer'
 }
 
-# 定义数据类型
-from pyflink.common.serialization import SimpleStringSchema
+# 定义数据类型 from pyflink.common.serialization import SimpleStringSchema
 
 ds = env.add_source(
     FlinkKafkaConsumer(
@@ -466,19 +456,16 @@ ds = env.add_source(
     )
 )
 
-# Map 操作
-class ParseJson(MapFunction):
+# Map 操作 class ParseJson(MapFunction):
     def map(self, value):
         import json
         return json.loads(value)
 
 parsed = ds.map(ParseJson(), output_type=Types.MAP(Types.STRING(), Types.STRING()))
 
-# Filter 操作
-filtered = parsed.filter(lambda x: x.get('status') == 'active')
+# Filter 操作 filtered = parsed.filter(lambda x: x.get('status') == 'active')
 
-# FlatMap 操作
-class ExplodeEvents(FlatMapFunction):
+# FlatMap 操作 class ExplodeEvents(FlatMapFunction):
     def flat_map(self, value, collector):
         events = value.get('events', [])
         for event in events:
@@ -489,16 +476,14 @@ class ExplodeEvents(FlatMapFunction):
 
 exploded = parsed.flat_map(ExplodeEvents())
 
-# KeyBy + Window
-from pyflink.datastream.window import TumblingEventTimeWindows, Time
+# KeyBy + Window from pyflink.datastream.window import TumblingEventTimeWindows, Time
 
 result = parsed \
     .key_by(lambda x: x['user_id']) \
     .window(TumblingEventTimeWindows.of(Time.minutes(5))) \
     .aggregate(AverageAggregate())
 
-# Sink
-result.add_sink(FlinkKafkaProducer(
+# Sink result.add_sink(FlinkKafkaProducer(
     topic='output-topic',
     serialization_schema=SimpleStringSchema(),
     producer_config=kafka_props
@@ -568,8 +553,7 @@ def hash_user_id(user_id: str) -> str:
     import hashlib
     return hashlib.md5(user_id.encode()).hexdigest()[:8]
 
-# 注册并使用
-table_env.create_temporary_function("hash_user_id", hash_user_id)
+# 注册并使用 table_env.create_temporary_function("hash_user_id", hash_user_id)
 
 result = table_env.sql_query("""
     SELECT
@@ -579,8 +563,7 @@ result = table_env.sql_query("""
     FROM user_events
 """)
 
-# Table API 使用
-result = table_env.from_path("user_events") \
+# Table API 使用 result = table_env.from_path("user_events") \
     .select(
         hash_user_id(col("user_id")).alias("short_id"),
         col("event_type"),
@@ -595,8 +578,7 @@ from pyflink.table.udf import udf
 from pyflink.table import DataTypes
 import pandas as pd
 
-# 使用 pandas_udf 装饰器启用向量化执行
-@udf(result_type=DataTypes.DOUBLE(), udf_type="pandas")
+# 使用 pandas_udf 装饰器启用向量化执行 @udf(result_type=DataTypes.DOUBLE(), udf_type="pandas")
 def calculate_discount(prices: pd.Series,
                        categories: pd.Series,
                        user_types: pd.Series) -> pd.Series:
@@ -629,8 +611,7 @@ def calculate_discount(prices: pd.Series,
 
     return prices * (1 - discounts)
 
-# 使用 Pandas UDF
-result = table_env.from_path("orders") \
+# 使用 Pandas UDF result = table_env.from_path("orders") \
     .select(
         col("order_id"),
         col("price"),
@@ -689,12 +670,10 @@ class WeightedAverage(AggregateFunction):
             DataTypes.FIELD("weight", DataTypes.INT())
         ])
 
-# 注册并使用
-weighted_avg = udaf(WeightedAverage())
+# 注册并使用 weighted_avg = udaf(WeightedAverage())
 table_env.create_temporary_function("weighted_avg", weighted_avg)
 
-# SQL 中使用
-result = table_env.sql_query("""
+# SQL 中使用 result = table_env.sql_query("""
     SELECT
         category,
         weighted_avg(price, quantity) as weighted_avg_price
@@ -714,8 +693,7 @@ from pyflink.table.udf import udf
 from pyflink.table import DataTypes
 import pandas as pd
 
-# 定义简单的神经网络模型
-class RecommendationModel(nn.Module):
+# 定义简单的神经网络模型 class RecommendationModel(nn.Module):
     def __init__(self, input_dim=10, hidden_dim=64, output_dim=5):
         super().__init__()
         self.fc1 = nn.Linear(input_dim, hidden_dim)
@@ -726,8 +704,7 @@ class RecommendationModel(nn.Module):
         x = self.relu(self.fc1(x))
         return self.fc2(x)
 
-# 加载预训练模型
-model = RecommendationModel()
+# 加载预训练模型 model = RecommendationModel()
 model.load_state_dict(torch.load('recommendation_model.pth'))
 model.eval()
 
@@ -756,8 +733,7 @@ def predict_scores(features: pd.Series) -> pd.Series:
     # 转换为 Python 列表
     return pd.Series(predictions.numpy().tolist())
 
-# 使用模型推理
-result = table_env.sql_query("""
+# 使用模型推理 result = table_env.sql_query("""
     SELECT
         user_id,
         product_id,
@@ -773,8 +749,7 @@ import tensorflow as tf
 from pyflink.table.udf import udf
 import pandas as pd
 
-# 加载 TensorFlow 模型
-model = tf.keras.models.load_model('fraud_detection_model')
+# 加载 TensorFlow 模型 model = tf.keras.models.load_model('fraud_detection_model')
 
 @udf(result_type=DataTypes.DOUBLE(), udf_type="pandas")
 def fraud_probability(features: pd.Series) -> pd.Series:
@@ -792,8 +767,7 @@ def fraud_probability(features: pd.Series) -> pd.Series:
 
     return pd.Series(predictions.flatten())
 
-# 在流处理中使用
-result = table_env.sql_query("""
+# 在流处理中使用 result = table_env.sql_query("""
     SELECT
         transaction_id,
         amount,
@@ -816,8 +790,7 @@ from pyflink.table.udf import udf
 import pandas as pd
 import numpy as np
 
-# 加载 scikit-learn 模型
-clf = joblib.load('classification_model.pkl')
+# 加载 scikit-learn 模型 clf = joblib.load('classification_model.pkl')
 
 @udf(result_type=DataTypes.ROW([
     DataTypes.FIELD("predicted_class", DataTypes.INT()),
@@ -850,23 +823,19 @@ def classify_with_confidence(features: pd.Series) -> pd.DataFrame:
 ```python
 from pyflink.table import EnvironmentSettings, TableEnvironment
 
-# 启用向量化执行
-env_settings = EnvironmentSettings.in_streaming_mode()
+# 启用向量化执行 env_settings = EnvironmentSettings.in_streaming_mode()
 table_env = TableEnvironment.create(env_settings)
 
-# 配置 Python UDF 执行优化
-config = table_env.get_config().get_configuration()
+# 配置 Python UDF 执行优化 config = table_env.get_config().get_configuration()
 
-# 启用 Arrow 优化
-config.set_string("python.fn-execution.bundle.size", "1000")
+# 启用 Arrow 优化 config.set_string("python.fn-execution.bundle.size", "1000")
 config.set_string("python.fn-execution.bundle.time", "1000")
 config.set_string("python.fn-execution.arrow.batch.size", "10000")
 
 # 设置 Python Worker 数量 (建议 = Task slot 数量)
 config.set_string("python.fn-execution.parallelism", "4")
 
-# 内存配置
-config.set_string("python.fn-execution.memory.managed", "true")
+# 内存配置 config.set_string("python.fn-execution.memory.managed", "true")
 config.set_string("taskmanager.memory.task.off-heap.size", "512mb")
 ```
 
@@ -877,32 +846,28 @@ config.set_string("taskmanager.memory.task.off-heap.size", "512mb")
 PyFlink UDF 性能优化最佳实践
 """
 
-# ❌ 低效写法:逐行处理
-@udf(result_type=DataTypes.DOUBLE())
+# ❌ 低效写法:逐行处理 @udf(result_type=DataTypes.DOUBLE())
 def slow_process(value):
     result = 0
     for i in range(len(value)):
         result += value[i] ** 2
     return result
 
-# ✅ 高效写法:使用 NumPy 向量化
-import numpy as np
+# ✅ 高效写法:使用 NumPy 向量化 import numpy as np
 
 @udf(result_type=DataTypes.DOUBLE(), udf_type="pandas")
 def fast_process(values: pd.Series) -> pd.Series:
     # 使用 NumPy 向量化操作
     return np.sum(values ** 2, axis=1)
 
-# ❌ 低效写法:频繁创建对象
-@udf(result_type=DataTypes.STRING())
+# ❌ 低效写法:频繁创建对象 @udf(result_type=DataTypes.STRING())
 def slow_transform(data):
     result = []
     for item in data.split(','):
         result.append(item.strip().upper())
     return ','.join(result)
 
-# ✅ 高效写法:减少中间对象
-import re
+# ✅ 高效写法:减少中间对象 import re
 
 # 预编译正则表达式 (在模块级别)
 SPLIT_PATTERN = re.compile(r',\s*')
@@ -925,11 +890,9 @@ from pyflink.table import StreamTableEnvironment, EnvironmentSettings
 env = StreamExecutionEnvironment.get_execution_environment()
 env.set_parallelism(1)  # 单并行度便于调试
 
-# 启用详细日志
-env.get_config().set_auto_watermark_interval(0)
+# 启用详细日志 env.get_config().set_auto_watermark_interval(0)
 
-# 使用内存数据快速测试
-test_data = [
+# 使用内存数据快速测试 test_data = [
     ("user1", "click", 100),
     ("user2", "purchase", 200),
     ("user1", "click", 150)
@@ -944,11 +907,9 @@ ds = env.from_collection(
     ])
 )
 
-# 打印中间结果进行调试
-ds.print()
+# 打印中间结果进行调试 ds.print()
 
-# 或者收集结果到 Python 列表
-results = ds.execute_and_collect()
+# 或者收集结果到 Python 列表 results = ds.execute_and_collect()
 for result in results:
     print(f"Debug: {result}")
 ```
@@ -959,8 +920,7 @@ for result in results:
 import logging
 from pyflink.table.udf import udf
 
-# 配置 Python Worker 日志
-logging.basicConfig(
+# 配置 Python Worker 日志 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
@@ -980,8 +940,7 @@ def debug_transform(value):
         raise
 
 # 在 Flink UI 中查看 Metrics
-# 1. 自定义 Counter
-from pyflink.metrics import Counter
+# 1. 自定义 Counter from pyflink.metrics import Counter
 
 class MonitoredMap(MapFunction):
     def __init__(self):
@@ -1012,19 +971,16 @@ PyFlink 常见问题与解决方案
 # 问题 1: ImportError: No module named 'xxx'
 # 解决方案:确保依赖在 Python Worker 中可用
 
-# 方式 1: 使用 requirements.txt
-from pyflink.table import TableEnvironment
+# 方式 1: 使用 requirements.txt from pyflink.table import TableEnvironment
 
 table_env.set_python_requirements(
     requirements_file_path="/path/to/requirements.txt",
     requirements_cache_dir="/path/to/cache"
 )
 
-# 方式 2: 使用 Conda 环境
-table_env.set_python_executable("/path/to/conda/env/bin/python")
+# 方式 2: 使用 Conda 环境 table_env.set_python_executable("/path/to/conda/env/bin/python")
 
-# 方式 3: 打包依赖文件
-table_env.add_python_archive("/path/to/site-packages.zip", "deps")
+# 方式 3: 打包依赖文件 table_env.add_python_archive("/path/to/site-packages.zip", "deps")
 
 # 问题 2: Serialization Error
 # 确保 UDF 中使用的对象可序列化
@@ -1032,15 +988,13 @@ table_env.add_python_archive("/path/to/site-packages.zip", "deps")
 from typing import List
 import pickle
 
-# ❌ 错误:使用不可序列化的对象
-@udf(result_type=DataTypes.STRING())
+# ❌ 错误:使用不可序列化的对象 @udf(result_type=DataTypes.STRING())
 def bad_udf(value):
     # 在每次调用时创建连接,效率低且可能有线程问题
     conn = create_database_connection()
     return conn.query(value)
 
-# ✅ 正确:在 open() 中初始化
-class GoodUdf(ScalarFunction):
+# ✅ 正确:在 open() 中初始化 class GoodUdf(ScalarFunction):
     def __init__(self):
         self.conn = None
 
@@ -1060,14 +1014,11 @@ class GoodUdf(ScalarFunction):
 
 config = table_env.get_config().get_configuration()
 
-# 减小 batch size
-config.set_string("python.fn-execution.bundle.size", "100")
+# 减小 batch size config.set_string("python.fn-execution.bundle.size", "100")
 
-# 限制 Arrow buffer 大小
-config.set_string("python.fn-execution.arrow.batch.size", "1000")
+# 限制 Arrow buffer 大小 config.set_string("python.fn-execution.arrow.batch.size", "1000")
 
-# 启用背压
-config.set_string("python.fn-execution.streaming.enabled", "true")
+# 启用背压 config.set_string("python.fn-execution.streaming.enabled", "true")
 ```
 
 ---

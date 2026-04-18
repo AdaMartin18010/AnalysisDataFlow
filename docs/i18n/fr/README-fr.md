@@ -57,10 +57,10 @@ Ce projet est une compilation et une systématisation complète des **modèles t
 ### Navigation par thème
 
 - **Fondements théoriques**: [Struct/ Théorie unifiée du streaming](../../../en/00-INDEX.md)
-- **Design patterns**: [Knowledge/ Patterns core du stream processing](../../Knowledge/02-design-patterns/)
+- **Design patterns**: [Knowledge/ Patterns core du stream processing]
 - **Flink Core**: [Flink/ Mécanisme Checkpoint](../../../Flink/02-core/checkpoint-mechanism-deep-dive.md)
 - **Technologies de pointe**: [Knowledge/06-frontier/ Bases de données AI-Native](../../../Knowledge/06-frontier/vector-search-streaming-convergence.md)
-- **Antipatterns**: [Knowledge/09-anti-patterns/ Antipatterns de stream processing](../../Knowledge/09-anti-patterns/)
+- **Antipatterns**: [Knowledge/09-anti-patterns/ Antipatterns de stream processing]
 
 ---
 
@@ -104,7 +104,7 @@ Si vous souhaitez contribuer à ce projet, veuillez consulter [CONTRIBUTING.md](
 
 ## Licence
 
-[Licence Apache 2.0](../../LICENSE)
+[Licence Apache 2.0]
 
 ---
 

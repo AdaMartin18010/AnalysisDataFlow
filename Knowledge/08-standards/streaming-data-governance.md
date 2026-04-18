@@ -179,8 +179,7 @@ Flink 作业未声明该字段 → 反序列化异常 → 订单流中断
 #### Confluent Schema Registry
 
 ```yaml
-# docker-compose.yml 部署
-services:
+# docker-compose.yml 部署 services:
   schema-registry:
     image: confluentinc/cp-schema-registry:7.5.0
     environment:
@@ -217,15 +216,13 @@ services:
 #### AWS Glue Schema Registry
 
 ```python
-# boto3 集成示例
-import boto3
+# boto3 集成示例 import boto3
 from aws_schema_registry import SchemaRegistryClient
 
 client = boto3.client('glue', region_name='us-east-1')
 registry = SchemaRegistryClient(client, registry_name='streaming-registry')
 
-# 注册 Schema
-schema_version = registry.register_schema(
+# 注册 Schema schema_version = registry.register_schema(
     schema_name='OrderEvent',
     data_format='AVRO',
     schema_definition=avro_schema_json,
@@ -238,14 +235,12 @@ schema_version = registry.register_schema(
 #### OpenLineage 集成
 
 ```python
-# Flink OpenLineage 集成
-from pyflink.datastream import StreamExecutionEnvironment
+# Flink OpenLineage 集成 from pyflink.datastream import StreamExecutionEnvironment
 from openlineage.client import OpenLineageClient
 
 env = StreamExecutionEnvironment.get_execution_environment()
 
-# 发送血缘事件
-client.emit(
+# 发送血缘事件 client.emit(
     RunEvent(
         eventType=RunState.START,
         eventTime=datetime.now(),
@@ -299,13 +294,11 @@ JOIN users u ON o.user_id = u.id;
 
 ```bash
 # 基于 Principal 的 ACL 管理
-# 1. 授予生产者权限
-kafka-acls --bootstrap-server kafka:9092 \
+# 1. 授予生产者权限 kafka-acls --bootstrap-server kafka:9092 \
   --add --allow-principal User:order-service \
   --producer --topic orders
 
-# 2. 授予消费者组权限
-kafka-acls --bootstrap-server kafka:9092 \
+# 2. 授予消费者组权限 kafka-acls --bootstrap-server kafka:9092 \
   --add --allow-principal User:analytics-service \
   --consumer --topic orders --group analytics-group
 
@@ -363,16 +356,14 @@ FROM users;
 ### 5.6 数据质量监控
 
 ```python
-# Great Expectations + Kafka 实时验证
-from great_expectations.core import ExpectationSuite
+# Great Expectations + Kafka 实时验证 from great_expectations.core import ExpectationSuite
 from great_expectations.expectations import (
     ExpectColumnValuesToNotBeNull,
     ExpectColumnValuesToBeBetween,
     ExpectColumnValuesToMatchRegex
 )
 
-# 定义流数据质量规则
-order_expectations = ExpectationSuite(
+# 定义流数据质量规则 order_expectations = ExpectationSuite(
     name="order_event_expectations",
     expectations=[
         ExpectColumnValuesToNotBeNull(column="order_id"),
@@ -384,8 +375,7 @@ order_expectations = ExpectationSuite(
     ]
 )
 
-# Flink 集成: 实时断言
-class QualityValidator(MapFunction):
+# Flink 集成: 实时断言 class QualityValidator(MapFunction):
     def map(self, event):
         validation_result = self.validator.validate(event)
         if not validation_result.success:

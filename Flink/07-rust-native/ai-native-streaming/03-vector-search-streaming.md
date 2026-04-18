@@ -1100,8 +1100,7 @@ class PineconeVectorStore:
         )
         return results.matches
 
-# 使用示例
-if __name__ == "__main__":
+# 使用示例 if __name__ == "__main__":
     store = PineconeVectorStore(
         api_key="your-api-key",
         environment="us-west1-gcp",

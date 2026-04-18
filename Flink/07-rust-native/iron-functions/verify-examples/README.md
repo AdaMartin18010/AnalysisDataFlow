@@ -22,25 +22,20 @@ verify-examples/
 # 安装 Rust(如果尚未安装)
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
-# 安装 WASM 目标
-rustup target add wasm32-unknown-unknown
+# 安装 WASM 目标 rustup target add wasm32-unknown-unknown
 
-# 验证安装
-rustc --version
+# 验证安装 rustc --version
 cargo --version
 ```
 
 ### 2. 编译 WASM 模块
 
 ```bash
-# 在 verify-examples 目录下
-cd Flink/14-rust-assembly-ecosystem/iron-functions/verify-examples
+# 在 verify-examples 目录下 cd Flink/14-rust-assembly-ecosystem/iron-functions/verify-examples
 
-# 编译为 WASM
-cargo build --release --target wasm32-unknown-unknown
+# 编译为 WASM cargo build --release --target wasm32-unknown-unknown
 
-# 验证输出
-ls -la target/wasm32-unknown-unknown/release/*.wasm
+# 验证输出 ls -la target/wasm32-unknown-unknown/release/*.wasm
 ```
 
 ### 3. 运行单元测试
@@ -130,8 +125,7 @@ cargo test
 # 安装 ironfun(如果尚未安装)
 curl -s https://irontools.dev/ironfun-cli-install.sh | sh
 
-# 打包为 JAR
-ironfun package-udf \
+# 打包为 JAR ironfun package-udf \
     --source-path . \
     --package-name com.demo.verify \
     --class-name VerifyExamples \
@@ -143,11 +137,9 @@ ironfun package-udf \
 运行版本检查脚本：
 
 ```bash
-# 从项目根目录
-python .scripts/iron-functions-tracker.py --check
+# 从项目根目录 python .scripts/iron-functions-tracker.py --check
 
-# 更新版本记录
-python .scripts/iron-functions-tracker.py --update
+# 更新版本记录 python .scripts/iron-functions-tracker.py --update
 ```
 
 ## 故障排除

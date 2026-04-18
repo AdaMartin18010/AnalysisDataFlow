@@ -431,11 +431,9 @@ public class PriorityBasedEnricher implements MaterializedTableEnricher {
 
 ```yaml
 # flink-conf.yaml
-# 注册自定义Enricher
-sql.materialized-table.enricher: com.example.PriorityBasedEnricher
+# 注册自定义Enricher sql.materialized-table.enricher: com.example.PriorityBasedEnricher
 
-# 物化表全局默认配置
-sql.materialized-table.default-freshness: 5min
+# 物化表全局默认配置 sql.materialized-table.default-freshness: 5min
 sql.materialized-table.default-format: paimon
 sql.materialized-table.checkpoint-interval: 1min
 ```
@@ -614,8 +612,7 @@ graph TB
 ### 8.2 监控指标
 
 ```yaml
-# 关键监控指标
-metrics:
+# 关键监控指标 metrics:
   freshness_lag:
     description: "物化表新鲜度延迟(当前时间与最新数据时间差)"
     threshold:
@@ -649,8 +646,7 @@ metrics:
 ### 8.3 常见告警配置
 
 ```yaml
-# Prometheus AlertManager配置示例
-groups:
+# Prometheus AlertManager配置示例 groups:
   - name: materialized_table_alerts
     rules:
       - alert: MaterializedTableFreshnessViolation

@@ -678,14 +678,12 @@ void filter_high_risk(
 #!/bin/bash
 # build_fpga_kernel.sh
 
-# 设置 Vitis 环境
-source /tools/Xilinx/Vitis/2023.2/settings64.sh
+# 设置 Vitis 环境 source /tools/Xilinx/Vitis/2023.2/settings64.sh
 source /tools/Xilinx/Vivado/2023.2/settings64.sh
 
 export PLATFORM=xilinx_u250_gen3x16_xdma_4_1_202210_1
 
-# 编译 Kernel
-v++ -c -t hw \
+# 编译 Kernel v++ -c -t hw \
     --platform $PLATFORM \
     --kernel risk_score_kernel \
     --kernel_frequency 300 \
@@ -693,8 +691,7 @@ v++ -c -t hw \
     -o risk_score_kernel.xo \
     risk_filter_kernel.cpp
 
-# 链接生成 xclbin
-v++ -l -t hw \
+# 链接生成 xclbin v++ -l -t hw \
     --platform $PLATFORM \
     --config connectivity.cfg \
     --kernel_frequency 300 \
@@ -707,15 +704,13 @@ echo "Build complete: risk_filter.xclbin"
 #### 6.1.3 connectivity.cfg
 
 ```ini
-# 连接配置
-[connectivity]
+# 连接配置 [connectivity]
 sp=risk_score_kernel_1.in_stream:HOST[0]
 sp=risk_score_kernel_1.out_stream:HOST[0]
 sp=risk_score_kernel_1.rules:HOST[1]
 sp=risk_score_kernel_1.merchant_risk:HOST[1]
 
-# SLR 分配
-slr=risk_score_kernel_1:SLR0
+# SLR 分配 slr=risk_score_kernel_1:SLR0
 ```
 
 #### 6.1.4 Java UDF + XRT 运行时

@@ -224,18 +224,15 @@ $$
 ### 6.1 D-Bot 的诊断提示模板
 
 ```markdown
-# Role
-你是一位 Apache Flink 故障诊断专家。
+# Role 你是一位 Apache Flink 故障诊断专家。
 
-# Context
-某 Flink 作业在运行中出现了以下异常：
+# Context 某 Flink 作业在运行中出现了以下异常：
 - 症状 1: TaskManager 日志中频繁出现 "Backpressure level = HIGH"
 - 症状 2: Checkpoint 持续时间从 10s 增加到 120s
 - 症状 3: RocksDB SST 文件数量持续增长
 - 时间线: 上述症状在 14:30 同时出现
 
-# Task
-请分析以上症状的根因，并给出：
+# Task 请分析以上症状的根因，并给出：
 1. 最可能的根因（按置信度排序）
 2. 每条根因的证据链
 3. 对应的修复建议
@@ -295,8 +292,7 @@ class LLMDiagnosisAgent:
                 matches.append(entry["description"])
         return "\n".join(matches[:5])
 
-# 知识库示例条目
-knowledge_base = [
+# 知识库示例条目 knowledge_base = [
     {
         "keywords": ["backpressure", "checkpoint timeout", "rocksdb"],
         "description": "RocksDB 后台 Compaction 阻塞 Checkpoint 线程，导致反压和 Checkpoint 超时。建议：增大 state.backend.incremental 或调整 RocksDB 线程数。"

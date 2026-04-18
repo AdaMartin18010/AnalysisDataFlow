@@ -663,8 +663,7 @@ stateDiagram-v2
 **Exactly-Once 必需配置**：
 
 ```properties
-# 消费者配置
-isolation.level=read_committed
+# 消费者配置 isolation.level=read_committed
 enable.auto.commit=false
 auto.offset.reset=earliest
 

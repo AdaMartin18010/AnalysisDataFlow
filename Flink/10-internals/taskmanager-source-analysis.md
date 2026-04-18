@@ -688,23 +688,19 @@ Barrier对齐过程:
 ### 6.1 TaskManager启动配置示例
 
 ```yaml
-# flink-conf.yaml - TaskManager配置示例
-taskmanager.memory.process.size: 8192m
+# flink-conf.yaml - TaskManager配置示例 taskmanager.memory.process.size: 8192m
 taskmanager.memory.flink.size: 6144m
 taskmanager.memory.managed.size: 2048m
 taskmanager.memory.network.min: 256m
 taskmanager.memory.network.max: 512m
 
-# Slot配置
-taskmanager.numberOfTaskSlots: 4
+# Slot配置 taskmanager.numberOfTaskSlots: 4
 
-# Netty网络配置
-taskmanager.memory.network.memory.buffer-size: 65536
+# Netty网络配置 taskmanager.memory.network.memory.buffer-size: 65536
 taskmanager.memory.network.memory.max-buffers-per-channel: 10
 taskmanager.memory.network.memory.max-overdraft-buffers-per-gateway: 5
 
-# 心跳配置
-taskmanager.heartbeat.interval: 10000
+# 心跳配置 taskmanager.heartbeat.interval: 10000
 taskmanager.heartbeat.timeout: 50000
 ```
 

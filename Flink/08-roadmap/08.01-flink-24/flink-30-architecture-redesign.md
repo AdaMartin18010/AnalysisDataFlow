@@ -745,17 +745,14 @@ $$
 ```yaml
 # flink-conf.yaml - 统一执行层配置
 
-# 执行模式配置
-execution.mode: AUTO  # AUTO, STREAMING, BATCH, INTERACTIVE
+# 执行模式配置 execution.mode: AUTO  # AUTO, STREAMING, BATCH, INTERACTIVE
 
-# 自适应执行优化
-execution.adaptive.enabled: true
+# 自适应执行优化 execution.adaptive.enabled: true
 execution.adaptive.target-parallelism: AUTO
 execution.adaptive.min-parallelism: 1
 execution.adaptive.max-parallelism: 1000
 
-# 执行模式切换策略
-execution.adaptive.switch-threshold:
+# 执行模式切换策略 execution.adaptive.switch-threshold:
   streaming-to-batch:
     condition: "bounded-data AND latency-tolerant"
     timeout: 30s
@@ -763,8 +760,7 @@ execution.adaptive.switch-threshold:
     condition: "unbounded-source-detected"
     immediate: true
 
-# 交互式查询优化
-execution.interactive:
+# 交互式查询优化 execution.interactive:
   progressive-results: true
   prefetch-enabled: true
   cache-hot-data: true
@@ -802,8 +798,7 @@ env.execute("Unified Execution Example");
 ```yaml
 # 下一代状态管理配置
 
-# 分层存储配置
-state.backend: tiered-storage
+# 分层存储配置 state.backend: tiered-storage
 state.backend.tiered-storage:
   # L1: 内存层
   l1-memory:
@@ -833,8 +828,7 @@ state.backend.tiered-storage:
       idle-days: 7
       compression: ZSTD
 
-# 智能缓存配置
-state.cache:
+# 智能缓存配置 state.cache:
   enabled: true
   ml-prediction: true  # 3.0新特性
   prefetch-window: 1000
@@ -997,38 +991,32 @@ public class UnifiedAPIExample {
 #!/bin/bash
 # Flink 2.x 到 3.0 迁移脚本
 
-# 1. 备份现有作业
-flink savepoint <job-id> s3://flink-backup/migration/savepoint-$(date +%Y%m%d)
+# 1. 备份现有作业 flink savepoint <job-id> s3://flink-backup/migration/savepoint-$(date +%Y%m%d)
 
-# 2. 运行兼容性检查工具
-flink-migration-check \
+# 2. 运行兼容性检查工具 flink-migration-check \
     --job-jar <path-to-jar> \
     --from-version 2.5 \
     --to-version 3.0 \
     --report-format json \
     --output migration-report.json
 
-# 3. 自动修复兼容性问题
-flink-migration-fix \
+# 3. 自动修复兼容性问题 flink-migration-fix \
     --input migration-report.json \
     --source-dir ./src \
     --output-dir ./src-migrated
 
-# 4. 配置转换
-flink-config-migrate \
+# 4. 配置转换 flink-config-migrate \
     --input flink-conf-2x.yaml \
     --output flink-conf-3.0.yaml \
     --target-version 3.0
 
-# 5. 验证迁移结果
-flink-migration-verify \
+# 5. 验证迁移结果 flink-migration-verify \
     --original-jar <original-jar> \
     --migrated-jar <migrated-jar> \
     --test-data ./test-data \
     --expected-output ./expected-output
 
-# 6. 使用迁移后的作业启动
-flink run \
+# 6. 使用迁移后的作业启动 flink run \
     -Dexecution.target=kubernetes \
     -Dkubernetes.cluster-id=flink-3-0-cluster \
     -Dstate.backend=tiered-storage \

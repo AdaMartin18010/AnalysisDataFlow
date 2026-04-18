@@ -22,7 +22,7 @@ Welcome to the English documentation hub for **AnalysisDataFlow** - a comprehens
 | [QUICK-START.md](./QUICK-START.md) | Quick start guide for new users | [./QUICK-START.md](./QUICK-START.md) |
 | [ARCHITECTURE.md](./ARCHITECTURE.md) | System architecture overview | [./ARCHITECTURE.md](./ARCHITECTURE.md) |
 | [GLOSSARY.md](./GLOSSARY.md) | Technical terminology glossary | [./GLOSSARY.md](./GLOSSARY.md) |
-| [LEARNING-PATH-GUIDE.md](./LEARNING-PATH-GUIDE.md) | Learning path navigation guide | [./LEARNING-PATH-GUIDE.md](./LEARNING-PATH-GUIDE.md) |
+| [LEARNING-PATH-GUIDE.md] | Learning path navigation guide | [./LEARNING-PATH-GUIDE.md] |
 | [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) | Stream computing troubleshooting manual | [./TROUBLESHOOTING.md](./TROUBLESHOOTING.md) |
 | [OBSERVABILITY-GUIDE.md](./OBSERVABILITY-GUIDE.md) | Stream processing observability guide | [./OBSERVABILITY-GUIDE.md](./OBSERVABILITY-GUIDE.md) |
 | [KNOWLEDGE-GRAPH-GUIDE.md](./KNOWLEDGE-GRAPH-GUIDE.md) | Knowledge graph guide | [./KNOWLEDGE-GRAPH-GUIDE.md](./KNOWLEDGE-GRAPH-GUIDE.md) |
@@ -31,9 +31,9 @@ Welcome to the English documentation hub for **AnalysisDataFlow** - a comprehens
 
 | Index | Description | Content Count |
 |-------|-------------|---------------|
-| [STRUCT-INDEX.md](./STRUCT-INDEX.md) | Struct/ formal theory navigation | 43 documents |
-| [KNOWLEDGE-INDEX.md](./KNOWLEDGE-INDEX.md) | Knowledge/ engineering practice navigation | 128+ documents |
-| [FLINK-INDEX.md](./FLINK-INDEX.md) | Flink/ technology navigation | 178+ documents |
+| [STRUCT-INDEX.md] | Struct/ formal theory navigation | 43 documents |
+| [KNOWLEDGE-INDEX.md] | Knowledge/ engineering practice navigation | 128+ documents |
+| [FLINK-INDEX.md] | Flink/ technology navigation | 178+ documents |
 
 ---
 
@@ -75,7 +75,7 @@ All English documents include navigation links to their Chinese counterparts at 
 
 ## Contributing to Translations
 
-We welcome contributions to expand our English documentation. See [CONTRIBUTING-EN.md](../CONTRIBUTING-EN.md) for guidelines.
+We welcome contributions to expand our English documentation. See [CONTRIBUTING-EN.md] for guidelines.
 
 ### Translation Priorities
 
@@ -102,7 +102,7 @@ Each English document follows the same six-section template as Chinese documents
 
 ## Roadmap
 
-See [I18N-ROADMAP.md](../I18N-ROADMAP.md) for detailed internationalization plans.
+See [I18N-ROADMAP.md] for detailed internationalization plans.
 
 ---
 

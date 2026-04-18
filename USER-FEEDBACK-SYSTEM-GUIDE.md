@@ -329,8 +329,8 @@ flowchart TD
 
 ### 8.2 快速链接
 
-- [提交新反馈](../../issues/new?template=user_feedback.yml)
-- [查看所有反馈](../../issues?q=is%3Aissue+label%3Auser-feedback)
+- [提交新反馈]
+- [查看所有反馈]
 - [参与用户调查](./community/user-survey-2026.md)
 
 ---
@@ -339,8 +339,8 @@ flowchart TD
 
 如有关于反馈系统的建议或问题，请通过以下方式联系：
 
-- **GitHub Issues**: [提交反馈](../../issues/new)
-- **GitHub Discussions**: [参与讨论](../../discussions)
+- **GitHub Issues**: [提交反馈]
+- **GitHub Discussions**: [参与讨论]
 - **项目维护团队**: 通过 Issue @maintainers
 
 ---

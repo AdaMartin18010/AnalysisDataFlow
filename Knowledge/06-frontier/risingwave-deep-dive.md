@@ -793,26 +793,21 @@ impl BarrierAligner {
 ### 10.2 性能调优参数
 
 ```toml
-# risingwave.toml
-[storage]
-# 块缓存大小
-block_cache_capacity_mb = 2048
+# risingwave.toml [storage]
+# 块缓存大小 block_cache_capacity_mb = 2048
 
-# 元数据缓存
-meta_cache_capacity_mb = 512
+# 元数据缓存 meta_cache_capacity_mb = 512
 
 # 共享缓冲区(MemTable)
 shared_buffer_capacity_mb = 2048
 
-# Compactor 内存限制
-compactor_memory_limit_mb = 2560
+# Compactor 内存限制 compactor_memory_limit_mb = 2560
 
 [streaming]
 # 检查点间隔(秒)
 checkpoint_interval_sec = 10
 
-# Barrier 超时
-barrier_interval_ms = 1000
+# Barrier 超时 barrier_interval_ms = 1000
 ```
 
 ## 11. 引用参考 (References)

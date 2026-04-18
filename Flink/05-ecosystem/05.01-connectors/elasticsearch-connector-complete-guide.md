@@ -602,8 +602,7 @@ public class RobustElasticsearchSink {
 from pyflink.table import StreamTableEnvironment, EnvironmentSettings
 from pyflink.datastream import StreamExecutionEnvironment
 
-# 创建执行环境
-env = StreamExecutionEnvironment.get_execution_environment()
+# 创建执行环境 env = StreamExecutionEnvironment.get_execution_environment()
 env.enable_checkpointing(60000)
 
 settings = EnvironmentSettings.new_instance() \
@@ -633,8 +632,7 @@ CREATE TABLE kafka_logs (
 """)
 
 # 创建 ES Sink 表
-# 动态索引通过 DATE_FORMAT 实现
-table_env.execute_sql("""
+# 动态索引通过 DATE_FORMAT 实现 table_env.execute_sql("""
 CREATE TABLE es_logs (
     log_id STRING PRIMARY KEY NOT ENFORCED,
     log_time TIMESTAMP(3),
@@ -659,8 +657,7 @@ CREATE TABLE es_logs (
 )
 """)
 
-# 数据转换并写入 ES
-table_env.execute_sql("""
+# 数据转换并写入 ES table_env.execute_sql("""
 INSERT INTO es_logs
 SELECT
     log_id,

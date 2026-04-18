@@ -444,15 +444,13 @@ from feast.types import Int64, Float64, String
 from feast.value_type import ValueType
 from datetime import timedelta
 
-# 定义实体
-user = Entity(
+# 定义实体 user = Entity(
     name="user_id",
     value_type=ValueType.STRING,
     description="User identifier"
 )
 
-# 定义特征视图
-user_features_view = FeatureView(
+# 定义特征视图 user_features_view = FeatureView(
     name="user_behavior_features",
     entities=["user_id"],
     ttl=timedelta(hours=24),
@@ -466,8 +464,7 @@ user_features_view = FeatureView(
     source=user_behavior_source,
 )
 
-# Flink到Feast的Sink
-class FeastSink(SinkFunction[FeatureRow]):
+# Flink到Feast的Sink class FeastSink(SinkFunction[FeatureRow]):
 
     def __init__(self, repo_path: str):
         self.repo_path = repo_path

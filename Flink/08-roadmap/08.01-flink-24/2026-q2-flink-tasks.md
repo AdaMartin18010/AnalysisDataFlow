@@ -441,8 +441,7 @@ public class AsyncBidProcessor extends AsyncProcessFunction<Event, Result> {
 **基准测试配置**:
 
 ```yaml
-# benchmark-config.yaml
-test_scenarios:
+# benchmark-config.yaml test_scenarios:
   - name: "high_throughput"
     events_per_second: 1_680_000  # 目标: 1.68M e/s
     state_size: "100GB"
@@ -493,8 +492,7 @@ CompletableFuture.allOf(futures).join();
 **实例场景**: 多云环境自动化部署
 
 ```yaml
-# flink-deployment.yaml - 目标状态
-apiVersion: flink.apache.org/v1beta2
+# flink-deployment.yaml - 目标状态 apiVersion: flink.apache.org/v1beta2
 kind: FlinkDeployment
 metadata:
   name: production-pipeline

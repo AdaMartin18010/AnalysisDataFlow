@@ -900,8 +900,7 @@ $$
 ### A2A主机Agent实现
 
 ```python
-# host_agent.py
-import httpx
+# host_agent.py import httpx
 import json
 import asyncio
 from typing import AsyncIterator, Dict, Any, Optional
@@ -1088,8 +1087,7 @@ class A2AHostAgent:
         import uuid
         return str(uuid.uuid4())
 
-# 使用示例
-async def main():
+# 使用示例 async def main():
     host = A2AHostAgent("host-001")
 
     # 发现远程Agent
@@ -1135,8 +1133,7 @@ if __name__ == "__main__":
 ### A2A远程Agent实现
 
 ```python
-# remote_agent.py
-from flask import Flask, request, jsonify, Response
+# remote_agent.py from flask import Flask, request, jsonify, Response
 import json
 import asyncio
 from datetime import datetime
@@ -1144,8 +1141,7 @@ from typing import Dict, Any
 
 app = Flask(__name__)
 
-# 模拟任务存储
-tasks: Dict[str, Dict] = {}
+# 模拟任务存储 tasks: Dict[str, Dict] = {}
 
 @app.route("/.well-known/agent.json", methods=["GET"])
 def agent_card():
@@ -1321,8 +1317,7 @@ if __name__ == "__main__":
 ### 多Agent协作工作流
 
 ```python
-# multi_agent_workflow.py
-import asyncio
+# multi_agent_workflow.py import asyncio
 from typing import List, Dict, Any
 from dataclasses import dataclass
 
@@ -1620,8 +1615,7 @@ class HiringOrchestrator:
 
         return schedules
 
-# 使用示例
-async def demo_hiring_workflow():
+# 使用示例 async def demo_hiring_workflow():
     """演示多Agent协作招聘流程"""
 
     # 创建A2A主机Agent

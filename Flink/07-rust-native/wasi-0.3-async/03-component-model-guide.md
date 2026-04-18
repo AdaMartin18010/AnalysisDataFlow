@@ -260,8 +260,7 @@ $$
 **工程实践**:
 
 ```bash
-# 验证组件兼容性
-wasm-tools component wit component.wasm
+# 验证组件兼容性 wasm-tools component wit component.wasm
 wasm-tools compose ./component-a.wasm -d ./component-b.wasm -o composed.wasm
 ```
 
@@ -667,10 +666,8 @@ cd ..
 
 echo "=== Building Go State Store Component ==="
 cd state-store-go
-# 使用 TinyGo 编译为 WASI
-tinygo build -target=wasi -o ../$OUT_DIR/state-store.wasm .
-# 包装为组件
-wasm-tools component embed $WIT_DIR/state-store.wit ../$OUT_DIR/state-store.wasm -o ../$OUT_DIR/state-store-component.wasm
+# 使用 TinyGo 编译为 WASI tinygo build -target=wasi -o ../$OUT_DIR/state-store.wasm .
+# 包装为组件 wasm-tools component embed $WIT_DIR/state-store.wit ../$OUT_DIR/state-store.wasm -o ../$OUT_DIR/state-store-component.wasm
 cd ..
 
 echo "=== Building AssemblyScript Filter Component ==="
@@ -680,8 +677,7 @@ wasm-tools component embed $WIT_DIR/filter.wit ../$OUT_DIR/filter.wasm -o ../$OU
 cd ..
 
 echo "=== Composing Components ==="
-# 组合组件
-wasm-tools compose $OUT_DIR/udf-rust.wasm \
+# 组合组件 wasm-tools compose $OUT_DIR/udf-rust.wasm \
     -d $OUT_DIR/state-store-component.wasm \
     -o $OUT_DIR/udf-with-state.wasm
 

@@ -871,8 +871,7 @@ $$\lambda_{breakeven} \approx 12M \text{ 调用/月 (对于 1GB, 100ms 平均执
 ```python
 # 伪代码示意,非完整可编译代码
 # 伪代码示意,非完整可编译代码
-# Serverless架构
-Event Source (Kinesis) → Lambda Function → TimeStream DB
+# Serverless架构 Event Source (Kinesis) → Lambda Function → TimeStream DB
                      ↓
                State Store (DynamoDB)
 ```
@@ -915,8 +914,7 @@ IoT Core → Lambda (数据清洗) → Kinesis → Lambda (聚合) → S3 → At
 状态键设计: `device:{device_id}:metrics`
 
 ```python
-# 状态访问模式
-state = get_state(f"device:{device_id}")
+# 状态访问模式 state = get_state(f"device:{device_id}")
 state.temperature = new_temp
 state.last_update = timestamp
 save_state(f"device:{device_id}", state)
@@ -1489,20 +1487,15 @@ graph LR
 
 ## 附录C: 公式汇总
 
-### 弹性伸缩公式
-$$n^*(t) = \frac{\lambda(t)}{\mu} + k \cdot \sqrt{\frac{\lambda(t)}{\mu}}$$
+### 弹性伸缩公式 $$n^*(t) = \frac{\lambda(t)}{\mu} + k \cdot \sqrt{\frac{\lambda(t)}{\mu}}$$
 
-### 冷启动概率
-$$P_{cold} \approx \frac{\lambda \cdot T_{cold}}{n_{pool}}$$
+### 冷启动概率 $$P_{cold} \approx \frac{\lambda \cdot T_{cold}}{n_{pool}}$$
 
-### 成本模型
-$$\mathcal{C} = P_{invoc} \cdot N_{invoc} + P_{mem} \cdot M \cdot T_{exec} \cdot N_{invoc} + P_{cpu} \cdot T_{exec} \cdot N_{invoc}$$
+### 成本模型 $$\mathcal{C} = P_{invoc} \cdot N_{invoc} + P_{mem} \cdot M \cdot T_{exec} \cdot N_{invoc} + P_{cpu} \cdot T_{exec} \cdot N_{invoc}$$
 
-### 最优预温实例数
-$$n_{min}^* = \sqrt{\frac{\lambda \cdot C_{cold} \cdot T_{cold}}{C_{keep}}}$$
+### 最优预温实例数 $$n_{min}^* = \sqrt{\frac{\lambda \cdot C_{cold} \cdot T_{cold}}{C_{keep}}}$$
 
-### 成本平衡点
-$$\lambda_{breakeven} = \frac{C_{vm}}{P_{invoc} + T_{exec} \cdot (P_{mem} \cdot M + P_{cpu})}$$
+### 成本平衡点 $$\lambda_{breakeven} = \frac{C_{vm}}{P_{invoc} + T_{exec} \cdot (P_{mem} \cdot M + P_{cpu})}$$
 
 ---
 
