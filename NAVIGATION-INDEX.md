@@ -96,7 +96,7 @@
 |------|----------|----------|
 | **理论基础** | [Struct/01-foundation/01.01-unified-streaming-theory.md](Struct/01-foundation/01.01-unified-streaming-theory.md) | USTM统一理论 |
 | | [Struct/01-foundation/01.02-process-calculus-primer.md](Struct/01-foundation/01.02-process-calculus-primer.md) | 进程演算入门 |
-| | [Struct/02-properties/02.02-consistency-hierarchy.md](../02-properties/02.02-consistency-hierarchy.md) | 一致性层级 |
+| | [Struct/02-properties/02.02-consistency-hierarchy.md](Struct/02-properties/02.02-consistency-hierarchy.md) | 一致性层级 |
 | **工程实践** | [Knowledge/02-design-patterns/](Knowledge/02-design-patterns/) | 8大设计模式 |
 | | [Knowledge/09-anti-patterns/](Knowledge/09-anti-patterns/) | 10大反模式 |
 | | [Knowledge/03-business-patterns/](Knowledge/03-business-patterns/) | 业务场景实践 |
@@ -122,7 +122,7 @@
 
 | 步骤 | 文档 | 预期产出 |
 |------|------|---------|
-| 1.1 | [Struct/00-INDEX.md](../Struct/00-INDEX.md) | 了解形式化等级体系 |
+| 1.1 | [Struct/00-INDEX.md](Struct/00-INDEX.md) | 了解形式化等级体系 |
 | 1.2 | [Struct/01-foundation/01.01-unified-streaming-theory.md](Struct/01-foundation/01.01-unified-streaming-theory.md) | 掌握统一流理论框架 |
 | 1.3 | [Struct/01-foundation/01.02-process-calculus-primer.md](Struct/01-foundation/01.02-process-calculus-primer.md) | 理解进程演算基础 |
 
@@ -130,7 +130,7 @@
 
 | 步骤 | 文档 | 预期产出 |
 |------|------|---------|
-| 2.1 | [Struct/02-properties/02.02-consistency-hierarchy.md](../02-properties/02.02-consistency-hierarchy.md) | 掌握一致性层级 |
+| 2.1 | [Struct/02-properties/02.02-consistency-hierarchy.md](Struct/02-properties/02.02-consistency-hierarchy.md) | 掌握一致性层级 |
 | 2.2 | [Struct/04-proofs/04.01-flink-checkpoint-correctness.md](Struct/04-proofs/04.01-flink-checkpoint-correctness.md) | 理解Checkpoint正确性证明 |
 
 **阶段3 - 前沿探索** (持续):
@@ -181,7 +181,7 @@
 |------|------|---------|
 | 2.1 | [Knowledge/04-technology-selection/engine-selection-guide.md](Knowledge/04-technology-selection/engine-selection-guide.md) | 引擎选型决策树 |
 | 2.2 | [Knowledge/04-technology-selection/flink-vs-risingwave.md](Knowledge/04-technology-selection/flink-vs-risingwave.md) | Flink vs RisingWave |
-| 2.3 | [Struct/02-properties/02.02-consistency-hierarchy.md](../02-properties/02.02-consistency-hierarchy.md) | 一致性选型 |
+| 2.3 | [Struct/02-properties/02.02-consistency-hierarchy.md](Struct/02-properties/02.02-consistency-hierarchy.md) | 一致性选型 |
 
 **阶段3 - 架构设计** (持续):
 
@@ -224,7 +224,7 @@
 | **流处理引擎选型决策树** | [Knowledge/04-technology-selection/engine-selection-guide.md](Knowledge/04-technology-selection/engine-selection-guide.md) | 选择Flink/Spark/Kafka Streams |
 | **状态后端选型决策树** | [Flink/09-practices/09.03-performance-tuning/state-backend-selection.md](Flink/09-practices/09.03-performance-tuning/state-backend-selection.md) | RocksDB/HashMap/Forst选择 |
 | **部署模式决策树** | [Flink/01-concepts/deployment-architectures.md](Flink/01-concepts/deployment-architectures.md) | Standalone/YARN/K8s选择 |
-| **一致性级别决策树** | [Struct/02-properties/02.02-consistency-hierarchy.md](../02-properties/02.02-consistency-hierarchy.md) | At-Most-Once/At-Least-Once/Exactly-Once选择 |
+| **一致性级别决策树** | [Struct/02-properties/02.02-consistency-hierarchy.md](Struct/02-properties/02.02-consistency-hierarchy.md) | At-Most-Once/At-Least-Once/Exactly-Once选择 |
 | **技术范式决策树** | [Knowledge/04-technology-selection/paradigm-selection-guide.md](Knowledge/04-technology-selection/paradigm-selection-guide.md) | Dataflow/Actor/CSP选择 |
 | **存储选型决策树** | [Knowledge/04-technology-selection/storage-selection-guide.md](Knowledge/04-technology-selection/storage-selection-guide.md) | 状态存储选择 |
 | **流数据库选型决策树** | [Knowledge/04-technology-selection/streaming-database-guide.md](Knowledge/04-technology-selection/streaming-database-guide.md) | RisingWave/Materialize选择 |
@@ -281,8 +281,8 @@
 |------|------|---------------|
 | [统一流计算理论](Struct/01-foundation/01.01-unified-streaming-theory.md) | S-01 | Def-S-01-01~12, Thm-S-01-01~03 |
 | [进程演算入门](Struct/01-foundation/01.02-process-calculus-primer.md) | S-02 | Def-S-02-01~08 |
-| [Actor模型形式化](../01-foundation/01.03-actor-model-formalization.md) | S-03 | Def-S-03-01~06 |
-| [Dataflow模型形式化](../01-foundation/01.04-dataflow-model-formalization.md) | S-04 | Def-S-04-01~10 |
+| [Actor模型形式化](Struct/01-foundation/01.03-actor-model-formalization.md) | S-03 | Def-S-03-01~06 |
+| [Dataflow模型形式化](Struct/01-foundation/01.04-dataflow-model-formalization.md) | S-04 | Def-S-04-01~10 |
 | [CSP形式化](Struct/01-foundation/01.05-csp-formalization.md) | S-05 | Def-S-05-01~07 |
 | [Petri网形式化](Struct/01-foundation/01.06-petri-net-formalization.md) | S-06 | Def-S-06-01~05 |
 | [Session Types](Struct/01-foundation/01.07-session-types.md) | S-07 | Def-S-07-01~08 |
@@ -292,7 +292,7 @@
 | 文档 | 编号 | 核心定理/定义 |
 |------|------|---------------|
 | [流处理确定性](Struct/02-properties/02.01-determinism-in-streaming.md) | S-08 | Thm-S-08-01~02 |
-| [一致性层级](../02-properties/02.02-consistency-hierarchy.md) | S-09 | Def-S-09-01~04, Thm-S-09-01 |
+| [一致性层级](Struct/02-properties/02.02-consistency-hierarchy.md) | S-09 | Def-S-09-01~04, Thm-S-09-01 |
 | [Watermark单调性](Struct/02-properties/02.03-watermark-monotonicity.md) | S-10 | Lemma-S-10-01~03 |
 | [活性与安全](Struct/02-properties/02.04-liveness-and-safety.md) | S-11 | Def-S-11-01~02 |
 | [类型安全推导](Struct/02-properties/02.05-type-safety-derivation.md) | S-12 | Thm-S-12-01 |
@@ -495,7 +495,7 @@
 |----------|------|------|
 | **全文搜索** | GitHub搜索 | `repo:luyanfeng/AnalysisDataFlow checkpoint` |
 | **定理编号搜索** | THEOREM-REGISTRY.md | 查找 `Thm-S-17-01` |
-| **目录索引** | 00-INDEX.md | [Struct/00-INDEX.md](../Struct/00-INDEX.md) |
+| **目录索引** | 00-INDEX.md | [Struct/00-INDEX.md](Struct/00-INDEX.md) |
 | | | [Knowledge/00-INDEX.md](Knowledge/00-INDEX.md) |
 | | | [Flink/00-INDEX.md](Flink/00-INDEX.md) |
 
@@ -675,7 +675,7 @@ Markdown行数: 338,716+
 
 ### B. 目录索引快速入口
 
-- [Struct/00-INDEX.md](../Struct/00-INDEX.md) — 形式化理论完整索引
+- [Struct/00-INDEX.md](Struct/00-INDEX.md) — 形式化理论完整索引
 - [Knowledge/00-INDEX.md](Knowledge/00-INDEX.md) — 工程实践完整索引
 - [Flink/00-INDEX.md](Flink/00-INDEX.md) — Flink专项完整索引
 - [tutorials/interactive/README.md](tutorials/interactive/README.md) — 交互式学习资源

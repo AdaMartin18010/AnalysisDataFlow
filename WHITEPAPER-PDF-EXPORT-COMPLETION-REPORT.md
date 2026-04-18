@@ -142,9 +142,9 @@ node scripts/generate-pdf-html.js
 
 | 白皮书 | 页数 | 源文件 | PDF下载 |
 |--------|------|--------|---------|
-| 流计算技术趋势白皮书 2026 | 40+ | [MD](./whitepapers/streaming-technology-trends-2026.md) | [PDF](./whitepapers/pdf/streaming-technology-trends-2026.pdf) |
-| Flink企业落地指南 | 60+ | [MD](./whitepapers/flink-enterprise-implementation-guide.md) | [PDF](./whitepapers/pdf/flink-enterprise-implementation-guide.pdf) |
-| 实时AI架构实践白皮书 | 50+ | [MD](./whitepapers/realtime-ai-architecture-practice.md) | [PDF](./whitepapers/pdf/realtime-ai-architecture-practice.pdf) |
+| 流计算技术趋势白皮书 2026 | 40+ | [MD](./whitepapers/streaming-technology-trends-2026.md) | PDF |
+| Flink企业落地指南 | 60+ | MD | PDF |
+| 实时AI架构实践白皮书 | 50+ | MD | PDF |
 
 **下载页面**: [whitepapers/pdf/index.html](./whitepapers/pdf/index.html)
 
@@ -221,7 +221,7 @@ docker run --rm -v $(pwd):/workspace pandoc/latex:3.1 \
 
 - [GitHub Actions工作流](./.github/workflows/pdf-export.yml)
 - [PDF导出指南](./PDF-EXPORT-GUIDE.md)
-- [白皮书索引](./whitepapers/WHITEPAPER-INDEX.md)
+- 白皮书索引
 - [项目主页](./README.md)
 
 ---

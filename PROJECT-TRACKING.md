@@ -437,9 +437,9 @@ v4.2 生态集成: [████████████████████
 | P2-8 | PyFlink深度指南 | ✅ 已完成 | [Flink/flink-pyflink-deep-dive.md](./Flink/flink-pyflink-deep-dive.md) |
 | P2-9 | State Backends深度对比 | ✅ 已完成 | [Flink/flink-state-backends-comparison.md](./Flink/flink-state-backends-comparison.md) |
 | P2-10 | 交互式图谱生成 | ✅ 已完成 | [knowledge-graph.html](./knowledge-graph.html) - D3.js交互式图谱v2.0 |
-| P2-11 | 文档关系自动映射 | ✅ 已完成 | [.scripts/doc-relationship-mapper.py](./.scripts/doc-relationship-mapper.py) - 自动扫描文档引用关系 |
+| P2-11 | 文档关系自动映射 | ✅ 已完成 | .scripts/doc-relationship-mapper.py - 自动扫描文档引用关系 |
 | P2-12 | 学习路径动态推荐 | ✅ 已完成 | [Knowledge/learning-path-recommender.md](./Knowledge/learning-path-recommender.md) - 动态推荐系统文档 |
-| P2-13 | 概念依赖图自动生成 | ✅ 已完成 | [.scripts/concept-dependency-generator.py](./.scripts/concept-dependency-generator.py) - Mermaid依赖图生成 |
+| P2-13 | 概念依赖图自动生成 | ✅ 已完成 | .scripts/concept-dependency-generator.py - Mermaid依赖图生成 |
 | **P2-3** | **边缘流处理实战** | **✅ 已完成** | **5篇边缘流处理文档 ([详细](#p2-3-知識--完成))** |
 
 **P2-3 边缘流处理实战** | 状态: **✅ 已完成** | 日期: 2026-04-08
@@ -710,9 +710,9 @@ v4.2 生态集成: [████████████████████
 | P3-1 | 内容国际化架构设计 | ✅ 完成 | [docs/i18n/ARCHITECTURE.md](docs/i18n/ARCHITECTURE.md) |
 | P3-2 | 术语表多语言版本 | ✅ 完成 | [GLOSSARY-en.md](GLOSSARY-en.md) |
 | P3-3 | 核心文档英文翻译 | ✅ 完成 | [docs/i18n/en/README.md](docs/i18n/en/README.md), [QUICK-START.md](docs/i18n/en/QUICK-START.md), [ARCHITECTURE.md](docs/i18n/en/ARCHITECTURE.md) |
-| P3-4 | 自动化翻译工作流 | ✅ 完成 | [.scripts/translation-workflow.py](.scripts/translation-workflow.py) |
-| P3-5 | 智能搜索增强 | ✅ 完成 | [.scripts/search-index-generator.py](.scripts/search-index-generator.py) |
-| P3-6 | 文档摘要自动生成 | ✅ 完成 | [.scripts/doc-summarizer.py](.scripts/doc-summarizer.py) |
+| P3-4 | 自动化翻译工作流 | ✅ 完成 | .scripts/translation-workflow.py |
+| P3-5 | 智能搜索增强 | ✅ 完成 | .scripts/search-index-generator.py |
+| P3-6 | 文档摘要自动生成 | ✅ 完成 | .scripts/doc-summarizer.py |
 | P3-7 | 问答机器人集成 | ✅ 完成 | [docs/chatbot-integration.md](docs/chatbot-integration.md) |
 | P3-8 | 学习路径个性化推荐 | ✅ 完成 | [Knowledge/personalized-learning-engine.md](Knowledge/personalized-learning-engine.md) |
 | P3-9 | RisingWave集成指南 | ✅ 完成 | [Flink/ecosystem/risingwave-integration-guide.md](Flink/risingwave-integration-guide.md) |
@@ -1763,7 +1763,7 @@ PROJECT-CRITICAL-REVIEW识别出13个Flink 2.4/2.5/3.0文档包含**虚构内容
 | 2 | Algolia DocSearch 申请 | docsearch.algolia.com | ⏳ 待管理员手动提交 |
 | 3 | GitHub Discussions 开启 | Settings > General | ✅ 已完成 |
 
-> 详见 [v4.2-MANUAL-ACTIVATION-CHECKLIST.md](../v4.2-MANUAL-ACTIVATION-CHECKLIST.md)
+> 详见 [v4.2-MANUAL-ACTIVATION-CHECKLIST.md](v4.2-MANUAL-ACTIVATION-CHECKLIST.md)
 
 ---
 
@@ -1795,7 +1795,7 @@ PROJECT-CRITICAL-REVIEW识别出13个Flink 2.4/2.5/3.0文档包含**虚构内容
 
 ## 学术前沿内容补充 — Phase 1-4 全面推进
 
-> **来源**: [PAPER-TODO-LIST.md](../PAPER-TODO-LIST.md)
+> **来源**: [PAPER-TODO-LIST.md](PAPER-TODO-LIST.md)
 > **状态**: 🟢 全面推进中 | **最后更新**: 2026-04-15
 
 ### 高优先级任务进展

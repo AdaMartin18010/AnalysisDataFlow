@@ -127,7 +127,7 @@
 | 主题 | 核心文档 | 难度 |
 |------|----------|------|
 | 🎯 **Checkpoint机制** | [04.01-flink-checkpoint-correctness.md](./Struct/04-proofs/04.01-flink-checkpoint-correctness.md) | ⭐⭐⭐⭐⭐ |
-| 🎯 **Exactly-Once语义** | [04.02-exactly-once-semantics.md](./Struct/04-proofs/04.02-exactly-once-semantics.md) | ⭐⭐⭐⭐⭐ |
+| 🎯 **Exactly-Once语义** | [04.02-exactly-once-semantics.md](Struct/04-proofs/04.02-flink-exactly-once-correctness.md) | ⭐⭐⭐⭐⭐ |
 | 🎯 **Watermark理论** | [02.03-watermark-monotonicity.md](./Struct/02-properties/02.03-watermark-monotonicity.md) | ⭐⭐⭐⭐ |
 | 🎯 **进程演算基础** | [01.02-process-calculus-primer.md](./Struct/01-foundation/01.02-process-calculus-primer.md) | ⭐⭐⭐⭐⭐ |
 | 🎯 **Actor模型形式化** | [01.03-actor-model-formalization.md](./Struct/01-foundation/01.03-actor-model-formalization.md) | ⭐⭐⭐⭐ |
@@ -141,7 +141,7 @@
 
 - [Flink快速开始](./QUICK-START.md)
 - [5分钟入门教程](./tutorials/00-5-MINUTE-QUICK-START.md)
-- [流处理概念图谱](./Knowledge/concurrency-paradigms-matrix.md)
+- [流处理概念图谱](Knowledge/01-concept-atlas/concurrency-paradigms-matrix.md)
 - [设计模式概览](./Knowledge/02-design-patterns/pattern-event-time-processing.md)
 
 #### 🟡 进阶级 (L3-L4)
@@ -154,7 +154,7 @@
 #### 🔴 专家级 (L5-L6)
 
 - [Checkpoint正确性证明](./Struct/04-proofs/04.01-flink-checkpoint-correctness.md)
-- [Exactly-Once语义形式化](./Struct/04-proofs/04.02-exactly-once-semantics.md)
+- [Exactly-Once语义形式化](Struct/04-proofs/04.02-flink-exactly-once-correctness.md)
 - [进程演算编码](./Struct/03-relationships/03.01-actor-to-csp-encoding.md)
 - [表达能力层次](./Struct/03-relationships/03.03-expressiveness-hierarchy.md)
 
@@ -208,10 +208,10 @@ graph TD
 | 链 | 直达链接 | 证明方法 | 复杂度 |
 |--|----------|----------|--------|
 | Chain-01 | [Checkpoint正确性](./Struct/04-proofs/04.01-flink-checkpoint-correctness.md) | 结构归纳+互模拟 | O(n²) |
-| Chain-02 | [Exactly-Once语义](./Struct/04-proofs/04.02-exactly-once-semantics.md) | 组合推理+协议验证 | O(n³) |
+| Chain-02 | [Exactly-Once语义](Struct/04-proofs/04.02-flink-exactly-once-correctness.md) | 组合推理+协议验证 | O(n³) |
 | Chain-03 | [State Backend等价性](./Flink/02-core/state-backend-evolution-analysis.md) | 双模拟等价 | O(n) |
 | Chain-04 | [Watermark代数](./Struct/02-properties/02.03-watermark-monotonicity.md) | 格理论 | O(log n) |
-| Chain-05 | [异步执行语义](./Flink/01-concepts/flink-2.0-async-execution-model.md) | 上下文等价 | O(n²) |
+| Chain-05 | [异步执行语义](Flink/02-core/flink-2.0-async-execution-model.md) | 上下文等价 | O(n²) |
 | Chain-06 | [Actor→CSP编码](./Struct/03-relationships/03.01-actor-to-csp-encoding.md) | 编码保持性 | O(n) |
 | Chain-07 | [Chandy-Lamport一致性](./Struct/04-proofs/04.03-chandy-lamport-consistency.md) | 快照一致性 | O(n) |
 | Chain-08 | [FG/FGG类型安全](./Struct/04-proofs/04.05-type-safety-fg-fgg.md) | 类型保持 | O(n) |
@@ -271,7 +271,7 @@ graph TD
 | 层级 | 名称 | 文档数 | 核心内容 | 直达入口 |
 |------|------|--------|----------|----------|
 | **Layer 6** | 形式化验证层 | 5篇 | Coq/TLA+/Iris | [Struct/07-tools/](./Struct/07-tools/) |
-| **Layer 5** | 证明与对比层 | 10篇 | 关键定理证明 | [Struct/04-proofs/](./Struct/04-proofs/) [Struct/05-comparative/](./Struct/05-comparative/) |
+| **Layer 5** | 证明与对比层 | 10篇 | 关键定理证明 | [Struct/04-proofs/](./Struct/04-proofs/) [Struct/05-comparative/](Struct/05-comparative-analysis/) |
 | **Layer 4** | 关系建立层 | 5篇 | 模型映射 | [Struct/03-relationships/](./Struct/03-relationships/) |
 | **Layer 3** | 性质推导层 | 8篇 | 性质分析 | [Struct/02-properties/](./Struct/02-properties/) |
 | **Layer 2** | 概念定义层 | 8篇 | 基础定义 | [Struct/01-foundation/](./Struct/01-foundation/) |
@@ -303,10 +303,10 @@ graph TD
 
 | 图表类型 | 数量 | 目录 |
 |----------|------|------|
-| 📊 **决策树** | 5篇 | [visuals/decision-trees/](./visuals/decision-trees/) |
-| 📊 **对比矩阵** | 5篇 | [visuals/comparison-matrices/](./visuals/comparison-matrices/) |
-| 📊 **思维导图** | 5篇 | [visuals/mind-maps/](./visuals/mind-maps/) |
-| 📊 **架构图集** | 6篇 | [visuals/architecture-diagrams/](./visuals/architecture-diagrams/) |
+| 📊 **决策树** | 5篇 | visuals/decision-trees/ |
+| 📊 **对比矩阵** | 5篇 | visuals/comparison-matrices/ |
+| 📊 **思维导图** | 5篇 | visuals/mind-maps/ |
+| 📊 **架构图集** | 6篇 | visuals/architecture-diagrams/ |
 
 ### 关键可视化文档
 
@@ -392,7 +392,7 @@ python .scripts/knowledge-search-system.py --query "checkpoint correctness"
 
 | 报告 | 描述 | 链接 |
 |------|------|------|
-| 📚 Flink 2.4/2.5/3.0完成报告 | 100个子任务全部交付 | [FLINK-24-25-30-COMPLETION-REPORT.md](./FLINK-24-25-30-COMPLETION-REPORT.md) |
+| 📚 Flink 2.4/2.5/3.0完成报告 | 100个子任务全部交付 | [FLINK-24-25-30-COMPLETION-REPORT.md](archive/completion-reports/FLINK-24-25-30-COMPLETION-REPORT.md) |
 | 🔗 关系梳理完成报告 | 500+关系边，11篇新文档 | [RELATIONSHIP-MAPPING-COMPLETION-REPORT.md](./RELATIONSHIP-MAPPING-COMPLETION-REPORT.md) |
 | 🔍 权威对齐完成报告 | 与Flink官方深度对齐 | [FLINK-AUTHORITY-ALIGNMENT-COMPLETION-REPORT.md](./FLINK-AUTHORITY-ALIGNMENT-COMPLETION-REPORT.md) |
 | 🤖 AI Agent深化报告 | 24个新增形式化元素 | [相关文档](./Knowledge/06-frontier/ai-agent-streaming-architecture.md) |
@@ -482,7 +482,7 @@ python .scripts/knowledge-search-system.py --query "checkpoint correctness"
 
 ### 联系方式
 
-- 📧 **Issue反馈**: [GitHub Issues](../../issues)
+- 📧 **Issue反馈**: GitHub Issues
 - 📖 **详细贡献指南**: [CONTRIBUTING.md](./CONTRIBUTING.md)
 - 📋 **项目跟踪**: [PROJECT-TRACKING.md](./PROJECT-TRACKING.md)
 
