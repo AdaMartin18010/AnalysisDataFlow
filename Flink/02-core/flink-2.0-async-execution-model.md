@@ -633,7 +633,7 @@ flowchart LR
     end
 
     subgraph "启用方式"
-        OPT1["`.enableAsyncState（）`"]
+        OPT1["`.enableAsyncState()`"]
         OPT2["```StateDescriptor```<br/>设置异步模式"]
         OPT3["```ForStStateBackend```<br/>远程存储配置"]
     end

@@ -454,7 +454,7 @@ graph TB
 
     subgraph Table["表 Table"]
         T1["时刻t₁: {r₁}"]
-        T2["时刻t₂: ｛｝"]
+        T2["时刻t₂: {}"]
         T3["时刻t₃: {r₂}"]
         T4["时刻t₄: {r₂, r₃}"]
     end

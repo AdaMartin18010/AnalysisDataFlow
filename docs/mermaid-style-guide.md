@@ -344,8 +344,8 @@ flowchart LR
 ### 5.3 字体和样式自定义
 
 ```mermaid
-flowchart TD
 %%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#e1f5fe', 'primaryTextColor': '#01579b', 'primaryBorderColor': '#0288d1', 'lineColor': '#0288d1', 'secondaryColor': '#fff3e0', 'tertiaryColor': '#e8f5e9'}}}%%
+flowchart TD
     A[自定义样式A] --> B[自定义样式B]
     B --> C[自定义样式C]
 ```

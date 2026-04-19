@@ -1,6 +1,6 @@
 # Flink vs Spark Structured Streaming 2026 Deep Comparison
 
-> **Stage**: Knowledge/04-technology-selection | **Prerequisites**: [Flink/02-core/](../Flink/02-core/) | **Formalization Level**: L3-L4 | **Updated**: 2026-04
+> **Stage**: Knowledge/04-technology-selection | **Prerequisites**: [Flink/02-core/checkpoint-mechanism-deep-dive.md](../Flink/02-core/checkpoint-mechanism-deep-dive.md) | **Formalization Level**: L3-L4 | **Updated**: 2026-04
 
 ## 1. Definitions
 
@@ -13,6 +13,7 @@ $$
 $$
 
 Where:
+
 - **Latency**: end-to-end processing delay from event occurrence to result emission
 - **Throughput**: maximum sustainable records processed per second
 - **Semantics**: consistency guarantees (At-Most-Once, At-Least-Once, Exactly-Once)
@@ -32,6 +33,7 @@ $$
 $$
 
 **2026 key capabilities**:
+
 - **Async State** (Flink 2.0): non-blocking state access via AEC for disaggregated state backends
 - **ForSt State Backend**: cloud-native disaggregated storage with S3/HDFS backend
 - **Adaptive Execution**: runtime plan optimization based on observed statistics
@@ -48,6 +50,7 @@ $$
 $$
 
 **2026 key capabilities**:
+
 - **Micro-batch default**: 1-second minimum trigger interval for most operations
 - **Continuous Processing mode**: experimental sub-100ms latency for limited operations
 - **Delta Lake streaming**: deep integration with Delta Lake for exactly-once sink
@@ -113,6 +116,7 @@ $$
 ### Relation 1: Flink `⊃` Spark SS in Native Streaming Expressiveness
 
 **Argument**:
+
 - **Encoding existence**: Spark SS Continuous Processing can be viewed as a restricted Flink-style streaming engine, but supports only map/filter/aggregate operations without windows or joins
 - **Separation result**: Flink supports native event-time windows, session windows, CEP, and iterative streaming; Spark SS micro-batch can approximate some but not all semantics, and Continuous Processing explicitly excludes them
 - **Conclusion**: Flink strictly subsumes Spark SS in native streaming expressiveness
@@ -120,6 +124,7 @@ $$
 ### Relation 2: Spark SS `⊃` Flink in Batch-Stream Unification Maturity
 
 **Argument**:
+
 - **Encoding existence**: Spark SS uses the same DataFrame API for batch and streaming queries; Flink's Table API achieves similar unification but DataStream API remains distinct
 - **Separation result**: Spark's Catalyst optimizer has mature batch optimization rules that transparently apply to micro-batch streaming; Flink's batch (DataSet/Table) and streaming (DataStream) optimizers are converging but historically separate
 - **Conclusion**: Spark SS has narrower but more mature batch-stream API unification for SQL-centric workloads
@@ -225,6 +230,7 @@ graph TD
 ### Thm-K-04-01: Optimal Engine Selection for Latency-Sensitive Stateful Streaming
 
 **Statement**: For workloads requiring:
+
 - End-to-end latency < 1 second (p99)
 - Stateful operations with event-time semantics
 - Exactly-Once output guarantees
@@ -253,6 +259,7 @@ Production deployments at Alibaba, Netflix, and Uber consistently choose Flink f
 ### Thm-K-04-02: Equivalence Condition for Batch-Stream Unified Lakehouse Ingestion
 
 **Statement**: For latency-tolerant (≥ 5 seconds) lakehouse data ingestion with:
+
 - Delta Lake or Iceberg sink
 - Append-only or idempotent upsert semantics
 - SQL-based transformations

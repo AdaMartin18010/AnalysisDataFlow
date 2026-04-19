@@ -225,7 +225,7 @@ $$\frac{1}{\alpha} \leq \frac{Perf_{AMD}}{Perf_{NVIDIA}} \leq \alpha, \quad \alp
 graph TB
     subgraph Source["CUDA Source Code"]
         CUDA[*.cu files]
-        H_CUDA[<cuda_runtime.h>]
+        H_CUDA["<cuda_runtime.h>"]
         Kernel_CUDA["__global__ void kernel（）"]
     end
 
@@ -235,7 +235,7 @@ graph TB
 
     subgraph Target["HIP Output"]
         HIP[*.hip files]
-        H_HIP[<hip/hip_runtime.h>]
+        H_HIP["<hip/hip_runtime.h>"]
         Kernel_HIP["__global__ void kernel（）"]
         Cond["条件编译:<br/>#ifdef __HIP_PLATFORM_AMD__"]
     end

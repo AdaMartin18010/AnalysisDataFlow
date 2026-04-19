@@ -1351,8 +1351,8 @@ flowchart TD
 ### 7.5 项目业务成果可视化
 
 ```mermaid
-graph TB
 %%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#e1f5fe', 'primaryTextColor': '#01579b', 'primaryBorderColor': '#0288d1', 'lineColor': '#0288d1', 'secondaryColor': '#fff3e0', 'tertiaryColor': '#e8f5e9'}}}%%
+graph TB
     subgraph "业务成果 Business Impact"
         direction LR
 

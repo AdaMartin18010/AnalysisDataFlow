@@ -11,7 +11,7 @@
     - [Def-K-06-61: 实时推理延迟模型 (Realtime Inference Latency Model)](#def-k-06-61-实时推理延迟模型-realtime-inference-latency-model)
     - [Def-K-06-62: 边缘-云协同推理 (Edge-Cloud Collaborative Inference)](#def-k-06-62-边缘-云协同推理-edge-cloud-collaborative-inference)
     - [Def-K-06-63: 流式Token生成 (Streaming Token Generation)](#def-k-06-63-流式token生成-streaming-token-generation)
-    - [Def-K-06-64: 模型量化与压缩 (Model Quantization \& Compression)]()
+    - [Def-K-06-64: 模型量化与压缩 (Model Quantization \& Compression)](#def-k-06-64-模型量化与压缩-model-quantization--compression)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
     - [Prop-K-06-15: 边缘推理延迟上界](#prop-k-06-15-边缘推理延迟上界)
     - [Prop-K-06-16: 量化精度损失边界](#prop-k-06-16-量化精度损失边界)

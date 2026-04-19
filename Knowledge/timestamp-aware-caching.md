@@ -80,7 +80,7 @@ $$
 
 ```mermaid
 graph TB
-    Query[时序查询<br/>WHERE ts > NOW（）-1h] --> Eval[评估缓存条目时间有效性]
+    Query["时序查询<br/>WHERE ts > NOW() -1h"] --> Eval[评估缓存条目时间有效性]
     Eval --> Rank[按 R(e) 排序]
     Rank --> Evict[淘汰低价值条目]
     Evict --> Load[加载新数据到缓存]

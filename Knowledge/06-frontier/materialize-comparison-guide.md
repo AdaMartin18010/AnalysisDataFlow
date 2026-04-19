@@ -27,7 +27,7 @@
     - [4.2 时间语义对比分析](#42-时间语义对比分析)
     - [4.3 状态管理机制深度对比](#43-状态管理机制深度对比)
     - [4.4 反例分析：Materialize的局限性](#44-反例分析materialize的局限性)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)]()
     - [Thm-K-06-20 (流处理引擎选择决策定理)](#thm-k-06-20-流处理引擎选择决策定理)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [6.1 实时库存管理系统](#61-实时库存管理系统)

@@ -820,7 +820,7 @@ graph TB
     end
 
     subgraph "差分状态 (Differential State)"
-        S0["State@t=0: ｛｝"]
+        S0["State@t=0: {}"]
         S1["State@t=1: {(1,2), (2,3)}"]
         S2["State@t=2: {(1,2), (2,3), (1,3)}"]
         D1["Δ@t=1: +{(1,2), (2,3)}"]
