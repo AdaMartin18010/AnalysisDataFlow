@@ -11,7 +11,7 @@
 > **稳定性**: GA (Generally Available)
 > **JIRA**: FLINK-38190
 >
-> 所属阶段: Flink/03-api | 前置依赖: [PyFlink Python API](./02-python-api.md), [Java AsyncFunction 指南](../02-core/async-execution-model.md) | 形式化等级: L3
+> 所属阶段: Flink/03-api | 前置依赖: [PyFlink Python API](./02-python-api.md), [Java AsyncFunction 指南](../../02-core/async-execution-model.md) | 形式化等级: L3
 
 ## 1. 概念定义 (Definitions)
 

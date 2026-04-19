@@ -26,7 +26,7 @@
     - [4.2 多级缓冲架构](#42-多级缓冲架构)
     - [4.3 批量同步协议设计](#43-批量同步协议设计)
     - [4.4 故障恢复与断点续传](#44-故障恢复与断点续传)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)]()
     - [Thm-F-09-05-04 (离线数据完整性定理)](#thm-f-09-05-04-离线数据完整性定理)
     - [工程推论 (Engineering Corollaries)](#工程推论-engineering-corollaries)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)

@@ -667,10 +667,10 @@ flowchart TB
         TM[TaskManager]
     end
 
-    DispatcherEndpoint -->|"submitJob()"| JMEndpoint
-    JMEndpoint -->|"requestSlot()"| RMEndpoint
-    RMEndpoint -->|"allocateSlot()"| TM
-    JMEndpoint -->|"submitTask()"| TM
+    DispatcherEndpoint -->|"submitJob（）"| JMEndpoint
+    JMEndpoint -->|"requestSlot（）"| RMEndpoint
+    RMEndpoint -->|"allocateSlot（）"| TM
+    JMEndpoint -->|"submitTask（）"| TM
     HA --> ZK
     CKP --> HDFS
 ```

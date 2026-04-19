@@ -30,7 +30,7 @@
     - [4.2 迟到数据处理机制](#42-迟到数据处理机制)
     - [4.3 窗口触发时机分析](#43-窗口触发时机分析)
     - [Lemma-F-02-01 源码验证](#lemma-f-02-01-源码验证)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)]()
     - [Thm-F-02-01: Event Time 结果确定性定理](#thm-f-02-01-event-time-结果确定性定理)
     - [Thm-F-02-02: Allowed Lateness 不破坏 Exactly-Once 语义](#thm-f-02-02-allowed-lateness-不破坏-exactly-once-语义)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
@@ -706,8 +706,8 @@ graph LR
     end
 
     subgraph "Window Layer"
-        W1[Window [0,10)<br/>TRIGGERED]
-        W2[Window [10,20)<br/>wm=10]
+        W1["Window ［0,10）<br/>TRIGGERED"]
+        W2["Window ［10,20）<br/>wm=10"]
     end
 
     subgraph "Sink Layer"

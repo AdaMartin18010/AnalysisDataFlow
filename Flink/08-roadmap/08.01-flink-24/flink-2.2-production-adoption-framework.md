@@ -1,6 +1,6 @@
 # Flink 2.2 生产采用决策框架
 
-> 所属阶段: Flink/08-roadmap | 前置依赖: [Flink 2.2 版本特性总览](./flink-2.2-feature-overview.md), [Flink 2.1 生产验证报告](../08.01-flink-23/flink-2.1-production-validation.md) | 形式化等级: L4 (工程论证 + 形式化定义)
+> 所属阶段: Flink/08-roadmap | 前置依赖: [Flink 2.2 版本特性总览](../../02-core/flink-2.2-frontier-features.md), [Flink 2.1 生产验证报告](./flink-2.1-frontier-tracking.md) | 形式化等级: L4 (工程论证 + 形式化定义)
 
 ## 1. 概念定义 (Definitions)
 

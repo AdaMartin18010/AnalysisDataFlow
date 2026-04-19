@@ -1388,7 +1388,7 @@ graph TB
 ```mermaid
 graph LR
     subgraph "堆内MemorySegment"
-        H1[heapMemory: byte[]]<-->H2[address: 相对偏移]
+        H1[heapMemory: byte［］]<-->H2[address: 相对偏移]
         H2 --> H3[JVM Heap<br/>连续数组]
     end
 

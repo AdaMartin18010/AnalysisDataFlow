@@ -1,6 +1,6 @@
-> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> **状态**: 实验性特性（Flink 2.0+）| **风险等级**: 中 | **最后更新**: 2026-04-20
 >
-> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+> DataStream V2 API 在 Flink 2.0（2025-03-24）中引入，当前为实验性特性。API 可能在未来版本中发生变化，请以 Apache Flink 官方发布为准。
 >
 # Flink DataStream API V2 完全指南
 
@@ -28,18 +28,18 @@
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
     - [3.1 DataStream V1 与 V2 全维度对比](#31-datastream-v1-与-v2-全维度对比)
     - [3.2 API 映射总表](#32-api-映射总表)
-    - [3.3 与 Table API / SQL 的互操作](#33-与-table-api--sql-的互操作)
+    - [3.3 与 Table API / SQL 的互操作]()
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [4.1 引入 V2 API 的动机 (FLINK-34547)](#41-引入-v2-api-的动机-flink-34547)
     - [4.2 V1 API 经过十年演进后的技术债](#42-v1-api-经过十年演进后的技术债)
     - [4.3 V2 API 设计原则论证](#43-v2-api-设计原则论证)
     - [4.4 何时使用 V2 vs V1 决策框架](#44-何时使用-v2-vs-v1-决策框架)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)]()
     - [5.1 V2 API 类型安全性论证](#51-v2-api-类型安全性论证)
     - [5.2 异步执行一致性边界](#52-异步执行一致性边界)
     - [5.3 性能基准与工程权衡](#53-性能基准与工程权衡)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
-    - [6.1 WordCount V2 (Java + Scala)](#61-wordcount-v2-java--scala)
+    - [6.1 WordCount V2 (Java + Scala)]()
     - [6.2 有状态计算 V2](#62-有状态计算-v2)
     - [6.3 窗口聚合 V2](#63-窗口聚合-v2)
     - [6.4 异步 I/O V2](#64-异步-io-v2)
@@ -52,9 +52,9 @@
   - [8. 迁移指南 (Migration Guide)](#8-迁移指南-migration-guide)
     - [8.1 Breaking Changes 完整清单](#81-breaking-changes-完整清单)
     - [8.2 逐模块迁移路径](#82-逐模块迁移路径)
-    - [8.3 代码对照表 (V1 → V2)](#83-代码对照表-v1--v2)
+    - [8.3 代码对照表 (V1 → V2)]()
     - [8.4 测试与回滚策略](#84-测试与回滚策略)
-  - [9. 路线图与稳定性 (Roadmap \& Stability)](#9-路线图与稳定性-roadmap--stability)
+  - [9. 路线图与稳定性 (Roadmap \& Stability)]()
     - [9.1 当前实验性状态说明](#91-当前实验性状态说明)
     - [9.2 预计稳定化时间线](#92-预计稳定化时间线)
     - [9.3 V1 完全替代计划](#93-v1-完全替代计划)

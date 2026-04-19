@@ -22,7 +22,7 @@
 
 ## 目录
 
-- [金融实时风控案例: GlobalTrade Bank — Calvin 确定性执行与 Flink 状态一致性融合实践](#金融实时风控案例-globaltrade-bank--calvin-确定性执行与-flink-状态一致性融合实践)
+- [金融实时风控案例: GlobalTrade Bank — Calvin 确定性执行与 Flink 状态一致性融合实践]()
   - [摘要](#摘要)
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
@@ -41,9 +41,9 @@
     - [Prop-K-10-05-02: CEP 模式匹配的时间窗口单调性](#prop-k-10-05-02-cep-模式匹配的时间窗口单调性)
     - [Cor-K-10-05-01: 故障恢复后风控决策的可重现性](#cor-k-10-05-01-故障恢复后风控决策的可重现性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [3.1 Calvin 排序层 ⟹ Flink Keyed State 分区策略](#31-calvin-排序层--flink-keyed-state-分区策略)
-    - [3.2 Flink Checkpoint ⟹ 监管审计快照](#32-flink-checkpoint--监管审计快照)
-    - [3.3 CEP 模式库 ⟹ Basel III 市场风险规则映射](#33-cep-模式库--basel-iii-市场风险规则映射)
+    - [3.1 Calvin 排序层 ⟹ Flink Keyed State 分区策略]()
+    - [3.2 Flink Checkpoint ⟹ 监管审计快照]()
+    - [3.3 CEP 模式库 ⟹ Basel III 市场风险规则映射]()
     - [3.4 统一技术-监管映射矩阵](#34-统一技术-监管映射矩阵)
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [4.1 技术选型论证: 为何放弃传统 2PC 架构](#41-技术选型论证-为何放弃传统-2pc-架构)
@@ -63,7 +63,7 @@
     - [6.6 Keyed State 与增量 Checkpoint 调优](#66-keyed-state-与增量-checkpoint-调优)
     - [6.7 性能数据与生产效果](#67-性能数据与生产效果)
     - [6.8 踩坑记录与工程教训](#68-踩坑记录与工程教训)
-      - [坑 1: 确定性执行的边界条件 — 外部系统调用的非确定性](#坑-1-确定性执行的边界条件--外部系统调用的非确定性)
+      - [坑 1: 确定性执行的边界条件 — 外部系统调用的非确定性]()
       - [坑 2: RocksDB 状态迁移的 SST 文件兼容性](#坑-2-rocksdb-状态迁移的-sst-文件兼容性)
       - [坑 3: Watermark 滞后导致的 CEP 窗口关闭延迟](#坑-3-watermark-滞后导致的-cep-窗口关闭延迟)
       - [坑 4: KeyGroup 重新分配导致的状态恢复异常](#坑-4-keygroup-重新分配导致的状态恢复异常)

@@ -1,10 +1,12 @@
-# Flink Stateful Functions (StateFun) 3.0 前瞻与生产实践
+﻿# Flink Stateful Functions (StateFun) 3.0 前瞻与生产实践
 
-> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04-20-20
+>
+> StateFun 3.0 尚未正式发布，当前处于社区早期规划阶段。预计目标版本为 Flink 2.5+。具体实现以 Apache Flink 官方发布为准。
 >
 > 此文档描述的 StateFun 3.0 特性处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 
-> 所属阶段: Flink/05-ecosystem | 前置依赖: [Flink/01-concepts/flink-architecture-overview.md](../../01-concepts/flink-architecture-overview.md), [Struct/03-relationships/actor-model-dataflow-mapping.md](../../../Struct/03-relationships/actor-model-dataflow-mapping.md) | 形式化等级: L3-L5
+> 所属阶段: Flink/05-ecosystem | 前置依赖: [Flink/01-concepts/flink-system-architecture-deep-dive.md](../../01-concepts/flink-system-architecture-deep-dive.md), [Struct/03-relationships/03.05-cross-model-mappings.md](../../../Struct/03-relationships/03.05-cross-model-mappings.md) | 形式化等级: L3-L5
 
 ## 摘要
 
@@ -24,7 +26,7 @@ StateFun 2.x 已于生产环境验证多年。当前社区正积极推进 **Stat
 - [2. 属性推导 (Properties)](#2-属性推导-properties)
 - [3. 关系建立 (Relations)](#3-关系建立-relations)
 - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
-- [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+- [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
 - [6. 实例验证 (Examples)](#6-实例验证-examples)
 - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
 - [8. 引用参考 (References)](#8-引用参考-references)

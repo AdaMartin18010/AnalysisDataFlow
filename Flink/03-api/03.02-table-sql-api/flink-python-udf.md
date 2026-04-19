@@ -169,7 +169,7 @@ graph TB
 
     KSQL -->|"CREATE FUNCTION"| UDF_REGISTRY
     UDF_REGISTRY -->|"Load UDF"| PYTHON["Python UDF Runtime"]
-    PYTHON -->|"connection()"| CONNECTION
+    PYTHON -->|"connection（）"| CONNECTION
     CONNECTION -->|"API Key"| REST_API
     CONNECTION -->|"Endpoint"| ML_MODEL
     SECRETS -->|"Inject"| PYTHON

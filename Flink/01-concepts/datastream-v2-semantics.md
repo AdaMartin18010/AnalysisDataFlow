@@ -1,6 +1,6 @@
-> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> **状态**: 实验性特性（Flink 2.0+）| **风险等级**: 中 | **最后更新**: 2026-04-20
 >
-> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+> DataStream V2 API 在 Flink 2.0（2025-03-24）中引入，当前为实验性特性。API 可能在未来版本中发生变化，请以 Apache Flink 官方发布为准。
 >
 # DataStream V2 API 语义分析 (DataStream V2 API Semantics)
 
@@ -25,15 +25,15 @@
     - [Lemma-F-01-02 (异步状态访问单调性)](#lemma-f-01-02-异步状态访问单调性)
     - [Prop-F-01-01 (声明式状态幂等初始化)](#prop-f-01-01-声明式状态幂等初始化)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [关系 1: DataStream V1 `↦` DataStream V2](#关系-1-datastream-v1--datastream-v2)
-    - [关系 2: DataStream V2 `≈` Dataflow 模型](#关系-2-datastream-v2--dataflow-模型)
-    - [关系 3: Async State Access `↔` 分离状态存储架构](#关系-3-async-state-access--分离状态存储架构)
+    - [关系 1: DataStream V1 `↦` DataStream V2]()
+    - [关系 2: DataStream V2 `≈` Dataflow 模型]()
+    - [关系 3: Async State Access `↔` 分离状态存储架构]()
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [4.1 DataStream V1 vs V2 对比](#41-datastream-v1-vs-v2-对比)
     - [4.2 反例：V1 运行时类型错误](#42-反例v1-运行时类型错误)
     - [4.3 反例：异步读写乱序完成](#43-反例异步读写乱序完成)
     - [4.4 边界讨论：延迟-一致性权衡](#44-边界讨论延迟-一致性权衡)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)]()
     - [Thm-F-01-01 (DataStream V2 类型安全性)](#thm-f-01-01-datastream-v2-类型安全性)
     - [Thm-F-01-02 (异步状态访问下的 Exactly-Once 保持性)](#thm-f-01-02-异步状态访问下的-exactly-once-保持性)
     - [工程论证：V2 选型决策](#工程论证v2-选型决策)

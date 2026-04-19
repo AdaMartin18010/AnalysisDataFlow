@@ -1,4 +1,4 @@
-> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+﻿> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04-20
 >
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 >
@@ -699,7 +699,7 @@ xychart-beta
 ```mermaid
 flowchart TB
     subgraph "JVM Heap"
-        J1[Java float[]]
+        J1[Java float［］]
         J2[DirectByteBuffer]
     end
 

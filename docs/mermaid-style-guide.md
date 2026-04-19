@@ -5,16 +5,19 @@
 ## 1. 基本原则
 
 ### 1.1 一致性
+
 - 所有图表必须使用统一的配色方案
 - 节点形状和样式遵循类型约定
 - 文字大小写规范统一
 
 ### 1.2 可读性
+
 - 图表宽度控制在 1200px 以内
 - 节点文字不超过 20 个中文字符或 40 个英文字符
 - 复杂图表应分层或分块展示
 
 ### 1.3 语法正确性
+
 - 所有图表必须通过 Mermaid 语法验证
 - 避免使用实验性功能
 - 使用标准字符集（UTF-8）
@@ -61,14 +64,14 @@ flowchart TD
     classDef process fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#1e3a8a
     classDef decision fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#92400e
     classDef data fill:#f3e8ff,stroke:#7c3aed,stroke-width:2px,color:#5b21b6
-    
+
     %% 节点定义
     Start([开始]):::startEnd
     Process1[处理步骤]:::process
     Decision{判断条件?}:::decision
     Data[(数据存储)]:::data
     End([结束]):::startEnd
-    
+
     %% 连接
     Start --> Process1
     Process1 --> Decision
@@ -78,6 +81,7 @@ flowchart TD
 ```
 
 **规范要点：**
+
 - 使用 `flowchart` 而非 `graph`（支持更多方向）
 - 方向使用 TD（自上而下）或 LR（从左到右）
 - 判断节点使用菱形 `{}`
@@ -93,7 +97,7 @@ sequenceDiagram
     participant API as API网关
     participant Service as 业务服务
     participant DB as 数据库
-    
+
     User->>UI: 提交请求
     activate UI
     UI->>API: POST /api/action
@@ -113,6 +117,7 @@ sequenceDiagram
 ```
 
 **规范要点：**
+
 - 使用 `autonumber` 自动编号
 - 明确标注 activate/deactivate
 - 异步消息使用虚线 `-->>`
@@ -129,31 +134,32 @@ classDiagram
         +execute() Result
         +addTransform(t: Transformation) void
     }
-    
+
     class Source {
         <<interface>>
         +open() void
         +read() T
         +close() void
     }
-    
+
     class Transformation~T,R~ {
         <<interface>>
         +apply(input: T) R
     }
-    
+
     class Sink~T~ {
         <<interface>>
         +write(record: T) void
         +flush() void
     }
-    
+
     Stream --> Source
     Stream --> Transformation
     Stream --> Sink
 ```
 
 **规范要点：**
+
 - 泛型使用 `~T~` 表示
 - 接口使用 `<<interface>>` 标注
 - 访问修饰符：`+` public, `-` private, `#` protected
@@ -164,14 +170,14 @@ classDiagram
 ```mermaid
 stateDiagram-v2
     [*] --> Idle: 初始化
-    
+
     state "运行中" as Running {
         [*] --> Processing
         Processing --> Waiting: 等待数据
         Waiting --> Processing: 收到数据
         Processing --> Error: 处理异常
     }
-    
+
     Idle --> Running: 启动
     Running --> Paused: 暂停
     Paused --> Running: 恢复
@@ -182,6 +188,7 @@ stateDiagram-v2
 ```
 
 **规范要点：**
+
 - 初始状态使用 `[*]`
 - 状态名使用中文
 - 复合状态使用嵌套定义
@@ -194,12 +201,12 @@ quadrantChart
     title 技术选型评估矩阵
     x-axis 低适用性 --> 高适用性
     y-axis 低成熟度 --> 高成熟度
-    
+
     quadrant-1 首选方案
     quadrant-2 潜力方案
     quadrant-3 避免使用
     quadrant-4 可行替代
-    
+
     Flink: [0.9, 0.95]
     Spark Streaming: [0.7, 0.9]
     Kafka Streams: [0.8, 0.85]
@@ -208,6 +215,7 @@ quadrantChart
 ```
 
 **规范要点：**
+
 - 坐标范围 [0, 1]
 - 标题说明评估维度
 - 象限命名清晰
@@ -220,15 +228,15 @@ gantt
     title 项目路线图
     dateFormat YYYY-MM-DD
     axisFormat %Y-%m
-    
+
     section 阶段一
     需求分析           :done, a1, 2026-01-01, 30d
     架构设计           :done, a2, after a1, 20d
-    
+
     section 阶段二
     核心开发           :active, b1, after a2, 60d
     单元测试           :b2, after b1, 20d
-    
+
     section 阶段三
     集成测试           :c1, after b2, 30d
     性能优化           :c2, after c1, 20d
@@ -236,6 +244,7 @@ gantt
 ```
 
 **规范要点：**
+
 - 使用标准日期格式
 - 任务状态标注：done, active, crit
 - 关键里程碑使用 milestone
@@ -266,6 +275,7 @@ mindmap
 ```
 
 **规范要点：**
+
 - 根节点使用 `((文字))` 圆形
 - 层级缩进两个空格
 - 支持 `<br/>` 换行
@@ -274,16 +284,19 @@ mindmap
 ## 4. 命名规范
 
 ### 4.1 节点ID
+
 - 使用有意义的英文或拼音
 - 驼峰命名：`processData`, `checkCondition`
 - 避免单字符ID（流程简单时除外）
 
 ### 4.2 显示文字
+
 - 中文文档使用中文标注
 - 保持简洁，不超过20字符
 - 必要时使用 `<br/>` 换行
 
 ### 4.3 注释规范
+
 - 使用 `%%` 添加注释
 - 复杂逻辑前添加说明
 - 样式类定义集中放置
@@ -298,17 +311,17 @@ flowchart TB
         A[数据源A]
         B[数据源B]
     end
-    
+
     subgraph 处理层
         C[数据清洗]
         D[数据转换]
     end
-    
+
     subgraph 输出层
         E[存储]
         F[展示]
     end
-    
+
     A --> C
     B --> C
     C --> D
@@ -322,7 +335,7 @@ flowchart TB
 flowchart LR
     A[文档A] --> B[文档B]
     B --> C[文档C]
-    
+
     click A "./doc-a.md" "查看文档A"
     click B "./doc-b.md" "查看文档B"
     click C "./doc-c.md" "查看文档C"
@@ -331,8 +344,8 @@ flowchart LR
 ### 5.3 字体和样式自定义
 
 ```mermaid
-%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#e1f5fe', 'primaryTextColor': '#01579b', 'primaryBorderColor': '#0288d1', 'lineColor': '#0288d1', 'secondaryColor': '#fff3e0', 'tertiaryColor': '#e8f5e9'}}}%%
 flowchart TD
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#e1f5fe', 'primaryTextColor': '#01579b', 'primaryBorderColor': '#0288d1', 'lineColor': '#0288d1', 'secondaryColor': '#fff3e0', 'tertiaryColor': '#e8f5e9'}}}%%
     A[自定义样式A] --> B[自定义样式B]
     B --> C[自定义样式C]
 ```
@@ -352,15 +365,19 @@ flowchart TD
 ## 7. 常见问题
 
 ### Q1: 图表渲染失败
+
 **A**: 检查特殊字符转义，确保使用标准 UTF-8 编码
 
 ### Q2: 节点文字重叠
+
 **A**: 使用 `<br/>` 换行，或调整图表方向
 
 ### Q3: 图表过大
+
 **A**: 使用子图分组，或拆分为多个图表
 
 ### Q4: 样式不生效
+
 **A**: 确认 classDef 定义在节点使用之前
 
 ---

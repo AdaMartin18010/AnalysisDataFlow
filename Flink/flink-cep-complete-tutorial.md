@@ -1286,18 +1286,18 @@ stateDiagram-v2
 
 ```mermaid
 flowchart LR
-    subgraph next["next() - 严格连续"]
+    subgraph next["next（） - 严格连续"]
         A1[A] -->|紧邻| B1[B]
         A1 -.->|X 不允许| X1[Other]
     end
 
-    subgraph followedBy["followedBy() - 宽松连续"]
+    subgraph followedBy["followedBy（） - 宽松连续"]
         A2[A] --> X2[Other]
         X2 --> X3[Other]
         X3 --> B2[B]
     end
 
-    subgraph followedByAny["followedByAny() - 非确定性"]
+    subgraph followedByAny["followedByAny（） - 非确定性"]
         A3[A] --> B3[B]
         A3 --> B4[B]
         A3 --> X4[Other] --> B5[B]

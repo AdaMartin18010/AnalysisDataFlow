@@ -1,6 +1,6 @@
 # Flink + RisingWave 混合架构生产实践指南
 
-> **所属阶段**: Knowledge/06-frontier | **前置依赖**: [Flink/02-core/flink-architecture-overview.md](../Flink/02-core/flink-architecture-overview.md), [Knowledge/06-frontier/streaming-databases-deep.md](./streaming-databases-deep.md) | **形式化等级**: L4-L5 | **文档版本**: v1.0 | **最后更新**: 2026-04-19
+> **所属阶段**: Knowledge/06-frontier | **前置依赖**: [Flink/01-concepts/flink-system-architecture-deep-dive.md](../../Flink/01-concepts/flink-system-architecture-deep-dive.md), [Knowledge/06-frontier/streaming-databases-deep.md](./streaming-databases-deep/streaming-database-comprehensive-matrix.md) | **形式化等级**: L4-L5 | **文档版本**: v1.0 | **最后更新**: 2026-04-19
 
 ---
 
@@ -138,6 +138,7 @@ T_{e2e} \geq \max\{ L_F^{proc}, L_R^{proc} \} + L_{sync} + L_{net}
 $$
 
 其中：
+
 - $L_F^{proc}$：Flink 处理延迟（含 checkpoint 屏障对齐时间）
 - $L_R^{proc}$：RisingWave 增量计算延迟（含 barrier 传播时间）
 - $L_{sync}$：同步层延迟（CDC 捕获 + 序列化 + 反序列化）
@@ -221,6 +222,7 @@ $$
 #### 模式 A：Flink ETL → RisingWave Serving（单向流）
 
 **适用条件**：
+
 - 业务需要复杂数据清洗、格式转换或跨源关联（如 JSON 嵌套解析、Protobuf 解码、维度表异步 Lookup）
 - 下游需要高并发、低延迟的即席查询（如 BI Dashboard、实时 API）
 - 数据新鲜度要求 $< 5s$，但查询模式频繁变化
@@ -242,6 +244,7 @@ $$
 #### 模式 B：RisingWave 实时视图 → Flink 深度分析（反向流）
 
 **适用条件**：
+
 - 需要轻量级实时聚合作为特征输入（如 RisingWave 计算近 1 小时用户行为统计）
 - Flink 执行复杂 ML 推理或图计算（如欺诈检测模型、用户相似度计算）
 - RisingWave 作为特征存储（Feature Store）的实时层
@@ -263,6 +266,7 @@ $$
 #### 模式 C：双向联邦（Bidirectional Federation）
 
 **适用条件**：
+
 - 闭环实时系统（如实时风控：RisingWave 规则过滤 → Flink 模型评分 → RisingWave 决策记录）
 - 双向数据依赖：Flink 输出影响 RisingWave 状态，RisingWave 更新触发 Flink 重新计算
 - 需要严格的事务边界保证
@@ -402,6 +406,7 @@ $$
 $$
 
 建议对以下数据启用缓存：
+
 - 最近 5 分钟内 Flink 写入的"热数据"
 - RisingWave 物化视图中被频繁查询的聚合结果
 - 维度表（小表）的全量缓存
@@ -455,7 +460,7 @@ CREATE TABLE enriched_events (
 
 -- 3. ETL 逻辑：JSON 解析 + 维度 enrich
 INSERT INTO enriched_events
-SELECT 
+SELECT
     e.event_id,
     e.user_id,
     e.event_type,
@@ -477,7 +482,7 @@ CREATE TABLE enriched_events (
 
 -- 2. 创建物化视图：实时分类统计
 CREATE MATERIALIZED VIEW category_stats AS
-SELECT 
+SELECT
     category,
     event_type,
     COUNT(*) AS event_count,
@@ -488,7 +493,7 @@ GROUP BY category, event_type;
 
 -- 3. 创建物化视图：用户行为漏斗（5分钟窗口）
 CREATE MATERIALIZED VIEW user_funnel_5min AS
-SELECT 
+SELECT
     user_id,
     window_start,
     COUNT(*) FILTER (WHERE event_type = 'page_view') AS pv,
@@ -504,7 +509,7 @@ GROUP BY user_id, window_start;
 -- ========== RisingWave SQL ==========
 -- 1. 实时用户特征聚合
 CREATE MATERIALIZED VIEW user_features AS
-SELECT 
+SELECT
     user_id,
     COUNT(*) AS total_events_1h,
     COUNT(DISTINCT session_id) AS session_count,
@@ -543,27 +548,27 @@ DataStream<FraudDecision> decisions = scores
 
 ```java
 // Async RisingWave Lookup 实现
-public class AsyncRisingWaveFeatureLookup 
+public class AsyncRisingWaveFeatureLookup
     extends RichAsyncFunction<TransactionEvent, EnrichedTransaction> {
-    
+
     private transient Connection connection;
-    private static final String LOOKUP_SQL = 
+    private static final String LOOKUP_SQL =
         "SELECT total_events_1h, session_count, avg_purchase " +
         "FROM user_features WHERE user_id = ?";
-    
+
     @Override
     public void open(Configuration parameters) throws Exception {
         connection = DriverManager.getConnection(
-            "jdbc:postgresql://risingwave-frontend:4566/dev", 
+            "jdbc:postgresql://risingwave-frontend:4566/dev",
             "root", ""
         );
     }
-    
+
     @Override
     public void asyncInvoke(
-            TransactionEvent event, 
+            TransactionEvent event,
             ResultFuture<EnrichedTransaction> resultFuture) {
-        
+
         CompletableFuture.supplyAsync(() -> {
             try (PreparedStatement stmt = connection.prepareStatement(LOOKUP_SQL)) {
                 stmt.setString(1, event.userId);
@@ -627,11 +632,11 @@ CREATE TABLE risk_scores (
 
 -- 决策落地物化视图
 CREATE MATERIALIZED VIEW final_decisions AS
-SELECT 
+SELECT
     r.transaction_id,
     r.user_id,
     r.risk_score,
-    CASE 
+    CASE
         WHEN r.risk_score > 0.9 THEN 'reject'
         WHEN r.risk_score > 0.7 THEN 'review'
         ELSE 'approve'
@@ -658,6 +663,7 @@ WHERE r.flink_timestamp > NOW() - INTERVAL '1' MINUTE;
 | API 层 | Spring Boot + RisingWave JDBC | 业务系统实时查询 |
 
 **关键指标**：
+
 - 数据新鲜度：端到端延迟 $< 3s$
 - Flink 作业吞吐：500K events/s
 - RisingWave 物化视图数量：120+
@@ -665,6 +671,7 @@ WHERE r.flink_timestamp > NOW() - INTERVAL '1' MINUTE;
 - 对比原架构（Flink + ClickHouse）：运维复杂度降低 40%，物化视图自维护减少 60% 的离线作业
 
 **一致性保障**：
+
 - Flink Sink 使用 Kafka 事务性 Producer
 - RisingWave 以 `read_committed` 模式消费 Kafka
 - 每日凌晨对 RisingWave 物化视图与 MySQL 源表进行一致性校验（checksum 比对）
@@ -704,6 +711,7 @@ Kafka → RisingWave（决策记录层）
    - 提供风控运营团队即席查询（如"近 1 小时被拒绝的交易 Top 100"）
 
 **关键指标**：
+
 - 规则引擎延迟：P99 $< 200ms$
 - ML 推理延迟：P99 $< 500ms$
 - 全流程延迟：P99 $< 1s$
@@ -712,6 +720,7 @@ Kafka → RisingWave（决策记录层）
 - 模型 AUC：0.94，误杀率 $< 0.1\%$
 
 **闭环优化**：
+
 - 风控运营人员在 RisingWave 中调整规则阈值
 - 调整后规则立即生效（RisingWave 物化视图实时更新）
 - 新规则命中数据回流到 Flink，用于模型在线学习（Online Learning）
@@ -729,20 +738,20 @@ flowchart TD
     A[业务需求分析] --> B{下游是否需要<br/>Ad-hoc 查询?}
     B -->|是| C{上游是否需要<br/>复杂 ETL/CEP?}
     B -->|否| D[单一 Flink 架构]
-    
+
     C -->|是| E[模式 A:<br/>Flink ETL → RisingWave Serving]
     C -->|否| F{是否需要<br/>实时特征工程?}
-    
+
     F -->|是| G[模式 B:<br/>RisingWave 特征 → Flink ML]
     F -->|否| H{是否存在<br/>数据闭环?}
-    
+
     H -->|是| I[模式 C:<br/>双向联邦架构]
     H -->|否| D
-    
+
     E --> J[Flink: 清洗/关联/窗口<br/>Kafka: 可靠缓冲<br/>RisingWave: 物化视图 + API]
     G --> K[RisingWave: 轻量聚合特征<br/>Flink: 复杂模型推理<br/>结果: 实时决策]
     I --> L[RisingWave: 规则过滤<br/>Flink: 深度分析<br/>RisingWave: 决策存储<br/>Kafka: 双向缓冲]
-    
+
     style E fill:#e1f5e1,stroke:#2e7d32
     style G fill:#e3f2fd,stroke:#1565c0
     style I fill:#fff3e0,stroke:#ef6c00
@@ -756,7 +765,7 @@ graph TB
         MySQL[(MySQL<br/>业务库)]
         KafkaRaw[Kafka<br/>原始事件]
     end
-    
+
     subgraph FlinkLayer["Flink 计算层"]
         CDC[Debezium CDC]
         Parse[JSON 解析<br/>Protobuf 解码]
@@ -764,23 +773,23 @@ graph TB
         Window[窗口聚合<br/>Session Window]
         Filter[异常过滤]
     end
-    
+
     subgraph SyncLayer["同步层"]
         KafkaBuf[Kafka<br/>Buffer Topic]
     end
-    
+
     subgraph RWLayer["RisingWave 服务层"]
         SourceTable[(Source Table)]
         MV1[MV: 实时分类统计]
         MV2[MV: 用户漏斗]
         MV3[MV: Top-K 商品]
     end
-    
+
     subgraph Serving["Serving 层"]
         API[REST API]
         BI[Grafana<br/>Metabase]
     end
-    
+
     MySQL --> CDC
     KafkaRaw --> Parse
     CDC --> Enrich
@@ -795,7 +804,7 @@ graph TB
     MV1 --> API
     MV2 --> BI
     MV3 --> API
-    
+
     style FlinkLayer fill:#e3f2fd,stroke:#1565c0
     style RWLayer fill:#e1f5e1,stroke:#2e7d32
     style SyncLayer fill:#fff3e0,stroke:#ef6c00
@@ -810,7 +819,7 @@ sequenceDiagram
     participant Kafka as Kafka Broker
     participant RW as RisingWave
     participant Query as BI/Query
-    
+
     rect rgb(227, 242, 253)
         Note over Src,Flink: Flink Exactly-Once 阶段
         Src ->> Flink: CDC Event Stream
@@ -819,21 +828,21 @@ sequenceDiagram
         Flink ->> Kafka: Write Records
         Flink ->> Kafka: Commit Transaction
     end
-    
+
     rect rgb(255, 243, 224)
         Note over Kafka,RW: 跨系统一致性屏障
         Kafka -->> RW: Barrier: tx_committed
         RW ->> RW: 消费到 Barrier
         RW ->> RW: 内部 Checkpoint (offset=tx_42)
     end
-    
+
     rect rgb(225, 245, 225)
         Note over RW,Query: RisingWave 查询一致性
         Query ->> RW: SELECT * FROM mv
         RW ->> RW: 使用已确认 offset 之前的快照
         RW -->> Query: 一致结果（无未提交数据）
     end
-    
+
     alt 故障恢复场景
         Flink ->> Flink: JobManager 故障
         Flink ->> Flink: 从 cp_42 恢复
@@ -855,7 +864,7 @@ classDiagram
         +TTL per state entry
         -No external query
     }
-    
+
     class RisingWaveState {
         +MaterializedView
         +SourceTable
@@ -864,24 +873,24 @@ classDiagram
         +Retention policy
         +Full SQL queryable
     }
-    
+
     class HybridStateManager {
         +placementPolicy()
         +syncStrategy()
         +consistencyCheck()
     }
-    
+
     class UseCaseETL {
         +Complex window join state
         +Session state machine
     }
-    
+
     class UseCaseServing {
         +User profile aggregation
         +Real-time inventory
         +Ad-hoc BI query
     }
-    
+
     FlinkState <|-- UseCaseETL : 适合
     RisingWaveState <|-- UseCaseServing : 适合
     HybridStateManager --> FlinkState : manages
@@ -892,25 +901,19 @@ classDiagram
 
 ## 8. 引用参考 (References)
 
-[^1]: RisingWave Labs, "RisingWave Architecture Overview", 2025. https://docs.risingwave.com/docs/current/architecture/
+[^1]: RisingWave Labs, "RisingWave Architecture Overview", 2025. <https://docs.risingwave.com/docs/current/architecture/>
 
-[^2]: Apache Flink Documentation, "Checkpointing", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/checkpointing/
+[^2]: Apache Flink Documentation, "Checkpointing", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/checkpointing/>
 
-[^3]: J. Kreps, "Questioning the Lambda Architecture", O'Reilly Radar, 2014. https://www.oreilly.com/radar/questioning-the-lambda-architecture/
+[^3]: J. Kreps, "Questioning the Lambda Architecture", O'Reilly Radar, 2014. <https://www.oreilly.com/radar/questioning-the-lambda-architecture/>
 
-[^4]: Z. Dehghani, "How to Move Beyond a Monolithic Data Lake to a Distributed Data Mesh", Martin Fowler Blog, 2019. https://martinfowler.com/articles/data-monolith-to-mesh.html
+[^4]: Z. Dehghani, "How to Move Beyond a Monolithic Data Lake to a Distributed Data Mesh", Martin Fowler Blog, 2019. <https://martinfowler.com/articles/data-monolith-to-mesh.html>
 
-[^5]: RisingWave Labs, "RisingWave Kafka Connector", 2025. https://docs.risingwave.com/docs/current/create-source-kafka/
 
-[^6]: Apache Flink Documentation, "JDBC Connector", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/table/jdbc/
 
-[^7]: RisingWave Labs, "SQL Commands and Syntax", 2025. https://docs.risingwave.com/docs/current/sql-commands/
 
-[^8]: Apache Kafka Documentation, "Transactions in Kafka", 2025. https://kafka.apache.org/documentation/#transactions
 
-[^9]: M. Kleppmann, "Designing Data-Intensive Applications", O'Reilly Media, 2017.
 
-[^10]: RisingWave Labs, "Flink RisingWave Integration Guide", 2025. https://www.risingwave.com/blog/flink-risingwave-integration/
 
 ---
 

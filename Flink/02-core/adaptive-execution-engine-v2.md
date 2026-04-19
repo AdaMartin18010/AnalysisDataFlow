@@ -1,6 +1,6 @@
 # Flink 自适应执行引擎 v2 (Adaptive Execution Engine V2)
 
-> **状态**: 前瞻 | **预计发布时间**: 2026-Q3 | **最后更新**: 2026-04-12
+> **状态**: 前瞻 | **预计发布时间**: 2026-Q3-Q4 | **最后更新**: 2026-04-20
 >
 > ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
 
@@ -15,7 +15,7 @@
 > | **目标版本** | Flink 2.4.0 |
 > | **文档状态** | 🔍 前瞻 (Preview) |
 > | **预计发布时间** | 2026 Q3-Q4 |
-> | **最后更新** | 2026-04-04 |
+> | **最后更新** | 2026-04-20 |
 > | **跟踪系统** | [.tasks/flink-release-tracker.md](../../.tasks/flink-release-tracker.md) |
 
 > **所属阶段**: Flink/02-core-mechanisms | **前置依赖**: [checkpoint-mechanism-deep-dive.md](./checkpoint-mechanism-deep-dive.md), [backpressure-and-flow-control.md](./backpressure-and-flow-control.md), [performance-tuning-guide.md](../09-practices/09.03-performance-tuning/performance-tuning-guide.md) | **形式化等级**: L4-L5
@@ -48,7 +48,7 @@
     - [论证 4.2: 数据倾斜自动处理策略](#论证-42-数据倾斜自动处理策略)
     - [论证 4.3: 资源自适应分配算法](#论证-43-资源自适应分配算法)
     - [反例 4.1: 自适应调整过度振荡](#反例-41-自适应调整过度振荡)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)]()
     - [Thm-F-02-56: 自适应执行正确性定理](#thm-f-02-56-自适应执行正确性定理)
     - [Thm-F-02-57: 数据倾斜处理有效性定理](#thm-f-02-57-数据倾斜处理有效性定理)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)

@@ -18,7 +18,7 @@
 
 ## 目录
 
-- [案例研究：形式化验证驱动开发 —— Veil Framework + LLM 辅助证明的分布式系统验证](#案例研究形式化验证驱动开发--veil-framework--llm-辅助证明的分布式系统验证)
+- [案例研究：形式化验证驱动开发 —— Veil Framework + LLM 辅助证明的分布式系统验证]()
   - [摘要](#摘要)
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
@@ -42,7 +42,7 @@
     - [4.3 效率对比：手工证明 vs LLM 辅助证明](#43-效率对比手工证明-vs-llm-辅助证明)
     - [4.4 LLM 辅助发现的手工证明边界条件遗漏](#44-llm-辅助发现的手工证明边界条件遗漏)
     - [4.5 踩坑记录：实施过程中的关键障碍](#45-踩坑记录实施过程中的关键障碍)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [5.1 Raft-EP 的 Veil 规约与 VC 生成](#51-raft-ep-的-veil-规约与-vc-生成)
     - [5.2 LLM 生成的 Lean 4 证明策略（精化实例）](#52-llm-生成的-lean-4-证明策略精化实例)
     - [5.3 TLA⁺ 规约片段与 TLC 模型检验](#53-tla-规约片段与-tlc-模型检验)

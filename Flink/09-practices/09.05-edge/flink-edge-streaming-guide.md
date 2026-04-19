@@ -26,7 +26,7 @@
     - [4.2 资源受限下的算子优化策略](#42-资源受限下的算子优化策略)
     - [4.3 间歇性网络的容错设计](#43-间歇性网络的容错设计)
     - [4.4 反例: 忽略资源约束的后果](#44-反例-忽略资源约束的后果)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)]()
     - [Thm-F-09-05-01 (边缘流处理可行性定理)](#thm-f-09-05-01-边缘流处理可行性定理)
     - [工程推论 (Engineering Corollaries)](#工程推论-engineering-corollaries)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)

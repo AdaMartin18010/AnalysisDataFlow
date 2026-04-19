@@ -22,7 +22,7 @@
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [4.1 测试环境标准化](#41-测试环境标准化)
     - [4.2 测试工具链选型](#42-测试工具链选型)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)]()
     - [Thm-FBS-01 (基准测试有效性定理)](#thm-fbs-01-基准测试有效性定理)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [6.1 快速开始](#61-快速开始)

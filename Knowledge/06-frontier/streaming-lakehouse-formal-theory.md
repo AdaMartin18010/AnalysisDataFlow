@@ -1073,7 +1073,7 @@ graph LR
     subgraph "版本链 Version Chain"
         direction TB
 
-        V0["v0<br/>2024-01-01 00:00<br/>初始创建<br/>Files: []"]
+        V0["v0<br/>2024-01-01 00:00<br/>初始创建<br/>Files: ［］"]
         V1["v1<br/>2024-01-01 12:00<br/>+f1.parquet<br/>Files: [f1]"]
         V2["v2<br/>2024-01-02 00:00<br/>+f2.parquet<br/>Files: [f1,f2]"]
         V3["v3<br/>2024-01-02 12:00<br/>+f3.parquet<br/>Files: [f1,f2,f3]"]

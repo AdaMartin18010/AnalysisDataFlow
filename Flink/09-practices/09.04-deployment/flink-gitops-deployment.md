@@ -33,7 +33,7 @@
     - [4.2 反例分析：手动部署的系统性风险](#42-反例分析手动部署的系统性风险)
     - [4.3 金丝雀发布 vs 蓝绿部署的决策分析](#43-金丝雀发布-vs-蓝绿部署的决策分析)
     - [4.4 多租户隔离策略的工程论证](#44-多租户隔离策略的工程论证)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)]()
     - [Thm-F-09-60: GitOps 模式下 Flink 作业升级的可恢复性定理](#thm-f-09-60-gitops-模式下-flink-作业升级的可恢复性定理)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [6.1 完整 GitOps 仓库目录结构](#61-完整-gitops-仓库目录结构)

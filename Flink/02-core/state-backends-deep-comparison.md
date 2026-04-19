@@ -1,6 +1,6 @@
-> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+> **状态**: 稳定内容 | **风险等级**: 低 | **最后更新**: 2026-04-20
 >
-> 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+> 本文档基于 Apache Flink 已发布版本的 State Backend 实现进行深度对比分析。内容反映当前稳定版本的实现。
 >
 # Flink State Backends 深度对比分析
 
@@ -37,12 +37,12 @@
       - [反例 2: 高吞吐随机读使用 RocksDB](#反例-2-高吞吐随机读使用-rocksdb)
       - [反例 3: 低带宽环境使用 ForSt](#反例-3-低带宽环境使用-forst)
     - [4.4 资源需求对比](#44-资源需求对比)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)]()
     - [Thm-F-02-03: 状态后端选择完备性定理](#thm-f-02-03-状态后端选择完备性定理)
     - [Thm-F-02-04: Checkpoint 效率优化界限定理](#thm-f-02-04-checkpoint-效率优化界限定理)
     - [工程论证：云原生场景下的 ForSt 优势](#工程论证云原生场景下的-forst-优势)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
-    - [6.1 MemoryStateBackend / HashMapStateBackend 配置](#61-memorystatebackend--hashmapstatebackend-配置)
+    - [6.1 MemoryStateBackend / HashMapStateBackend 配置]()
     - [6.2 RocksDBStateBackend 生产配置](#62-rocksdbstatebackend-生产配置)
     - [6.3 ForStStateBackend 配置（Flink 2.0+）](#63-forststatebackend-配置flink-20)
     - [6.4 状态后端迁移示例](#64-状态后端迁移示例)

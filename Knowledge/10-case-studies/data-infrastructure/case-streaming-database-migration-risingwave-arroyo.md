@@ -24,7 +24,7 @@
 
 ## 目录
 
-- [流数据库架构迁移: AdStream实时广告平台 — Streaming Database形式化选型与迁移实践](#流数据库架构迁移-adstream实时广告平台--streaming-database形式化选型与迁移实践)
+- [流数据库架构迁移: AdStream实时广告平台 — Streaming Database形式化选型与迁移实践]()
   - [摘要](#摘要)
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
@@ -43,10 +43,10 @@
     - [Prop-K-10-08-02: 流数据库选型八元组的偏序可比性](#prop-k-10-08-02-流数据库选型八元组的偏序可比性)
     - [Cor-K-10-08-01: 迁移前后查询结果集等价性](#cor-k-10-08-01-迁移前后查询结果集等价性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [3.1 AdStream业务模型 ⟹ Streaming Database八元组](#31-adstream业务模型--streaming-database八元组)
-    - [3.2 RisingWave / Arroyo / Materialize / Flink+MySQL 架构映射关系](#32-risingwave--arroyo--materialize--flinkmysql-架构映射关系)
-    - [3.3 CDC同步 ⟹ 流数据库增量输入流](#33-cdc同步--流数据库增量输入流)
-    - [3.4 USTM-F框架 ⟹ 选型决策编码](#34-ustm-f框架--选型决策编码)
+    - [3.1 AdStream业务模型 ⟹ Streaming Database八元组]()
+    - [3.2 RisingWave / Arroyo / Materialize / Flink+MySQL 架构映射关系]()
+    - [3.3 CDC同步 ⟹ 流数据库增量输入流]()
+    - [3.4 USTM-F框架 ⟹ 选型决策编码]()
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [4.1 为何从Flink+MySQL迁移至Streaming Database](#41-为何从flinkmysql迁移至streaming-database)
     - [4.2 形式化选型: RisingWave vs Arroyo vs Materialize](#42-形式化选型-risingwave-vs-arroyo-vs-materialize)

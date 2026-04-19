@@ -27,7 +27,7 @@
     - [4.1 实时追踪必要性论证](#41-实时追踪必要性论证)
     - [4.2 反例分析：纯云端架构失败模式](#42-反例分析纯云端架构失败模式)
     - [4.3 边界讨论](#43-边界讨论)
-  - [5. 工程论证 / 工程实践 (Proof / Engineering Argument)](#5-工程论证--工程实践-proof--engineering-argument)
+  - [5. 工程论证 / 工程实践 (Proof / Engineering Argument)]()
     - [5.1 边缘 vs 云端计算决策分析](#51-边缘-vs-云端计算决策分析)
     - [5.2 Flink 集群架构设计](#52-flink-集群架构设计)
     - [5.3 状态后端与 Checkpoint 策略](#53-状态后端与-checkpoint-策略)
@@ -1351,9 +1351,8 @@ flowchart TD
 ### 7.5 项目业务成果可视化
 
 ```mermaid
-%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#e1f5fe', 'primaryTextColor': '#01579b', 'primaryBorderColor': '#0288d1', 'lineColor': '#0288d1', 'secondaryColor': '#fff3e0', 'tertiaryColor': '#e8f5e9'}}}%%
-
 graph TB
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#e1f5fe', 'primaryTextColor': '#01579b', 'primaryBorderColor': '#0288d1', 'lineColor': '#0288d1', 'secondaryColor': '#fff3e0', 'tertiaryColor': '#e8f5e9'}}}%%
     subgraph "业务成果 Business Impact"
         direction LR
 

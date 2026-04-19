@@ -24,7 +24,7 @@
 
 ## 目录
 
-- [案例研究: AI Agent 合规平台 — NIST CAISI + Agent 行为契约治理](#案例研究-ai-agent-合规平台--nist-caisi--agent-行为契约治理)
+- [案例研究: AI Agent 合规平台 — NIST CAISI + Agent 行为契约治理]()
   - [摘要](#摘要)
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)

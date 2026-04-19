@@ -2,7 +2,7 @@
 
 > **状态**: 稳定更新 | **风险等级**: 低 | **最后更新**: 2026-04
 >
-> 所属阶段: Knowledge/04-technology-selection | 前置依赖: [Knowledge/06-frontier/streaming-lakehouse-iceberg-delta.md](../../06-frontier/streaming-lakehouse-iceberg-delta.md), [Knowledge/06-frontier/streaming-lakehouse-formal-theory.md](../../06-frontier/streaming-lakehouse-formal-theory.md), [Flink/05-ecosystem/flink-dynamic-iceberg-sink-guide.md](../../Flink/05-ecosystem/flink-dynamic-iceberg-sink-guide.md) | 形式化等级: L4-L5
+> 所属阶段: Knowledge/04-technology-selection | 前置依赖: [Knowledge/06-frontier/streaming-lakehouse-iceberg-delta.md](../06-frontier/streaming-lakehouse-iceberg-delta.md), [Knowledge/06-frontier/streaming-lakehouse-formal-theory.md](../06-frontier/streaming-lakehouse-formal-theory.md), [Flink/05-ecosystem/flink-dynamic-iceberg-sink-guide.md](../../Flink/05-ecosystem/flink-dynamic-iceberg-sink-guide.md) | 形式化等级: L4-L5
 
 ---
 
@@ -38,6 +38,7 @@ $$
 $$
 
 **核心特征**:
+
 - **元数据树**: 分层元数据文件组织（Table Metadata → Snapshot → Manifest List → Manifest → Data File）
 - **快照隔离**: 不可变快照序列，支持时间旅行
 - **隐藏分区**: 分区演进无需重写数据
@@ -54,11 +55,13 @@ $$
 $$
 
 其中：
+
 - $\Sigma_\Delta$: 所有可能的表状态空间
 - $\Lambda_\Delta = \{WRITE, DELETE, UPDATE, MERGE\}$: 操作集合
 - $\mathcal{L}_{\text{log}}$: JSON 格式的事务日志 (_delta_log)
 
 **核心特征**:
+
 - **乐观并发控制**: 基于事务日志的版本冲突检测
 - **Change Data Feed (CDF)**: 原生变更数据捕获
 - **Liquid Clustering**: 自适应数据布局优化（Delta 3.0+）
@@ -75,12 +78,14 @@ $$
 $$
 
 其中：
+
 - $\mathcal{D}_{\text{base}}$: 列式基准数据（Parquet）
 - $\mathcal{D}_{\text{delta}}$: Avro 格式增量日志
 - $\mathcal{T}_{\text{timeline}}$: 所有表操作的完整时间线
 - $\mathcal{I}_{\text{index}}$: 记录键到文件位置的映射索引
 
 **核心特征**:
+
 - **MVCC**: 多版本并发控制
 - **索引系统**: Bloom Filter / HBase Index / Bucket Index
 - **表类型**: Copy-on-Write (COW) vs Merge-on-Read (MOR)
@@ -97,12 +102,14 @@ $$
 $$
 
 其中：
+
 - $\text{LSM}_{\text{stream}}$: 面向流处理的 LSM-Tree 结构
 - $\mathcal{C}_{\text{native}}$: 原生 Changelog 生产机制
 - $\mathcal{M}_{\text{merge}}$: 合并引擎（Deduplicate / Partial Update / Aggregation）
 - $\mathcal{F}_{\text{lookup}}$: 支持 Lookup Join 的索引结构
 
 **核心特征**:
+
 - **流批统一**: 同一存储层同时服务流读和批读
 - **原生 Changelog**: 无需额外计算即可生成变更流
 - **Lookup Join**: 支持维表关联查询
@@ -119,6 +126,7 @@ $$
 $$
 
 其中：
+
 - $\mathcal{S}$: 流处理引擎（Flink / Spark Streaming）
 - $\mathcal{L}$: Lakehouse 存储格式（Iceberg / Delta / Hudi / Paimon）
 - $\Phi: \text{Stream} \to \mathcal{L}$: 流式摄取函数，保证 Exactly-Once
@@ -135,6 +143,7 @@ $$
 $$
 
 其中：
+
 - $\mathcal{B}_{\text{parquet}}$: Parquet 文件作为数据层
 - $\mathcal{M}_{\text{sql}}$: SQL 数据库存储元数据（突破传统文件元数据限制）
 - $\mathcal{Q}_{\text{duck}}$: DuckDB 向量化查询引擎
@@ -167,6 +176,7 @@ $$
 $$
 
 其中：
+
 - $\text{Latency}_{\text{ingest}}$: 数据摄取到内存/本地缓冲（毫秒级）
 - $\text{Latency}_{\text{commit}}$: 微批提交与元数据更新（秒级，通常 30s-5min）
 - $\text{Latency}_{\text{visibility}}$: 快照对查询引擎可见（秒级）
@@ -446,6 +456,7 @@ $$
 $$
 
 其中：
+
 - $L_{\text{req}}$: 数据可见性延迟要求
 - $U_{\text{freq}}$: 更新频率（每秒更新次数）
 - $Q_{\text{mode}}$: 查询模式（batch-heavy / stream-heavy / hybrid）
@@ -579,6 +590,7 @@ $$
 **步骤 1**: 数据在 Flink 中缓冲至 Checkpoint Barrier 到达，至少经历一个 Checkpoint 间隔 $T_c$。
 
 **步骤 2**: Checkpoint 完成后，Sink 执行提交操作：
+
 - Iceberg/Delta: 元数据文件原子更新（$T_{\text{commit}} \approx 100ms - 2s$）
 - Paimon: LSM 快照提交（$T_{\text{commit}} \approx 10ms - 100ms$）
 
@@ -957,18 +969,12 @@ gantt
 
 ## 8. 引用参考 (References)
 
-[^1]: DuckDB Labs, "DuckLake: Metadata in SQL Database", 2026. https://duckdb.org/ (早期发布，待验证)
+[^1]: DuckDB Labs, "DuckLake: Metadata in SQL Database", 2026. <https://duckdb.org/> (早期发布，待验证)
 
-[^2]: Apache Flink Blog, "Dynamic Iceberg Sink: Auto Table Creation and Schema Evolution", 2025-11. https://flink.apache.org/
+[^2]: Apache Flink Blog, "Dynamic Iceberg Sink: Auto Table Creation and Schema Evolution", 2025-11. <https://flink.apache.org/>
 
-[^3]: Conduktor, "Streaming to Lakehouse Tables: Delta Lake, Iceberg, Hudi, and Paimon", 2026-04. https://www.conduktor.io/blog/
+[^3]: Conduktor, "Streaming to Lakehouse Tables: Delta Lake, Iceberg, Hudi, and Paimon", 2026-04. <https://www.conduktor.io/blog/>
 
-[^4]: Apache Paimon Documentation, "Streaming Lakehouse Architecture", 2025. https://paimon.apache.org/
+[^4]: Apache Paimon Documentation, "Streaming Lakehouse Architecture", 2025. <https://paimon.apache.org/>
 
-[^5]: Data Lakehouse Hub, "Four Formats Coexistence Analysis 2026", 2026. https://datalakehousehub.com/
-
-[^6]: Apache Iceberg Documentation, "Schema Evolution and Partitioning", 2025. https://iceberg.apache.org/docs/latest/
-
-[^7]: Delta Lake Documentation, "Change Data Feed and Liquid Clustering", 2025. https://docs.delta.io/
-
-[^8]: Apache Hudi Documentation, "Table Types and Query Types", 2025. https://hudi.apache.org/docs/table_types/
+[^5]: Data Lakehouse Hub, "Four Formats Coexistence Analysis 2026", 2026. <https://datalakehousehub.com/>

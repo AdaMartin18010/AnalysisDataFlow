@@ -2,7 +2,7 @@
 
 > **创建日期**: 2026-04-12
 > **状态**: ✅ 100% 完成 (2026-04-15) | 46/46 任务全部交付
-> **关联文档**: [ACADEMIC-FRONTIER-GAP-ANALYSIS.md](./ACADEMIC-FRONTIER-GAP-ANALYSIS.md)
+> **关联文档**: [ACADEMIC-FRONTIER-GAP-ANALYSIS.md](./archive/academic-reports/ACADEMIC-FRONTIER-GAP-ANALYSIS.md)
 > **适用范围**: AnalysisDataFlow项目 v3.9+
 
 ---

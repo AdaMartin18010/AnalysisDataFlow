@@ -842,7 +842,7 @@ quadrantChart
 
 ### 下游应用
 
-- [../../NAVIGATION-INDEX.md](../../NAVIGATION-INDEX.md) — 项目综合导航索引
+- [../../release/v3.0.0/docs/NAVIGATION-INDEX.md](../../release/v3.0.0/docs/NAVIGATION-INDEX.md) — 项目综合导航索引
 - [../../Struct/05-comparative-analysis/05.01-go-vs-scala-expressiveness.md](../../Struct/05-comparative-analysis/05.01-go-vs-scala-expressiveness.md) — Go vs Scala 表达能力对比
 
 ---

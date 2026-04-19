@@ -1,6 +1,6 @@
 # Flink 多集群联邦架构深度指南
 
-> **所属阶段**: Flink/09-practices/09.04-deployment | **前置依赖**: [Flink GitOps 部署模式](./flink-gitops-deployment.md), [Flink Kubernetes Operator 高级配置](../09.05-operations/flink-k8s-operator-advanced.md), [Flink 状态后端与 Checkpoint 机制](../../02-core/02.03-state-management/flink-checkpoint-internals.md) | **形式化等级**: L5
+> **所属阶段**: Flink/09-practices/09.04-deployment | **前置依赖**: [Flink GitOps 部署模式](./flink-gitops-deployment.md), [Flink Kubernetes Operator 高级配置](../../09-practices/09.04-deployment/flink-kubernetes-operator-1.14-guide.md), [Flink 状态后端与 Checkpoint 机制](../../02-core/checkpoint-mechanism-deep-dive.md) | **形式化等级**: L5
 
 ---
 

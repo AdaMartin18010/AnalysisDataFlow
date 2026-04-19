@@ -8,8 +8,8 @@
 
 ## 📋 目录
 
-- [AnalysisDataFlow — 案例研究统一导航索引](#analysisdataflow--案例研究统一导航索引)
-  - [📋 目录](#-目录)
+- [AnalysisDataFlow — 案例研究统一导航索引](#analysisdataflow-案例研究统一导航索引)
+  - [📋 目录](#目录)
   - [1. 金融行业 (Finance)](#1-金融行业-finance)
   - [2. 电商零售 (E-commerce)](#2-电商零售-e-commerce)
   - [3. 物联网与工业 (IoT)](#3-物联网与工业-iot)

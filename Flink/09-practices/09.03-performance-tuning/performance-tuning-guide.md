@@ -27,7 +27,7 @@
     - [4.2 并行度调优的边界效应](#42-并行度调优的边界效应)
     - [4.3 检查点调优的权衡空间](#43-检查点调优的权衡空间)
     - [4.4 序列化优化的选择空间](#44-序列化优化的选择空间)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)]()
     - [Thm-F-06-01 (最优内存配置定理)](#thm-f-06-01-最优内存配置定理)
     - [Thm-F-06-02 (并行度扩展效率定理)](#thm-f-06-02-并行度扩展效率定理)
     - [工程推论 (Engineering Corollaries)](#工程推论-engineering-corollaries)

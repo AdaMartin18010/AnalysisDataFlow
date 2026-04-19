@@ -793,7 +793,7 @@ graph TD
     end
 
     subgraph "窗口触发"
-        WIN[窗口 [10:00, 11:00)]
+        WIN["窗口 ［10:00, 11:00）"]
         TRIGGER{WM >= 11:00?}
         OUTPUT[输出结果]
     end

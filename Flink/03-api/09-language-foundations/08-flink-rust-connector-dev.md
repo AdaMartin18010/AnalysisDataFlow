@@ -28,7 +28,7 @@
     - [4.2 集成方案选型分析](#42-集成方案选型分析)
     - [4.3 内存管理跨边界策略](#43-内存管理跨边界策略)
     - [4.4 边界条件与限制](#44-边界条件与限制)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)]()
     - [5.1 工程论证：JNI 方案的正确性保证](#51-工程论证jni-方案的正确性保证)
     - [5.2 性能工程论证：Rust vs Java Connector](#52-性能工程论证rust-vs-java-connector)
     - [5.3 集成复杂度评估](#53-集成复杂度评估)
@@ -1682,7 +1682,7 @@ flowchart TD
 graph LR
     subgraph "Java Heap"
         JOBJ[Java Objects<br/>String, Row, POJO]
-        JARR[byte[]]<-->JOBJ
+        JARR[byte［］]<-->JOBJ
     end
 
     subgraph "JNI Boundary"

@@ -10,9 +10,9 @@
 
 ## 目录
 
-- [Struct 层级 (形式理论) - 498个](#struct-层级)
-- [Knowledge 层级 (知识结构) - 732个](#knowledge-层级)
-- [Flink 层级 (Flink专项) - 1437个](#flink-层级)
+- [Struct 层级 (形式理论) - 498个](#struct-层级-形式理论)
+- [Knowledge 层级 (知识结构) - 732个](#knowledge-层级-知识结构)
+- [Flink 层级 (Flink专项) - 1437个](#flink-层级-flink专项)
 
 ## Struct 层级 (形式理论)
 

@@ -65,9 +65,9 @@ Invoke-RestMethod -Uri 'https://adamartin18010.github.io/AnalysisDataFlow/robots
 
 详见完整手册：
 
-- [`v4.2-ADMIN-OPERATION-GUIDE.md`](./v4.2-ADMIN-OPERATION-GUIDE.md) — 详细操作步骤与 FAQ
-- [`GO-LIVE-CHECKLIST-v4.2.md`](./GO-LIVE-CHECKLIST-v4.2.md) — 上线后验证清单
-- [`ALGOLIA-DOCSEARCH-APPLICATION.md`](./ALGOLIA-DOCSEARCH-APPLICATION.md) — 预填充申请模板
+- [`v4.2-ADMIN-OPERATION-GUIDE.md`](./archive/v4-status-reports/v4.2-ADMIN-OPERATION-GUIDE.md) — 详细操作步骤与 FAQ
+- [`GO-LIVE-CHECKLIST-v4.2.md`](./archive/project-management/GO-LIVE-CHECKLIST-v4.2.md) — 上线后验证清单
+- [`ALGOLIA-DOCSEARCH-APPLICATION.md`](./archive/ecosystem-reports/ALGOLIA-DOCSEARCH-APPLICATION.md) — 预填充申请模板
 
 ---
 

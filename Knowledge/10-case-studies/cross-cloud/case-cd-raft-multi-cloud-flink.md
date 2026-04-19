@@ -16,7 +16,7 @@
 >
 ## 目录
 
-- [跨国云原生流处理 — CD-Raft跨域共识的多云Flink部署](#跨国云原生流处理--cd-raft跨域共识的多云flink部署)
+- [跨国云原生流处理 — CD-Raft跨域共识的多云Flink部署]()
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-K-10-CC-01: 跨域实时交易分析平台 (Cross-Domain Real-Time Transaction Analytics Platform, CDRTAP)](#def-k-10-cc-01-跨域实时交易分析平台-cross-domain-real-time-transaction-analytics-platform-cdrtap)
@@ -29,7 +29,7 @@
     - [Lemma-K-10-CC-01: 跨域库存扣减的线性一致性边界](#lemma-k-10-cc-01-跨域库存扣减的线性一致性边界)
     - [Lemma-K-10-CC-02: 零RPO切换的可用性代价](#lemma-k-10-cc-02-零rpo切换的可用性代价)
     - [Lemma-K-10-CC-03: GDPR数据主权约束下的查询路由可行性](#lemma-k-10-cc-03-gdpr数据主权约束下的查询路由可行性)
-    - [Thm-K-10-CC-01: CD-Raft + Flink Multi-Cluster 的端到端一致性定理](#thm-k-10-cc-01-cd-raft--flink-multi-cluster-的端到端一致性定理)
+    - [Thm-K-10-CC-01: CD-Raft + Flink Multi-Cluster 的端到端一致性定理]()
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
     - [3.1 CD-Raft与Flink生态的集成关系矩阵](#31-cd-raft与flink生态的集成关系矩阵)
     - [3.2 多云部署与数据主权的关系映射](#32-多云部署与数据主权的关系映射)
@@ -63,7 +63,7 @@
       - [6.4.2 中国网络安全法合规准备（未来扩展）](#642-中国网络安全法合规准备未来扩展)
     - [6.5 踩坑记录与解决方案](#65-踩坑记录与解决方案)
       - [6.5.1 跨区域网络分区处理：Leader选举风暴](#651-跨区域网络分区处理leader选举风暴)
-      - [6.5.2 K8s Operator升级：1.13 → 1.14的CRD变更](#652-k8s-operator升级113--114的crd变更)
+      - [6.5.2 K8s Operator升级：1.13 → 1.14的CRD变更]()
       - [6.5.3 Istio Sidecar注入导致的Flink TM启动延迟](#653-istio-sidecar注入导致的flink-tm启动延迟)
       - [6.5.4 RocksDB增量Checkpoint跨云对象存储一致性](#654-rocksdb增量checkpoint跨云对象存储一致性)
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)

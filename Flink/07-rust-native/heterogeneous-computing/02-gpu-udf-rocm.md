@@ -226,7 +226,7 @@ graph TB
     subgraph Source["CUDA Source Code"]
         CUDA[*.cu files]
         H_CUDA[<cuda_runtime.h>]
-        Kernel_CUDA["__global__ void kernel()"]
+        Kernel_CUDA["__global__ void kernel（）"]
     end
 
     subgraph Conversion["hipify 转换"]
@@ -236,7 +236,7 @@ graph TB
     subgraph Target["HIP Output"]
         HIP[*.hip files]
         H_HIP[<hip/hip_runtime.h>]
-        Kernel_HIP["__global__ void kernel()"]
+        Kernel_HIP["__global__ void kernel（）"]
         Cond["条件编译:<br/>#ifdef __HIP_PLATFORM_AMD__"]
     end
 

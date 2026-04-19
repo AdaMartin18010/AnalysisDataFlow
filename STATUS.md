@@ -107,7 +107,7 @@
 | 100%完成最终报告 | 2026-04-11 | [查看](./100-PERCENT-COMPLETION-FINAL-REPORT.md) |
 | Coq编译报告 | 2026-04-11 | [查看](./reconstruction/phase4-verification/COQ-COMPILATION-REPORT.md) |
 | TLA+模型检查报告 | 2026-04-11 | [查看](./reconstruction/phase4-verification/TLA-MODEL-CHECK-REPORT.md) |
-| 交叉引用修复报告 | 2026-04-11 | [查看](./cross-ref-fix-report.md) |
+| 交叉引用修复报告 | 2026-04-11 | [查看](./archive/validation-reports/cross-ref-fix-report.md) |
 
 ---
 

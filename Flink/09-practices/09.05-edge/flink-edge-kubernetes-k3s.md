@@ -26,7 +26,7 @@
     - [4.2 Flink Kubernetes Operator部署模式](#42-flink-kubernetes-operator部署模式)
     - [4.3 资源限制下的调度优化](#43-资源限制下的调度优化)
     - [4.4 边缘场景的网络策略](#44-边缘场景的网络策略)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)]()
     - [Thm-F-09-05-02 (边缘K3s部署稳定性定理)](#thm-f-09-05-02-边缘k3s部署稳定性定理)
     - [工程推论 (Engineering Corollaries)](#工程推论-engineering-corollaries)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)

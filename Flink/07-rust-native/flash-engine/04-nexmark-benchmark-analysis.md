@@ -646,12 +646,11 @@ pie title Flash 5-10x 性能提升来源分解
 ### 7.3 规模扩展性能衰减图
 
 ```mermaid
-line title 加速比 vs 数据规模
-    y-axis 加速比(x) --> 0 --> 10
-    x-axis 数据规模
-    line [100M记录] 8.0
-    line [150M记录] 6.5
-    line [200M记录] 5.2
+xychart-beta
+    title "加速比 vs 数据规模"
+    x-axis [100M, 150M, 200M]
+    y-axis "加速比" 0 --> 10
+    line [8.0, 6.5, 5.2]
 ```
 
 ### 7.4 TPC-DS 性能对比

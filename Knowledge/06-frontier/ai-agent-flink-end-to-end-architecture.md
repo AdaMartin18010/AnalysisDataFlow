@@ -1,6 +1,6 @@
 # AI Agent 与 Flink 流式管道端到端架构指南
 
-> 所属阶段: Knowledge/ | 前置依赖: [Knowledge/06-frontier/ai-agent-stream-processing.md](ai-agent-stream-processing.md), [Flink/06-ai-ml/flink-ai-model-ddl.md](../Flink/06-ai-ml/flink-ai-model-ddl.md), [Flink/03-api/flink-python-async-datastream.md](../Flink/03-api/flink-python-async-datastream.md) | 形式化等级: L3-L5
+> 所属阶段: Knowledge/ | 前置依赖: [Knowledge/06-frontier/ai-agent-streaming-architecture.md](./ai-agent-streaming-architecture.md), [Flink/06-ai-ml/flink-ai-ml-integration-complete-guide.md](../../Flink/06-ai-ml/flink-ai-ml-integration-complete-guide.md), [Flink/03-api/flink-python-async-datastream.md](../../Flink/03-api/09-language-foundations/pyflink-async-functions-guide.md) | 形式化等级: L3-L5
 
 ---
 
@@ -10,7 +10,7 @@
 - [2. 属性推导 (Properties)](#2-属性推导-properties)
 - [3. 关系建立 (Relations)](#3-关系建立-relations)
 - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
-- [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+- [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
 - [6. 实例验证 (Examples)](#6-实例验证-examples)
 - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
 - [8. 引用参考 (References)](#8-引用参考-references)

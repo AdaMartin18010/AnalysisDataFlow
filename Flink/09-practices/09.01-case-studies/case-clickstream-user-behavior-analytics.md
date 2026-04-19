@@ -1258,7 +1258,7 @@ flowchart LR
     end
 
     subgraph FunnelState["Funnel状态管理"]
-        S0["State: {}"]
+        S0["State: ｛｝"]
         S1["State: {view}"]
         S2["State: {view, cart}"]
         S3["State: {view, cart, checkout}"]

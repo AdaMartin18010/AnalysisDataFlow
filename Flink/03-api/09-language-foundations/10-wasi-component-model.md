@@ -1,4 +1,4 @@
-> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
+﻿> **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04-20
 >
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
 >
@@ -27,10 +27,10 @@
     - [3.2 Component Model 与流计算生态映射](#32-component-model-与流计算生态映射)
     - [3.3 多语言生态系统关系](#33-多语言生态系统关系)
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
-    - [4.1 为何选择 WASI 0.2 + Component Model？](#41-为何选择-wasi-02-component-model)
+    - [4.1 为何选择 WASI 0.2 + Component Model？]()
     - [4.2 流处理场景下的设计权衡](#42-流处理场景下的设计权衡)
     - [4.3 边界与限制分析](#43-边界与限制分析)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)]()
     - [5.1 组件组合正确性论证](#51-组件组合正确性论证)
     - [6.2 Java 宿主代码实现](#62-java-宿主代码实现)
     - [6.3 组件组合示例](#63-组件组合示例)
@@ -38,7 +38,7 @@
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
     - [7.1 WASI 0.2 架构全景图](#71-wasi-02-架构全景图)
     - [7.2 Component Model 类型系统层次](#72-component-model-类型系统层次)
-    - [7.3 Flink + WASI 0.2 集成架构](#73-flink-wasi-02-集成架构)
+    - [7.3 Flink + WASI 0.2 集成架构]()
     - [7.4 开发工作流决策树](#74-开发工作流决策树)
     - [7.5 流算子组件生命周期](#75-流算子组件生命周期)
   - [8. 未来趋势 (Future Trends)](#8-未来趋势-future-trends)

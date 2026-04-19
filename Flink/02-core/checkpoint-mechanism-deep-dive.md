@@ -23,9 +23,9 @@
     - [Lemma-F-02-03 (增量 Checkpoint 的存储优化)](#lemma-f-02-03-增量-checkpoint-的存储优化)
     - [Prop-F-02-01 (Checkpoint 类型选择的权衡空间)](#prop-f-02-01-checkpoint-类型选择的权衡空间)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [关系 1: Flink Checkpoint ↔ Chandy-Lamport 分布式快照](#关系-1-flink-checkpoint--chandy-lamport-分布式快照)
-    - [关系 2: Checkpoint 机制 ⟹ Exactly-Once 语义](#关系-2-checkpoint-机制--exactly-once-语义)
-    - [关系 3: State Backend 类型 ↔ 应用场景](#关系-3-state-backend-类型--应用场景)
+    - [关系 1: Flink Checkpoint ↔ Chandy-Lamport 分布式快照]()
+    - [关系 2: Checkpoint 机制 ⟹ Exactly-Once 语义]()
+    - [关系 3: State Backend 类型 ↔ 应用场景]()
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [4.1 Checkpoint 架构：JM/TM 协调机制](#41-checkpoint-架构jmtm-协调机制)
     - [4.2 Aligned vs Unaligned：深度对比分析](#42-aligned-vs-unaligned深度对比分析)
@@ -37,7 +37,7 @@
     - [4.4 State Backend 快照流程详解](#44-state-backend-快照流程详解)
       - [HashMapStateBackend 快照流程](#hashmapstatebackend-快照流程)
       - [RocksDBStateBackend 快照流程](#rocksdbstatebackend-快照流程)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)]()
     - [Thm-F-02-01 (Checkpoint 恢复后系统状态等价性)](#thm-f-02-01-checkpoint-恢复后系统状态等价性)
     - [Thm-F-02-02 (增量 Checkpoint 完备性)](#thm-f-02-02-增量-checkpoint-完备性)
     - [Thm-F-02-01 源码验证](#thm-f-02-01-源码验证)
@@ -51,6 +51,10 @@
     - [7.2 State Backend 快照流程图](#72-state-backend-快照流程图)
     - [7.3 Checkpoint 类型对比决策树](#73-checkpoint-类型对比决策树)
     - [7.4 架构层次关联图](#74-架构层次关联图)
+  - [8. 调优建议与监控指标](#8-调优建议与监控指标)
+    - [8.1 Checkpoint 调优最佳实践](#81-checkpoint-调优最佳实践)
+      - [基础配置原则](#基础配置原则)
+      - [大状态作业调优](#大状态作业调优)
     - [8.2 关键监控指标](#82-关键监控指标)
       - [Flink 原生指标](#flink-原生指标)
       - [JVM 和系统指标](#jvm-和系统指标)
@@ -1270,7 +1274,7 @@ graph TB
     style E2 fill:#bbdefb,stroke:#1565c0
     style D1 fill:#c8e6c9,stroke:#2e7d32
     style S2 fill:#e1bee7,stroke:#6a1b9a
-```text
+```
 
 **图说明**:
 
@@ -1301,6 +1305,7 @@ graph TB
 **解决方案**:
 
 1. **启用增量 Checkpoint**(必需)
+
 ```java
    new EmbeddedRocksDBStateBackend(true)  // true 启用增量
    ```text

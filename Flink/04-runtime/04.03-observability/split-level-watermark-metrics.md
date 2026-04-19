@@ -584,8 +584,8 @@ flowchart TD
 Split-level时间分布的堆叠面积图示意：
 
 ```mermaid
-%% 这是一个概念图,表示时间分布的层次结构
 graph LR
+%% 这是一个概念图,表示时间分布的层次结构
     subgraph "1000ms / 1秒"
         subgraph Split0["Split-0 (健康)"]
             A0[Active: 850ms]

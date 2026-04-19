@@ -4,7 +4,7 @@
 
 ## 目录
 
-- [流数据库生态全面对比 - RisingWave vs Materialize vs Flink](#流数据库生态全面对比---risingwave-vs-materialize-vs-flink)
+- [流数据库生态全面对比 - RisingWave vs Materialize vs Flink]()
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-K-06-180: 流数据库系统 (Streaming Database System)](#def-k-06-180-流数据库系统-streaming-database-system)

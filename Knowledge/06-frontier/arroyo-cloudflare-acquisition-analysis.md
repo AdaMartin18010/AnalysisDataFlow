@@ -1,6 +1,6 @@
 # Arroyo 与 Cloudflare Pipelines：Rust 原生流处理的云原生进化
 
-> 所属阶段: Flink/ | 前置依赖: [13.1-dataflow-model.md](../../03-api/09-language-foundations/09-wasm-udf-frameworks.md), [14.1-risingwave-comparison.md](../risingwave-rust-udf-native-guide.md) | 形式化等级: L4-L5
+> 所属阶段: Flink/ | 前置依赖: [13.1-dataflow-model.md](../../Flink/03-api/09-language-foundations/09-wasm-udf-frameworks.md), [14.1-risingwave-comparison.md](../../Flink/07-rust-native/risingwave-rust-udf-native-guide.md) | 形式化等级: L4-L5
 
 ## 1. 概念定义 (Definitions)
 
@@ -961,6 +961,6 @@ GROUP BY user_id, HOP(INTERVAL '1' HOUR, INTERVAL '5' MINUTE)
 
 ## 相关资源
 
-- [进展跟踪文档](./PROGRESS-TRACKING.md) - 最新动态和里程碑
-- [影响分析文档](./IMPACT-ANALYSIS.md) - 对 Flink 生态的影响评估
-- [季度回顾](./QUARTERLY-REVIEWS/) - 定期进展总结
+- [进展跟踪文档](../../Flink/07-rust-native/arroyo-update/PROGRESS-TRACKING.md) - 最新动态和里程碑
+- [影响分析文档](../../Flink/07-rust-native/arroyo-update/IMPACT-ANALYSIS.md) - 对 Flink 生态的影响评估
+- [季度回顾](../../Flink/07-rust-native/arroyo-update/QUARTERLY-REVIEWS/) - 定期进展总结

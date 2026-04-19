@@ -501,7 +501,7 @@ Source --> Operator --> Sink
 ```markdown
 以下图表展示了 Checkpoint 的协调流程：
 
-```mermaid
+```text
 # 伪代码示意，非完整可编译代码
 ...
 ```

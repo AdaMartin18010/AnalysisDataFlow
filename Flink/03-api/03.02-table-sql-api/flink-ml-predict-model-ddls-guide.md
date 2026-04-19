@@ -10,7 +10,7 @@
 > **Flink 版本**: 2.1.0+ (SQL/Table API Model DDL), 2.2.0+ (ML_PREDICT GA + Table API 推理)
 > **稳定性**: 2.1 Experimental; 2.2 GA (Generally Available)
 >
-> 所属阶段: Flink/03-api | 前置依赖: [Flink SQL 完整指南](./flink-table-sql-complete-guide.md), [Flink Table API 指南](../flink-table-sql-complete-guide.md) | 形式化等级: L3-L4
+> 所属阶段: Flink/03-api | 前置依赖: [Flink SQL 完整指南](./flink-table-sql-complete-guide.md), [Flink Table API 指南](./flink-table-sql-complete-guide.md) | 形式化等级: L3-L4
 
 ## 1. 概念定义 (Definitions)
 

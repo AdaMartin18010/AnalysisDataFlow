@@ -24,7 +24,7 @@
     - [Def-S-11-06. 顺序性模拟同步协议 (Sequentiality Simulation Protocol)](#def-s-11-06-顺序性模拟同步协议-sequentiality-simulation-protocol)
     - [Def-S-11-07. ℱ*优化变体语法 (ℱ* Optimised Variant Syntax)](#def-s-11-07-ℱ优化变体语法-ℱ-optimised-variant-syntax)
     - [Def-S-11-08. 递归类型展开 (Recursive Type Unfolding)](#def-s-11-08-递归类型展开-recursive-type-unfolding)
-    - [Def-S-11-09. 编译映射 ⟦·⟧ (Compilation Mapping)](#def-s-11-09-编译映射-compilation-mapping)
+    - [Def-S-11-09. 编译映射 ⟦·⟧ (Compilation Mapping)](#def-s-11-09-编译映射--compilation-mapping)
     - [Def-S-11-10. 观察等价 (Observational Equivalence)](#def-s-11-10-观察等价-observational-equivalence)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
     - [Lemma-S-11-01. MST 线性使用保持性](#lemma-s-11-01-mst-线性使用保持性)
@@ -45,7 +45,7 @@
     - [4.3 反例：非线性使用导致协议失效](#43-反例非线性使用导致协议失效)
     - [4.4 边界讨论：MST 的表达边界](#44-边界讨论mst-的表达边界)
     - [4.5 构造性说明：从标准类型到 MST 的编译算法](#45-构造性说明从标准类型到-mst-的编译算法)
-  - [5. 形式证明 / 工程论证 (Proof)](#5-形式证明-工程论证-proof)
+  - [5. 形式证明 / 工程论证 (Proof)](#5-形式证明--工程论证-proof)
     - [Thm-S-11-01. MST 与标准会话类型的表达能力等价性](#thm-s-11-01-mst-与标准会话类型的表达能力等价性)
     - [Thm-S-11-02. ℱ\* 变体的递归类型完备性](#thm-s-11-02-ℱ-变体的递归类型完备性)
     - [Thm-S-11-03. 编译映射的语义保持性](#thm-s-11-03-编译映射的语义保持性)
@@ -1643,7 +1643,7 @@ flowchart TD
     B -->|?U.S'| D["翻译为输入前缀<br/>x(y).⟦S'⟧"]
     B -->|⊕{lᵢ:Sᵢ}| E["创建标签通道 t<br/>(νt)(x̄⟨t⟩.0 | t{case lᵢ⇒⟦Sᵢ⟧})"]
     B -->|&{lᵢ:Sᵢ}| F["接收标签通道<br/>x(t).t{case lᵢ⇒⟦Sᵢ⟧}"]
-    B -->|S₁ ; S₂| G["顺序组合模拟<br/>(νs)(⟦S₁⟧†ˢ | s().⟦S₂⟧)"]
+    B -->|S₁ ; S₂| G["顺序组合模拟<br/>(νs)(⟦S₁⟧†ˢ | s（）.⟦S₂⟧)"]
     B -->|μX.S'| H["递归编译<br/>rec Z.⟦S'{Z/X}⟧"]
     B -->|end| I["空进程<br/>0"]
 

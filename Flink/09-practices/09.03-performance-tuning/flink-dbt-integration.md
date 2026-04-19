@@ -30,7 +30,7 @@
     - [Thm-F-06-20 (dbt-Flink 集成 ROI 定理)](#thm-f-06-20-dbt-flink-集成-roi-定理)
     - [Thm-F-06-21 (流式模型幂等性保证定理)](#thm-f-06-21-流式模型幂等性保证定理)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
-    - [6.1 完整 dbt + Flink 项目结构](#61-完整-dbt--flink-项目结构)
+    - [6.1 完整 dbt + Flink 项目结构]()
     - [6.2 流式电商实时分析模型](#62-流式电商实时分析模型)
     - [6.3 profiles.yml 多环境配置](#63-profilesyml-多环境配置)
     - [6.4 GitHub Actions CI/CD 工作流](#64-github-actions-cicd-工作流)

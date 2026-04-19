@@ -80,7 +80,7 @@ $$
 
 ```mermaid
 graph TB
-    Query[时序查询<br/>WHERE ts > NOW()-1h] --> Eval[评估缓存条目时间有效性]
+    Query[时序查询<br/>WHERE ts > NOW（）-1h] --> Eval[评估缓存条目时间有效性]
     Eval --> Rank[按 R(e) 排序]
     Rank --> Evict[淘汰低价值条目]
     Evict --> Load[加载新数据到缓存]
@@ -101,6 +101,7 @@ graph TB
 ### 4.2 时间感知替换策略的设计
 
 一种实用的时间感知替换策略（T-LRU+）结合了三个信号：
+
 1. **时序相关性分数**: 衡量键的过期时间与当前查询窗口的匹配度
 2. **访问频率衰减**: 使用指数衰减而非原始计数，使近期访问权重更高
 3. **空间局部性**: 对于范围查询，保留与热门键时间相邻的条目
@@ -108,6 +109,7 @@ graph TB
 ### 4.3 反例：过度依赖时间导致的缓存抖动
 
 某系统将时间权重设置得过高，导致缓存中的条目在过期前 1 秒就被全部清空。结果：
+
 - 大量实际上仍有查询价值的数据被过早淘汰
 - 缓存命中率从 85% 骤降至 30%
 - 后端存储压力剧增
@@ -214,8 +216,3 @@ xychart-beta
 ---
 
 ## 8. 引用参考 (References)
-
-[^1]: Skybridge (OSDI 2025), "Distributed Caching with Bounded Staleness and Temporal Awareness".
-[^2]: Megiddo N. and Modha D.S., "ARC: A Self-Tuning, Low Overhead Replacement Cache", FAST 2003.
-[^3]: Jiang S. and Zhang X., "LIRS: An Efficient Low Inter-reference Recency Set Replacement Policy", SIGMETRICS 2002.
-[^4]: Redis Documentation, "Eviction Policies", 2025. https://redis.io/docs/

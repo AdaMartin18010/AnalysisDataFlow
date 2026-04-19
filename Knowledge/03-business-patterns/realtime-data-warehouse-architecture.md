@@ -1,6 +1,6 @@
 # Flink 实时数仓架构设计深度指南
 
-> 所属阶段: Knowledge/03-business-patterns | 前置依赖: [Flink/02-core/flink-state-management.md](../../Flink/02-core/flink-state-management.md), [Knowledge/02-design-patterns/streaming-etl-patterns.md](../02-design-patterns/streaming-etl-patterns.md) | 形式化等级: L4
+> 所属阶段: Knowledge/03-business-patterns | 前置依赖: [Flink/02-core/flink-state-management-complete-guide.md](../../Flink/02-core/flink-state-management-complete-guide.md), [Flink/02-core/streaming-etl-best-practices.md](../../Flink/02-core/streaming-etl-best-practices.md) | 形式化等级: L4
 
 ## 1. 概念定义 (Definitions)
 
