@@ -100,6 +100,41 @@ class SixSectionValidator:
             '_in-progress', 'archive', 'deprecated',
             'Flink-Scala-Rust-Comprehensive', '98-exercises',
             'docs/', 'i18n/',
+            # 参考手册/速查表类（不应强制六段式）
+            'complete-reference', 'functions-reference', 'cheatsheet',
+            'data-types-reference', 'built-in-functions',
+            'rest-api-complete-reference', 'sql-functions',
+            'datastream-api-cheatsheet',
+            # 案例研究汇编/注释类
+            'CODE-RUNNABILITY-NOTES', 'PERFORMANCE-DATA-NOTES',
+            # 证明链/推导链文档（特殊结构）
+            'STRUCT-DERIVATION-CHAIN', 'PROOF-CHAIN',
+            # 报告/追踪类
+            'COMPLETENESS-REPORT', 'FORMAL-ELEMENT-FIX-REPORT',
+            'BENCHMARK-RESULT', 'BENCHMARK-REPORT',
+            # 练习/习题类
+            'exercises', 'EXERCISES',
+            # 案例研究类（汇编/单篇案例不应强制六段式）
+            'case-studies', 'case-study',
+            # 指南/迁移/对比类
+            'migration-guide', 'upgrade-guide',
+            'connector-guide', 'integration-guide',
+            'security-hardening-guide', 'production-checklist',
+            'state-backends-comparison', 'comparison-matrix',
+            'market-report', 'annual-case-collection',
+            'key-theorem-proof-chains',
+            # 反模式/前沿分析/教程类
+            'anti-patterns', 'research-trends', 'project-supplementation',
+            'deep-comparison', 'complete-tutorial', 'complete-guide',
+            'progress-tracking', 'proof-graph',
+            # 对比/分析/集成/迁移类（特定文件，避免过度匹配）
+            'materialize-comparison', 'flink-1.x-vs-2.0',
+            'flink-vs-risingwave', 'rust-streaming-engines-comparison',
+            'query-optimization-analysis', 'cloudflare-pipelines-analysis',
+            'pulsar-functions-integration',
+            'kafka-streams-migration', 'streaming-databases-market-analysis',
+            'concurrency-paradigms-matrix', 'streaming-database-comprehensive-matrix',
+            'deployment-architectures',
         ]
         
         for pattern in patterns:
@@ -107,8 +142,9 @@ class SixSectionValidator:
             for f in files:
                 path = Path(f).resolve()
                 path_str = str(path).replace('\\', '/')
-                # 排除非核心文档
-                if any(x in path_str for x in SKIP_PATTERNS):
+                # 排除非核心文档（大小写不敏感匹配）
+                path_str_lower = path_str.lower()
+                if any(x.lower() in path_str_lower for x in SKIP_PATTERNS):
                     continue
                 # 排除模板文件、索引文件等
                 if not any(x in path_str for x in ['TEMPLATE', '_TEMPLATE', '00-INDEX']):

@@ -1,0 +1,664 @@
+{
+  "generated_at": "2026-04-20T06:52:47.601423",
+  "summary": {
+    "total": 2999,
+    "valid": 2651,
+    "invalid": 104,
+    "warnings": 2,
+    "success_rate": 88.39613204401468
+  },
+  "by_type": {
+    "graph": 1608,
+    "gantt": 93,
+    "flowchart": 719,
+    "quadrantChart": 56,
+    "stateDiagram": 108,
+    "mindmap": 37,
+    "sequenceDiagram": 213,
+    "pie": 28,
+    "classDiagram": 18,
+    "timeline": 15,
+    "erDiagram": 1,
+    "journey": 1
+  },
+  "errors": [
+    {
+      "file": "Struct\\aqp-streaming-formalization.md",
+      "diagram": 3,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Struct\\bounded-staleness-cache.md",
+      "diagram": 2,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Struct\\bounded-staleness.md",
+      "diagram": 3,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Struct\\end-to-end-reliability.md",
+      "diagram": 3,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Struct\\hardware-offload-decision.md",
+      "diagram": 3,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Struct\\interval-join-parallelism.md",
+      "diagram": 3,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Struct\\learned-cost-models-streaming.md",
+      "diagram": 3,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Struct\\online-tkg-learning.md",
+      "diagram": 3,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Struct\\unified-aqp-theory.md",
+      "diagram": 3,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Struct\\window-algebra-properties.md",
+      "diagram": 4,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Struct\\window-join-reordering.md",
+      "diagram": 4,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Struct\\01-foundation\\01.06-petri-net-formalization.md",
+      "diagram": 3,
+      "type": "bracket_mismatch",
+      "message": "Unbalanced brackets: 21 open, 20 close"
+    },
+    {
+      "file": "Struct\\05-comparative-analysis\\05.01-go-vs-scala-expressiveness.md",
+      "diagram": 6,
+      "type": "invalid_type",
+      "message": "Unknown chart type: radarChart"
+    },
+    {
+      "file": "Struct\\05-comparative-analysis\\05.04-concurrency-models-2025-comparison.md",
+      "diagram": 5,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Struct\\05-comparative-analysis\\05.04-concurrency-models-2025-comparison.md",
+      "diagram": 6,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Struct\\05-comparative-analysis\\05.04-concurrency-models-2025-comparison.md",
+      "diagram": 7,
+      "type": "invalid_type",
+      "message": "Unknown chart type: radar"
+    },
+    {
+      "file": "Struct\\06-frontier\\streaming-rag-formal-theory.md",
+      "diagram": 3,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Knowledge\\aqp-error-bounds.md",
+      "diagram": 4,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Knowledge\\automated-feature-selection.md",
+      "diagram": 4,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Knowledge\\gpu-stream-join.md",
+      "diagram": 3,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Knowledge\\llm-query-rewrite.md",
+      "diagram": 3,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Knowledge\\llm-stream-diagnosis.md",
+      "diagram": 3,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Knowledge\\llm-stream-tuning.md",
+      "diagram": 4,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Knowledge\\reliability-verification.md",
+      "diagram": 4,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Knowledge\\stream-summaries.md",
+      "diagram": 4,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Knowledge\\temporal-kg-reasoning.md",
+      "diagram": 3,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Knowledge\\timestamp-aware-caching.md",
+      "diagram": 2,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Knowledge\\01-concept-atlas\\data-streaming-landscape-2026-complete.md",
+      "diagram": 11,
+      "type": "invalid_type",
+      "message": "Unknown chart type: radarChart"
+    },
+    {
+      "file": "Knowledge\\01-concept-atlas\\streaming-languages-landscape-2025.md",
+      "diagram": 1,
+      "type": "invalid_type",
+      "message": "Unknown chart type: radarChart"
+    },
+    {
+      "file": "Knowledge\\02-design-patterns\\polyglot-streaming-patterns.md",
+      "diagram": 8,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Knowledge\\04-technology-selection\\streaming-database-guide.md",
+      "diagram": 9,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Knowledge\\04-technology-selection\\streaming-database-guide.md",
+      "diagram": 12,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Knowledge\\06-frontier\\serverless-streaming-formal-theory.md",
+      "diagram": 5,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Knowledge\\06-frontier\\streaming-slo-definition.md",
+      "diagram": 3,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Knowledge\\Flink-Scala-Rust-Comprehensive\\03-scala-rust-interop\\03.05-interop-comparison.md",
+      "diagram": 3,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Knowledge\\Flink-Scala-Rust-Comprehensive\\03-scala-rust-interop\\03.05-interop-comparison.md",
+      "diagram": 5,
+      "type": "invalid_type",
+      "message": "Unknown chart type: radar"
+    },
+    {
+      "file": "Knowledge\\Flink-Scala-Rust-Comprehensive\\04-rust-engines\\04.01-rust-engines-comparison.md",
+      "diagram": 6,
+      "type": "invalid_type",
+      "message": "Unknown chart type: radar"
+    },
+    {
+      "file": "Knowledge\\Flink-Scala-Rust-Comprehensive\\04-rust-engines\\04.05-vectorization-simd.md",
+      "diagram": 4,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Knowledge\\Flink-Scala-Rust-Comprehensive\\06-trends-2026\\06.02-adoption-roadmap.md",
+      "diagram": 2,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Knowledge\\Flink-Scala-Rust-Comprehensive\\performance-tests\\nexmark-benchmark-suite.md",
+      "diagram": 2,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Knowledge\\Flink-Scala-Rust-Comprehensive\\performance-tests\\nexmark-benchmark-suite.md",
+      "diagram": 3,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Knowledge\\Flink-Scala-Rust-Comprehensive\\performance-tests\\nexmark-benchmark-suite.md",
+      "diagram": 4,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Knowledge\\Flink-Scala-Rust-Comprehensive\\performance-tests\\nexmark-benchmark-suite.md",
+      "diagram": 6,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Knowledge\\Flink-Scala-Rust-Comprehensive\\performance-tests\\simd-vectorization-benchmark.md",
+      "diagram": 1,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Knowledge\\Flink-Scala-Rust-Comprehensive\\performance-tests\\simd-vectorization-benchmark.md",
+      "diagram": 2,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Knowledge\\Flink-Scala-Rust-Comprehensive\\performance-tests\\wasm-udf-overhead-analysis.md",
+      "diagram": 2,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Knowledge\\06-frontier\\streaming-databases-deep\\streaming-database-comprehensive-matrix.md",
+      "diagram": 3,
+      "type": "invalid_type",
+      "message": "Unknown chart type: radar"
+    },
+    {
+      "file": "Flink\\flink-nexmark-benchmark-guide.md",
+      "diagram": 2,
+      "type": "bracket_mismatch",
+      "message": "Unbalanced brackets: 5 open, 3 close"
+    },
+    {
+      "file": "Flink\\flink-ycsb-benchmark-guide.md",
+      "diagram": 3,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\02-core\\delta-join-production-guide.md",
+      "diagram": 5,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\02-core\\flink-delta-join-deep-dive.md",
+      "diagram": 5,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\06-ai-ml\\ai-agent-frameworks-ecosystem-2025.md",
+      "diagram": 5,
+      "type": "invalid_type",
+      "message": "Unknown chart type: radar"
+    },
+    {
+      "file": "Flink\\06-ai-ml\\flink-llm-realtime-rag-architecture.md",
+      "diagram": 4,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\06-ai-ml\\model-serving-frameworks-integration.md",
+      "diagram": 2,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\07-rust-native\\flink-rust-ecosystem-trends-2026.md",
+      "diagram": 5,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\07-rust-native\\iron-functions-complete-guide.md",
+      "diagram": 3,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\09-practices\\09.01-case-studies\\case-ecommerce-realtime-recommendation.md",
+      "diagram": 4,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\09-practices\\09.01-case-studies\\case-financial-realtime-risk-control.md",
+      "diagram": 4,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\09-practices\\09.01-case-studies\\case-financial-realtime-risk-control.md",
+      "diagram": 5,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\09-practices\\09.01-case-studies\\case-financial-realtime-risk-control.md",
+      "diagram": 6,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\09-practices\\09.01-case-studies\\case-logistics-realtime-tracking.md",
+      "diagram": 5,
+      "type": "invalid_type",
+      "message": "Unknown chart type: %%{init: {'theme': 'base', 'themeVariables': { 'pr"
+    },
+    {
+      "file": "Flink\\09-practices\\09.01-case-studies\\case-smart-grid-energy-management.md",
+      "diagram": 3,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\09-practices\\09.02-benchmarking\\flink-24-25-benchmark-results.md",
+      "diagram": 2,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\09-practices\\09.02-benchmarking\\flink-24-25-benchmark-results.md",
+      "diagram": 3,
+      "type": "invalid_type",
+      "message": "Unknown chart type: radar"
+    },
+    {
+      "file": "Flink\\09-practices\\09.02-benchmarking\\flink-24-25-benchmark-results.md",
+      "diagram": 4,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\09-practices\\09.02-benchmarking\\flink-24-25-benchmark-results.md",
+      "diagram": 5,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\09-practices\\09.02-benchmarking\\flink-24-25-benchmark-results.md",
+      "diagram": 6,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\09-practices\\09.02-benchmarking\\flink-24-25-benchmark-results.md",
+      "diagram": 7,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\09-practices\\09.02-benchmarking\\nexmark-2026-benchmark.md",
+      "diagram": 3,
+      "type": "invalid_type",
+      "message": "Unknown chart type: radar"
+    },
+    {
+      "file": "Flink\\09-practices\\09.02-benchmarking\\nexmark-2026-benchmark.md",
+      "diagram": 4,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\09-practices\\09.02-benchmarking\\nexmark-2026-benchmark.md",
+      "diagram": 5,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\09-practices\\09.02-benchmarking\\nexmark-2026-benchmark.md",
+      "diagram": 6,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\09-practices\\09.02-benchmarking\\performance-benchmark-suite.md",
+      "diagram": 5,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\09-practices\\09.02-benchmarking\\streaming-benchmarks.md",
+      "diagram": 5,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\09-practices\\09.02-benchmarking\\tco-analysis-2026.md",
+      "diagram": 5,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\09-practices\\09.02-benchmarking\\tco-analysis-2026.md",
+      "diagram": 6,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\09-practices\\09.02-benchmarking\\tco-analysis-2026.md",
+      "diagram": 7,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\09-practices\\09.02-benchmarking\\tco-analysis-2026.md",
+      "diagram": 8,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\09-practices\\09.02-benchmarking\\tco-analysis-2026.md",
+      "diagram": 9,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\09-practices\\09.03-performance-tuning\\flink-24-performance-improvements.md",
+      "diagram": 3,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\09-practices\\09.03-performance-tuning\\flink-24-performance-improvements.md",
+      "diagram": 6,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\09-practices\\09.03-performance-tuning\\flink-24-performance-improvements.md",
+      "diagram": 8,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\09-practices\\09.05-edge\\flink-edge-ai-optimization.md",
+      "diagram": 2,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\09-practices\\09.03-performance-tuning\\05-vs-competitors\\flink-vs-spark-streaming.md",
+      "diagram": 2,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\08-roadmap\\08.01-flink-24\\FLIP-TRACKING-SYSTEM.md",
+      "diagram": 5,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\07-rust-native\\ai-native-streaming\\04-ml-inference-optimization.md",
+      "diagram": 2,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\07-rust-native\\flash-engine\\04-nexmark-benchmark-analysis.md",
+      "diagram": 1,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\07-rust-native\\flash-engine\\04-nexmark-benchmark-analysis.md",
+      "diagram": 3,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\07-rust-native\\flash-engine\\04-nexmark-benchmark-analysis.md",
+      "diagram": 4,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\07-rust-native\\risingwave-comparison\\02-nexmark-head-to-head.md",
+      "diagram": 1,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\07-rust-native\\risingwave-comparison\\02-nexmark-head-to-head.md",
+      "diagram": 2,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\07-rust-native\\risingwave-comparison\\02-nexmark-head-to-head.md",
+      "diagram": 5,
+      "type": "invalid_type",
+      "message": "Unknown chart type: radar"
+    },
+    {
+      "file": "Flink\\07-rust-native\\simd-optimization\\03-jni-assembly-bridge.md",
+      "diagram": 3,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\07-rust-native\\vectorized-udfs\\01-vectorized-udf-intro.md",
+      "diagram": 6,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\07-rust-native\\vectorized-udfs\\03-columnar-processing.md",
+      "diagram": 6,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\07-rust-native\\vectorized-udfs\\04-performance-tuning.md",
+      "diagram": 5,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\07-rust-native\\wasi-0.3-async\\04-edge-compute-integration.md",
+      "diagram": 2,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\05-ecosystem\\05.01-connectors\\flink-24-connectors-guide.md",
+      "diagram": 2,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\03-api\\03.02-table-sql-api\\flink-sql-window-functions-deep-dive.md",
+      "diagram": 4,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\03-api\\09-language-foundations\\06-risingwave-deep-dive.md",
+      "diagram": 3,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "Flink\\03-api\\09-language-foundations\\07.01-timely-dataflow-optimization.md",
+      "diagram": 4,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "docs\\annual-review\\2026-ANNUAL-REVIEW.md",
+      "diagram": 1,
+      "type": "invalid_type",
+      "message": "Unknown chart type: radar"
+    },
+    {
+      "file": "docs\\annual-review\\2026-ANNUAL-REVIEW.md",
+      "diagram": 3,
+      "type": "invalid_type",
+      "message": "Unknown chart type: xychart-beta"
+    },
+    {
+      "file": "tutorials\\04-design-patterns-script.md",
+      "diagram": 2,
+      "type": "invalid_type",
+      "message": "Unknown chart type: | \u4e1a\u52a1\u9700\u6c42 | P01 | P02 | P03 | P04 | P05 | P06 | P07 |"
+    }
+  ],
+  "warnings": [
+    {
+      "file": "Flink\\10-internals\\memory-management-internals.md",
+      "diagram": 2,
+      "type": "empty_node",
+      "message": "Empty node detected"
+    },
+    {
+      "file": "Flink\\07-rust-native\\vectorized-udfs\\02-arrow-format-integration.md",
+      "diagram": 1,
+      "type": "empty_node",
+      "message": "Empty node detected"
+    }
+  ]
+}

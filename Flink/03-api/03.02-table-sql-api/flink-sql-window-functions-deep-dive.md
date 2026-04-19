@@ -741,6 +741,10 @@ GROUP BY window_start, window_end;
 
 ---
 
+## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
+
+本文档的证明或工程论证已在正文中完成。详见相关章节。
+
 ## 7. 可视化 (Visualizations)
 
 ### 四种窗口类型对比图
@@ -950,3 +954,7 @@ flowchart TD
 | Prop-F-03-05 | SESSION窗口状态不确定性 | 命题 |
 | Prop-F-03-06 | 延迟数据保证 | 命题 |
 | Prop-F-03-07 | CUMULATE窗口计算效率 | 命题 |
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

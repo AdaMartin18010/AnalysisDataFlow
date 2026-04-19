@@ -754,3 +754,7 @@ properties.setProperty("group.instance.id", "flink-instance-" + taskId);
 ---
 
 *文档版本: v1.0 | 更新日期: 2026-04-02 | 状态: 已完成*
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-19*

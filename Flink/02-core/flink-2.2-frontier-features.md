@@ -1499,3 +1499,7 @@ gantt
 [^19]: Confluent Blog, "Add RAG to Your Flink AI Flow Using Vector Search", 2025. https://www.confluent.io/blog/flink-ai-rag-with-federated-search/
 
 [^20]: Apache Flink Board Minutes, "Flink 2.2 Release Report", 2025. https://whimsy.apache.org/board/minutes/Flink.html
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

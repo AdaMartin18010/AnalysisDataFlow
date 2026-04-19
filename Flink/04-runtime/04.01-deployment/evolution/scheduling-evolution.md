@@ -704,3 +704,7 @@ sequenceDiagram
 - [autoscaling-evolution.md](./autoscaling-evolution.md) - 自动扩缩容演进
 - [flink-kubernetes-autoscaler-deep-dive.md](../flink-kubernetes-autoscaler-deep-dive.md) - K8s Autoscaler 深度分析
 - [flink-architecture-evolution-1x-to-2x.md](../../../01-concepts/flink-architecture-evolution-1x-to-2x.md) - 架构演进分析
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-19*

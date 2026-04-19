@@ -2049,3 +2049,7 @@ end algorithm; *)
 [^9]: Hillel Wayne, "Practical TLA+: Planning Driven Development", 2018. https://learntla.com/
 
 [^10]: Flink Generic WAL Sink FLIP, https://github.com/apache/flink/tree/main/flink-docs/docs/flips
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-19*

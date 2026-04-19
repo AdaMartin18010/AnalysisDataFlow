@@ -1243,3 +1243,7 @@ spec:
     static_configs:
       - targets: ['llm-agent:8080']
 ```
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-19*

@@ -216,7 +216,7 @@ graph TB
 
 ---
 
-## 5. 工程论证 (Engineering Argument)
+## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
 
 ### 5.1 Flink + Redis 特征缓存架构
 
@@ -505,3 +505,7 @@ flowchart TD
 ---
 
 *文档版本: v1.0 | 创建日期: 2026-04-02 | 形式化等级: L4*
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

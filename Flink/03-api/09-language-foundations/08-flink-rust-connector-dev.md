@@ -2204,3 +2204,7 @@ public class ConnectorBenchmark {
 - [03-rust-native.md](03-rust-native.md) - Rust UDF 基础
 - [Flink/04-connectors/kafka-integration-patterns.md](../../05-ecosystem/05.01-connectors/kafka-integration-patterns.md) - Kafka 集成模式
 - [Flink/01-architecture/flink-1.x-vs-2.0-comparison.md](../../01-concepts/flink-1.x-vs-2.0-comparison.md) - Flink 2.0 架构变化
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

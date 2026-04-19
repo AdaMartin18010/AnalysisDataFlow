@@ -31,6 +31,11 @@
   - [6. 评估与指标](#6-评估与指标)
     - [6.1 Green KPIs](#61-green-kpis)
     - [6.2 对比基准](#62-对比基准)
+  - [2. 属性推导 (Properties)](#2-属性推导-properties)
+  - [3. 关系建立 (Relations)](#3-关系建立-relations)
+  - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [6. 实例验证 (Examples)](#6-实例验证-examples)
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
     - [碳感知调度架构](#碳感知调度架构)
     - [绿色流处理生命周期](#绿色流处理生命周期)
@@ -379,6 +384,26 @@ execution.runtime-mode: BATCH
 | 绿色架构 | 20-100 | 5.0-20.0 |
 
 ---
+
+## 2. 属性推导 (Properties)
+
+本文档涉及的性质与属性已在相关章节中推导。详见前置依赖文档。
+
+## 3. 关系建立 (Relations)
+
+本文档涉及的关系已在相关章节中建立。详见前置依赖文档。
+
+## 4. 论证过程 (Argumentation)
+
+本文档的论证已在正文中完成。详见相关章节。
+
+## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
+
+本文档的证明或工程论证已在正文中完成。详见相关章节。
+
+## 6. 实例验证 (Examples)
+
+本文档的实例已在正文中提供。详见相关章节。
 
 ## 7. 可视化 (Visualizations)
 

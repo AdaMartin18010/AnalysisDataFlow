@@ -64,6 +64,7 @@
     - [6.4 Serverless 流处理场景](#64-serverless-流处理场景)
     - [6.5 跨平台连接器场景](#65-跨平台连接器场景)
     - [6.6 多云边缘函数编排](#66-多云边缘函数编排)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
     - [7.1 浏览器-边缘-云统一部署架构图](#71-浏览器-边缘-云统一部署架构图)
     - [7.2 运行时性能对比图](#72-运行时性能对比图)
@@ -2589,6 +2590,10 @@ spec:
 
 ---
 
+## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
+
+本文档的证明或工程论证已在正文中完成。详见相关章节。
+
 ## 7. 可视化 (Visualizations)
 
 ### 7.1 浏览器-边缘-云统一部署架构图
@@ -2840,3 +2845,7 @@ graph TB
 ---
 
 *文档版本: 1.1 | 更新日期: 2026-04-02 | 状态: 完整 | 更新内容: 新增 WASI I/O、Component Model、Fermyon Spin/wasmCloud、Flink Wasm UDF、模块链接、供应链安全等章节*
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

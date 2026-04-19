@@ -1,12 +1,12 @@
 # Formal Element Integrity Check Report
 
-**Generated**: 2026-04-20T06:12:58.589782
+**Generated**: 2026-04-20T07:02:43.800405
 
 ## Summary
 
 | Metric | Count |
 |--------|-------|
-| Files Checked | 397 |
+| Files Checked | 398 |
 | Files with Issues | 0 |
 
 ## Formal Elements Found
@@ -14,10 +14,10 @@
 | Type | Count |
 |------|-------|
 | Corollary (推论) | 64 |
-| Definition (定义) | 3675 |
-| Lemma (引理) | 1305 |
-| Proposition (命题) | 967 |
-| Theorem (定理) | 1278 |
+| Definition (定义) | 3680 |
+| Lemma (引理) | 1306 |
+| Proposition (命题) | 970 |
+| Theorem (定理) | 1281 |
 
 ## ⚠️ Files with Warnings Only
 
@@ -227,6 +227,7 @@
 | Knowledge/03-business-patterns/uber-realtime-platform.md | 10 |
 | Knowledge/04-technology-selection/engine-selection-guide.md | 30 |
 | Knowledge/04-technology-selection/flink-vs-risingwave.md | 14 |
+| Knowledge/04-technology-selection/flink-vs-spark-structured-streaming-2026.md | 15 |
 | Knowledge/04-technology-selection/lakehouse-formats-2026-comparison.md | 18 |
 | Knowledge/04-technology-selection/paradigm-selection-guide.md | 20 |
 | Knowledge/04-technology-selection/storage-selection-guide.md | 16 |
@@ -353,7 +354,7 @@
 | Struct/01-foundation/streaming-database-formal-definition.md | 44 |
 | Struct/02-properties/02.01-determinism-in-streaming.md | 137 |
 | Struct/02-properties/02.02-consistency-hierarchy.md | 81 |
-| Struct/02-properties/02.03-watermark-monotonicity.md | 41 |
+| Struct/02-properties/02.03-watermark-monotonicity.md | 42 |
 | Struct/02-properties/02.04-liveness-and-safety.md | 21 |
 | Struct/02-properties/02.05-type-safety-derivation.md | 30 |
 | Struct/02-properties/02.07-encrypted-stream-processing.md | 8 |
@@ -416,7 +417,7 @@
 
 ## Compliance Rate
 
-**100.0%** (397/397)
+**100.0%** (398/398)
 
 ## Recommendations
 

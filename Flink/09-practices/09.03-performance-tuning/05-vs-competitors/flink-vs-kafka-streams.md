@@ -1383,3 +1383,7 @@ Apache Flink 与 Kafka Streams 代表了流处理领域的两种不同哲学：
 - [Flink vs Spark Streaming](./flink-vs-spark-streaming.md)
 - [Flink 架构详解](../../../01-concepts/deployment-architectures.md)
 - [Flink Checkpoint 机制](../../../02-core/checkpoint-mechanism-deep-dive.md)
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

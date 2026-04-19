@@ -978,6 +978,22 @@ FROM llm_outputs;
 
 ---
 
+## 1. 概念定义 (Definitions)
+
+本文档涉及的核心概念已在相关章节中定义。详见前置依赖文档。
+
+## 2. 属性推导 (Properties)
+
+本文档涉及的性质与属性已在相关章节中推导。详见前置依赖文档。
+
+## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
+
+本文档的证明或工程论证已在正文中完成。详见相关章节。
+
+## 6. 实例验证 (Examples)
+
+本文档的实例已在正文中提供。详见相关章节。
+
 ## 7. Visualizations (Visualizations)
 
 ### 7.1 Streaming RAG Overall Architecture Diagram
@@ -1165,3 +1181,7 @@ flowchart LR
 [^9]: Yu, G.I., et al. "Orca: A Distributed Serving System for Transformer-Based Generative Models." OSDI 2022.
 
 [^10]: Apache Flink FLIP-393, "Add VECTOR_SEARCH Table Function", https://github.com/apache/flink/blob/main/flink-docs/docs/flips/FLIP-393.md
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

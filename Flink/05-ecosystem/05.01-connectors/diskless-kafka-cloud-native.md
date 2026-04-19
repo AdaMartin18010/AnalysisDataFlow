@@ -708,3 +708,7 @@ graph LR
 | RPO | Recovery Point Objective | 恢复点目标，数据丢失最大容忍时间 |
 | RTO | Recovery Time Objective | 恢复时间目标，系统恢复最大容忍时间 |
 | CRR | Cross-Region Replication | 跨区域复制 |
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-18*

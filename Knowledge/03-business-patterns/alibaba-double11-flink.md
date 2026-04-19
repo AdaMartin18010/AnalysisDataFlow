@@ -1,5 +1,7 @@
 # 阿里巴巴双11实时计算 - 全球最大规模流计算实践
 
+> 所属阶段: Knowledge | 前置依赖: [相关文档] | 形式化等级: L3
+
 > **业务领域**: 电商零售 (E-Commerce) | **复杂度等级**: ★★★★★ | **延迟要求**: < 100ms | **形式化等级**: L3-L4
 >
 > 本文档记录阿里巴巴双11全球购物狂欢节背后的实时计算架构与技术突破，涵盖2024年峰值44亿TPS的流处理系统设计与工程实践。
@@ -1067,3 +1069,7 @@ flowchart TD
 >   - [Flink 2.0 Architecture](../../Flink/09-practices/09.03-performance-tuning/flink-24-performance-improvements.md)
 >   - [Pattern: CEP Complex Event](../02-design-patterns/pattern-cep-complex-event.md)
 >   - [Pattern: Stateful Computation](../02-design-patterns/pattern-stateful-computation.md)
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

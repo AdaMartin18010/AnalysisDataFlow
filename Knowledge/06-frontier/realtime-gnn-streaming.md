@@ -690,3 +690,7 @@ xychart-beta
 [^9]: Kazemi, S. M., et al. "Representation Learning for Dynamic Graphs: A Survey." JMLR, 2020.
 
 [^10]: Skarding, J., et al. "Foundations of Modeling in Cyber-Physical Systems: A Taxonomy." ACM Computing Surveys, 2021.
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-18*

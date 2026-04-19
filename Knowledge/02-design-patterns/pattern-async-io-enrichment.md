@@ -1,5 +1,7 @@
 # 设计模式: 异步 I/O 富化 (Pattern: Async I/O Enrichment)
 
+> 所属阶段: Knowledge | 前置依赖: [相关文档] | 形式化等级: L3
+
 > **模式编号**: 04/7 | **所属系列**: Knowledge/02-design-patterns | **形式化等级**: L4-L5 | **复杂度**: ★★★☆☆
 >
 > 本模式解决流处理中**外部数据查询**与**流处理延迟**之间的核心矛盾，通过异步非阻塞 I/O 实现高吞吐、低延迟的数据富化。
@@ -31,7 +33,7 @@
     - [8.3 模式组合时的性质保持](#83-模式组合时的性质保持)
     - [8.4 边界条件与约束](#84-边界条件与约束)
     - [8.5 工程实现与理论的对应](#85-工程实现与理论的对应)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)]()
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [6.1 Flink AsyncDataStream 完整示例](#61-flink-asyncdatastream-完整示例)
     - [6.2 Redis 异步查询实现](#62-redis-异步查询实现)
@@ -991,3 +993,7 @@ flowchart TB
 ---
 
 *文档版本: v1.0 | 更新日期: 2026-04-02 | 状态: 已完成*
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

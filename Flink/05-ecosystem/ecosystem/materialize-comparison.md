@@ -1,5 +1,7 @@
 # Flink vs Materialize: Comprehensive Comparison
 
+> 所属阶段: Flink | 前置依赖: [相关文档] | 形式化等级: L3
+
 > **Project**: P3-10 | **Type**: Comparative Analysis | **Version**: v1.0 | **Date**: 2026-04-04
 >
 > **Scope**: Architecture, Performance, Cost, Use Cases

@@ -602,3 +602,7 @@ DataStream<InferenceResult> results = readings
 - **零停机更新**：模型文件通过 S3/NFS 分发，更新指令通过 Kafka 广播，作业不重启。
 - **灰度发布**：A/B 测试配置通过 Broadcast State 下发，可按设备 ID 或区域进行小流量验证。
 - **快速回滚**：当新版本模型出现精度下降时，广播"ROLLBACK"指令即可在秒级恢复旧版本。
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

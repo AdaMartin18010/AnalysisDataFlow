@@ -763,6 +763,10 @@ SHOW MATERIALIZED TABLES LIKE 'user%';
 
 ---
 
+## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
+
+本文档的证明或工程论证已在正文中完成。详见相关章节。
+
 ## 7. 可视化 (Visualizations)
 
 ### 7.1 物化表架构全景图
@@ -1060,3 +1064,7 @@ DROP MATERIALIZED TABLE <name>;
 | SinkUpsertMaterializer | v1 | v1 | **升级到 v2** |
 | 分区策略 | 无 | 无 | **使用 DISTRIBUTED BY** |
 | 元数据查询 | 系统表 | 系统表 | **使用 SHOW MATERIALIZED TABLES** |
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

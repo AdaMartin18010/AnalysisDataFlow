@@ -116,6 +116,7 @@ graph TB
 ### 4.2 Keyed Prefetching 的核心策略
 
 Keyed Prefetching 提出基于马尔可夫链的状态访问预测：
+
 1. **历史建模**: 维护键到键的转移概率矩阵 $P(k_{next} | k_{current})$
 2. **预测生成**: 当访问键 $k$ 时，预取所有满足 $P(k' | k) > \theta$ 的键 $k'$
 3. **动态更新**: 根据实际访问反馈在线更新转移概率
@@ -124,6 +125,7 @@ Keyed Prefetching 提出基于马尔可夫链的状态访问预测：
 ### 4.3 反例：盲目预取导致的内存压力
 
 某 Flink 作业对热门商品 ID 启用了无限制预取：
+
 - 每次访问一个商品状态时，预取该商品关联的 1000 个用户状态
 - 高峰期本地缓存膨胀到数十 GB，TaskManager 频繁触发 Full GC
 - 最终 OOM 崩溃，反而没有任何性能提升
@@ -244,6 +246,7 @@ sequenceDiagram
 
 ## 8. 引用参考 (References)
 
-[^1]: Keyed Prefetching (2025), "Predictive State Prefetching for Distributed Stream Processing".
-[^2]: Chen S. et al., "Lookahead: A Model-Based Prefetching Scheme for Key-Value Stores", SIGMOD 2022.
-[^3]: Apache Flink Documentation, "State Backends and Async Snapshots", 2025. https://nightlies.apache.org/flink/flink-docs-stable/
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-15*

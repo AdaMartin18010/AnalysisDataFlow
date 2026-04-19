@@ -1,5 +1,7 @@
 # 业务模式: 实时推荐系统 (Business Pattern: Real-time Recommendation System)
 
+> 所属阶段: Knowledge | 前置依赖: [相关文档] | 形式化等级: L3
+
 > **业务领域**: 电商/内容/广告推荐 | **复杂度等级**: ★★★★☆ | **延迟要求**: < 200ms | **形式化等级**: L4-L5
 >
 > 本模式解决推荐系统中**用户行为实时反馈**、**特征新鲜度保证**、**低延迟推理**等核心需求，提供基于 Flink + Async I/O + Window Aggregation 的高吞吐、低延迟实时推荐解决方案。
@@ -28,7 +30,7 @@
     - [4.2 特征计算的分层策略](#42-特征计算的分层策略)
     - [4.3 异步 I/O 的必然性论证](#43-异步-io-的必然性论证)
     - [4.4 冷启动问题解决方案](#44-冷启动问题解决方案)
-  - [5. 形式证明 / 工程论证](#5-形式证明-工程论证)
+  - [5. 形式证明 / 工程论证]()
     - [5.1 延迟上界分析](#51-延迟上界分析)
     - [5.2 吞吐量模型](#52-吞吐量模型)
     - [5.3 一致性论证](#53-一致性论证)
@@ -1327,3 +1329,7 @@ graph TB
 
 *文档版本: v1.0 | 更新日期: 2026-04-02 | 状态: 已完成*
 *关联文档: [Pattern 02: Windowed Aggregation](../02-design-patterns/pattern-windowed-aggregation.md) | [Pattern 04: Async I/O Enrichment](../02-design-patterns/pattern-async-io-enrichment.md) | [Pattern 05: State Management](../02-design-patterns/pattern-stateful-computation.md) | [Knowledge 索引](../00-INDEX.md)*
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

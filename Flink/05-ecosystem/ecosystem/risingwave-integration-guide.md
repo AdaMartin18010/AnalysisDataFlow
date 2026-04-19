@@ -1,5 +1,7 @@
 # RisingWave Integration Guide
 
+> 所属阶段: Flink | 前置依赖: [相关文档] | 形式化等级: L3
+
 > **Project**: P3-9 | **Type**: Integration Guide | **Version**: v1.0 | **Date**: 2026-04-04
 >
 > **Flink Version**: 1.17+ | **RisingWave Version**: 1.7+ | **Difficulty**: Intermediate

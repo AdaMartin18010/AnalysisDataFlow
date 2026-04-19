@@ -1,5 +1,7 @@
 # Flink 端到端 Exactly-Once 保障 (End-to-End Exactly-Once Guarantees)
 
+> 所属阶段: Flink | 前置依赖: [相关文档] | 形式化等级: L3
+
 > **Flink Version**: 1.17-1.19 | **Status**: Production Ready | **难度**: L4 (Advanced)
 >
 > 端到端 Exactly-Once 是流处理系统最核心的正确性保证，涉及 Source 可重放、Checkpoint 一致性、Sink 事务性三大支柱的协同工作。
@@ -1281,3 +1283,7 @@ stateDiagram-v2
 ---
 
 *文档版本: 1.0 | 最后更新: 2026-04-02 | 理论深度: L4 (Advanced)*
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

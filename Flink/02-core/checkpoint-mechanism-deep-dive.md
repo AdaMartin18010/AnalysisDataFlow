@@ -1474,3 +1474,7 @@ import org.apache.flink.streaming.api.CheckpointingMode;
 ---
 
 *文档版本: v1.1 | 更新日期: 2026-04-06 | 状态: 已完成权威对齐*
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

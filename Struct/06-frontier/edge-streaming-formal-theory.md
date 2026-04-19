@@ -31,6 +31,7 @@ $$\mathcal{E} = \langle \mathcal{N}, \mathcal{E}_d, \mathcal{C}, \mathcal{T}, \m
 $$e_i = \langle CPU_i, MEM_i, BW_i^{up}, BW_i^{down}, E_i^{max}, Lat_i^{cloud} \rangle$$
 
 其中：
+
 - $CPU_i \in \mathbb{R}^+$：CPU 处理能力（FLOPS）
 - $MEM_i \in \mathbb{N}$：可用内存（MB）
 - $BW_i^{up}, BW_i^{down} \in \mathbb{R}^+$：上行/下行带宽（Mbps）
@@ -61,9 +62,10 @@ $$\mathcal{P} = \langle op_1, op_2, \ldots, op_n; \mathcal{D} \rangle$$
 $$op_i = \langle Type_i, Function_i, State_i^{req}, Resources_i^{req} \rangle$$
 
 操作符类型包括：
+
 - $Type = Source$：数据源
 - $Type = Map$：转换操作
-- $Type = Filter$：过滤操作  
+- $Type = Filter$：过滤操作
 - $Type = Window$：窗口聚合
 - $Type = Join$：流连接
 - $Type = Sink$：数据输出
@@ -104,6 +106,7 @@ $$\mathcal{O} = \{O_{local}, O_{offload}, O_{sync}, O_{query}\}$$
 $$\mathcal{W}(t) = \arg\min_{l \in \mathcal{L}} \left\{ \alpha \cdot Lat(l) + \beta \cdot Cost(l) + \gamma \cdot Privacy(t, l) \right\}$$
 
 其中权重满足 $\alpha + \beta + \gamma = 1$，且：
+
 - $Lat(l)$：在层级 $l$ 的执行延迟
 - $Cost(l)$：在层级 $l$ 的执行成本
 - $Privacy(t, l)$：任务 $t$ 在层级 $l$ 的隐私风险
@@ -116,7 +119,7 @@ $$\mathcal{W}(t) = \arg\min_{l \in \mathcal{L}} \left\{ \alpha \cdot Lat(l) + \b
    $$\mathcal{P}_{layered} = \mathcal{P}_{L_1} \circ \mathcal{P}_{L_2} \circ \mathcal{P}_{L_3}$$
 
 2. **任务卸载模式（Offloading）**：
-   $$\mathcal{P}_{offload}(t) = \begin{cases} 
+   $$\mathcal{P}_{offload}(t) = \begin{cases}
    \mathcal{P}_{edge}(t) & \text{if } Complexity(t) \leq \theta_{edge} \\
    \mathcal{P}_{cloud}(t) & \text{otherwise}
    \end{cases}$$
@@ -131,6 +134,7 @@ $$\mathcal{W}(t) = \arg\min_{l \in \mathcal{L}} \left\{ \alpha \cdot Lat(l) + \b
 $$\min \mathbf{F}(\mathbf{x}) = \langle f_1(\mathbf{x}), f_2(\mathbf{x}), f_3(\mathbf{x}) \rangle$$
 
 其中：
+
 - $f_1(\mathbf{x}) = \sum_{t \in \mathcal{T}} Lat(t, \mathcal{W}(t))$：总延迟
 - $f_2(\mathbf{x}) = \sum_{t \in \mathcal{T}} Cost(t, \mathcal{W}(t))$：总成本
 - $f_3(\mathbf{x}) = \sum_{t \in \mathcal{T}} PrivacyRisk(t, \mathcal{W}(t))$：隐私风险
@@ -168,6 +172,7 @@ $$f_{partition}(e_i, \mathcal{C}, t_0, t_1) := \forall t \in [t_0, t_1]: \nexist
 $$\llbracket P \rrbracket_{e_i}^{partition} = \langle S_{local}, O_{local}, \mathcal{L}_{local} \rangle$$
 
 其中：
+
 - $S_{local}$：本地状态机
 - $O_{local}$：本地可执行操作集
 - $\mathcal{L}_{local}$：本地日志（用于恢复）
@@ -179,6 +184,7 @@ $$\llbracket P \rrbracket_{e_i}^{partition} = \langle S_{local}, O_{local}, \mat
 $$Merge(\sigma_{edge}^{t_1}, \sigma_{cloud}^{t_1}) = \sigma_{unified}^{t_1}$$
 
 合并策略取决于一致性模型：
+
 - 最终一致性：$\sigma_{unified} = \sigma_{edge} \cup \sigma_{cloud}$
 - 因果一致性：保留因果序 $Causal(\sigma_{edge}, \sigma_{cloud})$
 - 强一致性：冲突解决 $Resolve(\sigma_{edge} \cap \sigma_{cloud})$
@@ -518,6 +524,7 @@ $$PTransform_{hybrid} = PTransform_{edge} \circ SyncTransform \circ PTransform_{
 $$EdgeActor = Actor \ltimes ResourceConstrained \ltimes Mobility$$
 
 扩展Actor定义包含：
+
 - 位置属性：$location: Actor \rightarrow GeographicPosition$
 - 资源约束：$resources: Actor \rightarrow ResourceVector$
 - 连接状态：$connectivity: Actor \times Time \rightarrow \{online, offline\}$
@@ -549,6 +556,7 @@ $$EdgeLambda = \langle SpeedLayer_{edge}, BatchLayer_{cloud}, ServingLayer_{hybr
 特征：$D_{partition} < T_{heartbeat}$
 
 处理策略：
+
 - 本地缓冲数据
 - 保持处理状态
 - 自动恢复同步
@@ -562,6 +570,7 @@ $$Online \xrightarrow{timeout} Suspicious \xrightarrow{recovery} Online$$
 特征：$T_{heartbeat} \leq D_{partition} < T_{checkpoint}$
 
 处理策略：
+
 - 本地状态持久化
 - 压缩缓冲数据
 - 降级服务模式
@@ -575,6 +584,7 @@ $$Online \xrightarrow{timeout} Offline \xrightarrow{checkpoint} Persistent \xrig
 特征：$D_{partition} \geq T_{checkpoint}$
 
 处理策略：
+
 - 完整本地自治
 - 定期本地检查点
 - 冲突解决准备
@@ -592,6 +602,7 @@ $$Online \xrightarrow{timeout} Autonomous \xrightarrow{checkpoint} Checkpointed 
 $$|Buffer_{local}| \geq MEM_j \cdot \theta_{threshold}$$
 
 处理选项：
+
 1. 丢弃旧数据（有损）
 2. 压缩聚合（保真度降低）
 3. 本地持久化（延迟增加）
@@ -607,6 +618,7 @@ $$Policy_{overflow} = \arg\max_{p \in Policies} Utility(p, Context)$$
 $$E_{remaining} < E_{critical}$$
 
 处理选项：
+
 1. 降低采样率
 2. 暂停非关键任务
 3. 进入休眠模式
@@ -950,7 +962,7 @@ edge_deployment:
         - anomaly_detection
         - local_alert
         - predictive_maintenance
-        
+
   cloud_backend:
     - id: analytics-cluster
       resources:
@@ -962,14 +974,14 @@ edge_deployment:
         - ml_model_training
         - cross_site_analytics
         - digital_twin_simulation
-        
+
   sync_policy:
     mode: incremental
     interval: 30s
     conflict_resolution: timestamp_based
     compression: gzip
     encryption: TLS1.3
-    
+
   fault_tolerance:
     level: FT_3
     local_checkpoint_interval: 60s
@@ -987,7 +999,7 @@ class EdgeStreamProcessor:
         self.checkpoint_store = LocalStorage(path="/var/edge/checkpoints")
         self.power_manager = PowerManager()
         self.network_monitor = NetworkMonitor()
-        
+
     def process_with_partition_tolerance(self, event):
         """带分区容错的事件处理"""
         if self.is_connected():
@@ -998,65 +1010,65 @@ class EdgeStreamProcessor:
         else:
             # 分区模式:本地处理
             return self.process_partitioned(event)
-    
+
     def process_partitioned(self, event):
         """分区期间本地处理"""
         # 本地处理
         result = self.process_offline(event)
-        
+
         # 缓冲结果
         if not self.buffer.is_full():
             self.buffer.append(result)
         else:
             # 缓冲区满,执行策略
             self.handle_buffer_full(result)
-        
+
         # 更新本地状态
         self.local_state.update(result)
-        
+
         # 检查电源状态
         if self.power_manager.is_critical():
             self.enter_power_save_mode()
-        
+
         return result
-    
+
     def handle_buffer_full(self, result):
         """处理缓冲区溢出"""
         # 策略1:压缩旧数据
         self.compress_buffer()
-        
+
         # 策略2:持久化到本地存储
         if self.checkpoint_store.available_space() > 0:
             self.persist_oldest_data()
-        
+
         # 策略3:降级采样
         if self.buffer.usage_ratio() > 0.95:
             self.reduce_sampling_rate()
-    
+
     def on_partition_recovery(self):
         """分区恢复处理"""
         logger.info("Network partition recovered, initiating sync")
-        
+
         # 1. 建立连接
         self.establish_cloud_connection()
-        
+
         # 2. 同步缓冲数据
         buffered_data = self.buffer.drain()
         if buffered_data:
             self.sync_buffered_data(buffered_data)
-        
+
         # 3. 合并状态
         local_state = self.local_state.get()
         cloud_state = self.fetch_cloud_state()
         merged_state = self.merge_states(local_state, cloud_state)
-        
+
         # 4. 解决冲突
         if self.has_conflicts(local_state, cloud_state):
             resolved_state = self.resolve_conflicts(merged_state)
             self.local_state.set(resolved_state)
         else:
             self.local_state.set(merged_state)
-        
+
         # 5. 恢复正常处理
         self.set_mode(ProcessingMode.NORMAL)
         logger.info("Sync completed, back to normal mode")
@@ -1098,7 +1110,7 @@ class EdgeStreamProcessor:
 ```yaml
 partition_tolerance:
   level: FT_3
-  
+
   local_capabilities:
     - vehicle_detection:
         model: yolov5n.engine
@@ -1113,14 +1125,14 @@ partition_tolerance:
     - signal_control:
         algorithm: adaptive_timing
         fallback: fixed_schedule
-        
+
   recovery_actions:
     post_partition:
       - upload_traffic_statistics
       - sync_incident_logs
       - update_global_model
       - restore_cloud_coordination
-      
+
   degradation_policies:
     memory_pressure:
       threshold: 80%
@@ -1172,7 +1184,7 @@ graph TB
         GA[Global Aggregation]
         DL[Data Lake]
     end
-    
+
     subgraph EdgeNode["🔶 Edge Node Layer L2"]
         EP[Complex Processing]
         SM[State Management]
@@ -1180,7 +1192,7 @@ graph TB
         AG[Aggregation]
         AI[Local AI Inference]
     end
-    
+
     subgraph Gateway["🔷 Edge Gateway Layer L1"]
         FI[Filtering]
         RT[Routing]
@@ -1188,7 +1200,7 @@ graph TB
         PR[Protocol Conversion]
         SC[Security Check]
     end
-    
+
     subgraph Sensors["📡 Sensor Layer L0"]
         S1[IoT Sensor 1]
         S2[IoT Sensor 2]
@@ -1197,35 +1209,35 @@ graph TB
         S5[Video Camera]
         S6[Industrial Device]
     end
-    
+
     S1 --> FI
     S2 --> FI
     S3 --> FI
     S4 --> FI
     S5 --> SC
     S6 --> PR
-    
+
     SC --> FI
     PR --> FI
-    
+
     FI --> RT
     RT --> BF
     BF --> EP
-    
+
     EP --> SM
     SM --> CK
     EP --> AG
     EP --> AI
-    
+
     AG -.->|Sync| CA
     CK -.->|Backup| LT
     EP -.->|Model Update| ML
     AI -.->|Inference Results| CA
-    
+
     CA --> GA
     GA --> DL
     GA -.->|Control| EP
-    
+
     style Cloud fill:#e1f5ff,stroke:#01579b,stroke-width:2px
     style EdgeNode fill:#fff3e0,stroke:#e65100,stroke-width:2px
     style Gateway fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
@@ -1239,58 +1251,58 @@ graph TB
 ```mermaid
 flowchart TD
     Start([新任务到达]) --> Analyze{任务分析}
-    
+
     Analyze -->|计算复杂度| Comp{Complexity >= Threshold?}
     Analyze -->|延迟要求| Lat{Latency <= 50ms?}
     Analyze -->|数据隐私| Priv{Privacy Sensitive?}
     Analyze -->|数据量| Data{Data Size > 1MB?}
-    
+
     Comp -->|Yes| Cloud1[☁️ 云端执行]
     Comp -->|No| EdgeCheck
-    
+
     Lat -->|Yes| Edge1[🔶 边缘执行]
     Lat -->|No| Cloud2[☁️ 云端执行]
-    
+
     Priv -->|Yes| Edge2[🔶 边缘执行]
     Priv -->|No| CostCheck
-    
+
     Data -->|Yes| BandwidthCheck{带宽充足?}
     Data -->|No| EdgeCheck
-    
+
     EdgeCheck{边缘资源充足?}
     EdgeCheck -->|Yes| Edge1
     EdgeCheck -->|No| Cloud1
-    
+
     BandwidthCheck -->|Yes| Cloud3[☁️ 云端执行]
     BandwidthCheck -->|No| Compress[压缩数据]
     Compress --> Cloud3
-    
+
     CostCheck{成本优化?}
     CostCheck -->|Yes| CostComp[成本比较]
     CostComp -->|边缘便宜| Edge1
     CostComp -->|云端便宜| Cloud2
     CostCheck -->|No| Cloud2
-    
+
     Edge1 --> ExecuteE[边缘执行]
     Edge2 --> ExecuteE
     Cloud1 --> ExecuteC[云端执行]
     Cloud2 --> ExecuteC
     Cloud3 --> ExecuteC
-    
+
     ExecuteE --> Sync{需要同步?}
     ExecuteC --> Sync
-    
+
     Sync -->|Yes| Synchronize[状态同步]
     Sync -->|No| Complete
-    
+
     Synchronize --> Encrypt[加密传输]
     Encrypt --> Transmit[数据传输]
     Transmit --> Merge[合并状态]
     Merge --> Update[更新全局视图]
     Update --> Complete
-    
+
     Complete([任务完成])
-    
+
     style Start fill:#e8f5e9,stroke:#2e7d32
     style Complete fill:#e8f5e9,stroke:#2e7d32
     style Edge1 fill:#fff3e0,stroke:#e65100
@@ -1307,23 +1319,23 @@ flowchart TD
 ```mermaid
 stateDiagram-v2
     [*] --> Online: System Start
-    
+
     Online --> PartitionDetected: Heartbeat Timeout
     Online --> Online: Process Event
     Online --> Online: Sync with Cloud
     Online --> Online: Health Check
-    
+
     PartitionDetected --> Assessing: Start Assessment
-    
+
     Assessing --> ShortPartition: Duration < 30s
     Assessing --> MediumPartition: 30s <= Duration < 5min
     Assessing --> LongPartition: Duration >= 5min
-    
+
     ShortPartition --> Buffering: Buffer Events
     Buffering --> Buffering: Continue Buffering
     Buffering --> Buffering: Check Network
     Buffering --> Online: Network Recovered
-    
+
     MediumPartition --> OfflineProcessing: Activate Offline Mode
     OfflineProcessing --> LocalCheckpoint: Periodic Checkpoint
     LocalCheckpoint --> OfflineProcessing: Continue
@@ -1331,7 +1343,7 @@ stateDiagram-v2
     Compression --> OfflineProcessing: Continue
     OfflineProcessing --> PowerSaving: Battery Low
     OfflineProcessing --> Online: Network Recovered
-    
+
     LongPartition --> AutonomousMode: Full Autonomy
     AutonomousMode --> LocalAggregation: Aggregate Locally
     LocalAggregation --> LocalAggregation: Continue Processing
@@ -1339,10 +1351,10 @@ stateDiagram-v2
     StatePersist --> AutonomousMode: Continue
     AutonomousMode --> EmergencyMode: Critical Event
     AutonomousMode --> Online: Network Recovered
-    
+
     PowerSaving --> OfflineProcessing: Power Restored
     EmergencyMode --> AutonomousMode: Event Handled
-    
+
     Online --> RecoverySync: Enter Recovery
     RecoverySync --> Auth[Authenticate]
     Auth --> Handshake[Connection Handshake]
@@ -1351,28 +1363,28 @@ stateDiagram-v2
     MergeStates --> ConflictResolution[Resolve Conflicts]
     ConflictResolution --> UpdateGlobalState[Update Global View]
     UpdateGlobalState --> Online: Recovery Complete
-    
+
     note right of Online
         正常模式:
         - 实时同步
         - 强一致性
         - 完整功能
     end note
-    
+
     note right of OfflineProcessing
         离线模式:
         - 本地处理
         - 因果一致性
         - 缓冲数据
     end note
-    
+
     note right of AutonomousMode
         自治模式:
         - 完全自治
         - 最终一致性
         - 本地持久化
     end note
-    
+
     note right of EmergencyMode
         紧急模式:
         - 关键任务优先
@@ -1392,57 +1404,57 @@ graph TD
     Root --> LAT{延迟要求}
     Root --> BW{带宽限制}
     Root --> ENERGY{能耗约束}
-    
+
     CPU -->|高 >= 4cores| CheckCloud1{云端可用?}
     CPU -->|中 1-4cores| CheckEdge1{边缘可用?}
     CPU -->|低 < 1core| EdgeLow[边缘节点]
-    
+
     MEM -->|高 >= 8GB| CheckCloud2{云端可用?}
     MEM -->|中 2-8GB| CheckEdge2{边缘可用?}
     MEM -->|低 < 2GB| EdgeLow2[边缘节点]
-    
+
     LAT -->|< 10ms| ForceEdge[强制边缘]
     LAT -->|10-100ms| Adaptive[自适应]
     LAT -->|> 100ms| Flexible[灵活选择]
-    
+
     BW -->|受限 < 1Mbps| LocalProcess[本地处理]
     BW -->|充足 > 10Mbps| Hybrid[混合模式]
     BW -->|中等| AdaptiveBW[带宽自适应]
-    
+
     ENERGY -->|电池供电| BatteryOpt[电池优化]
     ENERGY -->|插电| PerformanceOpt[性能优化]
-    
+
     CheckCloud1 -->|Yes| CloudHigh[云端高性能节点]
     CheckCloud1 -->|No| Queue1[任务队列等待]
     CheckCloud1 -->|部分可用| CloudPartial[部分云端执行]
-    
+
     CheckEdge1 -->|Yes| EdgeMedium[边缘中等负载]
     CheckEdge1 -->|No| Offload1[尝试卸载]
     Offload1 -->|失败| Queue2[本地队列]
-    
+
     CheckCloud2 -->|Yes| CloudStorage[云存储节点]
     CheckCloud2 -->|No| Compress[数据压缩]
-    
+
     CheckEdge2 -->|Yes| EdgeMemory[边缘内存优化]
     CheckEdge2 -->|No| Stream[流式处理]
-    
+
     Adaptive --> LatencyCheck{当前延迟?}
     LatencyCheck -->|良好| EdgeAdaptive[边缘自适应]
     LatencyCheck -->|差| CloudAdaptive[云端自适应]
-    
+
     Flexible --> CostCheck{成本敏感?}
     CostCheck -->|Yes| CostOpt[成本优化]
     CostCheck -->|No| PerfOpt[性能优化]
-    
+
     BatteryOpt --> PowerCheck{电量?}
     PowerCheck -->|充足| NormalPower[正常模式]
     PowerCheck -->|中等| Balanced[平衡模式]
     PowerCheck -->|低| LowPower[低功耗模式]
-    
+
     AdaptiveBW --> BandwidthCheck{实时带宽?}
     BandwidthCheck -->|好| FullSync[全量同步]
     BandwidthCheck -->|差| DeltaSync[增量同步]
-    
+
     style Root fill:#f5f5f5,stroke:#333,stroke-width:2px
     style EdgeLow fill:#fff3e0,stroke:#e65100
     style EdgeLow2 fill:#fff3e0,stroke:#e65100
@@ -1463,34 +1475,34 @@ sequenceDiagram
     participant EG as Edge Gateway
     participant EN as Edge Node
     participant CC as Cloud Center
-    
+
     Note over S,CC: 正常模式
-    
+
     loop 数据采集
         S->>EG: 原始传感器数据
         EG->>EG: 过滤/聚合
         EG->>EN: 预处理数据
     end
-    
+
     EN->>EN: 本地分析处理
     EN->>CC: 增量状态同步
     CC->>CC: 全局分析
     CC-->>EN: 控制指令
-    
+
     Note over S,CC: 网络分区发生
-    
+
     EN->>EN: 检测到心跳超时
     EN->>EN: 切换至离线模式
-    
+
     loop 分区期间
         S->>EG: 继续数据采集
         EG->>EN: 本地数据处理
         EN->>EN: 缓冲数据
         EN->>EN: 本地检查点
     end
-    
+
     Note over S,CC: 网络恢复
-    
+
     EN->>CC: 连接恢复请求
     CC->>EN: 认证响应
     EN->>CC: 发送缓冲数据
@@ -1642,7 +1654,7 @@ Thm-S-ES-03 (资源分配最优性)
 
 ```
 Algorithm: AdaptiveTaskAllocation
-Input: 
+Input:
   - Task t with requirements (cpu, mem, latency, privacy)
   - Edge resources R_edge = {cpu_e, mem_e, bw_e}
   - Cloud availability A_cloud
@@ -1657,36 +1669,36 @@ Output: Assignment decision d ∈ {EDGE, CLOUD, HYBRID}
 6:   else
 7:     score_edge -= INF  // Cannot run on edge
 8:   end if
-9:   
+9:
 10:  if t.mem ≤ R_edge.mem then
 11:    score_edge += β * (1 - t.mem/R_edge.mem)
 12:  else
 13:    score_edge -= INF
 14:  end if
-15:  
+15:
 16:  // Latency preference
 17:  if t.latency < 50ms then
 18:    score_edge += γ * HIGH_PRIORITY
 19:  else if t.latency < 200ms then
 20:    score_edge += γ * MEDIUM_PRIORITY
 21:  end if
-22:  
+22:
 23:  // Privacy sensitivity
 24:  if t.privacy == HIGH then
 25:    score_edge += δ * PRIVACY_BONUS
 26:  end if
-27:  
+27:
 28:  // Network condition penalty
 29:  if N_cond.bandwidth < THRESHOLD then
 30:    score_edge += ε * BANDWIDTH_PENALTY
 31:  end if
-32:  
+32:
 33:  // Calculate cloud suitability score
 34:  score_cloud = BASE_CLOUD_SCORE
 35:  if not A_cloud then
 36:    score_cloud = -INF
 37:  end if
-38:  
+38:
 39:  // Decision
 40:  if score_edge > score_cloud then
 41:    return EDGE
@@ -1712,7 +1724,7 @@ Output: Managed state with partition tolerance
 2:   last_checkpoint = now()
 3:   local_log = []
 4:   buffer = CircularBuffer(MAX_SIZE)
-5:   
+5:
 6:   while system_running do
 7:     // Check network status
 8:     if N.is_partitioned() then
@@ -1720,13 +1732,13 @@ Output: Managed state with partition tolerance
 10:      result = PROCESSOFFLINE(S, input)
 11:      buffer.append(result)
 12:      local_log.append(operation)
-13:      
+13:
 14:      // Periodic checkpoint
 15:      if now() - last_checkpoint > T_ckpt then
 16:        CHECKPOINT(S, local_log)
 17:        last_checkpoint = now()
 18:      end if
-19:      
+19:
 20:      // Handle buffer overflow
 21:      if buffer.is_full() then
 22:        HANDLEOVERFLOW(buffer, S)
@@ -1735,7 +1747,7 @@ Output: Managed state with partition tolerance
 25:      // Normal online mode
 26:      result = PROCESSONLINE(S, input)
 27:      SYNCWITHCLOUD(result)
-28:      
+28:
 29:      // Check for recovery
 30:      if was_partitioned then
 31:        RECOVERFROMPARTITION(S, buffer, local_log)
@@ -1744,26 +1756,26 @@ Output: Managed state with partition tolerance
 34:    end if
 35:  end while
 36: end function
-37: 
+37:
 38: function RECOVERFROMPARTITION(S, buffer, local_log)
 39:   // Establish connection
 40:   connection = CONNECTTOCLOUD()
-41:   
+41:
 42:   // Fetch cloud state
 43:   S_cloud = FETCHCLOUDSTATE(connection)
-44:   
+44:
 45:   // Replay local log
 46:   S_reconstructed = REPLAY(S_cloud, local_log)
-47:   
+47:
 48:   // Merge buffered results
 49:   S_merged = MERGE(S_reconstructed, buffer.drain())
-50:   
+50:
 51:   // Resolve conflicts
 52:   S_resolved = RESOLVECONFLICTS(S_merged)
-53:   
+53:
 54:   // Update local state
 55:   S = S_resolved
-56:   
+56:
 57:   // Sync to cloud
 58:   SYNCSTATE(connection, S)
 59: end function
@@ -1781,28 +1793,28 @@ Output: Optimal task-resource mapping M
 
 1: function SCHEDULE(Q, R, O)
 2:   M = empty_mapping()
-3:   
+3:
 4:   // Sort tasks by priority and deadline
 5:   Q_sorted = SORT(Q, by=[priority, deadline])
-6:   
+6:
 7:   for each task t in Q_sorted do
 8:     best_resource = null
 9:     best_score = -INF
-10:    
+10:
 11:    for each resource r in R do
 12:      if not FEASIBLE(t, r) then
 13:        continue
 14:      end if
-15:      
+15:
 16:      // Calculate allocation score
 17:      score = EVALUATE(t, r, O)
-18:      
+18:
 19:      if score > best_score then
 20:        best_score = score
 21:        best_resource = r
 22:      end if
 23:    end for
-24:    
+24:
 25:    if best_resource ≠ null then
 26:      M[t] = best_resource
 27:      ALLOCATE(best_resource, t)
@@ -1811,13 +1823,13 @@ Output: Optimal task-resource mapping M
 30:      DEFER(t) or OFFLOAD(t)
 31:    end if
 32:  end for
-33:  
+33:
 34:  return M
 35: end function
-36: 
+36:
 37: function EVALUATE(t, r, O)
 38:   score = 0
-39:   
+39:
 40:   switch O do
 41:     case LATENCY:
 42:       score = -ESTIMATEDLATENCY(t, r)
@@ -1828,7 +1840,7 @@ Output: Optimal task-resource mapping M
 47:     case BALANCED:
 48:       score = w1*(-LATENCY) + w2*(-COST) + w3*(-ENERGY)
 49:   end switch
-50:   
+50:
 51:   return score
 52: end function
 ```
@@ -1887,7 +1899,7 @@ ProcessTask(e) ==
 PartitionRecover(e) ==
   /\ networkStatus[⟨e, CHOOSE c ∈ CloudNodes : TRUE⟩] = "partitioned"
   /\ networkStatus' = [networkStatus EXCEPT ![⟨e, CHOOSE c ∈ CloudNodes : TRUE⟩] = "connected"]
-  /\ cloudState' = [cloudState EXCEPT ![CHOOSE c ∈ CloudNodes : TRUE] = 
+  /\ cloudState' = [cloudState EXCEPT ![CHOOSE c ∈ CloudNodes : TRUE] =
                        @ ∪ Merge(@, edgeState[e], localLogs[e])]
   /\ localLogs' = [localLogs EXCEPT ![e] = ⟨⟩]
 
@@ -2007,3 +2019,7 @@ Qed.
 ---
 
 *文档版本: v1.0 | 创建日期: 2026-04-12 | 形式化等级: L5 | 文档大小: 约62KB*
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-15*

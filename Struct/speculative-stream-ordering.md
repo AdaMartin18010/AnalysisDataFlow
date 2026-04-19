@@ -448,3 +448,7 @@ graph LR
 [^5]: Zaharia et al., "Discretized Streams: Fault-Tolerant Streaming Computation at Scale", SOSP 2013.
 [^6]: Li et al., "Out-of-Order Processing: A New Architecture for High-Performance Stream Systems", PVLDB 1(1), 2008.
 [^7]: Kleppmann M., "Designing Data-Intensive Applications", O'Reilly Media, 2017.
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-15*

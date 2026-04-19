@@ -1328,3 +1328,7 @@ jobs:
 [^8]: Chris Hawblitzel, Jon Howell, Manos Kapritsos, Jacob R. Lorch, Bryan Parno, Michael L. Roberts, Srinath Setty, and Brian Zill. "IronFleet: Proving Safety and Liveness of Practical Distributed Systems." *Communications of the ACM* 60, no. 7 (2017): 83-92.
 
 [^9]: Kyle Kingsbury. "Jepsen." <https://jepsen.io/>
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-19*

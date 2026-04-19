@@ -693,3 +693,7 @@ sequenceDiagram
 - [backpressure-and-flow-control.md](./backpressure-and-flow-control.md) - 背压与流控详细分析
 - [flink-architecture-evolution-1x-to-2x.md](../01-concepts/flink-architecture-evolution-1x-to-2x.md) - 架构演进分析
 - [checkpoint-mechanism-deep-dive.md](./checkpoint-mechanism-deep-dive.md) - Checkpoint 机制深度分析
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

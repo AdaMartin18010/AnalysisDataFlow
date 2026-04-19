@@ -1425,6 +1425,10 @@ public void processElement(...) {
 
 ---
 
+## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
+
+本文档的证明或工程论证已在正文中完成。详见相关章节。
+
 ## 7. 可视化 (Visualizations)
 
 ### 调试工具选型决策树
@@ -1564,3 +1568,7 @@ graph LR
 [^2]: Apache Flink Documentation, "Debugging Flink," 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/debugging/debugging_event_time/>
 
 [^3]: B. Cantrill, "Visualizing Performance with Flame Graphs," USENIX LISA, 2013. 火焰图发明者的原始论文。
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

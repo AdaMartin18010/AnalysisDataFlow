@@ -927,3 +927,7 @@ flowchart TD
 [^2]: K3s Documentation, "Lightweight Kubernetes", Rancher Labs, 2024. <https://docs.k3s.io/>
 
 [^3]: Eclipse Mosquitto, "MQTT Broker for IoT", Eclipse Foundation, 2024. <https://mosquitto.org/documentation/>
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

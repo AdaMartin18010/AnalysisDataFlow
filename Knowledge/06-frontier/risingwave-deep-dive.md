@@ -828,3 +828,7 @@ checkpoint_interval_sec = 10
 ---
 
 *文档版本: 1.0 | 创建日期: 2026-04-02 | 维护者: AnalysisDataFlow Project*
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-18*

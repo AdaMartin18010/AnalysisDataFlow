@@ -162,3 +162,7 @@ sequenceDiagram
 [^1]: BlitzScale (OSDI 2025), "Elastic Resource Scheduling for Stream Inference".
 [^2]: Crankshaw D. et al., "Clipper: A Low-Latency Online Prediction Serving System", NSDI 2017.
 [^3]: Amazon SageMaker Documentation, "Multi-Model Endpoints", 2025. https://docs.aws.amazon.com/sagemaker/
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-15*

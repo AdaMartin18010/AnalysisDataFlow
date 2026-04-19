@@ -702,3 +702,7 @@ flowchart TD
 | `kubernetes.operator.job.autoscaler.vertex-parallelism.enabled` | `false` | 顶点级别扩缩容 |
 | `kubernetes.operator.job.autoscaler.back-pressure.threshold` | `0.2` | 背压阈值 |
 | `kubernetes.operator.job.autoscaler.catch-up.duration` | `10m` | 追赶时间目标 |
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-18*

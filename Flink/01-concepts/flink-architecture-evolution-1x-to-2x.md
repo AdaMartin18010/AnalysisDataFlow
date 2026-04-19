@@ -549,3 +549,7 @@ flowchart LR
 - [flink-1.x-vs-2.0-comparison.md](./flink-1.x-vs-2.0-comparison.md) - 详细架构对比
 - [disaggregated-state-analysis.md](./disaggregated-state-analysis.md) - 分离状态存储设计
 - [datastream-v2-semantics.md](./datastream-v2-semantics.md) - DataStream V2 语义分析
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

@@ -329,3 +329,7 @@ class TwoPhaseCommitKafkaSink extends TwoPhaseCommitSinkFunction[...] { ... }
 ---
 
 *快速参考卡片 v1.0 | 最后更新: 2026-04-03*
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

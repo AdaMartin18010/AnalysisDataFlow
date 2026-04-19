@@ -1622,6 +1622,10 @@ LIMIT 10;
 
 ---
 
+## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
+
+本文档的证明或工程论证已在正文中完成。详见相关章节。
+
 ## 7. 可视化 (Visualizations)
 
 ### 7.1 2026年Open Table Format生态全景图

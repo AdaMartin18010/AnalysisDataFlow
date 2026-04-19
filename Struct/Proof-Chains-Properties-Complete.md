@@ -13,17 +13,17 @@
   - [1. Properties层总览 (按性质分类)](#1-properties层总览-按性质分类)
     - [1.1 引理分类体系](#11-引理分类体系)
     - [1.2 引理-定理依赖总图](#12-引理-定理依赖总图)
-  - [2. 确定性引理簇 (Lemma-S-07-\*)](#2-确定性引理簇-lemma-s-07)
+  - [2. 确定性引理簇 (Lemma-S-07-\*)](#2-确定性引理簇-lemma-s-07-)
     - [2.1 确定性引理依赖网络](#21-确定性引理依赖网络)
     - [2.2 核心引理详解](#22-核心引理详解)
       - [Lemma-S-07-17: 纯函数算子的局部确定性](#lemma-s-07-17-纯函数算子的局部确定性)
       - [Lemma-S-07-43: Watermark 单调性保证触发确定性](#lemma-s-07-43-watermark-单调性保证触发确定性)
       - [Lemma-S-07-59: 分区哈希的确定性](#lemma-s-07-59-分区哈希的确定性)
       - [Lemma-S-07-72: 汇合系统的全局确定性](#lemma-s-07-72-汇合系统的全局确定性)
-      - [Lemma-S-07-82: 纯函数性 + FIFO + 事件时间 → 可观测确定性](#lemma-s-07-82-纯函数性-fifo-事件时间-可观测确定性)
-      - [Lemma-S-07-92: 无竞争条件 ↔ Keyed 分区状态隔离](#lemma-s-07-92-无竞争条件-keyed-分区状态隔离)
+      - [Lemma-S-07-82: 纯函数性 + FIFO + 事件时间 → 可观测确定性](#lemma-s-07-82-纯函数性--fifo--事件时间--可观测确定性)
+      - [Lemma-S-07-92: 无竞争条件 ↔ Keyed 分区状态隔离](#lemma-s-07-92-无竞争条件--keyed-分区状态隔离)
       - [Lemma-S-07-102: 结合律聚合函数对重放记录顺序不敏感](#lemma-s-07-102-结合律聚合函数对重放记录顺序不敏感)
-  - [3. 一致性引理簇 (Lemma-S-08-\*)](#3-一致性引理簇-lemma-s-08)
+  - [3. 一致性引理簇 (Lemma-S-08-\*)](#3-一致性引理簇-lemma-s-08-)
     - [3.1 一致性层级引理网络](#31-一致性层级引理网络)
     - [3.2 Exactly-Once引理链](#32-exactly-once引理链)
       - [Lemma-S-08-17: Exactly-Once 蕴含 At-Least-Once](#lemma-s-08-17-exactly-once-蕴含-at-least-once)
@@ -31,18 +31,18 @@
       - [Lemma-S-08-47: At-Least-Once 与 At-Most-Once 的误差互补性](#lemma-s-08-47-at-least-once-与-at-most-once-的误差互补性)
       - [Lemma-S-08-53: Strong Consistency 蕴含 Causal Consistency](#lemma-s-08-53-strong-consistency-蕴含-causal-consistency)
       - [Lemma-S-08-60: Causal Consistency 蕴含 Eventual Consistency](#lemma-s-08-60-causal-consistency-蕴含-eventual-consistency)
-  - [4. 单调性引理簇 (Lemma-S-09-\*)](#4-单调性引理簇-lemma-s-09)
+  - [4. 单调性引理簇 (Lemma-S-09-\*)](#4-单调性引理簇-lemma-s-09-)
     - [4.1 Watermark单调性引理](#41-watermark单调性引理)
       - [Lemma-S-09-07: 最小值保持单调性](#lemma-s-09-07-最小值保持单调性)
-  - [5. 活性/安全性引理簇 (Lemma-S-10-\*)](#5-活性安全性引理簇-lemma-s-10)
+  - [5. 活性/安全性引理簇 (Lemma-S-10-\*)](#5-活性安全性引理簇-lemma-s-10-)
     - [5.1 安全性引理](#51-安全性引理)
       - [Lemma-S-10-10: 安全性有限见证](#lemma-s-10-10-安全性有限见证)
     - [5.2 活性引理](#52-活性引理)
       - [Lemma-S-10-17: 活性无限承诺](#lemma-s-10-17-活性无限承诺)
-  - [6. 互模拟引理簇 (Lemma-S-15-\*)](#6-互模拟引理簇-lemma-s-15)
+  - [6. 互模拟引理簇 (Lemma-S-15-\*)](#6-互模拟引理簇-lemma-s-15-)
     - [Lemma-S-15-09: 强互模拟是等价关系](#lemma-s-15-09-强互模拟是等价关系)
     - [Lemma-S-15-20: 互模拟蕴含迹等价反之不成立](#lemma-s-15-20-互模拟蕴含迹等价反之不成立)
-  - [7. Checkpoint引理簇 (Lemma-S-17-\*)](#7-checkpoint引理簇-lemma-s-17)
+  - [7. Checkpoint引理簇 (Lemma-S-17-\*)](#7-checkpoint引理簇-lemma-s-17-)
     - [Lemma-S-17-22: Barrier传播不变式](#lemma-s-17-22-barrier传播不变式)
     - [Lemma-S-17-44: 状态一致性引理](#lemma-s-17-44-状态一致性引理)
     - [Lemma-S-17-57: 对齐点唯一性](#lemma-s-17-57-对齐点唯一性)
@@ -1046,3 +1046,7 @@ graph TB
 ---
 
 *文档版本: v1.0 | 创建日期: 2026-04-11 | 覆盖引理: 27个核心引理 | 总字数: ~8000字*
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-18*

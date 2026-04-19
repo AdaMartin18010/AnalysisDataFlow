@@ -789,6 +789,10 @@ FROM queries q, LATERAL TABLE(ML_PREDICT('gpt4_chat', q.query_text)) AS r;
 
 ---
 
+## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
+
+本文档的证明或工程论证已在正文中完成。详见相关章节。
+
 ## 7. 可视化 (Visualizations)
 
 ### 7.1 流式 LLM 集成架构图

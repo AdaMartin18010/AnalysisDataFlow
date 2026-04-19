@@ -221,3 +221,7 @@ flowchart TD
 [^6]: Deloitte, "AI Strategy Report: Enterprise Agent Adoption Trends", 2026.
 [^7]: M. Miller et al., "Capability-based Computer Systems", IEEE, 1986.
 [^8]: IETF, "OAuth 2.0 for Native Apps (RFC 8252)", 2017. <https://tools.ietf.org/html/rfc8252>
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-19*

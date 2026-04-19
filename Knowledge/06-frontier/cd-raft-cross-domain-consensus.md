@@ -1182,3 +1182,7 @@ graph TD
 [^14]: "ZooKeeper: Wait-free coordination for Internet-scale systems", Patrick Hunt et al., USENIX ATC 2010. https://www.usenix.org/legacy/event/atc10/tech/full_papers/Hunt.pdf
 
 [^15]: "etcd: A distributed, reliable key-value store for the most critical data of a distributed system", CoreOS, 2023. https://etcd.io/
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-19*

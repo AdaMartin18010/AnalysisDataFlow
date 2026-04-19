@@ -1,5 +1,7 @@
 # 反模式 AP-04: 热点 Key 未处理 (Hot Key Skew)
 
+> 所属阶段: Knowledge | 前置依赖: [相关文档] | 形式化等级: L3
+
 > **反模式编号**: AP-04 | **所属分类**: 数据分布类 | **严重程度**: P1 | **检测难度**: 难
 >
 > 数据倾斜导致某些 subtask 负载过高，形成处理瓶颈，整体吞吐受限于最慢的 subtask。
@@ -23,7 +25,7 @@
   - [4. 解决方案 (Solution)](#4-解决方案-solution)
     - [4.1 两阶段聚合（Two-Phase Aggregation）](#41-两阶段聚合two-phase-aggregation)
     - [4.2 热点 Key 加盐（Salting）](#42-热点-key-加盐salting)
-    - [4.3 局部聚合 + 全局合并（Map-Side Combine）](#43-局部聚合-全局合并map-side-combine)
+    - [4.3 局部聚合 + 全局合并（Map-Side Combine）](#43-局部聚合--全局合并map-side-combine)
     - [4.4 动态重分区](#44-动态重分区)
     - [4.5 Key 拆分与重组](#45-key-拆分与重组)
   - [5. 代码示例 (Code Examples)](#5-代码示例-code-examples)
@@ -718,3 +720,7 @@ flowchart TD
 ---
 
 *文档版本: v1.0 | 更新日期: 2026-04-03 | 状态: 已完成*
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

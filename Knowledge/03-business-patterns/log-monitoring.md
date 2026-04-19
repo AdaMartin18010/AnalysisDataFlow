@@ -1,5 +1,7 @@
 # 业务模式: 日志分析与监控 (Business Pattern: Log Analysis & Monitoring)
 
+> 所属阶段: Knowledge | 前置依赖: [相关文档] | 形式化等级: L3
+
 > **业务领域**: 运维监控 (DevOps/Observability) | **复杂度等级**: ★★★★☆ | **延迟要求**: < 5s (告警) | **形式化等级**: L3-L4
 >
 > 本模式解决大规模分布式系统的**日志收集**、**实时分析**、**异常检测**与**告警通知**需求，提供基于 Flink 的高吞吐、Schema-on-Read 的实时日志监控解决方案。
@@ -8,7 +10,7 @@
 
 ## 目录
 
-- [业务模式: 日志分析与监控 (Business Pattern: Log Analysis \& Monitoring)](#业务模式-日志分析与监控-business-pattern-log-analysis-monitoring)
+- [业务模式: 日志分析与监控 (Business Pattern: Log Analysis \& Monitoring)]()
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-K-03-04: 日志监控场景 (Log Monitoring Scenario)](#def-k-03-04-日志监控场景-log-monitoring-scenario)
@@ -23,7 +25,7 @@
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [4.1 日志解析的多层策略](#41-日志解析的多层策略)
     - [4.2 告警风暴的形成机制与抑制策略](#42-告警风暴的形成机制与抑制策略)
-  - [5. 形式证明 / 工程论证](#5-形式证明-工程论证)
+  - [5. 形式证明 / 工程论证]()
     - [5.1 日志聚合的单调性保证](#51-日志聚合的单调性保证)
     - [5.2 端到端 Exactly-Once 论证](#52-端到端-exactly-once-论证)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
@@ -802,3 +804,7 @@ graph TB
 
 *文档版本: v1.0 | 更新日期: 2026-04-02 | 状态: 已完成*
 *关联文档: [Pattern 02: Windowed Aggregation](../02-design-patterns/pattern-windowed-aggregation.md) | [Pattern 06: Side Output](../02-design-patterns/pattern-side-output.md) | [Knowledge 索引](../00-INDEX.md)*
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

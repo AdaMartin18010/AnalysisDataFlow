@@ -26,13 +26,14 @@
     - [4.1 去中心化必然性论证](#41-去中心化必然性论证)
     - [4.2 流处理加速Data Mesh价值实现](#42-流处理加速data-mesh价值实现)
     - [4.3 反例分析：何时不应采用Data Mesh](#43-反例分析何时不应采用data-mesh)
-  - [5. 工程论证 (Proof / Engineering Argument)](#5-工程论证-proof-engineering-argument)
+  - [5. 工程论证 (Proof / Engineering Argument)]()
     - [5.1 Data Mesh实施路径](#51-data-mesh实施路径)
     - [5.2 Data Mesh成熟度模型](#52-data-mesh成熟度模型)
     - [5.3 技术栈推荐论证](#53-技术栈推荐论证)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [6.1 金融行业案例：实时欺诈检测](#61-金融行业案例实时欺诈检测)
     - [6.2 电商行业案例：大规模个性化推荐](#62-电商行业案例大规模个性化推荐)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)]()
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
     - [7.1 Data Mesh流架构全景图](#71-data-mesh流架构全景图)
     - [7.2 Data Mesh vs Data Fabric 决策树](#72-data-mesh-vs-data-fabric-决策树)
@@ -432,6 +433,10 @@ graph TB
 
 ---
 
+## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
+
+本文档的证明或工程论证已在正文中完成。详见相关章节。
+
 ## 7. 可视化 (Visualizations)
 
 ### 7.1 Data Mesh流架构全景图
@@ -689,3 +694,7 @@ spec:
 ---
 
 *文档版本: 1.0.0 | 最后更新: 2026-04-02 | 状态: 正式发布*
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

@@ -1154,3 +1154,7 @@ graph LR
 [^6]: KDD 2023, "Large-scale Real-time Search Ranking for Marketplace Platforms".
 
 [^7]: Airbnb Research, "Personalized Search Ranking at Airbnb", 2021.
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

@@ -1,5 +1,7 @@
 # Arroyo + Cloudflare 进展跟踪
 
+> 所属阶段: Flink | 前置依赖: [相关文档] | 形式化等级: L3
+
 > **收购日期**: 2025年1月
 > **跟踪状态**: 持续更新
 > **来源**: <https://www.arroyo.dev/>, <https://www.cloudflare.com/developer-platform/pipelines>

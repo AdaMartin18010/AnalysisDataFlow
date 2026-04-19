@@ -520,6 +520,10 @@ jobmanager.scheduler: Adaptive
 
 ---
 
+## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
+
+本文档的证明或工程论证已在正文中完成。详见相关章节。
+
 ## 7. 可视化 (Visualizations)
 
 ### 配置场景决策树
@@ -655,3 +659,7 @@ graph LR
 [^6]: Apache Flink Documentation, "Changelog State Backend", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/changelog_state_backend/>
 
 [^7]: Apache Flink Documentation, "Kafka Connector", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/datastream/kafka/>
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

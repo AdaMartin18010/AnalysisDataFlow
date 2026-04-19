@@ -389,3 +389,7 @@ spec:
 - [^2] Arroyo WASM 边缘计算源码分析: `./arroyo-wasm-edge-src.md`
 - [^3] WASM UDF 性能源码分析: `./wasm-udf-performance-src.md`
 - [^4] WASI 0.3 异步 I/O 源码分析: `./wasi-03-async-src.md`
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-18*

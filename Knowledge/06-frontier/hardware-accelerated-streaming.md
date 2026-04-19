@@ -843,3 +843,7 @@ graph TB
 [^14]: Xilinx Documentation, "Vitis Unified Software Platform," 2025. https://www.xilinx.com/products/design-tools/vitis.html
 
 [^15]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing," *Proceedings of the VLDB Endowment*, vol. 8, no. 12, pp. 1792-1803, 2015.
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-14*

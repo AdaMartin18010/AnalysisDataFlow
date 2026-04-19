@@ -502,6 +502,10 @@ public class AuditEventReporter implements EventReporter {
 
 ---
 
+## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
+
+本文档的证明或工程论证已在正文中完成。详见相关章节。
+
 ## 7. 可视化 (Visualizations)
 
 ### 7.1 EventReporter 架构图
@@ -679,3 +683,7 @@ flowchart TD
 ---
 
 *文档版本: 1.0 | 最后更新: 2026-04-02 | 状态: 初稿完成*
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

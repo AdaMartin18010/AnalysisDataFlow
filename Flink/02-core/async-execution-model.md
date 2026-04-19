@@ -1272,3 +1272,7 @@ class AECCallbackProcessor {
 - [../01-architecture/disaggregated-state-analysis.md](../01-concepts/disaggregated-state-analysis.md) - 分离状态存储分析
 - [../01-architecture/flink-1.x-vs-2.0-comparison.md](../01-concepts/flink-1.x-vs-2.0-comparison.md) - Flink 1.x vs 2.0 架构对比
 - [../../Struct/01-foundation/01.04-dataflow-model-formalization.md](../../Struct/01-foundation/01.04-dataflow-model-formalization.md) - Dataflow 模型形式化
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

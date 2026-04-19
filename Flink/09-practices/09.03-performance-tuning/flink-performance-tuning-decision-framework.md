@@ -1652,3 +1652,7 @@ graph LR
 [^4]: Apache Flink Documentation, "Checkpointing", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/checkpointing/>
 
 [^5]: A. Bialek et al., "Garbage Collection Tuning for Low-Latency Streaming Systems", ACM SIGMOD Workshop, 2023.
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

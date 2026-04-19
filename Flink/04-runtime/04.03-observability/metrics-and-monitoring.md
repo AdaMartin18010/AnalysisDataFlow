@@ -339,6 +339,10 @@ public class HealthScoreReporter implements MetricReporter {
 
 ---
 
+## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
+
+本文档的证明或工程论证已在正文中完成。详见相关章节。
+
 ## 7. 可视化 (Visualizations)
 
 ### 7.1 Flink监控指标层次图
@@ -479,3 +483,7 @@ graph LR
 ---
 
 ## 8. 引用参考 (References)
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

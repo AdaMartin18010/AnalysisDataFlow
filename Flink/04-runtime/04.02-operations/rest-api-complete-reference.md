@@ -1251,3 +1251,7 @@ graph LR
 | Savepoint 状态 | GET | `/jobs/{id}/savepoints/{tid}` | v1+ |
 | 集群配置 | GET | `/config` | v1+ |
 | JM 配置 | GET | `/jobmanager/config` | v1+ |
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-18*

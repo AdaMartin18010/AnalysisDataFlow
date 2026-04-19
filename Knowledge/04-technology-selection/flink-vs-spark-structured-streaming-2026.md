@@ -1,6 +1,6 @@
 # Flink vs Spark Structured Streaming 2026 Deep Comparison
 
-> **Stage**: Knowledge/04-technology-selection | **Prerequisites**: [Flink/02-core/checkpoint-mechanism-deep-dive.md](../Flink/02-core/checkpoint-mechanism-deep-dive.md) | **Formalization Level**: L3-L4 | **Updated**: 2026-04
+> **Stage**: Knowledge/04-technology-selection | **Prerequisites**: [Flink/02-core/checkpoint-mechanism-deep-dive.md](../../Flink/02-core/checkpoint-mechanism-deep-dive.md) | **Formalization Level**: L3-L4 | **Updated**: 2026-04
 
 ## 1. Definitions
 
@@ -445,3 +445,7 @@ graph TB
 ---
 
 *Document Version: v1.0 | Updated: 2026-04-20 | Status: Core Summary*
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

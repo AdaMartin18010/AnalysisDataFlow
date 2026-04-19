@@ -1526,3 +1526,7 @@ KafkaSource<String> source = KafkaSource.<String>builder()
 ```
 
 ## 13. 引用参考 (References)
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-19*

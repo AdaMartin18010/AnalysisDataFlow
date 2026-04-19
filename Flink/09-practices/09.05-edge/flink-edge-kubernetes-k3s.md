@@ -935,3 +935,7 @@ flowchart LR
 [^1]: Rancher Labs, "K3s Documentation", <https://docs.k3s.io/>
 
 [^2]: Apache Flink, "Flink Kubernetes Operator", <https://nightlies.apache.org/flink/flink-kubernetes-operator-docs-stable/>
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

@@ -58,7 +58,7 @@
       - [Bytewax 局限性](#bytewax-局限性)
       - [Pathway 局限性](#pathway-局限性)
       - [ksqlDB 局限性](#ksqldb-局限性)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)]()
     - [Thm-K-04-03 (2026流处理生态选型定理)](#thm-k-04-03-2026流处理生态选型定理)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [6.1 实时数仓构建场景](#61-实时数仓构建场景)

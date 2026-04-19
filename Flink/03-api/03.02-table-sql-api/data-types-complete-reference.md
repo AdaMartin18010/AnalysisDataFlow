@@ -884,3 +884,7 @@ graph TB
 [^7]: Apache Flink Documentation, "Table API & SQL", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/tableApi/
 
 [^8]: Apache Flink Documentation, "Built-in Functions", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/functions/systemFunctions/
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

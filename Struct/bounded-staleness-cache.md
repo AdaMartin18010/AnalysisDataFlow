@@ -132,6 +132,7 @@ graph TB
 ### 4.2 Skybridge 的创新
 
 Skybridge 的核心贡献包括：
+
 1. **主动预热**: 基于查询模式预测未来访问的键，提前从源站拉取到边缘缓存
 2. **概率性过期**: 不依赖固定的 TTL，而是根据键的更新频率动态计算最优保留时间
 3. **分层预算**: 将总陈旧性预算按客户端-边缘-源站分层分配，每层独立优化
@@ -139,6 +140,7 @@ Skybridge 的核心贡献包括：
 ### 4.3 反例：过宽的陈旧性导致数据不一致
 
 某电商库存系统为降低数据库压力，将边缘缓存的 $\delta$ 设置为 5 分钟。促销期间：
+
 - 用户 A 看到商品库存为 1，立即下单
 - 实际上 30 秒前库存已售罄，但由于缓存陈旧性，用户看到了过期的库存信息
 - 结果超卖，需要大量人工介入处理退款
@@ -227,7 +229,7 @@ xychart-beta
 
 ## 8. 引用参考 (References)
 
-[^1]: Skybridge (OSDI 2025), "Distributed Caching with Bounded Staleness".
-[^2]: Bailis P. et al., "Probabilistically Bounded Staleness for Practical Partial Quorums", PVLDB 2012.
-[^3]: CockroachDB Documentation, "Follower Reads", 2025. https://www.cockroachlabs.com/docs/
-[^4]: Redis Documentation, "Cache Patterns and Strategies", 2025. https://redis.io/docs/
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-15*

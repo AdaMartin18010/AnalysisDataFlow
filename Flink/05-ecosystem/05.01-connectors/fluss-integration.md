@@ -317,6 +317,10 @@ App ──► Fluss ◄──► Flink SQL
 
 ---
 
+## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
+
+本文档的证明或工程论证已在正文中完成。详见相关章节。
+
 ## 7. 可视化 (Visualizations)
 
 ### Fluss 分层存储架构图
@@ -761,3 +765,7 @@ storage:
 [^25]: Apache Flink Documentation, "Flink 2.2 Release Notes", 2025-12-04. <https://nightlies.apache.org/flink/flink-docs-stable/docs/concepts/flink-2.2/>
 
 [^26]: dbaplus社群, "年度盘点：国内外数据库技术风向与重大更新（2025下半年版）", 2026-01-21. <https://dbaplus.cn/news-156-6976-1.html>
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

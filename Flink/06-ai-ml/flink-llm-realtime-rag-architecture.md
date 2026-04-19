@@ -1111,3 +1111,7 @@ collection = Collection("enterprise_kb", schema)
 }
 collection.create_index("embedding", index_params)
 ```
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-18*

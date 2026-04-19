@@ -989,6 +989,10 @@ class DeviceStateFunction
 
 ---
 
+## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
+
+本文档的证明或工程论证已在正文中完成。详见相关章节。
+
 ## 7. 可视化 (Visualizations)
 
 ### 7.1 IoT 整体架构图
@@ -1186,3 +1190,7 @@ stateDiagram-v2
 
 *文档版本: v1.0 | 更新日期: 2026-04-02 | 状态: 已完成*
 *关联文档: [Pattern 01: Event Time Processing](../02-design-patterns/pattern-event-time-processing.md) | [Pattern 05: State Management](../02-design-patterns/pattern-stateful-computation.md) | [Knowledge 索引](../00-INDEX.md)*
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

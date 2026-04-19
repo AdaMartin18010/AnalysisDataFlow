@@ -1,5 +1,7 @@
 # Flink SQL 查询优化分析 (Flink SQL Query Optimization Analysis)
 
+> 所属阶段: Flink | 前置依赖: [相关文档] | 形式化等级: L3
+
 > **文档定位**: 本文档系统分析 Flink SQL/Table API 查询优化器的核心机制，涵盖架构设计、优化策略、Join 算法选择与流计算增量优化。
 >
 > **前置知识**: [Dataflow 模型形式化](../../../Struct/01-foundation/01.04-dataflow-model-formalization.md)、[Apache Calcite 优化框架](https://calcite.apache.org/docs/)
@@ -14,13 +16,13 @@
     - [1.1 整体架构](#11-整体架构)
     - [1.2 Planner 组件详解](#12-planner-组件详解)
     - [1.3 逻辑计划与物理计划](#13-逻辑计划与物理计划)
-  - [2. 规则优化 (RBO - Rule-Based Optimization)](#2-规则优化-rbo---rule-based-optimization)
+  - [2. 规则优化 (RBO - Rule-Based Optimization)]()
     - [2.1 RBO 概述](#21-rbo-概述)
     - [2.2 核心优化规则分类](#22-核心优化规则分类)
     - [2.3 谓词下推 (Predicate Pushdown)](#23-谓词下推-predicate-pushdown)
     - [2.4 投影下推 (Projection Pushdown)](#24-投影下推-projection-pushdown)
     - [2.5 子查询去关联化](#25-子查询去关联化)
-  - [3. 代价优化 (CBO - Cost-Based Optimization)](#3-代价优化-cbo---cost-based-optimization)
+  - [3. 代价优化 (CBO - Cost-Based Optimization)]()
     - [3.1 CBO 概述](#31-cbo-概述)
     - [3.2 成本模型 (Cost Model)](#32-成本模型-cost-model)
     - [3.3 统计信息与基数估计](#33-统计信息与基数估计)
@@ -840,3 +842,7 @@ SET execution.checkpointing.max-concurrent-checkpoints = '1';
 [^10]: Apache Flink. "Interval Join." Flink SQL Documentation. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/sql/queries/joins/>
 
 [^11]: Apache Flink. "CBO (Cost-Based Optimizer)." Flink Configuration. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/config/>
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

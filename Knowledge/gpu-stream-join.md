@@ -435,3 +435,7 @@ xychart-beta
 [^5]: Shanbhag et al., "Large-Scale In-Memory Analytics on GPUs", IEEE Data Eng. Bull., 2019.
 [^6]: CUDA Best Practices Guide, "Coalesced Access to Global Memory", 2025.
 [^7]: Akidau et al., "The Dataflow Model", PVLDB 8(12), 2015.
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-18*

@@ -1168,3 +1168,7 @@ public class QuickStartJob {
 ---
 
 *本文档遵循AGENTS.md规范创建，适用于Flink 1.17-2.0版本*
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-19*

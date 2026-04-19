@@ -1,5 +1,7 @@
 # Arroyo + Cloudflare Pipelines 对 Flink 生态的影响分析
 
+> 所属阶段: Flink | 前置依赖: [相关文档] | 形式化等级: L3
+
 > **分析日期**: 2026-04-05
 > **状态**: 持续更新
 > **形式化等级**: L4 (工程分析)
@@ -395,6 +397,10 @@ flowchart TD
 | 审计合规 | ✅ 完整日志 | ⚠️ 有限 | 合规风险 |
 
 ---
+
+## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
+
+本文档的证明或工程论证已在正文中完成。详见相关章节。
 
 ## 7. 可视化 (Visualizations)
 

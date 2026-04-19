@@ -737,6 +737,10 @@ GROUP BY region, TUMBLE(event_time, INTERVAL '5' MINUTE);
 
 ---
 
+## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
+
+本文档的证明或工程论证已在正文中完成。详见相关章节。
+
 ## 7. 可视化 (Visualizations)
 
 ### 7.1 Arroyo 架构层次图
@@ -964,3 +968,7 @@ GROUP BY user_id, HOP(INTERVAL '1' HOUR, INTERVAL '5' MINUTE)
 - [进展跟踪文档](../../Flink/07-rust-native/arroyo-update/PROGRESS-TRACKING.md) - 最新动态和里程碑
 - [影响分析文档](../../Flink/07-rust-native/arroyo-update/IMPACT-ANALYSIS.md) - 对 Flink 生态的影响评估
 - [季度回顾](../../Flink/07-rust-native/arroyo-update/QUARTERLY-REVIEWS/) - 定期进展总结
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

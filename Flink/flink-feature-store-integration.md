@@ -497,3 +497,7 @@ quadrantChart
 [^5]: Tecton Documentation, "Real-Time Feature Computation", 2024. https://docs.tecton.ai/
 [^6]: OpenMLDB Documentation, "Flink Integration", 2025. https://openmldb.ai/docs/
 [^7]: Akidau et al., "The Dataflow Model", PVLDB 8(12), 2015.
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

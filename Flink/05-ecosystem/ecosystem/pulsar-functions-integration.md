@@ -1,5 +1,7 @@
 # Apache Pulsar Functions Integration with Flink
 
+> 所属阶段: Flink | 前置依赖: [相关文档] | 形式化等级: L3
+
 > **Project**: P3-12 | **Type**: Integration Guide | **Version**: v1.0 | **Date**: 2026-04-04
 >
 > **Flink Version**: 1.17+ | **Pulsar Version**: 2.11+ | **Difficulty**: Intermediate

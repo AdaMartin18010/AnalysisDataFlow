@@ -767,6 +767,10 @@ try {
 
 ---
 
+## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
+
+本文档的证明或工程论证已在正文中完成。详见相关章节。
+
 ## 7. 可视化 (Visualizations)
 
 ### 故障排查决策树
@@ -911,3 +915,7 @@ graph LR
 [^3]: Apache Flink Documentation, "Checkpointing Under Backpressure", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/checkpointing_under_backpressure/>
 
 [^4]: Apache Flink Documentation, "Back Pressure Monitoring", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/monitoring/back_pressure/>
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

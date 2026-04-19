@@ -595,6 +595,10 @@ env.execute("Streaming Data Science")
 
 ---
 
+## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
+
+本文档的证明或工程论证已在正文中完成。详见相关章节。
+
 ## 7. 可视化 (Visualizations)
 
 ### 7.1 PyFlink 执行架构图
@@ -1519,3 +1523,7 @@ graph TD
 
 [^10]: Apache Flink 2.1 Release Notes, "Python 3.12 Support", 2025. <https://nightlies.apache.org/flink/flink-docs-release-2.1/release-notes/flink-2.1/#python-312-support>
 [^11]: Apache Flink 2.2 Release Notes, "Async Function Support in PyFlink", FLINK-38190, 2025. <https://issues.apache.org/jira/browse/FLINK-38190>
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

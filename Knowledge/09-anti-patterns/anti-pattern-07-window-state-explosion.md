@@ -1,5 +1,7 @@
 # 反模式 AP-07: 窗口函数状态爆炸 (Window State Explosion)
 
+> 所属阶段: Knowledge | 前置依赖: [相关文档] | 形式化等级: L3
+
 > **反模式编号**: AP-07 | **所属分类**: 状态管理类 | **严重程度**: P1 | **检测难度**: 难
 >
 > 在窗口函数中累积大量原始事件而未使用增量聚合，导致窗口状态无限增长，最终 OOM 或 Checkpoint 超时。
@@ -16,7 +18,7 @@
     - [3.1 内存影响](#31-内存影响)
   - [4. 解决方案 (Solution)](#4-解决方案-solution)
     - [4.1 使用 AggregateFunction](#41-使用-aggregatefunction)
-    - [4.2 结合使用 Aggregate + ProcessWindow](#42-结合使用-aggregate-processwindow)
+    - [4.2 结合使用 Aggregate + ProcessWindow](#42-结合使用-aggregate--processwindow)
     - [4.3 使用 Evictor 限制状态](#43-使用-evictor-限制状态)
   - [5. 代码示例 (Code Examples)](#5-代码示例-code-examples)
     - [5.1 错误示例](#51-错误示例)
@@ -226,3 +228,7 @@ graph TB
 ---
 
 *文档版本: v1.0 | 更新日期: 2026-04-03 | 状态: 已完成*
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

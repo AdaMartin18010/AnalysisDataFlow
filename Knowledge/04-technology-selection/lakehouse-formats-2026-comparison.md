@@ -978,3 +978,7 @@ gantt
 [^4]: Apache Paimon Documentation, "Streaming Lakehouse Architecture", 2025. <https://paimon.apache.org/>
 
 [^5]: Data Lakehouse Hub, "Four Formats Coexistence Analysis 2026", 2026. <https://datalakehousehub.com/>
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

@@ -1,5 +1,7 @@
 # 设计模式: Checkpoint 与故障恢复 (Pattern 07: Checkpoint & Recovery)
 
+> 所属阶段: Knowledge | 前置依赖: [相关文档] | 形式化等级: L3
+
 > **模式编号**: 07/7 | **所属系列**: Knowledge/02-design-patterns | **形式化等级**: L5 | **复杂度**: ★★★★★
 >
 > 本模式解决分布式流处理中的**故障恢复**与**一致性保障**问题，通过 Checkpoint 机制实现 Exactly-Once 语义，并提供完整的故障恢复策略。
@@ -8,7 +10,7 @@
 
 ## 目录
 
-- [设计模式: Checkpoint 与故障恢复 (Pattern 07: Checkpoint \& Recovery)](#设计模式-checkpoint-与故障恢复-pattern-07-checkpoint-recovery)
+- [设计模式: Checkpoint 与故障恢复 (Pattern 07: Checkpoint \& Recovery)]()
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-K-02-07-01 (Checkpoint 机制)](#def-k-02-07-01-checkpoint-机制)
@@ -32,7 +34,7 @@
     - [8.2 满足的形式化性质](#82-满足的形式化性质)
     - [8.3 模式组合时的性质保持](#83-模式组合时的性质保持)
     - [8.4 边界条件与约束](#84-边界条件与约束)
-  - [5. 形式证明 / 工程论证](#5-形式证明-工程论证)
+  - [5. 形式证明 / 工程论证]()
     - [5.1 Checkpoint 一致性定理 (关联 Thm-S-17-01)](#51-checkpoint-一致性定理-关联-thm-s-17-01)
     - [5.2 Exactly-Once 正确性定理 (关联 Thm-S-18-01)](#52-exactly-once-正确性定理-关联-thm-s-18-01)
     - [5.3 故障恢复正确性工程论证](#53-故障恢复正确性工程论证)
@@ -998,3 +1000,7 @@ graph LR
 ---
 
 *文档版本: v1.0 | 更新日期: 2026-04-02 | 状态: 已完成*
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

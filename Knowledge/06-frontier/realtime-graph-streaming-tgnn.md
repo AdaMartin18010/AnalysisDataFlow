@@ -588,3 +588,7 @@ graph TB
 [^4]: A. Sankar et al., "DySAT: Deep Neural Representation Learning on Dynamic Graphs via Self-Attention Networks," WSDM, 2020.
 
 [^5]: S. Kumar et al., "Predicting Dynamic Embedding Trajectory in Temporal Interaction Networks," KDD, 2019.
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-13*

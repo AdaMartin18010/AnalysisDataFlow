@@ -925,6 +925,7 @@ $$\vec{\epsilon} \models P_1 \; \textbf{SEQ} \; P_2 \iff \exists i: \vec{\epsilo
 **定理 (SEQ结合律)**: $(P_1 \; \textbf{SEQ} \; P_2) \; \textbf{SEQ} \; P_3 \equiv P_1 \; \textbf{SEQ} \; (P_2 \; \textbf{SEQ} \; P_3)$
 
 **证明**：
+
 - 设$\vec{\epsilon} \models (P_1 \; \textbf{SEQ} \; P_2) \; \textbf{SEQ} \; P_3$
 - 则$\exists i, j: \vec{\epsilon}_{[1,i]} \models P_1$，$\vec{\epsilon}_{[i+1,j]} \models P_2$，$\vec{\epsilon}_{[j+1,k]} \models P_3$
 - 即$\vec{\epsilon}_{[i+1,k]} \models P_2 \; \textbf{SEQ} \; P_3$
@@ -955,7 +956,7 @@ $$|Perm(k)| = k!$$
 
 ### C.3 Kleene闭包的语义细节
 
-**定义 (Kleene闭包语义)**: 
+**定义 (Kleene闭包语义)**:
 
 $$P^* = \bigcup_{n=0}^{\infty} P^n$$
 
@@ -970,6 +971,7 @@ $$P^{*N} = \bigcup_{n=0}^{N} P^n$$
 **时间窗口约束的必要性**：
 
 若无窗口约束，$P^*$可能匹配任意长序列，导致：
+
 1. 内存无限增长
 2. 延迟无法确定
 3. 输出无法触发
@@ -1006,25 +1008,25 @@ function CONSTRUCT(P):
     case P of
         e (atomic):
             return NFA with 2 states: q0 --e--> q1
-        
+
         P1 SEQ P2:
             A1 = CONSTRUCT(P1)
             A2 = CONSTRUCT(P2)
             return CONCATENATE(A1, A2)
-        
+
         P1 OR P2:
             A1 = CONSTRUCT(P1)
             A2 = CONSTRUCT(P2)
             return UNION(A1, A2)
-        
+
         P*:
             A = CONSTRUCT(P)
             return KLEENE_STAR(A)
-        
+
         P WHERE C:
             A = CONSTRUCT(P)
             return ADD_GUARD(A, C)
-        
+
         P WITHIN T:
             A = CONSTRUCT(P)
             return ADD_TIMER(A, T)
@@ -1061,6 +1063,7 @@ $$F' = \{S \in Q' : S \cap F \neq \emptyset\}$$
 $$|Q'| = 2^{|Q|}$$
 
 **缓解策略**：
+
 1. **惰性构造**：按需生成可达状态
 2. **状态合并**：合并等价状态
 3. **直接NFA模拟**：避免完全确定化
@@ -1086,6 +1089,7 @@ $$|Q'| = 2^{|Q|}$$
 **属性索引**：为高频过滤条件建立索引
 
 **示例**：
+
 ```
 P = (A WHERE a.id = x) SEQ (B WHERE b.ref = a.id)
 ```
@@ -1122,7 +1126,7 @@ Pattern<Event, ?> pattern = Pattern
     .<Event>begin("a")
     .where(evt -> evt.getVal() > 100)
     .next("b_or_c")
-    .where(evt -> evt.getType().equals("B") 
+    .where(evt -> evt.getType().equals("B")
                || evt.getType().equals("C"))
     .within(Time.minutes(5));
 ```
@@ -1155,12 +1159,14 @@ Pattern<Event, ?> pattern = Pattern
 **主定理证明**：
 
 $(\Rightarrow)$ 方向：
+
 1. $\mathcal{O}(\vec{\epsilon}) = \epsilon_c$触发输出
 2. 根据实现，输出条件包含NFA接受状态检查
 3. 由引理G.1.1，$\vec{\epsilon} \models P$
 4. 最大性检查确保无扩展可能
 
 $(\Leftarrow)$ 方向：
+
 1. $\vec{\epsilon} \models P$且最大
 2. 由引理G.1.1，NFA到达接受状态
 3. 由引理G.1.2，系统检查接受状态
@@ -1215,6 +1221,7 @@ $(\Leftarrow)$ 方向：
 **命题1**: $W_1 \subseteq W_2 \land \vec{\epsilon} \models_{W_1} P \implies \vec{\epsilon} \models_{W_2} P$
 
 *证明*：
+
 1. $\vec{\epsilon} \models_{W_1} P$意味着：
    - $\vec{\epsilon} \models P$（语义匹配）
    - $\forall \epsilon \in \vec{\epsilon}: \epsilon \in W_1$（窗口约束）
@@ -1225,6 +1232,7 @@ $(\Leftarrow)$ 方向：
 **命题2**: $SAT(P, W_2) \land P \text{ 无NOT} \implies \exists W_1 \subseteq W_2: SAT(P, W_1)$
 
 *证明*：
+
 1. $SAT(P, W_2)$意味着$\exists \vec{\epsilon}: \vec{\epsilon} \models_{W_2} P$
 2. 定义$W_1 = [\min_{\epsilon \in \vec{\epsilon}} timestamp(\epsilon), \max_{\epsilon \in \vec{\epsilon}} timestamp(\epsilon) + \epsilon]$
 3. 显然$W_1 \subseteq W_2$（可能需要微调端点）
@@ -1241,7 +1249,8 @@ $(\Leftarrow)$ 方向：
 
 **业务场景**: 检测市场操纵行为
 
-**操纵模式**: 
+**操纵模式**:
+
 1. 大额买单推高价格
 2. 小额卖单获利
 3. 短时间内完成
@@ -1291,19 +1300,19 @@ P_{failure} =\; & (TEMP \; \textbf{WHERE} \; value > T_{max}) \\
 ```
 State: HEALTHY
   Event: TEMP > T_max → State: WARNING_TEMP
-  
+
 State: WARNING_TEMP
   Event: PRESSURE < P_min → State: WARNING_PRESSURE
   Event: TEMP normal → State: HEALTHY (reset)
-  
+
 State: WARNING_PRESSURE
   Event: VIBRATION > V_max → State: CRITICAL
   Event: timeout (5min) → State: HEALTHY (reset)
-  
+
 State: CRITICAL
   Event: SHUTDOWN → State: FAULT_DETECTED (output)
   Event: timeout (10min) → State: HEALTHY (reset)
-  
+
 State: FAULT_DETECTED
   Action: Send alert, log pattern
   → State: HEALTHY
@@ -1319,7 +1328,7 @@ State: FAULT_DETECTED
 
 **定义 (概率事件)**: $\epsilon^p = (\epsilon, p)$，其中$p \in [0,1]$为事件可信度。
 
-**定义 (概率匹配)**: 
+**定义 (概率匹配)**:
 
 $$P(\vec{\epsilon} \models P) = \prod_{\epsilon_i \in \vec{\epsilon}} p_i \cdot \mathbb{1}[\vec{\epsilon} \models P]$$
 
@@ -1380,7 +1389,7 @@ $$\vec{\epsilon} \models_{\theta} P \iff P(\vec{\epsilon} \models P) \geq \theta
 | 结合律 | ✅ | ✅ | $(a \circ b) \circ c = a \circ (b \circ c)$ |
 | 交换律 | ❌ | ✅ | SEQ依赖顺序 |
 | 单位元 | $\epsilon$ | $\emptyset$ | $P \; \textbf{SEQ} \; \epsilon = P$ |
-| 零元 | $\emptyset$ | $	op$ | $P \; \textbf{SEQ} \; \emptyset = \emptyset$ |
+| 零元 | $\emptyset$ | $ op$ | $P \; \textbf{SEQ} \; \emptyset = \emptyset$ |
 | 幂等律 | ❌ | ✅ | $P \; \textbf{OR} \; P = P$ |
 | 吸收律 | ✅ | ✅ | $P \; \textbf{SEQ} \; (P \; \textbf{OR} \; Q) = P \; \textbf{SEQ} \; P$ |
 | 分配律 | 部分 | ✅ | 见Lemma-S-CEP-01 |
@@ -1491,12 +1500,12 @@ for each event e in S:
 ```
 function LAZY_MATCH(P, S):
     active = {}  // 活跃部分匹配
-    
+
     for event e in S:
         // 1. 检查是否开启新匹配
         if can_start(P, e):
             active.add(new_partial_match(e))
-        
+
         // 2. 更新现有匹配
         for pm in active:
             if can_extend(pm, e):
@@ -1505,10 +1514,10 @@ function LAZY_MATCH(P, S):
                     output new_pm
                 else:
                     active.add(new_pm)
-        
+
         // 3. 清理过期匹配
         active = {pm | not expired(pm)}
-    
+
     return outputs
 ```
 
@@ -1516,7 +1525,7 @@ function LAZY_MATCH(P, S):
 
 ### L.3 近似匹配算法
 
-**定义 ($\epsilon$-近似匹配)**: 
+**定义 ($\epsilon$-近似匹配)**:
 
 $$\vec{\epsilon} \approx_{\epsilon} P \iff \exists \vec{\epsilon}': d(\vec{\epsilon}, \vec{\epsilon}') \leq \epsilon \land \vec{\epsilon}' \models P$$
 
@@ -1605,9 +1614,9 @@ $$\text{CEP}(S, P) = \sigma_{\models P}(\omega_{window}(S))$$
 -- 假设的CEP-SQL
 SELECT ComplexEvent(
     e1, e2
-) 
+)
 FROM Events AS e1, Events AS e2
-WHERE e1.type = 'A' 
+WHERE e1.type = 'A'
   AND e2.type = 'B'
   AND e1.timestamp < e2.timestamp
   AND e2.timestamp - e1.timestamp < INTERVAL '5' SECOND
@@ -1809,11 +1818,11 @@ Output: Complex Event Stream
 2.  nfa ← OPTIMIZE_NFA(nfa)             // ε-消除, 状态合并
 3.  active_states ← {nfa.q0}            // 初始活跃状态
 4.  partial_matches ← {}                // 部分匹配集合
-5.  
+5.
 6.  for each event e in S:
 7.      if e.timestamp > W.end:
 8.          break                        // 窗口结束
-9.      
+9.
 10.     // 更新活跃状态
 11.     new_states ← {}
 12.     for state in active_states:
@@ -1822,7 +1831,7 @@ Output: Complex Event Stream
 15.             for ns in next_states:
 16.                 if GUARD_SATISFIED(ns.guard, e):
 17.                     new_states.add(ns)
-18.     
+18.
 19.     // 检查接受状态
 20.     for state in new_states:
 21.         if state in nfa.F:
@@ -1830,15 +1839,15 @@ Output: Complex Event Stream
 23.             if IS_MAXIMAL(match, partial_matches):
 24.                 ce ← CONSTRUCT_COMPLEX_EVENT(match)
 25.                 OUTPUT(ce)
-26.     
+26.
 27.     // 更新部分匹配
 28.     UPDATE_PARTIAL_MATCHES(partial_matches, e, new_states)
-29.     
+29.
 30.     // 清理过期状态
 31.     CLEANUP_EXPIRED(partial_matches, current_time - W.size)
-32.     
+32.
 33.     active_states ← new_states ∪ {nfa.q0}  // 重新开始的可能性
-34. 
+34.
 35. return output_stream
 ```
 
@@ -1856,7 +1865,7 @@ function CONSTRUCT(P):
             qf ← NEW_STATE()
             ADD_TRANSITION(q0, event_type, qf)
             return NFA({q0, qf}, {event_type}, δ, q0, {qf})
-        
+
         case SEQ(P1, P2):
             nfa1 ← CONSTRUCT(P1)
             nfa2 ← CONSTRUCT(P2)
@@ -1869,7 +1878,7 @@ function CONSTRUCT(P):
                 nfa1.q0,
                 nfa2.F
             )
-        
+
         case OR(P1, P2):
             nfa1 ← CONSTRUCT(P1)
             nfa2 ← CONSTRUCT(P2)
@@ -1888,7 +1897,7 @@ function CONSTRUCT(P):
                 q0,
                 {qf}
             )
-        
+
         case KLEENE_STAR(P1):
             nfa1 ← CONSTRUCT(P1)
             q0 ← NEW_STATE()
@@ -1905,13 +1914,13 @@ function CONSTRUCT(P):
                 q0,
                 {qf}
             )
-        
+
         case WHERE(P1, condition):
             nfa ← CONSTRUCT(P1)
             for t in nfa.δ:
                 t.guard ← condition
             return nfa
-        
+
         case WITHIN(P1, duration):
             nfa ← CONSTRUCT(P1)
             nfa.timeout ← duration
@@ -1931,7 +1940,7 @@ function ADD_TO_WINDOW(e, spec, windows):
         window_id ← FLOOR(e.timestamp / spec.size)
         start ← window_id * spec.size
         end ← start + spec.size
-        
+
     else if spec.type == SLIDING:
         // 可能属于多个重叠窗口
         first_window ← FLOOR((e.timestamp - spec.size) / spec.slide) + 1
@@ -1941,11 +1950,11 @@ function ADD_TO_WINDOW(e, spec, windows):
             if e.timestamp >= start AND e.timestamp < end:
                 ADD_EVENT_TO_WINDOW(e, windows[i])
         return
-        
+
     else if spec.type == SESSION:
         // 动态窗口边界
         active_session ← FIND_SESSION(e.key, windows)
-        if active_session == NULL OR 
+        if active_session == NULL OR
            e.timestamp - active_session.last_event > spec.gap:
             // 创建新会话
             active_session ← CREATE_NEW_SESSION(e)
@@ -1953,11 +1962,11 @@ function ADD_TO_WINDOW(e, spec, windows):
         active_session.add(e)
         active_session.last_event ← e.timestamp
         return
-    
+
     // 添加到确定的窗口
     window ← GET_OR_CREATE_WINDOW(windows, start, end)
     window.add(e)
-    
+
     // 清理过期窗口
     EXPIRED_WINDOWS ← {w in windows | w.end < current_time - spec.late_tolerance}
     for w in EXPIRED_WINDOWS:
@@ -2033,3 +2042,7 @@ function ADD_TO_WINDOW(e, spec, windows):
 *作者: AnalysisDataFlow 形式化理论团队*
 *审核状态: 已通过形式化验证*
 *兼容标准: FLINK-CEP v1.17+, Esper v8.0+, Siddhi v5.0+*
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-19*

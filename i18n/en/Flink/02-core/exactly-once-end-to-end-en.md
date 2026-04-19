@@ -1,68 +1,105 @@
 # End-to-End Exactly-Once Guarantees
 
+> **Stage**: Flink | **Prerequisites**: [Related Documents] | **Formalization Level**: L3
+
 > **Flink Version**: 1.17-1.19 | **Status**: Production Ready | **Difficulty**: L4 (Advanced)
 >
-> End-to-end Exactly-Once is the core correctness guarantee of stream processing systems, involving the coordinated operation of three pillars: replayable Source, consistent Checkpoint, and transactional Sink.
+> End-to-end Exactly-Once is the most core correctness guarantee of stream processing systems, involving the collaborative work of three pillars: replayable Source, consistent Checkpoint, and transactional Sink.
+
+---
+
+## Table of Contents
+
+- [End-to-End Exactly-Once Guarantees](#end-to-end-exactly-once-guarantees)
+  - [Table of Contents](#table-of-contents)
+  - [1. Definitions](#1-definitions)
+    - [1.1 Exactly-Once Semantic Definition](#11-exactly-once-semantic-definition)
+    - [1.2 End-to-End Exactly-Once Three Pillars](#12-end-to-end-exactly-once-three-pillars)
+    - [1.3 Consistency Level Comparison](#13-consistency-level-comparison)
+  - [2. Properties](#2-properties)
+    - [2.1 Replayable Source Definition](#21-replayable-source-definition)
+    - [2.2 Kafka Source Offset Management](#22-kafka-source-offset-management)
+    - [2.3 Other Source System Implementations](#23-other-source-system-implementations)
+  - [3. Relations](#3-relations)
+    - [Connector Exactly-Once Support Matrix](#connector-exactly-once-support-matrix)
+  - [4. Argumentation](#4-argumentation)
+    - [4.1 Source Commit Failure](#41-source-commit-failure)
+    - [4.2 Checkpoint Failure](#42-checkpoint-failure)
+    - [4.3 Sink Pre-commit/Commit Failure](#43-sink-pre-commitcommit-failure)
+    - [4.4 Network Partition and Transaction Suspension](#44-network-partition-and-transaction-suspension)
+  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+    - [5.1 Two-Phase Commit Protocol (2PC)](#51-two-phase-commit-protocol-2pc)
+    - [5.2 Kafka Transactional Sink](#52-kafka-transactional-sink)
+    - [5.3 JDBC XA Transaction Sink](#53-jdbc-xa-transaction-sink)
+    - [5.4 Idempotent Sink Implementation](#54-idempotent-sink-implementation)
+  - [6. Examples](#6-examples)
+    - [6.1 Flink Core Configuration](#61-flink-core-configuration)
+    - [6.2 Kafka Exactly-Once Complete Configuration](#62-kafka-exactly-once-complete-configuration)
+    - [6.3 End-to-End Exactly-Once Job Complete Example](#63-end-to-end-exactly-once-job-complete-example)
+  - [7. Visualizations](#7-visualizations)
+    - [7.1 TwoPhaseCommitSinkFunction Core Class Architecture](#71-twophasecommitsinkfunction-core-class-architecture)
+    - [7.2 TwoPhaseCommitSinkFunction Transaction Lifecycle](#72-twophasecommitsinkfunction-transaction-lifecycle)
+    - [7.3 Exactly-Once Decision Tree](#73-exactly-once-decision-tree)
+  - [8. References](#8-references)
+
+---
 
 ## 1. Definitions
 
-### 1.1 Exactly-Once Semantics
+### 1.1 Exactly-Once Semantic Definition
 
 **Definition 1.1 (Exactly-Once Semantics)**:
 
-For each input record $r$ in a stream processing application, the result output to external systems reflects $r$'s processing effect exactly once [^1]:
+For each input record $r$ in a stream processing application, the result output to external systems reflects $r$'s processing effect exactly once[^1]:
 
 $$
 \forall r \in \text{Input}. \; |\{ e \in \text{Output} \mid \text{caused\_by}(e, r) \}| = 1
 $$
 
-Where $\text{caused\_by}(e, r)$ means output element $e$'s generation causally depends on record $r$'s processing.
+Where $\text{caused\_by}(e, r)$ indicates that output element $e$'s generation is causally dependent on record $r$'s processing.
 
-**Key insight**: Exactly-Once targets **side effects** (external system state changes), not the number of times a record is passed internally. In distributed stream processing, fault recovery necessarily causes records to be re-processed; Exactly-Once guarantees that "re-processing does not produce new side effects."
-
----
+**Key Insight**: Exactly-Once targets **side effects** (external system state changes), not the number of times a record is passed internally within Flink. In distributed stream processing, fault recovery inevitably causes records to be reprocessed; Exactly-Once guarantees that "reprocessing does not produce new side effects."
 
 ### 1.2 End-to-End Exactly-Once Three Pillars
 
-End-to-end Exactly-Once is not an isolated Flink internal mechanism, but the result of three-party collaboration among Source, engine, and Sink [^2]:
+End-to-end Exactly-Once is not an isolated mechanism within Flink, but the result of collaboration among Source, engine, and Sink[^2]:
 
 ```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                    End-to-End Exactly-Once Architecture                      │
-├─────────────────────────────────────────────────────────────────────────────┤
-│  ┌─────────────┐         ┌─────────────┐         ┌─────────────┐           │
-│  │   Source    │────────▶│    Flink    │────────▶│    Sink     │           │
-│  │   System    │         │   Engine    │         │   System    │           │
-│  └──────┬──────┘         └──────┬──────┘         └──────┬──────┘           │
-│         ▼                       ▼                       ▼                  │
-│  ┌─────────────┐         ┌─────────────┐         ┌─────────────┐           │
-│  │  Replayable │         │  Distributed│         │ Transaction │           │
-│  │  Offset/    │         │  Snapshot   │         │ 2PC /       │           │
-│  │  Position   │         │  Barrier    │         │  Idempotent │           │
-│  └─────────────┘         └─────────────┘         └─────────────┘           │
-│                                                                             │
-│  Formal: End-to-End-EO = Replayable(Source) ∧ ConsistentCheckpoint(Flink)  │
-│                        ∧ AtomicOutput(Sink)                                 │
-└─────────────────────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                    End-to-End Exactly-Once Guarantee Architecture              │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│  ┌─────────────┐         ┌─────────────┐         ┌─────────────┐               │
+│  │   Source    │────────▶│    Flink    │────────▶│    Sink     │               │
+│  │   System    │         │   Engine    │         │   System    │               │
+│  └──────┬──────┘         └──────┬──────┘         └──────┬──────┘               │
+│         ▼                       ▼                       ▼                      │
+│  ┌─────────────┐         ┌─────────────┐         ┌─────────────┐               │
+│  │  Replayable │         │  Distributed│         │  Transaction│               │
+│  │  Guarantee  │         │  Snapshot   │         │  / Idempotent│              │
+│  │  Offset/    │         │  Checkpoint │         │  Two-Phase  │               │
+│  │  Position   │         │  Barrier Align│       │  Commit     │               │
+│  └─────────────┘         └─────────────┘         └─────────────┘               │
+│                                                                                 │
+│  Formal: End-to-End-EO = Replayable(Source) ∧ ConsistentCheckpoint(Flink)     │
+│                         ∧ AtomicOutput(Sink)                                   │
+└─────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**Three Pillars**:
+**Three Pillars Detailed**:
 
-| Pillar | Function | Implementation | Recovery Behavior |
-|--------|----------|----------------|-------------------|
-| **Source replayable** | prevents data loss | offset persistence to Checkpoint | re-read from last Checkpoint offset |
-| **Checkpoint consistency** | guarantees state consistency | Chandy-Lamport distributed snapshot | recover to globally consistent state |
-| **Sink transactional** | prevents duplicate output | 2PC / idempotent write | uncommitted transactions rollback; committed transactions idempotent |
-
----
+| Pillar | Role | Implementation Mechanism | Fault Recovery Behavior |
+|--------|------|-------------------------|------------------------|
+| **Replayable Source** | Prevent data loss | Offset persistence to Checkpoint | Re-read from last Checkpoint offset |
+| **Checkpoint Consistency** | Guarantee state consistency | Chandy-Lamport distributed snapshot | Recover to globally consistent state |
+| **Transactional Sink** | Prevent duplicate output | 2PC / Idempotent write | Uncommitted transactions rolled back; committed transactions idempotent |
 
 ### 1.3 Consistency Level Comparison
 
-| Level | Definition | Data Loss | Duplication | Applicable Scenario |
-|-------|-----------|-----------|-------------|---------------------|
-| **At-Most-Once** | message processed 0 or 1 times | possible | none | log sampling, real-time monitoring |
-| **At-Least-Once** | message processed ≥1 times | none | possible | log aggregation, metrics collection |
-| **Exactly-Once** | message processed exactly 1 time | none | none | financial transactions, inventory management |
+| Level | Definition | Data Loss | Data Duplicate | Applicable Scenario |
+|-------|-----------|-----------|---------------|---------------------|
+| **At-Most-Once** | Message processed 0 or 1 times | Possible | None | Log sampling, real-time monitoring |
+| **At-Least-Once** | Message processed ≥1 times | None | Possible | Log aggregation, metrics collection |
+| **Exactly-Once** | Message processed exactly 1 time | None | None | Financial transactions, inventory management |
 
 ---
 
@@ -72,48 +109,82 @@ End-to-end Exactly-Once is not an isolated Flink internal mechanism, but the res
 
 **Definition 2.1 (Replayable Source)**:
 
-A Source is replayable iff after failure it can re-read the same data sequence from a persisted position marker (offset/position) [^3]:
+A Source is replayable if and only if after failure, the same data sequence can be re-read from the persisted position marker (offset/position)[^3]:
 
 $$
 \text{Replayable}(Src) \iff \forall p \in \text{Positions}. \; \exists! \text{Sequence}(p)
 $$
 
----
-
 ### 2.2 Kafka Source Offset Management
 
-Key Kafka Source Exactly-Once configuration parameters [^4]:
+Kafka Source Exactly-Once configuration key parameters[^4]:
 
 ```java
-Properties properties = new Properties();
-properties.setProperty("bootstrap.servers", "kafka:9092");
-properties.setProperty("group.id", "flink-eo-consumer");
-properties.setProperty("isolation.level", "read_committed");  // only read committed transactions
-properties.setProperty("enable.auto.commit", "false");         // Flink manages offsets
+import java.util.Properties;
+import org.apache.flink.api.common.serialization.SimpleStringSchema;
+import org.apache.flink.connector.kafka.source.KafkaSource;
 
-KafkaSource<String> source = KafkaSource.<String>builder()
-    .setBootstrapServers("kafka:9092")
-    .setTopics("input-topic")
-    .setGroupId("flink-eo-consumer")
-    .setProperty("isolation.level", "read_committed")
-    .setProperty("enable.auto.commit", "false")
-    .setStartingOffsets(OffsetsInitializer.earliest())
-    .setValueOnlyDeserializer(new SimpleStringSchema())
-    .build();
+public class Example {
+    public static void main(String[] args) throws Exception {
+        KafkaSource<String> source = KafkaSource.<String>builder()
+            .setBootstrapServers("kafka:9092")
+            .setTopics("input-topic")
+            .setGroupId("flink-eo-consumer")
+            .setProperty("isolation.level", "read_committed")  // key: only read committed
+            .setProperty("enable.auto.commit", "false")         // Flink manages offsets
+            .setStartingOffsets(OffsetsInitializer.earliest())
+            .setValueOnlyDeserializer(new SimpleStringSchema())
+            .build();
+    }
+}
 ```
 
-**Key design**: Flink uses offsets saved in StateBackend for recovery, not Kafka's `__consumer_offsets`. Even if async offset commit fails, no data loss or duplication occurs.
+**Offset Management Flow**:
 
----
+```mermaid
+sequenceDiagram
+    participant Kafka as Kafka Broker
+    participant Source as FlinkKafkaSource
+    participant State as Flink StateBackend
+    participant JM as JobManager
 
-### 2.3 Other Source Systems
+    Note over Kafka,JM: Normal Processing Phase
+    loop Continuous Reading
+        Kafka->>Source: Pull records (offset: 100-110)
+        Source->>Source: Process records
+    end
 
-| Source System | Position Marker | Replayable Support | Configuration Essentials |
-|--------------|-----------------|-------------------|-------------------------|
-| **Apache Pulsar** | Cursor (ledgerId, entryId) | ✅ | `SubscriptionType.Failover`, broker dedup |
-| **AWS Kinesis** | Sequence Number | ✅ | Shard-based sequence number tracking |
-| **RabbitMQ** | Delivery Tag | ⚠️ Limited | `autoAck=false`, manual ACK |
-| **File System** | File Position | ✅ | File offset persistence |
+    Note over Kafka,JM: Checkpoint Triggered
+    JM->>Source: snapshotState()
+    Source->>State: Save offset {topic: t1, p0: 110}
+    State-->>Source: Acknowledge
+    Source-->>JM: Checkpoint acknowledge
+
+    Note over Kafka,JM: Async Offset Commit (best-effort)
+    Source->>Kafka: Commit offset to __consumer_offsets
+    Kafka-->>Source: Acknowledge
+
+    Note over Kafka,JM: Failure Scenario
+    JM-xSource: Connection lost
+
+    Note over Kafka,JM: Recovery Phase
+    JM->>State: Recover from Checkpoint
+    State-->>JM: Offset {topic: t1, p0: 110}
+    JM->>Source: Recover with state
+    Source->>Kafka: Seek to offset 110
+    Kafka-->>Source: Resume reading from 110
+```
+
+**Key Design**: Flink uses offsets saved in StateBackend for recovery, not Kafka's `__consumer_offsets`. Even if async offset commit fails, it does not cause data loss or duplication.
+
+### 2.3 Other Source System Implementations
+
+| Source System | Position Marker | Replayable Support | Configuration Points |
+|--------------|----------------|-------------------|---------------------|
+| **Apache Pulsar** | Cursor (ledgerId, entryId) | ✅ Supported | `SubscriptionType.Failover`, enable broker-level dedup |
+| **AWS Kinesis** | Sequence Number | ✅ Supported | Shard-based sequence number tracking |
+| **RabbitMQ** | Delivery Tag | ⚠️ Limited | `autoAck=false`, manual acknowledgment |
+| **File System** | File Position | ✅ Supported | File offset persistence |
 
 ---
 
@@ -121,19 +192,43 @@ KafkaSource<String> source = KafkaSource.<String>builder()
 
 ### Connector Exactly-Once Support Matrix
 
-| Connector Type | Exactly-Once Support | Implementation Strategy | Configuration Essentials | Applicable Scenario |
-|:--------------|:--------------------:|:------------------------|:-------------------------|:--------------------|
-| **Apache Kafka** | ✅ Native | Transactional Producer (2PC) | `transactional.id`, `isolation.level=read_committed` | Stream pipelines |
-| **Apache Pulsar** | ✅ Native | Cursor management + broker dedup | `SubscriptionType.Failover`, enable dedup | Multi-tenant messaging |
-| **AWS Kinesis** | ⚠️ Partial | Sequence number tracking | Shard-based sequence Checkpoint | Cloud-native streaming |
-| **RabbitMQ** | ⚠️ Partial | Manual ACK | `autoAck=false`, manual confirmation | Traditional messaging |
-| **JDBC (PostgreSQL)** | ✅ Full | XA transactions (2PC) | `max_prepared_transactions > 0`, UPSERT | Relational databases |
-| **JDBC (MySQL)** | ✅ Full | XA transactions (2PC) | InnoDB, `XA RECOVER` | Relational databases |
-| **Elasticsearch** | ⚠️ Partial | Version control + idempotent ID | `version_type=external` | Search engines |
-| **HDFS** | ✅ Full | Atomic rename | temp → final atomic move | Big data storage |
-| **Amazon S3** | ✅ Full | Multipart upload + versioning | Enable Bucket Versioning | Cloud object storage |
-| **Redis** | ⚠️ Partial | Lua script + Checkpoint ID | Lua conditional update | Cache/KV store |
-| **Cassandra** | ⚠️ Partial | Idempotent write | Primary key dedup | Distributed database |
+| Connector Type | Exactly-Once Support | Implementation Strategy | Configuration Points | Applicable Scenario |
+|:--------------|:--------------------:|:------------------------|:---------------------|:--------------------|
+| **Apache Kafka** | ✅ Native | Transactional Producer (2PC) | `transactional.id`, `isolation.level=read_committed` | Stream processing pipeline |
+| **Apache Pulsar** | ✅ Native | Cursor management + Broker dedup | `SubscriptionType.Failover`, enable dedup | Multi-tenant message queue |
+| **AWS Kinesis** | ⚠️ Partial | Sequence number tracking | Shard-based sequence number Checkpoint | Cloud-native stream processing |
+| **RabbitMQ** | ⚠️ Partial | Manual ACK | `autoAck=false`, manual acknowledgment | Traditional message queue |
+| **JDBC (PostgreSQL)** | ✅ Full | XA transaction (2PC) | `max_prepared_transactions > 0`, UPSERT | Relational database |
+| **JDBC (MySQL)** | ✅ Full | XA transaction (2PC) | InnoDB engine, `XA RECOVER` | Relational database |
+| **Elasticsearch** | ⚠️ Partial | Version control + Idempotent ID | `version_type=external` | Search engine |
+| **HDFS** | ✅ Full | Atomic rename | Temp file → final file atomic move | Big data storage |
+| **Amazon S3** | ✅ Full | Multipart upload + Versioning | Enable Bucket Versioning | Cloud object storage |
+| **Redis** | ⚠️ Partial | Lua script + Checkpoint ID | Lua conditional update, Checkpoint ID dedup | Cache/KV storage |
+| **Cassandra** | ⚠️ Partial | Idempotent write | Primary key dedup, write consistency level | Distributed database |
+
+**Strategy Selection Decision Tree**:
+
+```mermaid
+graph TD
+    Start([Need Exactly-Once?]) --> Q1{Source Replayable?}
+    Q1 -->|No| A1([Give Up Exactly-Once])
+    Q1 -->|Yes| Q2{Sink Type?}
+    Q2 -->|Kafka| A2([Use Kafka Transaction])
+    Q2 -->|Database| Q3{Support XA Transaction?}
+    Q2 -->|File System| A3([Use Rename Atomic Operation])
+    Q2 -->|Other| Q4{Can Implement Idempotent?}
+    Q3 -->|Yes| A4([Use XA Sink])
+    Q3 -->|No| Q4
+    Q4 -->|Yes| A5([Use Idempotent Sink])
+    Q4 -->|No| A6([Use External Deduplication])
+    A2 --> C1[End-to-End Exactly-Once]
+    A3 --> C1
+    A4 --> C1
+    A5 --> C1
+    A6 --> C1
+    style Start fill:#bbdefb,stroke:#1565c0
+    style C1 fill:#e1bee7,stroke:#6a1b9a
+```
 
 ---
 
@@ -141,69 +236,91 @@ KafkaSource<String> source = KafkaSource.<String>builder()
 
 ### 4.1 Source Commit Failure
 
-**Scenario**: `notifyCheckpointComplete()` fails to commit offsets to Kafka.
+**Scenario**: `notifyCheckpointComplete()` fails to commit offset to Kafka
 
-**Analysis**: Source commit failure does **not** violate Exactly-Once, because Flink uses offsets in StateBackend for recovery, not Kafka-committed offsets. After recovery, the job re-reads from the Checkpoint offset; records before that offset are already processed and their effects committed via 2PC.
+```mermaid
+sequenceDiagram
+    participant Kafka as Kafka Broker
+    participant Source as FlinkKafkaSource
+    participant State as Flink StateBackend
+    participant JM as JobManager
 
----
+    Kafka->>Source: Records 0-100
+    JM->>Source: snapshotState()
+    Source->>State: Save offset=100
+    Source-->>JM: Acknowledge
+    JM->>Source: notifyCheckpointComplete()
+    Source-xKafka: commitAsync() - timeout
+    Note over Kafka,JM: Job failure
+    JM-xSource: Connection lost
+    Note over Kafka,JM: Recovery
+    JM->>State: Recover from Checkpoint
+    State-->>JM: offset=100
+    JM->>Source: Recover (offset=100)
+    Source->>Kafka: Seek to offset 100
+    Note right of Source: Records 0-99 already processed, skipped
+```
+
+**Key**: Source commit failure does not violate Exactly-Once, because Flink uses offsets from StateBackend for recovery, not Kafka-committed offsets.
 
 ### 4.2 Checkpoint Failure
 
 | Failure Type | Cause | Recovery Action |
 |-------------|-------|----------------|
-| **Sync phase failure** | state snapshot exception | abort Checkpoint, continue processing |
-| **Async phase failure** | state upload failure | abort Checkpoint, retry next time |
-| **Timeout** | Checkpoint exceeds time limit | abort; may indicate backpressure |
-| **Alignment timeout** | Barrier alignment timeout | task failure, trigger recovery |
-
----
+| **Synchronous phase failure** | State snapshot exception | Abort Checkpoint, continue processing |
+| **Asynchronous phase failure** | State upload failure | Abort Checkpoint, retry next time |
+| **Timeout** | Checkpoint duration exceeds limit | Abort, may indicate backpressure |
+| **Alignment timeout** | Barrier alignment timeout | Task failure, trigger recovery |
 
 ### 4.3 Sink Pre-commit/Commit Failure
 
-**Pre-commit failure**: exception propagates to CheckpointCoordinator; Checkpoint marked FAILED; all Sinks abort transactions.
+**Pre-commit failure**: Exception propagates to CheckpointCoordinator, Checkpoint marked FAILED, all Sinks abort transactions.
 
 **Commit failure (Split-Brain scenario)**:
-- Kafka Sink: transaction timeout; broker auto-aborts expired transactions
-- JDBC XA Sink: prepared transactions remain in DB; heuristic decision needed during recovery
 
-**Transaction Fencing**: Kafka uses epoch mechanism to prevent zombie task writes. New producer registration automatically aborts old epoch transactions, ensuring Exactly-Once.
+- Kafka Sink: Transaction timeout, Broker automatically aborts expired transactions
+- JDBC XA Sink: Prepared transactions remain in DB, heuristic decision needed during recovery
+
+### 4.4 Network Partition and Transaction Suspension
+
+**Transaction Fencing**: Kafka prevents zombie task writes through epoch mechanism. After new producer registers, transactions from old epoch are automatically aborted, ensuring Exactly-Once.
 
 ---
 
 ## 5. Proof / Engineering Argument
 
-### Two-Phase Commit Protocol (2PC)
+### 5.1 Two-Phase Commit Protocol (2PC)
 
-Flink implements 2PC via `TwoPhaseCommitSinkFunction` [^7], binding Checkpoint with external system transactions:
+Flink implements the two-phase commit protocol through `TwoPhaseCommitSinkFunction`[^7], binding Checkpoint with external system transactions:
 
-**Definition 4.1 (Flink 2PC Protocol)**:
+**Definition 5.1 (Flink 2PC Protocol)**:
 
 $$
 \text{Flink-2PC} = \langle \text{Coordinator}, \text{Participants}, \text{Prepare}, \text{Commit}, \text{Abort} \rangle
 $$
 
 - **Coordinator**: Flink JobManager (CheckpointCoordinator)
-- **Participants**: all TwoPhaseCommitSinkFunction instances
-- **Prepare**: `snapshotState()` — persists pre-commit state
-- **Commit**: `notifyCheckpointComplete()` — commits external transaction
-- **Abort**: `notifyCheckpointAborted()` or recovery from previous Checkpoint
+- **Participants**: All TwoPhaseCommitSinkFunction instances
+- **Prepare**: `snapshotState()` - persist pre-commit state
+- **Commit**: `notifyCheckpointComplete()` - commit external transaction
+- **Abort**: `notifyCheckpointAborted()` or recover from previous Checkpoint
 
-**2PC Sequence**:
+**2PC Sequence Diagram**:
 
 ```mermaid
 sequenceDiagram
     participant JM as JobManager<br/>Coordinator
     participant TM as TaskManager<br/>Subtask
     participant Sink as TwoPhaseCommitSink
-    participant Ext as External System<br/>Kafka/JDBC
+    participant Ext as External System<br/>Kafka/JDBC/...
 
     Note over JM,Ext: Phase 1: Prepare
     JM->>TM: Trigger Checkpoint
     TM->>Sink: snapshotState()
     Sink->>Ext: preCommit(transaction)
     Ext-->>Sink: OK (transaction prepared)
-    Sink-->>TM: state snapshot
-    TM-->>JM: Ack Checkpoint
+    Sink-->>TM: State snapshot
+    TM-->>JM: Acknowledge Checkpoint
 
     Note over JM,Ext: Coordinator Decision
     alt All participants acknowledged
@@ -218,45 +335,191 @@ sequenceDiagram
     end
 ```
 
+### 5.2 Kafka Transactional Sink
+
+#### 5.2.1 Legacy Kafka Producer (Before Flink 1.14)
+
+```java
+Properties properties = new Properties();
+properties.put("bootstrap.servers", "localhost:9092");
+properties.put("transactional.id", "flink-job-" + subtaskIndex);  // unique transactional.id
+properties.put("enable.idempotence", "true");
+properties.put("acks", "all");
+properties.put("retries", Integer.MAX_VALUE);
+
+FlinkKafkaProducer<String> sink = new FlinkKafkaProducer<>(
+    "output-topic", new SimpleStringSchema(), properties,
+    FlinkKafkaProducer.Semantic.EXACTLY_ONCE  // enable 2PC
+);
+```
+
+#### 5.2.2 New Kafka Sink (Flink 1.15+ Recommended)
+
+```java
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.api.common.serialization.SimpleStringSchema;
+import org.apache.flink.connector.kafka.sink.DeliveryGuarantee;
+import org.apache.flink.connector.kafka.sink.KafkaRecordSerializationSchema;
+import org.apache.flink.connector.kafka.sink.KafkaSink;
+import org.apache.flink.connector.kafka.source.KafkaSource;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
+public class Example {
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+
+        // Source configuration - only read committed transactions
+        KafkaSource<String> source = KafkaSource.<String>builder()
+            .setBootstrapServers("kafka:9092")
+            .setTopics("input-topic")
+            .setGroupId("flink-eo-consumer")
+            .setProperty("isolation.level", "read_committed")
+            .setProperty("enable.auto.commit", "false")
+            .setStartingOffsets(OffsetsInitializer.earliest())
+            .setValueOnlyDeserializer(new SimpleStringSchema())
+            .build();
+
+        // Sink configuration - Exactly-Once transactional write
+        KafkaSink<String> sink = KafkaSink.<String>builder()
+            .setBootstrapServers("kafka:9092")
+            .setRecordSerializer(KafkaRecordSerializationSchema.builder()
+                .setTopic("output-topic")
+                .setValueSerializationSchema(new SimpleStringSchema())
+                .build())
+            .setDeliveryGuarantee(DeliveryGuarantee.EXACTLY_ONCE)
+            .setTransactionalIdPrefix("flink-processor")
+            .build();
+
+        env.fromSource(source, WatermarkStrategy.noWatermarks(), "Kafka Source")
+            .map(new ProcessingFunction())
+            .sinkTo(sink);
+    }
+}
+```
+
+#### 5.2.3 Kafka Exactly-Once Complete Configuration Template
+
+**flink-conf.yaml key configuration**:
+
+```yaml
+# Checkpoint configuration
+execution.checkpointing.mode: EXACTLY_ONCE
+execution.checkpointing.interval: 60s
+execution.checkpointing.timeout: 10m
+execution.checkpointing.max-concurrent-checkpoints: 1
+
+# Restart strategy
+restart-strategy: fixed-delay
+restart-strategy.fixed-delay.attempts: 10
+restart-strategy.fixed-delay.delay: 10s
+```
+
+**Kafka cluster configuration requirements**:
+
+```properties
+# broker.properties
+# Transaction-related configuration
+transaction.state.log.replication.factor=3
+transaction.state.log.min.isr=2
+transaction.max.timeout.ms=900000  # match Flink Checkpoint timeout
+
+# Idempotency configuration
+enable.idempotence=true
+```
+
+**Transaction Fencing**: Kafka prevents zombie task writes through epoch mechanism. After new producer registers, transactions from old epoch are automatically aborted.
+
+#### 5.2.4 Kafka Exactly-Once Key Behaviors
+
+| Configuration Item | Role | Notes |
+|-------------------|------|-------|
+| `isolation.level=read_committed` | Consumer only reads committed transaction messages | Source must configure, otherwise may read uncommitted data |
+| `transactional.id` | Producer transaction unique identifier | Must be globally unique, typically includes subtaskIndex |
+| `DeliveryGuarantee.EXACTLY_ONCE` | Enable transactional write | Bound with Checkpoint mechanism |
+| `transaction.max.timeout.ms` | Kafka transaction maximum timeout | Must be greater than Flink Checkpoint timeout |
+
+**Idempotency guarantee**: Even if transaction timeout retries, Kafka ensures the same message is not duplicated through `producer.id` + `epoch` mechanism.
+
+### 5.3 JDBC XA Transaction Sink
+
+JDBC XA Sink implements Exactly-Once[^9]:
+
+```java
+JdbcXaSinkFunction<Row> xaSink = new JdbcXaSinkFunction<>(
+    "INSERT INTO results (id, value, ts) VALUES (?, ?, ?) " +
+    "ON CONFLICT (id) DO UPDATE SET value = EXCLUDED.value",
+    (ps, row) -> {
+        ps.setString(1, row.getId());
+        ps.setString(2, row.getValue());
+        ps.setTimestamp(3, Timestamp.valueOf(row.getTimestamp()));
+    },
+    xaDataSource,
+    XidGenerator.semanticXidGenerator(jobName, subtaskIndex)
+);
+```
+
 ---
 
-### Exactly-Once Correctness Theorem
+### 5.4 Idempotent Sink Implementation
 
-**Core Theorem**: Let Flink job $J = (Src, Ops, Snk)$ satisfy:
-1. $Src$ is replayable
-2. $Ops$ uses Barrier-aligned Checkpoint mechanism
-3. $Snk$ uses transactional 2PC protocol with idempotent commit
+#### 5.4.1 Idempotency Definition and Principle
 
-Then $J$ guarantees end-to-end Exactly-Once semantics.
+**Definition 5.1 (Idempotency)**:
 
-**Formal expression**:
+Operation $f$ is idempotent if and only if multiple applications produce the same effect as a single application[^10]:
 
 $$
-\forall r \in \text{Input}. \; |\{ e \in \text{Output} \mid \text{caused\_by}(e, r) \}| = 1
+\forall x. \; f(f(x)) = f(x)
 $$
 
-**Proof Structure**:
+**Idempotency vs Transactionality**:
 
+| Feature | Transactional Sink | Idempotent Sink |
+|---------|-------------------|-----------------|
+| Mechanism | 2PC protocol | Primary key/version dedup |
+| Latency | Higher (two phases) | Lower (direct write) |
+| External System Requirement | Support transactions | Support UPSERT/version control |
+| Applicable Systems | Kafka, JDBC (XA) | HBase, Cassandra, File System |
+
+#### 5.4.2 File System Idempotent Write
+
+Use atomic rename to implement file system Exactly-Once:
+
+```java
+@Override
+protected void preCommit(String pendingFile) throws Exception {
+    // Rename from .inprogress to pending (HDFS atomic operation)
+    fs.rename(inprogressPath, pendingPath);
+}
+
+@Override
+protected void commit(String pendingFile) {
+    // Atomically move from pending to final location
+    fs.rename(pendingPath, finalPath);
+}
 ```
-At-Least-Once (no loss)
-├── Source replayable lemma
-│   └── Replays from Checkpoint offset after failure
-│   └── All data processed at least once
 
-At-Most-Once (no duplication)
-├── 2PC atomicity lemma
-│   └── preCommit data invisible externally before Checkpoint success
-│   └── After failure recovery, preCommitted transactions safely commit (idempotent)
-│   └── Or abort and re-process into new transaction
+#### 5.4.3 Database UPSERT Mode
 
-Exactly-Once = At-Least-Once ∧ At-Most-Once
+```sql
+-- PostgreSQL: ON CONFLICT DO UPDATE
+INSERT INTO results (id, value, processed_at) VALUES (?, ?, ?)
+ON CONFLICT (id) DO UPDATE SET
+    value = EXCLUDED.value,
+    processed_at = EXCLUDED.processed_at;
+
+-- MySQL: INSERT ... ON DUPLICATE KEY UPDATE
+INSERT INTO results (id, value, processed_at) VALUES (?, ?, ?)
+ON DUPLICATE KEY UPDATE
+    value = VALUES(value),
+    processed_at = VALUES(processed_at);
 ```
 
 ---
 
 ## 6. Examples
 
-### Flink Core Configuration (flink-conf.yaml)
+### 6.1 Flink Core Configuration
 
 ```yaml
 # Checkpoint configuration
@@ -279,54 +542,62 @@ restart-strategy.fixed-delay.attempts: 10
 restart-strategy.fixed-delay.delay: 10s
 ```
 
----
+### 6.2 Kafka Exactly-Once Complete Configuration
 
-### Kafka Exactly-Once Complete Configuration
-
-**Kafka Source**:
-```java
-KafkaSource<String> source = KafkaSource.<String>builder()
-    .setBootstrapServers("kafka:9092")
-    .setTopics("input-topic")
-    .setGroupId("flink-eo-consumer")
-    .setProperty("isolation.level", "read_committed")     // key: only read committed
-    .setProperty("enable.auto.commit", "false")           // Flink manages offsets
-    .setStartingOffsets(OffsetsInitializer.committedOffsets(OffsetResetStrategy.EARLIEST))
-    .setValueOnlyDeserializer(new SimpleStringSchema())
-    .build();
-```
-
-**Kafka Sink**:
-```java
-KafkaSink<String> sink = KafkaSink.<String>builder()
-    .setBootstrapServers("kafka:9092")
-    .setRecordSerializer(KafkaRecordSerializationSchema.builder()
-        .setTopic("output-topic")
-        .setValueSerializationSchema(new SimpleStringSchema())
-        .build())
-    .setDeliveryGuarantee(DeliveryGuarantee.EXACTLY_ONCE)  // enable Exactly-Once
-    .setTransactionalIdPrefix("flink-processor")            // transaction ID prefix
-    .build();
-```
-
-**Kafka cluster requirements**:
-```properties
-# broker.properties
-# transaction configs
-transaction.state.log.replication.factor=3
-transaction.state.log.min.isr=2
-transaction.max.timeout.ms=900000  # must exceed Flink Checkpoint timeout
-
-# idempotency
-enable.idempotence=true
-```
-
----
-
-### Complete End-to-End Exactly-Once Job
+**Production-grade Kafka Source configuration**:
 
 ```java
+import org.apache.flink.api.common.serialization.SimpleStringSchema;
+import org.apache.flink.connector.kafka.source.KafkaSource;
+
+public class Example {
+    public static KafkaSource<String> createKafkaSource(String bootstrapServers, String topic, String groupId) {
+        return KafkaSource.<String>builder()
+            .setBootstrapServers(bootstrapServers)
+            .setTopics(topic)
+            .setGroupId(groupId)
+            .setProperty("isolation.level", "read_committed")
+            .setProperty("enable.auto.commit", "false")
+            .setProperty("auto.offset.reset", "earliest")
+            .setStartingOffsets(OffsetsInitializer.committedOffsets(OffsetResetStrategy.EARLIEST))
+            .setValueOnlyDeserializer(new SimpleStringSchema())
+            .build();
+    }
+}
+```
+
+**Production-grade Kafka Sink configuration**:
+
+```java
+import org.apache.flink.api.common.serialization.SimpleStringSchema;
+import org.apache.flink.connector.kafka.sink.DeliveryGuarantee;
+import org.apache.flink.connector.kafka.sink.KafkaRecordSerializationSchema;
+import org.apache.flink.connector.kafka.sink.KafkaSink;
+
+public class Example {
+    public static KafkaSink<String> createKafkaSink(String bootstrapServers, String topic, String transactionalIdPrefix) {
+        return KafkaSink.<String>builder()
+            .setBootstrapServers(bootstrapServers)
+            .setRecordSerializer(KafkaRecordSerializationSchema.builder()
+                .setTopic(topic)
+                .setValueSerializationSchema(new SimpleStringSchema())
+                .build())
+            .setDeliveryGuarantee(DeliveryGuarantee.EXACTLY_ONCE)
+            .setTransactionalIdPrefix(transactionalIdPrefix)
+            .build();
+    }
+}
+```
+
+### 6.3 End-to-End Exactly-Once Job Complete Example
+
+```java
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.CheckpointingMode;
+import org.apache.flink.streaming.api.windowing.time.Time;
+
 public class KafkaExactlyOnceJob {
+
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
@@ -341,7 +612,9 @@ public class KafkaExactlyOnceJob {
         env.getCheckpointConfig().setCheckpointStorage("hdfs:///flink/checkpoints");
 
         // 3. Configure restart strategy
-        env.setRestartStrategy(RestartStrategies.fixedDelayRestart(10, Time.seconds(10)));
+        env.setRestartStrategy(RestartStrategies.fixedDelayRestart(
+            10, Time.seconds(10)
+        ));
 
         // 4. Kafka Source - Exactly-Once
         KafkaSource<String> source = KafkaSource.<String>builder()
@@ -379,76 +652,96 @@ public class KafkaExactlyOnceJob {
 }
 ```
 
+**Key Configuration Verification**:
+
+```bash
+#!/bin/bash
+echo "=== Flink Exactly-Once Pre-Deployment Verification ==="
+grep -q "execution.checkpointing.mode: EXACTLY_ONCE" flink-conf.yaml && \
+    echo "✓ Checkpoint mode correct" || echo "✗ Checkpoint mode error"
+grep -q "isolation.level=read_committed" kafka.properties && \
+    echo "✓ Kafka isolation level correct" || echo "✗ Kafka isolation level error"
+echo "Verification complete!"
+```
+
 ---
 
 ## 7. Visualizations
 
-### End-to-End Exactly-Once Three Pillars
+### 7.1 TwoPhaseCommitSinkFunction Core Class Architecture
 
-```mermaid
-graph TB
-    subgraph "Source Layer"
-        S1[Kafka Source] --> S2[Offset Persistence]
-        S3[Pulsar Source] --> S4[Cursor Management]
-    end
+**Source Location**: `flink-streaming-java/src/main/java/org/apache/flink/streaming/api/functions/sink/TwoPhaseCommitSinkFunction.java`
 
-    subgraph "Flink Engine Layer"
-        F1[Checkpoint Coordinator] --> F2[Barrier Injection]
-        F2 --> F3[Barrier Alignment]
-        F3 --> F4[State Snapshot]
-        F4 --> F5[Checkpoint ACK]
-    end
+```java
+/**
+ * Abstract base class for two-phase commit sinks.
+ * Implements coordination between Flink and external system transactions.
+ *
+ * Type Parameters:
+ *   IN - Input data type
+ *   TXN - Transaction context type
+ *   CONTEXT - Transaction context holder type
+ */
+public abstract class TwoPhaseCommitSinkFunction<IN, TXN, CONTEXT>
+        extends RichSinkFunction<IN>
+        implements CheckpointedFunction, CheckpointListener {
 
-    subgraph "Sink Layer"
-        K1[Kafka Sink] --> K2[2PC Transaction]
-        K3[JDBC Sink] --> K4[XA Transaction]
-        K5[FileSystem Sink] --> K6[Atomic Rename]
-    end
+    // Current in-progress transaction
+    private transient TransactionHolder<TXN> currentTransaction;
 
-    S2 --> F1
-    S4 --> F1
-    F5 --> K2
-    F5 --> K4
-    F5 --> K6
+    // Pending commit transaction queue (waiting for Checkpoint confirmation)
+    private transient List<TransactionHolder<TXN>> pendingCommitTransactions;
 
-    style F1 fill:#e1bee7,stroke:#6a1b9a
-    style F3 fill:#fff9c4,stroke:#f57f17
-    style K2 fill:#c8e6c9,stroke:#2e7d32
-    style K4 fill:#c8e6c9,stroke:#2e7d32
-    style K6 fill:#c8e6c9,stroke:#2e7d32
+    // Transaction context Serializer (for Checkpoint)
+    private final TypeSerializer<CONTEXT> contextSerializer;
+
+    // Transaction Serializer
+    private final TypeSerializer<TXN> transactionSerializer;
+
+    public TwoPhaseCommitSinkFunction(
+            TypeSerializer<CONTEXT> contextSerializer,
+            TypeSerializer<TXN> transactionSerializer) {
+        this.contextSerializer = checkNotNull(contextSerializer);
+        this.transactionSerializer = checkNotNull(transactionSerializer);
+    }
+}
 ```
 
-**Legend**: Purple = Flink engine coordinating distributed snapshots; Yellow = Barrier alignment ensuring consistency; Green = various Sink implementations achieving Exactly-Once via different mechanisms (2PC, XA, atomic rename).
+#### Transaction Lifecycle Methods
+
+```java
+// [Pseudocode snippet — not directly runnable] Core logic only
+
+/**
+ * Start new transaction
+ * Called in the following scenarios:
+ * 1. During Sink initialization
+ * 2. After each Checkpoint completion (start next round transaction)
+ */
+protected abstract TXN beginTransaction() throws Exception;
+
+/**
+ * Pre-commit phase (Prepare Phase)
+ * Persist data to temporary location, but not yet visible
+ */
+protected abstract void preCommit(TXN transaction) throws Exception;
+
+/**
+ * Formal commit phase (Commit Phase)
+ * Called after receiving Checkpoint success notification
+ */
+protected abstract void commit(TXN transaction) throws Exception;
+
+/**
+ * Abort transaction
+ * Called when Checkpoint fails or job recovers
+ */
+protected abstract void abort(TXN transaction) throws Exception;
+```
 
 ---
 
-### Exactly-Once Strategy Selection Decision Tree
-
-```mermaid
-graph TD
-    Start([Need Exactly-Once?]) --> Q1{Source replayable?}
-    Q1 -->|No| A1([Abandon Exactly-Once])
-    Q1 -->|Yes| Q2{Sink type?}
-    Q2 -->|Kafka| A2([Use Kafka transactions])
-    Q2 -->|Database| Q3{Supports XA transactions?}
-    Q2 -->|File system| A3([Use atomic rename])
-    Q2 -->|Other| Q4{Can implement idempotency?}
-    Q3 -->|Yes| A4([Use XA Sink])
-    Q3 -->|No| Q4
-    Q4 -->|Yes| A5([Use idempotent Sink])
-    Q4 -->|No| A6([Use external dedup])
-    A2 --> C1[End-to-end Exactly-Once]
-    A3 --> C1
-    A4 --> C1
-    A5 --> C1
-    A6 --> C1
-    style Start fill:#bbdefb,stroke:#1565c0
-    style C1 fill:#e1bee7,stroke:#6a1b9a
-```
-
----
-
-### TwoPhaseCommitSinkFunction Lifecycle
+### 7.2 TwoPhaseCommitSinkFunction Transaction Lifecycle
 
 ```mermaid
 sequenceDiagram
@@ -470,17 +763,17 @@ sequenceDiagram
 
     Note right of Sink: Phase 1: Prepare
     Sink->>Sink: preCommit(currentTransaction)
-    Sink->>Ext: flush data to temporary location
+    Sink->>Ext: Flush data to temporary location
     Ext-->>Sink: OK
 
-    Sink->>State: save transaction context
-    State-->>TM: ack
+    Sink->>State: Save transaction context
+    State-->>TM: Acknowledge
     TM-->>JM: Checkpoint N success
 
     Note right of Sink: Phase 2: Commit Decision
     JM->>TM: notifyCheckpointComplete(N)
     TM->>Sink: notifyCheckpointComplete(N)
-    Sink->>Sink: find pending transactions
+    Sink->>Sink: Find pending transactions
     Sink->>Ext: commit(transaction)
     Ext-->>Sink: Committed
 
@@ -488,22 +781,115 @@ sequenceDiagram
     Sink->>Sink: beginTransaction()
 ```
 
+#### snapshotState Method Details
+
+```java
+// [Pseudocode snippet — not directly runnable] Core logic only
+/**
+ * Called during Checkpoint (Phase 1: Prepare)
+ */
+@Override
+public void snapshotState(FunctionSnapshotContext context) throws Exception {
+    long checkpointId = context.getCheckpointId();
+
+    // 1. Pre-commit current transaction
+    preCommit(currentTransaction.handle);
+
+    // 2. Add current transaction to pending commit queue
+    pendingCommitTransactions.add(currentTransaction);
+
+    // 3. Clear and save transaction context to StateBackend
+    state.clear();
+    state.add(new State<>(
+        contextSerializer,
+        currentTransaction.context,
+        pendingCommitTransactions,
+        userContext
+    ));
+
+    // 4. Start new transaction (for post-Checkpoint writes)
+    currentTransaction = beginTransactionInternal();
+}
+```
+
+#### notifyCheckpointComplete Method Details
+
+```java
+// [Pseudocode snippet — not directly runnable] Core logic only
+/**
+ * Called after Checkpoint success confirmation (Phase 2: Commit)
+ */
+@Override
+public void notifyCheckpointComplete(long checkpointId) throws Exception {
+    Iterator<TransactionHolder<TXN>> iterator = pendingCommitTransactions.iterator();
+
+    while (iterator.hasNext()) {
+        TransactionHolder<TXN> transaction = iterator.next();
+
+        // Only commit transactions with checkpointId <= current checkpointId
+        if (transaction.checkpointId <= checkpointId) {
+            try {
+                commit(transaction.handle);
+                iterator.remove();
+            } catch (Exception e) {
+                throw new FlinkRuntimeException(
+                    "Committing transaction failed", e);
+            }
+        }
+    }
+}
+```
+
+### 7.3 Exactly-Once Decision Tree
+
+```mermaid
+graph TD
+    Start([Need Exactly-Once?]) --> Q1{Source Replayable?}
+    Q1 -->|No| A1([Give Up Exactly-Once])
+    Q1 -->|Yes| Q2{Sink Type?}
+    Q2 -->|Kafka| A2([Use Kafka Transaction])
+    Q2 -->|Database| Q3{Support XA Transaction?}
+    Q2 -->|File System| A3([Use Rename Atomic Operation])
+    Q2 -->|Other| Q4{Can Implement Idempotent?}
+    Q3 -->|Yes| A4([Use XA Sink])
+    Q3 -->|No| Q4
+    Q4 -->|Yes| A5([Use Idempotent Sink])
+    Q4 -->|No| A6([Use External Deduplication])
+    A2 --> C1[End-to-End Exactly-Once]
+    A3 --> C1
+    A4 --> C1
+    A5 --> C1
+    A6 --> C1
+    style Start fill:#bbdefb,stroke:#1565c0
+    style C1 fill:#e1bee7,stroke:#6a1b9a
+```
+
 ---
 
 ## 8. References
 
 [^1]: Apache Flink Documentation. "Exactly-once Semantics". <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/exactly_once/>
+
 [^2]: Carbone, P., et al. (2017). "State Management in Apache Flink: Consistent Stateful Distributed Stream Processing". *Proceedings of the VLDB Endowment*.
+
 [^3]: Chandy, K.M., & Lamport, L. (1985). "Distributed Snapshots: Determining Global States of Distributed Systems". *ACM Transactions on Computer Systems*.
+
 [^4]: Apache Kafka Documentation. "Transactions in Kafka". <https://kafka.apache.org/documentation/#transactions>
+
 [^5]: Flink Documentation. "Checkpoints". <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/checkpointing/>
+
 [^6]: Flink Documentation. "Unaligned Checkpoints". <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/checkpointing/#unaligned-checkpoints>
+
 [^7]: Flink Documentation. "Two-Phase Commit Sink Functions". <https://nightlies.apache.org/flink/flink-docs-stable/api/java/org/apache/flink/streaming/api/functions/sink/TwoPhaseCommitSinkFunction.html>
+
 [^8]: Apache Kafka Documentation. "Configuring Producers for Transactions". <https://kafka.apache.org/documentation/#producerconfigs>
-[^9]: Flink Documentation. "JdbcXaSinkFunction".
-[^10]: Kleppmann, M. (2016). "Designing Data-Intensive Applications". O'Reilly Media.
-[^11]: Apache Flink Documentation, "Kafka Source", 2025.
+
+[^9]: Flink Documentation. "JdbcXaSinkFunction". <https://nightlies.apache.org/flink/flink-docs-stable/api/java/org/apache/flink/connector/jdbc/xa/JdbcXaSinkFunction.html>
+
+[^10]: Kleppmann, M. (2016). "Designing Data-Intensive Applications". O'Reilly Media. Chapter 9: Consistency and Consensus.
+
+[^11]: Apache Flink Documentation, "Kafka Source", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/datastream/kafka/#kafka-source>
 
 ---
 
-*Document Version: v1.0-en | Updated: 2026-04-20 | Status: Core Summary*
+*Document Version: v1.0 | Last Updated: 2026-04-20 | Status: Completed*

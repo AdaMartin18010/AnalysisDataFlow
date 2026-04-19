@@ -13,15 +13,15 @@
 - [Struct/ 推导链全景图](#struct-推导链全景图)
   - [摘要](#摘要)
   - [目录](#目录)
-  - [1. Foundation → Properties 推导]()
+  - [1. Foundation → Properties 推导](#1-foundation--properties-推导)
     - [1.1 进程演算基础到确定性性质](#11-进程演算基础到确定性性质)
     - [1.2 Dataflow 模型到 Watermark 单调性](#12-dataflow-模型到-watermark-单调性)
     - [1.3 定义→性质推导表](#13-定义性质推导表)
-  - [2. Properties → Relationships 推导]()
+  - [2. Properties → Relationships 推导](#2-properties--relationships-推导)
     - [2.1 确定性定理的组合推导](#21-确定性定理的组合推导)
     - [2.2 一致性层级到编码关系](#22-一致性层级到编码关系)
     - [2.3 性质→定理推导表](#23-性质定理推导表)
-  - [3. Relationships → Proofs 推导]()
+  - [3. Relationships → Proofs 推导](#3-relationships--proofs-推导)
     - [3.1 Flink 编码到 Checkpoint 正确性](#31-flink-编码到-checkpoint-正确性)
     - [3.2 Exactly-Once 保证的推论](#32-exactly-once-保证的推论)
     - [3.3 定理→证明应用表](#33-定理证明应用表)
@@ -454,3 +454,7 @@ graph TD
 ---
 
 *文档版本: 2026.04.06 | 形式化等级: L3-L5 | 推导链总数: 26 | 覆盖率: 91%*
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

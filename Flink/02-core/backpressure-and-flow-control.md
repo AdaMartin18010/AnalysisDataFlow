@@ -933,3 +933,7 @@ public class BufferDebloating {
 [^8]: Apache Flink Documentation, "Metrics System", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/metrics/>
 
 [^9]: Apache Flink JIRA, "FLINK-36556: Allow to configure starting buffer size when using buffer debloating", 2024. <https://issues.apache.org/jira/browse/FLINK-36556>
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

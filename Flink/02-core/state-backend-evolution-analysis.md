@@ -693,3 +693,7 @@ graph TB
 - [state-backends-deep-comparison.md](./state-backends-deep-comparison.md) - State Backend 深度对比
 - [flink-2.0-forst-state-backend.md](./flink-2.0-forst-state-backend.md) - ForSt State Backend 详细设计
 - [flink-architecture-evolution-1x-to-2x.md](../01-concepts/flink-architecture-evolution-1x-to-2x.md) - 架构演进分析
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

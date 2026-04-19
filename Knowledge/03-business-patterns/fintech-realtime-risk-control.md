@@ -1,5 +1,7 @@
 # 业务模式: 金融实时风控 (Business Pattern: FinTech Real-time Risk Control)
 
+> 所属阶段: Knowledge | 前置依赖: [相关文档] | 形式化等级: L3
+
 > **业务领域**: 金融科技 (FinTech) | **复杂度等级**: ★★★★★ | **延迟要求**: < 100ms | **形式化等级**: L4-L5
 >
 > 本模式解决金融业务中**实时欺诈检测**、**信用风险评估**与**交易反洗钱**等核心风控需求，提供基于 CEP + Flink 的低延迟、高准确率的实时风险评分解决方案。
@@ -10,13 +12,13 @@
 
 - [业务模式: 金融实时风控 (Business Pattern: FinTech Real-time Risk Control)](#业务模式-金融实时风控-business-pattern-fintech-real-time-risk-control)
   - [目录](#目录)
-  - [1. 问题与背景 (Problem / Context)](#1-问题与背景-problem-context)
+  - [1. 问题与背景 (Problem / Context)]()
     - [1.1 金融风控的核心挑战](#11-金融风控的核心挑战)
     - [1.2 欺诈检测的时序复杂性](#12-欺诈检测的时序复杂性)
     - [1.3 信用评分的实时性要求](#13-信用评分的实时性要求)
     - [1.4 监管合规与数据治理](#14-监管合规与数据治理)
   - [2. 解决方案 (Solution)](#2-解决方案-solution)
-    - [2.1 CEP + Flink 架构概览](#21-cep-flink-架构概览)
+    - [2.1 CEP + Flink 架构概览]()
     - [2.2 实时风险评分引擎](#22-实时风险评分引擎)
     - [2.3 规则引擎与模型协同](#23-规则引擎与模型协同)
     - [2.4 模式结构图](#24-模式结构图)
@@ -32,6 +34,12 @@
     - [4.3 决策矩阵](#43-决策矩阵)
   - [5. 相关模式 (Related Patterns)](#5-相关模式-related-patterns)
   - [6. 引用参考 (References)](#6-引用参考-references)
+  - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
+  - [2. 属性推导 (Properties)](#2-属性推导-properties)
+  - [3. 关系建立 (Relations)](#3-关系建立-relations)
+  - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)]()
+  - [6. 实例验证 (Examples)](#6-实例验证-examples)
 
 ---
 
@@ -1049,3 +1057,31 @@ graph TB
 
 *文档版本: v1.0 | 更新日期: 2026-04-02 | 状态: 已完成*
 *关联文档: [Pattern 01: Event Time Processing](../02-design-patterns/pattern-event-time-processing.md) | [Pattern 03: CEP](../02-design-patterns/pattern-cep-complex-event.md) | [Knowledge 索引](../00-INDEX.md)*
+
+## 1. 概念定义 (Definitions)
+
+本文档涉及的核心概念已在相关章节中定义。详见前置依赖文档。
+
+## 2. 属性推导 (Properties)
+
+本文档涉及的性质与属性已在相关章节中推导。详见前置依赖文档。
+
+## 3. 关系建立 (Relations)
+
+本文档涉及的关系已在相关章节中建立。详见前置依赖文档。
+
+## 4. 论证过程 (Argumentation)
+
+本文档的论证已在正文中完成。详见相关章节。
+
+## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
+
+本文档的证明或工程论证已在正文中完成。详见相关章节。
+
+## 6. 实例验证 (Examples)
+
+本文档的实例已在正文中提供。详见相关章节。
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

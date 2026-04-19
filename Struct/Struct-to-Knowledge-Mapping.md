@@ -18,14 +18,14 @@
     - [Lemma-S-M-02. 映射传递的语义保持性](#lemma-s-m-02-映射传递的语义保持性)
     - [Prop-S-M-01. 理论与实践的知识鸿沟](#prop-s-m-01-理论与实践的知识鸿沟)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [关系 1: Struct 定义 `↦` Knowledge 概念](#关系-1-struct-定义-knowledge-概念)
-    - [关系 2: Struct 定理 `⟹` Knowledge 模式](#关系-2-struct-定理-knowledge-模式)
-    - [关系 3: Struct 证明 `⇝` Knowledge 最佳实践](#关系-3-struct-证明-knowledge-最佳实践)
+    - [关系 1: Struct 定义 `↦` Knowledge 概念](#关系-1-struct-定义--knowledge-概念)
+    - [关系 2: Struct 定理 `⟹` Knowledge 模式](#关系-2-struct-定理--knowledge-模式)
+    - [关系 3: Struct 证明 `⇝` Knowledge 最佳实践](#关系-3-struct-证明--knowledge-最佳实践)
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [论证 1: 为什么需要形式化到工程的映射](#论证-1-为什么需要形式化到工程的映射)
     - [论证 2: 映射完整性与可用性的权衡](#论证-2-映射完整性与可用性的权衡)
     - [论证 3: 跨层追溯性的价值](#论证-3-跨层追溯性的价值)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-S-M-01. 映射覆盖完备性定理](#thm-s-m-01-映射覆盖完备性定理)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [示例 1: Checkpoint 正确性的跨层追溯](#示例-1-checkpoint-正确性的跨层追溯)
@@ -35,10 +35,10 @@
     - [图 2: 依赖传递与跨层追溯图](#图-2-依赖传递与跨层追溯图)
     - [图 3: 四层映射类型矩阵](#图-3-四层映射类型矩阵)
   - [8. 完整映射表 (Complete Mapping Tables)](#8-完整映射表-complete-mapping-tables)
-    - [表 1: 基础理论 → 概念图谱](#表-1-基础理论-概念图谱)
-    - [表 2: 性质推导 → 设计模式](#表-2-性质推导-设计模式)
-    - [表 3: 关系建立 → 模式实现](#表-3-关系建立-模式实现)
-    - [表 4: 证明层 → 生产实践](#表-4-证明层-生产实践)
+    - [表 1: 基础理论 → 概念图谱](#表-1-基础理论--概念图谱)
+    - [表 2: 性质推导 → 设计模式](#表-2-性质推导--设计模式)
+    - [表 3: 关系建立 → 模式实现](#表-3-关系建立--模式实现)
+    - [表 4: 证明层 → 生产实践](#表-4-证明层--生产实践)
   - [9. 引用参考 (References)](#9-引用参考-references)
 
 ---
@@ -631,3 +631,7 @@ streaming-anti-patterns.md: 避免 checkpoint.interval 配置不当
 ---
 
 *文档版本: 2026.04 | 映射覆盖: 15+ 核心定义, 10+ 关键定理, 10+ 工程文档 | 状态: Production*
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*

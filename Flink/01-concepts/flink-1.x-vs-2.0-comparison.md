@@ -1,5 +1,7 @@
 # Flink 1.x vs 2.0 架构对比 (Flink 1.x vs 2.0 Architecture Comparison)
 
+> 所属阶段: Flink | 前置依赖: [相关文档] | 形式化等级: L3
+
 > **状态**: ✅ Flink 2.0 Released (2025-03-24)
 > **技术演进**: Flink 1.x → Flink 2.0 | **核心变革**: Disaggregated State Storage + Async Execution | **形式化等级**: L5
 > **文档类型**: 架构对比分析 | **目标读者**: 架构师、Flink 开发者、运维工程师

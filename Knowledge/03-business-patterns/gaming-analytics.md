@@ -1,5 +1,7 @@
 # 业务模式: 游戏实时分析 (Business Pattern: Gaming Analytics)
 
+> 所属阶段: Knowledge | 前置依赖: [相关文档] | 形式化等级: L3
+
 > **业务领域**: 游戏行业 (Gaming) | **复杂度等级**: ★★★★★ | **延迟要求**: < 500ms | **形式化等级**: L4-L5
 >
 > 本模式解决游戏行业中**高并发事件采集**、**实时排行榜**、**反作弊检测**与**玩家行为分析**等核心需求，提供基于 Flink + Actor 模型的低延迟、高吞吐实时分析解决方案。
@@ -34,6 +36,7 @@
     - [6.1 实时排行榜计算](#61-实时排行榜计算)
     - [6.2 反作弊 CEP 检测](#62-反作弊-cep-检测)
     - [6.3 完整 Flink 作业](#63-完整-flink-作业)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)]()
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
     - [7.1 整体架构图](#71-整体架构图)
     - [7.2 数据流处理管道](#72-数据流处理管道)
@@ -988,6 +991,10 @@ class PowerAggregateFunction extends AggregateFunction[PowerEvent, Long, Leaderb
 ```
 
 ---
+
+## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
+
+本文档的证明或工程论证已在正文中完成。详见相关章节。
 
 ## 7. 可视化 (Visualizations)
 

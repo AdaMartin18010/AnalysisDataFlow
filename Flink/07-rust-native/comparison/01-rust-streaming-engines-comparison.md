@@ -609,3 +609,7 @@ graph TB
 - [Arroyo 进展跟踪](../arroyo-update/PROGRESS-TRACKING.md) - Arroyo + Cloudflare Pipelines 最新动态
 - [Arroyo 影响分析](../arroyo-update/IMPACT-ANALYSIS.md) - 对 Flink 生态的影响评估
 - [Arroyo 季度回顾](../arroyo-update/QUARTERLY-REVIEWS/)
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-20*
