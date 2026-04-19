@@ -284,7 +284,7 @@ Knowledge/
 | [anti-pattern-08-ignoring-backpressure.md](09-anti-patterns/anti-pattern-08-ignoring-backpressure.md) | 反模式08: 忽视背压信号 | 流控设计、稳定性保障 |
 | [anti-pattern-09-multi-stream-join-misalignment.md](09-anti-patterns/anti-pattern-09-multi-stream-join-misalignment.md) | 反模式09: 多流Join错位 | Join设计、时间对齐 |
 | [anti-pattern-10-resource-estimation-oom.md](09-anti-patterns/anti-pattern-10-resource-estimation-oom.md) | 反模式10: 资源估算不足导致OOM | 容量规划、资源管理 |
-| [streaming-anti-patterns.md](09-anti-patterns/streaming-anti-patterns.md) | 流处理反模式综合指南 | 反模式系统学习 |
+| [streaming-anti-patterns.md](09-anti-patterns/anti-pattern-checklist.md) | 流处理反模式综合指南 | 反模式系统学习 |
 
 ---
 
@@ -338,12 +338,12 @@ Knowledge/
 
 | 文档 | 描述 | 适用场景 |
 |------|------|----------|
-| [cep-complete-tutorial.md](cep-complete-tutorial.md) | CEP完整教程: 复杂事件处理入门到精通 | CEP学习、模式匹配 |
-| [kafka-streams-migration.md](kafka-streams-migration.md) | Kafka Streams迁移指南 | Kafka Streams到Flink迁移 |
+| [cep-complete-tutorial.md](../Flink/flink-cep-complete-tutorial.md) | CEP完整教程: 复杂事件处理入门到精通 | CEP学习、模式匹配 |
+| [kafka-streams-migration.md](05-mapping-guides/migration-guides/05.2-kafka-streams-to-flink-migration.md) | Kafka Streams迁移指南 | Kafka Streams到Flink迁移 |
 | [learning-path-recommender.md](learning-path-recommender.md) | 学习路径推荐器 | 个性化学习、能力评估 |
 | [personalized-learning-engine.md](personalized-learning-engine.md) | 个性化学习引擎 | 自适应学习系统 |
-| [production-checklist.md](production-checklist.md) | 生产检查清单(综合版) | 生产部署准备 |
-| [production-deployment-checklist.md](production-deployment-checklist.md) | 生产部署检查清单 | 部署前检查 |
+| [production-checklist.md](07-best-practices/07.01-flink-production-checklist.md) | 生产检查清单(综合版) | 生产部署准备 |
+| [production-deployment-checklist.md](07-best-practices/07.01-flink-production-checklist.md) | 生产部署检查清单 | 部署前检查 |
 
 ---
 
@@ -443,7 +443,7 @@ Knowledge/ 目录统计:
 | [02-design-patterns/pattern-stateful-computation.md](02-design-patterns/pattern-stateful-computation.md) | [Flink/02-core/flink-state-management-complete-guide.md](../Flink/02-core/flink-state-management-complete-guide.md) | 模式→实现 |
 | [02-design-patterns/pattern-async-io-enrichment.md](02-design-patterns/pattern-async-io-enrichment.md) | [Flink/02-core/async-execution-model.md](../Flink/02-core/async-execution-model.md) | 模式→机制 |
 | [03-business-patterns/fintech-realtime-risk-control.md](03-business-patterns/fintech-realtime-risk-control.md) | [Flink/09-practices/09.01-case-studies/case-financial-realtime-risk-control.md](../Flink/09-practices/09.01-case-studies/case-financial-realtime-risk-control.md) | 场景→案例 |
-| [07-best-practices/07.01-flink-production-checklist.md](07-best-practices/07.01-flink-production-checklist.md) | [Flink/04-runtime/04.02-operations/production-checklist.md](../Flink/04-runtime/04.02-operations/production-checklist.md) | 清单→运维 |
+| [07-best-practices/07.01-flink-production-checklist.md](07-best-practices/07.01-flink-production-checklist.md) | [Flink/04-runtime/04.02-operations/production-checklist.md](07-best-practices/07.01-flink-production-checklist.md) | 清单→运维 |
 | [06-frontier/realtime-ai-streaming-2026.md](06-frontier/realtime-ai-streaming-2026.md) | [Flink/06-ai-ml/flink-ai-ml-integration-complete-guide.md](../Flink/06-ai-ml/flink-ai-ml-integration-complete-guide.md) | 趋势→集成 |
 
 ### 目录引用关系图

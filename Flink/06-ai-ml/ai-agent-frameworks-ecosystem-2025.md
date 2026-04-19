@@ -4,7 +4,7 @@
 >
 > ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
 
-> 所属阶段: Flink | 前置依赖: [FLIP-531 AI Agents](./flink-agents-flip-531.md) | 形式化等级: L4
+> 所属阶段: Flink | 前置依赖: [FLIP-531 AI Agents](flink-ai-agents-flip-531.md) | 形式化等级: L4
 
 ## 1. 概念定义 (Definitions)
 

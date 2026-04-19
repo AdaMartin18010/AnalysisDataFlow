@@ -1813,7 +1813,7 @@ flink run -s <savepoint-path> -c <main-class> <jar-file>
 
 [^2]: K. Mani Chandy and Leslie Lamport, "Distributed Snapshots: Determining Global States of Distributed Systems", ACM Transactions on Computer Systems, Vol. 3, No. 1, 1985.
 
-[^3]: Apache Flink Documentation, "Queryable State", <https://archive.org/web/*/https://nightlies.apache.org/flink/flink-docs-release-1.16/docs/dev/datastream/fault-tolerance/queryable_state/> <!-- 404 as of 2026-04: deprecated in Flink 1.17+ -->
+[^3]: Apache Flink Documentation, "Queryable State" (已在 Flink 1.18 中移除). 移除公告参见 [FLINK-35516](https://issues.apache.org/jira/browse/FLINK-35516)。历史文档存档: <https://web.archive.org/web/*/https://nightlies.apache.org/flink/flink-docs-release-1.16/docs/dev/datastream/fault-tolerance/queryable_state/>
 
 [^4]: Apache Flink Documentation, "State Backends", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/>
 

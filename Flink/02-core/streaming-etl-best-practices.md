@@ -1334,7 +1334,7 @@ public class Example {
         // 自动扩缩容配置
         env.getConfig().setAutoWatermarkInterval(200L);
 
-        // 自适应调度器(Flink 1.17+)
+        // 自适应调度器(Flink 1.20+)
         Configuration conf = new Configuration();
         conf.set(JobManagerOptions.SCHEDULER, "AdaptiveScheduler");
         conf.set(AdaptiveSchedulerSettings.MAX_PARALLELISM, 128);

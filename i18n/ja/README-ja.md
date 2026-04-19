@@ -92,7 +92,7 @@
 - **📚 tutorialsディレクトリエントリ新設**: [5分入門](../../tutorials/00-5-MINUTE-QUICK-START.md) | [環境構築](../../tutorials/01-environment-setup.md)
 - **📖 クイックリファレンス新設**: [DataStream APIチートシート](../../Flink/03-api/09-language-foundations/datastream-api-cheatsheet.md)
 - **Flink 2.4/2.5/3.0ロードマップ**: [3年ロードマップ](../../Flink/08-roadmap/08.01-flink-24/flink-version-evolution-complete-guide.md)
-- **AI Agents 設計探索**: [Flink AI Agentsコンセプト設計](../../Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md)
+- **AI Agents 設計探索**: [Flink AI Agentsコンセプト設計](../../Flink/06-ai-ml/flink-ai-agents-flip-531.md)
 - **Smart Casual Verification**: [形式化検証の新手法](../../Struct/07-tools/smart-casual-verification.md)
 - **A2Aプロトコル深層分析**: [A2AとAgent通信プロトコル](../../Knowledge/06-frontier/a2a-protocol-agent-communication.md)
 

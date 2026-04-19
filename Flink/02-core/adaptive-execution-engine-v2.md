@@ -69,7 +69,7 @@
 
 ### Def-F-02-87: 自适应执行引擎 (Adaptive Execution Engine, AEE)
 
-**自适应执行引擎 (Adaptive Execution Engine V2, AEE-V2)** 是 Flink 1.17+ 引入的智能执行优化框架，能够根据运行时统计信息动态调整执行计划、资源分配和并行度。
+**自适应执行引擎 (Adaptive Execution Engine V2, AEE-V2)** 是 Flink 1.20+ 引入的智能执行优化框架，能够根据运行时统计信息动态调整执行计划、资源分配和并行度。
 
 $$
 \text{AEE-V2} = (\mathcal{P}, \mathcal{M}, \mathcal{A}, \mathcal{C}, \mathcal{R}, \delta, \pi)

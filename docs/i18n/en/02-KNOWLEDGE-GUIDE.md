@@ -254,7 +254,7 @@ Common pitfalls, bad practices, and avoidance strategies in stream processing.
 | [anti-pattern-08-ignoring-backpressure.md](../../../Knowledge/09-anti-patterns/anti-pattern-08-ignoring-backpressure.md) | Anti-Pattern 08: Ignoring Backpressure Signals | Flow control design, stability assurance |
 | [anti-pattern-09-multi-stream-join-misalignment.md](../../../Knowledge/09-anti-patterns/anti-pattern-09-multi-stream-join-misalignment.md) | Anti-Pattern 09: Multi-Stream Join Misalignment | Join design, time alignment |
 | [anti-pattern-10-resource-estimation-oom.md](../../../Knowledge/09-anti-patterns/anti-pattern-10-resource-estimation-oom.md) | Anti-Pattern 10: Resource Estimation OOM | Capacity planning, resource management |
-| [streaming-anti-patterns.md](../../../Knowledge/09-anti-patterns/streaming-anti-patterns.md) | Streaming Anti-Patterns Comprehensive Guide | Systematic anti-pattern learning |
+| [streaming-anti-patterns.md](../../../Knowledge/09-anti-patterns/anti-pattern-checklist.md) | Streaming Anti-Patterns Comprehensive Guide | Systematic anti-pattern learning |
 
 ---
 

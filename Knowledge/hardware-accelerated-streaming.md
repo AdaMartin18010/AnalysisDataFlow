@@ -1,6 +1,6 @@
 # 硬件加速流处理综述
 
-> **所属阶段**: Knowledge/ | **前置依赖**: [stream-feature-computation.md](./stream-feature-computation.md), [flink-state-backends-comparison.md](../Flink/flink-state-backends-comparison.md) | **形式化等级**: L4
+> **所属阶段**: Knowledge/ | **前置依赖**: [stream-feature-computation.md](./stream-feature-computation.md), [flink-state-backends-comparison.md](../Flink/02-core/state-backends-deep-comparison.md) | **形式化等级**: L4
 
 ---
 

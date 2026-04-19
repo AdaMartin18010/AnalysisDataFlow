@@ -8,7 +8,7 @@
 
 # Flink Agents 0.3 Roadmap 对齐
 
-> **所属阶段**: Flink/06-ai-ml | **前置依赖**: [FLIP-531 AI Agents 实现指南 (v0.2.x)](./flip-531-ai-agents-ga-guide.md), [Flink Agents 架构深度解析](./flink-agents-architecture-deep-dive.md) | **形式化等级**: L4-L5
+> **所属阶段**: Flink/06-ai-ml | **前置依赖**: [FLIP-531 AI Agents 实现指南 (v0.2.x)](flink-ai-agents-flip-531.md), [Flink Agents 架构深度解析](./flink-agents-architecture-deep-dive.md) | **形式化等级**: L4-L5
 
 ---
 

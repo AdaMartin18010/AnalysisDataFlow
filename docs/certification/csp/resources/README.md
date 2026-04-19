@@ -54,7 +54,7 @@
 
 ## 运维与调优
 
-- [生产检查清单](../../../../Knowledge/production-checklist.md)
+- [生产检查清单](../../../../Knowledge/07-best-practices/07.01-flink-production-checklist.md)
 - [性能调优指南](../../../../Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md)
 - 监控配置指南
 - [部署架构指南](../../../../DEPLOYMENT-ARCHITECTURES.md)

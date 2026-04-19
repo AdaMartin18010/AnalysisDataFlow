@@ -1,6 +1,6 @@
 # PyFlink 深度指南
 
-> 所属阶段: Flink | 前置依赖: [data-types-complete-reference.md](./data-types-complete-reference.md) | 形式化等级: L3
+> 所属阶段: Flink | 前置依赖: [data-types-complete-reference.md](03-api/03.02-table-sql-api/data-types-complete-reference.md) | 形式化等级: L3
 
 ---
 

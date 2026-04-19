@@ -28,6 +28,7 @@ try:
 except ImportError:
     HAS_REQUESTS = False
 
+# Optional: pip install feedparser for RSS monitoring
 try:
     import feedparser
     HAS_FEEDPARSER = True
@@ -43,7 +44,7 @@ CONFIG = {
     "flink_flips": {
         "name": "Apache Flink FLIPs",
         "source_type": "github_api",
-        "url": "https://api.github.com/repos/apache/flink/contents/flink-docs/docs/flips",
+        "url": "https://api.github.com/repos/apache/flink/contents/docs/content/docs/flips",
         "check_interval_hours": 168,  # weekly
     },
     "mcp_spec": {
@@ -172,7 +173,7 @@ def check_web_page(name: str, url: str) -> dict:
     if not HAS_REQUESTS:
         return {"status": "skipped", "reason": "requests not installed"}
     try:
-        resp = requests.get(url, timeout=30)
+        resp = requests.get(url, timeout=30, headers={"User-Agent": "AnalysisDataFlow-ContentTracker/1.0"})
         resp.raise_for_status()
         content = resp.text
         # Simple hash of first 8KB

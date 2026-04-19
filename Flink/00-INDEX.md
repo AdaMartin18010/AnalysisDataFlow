@@ -183,7 +183,7 @@
 |------|------|------|
 | [06-ai-ml/flink-ai-ml-integration-complete-guide.md](06-ai-ml/flink-ai-ml-integration-complete-guide.md) | AI/ML 集成完整指南 | 1.19+ |
 | [06-ai-ml/flink-llm-integration.md](06-ai-ml/flink-llm-integration.md) | LLM 集成 | 1.20+ |
-| [06-ai-ml/flink-agents-flip-531.md](06-ai-ml/flink-agents-flip-531.md) | AI Agents (FLIP-531) | 2.4+ |
+| [06-ai-ml/flink-agents-flip-531.md](06-ai-ml/flink-ai-agents-flip-531.md) | AI Agents (FLIP-531) | 2.4+ |
 | [06-ai-ml/flink-realtime-ml-inference.md](06-ai-ml/flink-realtime-ml-inference.md) | 实时 ML 推理 | 1.19+ |
 | [06-ai-ml/realtime-feature-engineering-guide.md](06-ai-ml/realtime-feature-engineering-guide.md) | 实时特征工程 | 1.19+ |
 | [06-ai-ml/vector-database-integration.md](06-ai-ml/vector-database-integration.md) | 向量数据库集成 | 1.20+ |
@@ -243,7 +243,7 @@
 | 文档 | 描述 |
 |------|------|
 | [09-practices/09.04-security/flink-security-complete-guide.md](09-practices/09.04-security/flink-security-complete-guide.md) | 安全完整指南 |
-| [09-practices/09.04-security/security-hardening-guide.md](09-practices/09.04-security/security-hardening-guide.md) | 安全加固指南 |
+| [09-practices/09.04-security/security-hardening-guide.md](09-practices/09.04-security/flink-security-complete-guide.md) | 安全加固指南 |
 
 #### 部署
 

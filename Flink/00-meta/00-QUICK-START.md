@@ -50,7 +50,7 @@
 
 **系统要求：**
 
-- Docker 20.10+ / Docker Compose 2.0+
+- Docker 24.0+ / Docker Compose 2.0+
 - 4GB+ 可用内存
 - 2核+ CPU
 

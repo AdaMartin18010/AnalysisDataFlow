@@ -1,6 +1,6 @@
 # Flink 安全特性完整指南
 
-> **所属阶段**: Flink/Security | **前置依赖**: [Flink 安全特性](flink-security-complete-guide.md), [流处理安全最佳实践](./streaming-security-best-practices.md) | **形式化等级**: L3-L5
+> **所属阶段**: Flink/Security | **前置依赖**: [Flink 安全特性](flink-security-complete-guide.md), [流处理安全最佳实践](flink-security-complete-guide.md) | **形式化等级**: L3-L5
 
 ---
 

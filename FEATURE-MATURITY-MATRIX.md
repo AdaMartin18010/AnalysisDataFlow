@@ -191,7 +191,7 @@
 - [Flink 2.4 跟踪文档](Flink/08-roadmap/08.01-flink-24/flink-2.4-tracking.md)
 - [Flink 2.5 预览文档](Flink/08-roadmap/08.01-flink-24/flink-2.5-preview.md)
 - [Flink 3.0 架构愿景](Flink/08-roadmap/08.01-flink-24/flink-30-architecture-redesign.md)
-- [FLIP-531 概念设计](Flink/06-ai-ml/flink-agents-flip-531.md)
+- [FLIP-531 概念设计](Flink/06-ai-ml/flink-ai-agents-flip-531.md)
 - [Flink 官方路线图](https://nightlies.apache.org/flink/flink-docs-stable/roadmap/)
 
 ---

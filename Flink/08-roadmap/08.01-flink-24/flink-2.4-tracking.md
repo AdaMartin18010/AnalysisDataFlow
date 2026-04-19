@@ -27,7 +27,7 @@
 >
 > | 最后更新 | 跟踪系统 |
 > |----------|----------|
-> | 2026-04-07 | [.tasks/flink-release-tracker.md](#) |
+> | 2026-04-20 | [.tasks/flink-release-tracker.md](#) |
 
 ---
 

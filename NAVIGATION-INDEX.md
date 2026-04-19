@@ -107,7 +107,7 @@
 | | [Flink/06-ai-ml/](Flink/06-ai-ml/) | AI/ML集成 |
 | **前沿技术** | [Knowledge/06-frontier/realtime-ai-streaming-2026.md](Knowledge/06-frontier/realtime-ai-streaming-2026.md) | 实时AI流处理 |
 | | [Knowledge/06-frontier/vector-search-streaming-convergence.md](Knowledge/06-frontier/vector-search-streaming-convergence.md) | 向量搜索集成 |
-| | [Flink/06-ai-ml/flink-agents-flip-531.md](Flink/06-ai-ml/flink-agents-flip-531.md) | Flink AI Agents |
+| | [Flink/06-ai-ml/flink-agents-flip-531.md](Flink/06-ai-ml/flink-ai-agents-flip-531.md) | Flink AI Agents |
 | | [Knowledge/06-frontier/streaming-lakehouse-iceberg-delta.md](Knowledge/06-frontier/streaming-lakehouse-iceberg-delta.md) | Streaming Lakehouse |
 | | [Knowledge/06-frontier/mcp-protocol-agent-streaming.md](Knowledge/06-frontier/mcp-protocol-agent-streaming.md) | MCP协议 |
 | | [Knowledge/06-frontier/a2a-protocol-agent-communication.md](Knowledge/06-frontier/a2a-protocol-agent-communication.md) | A2A协议 |
@@ -423,21 +423,21 @@
 
 | 主题 | 文档 | 关键内容 |
 |------|------|----------|
-| Flink AI Agents | [flink-agents-flip-531.md](Flink/06-ai-ml/flink-agents-flip-531.md) | FLIP-531原生Agent |
+| Flink AI Agents | [flink-agents-flip-531.md](Flink/06-ai-ml/flink-ai-agents-flip-531.md) | FLIP-531原生Agent |
 | LLM集成 | [flink-llm-integration.md](Flink/06-ai-ml/flink-llm-integration.md) | 大模型集成 |
 | 实时推理 | [flink-realtime-ml-inference.md](Flink/06-ai-ml/flink-realtime-ml-inference.md) | 在线预测 |
 | 特征工程 | [realtime-feature-engineering-feature-store.md](Flink/06-ai-ml/realtime-feature-engineering-feature-store.md) | 特征平台 |
 | 向量数据库 | [vector-database-integration.md](Flink/06-ai-ml/vector-database-integration.md) | Milvus/Pinecone |
 | RAG架构 | [rag-streaming-architecture.md](Flink/06-ai-ml/rag-streaming-architecture.md) | 检索增强生成 |
 | 在线学习 | [online-learning-algorithms.md](Flink/06-ai-ml/online-learning-algorithms.md) | 增量学习 |
-| AI Agents GA | [flip-531-ai-agents-ga-guide.md](Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md) | 生产级发布 |
+| AI Agents GA | [flip-531-ai-agents-ga-guide.md](Flink/06-ai-ml/flink-ai-agents-flip-531.md) | 生产级发布 |
 
 ### 3.4 前沿技术文档索引 (Knowledge/06-frontier/ & Flink/前沿/)
 
 | 技术方向 | 文档 | 成熟度 |
 |----------|------|--------|
 | **AI Agent流处理** | [ai-agent-streaming-architecture.md](Knowledge/06-frontier/ai-agent-streaming-architecture.md) | 🔶 新兴 |
-| | [Flink/06-ai-ml/flink-agents-flip-531.md](Flink/06-ai-ml/flink-agents-flip-531.md) | 🔶 新兴 |
+| | [Flink/06-ai-ml/flink-agents-flip-531.md](Flink/06-ai-ml/flink-ai-agents-flip-531.md) | 🔶 新兴 |
 | **MCP协议** | [mcp-protocol-agent-streaming.md](Knowledge/06-frontier/mcp-protocol-agent-streaming.md) | 🔶 新兴 |
 | **A2A协议** | [a2a-protocol-agent-communication.md](Knowledge/06-frontier/a2a-protocol-agent-communication.md) | 🔶 新兴 |
 | **多模态流处理** | [multimodal-streaming-architecture.md](Knowledge/06-frontier/multimodal-streaming-architecture.md) | 🔶 新兴 |

@@ -99,7 +99,7 @@
 
 - [Flink/10-deployment/kubernetes-deployment-production-guide.md](../Flink/04-runtime/04.01-deployment/kubernetes-deployment-production-guide.md)
 - [Flink/06-engineering/flink-tco-cost-optimization-guide.md](../Flink/09-practices/09.03-performance-tuning/flink-tco-cost-optimization-guide.md)
-- [Flink/13-security/streaming-security-best-practices.md](../Flink/09-practices/09.04-security/streaming-security-best-practices.md)
+- [Flink/13-security/streaming-security-best-practices.md](../Flink/09-practices/09.04-security/flink-security-complete-guide.md)
 - [Knowledge/06-frontier/cd-raft-cross-domain-consensus.md](../Knowledge/06-frontier/cd-raft-cross-domain-consensus.md)
 - [Flink/15-observability/flink-opentelemetry-observability.md](../Flink/04-runtime/04.03-observability/flink-opentelemetry-observability.md)
 - [Knowledge/09-anti-patterns/anti-pattern-checklist.md](../Knowledge/09-anti-patterns/anti-pattern-checklist.md)

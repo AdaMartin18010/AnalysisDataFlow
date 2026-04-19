@@ -311,10 +311,10 @@ $$\forall k \in \mathcal{K}_{valid}, \mathcal{M}(k) \in \mathcal{F}_{valid} \lan
 
 | Knowledge选型指南 | Flink配置文档 | 映射说明 |
 |------------------|--------------|----------|
-| [engine-selection-guide.md](./04-technology-selection/engine-selection-guide.md) | [flink-state-backends-comparison.md](../Flink/flink-state-backends-comparison.md) | 引擎选择指南→状态后端对比 |
+| [engine-selection-guide.md](./04-technology-selection/engine-selection-guide.md) | [flink-state-backends-comparison.md](../Flink/02-core/state-backends-deep-comparison.md) | 引擎选择指南→状态后端对比 |
 | [streaming-database-guide.md](./04-technology-selection/streaming-database-guide.md) | [flink-vs-risingwave-deep-dive.md](../Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-risingwave-deep-dive.md) | 流数据库指南→Flink vs RisingWave深度对比 |
 | [paradigm-selection-guide.md](./04-technology-selection/paradigm-selection-guide.md) | [datastream-v2-semantics.md](../Flink/01-concepts/datastream-v2-semantics.md) | 范式选择指南→DataStream V2语义 |
-| [storage-selection-guide.md](./04-technology-selection/storage-selection-guide.md) | [state-backends-deep-comparison.md](../Flink/3.9-state-backends-deep-comparison.md) | 存储选择指南→状态后端深度对比 |
+| [storage-selection-guide.md](./04-technology-selection/storage-selection-guide.md) | [state-backends-deep-comparison.md](../Flink/02-core/state-backends-deep-comparison.md) | 存储选择指南→状态后端深度对比 |
 | [flink-vs-risingwave.md](./04-technology-selection/flink-vs-risingwave.md) | [risingwave-integration-guide.md](../Flink/05-ecosystem/ecosystem/risingwave-integration-guide.md) | Flink对比指南→RisingWave集成指南 |
 
 ---

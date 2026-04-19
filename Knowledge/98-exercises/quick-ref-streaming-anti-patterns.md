@@ -2,7 +2,7 @@
 
 > **快速查阅**: 10大常见反模式的症状、原因与解决方案
 >
-> **完整文档**: [streaming-anti-patterns.md](../09-anti-patterns/streaming-anti-patterns.md)
+> **完整文档**: [streaming-anti-patterns.md](../09-anti-patterns/anti-pattern-checklist.md)
 
 ---
 
@@ -324,7 +324,7 @@ class TwoPhaseCommitKafkaSink extends TwoPhaseCommitSinkFunction[...] { ... }
 | AP-06 | [anti-pattern-07-window-state-explosion.md](../09-anti-patterns/anti-pattern-07-window-state-explosion.md) |
 | AP-09 | [anti-pattern-05-blocking-io-processfunction.md](../09-anti-patterns/anti-pattern-05-blocking-io-processfunction.md) |
 | AP-10 | [anti-pattern-10-resource-estimation-oom.md](../09-anti-patterns/anti-pattern-10-resource-estimation-oom.md) |
-| 综合 | [streaming-anti-patterns.md](../09-anti-patterns/streaming-anti-patterns.md) |
+| 综合 | [streaming-anti-patterns.md](../09-anti-patterns/anti-pattern-checklist.md) |
 
 ---
 

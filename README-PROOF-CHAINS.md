@@ -149,7 +149,7 @@
 - [Checkpoint机制详解](./Flink/02-core/checkpoint-mechanism-deep-dive.md)
 - [Exactly-Once端到端](./Flink/02-core/exactly-once-end-to-end.md)
 - [Watermark策略](./Flink/02-core/time-semantics-and-watermark.md)
-- [State Backend对比](./Flink/flink-state-backends-comparison.md)
+- [State Backend对比](Flink/02-core/state-backends-deep-comparison.md)
 
 #### 🔴 专家级 (L5-L6)
 

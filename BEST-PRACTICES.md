@@ -405,7 +405,7 @@ class WatermarkDesign {
   env.getConfig.setAutoWatermarkInterval(200)
 }
 
-// 步骤 6: Watermark 对齐配置（Flink 1.17+）
+// 步骤 6: Watermark 对齐配置（Flink 1.20+）
 val alignmentGroup = "alignment-group-1"
 source1.assignTimestampsAndWatermarks(watermarkStrategy.withIdleness(Duration.ofMinutes(2)))
 source2.assignTimestampsAndWatermarks(watermarkStrategy.withIdleness(Duration.ofMinutes(2)))

@@ -5,7 +5,7 @@
 > **稳定性**: GA (Generally Available)
 >
 > Apache Flink Agents 0.2.0 已于 2026-02-06 正式发布，新增 Embedding Models、Vector Stores、Java 异步执行等能力[^1]。
-> **所属阶段**: Flink/06-ai-ml | **前置依赖**: [FLIP-531 AI Agents](flink-agents-flip-531.md), [Flink MCP集成](flink-agents-mcp-integration.md) | **形式化等级**: L4-L5
+> **所属阶段**: Flink/06-ai-ml | **前置依赖**: [FLIP-531 AI Agents](flink-ai-agents-flip-531.md), [Flink MCP集成](flink-agents-mcp-integration.md) | **形式化等级**: L4-L5
 
 ---
 

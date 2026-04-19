@@ -155,12 +155,12 @@ flowchart LR
 | **作业部署** | jar 提交、SQL 提交、镜像部署 | [Kubernetes 部署指南](./04.01-deployment/kubernetes-deployment.md) |
 | **状态管理** | Savepoint、Checkpoint 操作 | [Flink/02-core/](../02-core/) |
 | **扩缩容** | 并行度调整、资源配置 | [Autoscaling 深度解析](./04.01-deployment/flink-kubernetes-autoscaler-deep-dive.md) |
-| **故障恢复** | 重启策略、故障排查 | [生产检查清单](./04.02-operations/production-checklist.md) |
+| **故障恢复** | 重启策略、故障排查 | [生产检查清单](../../Knowledge/07-best-practices/07.01-flink-production-checklist.md) |
 | **版本升级** | 状态兼容性、滚动升级 | [升级策略](./04.01-deployment/evolution/upgrade-strategy.md) |
 
 ### 3.3 生产检查清单
 
-[生产检查清单](./04.02-operations/production-checklist.md) 提供了作业上线前的完整检查项：
+[生产检查清单](../../Knowledge/07-best-practices/07.01-flink-production-checklist.md) 提供了作业上线前的完整检查项：
 
 ```markdown
 □ 资源配置检查

@@ -93,7 +93,7 @@ graph TB
 
 | 技术 | 版本 | 说明 | 相关文档 |
 |------|------|------|----------|
-| **Flink + AI Agent** | FLIP-531 | AI Agent 流式集成 | [FLIP-531](../Flink/06-ai-ml/flink-agents-flip-531.md) |
+| **Flink + AI Agent** | FLIP-531 | AI Agent 流式集成 | [FLIP-531](../Flink/06-ai-ml/flink-ai-agents-flip-531.md) |
 | **Wasm UDF** | WASI 0.3 | WebAssembly 用户函数 | [Wasm UDF](../Flink/03-api/09-language-foundations/09-wasm-udf-frameworks.md) |
 | **Gleam** | - | 类型安全函数式语言 | |
 | **Kotlin Flow** | - | Kotlin 协程流处理 | |

@@ -91,7 +91,7 @@ Dieses Projekt ist eine umfassende Systematisierung und Konstruktion der **theor
 - **✅ E1-E4 Fehlerkorrekturen abgeschlossen**: Begriffseinhaltung, Link-Reparaturen, Dokumentenabstimmung
 - **📚 tutorials-Verzeichnis-Eintrag hinzugefügt**: [5-Minuten-Schnellstart](../../tutorials/00-5-MINUTE-QUICK-START.md)
 - **Flink 2.4/2.5/3.0-Roadmap**: [3-Jahres-Roadmap](../../Flink/08-roadmap/08.01-flink-24/flink-version-evolution-complete-guide.md)
-- **AI Agents Design-Exploration**: [Flink AI Agents Konzeptdesign](../../Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md)
+- **AI Agents Design-Exploration**: [Flink AI Agents Konzeptdesign](../../Flink/06-ai-ml/flink-ai-agents-flip-531.md)
 - **Smart Casual Verification**: [Neue Methode der Formalisierungs-Überprüfung](../../Struct/07-tools/smart-casual-verification.md)
 - **A2A-Protokoll Tiefenanalyse**: [A2A- und Agent-Kommunikationsprotokoll](../../Knowledge/06-frontier/a2a-protocol-agent-communication.md)
 

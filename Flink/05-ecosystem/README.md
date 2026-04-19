@@ -122,7 +122,7 @@ graph TB
 |--------|----------|----------|------|
 | **JDBC** | Source/Sink | 批量写入、连接池 | [JDBC 完整指南](./05.01-connectors/jdbc-connector-complete-guide.md) |
 | **MongoDB** | Source/Sink | Change Stream、批量写入 | [MongoDB 指南](./05.01-connectors/mongodb-connector-complete-guide.md) |
-| **Elasticsearch** | Sink | 批量索引、动态模板 | [ES 连接器指南](./05.01-connectors/flink-elasticsearch-connector-guide.md) |
+| **Elasticsearch** | Sink | 批量索引、动态模板 | [ES 连接器指南](05.01-connectors/elasticsearch-connector-complete-guide.md) |
 
 #### 2.2.3 CDC 连接器
 
@@ -400,7 +400,7 @@ graph TB
 |----------|--------------|----------|
 | **实时数仓** | Kafka → Flink → Paimon/Iceberg | [Lakehouse 集成](./05.02-lakehouse/) |
 | **CDC 数据同步** | Flink CDC → Kafka/Sink | [CDC 3.0 指南](./05.01-connectors/flink-cdc-3.0-data-integration.md) |
-| **全文检索** | Flink → Elasticsearch | [ES 连接器](./05.01-connectors/flink-elasticsearch-connector-guide.md) |
+| **全文检索** | Flink → Elasticsearch | [ES 连接器](05.01-connectors/elasticsearch-connector-complete-guide.md) |
 | **多语言 UDF** | WASM UDF | [WASM 流处理](./05.03-wasm-udf/wasm-streaming.md) |
 | **实时图分析** | Flink Gelly | [Gelly 指南](./05.04-graph/flink-gelly.md) |
 | **特征工程** | PyFlink → Feature Store | [AI/ML 生态](../06-ai-ml/) |

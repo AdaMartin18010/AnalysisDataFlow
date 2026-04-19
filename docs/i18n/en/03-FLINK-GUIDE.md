@@ -122,7 +122,7 @@ Flink connector ecosystem and data integration.
 | [04.01-kafka-connector.md](../../../Flink/05-ecosystem/05.01-connectors/evolution/kafka-connector.md) | Kafka Connector | Producer, consumer, exactly-once integration |
 | [04.02-filesystem-connector.md](../../../Flink/05-ecosystem/05.01-connectors/evolution/file-connector.md) | Filesystem Connector | Parquet, ORC, CSV, streaming file sink |
 | [04.03-jdbc-connector.md](../../../Flink/05-ecosystem/05.01-connectors/evolution/jdbc-connector.md) | JDBC Connector | Database read/write, batch optimization |
-| [04.04-elasticsearch-connector.md](../../../Flink/05-ecosystem/05.01-connectors/flink-elasticsearch-connector-guide.md) | Elasticsearch Connector | Real-time indexing, bulk operations |
+| [04.04-elasticsearch-connector.md](../../../Flink/05-ecosystem/05.01-connectors/elasticsearch-connector-complete-guide.md) | Elasticsearch Connector | Real-time indexing, bulk operations |
 | [04.05-cdc-connectors.md](../../../Flink/05-ecosystem/05.01-connectors/flink-cdc-3.0-data-integration.md) | CDC Connectors | Debezium, Canal, change data capture |
 | [04.06-pulsar-connector.md](../../../Flink/05-ecosystem/05.01-connectors/pulsar-integration-guide.md) | Pulsar Connector | Tiered storage, multi-tenancy integration |
 | [04.07-rabbitmq-connector.md](../../../Flink/05-ecosystem/05.01-connectors/evolution/mq-connector.md) | RabbitMQ Connector | AMQP integration, queue semantics |
@@ -149,7 +149,7 @@ Flink comparison with other stream processing engines.
 | [05.04-flink-vs-risingwave.md](../../../Flink/09-practices/09.03-performance-tuning/05-vs-competitors/flink-vs-risingwave-deep-dive.md) | Flink vs RisingWave | Stream processing vs stream database |
 | [05.05-flink-vs-materialize.md](../../../Flink/05-ecosystem/ecosystem/materialize-comparison.md) | Flink vs Materialize | SQL-first streaming comparison |
 | [05.06-engine-selection-guide.md] | Stream Engine Selection Guide | Decision matrix, use case mapping |
-| [05.07-migration-guide-spark-to-flink.md](../../../Flink/05-ecosystem/ecosystem/kafka-streams-migration.md) | Spark to Flink Migration | Code conversion, semantic mapping |
+| [05.07-migration-guide-spark-to-flink.md](../../../Knowledge/05-mapping-guides/migration-guides/05.2-kafka-streams-to-flink-migration.md) | Spark to Flink Migration | Code conversion, semantic mapping |
 | [05.08-hybrid-architectures.md](../../../Flink/07-rust-native/risingwave-comparison/04-hybrid-deployment.md) | Hybrid Architectures | Multi-engine coexistence patterns |
 
 ---
@@ -161,7 +161,7 @@ Production engineering practices and operational guidelines.
 | Document | Description | Key Points |
 |----------|-------------|------------|
 | [06.01-performance-tuning.md](../../../Flink/09-practices/09.03-performance-tuning/performance-tuning-guide.md) | Performance Tuning Guide | Backpressure optimization, serialization tuning |
-| [06.02-production-checklist.md](../../../Flink/04-runtime/04.02-operations/production-checklist.md) | Production Checklist | Pre-launch verification, monitoring setup |
+| [06.02-production-checklist.md](../../../Knowledge/07-best-practices/07.01-flink-production-checklist.md) | Production Checklist | Pre-launch verification, monitoring setup |
 | [06.03-testing-strategies.md](../../../Flink/09-practices/09.03-performance-tuning/stream-processing-testing-strategies.md) | Testing Strategies | Unit testing, integration testing, chaos engineering |
 | [06.04-monitoring-alerting.md](../../../Flink/04-runtime/04.03-observability/metrics-and-monitoring.md) | Monitoring and Alerting | Metrics, logs, tracing, alert rules |
 | [06.05-cost-optimization.md](../../../Flink/09-practices/09.03-performance-tuning/flink-tco-cost-optimization-guide.md) | Cost Optimization | Resource right-sizing, spot instances |
@@ -169,7 +169,7 @@ Production engineering practices and operational guidelines.
 | [06.07-config-management.md](../../../Flink/04-runtime/04.01-deployment/evolution/config-management.md) | Configuration Management | Dynamic config, environment separation |
 | [06.08-version-upgrades.md](../../../Flink/00-meta/version-tracking.md) | Version Upgrade Guide | Migration strategies, compatibility testing |
 | [06.09-disaster-recovery.md] | Disaster Recovery | Multi-region deployment, backup strategies |
-| [06.10-security-hardening.md](../../../Flink/09-practices/09.04-security/security-hardening-guide.md) | Security Hardening | Authentication, encryption, network policies |
+| [06.10-security-hardening.md](../../../Flink/09-practices/09.04-security/flink-security-complete-guide.md) | Security Hardening | Authentication, encryption, network policies |
 
 ---
 
@@ -272,7 +272,7 @@ Flink integration with AI/ML workloads.
 | [12.05-pytorch-integration.md] | PyTorch Integration | PyTorch + Flink |
 | [12.06-online-learning.md](../../../Flink/06-ai-ml/online-learning-algorithms.md) | Online Learning | Incremental model updates |
 | [12.07-model-serving.md](../../../Flink/06-ai-ml/model-serving-streaming.md) | Model Serving Patterns | Low-latency inference |
-| [12.08-flip-531-ai-agents.md](../../../Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md) | FLIP-531 AI Agents | Flink AI Agents proposal |
+| [12.08-flip-531-ai-agents.md](../../../Flink/06-ai-ml/flink-ai-agents-flip-531.md) | FLIP-531 AI Agents | Flink AI Agents proposal |
 | [12.09-multimodal-streaming.md](../../../Flink/06-ai-ml/llm-streaming-inference-architecture.md) | Multimodal Streaming | Text/image/video processing |
 | [12.10-graph-neural-networks.md] | Graph Neural Networks | TGN, TGNN integration |
 | [12.11-vector-search-integration.md](../../../Flink/06-ai-ml/vector-database-integration.md) | Vector Search Integration | RAG, vector databases |

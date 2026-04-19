@@ -91,7 +91,7 @@ Ce projet est une organisation systématique et une construction des **modèles 
 - **✅ Corrections d'erreurs E1-E4 terminées** : Uniformisation terminée, réparation de liens, alignement des documents
 - **📚 Nouveau répertoire tutorials** : [Démarrage en 5 minutes](../../tutorials/00-5-MINUTE-QUICK-START.md)
 - **Flink 2.4/2.5/3.0 Roadmap** : [Roadmap 3 ans](../../Flink/08-roadmap/08.01-flink-24/flink-version-evolution-complete-guide.md)
-- **Exploration de la conception AI Agents** : [Conception conceptuelle Flink AI Agents](../../Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md)
+- **Exploration de la conception AI Agents** : [Conception conceptuelle Flink AI Agents](../../Flink/06-ai-ml/flink-ai-agents-flip-531.md)
 - **Smart Casual Verification** : [Nouvelle méthode de vérification formalisée](../../Struct/07-tools/smart-casual-verification.md)
 - **Analyse approfondie du protocole A2A** : [Protocole A2A et communication Agent](../../Knowledge/06-frontier/a2a-protocol-agent-communication.md)
 

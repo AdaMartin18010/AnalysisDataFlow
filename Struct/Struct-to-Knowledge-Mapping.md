@@ -602,7 +602,7 @@ graph TB
 | [Thm-S-17-01 Checkpoint 正确性](./04-proofs/04.01-flink-checkpoint-correctness.md) | [pattern-checkpoint-recovery.md](../Knowledge/02-design-patterns/pattern-checkpoint-recovery.md) | Validated | 形式证明 → Checkpoint 屏障对齐工程实现 |
 | [Thm-S-17-01 Checkpoint 正确性](./04-proofs/04.01-flink-checkpoint-correctness.md) | [07.01-flink-production-checklist.md](../Knowledge/07-best-practices/07.01-flink-production-checklist.md) | Validated | Barrier 传播语义 → 生产检查清单配置项 |
 | [Thm-S-18-01 Exactly-Once](./04-proofs/04.02-flink-exactly-once-correctness.md) | [07.01-flink-production-checklist.md](../Knowledge/07-best-practices/07.01-flink-production-checklist.md) | Validated | EO 语义保证 → 端到端一致性检查项 |
-| [Thm-S-19-01 Chandy-Lamport](./04-proofs/04.03-chandy-lamport-consistency.md) | [streaming-anti-patterns.md](../Knowledge/09-anti-patterns/streaming-anti-patterns.md) | Validated | 避免违反 CL 协议的反模式 |
+| [Thm-S-19-01 Chandy-Lamport](./04-proofs/04.03-chandy-lamport-consistency.md) | [streaming-anti-patterns.md](../Knowledge/09-anti-patterns/anti-pattern-checklist.md) | Validated | 避免违反 CL 协议的反模式 |
 
 **实践验证链**：
 

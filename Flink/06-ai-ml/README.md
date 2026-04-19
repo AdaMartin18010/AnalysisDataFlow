@@ -167,7 +167,7 @@ graph TB
 | 📘 [Agent 架构深度解析](./flink-agents-architecture-deep-dive.md) | 运行时架构 | ⭐⭐⭐⭐ |
 | 📘 [Agent 模式目录](./flink-agents-patterns-catalog.md) | 设计模式与最佳实践 | ⭐⭐⭐⭐ |
 | 📘 [生产检查清单](./flink-agents-production-checklist.md) | 上线前检查项 | ⭐⭐⭐ |
-| 🆕 [FLIP-531 GA 指南](./flip-531-ai-agents-ga-guide.md) | 生产环境部署 | ⭐⭐⭐⭐ |
+| 🆕 [FLIP-531 GA 指南](flink-ai-agents-flip-531.md) | 生产环境部署 | ⭐⭐⭐⭐ |
 
 ### 2.5 AI Agent 演进路线
 

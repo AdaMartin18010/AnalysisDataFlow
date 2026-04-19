@@ -4,7 +4,7 @@
 >
 > ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
 
-> **所属阶段**: Flink/06-ai-ml | **前置依赖**: [FLIP-531 AI Agents](flip-531-ai-agents-ga-guide.md), [Flink Agents MCP集成](flink-agents-mcp-integration.md) | **形式化等级**: L4-L5
+> **所属阶段**: Flink/06-ai-ml | **前置依赖**: [FLIP-531 AI Agents](flink-ai-agents-flip-531.md), [Flink Agents MCP集成](flink-agents-mcp-integration.md) | **形式化等级**: L4-L5
 
 ---
 
