@@ -64,7 +64,7 @@
     - [6.4 Serverless 流处理场景](#64-serverless-流处理场景)
     - [6.5 跨平台连接器场景](#65-跨平台连接器场景)
     - [6.6 多云边缘函数编排](#66-多云边缘函数编排)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)]()
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
     - [7.1 浏览器-边缘-云统一部署架构图](#71-浏览器-边缘-云统一部署架构图)
     - [7.2 运行时性能对比图](#72-运行时性能对比图)

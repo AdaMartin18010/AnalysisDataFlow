@@ -25,7 +25,7 @@
   - [4. 解决方案 (Solution)](#4-解决方案-solution)
     - [4.1 两阶段聚合（Two-Phase Aggregation）](#41-两阶段聚合two-phase-aggregation)
     - [4.2 热点 Key 加盐（Salting）](#42-热点-key-加盐salting)
-    - [4.3 局部聚合 + 全局合并（Map-Side Combine）](#43-局部聚合--全局合并map-side-combine)
+    - [4.3 局部聚合 + 全局合并（Map-Side Combine）]()
     - [4.4 动态重分区](#44-动态重分区)
     - [4.5 Key 拆分与重组](#45-key-拆分与重组)
   - [5. 代码示例 (Code Examples)](#5-代码示例-code-examples)

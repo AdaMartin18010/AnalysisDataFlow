@@ -19,7 +19,7 @@
     - [方向2: 事务性流处理的形式化理论](#方向2-事务性流处理的形式化理论)
     - [方向3: 增量视图维护的语义基础](#方向3-增量视图维护的语义基础)
   - [2025年重要论文](#2025年重要论文)
-    - [论文1: IcedTea - Dataflow系统时间旅行调试](#论文1-icedtea---dataflow系统时间旅行调试)
+    - [论文1: IcedTea - Dataflow系统时间旅行调试]()
     - [论文2: 流处理系统形式化验证进展](#论文2-流处理系统形式化验证进展)
     - [论文3: 自适应工作流优化](#论文3-自适应工作流优化)
     - [论文4: 学习型查询优化器](#论文4-学习型查询优化器)
@@ -42,7 +42,7 @@
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)]()
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
   - [参考文献](#参考文献)
 
