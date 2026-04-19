@@ -1,11 +1,12 @@
 > **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
-> 
+>
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # 流计算知识重构计划 - 确认清单
 
 > **日期**: 2026-04-09
 > **基线已保存**: archive/2026-04-09-baseline/
-> **计划文档**: MASTER-RECONSTRUCTION-PLAN.md + DETAILED-TASK-BREAKDOWN.md
+> **计划文档**: [archive/prospective-convergence/2026-04/MASTER-RECONSTRUCTION-PLAN.md](../../../archive/prospective-convergence/2026-04/MASTER-RECONSTRUCTION-PLAN.md) + DETAILED-TASK-BREAKDOWN.md
 
 ---
 
@@ -147,7 +148,7 @@ L1: 数学基础 - Set/Order/Lattice/Category Theory
 ### 9. 文件与归档
 
 - [ ] 基线已保存: archive/2026-04-09-baseline/
-- [ ] 主计划: MASTER-RECONSTRUCTION-PLAN.md
+- [ ] 主计划: [archive/prospective-convergence/2026-04/MASTER-RECONSTRUCTION-PLAN.md](../../../archive/prospective-convergence/2026-04/MASTER-RECONSTRUCTION-PLAN.md)
 - [ ] 任务分解: DETAILED-TASK-BREAKDOWN.md
 - [ ] 确认清单: PLAN-CONFIRMATION.md (本文件)
 

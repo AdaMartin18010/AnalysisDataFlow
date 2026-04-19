@@ -4,7 +4,7 @@
 >
 # 流计算知识重构详细任务分解
 
-> 配套: MASTER-RECONSTRUCTION-PLAN.md
+> 配套: [archive/prospective-convergence/2026-04/MASTER-RECONSTRUCTION-PLAN.md](archive/prospective-convergence/2026-04/MASTER-RECONSTRUCTION-PLAN.md)
 > 总任务: 105项 | 总工时: 1040h | 周期: 24周
 
 ---

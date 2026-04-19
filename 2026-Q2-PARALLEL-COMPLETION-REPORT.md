@@ -286,4 +286,4 @@ phase2-case-studies/gaming/11.12.2-game-analytics-realtime.md
 ---
 
 *报告生成时间: 2026-04-12*
-*执行计划: 2026-Q2-PARALLEL-EXECUTION-PLAN.md*
+*执行计划: [archive/prospective-convergence/2026-04/2026-Q2-PARALLEL-EXECUTION-PLAN.md](archive/prospective-convergence/2026-04/2026-Q2-PARALLEL-EXECUTION-PLAN.md)*

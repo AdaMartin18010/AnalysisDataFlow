@@ -1,6 +1,7 @@
 > **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
-> 
+>
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # 流计算7层架构思维导图
 
 > **文档定位**: Phase 3 可视化文档 | **形式化等级**: L1-L7 全覆盖 | **版本**: 2026-04-09
@@ -427,7 +428,7 @@ graph TB
 
 > **关联文档**:
 >
-> - [MASTER-RECONSTRUCTION-PLAN.md](../../MASTER-RECONSTRUCTION-PLAN.md) - 重构计划与七层架构定义
+> - [archive/prospective-convergence/2026-04/MASTER-RECONSTRUCTION-PLAN.md](../../archive/prospective-convergence/2026-04/MASTER-RECONSTRUCTION-PLAN.md) - 重构计划与七层架构定义
 > - [Struct/00-INDEX.md](../../Struct/00-INDEX.md) - 形式理论文档索引
 > - [Knowledge/00-INDEX.md](../../Knowledge/00-INDEX.md) - 知识结构文档索引
 > - [ARCHITECTURE.md](../../ARCHITECTURE.md) - 项目技术架构文档
