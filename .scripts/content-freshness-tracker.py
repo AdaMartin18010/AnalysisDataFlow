@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """
 AnalysisDataFlow Content Freshness Tracker
 
@@ -44,7 +44,8 @@ CONFIG = {
     "flink_flips": {
         "name": "Apache Flink FLIPs",
         "source_type": "github_api",
-        "url": "https://api.github.com/repos/apache/flink/contents/docs/content/docs/flips",
+        "url": "# FLIPs moved from GitHub to https://ossip.dev/flink.html (2025)
+# `https://api.github.com/repos/apache/flink/contents/docs/content/docs/flips",
         "check_interval_hours": 168,  # weekly
     },
     "mcp_spec": {
@@ -333,3 +334,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

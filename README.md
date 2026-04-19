@@ -1,14 +1,14 @@
-# AnalysisDataFlow
+﻿# AnalysisDataFlow
 
 [![中文](https://img.shields.io/badge/中文-🇨🇳-red)](./) [![English](https://img.shields.io/badge/English-🇬🇧-blue)](./docs/i18n/en/00-OVERVIEW.md)
 
-[![Version](https://img.shields.io/badge/Version-v5.0.0-brightgreen)](./PROJECT-COMPLETION-MASTER-REPORT.md)
-[![PR Quality Gate](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml/badge.svg) ⚠️ **[已失效: HTTP 404]** [Archive备份](https://web.archive.org/web/*/https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml/badge.svg)](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml)
+[![Version](https://img.shields.io/badge/Version-v5.0.0-brightgreen)](./PROJECT-TRACKING.md)
+[![PR Quality Gate](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml/badge.svg) ⚠️ **[已失效: HTTP 404]** [Archive备份](https://web.archive.org/web/*/https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml/badge.svg)](<https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml>)
 [![Scheduled Maintenance](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/scheduled-maintenance.yml/badge.svg)](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/scheduled-maintenance.yml)
 [![Doc Update Sync](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/doc-update-sync.yml/badge.svg)](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/doc-update-sync.yml)
 [![Docs](https://img.shields.io/badge/Docs-1050%2B-blue)](./docs/README.md)
 [![Theorems](https://img.shields.io/badge/Theorems-10800%2B-green)](./THEOREM-REGISTRY.md)
-[![Last Updated](https://img.shields.io/badge/Last%20Updated-2026--04--12-orange)]()
+[![Last Updated](https://img.shields.io/badge/Last%20Updated-2026--04--20-orange)]()
 [![Status](https://img.shields.io/badge/Status-100%25%20Complete-success)]()
 [![Production Verified](https://img.shields.io/badge/🏭%20寻求生产验证-提交案例-yellow)](./.github/ISSUE_TEMPLATE/production-verification.md)
 
@@ -90,7 +90,7 @@
 
 ## 🎉 项目完成公告
 
-> **状态**: 100% 完成 ✅ | **版本**: v5.0 | **日期**: 2026-04-12
+> **状态**: 100% 完成 ✅ | **版本**: v4.6 | **日期**: 2026-04-20
 
 本项目已达到**100%完成状态**，所有规划内容已全部交付：
 
@@ -104,7 +104,7 @@
 - ✅ **英文核心文档**: 4篇英文翻译完成
 - ✅ **全面生态对齐**: Go/Rust/Flink多语言生态
 
-**📊 项目完成总报告**: [PROJECT-COMPLETION-MASTER-REPORT.md](./PROJECT-COMPLETION-MASTER-REPORT.md)
+**📊 项目完成总报告**: [PROJECT-COMPLETION-MASTER-REPORT.md](archive/completion-reports/PROJECT-COMPLETION-MASTER-REPORT.md)
 **📅 项目时间线**: [PROJECT-TIMELINE.md](./PROJECT-TIMELINE.md)
 **🏆 贡献者荣誉墙**: [CONTRIBUTORS-HALL-OF-FAME.md](./CONTRIBUTORS-HALL-OF-FAME.md)
 
@@ -124,6 +124,7 @@
 
 ### 按主题导航
 
+- **🧭 导航门户**: [NAVIGATION-PORTAL.md](NAVIGATION-PORTAL.md) — 按角色与目标快速定位全库内容
 - **理论基础**: [Struct/ 统一流计算理论]
 - **设计模式**: [Knowledge/ 流处理核心模式](Knowledge/02-design-patterns/)
 - **Flink 核心**: [Flink/ Checkpoint机制](Flink/02-core/checkpoint-mechanism-deep-dive.md)
@@ -141,11 +142,11 @@
 
 ### 最新更新 (v5.0 项目完成总报告版)
 
-- **🏆 项目完成总报告**: [PROJECT-COMPLETION-MASTER-REPORT.md](./PROJECT-COMPLETION-MASTER-REPORT.md) - 统一整合报告
+- **🏆 项目完成总报告**: [PROJECT-COMPLETION-MASTER-REPORT.md](archive/completion-reports/PROJECT-COMPLETION-MASTER-REPORT.md) - 统一整合报告
 - **📅 项目时间线**: [PROJECT-TIMELINE.md](./PROJECT-TIMELINE.md) - 完整里程碑历史
 - **🏆 贡献者荣誉墙**: [CONTRIBUTORS-HALL-OF-FAME.md](./CONTRIBUTORS-HALL-OF-FAME.md) - 感谢所有贡献者
 - **📈 统计仪表板**: [PROJECT-STATS-DASHBOARD.md](./PROJECT-STATS-DASHBOARD.md) - 实时数据统计
-- **✅ 最终发布清单**: [FINAL-RELEASE-CHECKLIST.md](./FINAL-RELEASE-CHECKLIST.md) - 发布准备状态
+- **✅ 最终发布清单**: [FINAL-RELEASE-CHECKLIST.md](archive/completion-reports/FINAL-RELEASE-CHECKLIST.md) - 发布准备状态
 - **🎉 100%完成里程碑**: [100-PERCENT-COMPLETION-FINAL-REPORT.md](./100-PERCENT-COMPLETION-FINAL-REPORT.md) - 项目全面达成100%完成
 - **✅ 交叉引用清零**: [cross-ref-fix-report.md](./cross-ref-fix-report.md) - 730个错误已全部修复
 - **🔬 形式化验证完成**: [COQ-COMPILATION-REPORT.md](./reconstruction/phase4-verification/COQ-COMPILATION-REPORT.md) | [TLA-MODEL-CHECK-REPORT.md](./reconstruction/phase4-verification/TLA-MODEL-CHECK-REPORT.md)
@@ -294,9 +295,9 @@ Struct/01-foundation/ (理论基础)
 
 ## 项目状态
 
-**总文档数**: 1,050+ | **定理注册表版本**: v3.9 | **最后更新**: 2026-04-12 | **状态**: 100%完成 ✅ | **大小**: 31+ MB
+**总文档数**: 1,050+ | **定理注册表版本**: v4.6 | **最后更新**: 2026-04-20 | **状态**: 100%完成 ✅ | **大小**: 31+ MB
 
-> 📊 **项目完成总报告**: 详见 [PROJECT-COMPLETION-MASTER-REPORT.md](./PROJECT-COMPLETION-MASTER-REPORT.md) - 统一整合报告
+> 📊 **项目完成总报告**: 详见 [PROJECT-COMPLETION-MASTER-REPORT.md](archive/completion-reports/PROJECT-COMPLETION-MASTER-REPORT.md) - 统一整合报告
 >
 > 📅 **项目时间线**: 详见 [PROJECT-TIMELINE.md](./PROJECT-TIMELINE.md) - 完整里程碑历史
 >
@@ -304,7 +305,7 @@ Struct/01-foundation/ (理论基础)
 >
 > 📈 **统计仪表板**: 详见 [PROJECT-STATS-DASHBOARD.md](./PROJECT-STATS-DASHBOARD.md) - 实时数据统计
 >
-> ✅ **发布清单**: 详见 [FINAL-RELEASE-CHECKLIST.md](./FINAL-RELEASE-CHECKLIST.md) - 发布准备状态
+> ✅ **发布清单**: 详见 [FINAL-RELEASE-CHECKLIST.md](archive/completion-reports/FINAL-RELEASE-CHECKLIST.md) - 发布准备状态
 >
 > 🗺️ **版本跟踪**: 详见 [PROJECT-VERSION-TRACKING.md](archive/tracking-reports/PROJECT-VERSION-TRACKING.md) 了解完整版本历史
 >
@@ -364,6 +365,7 @@ Struct/01-foundation/ (理论基础)
 | v3.9 | 2026-04-11 | 英文文档 | 4篇核心英文文档 | ✅ 完成 |
 | **v4.0** | **2026-04-12** | **生态对齐** | **13新文档+131形式化元素** | **✅ 完成** |
 | **v5.0** | **2026-04-12** | **项目总报告** | **整合文档+发布准备** | **✅ 完成** |
+| **v4.6** | **2026-04-20** | **根目录导航优化** | **精简结构+导航门户** | **✅ 完成** |
 
 ---
 
