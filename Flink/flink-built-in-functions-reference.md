@@ -3,4 +3,3 @@
 > 本文档内容已整合至主文档，此处保留为重定向入口。
 > **主文档**: [Flink\03-api\03.02-table-sql-api\built-in-functions-complete-list.md](../Flink/03-api/03.02-table-sql-api/built-in-functions-complete-list.md)
 > **归档位置**: [../archive/content-deduplication/2026-04/Flink/flink-built-in-functions-reference.md](../archive/content-deduplication/2026-04/Flink/flink-built-in-functions-reference.md)
-

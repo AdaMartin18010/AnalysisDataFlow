@@ -26,7 +26,7 @@
     - [4.2 边缘网关的分层架构](#42-边缘网关的分层架构)
     - [4.3 消息路由的动态配置](#43-消息路由的动态配置)
     - [4.4 边缘场景的协议优化](#44-边缘场景的协议优化)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-F-09-05-03 (协议转换正确性定理)](#thm-f-09-05-03-协议转换正确性定理)
     - [工程推论 (Engineering Corollaries)](#工程推论-engineering-corollaries)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)

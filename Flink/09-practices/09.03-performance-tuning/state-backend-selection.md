@@ -10,7 +10,7 @@
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-F-06-01 (状态后端 State Backend)](#def-f-06-01-状态后端-state-backend)
-    - [Def-F-06-02 (HeapStateBackend / MemoryStateBackend)](#def-f-06-02-heapstatebackend-memorystatebackend)
+    - [Def-F-06-02 (HeapStateBackend / MemoryStateBackend)](#def-f-06-02-heapstatebackend--memorystatebackend)
     - [Def-F-06-03 (RocksDBStateBackend)](#def-f-06-03-rocksdbstatebackend)
     - [Def-F-06-04 (HashMapStateBackend)](#def-f-06-04-hashmapstatebackend)
     - [Def-F-06-05 (EmbeddedRocksDBStateBackend)](#def-f-06-05-embeddedrocksdbstatebackend)
@@ -41,7 +41,7 @@
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
     - [状态后端架构对比图](#状态后端架构对比图)
     - [状态后端选型决策树](#状态后端选型决策树)
-    - [状态后端 × 特性详细对比表](#状态后端-特性详细对比表)
+    - [状态后端 × 特性详细对比表](#状态后端--特性详细对比表)
   - [8. 引用参考 (References)](#8-引用参考-references)
 
 ## 1. 概念定义 (Definitions)

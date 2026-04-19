@@ -1,6 +1,7 @@
 ﻿> **⚠️ 前瞻性内容风险声明**
 >
 > 本文档描述的技术特性处于早期规划或社区讨论阶段，**不代表 Apache Flink 官方承诺**。
+>
 > - 相关 FLIP 可能尚未进入正式投票，或可能在实现过程中发生显著变更
 > - 预计发布时间基于社区讨论趋势分析，存在延迟或取消的风险
 > - 生产环境选型请以 Apache Flink 官方发布为准
@@ -789,6 +790,7 @@ flowchart TD
 > **⚠️ 虚构 FLIP 风险声明**
 >
 > 以下表格中 **FLIP-540 至 FLIP-551** 为本项目基于技术趋势分析构建的**假设性/虚构 FLIP 编号**，**不代表 Apache Flink 官方已分配或已投票通过的 FLIP**。
+>
 > - 这些编号及对应标题、状态、进度均为前瞻性推测，无任何官方 JIRA/GitHub/邮件列表来源
 > - 如需了解真实 FLIP 状态，请访问 [Apache Flink 官方 FLIP 列表](https://github.com/apache/flink/tree/master/flink-docs/docs/flips/)
 > - 请勿将这些虚构 FLIP 作为生产选型或技术决策的依据

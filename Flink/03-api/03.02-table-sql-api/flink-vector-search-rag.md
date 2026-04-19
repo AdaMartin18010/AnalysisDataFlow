@@ -1224,9 +1224,7 @@ LATERAL TABLE(VECTOR_SEARCH(
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink Documentation, "Vector Search", 2025. https://nightlies.apache.org/flink/flink-docs-release-2.2/docs/dev/table/sql/queries/vector-search/
-[^2]: Apache Flink Blog, "Apache Flink 2.2.0: Advancing Real-Time Data & AI", December 4, 2025. https://flink.apache.org/2025/12/04/apache-flink-2.2.0-advancing-real-time-data--ai-and-empowering-stream-processing-for-the-ai-era/
-[^3]: Confluent Blog, "Add RAG to Your Flink AI Flow Using Vector Search", 2025. https://www.confluent.io/blog/flink-ai-rag-with-federated-search/
+[^2]: Apache Flink Blog, "Apache Flink 2.2.0: Advancing Real-Time Data & AI", December 4, 2025. <https://flink.apache.org/2025/12/04/apache-flink-2.2.0-advancing-real-time-data--ai-and-empowering-stream-processing-for-the-ai-era/>
 
 ---
 

@@ -3,4 +3,3 @@
 > 本文档内容已整合至主文档，此处保留为重定向入口。
 > **主文档**: [Flink\02-core\state-backends-deep-comparison.md](../Flink/02-core/state-backends-deep-comparison.md)
 > **归档位置**: [../archive/content-deduplication/2026-04/Flink/flink-state-backends-comparison.md](../archive/content-deduplication/2026-04/Flink/flink-state-backends-comparison.md)
-

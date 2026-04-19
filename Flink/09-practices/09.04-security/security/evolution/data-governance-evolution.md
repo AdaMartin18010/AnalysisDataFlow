@@ -65,8 +65,8 @@ LineageRecorder.record(new DataLineage()
 ### 6.1 质量规则
 
 ```yaml
-data_quality: 
-  rules: 
+data_quality:
+  rules:
     - column: email
       pattern: ".*@.*\\..*"
     - column: age

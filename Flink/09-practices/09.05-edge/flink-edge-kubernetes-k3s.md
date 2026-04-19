@@ -26,7 +26,7 @@
     - [4.2 Flink Kubernetes Operator部署模式](#42-flink-kubernetes-operator部署模式)
     - [4.3 资源限制下的调度优化](#43-资源限制下的调度优化)
     - [4.4 边缘场景的网络策略](#44-边缘场景的网络策略)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-F-09-05-02 (边缘K3s部署稳定性定理)](#thm-f-09-05-02-边缘k3s部署稳定性定理)
     - [工程推论 (Engineering Corollaries)](#工程推论-engineering-corollaries)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
@@ -96,6 +96,7 @@ R_{allocatable} = R_{total} - R_{system} - R_{k3s} - R_{reserved}
 $$
 
 其中边缘典型值：
+
 - $R_{system}$: 操作系统占用 (约 512MB)
 - $R_{k3s}$: K3s组件占用 (约 512MB)
 - $R_{reserved}$: 系统保留 (约 256MB)
@@ -186,6 +187,7 @@ R_{operator}(n) = R_{base} + n \cdot R_{per-deployment}
 $$
 
 其中：
+
 - $R_{base}$: 基础开销 (约 256MB 内存, 0.1 CPU)
 - $R_{per-deployment}$: 每个FlinkDeployment开销 (约 50MB 内存, 0.02 CPU)
 
@@ -241,6 +243,7 @@ T_{max} = f(C_{limit}, M_{limit}) = k \cdot \min\left(\frac{C_{limit}}{C_{per-ta
 $$
 
 其中：
+
 - $C_{per-task}$: 每个并行任务的CPU需求 (约 0.5核)
 - $M_{per-task}$: 每个并行任务的内存需求 (约 1GB)
 - $k$: 效率系数 (0.6-0.8)
@@ -357,7 +360,7 @@ $$
 **陈述**：在满足以下条件时，Flink on K3s边缘部署具有稳定性保证：
 
 $$
-\forall t \in [0, \infty): 
+\forall t \in [0, \infty):
 \begin{cases}
 \sum_{i} R_{pod_i}(t) \leq R_{allocatable} \\
 R_{requests} \leq R_{limits} \cdot \alpha \quad (\alpha \leq 0.8) \\
@@ -366,24 +369,29 @@ R_{requests} \leq R_{limits} \cdot \alpha \quad (\alpha \leq 0.8) \\
 $$
 
 其中：
+
 - $\alpha$: 资源利用率上限 (推荐 0.8)
 - $\beta$: 资源增长速率限制
 
 **证明**：
 
 **步骤 1**: 建立资源模型
+
 - K3s节点可分配资源 $R_{allocatable} = R_{total} - R_{system} - R_{k3s}$
 - Pod资源请求 $R_{requests}$ 和限制 $R_{limits}$ 满足 $R_{requests} \leq R_{limits}$
 
 **步骤 2**: 分析稳定性条件
+
 - 当所有Pod的资源使用 $\sum R_{usage} \leq R_{allocatable}$ 时，系统不会触发OOM
 - 设置 $R_{requests} \leq 0.8 \cdot R_{limits}$ 确保突发缓冲
 
 **步骤 3**: 验证K8s调度保证
+
 - K8s调度器保证已调度Pod的资源请求总和不超过节点容量
 - 资源限制通过cgroups强制执行
 
 **步骤 4**: 结论
+
 - 满足上述条件时，Flink Pod不会抢占其他关键系统资源
 - 即使Flink进程内存泄漏，也会被cgroups限制在 $R_{limits}$ 内
 - 因此系统稳定 ∎
@@ -582,10 +590,10 @@ spec:
   image: flink:1.18-scala_2.12
   flinkVersion: v1.18
   serviceAccount: flink-service-account
-  
+
   # 作业模式: Application (推荐用于边缘)
   mode: native
-  
+
   jobManager:
     resource:
       memory: "512m"
@@ -593,13 +601,13 @@ spec:
     replicas: 1
     # 边缘环境禁用高可用
     # 单点故障可接受
-    
+
   taskManager:
     resource:
       memory: "1536m"
       cpu: 1.5
     replicas: 1
-    
+
   podTemplate:
     spec:
       containers:
@@ -648,7 +656,7 @@ spec:
           operator: "Equal"
           value: "true"
           effect: "NoSchedule"
-          
+
   job:
     jarURI: local:///opt/flink/examples/streaming/StateMachineExample.jar
     parallelism: 2
@@ -669,7 +677,7 @@ data:
     # =================================================================
     # Flink 边缘K8s部署配置
     # =================================================================
-    
+
     # 基础配置
     jobmanager.rpc.address: localhost
     jobmanager.rpc.port: 6123
@@ -677,13 +685,13 @@ data:
     taskmanager.memory.process.size: 1536m
     taskmanager.numberOfTaskSlots: 2
     parallelism.default: 2
-    
+
     # 内存优化
     taskmanager.memory.managed.fraction: 0.2
     taskmanager.memory.network.fraction: 0.1
     taskmanager.memory.framework.heap.size: 128m
     taskmanager.memory.task.heap.size: 1024m
-    
+
     # 检查点配置 (适应边缘存储)
     execution.checkpointing.interval: 60s
     execution.checkpointing.min-pause-between-checkpoints: 30s
@@ -691,17 +699,17 @@ data:
     execution.checkpointing.externalized-checkpoint-retention: RETAIN_ON_CANCELLATION
     state.backend: hashmap
     state.checkpoints.dir: file:///opt/flink/checkpoints
-    
+
     # 重启策略
     restart-strategy: fixed-delay
     restart-strategy.fixed-delay.attempts: 3
     restart-strategy.fixed-delay.delay: 10s
-    
+
     # Kubernetes特定配置
     kubernetes.rest-service.exposed.type: NodePort
     kubernetes.pod-template-file: /opt/flink/conf/pod-template.yaml
     kubernetes.service-account: flink-service-account
-    
+
     # 日志配置
     log4j.rootLogger: WARN, console
     log4j.logger.org.apache.flink: WARN
@@ -724,7 +732,7 @@ kubectl logs -n flink deployment/edge-iot-processor
 # 节点资源规划
 # 总内存: 4GB
 # ├─ 系统: 512MB
-# ├─ K3s: 768MB  
+# ├─ K3s: 768MB
 # └─ Flink: 2GB
 #     ├─ JobManager: 512MB
 #     └─ TaskManager: 1.5GB
@@ -738,18 +746,18 @@ spec:
   image: flink:1.18-scala_2.12
   flinkVersion: v1.18
   mode: native
-  
+
   jobManager:
     resource:
       memory: "512m"
       cpu: 0.5
-    
+
   taskManager:
     resource:
       memory: "1536m"
       cpu: 1.0
     replicas: 1
-    
+
   podTemplate:
     spec:
       containers:
@@ -826,31 +834,31 @@ graph TB
                 Controller[Controller]
                 SQLite[(SQLite)]
             end
-            
+
             subgraph Workload["工作负载"]
                 subgraph FlinkNS["flink namespace"]
                     JM[JobManager Pod<br/>512MB / 0.5 CPU]
                     TM[TaskManager Pod<br/>1.5GB / 1 CPU]
                     SVC[Service<br/>NodePort]
                 end
-                
+
                 subgraph SystemNS["kube-system"]
                     DNS[CoreDNS]
                     Flannel[Flannel CNI]
                 end
             end
         end
-        
+
         subgraph Storage["本地存储"]
             CP[(检查点目录)]
             LOG[(日志目录)]
         end
     end
-    
+
     subgraph Cloud["云端 Cloud"]
         CloudSVC[云服务<br/>Kafka/存储]
     end
-    
+
     API --> Scheduler
     Scheduler --> JM
     Scheduler --> TM
@@ -859,7 +867,7 @@ graph TB
     TM --> CP
     JM --> LOG
     SVC --> CloudSVC
-    
+
     style ControlPlane fill:#e8f5e9
     style FlinkNS fill:#fff3e0
 ```
@@ -869,29 +877,29 @@ graph TB
 ```mermaid
 flowchart TB
     A[Pod创建] --> B{节点选择}
-    
+
     B -->|有node-type标签| C[边缘节点选择]
     B -->|无标签| D[默认节点]
-    
+
     C --> E{资源充足?}
     E -->|是| F[调度到边缘节点]
     E -->|否| G[Pending状态]
-    
+
     F --> H[创建容器]
     H --> I[配置cgroups]
     I --> J[启动Flink进程]
-    
+
     J --> K{健康检查}
     K -->|通过| L[Running状态]
     K -->|失败| M[重启容器]
-    
+
     G --> N[等待资源释放]
     N --> E
-    
+
     M --> O{重启次数 < 3?}
     O -->|是| J
     O -->|否| P[CrashLoopBackOff]
-    
+
     style F fill:#c8e6c9
     style L fill:#c8e6c9
     style P fill:#ffcdd2
@@ -910,12 +918,12 @@ flowchart LR
     G --> H[部署Flink作业]
     H --> I[验证运行状态]
     I --> J{检查点正常?}
-    
+
     J -->|是| K[部署完成]
     J -->|否| L[检查配置]
     L --> M[调整资源限制]
     M --> H
-    
+
     style K fill:#c8e6c9
     style J fill:#fff9c4
 ```
@@ -924,16 +932,6 @@ flowchart LR
 
 ## 8. 引用参考 (References)
 
-[^1]: Rancher Labs, "K3s Documentation", https://docs.k3s.io/
+[^1]: Rancher Labs, "K3s Documentation", <https://docs.k3s.io/>
 
-[^2]: Apache Flink, "Flink Kubernetes Operator", https://nightlies.apache.org/flink/flink-kubernetes-operator-docs-stable/
-
-[^3]: Kubernetes Documentation, "Resource Management", https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
-
-[^4]: CNCF, "Lightweight Kubernetes Landscape", Cloud Native Computing Foundation, 2024.
-
-[^5]: D. Bernstein, "Containers and Cloud: From LXC to Docker to Kubernetes", IEEE Cloud Computing, 1(3), 2014.
-
-[^6]: B. Burns, et al., "Borg, Omega, and Kubernetes", ACM Queue, 14, 2016.
-
-[^7]: Apache Flink, "Native Kubernetes Deployment", https://nightlies.apache.org/flink/flink-docs-stable/docs/deployment/resource-providers/native_kubernetes/
+[^2]: Apache Flink, "Flink Kubernetes Operator", <https://nightlies.apache.org/flink/flink-kubernetes-operator-docs-stable/>

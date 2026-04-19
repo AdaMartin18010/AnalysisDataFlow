@@ -32,7 +32,7 @@
     - [4.1 迁移策略选择](#41-迁移策略选择)
     - [4.2 回滚计划设计](#42-回滚计划设计)
     - [4.3 生产环境迁移最佳实践](#43-生产环境迁移最佳实践)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-F-09-02: 平滑升级正确性](#thm-f-09-02-平滑升级正确性)
     - [Prop-F-09-02: 配置迁移等价性](#prop-f-09-02-配置迁移等价性)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
@@ -690,6 +690,7 @@ return Cluster₁.₁₄
 3. **验证方法**：
 
    ```python
+
 def verify_equivalence(config_113, config_114):
     # 运行基准测试
     baseline = run_benchmark(config_113)
@@ -698,6 +699,7 @@ def verify_equivalence(config_113, config_114):
     assert abs(baseline.throughput - migrated.throughput) / baseline.throughput < 0.05
     assert abs(baseline.latency_p99 - migrated.latency_p99) / baseline.latency_p99 < 0.10
     assert abs(baseline.resource_usage - migrated.resource_usage) / baseline.resource_usage < 0.15
+
 ```
 
 ---

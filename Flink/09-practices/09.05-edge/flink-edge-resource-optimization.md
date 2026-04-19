@@ -30,7 +30,7 @@
     - [4.2 内存管理优化](#42-内存管理优化)
     - [4.3 低功耗模式设计](#43-低功耗模式设计)
     - [4.4 边缘场景的JVM调优](#44-边缘场景的jvm调优)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-F-09-05-05 (边缘资源最优配置定理)](#thm-f-09-05-05-边缘资源最优配置定理)
     - [工程推论 (Engineering Corollaries)](#工程推论-engineering-corollaries)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)

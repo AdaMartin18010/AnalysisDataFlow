@@ -9,6 +9,7 @@
 > 本案例描述的是基于项目理论框架推导出的理想架构方案，包含假设性性能指标与理论成本模型。
 > 实际生产部署可能因环境差异、数据规模、团队能力等因素产生显著不同结果。
 > 建议将其作为架构设计参考而非直接复制粘贴的生产蓝图。
+>
 ## 目录
 
 - [智能制造IoT实时流处理案例研究 (Smart Manufacturing IoT Real-time Stream Processing)](#智能制造iot实时流处理案例研究-smart-manufacturing-iot-real-time-stream-processing)

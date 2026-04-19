@@ -52,9 +52,9 @@ $$
 ### 5.1 RBAC配置
 
 ```yaml
-roles: 
+roles:
   - name: operator
-    permissions: 
+    permissions:
       - jobs:read
       - jobs:start
       - jobs:stop

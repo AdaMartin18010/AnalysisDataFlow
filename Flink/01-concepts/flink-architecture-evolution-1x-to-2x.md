@@ -248,10 +248,11 @@ $$
 1. **有序回调保证**:
 
    ```java
+
 // [伪代码片段 - 不可直接运行] 仅展示核心逻辑
    // 同一 key 的状态操作保持顺序
    state.getAsync(key)
-       .thenApply(v -> { /* 处理1 */ })
+       .thenApply(v -> { /*处理1*/ })
        .thenCompose(v -> state.updateAsync(key, v));
 
 ```

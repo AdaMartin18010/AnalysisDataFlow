@@ -80,6 +80,7 @@ $$
 $$
 
 **证明概要**:
+
 1. 建立旧文档全集到 URL 的哈希映射
 2. 重组委员会逐篇审查，确定新归属或废弃理由
 3. 对未被映射的文档触发阻塞性检查（CI 失败）
@@ -104,6 +105,7 @@ $$
 $$
 
 **证明概要**:
+
 1. 将每条重定向规则建模为有向边 $(source, target)$
 2. 使用拓扑排序验证图无环（DFS 检测回边）
 3. 若检测到环，则 CI 流水线自动失败
@@ -394,15 +396,3 @@ graph LR
 ---
 
 ## 8. 引用参考 (References)
-
-[^1]: Apache Flink FLIP-561, "Restructure Flink documentation", 2026-01. <https://github.com/apache/flink/blob/main/flink-docs/docs/flips/FLIP-561.md>
-
-[^2]: Flink Dev Mailing List, "[DISCUSS] FLIP-561: Restructure Flink documentation", January 2026. <https://lists.apache.org/thread/flip-561-discuss>
-
-[^3]: M. Visser, "Flink Documentation Restructure Proposal", Flink Forward 2026. <https://flink-forward.org/2026/documentation-restructure>
-
-[^4]: Diátaxis Framework, "A systematic approach to technical documentation authoring", 2020. <https://diataxis.fr/>
-
-[^5]: Stripe Documentation Team, "Docs as Code: Scaling Documentation at Stripe", 2024. <https://stripe.com/blog/docs-as-code>
-
-[^6]: Google Search Central, "Move your site to a new domain", 2025. <https://developers.google.com/search/docs/crawling-indexing/move-site>
