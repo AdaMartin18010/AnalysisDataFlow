@@ -20,8 +20,8 @@ docker-compose logs -f jobmanager
 
 | 服务 | 地址 | 说明 |
 |-----|------|------|
-| Flink Web UI | http://localhost:8081 | 作业管理界面 |
-| Kafka UI | http://localhost:8082 | Kafka管理界面 |
+| Flink Web UI | <http://localhost:8081> | 作业管理界面 |
+| Kafka UI | <http://localhost:8082> | Kafka管理界面 |
 
 ## 提交作业
 
@@ -104,11 +104,13 @@ docker-compose exec kafka kafka-console-consumer --topic sensor-data --from-begi
 ## 配置说明
 
 ### JobManager配置
+
 - 内存: 1024m
 - Heap: 512m
 - Web UI端口: 8081
 
 ### TaskManager配置
+
 - 内存: 2048m
 - Slot数量: 4
 - 副本数: 2
@@ -116,6 +118,7 @@ docker-compose exec kafka kafka-console-consumer --topic sensor-data --from-begi
 ## 故障排查
 
 ### 服务无法启动
+
 ```bash
 # 检查端口占用
 netstat -tlnp | grep 8081
@@ -126,6 +129,7 @@ docker-compose up -d
 ```
 
 ### 作业提交失败
+
 ```bash
 # 检查JobManager是否就绪
 curl http://localhost:8081/overview
@@ -135,7 +139,9 @@ docker-compose logs taskmanager | grep "Registering TaskManager"
 ```
 
 ### 内存不足
+
 编辑 `docker-compose.yml` 调整内存配置：
+
 ```yaml
 environment:
   - FLINK_PROPERTIES=

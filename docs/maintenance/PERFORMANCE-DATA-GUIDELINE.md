@@ -7,6 +7,7 @@
 ## 1. 为什么需要可信度标注
 
 流计算领域的性能数据高度依赖测试环境。RisingWave 2026 权威对比报告指出：
+
 - 相同 Nexmark 查询在不同硬件下差异可达 3x
 - 状态规模直接影响恢复时间（Flink 1.x 分钟级 vs ForSt 秒级）
 - 云成本对比必须标注区域和实例类型
@@ -20,33 +21,39 @@
 所有性能数据必须标注以下三种标识之一：
 
 ### 📊 实测数据
+
 ```markdown
 📊 **实测数据** | 环境: AWS r6g.2xlarge × 3, Flink 2.2.0, 100GB RocksDB 状态
 吞吐量: 1.2M events/sec | 延迟: P99 45ms
 ```
 
 **要求**：
+
 - 必须附测试环境模板（见第 4 节）
 - 必须说明测试工具（Nexmark / 自定义 / 其他）
 - 必须说明测试时长和重复次数
 
 ### 📖 官方数据
+
 ```markdown
 📖 **官方数据** | 来源: Apache Flink 官方博客, "Flink 2.2.0 Release", 2025-12-04
 吞吐量: 1.5M events/sec (官方声明)
 ```
 
 **要求**：
+
 - 必须提供可验证的 URL 或文献引用
 - 优先使用官方白皮书/博客/Release Notes
 - 引用格式：`[^n]` 上标
 
 ### 🔮 估算数据
+
 ```markdown
 🔮 **估算数据** | 置信区间: [0.8M, 1.5M] events/sec | 依据: 基于 Flink 1.18 数据线性外推 + 存算分离架构理论增益
 ```
 
 **要求**：
+
 - 必须说明估算方法和依据
 - 必须提供置信区间或误差范围
 - 禁止在选型决策树中作为唯一依据使用
@@ -113,6 +120,3 @@
 ---
 
 ## 7. 引用参考
-
-[^1]: RisingWave, "RisingWave vs Apache Flink: A Detailed Comparison (2026)", 2026-03-20. https://risingwave.com/blog/risingwave-vs-apache-flink-comparison/
-[^2]: Conduktor, "Streaming to Lakehouse Tables: Delta Lake, Iceberg, Hudi, and Paimon", 2026-04-01. https://conduktor.io/glossary/streaming-to-lakehouse-tables

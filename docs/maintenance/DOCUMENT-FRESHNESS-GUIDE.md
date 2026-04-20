@@ -9,6 +9,7 @@
 技术知识库的核心价值在于**准确性**和**时效性**。根据 Microsoft 开源团队 2026 年最佳实践（Drasi + AI Agent 模式），文档偏差是开源项目最大的技术债务来源之一。
 
 本项目当前规模：
+
 - ~900 篇文档
 - ~33 MB 内容
 - 覆盖 Flink、流计算、形式化验证等快速演进领域
@@ -22,6 +23,7 @@
 ### 2.1 月度巡检
 
 `.github/workflows/doc-freshness.yml` 每月 1 日自动运行：
+
 - 扫描核心目录 (`Struct/`, `Knowledge/`, `Flink/`, `en/`, `formal-methods/`)
 - 标记超过 6 个月未更新的文档
 - 检测已过期的前瞻性预计发布日期
@@ -36,6 +38,7 @@ python .scripts/doc-freshness-checker.py --root . --output FRESHNESS-REPORT.md
 ```
 
 检查器输出三个等级：
+
 | 等级 | 条件 | 响应时间 |
 |------|------|----------|
 | 🔴 P0 | 超过 2 年未更新 / 前瞻日期严重过期 | 7 天内处理 |
@@ -55,6 +58,7 @@ python .scripts/doc-freshness-checker.py --root . --output FRESHNESS-REPORT.md
 ```
 
 对于前瞻内容：
+
 ```markdown
 > **最后核实日期**: 2026-04-19 | **预计发布**: 2026 Q2
 > **风险等级**: 高 | **信息来源**: [官方链接]
@@ -75,6 +79,7 @@ python .scripts/doc-freshness-checker.py --root . --output FRESHNESS-REPORT.md
 **触发条件**：Apache Flink 新版本发布、竞品重大更新、标准组织发布新规
 
 **响应流程**：
+
 1. 发布后 7 天内，创建核实 Issue
 2. 对比项目文档与官方 Release Notes
 3. 更新"已发布"特性为确认状态
@@ -116,6 +121,3 @@ lychee --exclude-path release/ --exclude-path archive/ ./**/*.md
 ---
 
 ## 6. 引用参考
-
-[^1]: Microsoft Open Source Blog, "How Drasi used GitHub Copilot to find documentation bugs", 2026-04. https://opensource.microsoft.com/blog/2026/04/09/how-drasi-used-github-copilot-to-find-documentation-bugs/
-[^2]: HelpDocs, "The Ultimate Guide to Knowledge Base Software in 2026", 2026-02. https://blog.helpdocs.io/the-ultimate-guide-to-knowledge-base-software-in-2025/

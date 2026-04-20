@@ -35,10 +35,8 @@
   - [8. 与 Dataflow 模型的关系](#8-与-dataflow-模型的关系)
   - [9. 迁移路径与向后兼容性](#9-迁移路径与向后兼容性)
     - [9.1 迁移策略](#91-迁移策略)
-- [从 Flink 1.x 创建 Savepoint](#从-flink-1x-创建-savepoint)
-- [使用 Flink 2.0 恢复](#使用-flink-20-恢复)
-  - [9.2 向后兼容性](#92-向后兼容性)
-  - [9.3 风险与缓解](#93-风险与缓解)
+    - [9.2 向后兼容性](#92-向后兼容性)
+    - [9.3 风险与缓解](#93-风险与缓解)
   - [10. 性能基准对比](#10-性能基准对比)
     - [10.1 官方发布数据 (2025-03-24)](#101-官方发布数据-2025-03-24)
     - [10.2 实验室测试数据](#102-实验室测试数据)
@@ -450,13 +448,13 @@ Operator2.0 = (Transform, StateReference, ProcessingLogic)
 3. **迁移阶段**:
 
    ```bash
-   # 从 Flink 1.x 创建 Savepoint
-   flink savepoint <job-id> s3://flink-migration/savepoint-1x
+        # 从 Flink 1.x 创建 Savepoint
+        flink savepoint <job-id> s3://flink-migration/savepoint-1x
 
-   # 使用 Flink 2.0 恢复
-   flink run -s s3://flink-migration/savepoint-1x \
-     -Dstate.backend=disaggregated \
-     job-2.0.jar
+        # 使用 Flink 2.0 恢复
+        flink run -s s3://flink-migration/savepoint-1x \
+            -Dstate.backend=disaggregated \
+            job-2.0.jar
 
     ```
 

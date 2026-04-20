@@ -197,6 +197,7 @@ https://github.com/luyanfeng/AnalysisDataFlow/issues/new?template=production-ver
 **可以，而且非常欢迎！**
 
 验证失败往往意味着文档存在改进空间。请详细描述：
+
 - 预期行为与实际行为的差异
 - 错误信息或异常现象
 - 您尝试过的解决方案
@@ -211,6 +212,7 @@ https://github.com/luyanfeng/AnalysisDataFlow/issues/new?template=production-ver
 ### Q3: 验证内容需要完全符合文档吗？
 
 不需要。实际使用中往往会有调整，我们关注的是：
+
 - 文档描述是否准确
 - 参数建议是否合理
 - 是否有文档未覆盖的注意事项
@@ -225,6 +227,7 @@ https://github.com/luyanfeng/AnalysisDataFlow/issues/new?template=production-ver
 ### Q5: 可以提交多个验证案例吗？
 
 **非常欢迎！** 每个独立场景建议单独提交，便于：
+
 - 精准定位文档问题
 - 分类归档展示
 - 分别追踪改进进度
