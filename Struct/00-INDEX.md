@@ -8,10 +8,10 @@
 
 | 指标 | 数量 | 更新 |
 |------|------|------|
-| **总文档数** | 53+ 篇 | +3新文档 |
-| **定理 (Thm)** | 385+ | +5新定理 |
-| **定义 (Def)** | 858+ | +8新定义 |
-| **引理/命题** | 1705+ | +5新引理 |
+| **总文档数** | 56+ 篇 | +4新文档 |
+| **定理 (Thm)** | 391+ | +6新定理 |
+| **定义 (Def)** | 864+ | +6新定义 |
+| **引理/命题** | 1710+ | +5新引理 |
 | **形式化等级覆盖** | L1-L6 | 完整 |
 
 ---
@@ -79,7 +79,7 @@
 | [05.03-encoding-completeness-analysis.md](./05-comparative-analysis/05.03-encoding-completeness-analysis.md) | 编码完备性 | L4-L5 |
 | [05.04-concurrency-models-2025-comparison.md](./05-comparative-analysis/05.04-concurrency-models-2025-comparison.md) | 并发模型2025 | L5 |
 
-### 06-frontier/ 前沿研究 (13篇) [100%]
+### 06-frontier/ 前沿研究 (17篇) [100%]
 
 | 文档 | 描述 | 等级 |
 |------|------|------|
@@ -89,6 +89,9 @@
 | [06.04-pdot-path-dependent-types.md](./06-frontier/06.04-pdot-path-dependent-types.md) | pDOT路径依赖类型 | L5-L6 |
 | [06.05-ai-agent-streaming-formalization.md](./06-frontier/06.05-ai-agent-streaming-formalization.md) | AI Agent流式形式化 | L5-L6 |
 | **[06.10-transactional-cloud-dataflow-actor.md](./06-frontier/06.10-transactional-cloud-dataflow-actor.md)** | 事务性云Dataflow+Actor | L5-L6 | 🆕 |
+| **[formal-verification-toolchain-matrix.md](./06-frontier/formal-verification-toolchain-matrix.md)** | 形式化验证工具链选型矩阵 | L4-L5 | 🆕 v4.6 |
+| **[tla-vs-lean4-expressiveness.md](./06-frontier/tla-vs-lean4-expressiveness.md)** | TLA+ vs Lean4 表达能力对比 | L5-L6 | 🆕 v4.6 |
+| **[iris-coq-state-safety-verification.md](./06-frontier/iris-coq-state-safety-verification.md)** | Iris vs Coq 状态安全性验证 | L5-L6 | 🆕 v4.6 |
 | **[probabilistic-streaming](./06-frontier/probabilistic-streaming/probabilistic-stream-semantics.md)** | 概率流处理语义 | L5-L6 | 🆕 |
 | **[first-person-choreographies](./06-frontier/first-person-choreographies/first-person-cp-advanced.md)** | 1CP前沿 | L6 | 🆕 |
 
@@ -133,7 +136,7 @@
 
 ```
 总体进度: [████████████████████] 100% ✅ v2.0 FINAL
-Struct/:    [████████████████████] 100% (50文档, 380定理)
+Struct/:    [████████████████████] 100% (56文档, 391定理)
 Knowledge/: [████████████████████] 100% (250+文档)
 Flink/:     [████████████████████] 100% (390+文档)
 形式化元素: [████████████████████] 100% (10,745元素)

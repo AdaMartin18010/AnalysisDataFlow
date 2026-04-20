@@ -1,6 +1,6 @@
 # Knowledge/06-frontier 前沿技术专题索引
 
-> 所属阶段: Knowledge/06-frontier | 状态: 活跃维护 | 最后更新: 2026-04-19
+> 所属阶段: Knowledge/06-frontier | 状态: 活跃维护 | 最后更新: 2026-04-20
 
 ---
 
@@ -146,7 +146,23 @@
 
 ---
 
-## 新增前沿文档 (2026-04-12)
+## 新增前沿文档 (2026-04-20)
+
+| 序号 | 文档路径 | 主题 | 大小 | 形式化元素 |
+|------|---------|------|------|-----------|
+| 1 | [veil-framework-production-assessment.md](veil-framework-production-assessment.md) | Veil框架生产实践评估 | 23.3 KB | 2定义+1定理+1命题 |
+
+**本次新增统计**:
+
+- 文档数量: 1篇
+- 总大小: 23.3 KB
+- 形式化元素: 2定义 + 1定理 + 1命题 = 4个
+
+---
+
+## 历史新增前沿文档
+
+### 2026-04-12 批次
 
 | 序号 | 文档路径 | 主题 | 大小 | 形式化元素 |
 |------|---------|------|------|-----------|
@@ -156,7 +172,7 @@
 | 4 | [federated-streaming-learning.md](federated-streaming-learning.md) | 联邦流学习 | 28.4 KB | 2定义+1定理 |
 | 5 | [flink-risingwave-hybrid-architecture.md](flink-risingwave-hybrid-architecture.md) | Flink+RisingWave混合架构 | 35.1 KB | 5定义+2引理+1命题 |
 
-**本次新增统计**:
+**该批次统计**:
 
 - 文档数量: 5篇
 - 总大小: 161.9 KB
@@ -207,16 +223,23 @@
 - IoT自愈
 - 实时RAG
 
+### 形式化验证前沿
+
+- Veil框架生产实践评估
+- 形式化验证工具链选型 (Struct/)
+- TLA+ vs Lean4 表达能力 (Struct/)
+- Iris vs Coq 状态安全性 (Struct/)
+
 ---
 
 ## 形式化元素统计
 
 | 类型 | 总数 | 说明 |
 |------|------|------|
-| 定义 (Def) | ~180+ | 核心概念形式化定义 |
-| 定理 (Thm) | ~60+ | 重要性质与保证 |
+| 定义 (Def) | ~182+ | 核心概念形式化定义 |
+| 定理 (Thm) | ~61+ | 重要性质与保证 |
 | 引理 (Lemma) | ~40+ | 辅助证明步骤 |
-| 命题 (Prop) | ~50+ | 重要观察与结论 |
+| 命题 (Prop) | ~51+ | 重要观察与结论 |
 | 推论 (Cor) | ~15+ | 直接推导结果 |
 
 ---
@@ -240,6 +263,7 @@
 1. [edge-streaming-advanced-2026.md](edge-streaming-advanced-2026.md) - 边缘流深化
 2. [realtime-gnn-streaming.md](realtime-gnn-streaming.md) - 实时GNN
 3. [federated-streaming-learning.md](federated-streaming-learning.md) - 联邦流学习
+4. [veil-framework-production-assessment.md](veil-framework-production-assessment.md) - Veil框架生产评估
 
 ---
 

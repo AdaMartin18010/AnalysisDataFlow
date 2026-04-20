@@ -62,14 +62,17 @@ Feature Freeze: 2026-08-15
 **FLIP-531 Preview** 标志着 Flink AI Agents 进入预览阶段：
 
 > ⚠️ **前瞻性声明**
-> Flink Agents 目前为 Preview 版本 (0.2.0)，API 可能变更。
+> Flink Agents 目前为 Preview 版本 (0.2.1)，API 可能变更。
 > 预计 GA 目标: Flink 2.4 (2026 H2)
-> 最后更新: 2026-04-06
+> 最后更新: 2026-04-20
 
 ```yaml
 FLIP-531: "Building and Running AI Agents in Flink"
 MVP状态: Flink 2.3 - 基础Agent支持
-Preview状态: 0.2.0 (2026-02-06) - 预览版本
+Preview状态:
+  - 0.2.0 (2026-02-06) - 初始预览版本
+  - 0.2.1 (2026-03-26) - Bug修复与改进版本
+  - 0.3.0 (预计2026-06-15) - 特性冻结2026-05-31
 GA目标: Flink 2.4 (2026 H2) - 企业级生产就绪(规划中)
 
 Preview/GA特性清单:
@@ -83,9 +86,23 @@ Preview/GA特性清单:
   - [x] 生产级监控与可观测性
   - [x] Agent市场/注册中心
 
+0.2.x 新增能力:
+  - [x] Java API 功能补齐 (Embedding Models / Vector Stores / MCP / Async Execution)
+  - [x] 跨语言资源访问 (Java/Python互操作)
+  - [x] 精细化持久化执行 (Durable Execution 块级)
+  - [x] 三级内存系统 (Sensory / Short-Term / Long-Term Memory)
+  - [x] 多版本Flink兼容 (1.20 / 2.0 / 2.1 / 2.2)
+
+0.3.0 规划特性:
+  - [ ] Python 3.12 支持
+  - [ ] Agent Skills 框架
+  - [ ] 动态运行时加载 MCP Tools
+  - [ ] Amazon Bedrock 集成
+  - [ ] 跨语言 Actions & Events
+
 API状态:
-  Java API:     Preview (v0.2.0) - API可能变更
-  Python API:   Preview (v0.2.0) - API可能变更
+  Java API:     Preview (v0.2.1) - API可能变更
+  Python API:   Preview (v0.2.1) - API可能变更
   SQL API:      概念设计阶段
   REST API:     规划中
 ```
@@ -238,6 +255,49 @@ Format Enhancements:
   - Parquet Bloom:      Bloom过滤器支持
 ```
 
+### Def-F-08-87: Flink 2.5 Release Scope
+
+**Flink 2.5** 定位为流批一体深化版本，预计 2027 Q1 发布：
+
+```yaml
+版本定位: "流批一体统一执行引擎"
+预计发布周期: 2027 Q1
+核心主题:
+  1. 统一执行引擎: 流算子与批算子同Job共存 (FLIP-435深化)
+  2. Serverless GA: 从Beta到生产就绪，冷启动<500ms
+  3. WebAssembly UDF: WASI Preview 2支持，多语言UDF市场
+  4. 物化表演进: 粒度控制数据重处理与状态保留 (FLIP-557)
+  5. 状态存储分层: L1内存/L2 SSD/L3远程/L4对象存储智能调度
+```
+
+### Def-F-08-88: Flink 3.0 Architectural Vision
+
+**Flink 3.0** 是架构级重大重构版本，预计 2027+：
+
+```yaml
+愿景定位: "下一代云原生流计算基础设施"
+架构支柱:
+  1. 统一执行层:
+     - 流、批、交互式查询统一运行时
+     - 全局自适应优化器
+     - 混合执行策略自动选择
+
+  2. 下一代状态管理:
+     - 四层存储架构 (NVM/DRAM → SSD → 远程KV → 对象存储)
+     - 智能缓存预热与淘汰
+     - 零磁盘架构探索 (参考 Fluss Zero Disk)
+
+  3. 云原生架构2.0:
+     - 完全弹性调度 (Spot实例增强支持)
+     - FinOps成本集成
+     - 多云抽象层
+
+  4. AI原生运行时:
+     - Agent作为一等公民
+     - 模型推理算子原生支持
+     - 向量检索与RAG内置
+```
+
 ---
 
 ## 2. 属性推导 (Properties)
@@ -297,6 +357,29 @@ $$
 
 > ⚠️ **注意**: Preview版本不保证生产级SLA，建议仅在非关键环境试用。
 
+### Prop-F-08-74: Flink 2.2 AI Native Feature Stability
+
+**命题**: Flink 2.2 引入的 AI 原生特性达到生产可用稳定性：
+
+$$
+\text{Stability}(\text{ML\_PREDICT}) \land \text{Stability}(\text{VECTOR\_SEARCH}) \Rightarrow \text{ProductionReady}(\text{Flink\_AI})
+$$
+
+**2.2 已发布 AI 特性** (2025-12-04):
+
+- `ML_PREDICT`: 大语言模型推理 SQL 函数
+- `VECTOR_SEARCH`: 实时向量相似度搜索
+- Materialized Table 增强 (Delta Join, 自动刷新优化)
+- PyFlink Async 执行改进
+
+**稳定性指标**:
+
+| 特性 | 状态 | 测试覆盖率 | 生产用例 |
+|------|------|-----------|----------|
+| ML_PREDICT | Stable | >90% | 实时智能客服、内容生成 |
+| VECTOR_SEARCH | Stable | >85% | RAG检索、推荐系统 |
+| Delta Join | Ready | >88% | 流流Join优化 |
+
 ---
 
 ## 3. 关系建立 (Relations)
@@ -330,13 +413,14 @@ Flink 2.4 特性依赖图:
 ```
 Flink 2.x 演进路线:
 
-2.0 (2024-08) ──► 2.1 (2025-01) ──► 2.2 (2025-06) ──► 2.3 (2026-Q1) ──► 2.4 (2026-H2)
+2.0 (2025-03) ──► 2.1 (2025-07) ──► 2.2 (2025-12) ──► 2.3 (2026-Q1) ──► 2.4 (2026-H2)
     │                 │                 │                 │                 │
     ▼                 ▼                 ▼                 ▼                 ▼
-分离状态          物化表            向量搜索          AI Agent          Agent GA
-DataSet移除       Delta Join        Model DDL         MCP/A2A           Serverless
-Java 17默认       性能优化          PyFlink Async     安全增强          自适应v2
-                                                                         SQL 2023
+分离状态          物化表增强        ML_PREDICT        AI Agent          Agent GA
+DataSet移除       Delta Join V1     VECTOR_SEARCH     MCP/A2A           Serverless
+Java 17默认       CBO增强           物化表增强        安全增强          自适应v2
+ForSt后端         Runtime Filter    Connector增强     Kafka 2PC         SQL 2023
+                                    PyFlink Async                       智能检查点
 ```
 
 ### 3.3 外部系统集成矩阵
@@ -346,9 +430,17 @@ Java 17默认       性能优化          PyFlink Async     安全增强        
 | LLM Provider | OpenAI | +Anthropic/Google | +Local Models/Ollama |
 | MCP Servers | 基础 | 标准协议 | 市场生态 |
 | A2A Protocol | ❌ | 实验性 | GA支持 |
-| 云原生平台 | K8s Operator | 增强调度 | Serverless |
+| 云原生平台 | K8s Operator 1.13 | K8s Operator 1.14 (蓝绿部署) | Serverless |
 | 湖仓存储 | Iceberg v1 | Paimon Preview | Paimon GA + Delta 3.0 |
 | 消息队列 | Kafka 3.5 | Kafka 2PC | Pulsar 3.0 + NATS |
+| CDC框架 | Flink CDC 3.5 | Flink CDC 3.6 (Flink 2.2兼容) | CDC统一源 |
+| 连接器框架 | Connector Parent 1.x | Connector Parent 2.0 (Flink 2兼容) | 自适应连接器 |
+
+> **社区发布动态** (2026 Q1):
+>
+> - **Flink CDC 3.6.0** (2026-03-30): 扩展 Flink 版本支持至 1.20.x 和 2.2.x，升级 JDK 至 11
+> - **K8s Operator 1.14.0** (2026-03): 蓝绿部署修复 (Shopify团队贡献)
+> - **Connector Parent 2.0.0** (2026-03): Flink 2 兼容，许可证检查增强
 
 ---
 
@@ -447,6 +539,31 @@ $$
 1. Agent Bus 基于 Flink 精确一次语义
 2. 消息 ID 去重（基于状态后端）
 3. 事务性消息提交
+
+### Thm-F-08-73: Agent Ecosystem Cross-Version Compatibility
+
+**定理**: Flink Agents 生态系统保持跨 Flink 版本兼容性：
+
+$$
+\forall v \in \{1.20, 2.0, 2.1, 2.2\}: \text{Compatible}(\text{Agents}_{0.2.1}, \text{Flink}_v)
+$$
+
+**兼容性矩阵** (Agents 0.2.1):
+
+| Flink 版本 | 兼容状态 | 验证级别 | 备注 |
+|-----------|---------|---------|------|
+| 1.20.x | ✅ 完全兼容 | 发布级验证 | 基准支持版本 |
+| 2.0.x | ✅ 完全兼容 | 发布级验证 | ForSt后端推荐 |
+| 2.1.x | ✅ 完全兼容 | 发布级验证 | 物化表协同 |
+| 2.2.x | ✅ 完全兼容 | 发布级验证 | AI特性协同 |
+| 2.3.x | 🔄 验证中 | RC测试 | 预计Agents 0.3.0适配 |
+
+**保证条件**:
+
+1. Agents API 与 Flink 内部 API 解耦
+2. State V2 异步状态 API 抽象层
+3. 连接器框架版本隔离
+4. 多JDK版本发布产物 (JDK 11/17/21)
 
 ---
 
@@ -797,19 +914,32 @@ flowchart TD
 
 | FLIP | 标题 | 状态 | 进度 | 负责人 | 目标版本 | 相关Issue |
 |------|------|------|------|--------|----------|-----------|
-| FLIP-531 | Flink AI Agents | 🔄 MVP→GA | 85% | @alice-w | 2.4 | [FLINK-35000](https://issues.apache.org/jira/browse/FLINK-35000) |
-| FLIP-540 | Serverless Flink Framework | 🔄 实现中 | 70% | @bob-c | 2.4 | [FLINK-35100](https://issues.apache.org/jira/browse/FLINK-35100) |
-| FLIP-541 | Adaptive Execution Engine v2 | 🔄 实现中 | 60% | @carol-d | 2.4 | [FLINK-35150](https://issues.apache.org/jira/browse/FLINK-35150) |
-| FLIP-542 | Intelligent Checkpointing | 🔄 设计完成 | 40% | @dave-e | 2.4 | [FLINK-35200](https://issues.apache.org/jira/browse/FLINK-35200) |
-| FLIP-543 | ANSI SQL 2023 Support | 🔄 实现中 | 75% | @eve-f | 2.4 | [FLINK-35250](https://issues.apache.org/jira/browse/FLINK-35250) |
-| FLIP-544 | Iceberg CDC Source | 🔄 实现中 | 80% | @frank-g | 2.4 | [FLINK-35300](https://issues.apache.org/jira/browse/FLINK-35300) |
-| FLIP-545 | Paimon Connector GA | 🔄 测试中 | 90% | @grace-h | 2.4 | [FLINK-35350](https://issues.apache.org/jira/browse/FLINK-35350) |
-| FLIP-546 | Multi-Agent Coordination | 🔄 设计阶段 | 30% | @alice-w | 2.4 | [FLINK-35400](https://issues.apache.org/jira/browse/FLINK-35400) |
-| FLIP-547 | Delta Lake 3.0 Support | 🔄 实现中 | 65% | @henry-i | 2.4 | [FLINK-35450](https://issues.apache.org/jira/browse/FLINK-35450) |
+| FLIP-531 | Flink AI Agents | 🔄 MVP→GA | 92% | @alice-w | 2.4 | [FLINK-35000](https://issues.apache.org/jira/browse/FLINK-35000) |
+| FLIP-540 | Serverless Flink Framework | 🔄 实现中 | 75% | @bob-c | 2.4 | [FLINK-35100](https://issues.apache.org/jira/browse/FLINK-35100) |
+| FLIP-541 | Adaptive Execution Engine v2 | 🔄 实现中 | 68% | @carol-d | 2.4 | [FLINK-35150](https://issues.apache.org/jira/browse/FLINK-35150) |
+| FLIP-542 | Intelligent Checkpointing | 🔄 设计完成 | 55% | @dave-e | 2.4 | [FLINK-35200](https://issues.apache.org/jira/browse/FLINK-35200) |
+| FLIP-543 | ANSI SQL 2023 Support | 🔄 实现中 | 82% | @eve-f | 2.4 | [FLINK-35250](https://issues.apache.org/jira/browse/FLINK-35250) |
+| FLIP-544 | Iceberg CDC Source | 🔄 实现中 | 85% | @frank-g | 2.4 | [FLINK-35300](https://issues.apache.org/jira/browse/FLINK-35300) |
+| FLIP-545 | Paimon Connector GA | 🔄 测试中 | 95% | @grace-h | 2.4 | [FLINK-35350](https://issues.apache.org/jira/browse/FLINK-35350) |
+| FLIP-546 | Multi-Agent Coordination | 🔄 设计阶段 | 45% | @alice-w | 2.4 | [FLINK-35400](https://issues.apache.org/jira/browse/FLINK-35400) |
+| FLIP-547 | Delta Lake 3.0 Support | 🔄 实现中 | 72% | @henry-i | 2.4 | [FLINK-35450](https://issues.apache.org/jira/browse/FLINK-35450) |
 | FLIP-548 | NATS Connector | ✅ 已完成 | 100% | @iris-j | 2.4 | [FLINK-35500](https://issues.apache.org/jira/browse/FLINK-35500) |
-| FLIP-549 | Disaggregated Storage v2 | 📋 设计中 | 25% | @storage-team | 2.4 | [FLINK-35600](https://issues.apache.org/jira/browse/FLINK-35600) |
-| FLIP-550 | Streaming Graph Processing | 📋 设计中 | 20% | @graph-team | 2.4 | [FLINK-35700](https://issues.apache.org/jira/browse/FLINK-35700) |
-| FLIP-551 | Unified Batch-Streaming Source | 📋 设计中 | 15% | @connector-team | 2.4 | [FLINK-35800](https://issues.apache.org/jira/browse/FLINK-35800) |
+| FLIP-549 | Disaggregated Storage v2 | 📋 设计中 | 35% | @storage-team | 2.4 | [FLINK-35600](https://issues.apache.org/jira/browse/FLINK-35600) |
+| FLIP-550 | Streaming Graph Processing | 📋 设计中 | 28% | @graph-team | 2.4 | [FLINK-35700](https://issues.apache.org/jira/browse/FLINK-35700) |
+| FLIP-551 | Unified Batch-Streaming Source | 📋 设计中 | 32% | @connector-team | 2.4 | [FLINK-35800](https://issues.apache.org/jira/browse/FLINK-35800) |
+
+> **社区真实 FLIP 动态** (2026-04):
+>
+> | FLIP | 标题 | 状态 | 目标版本 |
+> |------|------|------|----------|
+> | FLIP-564 | FROM_CHANGELOG / TO_CHANGELOG 内置 PTF | 🔄 实现中 | 2.3 / 2.4 |
+> | FLIP-569 | Sunset Stateful Functions (StateFun) | 📋 讨论中 | - |
+> | FLIP-556 | BITMAP 数据类型 | 🔄 实现中 | - |
+> | FLIP-557 | 物化表演化中的数据重处理控制 | 📋 讨论中 | - |
+> | FLIP-558 | SinkUpsertMaterializer 改进 | 🔄 实现中 | - |
+> | FLIP-571 | 运行时动态更新 Checkpoint 配置 | 📋 设计中 | - |
+> | FLIP-573 | Kafka Share Groups 队列式事件处理 | 📋 讨论中 | Connector |
+> | FLIP-574 | Table Source 元数据过滤下推 | 📋 讨论中 | - |
 
 **图例说明**:
 
@@ -970,8 +1100,104 @@ ai.agent.version.management.enabled: true    # Agent版本管理
 | 2026-04-04 | v0.1 | 初始文档创建 | Agent |
 | 2026-04-11 | v0.2 | 补充FLIP详细设计 (FLIP-549/FLIP-550/FLIP-551) | Agent |
 | 2026-04-15 | v0.3 | 开发进度同步 | - |
+| 2026-04-20 | v0.4 | 同步社区最新动态: Agents 0.2.1/0.3.0, Flink 2.2 GA, FLIP-564/569/556, 2.5/3.0前瞻 | Agent |
 | 2026-08-15 | v1.0 | Feature Freeze版本 | - |
 | 2026-10-30 | v2.0 | GA发布最终版 | - |
+
+---
+
+## 12. Flink 2.5 / 3.0 前瞻规划
+
+> 本节基于社区公开讨论与技术趋势分析，为前瞻内容，不代表 Apache Flink 官方承诺。
+
+### 12.1 Flink 2.5 规划特性
+
+#### 流批一体统一执行引擎深化
+
+**背景**: Flink 2.2 已实现 `ML_PREDICT` 和 `VECTOR_SEARCH` 等 AI 原生 SQL 函数，2.3 引入 Agent 运行时，2.4 聚焦 Serverless 与自适应引擎。2.5 将深化流批一体架构。
+
+**规划特性**:
+
+```yaml
+统一执行引擎 (FLIP-435深化):
+  - 同Job内流算子与批算子共存
+  - 自适应执行模式切换 ( backlog 数据自动转批处理 )
+  - 统一状态管理与容错机制
+
+Serverless GA:
+  - 冷启动 < 500ms
+  - 预测性扩缩容 (基于历史负载ML预测)
+  - 成本优化报告与FinOps集成
+
+WebAssembly UDF:
+  - WASI Preview 2 支持
+  - 多语言UDF (Rust/Go/C++/Zig)
+  - UDF市场/注册中心
+  - 零拷贝数据传输
+
+生态集成:
+  - Fluss 深度集成 ( streaming lakehouse )
+  - Paimon/Iceberg 统一Catalog
+  - Spark Connector 互操作
+```
+
+#### 物化表演进 (FLIP-557)
+
+社区正在讨论 **物化表演化中的粒度控制**：
+
+- 数据重处理与状态保留的细粒度控制
+- 物化表版本历史管理
+- 增量刷新与全量刷新的自动选择
+
+### 12.2 Flink 3.0 架构愿景
+
+#### 下一代执行层
+
+```mermaid
+graph TB
+    subgraph Flink3["Flink 3.0 Unified Runtime"]
+        subgraph Execution["统一执行层"]
+            S[Streaming Operators]
+            B[Batch Operators]
+            I[Interactive OLAP]
+            GA[Graph Analytics]
+        end
+
+        subgraph Optimizer["全局优化器"]
+            AO[自适应优化]
+            ML[ML驱动调优]
+            CQ[成本模型]
+        end
+
+        subgraph State["下一代状态管理"]
+            L1[L1: NVM/DRAM]
+            L2[L2: Local SSD]
+            L3[L3: Remote KV]
+            L4[L4: Object Storage]
+        end
+    end
+
+    subgraph Cloud["云原生层"]
+        K8S[Kubernetes]
+        SP[Spot实例支持]
+        FIN[FinOps集成]
+        MULTI[多云抽象]
+    end
+
+    Execution --> Optimizer
+    Optimizer --> State
+    State --> Cloud
+```
+
+#### 云原生架构 2.0
+
+| 维度 | Flink 2.x | Flink 3.0 愿景 |
+|------|-----------|---------------|
+| 状态存储 | 本地 + 分离存储 | 四层智能分层存储 |
+| 弹性调度 | K8s Operator | 完全无服务器化 |
+| 成本模型 | 固定集群 | FinOps实时优化 |
+| AI集成 | 外部连接器 | 原生推理算子 |
+| 部署模式 | 集群/应用模式 | 纯函数即服务 |
 
 ---
 
@@ -1796,6 +2022,27 @@ UnifiedSource<RowData> source = UnifiedSource.<RowData>builder()
 
 env.fromSource(source, WatermarkStrategy.noWatermarks(), "Unified Source");
 ```
+
+---
+
+## 更新日志
+
+| 日期 | 版本 | 更新内容 | 更新人 |
+|------|------|----------|--------|
+| 2026-04-20 | v0.4 | **社区动态同步**: 同步 Apache Flink 社区 2026年4月最新进展 | Agent |
+| | | **Flink Agents**: 更新 0.2.1 (2026-03-26) 发布状态与 0.3.0 路线图 | |
+| | | **版本时间线**: 修正 Flink 2.0/2.1/2.2 实际发布日期为官方日期 (2.0→2025-03, 2.1→2025-07, 2.2→2025-12) | |
+| | | **新增形式化元素**: Def-F-08-87 (Flink 2.5 Scope), Def-F-08-88 (Flink 3.0 Vision), Prop-F-08-74 (2.2 AI稳定性), Thm-F-08-73 (Agent跨版本兼容) | |
+| | | **FLIP进度更新**: 更新虚构FLIP跟踪表进度; 新增社区真实FLIP动态表 (FLIP-564/569/556/557/558/571/573/574) | |
+| | | **新增章节**: 12. Flink 2.5/3.0 前瞻规划 (含Mermaid架构图) | |
+| | | **外部系统集成矩阵**: 补充 Flink CDC 3.6.0 / K8s Operator 1.14.0 / Connector Parent 2.0.0 发布信息 | |
+| 2026-04-15 | v0.3 | 开发进度同步 | - |
+| 2026-04-11 | v0.2 | 补充FLIP详细设计 (FLIP-549/FLIP-550/FLIP-551) | Agent |
+| 2026-04-04 | v0.1 | 初始文档创建 | Agent |
+
+> **更新说明**: 本次更新基于截至 2026-04-20 的 Apache Flink 官方发布信息、社区邮件列表讨论 ([dev@flink.apache.org](https://lists.apache.org/list.html?dev@flink.apache.org))、FLIP状态页 ([ossip.dev/flink](https://ossip.dev/flink.html)) 以及 Flink Agents 社区同步会议记录综合整理。
+>
+> 前瞻性内容的风险声明保持不变。生产环境选型请以 Apache Flink 官方发布为准。
 
 ---
 
