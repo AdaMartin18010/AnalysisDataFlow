@@ -40,6 +40,7 @@ $$
 $$
 
 其中：
+
 - $\mathcal{P}$: 主存储指示符，$\mathcal{P}(\text{ForSt}) = \text{DFS}$
 - $\phi_{\text{promote}}: \mathcal{S}_{\text{remote}} \times \text{AccessPattern} \to \mathcal{S}_{\text{local}}$: 数据提升函数
 - $\phi_{\text{evict}}: \mathcal{S}_{\text{local}} \times \text{LRUPolicy} \to \mathcal{S}_{\text{remote}}$: 数据淘汰函数
@@ -153,6 +154,7 @@ $$
 $$
 
 其中：
+
 - $\mathcal{D}$: Differential Dataflow 差分计算流
 - $\mathcal{T}$: 时态数据类型 (Temporal Data Types)
 - $\mathcal{L}$: Lattice 合并结构
@@ -218,6 +220,7 @@ T_{\text{forst}} = T_{\text{flush}}^{\text{async}} + T_{\text{metadata}} \approx
 $$
 
 因为：
+
 1. 状态文件已在 DFS 中，无需上传
 2. 仅当文件被修改时才创建新版本
 3. Checkpoint 仅持久化元数据引用列表
@@ -287,6 +290,7 @@ $$
 $$
 
 其中：
+
 - $C_{\text{ssd}} \approx \$0.10/\text{GB}/\text{月}$
 - $R_{\text{replication}} = 2$（高可用需双副本）
 - $T_{\text{reserved}} = 1.5$（预留容量）
@@ -298,6 +302,7 @@ $$
 $$
 
 其中：
+
 - $C_{\text{object}} \approx \$0.023/\text{GB}/\text{月}$
 - $0.1 \times |S|$ 是 10% 热数据的本地缓存
 
@@ -645,11 +650,13 @@ $$
 设月度状态存储需求为 $|S|$，AWS 定价基准：
 
 **RocksDB 成本构成**:
+
 - 本地 SSD (gp3): $0.08/GB/月 × 1.5 (预留) × 2 (HA) = $0.24/GB/月
 - EBS 快照: $0.05/GB/月
 - 计算实例 (c6i.2xlarge): $0.17/小时 × 730 = $124/月/节点
 
 **ForSt 成本构成**:
+
 - S3 Standard: $0.023/GB/月
 - 本地缓存 (10% 热数据): $0.08/GB/月 × 0.1 = $0.008/GB/月
 - 计算实例 (c6i.xlarge, 更少磁盘): $0.085/小时 × 730 = $62/月/节点
@@ -735,6 +742,7 @@ $$
 $$
 
 其中：
+
 - $M_{\text{max}}$: TM 堆内存的 30%
 - $L_{\text{sla}}$: P99 延迟要求
 - $E_{\text{env}}$: 部署环境（edge/cloud）
@@ -761,6 +769,7 @@ B_{\text{min}} \geq \frac{\lambda \cdot (1 - h_{\text{local}}) \cdot s_{\text{av
 $$
 
 其中：
+
 - $\lambda$: 每秒状态访问次数
 - $h_{\text{local}}$: 本地缓存命中率
 - $s_{\text{avg}}$: 平均状态值大小
@@ -1077,14 +1086,14 @@ gantt
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink Documentation, "ForSt State Backend", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/
+[^1]: Apache Flink Documentation, "ForSt State Backend", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/>
 
 [^2]: T. Akidau et al., "ForSt: A Disaggregated State Backend for Stream Processing", VLDB 2025.
 
-[^3]: RisingWave Labs, "RisingWave vs Apache Flink: A Technical Comparison", 2026. https://risingwave.com/blog/risingwave-vs-apache-flink-comparison/
+[^3]: RisingWave Labs, "RisingWave vs Apache Flink: A Technical Comparison", 2026. <https://risingwave.com/blog/risingwave-vs-apache-flink-comparison/>
 
-[^4]: Materialize Inc., "Differential Dataflow", 2024. https://github.com/TimelyDataflow/differential-dataflow
+[^4]: Materialize Inc., "Differential Dataflow", 2024. <https://github.com/TimelyDataflow/differential-dataflow>
 
-[^5]: AWS Pricing Calculator, "S3 Standard vs EBS gp3 Pricing", 2026. https://aws.amazon.com/pricing/
+[^5]: AWS Pricing Calculator, "S3 Standard vs EBS gp3 Pricing", 2026. <https://aws.amazon.com/pricing/>
 
 [^6]: T. Akidau et al., "The Dataflow Model", PVLDB, 8(12), 2015.

@@ -106,6 +106,7 @@ $$
 $$
 
 **Flink 2.2 完善项**：
+
 1. `TwoPhaseCommittingSink` 接口稳定化，支持预写日志 (WAL) 模式
 2. `SinkWriter` 支持 `flush()` 显式刷盘语义
 3. `Committer` 支持批量提交 (Batch Commit) 优化
@@ -315,6 +316,7 @@ $$
 **定理**: 在 FLIP-27 Source API 下，若 Checkpoint Barrier 到达 SourceReader 时，Reader 已完成其 `snapshotState()` 调用，则恢复后的 Source 不会丢失记录，也不会重复处理记录。
 
 **证明概要**：
+
 1. Reader 的检查点状态包含：已分配但未完成消费的 Split 集合 $S_{assigned}$ 和每个 Split 的消费进度 $P_s$
 2. 当 Barrier 到达时，Reader 暂停读取，调用 `snapshotState()`
 3. `snapshotState()` 返回的状态是调用时刻的精确快照
@@ -333,6 +335,7 @@ $$
 **工程定理**: 在 SinkV2 的两阶段提交协议中，若外部系统满足事务的原子性 (Atomicity) 和持久性 (Durability)，且 Flink 的 Checkpoint 机制正常工作，则端到端 Exactly-Once 语义可被保证。
 
 **论证**：
+
 1. **成功路径**：$CP_k$ 全局成功 $\implies$ `GlobalCommitter.commit(C_k)` 被调用，外部事务原子性保证 $C_k$ 全部持久化
 2. **失败路径**：$CP_k$ 失败或作业重启 $\implies$ `abort(T_k)` 被调用，外部事务原子性保证 $C_k$ 全部被回滚，记录会在后续 Checkpoint 中重新提交
 3. **幂等性保障**：使用 Checkpoint ID 作为事务 ID，确保重复 `commit()` 幂等
@@ -353,14 +356,14 @@ public class TokenBucketRateLimiter implements RateLimiter {
     private final double refillRatePerSecond;
     private double availableTokens;
     private long lastRefillTimestamp;
-    
+
     public TokenBucketRateLimiter(double maxCapacity, double refillRatePerSecond) {
         this.maxCapacity = maxCapacity;
         this.refillRatePerSecond = refillRatePerSecond;
         this.availableTokens = maxCapacity;
         this.lastRefillTimestamp = System.nanoTime();
     }
-    
+
     @Override
     public synchronized long acquire(int permits) {
         refillTokens();
@@ -378,7 +381,7 @@ public class TokenBucketRateLimiter implements RateLimiter {
         availableTokens = 0;
         return waitTimeMillis;
     }
-    
+
     @Override
     public synchronized boolean tryAcquire(int permits, long timeout, TimeUnit unit) {
         refillTokens();
@@ -394,17 +397,17 @@ public class TokenBucketRateLimiter implements RateLimiter {
         }
         return false;
     }
-    
+
     @Override
     public synchronized double getAvailableTokens() {
         refillTokens();
         return availableTokens;
     }
-    
+
     private void refillTokens() {
         long now = System.nanoTime();
         double elapsedSeconds = (now - lastRefillTimestamp) / 1_000_000_000.0;
-        availableTokens = Math.min(maxCapacity, 
+        availableTokens = Math.min(maxCapacity,
             availableTokens + elapsedSeconds * refillRatePerSecond);
         lastRefillTimestamp = now;
     }
@@ -433,23 +436,23 @@ public class EnhancedJdbcFactory implements DynamicTableSourceFactory {
     public String factoryIdentifier() {
         return "enhanced-jdbc";
     }
-    
+
     @Override
     public DynamicTableSource createDynamicTableSource(Context context) {
-        final FactoryUtil.TableFactoryHelper helper = 
+        final FactoryUtil.TableFactoryHelper helper =
             FactoryUtil.createTableFactoryHelper(this, context);
         ReadableConfig config = helper.getOptions();
         String url = config.get(URL);
         String tableName = config.get(TABLE_NAME);
-        
+
         InferredConfig inferred = inferFromUrl(url);
         String driver = config.getOptional(DRIVER).orElse(inferred.driver);
         int port = config.getOptional(PORT).orElse(inferred.port);
-        
+
         validateConfiguration(url, driver, tableName);
         return new EnhancedJdbcTableSource(url, driver, tableName, port);
     }
-    
+
     private InferredConfig inferFromUrl(String url) {
         if (url.startsWith("jdbc:mysql:")) {
             return new InferredConfig("com.mysql.cj.jdbc.Driver", 3306);
@@ -460,7 +463,7 @@ public class EnhancedJdbcFactory implements DynamicTableSourceFactory {
         }
         throw new IllegalArgumentException("Unsupported JDBC URL: " + url);
     }
-    
+
     private void validateConfiguration(String url, String driver, String tableName) {
         if (url == null || url.isEmpty()) {
             throw new ValidationException("JDBC URL is required");
@@ -474,7 +477,7 @@ public class EnhancedJdbcFactory implements DynamicTableSourceFactory {
             throw new ValidationException("JDBC driver not found: " + driver, e);
         }
     }
-    
+
     private static class InferredConfig {
         final String driver;
         final int port;
@@ -496,27 +499,27 @@ WITH ('connector' = 'enhanced-jdbc', 'url' = 'jdbc:mysql://host/analytics', 'tab
 ### 6.3 FLIP-27 Source 完整实现示例
 
 ```java
-public class DirectoryTextSource 
+public class DirectoryTextSource
     implements Source<String, FileSplit, FileEnumeratorState> {
     private final String directoryPath;
     private final long maxBytesPerSplit;
-    
+
     public DirectoryTextSource(String directoryPath, long maxBytesPerSplit) {
         this.directoryPath = directoryPath;
         this.maxBytesPerSplit = maxBytesPerSplit;
     }
-    
+
     @Override
     public Boundedness getBoundedness() {
         return Boundedness.CONTINUOUS_UNBOUNDED;
     }
-    
+
     @Override
     public SplitEnumerator<FileSplit, FileEnumeratorState> createEnumerator(
             SplitEnumeratorContext<FileSplit> enumContext) {
         return new DirectorySplitEnumerator(directoryPath, maxBytesPerSplit, enumContext);
     }
-    
+
     @Override
     public SourceReader<String, FileSplit> createReader(SourceReaderContext readerContext) {
         return new DirectorySourceReader(readerContext);
@@ -528,32 +531,32 @@ public class FileSplit implements SourceSplit {
     private final String filePath;
     private final long startOffset;
     private final long endOffset;
-    
+
     public FileSplit(String splitId, String filePath, long startOffset, long endOffset) {
         this.splitId = splitId;
         this.filePath = filePath;
         this.startOffset = startOffset;
         this.endOffset = endOffset;
     }
-    
+
     @Override public String splitId() { return splitId; }
     public String filePath() { return filePath; }
     public long startOffset() { return startOffset; }
     public long endOffset() { return endOffset; }
 }
 
-public class DirectorySplitEnumerator 
+public class DirectorySplitEnumerator
     implements SplitEnumerator<FileSplit, FileEnumeratorState> {
     private final String directoryPath;
     private final long maxBytesPerSplit;
     private final SplitEnumeratorContext<FileSplit> context;
     private final List<FileSplit> unassignedSplits = new ArrayList<>();
-    
+
     @Override
     public void start() {
         context.callAsync(this::discoverNewFiles, this::handleDiscoveredFiles, 0L, 5000L);
     }
-    
+
     private List<FileSplit> discoverNewFiles() {
         List<FileSplit> newSplits = new ArrayList<>();
         File[] files = new File(directoryPath).listFiles((d, n) -> n.endsWith(".txt"));
@@ -569,18 +572,18 @@ public class DirectorySplitEnumerator
         }
         return newSplits;
     }
-    
+
     private void handleDiscoveredFiles(List<FileSplit> newSplits, Throwable error) {
         if (error != null) throw new RuntimeException("Failed to discover files", error);
         unassignedSplits.addAll(newSplits);
         assignSplitsToReaders();
     }
-    
+
     @Override
     public void handleSplitRequest(int subtaskId, @Nullable String hostname) {
         assignSplitsToReaders();
     }
-    
+
     private void assignSplitsToReaders() {
         if (unassignedSplits.isEmpty()) return;
         Map<Integer, List<FileSplit>> assignments = new HashMap<>();
@@ -602,7 +605,7 @@ public class DirectorySplitEnumerator
             context.assignSplits(new SplitsAssignment<>(e.getValue(), e.getKey()));
         }
     }
-    
+
     @Override
     public FileEnumeratorState snapshotState(long checkpointId) {
         return new FileEnumeratorState(new ArrayList<>(unassignedSplits));
@@ -616,24 +619,24 @@ public class DirectorySplitEnumerator
 ### 6.4 FLIP-143 SinkV2 Exactly-Once 实现示例
 
 ```java
-public class ExactlyOnceKafkaSink<T> implements 
+public class ExactlyOnceKafkaSink<T> implements
         Sink<T>, TwoPhaseCommittingSink<T, KafkaCommittable> {
     private final String bootstrapServers;
     private final String topic;
     private final SerializationSchema<T> serializer;
-    
-    public ExactlyOnceKafkaSink(String bootstrapServers, String topic, 
+
+    public ExactlyOnceKafkaSink(String bootstrapServers, String topic,
                                  SerializationSchema<T> serializer) {
         this.bootstrapServers = bootstrapServers;
         this.topic = topic;
         this.serializer = serializer;
     }
-    
+
     @Override
     public SinkWriter<T> createWriter(WriterInitContext context) throws IOException {
         return new ExactlyOnceKafkaWriter<>(context, topic, serializer, bootstrapServers);
     }
-    
+
     @Override
     public Committer<KafkaCommittable> createCommitter() {
         return new KafkaCommitter();
@@ -646,7 +649,7 @@ public class ExactlyOnceKafkaWriter<T> implements SinkWriter<T> {
     private final KafkaProducer<String, byte[]> producer;
     private final List<Future<RecordMetadata>> pendingFutures = new ArrayList<>();
     private final String transactionalId;
-    
+
     public ExactlyOnceKafkaWriter(WriterInitContext context, String topic,
             SerializationSchema<T> serializer, String bootstrapServers) {
         this.topic = topic;
@@ -661,19 +664,19 @@ public class ExactlyOnceKafkaWriter<T> implements SinkWriter<T> {
         this.producer.initTransactions();
         this.producer.beginTransaction();
     }
-    
+
     @Override
     public void write(T element, Context context) {
         byte[] value = serializer.serialize(element);
         ProducerRecord<String, byte[]> record = new ProducerRecord<>(topic, value);
         pendingFutures.add(producer.send(record));
     }
-    
+
     @Override
     public Collection<KafkaCommittable> prepareCommit(boolean flush) throws IOException {
         if (flush) producer.flush();
         for (Future<RecordMetadata> future : pendingFutures) {
-            try { future.get(); } 
+            try { future.get(); }
             catch (Exception e) {
                 throw new IOException("Failed to send record to Kafka", e);
             }
@@ -681,7 +684,7 @@ public class ExactlyOnceKafkaWriter<T> implements SinkWriter<T> {
         pendingFutures.clear();
         return Collections.singletonList(new KafkaCommittable(transactionalId));
     }
-    
+
     @Override public void flush(boolean endOfInput) { producer.flush(); }
     @Override public void close() { producer.close(); }
 }
@@ -698,7 +701,7 @@ public class KafkaCommitter implements Committer<KafkaCommittable> {
     @Override
     public void commit(Collection<CommitRequest<KafkaCommittable>> requests) {
         for (CommitRequest<KafkaCommittable> request : requests) {
-            System.out.println("Committing transaction: " 
+            System.out.println("Committing transaction: "
                 + request.getCommittable().getTransactionalId());
             request.signalAlreadyCommitted();
         }
@@ -716,7 +719,7 @@ public class KafkaCommitter implements Committer<KafkaCommittable> {
 public class KafkaConnectorIntegrationTest {
     private KafkaContainer kafka;
     private StreamExecutionEnvironment env;
-    
+
     @BeforeAll
     void setUp() {
         kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.5.0"));
@@ -725,12 +728,12 @@ public class KafkaConnectorIntegrationTest {
         env.setParallelism(2);
         env.enableCheckpointing(5000);
     }
-    
+
     @AfterAll
     void tearDown() {
         if (kafka != null) kafka.stop();
     }
-    
+
     @Test
     void testKafkaSourceAndSinkEndToEnd() throws Exception {
         String bootstrapServers = kafka.getBootstrapServers();
@@ -738,7 +741,7 @@ public class KafkaConnectorIntegrationTest {
         String outputTopic = "output-topic";
         List<String> testData = Arrays.asList("msg-1", "msg-2", "msg-3");
         writeTestData(bootstrapServers, inputTopic, testData);
-        
+
         KafkaSource<String> source = KafkaSource.<String>builder()
             .setBootstrapServers(bootstrapServers)
             .setTopics(inputTopic)
@@ -746,7 +749,7 @@ public class KafkaConnectorIntegrationTest {
             .setStartingOffsets(OffsetsInitializer.earliest())
             .setValueOnlyDeserializer(new SimpleStringSchema())
             .build();
-        
+
         KafkaSink<String> sink = KafkaSink.<String>builder()
             .setBootstrapServers(bootstrapServers)
             .setRecordSerializer(KafkaRecordSerializationSchema.builder()
@@ -755,16 +758,16 @@ public class KafkaConnectorIntegrationTest {
                 .build())
             .setDeliveryGuarantee(DeliveryGuarantee.EXACTLY_ONCE)
             .build();
-        
+
         DataStream<String> stream = env.fromSource(
             source, WatermarkStrategy.noWatermarks(), "Kafka Source");
         stream.map(String::toUpperCase).sinkTo(sink);
         env.execute("Kafka Connector E2E Test");
-        
+
         List<String> results = readOutputData(bootstrapServers, outputTopic, testData.size());
         assertThat(results).containsExactlyInAnyOrder("MSG-1", "MSG-2", "MSG-3");
     }
-    
+
     private void writeTestData(String bootstrapServers, String topic, List<String> data) {
         Properties props = new Properties();
         props.put("bootstrap.servers", bootstrapServers);
@@ -775,7 +778,7 @@ public class KafkaConnectorIntegrationTest {
             p.flush();
         }
     }
-    
+
     private List<String> readOutputData(String bootstrapServers, String topic, int count) {
         Properties props = new Properties();
         props.put("bootstrap.servers", bootstrapServers);
@@ -801,14 +804,14 @@ public class KafkaConnectorIntegrationTest {
 ### 6.6 多模态 AI Connector 实现示例
 
 ```java
-public class MultimodalAiSource 
+public class MultimodalAiSource
     implements Source<RowData, MultimodalSplit, MultimodalCheckpoint> {
     private final String endpoint;
-    
+
     public MultimodalAiSource(String endpoint) {
         this.endpoint = endpoint;
     }
-    
+
     @Override
     public SourceReader<RowData, MultimodalSplit> createReader(SourceReaderContext ctx) {
         return new MultimodalSourceReader(ctx, new EmbeddingClient(endpoint));
@@ -818,11 +821,11 @@ public class MultimodalAiSource
 public class MultimodalSplitReader implements SplitReader<RowData, MultimodalSplit> {
     private final EmbeddingClient embeddingClient;
     private final Queue<MultimodalRecord> records = new ArrayDeque<>();
-    
+
     public MultimodalSplitReader(EmbeddingClient client) {
         this.embeddingClient = client;
     }
-    
+
     @Override
     public RecordsWithSplitIds<RowData> fetch() {
         RecordsBySplits.Builder<RowData> builder = new RecordsBySplits.Builder<>();
@@ -837,7 +840,7 @@ public class MultimodalSplitReader implements SplitReader<RowData, MultimodalSpl
         builder.add(record.getSplitId(), rowData);
         return builder.build();
     }
-    
+
     private RowData processTextRecord(MultimodalRecord record) {
         float[] embedding = embeddingClient.embedText(record.getTextContent());
         GenericRowData row = new GenericRowData(4);
@@ -847,7 +850,7 @@ public class MultimodalSplitReader implements SplitReader<RowData, MultimodalSpl
         row.setField(3, BinaryArrayData.fromPrimitiveArray(embedding));
         return row;
     }
-    
+
     private RowData processImageRecord(MultimodalRecord record) {
         float[] embedding = embeddingClient.embedImage(record.getBinaryContent());
         GenericRowData row = new GenericRowData(4);
@@ -857,7 +860,7 @@ public class MultimodalSplitReader implements SplitReader<RowData, MultimodalSpl
         row.setField(3, BinaryArrayData.fromPrimitiveArray(embedding));
         return row;
     }
-    
+
     private RowData processAudioRecord(MultimodalRecord record) {
         float[] embedding = embeddingClient.embedAudio(record.getBinaryContent());
         GenericRowData row = new GenericRowData(4);
@@ -867,7 +870,7 @@ public class MultimodalSplitReader implements SplitReader<RowData, MultimodalSpl
         row.setField(3, BinaryArrayData.fromPrimitiveArray(embedding));
         return row;
     }
-    
+
     private RowData processStructuredRecord(MultimodalRecord record) {
         GenericRowData row = new GenericRowData(4);
         row.setField(0, StringData.fromString(record.getId()));
@@ -876,7 +879,7 @@ public class MultimodalSplitReader implements SplitReader<RowData, MultimodalSpl
         row.setField(3, null);
         return row;
     }
-    
+
     @Override
     public void handleSplitsChanges(SplitsChange<MultimodalSplit> changes) {
         for (MultimodalSplit split : changes.splits()) records.addAll(split.getRecords());
@@ -907,25 +910,25 @@ graph TB
         B[DynamicTableFactory V2]
         C[Config Inference & Validation]
     end
-    
+
     subgraph "DataStream API Layer"
         D[DataStream Source/Sink]
         E[RateLimiter Integration]
     end
-    
+
     subgraph "Unified Connector API Layer"
         F[FLIP-27 Source API]
         G[FLIP-143 SinkV2 API]
         H[Lifecycle Management]
     end
-    
+
     subgraph "Runtime Layer"
         I[SplitEnumerator<br/>JobManager]
         J[SourceReader<br/>TaskManager]
         K[SinkWriter<br/>TaskManager]
         L[Committer / GlobalCommitter]
     end
-    
+
     subgraph "External Systems"
         M[Kafka]
         N[JDBC]
@@ -933,7 +936,7 @@ graph TB
         P[Vector DB]
         Q[AI/ML Services]
     end
-    
+
     A --> B
     B --> C
     C --> D
@@ -963,7 +966,7 @@ graph TB
 stateDiagram-v2
     [*] --> CREATED : create()
     CREATED --> OPENED : open()
-    
+
     state SourceLifecycle {
         OPENED --> RUNNING : startReader()
         RUNNING --> SNAPSHOTTING : snapshotState()
@@ -971,7 +974,7 @@ stateDiagram-v2
         RUNNING --> IDLE : no splits
         IDLE --> RUNNING : new splits assigned
     }
-    
+
     state SinkLifecycle {
         OPENED --> WRITING : write()
         WRITING --> PREPARING_COMMIT : prepareCommit()
@@ -980,7 +983,7 @@ stateDiagram-v2
         WRITING --> FLUSHING : flush()
         FLUSHING --> WRITING : flushed
     }
-    
+
     RUNNING --> CLOSED : close()
     WRITING --> CLOSED : close()
     IDLE --> CLOSED : close()
@@ -999,26 +1002,26 @@ graph TB
         B[集成测试层<br/>Integration Tests]
         C[E2E 测试层<br/>End-to-End Tests]
     end
-    
+
     subgraph "单元测试工具"
         A1[SourceReaderTestBase]
         A2[MockSplitEnumeratorContext]
         A3[MockSinkWriterContext]
         A4[OneInputStreamOperatorTestHarness]
     end
-    
+
     subgraph "集成测试工具"
         B1[MiniCluster]
         B2[TestContainer<br/>Kafka/MySQL/ES]
         B3[EmbeddedConnectCluster]
     end
-    
+
     subgraph "E2E 测试工具"
         C1[FlinkContainerTestEnvironment]
         C2[Docker Compose]
         C3[Cloud Environment Tests]
     end
-    
+
     A --> A1
     A --> A2
     A --> A3
@@ -1029,7 +1032,7 @@ graph TB
     C --> C1
     C --> C2
     C --> C3
-    
+
     style A fill:#e1f5fe
     style B fill:#fff3e0
     style C fill:#f3e5f5
@@ -1039,16 +1042,6 @@ graph TB
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink Documentation, "FLIP-27: Refactor Source Interface", https://github.com/apache/flink/tree/master/flink-docs/docs/flips/
-[^2]: Apache Flink Documentation, "FLIP-143: Unified Sink API", https://github.com/apache/flink/tree/master/flink-docs/docs/flips/
-[^3]: Apache Flink Documentation, "FLIP-191: Extend Unified Sink API to Support Two-phase Commit", https://github.com/apache/flink/tree/master/flink-docs/docs/flips/
-[^4]: Apache Flink Documentation, "Flink 2.2 Release Notes - Connector Framework Enhancements", https://nightlies.apache.org/flink/flink-docs-release-2.2/
-[^5]: Apache Kafka Documentation, "Transactions in Kafka", https://kafka.apache.org/documentation/#transactions
-[^6]: TestContainers Project, "TestContainers for Java", https://www.testcontainers.org/
-[^7]: Apache Flink Documentation, "Dynamic Tables", https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/concepts/dynamic_tables/
-[^8]: Apache Flink Documentation, "Table API - Connectors", https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/table/overview/
-[^9]: M. Kleppmann, "Designing Data-Intensive Applications", O'Reilly Media, 2017.
-[^10]: T. Akidau et al., "The Dataflow Model", PVLDB, 8(12), 2015.
 
 
 

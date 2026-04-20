@@ -295,6 +295,7 @@ $$
 $$
 
 职责边界：
+
 - **MCP**：Agent ↔ Tool/Context 的标准化接口
 - **A2A**：Agent ↔ Agent 的协作与任务委托协议
 - **AIP**：Agent 身份发现、验证与信誉层（Identity Layer）
@@ -308,6 +309,7 @@ $$
 $$
 
 核心能力：
+
 - **LangGraph**：状态图驱动的循环推理与条件分支
 - **AutoGen**：对话驱动的多 Agent 协商与代码生成
 - **CrewAI**：角色扮演与任务流水线编排

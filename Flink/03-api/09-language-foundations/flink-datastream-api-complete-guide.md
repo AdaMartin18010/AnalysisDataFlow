@@ -39,7 +39,7 @@
     - [4.2 状态后端选择论证](#42-状态后端选择论证)
     - [4.3 异步 I/O 性能边界](#43-异步-io-性能边界)
     - [4.4 CEP 模式复杂度分析](#44-cep-模式复杂度分析)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)]()
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [5.1 Exactly-Once 语义保证](#51-exactly-once-语义保证)
     - [5.2 异步状态访问一致性论证](#52-异步状态访问一致性论证)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)

@@ -3,4 +3,3 @@
 > 本文档内容已整合至主文档，此处保留为重定向入口。
 > **主文档**: [Flink\05-ecosystem\05.01-connectors\elasticsearch-connector-complete-guide.md](../../../Flink/05-ecosystem/05.01-connectors/elasticsearch-connector-complete-guide.md)
 > **归档位置**: [../../../archive/content-deduplication/2026-04/Flink/05-ecosystem/05.01-connectors/flink-elasticsearch-connector-guide.md](../../../archive/content-deduplication/2026-04/Flink/05-ecosystem/05.01-connectors/flink-elasticsearch-connector-guide.md)
-

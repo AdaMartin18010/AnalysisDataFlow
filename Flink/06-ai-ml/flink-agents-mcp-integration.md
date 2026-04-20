@@ -986,8 +986,7 @@ flowchart LR
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink Blog, "Apache Flink Agents 0.2.0 Release Announcement", February 6, 2026. https://flink.apache.org/2026/02/06/apache-flink-agents-0.2.0-release-announcement/
-[^2]: Anthropic, "Model Context Protocol Specification", 2025. https://modelcontextprotocol.io/
+[^1]: Apache Flink Blog, "Apache Flink Agents 0.2.0 Release Announcement", February 6, 2026. <https://flink.apache.org/2026/02/06/apache-flink-agents-0.2.0-release-announcement/>
 
 
 ---

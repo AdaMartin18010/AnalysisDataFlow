@@ -34,7 +34,7 @@
     - [4.1 部署模式选择决策树](#41-部署模式选择决策树)
     - [4.2 资源配置反模式分析](#42-资源配置反模式分析)
     - [4.3 升级策略的兼容性边界](#43-升级策略的兼容性边界)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)]()
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-F-10-40: Kubernetes Native 部署的容错完备性](#thm-f-10-40-kubernetes-native-部署的容错完备性)
     - [Thm-F-10-41: 细粒度资源管理的最优性](#thm-f-10-41-细粒度资源管理的最优性)
     - [Thm-F-10-42: 蓝绿部署的零停机保证](#thm-f-10-42-蓝绿部署的零停机保证)
