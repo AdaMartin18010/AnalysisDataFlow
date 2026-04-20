@@ -1,23 +1,23 @@
 # Formal Element Integrity Check Report
 
-**Generated**: 2026-04-20T07:02:43.800405
+**Generated**: 2026-04-21T04:49:41.520782
 
 ## Summary
 
 | Metric | Count |
 |--------|-------|
-| Files Checked | 398 |
+| Files Checked | 429 |
 | Files with Issues | 0 |
 
 ## Formal Elements Found
 
 | Type | Count |
 |------|-------|
-| Corollary (推论) | 64 |
-| Definition (定义) | 3680 |
-| Lemma (引理) | 1306 |
-| Proposition (命题) | 970 |
-| Theorem (定理) | 1281 |
+| Corollary (推论) | 70 |
+| Definition (定义) | 3994 |
+| Lemma (引理) | 1483 |
+| Proposition (命题) | 1040 |
+| Theorem (定理) | 1419 |
 
 ## ⚠️ Files with Warnings Only
 
@@ -40,7 +40,7 @@
 | Flink/02-core/flink-delta-join-deep-dive.md | 9 |
 | Flink/02-core/flink-streaming-multi-join-operator.md | 9 |
 | Flink/02-core/forst-state-backend.md | 25 |
-| Flink/02-core/multi-way-join-optimization.md | 2 |
+| Flink/02-core/multi-way-join-optimization.md | 1 |
 | Flink/02-core/network-stack-evolution.md | 10 |
 | Flink/02-core/smart-checkpointing-strategies.md | 56 |
 | Flink/02-core/state-backend-evolution-analysis.md | 9 |
@@ -53,7 +53,7 @@
 | Flink/03-api/03.02-table-sql-api/flink-ml-predict-model-ddls-guide.md | 8 |
 | Flink/03-api/03.02-table-sql-api/flink-process-table-functions.md | 19 |
 | Flink/03-api/03.02-table-sql-api/flink-python-udf.md | 2 |
-| Flink/03-api/03.02-table-sql-api/flink-sql-calcite-optimizer-deep-dive.md | 99 |
+| Flink/03-api/03.02-table-sql-api/flink-sql-calcite-optimizer-deep-dive.md | 75 |
 | Flink/03-api/03.02-table-sql-api/flink-sql-hints-optimization.md | 24 |
 | Flink/03-api/03.02-table-sql-api/flink-sql-window-functions-deep-dive.md | 51 |
 | Flink/03-api/03.02-table-sql-api/flink-vector-search-rag.md | 24 |
@@ -64,7 +64,7 @@
 | Flink/03-api/09-language-foundations/01.01-scala-types-for-streaming.md | 10 |
 | Flink/03-api/09-language-foundations/01.02-typeinformation-derivation.md | 20 |
 | Flink/03-api/09-language-foundations/01.03-scala3-type-system-formalization.md | 39 |
-| Flink/03-api/09-language-foundations/02-python-api.md | 16 |
+| Flink/03-api/09-language-foundations/02-python-api.md | 11 |
 | Flink/03-api/09-language-foundations/02.01-java-api-from-scala.md | 8 |
 | Flink/03-api/09-language-foundations/02.02-flink-scala-api-community.md | 22 |
 | Flink/03-api/09-language-foundations/02.03-python-async-api.md | 19 |
@@ -99,7 +99,7 @@
 | Flink/04-runtime/04.03-observability/event-reporting.md | 17 |
 | Flink/04-runtime/04.03-observability/flink-opentelemetry-observability.md | 12 |
 | Flink/04-runtime/04.03-observability/metrics-and-monitoring.md | 33 |
-| Flink/04-runtime/04.03-observability/opentelemetry-streaming-observability.md | 23 |
+| Flink/04-runtime/04.03-observability/opentelemetry-streaming-observability.md | 20 |
 | Flink/04-runtime/04.03-observability/realtime-data-quality-monitoring.md | 72 |
 | Flink/04-runtime/04.03-observability/split-level-watermark-metrics.md | 8 |
 | Flink/04-runtime/04.03-observability/streaming-metrics-monitoring-slo.md | 32 |
@@ -122,7 +122,7 @@
 | Flink/05-ecosystem/05.02-lakehouse/flink-paimon-integration.md | 29 |
 | Flink/05-ecosystem/05.02-lakehouse/streaming-lakehouse-deep-dive-2026.md | 13 |
 | Flink/05-ecosystem/05.03-wasm-udf/wasi-0.3-async-preview.md | 22 |
-| Flink/05-ecosystem/05.03-wasm-udf/wasm-streaming.md | 8 |
+| Flink/05-ecosystem/05.03-wasm-udf/wasm-streaming.md | 6 |
 | Flink/05-ecosystem/05.05-stateful-functions/stateful-functions-3.0-guide.md | 17 |
 | Flink/06-ai-ml/ai-agent-frameworks-ecosystem-2025.md | 5 |
 | Flink/06-ai-ml/flink-25-gpu-acceleration.md | 17 |
@@ -137,7 +137,7 @@
 | Flink/06-ai-ml/model-serving-streaming.md | 7 |
 | Flink/06-ai-ml/online-learning-algorithms.md | 18 |
 | Flink/06-ai-ml/online-learning-production.md | 15 |
-| Flink/06-ai-ml/vector-database-integration.md | 8 |
+| Flink/06-ai-ml/vector-database-integration.md | 7 |
 | Flink/07-roadmap/flink-23-formal-analysis.md | 20 |
 | Flink/07-roadmap/flink-24-formal-prospects.md | 20 |
 | Flink/07-rust-native/edge-wasm-runtime/05-production-deployment-guide.md | 18 |
@@ -146,7 +146,7 @@
 | Flink/08-roadmap/08.01-flink-24/FLIP-TRACKING-SYSTEM.md | 10 |
 | Flink/08-roadmap/08.01-flink-24/community-dynamics-tracking.md | 9 |
 | Flink/08-roadmap/08.01-flink-24/flink-2.2-production-adoption-framework.md | 22 |
-| Flink/08-roadmap/08.01-flink-24/flink-2.4-tracking.md | 42 |
+| Flink/08-roadmap/08.01-flink-24/flink-2.4-tracking.md | 38 |
 | Flink/08-roadmap/08.01-flink-24/flink-2.5-preview.md | 11 |
 | Flink/08-roadmap/08.01-flink-24/flink-25-stream-batch-unification.md | 18 |
 | Flink/08-roadmap/2027-trends-prediction.md | 6 |
@@ -204,23 +204,25 @@
 | Knowledge/02-design-patterns/02.01-stream-join-patterns.md | 14 |
 | Knowledge/02-design-patterns/02.02-dual-stream-patterns.md | 15 |
 | Knowledge/02-design-patterns/02.03-backpressure-handling-patterns.md | 15 |
-| Knowledge/02-design-patterns/pattern-async-io-enrichment.md | 28 |
-| Knowledge/02-design-patterns/pattern-cep-complex-event.md | 25 |
-| Knowledge/02-design-patterns/pattern-checkpoint-recovery.md | 60 |
-| Knowledge/02-design-patterns/pattern-event-time-processing.md | 27 |
-| Knowledge/02-design-patterns/pattern-log-analysis.md | 21 |
+| Knowledge/02-design-patterns/pattern-async-io-enrichment.md | 27 |
+| Knowledge/02-design-patterns/pattern-cep-complex-event.md | 24 |
+| Knowledge/02-design-patterns/pattern-checkpoint-recovery.md | 59 |
+| Knowledge/02-design-patterns/pattern-event-time-processing.md | 26 |
+| Knowledge/02-design-patterns/pattern-log-analysis.md | 20 |
 | Knowledge/02-design-patterns/pattern-realtime-feature-engineering.md | 6 |
-| Knowledge/02-design-patterns/pattern-side-output.md | 39 |
-| Knowledge/02-design-patterns/pattern-stateful-computation.md | 33 |
-| Knowledge/02-design-patterns/pattern-windowed-aggregation.md | 75 |
+| Knowledge/02-design-patterns/pattern-side-output.md | 38 |
+| Knowledge/02-design-patterns/pattern-stateful-computation.md | 32 |
+| Knowledge/02-design-patterns/pattern-windowed-aggregation.md | 74 |
 | Knowledge/02-design-patterns/polyglot-streaming-patterns.md | 53 |
 | Knowledge/03-business-patterns/airbnb-marketplace-dynamics.md | 10 |
-| Knowledge/03-business-patterns/alibaba-double11-flink.md | 11 |
-| Knowledge/03-business-patterns/gaming-analytics.md | 15 |
+| Knowledge/03-business-patterns/alibaba-double11-flink.md | 10 |
+| Knowledge/03-business-patterns/business-scenario-decision-tree-comprehensive.md | 16 |
+| Knowledge/03-business-patterns/data-mesh-streaming-integration.md | 4 |
+| Knowledge/03-business-patterns/gaming-analytics.md | 14 |
 | Knowledge/03-business-patterns/iot-stream-processing.md | 16 |
-| Knowledge/03-business-patterns/log-monitoring.md | 12 |
+| Knowledge/03-business-patterns/log-monitoring.md | 11 |
 | Knowledge/03-business-patterns/netflix-streaming-pipeline.md | 10 |
-| Knowledge/03-business-patterns/real-time-recommendation.md | 15 |
+| Knowledge/03-business-patterns/real-time-recommendation.md | 14 |
 | Knowledge/03-business-patterns/spotify-music-recommendation.md | 10 |
 | Knowledge/03-business-patterns/streaming-data-product-economics.md | 13 |
 | Knowledge/03-business-patterns/stripe-payment-processing.md | 10 |
@@ -234,18 +236,23 @@
 | Knowledge/04-technology-selection/streaming-database-ecosystem-comparison-2026.md | 18 |
 | Knowledge/04-technology-selection/streaming-database-guide.md | 34 |
 | Knowledge/04-technology-selection/streaming-databases-2026-comparison.md | 16 |
+| Knowledge/04-technology-selection/streaming-performance-comparison-xchart.md | 6 |
+| Knowledge/04-technology-selection/streaming-security-model-comparison.md | 4 |
 | Knowledge/05-mapping-guides/migration-guides/05.1-spark-streaming-to-flink-migration.md | 7 |
 | Knowledge/05-mapping-guides/migration-guides/05.2-kafka-streams-to-flink-migration.md | 7 |
 | Knowledge/05-mapping-guides/migration-guides/05.3-storm-to-flink-migration.md | 8 |
 | Knowledge/05-mapping-guides/migration-guides/05.4-flink-1x-to-2x-migration.md | 7 |
 | Knowledge/05-mapping-guides/migration-guides/05.5-batch-to-streaming-migration.md | 8 |
 | Knowledge/05-mapping-guides/multi-agent-frameworks-2026-comparison.md | 12 |
+| Knowledge/05-mapping-guides/realtime-ml-pipeline-complete-mapping.md | 5 |
 | Knowledge/05-mapping-guides/streaming-etl-tools-landscape-2026.md | 20 |
 | Knowledge/05-mapping-guides/streaming-sql-engines-2026-comparison.md | 14 |
 | Knowledge/05-mapping-guides/struct-to-flink-mapping.md | 152 |
 | Knowledge/05-mapping-guides/theory-to-code-patterns.md | 57 |
+| Knowledge/05-mapping-guides/theory-to-implementation-static-dynamic-mapping.md | 8 |
 | Knowledge/05-migrations/kafka-streams-to-flink-guide.md | 8 |
 | Knowledge/06-frontier/a2a-protocol-agent-communication.md | 31 |
+| Knowledge/06-frontier/agentic-streaming-mst-verification.md | 32 |
 | Knowledge/06-frontier/ai-agent-a2a-protocol.md | 12 |
 | Knowledge/06-frontier/ai-agent-database-workloads.md | 7 |
 | Knowledge/06-frontier/cloud-edge-continuum.md | 16 |
@@ -254,6 +261,8 @@
 | Knowledge/06-frontier/edge-streaming-patterns.md | 18 |
 | Knowledge/06-frontier/faas-dataflow.md | 13 |
 | Knowledge/06-frontier/go-streaming-ecosystem-2025.md | 1 |
+| Knowledge/06-frontier/iris-separation-logic-streaming-extension.md | 26 |
+| Knowledge/06-frontier/llm-assisted-stream-processing-optimization.md | 26 |
 | Knowledge/06-frontier/materialize-comparison-guide.md | 16 |
 | Knowledge/06-frontier/mcp-protocol-agent-streaming.md | 15 |
 | Knowledge/06-frontier/mcp-security-governance-2026.md | 7 |
@@ -280,9 +289,12 @@
 | Knowledge/06-frontier/streaming-databases.md | 14 |
 | Knowledge/06-frontier/streaming-graph-processing-tgn.md | 13 |
 | Knowledge/06-frontier/streaming-lakehouse-iceberg-delta.md | 6 |
+| Knowledge/06-frontier/streaming-mcp-a2a-integration.md | 6 |
 | Knowledge/06-frontier/streaming-security-compliance.md | 18 |
 | Knowledge/06-frontier/streaming-slo-definition.md | 14 |
+| Knowledge/06-frontier/streaming-vector-db-frontier-2026.md | 27 |
 | Knowledge/06-frontier/vector-search-streaming-convergence.md | 9 |
+| Knowledge/06-frontier/veil-framework-production-assessment.md | 9 |
 | Knowledge/06-frontier/wasm-dataflow-patterns.md | 14 |
 | Knowledge/06-frontier/web3-streaming-analytics-defi.md | 13 |
 | Knowledge/07-best-practices/07.02-performance-tuning-patterns.md | 3 |
@@ -338,7 +350,7 @@
 | Knowledge/tkg-stream-updates.md | 9 |
 | Knowledge/video-stream-cep.md | 4 |
 | Knowledge/zero-shot-video-query.md | 4 |
-| Struct/01-foundation/01.01-unified-streaming-theory.md | 4 |
+| Struct/01-foundation/01.01-unified-streaming-theory.md | 3 |
 | Struct/01-foundation/01.02-process-calculus-primer.md | 30 |
 | Struct/01-foundation/01.03-actor-model-formalization.md | 80 |
 | Struct/01-foundation/01.04-dataflow-model-formalization.md | 68 |
@@ -355,36 +367,44 @@
 | Struct/02-properties/02.01-determinism-in-streaming.md | 137 |
 | Struct/02-properties/02.02-consistency-hierarchy.md | 81 |
 | Struct/02-properties/02.03-watermark-monotonicity.md | 42 |
-| Struct/02-properties/02.04-liveness-and-safety.md | 21 |
-| Struct/02-properties/02.05-type-safety-derivation.md | 30 |
+| Struct/02-properties/02.04-liveness-and-safety.md | 19 |
+| Struct/02-properties/02.05-type-safety-derivation.md | 28 |
 | Struct/02-properties/02.07-encrypted-stream-processing.md | 8 |
 | Struct/02-properties/02.08-differential-privacy-streaming.md | 14 |
-| Struct/03-relationships/03.01-actor-to-csp-encoding.md | 14 |
+| Struct/03-relationships/03.01-actor-to-csp-encoding.md | 12 |
 | Struct/03-relationships/03.02-flink-to-process-calculus.md | 52 |
 | Struct/03-relationships/03.03-expressiveness-hierarchy.md | 35 |
 | Struct/03-relationships/03.04-bisimulation-equivalences.md | 24 |
-| Struct/03-relationships/03.05-cross-model-mappings.md | 45 |
+| Struct/03-relationships/03.05-cross-model-mappings.md | 42 |
+| Struct/03-relationships/03.07-three-layer-relationship-comprehensive.md | 12 |
+| Struct/03-relationships/03.08-theorem-dependency-proof-tree.md | 63 |
+| Struct/03-relationships/stream-vs-batch-unified-model-evolution.md | 5 |
 | Struct/04-proofs/04.01-flink-checkpoint-correctness.md | 108 |
-| Struct/04-proofs/04.02-flink-exactly-once-correctness.md | 86 |
+| Struct/04-proofs/04.02-flink-exactly-once-correctness.md | 85 |
 | Struct/04-proofs/04.03-chandy-lamport-consistency.md | 90 |
 | Struct/04-proofs/04.04-watermark-algebra-formal-proof.md | 66 |
-| Struct/04-proofs/04.05-type-safety-fg-fgg.md | 60 |
+| Struct/04-proofs/04.05-type-safety-fg-fgg.md | 58 |
 | Struct/04-proofs/04.06-dot-subtyping-completeness.md | 41 |
 | Struct/04-proofs/04.07-deadlock-freedom-choreographic.md | 107 |
-| Struct/05-comparative-analysis/05.01-go-vs-scala-expressiveness.md | 6 |
-| Struct/05-comparative-analysis/05.02-expressiveness-vs-decidability.md | 28 |
+| Struct/05-comparative-analysis/05.01-go-vs-scala-expressiveness.md | 5 |
+| Struct/05-comparative-analysis/05.02-expressiveness-vs-decidability.md | 27 |
 | Struct/05-comparative-analysis/05.03-encoding-completeness-analysis.md | 52 |
 | Struct/05-comparative-analysis/05.04-concurrency-models-2025-comparison.md | 39 |
 | Struct/06-frontier/06.01-open-problems-streaming-verification.md | 24 |
-| Struct/06-frontier/06.02-choreographic-streaming-programming.md | 33 |
+| Struct/06-frontier/06.02-choreographic-streaming-programming.md | 32 |
 | Struct/06-frontier/06.03-ai-agent-session-types.md | 93 |
 | Struct/06-frontier/06.04-pdot-path-dependent-types.md | 22 |
 | Struct/06-frontier/06.05-ai-agent-streaming-formalization.md | 24 |
+| Struct/06-frontier/06.06-agentic-streaming-behavioral-contracts.md | 36 |
 | Struct/06-frontier/06.10-transactional-cloud-dataflow-actor.md | 30 |
 | Struct/06-frontier/calvin-deterministic-streaming.md | 51 |
+| Struct/06-frontier/cloud-native-streaming-evolution.md | 4 |
 | Struct/06-frontier/dbsp-theory-framework.md | 42 |
 | Struct/06-frontier/first-person-choreographies.md | 11 |
-| Struct/06-frontier/llm-guided-formal-proof-automation.md | 38 |
+| Struct/06-frontier/iris-coq-state-safety-verification.md | 12 |
+| Struct/06-frontier/llm-guided-formal-proof-automation.md | 37 |
+| Struct/06-frontier/streaming-theory-evolution-timeline.md | 15 |
+| Struct/06-frontier/tla-vs-lean4-expressiveness.md | 9 |
 | Struct/07-tools/coq-mechanization.md | 15 |
 | Struct/07-tools/iris-separation-logic.md | 3 |
 | Struct/07-tools/model-checking-guided-testing.md | 11 |
@@ -414,10 +434,21 @@
 | Struct/unified-aqp-theory.md | 9 |
 | Struct/window-algebra-properties.md | 9 |
 | Struct/window-join-reordering.md | 13 |
+| docs/i18n/en/Flink/02-core/checkpoint-mechanism-deep-dive.md | 36 |
+| docs/i18n/en/Knowledge/02-design-patterns/pattern-event-time-processing.md | 22 |
+| docs/i18n/en/Knowledge/02-design-patterns/pattern-stateful-computation.md | 15 |
+| docs/i18n/en/Struct/01-foundation/01.01-unified-streaming-theory.md | 5 |
+| docs/i18n/en/Struct/01-foundation/01.04-dataflow-model-formalization.md | 70 |
+| docs/i18n/en/Struct/02-properties/02.01-determinism-in-streaming.md | 137 |
+| docs/i18n/en/Struct/02-properties/02.02-consistency-hierarchy.md | 85 |
+| docs/i18n/en/Struct/02-properties/02.03-watermark-monotonicity.md | 43 |
+| docs/i18n/en/Struct/04-proofs/04.01-flink-checkpoint-correctness.md | 64 |
+| docs/i18n/en/Struct/04-proofs/04.02-flink-exactly-once-correctness.md | 86 |
+| docs/i18n/en/Struct/04-proofs/04.05-type-safety-fg-fgg-FRAMEWORK.md | 60 |
 
 ## Compliance Rate
 
-**100.0%** (398/398)
+**100.0%** (429/429)
 
 ## Recommendations
 
