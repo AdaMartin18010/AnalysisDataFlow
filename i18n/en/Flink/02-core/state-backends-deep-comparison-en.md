@@ -7,7 +7,8 @@ last_sync: "2026-04-20"
 
 > **Status**: Stable Content | **Risk Level**: Low | **Last Updated**: 2026-04-20
 >
-> This document is based on the State Backend implementations of released Apache Flink versions. Content reflects the current stable version implementation.
+> This document is based on the State Backend implementations of released Apache Flink versions for deep comparative analysis. Content reflects current stable version implementations.
+>
 
 # Flink State Backends Deep Comparison Analysis
 
@@ -31,7 +32,7 @@ last_sync: "2026-04-20"
     - [Lemma-F-02-06: State Backend Access Latency Ordering](#lemma-f-02-06-state-backend-access-latency-ordering)
     - [Lemma-F-02-07: State Capacity Scalability](#lemma-f-02-07-state-capacity-scalability)
     - [Prop-F-02-05: Checkpoint Time Complexity Comparison](#prop-f-02-05-checkpoint-time-complexity-comparison)
-    - [Prop-F-02-06: Fault Recovery Time Bounds](#prop-f-02-06-fault-recovery-time-bounds)
+    - [Prop-F-02-06: Failure Recovery Time Bounds](#prop-f-02-06-failure-recovery-time-bounds)
   - [3. Relations](#3-relations)
     - [3.1 State Backend Evolution Relations](#31-state-backend-evolution-relations)
     - [3.2 State Backend to Dataflow Model Mapping](#32-state-backend-to-dataflow-model-mapping)
@@ -39,11 +40,11 @@ last_sync: "2026-04-20"
   - [4. Argumentation](#4-argumentation)
     - [4.1 State Backend Selection Decision Tree](#41-state-backend-selection-decision-tree)
     - [4.2 Scenario Adaptation Boundary Analysis](#42-scenario-adaptation-boundary-analysis)
-    - [4.3 Counter-Example Analysis: Impact of Improper Selection](#43-counter-example-analysis-impact-of-improper-selection)
-      - [Counter-Example 1: Using HashMap for Large State](#counter-example-1-using-hashmap-for-large-state)
-      - [Counter-Example 2: Using RocksDB for High-Throughput Random Reads](#counter-example-2-using-rocksdb-for-high-throughput-random-reads)
-      - [Counter-Example 3: Using ForSt in Low-Bandwidth Environment](#counter-example-3-using-forst-in-low-bandwidth-environment)
-    - [4.4 Resource Requirements Comparison](#44-resource-requirements-comparison)
+    - [4.3 Counterexample Analysis: Impact of Improper Selection](#43-counterexample-analysis-impact-of-improper-selection)
+      - [Counterexample 1: Large State Using HashMap](#counterexample-1-large-state-using-hashmap)
+      - [Counterexample 2: High-Throughput Random Read Using RocksDB](#counterexample-2-high-throughput-random-read-using-rocksdb)
+      - [Counterexample 3: Low-Bandwidth Environment Using ForSt](#counterexample-3-low-bandwidth-environment-using-forst)
+    - [4.4 Resource Requirement Comparison](#44-resource-requirement-comparison)
   - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
     - [Thm-F-02-03: State Backend Selection Completeness Theorem](#thm-f-02-03-state-backend-selection-completeness-theorem)
     - [Thm-F-02-04: Checkpoint Efficiency Optimization Bound Theorem](#thm-f-02-04-checkpoint-efficiency-optimization-bound-theorem)
@@ -58,10 +59,10 @@ last_sync: "2026-04-20"
     - [7.1 State Backend Architecture Comparison](#71-state-backend-architecture-comparison)
     - [7.2 Complete Feature Comparison Matrix](#72-complete-feature-comparison-matrix)
     - [7.3 Checkpoint Flow Comparison](#73-checkpoint-flow-comparison)
-    - [7.4 Fault Recovery Flow Comparison](#74-fault-recovery-flow-comparison)
+    - [7.4 Failure Recovery Flow Comparison](#74-failure-recovery-flow-comparison)
     - [7.5 Selection Decision Tree](#75-selection-decision-tree)
   - [8. Source Code Analysis](#8-source-code-analysis)
-    - [8.1 RocksDB SST File Format Deep Dive](#81-rocksdb-sst-file-format-deep-dive)
+    - [8.1 RocksDB SST File Format Details](#81-rocksdb-sst-file-format-details)
       - [8.1.1 SST File Application in RocksDBStateBackend](#811-sst-file-application-in-rocksdbstatebackend)
       - [8.1.2 SST File Version Management](#812-sst-file-version-management)
     - [8.2 Compaction Mechanism Comparison Source Analysis](#82-compaction-mechanism-comparison-source-analysis)
@@ -84,20 +85,20 @@ $$
 \text{StateBackend} = \langle \text{StorageLayer}, \text{AccessInterface}, \text{SnapshotStrategy}, \text{RecoveryMechanism} \rangle
 $$
 
-where:
+Where:
 
-| Component | Responsibility | Key Properties |
-|-----------|---------------|----------------|
-| $\text{StorageLayer}$ | State physical storage | Location (memory/disk/remote), capacity, durability |
-| $\text{AccessInterface}$ | State access interface | Latency, throughput, concurrency capability |
-| $\text{SnapshotStrategy}$ | Snapshot generation strategy | Full/incremental, sync/async, consistency guarantee |
-| $\text{RecoveryMechanism}$ | Fault recovery mechanism | Recovery time, state consistency, resource requirements |
+| Component | Responsibility | Key Attributes |
+|------|------|---------|
+| $\text{StorageLayer}$ | State physical storage | Location (memory/disk/remote), capacity, persistence |
+| $\text{AccessInterface}$ | State access interface | Latency, throughput, concurrency |
+| $\text{SnapshotStrategy}$ | Snapshot generation strategy | Full/incremental, synchronous/asynchronous, consistency guarantee |
+| $\text{RecoveryMechanism}$ | Failure recovery mechanism | Recovery time, state consistency, resource requirements |
 
 ---
 
 ### Def-F-02-15: MemoryStateBackend
 
-**Definition**: MemoryStateBackend (Flink 1.x naming, unified under HashMapStateBackend in 1.13+) stores state data in TaskManager's JVM heap memory:
+**Definition**: MemoryStateBackend (Flink 1.x naming, unified replacement by HashMapStateBackend in 1.13+) stores state data in TaskManager JVM heap memory:
 
 $$
 \text{MemoryStateBackend} = \langle \text{Heap}_{\text{tm}}, \text{HashMap}_{K,V}, \Psi_{\text{async-fs}}, \Omega_{\text{deserialize}} \rangle
@@ -106,23 +107,23 @@ $$
 **Core Characteristics**:
 
 1. **Storage Location**: TaskManager JVM heap memory
-2. **Data Structure**: `HashMap<K, State>` for keyed state
-3. **Snapshot Mechanism**: Async replication to file system (HDFS/S3)
+2. **Data Structure**: `HashMap<K, State>` stores keyed state
+3. **Snapshot Mechanism**: Asynchronously copies to file system (HDFS/S3)
 4. **Access Latency**: Nanosecond-level (direct memory access)
 
-**Capacity Constraints**:
+**Capacity Constraint**:
 
 $$
 |S_{\text{total}}| \leq \alpha \cdot \text{taskmanager.memory.task.heap.size}, \quad \alpha \approx 0.3
 $$
 
-> ⚠️ **Note**: MemoryStateBackend is deprecated in Flink 1.13+; HashMapStateBackend is recommended.
+> ⚠️ **Note**: Flink 1.13+ has deprecated MemoryStateBackend; HashMapStateBackend is recommended.
 
 ---
 
 ### Def-F-02-16: FsStateBackend
 
-**Definition**: FsStateBackend (Flink 1.x) is an extension of MemoryStateBackend; state is stored in memory, but snapshots are asynchronously written to a distributed file system:
+**Definition**: FsStateBackend (Flink 1.x) is an extension of MemoryStateBackend, storing state in memory but asynchronously writing snapshots to distributed file system:
 
 $$
 \text{FsStateBackend} = \langle \text{Heap}_{\text{tm}}, \text{HashMap}_{K,V}, \Psi_{\text{async-fs}}, \text{CheckpointStorage}_{\text{fs}} \rangle
@@ -143,14 +144,14 @@ $$
 **Core Improvements**:
 
 1. **Unified API**: Single backend supports memory storage + arbitrary snapshot target
-2. **Async Snapshot**: Copy-on-Write snapshot that does not block data stream processing
+2. **Async Snapshot**: Copy-on-Write snapshot that does not block data flow processing
 3. **Managed Memory Integration**: Deep integration with Flink memory model
 
 ---
 
 ### Def-F-02-18: RocksDBStateBackend
 
-**Definition**: RocksDBStateBackend (EmbeddedRocksDBStateBackend in 1.13+) uses an embedded RocksDB database for state storage:
+**Definition**: RocksDBStateBackend (1.13+ as EmbeddedRocksDBStateBackend) uses embedded RocksDB database to store state:
 
 $$
 \text{RocksDBStateBackend} = \langle \text{LSM-Tree}, \text{MemTable}, \text{SST Files}, \text{WAL}, \Psi_{\text{incremental}} \rangle
@@ -162,53 +163,53 @@ $$
 \text{RocksDB} = \text{MemTable}_{\text{active}} \cup \text{MemTable}_{\text{immutable}} \cup \left( \bigcup_{i=0}^{L} \text{Level}_i \right)
 $$
 
-where:
+Where:
 
 - **MemTable**: In-memory write buffer (default 64MB)
 - **Level 0**: SST files flushed directly from MemTable
-- **Level 1+**: Ordered SST file levels merged through Compaction
+- **Level 1+**: Ordered SST file levels merged via Compaction
 
-**Key Features**:
+**Key Characteristics**:
 
-1. **Disk-Level Capacity**: Supports TB-level state storage
-2. **Incremental Checkpoint**: Uploads only changed SST files
+1. **Disk-level Capacity**: Supports TB-level state storage
+2. **Incremental Checkpoint**: Only uploads changed SST files
 3. **Memory-Disk Tiering**: Block Cache caches hot data
-4. **Native TTL**: Cleans expired data through Compaction Filter
+4. **Native TTL**: Cleans expired data via Compaction Filter
 
 ---
 
 ### Def-F-02-19: ForStStateBackend
 
-**Definition**: ForSt (For Streaming) is a disaggregated state backend introduced in Flink 2.0+, designed for cloud-native scenarios:
+**Definition**: ForSt (For Streaming) is the disaggregated state backend introduced in Flink 2.0+, designed for cloud-native scenarios:
 
 $$
 \text{ForStStateBackend} = \langle \text{UFS}, \text{LocalCache}_{\text{L1/L2}}, \text{LazyRestore}, \text{RemoteCompaction} \rangle
 $$
 
-where:
+Where:
 
 | Component | Description | Performance Characteristics |
-|-----------|-------------|----------------------------|
+|------|------|---------|
 | $\text{UFS}$ | Unified File System (S3/HDFS/GCS) | Primary storage, unlimited capacity |
 | $\text{LocalCache}_{\text{L1}}$ | Memory cache (LRU/SLRU) | ~1μs access latency |
 | $\text{LocalCache}_{\text{L2}}$ | Local disk cache | ~1ms access latency |
-| $\text{LazyRestore}$ | Lazy recovery mechanism | Sub-second fault recovery |
+| $\text{LazyRestore}$ | Lazy recovery mechanism | Sub-second failure recovery |
 | $\text{RemoteCompaction}$ | Remote Compaction service | CPU resource decoupling |
 
 **Core Innovations**:
 
-1. **Compute-Storage Separation**: State primary storage in object storage, local only as cache
+1. **Compute-Storage Separation**: State primarily stored in object storage, local only as cache
 2. **Lightweight Checkpoint**: Metadata snapshot, time complexity $O(1)$
-3. **Instant Recovery**: LazyRestore achieves second-level fault recovery
-4. **Cost Optimization**: Storage cost reduced by 50-70%
+3. **Instant Recovery**: LazyRestore achieves second-level failure recovery
+4. **Cost Optimization**: Storage cost reduced 50-70%
 
-> 📌 **Forward-Looking Note**: ForStStateBackend is a new feature introduced in Flink 2.0/2.4, in rapid iteration. Verify stability of the specific version before production use.
+> 📌 **Forward-looking Note**: ForStStateBackend is a new feature introduced in Flink 2.0/2.4, in rapid iteration. Please verify stability of specific versions before production use.
 
 ---
 
 ### Def-F-02-20: Incremental Checkpointing
 
-**Definition**: Incremental Checkpointing persists only the state change portion since the last checkpoint:
+**Definition**: Incremental Checkpoint only persists the portion of state changed since the last Checkpoint:
 
 $$
 \Delta_n = S_n \ominus S_{n-1}, \quad |CP_n^{\text{inc}}| = |\Delta_n| \ll |S_n|
@@ -224,7 +225,7 @@ $$
 
 **ForSt Implementation Mechanism**:
 
-Based on UFS hard link sharing, checkpoint only persists metadata references:
+Based on UFS hard link sharing, Checkpoint only persists metadata references:
 
 $$
 CP_n^{\text{forst}} = \{ (f, \text{version}) \mid f \in \text{SST}_n \}
@@ -236,7 +237,7 @@ $$
 
 ### Lemma-F-02-06: State Backend Access Latency Ordering
 
-**Lemma**: State access latency of the four State Backends satisfies the following inequality:
+**Lemma**: The state access latency of the four State Backends satisfies the following inequality:
 
 $$
 \text{Latency}_{\text{HashMap}} < \text{Latency}_{\text{RocksDB}}^{\text{cache-hit}} < \text{Latency}_{\text{ForSt}}^{\text{L1-hit}} < \text{Latency}_{\text{RocksDB}}^{\text{cache-miss}} < \text{Latency}_{\text{ForSt}}^{\text{cache-miss}}
@@ -244,9 +245,9 @@ $$
 
 **Proof**:
 
-| Level | Latency Range | Reason |
-|-------|--------------|--------|
-| HashMap | 10-100 ns | JVM heap direct access |
+| Tier | Latency Range | Reason |
+|------|---------|------|
+| HashMap | 10-100 ns | JVM heap memory direct access |
 | RocksDB Cache Hit | 1-10 μs | Block Cache memory access |
 | ForSt L1 Hit | 1-10 μs | Local memory cache |
 | RocksDB Cache Miss | 1-10 ms | Local disk I/O |
@@ -258,7 +259,7 @@ $\square$
 
 ### Lemma-F-02-07: State Capacity Scalability
 
-**Lemma**: Theoretical capacity limits of the four State Backends satisfy:
+**Lemma**: The theoretical capacity limits of the four State Backends satisfy:
 
 $$
 \text{Capacity}_{\text{HashMap}} \ll \text{Capacity}_{\text{RocksDB}} < \text{Capacity}_{\text{ForSt}} \approx \infty
@@ -267,7 +268,7 @@ $$
 **Proof**:
 
 | Backend | Capacity Limit | Typical Value |
-|---------|---------------|---------------|
+|------|---------|--------|
 | HashMap | TM heap memory | < 10 GB |
 | RocksDB | TM local disk | 100 GB - 10 TB |
 | ForSt | UFS storage capacity | Theoretically unlimited (PB-level) |
@@ -278,22 +279,22 @@ $\square$
 
 ### Prop-F-02-05: Checkpoint Time Complexity Comparison
 
-**Proposition**: Checkpoint time complexity of different State Backends:
+**Proposition**: Checkpoint time complexity for different State Backends:
 
 | Backend | Time Complexity | Description |
-|---------|----------------|-------------|
+|---------|-----------|------|
 | HashMap | $O(\|S\|)$ | Full serialization and upload |
 | RocksDB (full) | $O(\|S\|)$ | Full SST upload |
-| RocksDB (incremental) | $O(\|\Delta S\|)$ | Upload changed SST only |
-| ForSt | $O(1)$ | Metadata snapshot only |
+| RocksDB (incremental) | $O(\|\Delta S\|)$ | Only upload changed SSTs |
+| ForSt | $O(1)$ | Only metadata snapshot |
 
-**Corollary**: For large state scenarios ($|S| > 100\text{GB}$), ForSt's checkpoint speed advantage is significant.
+**Corollary**: For large-state scenarios ($|S| > 100\text{GB}$), ForSt's Checkpoint speed advantage is significant.
 
 ---
 
-### Prop-F-02-06: Fault Recovery Time Bounds
+### Prop-F-02-06: Failure Recovery Time Bounds
 
-**Proposition**: Fault recovery time satisfies the following bounds:
+**Proposition**: Failure recovery time satisfies the following bounds:
 
 $$
 T_{\text{recovery}}^{\text{HashMap}} \approx T_{\text{recovery}}^{\text{ForSt}} \ll T_{\text{recovery}}^{\text{RocksDB}}
@@ -325,10 +326,10 @@ RocksDBStateBackend ───→ EmbeddedRocksDBStateBackend ──┘
 ForStStateBackend ──────────────────────────────┘
 ```
 
-**Evolution Motivation**:
+**Evolution Motivations**:
 
 1. **API Simplification**: Unified Memory/Fs into HashMap
-2. **Performance Optimization**: EmbeddedRocksDB natively supports incremental Checkpoint
+2. **Performance Optimization**: EmbeddedRocksDB native incremental Checkpoint support
 3. **Cloud-Native Adaptation**: ForSt achieves compute-storage separation
 
 ---
@@ -336,23 +337,23 @@ ForStStateBackend ────────────────────�
 ### 3.2 State Backend to Dataflow Model Mapping
 
 | Dataflow Model Concept | HashMap Implementation | RocksDB Implementation | ForSt Implementation |
-|-----------------------|------------------------|------------------------|---------------------|
+|-------------------|--------------|--------------|-----------|
 | Windowed State | Heap HashMap | SST Files | SST in UFS |
 | Trigger | Checkpoint Barrier | Checkpoint Barrier | Checkpoint Barrier |
 | Accumulation | Full snapshot | Incremental SST | Hard link reference |
-| Discarding | GC reclamation | Compaction + GC | Reference counting GC |
+| Discarding | GC回收 | Compaction + GC | Reference counting GC |
 
 ---
 
 ### 3.3 Checkpoint Mechanism Comparison
 
 | Dimension | HashMapStateBackend | RocksDBStateBackend | ForStStateBackend |
-|-----------|--------------------|--------------------|--------------------|
+|------|--------------------|--------------------|--------------------|
 | **Sync Phase** | Create HashMap view | Flush MemTable | None (async flush) |
 | **Async Phase** | Serialize to remote storage | Upload SST files | Only persist metadata |
 | **Incremental Support** | ❌ Not supported | ✅ SST file-level | ✅ Hard link sharing |
 | **Consistency Guarantee** | Copy-on-Write | LSM immutability | Atomic rename |
-| **Network Transfer** | Large (full state) | Medium (incremental SST) | Minimal (metadata only) |
+| **Network Transmission** | Large (full state) | Medium (incremental SST) | Minimal (only metadata) |
 
 ---
 
@@ -362,20 +363,20 @@ ForStStateBackend ────────────────────�
 
 ```mermaid
 flowchart TD
-    START([Start Selection]) --> Q1{State size?}
+    START([Start Selection]) --> Q1{State Size?}
 
-    Q1 -->|< 100MB| Q2{Latency requirement?}
-    Q1 -->|100MB - 100GB| Q3{Need incremental Checkpoint?}
-    Q1 -->|> 100GB| Q4{Deployment environment?}
+    Q1 -->|< 100MB| Q2{Latency Requirement?}
+    Q1 -->|100MB - 100GB| Q3{Need Incremental Checkpoint?}
+    Q1 -->|> 100GB| Q4{Deployment Environment?}
 
     Q2 -->|< 1ms| HASHMAP[HashMapStateBackend]
-    Q2 -->|> 1ms| Q5{Cost sensitive?}
+    Q2 -->|> 1ms| Q5{Cost Sensitive?}
 
     Q3 -->|Yes| ROCKSDB[RocksDBStateBackend]
     Q3 -->|No| Q2
 
-    Q4 -->|Cloud-native/K8s| FORST[ForStStateBackend]
-    Q4 -->|Local/VM| Q6{Network bandwidth?}
+    Q4 -->|Cloud-Native/K8s| FORST[ForStStateBackend]
+    Q4 -->|Local/VM| Q6{Network Bandwidth?}
 
     Q5 -->|Yes| HASHMAP
     Q5 -->|No| ROCKSDB
@@ -402,23 +403,23 @@ flowchart TD
 
 ### 4.2 Scenario Adaptation Boundary Analysis
 
-| Scenario Feature | Recommended Backend | Rationale |
-|-----------------|--------------------|-----------|
+| Scenario Characteristics | Recommended Backend | Reason |
+|---------|---------|------|
 | State < 100MB, low latency | HashMap | Memory access, nanosecond latency |
 | State 100MB - 10GB, medium latency | HashMap/RocksDB | Depends on GC tolerance |
 | State > 10GB | RocksDB | Avoid heap memory pressure |
-| State > 100GB, frequent Checkpoint | **ForSt** | Checkpoint efficiency advantage |
-| Cloud-native/K8s deployment | **ForSt** | Compute elasticity |
+| State > 100GB, high-frequency Checkpoint | **ForSt** | Checkpoint efficiency advantage |
+| Cloud-native/K8s deployment | **ForSt** | Compute elastic scaling |
 | Edge/network-constrained environment | RocksDB | Avoid network dependency |
 | Ultra-low latency (< 1ms P99) | HashMap | RocksDB serialization overhead |
 
 ---
 
-### 4.3 Counter-Example Analysis: Impact of Improper Selection
+### 4.3 Counterexample Analysis: Impact of Improper Selection
 
-#### Counter-Example 1: Using HashMap for Large State
+#### Counterexample 1: Large State Using HashMap
 
-**Scenario**: 100 million user sessions × 200B = 20GB state, 10 TM × 4GB heap
+**Scenario**: 100M user sessions × 200B = 20GB state, 10 TM × 4GB heap
 
 **Calculation**: 2GB per TM + overhead ≈ 3GB (75% of heap memory)
 
@@ -428,17 +429,17 @@ flowchart TD
 - OOM risk, job instability
 - **Solution**: Migrate to RocksDBStateBackend
 
-#### Counter-Example 2: Using RocksDB for High-Throughput Random Reads
+#### Counterexample 2: High-Throughput Random Read Using RocksDB
 
-**Scenario**: 100K TPS random key queries, cache hit rate < 50%
+**Scenario**: 100K TPS random key queries, Cache hit rate < 50%
 
 **Problems**:
 
 - Disk I/O becomes bottleneck
 - Write Stall causes backpressure
-- **Solution**: Increase Block Cache or migrate to HashMap (if state size allows)
+- **Solution**: Increase Block Cache or migrate to HashMap (if state allows)
 
-#### Counter-Example 3: Using ForSt in Low-Bandwidth Environment
+#### Counterexample 3: Low-Bandwidth Environment Using ForSt
 
 **Scenario**: Edge node, network bandwidth 100Mbps, state 1TB
 
@@ -450,15 +451,15 @@ flowchart TD
 
 ---
 
-### 4.4 Resource Requirements Comparison
+### 4.4 Resource Requirement Comparison
 
 | Resource Type | HashMap | RocksDB | ForSt |
-|--------------|---------|---------|-------|
+|---------|---------|---------|-------|
 | **Memory** | High (all state in memory) | Medium (Block Cache + MemTable) | Medium (local cache) |
 | **Disk** | None | High (state + WAL) | Medium (local cache) |
 | **CPU** | Low | Medium (serialization + Compaction) | High (serialization + network) |
 | **Network** | Low (only Checkpoint) | Medium (incremental Checkpoint) | High (state access) |
-| **Storage Cost** | High | Medium | Low |
+| **Storage Cost** | High (memory expensive) | Medium (local SSD) | Low (object storage) |
 
 ---
 
@@ -466,7 +467,7 @@ flowchart TD
 
 ### Thm-F-02-03: State Backend Selection Completeness Theorem
 
-**Theorem**: For any job $J$, there exists an optimal state backend selection strategy uniquely determined by the feature vector $F(J) = (S_{\text{size}}, L_{\text{sla}}, E_{\text{env}}, C_{\text{budget}})$.
+**Theorem**: For any job $J$, there exists an optimal state backend selection strategy, uniquely determined by the feature vector $F(J) = (S_{\text{size}}, L_{\text{sla}}, E_{\text{env}}, C_{\text{budget}})$.
 
 **Decision Function**:
 
@@ -480,16 +481,16 @@ $$
 
 **Typical Thresholds**:
 
-- $M_{\text{max}}$: 30% of TM heap memory (e.g., 4GB heap → 1.2GB state limit)
+- $M_{\text{max}}$: 30% of TM heap memory (e.g., 4GB heap → 1.2GB state upper limit)
 - $L_{\text{sla}}$: P99 latency requirement
 - $E_{\text{env}}$: Deployment environment (edge/cloud)
 
 **Proof**:
 
 1. **Capacity Constraint**: If $S_{\text{size}} \geq M_{\text{max}}$, HashMap causes unacceptable GC pressure, must choose disk-level backend
-2. **Latency Constraint**: If $L_{\text{sla}} < 1\text{ms}$, RocksDB/ForSt serialization overhead cannot meet requirement, HashMap preferred
+2. **Latency Constraint**: If $L_{\text{sla}} < 1\text{ms}$, RocksDB/ForSt serialization overhead cannot meet requirement, prioritize HashMap
 3. **Environment Constraint**: Edge environment has network constraints, ForSt remote access infeasible, choose RocksDB
-4. **Cost Optimization**: Cloud-native environment leverages object storage cost advantage, choose ForSt
+4. **Cost Optimization**: Cloud-native environments leverage object storage cost advantages, choose ForSt
 
 $\square$
 
@@ -497,7 +498,7 @@ $\square$
 
 ### Thm-F-02-04: Checkpoint Efficiency Optimization Bound Theorem
 
-**Theorem**: Incremental Checkpoint storage savings rate $R_{\text{save}}$ satisfies:
+**Theorem**: The storage savings rate $R_{\text{save}}$ of incremental Checkpoint satisfies:
 
 $$
 R_{\text{save}} = 1 - \frac{|\Delta S|}{|S|}
@@ -509,13 +510,13 @@ $$
 
 **Backend Efficiency Comparison**:
 
-| Backend | Optimal Savings Rate | Typical Scenario Savings Rate |
-|---------|---------------------|------------------------------|
+| Backend | Optimal Savings | Typical Scenario Savings |
+|------|-----------|---------------|
 | HashMap | 0% | 0% |
-| RocksDB (incremental) | 90-99% | 50-80% |
+| RocksDB (Incremental) | 90-99% | 50-80% |
 | ForSt | ~100% | ~100% |
 
-**Engineering Corollary**: For hotspot-heavy scenarios (e.g., session windows), RocksDB incremental Checkpoint effect is significant; ForSt, due to hard link mechanism, almost consistently reaches theoretical optimum.
+**Engineering Corollary**: For hot-spot obvious scenarios (e.g., session windows), RocksDB incremental Checkpoint effect is significant; ForSt, due to hard link mechanism, almost constantly reaches theoretical optimum.
 
 ---
 
@@ -526,15 +527,15 @@ $$
 **Cost Analysis**:
 
 | Cost Item | RocksDB | ForSt | Savings |
-|-----------|---------|-------|---------|
+|--------|---------|-------|------|
 | Storage (Monthly) | $0.10/GB × 2 replicas = $0.20/GB | $0.023/GB = $0.023/GB | **88%** |
 | Compute (Reserved) | Must reserve disk capacity | On-demand scaling | **50%** |
-| Network (Checkpoint) | Incremental upload | Metadata only | **90%** |
+| Network (Checkpoint) | Incremental upload | Only metadata | **90%** |
 
 **Elasticity Analysis**:
 
-- **RocksDB scaling**: Requires state migration → $T_{\text{scale}} = O(|S| / B_{\text{network}})$
-- **ForSt scaling**: Only needs to load metadata → $T_{\text{scale}} = O(1)$
+- **RocksDB Scaling**: Requires state migration → $T_{\text{scale}} = O(|S| / B_{\text{network}})$
+- **ForSt Scaling**: Only needs metadata loading → $T_{\text{scale}} = O(1)$
 
 **Reliability Analysis**:
 
@@ -568,7 +569,7 @@ public class Example {
         // Or S3: env.getCheckpointConfig().setCheckpointStorage("s3://bucket/checkpoints");
 
         // Checkpoint parameters
-        env.enableCheckpointing(10000);  // 10-second interval
+        env.enableCheckpointing(10000);  // 10 second interval
         env.getCheckpointConfig().setCheckpointingMode(CheckpointingMode.EXACTLY_ONCE);
         env.getCheckpointConfig().setCheckpointTimeout(60000);
 
@@ -576,10 +577,11 @@ public class Example {
 }
 ```
 
-**flink-conf.yaml configuration**:
+**flink-conf.yaml Configuration**:
 
 ```yaml
-# State backend configuration state.backend: hashmap
+# State backend configuration
+state.backend: hashmap
 
 # Memory configuration (critical!)
 taskmanager.memory.task.heap.size: 2gb
@@ -607,7 +609,7 @@ public class Example {
         // Checkpoint configuration
         env.enableCheckpointing(60000);  // 60 seconds
         env.getCheckpointConfig().setCheckpointStorage("hdfs:///checkpoints");
-        env.getCheckpointConfig().setCheckpointTimeout(600000);  // 10-minute timeout
+        env.getCheckpointConfig().setCheckpointTimeout(600000);  // 10 minute timeout
         env.getCheckpointConfig().setMinPauseBetweenCheckpoints(30000);
 
         // RocksDB fine-grained configuration
@@ -640,7 +642,7 @@ public class Example {
 **Key Parameter Descriptions**:
 
 | Parameter | Description | Recommended Value |
-|-----------|-------------|-------------------|
+|------|------|--------|
 | `write_buffer_size` | MemTable size | 64-128 MB |
 | `max_write_buffer_number` | Max MemTable count | 3-5 |
 | `target_file_size_base` | L0 SST file size | 32-64 MB |
@@ -655,7 +657,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 public class Example {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        // ========== ForStStateBackend Configuration (Forward-Looking) ==========
+        // ========== ForStStateBackend Configuration (Forward-looking) ==========
         // Flink 2.0+ support
         ForStStateBackend forstBackend = new ForStStateBackend();
         forstBackend.setUFSStoragePath("s3://flink-state-bucket/jobs/job-001");
@@ -665,7 +667,7 @@ public class Example {
 
         env.setStateBackend(forstBackend);
 
-        // ForSt recommends longer Checkpoint interval
+        // ForSt recommends longer Checkpoint intervals
         env.enableCheckpointing(120000);  // 2 minutes
 
     }
@@ -675,21 +677,26 @@ public class Example {
 **flink-conf.yaml Complete Configuration**:
 
 ```yaml
-# ========== ForSt State Backend Core Configuration ========== state.backend: forst
+# ========== ForSt State Backend Core Configuration ==========
+state.backend: forst
 
-# UFS configuration state.backend.forst.ufs.type: s3
+# UFS configuration
+state.backend.forst.ufs.type: s3
 state.backend.forst.ufs.s3.bucket: flink-state-bucket
 state.backend.forst.ufs.s3.region: us-east-1
 state.backend.forst.ufs.s3.credentials.provider: IAM_ROLE
 
-# Local cache configuration state.backend.forst.cache.memory.size: 4gb
+# Local cache configuration
+state.backend.forst.cache.memory.size: 4gb
 state.backend.forst.cache.disk.size: 100gb
 state.backend.forst.cache.policy: SLRU
 
-# Recovery configuration state.backend.forst.restore.mode: LAZY
+# Recovery configuration
+state.backend.forst.restore.mode: LAZY
 state.backend.forst.restore.preload.keys: 10000
 
-# Remote Compaction configuration state.backend.forst.compaction.remote.enabled: true
+# Remote Compaction configuration
+state.backend.forst.compaction.remote.enabled: true
 state.backend.forst.compaction.remote.endpoint: compaction-service:9090
 ```
 
@@ -704,10 +711,10 @@ state.backend.forst.compaction.remote.endpoint: compaction-service:9090
 flink savepoint <job-id> hdfs:///savepoints/migration
 
 # 2. Modify code to switch backend
-# env.setStateBackend(new HashMapStateBackend());  // old
-# env.setStateBackend(new EmbeddedRocksDBStateBackend(true));  // new
+# env.setStateBackend(new HashMapStateBackend());  // Old
+# env.setStateBackend(new EmbeddedRocksDBStateBackend(true));  // New
 
-# 3. Restore from Savepoint (automatically converts state format)
+# 3. Recover from Savepoint (automatically converts state format)
 flink run -s hdfs:///savepoints/migration/savepoint-xxxxx \
   -c com.example.MyJob my-job.jar
 ```
@@ -715,10 +722,10 @@ flink run -s hdfs:///savepoints/migration/savepoint-xxxxx \
 **Migration Compatibility Matrix**:
 
 | Source Backend | Target Backend | Compatibility | Notes |
-|----------------|---------------|---------------|-------|
+|--------|---------|--------|---------|
 | HashMap | RocksDB | ✅ Supported | Automatic conversion, no data loss |
 | RocksDB | HashMap | ⚠️ Conditional | Must ensure state size < TM heap memory |
-| HashMap/RocksDB | ForSt | ✅ Supported | Flink 2.0+ support |
+| HashMap/RocksDB | ForSt | ✅ Supported | Flink 2.0+ supported |
 | ForSt | RocksDB | ❌ Not supported | Storage architecture incompatible |
 
 ---
@@ -758,11 +765,11 @@ public class MonitoredStateOperator extends KeyedProcessFunction<String, Event, 
 **Key Monitoring Metrics**:
 
 | Metric | Description | Alert Threshold |
-|--------|-------------|-----------------|
+|------|------|---------|
 | `checkpointed_bytes` | Checkpoint size | > 1GB needs attention |
 | `checkpointDuration` | Checkpoint duration | > 60s needs optimization |
 | `stateAccessLatency` | State access latency | P99 > 10ms needs tuning |
-| `rocksdb_memtable_flush_duration` | MemTable flush duration | > 5s may cause Write Stall |
+| `rocksdb_memtable_flush_duration` | MemTable Flush duration | > 5s possible Write Stall |
 
 ---
 
@@ -825,7 +832,7 @@ graph TB
 ### 7.2 Complete Feature Comparison Matrix
 
 | Feature Dimension | HashMapStateBackend | RocksDBStateBackend | ForStStateBackend |
-|:-----------------:|:-------------------:|:-------------------:|:-----------------:|
+|:--------:|:-------------------:|:-------------------:|:-----------------:|
 | **Storage Location** | JVM Heap | Local Disk (LSM-Tree) | Remote UFS + Local Cache |
 | **State Capacity** | < 10 GB | 100 GB - 10 TB | Unlimited (PB-level) |
 | **Access Latency** | 10-100 ns | 1 μs - 10 ms | 1 μs - 100 ms |
@@ -838,7 +845,7 @@ graph TB
 | **Checkpoint Speed** | Slow | Fast (incremental) | Extremely fast (O(1)) |
 | **Recovery Speed** | Fast | Slow | Extremely fast (Lazy) |
 | **Incremental Checkpoint** | ❌ | ✅ | ✅ |
-| **TTL Support** | ✅ | ✅ (native) | ✅ |
+| **TTL Support** | ✅ | ✅ (Native) | ✅ |
 | **Cloud-Native Friendly** | ⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
 | **Storage Cost** | High | Medium | Low |
 | **Applicable Flink Version** | 1.13+ | 1.13+ | 2.0+ |
@@ -850,7 +857,7 @@ graph TB
 ```mermaid
 flowchart TB
     subgraph "HashMap Checkpoint"
-        H1[Barrier Arrival] --> H2[Sync Phase<br/>Copy-on-Write]
+        H1[Barrier Arrived] --> H2[Sync Phase<br/>Copy-on-Write]
         H2 --> H3[Async Phase<br/>Serialize State]
         H3 --> H4[Upload to DFS]
         H4 --> H5[Persist Metadata]
@@ -861,7 +868,7 @@ flowchart TB
     end
 
     subgraph "RocksDB Checkpoint"
-        R1[Barrier Arrival] --> R2[Sync Phase<br/>Flush MemTable]
+        R1[Barrier Arrived] --> R2[Sync Phase<br/>Flush MemTable]
         R2 --> R3[Async Phase<br/>Identify Delta SST]
         R3 --> R4[Upload New SST]
         R4 --> R5[Persist Metadata]
@@ -872,7 +879,7 @@ flowchart TB
     end
 
     subgraph "ForSt Checkpoint"
-        F1[Barrier Arrival] --> F2[Capture SST List]
+        F1[Barrier Arrived] --> F2[Capture SST List]
         F2 --> F3[Hard Link Unchanged]
         F3 --> F4[Persist Metadata<br/>File References]
         F4 --> F5[Complete]
@@ -885,12 +892,12 @@ flowchart TB
 **Color Legend**:
 
 - 🟥 Red: Time-consuming operations
-- 🟨 Yellow: Medium time consumption
+- 🟨 Yellow: Medium time-consuming
 - 🟩 Green: Lightweight operations
 
 ---
 
-### 7.4 Fault Recovery Flow Comparison
+### 7.4 Failure Recovery Flow Comparison
 
 ```mermaid
 sequenceDiagram
@@ -931,25 +938,25 @@ sequenceDiagram
 
 ```mermaid
 flowchart TD
-    A[Select State Backend] --> B{State size?}
+    A[Select State Backend] --> B{State Size?}
 
-    B -->|< 100 MB| C{Latency requirement?}
-    B -->|100 MB - 10 GB| D{Need incremental<br/>Checkpoint?}
-    B -->|> 10 GB| E{Deployment environment?}
+    B -->|< 100 MB| C{Latency Requirement?}
+    B -->|100 MB - 10 GB| D{Need<br/>Incremental Checkpoint?}
+    B -->|> 10 GB| E{Deployment Environment?}
 
     C -->|< 1 ms| F[✅ HashMapStateBackend<br/>Low latency memory access]
-    C -->|> 1 ms| G{State change frequency?}
+    C -->|> 1 ms| G{State Change Frequency?}
 
     D -->|Yes| H[✅ RocksDBStateBackend<br/>Incremental Checkpoint]
     D -->|No| C
 
     E -->|Local/VM| H
-    E -->|K8s/Cloud-native| I{Network bandwidth?}
+    E -->|K8s/Cloud-Native| I{Network Bandwidth?}
 
     G -->|High| H
     G -->|Low| F
 
-    I -->|> 10 Gbps| J[✅ ForStStateBackend<br/>Cloud-native optimized]
+    I -->|> 10 Gbps| J[✅ ForStStateBackend<br/>Cloud-native optimization]
     I -->|< 10 Gbps| H
 
     F --> K[Config Points:<br/>- Limit heap memory usage<br/>- Configure TTL]
@@ -966,7 +973,7 @@ flowchart TD
 
 ## 8. Source Code Analysis
 
-### 8.1 RocksDB SST File Format Deep Dive
+### 8.1 RocksDB SST File Format Details
 
 #### 8.1.1 SST File Application in RocksDBStateBackend
 
@@ -991,13 +998,13 @@ public class EmbeddedRocksDBStateBackend implements StateBackend {
             CheckpointStreamFactory streamFactory,
             CheckpointOptions checkpointOptions) {
 
-        // 1. Flush MemTable to L0, generating new SST files
+        // 1. Flush MemTable to L0, generate new SST files
         rocksDB.flush(new FlushOptions().setWaitForFlush(true));
 
         // 2. Get current all SST file list
         List<LiveFileMetaData> liveFiles = rocksDB.getLiveFilesMetaData();
 
-        // 3. Compare with last Checkpoint, identify new SST files
+        // 3. Compare with last Checkpoint, find new SST files
         Set<SSTFileInfo> newSSTFiles = getNewSSTFiles(liveFiles, previousCheckpointFiles);
 
         // 4. Upload new SST files
@@ -1098,25 +1105,25 @@ public class CompactionImpactAnalysis {
         // Deleted files (merged)
         Set<String> deletedFiles = getDeletedFiles(before, after);
 
-        // New files (merge result)
+        // New files (merge results)
         Set<String> addedFiles = getAddedFiles(before, after);
 
         // Unchanged files
         Set<String> unchangedFiles = getUnchangedFiles(before, after);
 
-        // Files newly added by Compaction need to be uploaded in next Checkpoint
+        // Files added due to Compaction need to be uploaded in next Checkpoint
         return new CompactionEffect(deletedFiles, addedFiles, unchangedFiles);
     }
 
     /**
-     * Estimate extra Checkpoint overhead caused by Compaction
+     * Estimate additional Checkpoint overhead caused by Compaction
      */
     public long estimateCompactionUploadCost(CompactionEffect effect) {
         long totalSize = 0;
         for (String fileName : effect.getAddedFiles()) {
             totalSize += getFileSize(fileName);
         }
-        return totalSize;  // Bytes to upload
+        return totalSize;  // Bytes needing upload
     }
 }
 ```
@@ -1154,7 +1161,7 @@ public class ForStRemoteCompactionScheduler {
             // Update local metadata references
             updateSSTMetadata(completedTask.getOutputFiles());
 
-            // Clean up input files (decrement reference count)
+            // Clean up input files (reference count - 1)
             cleanupInputFiles(inputFiles);
         });
 
@@ -1165,7 +1172,7 @@ public class ForStRemoteCompactionScheduler {
      * Determine if remote Compaction should be used
      */
     public boolean shouldUseRemoteCompaction(int inputFileCount, long inputFileSize) {
-        // Use remote Compaction when file count is large or size is large
+        // Use remote Compaction when many files or large size
         return inputFileCount > REMOTE_COMPACTION_MIN_FILES
             || inputFileSize > REMOTE_COMPACTION_MIN_SIZE;
     }
@@ -1195,7 +1202,7 @@ sequenceDiagram
         TM->>Backend: snapshotState()
         Backend->>RocksDB: flush()
         Backend->>RocksDB: getLiveFiles()
-        Backend->>Backend: Identify new SST
+        Backend->>Backend: Identify new SSTs
         Backend->>Storage: Upload new SST files
         Backend->>Storage: Save SST file list
         Storage-->>Backend: IncrementalStateHandle
@@ -1212,11 +1219,11 @@ sequenceDiagram
 ```
 
 | Checkpoint Phase | HashMap | RocksDB | ForSt |
-|------------------|---------|---------|-------|
-| **Sync Phase** | Copy-on-Write | Flush MemTable | None / Lightweight |
-| **Data Upload** | Full state serialization | Incremental SST upload | Metadata only |
+|----------------|---------|---------|-------|
+| **Sync Phase** | Copy-on-Write | Flush MemTable | None/Lightweight |
+| **Data Upload** | Full state serialization | Incremental SST upload | Only metadata |
 | **Time Complexity** | O(\|S\|) | O(\|\Delta S\|) | O(1) |
-| **Network Transfer** | Large | Medium | Minimal |
+| **Network Transmission** | Large | Medium | Minimal |
 | **Implementation Class** | `HeapSnapshotStrategy` | `RocksDBIncrementalSnapshotStrategy` | `ForStMetadataSnapshotStrategy` |
 
 ### 8.4 State Backend Selection Decision Source Mapping
@@ -1257,7 +1264,7 @@ public class StateBackendSelector {
             return createRocksDBBackend(config, true);  // Enable incremental
         }
 
-        // Default to RocksDB (general scenario)
+        // Default use RocksDB (general scenario)
         return createRocksDBBackend(config, true);
     }
 
@@ -1370,4 +1377,4 @@ public class StateBackendMetrics {
 
 ---
 
-*Document Version: v1.0 | Last Updated: 2026-04-04 | Status: Complete | Formalization Level: L4*
+*Document Version: v1.0 | Last Updated: 2026-04-20 | Status: Complete | Formalization Level: L4*
