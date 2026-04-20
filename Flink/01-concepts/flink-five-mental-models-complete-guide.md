@@ -8,7 +8,7 @@ stage: Flink/01-concepts
 
 # Flink 流计算五大心智模型与专家争议全景
 
-> 所属阶段: Flink/01-concepts | 前置依赖: [Struct/01-foundation/01.01-unified-streaming-theory.md](../Struct/01-foundation/01.01-unified-streaming-theory.md), [Knowledge/01-concept-atlas/01.01-stream-processing-fundamentals.md](../Knowledge/01-concept-atlas/01.01-stream-processing-fundamentals.md) | 形式化等级: L3-L4
+> 所属阶段: Flink/01-concepts | 前置依赖: [Struct/01-foundation/01.01-unified-streaming-theory.md](../../Struct/01-foundation/01.01-unified-streaming-theory.md), [Knowledge/01-concept-atlas/01.01-stream-processing-fundamentals.md](../../Knowledge/01-concept-atlas/01.01-stream-processing-fundamentals.md) | 形式化等级: L3-L4
 
 ## 目录
 

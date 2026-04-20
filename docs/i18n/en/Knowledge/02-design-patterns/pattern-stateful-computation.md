@@ -411,6 +411,35 @@ This section establishes the formal connection between the Stateful Computation 
 
 [^12]: Type Safety Derivation. [Struct/02-properties/02.05-type-safety-derivation.md](../../../../../USTM-F-Reconstruction/archive/original-struct/02-properties/02.05-type-safety-derivation.md)
 
+## 7. Visualizations
+
+### State Management Architecture Diagram
+
+```mermaid
+graph TB
+    subgraph "Keyed State"
+        A[Input Events] --> B{Key Extractor}
+        B --> C[ValueState]
+        B --> D[ListState]
+        B --> E[MapState]
+        B --> F[ReducingState]
+        B --> G[AggregatingState]
+    end
+    subgraph "State Backend"
+        C --> H[HashMapStateBackend]
+        D --> H
+        E --> H
+        F --> I[RocksDBStateBackend]
+        G --> I
+    end
+    subgraph "Persistence"
+        H --> J[Checkpoint to DFS]
+        I --> J
+    end
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style J fill:#bbf,stroke:#333,stroke-width:2px
+```
+
 ---
 
 *Document Version: v1.0 | Last Updated: 2026-04-02*

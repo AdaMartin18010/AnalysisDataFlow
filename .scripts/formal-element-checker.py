@@ -39,13 +39,13 @@ FORMAL_ELEMENT_PATTERNS = {
 # 六段式必需章节
 REQUIRED_SECTIONS = [
     {
-        'names': ['概念定义', 'Definitions', '定义'],
+        'names': ['概念定义', 'Definitions', '定义', 'Core Concept Definitions'],
         'id': 'definitions',
         'required': True,
         'check_elements': ['Def']  # 此章节应包含定义
     },
     {
-        'names': ['属性推导', 'Properties', '性质推导'],
+        'names': ['属性推导', 'Properties', '性质推导', 'Formal Properties', 'Satisfied Formal Properties'],
         'id': 'properties',
         'required': True,
         'check_elements': ['Lemma', 'Prop']  # 此章节应包含引理/命题
@@ -57,13 +57,13 @@ REQUIRED_SECTIONS = [
         'check_elements': ['Thm']  # 此章节应包含定理
     },
     {
-        'names': ['实例验证', 'Examples', '实例', '示例'],
+        'names': ['实例验证', 'Examples', '实例', '示例', 'Implementation'],
         'id': 'examples',
         'required': True,
         'check_elements': []  # 示例不强制要求形式化元素
     },
     {
-        'names': ['可视化', 'Visualizations', '图表'],
+        'names': ['可视化', 'Visualizations', '图表', 'Pattern Structure Diagram'],
         'id': 'visualizations',
         'required': True,
         'check_elements': []  # 可视化章节
@@ -118,7 +118,7 @@ class FormalElementChecker:
         for i, line in enumerate(lines):
             for section_def in REQUIRED_SECTIONS:
                 for name in section_def['names']:
-                    pattern = rf'^##+\s*\d*\.?\s*{re.escape(name)}'
+                    pattern = rf'^##+\s*[\d\.]*\s*{re.escape(name)}'
                     if re.search(pattern, line, re.IGNORECASE):
                         section_positions.append({
                             'id': section_def['id'],
