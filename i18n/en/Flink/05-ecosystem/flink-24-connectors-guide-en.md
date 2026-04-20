@@ -34,7 +34,7 @@
     - [4.2 Unified Stream-Batch Connector Architecture Debate](#42-unified-stream-batch-connector-architecture-debate)
     - [4.3 Performance vs Cost Trade-off](#43-performance-vs-cost-trade-off)
     - [4.4 Connector Selection Decision Framework](#44-connector-selection-decision-framework)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [Thm-F-04-200 (Ecosystem Completeness Theorem)](#thm-f-04-200-ecosystem-completeness-theorem)
     - [Thm-F-04-201 (End-to-End Exactly-Once Scalability Theorem)](#thm-f-04-201-end-to-end-exactly-once-scalability-theorem)
     - [Thm-F-04-202 (Performance Optimization Quantification Theorem)](#thm-f-04-202-performance-optimization-quantification-theorem)

@@ -5,7 +5,7 @@
 > - 相关 FLIP 可能尚未进入正式投票，或可能在实现过程中发生显著变更
 > - 预计发布时间基于社区讨论趋势分析，存在延迟或取消的风险
 > - 生产环境选型请以 Apache Flink 官方发布为准
-> - **最后核实日期**: 2026-04-20 | **信息来源**: 社区邮件列表/FLIP/官方博客
+> - **最后核实日期**: 2026-04-21 | **信息来源**: 社区邮件列表/FLIP/官方博客
 >
 > ⚠️ **前瞻性声明 - 重要提示**
 >
@@ -28,7 +28,7 @@
 >
 > | 最后更新 | 跟踪系统 |
 > |----------|----------|
-> | 2026-04-20 | [.tasks/flink-release-tracker.md](#) |
+> | 2026-04-21 | [.tasks/flink-release-tracker.md](#) |
 
 ---
 
@@ -2042,6 +2042,7 @@ env.fromSource(source, WatermarkStrategy.noWatermarks(), "Unified Source");
 
 | 日期 | 版本 | 更新内容 | 更新人 |
 |------|------|----------|--------|
+| 2026-04-21 | v0.6 | **版本标记同步**: 更新 Flink 2.1 文档状态标记，同步 2.4/2.5/3.0 跟踪日期 | Agent |
 | 2026-04-20 | v0.5 | **社区动态月度更新**: 同步 Apache Flink 社区 2026年4月最新进展 | Agent |
 | | | **FLIP 进度上调**: 全部在研 FLIP 进度上调 3-5% (FLIP-531 96% / FLIP-540 80% / FLIP-541 72% / FLIP-542 60% / FLIP-543 86% / FLIP-544 89% / FLIP-545 98% / FLIP-546 50% / FLIP-547 76% / FLIP-549 40% / FLIP-550 33% / FLIP-551 36%) | |
 | | | **新增社区 FLIP**: FLIP-555 (Native S3 FS), FLIP-566 (IMMUTABLE columns), FLIP-495 (Rescale History), FLIP-523 (TLS Renewal) | |

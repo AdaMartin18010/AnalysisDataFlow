@@ -12,7 +12,7 @@
 
 ## 目录
 
-- [流处理 + 边缘 LLM 推理生产实践](#流处理--边缘-llm-推理生产实践)
+- [流处理 + 边缘 LLM 推理生产实践](#流处理-边缘-llm-推理生产实践)
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-K-10-37-01: 边缘LLM推理流水线 (Edge LLM Inference Pipeline)](#def-k-10-37-01-边缘llm推理流水线-edge-llm-inference-pipeline)
@@ -28,7 +28,7 @@
     - [4.1 边缘部署vs云端部署LLM决策分析](#41-边缘部署vs云端部署llm决策分析)
     - [4.2 模型量化精度-延迟权衡分析](#42-模型量化精度-延迟权衡分析)
     - [4.3 离线自治与降级策略设计](#43-离线自治与降级策略设计)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [Thm-K-10-37-01: 边缘流式推理端到端延迟上界定理](#thm-k-10-37-01-边缘流式推理端到端延迟上界定理)
     - [Thm-K-10-37-02: 边缘-云协同推理一致性定理](#thm-k-10-37-02-边缘-云协同推理一致性定理)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)

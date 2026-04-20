@@ -30,7 +30,7 @@
     - [4.2 Late Data Handling Mechanism](#42-late-data-handling-mechanism)
     - [4.3 Window Trigger Timing Analysis](#43-window-trigger-timing-analysis)
     - [Lemma-F-02-01 Source Code Verification](#lemma-f-02-01-source-code-verification)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [Thm-F-02-01: Event Time Result Determinism Theorem](#thm-f-02-01-event-time-result-determinism-theorem)
     - [Thm-F-02-02: Allowed Lateness Does Not Break Exactly-Once Semantics](#thm-f-02-02-allowed-lateness-does-not-break-exactly-once-semantics)
   - [6. Examples](#6-examples)
