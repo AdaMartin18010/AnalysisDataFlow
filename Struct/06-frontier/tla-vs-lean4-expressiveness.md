@@ -577,8 +577,8 @@ graph TB
 
     subgraph TLA["TLA+ 抽象层"]
         T1["[] (e ∈ processed => e ∈ outputs)"]
-        T2["Crash => <> Recovered /\ OutputCorrect"]
-        T3["无原生支持<br/>需编码为集合关系"]
+        T2["Crash => Diamond Recovered and OutputCorrect"]
+        T3["无原生支持 需编码为集合关系"]
     end
 
     subgraph Lean["Lean4 抽象层"]

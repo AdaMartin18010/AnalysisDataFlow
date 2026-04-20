@@ -295,8 +295,8 @@
 | Formal Theory | 40 | [Section 2](#2-formal-theory) |
 | Flink Architecture | 50 | [Section 3](#3-flink-architecture) |
 | Consistency Models | 19 | [Section 4](#4-consistency-models) |
-| Windowing & Time | 20 | [Section 5](#5-windowing--time) |
-| Deployment & Operations | 20 | [Section 6](#6-deployment--operations) |
+| Windowing & Time | 20 | [Section 5](#5-windowing-time) |
+| Deployment & Operations | 20 | [Section 6](#6-deployment-operations) |
 | AI/ML Integration | 15 | [Section 7](#7-aiml-integration) |
 | **Total** | **194** | — |
 

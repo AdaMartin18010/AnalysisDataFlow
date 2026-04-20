@@ -1,8 +1,9 @@
 > **Status**: 🔮 Forward-looking Content | **Risk Level**: High | **Last Updated**: 2026-04
-> 
+>
 > The content described in this document is in the early planning stage and may not match the final implementation. Please refer to the official Apache Flink release.
 
 ---
+
 title: "Stream Computing Academic Frontier Survey 2024-2026"
 translation_status: ai_translated_reviewed
 source_version: v4.1

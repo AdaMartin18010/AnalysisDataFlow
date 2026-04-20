@@ -30,15 +30,25 @@
   - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
     - [5.1 Two-Phase Commit Protocol (2PC)](#51-two-phase-commit-protocol-2pc)
     - [5.2 Kafka Transactional Sink](#52-kafka-transactional-sink)
+      - [5.2.1 Legacy Kafka Producer (Before Flink 1.14)](#521-legacy-kafka-producer-before-flink-114)
+      - [5.2.2 New Kafka Sink (Flink 1.15+ Recommended)](#522-new-kafka-sink-flink-115-recommended)
+      - [5.2.3 Kafka Exactly-Once Complete Configuration Template](#523-kafka-exactly-once-complete-configuration-template)
+      - [5.2.4 Kafka Exactly-Once Key Behaviors](#524-kafka-exactly-once-key-behaviors)
     - [5.3 JDBC XA Transaction Sink](#53-jdbc-xa-transaction-sink)
     - [5.4 Idempotent Sink Implementation](#54-idempotent-sink-implementation)
+      - [5.4.1 Idempotency Definition and Principle](#541-idempotency-definition-and-principle)
+      - [5.4.2 File System Idempotent Write](#542-file-system-idempotent-write)
+      - [5.4.3 Database UPSERT Mode](#543-database-upsert-mode)
   - [6. Examples](#6-examples)
     - [6.1 Flink Core Configuration](#61-flink-core-configuration)
     - [6.2 Kafka Exactly-Once Complete Configuration](#62-kafka-exactly-once-complete-configuration)
     - [6.3 End-to-End Exactly-Once Job Complete Example](#63-end-to-end-exactly-once-job-complete-example)
   - [7. Visualizations](#7-visualizations)
     - [7.1 TwoPhaseCommitSinkFunction Core Class Architecture](#71-twophasecommitsinkfunction-core-class-architecture)
+      - [Transaction Lifecycle Methods](#transaction-lifecycle-methods)
     - [7.2 TwoPhaseCommitSinkFunction Transaction Lifecycle](#72-twophasecommitsinkfunction-transaction-lifecycle)
+      - [snapshotState Method Details](#snapshotstate-method-details)
+      - [notifyCheckpointComplete Method Details](#notifycheckpointcomplete-method-details)
     - [7.3 Exactly-Once Decision Tree](#73-exactly-once-decision-tree)
   - [8. References](#8-references)
 
@@ -876,19 +886,15 @@ graph TD
 
 [^4]: Apache Kafka Documentation. "Transactions in Kafka". <https://kafka.apache.org/documentation/#transactions>
 
-[^5]: Flink Documentation. "Checkpoints". <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/checkpointing/>
 
-[^6]: Flink Documentation. "Unaligned Checkpoints". <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/checkpointing/#unaligned-checkpoints>
 
 [^7]: Flink Documentation. "Two-Phase Commit Sink Functions". <https://nightlies.apache.org/flink/flink-docs-stable/api/java/org/apache/flink/streaming/api/functions/sink/TwoPhaseCommitSinkFunction.html>
 
-[^8]: Apache Kafka Documentation. "Configuring Producers for Transactions". <https://kafka.apache.org/documentation/#producerconfigs>
 
 [^9]: Flink Documentation. "JdbcXaSinkFunction". <https://nightlies.apache.org/flink/flink-docs-stable/api/java/org/apache/flink/connector/jdbc/xa/JdbcXaSinkFunction.html>
 
 [^10]: Kleppmann, M. (2016). "Designing Data-Intensive Applications". O'Reilly Media. Chapter 9: Consistency and Consensus.
 
-[^11]: Apache Flink Documentation, "Kafka Source", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/datastream/kafka/#kafka-source>
 
 ---
 

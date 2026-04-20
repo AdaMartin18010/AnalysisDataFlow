@@ -29,8 +29,12 @@
     - [3.3 Checkpoint Mechanism and Consistency Levels](#33-checkpoint-mechanism-and-consistency-levels)
   - [4. Argumentation](#4-argumentation)
     - [4.1 State Backend Deep Comparison](#41-state-backend-deep-comparison)
+      - [4.1.1 Performance Comparison Matrix](#411-performance-comparison-matrix)
+      - [4.1.2 Technical Implementation Differences](#412-technical-implementation-differences)
     - [4.2 State Type Selection Decision Tree](#42-state-type-selection-decision-tree)
     - [4.3 Checkpoint Mechanism Details](#43-checkpoint-mechanism-details)
+      - [4.3.1 Full Checkpoint vs Incremental Checkpoint vs Changelog](#431-full-checkpoint-vs-incremental-checkpoint-vs-changelog)
+      - [4.3.2 Checkpoint Configuration Parameters](#432-checkpoint-configuration-parameters)
     - [4.4 State TTL Expiration Policies](#44-state-ttl-expiration-policies)
   - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
     - [Thm-F-02-90: State Backend Selection Optimality Theorem](#thm-f-02-90-state-backend-selection-optimality-theorem)
@@ -52,12 +56,31 @@
     - [7.4 TTL Cleanup Strategy Comparison](#74-ttl-cleanup-strategy-comparison)
   - [8. Performance Tuning and Troubleshooting](#8-performance-tuning-and-troubleshooting)
     - [8.1 State Backend Selection Guide](#81-state-backend-selection-guide)
+      - [8.1.1 Decision Matrix](#811-decision-matrix)
+      - [8.1.2 Configuration Template](#812-configuration-template)
     - [8.2 State Type Performance Tuning](#82-state-type-performance-tuning)
+      - [8.2.1 ValueState Optimization](#821-valuestate-optimization)
+      - [8.2.2 MapState Optimization](#822-mapstate-optimization)
+      - [8.2.3 ListState Optimization](#823-liststate-optimization)
     - [8.3 Checkpoint Tuning](#83-checkpoint-tuning)
+      - [8.3.1 Timeout and Retry Configuration](#831-timeout-and-retry-configuration)
+      - [8.3.2 Unaligned Checkpoint Configuration](#832-unaligned-checkpoint-configuration)
     - [8.4 TTL Configuration Best Practices](#84-ttl-configuration-best-practices)
+      - [8.4.1 SQL-Style State TTL Configuration](#841-sql-style-state-ttl-configuration)
+      - [8.4.2 State TTL Important Behaviors](#842-state-ttl-important-behaviors)
+      - [8.4.3 TTL Duration Calculation](#843-ttl-duration-calculation)
+      - [8.4.4 Cleanup Strategy Selection](#844-cleanup-strategy-selection)
     - [8.5 Troubleshooting Guide](#85-troubleshooting-guide)
+      - [8.5.1 Checkpoint Frequent Timeout](#851-checkpoint-frequent-timeout)
+      - [8.5.2 State Continuous Growth (OOM Risk)](#852-state-continuous-growth-oom-risk)
+      - [8.5.3 State Access Performance Issues](#853-state-access-performance-issues)
     - [8.6 Changelog State Backend Production Configuration](#86-changelog-state-backend-production-configuration)
+      - [8.6.1 Enable Changelog State Backend](#861-enable-changelog-state-backend)
+      - [8.6.2 Changelog Configuration Parameters](#862-changelog-configuration-parameters)
     - [8.7 State Migration and Upgrade](#87-state-migration-and-upgrade)
+      - [8.7.1 Savepoint vs Checkpoint Comparison](#871-savepoint-vs-checkpoint-comparison)
+      - [8.7.2 State Compatibility Rules](#872-state-compatibility-rules)
+      - [8.7.3 Upgrade Operation Flow](#873-upgrade-operation-flow)
   - [9. References](#9-references)
 
 ---
@@ -1245,6 +1268,7 @@ $$
 $$
 
 Where cleanup delay depends on the cleanup strategy:
+
 - Full Snapshot: up to one checkpoint interval
 - Incremental: immediate on access
 - RocksDB Compaction Filter: up to one compaction cycle
@@ -1359,13 +1383,9 @@ state.backend.changelog.max-fetch-retries: 3
 
 [^4]: Apache Flink Documentation, "Changelog State Backend," 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/changelog_state_backend/>
 
-[^5]: Apache Flink Documentation, "State Backends," 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/>
 
-[^6]: Apache Flink Documentation, "Checkpointing," 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/checkpointing/>
 
-[^7]: Apache Flink Documentation, "RocksDB State Backend Tuning," 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/large_state_tuning/>
 
-[^8]: Apache Flink Documentation, "State TTL," 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/state/#state-time-to-live-ttl>
 
 ---
 

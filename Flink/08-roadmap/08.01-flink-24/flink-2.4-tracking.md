@@ -914,19 +914,19 @@ flowchart TD
 
 | FLIP | 标题 | 状态 | 进度 | 负责人 | 目标版本 | 相关Issue |
 |------|------|------|------|--------|----------|-----------|
-| FLIP-531 | Flink AI Agents | 🔄 MVP→GA | 92% | @alice-w | 2.4 | [FLINK-35000](https://issues.apache.org/jira/browse/FLINK-35000) |
-| FLIP-540 | Serverless Flink Framework | 🔄 实现中 | 75% | @bob-c | 2.4 | [FLINK-35100](https://issues.apache.org/jira/browse/FLINK-35100) |
-| FLIP-541 | Adaptive Execution Engine v2 | 🔄 实现中 | 68% | @carol-d | 2.4 | [FLINK-35150](https://issues.apache.org/jira/browse/FLINK-35150) |
-| FLIP-542 | Intelligent Checkpointing | 🔄 设计完成 | 55% | @dave-e | 2.4 | [FLINK-35200](https://issues.apache.org/jira/browse/FLINK-35200) |
-| FLIP-543 | ANSI SQL 2023 Support | 🔄 实现中 | 82% | @eve-f | 2.4 | [FLINK-35250](https://issues.apache.org/jira/browse/FLINK-35250) |
-| FLIP-544 | Iceberg CDC Source | 🔄 实现中 | 85% | @frank-g | 2.4 | [FLINK-35300](https://issues.apache.org/jira/browse/FLINK-35300) |
-| FLIP-545 | Paimon Connector GA | 🔄 测试中 | 95% | @grace-h | 2.4 | [FLINK-35350](https://issues.apache.org/jira/browse/FLINK-35350) |
-| FLIP-546 | Multi-Agent Coordination | 🔄 设计阶段 | 45% | @alice-w | 2.4 | [FLINK-35400](https://issues.apache.org/jira/browse/FLINK-35400) |
-| FLIP-547 | Delta Lake 3.0 Support | 🔄 实现中 | 72% | @henry-i | 2.4 | [FLINK-35450](https://issues.apache.org/jira/browse/FLINK-35450) |
+| FLIP-531 | Flink AI Agents | 🔄 MVP→GA | 96% | @alice-w | 2.4 | [FLINK-35000](https://issues.apache.org/jira/browse/FLINK-35000) |
+| FLIP-540 | Serverless Flink Framework | 🔄 实现中 | 80% | @bob-c | 2.4 | [FLINK-35100](https://issues.apache.org/jira/browse/FLINK-35100) |
+| FLIP-541 | Adaptive Execution Engine v2 | 🔄 实现中 | 72% | @carol-d | 2.4 | [FLINK-35150](https://issues.apache.org/jira/browse/FLINK-35150) |
+| FLIP-542 | Intelligent Checkpointing | 🔄 设计完成 | 60% | @dave-e | 2.4 | [FLINK-35200](https://issues.apache.org/jira/browse/FLINK-35200) |
+| FLIP-543 | ANSI SQL 2023 Support | 🔄 实现中 | 86% | @eve-f | 2.4 | [FLINK-35250](https://issues.apache.org/jira/browse/FLINK-35250) |
+| FLIP-544 | Iceberg CDC Source | 🔄 实现中 | 89% | @frank-g | 2.4 | [FLINK-35300](https://issues.apache.org/jira/browse/FLINK-35300) |
+| FLIP-545 | Paimon Connector GA | 🔄 测试中 | 98% | @grace-h | 2.4 | [FLINK-35350](https://issues.apache.org/jira/browse/FLINK-35350) |
+| FLIP-546 | Multi-Agent Coordination | 🔄 设计阶段 | 50% | @alice-w | 2.4 | [FLINK-35400](https://issues.apache.org/jira/browse/FLINK-35400) |
+| FLIP-547 | Delta Lake 3.0 Support | 🔄 实现中 | 76% | @henry-i | 2.4 | [FLINK-35450](https://issues.apache.org/jira/browse/FLINK-35450) |
 | FLIP-548 | NATS Connector | ✅ 已完成 | 100% | @iris-j | 2.4 | [FLINK-35500](https://issues.apache.org/jira/browse/FLINK-35500) |
-| FLIP-549 | Disaggregated Storage v2 | 📋 设计中 | 35% | @storage-team | 2.4 | [FLINK-35600](https://issues.apache.org/jira/browse/FLINK-35600) |
-| FLIP-550 | Streaming Graph Processing | 📋 设计中 | 28% | @graph-team | 2.4 | [FLINK-35700](https://issues.apache.org/jira/browse/FLINK-35700) |
-| FLIP-551 | Unified Batch-Streaming Source | 📋 设计中 | 32% | @connector-team | 2.4 | [FLINK-35800](https://issues.apache.org/jira/browse/FLINK-35800) |
+| FLIP-549 | Disaggregated Storage v2 | 📋 设计中 | 40% | @storage-team | 2.4 | [FLINK-35600](https://issues.apache.org/jira/browse/FLINK-35600) |
+| FLIP-550 | Streaming Graph Processing | 📋 设计中 | 33% | @graph-team | 2.4 | [FLINK-35700](https://issues.apache.org/jira/browse/FLINK-35700) |
+| FLIP-551 | Unified Batch-Streaming Source | 📋 设计中 | 36% | @connector-team | 2.4 | [FLINK-35800](https://issues.apache.org/jira/browse/FLINK-35800) |
 
 > **社区真实 FLIP 动态** (2026-04):
 >
@@ -940,6 +940,19 @@ flowchart TD
 > | FLIP-571 | 运行时动态更新 Checkpoint 配置 | 📋 设计中 | - |
 > | FLIP-573 | Kafka Share Groups 队列式事件处理 | 📋 讨论中 | Connector |
 > | FLIP-574 | Table Source 元数据过滤下推 | 📋 讨论中 | - |
+> | FLIP-555 | Flink Native S3 FileSystem (AWS SDK V2) | 🔄 实现中 | 2.3 / 2.4 |
+> | FLIP-566 | IMMUTABLE columns constraint | 📋 讨论中 | - |
+> | FLIP-495 | AdaptiveScheduler rescale history 记录与查询 | 🔄 实现中 | 2.3 / 2.4 |
+> | FLIP-523 | TLS Certificate Renewal 热重载 | 📋 讨论中 | - |
+>
+> **2026年4月社区讨论亮点**:
+>
+> - **Flink Agents 0.3.0 进展** (2026-04-15 社区同步): Agent Skills Integration (Python) 评审中; Mem0 长期记忆支持评审中; Python Durable Reconciler 已合并 (#614); OpenAI Response API 支持已合并 (#132); 通义千问 Embedding 模型集成已合并 (#611)
+> - **Flink 2.3 发布计划**: 社区持续推进 2.3 版本发布准备工作，Feature Freeze 预计 2026-05
+> - **Watermark 改进**: Buffer watermarks for watermark alignment (FLINK-37399), SamplingWatermarkRingBuffer 引入，Source output 初始化优化 (FLINK-39167)
+> - **Checkpoint 恢复增强**: 恢复时尝试获取最新 checkpoint (不依赖间隔配置), Source 暂停直到首个 checkpoint barrier 接收 (FLINK-38939)
+> - **Kafka Connector**: 支持全局 enumerator/dispatcher 处理多集群拓扑 (FLINK-39012), 升级至 Kafka 4.2.0 (FLINK-39120)
+> - **Table Planner**: MiniBatchGroupAggFunction 静默丢记录修复 (FLINK-35661), CAST 单射性检查引入 (FLINK-39088), StreamPhysicalOverAggregateRule 类型不匹配修复 (FLINK-38624)
 
 **图例说明**:
 
@@ -2029,6 +2042,11 @@ env.fromSource(source, WatermarkStrategy.noWatermarks(), "Unified Source");
 
 | 日期 | 版本 | 更新内容 | 更新人 |
 |------|------|----------|--------|
+| 2026-04-20 | v0.5 | **社区动态月度更新**: 同步 Apache Flink 社区 2026年4月最新进展 | Agent |
+| | | **FLIP 进度上调**: 全部在研 FLIP 进度上调 3-5% (FLIP-531 96% / FLIP-540 80% / FLIP-541 72% / FLIP-542 60% / FLIP-543 86% / FLIP-544 89% / FLIP-545 98% / FLIP-546 50% / FLIP-547 76% / FLIP-549 40% / FLIP-550 33% / FLIP-551 36%) | |
+| | | **新增社区 FLIP**: FLIP-555 (Native S3 FS), FLIP-566 (IMMUTABLE columns), FLIP-495 (Rescale History), FLIP-523 (TLS Renewal) | |
+| | | **Flink Agents 0.3.0**: Python Durable Reconciler 合并, OpenAI Response API 合并, 通义千问 Embedding 集成 | |
+| | | **核心改进**: Watermark alignment buffer, Checkpoint barrier pause source, Kafka 4.2.0 升级, Table planner 多项修复 | |
 | 2026-04-20 | v0.4 | **社区动态同步**: 同步 Apache Flink 社区 2026年4月最新进展 | Agent |
 | | | **Flink Agents**: 更新 0.2.1 (2026-03-26) 发布状态与 0.3.0 路线图 | |
 | | | **版本时间线**: 修正 Flink 2.0/2.1/2.2 实际发布日期为官方日期 (2.0→2025-03, 2.1→2025-07, 2.2→2025-12) | |

@@ -40,7 +40,7 @@ last_sync: "2026-04-15"
     - [8.5 Engineering Implementation and Theory Correspondence](#85-engineering-implementation-and-theory-correspondence)
   - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
     - [5.1 Watermark Monotonicity Guarantee](#51-watermark-monotonicity-guarantee)
-    - [5.2 Late Data Processing Exactly-Once Compatibility](#52-late-data-processing-exactly-once-compatibility)
+    - [5.2 Late Data Processing ExactlyOnce Compatibility](#52-late-data-processing-exactlyonce-compatibility)
     - [5.3 Idle Source Handling Engineering Argument](#53-idle-source-handling-engineering-argument)
   - [6. Examples](#6-examples)
     - [6.1 Flink Watermark Generation Strategies](#61-flink-watermark-generation-strategies)
