@@ -576,7 +576,7 @@ graph TB
     end
 
     subgraph TLA["TLA+ 抽象层"]
-        T1["[] (e ∈ processed => e ∈ outputs)"]
+        T1["□ (e ∈ processed => e ∈ outputs)"]
         T2["Crash => Diamond Recovered and OutputCorrect"]
         T3["无原生支持 需编码为集合关系"]
     end
