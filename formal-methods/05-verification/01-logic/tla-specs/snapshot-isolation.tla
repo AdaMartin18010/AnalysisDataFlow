@@ -33,6 +33,9 @@ CONSTANTS
     TxId,               \* 事务 ID 集合
     MaxVersion          \* 最大版本号（用于模型检查）
 
+(* ASSUME-01: 基数假设 - 至少需要 2 个事务才能展示 SI 异常（如 Write Skew） *)
+(* 证明思路: 这是模型配置约束，确保状态空间足够展示并发行为；
+ * 单事务无法产生任何隔离异常，因此 2 是最小有意义配置 *)
 ASSUME CardinalityAssumption == 
     Cardinality(TxId) >= 2
 

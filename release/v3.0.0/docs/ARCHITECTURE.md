@@ -1,6 +1,7 @@
 > **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
-> 
+>
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # AnalysisDataFlow 技术架构文档
 
 > **版本**: v1.1 | **更新日期**: 2026-04-11 | **状态**: Production | **项目状态**: 100%完成 ✅
@@ -16,10 +17,10 @@
   - [1. 项目整体架构](#1-项目整体架构)
     - [1.1 四层架构概览](#11-四层架构概览)
     - [1.2 各层职责与接口](#12-各层职责与接口)
-      - [Layer 1: Struct/ - 形式理论基础层](#layer-1-struct---形式理论基础层)
-      - [Layer 2: Knowledge/ - 知识应用层](#layer-2-knowledge---知识应用层)
-      - [Layer 3: Flink/ - 工程实现层](#layer-3-flink---工程实现层)
-      - [Layer 4: visuals/ - 可视化导航层](#layer-4-visuals---可视化导航层)
+      - [Layer 1: Struct/ - 形式理论基础层](#layer-1-struct-形式理论基础层)
+      - [Layer 2: Knowledge/ - 知识应用层](#layer-2-knowledge-知识应用层)
+      - [Layer 3: Flink/ - 工程实现层](#layer-3-flink-工程实现层)
+      - [Layer 4: visuals/ - 可视化导航层](#layer-4-visuals-可视化导航层)
     - [1.3 数据流转与依赖关系](#13-数据流转与依赖关系)
   - [2. 文档生成架构](#2-文档生成架构)
     - [2.1 Markdown 处理流程](#21-markdown-处理流程)

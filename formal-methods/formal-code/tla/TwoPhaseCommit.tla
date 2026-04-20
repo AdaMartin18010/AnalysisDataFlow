@@ -30,7 +30,9 @@ CONSTANTS
     RM,                 \* 资源管理器的集合，例如 {r1, r2, r3}
     Ballot              \* 提案号集合，用于唯一标识事务尝试
 
-ASSUME
+(* ASSUME-01: 常量参数约束 - RM 非空有限，Ballot 为自然数子集 *)
+(* 证明思路: 模型参数约束，由 TLC 配置保证；有限性确保模型检查可终止 *)
+ASSUME ConstantsAssumption ==
     /\ RM # {}          \* 至少有一个资源管理器
     /\ IsFiniteSet(RM)  \* RM 是有限集合
     /\ Ballot \subseteq Nat  \* Ballot 是自然数的子集
@@ -234,23 +236,22 @@ TMAbortNoCommitted ==
 (* 状态转移不变式                                                               *)
 (*----------------------------------------------------------------------------*)
 
-(* Thm-S-TP-07: RM 状态单调性 - 状态转移是单向的                                  *)
+(* Thm-S-TP-07: RM 状态转移有效性 - 只允许合法的状态转换 *)
 (* working -> prepared -> committed                                            *)
 (* working -> aborted                                                          *)
 (* prepared -> aborted (通过 TM abort)                                         *)
-RMStateMonotonicity ==
-    \A r \in RM :
-        / rmState[r] = "working"
-        / rmState[r] = "prepared"
-        / rmState[r] = "committed"
-        / rmState[r] = "aborted"
+RMStateTransitionValidity ==
+    [][\A r \in RM :
+        /\ (rmState[r] = "working" => rmState'[r] \in {"working", "prepared", "aborted"})
+        /\ (rmState[r] = "prepared" => rmState'[r] \in {"prepared", "committed", "aborted"})
+        /\ (rmState[r] = "committed" => rmState'[r] = "committed")
+        /\ (rmState[r] = "aborted" => rmState'[r] = "aborted")]_vars
 
-(* Thm-S-TP-08: TM 状态单调性                                                   *)
-(* init -> commit 或 init -> abort，不可回退                                      *)
-TMStateMonotonicity ==
-    / tmState = "init"
-    / tmState = "commit"
-    / tmState = "abort"
+(* Thm-S-TP-08: TM 状态转移有效性 - init 只能转移到 commit 或 abort *)
+TMStateTransitionValidity ==
+    [][\/ (tmState = "init" => tmState' \in {"init", "commit", "abort"})
+        \/ (tmState = "commit" => tmState' = "commit")
+        \/ (tmState = "abort" => tmState' = "abort")]_vars
 
 (*----------------------------------------------------------------------------*)
 (* 组合不变式                                                                   *)

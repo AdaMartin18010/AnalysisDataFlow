@@ -8,7 +8,7 @@
 [![Doc Update Sync](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/doc-update-sync.yml/badge.svg)](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/doc-update-sync.yml)
 [![Docs](https://img.shields.io/badge/Docs-1050%2B-blue)](./docs/README.md)
 [![Theorems](https://img.shields.io/badge/Theorems-10800%2B-green)](./THEOREM-REGISTRY.md)
-[![Last Updated](https://img.shields.io/badge/Last%20Updated-2026--04--20-orange)]()
+[![Last Updated](https://img.shields.io/badge/Last%20Updated-2026-04-20-orange)]()
 [![Status](https://img.shields.io/badge/Status-100%25%20Complete-success)]()
 [![Production Verified](https://img.shields.io/badge/🏭%20寻求生产验证-提交案例-yellow)](./.github/ISSUE_TEMPLATE/production-verification.md)
 

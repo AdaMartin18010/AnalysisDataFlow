@@ -96,6 +96,23 @@ def fv : Term → List Name
   | app t₁ t₂ => fv t₁ ++ fv t₂
 
 /-- 
+项的大小（节点数）
+
+用于证明替换操作的终止性。
+-/
+def size : Term → Nat
+  | var _ => 1
+  | abs _ t => 1 + size t
+  | app t₁ t₂ => 1 + size t₁ + size t₂
+
+@[simp]
+theorem size_pos (t : Term) : size t > 0 := by
+  induction t with
+  | var x => simp [size]
+  | abs x t ih => simp [size]; linarith
+  | app t₁ t₂ ih₁ ih₂ => simp [size]; linarith
+
+/-- 
 变量在项中是否自由
 -/
 def isFreeVar (x : Name) (t : Term) : Bool :=
@@ -150,27 +167,27 @@ def freshVar (base : Name) (t : Term) : Name :=
 
 -- 变量的自由变量就是其本身
 @[simp]
-lemma fv_var (x : Name) : fv (var x) = [x] := by
+theorem fv_var (x : Name) : fv (var x) = [x] := by
   simp [fv]
 
 -- 抽象的自由变量是体中自由变量去掉绑定变量
 @[simp]
-lemma fv_abs (x : Name) (t : Term) : 
+theorem fv_abs (x : Name) (t : Term) : 
   fv (abs x t) = List.filter (fun y => y ≠ x) (fv t) := by
   simp [fv]
 
 -- 应用的自由变量是两个子项自由变量的并
 @[simp]
-lemma fv_app (t₁ t₂ : Term) : 
+theorem fv_app (t₁ t₂ : Term) : 
   fv (app t₁ t₂) = fv t₁ ++ fv t₂ := by
   simp [fv]
 
 -- 恒等函数是封闭项
-lemma identity_closed : isClosed identity := by
+theorem identity_closed : isClosed identity := by
   simp [isClosed, identity]
 
 -- Omega 组合子是封闭项（用于证明停机性相关性质）
-lemma omega_closed : isClosed Omega := by
+theorem omega_closed : isClosed Omega := by
   simp [isClosed, Omega, omegaTerm]
 
 end FormalMethods.Lambda.Syntax

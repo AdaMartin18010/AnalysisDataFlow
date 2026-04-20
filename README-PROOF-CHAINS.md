@@ -11,7 +11,7 @@
 [![定理数](./badges/theorems.svg)](./THEOREM-REGISTRY.md)
 [![依赖覆盖率](./badges/coverage.svg)](./cross-ref-validation-report-v3.md)
 [![Version](https://img.shields.io/badge/Version-v3.6-orange)](./CHANGELOG.md)
-[![Last Updated](https://img.shields.io/badge/Last%20Updated-2026--04--11-informational)](./STATUS.md)
+[![Last Updated](https://img.shields.io/badge/Last%20Updated-2026-04-11-informational)](./STATUS.md)
 
 ---
 

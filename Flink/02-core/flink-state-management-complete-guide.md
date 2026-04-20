@@ -36,7 +36,7 @@
       - [4.3.1 全量 Checkpoint vs 增量 Checkpoint vs Changelog](#431-全量-checkpoint-vs-增量-checkpoint-vs-changelog)
       - [4.3.2 Checkpoint 配置参数](#432-checkpoint-配置参数)
     - [4.4 State TTL 过期策略](#44-state-ttl-过期策略)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [Thm-F-02-90: State Backend 选择最优性定理](#thm-f-02-90-state-backend-选择最优性定理)
     - [Thm-F-02-91: Checkpoint 完备性定理](#thm-f-02-91-checkpoint-完备性定理)
     - [Thm-F-02-92: State TTL 一致性定理](#thm-f-02-92-state-ttl-一致性定理)

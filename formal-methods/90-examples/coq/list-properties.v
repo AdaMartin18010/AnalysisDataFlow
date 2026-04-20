@@ -314,6 +314,38 @@ Qed.
  * ---------------------------------------------------------------------------- *)
 
 (* Fold 与反转的关系 *)
+(* 辅助引理: fold_left 在连接上的分配律 *)
+Theorem fold_left_app : forall (A B : Type) (f : A -> B -> A) (l1 l2 : list B) (i : A),
+    fold_left f (l1 ++ l2) i = fold_left f l2 (fold_left f l1 i).
+Proof.
+  intros A B f l1 l2 i.
+  revert l2 i.
+  induction l1 as [| x xs IH]; intros l2 i.
+  - (* 基本情况: l1 = [] *)
+    simpl.
+    reflexivity.
+  - (* 归纳步骤: l1 = x :: xs *)
+    simpl.
+    apply IH.
+Qed.
+
+(* 辅助引理: rev_acc 在 acc 后追加单元素 *)
+Lemma rev_acc_snoc : forall (A : Type) (acc : list A) (x : A) (l : list A),
+    rev_acc (acc ++ [x]) l = rev_acc acc l ++ [x].
+Proof.
+  intros A acc x l.
+  revert acc.
+  induction l as [| y ys IH]; intros acc.
+  - (* 基本情况: l = [] *)
+    simpl. reflexivity.
+  - (* 归纳步骤: l = y :: ys *)
+    simpl.
+    rewrite IH.
+    reflexivity.
+Qed.
+
+(* 修改说明 (2026-04-21): 从 Abort 补全为完整证明。
+   核心思路: rev (x::xs) = rev xs ++ [x]，结合 fold_left_app 完成归纳。 *)
 Theorem fold_left_rev_right : forall (A B : Type) (f : A -> B -> A) (l : list B) (i : A),
     fold_left f (rev l) i = fold_right (fun x acc => f acc x) i l.
 Proof.
@@ -321,16 +353,22 @@ Proof.
   revert i.
   induction l as [| x xs IH]; intros i.
   - (* 基本情况: l = [] *)
-    simpl.
-    unfold rev.
-    simpl.
-    reflexivity.
+    simpl. unfold rev. simpl. reflexivity.
   - (* 归纳步骤: l = x :: xs *)
     simpl.
     rewrite IH.
     unfold rev.
     simpl.
-Abort. (* 留作练习 *)
+    (* 关键: rev_acc [x] xs = rev_acc [] xs ++ [x] *)
+    assert (Hrev: rev_acc [x] xs = rev_acc [] xs ++ [x]).
+    { replace [x] with ([] ++ [x]) by reflexivity.
+      apply rev_acc_snoc. }
+    rewrite Hrev.
+    (* fold_left f (rev xs ++ [x]) i = fold_left f [x] (fold_left f (rev xs) i) *)
+    rewrite fold_left_app.
+    simpl.
+    reflexivity.
+Qed.
 
 (* Fold 连接分配律: fold_left f (l1 ++ l2) i = fold_left f l2 (fold_left f l1 i) *)
 Theorem fold_left_app : forall (A B : Type) (f : A -> B -> A) (l1 l2 : list B) (i : A),

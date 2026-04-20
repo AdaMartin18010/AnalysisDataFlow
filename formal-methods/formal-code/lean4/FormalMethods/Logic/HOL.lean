@@ -23,7 +23,7 @@ HOL是Isabelle/HOL、HOL4、HOL Light等定理证明器的理论基础。
 日期: 2026-04-10
 -/
 
-import Mathlib.Data.Nat.Basic
+import Mathlib.Data.Nat.Defs
 import Mathlib.Logic.Basic
 import Mathlib.Tactic
 

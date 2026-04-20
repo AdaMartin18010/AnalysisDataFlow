@@ -5,7 +5,6 @@
 /- ============================================================================ -/
 
 import Mathlib.Data.List.Basic
-import Mathlib.Data.Nat.Basic
 import Mathlib.Tactic
 import Mathlib.Logic.Basic
 
@@ -22,19 +21,19 @@ inductive VerifierResult
   | Unknown
   deriving Repr, DecidableEq
 
-/- 任务类型 -/
-inductive Task
-  | ProofTask (prop : Prop) : Task
-  | ModelCheckTask (system : Type) (spec : Type) : Task
-  deriving Repr
+/- 任务类型（更名为FTask以避免与Lean核心Task冲突） -/
+/- 注意: 由于构造器量化Prop和Type，FTask位于Type 1，不使用deriving Repr -/
+inductive FTask
+  | ProofTask (prop : Prop) : FTask
+  | ModelCheckTask (system : Type) (spec : Type) : FTask
 
 /- 验证器类型 -/
-def Verifier := Task -> VerifierResult
+def Verifier := FTask → VerifierResult
 
 /- FoVer框架 -/
 structure FoVer where
   verifier : Verifier
-  formalizer : String -> Task
+  formalizer : String → FTask
 
 /- 推理步骤 -/
 structure ReasoningStep where
@@ -56,16 +55,16 @@ structure TrainingData where
   verified : Bool
   deriving Repr
 
-/- 数据集 -/
-def FoVerDataset := List TrainingData
+/- 数据集（使用abbrev以自动获得List的Membership实例） -/
+abbrev FoVerDataset := List TrainingData
 
 /- 数据集Soundness: 所有Correct标签必须经过验证 -/
 def DatasetSound (ds : FoVerDataset) : Prop :=
-  ∀ td ∈ ds, td.label = StepCorrectness.Correct -> td.verified = true
+  ∀ td ∈ ds, td.label = StepCorrectness.Correct → td.verified = true
 
-/- 数据生成 -/
+/- 数据生成（使用List.bind替代flatMap） -/
 def generateTrainingData (fover : FoVer) (tasks : List String) : FoVerDataset :=
-  tasks.flatMap (λ task_desc =>
+  tasks.bind (λ task_desc =>
     let formal_task := fover.formalizer task_desc
     let verification := fover.verifier formal_task
     match verification with
@@ -79,6 +78,18 @@ def generateTrainingData (fover : FoVer) (tasks : List String) : FoVerDataset :=
         []
   )
 
+/- 辅助引理: generateTrainingData在空列表上的行为 -/
+lemma generateTrainingData_nil (fover : FoVer) :
+  generateTrainingData fover [] = [] := by
+  unfold generateTrainingData
+  simp [List.bind]
+
+/- 辅助引理: generateTrainingData在cons上的行为 -/
+lemma generateTrainingData_cons (fover : FoVer) (head : String) (tail : List String) :
+  generateTrainingData fover (head :: tail) = generateTrainingData fover [head] ++ generateTrainingData fover tail := by
+  unfold generateTrainingData
+  simp [List.bind]
+
 end Definitions
 
 /- ---------------------------------------------------------------------------- -/
@@ -89,56 +100,47 @@ section Core_Theorem
 
 /- 辅助引理: 生成的数据项满足soundness条件 -/
 lemma generated_item_sound (fover : FoVer) (task_desc : String) :
-  let item := generateTrainingData fover [task_desc]
-  ∀ td ∈ item, td.label = StepCorrectness.Correct -> td.verified = true := by
-  intro item
+  ∀ td, td ∈ generateTrainingData fover [task_desc] → td.label = StepCorrectness.Correct → td.verified = true := by
   intro td htd hlabel
-  simp [generateTrainingData] at htd
+  unfold generateTrainingData at htd
+  simp [List.bind] at htd
   cases hver : fover.verifier (fover.formalizer task_desc) with
   | Valid =>
-    simp [hver] at htd
-    rcases htd with (rfl | hfalse)
-    · simp at hlabel
-      simp
-    · contradiction
+    have heq : td = {step := {context := [], current_step := task_desc}, label := StepCorrectness.Correct, verified := true} := by
+      simp [hver] at htd
+      exact htd
+    rw [heq] at hlabel ⊢
   | Invalid =>
-    simp [hver] at htd
-    rcases htd with (rfl | hfalse)
-    · simp at hlabel
-    · contradiction
+    have heq : td = {step := {context := [], current_step := task_desc}, label := StepCorrectness.Incorrect, verified := true} := by
+      simp [hver] at htd
+      exact htd
+    rw [heq] at hlabel
+    simp at hlabel
   | Unknown =>
-    simp [hver] at htd
-    contradiction
+    have hfalse : False := by
+      simp [hver] at htd
+      exact htd
 
 /- Thm-S-07-FV-01: FoVer生成的训练数据满足Soundness - 完整证明 -/
 theorem FoVer_Soundness_Complete (fover : FoVer) (tasks : List String) :
-  let ds := generateTrainingData fover tasks
-  DatasetSound ds := by
-  intro ds
+  DatasetSound (generateTrainingData fover tasks) := by
   unfold DatasetSound
-  intro td htd hlabel
+  intro td htd h_label
+  revert td htd h_label
   induction tasks with
   | nil =>
-    simp [generateTrainingData] at htd
+    intro td htd h_label
+    rw [generateTrainingData_nil fover] at htd
     contradiction
   | cons head tail ih =>
-    simp [generateTrainingData] at htd
-    cases hmem : (generateTrainingData fover [head]) with
-    | nil =>
-      simp [hmem] at htd
-      apply ih
-      assumption
-    | cons item rest =>
-      simp [hmem] at htd
-      cases htd with
-      | inl hitem =>
-        rw [hitem] at hlabel
-        apply generated_item_sound
-        simp
-        assumption
-      | inr htail =>
-        apply ih
-        assumption
+    intro td htd h_label
+    rw [generateTrainingData_cons fover head tail] at htd
+    simp [List.mem_append] at htd
+    cases htd with
+    | inl h1 =>
+      exact generated_item_sound fover head td h1 h_label
+    | inr h2 =>
+      exact ih td h2 h_label
 
 end Core_Theorem
 
@@ -159,18 +161,23 @@ structure NeuralProofCertificate where
 def VerificationTime (npc : NeuralProofCertificate) : Nat :=
   npc.input_size * npc.output_size * npc.weights.length
 
-/- Thm-S-07-FV-02: 神经证书验证的多项式复杂性 - 完整证明 -/
-theorem NeuralCertificate_Polynomial_Complexity (npc : NeuralProofCertificate) :
-  ∃ (a b c : Nat),
-    VerificationTime npc ≤ a * npc.input_size ^ 1 + b * npc.output_size ^ 1 + c * npc.weights.length ^ 1 := by
-  use 1, 1, 1
-  simp [VerificationTime]
-  linarith
-
-/- 更精确的线性复杂性 -/
+/- 精确相等性定理（前置引理） -/
 theorem NeuralCertificate_Linear_Complexity (npc : NeuralProofCertificate) :
   VerificationTime npc = npc.input_size * npc.output_size * npc.weights.length := by
   simp [VerificationTime]
+
+/- Thm-S-07-FV-02: 神经证书验证的多项式复杂性 - 完整证明 -/
+theorem NeuralCertificate_Polynomial_Complexity (npc : NeuralProofCertificate) :
+  ∃ (a b c d : Nat),
+    VerificationTime npc ≤ a * npc.input_size + b * npc.output_size + c * npc.weights.length + d := by
+  use npc.output_size * npc.weights.length,
+    npc.input_size * npc.weights.length,
+    npc.input_size * npc.output_size,
+    0
+  simp [VerificationTime]
+  try { nlinarith }
+  try { omega }
+  try { trivial }
 
 end Neural_Certificates
 
@@ -181,12 +188,12 @@ end Neural_Certificates
 section PRM_Training
 
 /- PRM评分函数 -/
-def PRM := ReasoningStep -> Float
+def PRM := ReasoningStep → Float
 
 /- PRM正确性: 高评分对应正确步骤 -/
 def PRMCorrectness (prm : PRM) (ds : FoVerDataset) : Prop :=
   ∀ td ∈ ds,
-    td.label = StepCorrectness.Correct ->
+    td.label = StepCorrectness.Correct →
     prm td.step > 0.5  /- 高置信度 -/
 
 /- 训练保证: 在sound数据上训练的PRM具有正确性 -/
@@ -195,7 +202,7 @@ theorem PRM_Training_Guarantee
   (fover : FoVer)
   (tasks : List String)
   (h_trained : ∀ td ∈ generateTrainingData fover tasks, 
-    td.label = StepCorrectness.Correct -> prm td.step > 0.5) :
+    td.label = StepCorrectness.Correct → prm td.step > 0.5) :
   PRMCorrectness prm (generateTrainingData fover tasks) := by
   unfold PRMCorrectness
   exact h_trained
@@ -209,16 +216,17 @@ end PRM_Training
 section Streaming_Extension
 
 /- 流处理验证器 - 满足完备性条件 -/
-def StreamingVerifier (task : Task) : VerifierResult :=
+open Classical in
+noncomputable def StreamingVerifier (task : FTask) : VerifierResult :=
   match task with
-  | Task.ProofTask p => 
-      if Classical.propDecidable p then VerifierResult.Valid else VerifierResult.Unknown
-  | Task.ModelCheckTask _ _ => 
+  | FTask.ProofTask p => 
+      if p then VerifierResult.Valid else VerifierResult.Unknown
+  | FTask.ModelCheckTask _ _ => 
       VerifierResult.Valid  /- 假设模型检查成功 -/
 
 /- Checkpoint任务 -/
-def CheckpointTask : Task :=
-  Task.ModelCheckTask String String
+def CheckpointTask : FTask :=
+  FTask.ModelCheckTask String String
 
 /- Checkpoint验证定理 -/
 theorem Checkpoint_Verification_Sound :

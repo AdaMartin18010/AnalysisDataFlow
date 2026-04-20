@@ -2073,7 +2073,7 @@ flowchart TD
 
 - [Fairness](#fairness)
 - [Fault Tolerance](#fault-tolerance)
-- [Finally / Eventually](#finally--eventually)
+- [Finally / Eventually](#finally-eventually)
 - [Fixed Point](#fixed-point)
 - [FLP Impossibility](#flp-impossibility)
 - [Formal Specification](#formal-specification)
@@ -2198,7 +2198,7 @@ flowchart TD
 - [Set](#set)
 - [Sharding](#sharding)
 - [Separation Logic](#separation-logic)
-- [Sigma Type](#sigma-type--dependent-pair-type)
+- [Sigma Type](#sigma-type-dependent-pair-type)
 - [Smart Casual Verification](#smart-casual-verification)
 - [State Compression](#state-compression)
 - [State Space](#state-space)

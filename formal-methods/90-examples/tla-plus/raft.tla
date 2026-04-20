@@ -43,7 +43,10 @@ CONSTANTS
     AppendEntriesResponse,
     ClientRequest
 
-ASSUME
+(* ASSUME-01: 基数假设 - 至少需要 3 个节点以保证多数派容错 *)
+(* 证明思路: 2 个节点无法容忍任何故障（2/2 不是多数），3 个节点可容忍 1 个故障；
+ * 这是 Raft 提供容错能力的最小配置 *)
+ASSUME ServerSizeAssumption ==
     /\ Cardinality(Server) >= 3    (* 至少需要3个节点 *)
 
 (* ----------------------------------------------------------------------------

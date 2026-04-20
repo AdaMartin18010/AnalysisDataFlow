@@ -27,7 +27,9 @@ CONSTANTS
     MaxTerm,            \* 用于模型检测的最大任期号（限制状态空间）
     MaxLogLength        \* 用于模型检测的最大日志长度（限制状态空间）
 
-ASSUME
+(* ASSUME-01: 常量参数约束 - Server 非空有限，MaxTerm/MaxLogLength 为自然数 *)
+(* 证明思路: 模型参数约束，由 TLC 配置保证；有限性保证模型检查可终止 *)
+ASSUME ConstantsAssumption ==
     /\ Server # {}                              \* 至少有一个服务器
     /\ IsFiniteSet(Server)                      \* 服务器集合有限
     /\ MaxTerm \in Nat                          \* MaxTerm 是自然数
@@ -178,54 +180,72 @@ Timeout(s) ==
     /\ UNCHANGED <<log, commitIndex, lastApplied, nextIndex, matchIndex, messages>>
 
 (* Def-S-Raft-03: Candidate 向其他服务器发送 RequestVote 请求 *)
+(* TODO-01: 需补充完整实现 - 向所有其他服务器广播 RequestVote 消息 *)
+(* 完成建议: 参考 formal-methods/05-verification/01-logic/tla-specs/raft.tla 中 StartElection *)
 SendRequestVote(s) ==
     /\ state[s] = Candidate                         \* 必须是 Candidate
-    /\ UNCHANGED vars  \* 框架占位符，实际实现需要添加消息
+    /\ UNCHANGED vars
 
 (* Def-S-Raft-04: 服务器响应 RequestVote 请求 *)
+(* TODO-02: 需补充完整实现 - 检查任期和日志新鲜度，决定是否投票 *)
+(* 完成建议: 参考 formal-methods/90-examples/tla-plus/raft.tla 中 HandleRequestVote *)
 HandleRequestVote(s) ==
-    /\ UNCHANGED vars  \* 框架占位符
+    /\ UNCHANGED vars
 
 (* Def-S-Raft-05: Candidate 收到多数派投票，成为 Leader *)
+(* TODO-03: 需补充完整实现 - 统计投票，若达到多数派则转换为 Leader *)
+(* 完成建议: 参考 formal-methods/05-verification/01-logic/tla-specs/raft.tla 中 CollectVote *)
 BecomeLeader(s) ==
     /\ state[s] = Candidate                         \* 必须是 Candidate
-    /\ UNCHANGED vars  \* 框架占位符
+    /\ UNCHANGED vars
 
 (*----------------------------------------------------------------------------*)
 (* 日志复制相关动作                                                             *)
 (*----------------------------------------------------------------------------*)
 
 (* Def-S-Raft-06: Leader 接收客户端请求，追加新条目 *)
+(* TODO-04: 需补充完整实现 - 选择新值并追加到 Leader 日志 *)
+(* 完成建议: 参考 formal-methods/05-verification/01-logic/tla-specs/raft.tla 中 ClientRequest *)
 ClientRequest(s) ==
     /\ state[s] = Leader                            \* 必须是 Leader
     /\ Len(log[s]) < MaxLogLength                   \* 日志未满（模型限制）
-    /\ UNCHANGED vars  \* 框架占位符
+    /\ UNCHANGED vars
 
 (* Def-S-Raft-07: Leader 向 Follower 发送 AppendEntries 请求 *)
+(* TODO-05: 需补充完整实现 - 根据 nextIndex 构造并发送 AppendEntries *)
+(* 完成建议: 参考 formal-methods/90-examples/tla-plus/raft.tla 中 ReplicateLog *)
 SendAppendEntries(s) ==
     /\ state[s] = Leader                            \* 必须是 Leader
-    /\ UNCHANGED vars  \* 框架占位符
+    /\ UNCHANGED vars
 
 (* Def-S-Raft-08: Follower 处理 AppendEntries 请求 *)
+(* TODO-06: 需补充完整实现 - 日志匹配检查、追加新条目、更新 commitIndex *)
+(* 完成建议: 参考 formal-methods/05-verification/01-logic/tla-specs/raft.tla 中 HandleAppendEntries *)
 HandleAppendEntries(s) ==
-    /\ UNCHANGED vars  \* 框架占位符
+    /\ UNCHANGED vars
 
 (* Def-S-Raft-09: Leader 根据 matchIndex 更新 commitIndex *)
+(* TODO-07: 需补充完整实现 - 找到可提交的最高索引并更新 commitIndex *)
+(* 完成建议: 参考 formal-methods/05-verification/01-logic/tla-specs/raft.tla 中 AdvanceCommitIndex *)
 AdvanceCommitIndex(s) ==
     /\ state[s] = Leader                            \* 必须是 Leader
-    /\ UNCHANGED vars  \* 框架占位符
+    /\ UNCHANGED vars
 
 (*----------------------------------------------------------------------------*)
 (* 消息处理动作                                                                 *)
 (*----------------------------------------------------------------------------*)
 
 (* Def-S-Raft-10: 消息被丢弃（模拟网络丢包） *)
+(* TODO-08: 需补充完整实现 - 从 messages 中删除某条消息 *)
+(* 完成建议: \E m \in messages : messages' = messages \ {m} *)
 DropMessage ==
-    /\ UNCHANGED vars  \* 框架占位符
+    /\ UNCHANGED vars
 
 (* Def-S-Raft-11: 消息延迟（模拟网络延迟） *)
+(* TODO-09: 需补充完整实现 - 可引入延迟消息集合 *)
+(* 完成建议: 参考 streaming-systems.tla 中的消息处理模式 *)
 DelayMessage ==
-    /\ UNCHANGED vars  \* 框架占位符
+    /\ UNCHANGED vars
 
 (*----------------------------------------------------------------------------*)
 (* 下一步关系                                                                   *)
@@ -250,8 +270,11 @@ Next ==
 (*============================================================================*)
 
 (* Def-S-Raft-13: 公平性条件（基础框架，待完善） *)
+(* TODO-10: 需补充完整公平性约束以保证选举和日志复制活性 *)
+(* 完成建议: 对 Timeout, SendRequestVote, HandleRequestVote, BecomeLeader, ClientRequest,
+ *          SendAppendEntries, HandleAppendEntries, AdvanceCommitIndex 添加弱公平性 *)
 Fairness ==
-    TRUE  \* 框架占位符
+    TRUE
 
 (* Def-S-Raft-14: 完整规约 *)
 Spec == Init /\ [][Next]_vars /\ Fairness
@@ -290,10 +313,15 @@ ElectionSafety ==
 
 (* Thm-S-Raft-03: Leader 只追加（Leader Append-Only）                            *)
 (* Leader 从不修改或删除日志条目，只追加新条目                                      *)
+(* 辅助: 序列前缀判断，seq1 是 seq2 的前缀当且仅当 seq2 前 Len(seq1) 个元素与 seq1 相同 *)
+IsPrefixSeq(seq1, seq2) ==
+    /\ Len(seq1) <= Len(seq2)
+    /\ \A i \in 1..Len(seq1) : seq1[i] = seq2[i]
+
 LeaderAppendOnly ==
     [][\A s \in Server :
         (state[s] = Leader /\ state'[s] = Leader)
-            => IsPrefix(log[s], log'[s])]_vars
+            => IsPrefixSeq(log[s], log'[s])]_vars
 
 (* Thm-S-Raft-04: 日志匹配（Log Matching）                                       *)
 (* 如果两个日志条目有相同的索引和任期，则它们存储相同的命令                        *)

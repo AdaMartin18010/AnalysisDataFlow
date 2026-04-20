@@ -28,7 +28,7 @@
   - [4. Argumentation](#4-argumentation)
     - [4.1 Challenges in Stream Joins](#41-challenges-in-stream-joins)
     - [4.2 State Backend Impact](#42-state-backend-impact)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [5.1 Window Join Formal Specification](#51-window-join-formal-specification)
     - [5.2 Interval Join Formalization](#52-interval-join-formalization)
     - [5.3 Exactly-Once Guarantee](#53-exactly-once-guarantee)

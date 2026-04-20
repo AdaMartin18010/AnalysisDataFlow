@@ -27,7 +27,7 @@
   - [4. Argumentation](#4-argumentation)
     - [4.1 Why Schema Evolution Matters](#41-why-schema-evolution-matters)
     - [4.2 Breaking Change Detection](#42-breaking-change-detection)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [5.1 Compatibility Rules Formalization](#51-compatibility-rules-formalization)
     - [5.2 Schema Registry Contract](#52-schema-registry-contract)
   - [6. Examples](#6-examples)

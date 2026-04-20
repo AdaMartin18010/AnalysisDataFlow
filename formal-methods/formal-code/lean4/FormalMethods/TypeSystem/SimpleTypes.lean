@@ -149,16 +149,24 @@ lemma weakening {Γ t T} (h : Γ ⊢ t : T) :
   ∀ (x : Name) (S : Type), 
     ¬inContext x Γ → 
     (Γ, x : S) ⊢ t : T := by
-  /- 详细证明策略 (Weakening):
+  /- 证明策略 (Weakening):
      对 hasType 的推导进行结构归纳。
+     
      Base Case (T-Var): lookupContext Γ y = some T。
-     在扩展环境 (Γ, x:S) 中，若 y = x，则与 ¬inContext x Γ 矛盾。
-     若 y ≠ x，则 lookupContext (Γ, x:S) y = lookupContext Γ y = some T。
-     Inductive Step (T-Abs): 需要证明 (Γ, x:S, y:T₁) ⊢ t : T₂。
-     若 x = y，则需利用 α-等价或重命名策略。
-     若 x ≠ y，则直接应用 IH。
-     在当前简化实现中（无 α-等价处理），保留 sorry。 -/
-  sorry -- 通过对类型判断的归纳证明
+     在扩展环境 (Γ, x:S) 中:
+     · 若 y = x: 与 ¬inContext x Γ 矛盾（因 lookupContext Γ x = some T）
+     · 若 y ≠ x: lookupContext (Γ, x:S) y = lookupContext Γ y = some T
+     
+     Inductive Step (T-Abs): t = abs y t'，需证 (Γ, x:S) ⊢ abs y t' : T₁ → T₂。
+     即需证 (Γ, x:S, y:T₁) ⊢ t' : T₂。
+     前提给出 (Γ, y:T₁) ⊢ t' : T₂。
+     · 若 x = y: 需要 α-等价重命名或利用 x 不在 Γ 中（此时 y 也不在 (Γ, y:T₁) 中...）
+       在当前实现中（字符串变量无 α-等价），这种情况需要特殊处理。
+     · 若 x ≠ y: 由归纳假设直接得 (Γ, x:S, y:T₁) ⊢ t' : T₂
+     
+     Inductive Step (T-App): 直接由两个子推导的 IH 组合。
+  -/
+  sorry
 
 /-- 
 类型判断的唯一性
@@ -168,15 +176,35 @@ lemma weakening {Γ t T} (h : Γ ⊢ t : T) :
 lemma type_uniqueness {Γ t T₁ T₂} 
     (h₁ : Γ ⊢ t : T₁) (h₂ : Γ ⊢ t : T₂) : 
   T₁ = T₂ := by
-  /- 详细证明策略 (Type Uniqueness):
+  /- 证明策略 (Type Uniqueness):
      对 h₁ 进行结构归纳，对 h₂ 进行反演 (inversion)。
-     Case T-Var: lookupContext Γ x = some T₁ 且 lookupContext Γ x = some T₂。
-     由 lookupContext 的确定性（若实现为函数），T₁ = T₂。
-     Case T-Abs: t = abs x t'，则 h₂ 必为 T-Abs，
-     由 IH 得 T₁₂ = T₂₂，因此 arrow T₁₁ T₁₂ = arrow T₂₁ T₂₂。
-     Case T-App: 由 IH 得箭头类型相等，再得参数类型相等。
-     当前简化版本保留 sorry（需要 lookupContext 的单射引理）。 -/
-  sorry -- 通过对项结构的归纳证明
+     
+     Case T-Var: t = var x。
+     h₁: lookupContext Γ x = some T₁
+     h₂: lookupContext Γ x = some T₂
+     由 lookupContext 的函数性（部分函数），T₁ = T₂。
+     需先证明: lookupContext Γ x = some T₁ → lookupContext Γ x = some T₂ → T₁ = T₂
+     （这由 Option.some.inj 直接得到）
+     
+     Case T-Abs: t = abs x t'。
+     h₁: (Γ, x:T₁₁) ⊢ t' : T₁₂, 其中 T₁ = T₁₁ → T₁₂
+     h₂ 必为 T-Abs（因 abs 的形式唯一确定规则）:
+     h₂: (Γ, x:T₂₁) ⊢ t' : T₂₂, 其中 T₂ = T₂₁ → T₂₂
+     由 IH 于 t': T₁₂ = T₂₂
+     由上下文相等（extendContext 的单射性）: T₁₁ = T₂₁
+     故 T₁ = T₂
+     
+     Case T-App: t = app t₁ t₂。
+     h₁: Γ ⊢ t₁ : T₁₁ → T₁₂, Γ ⊢ t₂ : T₁₁, T₁ = T₁₂
+     h₂: Γ ⊢ t₁ : T₂₁ → T₂₂, Γ ⊢ t₂ : T₂₁, T₂ = T₂₂
+     由 IH 于 t₁: T₁₁ → T₁₂ = T₂₁ → T₂₂
+     由 arrow 的单射性: T₁₂ = T₂₂
+     故 T₁ = T₂
+     
+     Case T-True/T-False: t = abs "t" (abs "f" (var "t")) 或类似。
+     h₁ 和 h₂ 都只能是 T-True 或 T-False，故 T₁ = T₂ = bool。
+  -/
+  sorry
 
 /-! 
 ## 示例项的类型判断

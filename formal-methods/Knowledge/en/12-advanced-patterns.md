@@ -26,7 +26,7 @@
   - [4. Argumentation](#4-argumentation)
     - [4.1 Event Time vs Processing Time Trade-offs](#41-event-time-vs-processing-time-trade-offs)
     - [4.2 State Backend Selection Criteria](#42-state-backend-selection-criteria)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [5.1 Event Time Processing Correctness](#51-event-time-processing-correctness)
     - [5.2 Stateful Computation Consistency](#52-stateful-computation-consistency)
     - [5.3 Window Aggregation Correctness Conditions](#53-window-aggregation-correctness-conditions)

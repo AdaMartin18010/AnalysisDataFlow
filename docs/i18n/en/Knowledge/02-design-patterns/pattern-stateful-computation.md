@@ -10,7 +10,7 @@
 
 - [Design Pattern: Stateful Computation](#design-pattern-stateful-computation)
   - [Table of Contents](#table-of-contents)
-  - [1. Problem / Context](#1-problem--context)
+  - [1. Problem / Context](#1-problem-context)
     - [1.1 Challenges of Distributed Stateful Computation](#11-challenges-of-distributed-stateful-computation)
     - [1.2 Core Conflict Triangle](#12-core-conflict-triangle)
   - [2. Solution](#2-solution)

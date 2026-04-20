@@ -217,7 +217,7 @@
 | T4 | Netflix | Benchmarking Streaming Computation Engines at Netflix | [Blog](https://netflixtechblog.com/benchmarking-streaming-computation-engines-at-netflix-bfdc598ed25b) | 流计算引擎基准测试 |
 | T5 | Uber | Exactly-Once Processing in Uber's Stream Processing | [Blog](https://www.uber.com/en-US/blog/exactly-once/) | Uber 精确一次语义实现 |
 | T6 | Uber | Stream Processing at Uber with Flink | [Blog](https://www.uber.com/en-US/blog/flink/) | Uber 的 Flink 实践经验 |
-| T7 | LinkedIn | Samza: Stateful Stream Processing at LinkedIn | [Blog](https://engineering.linkedin.com/blog/2016/12/samza--stateful-stream-processing-at-linkedin) | Samza 的设计与实现 |
+| T7 | LinkedIn | Samza: Stateful Stream Processing at LinkedIn | [Blog](https://engineering.linkedin.com/blog/2016/12/samza-stateful-stream-processing-at-linkedin) | Samza 的设计与实现 |
 | T8 | LinkedIn | How LinkedIn Uses Apache Kafka | [Blog](https://engineering.linkedin.com/blog/2019/apache-kafka) | Kafka 在 LinkedIn 的应用 |
 | T9 | Twitter | Heron: Real-Time Stream Processing at Twitter | [Blog](https://blog.twitter.com/engineering/en_us/topics/infrastructure/2015/flying-faster-with-twitter-heron) | Heron 替代 Storm 的演进 |
 | T10 | Amazon | Streaming ETL with AWS | [Blog](https://aws.amazon.com/blogs/big-data/) | AWS 流式 ETL 方案 |

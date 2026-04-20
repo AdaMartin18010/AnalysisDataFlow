@@ -1,6 +1,7 @@
 > **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
-> 
+>
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # AnalysisDataFlow 文档分级清单
 
 > **版本**: v1.0 | **生成日期**: 2026-04-05 | **文档总数**: 513
@@ -10,9 +11,9 @@
 ## 目录
 
 - [概述](#概述)
-- [核心层 (Core Tier) - 50篇](#核心层-core-tier---50篇)
-- [进阶层 (Advanced Tier) - 102篇](#进阶层-advanced-tier---102篇)
-- [参考层 (Reference Tier) - 361篇](#参考层-reference-tier---361篇)
+- [核心层 (Core Tier) - 50篇](#核心层-core-tier-50篇)
+- [进阶层 (Advanced Tier) - 102篇](#进阶层-advanced-tier-102篇)
+- [参考层 (Reference Tier) - 361篇](#参考层-reference-tier-361篇)
 - [统计汇总](#统计汇总)
 - [维护计划](#维护计划)
 

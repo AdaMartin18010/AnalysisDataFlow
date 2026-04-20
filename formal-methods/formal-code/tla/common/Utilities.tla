@@ -46,6 +46,8 @@ Min(S) == CHOOSE x \in S : \A y \in S : x <= y
 CartesianProduct(S, T) == { <<x, y>> : x \in S, y \in T }
 
 (* 集合元素个数（基数） *)
+(* 注意: FiniteSets 模块已提供 Cardinality(S) 运算符，优先使用标准库版本 *)
+(* 此处保留递归定义作为教学参考，名称使用 Cardinaltiy 以避免与标准库冲突 *)
 Cardinaltiy(S) == 
   IF S = {} THEN 0
   ELSE 1 + Cardinaltiy({ x \in S : x # CHOOSE_ONE(S) })

@@ -15,8 +15,13 @@ CONSTANTS
     MaxCheckpointId,
     MaxRecords
 
-ASSUME TaskManagers \subseteq STRING
-ASSUME MaxCheckpointId \in Nat /\ MaxCheckpointId > 0
+(* ASSUME-01: 参数化假设 - TaskManagers 必须是 STRING 的子集 *)
+(* 证明思路: 由 TLC 模型配置实例化，属于模型参数约束 *)
+ASSUME TaskManagersAssumption == TaskManagers \subseteq STRING
+
+(* ASSUME-02: 参数化假设 - MaxCheckpointId 为正自然数 *)
+(* 证明思路: 状态空间边界约束，用于 TLC 模型检查有限性保证 *)
+ASSUME MaxCheckpointIdAssumption == MaxCheckpointId \in Nat /\ MaxCheckpointId > 0
 
 (* ---------------------------------------------------------------------------- *)
 (* 类型定义                                                                     *)
@@ -137,6 +142,20 @@ Safety_CompleteConsistency ==
 Safety_ActiveNonEmpty ==
     cp_status = "active" => 
         \A tm \in TaskManagers : tm_state[tm].status = "checkpointing"
+
+(* 安全性4: 已完成Checkpoint的TM状态一致性 *)
+(* TODO-03: 补充 TM 状态与 checkpoint 完成状态的一致性 *)
+(* 完成建议: 当 cp_status="completed" 时所有 TM 必须处于 idle 状态 *)
+Safety_CompletedAllIdle ==
+    cp_status = "completed" => 
+        \A tm \in TaskManagers : tm_state[tm].status = "idle"
+
+(* 安全性5: channel_buf 中的 barrier 必须与 pending checkpoint 匹配 *)
+Safety_BarrierConsistency ==
+    cp_status = "active" => 
+        \A tm \in TaskManagers :
+            (tm_state[tm].status = "checkpointing" /\ channel_buf[tm] # <<>>)
+            => Head(channel_buf[tm]).checkpoint_id = cp_id
 
 (* 核心定理: Checkpoint正确性 *)
 CheckpointCorrectness ==

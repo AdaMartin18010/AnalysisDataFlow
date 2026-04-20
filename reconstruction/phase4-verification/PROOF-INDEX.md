@@ -28,7 +28,7 @@
     - [10. `StateBackendEquivalenceComplete.tla`](#10-statebackendequivalencecompletetla)
     - [11. `StateBackendTLA.tla`](#11-statebackendtlatla)
     - [12. `ExactlyOnce.tla`](#12-exactlyoncetla)
-    - [13. `Checkpoint.tla` / `Checkpoint-fixed.tla`](#13-checkpointtla--checkpoint-fixedtla)
+    - [13. `Checkpoint.tla` / `Checkpoint-fixed.tla`](#13-checkpointtla-checkpoint-fixedtla)
   - [主题交叉引用](#主题交叉引用)
     - [Watermark 主题](#watermark-主题)
     - [Exactly-Once 主题](#exactly-once-主题)

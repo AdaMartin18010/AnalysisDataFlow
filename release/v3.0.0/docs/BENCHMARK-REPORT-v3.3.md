@@ -37,7 +37,7 @@
   - [8. 论证过程 (Argumentation)](#8-论证过程-argumentation)
     - [8.1 测试环境标准化论证](#81-测试环境标准化论证)
     - [8.2 数据集设计原理](#82-数据集设计原理)
-  - [9. 形式证明 / 工程论证 (Proof / Engineering Argument)](#9-形式证明--工程论证-proof--engineering-argument)
+  - [9. 形式证明 / 工程论证 (Proof / Engineering Argument)](#9-形式证明-工程论证-proof-engineering-argument)
     - [Thm-BR-01 (性能基准有效性定理)](#thm-br-01-性能基准有效性定理)
   - [10. 实例验证 (Examples)](#10-实例验证-examples)
     - [10.1 Nexmark 基准测试结果](#101-nexmark-基准测试结果)

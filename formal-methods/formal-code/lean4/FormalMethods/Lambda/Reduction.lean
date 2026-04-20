@@ -176,7 +176,19 @@ Church-Rosser 定理
 
 Beta 归约满足 Church-Rosser 性质。
 
-这是一个著名的结果，但证明相当复杂，涉及并行归约 (parallel reduction)。
+证明概要 (Tait-Martin-Löf 方法，通过并行归约):
+1. 定义并行归约 ▹:
+   - 变量: x ▹ x
+   - Beta: (λx.t) s ▹ [x:=s']t' 若 t ▹ t' 且 s ▹ s'
+   - 抽象: λx.t ▹ λx.t' 若 t ▹ t'
+   - 应用: t s ▹ t' s' 若 t ▹ t' 且 s ▹ s'
+2. 证明 ▹ 满足菱形性质 (diamond property):
+   若 t ▹ s₁ 且 t ▹ s₂，则 ∃ r, s₁ ▹ r 且 s₂ ▹ r
+3. 证明 →*β 是 ▹ 的自反传递闭包
+4. 由菱形性质推出 Church-Rosser 性质
+
+这是 Lambda 演算最重要的元定理之一，证明涉及复杂的归纳论证。
+在标准文献中 (Barendregt, "The Lambda Calculus") 有完整证明。
 -/
 axiom church_rosser : ChurchRosserProperty
 

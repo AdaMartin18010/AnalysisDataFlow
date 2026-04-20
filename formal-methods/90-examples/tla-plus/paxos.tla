@@ -37,7 +37,10 @@ CONSTANTS
     Value,              (* 可能的值集合 *)
     Quorum              (* 法定集合 (Acceptor的子集) *)
 
-ASSUME
+(* ASSUME-01: 常量参数约束 - 角色互斥，Quorum 满足交集性质 *)
+(* 证明思路: 角色互斥避免进程自我投票；Quorum 交集是 Paxos 安全性的核心前提，
+ * 若每个 Quorum 包含多数 Acceptor，则由鸽巢原理自动满足 *)
+ASSUME ConstantsAssumption ==
     /\ Proposer \cap Acceptor = {}       (* 角色互斥 *)
     /\ Quorum \subseteq SUBSET Acceptor  (* Quorum是Acceptor的子集族 *)
     /\ \A Q1, Q2 \in Quorum : Q1 \cap Q2 # {}  (* 任意两个Quorum相交 *)

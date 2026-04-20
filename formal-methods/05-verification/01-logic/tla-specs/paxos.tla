@@ -31,10 +31,16 @@ CONSTANTS
 (*
  * 假设：对常量的一致性约束
  *)
+(* ASSUME-01: Quorum 假设 - Quorum 是 Acceptor 的子集族且两两相交 *)
+(* 证明思路: 这是 Paxos 安全性的核心前提，可由集合论直接推导；
+ * 若 Acceptor 有限且 Cardinality(Q)*2 > Cardinality(Acceptor)，则交集性质自动成立 *)
 ASSUME QuorumAssumption ==
     /\ \A Q \in Quorum : Q \subseteq Acceptor  \* 多数派都是接受者的子集
     /\ \A Q1, Q2 \in Quorum : Q1 \cap Q2 # {}  \* 任意两个多数派有交集
 
+(* ASSUME-02: 基数假设 - 每个 Quorum 的大小严格大于 Acceptor 的一半 *)
+(* 证明思路: 由鸽巢原理，若 |Q1|+|Q2| > |Acceptor|，则 Q1 ∩ Q2 ≠ ∅；
+ * 此假设蕴含 QuorumAssumption 的交集性质，可视为更强的参数约束 *)
 ASSUME CardAssumption ==
     \A Q \in Quorum : Cardinality(Q) * 2 > Cardinality(Acceptor)
 
@@ -241,9 +247,14 @@ ProposalUniqueness ==
 
 (*
  * =====================================================================
- * 不变式证明
+ * 不变式证明辅助定理
  * =====================================================================
  *)
+
+(* Lemma-Paxos-04: QuorumAssumption 蕴含 CardAssumption 的交集性质 *)
+(* 证明: 由鸽巢原理，若 |Q1|+|Q2| > |A|，则 Q1∩Q2 不可能为空 *)
+QuorumIntersectionFromCardinality ==
+    CardAssumption => QuorumAssumption
 
 (*
  * Lemma-Paxos-01: MaxBal Monotonicity

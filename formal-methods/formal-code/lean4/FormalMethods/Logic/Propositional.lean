@@ -444,8 +444,15 @@ section NaturalDeduction
 
     /-- 定理 3.2 (双重否定消除 - 经典逻辑): Γ ⊢ ¬¬φ → φ
 
-    注意: 双重否定消除等价于排中律，在自然演绎系统中需要作为额外规则添加
-    这里我们假设它是系统的一部分（经典自然演绎）
+    注意: 双重否定消除等价于排中律，在自然演绎系统中需要作为额外规则添加。
+    这里我们将其作为经典自然演绎系统的核心公理引入。
+
+    数学基础: 在经典逻辑中，DNE (Double Negation Elimination) 是以下等价之一:
+    - DNE ↔ LEM (排中律)
+    - DNE ↔ Peirce定律
+    - DNE ↔ 反证法 (reductio ad absurdum)
+
+    在直觉主义逻辑中，DNE 不可证，因此它明确标记了经典逻辑与直觉主义逻辑的分界。
     -/
     axiom dne_axiom {Γ : Context} {φ : Formula} : Γ ⊢ ((¬' (¬' φ)) →' φ)
 
@@ -489,17 +496,39 @@ section NaturalDeduction
       have h1 : Γ ⊢ (¬' (¬' φ)) := not_intro h
       exact dne h1
 
-    /-- 定理 3.5 (→ 的等价定义): (φ → ψ) ≡ (¬φ ∨ ψ) -/
+    /-- 定理 3.5 (→ 的等价定义): (φ → ψ) ≡ (¬φ ∨ ψ)
+
+    证明策略:
+    - (→): 由排中律，φ ∨ ¬φ。若 φ 则 ψ（由前提），故 ¬φ ∨ ψ；若 ¬φ 则 ¬φ ∨ ψ 直接成立。
+    - (←): 若 ¬φ ∨ ψ 且 φ，则 ¬φ 与 φ 矛盾，故 ψ 必成立。
+    -/
     theorem imp_iff_not_or {Γ : Context} {φ ψ : Formula} :
         Γ ⊢ ((φ →' ψ) →' ((¬' φ) ∨' ψ)) ∧' (((¬' φ) ∨' ψ) →' (φ →' ψ)) := by
       apply and_intro
       · -- (φ → ψ) → (¬φ ∨ ψ)
         apply imp_intro
-        -- 使用排中律分情况讨论
-        sorry -- 需要更复杂的推导
+        have h_lem : (φ ∨' (¬' φ)) :: (φ →' ψ) :: Γ ⊢ (φ ∨' (¬' φ)) := by
+          apply weakening lem (by simp)
+        apply or_elim h_lem
+        · -- 假设 φ
+          have h_psi : φ :: (φ →' ψ) :: Γ ⊢ ψ :=
+            imp_elim (ax (by simp)) (ax (by simp))
+          apply or_intro_right h_psi
+        · -- 假设 ¬φ
+          have h_notphi : (¬' φ) :: (φ →' ψ) :: Γ ⊢ (¬' φ) := ax (by simp)
+          apply or_intro_left h_notphi
       · -- (¬φ ∨ ψ) → (φ → ψ)
         apply imp_intro
-        sorry -- 需要更复杂的推导
+        apply imp_intro
+        have h_lem : φ :: ((¬' φ) ∨' ψ) :: Γ ⊢ ((¬' φ) ∨' ψ) := ax (by simp)
+        apply or_elim h_lem
+        · -- 假设 ¬φ，与 φ 矛盾
+          have h_not : φ :: (¬' φ) :: ((¬' φ) ∨' ψ) :: Γ ⊢ (¬' φ) := ax (by simp)
+          have h_phi : φ :: (¬' φ) :: ((¬' φ) ∨' ψ) :: Γ ⊢ φ := ax (by simp)
+          exact bot_elim (not_elim h_not h_phi)
+        · -- 假设 ψ，直接得证
+          have h_psi : ψ :: φ :: ((¬' φ) ∨' ψ) :: Γ ⊢ ψ := ax (by simp)
+          exact weakening h_psi (by simp)
 
     /- ============================================================
       常用推导规则
@@ -536,10 +565,25 @@ section NaturalDeduction
         and_intro hψ hχ
       exact and_intro hφ hψχ
 
-    /-- 分配律: φ ∧ (ψ ∨ χ) ⊢ (φ ∧ ψ) ∨ (φ ∧ χ) -/
+    /-- 分配律: φ ∧ (ψ ∨ χ) ⊢ (φ ∧ ψ) ∨ (φ ∧ χ)
+
+    证明策略: 由前提得 φ 和 ψ ∨ χ。对 ψ ∨ χ 分情况:
+    - 若 ψ，则 φ ∧ ψ，故 (φ ∧ ψ) ∨ (φ ∧ χ)
+    - 若 χ，则 φ ∧ χ，故 (φ ∧ ψ) ∨ (φ ∧ χ)
+    -/
     theorem and_or_distrib {Γ : Context} {φ ψ χ : Formula} :
         (φ ∧' (ψ ∨' χ)) :: Γ ⊢ ((φ ∧' ψ) ∨' (φ ∧' χ)) := by
-      sorry -- 需要分情况讨论
+      have h_phi : (φ ∧' (ψ ∨' χ)) :: Γ ⊢ φ := and_elim_left (ax (by simp))
+      have h_or : (φ ∧' (ψ ∨' χ)) :: Γ ⊢ (ψ ∨' χ) := and_elim_right (ax (by simp))
+      apply or_elim h_or
+      · -- 假设 ψ
+        have h_and : (φ ∧' (ψ ∨' χ)) :: Γ ⊢ (φ ∧' ψ) :=
+          and_intro h_phi (ax (by simp))
+        apply or_intro_left h_and
+      · -- 假设 χ
+        have h_and : (φ ∧' (ψ ∨' χ)) :: Γ ⊢ (φ ∧' χ) :=
+          and_intro h_phi (ax (by simp))
+        apply or_intro_right h_and
 
   end Derives
 
@@ -708,11 +752,32 @@ section MetaTheory
 
   /-- 引理 4.2 (Lindenbaum 引理): 任何一致的公式集都可以扩展为极大一致集
 
-  这是完备性证明的关键步骤。
+  这是完备性证明的关键步骤。证明概要:
+  1. 枚举所有公式 φ₀, φ₁, φ₂, ...
+  2. 递归构造序列 Γ₀ ⊆ Γ₁ ⊆ Γ₂ ⊆ ...，其中 Γ₀ = Γ
+  3. Γₙ₊₁ = Γₙ ∪ {φₙ} 若一致，否则 Γₙ ∪ {¬φₙ}
+  4. 令 Δ = ∪ₙ Γₙ，则 Δ 是极大一致的
+
+  注: 此证明需要可数选择公理 (AC_ω)。Lean 的标准库已包含选择公理，
+  但完整的形式化需要处理公式的枚举和无限构造，此处保留为 admitted 目标。
   -/
   lemma lindenbaum {Γ : Set Formula} (h : Consistent Γ) :
       ∃ Δ : Set Formula, MaximalConsistent Δ ∧ Γ ⊆ Δ := by
-    -- 证明需要使用选择公理，将公式枚举并递归构造
+    -- 使用经典逻辑中的选择公理进行构造
+    -- 完整证明需: (1) 公式枚举 (2) 递归扩展 (3) 极大一致性验证
+    /- 证明策略详解:
+       Step 1: 由于 Formula 是可数类型（基于 Nat 的命题变量），
+               可构造枚举 seq : Nat → Formula。
+       Step 2: 定义 Γ₀ = Γ,  Γₙ₊₁ = if Consistent (Γₙ ∪ {seq n})
+                                    then Γₙ ∪ {seq n}
+                                    else Γₙ ∪ {¬' (seq n)}
+       Step 3: 证明每个 Γₙ 都是一致的（归纳法）。
+       Step 4: 令 Δ = ⋃ₙ Γₙ，证明 MaximalConsistent Δ。
+               - 一致性: 若 Δ ⊢ ⊥，则存在有限推导，用到有限个公式，
+                 这些公式属于某个 Γₙ，与 Γₙ 一致矛盾。
+               - 极大性: 对任意 φ = seq n，由构造 φ ∈ Γₙ₊₁ 或 ¬φ ∈ Γₙ₊₁，
+                 故 φ ∈ Δ 或 ¬φ ∈ Δ。
+    -/
     sorry
 
   /-- 引理 4.3 (典范模型): 对于极大一致集 Γ，定义典范赋值 σ_Γ 使得
@@ -738,22 +803,159 @@ section MetaTheory
           have h_contra := h.1
           contradiction
         simp [this]
-    | top => simp [eval]; sorry
+    | top => simp [eval]; constructor <;> { intro; simp [Entails, eval] }
     | and φ ψ ih₁ ih₂ =>
         simp [eval]
-        sorry -- 需要极大一致性的性质
+        constructor
+        · intro h
+          have hφ : φ ∈ Γ ∨ (¬' φ) ∈ Γ := h.2 φ
+          have hψ : ψ ∈ Γ ∨ (¬' ψ) ∈ Γ := h.2 ψ
+          cases hφ with
+          | inl hφ => cases hψ with
+            | inl hψ => exact ⟨hφ, hψ⟩
+            | inr hψ =>
+              have h_and : (¬' ψ) ∈ Γ := hψ
+              have h_bot : ¬Consistent Γ := by
+                simp [Consistent, Entails]
+                intro σ hσ
+                have hψ' : ⟦ψ⟧ σ = true := hσ ψ (ih₂.1 hψ)
+                have h_notψ : ⟦¬' ψ⟧ σ = true := hσ (¬' ψ) h_and
+                simp [eval] at h_notψ
+                rw [hψ'] at h_notψ
+                contradiction
+              have h_contra := h.1
+              contradiction
+          · intro h
+            have hφ : (¬' φ) ∈ Γ := h
+            have h_bot : ¬Consistent Γ := by
+              simp [Consistent, Entails]
+              intro σ hσ
+              have hφ' : ⟦φ⟧ σ = true := hσ φ (ih₁.1 (Or.inr hφ))
+              have h_notφ : ⟦¬' φ⟧ σ = true := hσ (¬' φ) hφ
+              simp [eval] at h_notφ
+              rw [hφ'] at h_notφ
+              contradiction
+            have h_contra := h.1
+            contradiction
+        · intro ⟨hφ, hψ⟩
+          constructor
+          · exact ih₁.2 hφ
+          · exact ih₂.2 hψ
     | or φ ψ ih₁ ih₂ =>
         simp [eval]
-        /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
-        sorry
+        constructor
+        · intro h
+          have hφ : φ ∈ Γ ∨ (¬' φ) ∈ Γ := h.2 φ
+          have hψ : ψ ∈ Γ ∨ (¬' ψ) ∈ Γ := h.2 ψ
+          cases hφ with
+          | inl hφ => left; exact ih₁.2 hφ
+          | inr hφ =>
+            cases hψ with
+            | inl hψ => right; exact ih₂.2 hψ
+            | inr hψ =>
+              have h_bot : ¬Consistent Γ := by
+                simp [Consistent, Entails]
+                intro σ hσ
+                have hφ' : ⟦φ⟧ σ = true := hσ φ (ih₁.1 (Or.inr hφ))
+                have hψ' : ⟦ψ⟧ σ = true := hσ ψ (ih₂.1 (Or.inr hψ))
+                have h_notφ : ⟦¬' φ⟧ σ = true := hσ (¬' φ) hφ
+                simp [eval] at h_notφ
+                rw [hφ'] at h_notφ
+                contradiction
+              have h_contra := h.1
+              contradiction
+        · intro h
+          cases h with
+          | inl hφ => left; exact ih₁.2 hφ
+          | inr hψ => right; exact ih₂.2 hψ
     | imp φ ψ ih₁ ih₂ =>
         simp [eval]
-        /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
-        sorry
+        constructor
+        · intro h
+          have hφ : φ ∈ Γ ∨ (¬' φ) ∈ Γ := h.2 φ
+          cases hφ with
+          | inr hφ =>
+            intro hφ'
+            have h_bot : ¬Consistent Γ := by
+              simp [Consistent, Entails]
+              intro σ hσ
+              have hφ'' : ⟦φ⟧ σ = true := hσ φ (ih₁.1 (Or.inr hφ))
+              have h_notφ : ⟦¬' φ⟧ σ = true := hσ (¬' φ) hφ
+              simp [eval] at h_notφ
+              rw [hφ''] at h_notφ
+              contradiction
+            have h_contra := h.1
+            contradiction
+          | inl hφ =>
+            have hψ : ψ ∈ Γ ∨ (¬' ψ) ∈ Γ := h.2 ψ
+            cases hψ with
+            | inl hψ =>
+              intro _
+              exact ih₂.2 hψ
+            | inr hψ =>
+              intro hφ'
+              have h_bot : ¬Consistent Γ := by
+                simp [Consistent, Entails]
+                intro σ hσ
+                have hψ' : ⟦ψ⟧ σ = true := hσ ψ (ih₂.1 (Or.inr hψ))
+                have h_notψ : ⟦¬' ψ⟧ σ = true := hσ (¬' ψ) hψ
+                simp [eval] at h_notψ
+                rw [hψ'] at h_notψ
+                contradiction
+              have h_contra := h.1
+              contradiction
+        · intro h
+          have hψ : ψ ∈ Γ ∨ (¬' ψ) ∈ Γ := h.2 ψ
+          cases hψ with
+          | inl hψ => exact ih₂.2 hψ
+          | inr hψ =>
+            intro hφ'
+            have hφ : φ ∈ Γ ∨ (¬' φ) ∈ Γ := h.2 φ
+            cases hφ with
+            | inl hφ => exact h (ih₁.2 hφ)
+            | inr hφ =>
+              have h_bot : ¬Consistent Γ := by
+                simp [Consistent, Entails]
+                intro σ hσ
+                have hφ'' : ⟦φ⟧ σ = true := hσ φ (ih₁.1 (Or.inr hφ))
+                have h_notφ : ⟦¬' φ⟧ σ = true := hσ (¬' φ) hφ
+                simp [eval] at h_notφ
+                rw [hφ''] at h_notφ
+                contradiction
+              have h_contra := h.1
+              contradiction
     | not φ ih =>
         simp [eval]
-        /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
-        sorry
+        constructor
+        · intro h hφ
+          have h_notφ : (¬' φ) ∈ Γ := h
+          have h_bot : ¬Consistent Γ := by
+            simp [Consistent, Entails]
+            intro σ hσ
+            have hφ' : ⟦φ⟧ σ = true := hσ φ hφ
+            have h_notφ' : ⟦¬' φ⟧ σ = true := hσ (¬' φ) h_notφ
+            simp [eval] at h_notφ'
+            rw [hφ'] at h_notφ'
+            contradiction
+          have h_contra := h.1
+          contradiction
+        · intro h
+          have hφ : φ ∈ Γ ∨ (¬' φ) ∈ Γ := h.2 φ
+          cases hφ with
+          | inr h_notφ => exact h_notφ
+          | inl hφ =>
+            have h_bot : ¬Consistent Γ := by
+              simp [Consistent, Entails]
+              intro σ hσ
+              have hφ' : ⟦φ⟧ σ = true := hσ φ (ih.1 hφ)
+              have h_notφ : ⟦¬' φ⟧ σ = true := hσ (¬' φ) (by
+                intro hφ''
+                exact h (ih.1 hφ''))
+              simp [eval] at h_notφ
+              rw [hφ'] at h_notφ
+              contradiction
+            have h_contra := h.1
+            contradiction
 
   /-- 定理 4.2 (完备性): 自然演绎系统是完备的，即任何语义有效的公式都是可推导的。
 
@@ -761,33 +963,73 @@ section MetaTheory
 
   证明概要:
   1. 反证法: 假设 Γ ⊬ φ
-  2. 则 Γ ∪ {¬φ} 是一致的
+  2. 则 Γ ∪ {¬φ} 是一致的（否则 Γ ⊢ φ 可由反证法得到）
   3. 通过 Lindenbaum 引理扩展为极大一致集 Δ
-  4. 构造典范赋值 σ_Δ
+  4. 构造典范赋值 σ_Δ: PropVar → Bool
   5. 由真值引理，σ_Δ 满足 Γ 但使 φ 为假
   6. 这与 Γ ⊨ φ 矛盾
+
+  证明依赖: Lindenbaum 引理、真值引理、反证法。
+  这是命题逻辑最核心的元定理之一（Gödel 完备性定理的命题版本）。
   -/
   theorem completeness : ∀ {Γ : Set Formula} {φ : Formula},
       (Γ ⊨ φ) → ∃ Γ' : Context, Γ'.toSet = Γ ∧ (Γ' ⊢ φ) := by
-    -- 完备性证明需要构造性方法
+    -- 核心证明步骤：
+    -- 1. 将 Set Formula 转换为 Context（有限列表表示）
+    -- 2. 反证法: 假设 Γ' ⊬ φ
+    -- 3. 证明 Consistent (Γ ∪ {¬' φ})
+    -- 4. 应用 lindenbaum 得到极大一致集 Δ
+    -- 5. 证明 canonicalAssignment Δ h 满足 Γ 中的所有公式
+    -- 6. 由 Γ ⊨ φ 推出矛盾
+    /- 详细策略:
+       · 关键步骤 3: 若 ¬Consistent (Γ ∪ {¬' φ})，则 ∃ Γ'' ⊆ Γ ∪ {¬' φ} 有限使 Γ'' ⊢ ⊥。
+         若 ¬' φ ∈ Γ''，则 Γ'' \ {¬' φ} ⊢ φ（由反证法），故 Γ ⊢ φ，矛盾。
+       · 关键步骤 5: 对任意 ψ ∈ Γ，由真值引理和 Γ ⊆ Δ，⟦ψ⟧ σ_Δ = true。
+       · 关键步骤 6: 由 ¬φ ∈ Δ，⟦¬' φ⟧ σ_Δ = true，故 ⟦φ⟧ σ_Δ = false，
+         但 Γ ⊨ φ 要求 ⟦φ⟧ σ_Δ = true，矛盾。
+    -/
     sorry
 
-  /-- 推论 4.2 (紧致性): 若 Γ ⊨ φ，则存在有限子集 Γ' ⊆ Γ 使得 Γ' ⊨ φ -/
+  /-- 推论 4.2 (紧致性): 若 Γ ⊨ φ，则存在有限子集 Γ' ⊆ Γ 使得 Γ' ⊨ φ
+
+  证明思路: 由完备性，Γ ⊨ φ 蕴含 Γ ⊢ φ。自然演绎的推导只使用有限个假设，
+  因此存在有限 Γ' ⊆ Γ 使得 Γ' ⊢ φ。再由可靠性，Γ' ⊨ φ。
+  -/
   corollary compactness {Γ : Set Formula} {φ : Formula}
       (h : Γ ⊨ φ) : ∃ Γ' : Finset Formula, ↑Γ' ⊆ Γ ∧ (↑Γ' : Set Formula) ⊨ φ := by
-    -- 从完备性推导紧致性
-    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
+    -- 证明步骤:
+    -- 1. 由完备性定理，Γ ⊨ φ → ∃ Γ_c : Context, Γ_c.toSet = Γ ∧ Γ_c ⊢ φ
+    -- 2. 自然演绎推导 Γ_c ⊢ φ 只用到 Γ_c 中的有限个公式
+    -- 3. 取 Γ' 为这有限个公式的集合
+    -- 4. 由可靠性，Γ' ⊢ φ → Γ' ⊨ φ
+    /- 形式化难点:
+       · 需证明 "推导只用到有限个假设"（推导的有限支持性）。
+       · 这在 Lean 中需要对 Derives 归纳类型进行元理论分析，
+         或引入有限推导的概念。
+    -/
     sorry
 
   /-- 定理 4.3 (可靠性与完备性的等价形式):
   Γ ⊢ φ ↔ Γ ⊨ φ
+
+  这是命题逻辑的核心定理，表明语法推导与语义蕴涵完全对应。
   -/
   theorem soundness_completeness_equiv {Γ : Context} {φ : Formula} :
       (Γ ⊢ φ) ↔ (Γ.toSet ⊨ φ) := by
     constructor
-    · exact soundness
-    · intro h
-      -- 这里需要完备性的具体证明
+    · -- →: 可靠性，已由 soundness 证明
+      exact soundness
+    · -- ←: 完备性，需从 Γ.toSet ⊨ φ 推出 Γ ⊢ φ
+      -- 由 completeness: Γ.toSet ⊨ φ → ∃ Γ', Γ'.toSet = Γ.toSet ∧ Γ' ⊢ φ
+      -- 需进一步证明 Γ' ⊢ φ 且 Γ'.toSet = Γ.toSet 蕴含 Γ ⊢ φ
+      -- （这要求证明 Context 的集合等价性保持可推导性）
+      intro h
+      /- 证明步骤:
+         1. 应用 completeness 于 h，得到 Γ' 使得 Γ'.toSet = Γ.toSet 且 Γ' ⊢ φ
+         2. 证明 Γ' 和 Γ 作为列表，其集合相等蕴含可推导性等价
+         3. 具体地，需证明: 若 Γ'.toSet = Γ.toSet，则 ∀ ψ, Γ' ⊢ ψ ↔ Γ ⊢ ψ
+         4. 这可以通过对 Context 的结构归纳或直接使用集合等价性完成
+      -/
       sorry
 
 end MetaTheory
@@ -1021,12 +1263,23 @@ deriving Repr, Inhabited
   def formulaToCNF (φ : Formula) : CNF :=
     toCNF (toNNF φ)
 
-  /-- 定理 5.2 (CNF 等价性): formulaToCNF(φ).toFormula ≡ φ -/
+  /-- 定理 5.2 (CNF 等价性): formulaToCNF(φ).toFormula ≡ φ
+
+  证明策略: 由 toNNF_equiv 和 toCNF_preserves_equiv 组合得到。
+  -/
   theorem formulaToCNF_equiv (φ : Formula) :
       (formulaToCNF φ).toFormula ≡ φ := by
     intro σ
     simp [formulaToCNF]
-    -- 这里需要更详细的证明
+    -- 证明分解:
+    -- 1. toNNF φ ≡ φ (由 toNNF_equiv)
+    -- 2. toCNF (toNNF φ).toFormula ≡ (toNNF φ).toFormula (由 toCNF 保持等价)
+    -- 3. 传递性得证
+    /- 形式化要点:
+       · 需先证明 toNNF_equiv: ∀ φ, toNNF φ ≡ φ
+       · 需证明 toCNF 保持语义等价: ∀ ψ ∈ NNF, toCNF ψ ≡ ψ
+       · 两者组合即得目标
+    -/
     sorry
 
   /-- 函数 5.3 (DNF 转换) -/
@@ -1047,22 +1300,46 @@ deriving Repr, Inhabited
   def formulaToDNF (φ : Formula) : DNF :=
     toDNF (toNNF φ)
 
-  /-- 定理 5.3 (DNF 等价性): formulaToDNF(φ).toFormula ≡ φ -/
+  /-- 定理 5.3 (DNF 等价性): formulaToDNF(φ).toFormula ≡ φ
+
+  证明策略: 同 CNF 等价性，由 toNNF_equiv 和 toDNF 保持等价组合得到。
+  -/
   theorem formulaToDNF_equiv (φ : Formula) :
       (formulaToDNF φ).toFormula ≡ φ := by
     intro σ
     simp [formulaToDNF]
-    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
+    /- 证明分解:
+       1. toNNF φ ≡ φ (由 toNNF_equiv)
+       2. toDNF (toNNF φ).toFormula ≡ (toNNF φ).toFormula (归纳证明)
+       3. 传递性得证
+    -/
     sorry
 
   /- ============================================================
     范式的性质
     ============================================================ -/
 
-  /-- 引理 5.4 (CNF 可满足性): CNF 可满足当且仅当每个子句可满足 -/
+  /-- 引理 5.4 (CNF 可满足性): CNF 可满足当且仅当每个子句可满足
+
+  注意: 这里的 "每个子句可满足" 是指每个子句作为独立公式可满足，
+  而非存在统一赋值满足所有子句。后者正是 SAT 问题的定义。
+
+  形式化说明: CNF = List Clause，cnf.toFormula = ⋀ᵢ (⋁ⱼ lᵢⱼ)。
+  一个赋值 σ 满足 CNF 当且仅当 σ 满足每个子句。
+  这个引理的准确表述应为:
+    Satisfiable cnf.toFormula ↔ ∃ σ, ∀ c ∈ cnf, satisfiesClause σ c = true
+  -/
   lemma cnf_satisfiable_iff (cnf : CNF) :
       Satisfiable cnf.toFormula ↔ ∀ c ∈ cnf, Satisfiable c.toFormula := by
-    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
+    -- 注意: 此表述在数学上不精确。
+    -- "每个子句可满足" (右端) 是 ∀ c ∈ cnf, ∃ σ, σ ⊨ c
+    -- "CNF可满足" (左端) 是 ∃ σ, ∀ c ∈ cnf, σ ⊨ c
+    -- 两者不等价！右端蕴含左端不成立。
+    /- 正确的引理应该是:
+       lemma cnf_satisfiable_characterization (cnf : CNF) :
+         Satisfiable cnf.toFormula ↔ ∃ σ, ∀ c ∈ cnf, satisfiesClause σ c = true
+       证明: 直接由 eval 和 satisfiesClause 的定义展开。
+    -/
     sorry
 
   /-- 引理 5.5 (霍恩子句): 最多含一个正文字的子句
@@ -1073,14 +1350,30 @@ deriving Repr, Inhabited
     -- 正文字数量 ≤ 1
     (c.filter (fun l => match l with | Literal.pos _ => true | _ => false)).length ≤ 1
 
-  /-- 定理 5.4 (霍恩可满足性): 霍恩公式的可满足性可在多项式时间内判定 -/
+  /-- 定理 5.4 (霍恩可满足性): 霍恩公式的可满足性可在多项式时间内判定
+
+  前向链算法 (Forward Chaining):
+  1. 初始化: 所有单元子句（单文字子句）中的正文字设为真
+  2. 迭代: 若所有正文字为假的霍恩子句中只剩一个未赋值负文字，
+     则该负文字必须为假（即对应变量为真）
+  3. 终止: 若无新单元推导，则当前赋值即为满足赋值（若未出现空子句）
+
+  复杂度: O(|变量| × |子句|)，是多项式时间的。
+  -/
   theorem horn_sat_polynomial :
       ∃ (algorithm : CNF → Bool),
       ∀ (cnf : CNF),
         (∀ c ∈ cnf, isHornClause c) →
         (algorithm cnf = true ↔ Satisfiable cnf.toFormula) := by
-    -- 前向链算法
-    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
+    -- 形式化前向链算法
+    /- 实现要点:
+       1. 定义 unitPropagation 的完整版本
+       2. 证明算法的终止性（变量赋值单调递增）
+       3. 证明算法的正确性:
+          - Soundness: 算法返回 sat 则公式可满足
+          - Completeness: 公式可满足则算法返回 sat
+       4. 证明算法的时间复杂度为多项式
+    -/
     sorry
 
 end NormalForms
@@ -1107,10 +1400,20 @@ section SATSolving
   def satisfiesCNF (σ : Assignment) (cnf : CNF) : Bool :=
     cnf.all (satisfiesClause σ)
 
-  /-- 定理 6.1 (SAT 语义等价): satisfiesCNF 与 eval 等价 -/
+  /-- 定理 6.1 (SAT 语义等价): satisfiesCNF 与 eval 等价
+
+  证明策略: 对 CNF 的列表结构归纳，展开定义即可。
+  -/
   theorem satisfiesCNF_equiv (σ : Assignment) (cnf : CNF) :
       satisfiesCNF σ cnf = true ↔ ⟦cnf.toFormula⟧ σ = true := by
-    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
+    /- 证明分解:
+       satisfiesCNF σ cnf = cnf.all (satisfiesClause σ)
+       ⟦cnf.toFormula⟧ σ = ⟦⋀ᵢ cᵢ⟧ σ = ∀ i, ⟦cᵢ⟧ σ = true
+       需证明: cnf.all (satisfiesClause σ) = true ↔ ∀ c ∈ cnf, satisfiesClause σ c = true
+       这由 List.all 的定义直接得到。
+       进一步需证明: satisfiesClause σ c = true ↔ ⟦c.toFormula⟧ σ = true
+       由 Literal 和 eval 的定义直接得到。
+    -/
     sorry
 
   /-- 单元传播 (Unit Propagation)
@@ -1140,12 +1443,29 @@ section SATSolving
     -- 递归求解
     DPLLResult.unsat  -- 占位符
 
-  /-- 定理 6.2 (DPLL 正确性): DPLL 算法是正确的 -/
+  /-- 定理 6.2 (DPLL 正确性): DPLL 算法是正确的
+
+  DPLL 算法的正确性证明需要:
+  1. 单元传播保持可满足性
+  2. 纯文字消除保持可满足性
+  3. 分支选择的完备性（至少一个分支可满足当且仅当原公式可满足）
+  4. 终止性（每次递归变量数减少）
+
+  这是 SAT 求解器的核心正确性定理。
+  -/
   theorem dpll_correct (cnf : CNF) :
       match dpll cnf with
       | DPLLResult.sat σ => satisfiesCNF σ cnf = true
       | DPLLResult.unsat => ¬SAT cnf := by
-    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
+    -- 当前 dpll 实现为占位符，始终返回 unsat
+    -- 完整证明需要实现 DPLL 算法并验证其性质
+    /- 证明结构:
+       · 对 cnf 的结构/子句数归纳
+       · 单元传播引理: unitPropagate 保持 SAT 等价
+       · 纯文字引理: pureLiteralElim 保持 SAT 等价
+       · 分支引理: 对变量 v，CNF 可满足 ↔ CNF[v=true] 可满足 ∨ CNF[v=false] 可满足
+       · 终止: 每次分支减少未赋值变量数
+    -/
     sorry
 
 end SATSolving

@@ -10,7 +10,7 @@
 
 - [Design Pattern: Event Time Processing](#design-pattern-event-time-processing)
   - [Table of Contents](#table-of-contents)
-  - [1. Problem / Context](#1-problem--context)
+  - [1. Problem / Context](#1-problem-context)
     - [1.1 Temporal Challenges in Distributed Stream Processing](#11-temporal-challenges-in-distributed-stream-processing)
     - [1.2 Time Semantics Selection Dilemma](#12-time-semantics-selection-dilemma)
     - [1.3 Specific Manifestations in Business Scenarios](#13-specific-manifestations-in-business-scenarios)

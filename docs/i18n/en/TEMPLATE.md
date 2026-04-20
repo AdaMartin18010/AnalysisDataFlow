@@ -29,7 +29,7 @@ Brief introduction to the topic. Explain what this document covers and why it ma
   - [4. Argumentation](#4-argumentation)
     - [4.1 \[Topic of Argumentation\]](#41-topic-of-argumentation)
     - [4.2 \[Another Topic\]](#42-another-topic)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [Thm-X-XX-01: \[Theorem Name\]](#thm-x-xx-01-theorem-name)
     - [Engineering Argument: \[Engineering Decision\]](#engineering-argument-engineering-decision)
   - [6. Examples](#6-examples)

@@ -454,7 +454,7 @@ LogReplication ==
     \A s \in Server :
         (state[s] = "Leader" 
          /\ commitIndex[s] < LastLogIndex(s))
-        => <>(commitIndex[s] > commitIndex[s])
+        => <>(commitIndex[s] >= LastLogIndex(s))
 
 (*
  * =====================================================================

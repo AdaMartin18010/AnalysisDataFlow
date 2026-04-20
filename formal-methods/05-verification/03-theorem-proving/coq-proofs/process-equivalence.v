@@ -949,7 +949,43 @@ Inductive pi_trans : pi -> pi_action -> pi -> Prop :=
   (* 输出 *)
   | PT_Output : forall a x P,
       (pi_output a x P) -pi- (pi_out a x) -> P
-  (* 更多规则略... *)
+  (* 并行左 *)
+  | PT_ParL : forall P Q a P',
+      P -pi- a -> P' ->
+      (pi_par P Q) -pi- a -> (pi_par P' Q)
+  (* 并行右 *)
+  | PT_ParR : forall P Q a Q',
+      Q -pi- a -> Q' ->
+      (pi_par P Q) -pi- a -> (pi_par P Q')
+  (* 通信 *)
+  | PT_Com : forall P Q a x y P' Q',
+      P -pi- (pi_in a x) -> P' ->
+      Q -pi- (pi_out a y) -> Q' ->
+      (pi_par P Q) -pi- pi_tau -> (pi_par P' Q')
+  (* 选择和左 *)
+  | PT_SumL : forall P Q a P',
+      P -pi- a -> P' ->
+      (pi_sum P Q) -pi- a -> P'
+  (* 选择和右 *)
+  | PT_SumR : forall P Q a Q',
+      Q -pi- a -> Q' ->
+      (pi_sum P Q) -pi- a -> Q'
+  (* 限制 *)
+  | PT_Restr : forall P a x P',
+      P -pi- a -> P' ->
+      a <> pi_in x x ->
+      a <> pi_out x x ->
+      a <> pi_bound_out x x ->
+      (pi_restr x P) -pi- a -> (pi_restr x P')
+  (* 复制 *)
+  | PT_Repl : forall P a P',
+      P -pi- a -> P' ->
+      (pi_repl P) -pi- a -> (pi_par P' (pi_repl P))
+  (* 匹配 *)
+  | PT_Match : forall P a x y P',
+      x = y ->
+      P -pi- a -> P' ->
+      (pi_match x y P) -pi- a -> P'
 
   where "P '-pi-' a '->' P'" := (pi_trans P a P').
 
@@ -969,12 +1005,41 @@ Inductive pi_trans : pi -> pi_action -> pi -> Prop :=
  * - 则存在 Q' 使得 Q => Q' 且 P' ~ Q'
  *)
 
+(* 定义: 零个或多个τ迁移 (P => P') *)
+Inductive tau_star : ccs -> ccs -> Prop :=
+  | TS_Zero : forall P, tau_star P P
+  | TS_Step : forall P P' P'',
+      P -tau-> P' ->
+      tau_star P' P'' ->
+      tau_star P P''.
+
 Definition weak_transition (P : ccs) (a : action) (P' : ccs) : Prop :=
   exists P1 P2,
-    (* P => P1 (零个或多个 τ) *)
-    (* P1 -a-> P2 *)
-    (* P2 => P' (零个或多个 τ) *)
-    True.  (* 占位符 *)
+    tau_star P P1 /\       (* P => P1 (零个或多个 τ) *)
+    P1 -a-> P2 /\          (* P1 -a-> P2 *)
+    tau_star P2 P'.        (* P2 => P' (零个或多个 τ) *)
+
+(* 定义: 弱互模拟 *)
+Definition weak_bisimulation (R : ccs -> ccs -> Prop) : Prop :=
+  forall P Q,
+    R P Q ->
+    (forall a P',
+        P -a-> P' ->
+        exists Q',
+          weak_transition Q a Q' /\ R P' Q') /\
+    (forall a Q',
+        Q -a-> Q' ->
+        exists P',
+          weak_transition P a P' /\ R P' Q').
+
+(* 定义: 弱互模拟等价 (~>) *)
+Inductive weak_bisimilar : ccs -> ccs -> Prop :=
+  | WB_intro : forall R P Q,
+      weak_bisimulation R ->
+      R P Q ->
+      weak_bisimilar P Q.
+
+Notation "P '~>' Q" := (weak_bisimilar P Q) (at level 40).
 
 (* =====================================================================
  * 10. 应用与扩展

@@ -4,7 +4,7 @@
 (*                                                                            *)
 (* 基于 Leslie Lamport 的 "The Part-Time Parliament" 和 "Paxos Made Simple"     *)
 (* 本版本提供基础框架，包含核心变量和动作定义                                    *)
-(*                                                                            (* 所属阶段: Struct/ | 形式化等级: L5                                           *)
+(* 所属阶段: Struct/ | 形式化等级: L5                                           *)
 (* 状态: 基础框架（待完善完整实现）                                              *)
 (******************************************************************************)
 
@@ -27,7 +27,9 @@ CONSTANTS
     Ballot,             \* 选票号集合（全序集合）
     Quorum              \* 法定集合（多数派的子集）
 
-ASSUME
+(* ASSUME-01: 常量参数约束 - Acceptor、Proposer 非空且有限，Quorum 满足交集性质 *)
+(* 证明思路: 这是模型配置假设，由 TLC 常量定义保证；Quorum 交集是 Paxos 安全性的核心前提 *)
+ASSUME ConstantsAssumption ==
     /\ Acceptor # {}                              \* 至少有一个 Acceptor
     /\ Proposer # {}                              \* 至少有一个 Proposer
     /\ IsFiniteSet(Acceptor)                      \* Acceptor 集合有限
@@ -43,8 +45,9 @@ ASSUME
 (* 空值定义 *)
 None == 0
 
-(* 选票号必须是全序的，这里假设 Ballot 是自然数的子集 *)
-ASSUME Ballot \subseteq Nat
+(* ASSUME-02: Ballot 必须是全序集合，此处限定为自然数子集以保证可比性 *)
+(* 证明思路: Nat 上的 < 关系是全序，因此 Ballot 继承全序性；这是选票号比较的基础 *)
+ASSUME BallotOrderingAssumption == Ballot \subseteq Nat
 
 (* Acceptor 可能的投票状态 *)
 VoteRecord ==
@@ -160,14 +163,18 @@ Init ==
 
 (* Def-S-Paxos-02: Phase 1a - Proposer 发送 Prepare 请求 *)
 (* Proposer p 选择一个新的选票号 b 并发送 Prepare 请求 *)
+(* TODO-01: 需补充完整实现 - 选择新选票号并更新 propState, propBal, msgs *)
+(* 完成建议: 参考 formal-methods/05-verification/01-logic/tla-specs/paxos.tla 中 Prepare 动作 *)
 Phase1a(p) ==
     /\ propState[p] = Idle                        \* Proposer 必须处于 Idle 状态
-    /\ UNCHANGED vars  \* 框架占位符
+    /\ UNCHANGED vars
 
 (* Def-S-Paxos-03: Phase 1b - Acceptor 响应 Promise *)
 (* Acceptor a 收到 Prepare(b) 后，如果 b > maxBal[a]，则承诺不投票 <= b *)
+(* TODO-02: 需补充完整实现 - 更新 maxBal, votes, 添加 Promise 消息到 msgs *)
+(* 完成建议: 参考 formal-methods/90-examples/tla-plus/paxos.tla 中 Promise 动作 *)
 Phase1b(a) ==
-    /\ UNCHANGED vars  \* 框架占位符
+    /\ UNCHANGED vars
 
 (*----------------------------------------------------------------------------*)
 (* Phase 2: 接受阶段                                                            *)
@@ -175,34 +182,44 @@ Phase1b(a) ==
 
 (* Def-S-Paxos-04: Phase 2a - Proposer 发送 Accept 请求 *)
 (* Proposer p 收到多数派 Promise 后，发送 Accept(b, v) 请求 *)
+(* TODO-03: 需补充完整实现 - 根据 Promise 选择值，更新 propState, propVal, msgs *)
+(* 完成建议: 参考 formal-methods/90-examples/tla-plus/paxos.tla 中 Propose 动作 *)
 Phase2a(p) ==
     /\ propState[p] = Preparing                   \* 必须在 Preparing 状态
-    /\ UNCHANGED vars  \* 框架占位符
+    /\ UNCHANGED vars
 
 (* Def-S-Paxos-05: Phase 2b - Acceptor 接受值 *)
 (* Acceptor a 收到 Accept(b, v) 后，如果未承诺更高选票号，则接受 *)
+(* TODO-04: 需补充完整实现 - 在 b >= maxBal[a] 时更新 votes[a] *)
+(* 完成建议: 参考 formal-methods/05-verification/01-logic/tla-specs/paxos.tla 中 Accept 动作 *)
 Phase2b(a) ==
-    /\ UNCHANGED vars  \* 框架占位符
+    /\ UNCHANGED vars
 
 (*----------------------------------------------------------------------------*)
 (* 学习被选中的值                                                               *)
 (*----------------------------------------------------------------------------*)
 
 (* Def-S-Paxos-06: 更新被选中的值集合 *)
+(* TODO-05: 需补充完整实现 - 当检测到 Quorum 对同一 (b,v) 投票时更新 chosen *)
+(* 完成建议: 遍历所有选票号和值，检查是否存在 Quorum 已投票，若存在则加入 chosen *)
 LearnChosen ==
-    /\ UNCHANGED vars  \* 框架占位符
+    /\ UNCHANGED vars
 
 (*----------------------------------------------------------------------------*)
 (* 消息处理动作                                                                 *)
 (*----------------------------------------------------------------------------*)
 
 (* Def-S-Paxos-07: 消息被丢弃（模拟网络丢包） *)
+(* TODO-06: 需补充完整实现 - 从 msgs 中删除某条消息 *)
+(* 完成建议: \E m \in msgs : msgs' = msgs \ {m} *)
 DropMessage ==
-    /\ UNCHANGED vars  \* 框架占位符
+    /\ UNCHANGED vars
 
 (* Def-S-Paxos-08: 消息延迟（模拟网络延迟） *)
+(* TODO-07: 需补充完整实现 - 可添加延迟计数器或消息队列建模 *)
+(* 完成建议: 引入延迟消息集合 delayed_msgs，消息先在 delayed_msgs 中停留若干步 *)
 DelayMessage ==
-    /\ UNCHANGED vars  \* 框架占位符
+    /\ UNCHANGED vars
 
 (*----------------------------------------------------------------------------*)
 (* 下一步关系                                                                   *)
@@ -224,8 +241,10 @@ Next ==
 (*============================================================================*)
 
 (* Def-S-Paxos-10: 公平性条件（基础框架，待完善） *)
+(* TODO-08: 需补充完整公平性约束以保证活性 *)
+(* 完成建议: 对所有 Phase1a, Phase2a, Phase1b, Phase2b 动作添加弱公平性 *)
 Fairness ==
-    TRUE  \* 框架占位符
+    TRUE
 
 (* Def-S-Paxos-11: 完整规约 *)
 Spec == Init /\ [][Next]_vars /\ Fairness

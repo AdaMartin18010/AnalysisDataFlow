@@ -23,10 +23,11 @@
 -/
 
 import FormalMethods.Lambda.Syntax
-import FormalMethods.Lambda.Operational
-import FormalMethods.Lambda.Typing
-import FormalMethods.Lambda.Safety
+import FormalMethods.Lambda.Substitution
+import FormalMethods.Lambda.Reduction
 import FormalMethods.TypeSystem.SystemF
+import FormalMethods.TypeSystem.SimpleTypes
+import FormalMethods.TypeSystem.Safety
 import FormalMethods.Logic.Propositional
 import FormalMethods.Concurrent.CCS
 

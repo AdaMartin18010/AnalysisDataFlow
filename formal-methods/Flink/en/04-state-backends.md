@@ -10,7 +10,7 @@
 - [2. Properties](#2-properties)
 - [3. Relations](#3-relations)
 - [4. Argumentation](#4-argumentation)
-- [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+- [5. Proof / Engineering Argument](#5-proof-engineering-argument)
 - [6. Examples](#6-examples)
 - [7. Visualizations](#7-visualizations)
 - [8. References](#8-references)

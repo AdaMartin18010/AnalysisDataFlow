@@ -37,7 +37,10 @@ CONSTANTS
     REPEATABLE_READ,
     SERIALIZABLE
 
-ASSUME
+(* ASSUME-01: 非空假设 - Transaction、Key、Value 必须非空 *)
+(* 证明思路: 空集合会导致 Init 中映射无定义或数据库初始状态无意义；
+ * 这是模型配置约束，由 TLC 常量定义保证 *)
+ASSUME NonEmptyAssumption ==
     /\ Transaction # {}
     /\ Key # {}
     /\ Value # {}

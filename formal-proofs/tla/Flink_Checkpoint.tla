@@ -18,8 +18,11 @@ CONSTANTS
     CheckpointInterval,     \* 检查点间隔
     MaxInflightRecords      \* 最大在途记录数
 
-ASSUME CheckpointInterval \in Nat
-ASSUME CheckpointInterval > 0
+(* ASSUME-01: 参数化假设 - CheckpointInterval 必须是正自然数 *)
+(* 证明思路: 这是模型参数约束，由 TLC 配置保证，非证明目标 *)
+ASSUME CheckpointIntervalAssumption ==
+    /\ CheckpointInterval \in Nat
+    /\ CheckpointInterval > 0
 
 (* ---------------------------------------------------------------------------- *)
 (* 类型定义                                                                     *)
@@ -109,11 +112,14 @@ CompleteCheckpoint(tm) ==
        /\ UNCHANGED <<channels, global_checkpoint>>
 
 (* 4. 全局Checkpoint确认 *)
+(* TODO-03: checkpoint_coord.completed \supseteq TaskManagers 存在类型不匹配 *)
+(* 问题: completed 存储的是 checkpoint ID (Nat)，而 TaskManagers 是 STRING 集合 *)
+(* 完成建议: 重构为按 checkpoint ID 追踪每个 TM 的完成状态，例如 completedTM[cp_id] \subseteq TaskManagers *)
 ConfirmGlobalCheckpoint ==
     /\ checkpoint_coord.active # {}
     /\ LET cp_id == CHOOSE id \in checkpoint_coord.active : TRUE
        IN
-       /\ checkpoint_coord.completed \supseteq TaskManagers  \* 所有TM完成
+       /\ checkpoint_coord.completed \supseteq TaskManagers  \* 所有TM完成 (注意: 当前实现存在类型不匹配，语义待修正)
        /\ global_checkpoint' = [latest |-> cp_id,
                                states |-> global_checkpoint.states \union {cp_id}]
        /\ checkpoint_coord' = [checkpoint_coord EXCEPT 
@@ -150,21 +156,24 @@ Next ==
 (* ---------------------------------------------------------------------------- *)
 
 (* 活性: 最终总会触发Checkpoint *)
+(* TODO-01: 需补充公平性条件 WF_vars(TriggerCheckpoint) 以确保活性 *)
+(* 完成建议: 在 Spec 中添加公平性约束，使 TriggerCheckpoint 在持续可启用时最终执行 *)
 Liveness == 
-    [](global_checkpoint.latest > 0 ~> global_checkpoint.latest >= 0)
+    <> (global_checkpoint.latest > 0)
 
 (* 安全性: Checkpoint ID单调递增 *)
 Safety ==
     [][global_checkpoint.latest' >= global_checkpoint.latest]_vars
 
 (* 一致性: 所有TaskManager的快照是一致的 *)
+(* TODO-02: 当前为简化表示，需补充具体状态等价性条件 *)
+(* 完成建议: 定义状态等价关系 StateEquivalence(tm1, tm2, cp_id)，比较处理记录的集合 *)
 Consistency ==
     \A cp_id \in global_checkpoint.states :
         \A tm1, tm2 \in TaskManagers :
             (cp_id \notin tm_states[tm1].pending_barriers /\
              cp_id \notin tm_states[tm2].pending_barriers)
-            =>  \* 状态一致性条件
-                TRUE  \* 简化表示
+            => tm_states[tm1].state_data = tm_states[tm2].state_data
 
 (* ---------------------------------------------------------------------------- *)
 (* 规约完整定义                                                                 *)

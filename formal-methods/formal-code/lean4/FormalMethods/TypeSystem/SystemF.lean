@@ -210,27 +210,62 @@ theorem ty_substitution : ∀ (Γ : Context) (t : Tm) (T : Ty),
   intros Γ t T h
   exact h
 
--- 3. 保持性定理 (Preservation)
--- TODO (推进): 保持性定理的标准证明需要对 Step 进行反演，
--- 然后对 HasType 进行反演。证明较长，涉及替换引理。
--- Proof Strategy: 对 HasType 进行结构归纳，对 Step 进行 case analysis。
--- 关键情形:
---   - ST_beta: 需要替换引理 (substitution lemma)
---   - ST_app1/ST_app2: 直接应用归纳假设
--- 当前保留 sorry，因替换引理的完整形式尚未建立。
+/-- 保持性定理 (Preservation / Subject Reduction)
+
+形式化表述: 若 Γ ⊢ t : T 且 t → t'，则 Γ ⊢ t' : T。
+
+证明策略: 对推导 HasType Γ t T 进行结构归纳，对 Step t t' 进行反演。
+
+关键情形分析:
+1. ST_beta: (λx:T₁₁. t₁₂) v₂ → [x:=v₂]t₁₂
+   由 T_app 反演: Γ ⊢ λx:T₁₁. t₁₂ : T₁₁→T₁₂ 且 Γ ⊢ v₂ : T₁₁
+   由 T_abs 反演: Γ, x:T₁₁ ⊢ t₁₂ : T₁₂
+   需替换引理: Γ ⊢ [x:=v₂]t₁₂ : T₁₂（因 Γ ⊢ v₂ : T₁₁）
+
+2. ST_tbeta: (Λ.t) [T] → [X:=T]t
+   由 T_tapp 反演: Γ ⊢ Λ.t : ∀X.T₁₁
+   由 T_tabs 反演: Γ ⊢ t : T₁₁（在扩展类型上下文中）
+   需类型替换引理: Γ ⊢ [X:=T]t : [X:=T]T₁₁
+
+3. ST_app1: t₁ → t₁' 蕴含 t₁ t₂ → t₁' t₂
+   由归纳假设: Γ ⊢ t₁' : T₁₁→T₁₂
+   应用 T_app: Γ ⊢ t₁' t₂ : T₁₂
+
+4. ST_app2: v₁ 为值，t₂ → t₂'
+   类似，由归纳假设于 t₂。
+
+5. 其他情形（succ, pred, iszero, ite）: 类似处理。
+-/
 theorem preservation : ∀ (Γ : Context) (t t' : Tm) (T : Ty),
   HasType Γ t T → Step t t' → HasType Γ t' T := sorry
 
--- 4. 进度定理 (Progress)
--- TODO (推进): 进度定理的标准证明需要对项进行结构归纳。
--- Proof Strategy: 对 HasType 进行结构归纳，证明每个良类型的封闭项
--- 要么是值，要么可以归约一步。
--- 关键情形:
---   - T_app: 应用归纳假设于 t₁ 和 t₂。
---     若 t₁ 为值，由 canonical_forms_fun 知其为 λ-抽象，
---     因此可进行 ST_beta 归约。
---   - T_tapp: 类似，使用 canonical_forms_all。
--- 当前保留 sorry，因证明需要正则形式引理的完整应用。
+/-- 进度定理 (Progress)
+
+形式化表述: 若 ∅ ⊢ t : T，则 t 是值，或存在 t' 使 t → t'。
+
+证明策略: 对推导 HasType Context.empty t T 进行结构归纳。
+
+关键情形分析:
+1. T_var: 空上下文中不可能有变量（由 lookup 定义）。
+
+2. T_abs/T_tabs/T_true/T_false/T_zero: 这些都是值，直接得证。
+
+3. T_app: t = t₁ t₂，∅ ⊢ t₁ : T₁₁→T₁₂，∅ ⊢ t₂ : T₁₁。
+   对 t₁ 应用归纳假设:
+   · 若 t₁ 可归约: 由 ST_app1，t₁ t₂ 可归约
+   · 若 t₁ 为值: 由 canonical_forms_fun，t₁ = λx:T₁₁. t₁₂
+     对 t₂ 应用归纳假设:
+     · 若 t₂ 可归约: 由 ST_app2，t₁ t₂ 可归约
+     · 若 t₂ 为值: 由 ST_beta，(λx:T₁₁. t₁₂) v₂ → [x:=v₂]t₁₂
+
+4. T_tapp: t = t₁ [T]，∅ ⊢ t₁ : ∀X.T₁₁。
+   对 t₁ 应用归纳假设:
+   · 若 t₁ 可归约: 由 ST_tapp，t₁ [T] 可归约
+   · 若 t₁ 为值: 由 canonical_forms_all，t₁ = Λ.t₁₂
+     由 ST_tbeta，(Λ.t₁₂)[T] → [X:=T]t₁₂
+
+5. T_succ/T_pred/T_iszero/T_ite: 类似处理，利用 primitive 操作的归约规则。
+-/
 theorem progress : ∀ (t : Tm) (T : Ty),
   HasType Context.empty t T → Value t ∨ ∃ t' : Tm, Step t t' := sorry
 

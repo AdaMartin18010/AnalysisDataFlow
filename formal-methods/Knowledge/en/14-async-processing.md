@@ -29,7 +29,7 @@
   - [4. Argumentation](#4-argumentation)
     - [4.1 Why Async?](#41-why-async)
     - [4.2 Async in Stream Processing](#42-async-in-stream-processing)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [5.1 Determinism of Async Execution](#51-determinism-of-async-execution)
     - [5.2 Type Safety](#52-type-safety)
     - [5.3 Cooperative Cancellation Safety](#53-cooperative-cancellation-safety)

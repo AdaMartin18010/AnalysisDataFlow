@@ -23,9 +23,9 @@ This document systematically organizes the complete derivation relationship netw
 
 ## Table of Contents
 
-- [1. Foundation → Properties Derivation](#1-foundation--properties-derivation)
-- [2. Properties → Relationships Derivation](#2-properties--relationships-derivation)
-- [3. Relationships → Proofs Derivation](#3-relationships--proofs-derivation)
+- [1. Foundation → Properties Derivation](#1-foundation-properties-derivation)
+- [2. Properties → Relationships Derivation](#2-properties-relationships-derivation)
+- [3. Relationships → Proofs Derivation](#3-relationships-proofs-derivation)
 - [4. Complete Derivation Tree](#4-complete-derivation-tree)
 - [5. Derivation Relationship Definition Index](#5-derivation-relationship-definition-index)
 - [6. Coverage Statistics](#6-coverage-statistics)

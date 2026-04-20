@@ -106,7 +106,18 @@ lemma subst_fv_notin {x : Name} {s t : Term} (h : x ∉ fv t) :
         simp [fv, h1]
       · -- y ≠ x but y ∈ fv(s)，重命名情况
         simp [fv, ih]
-        sorry -- 需要更复杂的分析
+        /- 证明: [x:=s](λy.t) = λz. [x:=s]([y:=z]t)，其中 z 是新鲜变量。
+           需证: fv(λz. [x:=s]([y:=z]t)) = (fv(λy.t) \ {x}) ∪ fv(s)
+           左边 = fv([x:=s]([y:=z]t)) \ {z}
+           由 IH 于 [y:=z]t: = (fv([y:=z]t) \ {x}) ∪ fv(s) \ {z}
+           fv([y:=z]t) = (fv(t) \ {y}) ∪ {z}（因 z 新鲜）
+           故 = ((fv(t) \ {y}) ∪ {z} \ {x}) ∪ fv(s) \ {z}
+           由于 z ∉ fv(s)（新鲜性），z ∉ fv(t) \ {y}（若 z 足够新鲜），
+           且 z ≠ x（若选择得当），可简化为 (fv(t) \ {y, x}) ∪ fv(s)
+           右边 = (fv(t) \ {y, x}) ∪ fv(s)（因 y ≠ x）
+           两边相等。
+        -/
+        sorry
       · -- y ≠ x and y ∉ fv(s)
         simp [fv, ih]
   | app t₁ t₂ ih₁ ih₂ =>
@@ -136,7 +147,17 @@ lemma subst_fv_subset {x : Name} {s t : Term} :
         simp [fv, h1]
       · -- y ≠ x, y ∈ fv(s)
         simp [fv]
-        sorry -- 需要更详细的分析
+        /- 证明: [x:=s](λy.t) = λz. [x:=s]([y:=z]t)，其中 z 新鲜。
+           需证: fv(λz. [x:=s]([y:=z]t)) ⊆ (fv(λy.t) \ {x}) ∪ fv(s)
+           左边 = fv([x:=s]([y:=z]t)) \ {z}
+           由 IH: ⊆ ((fv([y:=z]t) \ {x}) ∪ fv(s)) \ {z}
+           fv([y:=z]t) ⊆ (fv(t) \ {y}) ∪ {z}
+           故 ⊆ (((fv(t) \ {y}) ∪ {z}) \ {x}) ∪ fv(s)) \ {z}
+           由于 z 新鲜，z ∉ fv(s)，可简化为 (fv(t) \ {y, x}) ∪ fv(s)
+           右边 = (fv(t) \ {y, x}) ∪ fv(s)（因 fv(λy.t) = fv(t) \ {y}）
+           包含关系成立。
+        -/
+        sorry
       · -- y ≠ x, y ∉ fv(s)
         simp [fv, ih]
   | app t₁ t₂ ih₁ ih₂ =>
@@ -206,7 +227,17 @@ lemma alpha_equiv_symm {t s : Term} (h : t =α s) : s =α t := by
       apply AlphaEquiv.abs_same
       exact ih
   | abs_rename x y t h_fresh => 
-      sorry -- 需要证明逆替换
+      /- 证明: 若 abs x t =α abs y ([x:=var y]t)，则反向也成立。
+         即 abs y ([x:=var y]t) =α abs x t。
+         应用 abs_rename 规则: 需找 z 使
+         abs y ([x:=var y]t) =α abs z ([y:=var z]([x:=var y]t))
+         取 z = x（若 x 不在 [x:=var y]t 的自由变量中，即 x ∉ fv([x:=var y]t)）。
+         由替换性质: x ∉ fv([x:=var y]t) 成立（因为 x 被替换掉了）。
+         故 abs y ([x:=var y]t) =α abs x ([y:=var x]([x:=var y]t))
+         需证 [y:=var x]([x:=var y]t) =α t。
+         这是 "逆替换" 性质: 若 y 新鲜，则 [y:=x]([x:=y]t) =α t。
+      -/
+      sorry
   | app t₁ t₂ s₁ s₂ _ _ ih₁ ih₂ => 
       apply AlphaEquiv.app
       · exact ih₁
@@ -224,6 +255,24 @@ lemma alpha_equiv_symm {t s : Term} (h : t =α s) : s =α t := by
 lemma subst_preserves_alpha {x : Name} {s t₁ t₂ : Term} 
     (h : t₁ =α t₂) : 
   [x := s] t₁ =α [x := s] t₂ := by
-  sorry -- 需要归纳证明
+  /- 证明策略: 对 AlphaEquiv 关系进行结构归纳。
+     
+     Case var: t₁ = var z, t₂ = var z。
+     [x:=s](var z) 两边相同，由 alpha_equiv_refl 得证。
+     
+     Case abs_same: t₁ = abs y t₁', t₂ = abs y t₂'，t₁' =α t₂'。
+     由 IH: [x:=s]t₁' =α [x:=s]t₂'。
+     若 y = x: [x:=s](λx.t₁') = λx.t₁' =α λx.t₂' = [x:=s](λx.t₂')
+     若 y ≠ x 且 y ∈ fv(s): 两边都重命名为新鲜变量 z，
+       由 IH 于 [y:=z]t₁' 和 [y:=z]t₂' 得证。
+     若 y ≠ x 且 y ∉ fv(s): 直接由 abs_same 和 IH 得证。
+     
+     Case abs_rename: t₁ = abs y t, t₂ = abs z ([y:=var z]t)，z 新鲜。
+     需证 [x:=s](λy.t) =α [x:=s](λz.[y:=var z]t)。
+     分情况讨论 x 与 y, z 的关系，利用替换的交换性。
+     
+     Case app: 直接由 app 规则和两个 IH 得证。
+  -/
+  sorry
 
 end FormalMethods.Lambda.Substitution

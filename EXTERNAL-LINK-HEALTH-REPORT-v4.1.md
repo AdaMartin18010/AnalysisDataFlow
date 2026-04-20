@@ -612,7 +612,7 @@
 | [https://web.archive.org/web/*/https://doi.org/10.14778/31377...](https://web.archive.org/web/*/https://doi.org/10.14778/3137765.3137777) | release/v3.0.0/docs/EXTERNAL-LINK-H | 使用Archive.org备份或查找论文最新位置 |
 | [https://web.archive.org/web/*/https://doi.org/10.1561/310000...](https://web.archive.org/web/*/https://doi.org/10.1561/3100000014) | release/v3.0.0/docs/EXTERNAL-LINK-H | 使用Archive.org备份或查找论文最新位置 |
 | [https://web.archive.org/web/*/https://dzone.com/big-data-ana...](https://web.archive.org/web/*/https://dzone.com/big-data-analytics) | release/v3.0.0/docs/EXTERNAL-LINK-H | 临时性问题，稍后重试或使用替代链接 |
-| [https://web.archive.org/web/*/https://engineering.linkedin.c...](https://web.archive.org/web/*/https://engineering.linkedin.com/blog/2016/12/samza--stateful-stream-processing-at-linkedin) | release/v3.0.0/docs/EXTERNAL-LINK-H | 临时性问题，稍后重试或使用替代链接 |
+| [https://web.archive.org/web/*/https://engineering.linkedin.c...](https://web.archive.org/web/*/https://engineering.linkedin.com/blog/2016/12/samza-stateful-stream-processing-at-linkedin) | release/v3.0.0/docs/EXTERNAL-LINK-H | 临时性问题，稍后重试或使用替代链接 |
 | [https://web.archive.org/web/*/https://engineering.linkedin.c...](https://web.archive.org/web/*/https://engineering.linkedin.com/blog/2019/apache-kafka) | release/v3.0.0/docs/EXTERNAL-LINK-H | 临时性问题，稍后重试或使用替代链接 |
 | [https://web.archive.org/web/*/https://flink.apache.org/docum...](https://web.archive.org/web/*/https://flink.apache.org/documentation/exactly-once.html) | release/v3.0.0/docs/EXTERNAL-LINK-H | 检查Flink版本号是否正确，可能需要更新到最新版本 |
 | [https://web.archive.org/web/*/https://gist.github.com/sindre...](https://web.archive.org/web/*/https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c) | release/v3.0.0/docs/EXTERNAL-LINK-H | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |
@@ -1260,7 +1260,7 @@
 | [https://en.wikipedia.org/wiki/Serializability](https://en.wikipedia.org/wiki/Serializability) | Timeout | release/v3.0.0/docs/forma | 临时性问题，稍后重试或使用替代链接 |
 | [https://en.wikipedia.org/wiki/Temporal_logic](https://en.wikipedia.org/wiki/Temporal_logic) | Timeout | formal-methods/98-appendi | 临时性问题，稍后重试或使用替代链接 |
 | [https://en.wikipedia.org/wiki/Type_theory](https://en.wikipedia.org/wiki/Type_theory) | Timeout | formal-methods/98-appendi | 临时性问题，稍后重试或使用替代链接 |
-| [https://engineering.linkedin.com/blog/2016/12/samz...](https://engineering.linkedin.com/blog/2016/12/samza--stateful-stream-processing-at-linkedin) | Client Error 429 | release/v3.0.0/docs/EXTER | 手动检查链接有效性 |
+| [https://engineering.linkedin.com/blog/2016/12/samz...](https://engineering.linkedin.com/blog/2016/12/samza-stateful-stream-processing-at-linkedin) | Client Error 429 | release/v3.0.0/docs/EXTER | 手动检查链接有效性 |
 | [https://fonts.google.com/specimen/Inter](https://fonts.google.com/specimen/Inter) | Timeout | v5.0/MEDIA-KIT/BRAND-GUID | 临时性问题，稍后重试或使用替代链接 |
 | [https://gist.github.com/sindresorhus/a39789f98801d](https://gist.github.com/sindresorhus/a39789f98801d) | Connection Error: Cannot conne | release/v3.0.0/docs/repor | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |
 | [https://gist.github.com/sindresorhus/a39789f98801d...](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c) | Connection Error: Cannot conne | release/v3.0.0/docs/EXTER | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |
@@ -1511,7 +1511,7 @@
 | [https://web.archive.org/web/*/https://doi.org/10.1...](https://web.archive.org/web/*/https://doi.org/10.14778/3137765.3137777) | Timeout | release/v3.0.0/docs/EXTER | 使用Archive.org备份或查找论文最新位置 |
 | [https://web.archive.org/web/*/https://doi.org/10.1...](https://web.archive.org/web/*/https://doi.org/10.1561/3100000014) | Timeout | release/v3.0.0/docs/EXTER | 使用Archive.org备份或查找论文最新位置 |
 | [https://web.archive.org/web/*/https://dzone.com/bi...](https://web.archive.org/web/*/https://dzone.com/big-data-analytics) | Timeout | release/v3.0.0/docs/EXTER | 临时性问题，稍后重试或使用替代链接 |
-| [https://web.archive.org/web/*/https://engineering....](https://web.archive.org/web/*/https://engineering.linkedin.com/blog/2016/12/samza--stateful-stream-processing-at-linkedin) | Timeout | release/v3.0.0/docs/EXTER | 临时性问题，稍后重试或使用替代链接 |
+| [https://web.archive.org/web/*/https://engineering....](https://web.archive.org/web/*/https://engineering.linkedin.com/blog/2016/12/samza-stateful-stream-processing-at-linkedin) | Timeout | release/v3.0.0/docs/EXTER | 临时性问题，稍后重试或使用替代链接 |
 | [https://web.archive.org/web/*/https://engineering....](https://web.archive.org/web/*/https://engineering.linkedin.com/blog/2019/apache-kafka) | Timeout | release/v3.0.0/docs/EXTER | 临时性问题，稍后重试或使用替代链接 |
 | [https://web.archive.org/web/*/https://flink.apache...](https://web.archive.org/web/*/https://flink.apache.org/documentation/exactly-once.html) | Timeout | release/v3.0.0/docs/EXTER | 检查Flink版本号是否正确，可能需要更新到最新版本 |
 | [https://web.archive.org/web/*/https://gist.github....](https://web.archive.org/web/*/https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c) | Timeout | release/v3.0.0/docs/EXTER | 检查仓库是否已重命名或删除，考虑替换为备用文档链接 |

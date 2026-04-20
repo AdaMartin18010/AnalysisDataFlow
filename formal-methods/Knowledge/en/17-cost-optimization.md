@@ -24,7 +24,7 @@
   - [4. Argumentation](#4-argumentation)
     - [4.1 Resource Utilization Challenges](#41-resource-utilization-challenges)
     - [4.2 Pricing Model Selection](#42-pricing-model-selection)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [5.1 Auto-scaling Implementation](#51-auto-scaling-implementation)
     - [5.2 Storage Optimization](#52-storage-optimization)
     - [5.3 Compute Cost Optimization](#53-compute-cost-optimization)

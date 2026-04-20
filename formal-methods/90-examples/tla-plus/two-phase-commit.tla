@@ -47,8 +47,11 @@ CONSTANTS
     Abort,                 (* 中止命令 *)
     Ack                    (* 确认 *)
 
-ASSUME
-    (* 基本假设 *)
+(* ASSUME-01: 角色分离假设 - Coordinator 不能是 Participant *)
+(* 证明思路: 角色分离确保协调者独立决策，避免投票和决策的角色冲突 *)
+(* ASSUME-02: 非空假设 - 至少有一个参与者 *)
+(* 证明思路: 空参与者集合使协议无意义；这是模型配置约束 *)
+ASSUME ConstantsAssumption ==
     /\ Coordinator \notin Participant     (* 协调者不是参与者 *)
     /\ Participant \neq {}                (* 至少有一个参与者 *)
 

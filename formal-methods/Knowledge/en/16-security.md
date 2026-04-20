@@ -8,7 +8,7 @@
 
 ## Table of Contents
 
-- [Security \& Privacy](#security--privacy)
+- [Security \& Privacy](#security-privacy)
   - [Table of Contents](#table-of-contents)
   - [1. Definitions](#1-definitions)
     - [Def-K-16-01: Stream Processing Security](#def-k-16-01-stream-processing-security)
@@ -25,7 +25,7 @@
   - [4. Argumentation](#4-argumentation)
     - [4.1 Why Zero Trust?](#41-why-zero-trust)
     - [4.2 Encryption Necessity](#42-encryption-necessity)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [5.1 Authentication Configuration](#51-authentication-configuration)
     - [5.2 Authorization Patterns](#52-authorization-patterns)
     - [5.3 Data Encryption Implementation](#53-data-encryption-implementation)

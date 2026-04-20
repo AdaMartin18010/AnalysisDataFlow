@@ -33,7 +33,7 @@
     - [4.1 为什么选择 Blue/Green 模式](#41-为什么选择-bluegreen-模式)
     - [4.2 无状态流应用适用场景分析](#42-无状态流应用适用场景分析)
     - [4.3 反例分析：有状态作业的限制](#43-反例分析有状态作业的限制)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [Thm-F-04-05: Blue/Green 部署零停机保证](#thm-f-04-05-bluegreen-部署零停机保证)
     - [Thm-F-04-06: 状态一致性切换正确性](#thm-f-04-06-状态一致性切换正确性)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)

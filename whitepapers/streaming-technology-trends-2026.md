@@ -1,6 +1,7 @@
 > **状态**: 🔮 前瞻内容 | **风险等级**: 高 | **最后更新**: 2026-04
-> 
+>
 > 此文档描述的内容处于早期规划阶段，可能与最终实现不符。请以 Apache Flink 官方发布为准。
+>
 # 流计算技术趋势白皮书 2026
 
 ## Streaming Technology Trends Whitepaper 2026
@@ -18,12 +19,15 @@
   - [目录](#目录)
   - [执行摘要 (Executive Summary)](#执行摘要-executive-summary)
     - [核心发现 (Key Findings)](#核心发现-key-findings)
-    - [市场规模与增长 (Market Size & Growth)](#市场规模与增长-market-size--growth)
+    - [市场规模与增长 (Market Size \& Growth)](#市场规模与增长-market-size--growth)
     - [技术趋势雷达 (Technology Radar 2026)](#技术趋势雷达-technology-radar-2026)
     - [关键建议 (Key Recommendations)](#关键建议-key-recommendations)
   - [第1章: 2025-2026技术回顾](#第1章-2025-2026技术回顾)
     - [1.1 技术演进时间线](#11-技术演进时间线)
     - [1.2 关键技术突破](#12-关键技术突破)
+      - [1.2.1 存算分离架构成熟](#121-存算分离架构成熟)
+      - [1.2.2 AI-Native流处理崛起](#122-ai-native流处理崛起)
+      - [1.2.3 WASM UDF生态成熟](#123-wasm-udf生态成熟)
     - [1.3 标准化进展](#13-标准化进展)
   - [第2章: 新兴趋势深度分析](#第2章-新兴趋势深度分析)
     - [2.1 AI-Native流处理](#21-ai-native流处理)
@@ -668,14 +672,6 @@ flowchart TD
 
 ### 参考文献 (References)
 
-[^1]: Apache Flink Documentation, "Checkpointing", 2026. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/checkpointing/
-[^2]: T. Akidau et al., "The Dataflow Model", PVLDB, 8(12), 2015.
-[^3]: L. Lamport, "Time, Clocks, and the Ordering of Events in a Distributed System", CACM, 21(7), 1978.
-[^4]: RisingWave Labs, "RisingWave Architecture Whitepaper", 2025.
-[^5]: Materialize, "Differential Dataflow", 2024.
-[^6]: FLIP-531: "Flink AI-Native Roadmap", Apache Flink, 2025.
-[^7]: CNCF, "CloudEvents Specification v1.0", 2025.
-[^8]: W3C, "WebAssembly Specification", 2024.
 
 ---
 

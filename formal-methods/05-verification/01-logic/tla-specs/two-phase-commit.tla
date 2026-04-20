@@ -37,6 +37,9 @@ CONSTANTS
     Value,              \* 事务值的集合
     Coordinator         \* 协调者（单一节点）
 
+(* ASSUME-01: 协调者假设 - Coordinator 不能是 Participant 的成员 *)
+(* 证明思路: 这是角色分离约束，确保协调者独立管理事务生命周期；
+ * 若 Coordinator ∈ Participant，则投票收集和决策制定会产生角色冲突 *)
 ASSUME CoordinatorAssumption == 
     Coordinator \notin Participant
 

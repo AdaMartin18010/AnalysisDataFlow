@@ -26,12 +26,21 @@ CONSTANTS
     Sources,            (* 数据源集合 *)
     Sinks               (* 数据汇集合 *)
 
-ASSUME MaxTimestamp \in Nat
-ASSUME MaxRecords \in Nat
-ASSUME NumPartitions \in Nat \ {0}
-ASSUME Workers # {}
-ASSUME Sources # {}
-ASSUME Sinks # {}
+(* ASSUME-01: 常量参数约束 - MaxTimestamp/MaxRecords 为自然数，NumPartitions 为正 *)
+(* 证明思路: 模型空间边界约束，由 TLC 配置保证 *)
+ASSUME MaxTimestampAssumption == MaxTimestamp \in Nat
+
+(* ASSUME-02: MaxRecords 为自然数，限制状态空间大小 *)
+ASSUME MaxRecordsAssumption == MaxRecords \in Nat
+
+(* ASSUME-03: NumPartitions 必须为正自然数 *)
+ASSUME NumPartitionsAssumption == NumPartitions \in Nat \ {0}
+
+(* ASSUME-04: Workers, Sources, Sinks 必须非空 *)
+(* 证明思路: 空集合会导致 Init 中状态映射无定义或流处理系统无意义 *)
+ASSUME WorkersNonEmpty == Workers # {}
+ASSUME SourcesNonEmpty == Sources # {}
+ASSUME SinksNonEmpty == Sinks # {}
 
 (* ============================================================
  * 变量定义
@@ -223,9 +232,9 @@ RecoverWorker(w) ==
     /\ LET latestCp == CHOOSE cp \in completedCheckpoints : 
                           \A cp2 \in completedCheckpoints : cp >= cp2
            cpState == CHOOSE cs \in checkpointStates : cs[1] = latestCp /\ cs[2] = w
-           savedState == csState[3].state
-           savedTimestamp == csState[3].timestamp
-           savedOffsets == csState[3].offset
+           savedState == cpState[3].state
+           savedTimestamp == cpState[3].timestamp
+           savedOffsets == cpState[3].offset
        IN /\ operatorStates' = [operatorStates EXCEPT ![w] = savedState]
           /\ operatorTimestamps' = [operatorTimestamps EXCEPT ![w] = savedTimestamp]
           /\ partitionOffsets' = savedOffsets
@@ -312,10 +321,13 @@ FailedWorkersInactive ==
         /\ operatorTimestamps[w] = 0
 
 (* Watermark单调性 *)
+(* TODO-02: 原表达式存在语法错误 (t1 <= t2 / t2 <= t1 中 / 应为 /\ 或 \/)；
+ * 已修正为表达 watermarks[p] 随时间非递减的正确语义 *)
+(* 完成建议: 使用 [][watermarks[p] <= watermarks'[p]] 或维护历史最大值集合 *)
 WatermarkMonotonicity ==
     \A p \in 1..NumPartitions :
-        \A t1, t2 \in watermarkProgress[p] :
-            t1 <= t2 / t2 <= t1
+        \A t \in watermarkProgress[p] :
+            t <= watermarks[p]
 
 (* ============================================================
  * 活性属性
@@ -348,8 +360,8 @@ NoDuplicateProcessing ==
 (* 无丢失记录 *)
 NoLostRecords ==
     \A r \in records :
-        \E pr \in processedRecords : pr.record = r
-        / globalTime < MaxTimestamp
+        /\ \E pr \in processedRecords : pr.record = r
+        /\ globalTime < MaxTimestamp
 
 (* Exactly-Once语义 *)
 ExactlyOnceSemantics ==

@@ -10,7 +10,7 @@
 [![PR Quality Gate](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml/badge.svg) ⚠️ **[已失效: HTTP 404]** [Archive备份](https://web.archive.org/web/*/https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml/badge.svg)](<https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml>)
 [![Docs](https://img.shields.io/badge/Docs-1010%2B-blue)](../../../)
 [![Theorems](https://img.shields.io/badge/Theorems-10000%2B-green)](../../../THEOREM-REGISTRY.md)
-[![Last Updated](https://img.shields.io/badge/Last%20Updated-2026--04--11-orange)]()
+[![Last Updated](https://img.shields.io/badge/Last%20Updated-2026-04-11-orange)]()
 [![Status](https://img.shields.io/badge/Status-100%25%20Complete-success)]()
 
 > **"Formal Theory Supplement + Frontier Exploration Laboratory" for Stream Computing**
