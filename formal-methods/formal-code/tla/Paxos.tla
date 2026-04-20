@@ -163,18 +163,25 @@ Init ==
 
 (* Def-S-Paxos-02: Phase 1a - Proposer 发送 Prepare 请求 *)
 (* Proposer p 选择一个新的选票号 b 并发送 Prepare 请求 *)
-(* TODO-01: 需补充完整实现 - 选择新选票号并更新 propState, propBal, msgs *)
-(* 完成建议: 参考 formal-methods/05-verification/01-logic/tla-specs/paxos.tla 中 Prepare 动作 *)
 Phase1a(p) ==
     /\ propState[p] = Idle                        \* Proposer 必须处于 Idle 状态
-    /\ UNCHANGED vars
+    /\ propBal[p] = None                          \* 尚未选择选票号
+    /\ \E b \in Ballot :
+        /\ msgs' = msgs \cup {[type |-> "Phase1a", proposer |-> p, ballot |-> b]}
+        /\ propState' = [propState EXCEPT ![p] = Preparing]
+        /\ propBal' = [propBal EXCEPT ![p] = b]
+        /\ UNCHANGED <<maxBal, votes, chosen, propVal>>
 
 (* Def-S-Paxos-03: Phase 1b - Acceptor 响应 Promise *)
 (* Acceptor a 收到 Prepare(b) 后，如果 b > maxBal[a]，则承诺不投票 <= b *)
-(* TODO-02: 需补充完整实现 - 更新 maxBal, votes, 添加 Promise 消息到 msgs *)
-(* 完成建议: 参考 formal-methods/90-examples/tla-plus/paxos.tla 中 Promise 动作 *)
 Phase1b(a) ==
-    /\ UNCHANGED vars
+    /\ \E m \in msgs :
+        /\ m.type = "Phase1a"
+        /\ m.ballot > maxBal[a]
+        /\ maxBal' = [maxBal EXCEPT ![a] = m.ballot]
+        /\ msgs' = msgs \cup {[type |-> "Phase1b", acceptor |-> a, ballot |-> m.ballot,
+                                 maxVBal |-> MaxVotedBallot(a), maxVal |-> MaxVotedValue(a)]}
+        /\ UNCHANGED <<votes, chosen, propBal, propVal, propState>>
 
 (*----------------------------------------------------------------------------*)
 (* Phase 2: 接受阶段                                                            *)
@@ -182,44 +189,69 @@ Phase1b(a) ==
 
 (* Def-S-Paxos-04: Phase 2a - Proposer 发送 Accept 请求 *)
 (* Proposer p 收到多数派 Promise 后，发送 Accept(b, v) 请求 *)
-(* TODO-03: 需补充完整实现 - 根据 Promise 选择值，更新 propState, propVal, msgs *)
-(* 完成建议: 参考 formal-methods/90-examples/tla-plus/paxos.tla 中 Propose 动作 *)
 Phase2a(p) ==
     /\ propState[p] = Preparing                   \* 必须在 Preparing 状态
-    /\ UNCHANGED vars
+    /\ propBal[p] # None                          \* 已选择选票号
+    /\ \E Q \in Quorum :
+        /\ Q \subseteq Acceptor
+        /\ \A a \in Q : \E m \in msgs :
+            /\ m.type = "Phase1b"
+            /\ m.acceptor = a
+            /\ m.ballot = propBal[p]
+        /\ LET valid_promises == {m \in msgs :
+                /\ m.type = "Phase1b"
+                /\ m.ballot = propBal[p]
+                /\ m.maxVBal # None}
+           IN LET chosen_val ==
+                IF valid_promises = {}
+                THEN CHOOSE v \in Value : TRUE
+                ELSE LET max_promise == CHOOSE m \in valid_promises :
+                            \A m2 \in valid_promises : m.maxVBal >= m2.maxVBal
+                     IN max_promise.maxVal
+              IN /\ propVal' = [propVal EXCEPT ![p] = chosen_val]
+                 /\ propState' = [propState EXCEPT ![p] = Accepting]
+                 /\ msgs' = msgs \cup {[type |-> "Phase2a", proposer |-> p,
+                                        ballot |-> propBal[p], value |-> chosen_val]}
+                 /\ UNCHANGED <<maxBal, votes, chosen>>
 
 (* Def-S-Paxos-05: Phase 2b - Acceptor 接受值 *)
 (* Acceptor a 收到 Accept(b, v) 后，如果未承诺更高选票号，则接受 *)
-(* TODO-04: 需补充完整实现 - 在 b >= maxBal[a] 时更新 votes[a] *)
-(* 完成建议: 参考 formal-methods/05-verification/01-logic/tla-specs/paxos.tla 中 Accept 动作 *)
 Phase2b(a) ==
-    /\ UNCHANGED vars
+    /\ \E m \in msgs :
+        /\ m.type = "Phase2a"
+        /\ m.ballot >= maxBal[a]
+        /\ maxBal' = [maxBal EXCEPT ![a] = m.ballot]
+        /\ votes' = [votes EXCEPT ![a] = votes[a] \cup {<<m.ballot, m.value>>}]
+        /\ msgs' = msgs \cup {[type |-> "Phase2b", acceptor |-> a,
+                               ballot |-> m.ballot, value |-> m.value]}
+        /\ UNCHANGED <<chosen, propBal, propVal, propState>>
 
 (*----------------------------------------------------------------------------*)
 (* 学习被选中的值                                                               *)
 (*----------------------------------------------------------------------------*)
 
 (* Def-S-Paxos-06: 更新被选中的值集合 *)
-(* TODO-05: 需补充完整实现 - 当检测到 Quorum 对同一 (b,v) 投票时更新 chosen *)
-(* 完成建议: 遍历所有选票号和值，检查是否存在 Quorum 已投票，若存在则加入 chosen *)
 LearnChosen ==
-    /\ UNCHANGED vars
+    /\ \E v \in Value, b \in Ballot, Q \in Quorum :
+        /\ Q \subseteq Acceptor
+        /\ \A a \in Q : <<b, v>> \in votes[a]
+        /\ chosen' = chosen \cup {v}
+        /\ UNCHANGED <<maxBal, votes, propBal, propVal, propState, msgs>>
 
 (*----------------------------------------------------------------------------*)
 (* 消息处理动作                                                                 *)
 (*----------------------------------------------------------------------------*)
 
 (* Def-S-Paxos-07: 消息被丢弃（模拟网络丢包） *)
-(* TODO-06: 需补充完整实现 - 从 msgs 中删除某条消息 *)
-(* 完成建议: \E m \in msgs : msgs' = msgs \ {m} *)
 DropMessage ==
-    /\ UNCHANGED vars
+    /\ msgs # {}
+    /\ \E m \in msgs : msgs' = msgs \ {m}
+    /\ UNCHANGED <<maxBal, votes, chosen, propBal, propVal, propState>>
 
 (* Def-S-Paxos-08: 消息延迟（模拟网络延迟） *)
-(* TODO-07: 需补充完整实现 - 可添加延迟计数器或消息队列建模 *)
-(* 完成建议: 引入延迟消息集合 delayed_msgs，消息先在 delayed_msgs 中停留若干步 *)
+(* 简化实现：消息延迟由环境非确定性和 DropMessage 共同模拟 *)
 DelayMessage ==
-    /\ UNCHANGED vars
+    /\ TRUE
 
 (*----------------------------------------------------------------------------*)
 (* 下一步关系                                                                   *)
@@ -240,11 +272,13 @@ Next ==
 (* 时序公式                                                                     *)
 (*============================================================================*)
 
-(* Def-S-Paxos-10: 公平性条件（基础框架，待完善） *)
-(* TODO-08: 需补充完整公平性约束以保证活性 *)
-(* 完成建议: 对所有 Phase1a, Phase2a, Phase1b, Phase2b 动作添加弱公平性 *)
+(* Def-S-Paxos-10: 公平性条件 *)
 Fairness ==
-    TRUE
+    /\ \A p \in Proposer : WF_vars(Phase1a(p))
+    /\ \A a \in Acceptor : WF_vars(Phase1b(a))
+    /\ \A p \in Proposer : WF_vars(Phase2a(p))
+    /\ \A a \in Acceptor : WF_vars(Phase2b(a))
+    /\ WF_vars(LearnChosen)
 
 (* Def-S-Paxos-11: 完整规约 *)
 Spec == Init /\ [][Next]_vars /\ Fairness

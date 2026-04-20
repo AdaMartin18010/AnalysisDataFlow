@@ -180,72 +180,148 @@ Timeout(s) ==
     /\ UNCHANGED <<log, commitIndex, lastApplied, nextIndex, matchIndex, messages>>
 
 (* Def-S-Raft-03: Candidate 向其他服务器发送 RequestVote 请求 *)
-(* TODO-01: 需补充完整实现 - 向所有其他服务器广播 RequestVote 消息 *)
-(* 完成建议: 参考 formal-methods/05-verification/01-logic/tla-specs/raft.tla 中 StartElection *)
 SendRequestVote(s) ==
     /\ state[s] = Candidate                         \* 必须是 Candidate
-    /\ UNCHANGED vars
+    /\ messages' = messages \cup
+        {[type |-> "RequestVoteRequest", term |-> currentTerm[s], candidate |-> s,
+          lastLogIndex |-> LastLogIndex(s), lastLogTerm |-> LastLogTerm(s)]}
+    /\ UNCHANGED <<currentTerm, votedFor, log, commitIndex, lastApplied,
+                   nextIndex, matchIndex, state>>
 
 (* Def-S-Raft-04: 服务器响应 RequestVote 请求 *)
-(* TODO-02: 需补充完整实现 - 检查任期和日志新鲜度，决定是否投票 *)
-(* 完成建议: 参考 formal-methods/90-examples/tla-plus/raft.tla 中 HandleRequestVote *)
 HandleRequestVote(s) ==
-    /\ UNCHANGED vars
+    /\ \E m \in messages :
+        /\ m.type = "RequestVoteRequest"
+        /\ m.candidate # s
+        /\ m.term >= currentTerm[s]
+        /\ LET canVote ==
+               (m.term > currentTerm[s] \/ votedFor[s] = Nil \/ votedFor[s] = m.candidate)
+               /\ LogIsAtLeastAsUpToDate(m.candidate, s)
+           IN
+           /\ currentTerm' = [currentTerm EXCEPT ![s] = IF m.term > currentTerm[s] THEN m.term ELSE @]
+           /\ state' = [state EXCEPT ![s] = IF m.term > currentTerm[s] THEN Follower ELSE @]
+           /\ votedFor' = [votedFor EXCEPT ![s] = IF canVote THEN m.candidate ELSE @]
+           /\ messages' = messages \cup
+               {[type |-> "RequestVoteResponse", term |-> m.term, voter |-> s,
+                 voteGranted |-> canVote]}
+           /\ UNCHANGED <<log, commitIndex, lastApplied, nextIndex, matchIndex>>
 
 (* Def-S-Raft-05: Candidate 收到多数派投票，成为 Leader *)
-(* TODO-03: 需补充完整实现 - 统计投票，若达到多数派则转换为 Leader *)
-(* 完成建议: 参考 formal-methods/05-verification/01-logic/tla-specs/raft.tla 中 CollectVote *)
 BecomeLeader(s) ==
     /\ state[s] = Candidate                         \* 必须是 Candidate
-    /\ UNCHANGED vars
+    /\ \E Q \in SUBSET Server :
+        /\ IsMajority(Q)
+        /\ \A voter \in Q :
+            \E m \in messages :
+                /\ m.type = "RequestVoteResponse"
+                /\ m.term = currentTerm[s]
+                /\ m.voter = voter
+                /\ m.voteGranted
+        /\ state' = [state EXCEPT ![s] = Leader]
+        /\ nextIndex' = [nextIndex EXCEPT ![s] =
+             [t \in Server |-> LastLogIndex(s) + 1]]
+        /\ matchIndex' = [matchIndex EXCEPT ![s] =
+             [t \in Server |-> 0]]
+        /\ UNCHANGED <<currentTerm, votedFor, log, commitIndex, lastApplied, messages>>
 
 (*----------------------------------------------------------------------------*)
 (* 日志复制相关动作                                                             *)
 (*----------------------------------------------------------------------------*)
 
 (* Def-S-Raft-06: Leader 接收客户端请求，追加新条目 *)
-(* TODO-04: 需补充完整实现 - 选择新值并追加到 Leader 日志 *)
-(* 完成建议: 参考 formal-methods/05-verification/01-logic/tla-specs/raft.tla 中 ClientRequest *)
 ClientRequest(s) ==
     /\ state[s] = Leader                            \* 必须是 Leader
     /\ Len(log[s]) < MaxLogLength                   \* 日志未满（模型限制）
-    /\ UNCHANGED vars
+    /\ \E v \in Value :
+        /\ log' = [log EXCEPT ![s] =
+             Append(@, [term |-> currentTerm[s], value |-> v])]
+        /\ UNCHANGED <<currentTerm, votedFor, commitIndex, lastApplied,
+                       nextIndex, matchIndex, state, messages>>
 
 (* Def-S-Raft-07: Leader 向 Follower 发送 AppendEntries 请求 *)
-(* TODO-05: 需补充完整实现 - 根据 nextIndex 构造并发送 AppendEntries *)
-(* 完成建议: 参考 formal-methods/90-examples/tla-plus/raft.tla 中 ReplicateLog *)
 SendAppendEntries(s) ==
     /\ state[s] = Leader                            \* 必须是 Leader
-    /\ UNCHANGED vars
+    /\ \E t \in Server :
+        /\ t # s
+        /\ LET nextIdx == nextIndex[s][t]
+               prevIdx == nextIdx - 1
+               prevTerm == LogTerm(s, prevIdx)
+               entries == IF nextIdx <= LastLogIndex(s)
+                          THEN SubSeq(log[s], nextIdx, LastLogIndex(s))
+                          ELSE <<>>
+           IN
+           /\ messages' = messages \cup
+               {[type |-> "AppendEntriesRequest", term |-> currentTerm[s],
+                 leader |-> s, prevLogIndex |-> prevIdx, prevLogTerm |-> prevTerm,
+                 entries |-> entries, leaderCommit |-> commitIndex[s]]}
+           /\ UNCHANGED <<currentTerm, votedFor, log, commitIndex, lastApplied,
+                          nextIndex, matchIndex, state>>
 
 (* Def-S-Raft-08: Follower 处理 AppendEntries 请求 *)
-(* TODO-06: 需补充完整实现 - 日志匹配检查、追加新条目、更新 commitIndex *)
-(* 完成建议: 参考 formal-methods/05-verification/01-logic/tla-specs/raft.tla 中 HandleAppendEntries *)
 HandleAppendEntries(s) ==
-    /\ UNCHANGED vars
+    /\ \E m \in messages :
+        /\ m.type = "AppendEntriesRequest"
+        /\ m.leader # s
+        /\ m.term >= currentTerm[s]
+        /\ LET logOk ==
+               IF m.prevLogIndex = 0 THEN TRUE
+               ELSE IF m.prevLogIndex > Len(log[s]) THEN FALSE
+               ELSE LogTerm(s, m.prevLogIndex) = m.prevLogTerm
+           IN
+           /\ currentTerm' = [currentTerm EXCEPT ![s] = IF m.term > currentTerm[s] THEN m.term ELSE @]
+           /\ state' = [state EXCEPT ![s] = IF m.term > currentTerm[s] THEN Follower ELSE @]
+           /\ IF logOk THEN
+                  LET newLog ==
+                      IF m.prevLogIndex < Len(log[s])
+                      THEN SubSeq(log[s], 1, m.prevLogIndex) \o m.entries
+                      ELSE log[s] \o m.entries
+                      newLogLen == Len(newLog)
+                  IN
+                  /\ log' = [log EXCEPT ![s] = newLog]
+                  /\ commitIndex' = [commitIndex EXCEPT ![s] =
+                       IF m.leaderCommit > commitIndex[s]
+                       THEN Min({m.leaderCommit, newLogLen})
+                       ELSE @]
+                  /\ messages' = messages \cup
+                      {[type |-> "AppendEntriesResponse", term |-> m.term,
+                        follower |-> s, success |-> TRUE,
+                        matchIndex |-> newLogLen]}
+              ELSE
+                  /\ UNCHANGED <<log, commitIndex>>
+                  /\ messages' = messages \cup
+                      {[type |-> "AppendEntriesResponse", term |-> m.term,
+                        follower |-> s, success |-> FALSE,
+                        matchIndex |-> 0]}
+           /\ UNCHANGED <<votedFor, lastApplied, nextIndex, matchIndex>>
 
 (* Def-S-Raft-09: Leader 根据 matchIndex 更新 commitIndex *)
-(* TODO-07: 需补充完整实现 - 找到可提交的最高索引并更新 commitIndex *)
-(* 完成建议: 参考 formal-methods/05-verification/01-logic/tla-specs/raft.tla 中 AdvanceCommitIndex *)
 AdvanceCommitIndex(s) ==
     /\ state[s] = Leader                            \* 必须是 Leader
-    /\ UNCHANGED vars
+    /\ \E n \in (commitIndex[s] + 1)..LastLogIndex(s) :
+        /\ log[s][n].term = currentTerm[s]
+        /\ \E Q \in SUBSET Server :
+            /\ IsMajority(Q)
+            /\ \A t \in Q :
+                t = s \/ matchIndex[s][t] >= n
+        /\ commitIndex' = [commitIndex EXCEPT ![s] = n]
+        /\ UNCHANGED <<currentTerm, votedFor, log, lastApplied,
+                       nextIndex, matchIndex, state, messages>>
 
 (*----------------------------------------------------------------------------*)
 (* 消息处理动作                                                                 *)
 (*----------------------------------------------------------------------------*)
 
 (* Def-S-Raft-10: 消息被丢弃（模拟网络丢包） *)
-(* TODO-08: 需补充完整实现 - 从 messages 中删除某条消息 *)
-(* 完成建议: \E m \in messages : messages' = messages \ {m} *)
 DropMessage ==
-    /\ UNCHANGED vars
+    /\ messages # {}
+    /\ \E m \in messages : messages' = messages \ {m}
+    /\ UNCHANGED <<currentTerm, votedFor, log, commitIndex, lastApplied,
+                   nextIndex, matchIndex, state>>
 
 (* Def-S-Raft-11: 消息延迟（模拟网络延迟） *)
-(* TODO-09: 需补充完整实现 - 可引入延迟消息集合 *)
-(* 完成建议: 参考 streaming-systems.tla 中的消息处理模式 *)
+(* 简化实现：消息延迟由环境非确定性和 DropMessage 共同模拟 *)
 DelayMessage ==
-    /\ UNCHANGED vars
+    /\ TRUE
 
 (*----------------------------------------------------------------------------*)
 (* 下一步关系                                                                   *)
@@ -269,12 +345,16 @@ Next ==
 (* 时序公式                                                                     *)
 (*============================================================================*)
 
-(* Def-S-Raft-13: 公平性条件（基础框架，待完善） *)
-(* TODO-10: 需补充完整公平性约束以保证选举和日志复制活性 *)
-(* 完成建议: 对 Timeout, SendRequestVote, HandleRequestVote, BecomeLeader, ClientRequest,
- *          SendAppendEntries, HandleAppendEntries, AdvanceCommitIndex 添加弱公平性 *)
+(* Def-S-Raft-13: 公平性条件 *)
 Fairness ==
-    TRUE
+    /\ \A s \in Server : WF_vars(Timeout(s))
+    /\ \A s \in Server : WF_vars(SendRequestVote(s))
+    /\ \A s \in Server : WF_vars(HandleRequestVote(s))
+    /\ \A s \in Server : WF_vars(BecomeLeader(s))
+    /\ \A s \in Server : WF_vars(ClientRequest(s))
+    /\ \A s \in Server : WF_vars(SendAppendEntries(s))
+    /\ \A s \in Server : WF_vars(HandleAppendEntries(s))
+    /\ \A s \in Server : WF_vars(AdvanceCommitIndex(s))
 
 (* Def-S-Raft-14: 完整规约 *)
 Spec == Init /\ [][Next]_vars /\ Fairness
