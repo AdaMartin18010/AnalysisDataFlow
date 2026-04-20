@@ -23,6 +23,20 @@ ASSUME TaskManagersAssumption == TaskManagers \subseteq STRING
 (* 证明思路: 状态空间边界约束，用于 TLC 模型检查有限性保证 *)
 ASSUME MaxCheckpointIdAssumption == MaxCheckpointId \in Nat /\ MaxCheckpointId > 0
 
+(* ASSUME-03: 参数化假设 - MaxRecords 为非负自然数 *)
+(* 证明思路: 通道缓冲区上界约束，控制TLC状态空间大小；
+ * 此参数限制每个TM可处理的最大记录数，用于模型检查截断 *)
+ASSUME MaxRecordsAssumption ==
+    /\ MaxRecords \in Nat
+    /\ MaxRecords >= 0
+
+(* ASSUME-04: 系统公理 - TaskManagers 非空有限集 *)
+(* 证明思路: 空TM集导致无状态转移（除ResetCheckpoint外），规约无意义；
+ * 必须有限以保证TLC可穷尽检查 *)
+ASSUME TaskManagersNonEmpty ==
+    /\ TaskManagers # {}
+    /\ IsFiniteSet(TaskManagers)
+
 (* ---------------------------------------------------------------------------- *)
 (* 类型定义                                                                     *)
 (* ---------------------------------------------------------------------------- *)
@@ -144,8 +158,13 @@ Safety_ActiveNonEmpty ==
         \A tm \in TaskManagers : tm_state[tm].status = "checkpointing"
 
 (* 安全性4: 已完成Checkpoint的TM状态一致性 *)
-(* TODO-03: 补充 TM 状态与 checkpoint 完成状态的一致性 *)
-(* 完成建议: 当 cp_status="completed" 时所有 TM 必须处于 idle 状态 *)
+(* 已完成-03: TM 状态与 checkpoint 完成状态的一致性已由 Safety_CompletedAllIdle 和
+ * CheckpointCorrectness 联合保证。
+ * 证明思路: 
+ *   1. CompleteCheckpoint 动作设置 cp_status = "completed" 前要求
+ *      \A tm \in TaskManagers : tm_state[tm].pending = {}
+ *   2. CompleteCheckpoint 同时将 tm_state 全部重置为 [status |-> "idle", pending |-> {}]
+ *   3. 因此 cp_status = "completed" => \A tm : tm_state[tm].status = "idle" 是不变式 *)
 Safety_CompletedAllIdle ==
     cp_status = "completed" => 
         \A tm \in TaskManagers : tm_state[tm].status = "idle"
@@ -156,6 +175,21 @@ Safety_BarrierConsistency ==
         \A tm \in TaskManagers :
             (tm_state[tm].status = "checkpointing" /\ channel_buf[tm] # <<>>)
             => Head(channel_buf[tm]).checkpoint_id = cp_id
+
+(* 安全性6: 类型精确不变式 - channel_buf 中 barrier 的 checkpoint_id 合法性 *)
+(* 证明思路: 由 TriggerCheckpoint 设置 cp_id 并分配 barrier，后续仅通过
+ * ReceiveBarrier 消费，因此所有 barrier 的 checkpoint_id 都在合法范围内 *)
+Safety_BarrierIdRange ==
+    \A tm \in TaskManagers :
+        \A i \in 1..Len(channel_buf[tm]) :
+            (channel_buf[tm][i].type = "barrier")
+            => (channel_buf[tm][i].checkpoint_id \in 1..cp_id)
+
+(* 安全性7: completed_cps 单调性 - 已完成的 checkpoint 不会被移除 *)
+(* 证明思路: completed_cps 仅在 CompleteCheckpoint 中通过 \union {cp_id} 增长，
+ * 无任何动作从中删除元素 *)
+Safety_CompletedMonotonic ==
+    [][completed_cps' \supseteq completed_cps]_vars
 
 (* 核心定理: Checkpoint正确性 *)
 CheckpointCorrectness ==

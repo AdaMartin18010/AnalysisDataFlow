@@ -34,6 +34,34 @@ CONSTANTS
     MaxTerm,            \* 最大任期数（用于模型检查）
     MaxLogLen           \* 最大日志长度（用于模型检查）
 
+(* ASSUME-01: 参数约束 - Server 非空有限集，确保多数派有意义 *)
+(* 证明思路: 
+ *   1. Server = {} 导致 Quorum = {}，无法形成任何决策
+ *   2. 无限 Server 导致 TLC 无法穷尽检查状态空间
+ *   3. 多数派定义 Cardinality(Q)*2 > Cardinality(Server) 要求 |Server| >= 1 *)
+ASSUME ServerValid ==
+    /\ Server # {}
+    /\ IsFiniteSet(Server)
+
+(* ASSUME-02: 参数约束 - Value 非空，确保客户端请求有意义 *)
+(* 证明思路: Value = {} 导致 ClientRequest 动作中 \E v \in Value 无量化实例，
+ * 日志永远无法增长，活性属性 LogReplication 无法满足 *)
+ASSUME ValueNonEmpty == Value # {}
+
+(* ASSUME-03: 参数约束 - MaxTerm 为正自然数，控制状态空间 *)
+(* 证明思路: MaxTerm = 0 导致 Term = {0}，无法展示任期递增的核心行为；
+ * 无限 Term 导致 TLC 无法穷尽检查 *)
+ASSUME MaxTermValid ==
+    /\ MaxTerm \in Nat
+    /\ MaxTerm > 0
+
+(* ASSUME-04: 参数约束 - MaxLogLen 为正自然数，控制状态空间 *)
+(* 证明思路: MaxLogLen = 0 导致 Index = {}，无法追加任何日志条目；
+ * 此参数用于 TLC 模型检查截断，实际协议无此限制 *)
+ASSUME MaxLogLenValid ==
+    /\ MaxLogLen \in Nat
+    /\ MaxLogLen > 0
+
 (*
  * =====================================================================
  * 辅助定义
@@ -376,6 +404,8 @@ Next ==
  *)
 Spec == Init /\ [][Next]_<<currentTerm, votedFor, log, commitIndex, 
                           lastApplied, state, nextIndex, matchIndex, msgs>>
+    /\ WF_<<currentTerm, votedFor, log, commitIndex, 
+            lastApplied, state, nextIndex, matchIndex, msgs>>(Next)
 
 (*
  * =====================================================================
@@ -442,6 +472,13 @@ StateMachineSafety ==
 (*
  * Thm-Raft-06: Leader Election
  * 最终会有一个领导者被选出
+ * 
+ * 公平性条件说明:
+ *   1. 需要 WF 对 StartElection(s)：Follower 超时时最终发起选举
+ *   2. 需要 WF 对 HandleVoteRequest(s)：投票请求最终得到处理
+ *   3. 需要 WF 对 CollectVote(s)：收到足够投票后最终成为 Leader
+ *   4. 这些已包含在 Spec 的全局 WF(Next) 中
+ *   5. 额外需要假设：多数派服务器不会同时崩溃，且网络最终可靠
  *)
 LeaderElection ==
     <>(\E s \in Server : state[s] = "Leader")
@@ -449,12 +486,38 @@ LeaderElection ==
 (*
  * Thm-Raft-07: Log Replication Progress
  * 一旦领导者被选出，日志最终会被复制到多数派
+ * 
+ * 公平性条件说明:
+ *   1. 需要 WF 对 ReplicateLog(leader, follower)：领导者最终发送 AppendEntries
+ *   2. 需要 WF 对 HandleAppendEntries(s)：Follower 最终处理 AppendEntries
+ *   3. 需要 WF 对 HandleAppendEntriesResponse(leader)：领导者最终处理响应
+ *   4. 需要 WF 对 AdvanceCommitIndex(leader)：满足条件后最终推进 commitIndex
+ *   5. 已包含在 Spec 的全局 WF(Next) 中
  *)
 LogReplication ==
     \A s \in Server :
         (state[s] = "Leader" 
          /\ commitIndex[s] < LastLogIndex(s))
         => <>(commitIndex[s] >= LastLogIndex(s))
+
+(*
+ * Thm-Raft-08: Term Monotonicity
+ * 每个服务器的 currentTerm 单调不减
+ * 这是 Leader Completeness 的前提引理
+ *)
+TermMonotonicity ==
+    [][\A s \in Server : currentTerm'[s] >= currentTerm[s]]_<<currentTerm, votedFor, log, commitIndex, 
+                                                              lastApplied, state, nextIndex, matchIndex, msgs>>
+
+(*
+ * Thm-Raft-09: Commit Progress
+ * 已提交的日志最终会被应用到状态机
+ * 
+ * 注意: 此属性要求 lastApplied 最终追上 commitIndex
+ *)
+ApplyProgress ==
+    \A s \in Server :
+        (lastApplied[s] < commitIndex[s]) => <>(lastApplied[s] >= commitIndex[s])
 
 (*
  * =====================================================================

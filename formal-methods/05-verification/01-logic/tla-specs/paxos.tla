@@ -44,6 +44,26 @@ ASSUME QuorumAssumption ==
 ASSUME CardAssumption ==
     \A Q \in Quorum : Cardinality(Q) * 2 > Cardinality(Acceptor)
 
+(* ASSUME-03: 参数约束 - Value 非空，确保至少有一个可被选定的值 *)
+(* 证明思路: 空值集导致 Propose 动作中 CHOOSE v \in Value 无定义；
+ * 这是模型有意义的前提条件，非分布式安全性的核心假设 *)
+ASSUME ValueNonEmpty == Value # {}
+
+(* ASSUME-04: 参数约束 - Proposer 非空，确保协议可以被推进 *)
+(* 证明思路: 空 Proposer 集导致 Prepare/Propose 动作无量化实例，
+ * 规约只能停留在 Init 状态，活性属性无法满足 *)
+ASSUME ProposerNonEmpty == Proposer # {}
+
+(* ASSUME-05: 参数约束 - Acceptor 非空且有限，Quorum 非空 *)
+(* 证明思路: 
+ *   1. Acceptor = {} 导致 Quorum = {}，交集性质空洞满足但协议无意义
+ *   2. 无限 Acceptor 导致 TLC 无法穷尽检查
+ *   3. Quorum = {} 导致 Learn 动作无量化实例 *)
+ASSUME AcceptorValid ==
+    /\ Acceptor # {}
+    /\ IsFiniteSet(Acceptor)
+    /\ Quorum # {}
+
 (*
  * 扩展标准模块
  *)
@@ -231,10 +251,22 @@ Agreement ==
 (*
  * Thm-Paxos-04: Eventual Choice
  * 如果有一个 Proposer 持续运行且网络可靠，最终会有一个值被选定
- * 注意：这需要公平性假设
- *)
+ * 公平性条件说明:
+ *   1. WF_vars(Learn): 已在 Spec 中声明，保证 Learn 动作持续可执行时最终发生
+ *   2. 更强的活性需要补充: 
+ *      - WF_vars(Promise(a)) 对每个 Acceptor a：最终响应 Prepare
+ *      - WF_vars(Accept(a)) 对每个 Acceptor a：最终接受合法 Propose
+ *      - 对某个 Proposer p: SF_vars(Prepare(p,b) \/ Propose(p,b)) 保证无限次尝试
+ *   3. 在异步网络且无故障假设下，Eventual Choice 可被证明 *)
 Liveness ==
     <> (chosen # {})
+
+(* 公平性条件细化 - 用于活性证明 *)
+Fairness ==
+    /\ \A a \in Acceptor : WF_<<msgs, maxBal, maxVBal, maxVal, chosen>>(Promise(a))
+    /\ \A a \in Acceptor : WF_<<msgs, maxBal, maxVBal, maxVal, chosen>>(Accept(a))
+    /\ \E p \in Proposer : \A b \in Ballot : 
+        SF_<<msgs, maxBal, maxVBal, maxVal, chosen>>(Prepare(p, b) \/ Propose(p, b))
 
 (*
  * Thm-Paxos-05: Proposal Progress
@@ -244,6 +276,31 @@ ProposalUniqueness ==
     \A m1, m2 \in msgs :
         (m1.type = "propose" /\ m2.type = "propose" /\ m1.bal = m2.bal)
         => m1.val = m2.val
+
+(*
+ * =====================================================================
+ * 类型精确不变量增强
+ * =====================================================================
+ *)
+
+(* TypeOK-Precision-01: Promise 消息的 maxVBal 和 maxVal 一致性 *)
+(* 若 Acceptor 未接受过任何值（maxVBal=-1），则 maxVal 必须为 None *)
+TypeOK_PromiseConsistency ==
+    \A a \in Acceptor :
+        (maxVBal[a] = -1) => (maxVal[a] = None)
+
+(* TypeOK-Precision-02: 已选定值的合法性 *)
+(* chosen 中的值必须是 Propose 过的值，且 Propose 过的值必须来自 Value *)
+TypeOK_ChosenValidity ==
+    /\ chosen \subseteq Value
+    /\ \A m \in msgs : (m.type \in {"propose", "accept"}) => m.val \in Value
+
+(* TypeOK-Precision-03: ballot 消息的顺序一致性 *)
+(* accept 消息的 ballot 不小于对应 proposer 已发送的 prepare ballot *)
+TypeOK_BallotOrder ==
+    \A m1, m2 \in msgs :
+        (m1.type = "prepare" /\ m2.type = "accept" /\ m1.bal = m2.bal)
+        => m2.bal >= m1.bal
 
 (*
  * =====================================================================

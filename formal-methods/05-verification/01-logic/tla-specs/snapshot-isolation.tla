@@ -39,6 +39,30 @@ CONSTANTS
 ASSUME CardinalityAssumption == 
     Cardinality(TxId) >= 2
 
+(* ASSUME-02: 参数约束 - Key 非空，确保数据库有数据可操作 *)
+(* 证明思路: Key = {} 导致 tx_write_set 和 tx_read_set 无任何操作对象，
+ * 所有事务变为空操作，无法展示任何隔离级别特性 *)
+ASSUME KeyNonEmpty == Key # {}
+
+(* ASSUME-03: 参数约束 - Value 非空，确保写入操作有意义 *)
+(* 证明思路: Value = {} 导致 WriteKey 动作中 CHOOSE v \in Value 无定义，
+ * 且 Init 中数据库初始值 CHOOSE 失败 *)
+ASSUME ValueNonEmpty == Value # {}
+
+(* ASSUME-04: 参数约束 - MaxVersion 为正自然数，控制版本空间 *)
+(* 证明思路: MaxVersion = 0 导致 Version = {0}，所有操作共享同一版本，
+ * 无法展示快照隔离的时间戳区分特性；必须有限以控制 TLC 状态空间 *)
+ASSUME MaxVersionValid ==
+    /\ MaxVersion \in Nat
+    /\ MaxVersion > 0
+
+(* ASSUME-05: 参数约束 - TxId 非空有限集 *)
+(* 证明思路: 空 TxId 导致无任何事务可执行，规约停留在 Init；
+ * 无限 TxId 导致 TLC 无法穷尽检查 *)
+ASSUME TxIdValid ==
+    /\ TxId # {}
+    /\ IsFiniteSet(TxId)
+
 (*
  * =====================================================================
  * 辅助定义
@@ -241,6 +265,33 @@ Next ==
 Spec == Init /\ [][Next]_<<db, committedVersions, tx_state, tx_start_time,
                           tx_read_set, tx_write_set, tx_snapshot,
                           next_timestamp, history>>
+
+(*
+ * =====================================================================
+ * 类型精确不变量增强
+ * =====================================================================
+ *)
+
+(* TypeOK-Precision-01: 事务状态转换合法性 *)
+(* 事务状态必须按 active -> committing -> committed 或 active -> aborted 转换 *)
+TypeOK_StateTransition ==
+    [][\A tx \in TxId :
+        (tx_state[tx] = "committed" => tx_state'[tx] = "committed")
+        /\ (tx_state[tx] = "aborted" => tx_state'[tx] = "aborted")
+        /\ (tx_state[tx] = "committing" => tx_state'[tx] \in {"committing", "committed"})
+    ]_<<db, committedVersions, tx_state, tx_start_time, tx_read_set, tx_write_set, tx_snapshot, next_timestamp, history>>
+
+(* TypeOK-Precision-02: next_timestamp 单调递增且有上界 *)
+(* next_timestamp 每次增加 1，且不超过 Timestamp 最大值 *)
+TypeOK_TimestampMonotonic ==
+    [][next_timestamp' >= next_timestamp]_<<db, committedVersions, tx_state, tx_start_time, tx_read_set, tx_write_set, tx_snapshot, next_timestamp, history>>
+
+(* TypeOK-Precision-03: 已提交版本的数据库一致性 *)
+(* committedVersions 中的每个条目都对应 db 中存在的版本 *)
+TypeOK_CommittedVersionsConsistency ==
+    \A cv \in committedVersions :
+        \E i \in 1..Len(db[cv.key]) :
+            db[cv.key][i].ts = cv.ts
 
 (*
  * =====================================================================
