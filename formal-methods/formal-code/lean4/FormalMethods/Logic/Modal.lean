@@ -481,9 +481,16 @@ deriving Repr
   在 T 系统中，任何真命题都是可能的。
   -/
   theorem T_reflection (φ : ModalFormula) : TDerives [] (φ →ₘ ◇φ) := by
-    -- 证明：φ → ¬□¬φ
-    -- 这等价于 T 公理的否定对偶形式
-    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
+    -- 证明目标: φ →ₘ ◇φ = φ →ₘ ¬ₘ(□(¬ₘφ))
+    -- 这等价于 T 公理 □(¬ₘφ) →ₘ (¬ₘφ) 的逆否命题。
+    /- 证明策略（需扩展 TDerives 定义）:
+       1. T公理实例: TDerives [] (□(¬ₘφ) →ₘ (¬ₘφ))  [T_axiom]
+       2. 逆否命题: (□(¬ₘφ) →ₘ (¬ₘφ)) →ₘ (φ →ₘ ¬ₘ(□(¬ₘφ)))  [prop_not]
+       3. 应用 MP: TDerives [] (φ →ₘ ◇φ)
+
+       当前阻碍: TDerives 仅包含 K 嵌入和 T_axiom 构造子，无 MP 规则。
+       需将 TDerives 扩展为包含 K 的所有规则 + T_axiom，或添加推导保持引理。
+    -/
     sorry
 
   /-- 
@@ -528,8 +535,17 @@ deriving Repr
   -/
   theorem S5_negative_introspection (φ : ModalFormula) :
       S5Derives [] ((¬ₘ□φ) →ₘ □(¬ₘ□φ)) := by
-    -- 证明：将 5 公理应用于 ¬φ
-    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
+    -- 证明目标: ¬□φ → □¬□φ
+    -- 注意到 ¬□φ = ◇¬φ，而 5 公理给出 ◇ψ → □◇ψ。
+    -- 取 ψ = ¬φ，则 ◇¬φ → □◇¬φ = ¬□φ → □¬□φ。
+    /- 证明策略（需扩展 S5Derives 定义）:
+       1. 5公理实例: S5Derives [] (◇(¬ₘφ) →ₘ □◇(¬ₘφ))  [five_axiom]
+       2. 由对偶性: ◇(¬ₘφ) = ¬ₘ(□φ) 且 □◇(¬ₘφ) = □(¬ₘ(□φ))
+       3. 替换得: S5Derives [] ((¬ₘ□φ) →ₘ □(¬ₘ□φ))
+
+       当前阻碍: S5Derives 缺少替换/等值规则和对偶性引理。
+       需形式化 ModalFormula 上的等值替换保持可推导性。
+    -/
     sorry
 
   /-- 
@@ -629,11 +645,26 @@ section CorrespondenceTheory
       (F ⊨f (□(var 0) →ₘ □□(var 0))) ↔ Transitive F.rel := by
     constructor
     · -- 语义有效性 → 传递性
-      /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
+      /- 证明策略（反证法 + 构造反例）:
+         1. 假设 F ⊨f □p → □□p 但 F 不传递。
+         2. 则 ∃w₁,w₂,w₃, R w₁ w₂ ∧ R w₂ w₃ ∧ ¬R w₁ w₃。
+         3. 构造赋值 V(p) = {w | R w₁ w}，即 p 在所有 w₁-可达世界上为真。
+         4. 在 w₁: ∀w', R w₁ w' → w' ⊨ p（由 V 的定义）。故 w₁ ⊨ □p。
+         5. 由有效性，w₁ ⊨ □□p，即 ∀w', R w₁ w' → ∀w'', R w' w'' → w'' ⊨ p。
+         6. 取 w' = w₂（R w₁ w₂ 成立），w'' = w₃（R w₂ w₃ 成立）。
+         7. 则 w₃ ⊨ p，即 w₃ ∈ V(p)，即 R w₁ w₃。
+         8. 这与 ¬R w₁ w₃ 矛盾。
+
+         形式化难点:
+         · 从框架性质反设提取具体世界 w₁,w₂,w₃
+         · 赋值 V 的构造和框架成员关系的处理
+      -/
       sorry
     · -- 传递性 → 语义有效性
-      /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
-      sorry
+      intro hTrans V w hw
+      simp [satisfies]
+      intro hBox w1 hw1 w2 hw2
+      exact hBox w2 (hTrans w w1 w2 hw1 hw2)
 
   /-- 
   定理 4.3 (对应定理 - 5 公理与欧几里得性):
@@ -644,11 +675,30 @@ section CorrespondenceTheory
       (F ⊨f (◇(var 0) →ₘ □◇(var 0))) ↔ Euclidean F.rel := by
     constructor
     · -- 语义有效性 → 欧几里得性
-      /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
+      /- 证明策略（反证法 + 构造反例）:
+         1. 假设 F ⊨f ◇p → □◇p 但 F 不欧几里得。
+         2. 则 ∃w₁,w₂,w₃, R w₁ w₂ ∧ R w₁ w₃ ∧ ¬R w₂ w₃。
+         3. 构造赋值 V(p) = {w₃}，即只有 w₃ 满足 p。
+         4. 在 w₁: w₃ 是 R-后继且 w₃ ⊨ p，故 w₁ ⊨ ◇p。
+         5. 由有效性，w₁ ⊨ □◇p，即 ∀w', R w₁ w' → ∃w'', R w' w'' ∧ w'' ⊨ p。
+         6. 取 w' = w₂（R w₁ w₂ 成立）。则 ∃w'', R w₂ w'' ∧ w'' ⊨ p。
+         7. 但 w'' ⊨ p 意味着 w'' = w₃（V(p) = {w₃}）。
+         8. 故 R w₂ w₃，与 ¬R w₂ w₃ 矛盾。
+
+         形式化难点:
+         · 从框架性质反设提取具体世界
+         · 赋值 V(p) = {w₃} 的构造
+         · 唯一性推理（w'' ⊨ p → w'' = w₃）
+      -/
       sorry
     · -- 欧几里得性 → 语义有效性
-      /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
-      sorry
+      intro hEucl V w hw
+      simp [satisfies]
+      intro ⟨w1, hw1, hφ⟩ w2 hw2
+      use w1
+      constructor
+      · exact hEucl w w1 w2 hw1 hw2
+      · exact hφ
 
   /-- 
   定理 4.4 (B 公理与对称性):
@@ -656,8 +706,53 @@ section CorrespondenceTheory
   -/
   theorem correspondence_B (F : KripkeFrame) :
       (F ⊨f ((var 0) →ₘ □◇(var 0))) ↔ Symmetric F.rel := by
-    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
-    sorry
+    constructor
+    · -- 语义有效性 → 对称性
+      /- 证明策略（反证法）:
+         1. 假设 F ⊨f p → □◇p 但 F 不对称
+         2. 则 ∃w₁w₂, R w₁ w₂ ∧ ¬R w₂ w₁
+         3. 构造赋值 V(p) = {w₂}
+         4. 在 w₁: w₁ ⊨ p? 取决于 w₁ = w₂（可能不成立）
+         5. 需更精细的构造: V(p) = {w' | R w₂ w'}
+         6. 则 w₂ ⊨ p（由自反...不，对称性不保证自反）
+         7. 标准构造: V(p) = {w₂}，则在 w₁ 处
+            - 若 w₁ ≠ w₂，w₁ ⊭ p，故 w₁ ⊨ p → □◇p 空真
+            - 需找 w 使 w ⊨ p 但 w ⊭ □◇p
+         8. 取 w = w₂: w₂ ⊨ p。需 w₂ ⊭ □◇p，即 ∃w', R w₂ w' ∧ w' ⊭ ◇p
+            = ∃w', R w₂ w' ∧ ¬∃w'', R w' w'' ∧ w'' ⊨ p
+         9. 若 ¬R w₂ w₁，则对任意 w' ≠ w₁, ... 这变得复杂。
+         更直接的标准构造: 令 V(p) = {w₂}，取 w = w₁。
+         若 w₁ ⊨ p（即 w₁ = w₂，不一般成立），则改取 w = w₂:
+         w₂ ⊨ p，需 w₂ ⊭ □◇p，即 ∃w', R w₂ w' 但 w' ⊭ ◇p。
+         若 ¬R w₂ w₁ 且 w₁ 是唯一使... 这仍复杂。
+
+         标准证明: 设 ¬Symmetric，则 ∃w₁,w₂: R w₁ w₂ ∧ ¬R w₂ w₁。
+         令 V(p) = {w₁}。则 w₂ ⊨ □p? 否，因为 R w₂ w₁ 不成立，
+         但 w₁ 是 p 的唯一真世界... 实际上 M,w₂ ⊭ □p 因为存在
+         R-后继不满足 p? 不一定。
+
+         正确构造: V(p) = {w' | R w₂ w'}。则 w₂ ⊨ □p（因为所有
+         R-后继都在 V(p) 中）。由 B 公理，w₂ ⊨ □◇p，故
+         ∀w', R w₂ w' → ∃w'', R w' w'' ∧ w'' ⊨ p。
+         特别地，若 R w₂ w₁（假设不成立），则...
+
+         实际上应利用 ¬R w₂ w₁。由于 R w₁ w₂ 但 ¬R w₂ w₁，
+         令 V(p) = {w₁}。则 w₁ ⊨ p。需 w₁ ⊭ □◇p，即
+         ∃w', R w₁ w' ∧ w' ⊭ ◇p = ∃w', R w₁ w' ∧ ¬∃w'', R w' w'' ∧ w'' ⊨ p。
+         取 w' = w₂。R w₁ w₂ 成立。w₂ ⊭ ◇p?
+         ◇p 要求 ∃w'', R w₂ w'' ∧ w'' ⊨ p = ∃w'', R w₂ w'' ∧ w'' = w₁。
+         即 R w₂ w₁，但这正是 ¬R w₂ w₁！故 w₂ ⊭ ◇p。
+         所以 w₁ ⊭ □◇p，与 B 公理矛盾。
+      -/
+      sorry
+    · -- 对称性 → 语义有效性
+      intro hSymm V w hw
+      simp [satisfies]
+      intro hp w1 hw1
+      use w
+      constructor
+      · exact hSymm w w1 hw1
+      · exact hp
 
   /-- 
   定义 4.3 (典范模型): 用于完备性证明的模型构造
@@ -671,10 +766,27 @@ section CorrespondenceTheory
   定理 4.5 (典范模型存在性 - Lindenbaum 引理):
   任何一致的公式集都可以扩展为极大一致集。
   -/
-  theorem lindenbaum_modal {Γ : Set ModalFormula} 
+  theorem lindenbaum_modal {Γ : Set ModalFormula}
       (hCons : ¬(∃ Δ : ModalContext, Δ.toSet ⊆ Γ ∧ Δ ⊢ₖ ⊥)) :
       ∃ MCS : MaximalConsistentSet, Γ ⊆ MCS.formulas := by
-    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
+    /- 证明策略（模态逻辑版 Lindenbaum 构造）:
+       Step 1: 枚举所有模态公式 φ₀, φ₁, φ₂, ...（ModalFormula 可数）
+       Step 2: 递归定义 Γ₀ = Γ,  Γₙ₊₁ = if Consistent(Γₙ ∪ {φₙ})
+                                           then Γₙ ∪ {φₙ}
+                                           else Γₙ ∪ {¬φₙ}
+       Step 3: 归纳证明每个 Γₙ 一致（使用 hCons）
+       Step 4: Δ = ⋃ₙ Γₙ，证明:
+               - 一致性: 若 Δ ⊢ₖ ⊥，则有限推导使用有限公式，
+                 属于某个 Γₙ，与 Γₙ 一致矛盾。
+               - 极大性: 对任意 φ = φₙ，由构造 φ ∈ Γₙ₊₁ 或 ¬φ ∈ Γₙ₊₁，
+                 故 φ ∈ Δ 或 ¬φ ∈ Δ。
+       Step 5: 构造 MCS = { formulas := Δ, ... }，验证定义。
+
+       形式化难点:
+       · ModalFormula 的可数性证明（基于 Nat 的归纳定义）
+       · 一致性在集合运算下的保持性
+       · 无穷并集上推导关系的紧致性
+    -/
     sorry
 
 end CorrespondenceTheory
@@ -753,7 +865,24 @@ section SoundnessCompleteness
   -/
   theorem K_completeness {Γ : Set ModalFormula} {φ : ModalFormula}
       (h : Γ ⊨ₘ φ) : ∃ Δ : ModalContext, Δ.toSet ⊆ Γ ∧ Δ ⊢ₖ φ := by
-    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
+    /- 证明策略（典范模型构造法）:
+       Step 1: 反证法。假设 ∀Δ, Δ.toSet ⊆ Γ → ¬(Δ ⊢ₖ φ)。
+       Step 2: 则 Γ ∪ {¬φ} 是 K-一致的（否则某个有限子集 ⊢ₖ ⊥，
+               由反证法可得该子集 \ {¬φ} ⊢ₖ φ）。
+       Step 3: 应用 lindenbaum_modal 扩展为极大一致集 Σ。
+       Step 4: 构造典范模型 M_Σ = (W_Σ, R_Σ, V_Σ):
+               - W_Σ = 所有极大一致集
+               - R_Σ Σ₁ Σ₂ ↔ ∀ψ, □ψ ∈ Σ₁ → ψ ∈ Σ₂
+               - V_Σ(p) = {Σ | p ∈ Σ}
+       Step 5: 证明真值引理: M_Σ, Σ ⊨ ψ ↔ ψ ∈ Σ（对 ψ 的结构归纳）。
+       Step 6: 由构造，Γ ⊆ Σ 且 ¬φ ∈ Σ，故 M_Σ, Σ ⊨ Γ 但 M_Σ, Σ ⊭ φ。
+       Step 7: 这与 Γ ⊨ₘ φ 矛盾。
+
+       形式化难点:
+       · 极大一致集上的典范关系定义
+       · 真值引理中 □ψ 情况的证明（需用到 R_Σ 的定义）
+       · 从语义反设到语法一致性的桥接
+    -/
     sorry
 
   /-- 
@@ -833,7 +962,23 @@ section SoundnessCompleteness
   theorem finite_model_property (φ : ModalFormula) :
       Satisfiable φ → ∃ (M : KripkeModel),
         M.frame.worlds.Finite ∧ ∃ w ∈ M.frame.worlds, M, w ⊨ φ := by
-    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
+    /- 证明策略（Filtration 方法）:
+       Step 1: 设 φ 可满足，则存在模型 M 和世界 w₀ 使 M,w₀ ⊨ φ。
+       Step 2: 令 Sub(φ) 为 φ 的所有子公式集合（有限）。
+       Step 3: 定义等价关系: w ≡ w' ↔ ∀ψ ∈ Sub(φ), M,w ⊨ ψ ↔ M,w' ⊨ ψ。
+       Step 4: 商模型 M^f = (W^f, R^f, V^f):
+               - W^f = W / ≡（等价类集合，有限，因 Sub(φ) 有限）
+               - R^f([w], [w']) ↔ ∀□ψ ∈ Sub(φ), M,w ⊨ □ψ → M,w' ⊨ ψ
+               - V^f(p) = {[w] | M,w ⊨ p}（对 p ∈ Sub(φ) 中的变量）
+       Step 5: 证明 Filtration 引理: 对 ψ ∈ Sub(φ)，M^f,[w] ⊨ ψ ↔ M,w ⊨ ψ。
+               （对 ψ 结构归纳，关键情况 □ψ 利用 R^f 定义）
+       Step 6: 特别地，M^f,[w₀] ⊨ φ，且 W^f 有限。
+
+       形式化难点:
+       · 商类型/等价类的构造（Lean 的 Quotient 类型）
+       · Filtration 引理的归纳证明（□ 情况）
+       · 赋值 V^f 在不在 Sub(φ) 中的变量上的处理
+    -/
     sorry
 
 end SoundnessCompleteness
@@ -1031,7 +1176,12 @@ deriving DecidableEq, Repr, Inhabited
       (φ : CTLFormula) :
       (KS, s ⊨c (CTLFormula.AX φ)) ↔
         ∀ (π : CTLPath KS), π.val 0 = s → ltlSatisfies (fun i => π.val i) 0 (LTLFormula.next (toLTL φ)) := by
-    sorry -- 需要定义 toLTL 转换函数
+    sorry /- 需要完善 toLTL 转换函数并验证语义保持:
+              当前 toLTL 仅处理了基本连接词，未处理路径量词。
+              完整证明需扩展 toLTL 到所有 CTLFormula 并验证:
+              ∀ φ, KS,s ⊨c AX φ ↔ ∀π, π.0=s → π,0 ⊨ₗ X(toLTL φ)
+              这直接由 ctlSatisfies 和 ltlSatisfies 的定义可得。
+           -/
   where
     toLTL : CTLFormula → LTLFormula
       | CTLFormula.prop p => LTLFormula.prop p
@@ -1045,8 +1195,46 @@ deriving DecidableEq, Repr, Inhabited
   -/
   theorem ctl_expressiveness : ∃ φ : CTLFormula,
       ¬∃ ψ : LTLFormula, ∀ KS s, (KS, s ⊨c φ) ↔ (π, 0 ⊨ₗ ψ) := by
-    -- AG EF p 是 CTL 可表达但 LTL 不可表达的
-    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
+    -- AG EF p 是 CTL 可表达但 LTL 不可表达的经典例子。
+    /- 证明策略:
+       1. 取 φ = AG (EF (prop 0))，即"从所有路径的所有状态，
+          都存在某条路径最终到达 p"。
+       2. 假设存在 LTL 公式 ψ 等价于 φ。
+       3. 构造两个 Kripke 结构:
+          - KS₁: 一个二元分支树，每个节点都有路径到达 p。
+            KS₁ 满足 φ。
+          - KS₂: 一条无限路径，每隔一个状态可达 p，但另一分支
+            永远不到达 p。KS₂ 不满足 φ。
+       4. 但对任意 LTL 公式 ψ，KS₁ 和 KS₂ 的每条路径上的
+          LTL 语义相同（因为路径集合不同）。
+       5. 具体地，考虑 KS₁ 的一条永远不到达 p 的路径
+          （如果存在）和 KS₂ 的对应路径...
+
+       更标准的证明使用"分叉"性质:
+       - 构造 KS_broom: 一个根节点分出两条路径，一条
+         最终到达 p，另一条永不到达 p。
+       - 构造 KS_line: 一条线性路径，最终到达 p。
+       - 两者在所有路径上的 LTL 性质相同（因为 LTL 只谈
+         单条路径），但 CTL 的 AG EF p 在 KS_broom 上
+         成立（从根出发，沿第二分支永远有路径不到达 p？
+         不对，需更精细构造）。
+
+       标准构造（Clarke & Draghicescu, 1988）:
+       - M₁: 状态 {s₀, s₁, s₂}，s₀→s₁, s₀→s₂, s₁→s₁, s₂→s₂。
+         L(s₁) = {p}, L(s₂) = ∅。
+         M₁,s₀ ⊨c AG EF p（因为从 s₀ 出发，无论到 s₁ 还是 s₂，
+         若到 s₁ 则已满足 p；若到 s₂ 则... 不对，s₂ 永不满足 p）。
+       - 修正: M₁ 中 s₂ 也有自环，则 s₀ 沿 s₂ 分支到不了 p，
+         故 M₁,s₀ ⊭c AG EF p。
+       - 正确构造:
+         M₁: s₀→s₁, s₁→s₁, s₀→s₂, s₂→s₂, L(s₁)={p}, L(s₂)=∅。
+         M₂: 同 M₁ 但移除 s₀→s₂。
+         则 M₂,s₀ ⊨c AG EF p（唯一路径 s₀→s₁→s₁→... 总是满足 p）。
+         M₁,s₀ ⊭c AG EF p（取 s₀→s₂ 分支，s₂ 上 EF p 不成立）。
+         但对 LTL，M₁ 和 M₂ 的路径集合上的性质需仔细比较...
+
+       这是一个经典的文献结果，形式化证明需要仔细的模型构造。
+    -/
     sorry
 
 end TemporalLogic
@@ -1079,8 +1267,26 @@ section DecidabilityComplexity
   -/
   theorem modal_logic_decidable :
       ∀ φ : ModalFormula, Decidable (Valid φ) := by
-    -- 通过有穷模型性，可以在有穷模型上搜索
-    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
+    -- 通过有穷模型性，可以在有穷模型上搜索。
+    /- 证明策略:
+       1. 由有穷模型性: Valid φ ↔ 对所有有穷模型 M 和所有 w，M,w ⊨ φ。
+       2. 更精确地，若 φ 可满足，则存在大小 ≤ 2^|Sub(φ)| 的模型满足它
+          （Filtration 的界）。
+       3. 因此，要判定 Valid φ，只需检查所有大小 ≤ 2^|Sub(φ)| 的模型。
+       4. 对固定大小 n，模型的数量为有限（框架和赋值都有限）。
+       5. 穷举搜索给出判定过程。
+
+       形式化步骤:
+       · 定义 boundedCheck n φ := ∀M, |M.worlds| ≤ n → ∀w ∈ M.worlds, M,w ⊨ φ
+       · 证明: Valid φ ↔ boundedCheck (2^|Sub(φ)|) φ
+       · 对 fixed n，boundedCheck 是可计算的（有限量词域）
+       · 使用 Lean 的 Decidable 类型类实例化
+
+       形式化难点:
+       · 有穷模型性给出的上界精确形式化
+       · 有穷模型上的穷尽搜索作为可计算函数
+       · Decidable 实例的构造（需将 Prop 级判定转化为 Bool 计算）
+    -/
     sorry
 
   /-- 
@@ -1097,7 +1303,27 @@ section DecidabilityComplexity
   -/
   theorem LTL_satisfiability_PSPACE (φ : LTLFormula) :
       Decidable (∃ π i, π, i ⊨ₗ φ) := by
-    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
+    /- 证明策略（ tableau / automata-based 方法）:
+       方法 1 (Tableau):
+       1. 构造 φ 的 closure set CL(φ)（所有子公式及其否定，有限）。
+       2. 定义原子命题集合上的 Büchi 自动机 A_φ，
+          状态为 CL(φ) 的极大一致子集。
+       3. A_φ 接受路径 π 当且仅当 π ⊨ₗ φ。
+       4. 检查 A_φ 的非空性（图论可达性 + 循环检测），
+          可在多项式空间内完成。
+
+       方法 2 (On-the-fly tableau):
+       1. 从初始节点 {φ} 开始展开 tableau。
+       2. 应用分解规则（∧ 分解为两个子目标，∨ 非确定选择，
+          X 推迟到下一状态）。
+       3. 检查是否存在无限展开满足所有 Eventually (F) 约束。
+       4. 非确定性算法使用多项式空间（只存储当前路径前缀）。
+
+       形式化难点:
+       · Büchi 自动机的形式化定义
+       · 非空性的多项式空间算法
+       · 或: On-the-fly tableau 的完备性和可靠性证明
+    -/
     sorry
 
   /-- 
@@ -1106,7 +1332,33 @@ section DecidabilityComplexity
   -/
   theorem CTL_model_checking_P (KS : KripkeStructure) (s : State) (φ : CTLFormula) :
       Decidable (KS, s ⊨c φ) := by
-    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
+    /- 证明策略（标记算法 / 不动点迭代）:
+       核心思想: 对 CTL 公式 φ，计算满足 φ 的状态集合 Sat(φ)。
+
+       算法:
+       1. 对 φ 的结构递归计算:
+          - Sat(prop p) = {s | p ∈ L(s)}
+          - Sat(¬ψ) = S \ Sat(ψ)
+          - Sat(ψ₁ ∧ ψ₂) = Sat(ψ₁) ∩ Sat(ψ₂)
+          - Sat(EX ψ) = pre∃(Sat(ψ)) = {s | ∃s', R(s,s') ∧ s' ∈ Sat(ψ)}
+          - Sat(EG ψ) = 最大不动点: νZ. Sat(ψ) ∩ pre∃(Z)
+            通过迭代: Z₀ = S, Z_{i+1} = Sat(ψ) ∩ pre∃(Z_i)，直到稳定。
+          - Sat(E[ψ₁ U ψ₂]) = 最小不动点: μZ. Sat(ψ₂) ∪ (Sat(ψ₁) ∩ pre∃(Z))
+            通过迭代: Z₀ = ∅, Z_{i+1} = Sat(ψ₂) ∪ (Sat(ψ₁) ∩ pre∃(Z_i))，直到稳定。
+       2. 由于状态集有限，迭代最多 |S| 步收敛。
+       3. 复杂度: O(|φ| × (|S| + |R|))，多项式时间。
+
+       形式化步骤:
+       · 定义状态标记函数 label : CTLFormula → Set State
+       · 证明 label(φ) = {s | KS,s ⊨c φ}
+       · 证明迭代算法的终止性（单调有界序列）
+       · 构造 Decidable 实例
+
+       形式化难点:
+       · 不动点迭代在 Lean 中的终止性证明
+       · 最大/最小不动点的集合论刻画
+       · 算法复杂度分析
+    -/
     sorry
 
 end DecidabilityComplexity

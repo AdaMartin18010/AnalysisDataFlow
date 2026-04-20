@@ -906,7 +906,26 @@ theorem complete_induction (P : NatType → Prop) :
   ∀ n, P n := by
   intro h n
   -- 使用强归纳法
-  /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
+  /- 证明策略:
+     完全归纳法（course-of-values induction）断言:
+     若 (∀ m < n, P m) → P n 对所有 n 成立，则 ∀ n, P n。
+
+     证明方法: 将完全归纳转化为标准归纳。
+     定义 Q(n) := ∀ m < n, P m。
+     1. 证 Q(0): ∀ m < 0, P m。由于 m < 0 永假（NatLt 无 zero < zero 构造子），空真。
+     2. 归纳步: 假设 Q(n)，即 ∀ m < n, P m。证 Q(n+1) = ∀ m < n+1, P m。
+        对任意 m < n+1:
+        · 若 m < n: 由 Q(n) 得 P m。
+        · 若 m = n: 需证 P n。由 h，只需 (∀ m < n, P m)，即 Q(n)。
+        故 Q(n+1)。
+     3. 由标准归纳，∀ n, Q(n)。
+     4. 对任意 n，由 Q(n+1) 和 n < n+1，得 P n。
+
+     形式化步骤:
+     · 使用 strong_induction 或直接对 Q 标准归纳
+     · 处理 NatLt 的 cases 分析
+     · 利用 NatLt.succ_succ 的注入性区分 m < n 和 m = n
+  -/
   sorry
 
 /-- 课程归纳法（用于归纳谓词的证明） -/

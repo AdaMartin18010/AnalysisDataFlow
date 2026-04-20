@@ -1319,26 +1319,33 @@ deriving Repr, Inhabited
     范式的性质
     ============================================================ -/
 
-  /-- 引理 5.4 (CNF 可满足性): CNF 可满足当且仅当每个子句可满足
+  /-- 引理 5.4 (CNF 可满足性 - 原始表述):
 
-  注意: 这里的 "每个子句可满足" 是指每个子句作为独立公式可满足，
-  而非存在统一赋值满足所有子句。后者正是 SAT 问题的定义。
+  注意: 原始表述 "Satisfiable cnf.toFormula ↔ ∀ c ∈ cnf, Satisfiable c.toFormula"
+  在数学上不精确。右端允许每个子句有不同的满足赋值，而左端要求统一赋值。
 
-  形式化说明: CNF = List Clause，cnf.toFormula = ⋀ᵢ (⋁ⱼ lᵢⱼ)。
-  一个赋值 σ 满足 CNF 当且仅当 σ 满足每个子句。
-  这个引理的准确表述应为:
-    Satisfiable cnf.toFormula ↔ ∃ σ, ∀ c ∈ cnf, satisfiesClause σ c = true
+  方向→成立: 若 ∃σ, σ ⊨ ⋀ᵢ cᵢ，则对任意 cⱼ ∈ cnf，σ ⊨ cⱼ，故 cⱼ 可满足。
+  方向←不成立: 反例 cnf = {[p], [¬p]}。每个子句单独可满足，但无统一赋值。
+
+  实际使用请改用下方 `cnf_satisfiable_characterization`。
   -/
   lemma cnf_satisfiable_iff (cnf : CNF) :
       Satisfiable cnf.toFormula ↔ ∀ c ∈ cnf, Satisfiable c.toFormula := by
-    -- 注意: 此表述在数学上不精确。
-    -- "每个子句可满足" (右端) 是 ∀ c ∈ cnf, ∃ σ, σ ⊨ c
-    -- "CNF可满足" (左端) 是 ∃ σ, ∀ c ∈ cnf, σ ⊨ c
-    -- 两者不等价！右端蕴含左端不成立。
-    /- 正确的引理应该是:
-       lemma cnf_satisfiable_characterization (cnf : CNF) :
-         Satisfiable cnf.toFormula ↔ ∃ σ, ∀ c ∈ cnf, satisfiesClause σ c = true
-       证明: 直接由 eval 和 satisfiesClause 的定义展开。
+    -- 证明策略: 方向←不成立，故无法完成双向证明。
+    -- 保留此引理作为教学示例（形式化中常见的表述陷阱）。
+    /- 完整证明框架:
+       方向→:
+       1. 假设 Satisfiable cnf.toFormula，即 ∃σ, ⟦cnf.toFormula⟧ σ = true
+       2. 由 eval_cnf_member 引理: c ∈ cnf → ⟦c.toFormula⟧ σ = true
+       3. 故 c 可满足
+
+       方向←（反例）:
+       取 cnf = [[pos 0], [neg 0]]，即 p ∧ ¬p 的 CNF 形式。
+       · [pos 0] 可被 σ(p)=true 满足
+       · [neg 0] 可被 σ(p)=false 满足
+       · 但不存在统一 σ 同时满足两者，故 CNF 不可满足。
+
+       需先证明 eval_cnf_member（见 cnf_satisfiable_characterization 证明）。
     -/
     sorry
 
@@ -1400,21 +1407,156 @@ section SATSolving
   def satisfiesCNF (σ : Assignment) (cnf : CNF) : Bool :=
     cnf.all (satisfiesClause σ)
 
+  /-- 辅助引理: 文字满足语义等价 -/
+  lemma satisfiesLiteral_equiv (σ : Assignment) (l : Literal) :
+      satisfiesLiteral σ l = true ↔ ⟦l.toFormula⟧ σ = true := by
+    cases l with
+    | pos v => simp [satisfiesLiteral, Literal.toFormula, eval]
+    | neg v => simp [satisfiesLiteral, Literal.toFormula, eval]
+
+  /-- 辅助引理: 子句满足语义等价 -/
+  lemma satisfiesClause_equiv (σ : Assignment) (c : Clause) :
+      satisfiesClause σ c = true ↔ ⟦c.toFormula⟧ σ = true := by
+    induction c with
+    | nil => simp [satisfiesClause, Clause.toFormula, eval]
+    | cons l ls ih =>
+        simp [satisfiesClause, Clause.toFormula, eval]
+        constructor
+        · intro h
+          cases h1 : satisfiesLiteral σ l with
+          | true =>
+              have h2 : ⟦l.toFormula⟧ σ = true := (satisfiesLiteral_equiv σ l).mp h1
+              simp [h1, h2] at h ⊢
+              try { trivial }
+          | false =>
+              simp [h1] at h
+              have h2 : ⟦ls.toFormula⟧ σ = true := ih.mp h
+              simp [h2]
+              have h3 : ⟦l.toFormula⟧ σ = false := by
+                have h4 : satisfiesLiteral σ l = false := h1
+                have h5 : ⟦l.toFormula⟧ σ ≠ true := by
+                  intro h6
+                  have : satisfiesLiteral σ l = true := (satisfiesLiteral_equiv σ l).mpr h6
+                  contradiction
+                cases h7 : ⟦l.toFormula⟧ σ <;> triv <;> contradiction
+              simp [h3]
+        · intro h
+          cases h1 : ⟦l.toFormula⟧ σ with
+          | true =>
+              have h2 : satisfiesLiteral σ l = true := (satisfiesLiteral_equiv σ l).mpr h1
+              simp [h1, h2]
+              try { trivial }
+          | false =>
+              simp [h1] at h
+              have h2 : satisfiesClause σ ls = true := ih.mpr h
+              simp [h2]
+              have h3 : satisfiesLiteral σ l = false := by
+                have h4 : ⟦l.toFormula⟧ σ = false := h1
+                have h5 : satisfiesLiteral σ l ≠ true := by
+                  intro h6
+                  have : ⟦l.toFormula⟧ σ = true := (satisfiesLiteral_equiv σ l).mp h6
+                  contradiction
+                cases h7 : satisfiesLiteral σ l <;> triv <;> contradiction
+              simp [h3]
+
+  /-- 辅助引理: CNF成员子句的求值保持性 -/
+  lemma eval_cnf_member (σ : Assignment) (cnf : CNF) (c : Clause) (hc : c ∈ cnf) :
+      ⟦cnf.toFormula⟧ σ = true → ⟦c.toFormula⟧ σ = true := by
+    induction cnf with
+    | nil => simp at hc
+    | cons c' cs ih =>
+        simp [CNF.toFormula, eval] at *
+        intro h
+        cases hc with
+        | head =>
+            cases h' : ⟦c'.toFormula⟧ σ <;> simp [h'] at h ⊢
+            · contradiction
+            · exact h'
+        | tail hmem =>
+            cases h' : ⟦c'.toFormula⟧ σ <;> simp [h'] at h ⊢
+            · contradiction
+            · exact ih hmem h
+
+  /-- 辅助引理: 从成员子句求值得出CNF求值 -/
+  lemma eval_cnf_from_members (σ : Assignment) (cnf : CNF) :
+      (∀ c ∈ cnf, ⟦c.toFormula⟧ σ = true) → ⟦cnf.toFormula⟧ σ = true := by
+    induction cnf with
+    | nil => simp [CNF.toFormula, eval]
+    | cons c cs ih =>
+        simp [CNF.toFormula, eval]
+        intro h
+        constructor
+        · exact h c (by simp)
+        · exact ih (fun c' hmem => h c' (by simp [hmem]))
+
   /-- 定理 6.1 (SAT 语义等价): satisfiesCNF 与 eval 等价
 
-  证明策略: 对 CNF 的列表结构归纳，展开定义即可。
+  证明策略: 对 CNF 的列表结构归纳，利用子句满足等价引理。
   -/
   theorem satisfiesCNF_equiv (σ : Assignment) (cnf : CNF) :
       satisfiesCNF σ cnf = true ↔ ⟦cnf.toFormula⟧ σ = true := by
-    /- 证明分解:
-       satisfiesCNF σ cnf = cnf.all (satisfiesClause σ)
-       ⟦cnf.toFormula⟧ σ = ⟦⋀ᵢ cᵢ⟧ σ = ∀ i, ⟦cᵢ⟧ σ = true
-       需证明: cnf.all (satisfiesClause σ) = true ↔ ∀ c ∈ cnf, satisfiesClause σ c = true
-       这由 List.all 的定义直接得到。
-       进一步需证明: satisfiesClause σ c = true ↔ ⟦c.toFormula⟧ σ = true
-       由 Literal 和 eval 的定义直接得到。
-    -/
-    sorry
+    induction cnf with
+    | nil => simp [satisfiesCNF, CNF.toFormula, eval]
+    | cons c cs ih =>
+        simp [satisfiesCNF, CNF.toFormula, eval]
+        constructor
+        · intro h
+          cases h1 : satisfiesClause σ c with
+          | true =>
+              have h2 : ⟦c.toFormula⟧ σ = true := (satisfiesClause_equiv σ c).mp h1
+              simp [h1, h2] at h ⊢
+              try { trivial }
+          | false =>
+              simp [h1] at h
+              have h2 : ⟦cs.toFormula⟧ σ = true := ih.mp h
+              simp [h2]
+              have h3 : ⟦c.toFormula⟧ σ = false := by
+                have h4 : satisfiesClause σ c = false := h1
+                have h5 : ⟦c.toFormula⟧ σ ≠ true := by
+                  intro h6
+                  have : satisfiesClause σ c = true := (satisfiesClause_equiv σ c).mpr h6
+                  contradiction
+                cases h7 : ⟦c.toFormula⟧ σ <;> triv <;> contradiction
+              simp [h3]
+        · intro h
+          cases h1 : ⟦c.toFormula⟧ σ with
+          | true =>
+              have h2 : satisfiesClause σ c = true := (satisfiesClause_equiv σ c).mpr h1
+              simp [h1, h2]
+              try { trivial }
+          | false =>
+              simp [h1] at h
+              have h2 : satisfiesCNF σ cs = true := ih.mpr h
+              simp [h2]
+              have h3 : satisfiesClause σ c = false := by
+                have h4 : ⟦c.toFormula⟧ σ = false := h1
+                have h5 : satisfiesClause σ c ≠ true := by
+                  intro h6
+                  have : ⟦c.toFormula⟧ σ = true := (satisfiesClause_equiv σ c).mp h6
+                  contradiction
+                cases h7 : satisfiesClause σ c <;> triv <;> contradiction
+              simp [h3]
+
+  /-- 引理 6.1' (CNF 可满足性精确特征化):
+  CNF 可满足当且仅当存在统一赋值满足每个子句。
+  -/
+  lemma cnf_satisfiable_characterization (cnf : CNF) :
+      Satisfiable cnf.toFormula ↔ ∃ σ, ∀ c ∈ cnf, satisfiesClause σ c = true := by
+    constructor
+    · intro h
+      rcases h with ⟨σ, hσ⟩
+      use σ
+      intro c hc
+      have h1 : ⟦c.toFormula⟧ σ = true := eval_cnf_member σ cnf c hc hσ
+      exact (satisfiesClause_equiv σ c).mpr h1
+    · intro h
+      rcases h with ⟨σ, hσ⟩
+      use σ
+      have h1 : ∀ c ∈ cnf, ⟦c.toFormula⟧ σ = true := by
+        intro c hc
+        have h2 : satisfiesClause σ c = true := hσ c hc
+        exact (satisfiesClause_equiv σ c).mp h2
+      exact eval_cnf_from_members σ cnf h1
 
   /-- 单元传播 (Unit Propagation)
 

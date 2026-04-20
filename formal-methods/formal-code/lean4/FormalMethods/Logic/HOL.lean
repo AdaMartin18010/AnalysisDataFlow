@@ -716,7 +716,17 @@ section ClassicalReasoning
   φ → ¬¬φ 在直觉主义逻辑中也可证明。
   -/
   theorem DNI_provable (φ : Term) : IsTautology (DNI φ) := by
-    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
+    /- 证明策略:
+       1. 展开 DNI φ = φ →ᶜ (¬ᶜ (¬ᶜ φ)) = φ →ᶜ (¬ᶜ φ →ᶜ ⊥ᶜ)。
+       2. 假设 φ 为真，需证 ¬ᶜ φ →ᶜ ⊥ᶜ，即 (φ →ᶜ ⊥ᶜ) →ᶜ ⊥ᶜ。
+       3. 假设 φ →ᶜ ⊥ᶜ（即 ¬φ），与前提 φ 矛盾，故 ⊥ᶜ。
+       4. 形式化: 使用 HOLProves 的蕴含引入和 ⊥ 消除规则。
+
+       形式化难点:
+       · IsTautology 定义为 ∀M interp, interp φ = interp ⊤ᶜ，
+         需要构造模型或直接使用命题逻辑推导。
+       · 当前缺少从 HOLProves 到 IsTautology 的桥梁引理。
+    -/
     sorry
 
   /-- 
@@ -734,8 +744,20 @@ section ClassicalReasoning
   -/
   theorem DNE_implies_LEM (φ : Term) (hDNE : IsTautology (DNE φ)) :
       IsTautology (φ ∨ᶜ (¬ᶜ φ)) := by
-    -- 使用DNE证明LEM的经典构造
-    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
+    -- 使用DNE证明LEM的经典构造（Kalmar 构造）
+    /- 证明策略:
+       1. 先证 ¬¬(φ ∨ᶜ ¬φ)，即 (φ ∨ᶜ ¬φ →ᶜ ⊥ᶜ) →ᶜ ⊥ᶜ。
+       2. 假设 h : φ ∨ᶜ ¬φ →ᶜ ⊥ᶜ。
+       3. 证 ¬φ: 假设 φ，则 φ ∨ᶜ ¬φ（∨-intro-left），与 h 矛盾得 ⊥ᶜ。
+       4. 由 ¬φ 得 φ ∨ᶜ ¬φ（∨-intro-right），再次与 h 矛盾得 ⊥ᶜ。
+       5. 故 ¬¬(φ ∨ᶜ ¬φ)。
+       6. 应用 DNE: ¬¬(φ ∨ᶜ ¬φ) →ᶜ (φ ∨ᶜ ¬φ)。
+       7. 得 φ ∨ᶜ ¬φ。
+
+       形式化难点:
+       · 需要 HOLProves 中的完整推理规则链
+       · 从语法推导到 IsTautology 的转换引理
+    -/
     sorry
 
   /- ============================================================
@@ -777,8 +799,22 @@ section ClassicalReasoning
   -/
   theorem eps_implies_LEM (φ : Term) (hφ : TypeEnv.empty ⊢ φ : Bool) :
       IsTautology (φ ∨ᶜ (¬ᶜ φ)) := by
-    -- 使用ε算子构造LEM的证明
-    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
+    -- 使用ε算子构造LEM的证明（Hilbert 的经典构造）
+    /- 证明策略:
+       1. 定义谓词 P := λx. (x = true ∧ φ) ∨ (x = false ∧ ¬φ)。
+       2. 由排中律的元语言版本（Lean 的 classic），P true ∨ P false 在元语言成立。
+       3. 故 ∃x. P(x) 在 HOL 中可证。
+       4. 由 ε-公理: P(εx.P(x))。
+       5. 情况分析:
+          - 若 εx.P(x) = true，则由 P 的定义得 φ。
+          - 若 εx.P(x) = false，则由 P 的定义得 ¬φ。
+       6. 无论哪种情况，φ ∨ ¬φ 成立。
+
+       形式化难点:
+       · 需要将 Lean 的元语言排中律嵌入 HOL 对象语言
+       · ε-公理的应用需要合适的谓词类型
+       · 等式情况分析在 HOL 项上的实现
+    -/
     sorry
 
   /-- 
@@ -937,8 +973,25 @@ section FormalizedMathematics
       (∀ᶜ Nat (λ l, ∀ᶜ Nat (λ m, ∀ᶜ Nat (λ n,
         (app (app (const addC) (app (app (const addC) l) m)) n) =[Nat]
         (app (app (const addC) l) (app (app (const addC) m) n)))))) := by
-    -- 使用归纳原理证明
-    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
+    -- 使用Peano归纳原理证明
+    /- 证明策略（对 n 归纳）:
+       基础: n = 0
+       (l + m) + 0 = l + m        [add_def 右投影]
+       l + (m + 0) = l + m        [add_def 右投影]
+       故相等。
+
+       归纳步: 假设 (l + m) + n = l + (m + n)，证 (l + m) + S(n) = l + (m + S(n))。
+       左边: (l + m) + S(n) = S((l + m) + n)  [add_def 左投影]
+       右边: l + (m + S(n)) = l + S(m + n)     [add_def 左投影]
+                         = S(l + (m + n))      [add_def 左投影]
+       由归纳假设，(l + m) + n = l + (m + n)，
+       故 S((l + m) + n) = S(l + (m + n))。相等。
+
+       形式化难点:
+       · 需展开 addC 的定义（原始递归公理）
+       · 归纳原理在 IsTautology 框架下的应用
+       · 等式替换的保持性
+    -/
     sorry
 
   /-- 
@@ -950,7 +1003,41 @@ section FormalizedMathematics
       (∀ᶜ Nat (λ m, ∀ᶜ Nat (λ n,
         (app (app (const addC) m) n) =[Nat]
         (app (app (const addC) n) m)))) := by
-    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
+    /- 证明策略（双重归纳）:
+       外层对 m 归纳，内层对 n 归纳。
+
+       基础1: m = 0
+       0 + n = n           [add_def]
+       n + 0 = n           [add_def]
+       故相等。
+
+       归纳步1: 假设 m + n = n + m，证 S(m) + n = n + S(m)。
+       对 n 再归纳:
+         基础2: n = 0
+         S(m) + 0 = S(m)   [add_def]
+         0 + S(m) = S(m)   [add_def]
+         故相等。
+         归纳步2: 假设 S(m) + n = n + S(m)，证 S(m) + S(n) = S(n) + S(m)。
+         S(m) + S(n) = S(S(m) + n)     [add_def]
+                     = S(n + S(m))     [内层归纳假设]
+         S(n) + S(m) = S(S(n) + m)     [add_def]
+                     = S(m + S(n))     [外层归纳假设... 这不对，需要调整]
+
+       更优策略: 先证引理 ∀m. S(m) + n = S(m + n)（已内置于add_def），
+       然后对 n 归纳:
+       基础: m + 0 = 0 + m = m。
+       归纳步: 假设 m + n = n + m。
+       m + S(n) = S(m + n) = S(n + m) = S(n) + m。
+       还需证 S(n) + m = n + S(m)... 这需要另一个引理。
+
+       标准证明: 先证右单位元 (∀m, m + 0 = m) 和右后继
+       (∀m n, m + S(n) = S(m + n))，然后对 n 归纳证交换律。
+
+       形式化难点:
+       · 需先建立辅助引理（右单位元、右后继）
+       · 双重归纳在 IsTautology 中的表达
+       · 原始递归公理（add_def）的精确展开
+    -/
     sorry
 
   /-- 
@@ -964,7 +1051,26 @@ section FormalizedMathematics
         (app (app (const addC) 
           (app (app (const mulC) l) m)) 
           (app (app (const mulC) l) n)))))) := by
-    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
+    /- 证明策略（对 l 归纳）:
+       基础: l = 0
+       0 * (m + n) = 0            [mul_def]
+       (0 * m) + (0 * n) = 0 + 0 = 0  [mul_def, add_def]
+       故相等。
+
+       归纳步: 假设 l * (m + n) = (l * m) + (l * n)，
+       证 S(l) * (m + n) = (S(l) * m) + (S(l) * n)。
+       左边: S(l) * (m + n) = (l * (m + n)) + (m + n)    [mul_def]
+       右边: (S(l) * m) + (S(l) * n)
+           = ((l * m) + m) + ((l * n) + n)               [mul_def]
+           = ((l * m) + (l * n)) + (m + n)               [加法交换律/结合律重组]
+           = (l * (m + n)) + (m + n)                     [归纳假设]
+       故相等。
+
+       形式化难点:
+       · 需先完成 add_comm 和 add_assoc 的证明
+       · 多项式等式在原始递归定义下的验证
+       · 归纳假设的精确应用
+    -/
     sorry
 
   /- ============================================================
@@ -983,8 +1089,24 @@ section FormalizedMathematics
       (hBase : IsTautology (app P zero))
       (hStep : IsTautology (∀ᶜ Nat (λ n, (app P n) →ᶜ (app P (app (const succC) n))))) :
       IsTautology (∀ᶜ Nat (λ n, app P n)) := by
-    -- 应用Peano归纳公理
-    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
+    -- 应用Peano归纳公理 (peano_induction)
+    /- 证明策略:
+       1. peano_induction 给出:
+          IsTautology ((app P zero) ∧ᶜ (∀ᶜ Nat (λ n, (app P n) →ᶜ (app P (succ n)))))
+                      →ᶜ (∀ᶜ Nat (λ n, app P n)))
+       2. 由 hBase 和 hStep，合取引入得:
+          IsTautology ((app P zero) ∧ᶜ (∀ᶜ Nat (λ n, (app P n) →ᶜ (app P (succ n)))))
+       3. 应用蕴含消除（MP）即得目标。
+
+       形式化步骤:
+       · 使用 peano_induction 公理
+       · 使用 IsTautology 上的合取引入引理（需先证明）
+       · 使用 IsTautology 上的蕴含消除引理
+
+       形式化难点:
+       · IsTautology 目前仅为定义，缺少推理规则
+       · 需建立从公理到定理的推导体系
+    -/
     sorry
 
   /-- 
@@ -1009,8 +1131,23 @@ section FormalizedMathematics
       (h : IsTautology (∀ᶜ Nat (λ n, 
         (∀ᶜ Nat (λ m, (m <ᶜ n) →ᶜ (app P m))) →ᶜ (app P n)))) :
       IsTautology (∀ᶜ Nat (λ n, app P n)) := by
-    -- 使用Peano归纳证明良基归纳
-    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
+    -- 使用Peano归纳证明良基归纳（强归纳法）
+    /- 证明策略:
+       1. 定义 Q(n) := ∀m < n, P(m)。
+       2. 证 Q(0): ∀m < 0, P(m)。由于 m < 0 永假（由 < 的定义和 Nat.succ_ne_zero），空真。
+       3. 归纳步: 假设 Q(n)，证 Q(S(n)) = ∀m < S(n), P(m)。
+          对 m 分情况:
+          · m < n: 由 Q(n) 直接得 P(m)。
+          · m = n: 需证 P(n)。由 h，只需证 ∀m < n, P(m)，这正是 Q(n)。
+       4. 故 ∀n, Q(n)。特别地，对任意 n，取 m = n - 1（或类似），得 P(n)。
+          更直接地，由 Q(S(n)) 得 ∀m < S(n), P(m)，而 n < S(n)（由定义），故 P(n)。
+       5. 因此 ∀n, P(n)。
+
+       形式化难点:
+       · < 的定义涉及存在量词，需展开并处理
+       · 强归纳到弱归纳的转换引理
+       · 不等式推理在 Peano 算术中的形式化
+    -/
     sorry
 
   /- ============================================================
@@ -1054,7 +1191,26 @@ section FormalizedMathematics
       (¬ᶜ (∃ᶜ (σ →' (Set σ)) (λ f, 
         ∀ᶜ (Set σ) (λ S, ∃ᶜ σ (λ x, app f x =[Set σ] S))))) := by
     -- 经典的Cantor对角线论证
-    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
+    /- 证明策略:
+       1. 假设存在满射 f : σ → (σ → Bool)。
+       2. 构造对角集合 D := λx. ¬(f x x)，即 D(x) = ¬(f(x)(x))。
+       3. 由满射性，∃d, f(d) = D。
+       4. 考虑 D(d) = ¬(f(d)(d)) = ¬(D(d))。
+       5. 若 D(d) = true，则 ¬(D(d)) = false，矛盾。
+       6. 若 D(d) = false，则 ¬(D(d)) = true，矛盾。
+       7. 故不存在这样的满射。
+
+       形式化步骤:
+       · 在 HOL 中，Set σ = σ →' Bool
+       · 对角集合表示为 lam σ (¬ᶜ (app (app f (var 0)) (var 0)))
+       · 满射性假设给出存在 d 使 f(d) 与该对角项外延相等
+       · 将 d 代入自身产生矛盾
+
+       形式化难点:
+       · HOL 中等式的性质（外延 vs 内涵）
+       · 自引用项的构造（对角线方法的核心）
+       · 从语义等式导出语法矛盾
+    -/
     sorry
 
 end FormalizedMathematics
@@ -1160,7 +1316,28 @@ section HOLProofSystem
       (h : Γ ⊢ᴴ φ) (hType : TypeEnv.empty ⊢ φ : Bool) :
       IsTautology φ := by
     -- 对证明树进行归纳
-    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
+    /- 证明策略（对 HOLProves 归纳）:
+       基本情况:
+       · ax: 若 φ ∈ Γ，由假设 Γ 中所有公式为真，得 φ 为真。
+       · true_intro: ⊤ᶜ 恒真。
+       · eq_refl, beta_conv: 等式和 β-转换的语义有效性。
+       · lem: φ ∨ᶜ ¬φ 的语义有效性（由 Bool 的二值性）。
+
+       归纳步骤（对每个推理规则）:
+       · false_elim: ⊥ → φ 恒真。
+       · imp_intro/elim: 语义上的蕴含保持。
+       · and_intro/elim: 语义上的合取保持。
+       · or_intro/elim: 语义上的析取保持。
+       · eq_symm/trans, app_cong, lam_cong: 等式关系的语义保持。
+       · forall_intro/elim: 全称量词的语义保持（需处理赋值更新）。
+       · dne: 双重否定消除在经典语义下有效。
+
+       形式化难点:
+       · 需要定义 HOL 的模型/语义解释函数
+       · 处理 de Bruijn 索引的赋值更新
+       · β-规约的语义保持性（替换引理）
+       · 环境 Γ 中假设的语义真值性
+    -/
     sorry
 
   /-- 
@@ -1177,7 +1354,33 @@ section HOLProofSystem
       (hType : TypeEnv.empty ⊢ φ : Bool) :
       [] ⊢ᴴ φ := by
     -- Henkin语义下的完备性证明
-    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
+    /- 证明策略（Henkin 模型构造）:
+       注意: HOL 作为二阶逻辑片段，对标准语义不完备。
+       这里的完备性是相对于 Henkin 语义（允许任意高阶函数作为解释）。
+
+       Step 1: 定义 Henkin 模型
+       · 论域: 每个类型 σ 有一个非空集合 D_σ
+       · D_Bool = {true, false}
+       · D_(σ→τ) ⊆ D_σ → D_τ（不一定是全部函数）
+       · 需满足组合封闭性和 λ-抽象解释
+
+       Step 2: 对一致的公式集 Γ，构造 Henkin 模型
+       · 添加可数无穷多常量作为 witness
+       · 应用 Lindenbaum 型构造得到极大一致 Henkin 集
+
+       Step 3: 真值引理
+       · 在 Henkin 模型中，φ 为真 ↔ φ ∈ Δ（极大一致集）
+
+       Step 4: 完备性
+       · 若 φ 在所有 Henkin 模型中为真，则 φ 在典范模型中为真
+       · 故 φ ∈ Δ，即 Δ ⊢ᴴ φ
+       · 由 Δ 的构造，[] ⊢ᴴ φ
+
+       形式化难点:
+       · Henkin 域的精确构造（预层/层结构）
+       · 高阶 Lindenbaum 构造
+       · 与一阶完备性相比，HOL 需要处理函数类型的解释
+    -/
     sorry
 
 end HOLProofSystem
@@ -1219,7 +1422,32 @@ section Examples
   theorem deMorgan_provable (A B : Term) 
       (hA : TypeEnv.empty ⊢ A : Bool) (hB : TypeEnv.empty ⊢ B : Bool) :
       IsTautology (deMorgan1 A B) := by
-    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
+    /- 证明策略（真值表/语义验证）:
+       deMorgan1 A B = (¬ᶜ (A ∧ᶜ B)) ↔ᶜ ((¬ᶜ A) ∨ᶜ (¬ᶜ B))
+       对 A, B 的语义值分四种情况:
+       1. A = true, B = true:
+          ¬(true ∧ true) = ¬true = false
+          (¬true) ∨ (¬true) = false ∨ false = false
+          故 false ↔ false = true
+       2. A = true, B = false:
+          ¬(true ∧ false) = ¬false = true
+          (¬true) ∨ (¬false) = false ∨ true = true
+          故 true ↔ true = true
+       3. A = false, B = true: 对称于情况2，得 true。
+       4. A = false, B = false:
+          ¬(false ∧ false) = ¬false = true
+          (¬false) ∨ (¬false) = true ∨ true = true
+          故 true ↔ true = true
+
+       形式化步骤:
+       · 利用 HOL 中 Bool 的二值性（LEM_bool）
+       · 对 A 和 B 的情况分析
+       · 每种情况使用 simp 和定义展开
+
+       形式化难点:
+       · IsTautology 上的情况分析需要模型论工具
+       · 或: 直接在 HOLProves 中构造语法证明（更长但更基础）
+    -/
     sorry
 
   /- ============================================================
@@ -1251,7 +1479,26 @@ section Examples
   -/
   theorem naturals_unbounded : IsTautology naturalsUnbounded := by
     -- 构造证明: 对于任意n, S(n) > n
-    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
+    /- 证明策略:
+       naturalsUnbounded = ∀ᶜ Nat (λ n, ∃ᶜ Nat (λ m, n <ᶜ m))
+       其中 n <ᶜ m = ∃ᶜ Nat (λ k, m =[Nat] n + S(k))
+
+       对任意 n，取 m = S(n)。
+       需证 n <ᶜ S(n)，即 ∃k, S(n) = n + S(k)。
+       取 k = 0: S(n) = n + S(0) = n + 1 = S(n)。
+       由 add_def: n + S(0) = S(n + 0) = S(n)。
+       故 S(n) = n + S(0)，即 k = 0 是 witness。
+
+       形式化步骤:
+       · 对任意 n，构造 witness m = S(n)
+       · 展开 <ᶜ 的定义
+       · 取 k = 0
+       · 使用 add_def 验证 n + S(0) = S(n + 0) = S(n)
+
+       形式化难点:
+       · 存在量词的 witness 构造在 IsTautology 中的表达
+       · add_def 的展开和等式推理
+    -/
     sorry
 
   /- ============================================================
@@ -1275,7 +1522,25 @@ section Examples
   theorem empty_set_subset (σ : SimpleType) (S : Term)
       (hS : TypeEnv.empty ⊢ S : Set σ) :
       IsTautology (emptySetSubset σ S) := by
-    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
+    /- 证明策略:
+       emptySetSubset σ S = emptySet ⊆[σ] S
+       其中 emptySet = lam σ ⊥ᶜ，
+       ⊆[σ] 定义为 ∀ᶜ σ (λ x, (x ∈[σ] emptySet) →ᶜ (x ∈[σ] S))
+
+       对任意 x : σ:
+       x ∈[σ] emptySet = app (lam σ ⊥ᶜ) x = ⊥ᶜ [β-规约]
+       ⊥ᶜ →ᶜ (x ∈[σ] S) = false → anything = true
+       故整个全称式为真。
+
+       形式化步骤:
+       · 展开 emptySetSubset 和 subset 的定义
+       · 应用 β-转换: app (lam σ ⊥ᶜ) x = ⊥ᶜ
+       · 使用 ⊥ → φ 恒真
+
+       形式化难点:
+       · β-规约的语义等价性
+       · 假前件蕴含式的语义有效性
+    -/
     sorry
 
   /-- 
@@ -1336,8 +1601,30 @@ section MetaTheory
   -/
   theorem hol_relative_consistency 
       (hZFC : ¬∃ (φ : Prop), φ ∧ ¬φ) : HOLConsistent := by
-    -- 通过模型论证明
-    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
+    -- 通过模型论证明（相对一致性）
+    /- 证明策略:
+       HOLConsistent = ¬∃t, TypeEnv.empty ⊢ t : Bool ∧ IsTautology (t ∧ᶜ ¬ᶜ t)
+
+       思路: 在 ZFC 中构造 HOL 的标准模型。
+       1. 对每个简单类型 σ，定义其解释 [σ]:
+          - [Bool] = {0, 1}
+          - [Nat] = ω（自然数集）
+          - [Ind] = 某个非空集合（如 ω）
+          - [σ → τ] = [σ] → [τ]（全函数集）
+          - [σ × τ] = [σ] × [τ]（笛卡尔积）
+       2. 对项 t : σ，定义其解释 [t] ∈ [σ]。
+       3. 对 HOLProves Γ φ，若 Γ 中所有假设在模型中为真，则 φ 为真。
+          （可靠性在标准模型中成立）
+       4. 特别地，若 [] ⊢ᴴ (t ∧ᶜ ¬ᶜ t)，则 t ∧ᶜ ¬ᶜ t 在模型中为真。
+       5. 但 [t ∧ᶜ ¬ᶜ t] = [t] ∧ ¬[t] = false（Bool 的二值性）。
+       6. 矛盾，故不存在这样的 t。
+
+       形式化难点:
+       · 在 Lean（元语言）中构造 ZFC 模型
+       · 类型层次结构到集合论的编码
+       · HOL 常量的解释（特别是 ε 算子需要选择公理）
+       · 从语法一致性到语义模型的桥接
+    -/
     sorry
 
   /-- 
