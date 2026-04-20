@@ -10,7 +10,7 @@
 
 ## Table of Contents
 
-- [Business Pattern: Log Analysis \& Monitoring](#business-pattern-log-analysis--monitoring)
+- [Business Pattern: Log Analysis \& Monitoring](#business-pattern-log-analysis-monitoring)
   - [Table of Contents](#table-of-contents)
   - [1. Definitions](#1-definitions)
     - [Def-K-03-04: Log Monitoring Scenario](#def-k-03-04-log-monitoring-scenario)
@@ -25,7 +25,7 @@
   - [4. Argumentation](#4-argumentation)
     - [4.1 Multi-Layer Strategy for Log Parsing](#41-multi-layer-strategy-for-log-parsing)
     - [4.2 Alert Storm Formation Mechanism and Suppression Strategy](#42-alert-storm-formation-mechanism-and-suppression-strategy)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [5.1 Monotonicity Guarantee of Log Aggregation](#51-monotonicity-guarantee-of-log-aggregation)
     - [5.2 End-to-End Exactly-Once Argument](#52-end-to-end-exactly-once-argument)
   - [6. Examples](#6-examples)

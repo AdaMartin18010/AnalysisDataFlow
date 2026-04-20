@@ -29,7 +29,7 @@ last_sync: "2026-04-15"
   - [4. Argumentation](#4-argumentation)
     - [4.1 YCSB Adaptation in Stream Computing](#41-ycsb-adaptation-in-stream-computing)
     - [4.2 Comparative Testing Methodology](#42-comparative-testing-methodology)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [Thm-FYB-01 (State Backend Selection Theorem)](#thm-fyb-01-state-backend-selection-theorem)
   - [6. Examples](#6-examples)
     - [6.1 YCSB Environment Setup](#61-ycsb-environment-setup)

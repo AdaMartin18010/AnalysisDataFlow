@@ -33,7 +33,7 @@ last_sync: "2026-04-15"
     - [4.1 Decentralization Necessity Argument](#41-decentralization-necessity-argument)
     - [4.2 Stream Processing Accelerates Data Mesh Value Realization](#42-stream-processing-accelerates-data-mesh-value-realization)
     - [4.3 Counterexample Analysis: When Not to Adopt Data Mesh](#43-counterexample-analysis-when-not-to-adopt-data-mesh)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [5.1 Data Mesh Implementation Path](#51-data-mesh-implementation-path)
     - [5.2 Data Mesh Maturity Model](#52-data-mesh-maturity-model)
     - [5.3 Technology Stack Recommendation Argument](#53-technology-stack-recommendation-argument)

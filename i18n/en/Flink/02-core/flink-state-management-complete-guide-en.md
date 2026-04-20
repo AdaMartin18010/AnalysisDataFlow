@@ -36,7 +36,7 @@
       - [4.3.1 Full Checkpoint vs Incremental Checkpoint vs Changelog](#431-full-checkpoint-vs-incremental-checkpoint-vs-changelog)
       - [4.3.2 Checkpoint Configuration Parameters](#432-checkpoint-configuration-parameters)
     - [4.4 State TTL Expiration Policies](#44-state-ttl-expiration-policies)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [Thm-F-02-90: State Backend Selection Optimality Theorem](#thm-f-02-90-state-backend-selection-optimality-theorem)
     - [Thm-F-02-91: Checkpoint Completeness Theorem](#thm-f-02-91-checkpoint-completeness-theorem)
     - [Thm-F-02-92: State TTL Consistency Theorem](#thm-f-02-92-state-ttl-consistency-theorem)

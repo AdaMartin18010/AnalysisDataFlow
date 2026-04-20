@@ -42,7 +42,7 @@
     - [4.3 Counter-Example: Dynamic Sink Inapplicable Scenarios](#43-counter-example-dynamic-sink-inapplicable-scenarios)
     - [4.4 Boundary Discussion: Schema Evolution Boundary Conditions](#44-boundary-discussion-schema-evolution-boundary-conditions)
     - [4.5 Constructive Note: Topic Auto-Discovery Mechanism](#45-constructive-note-topic-auto-discovery-mechanism)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [5.1 Thm-K-10-07-01: Dynamic Iceberg Sink End-to-End Consistency Theorem](#51-thm-k-10-07-01-dynamic-iceberg-sink-end-to-end-consistency-theorem)
     - [5.2 Engineering Argument: TCO Cost Model](#52-engineering-argument-tco-cost-model)
     - [5.3 Engineering Argument: Small File Problem and Compaction Strategy](#53-engineering-argument-small-file-problem-and-compaction-strategy)

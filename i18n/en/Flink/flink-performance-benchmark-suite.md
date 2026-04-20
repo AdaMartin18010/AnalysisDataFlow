@@ -29,7 +29,7 @@ last_sync: "2026-04-15"
   - [4. Argumentation](#4-argumentation)
     - [4.1 Test Environment Standardization](#41-test-environment-standardization)
     - [4.2 Test Toolchain Selection](#42-test-toolchain-selection)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [Thm-FBS-01 (Benchmark Validity Theorem)](#thm-fbs-01-benchmark-validity-theorem)
   - [6. Examples](#6-examples)
     - [6.1 Quick Start](#61-quick-start)

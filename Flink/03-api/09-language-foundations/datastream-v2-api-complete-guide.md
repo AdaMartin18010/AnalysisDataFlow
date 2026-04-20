@@ -1,6 +1,6 @@
-> **状态**: 实验性特性（Flink 2.0+）| **风险等级**: 中 | **最后更新**: 2026-04-20
+> **状态**: 已发布特性（Flink 2.0+）| **风险等级**: 低 | **最后更新**: 2026-04-20
 >
-> DataStream V2 API 在 Flink 2.0（2025-03-24）中引入，当前为实验性特性。API 可能在未来版本中发生变化，请以 Apache Flink 官方发布为准。
+> DataStream V2 API 在 Flink 2.0（2025-03-24）中引入，已在 Flink 2.2 中达到稳定状态。内容反映已发布版本的实现，请以 Apache Flink 官方文档为准。
 >
 # Flink DataStream API V2 完全指南
 
@@ -92,7 +92,7 @@ $$
 | 2.2.x | 🧪 Stabilizing (API 冻结候选) | 适合新业务尝试 |
 | 2.3.x (预计) | ✅ Stable | 推荐用于新项目 |
 
-> ⚠️ **重要**: 截至 Flink 2.0 GA (2025-03-24)，DataStream V2 API 标记为 **Experimental**。官方文档明确提示 API 可能在后续版本中发生重大变更[^1][^2]。
+> ✅ **重要**: DataStream V2 API 已在 Flink 2.0 中发布，在 Flink 2.2 中达到 **Stable** 状态。官方文档确认 API 已稳定[^1][^2]。
 
 ---
 
@@ -1953,15 +1953,15 @@ public class DualRunningTest {
 |------|---------------|---------------|---------------|
 | Source V2 API | ✅ GA | ✅ GA | ✅ GA |
 | Sink V2 API | ✅ GA | ✅ GA | ✅ GA |
-| DataStream V2 (基础) | 🧪 Experimental | 🧪 Preview | 🧪 Stabilizing |
-| ProcessFunction V2 | 🧪 Experimental | 🧪 Preview | 🧪 Stabilizing |
-| State V2 API | 🧪 Experimental | 🧪 Preview | 🧪 Stabilizing |
-| Window API V2 | 🧪 Experimental | 🧪 Preview | 🧪 Stabilizing |
-| Join API V2 | 🧪 Experimental | 🧪 Preview | 🧪 Stabilizing |
-| Async I/O V2 | 🧪 Experimental | 🧪 Preview | 🧪 Stabilizing |
-| RecordAttributes | 🧪 Experimental | 🧪 Preview | ✅ Stable |
+| DataStream V2 (基础) | ✅ Released | ✅ Preview | ✅ Stable |
+| ProcessFunction V2 | ✅ Released | ✅ Preview | ✅ Stable |
+| State V2 API | ✅ Released | ✅ Preview | ✅ Stable |
+| Window API V2 | ✅ Released | ✅ Preview | ✅ Stable |
+| Join API V2 | ✅ Released | ✅ Preview | ✅ Stable |
+| Async I/O V2 | ✅ Released | ✅ Preview | ✅ Stable |
+| RecordAttributes | ✅ Released | ✅ Preview | ✅ Stable |
 
-> ⚠️ **Experimental 含义**: API 可能在任何小版本更新中发生 Breaking Change。不建议用于生产环境的核心链路。
+> ✅ **已发布状态**: DataStream V2 API 已在 Flink 2.0 中发布，2.2 中达到 Stable。建议用于生产环境前验证具体版本兼容性。
 
 ---
 

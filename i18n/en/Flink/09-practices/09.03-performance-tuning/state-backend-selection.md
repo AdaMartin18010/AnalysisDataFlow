@@ -17,7 +17,7 @@ last_sync: "2026-04-15"
   - [Table of Contents](#table-of-contents)
   - [1. Definitions](#1-definitions)
     - [Def-F-06-01 (State Backend)](#def-f-06-01-state-backend)
-    - [Def-F-06-02 (HeapStateBackend / MemoryStateBackend)](#def-f-06-02-heapstatebackend--memorystatebackend)
+    - [Def-F-06-02 (HeapStateBackend / MemoryStateBackend)](#def-f-06-02-heapstatebackend-memorystatebackend)
     - [Def-F-06-03 (RocksDBStateBackend)](#def-f-06-03-rocksdbstatebackend)
     - [Def-F-06-04 (HashMapStateBackend)](#def-f-06-04-hashmapstatebackend)
     - [Def-F-06-05 (EmbeddedRocksDBStateBackend)](#def-f-06-05-embeddedrocksdbstatebackend)
@@ -48,7 +48,7 @@ last_sync: "2026-04-15"
   - [7. Visualizations](#7-visualizations)
     - [State Backend Architecture Comparison Diagram](#state-backend-architecture-comparison-diagram)
     - [State Backend Selection Decision Tree](#state-backend-selection-decision-tree)
-    - [State Backend × Feature Detailed Comparison Table](#state-backend--feature-detailed-comparison-table)
+    - [State Backend × Feature Detailed Comparison Table](#state-backend-feature-detailed-comparison-table)
   - [8. References](#8-references)
 
 ## 1. Definitions

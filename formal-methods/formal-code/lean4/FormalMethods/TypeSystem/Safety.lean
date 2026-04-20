@@ -48,6 +48,7 @@ lemma substitution_lemma {Γ x s t S T}
     (h₁ : (Γ, x : S) ⊢ t : T)
     (h₂ : Γ ⊢ s : S) : 
   Γ ⊢ ([x := s] t) : T := by
+  /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
   sorry -- 通过对 t 的结构归纳证明
 
 /-! 
@@ -137,6 +138,7 @@ lemma canonical_forms_fun {t T₁ T₂}
     (h_nf : isNormalForm t)
     (h_ty : emptyContext ⊢ t : (T₁ ⇒ T₂)) : 
   ∃ x body, t = abs x body := by
+  /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
   sorry -- 通过分析类型判断的可能形式
 
 /-- 
@@ -150,6 +152,7 @@ lemma canonical_forms_bool {t}
     (h_ty : emptyContext ⊢ t : bool) : 
   t = abs "t" (abs "f" (var "t")) ∨ 
   t = abs "t" (abs "f" (var "f")) := by
+  /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
   sorry
 
 /-! 
@@ -175,6 +178,7 @@ lemma canonical_forms_bool {t}
 theorem progress {t T} 
     (h : emptyContext ⊢ t : T) : 
   isValue t ∨ ∃ t', t →β t' := by
+  /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
   sorry -- 通过对类型判断的归纳证明
 
 /-! 

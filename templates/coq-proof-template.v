@@ -123,7 +123,10 @@ Lemma stream_map_id : forall A (s : stream A),
   stream_map id s = s.
 Proof.
   (* 对有限流使用归纳，余归纳流使用双模拟 *)
-Admitted. (* TODO: 完成证明 *)
+  (* TODO: 对有限流使用 induction s; [reflexivity | simpl; rewrite IH; reflexivity]。
+     对无限流需建立 bisimulation 关系，证明 stream_map id 与 id
+     在所有位置产生相同元素。 *)
+Admitted.
 
 (* ============================================================================
  * 第5部分：主要定理
@@ -150,7 +153,11 @@ Proof.
   (* 步骤1: 建立不变式 *)
   (* 步骤2: 归纳证明 *)
   (* 步骤3: 得出结论 *)
-Admitted. (* TODO: 完成证明 *)
+  (* TODO: 需先定义系统处理操作的归纳不变式:
+     Inv(sys) := NoDup (processed_events sys)。
+     证明 init_system 满足 Inv，且每一步处理保持 Inv。
+     最后由 Inv 推出 count_occ = 1。 *)
+Admitted.
 
 (** 定理T-XX-XX: 水印单调性
  * 
@@ -166,7 +173,11 @@ Proof.
   intros sys sys' Hstep.
   (* 证明: 检查所有可能的转换 *)
   (* 每种转换都保持水印单调性 *)
-Admitted. (* TODO: 完成证明 *)
+  (* TODO: 需定义系统转换关系 step : SystemState -> SystemState -> Prop，
+     然后对 step 进行 inversion 分析。每种转换（事件处理、水印推进、
+     checkpoint）都需证明 current_watermark 的单调性。
+     若使用占位 True，可直接 trivial 完成。 *)
+Admitted.
 
 (* ============================================================================
  * 第6部分：Iris分离逻辑规范 (并发验证)
@@ -196,7 +207,11 @@ Proof.
   (* Iris证明 *)
   unfold system_state.
   (* 使用Iris的own谓词性质 *)
-Admitted. (* TODO: 完成证明 *)
+  (* TODO: 需利用 Iris 的 own_mono 和 valid_transition 定义。
+     关键步骤: iDestruct "Hs" as "Hs"; iApply own_mono;
+     结合 #Hvalid 中的转换有效性推导出水印单调性。
+     需要补充 valid_transition 的完整定义。 *)
+Admitted.
 
 (* ============================================================================
  * 第7部分：证明自动化战术

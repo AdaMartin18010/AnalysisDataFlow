@@ -825,6 +825,7 @@ theorem strong_induction (P : NatType → Prop) :
   intro step base n
   -- 需要证明所有小于等于 n 的元素都满足 P
   suffices ∀ m, NatType.LE m n → P m from
+    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
     sorry  -- 完成证明
   induction n with
   | zero =>
@@ -833,6 +834,7 @@ theorem strong_induction (P : NatType → Prop) :
     | refl => exact base
     | step h' =>
       -- 不可能有 m < 0
+      /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
       sorry
   | succ n ih =>
     intro m h
@@ -850,6 +852,7 @@ theorem complete_induction (P : NatType → Prop) :
   ∀ n, P n := by
   intro h n
   -- 使用强归纳法
+  /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
   sorry
 
 /-- 课程归纳法（用于归纳谓词的证明） -/

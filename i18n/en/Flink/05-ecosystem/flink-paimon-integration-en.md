@@ -8,7 +8,7 @@
 
 ## Table of Contents
 
-- [Flink + Apache Paimon Integration](#flink--apache-paimon-integration)
+- [Flink + Apache Paimon Integration](#flink-apache-paimon-integration)
   - [Table of Contents](#table-of-contents)
   - [1. Definitions](#1-definitions)
     - [Def-F-14-01 (Paimon Formal Definition)](#def-f-14-01-paimon-formal-definition)
@@ -30,8 +30,8 @@
     - [4.1 LSM Compaction Timing and Resource Consumption Analysis](#41-lsm-compaction-timing-and-resource-consumption-analysis)
     - [4.2 Changelog Producer Selection Decision Framework](#42-changelog-producer-selection-decision-framework)
     - [4.3 Bucket Design and Data Skew Handling](#43-bucket-design-and-data-skew-handling)
-    - [4.4 Paimon vs Kafka + Hive Cost Comparison](#44-paimon-vs-kafka--hive-cost-comparison)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+    - [4.4 Paimon vs Kafka + Hive Cost Comparison](#44-paimon-vs-kafka-hive-cost-comparison)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [Thm-F-14-01 (Exactly-Once Semantics)](#thm-f-14-01-exactly-once-semantics)
     - [Thm-F-14-02 (Incremental Consumption Completeness)](#thm-f-14-02-incremental-consumption-completeness)
     - [Thm-F-14-03 (Stream-Batch Query Consistency)](#thm-f-14-03-stream-batch-query-consistency)
@@ -48,7 +48,7 @@
     - [7.1 Paimon LSM Architecture](#71-paimon-lsm-architecture)
     - [7.2 Changelog Generation Flow](#72-changelog-generation-flow)
     - [7.3 Paimon vs Iceberg vs Hudi Comparison](#73-paimon-vs-iceberg-vs-hudi-comparison)
-    - [7.4 Flink + Paimon + Fluss Tiered Architecture](#74-flink--paimon--fluss-tiered-architecture)
+    - [7.4 Flink + Paimon + Fluss Tiered Architecture](#74-flink-paimon-fluss-tiered-architecture)
   - [8. References](#8-references)
 
 ---

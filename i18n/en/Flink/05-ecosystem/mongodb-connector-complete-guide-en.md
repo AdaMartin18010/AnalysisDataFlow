@@ -29,7 +29,7 @@
     - [4.2 Partition Strategy and Parallelism Matching Analysis](#42-partition-strategy-and-parallelism-matching-analysis)
     - [4.3 Idempotent Write and Duplicate Data Processing Boundary](#43-idempotent-write-and-duplicate-data-processing-boundary)
     - [4.4 Connection Pool Configuration and Resource Management Trade-offs](#44-connection-pool-configuration-and-resource-management-trade-offs)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [Thm-F-04-03 (Change Streams Source Exactly-Once Correctness)](#thm-f-04-03-change-streams-source-exactly-once-correctness)
     - [Thm-F-04-04 (MongoDB Sink Idempotent Write Guarantee)](#thm-f-04-04-mongodb-sink-idempotent-write-guarantee)
   - [6. Examples](#6-examples)

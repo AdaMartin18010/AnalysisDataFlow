@@ -12,7 +12,7 @@
 
 - [Flink 2.4 前瞻形式化论证](#flink-24-前瞻形式化论证)
   - [目录](#目录)
-  - [⚠️ 特性状态声明](#特性状态声明)
+  - [⚠️ 特性状态声明](#️-特性状态声明)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-F-24-01: FLIP-531 Agents形式化模型](#def-f-24-01-flip-531-agents形式化模型)
     - [Def-F-24-02: 异步执行引擎语义](#def-f-24-02-异步执行引擎语义)
@@ -31,7 +31,7 @@
     - [Arg-F-24-01: Agent模型与传统算子对比论证](#arg-f-24-01-agent模型与传统算子对比论证)
     - [Arg-F-24-02: 异步vs同步执行权衡分析](#arg-f-24-02-异步vs同步执行权衡分析)
     - [Arg-F-24-03: 云原生架构演进论证](#arg-f-24-03-云原生架构演进论证)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-F-24-01: Agent生命周期正确性（工程论证）](#thm-f-24-01-agent生命周期正确性工程论证)
     - [Thm-F-24-02: 异步处理Exactly-Once保证（工程论证）](#thm-f-24-02-异步处理exactly-once保证工程论证)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
@@ -1507,7 +1507,7 @@ flowchart TD
     Q4 -->|可等待| Q5
 
     Q5 -->|是| Use24Agent[选择 Flink 2.4<br/>完整Agent支持]
-    Q5 -->|否| Use23Wait[等待 2.4 GA<br/>先用2.3预览]
+    Q5 -->|否| Use23Wait[等待 2.4 GA<br/>先用2.3已发布版]
 
     Q3 -->|> 500K/s| Q6{延迟敏感性?}
     Q3 -->|< 500K/s| Q7{需要Serverless?}

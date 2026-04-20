@@ -8,7 +8,7 @@
 
 ## Table of Contents
 
-- [Flink + Apache Iceberg Integration](#flink--apache-iceberg-integration)
+- [Flink + Apache Iceberg Integration](#flink-apache-iceberg-integration)
   - [Table of Contents](#table-of-contents)
   - [1. Definitions](#1-definitions)
     - [Def-F-14-01 (Iceberg Table Format Formalization)](#def-f-14-01-iceberg-table-format-formalization)
@@ -28,7 +28,7 @@
     - [4.2 Small File Problem and Compaction Strategy](#42-small-file-problem-and-compaction-strategy)
     - [4.3 Partition Evolution vs Re-partitioning Cost](#43-partition-evolution-vs-re-partitioning-cost)
     - [4.4 Catalog Selection and Cross-Region Consistency](#44-catalog-selection-and-cross-region-consistency)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [Thm-F-14-01 (End-to-End Exactly-Once Semantics)](#thm-f-14-01-end-to-end-exactly-once-semantics)
     - [Thm-F-14-02 (Incremental Consumption Completeness)](#thm-f-14-02-incremental-consumption-completeness)
     - [Thm-F-14-03 (Time Travel Consistency)](#thm-f-14-03-time-travel-consistency)
@@ -42,11 +42,11 @@
     - [6.7 Schema Evolution](#67-schema-evolution)
     - [6.8 Compaction and Optimization](#68-compaction-and-optimization)
   - [7. Visualizations](#7-visualizations)
-    - [7.1 Flink + Iceberg Architecture](#71-flink--iceberg-architecture)
+    - [7.1 Flink + Iceberg Architecture](#71-flink-iceberg-architecture)
     - [7.2 Incremental Snapshot Consumption Data Flow](#72-incremental-snapshot-consumption-data-flow)
     - [7.3 Time Travel Application Scenarios](#73-time-travel-application-scenarios)
     - [7.4 Iceberg vs Hudi vs Paimon Comparison Matrix](#74-iceberg-vs-hudi-vs-paimon-comparison-matrix)
-    - [7.5 Flink + Iceberg + Trino Unified Architecture](#75-flink--iceberg--trino-unified-architecture)
+    - [7.5 Flink + Iceberg + Trino Unified Architecture](#75-flink-iceberg-trino-unified-architecture)
   - [8. References](#8-references)
 
 ---

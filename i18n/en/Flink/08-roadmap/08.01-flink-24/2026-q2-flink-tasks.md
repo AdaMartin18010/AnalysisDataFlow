@@ -32,7 +32,7 @@ last_sync: "2026-04-15"
     - [4.1 Task Priority Argumentation](#41-task-priority-argumentation)
     - [4.2 Timeline Feasibility Analysis](#42-timeline-feasibility-analysis)
     - [4.3 Resource Constraint Argumentation](#43-resource-constraint-argumentation)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [5.1 Q2 Goal Attainability Proof](#51-q2-goal-attainability-proof)
     - [5.2 Risk Assessment Formalization](#52-risk-assessment-formalization)
   - [6. Examples](#6-examples)

@@ -11,7 +11,7 @@ last_sync: "2026-04-15"
 
 ## Table of Contents
 
-- [Netflix Streaming Architecture - From Keystone to Flink](#netflix-streaming-architecture---from-keystone-to-flink)
+- [Netflix Streaming Architecture - From Keystone to Flink](#netflix-streaming-architecture-from-keystone-to-flink)
   - [Table of Contents](#table-of-contents)
   - [1. Definitions](#1-definitions)
     - [Def-K-03-08: Netflix Data Pipeline](#def-k-03-08-netflix-data-pipeline)
@@ -27,7 +27,7 @@ last_sync: "2026-04-15"
   - [4. Argumentation](#4-argumentation)
     - [Why Migrate from Chukwa to Flink?](#why-migrate-from-chukwa-to-flink)
     - [Global Deployment Challenges](#global-deployment-challenges)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [Theorem: Keystone Platform Satisfies Netflix Streaming SLA](#theorem-keystone-platform-satisfies-netflix-streaming-sla)
   - [6. Examples](#6-examples)
     - [Case 1: Real-time Viewing Experience Optimization](#case-1-real-time-viewing-experience-optimization)

@@ -32,7 +32,7 @@ This document establishes a complete mapping from formal definitions across the 
     - [4.1 Core Dependency Chain](#41-core-dependency-chain)
     - [4.2 Explicit Dependency Chain Explanations](#42-explicit-dependency-chain-explanations)
     - [4.3 Dependency Chain Semantic Interpretation](#43-dependency-chain-semantic-interpretation)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [5.1 Mapping Statistics](#51-mapping-statistics)
     - [5.2 Validation Coverage](#52-validation-coverage)
     - [5.3 Source Module Coverage](#53-source-module-coverage)

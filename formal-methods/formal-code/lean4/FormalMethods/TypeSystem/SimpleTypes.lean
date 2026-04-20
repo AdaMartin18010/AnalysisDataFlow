@@ -149,6 +149,7 @@ lemma weakening {Γ t T} (h : Γ ⊢ t : T) :
   ∀ (x : Name) (S : Type), 
     ¬inContext x Γ → 
     (Γ, x : S) ⊢ t : T := by
+  /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
   sorry -- 通过对类型判断的归纳证明
 
 /-- 
@@ -159,6 +160,7 @@ lemma weakening {Γ t T} (h : Γ ⊢ t : T) :
 lemma type_uniqueness {Γ t T₁ T₂} 
     (h₁ : Γ ⊢ t : T₁) (h₂ : Γ ⊢ t : T₂) : 
   T₁ = T₂ := by
+  /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
   sorry -- 通过对项结构的归纳证明
 
 /-! 
@@ -192,6 +194,7 @@ lemma combinator_S_typed {A B C : Type} :
       (app (app (var "f") (var "x")) 
            (app (var "g") (var "x"))))) : 
     ((A ⇒ B ⇒ C) ⇒ (A ⇒ B) ⇒ A ⇒ C) := by
+  /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
   sorry -- 详细的构造证明
 
 /-! 

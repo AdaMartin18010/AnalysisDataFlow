@@ -242,7 +242,7 @@ end Streaming_Extension
 ✅ 流处理扩展: Checkpoint验证 - 完成
 ✅ 辅助引理: generated_item_sound - 完整证明
 ✅ 列表归纳: FoVer_Soundness使用归纳法完成
-*)
+-/
 
 /- ============================================================================ -/
 /- End of FoVer_Complete.lean - 100%完成 ✅                                      -/

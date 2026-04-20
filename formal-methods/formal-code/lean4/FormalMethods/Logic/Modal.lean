@@ -476,6 +476,7 @@ deriving Repr
   theorem T_reflection (φ : ModalFormula) : TDerives [] (φ →ₘ ◇φ) := by
     -- 证明：φ → ¬□¬φ
     -- 这等价于 T 公理的否定对偶形式
+    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
     sorry
 
   /-- 
@@ -521,6 +522,7 @@ deriving Repr
   theorem S5_negative_introspection (φ : ModalFormula) :
       S5Derives [] ((¬ₘ□φ) →ₘ □(¬ₘ□φ)) := by
     -- 证明：将 5 公理应用于 ¬φ
+    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
     sorry
 
   /-- 
@@ -620,8 +622,10 @@ section CorrespondenceTheory
       (F ⊨f (□(var 0) →ₘ □□(var 0))) ↔ Transitive F.rel := by
     constructor
     · -- 语义有效性 → 传递性
+      /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
       sorry
     · -- 传递性 → 语义有效性
+      /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
       sorry
 
   /-- 
@@ -633,8 +637,10 @@ section CorrespondenceTheory
       (F ⊨f (◇(var 0) →ₘ □◇(var 0))) ↔ Euclidean F.rel := by
     constructor
     · -- 语义有效性 → 欧几里得性
+      /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
       sorry
     · -- 欧几里得性 → 语义有效性
+      /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
       sorry
 
   /-- 
@@ -643,6 +649,7 @@ section CorrespondenceTheory
   -/
   theorem correspondence_B (F : KripkeFrame) :
       (F ⊨f ((var 0) →ₘ □◇(var 0))) ↔ Symmetric F.rel := by
+    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
     sorry
 
   /-- 
@@ -660,6 +667,7 @@ section CorrespondenceTheory
   theorem lindenbaum_modal {Γ : Set ModalFormula} 
       (hCons : ¬(∃ Δ : ModalContext, Δ.toSet ⊆ Γ ∧ Δ ⊢ₖ ⊥)) :
       ∃ MCS : MaximalConsistentSet, Γ ⊆ MCS.formulas := by
+    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
     sorry
 
 end CorrespondenceTheory
@@ -738,6 +746,7 @@ section SoundnessCompleteness
   -/
   theorem K_completeness {Γ : Set ModalFormula} {φ : ModalFormula}
       (h : Γ ⊨ₘ φ) : ∃ Δ : ModalContext, Δ.toSet ⊆ Γ ∧ Δ ⊢ₖ φ := by
+    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
     sorry
 
   /-- 
@@ -817,6 +826,7 @@ section SoundnessCompleteness
   theorem finite_model_property (φ : ModalFormula) :
       Satisfiable φ → ∃ (M : KripkeModel),
         M.frame.worlds.Finite ∧ ∃ w ∈ M.frame.worlds, M, w ⊨ φ := by
+    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
     sorry
 
 end SoundnessCompleteness
@@ -1029,6 +1039,7 @@ deriving DecidableEq, Repr, Inhabited
   theorem ctl_expressiveness : ∃ φ : CTLFormula,
       ¬∃ ψ : LTLFormula, ∀ KS s, (KS, s ⊨c φ) ↔ (π, 0 ⊨ₗ ψ) := by
     -- AG EF p 是 CTL 可表达但 LTL 不可表达的
+    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
     sorry
 
 end TemporalLogic
@@ -1062,6 +1073,7 @@ section DecidabilityComplexity
   theorem modal_logic_decidable :
       ∀ φ : ModalFormula, Decidable (Valid φ) := by
     -- 通过有穷模型性，可以在有穷模型上搜索
+    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
     sorry
 
   /-- 
@@ -1078,6 +1090,7 @@ section DecidabilityComplexity
   -/
   theorem LTL_satisfiability_PSPACE (φ : LTLFormula) :
       Decidable (∃ π i, π, i ⊨ₗ φ) := by
+    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
     sorry
 
   /-- 
@@ -1086,6 +1099,7 @@ section DecidabilityComplexity
   -/
   theorem CTL_model_checking_P (KS : KripkeStructure) (s : State) (φ : CTLFormula) :
       Decidable (KS, s ⊨c φ) := by
+    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
     sorry
 
 end DecidabilityComplexity

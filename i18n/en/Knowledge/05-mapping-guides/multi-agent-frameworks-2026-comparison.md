@@ -31,7 +31,7 @@ last_sync: "2026-04-15"
   - [4. Argumentation](#4-argumentation)
     - [4.1 Selection Decision Framework](#41-selection-decision-framework)
     - [4.2 Counterexample Analysis](#42-counterexample-analysis)
-  - [5. Engineering Argument / Production Deployment Best Practices](#5-engineering-argument--production-deployment-best-practices)
+  - [5. Engineering Argument / Production Deployment Best Practices](#5-engineering-argument-production-deployment-best-practices)
     - [5.1 Deployment Architecture Comparison](#51-deployment-architecture-comparison)
     - [5.2 Performance Optimization Strategies](#52-performance-optimization-strategies)
   - [6. Examples](#6-examples)

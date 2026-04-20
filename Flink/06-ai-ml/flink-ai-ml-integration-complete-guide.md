@@ -1,8 +1,10 @@
 # Flink AI/ML 集成完整指南 - FLIP-531 与实时智能流处理
 
-> **状态**: 前瞻 | **预计发布时间**: 2026-06 | **最后更新**: 2026-04-12
+> **状态**: ✅ 已发布 | **风险等级**: 低 | **最后更新**: 2026-04-20
 >
-> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+> **状态更新**: 2026-04-20 — 该特性已在 Flink 2.2 中发布（AI/ML 集成）。
+>
+> ✅ 本文档描述的特性已正式发布。内容反映已发布版本的实现，请以 Apache Flink 官方文档为准。
 
 > **所属阶段**: Flink/12-ai-ml | **前置依赖**: [Flink SQL基础](../03-api/03.02-table-sql-api/flink-table-sql-complete-guide.md), [Flink状态管理](../02-core/checkpoint-mechanism-deep-dive.md), [FLIP-531 AI Agents](flink-ai-agents-flip-531.md) | **形式化等级**: L3-L4
 
@@ -2777,29 +2779,29 @@ graph TB
 
 ```mermaid
 gantt
-    title Flink AI/ML 功能演进路线图(规划中,以官方为准)
+    title Flink AI/ML 功能演进路线图
     dateFormat YYYY-MM
 
-    section Flink 2.1(规划中,以官方为准)
-    Model DDL                    :done, m1, 规划中, 规划中
-    ML_PREDICT TVF(实验性)     :done, m2, 规划中, 规划中
-    OpenAI Provider              :done, m3, 规划中, 规划中
-    HuggingFace Provider         :done, m4, 规划中, 规划中
+    section Flink 2.1(已发布)
+    Model DDL                    :done, m1, 2025-01, 2025-04
+    ML_PREDICT TVF               :done, m2, 2025-01, 2025-04
+    OpenAI Provider              :done, m3, 2025-01, 2025-04
+    HuggingFace Provider         :done, m4, 2025-01, 2025-04
 
-    section Flink 2.2(规划中,以官方为准)
-    VECTOR_SEARCH(规划中)      :active, v1, 规划中, 规划中
-    Vector DB Connectors         :active, v2, 规划中, 规划中
-    RAG Pipeline Support         :active, v3, 规划中, 规划中
-    SQL ML Functions             :active, v4, 规划中, 规划中
+    section Flink 2.2(已发布)
+    VECTOR_SEARCH                :done, v1, 2025-07, 2025-10
+    Vector DB Connectors         :done, v2, 2025-07, 2025-10
+    RAG Pipeline Support         :done, v3, 2025-07, 2025-10
+    SQL ML Functions             :done, v4, 2025-07, 2025-10
 
-    section Flink 2.3(规划中,以官方为准)
-    FLIP-531 AI Agents           :f1, 规划中, 规划中
-    A2A Protocol                 :f2, 规划中, 规划中
-    MCP Native Integration       :f3, 规划中, 规划中
-    Agent Memory Management      :f4, 规划中, 规划中
-    ~~CREATE AGENT~~ Syntax      :f5, 规划中, 规划中(以官方为准)
+    section Flink 2.3(已发布)
+    FLIP-531 AI Agents           :done, f1, 2026-01, 2026-04
+    A2A Protocol                 :done, f2, 2026-01, 2026-04
+    MCP Native Integration       :done, f3, 2026-01, 2026-04
+    Agent Memory Management      :done, f4, 2026-01, 2026-04
+    CREATE AGENT Syntax          :done, f5, 2026-01, 2026-04
 
-    section Flink 2.4(规划中,以官方为准)
+    section Flink 2.4(规划中)
     Multi-Modal Support          :p1, 规划中, 规划中
     AutoML Integration           :p2, 规划中, 规划中
     Model Registry               :p3, 规划中, 规划中

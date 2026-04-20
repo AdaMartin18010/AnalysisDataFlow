@@ -27,7 +27,7 @@ last_sync: "2026-04-15"
     - [Direction 2: Formal Theory of Transactional Stream Processing](#direction-2-formal-theory-of-transactional-stream-processing)
     - [Direction 3: Semantic Foundations of Incremental View Maintenance](#direction-3-semantic-foundations-of-incremental-view-maintenance)
   - [Important Papers in 2025](#important-papers-in-2025)
-    - [Paper 1: IcedTea — Time-Travel Debugging in Dataflow Systems](#paper-1-icedtea--time-travel-debugging-in-dataflow-systems)
+    - [Paper 1: IcedTea — Time-Travel Debugging in Dataflow Systems](#paper-1-icedtea-time-travel-debugging-in-dataflow-systems)
     - [Paper 2: Advances in Formal Verification of Stream Processing Systems](#paper-2-advances-in-formal-verification-of-stream-processing-systems)
     - [Paper 3: Adaptive Workflow Optimization](#paper-3-adaptive-workflow-optimization)
     - [Paper 4: Learned Query Optimizer](#paper-4-learned-query-optimizer)

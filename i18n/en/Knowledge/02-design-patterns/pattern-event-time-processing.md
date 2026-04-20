@@ -38,7 +38,7 @@ last_sync: "2026-04-15"
     - [8.3 Property Preservation under Pattern Composition](#83-property-preservation-under-pattern-composition)
     - [8.4 Boundary Conditions and Constraints](#84-boundary-conditions-and-constraints)
     - [8.5 Engineering Implementation and Theory Correspondence](#85-engineering-implementation-and-theory-correspondence)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [5.1 Watermark Monotonicity Guarantee](#51-watermark-monotonicity-guarantee)
     - [5.2 Late Data Processing ExactlyOnce Compatibility](#52-late-data-processing-exactlyonce-compatibility)
     - [5.3 Idle Source Handling Engineering Argument](#53-idle-source-handling-engineering-argument)

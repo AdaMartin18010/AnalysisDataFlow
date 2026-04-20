@@ -34,7 +34,7 @@ last_sync: "2026-04-15"
       - [5.2.1 Basic Monitoring Checklist](#521-basic-monitoring-checklist)
       - [5.2.2 Log Checklist](#522-log-checklist)
     - [5.3 Security Review](#53-security-review)
-      - [5.3.1 Authentication \& Authorization Checklist](#531-authentication--authorization-checklist)
+      - [5.3.1 Authentication \& Authorization Checklist](#531-authentication-authorization-checklist)
       - [5.3.2 Data Security Checklist](#532-data-security-checklist)
       - [5.3.3 Audit Log Checklist](#533-audit-log-checklist)
     - [5.4 Performance Validation](#54-performance-validation)

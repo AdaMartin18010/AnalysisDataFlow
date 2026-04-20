@@ -25,6 +25,8 @@
 | [realtime-ai-inference-architecture.md](realtime-ai-inference-architecture.md) | 实时AI推理架构 | L4-L5 | ~40KB | 3定义+2定理 |
 | [realtime-ai-streaming-2026.md](realtime-ai-streaming-2026.md) | 2026实时AI展望 | L3 | ~35KB | 2定义+1命题 |
 | [real-time-rag-architecture.md](real-time-rag-architecture.md) | 实时RAG架构 | L4 | ~33KB | 2定义+2引理 |
+| [llm-assisted-stream-processing-optimization.md](llm-assisted-stream-processing-optimization.md) | LLM辅助流处理优化 ⭐NEW | L3-L5 | ~26KB | 5定义+2命题+1引理+1定理 |
+| [streaming-vector-db-frontier-2026.md](streaming-vector-db-frontier-2026.md) | 流式向量数据库前沿 | L3-L4 | ~26KB | 4定义+2命题+1引理+2定理 |
 
 ### 多模态与图流处理
 
@@ -151,12 +153,14 @@
 | 序号 | 文档路径 | 主题 | 大小 | 形式化元素 |
 |------|---------|------|------|-----------|
 | 1 | [veil-framework-production-assessment.md](veil-framework-production-assessment.md) | Veil框架生产实践评估 | 23.3 KB | 2定义+1定理+1命题 |
+| 2 | [llm-assisted-stream-processing-optimization.md](llm-assisted-stream-processing-optimization.md) | LLM辅助流处理优化 | 26.2 KB | 5定义+2命题+1引理+1定理 |
+| 3 | [streaming-vector-db-frontier-2026.md](streaming-vector-db-frontier-2026.md) | 流式向量数据库前沿 (v2.0更新) | 25.6 KB | 4定义+2命题+1引理+2定理 |
 
 **本次新增统计**:
 
-- 文档数量: 1篇
-- 总大小: 23.3 KB
-- 形式化元素: 2定义 + 1定理 + 1命题 = 4个
+- 文档数量: 2篇新增 + 1篇重大更新
+- 总大小: 51.8 KB 新增内容
+- 形式化元素: 9定义 + 4命题 + 2引理 + 3定理 = 18个
 
 ---
 
@@ -222,6 +226,7 @@
 - 数字孪生
 - IoT自愈
 - 实时RAG
+- LLM辅助流处理优化
 
 ### 形式化验证前沿
 

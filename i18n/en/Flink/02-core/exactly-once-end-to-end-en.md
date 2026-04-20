@@ -27,7 +27,7 @@
     - [4.2 Checkpoint Failure](#42-checkpoint-failure)
     - [4.3 Sink Pre-commit/Commit Failure](#43-sink-pre-commitcommit-failure)
     - [4.4 Network Partition and Transaction Suspension](#44-network-partition-and-transaction-suspension)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [5.1 Two-Phase Commit Protocol (2PC)](#51-two-phase-commit-protocol-2pc)
     - [5.2 Kafka Transactional Sink](#52-kafka-transactional-sink)
       - [5.2.1 Legacy Kafka Producer (Before Flink 1.14)](#521-legacy-kafka-producer-before-flink-114)

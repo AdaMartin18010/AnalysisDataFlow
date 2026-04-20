@@ -25,9 +25,11 @@ Definition min_plus_add (x y : R) : R := Rmin x y.
 Definition min_plus_mul (x y : R) : R := x + y.
 
 (* Min-Plus卷积 *)
+(* 注意: Rbar.glb_Rbar API可能因Coq版本而异，以下代码基于MathComp-Analysis 1.0+
+   如遇编译错误，请检查Rbar.glb_Rbar的签名 *)
 Definition min_plus_convolution (f g : R -> R) (t : R) : R :=
   Rbar.real (Rbar.glb_Rbar (fun s => 
-    min_plus_mul (f s) (g (t - s)))) 0 t.
+    min_plus_mul (f s) (g (t - s))) 0 t).
 
 (* 记法 *)
 Notation "f '⊗' g" := (min_plus_convolution f g) (at level 40).

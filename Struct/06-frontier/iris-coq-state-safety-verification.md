@@ -24,7 +24,7 @@
     - [论证 1: 为什么状态后端验证必须采用分离逻辑](#论证-1-为什么状态后端验证必须采用分离逻辑)
     - [论证 2: 纯 Coq 方法的适用边界](#论证-2-纯-coq-方法的适用边界)
     - [论证 3: 从 Iris 到生产代码的提取鸿沟](#论证-3-从-iris-到生产代码的提取鸿沟)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [工程论证: Flink 状态后端并发安全性的分层验证框架](#工程论证-flink-状态后端并发安全性的分层验证框架)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [示例 1: HashMap 状态后端的 Iris 验证](#示例-1-hashmap-状态后端的-iris-验证)

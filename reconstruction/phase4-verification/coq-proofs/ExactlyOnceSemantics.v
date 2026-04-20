@@ -744,7 +744,11 @@ Proof.
   - (* NoDup transaction_id from transaction management *)
     (* 简化：假设 sink 处于 committed 状态 *)
     apply transactional_output_unique with (sink := sink); auto.
-    admit. (* 需要证明 sink 处于 committed 状态 *)
+    (* TODO: 需证明 sink 处于 committed 状态。
+       策略: 从 Hatomic (CheckpointAtomic) 和 Hmapping 推导
+       transactional_sink 的 commit 不变式，或添加
+       sink_committed 作为显式假设。 *)
+    admit.
     
   - (* Uniqueness from determinism assumption *)
     intros o1 o2 Hin1 Hin2 Heq_id.
@@ -931,7 +935,11 @@ Proof.
   split.
   - (* Apply the main exactly_once_complete theorem *)
     (* Note: We need determinism assumption for this *)
-    admit. (* 简化：需要 DeterministicProcessing 假设 *)
+    (* TODO: 需引入 DeterministicProcessing 假设作为显式前提，
+       或从 Hvalid (ValidSystem) 推导。
+       策略: 展开 StrongExactlyOnce 与 ExactlyOnceConditions，
+       将 exactly_once_complete 的结果与 Hlive 组合。 *)
+    admit.
   - (* Liveness is given as assumption *)
     exact Hlive.
 Qed.

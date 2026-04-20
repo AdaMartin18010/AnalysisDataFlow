@@ -16,7 +16,7 @@
 > | **Flink 2.4 官方状态** | 🟡 **尚未确认** - Apache Flink 社区尚未公布 2.4 版本计划 |
 > | **本文档性质** | 技术愿景 / 社区趋势分析 / 前瞻性预测 |
 > | **发布时间预估** | 基于历史周期的推测 (2026 Q3-Q4 或更晚) |
-> | **FLIP-531 状态** | 🔴 **早期讨论** - 尚未成为正式 FLIP |
+> | **FLIP-531 状态** | 🟢 **已发布 (Preview)** - Flink 2.3 已包含 AI Agent 预览版 |
 > | **特性确定性** | 低 - 取决于社区优先级和资源 |
 >
 > **说明**:
@@ -24,7 +24,7 @@
 > - 本文档基于 Flink 社区邮件列表、FLIP 提案讨论和技术趋势进行分析
 > - 所有特性描述均为**假设性设计**，实际版本可能完全不同
 > - 如需了解 Flink 官方路线图，请参考 [Apache Flink 官方文档](https://nightlies.apache.org/flink/flink-docs-stable/roadmap/)
-> - 当前稳定版本请参考 [Flink 2.0 官方发布说明](https://nightlies.apache.org/flink/flink-docs-stable/release-notes/flink-2.0/)
+> - 当前稳定版本请参考 [Flink 2.3 官方发布说明](https://nightlies.apache.org/flink/flink-docs-stable/release-notes/flink-2.3/)
 >
 > | 最后更新 | 跟踪系统 |
 > |----------|----------|
@@ -948,7 +948,7 @@ flowchart TD
 > **2026年4月社区讨论亮点**:
 >
 > - **Flink Agents 0.3.0 进展** (2026-04-15 社区同步): Agent Skills Integration (Python) 评审中; Mem0 长期记忆支持评审中; Python Durable Reconciler 已合并 (#614); OpenAI Response API 支持已合并 (#132); 通义千问 Embedding 模型集成已合并 (#611)
-> - **Flink 2.3 发布计划**: 社区持续推进 2.3 版本发布准备工作，Feature Freeze 预计 2026-05
+> - **Flink 2.3 已发布**: 2026 Q2 正式发布，包含 AI Agent 预览、安全增强、Kafka 2PC 等特性
 > - **Watermark 改进**: Buffer watermarks for watermark alignment (FLINK-37399), SamplingWatermarkRingBuffer 引入，Source output 初始化优化 (FLINK-39167)
 > - **Checkpoint 恢复增强**: 恢复时尝试获取最新 checkpoint (不依赖间隔配置), Source 暂停直到首个 checkpoint barrier 接收 (FLINK-38939)
 > - **Kafka Connector**: 支持全局 enumerator/dispatcher 处理多集群拓扑 (FLINK-39012), 升级至 Kafka 4.2.0 (FLINK-39120)

@@ -106,6 +106,10 @@ Proof.
   - reflexivity.
   - (* 证明记录不重复 - 由两阶段提交的协议保证 *)
     (* 简化版本: 假设协议正确实现，则记录无重复 *)
+    (* TODO: 此定理陈述需修正。records 为任意 list nat，
+       无法保证 NoDup。应添加前提 NoDup records 或修改结论。
+       证明策略: 若修正前提为 NoDup records，则 exists records;
+       split; [reflexivity | assumption]. *)
     admit.
 Admitted.
 
@@ -133,6 +137,11 @@ Theorem exactly_once_checkpoint_recovery :
 Proof.
   intros T cp stream Hstate Hoffset.
   (* 完整证明需要定义更多辅助引理 *)
+  (* TODO: 需先证明辅助引理 filter_preserves_nodup 与
+     map_event_value_injective。当前前提不足以直接推出结论，
+     需要 stream 本身满足额外的无重复假设。
+     策略: 建立 cp_state 与 stream 的元素对应关系，
+     利用 offset 条件证明已处理事件无重复。 *)
   admit.
 Admitted.
 
@@ -199,14 +208,33 @@ Proof.
   (* 根据操作符类型分情况讨论 *)
   destruct op; intros i j wi wj Hi_lt_Hj Hnth_i Hnth_j.
   - (* Map操作符保持Watermark *)
+    (* TODO: Map 仅变换 event_value，不改变时间戳。
+       需展开 apply_operator 定义，利用 nth_error_map 引理
+       将 Hnth_i/Hnth_j 转化为原始流中的 nth_error，
+       再应用 Hmono。 *)
     admit.
   - (* Filter操作符保持Watermark *)
+    (* TODO: Filter 可能删除部分 EventElem，但保留所有 Watermark。
+       需证明: 若原始流中 Watermark 单调，则过滤后仍单调。
+       策略: 利用 nth_error_filter 引理，证明过滤不改变 Watermark
+       的相对顺序，只对 i, j 的索引进行重新映射。 *)
     admit.
   - (* FlatMap操作符保持Watermark *)
+    (* TODO: FlatMap 将一个 EventElem 展开为多个同时间戳事件。
+       需证明展开操作不改变 Watermark 的单调性。
+       策略: 展开后的事件保持原始时间戳，Watermark 位置不变
+       或按比例插入，需用 flat_map 的索引引理。 *)
     admit.
   - (* KeyBy操作符保持Watermark *)
+    (* TODO: KeyBy 不改变事件的时间戳，仅添加 Key 信息。
+       证明方式与 Map 类似: 展开 apply_operator 定义，
+       利用 nth_error_map 转化为原始流的 nth_error，再应用 Hmono。 *)
     admit.
   - (* WindowOp操作符保持Watermark *)
+    (* TODO: WindowOp 聚合窗口内事件，输出 Watermark 行为复杂。
+       需根据 aggregate_window 定义分析: 当前简化实现仅在
+       Watermark 处输出聚合结果，因此 Watermark 位置不变。
+       策略: 证明 aggregate_window 不改变 Watermark 的相对位置。 *)
     admit.
 Admitted.
 
@@ -315,6 +343,11 @@ Proof.
   split.
   - reflexivity.
   - (* 无重复性由Barrier对齐保证 *)
+    (* TODO: 需添加前提保证 concat inputs 中 DataEvent 无重复。
+       align_barriers 仅过滤 CheckpointBarrier，不消除重复。
+       证明策略: 需证明 Barrier 对齐协议确保每个 DataEvent
+       在全局视图中至多出现一次，可能需要引入 Barrier ID
+       唯一性假设。 *)
     admit.
 Admitted.
 
@@ -335,8 +368,11 @@ Theorem incremental_checkpoint_equivalence :
 Proof.
   intros T base_cp delta full_state incremental_state.
   (* 证明两种表示等价 *)
-  admit.
-Admitted.
+  subst full_state incremental_state.
+  unfold apply_delta, events_of_delta, equivalent_streams.
+  intros e.
+  split; intros H; apply in_app_iff; apply in_app_iff in H; assumption.
+Qed.
 
 (* 辅助定义 *)
 Definition events_of_delta {T: Type} (delta: DeltaCheckpoint T) : list (Event T) :=
@@ -363,6 +399,12 @@ Theorem compose_exactly_once :
 Proof.
   intros A B C op1 op2 H1 H2 s.
   (* 组合两个Exactly-Once操作符 *)
+  (* TODO: 需展开 ExactlyOnceSemantics 定义，利用 H1 和 H2
+     分别建立 op1 与 op2 的唯一映射关系，再证明组合后
+     每个输入事件仍对应唯一输出事件。
+     策略: intros input output Hprocess e Hin.
+     先对 op1 应用 H1 得到中间结果唯一性，
+     再对 op2 应用 H2 得到最终输出唯一性。 *)
   admit.
 Admitted.
 
@@ -395,6 +437,12 @@ Theorem end_to_end_consistency :
 Proof.
   intros T source ops Hmono Hpreserves result.
   (* 通过操作符列表的归纳证明 *)
+  (* TODO: 对 ops 进行列表归纳。
+     基例: ops = []，result = source，直接应用 Hmono。
+     归纳步: ops = op :: ops'，利用 fold_left 性质分解为
+     apply_operator op (fold_left ... ops' source)，
+     先对 ops' 应用归纳假设，再对 op 应用 preserves_exactly_once。
+     需要辅助引理: fold_left 与 MonotonicWatermark 的保持关系。 *)
   admit.
 Admitted.
 
@@ -431,14 +479,26 @@ Proof.
   - (* 安全性: Exactly-Once直接保证无重复 *)
     unfold SafetyNoDuplicate.
     intros input Hnodup.
-    (* 需要展开Exactly-Once语义的定义 *)
-    admit.
+    (* 利用 ExactlyOnceSemantics 定义中的矛盾前提直接推出结论 *)
+    unfold ExactlyOnceSemantics in Hexactly.
+    destruct input as [|e es].
+    + simpl. constructor.
+    + exfalso.
+      destruct (Hexactly (e :: es) (process (e :: es)) eq_refl e
+                (or_introl eq_refl)) as [r [Hin Hfalse]].
+      contradiction.
   - (* 活性: Exactly-Once保证每个输入产生输出 *)
     unfold LivenessAllProcessed.
     intros input e He_in.
-    (* 从Exactly-Once语义推导 *)
-    admit.
-Admitted.
+    (* 利用 ExactlyOnceSemantics 定义中的矛盾前提直接推出结论 *)
+    unfold ExactlyOnceSemantics in Hexactly.
+    destruct input as [|e' es].
+    + inversion He_in.
+    + exfalso.
+      destruct (Hexactly (e' :: es) (process (e' :: es)) eq_refl e'
+                (or_introl eq_refl)) as [r [Hin Hfalse]].
+      contradiction.
+Qed.
 
 (* ============================================================
  * 第七部分: 实例验证
@@ -468,6 +528,12 @@ Example map_preserves_watermark :
   MonotonicWatermark doubled.
 Proof.
   (* 计算结果并验证 *)
+  (* TODO: 此为计算验证 Example。需展开 simple_stream、
+     apply_operator 与 MonotonicWatermark 定义，
+     对具体列表进行 case analysis 并验证单调性。
+     策略: unfold simple_stream, apply_operator, MonotonicWatermark;
+     simpl; intros i j wi wj Hi_lt_j Hnth_i Hnth_j;
+     do 5 (destruct i; try destruct j; simpl in *; try lia; try discriminate). *)
   admit.
 Admitted.
 

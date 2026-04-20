@@ -1,11 +1,11 @@
-> **状态**: 实验性特性（Flink 2.0+）| **风险等级**: 中 | **最后更新**: 2026-04-20
+> **状态**: 已发布特性（Flink 2.0+）| **风险等级**: 低 | **最后更新**: 2026-04-20
 >
-> DataStream V2 API 在 Flink 2.0（2025-03-24）中引入，当前为实验性特性。API 可能在未来版本中发生变化，请以 Apache Flink 官方发布为准。
+> DataStream V2 API 在 Flink 2.0（2025-03-24）中引入，已在 Flink 2.2 中达到稳定状态。内容反映已发布版本的实现，请以 Apache Flink 官方文档为准。
 >
 # DataStream V2 API 语义分析 (DataStream V2 API Semantics)
 
 > **所属阶段**: Flink/01-architecture | **前置依赖**: [Dataflow 模型形式化](../../Struct/01-foundation/01.04-dataflow-model-formalization.md) | **形式化等级**: L5
-> **警告**: DataStream V2 API 是 Apache Flink 2.0 中引入的**实验性特性**，API 可能在未来版本中发生重大变化[^1][^2]。
+> **说明**: DataStream V2 API 是 Apache Flink 2.0 中引入的**已发布特性**，在 Flink 2.2 中达到稳定状态[^1][^2]。
 
 ---
 

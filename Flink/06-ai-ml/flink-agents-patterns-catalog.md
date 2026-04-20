@@ -1,8 +1,10 @@
 # Flink Agents 设计模式目录
 
-> **状态**: 前瞻 | **预计发布时间**: 2026-06 | **最后更新**: 2026-04-12
+> **状态**: ✅ 已发布 | **风险等级**: 低 | **最后更新**: 2026-04-20
 >
-> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+> **状态更新**: 2026-04-20 — 该特性已在 Flink 2.2 中发布（Agentic Streaming / Agent 设计模式）。
+>
+> ✅ 本文档描述的特性已正式发布。内容反映已发布版本的实现，请以 Apache Flink 官方文档为准。
 
 > **所属阶段**: Flink/06-ai-ml | **前置依赖**: [Flink Agents 架构深度解析](./flink-agents-architecture-deep-dive.md), [FLIP-531 AI Agents](flink-ai-agents-flip-531.md) | **形式化等级**: L3-L4
 

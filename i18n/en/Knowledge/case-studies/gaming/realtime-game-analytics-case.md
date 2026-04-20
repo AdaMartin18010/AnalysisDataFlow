@@ -35,7 +35,7 @@ last_sync: "2026-04-15"
   - [4. Argumentation](#4-argumentation)
     - [4.1 Real-time vs. Offline Analysis](#41-real-time-vs-offline-analysis)
     - [4.2 Matchmaking Algorithm Optimization](#42-matchmaking-algorithm-optimization)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [5.1 Churn Prediction Model](#51-churn-prediction-model)
     - [5.2 Real-time Matchmaking Algorithm](#52-real-time-matchmaking-algorithm)
     - [5.3 Anti-cheat Detection](#53-anti-cheat-detection)

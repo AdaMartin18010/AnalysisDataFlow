@@ -8,9 +8,9 @@
 > - **最后核实日期**: 2026-04-20 | **信息来源**: 社区邮件列表/FLIP/官方博客
 >\n# Flink 版本演进与路线图完整指南
 
-> **状态**: 前瞻 | **预计发布时间**: 2026-Q3 起 | **最后更新**: 2026-04-12
+> **状态**: 混合 — 已发布(2.0-2.3) + 前瞻(2.4+) | **最后更新**: 2026-04-20
 >
-> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+> ⚠️ Flink 2.0-2.3 已正式发布。Flink 2.4+ 特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
 
 > 所属阶段: Flink/08-roadmap | 前置依赖: [Flink 2.3/2.4 路线图](flink-2.3-2.4-roadmap.md) | 形式化等级: L4
 >
@@ -36,7 +36,7 @@
     - [Def-F-08-55: Flink 2.0 Release](#def-f-08-55-flink-20-release)
     - [Def-F-08-56: Flink 2.1 Release](#def-f-08-56-flink-21-release)
     - [Def-F-08-57: Flink 2.2 Release](#def-f-08-57-flink-22-release)
-    - [Def-F-08-58: Flink 2.3 Release (Current)](#def-f-08-58-flink-23-release-current)
+    - [Def-F-08-58: Flink 2.3 Release (已发布)](#def-f-08-58-flink-23-release-已发布)
     - [Def-F-08-59: Flink 2.4 Release (预期)](#def-f-08-59-flink-24-release-预期)
     - [Def-F-08-60: Flink 2.5+ 长期路线图](#def-f-08-60-flink-25-长期路线图)
   - [1.4 路线图规划框架](#14-路线图规划框架)
@@ -63,7 +63,7 @@
     - [论证 3: AI/ML 集成需求](#论证-3-aiml-集成需求)
   - [4.2 长期路线图可行性论证](#42-长期路线图可行性论证)
     - [资源投入论证](#资源投入论证)
-- [5. 形式证明 / 工程论证 (Proof / Engineering Argument)]()
+- [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
   - [5.1 迁移完备性定理](#51-迁移完备性定理)
     - [Thm-F-08-50: 版本迁移完备性定理](#thm-f-08-50-版本迁移完备性定理)
   - [5.2 版本选择决策完备性](#52-版本选择决策完备性)
@@ -74,10 +74,10 @@
     - [示例 2: 状态后端配置迁移](#示例-2-状态后端配置迁移)
     - [示例 3: Java 17 迁移检查](#示例-3-java-17-迁移检查)
   - [6.2 各版本升级检查清单](#62-各版本升级检查清单)
-    - [检查清单 1: 1.x → 2.0 迁移]()
-    - [检查清单 2: 2.0 → 2.1 迁移]()
-    - [检查清单 3: 2.1 → 2.2 迁移]()
-    - [检查清单 4: 2.2 → 2.3 迁移]()
+    - [检查清单 1: 1.x → 2.0 迁移](#检查清单-1-1x--20-迁移)
+    - [检查清单 2: 2.0 → 2.1 迁移](#检查清单-2-20--21-迁移)
+    - [检查清单 3: 2.1 → 2.2 迁移](#检查清单-3-21--22-迁移)
+    - [检查清单 4: 2.2 → 2.3 迁移](#检查清单-4-22--23-迁移)
 - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
   - [7.1 Flink 版本演进时间线](#71-flink-版本演进时间线)
   - [7.2 版本选择决策树](#72-版本选择决策树)
@@ -352,12 +352,12 @@ Flink 2.2.0:
   主题: "AI/ML原生支持与向量搜索"
 
 关键FLIPs:
-  FLIP-471: "VECTOR_SEARCH Support"(规划中)
+  FLIP-471: "VECTOR_SEARCH Support" ✅
     - 向量搜索SQL函数
     - 向量索引集成
     - ANN近似最近邻
 
-  FLIP-472: "Model DDL & ML_PREDICT"(实验性)
+  FLIP-472: "Model DDL & ML_PREDICT" ✅
     - ~~CREATE MODEL~~语句(概念设计,尚未支持)
     - ML_PREDICT函数
     - 模型管理与版本控制
@@ -410,9 +410,9 @@ SELECT text, ML_PREDICT(sentiment_model, text) as result
 FROM social_media_posts;
 ```
 
-#### Def-F-08-58: Flink 2.3 Release (Current)
+#### Def-F-08-58: Flink 2.3 Release (已发布)
 
-**发布时间**: 2026年Q1-Q2
+**发布时间**: 2026年Q1-Q2 (已发布)
 
 **核心特性**:
 
@@ -594,7 +594,7 @@ Complexity(v_src → v_dst) = α × (v_dst - v_src) + β × BreakingChanges
 | 1.19→2.0 | 2-4周 | 🔴 高 | 分阶段迁移 |
 | 2.0→2.1 | 1-2天 | 🟢 低 | 直接升级 |
 | 2.1→2.2 | 2-3天 | 🟡 中 | 测试AI功能 |
-| 2.2→2.3 | 1-2天 | 🟡 中 | 安全验证 |
+| 2.2→2.3 | 1-2天 | 🟢 低 | 标准升级 |
 
 ### 2.3 性能演进属性
 
@@ -662,7 +662,7 @@ Flink 1.17→2.3 典型性能提升:
 | FLIP-471 | VECTOR_SEARCH | 2.2 | ✅ Released |
 | FLIP-472 | Model DDL | 2.2 | ✅ Released |
 | FLIP-473 | Async I/O PyFlink | 2.2 | ✅ Released |
-| FLIP-531 | Flink AI Agents | 2.3 | 🔄 MVP→GA |
+| FLIP-531 | Flink AI Agents | 2.3 | ✅ Released |
 | FLIP-532 | Security Enhancement | 2.3 | ✅ Released |
 | FLIP-533 | Kafka 2PC | 2.3 | ✅ Released |
 
@@ -1261,4 +1261,11 @@ gantt
 
 ---
 
-*文档版本: 2026.04 | 定理编号: Def-F-08-50 ~ Def-F-08-64, Lemma-F-08-50 ~ Lemma-F-08-51, Prop-F-08-50 ~ Prop-F-08-51, Thm-F-08-50 ~ Thm-F-08-51 | 形式化等级: L4*
+*文档版本: 2026.04-v2 | 定理编号: Def-F-08-50 ~ Def-F-08-64, Lemma-F-08-50 ~ Lemma-F-08-51, Prop-F-08-50 ~ Prop-F-08-51, Thm-F-08-50 ~ Thm-F-08-51 | 形式化等级: L4*
+>
+> **版本历史**:
+>
+> | 日期 | 版本 | 变更 |
+> |------|------|------|
+> | 2026-04-12 | v1.0 | 初始版本 |
+> | 2026-04-20 | v2.0 | 更新 Flink 2.3 为已发布状态，更新 FLIP 状态，更新 DataStream V2 标记 |

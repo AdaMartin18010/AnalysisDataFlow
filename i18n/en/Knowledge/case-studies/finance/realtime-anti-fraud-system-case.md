@@ -35,7 +35,7 @@ last_sync: "2026-04-15"
   - [4. Argumentation](#4-argumentation)
     - [4.1 Rule Engine vs Machine Learning](#41-rule-engine-vs-machine-learning)
     - [4.2 Decision Strategy Optimization](#42-decision-strategy-optimization)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [5.1 CEP Rule Definition](#51-cep-rule-definition)
     - [5.2 Risk Score Calculation](#52-risk-score-calculation)
   - [6. Examples](#6-examples)

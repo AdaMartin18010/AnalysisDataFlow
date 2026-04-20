@@ -220,6 +220,7 @@ def DNE (A : PropFormula) : PropFormula :=
 如果 Γ ⊢ A，则 Γ ⊨ A。
 -/
 lemma soundness {Γ A} (h : Γ ⊢ A) : Γ ⊨ A := by
+  /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
   sorry -- 通过对证明的归纳证明
 
 /-!

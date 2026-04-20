@@ -29,7 +29,7 @@
     - [4.1 Temporal Challenges in Distributed Stream Processing](#41-temporal-challenges-in-distributed-stream-processing)
     - [4.2 Time Semantics Selection Argument](#42-time-semantics-selection-argument)
     - [4.3 Applicability Analysis](#43-applicability-analysis)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [5.1 Watermark Monotonicity Guarantee](#51-watermark-monotonicity-guarantee)
     - [5.2 Late Data Processing Exactly-Once Compatibility](#52-late-data-processing-exactly-once-compatibility)
     - [5.3 Idle Source Processing Engineering Argument](#53-idle-source-processing-engineering-argument)

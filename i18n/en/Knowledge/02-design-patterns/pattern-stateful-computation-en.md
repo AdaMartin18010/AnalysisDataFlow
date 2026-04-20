@@ -32,7 +32,7 @@
     - [4.1 Challenges of Distributed Stateful Computation](#41-challenges-of-distributed-stateful-computation)
     - [4.2 State Backend Selection Argument](#42-state-backend-selection-argument)
     - [4.3 Applicability Analysis](#43-applicability-analysis)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [5.1 Keyed State Local Determinism Argument](#51-keyed-state-local-determinism-argument)
     - [5.2 Incremental Checkpoint Consistency Argument](#52-incremental-checkpoint-consistency-argument)
     - [5.3 State Backend Selection Engineering Trade-offs](#53-state-backend-selection-engineering-trade-offs)

@@ -34,7 +34,7 @@ last_sync: "2026-04-15"
     - [4.2 Boundary Effects of Parallelism Tuning](#42-boundary-effects-of-parallelism-tuning)
     - [4.3 Trade-off Space of Checkpoint Tuning](#43-trade-off-space-of-checkpoint-tuning)
     - [4.4 Selection Space of Serialization Optimization](#44-selection-space-of-serialization-optimization)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [Thm-F-06-01 (Optimal Memory Configuration Theorem)](#thm-f-06-01-optimal-memory-configuration-theorem)
     - [Thm-F-06-02 (Parallelism Scaling Efficiency Theorem)](#thm-f-06-02-parallelism-scaling-efficiency-theorem)
     - [Engineering Corollaries](#engineering-corollaries)

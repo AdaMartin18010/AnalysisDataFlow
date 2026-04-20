@@ -35,7 +35,7 @@ last_sync: "2026-04-15"
     - [4.1 New Feature Selection Decision](#41-new-feature-selection-decision)
     - [4.2 Production Readiness Assessment](#42-production-readiness-assessment)
     - [4.3 Cost-Benefit Analysis](#43-cost-benefit-analysis)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [Thm-F-09-03: Declarative Resource Optimality](#thm-f-09-03-declarative-resource-optimality)
     - [Prop-F-09-03: Autoscaling V2 Convergence Speed](#prop-f-09-03-autoscaling-v2-convergence-speed)
   - [6. Examples](#6-examples)

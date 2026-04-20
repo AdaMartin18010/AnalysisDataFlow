@@ -181,5 +181,5 @@ Spec == Init /\ [][Next]_vars /\ Liveness
 THEOREM CheckpointCorrectness ==
     Spec => []Consistency
 
-================================================================================
 (* End of Flink_Checkpoint.tla *)
+================================================================================

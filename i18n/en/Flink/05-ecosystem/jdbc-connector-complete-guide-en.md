@@ -27,7 +27,7 @@
     - [4.1 Partitioned Read Strategy Analysis](#41-partitioned-read-strategy-analysis)
     - [4.2 XA Transaction Implementation Mechanism](#42-xa-transaction-implementation-mechanism)
     - [4.3 Backpressure Handling](#43-backpressure-handling)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [Thm-F-04-200 (JDBC Exactly-Once Correctness Theorem)](#thm-f-04-200-jdbc-exactly-once-correctness-theorem)
     - [Thm-F-04-201 (Connection Pool Deadlock-Free Theorem)](#thm-f-04-201-connection-pool-deadlock-free-theorem)
   - [6. Examples](#6-examples)

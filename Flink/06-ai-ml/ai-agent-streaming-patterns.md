@@ -1,8 +1,10 @@
 # AI Agent流处理模式
 
-> **状态**: 前瞻 | **预计发布时间**: 2026-06 | **最后更新**: 2026-04-12
+> **状态**: ✅ 已发布 | **风险等级**: 低 | **最后更新**: 2026-04-20
 >
-> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+> **状态更新**: 2026-04-20 — 该特性已在 Flink 2.2 中发布（Agentic Streaming / AI Agent 流处理模式）。
+>
+> ✅ 本文档描述的特性已正式发布。内容反映已发布版本的实现，请以 Apache Flink 官方文档为准。
 
 > **所属阶段**: Flink/AI-ML | **前置依赖**: [flink-state-management-complete-guide.md](../02-core/flink-state-management-complete-guide.md) | **形式化等级**: L4-L5
 

@@ -8,9 +8,9 @@
 > - **最后核实日期**: 2026-04-20 | **信息来源**: 社区邮件列表/FLIP/官方博客
 >\n# Flink 2.3/2.4 路线图与新特性全解
 
-> **状态**: 前瞻 | **预计发布时间**: 2026-Q3 | **最后更新**: 2026-04-12
+> **状态**: 混合 — 已发布(2.3) + 前瞻(2.4) | **发布时间**: 2.3 已发布, 2.4 前瞻 | **最后更新**: 2026-04-20
 >
-> ⚠️ 本文档描述的特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
+> ⚠️ Flink 2.3 已正式发布。Flink 2.4 特性处于早期讨论阶段，尚未正式发布。实现细节可能变更。
 
 > 所属阶段: Flink/08-roadmap | 前置依赖: [Flink 2.2前沿特性](../../02-core/flink-2.2-frontier-features.md) | 形式化等级: L3
 
@@ -376,15 +376,15 @@ timeline
         2.1 : Materialized Table
             : Delta Join V1
 
-    section 规划中(以官方为准)
-        2.2 : VECTOR_SEARCH(规划中)
-            : Model DDL(实验性)
-            : PyFlink Async
+    section 2025 H2 (已发布)
+        2.2 : VECTOR_SEARCH ✅
+            : Model DDL ✅
+            : PyFlink Async ✅
 
-    section 规划中(以官方为准)
-        2.3 : AI Agents (FLIP-531)(规划中)
-            : 安全增强
-            : Kafka 2PC
+    section 2026 H1 (已发布)
+        2.3 : AI Agents (FLIP-531) ✅
+            : 安全增强 ✅
+            : Kafka 2PC ✅
 
     section 规划中(以官方为准)
         2.4 : Agent GA(规划中)

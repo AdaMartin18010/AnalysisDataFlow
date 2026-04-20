@@ -31,7 +31,7 @@ last_sync: "2026-04-15"
     - [4.2 Backpressure Monitoring (AP-08)](#42-backpressure-monitoring-ap-08)
     - [4.3 Memory and GC Monitoring (AP-10)](#43-memory-and-gc-monitoring-ap-10)
   - [5. Troubleshooting Quick Reference](#5-troubleshooting-quick-reference)
-    - [5.1 Symptom → Anti-pattern Mapping](#51-symptom--anti-pattern-mapping)
+    - [5.1 Symptom → Anti-pattern Mapping](#51-symptom-anti-pattern-mapping)
     - [5.2 Emergency Handling Process](#52-emergency-handling-process)
   - [6. Tool Recommendations](#6-tool-recommendations)
     - [6.1 Static Analysis Tools](#61-static-analysis-tools)

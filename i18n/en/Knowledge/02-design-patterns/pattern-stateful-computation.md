@@ -41,7 +41,7 @@ last_sync: "2026-04-15"
     - [8.3 Property Preservation Under Composition](#83-property-preservation-under-composition)
     - [8.4 Boundary Conditions and Constraints](#84-boundary-conditions-and-constraints)
     - [8.5 Formal Characteristics of State Backends](#85-formal-characteristics-of-state-backends)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [5.1 Keyed State Local Determinism Argument](#51-keyed-state-local-determinism-argument)
     - [5.2 Incremental Checkpoint Consistency Argument](#52-incremental-checkpoint-consistency-argument)
     - [5.3 State Backend Selection Engineering Trade-offs](#53-state-backend-selection-engineering-trade-offs)

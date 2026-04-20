@@ -35,7 +35,7 @@ last_sync: "2026-04-15"
   - [4. Argumentation](#4-argumentation)
     - [4.1 Edge Computing vs Cloud Computing](#41-edge-computing-vs-cloud-computing)
     - [4.2 Time-Series Data Storage Selection](#42-time-series-data-storage-selection)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [5.1 Real-Time Load Forecasting](#51-real-time-load-forecasting)
     - [5.2 Anomaly Detection Algorithm](#52-anomaly-detection-algorithm)
   - [6. Examples](#6-examples)

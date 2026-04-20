@@ -32,7 +32,7 @@ last_sync: "2026-04-15"
     - [4.1 Upgrade Driver Analysis](#41-upgrade-driver-analysis)
     - [4.2 Backward Compatibility Boundary Discussion](#42-backward-compatibility-boundary-discussion)
     - [4.3 Cloud Vendor Adaptation Lag Analysis](#43-cloud-vendor-adaptation-lag-analysis)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [Thm-F-09-01 (Upgrade Necessity Theorem)](#thm-f-09-01-upgrade-necessity-theorem)
     - [Thm-F-09-02 (Compatibility Preservation Theorem)](#thm-f-09-02-compatibility-preservation-theorem)
     - [Engineering Corollaries](#engineering-corollaries)

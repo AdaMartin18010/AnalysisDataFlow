@@ -1,5 +1,5 @@
 # Redirect
 
-> This document is available at [i18n/en/BEST-PRACTICES.md](../i18n/en/BEST-PRACTICES.md)
+> This document is available at [BEST-PRACTICES.md](./BEST-PRACTICES.md)
 >
 > See [i18n/ARCHITECTURE.md](../i18n/ARCHITECTURE.md) for the internationalization strategy.

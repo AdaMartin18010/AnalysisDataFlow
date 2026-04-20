@@ -716,6 +716,7 @@ section ClassicalReasoning
   φ → ¬¬φ 在直觉主义逻辑中也可证明。
   -/
   theorem DNI_provable (φ : Term) : IsTautology (DNI φ) := by
+    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
     sorry
 
   /-- 
@@ -734,6 +735,7 @@ section ClassicalReasoning
   theorem DNE_implies_LEM (φ : Term) (hDNE : IsTautology (DNE φ)) :
       IsTautology (φ ∨ᶜ (¬ᶜ φ)) := by
     -- 使用DNE证明LEM的经典构造
+    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
     sorry
 
   /- ============================================================
@@ -776,6 +778,7 @@ section ClassicalReasoning
   theorem eps_implies_LEM (φ : Term) (hφ : TypeEnv.empty ⊢ φ : Bool) :
       IsTautology (φ ∨ᶜ (¬ᶜ φ)) := by
     -- 使用ε算子构造LEM的证明
+    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
     sorry
 
   /-- 
@@ -935,6 +938,7 @@ section FormalizedMathematics
         (app (app (const addC) (app (app (const addC) l) m)) n) =[Nat]
         (app (app (const addC) l) (app (app (const addC) m) n)))))) := by
     -- 使用归纳原理证明
+    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
     sorry
 
   /-- 
@@ -946,6 +950,7 @@ section FormalizedMathematics
       (∀ᶜ Nat (λ m, ∀ᶜ Nat (λ n,
         (app (app (const addC) m) n) =[Nat]
         (app (app (const addC) n) m)))) := by
+    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
     sorry
 
   /-- 
@@ -959,6 +964,7 @@ section FormalizedMathematics
         (app (app (const addC) 
           (app (app (const mulC) l) m)) 
           (app (app (const mulC) l) n)))))) := by
+    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
     sorry
 
   /- ============================================================
@@ -978,6 +984,7 @@ section FormalizedMathematics
       (hStep : IsTautology (∀ᶜ Nat (λ n, (app P n) →ᶜ (app P (app (const succC) n))))) :
       IsTautology (∀ᶜ Nat (λ n, app P n)) := by
     -- 应用Peano归纳公理
+    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
     sorry
 
   /-- 
@@ -1003,6 +1010,7 @@ section FormalizedMathematics
         (∀ᶜ Nat (λ m, (m <ᶜ n) →ᶜ (app P m))) →ᶜ (app P n)))) :
       IsTautology (∀ᶜ Nat (λ n, app P n)) := by
     -- 使用Peano归纳证明良基归纳
+    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
     sorry
 
   /- ============================================================
@@ -1046,6 +1054,7 @@ section FormalizedMathematics
       (¬ᶜ (∃ᶜ (σ →' (Set σ)) (λ f, 
         ∀ᶜ (Set σ) (λ S, ∃ᶜ σ (λ x, app f x =[Set σ] S))))) := by
     -- 经典的Cantor对角线论证
+    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
     sorry
 
 end FormalizedMathematics
@@ -1151,6 +1160,7 @@ section HOLProofSystem
       (h : Γ ⊢ᴴ φ) (hType : TypeEnv.empty ⊢ φ : Bool) :
       IsTautology φ := by
     -- 对证明树进行归纳
+    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
     sorry
 
   /-- 
@@ -1167,6 +1177,7 @@ section HOLProofSystem
       (hType : TypeEnv.empty ⊢ φ : Bool) :
       [] ⊢ᴴ φ := by
     -- Henkin语义下的完备性证明
+    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
     sorry
 
 end HOLProofSystem
@@ -1208,6 +1219,7 @@ section Examples
   theorem deMorgan_provable (A B : Term) 
       (hA : TypeEnv.empty ⊢ A : Bool) (hB : TypeEnv.empty ⊢ B : Bool) :
       IsTautology (deMorgan1 A B) := by
+    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
     sorry
 
   /- ============================================================
@@ -1239,6 +1251,7 @@ section Examples
   -/
   theorem naturals_unbounded : IsTautology naturalsUnbounded := by
     -- 构造证明: 对于任意n, S(n) > n
+    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
     sorry
 
   /- ============================================================
@@ -1262,6 +1275,7 @@ section Examples
   theorem empty_set_subset (σ : SimpleType) (S : Term)
       (hS : TypeEnv.empty ⊢ S : Set σ) :
       IsTautology (emptySetSubset σ S) := by
+    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
     sorry
 
   /-- 
@@ -1323,6 +1337,7 @@ section MetaTheory
   theorem hol_relative_consistency 
       (hZFC : ¬∃ (φ : Prop), φ ∧ ¬φ) : HOLConsistent := by
     -- 通过模型论证明
+    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
     sorry
 
   /-- 

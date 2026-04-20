@@ -36,7 +36,7 @@ This paper establishes a formal theoretical system combining AI Agents with stre
     - [4.1 Streaming Agent Computational Complexity Analysis](#41-streaming-agent-computational-complexity-analysis)
     - [4.2 Multi-Agent Negotiation Game-Theoretic Analysis](#42-multi-agent-negotiation-game-theoretic-analysis)
     - [4.3 Concept Drift Detection and Adaptation](#43-concept-drift-detection-and-adaptation)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [5.1 Single-Agent Stream Processing Correctness Theorem](#51-single-agent-stream-processing-correctness-theorem)
     - [5.2 Multi-Agent Collaboration Termination Theorem](#52-multi-agent-collaboration-termination-theorem)
     - [5.3 Streaming Inference Consistency Theorem](#53-streaming-inference-consistency-theorem)

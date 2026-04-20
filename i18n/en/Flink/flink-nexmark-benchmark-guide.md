@@ -29,7 +29,7 @@ last_sync: "2026-04-15"
   - [4. Argumentation](#4-argumentation)
     - [4.1 Nexmark Design Principles](#41-nexmark-design-principles)
     - [4.2 Result Reproducibility Assurance](#42-result-reproducibility-assurance)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [Thm-FNB-01 (Nexmark Representativeness Theorem)](#thm-fnb-01-nexmark-representativeness-theorem)
   - [6. Examples](#6-examples)
     - [6.1 Nexmark Environment Setup](#61-nexmark-environment-setup)

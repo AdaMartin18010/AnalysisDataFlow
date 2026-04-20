@@ -35,7 +35,7 @@ last_sync: "2026-04-15"
   - [4. Argumentation](#4-argumentation)
     - [4.1 Real-Time vs Offline Recommendation](#41-real-time-vs-offline-recommendation)
     - [4.2 Cold Start Problem Analysis](#42-cold-start-problem-analysis)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [5.1 Feature Engineering Pipeline](#51-feature-engineering-pipeline)
     - [5.2 Model Inference Optimization](#52-model-inference-optimization)
   - [6. Examples](#6-examples)

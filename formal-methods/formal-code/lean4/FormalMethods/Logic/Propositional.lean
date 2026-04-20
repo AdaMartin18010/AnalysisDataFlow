@@ -744,12 +744,15 @@ section MetaTheory
         sorry -- 需要极大一致性的性质
     | or φ ψ ih₁ ih₂ =>
         simp [eval]
+        /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
         sorry
     | imp φ ψ ih₁ ih₂ =>
         simp [eval]
+        /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
         sorry
     | not φ ih =>
         simp [eval]
+        /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
         sorry
 
   /-- 定理 4.2 (完备性): 自然演绎系统是完备的，即任何语义有效的公式都是可推导的。
@@ -773,6 +776,7 @@ section MetaTheory
   corollary compactness {Γ : Set Formula} {φ : Formula}
       (h : Γ ⊨ φ) : ∃ Γ' : Finset Formula, ↑Γ' ⊆ Γ ∧ (↑Γ' : Set Formula) ⊨ φ := by
     -- 从完备性推导紧致性
+    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
     sorry
 
   /-- 定理 4.3 (可靠性与完备性的等价形式):
@@ -1048,6 +1052,7 @@ deriving Repr, Inhabited
       (formulaToDNF φ).toFormula ≡ φ := by
     intro σ
     simp [formulaToDNF]
+    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
     sorry
 
   /- ============================================================
@@ -1057,6 +1062,7 @@ deriving Repr, Inhabited
   /-- 引理 5.4 (CNF 可满足性): CNF 可满足当且仅当每个子句可满足 -/
   lemma cnf_satisfiable_iff (cnf : CNF) :
       Satisfiable cnf.toFormula ↔ ∀ c ∈ cnf, Satisfiable c.toFormula := by
+    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
     sorry
 
   /-- 引理 5.5 (霍恩子句): 最多含一个正文字的子句
@@ -1074,6 +1080,7 @@ deriving Repr, Inhabited
         (∀ c ∈ cnf, isHornClause c) →
         (algorithm cnf = true ↔ Satisfiable cnf.toFormula) := by
     -- 前向链算法
+    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
     sorry
 
 end NormalForms
@@ -1103,6 +1110,7 @@ section SATSolving
   /-- 定理 6.1 (SAT 语义等价): satisfiesCNF 与 eval 等价 -/
   theorem satisfiesCNF_equiv (σ : Assignment) (cnf : CNF) :
       satisfiesCNF σ cnf = true ↔ ⟦cnf.toFormula⟧ σ = true := by
+    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
     sorry
 
   /-- 单元传播 (Unit Propagation)
@@ -1137,6 +1145,7 @@ section SATSolving
       match dpll cnf with
       | DPLLResult.sat σ => satisfiesCNF σ cnf = true
       | DPLLResult.unsat => ¬SAT cnf := by
+    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
     sorry
 
 end SATSolving

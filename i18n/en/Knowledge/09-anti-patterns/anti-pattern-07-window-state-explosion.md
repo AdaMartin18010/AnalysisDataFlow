@@ -23,7 +23,7 @@ last_sync: "2026-04-15"
     - [3.1 Memory Impact](#31-memory-impact)
   - [4. Solution](#4-solution)
     - [4.1 Use AggregateFunction](#41-use-aggregatefunction)
-    - [4.2 Combine Aggregate + ProcessWindow](#42-combine-aggregate--processwindow)
+    - [4.2 Combine Aggregate + ProcessWindow](#42-combine-aggregate-processwindow)
     - [4.3 Use Evictor to Limit State](#43-use-evictor-to-limit-state)
   - [5. Code Examples](#5-code-examples)
     - [5.1 Bad Example](#51-bad-example)

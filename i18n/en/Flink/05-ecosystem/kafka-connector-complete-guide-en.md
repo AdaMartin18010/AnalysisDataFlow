@@ -33,7 +33,7 @@ source: "Flink/05-ecosystem/05.01-connectors/kafka-integration-patterns.md"
     - [4.2 Consumer Group Rebalance Impact Analysis](#42-consumer-group-rebalance-impact-analysis)
     - [4.3 Transaction Timeout and Recovery Boundary](#43-transaction-timeout-and-recovery-boundary)
     - [4.4 Idempotency vs. Transactionality Engineering Tradeoff](#44-idempotency-vs-transactionality-engineering-tradeoff)
-  - [5. Proof / Engineering Argument](#5-proof--engineering-argument)
+  - [5. Proof / Engineering Argument](#5-proof-engineering-argument)
     - [Thm-F-04-01 (Kafka Source Exactly-Once Correctness)](#thm-f-04-01-kafka-source-exactly-once-correctness)
     - [Thm-F-04-02 (Kafka Sink Transactional Atomicity Guarantee)](#thm-f-04-02-kafka-sink-transactional-atomicity-guarantee)
   - [6. Examples](#6-examples)

@@ -8,6 +8,7 @@
 
 import Mathlib.Data.List.Basic
 import Mathlib.Data.Nat.Basic
+import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 
 /- ---------------------------------------------------------------------------- -/
@@ -121,6 +122,21 @@ theorem FoVer_Soundness (fover : FoVer)
   intro td h_td h_label
   unfold generateTrainingData at h_td
   simp at h_td
+  /- TODO: 参照 FoVer_Complete.lean 中的完整证明。
+     策略: 对 tasks 进行列表归纳。
+     | nil => simp [generateTrainingData] at h_td; contradiction
+     | cons head tail ih =>
+         simp [generateTrainingData] at h_td
+         cases hmem : (generateTrainingData fover [head]) with
+         | nil => simp [hmem] at h_td; apply ih; assumption
+         | cons item rest =>
+             simp [hmem] at h_td
+             cases h_td with
+             | inl hitem => rw [hitem] at h_label; apply generated_item_sound; simp; assumption
+             | inr htail => apply ih; assumption
+     注意: Framework 中 Verifier 类型与 Complete 不同，
+     需确认 fover.verifier 的调用签名一致。 -/
+  /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
   sorry
 
 /- 神经证明证书定义 -/
@@ -138,7 +154,9 @@ theorem NeuralCertificate_Verification_Complexity
   (npc : NeuralProofCertificate) :
   ∃ (poly : Nat -> Nat),
     ∀ n, True := by
-  sorry
+  use (λ _ => 0)
+  intro n
+  trivial
 
 end Core_Theorems
 
@@ -158,7 +176,8 @@ inductive StreamingTask
 /- 定理: Checkpoint协议的FoVer验证框架 -/
 theorem Checkpoint_FoVer_Validation :
   ∀ (checkpoint_protocol : String), True := by
-  sorry
+  intro checkpoint_protocol
+  trivial
 
 end Streaming_Extension
 
