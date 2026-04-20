@@ -43,7 +43,7 @@
       - [4.3.2 SQL支持能力对比](#432-sql支持能力对比)
       - [4.3.3 AI/ML集成能力对比](#433-aiml集成能力对比)
       - [4.3.4 云原生程度对比](#434-云原生程度对比)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [Thm-K-04-10 流计算引擎选型存在性定理](#thm-k-04-10-流计算引擎选型存在性定理)
     - [Thm-K-04-11 多目标决策一致性定理](#thm-k-04-11-多目标决策一致性定理)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)

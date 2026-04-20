@@ -1,6 +1,6 @@
 # Flink 系统架构组成分析
 
-> 所属阶段: Flink/01-concepts | 前置依赖: [Flink/01-concepts/flink-core-concepts.md](../01-concepts/flink-core-concepts.md) | 形式化等级: L4
+> 所属阶段: Flink/01-concepts | 前置依赖: [Flink/01-concepts/flink-system-architecture-deep-dive.md](./flink-system-architecture-deep-dive.md) | 形式化等级: L4
 
 ## 1. 概念定义 (Definitions)
 

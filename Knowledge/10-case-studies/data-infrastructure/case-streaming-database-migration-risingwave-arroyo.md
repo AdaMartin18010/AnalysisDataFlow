@@ -53,7 +53,7 @@
     - [4.3 反例分析: 将Flink+MySQL误判为Streaming Database的陷阱](#43-反例分析-将flinkmysql误判为streaming-database的陷阱)
     - [4.4 边界讨论: Streaming Database的适用域与局限](#44-边界讨论-streaming-database的适用域与局限)
     - [4.5 构造性说明: 零停机迁移的数学保证](#45-构造性说明-零停机迁移的数学保证)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [5.1 Thm-K-10-08-01: 迁移前后语义等价性定理](#51-thm-k-10-08-01-迁移前后语义等价性定理)
     - [5.2 工程论证: 端到端延迟分解与优化路径](#52-工程论证-端到端延迟分解与优化路径)
     - [5.3 工程论证: TCO成本模型与ROI分析](#53-工程论证-tco成本模型与roi分析)

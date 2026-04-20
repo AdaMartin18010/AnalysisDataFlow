@@ -36,7 +36,7 @@
     - [4.3 反例分析: Dynamic Sink 不适用场景](#43-反例分析-dynamic-sink-不适用场景)
     - [4.4 边界讨论: Schema Evolution 的边界条件](#44-边界讨论-schema-evolution-的边界条件)
     - [4.5 构造性说明: Topic 自动发现机制](#45-构造性说明-topic-自动发现机制)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [5.1 Thm-K-10-07-01: Dynamic Iceberg Sink 端到端一致性定理](#51-thm-k-10-07-01-dynamic-iceberg-sink-端到端一致性定理)
     - [5.2 工程论证: TCO 成本模型](#52-工程论证-tco-成本模型)
     - [5.3 工程论证: 小文件问题与 Compaction 策略](#53-工程论证-小文件问题与-compaction-策略)

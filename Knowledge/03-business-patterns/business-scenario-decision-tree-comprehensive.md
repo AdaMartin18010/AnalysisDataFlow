@@ -35,7 +35,7 @@
     - [5.1 决策树有效性论证](#51-决策树有效性论证)
     - [5.2 关键指标阈值推导](#52-关键指标阈值推导)
     - [5.3 架构模式推荐逻辑](#53-架构模式推荐逻辑)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [Thm-K-03-XX: 业务场景决策树完备性定理](#thm-k-03-xx-业务场景决策树完备性定理)
     - [Thm-K-03-XX: 技术选型收敛定理](#thm-k-03-xx-技术选型收敛定理)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)

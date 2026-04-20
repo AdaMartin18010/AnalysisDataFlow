@@ -52,7 +52,7 @@
       - [选择 3: 为何采用"契约即代码"而非配置中心模式？](#选择-3-为何采用契约即代码而非配置中心模式)
     - [4.2 反例分析: 契约验证失效场景](#42-反例分析-契约验证失效场景)
     - [4.3 边界讨论: LLM 非确定性对合规审计的影响](#43-边界讨论-llm-非确定性对合规审计的影响)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [Thm-K-10-AG-01: Agent 行为契约拦截完备性定理](#thm-k-10-ag-01-agent-行为契约拦截完备性定理)
     - [Thm-K-10-AG-02: NIST CAISI 合规映射完整性定理](#thm-k-10-ag-02-nist-caisi-合规映射完整性定理)
     - [Thm-K-10-AG-03: 多 Agent 协作无死锁定理 (SecureFinance 变体)](#thm-k-10-ag-03-多-agent-协作无死锁定理-securefinance-变体)

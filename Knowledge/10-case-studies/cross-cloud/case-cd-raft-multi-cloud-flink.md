@@ -38,7 +38,7 @@
     - [4.1 为什么选择CD-Raft而非标准Raft或EPaxos](#41-为什么选择cd-raft而非标准raft或epaxos)
     - [4.2 多云K8s联邦 vs 单云多区域的架构抉择](#42-多云k8s联邦-vs-单云多区域的架构抉择)
     - [4.3 反例分析：网络分区下的脑裂风险](#43-反例分析网络分区下的脑裂风险)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [5.1 零RPO工程论证：WorldMart交易平台的持久化路径分析](#51-零rpo工程论证worldmart交易平台的持久化路径分析)
     - [5.2 性能边界论证：CD-Raft Fast Return的延迟优化定量分析](#52-性能边界论证cd-raft-fast-return的延迟优化定量分析)
     - [5.3 合规性论证：GDPR第44-49条在流处理架构中的工程映射](#53-合规性论证gdpr第44-49条在流处理架构中的工程映射)

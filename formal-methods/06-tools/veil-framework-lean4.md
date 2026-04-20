@@ -49,7 +49,7 @@ Veil 是一个开源的、基础性的（foundational）迁移系统验证框架
     - [4.3 构造性说明：从 Ivy 到 Veil 的机械化迁移路径](#43-构造性说明从-ivy-到-veil-的机械化迁移路径)
     - [4.4 性能-信任权衡的工程分析](#44-性能-信任权衡的工程分析)
     - [4.5 Liveness 性质的当前边界与未来扩展](#45-liveness-性质的当前边界与未来扩展)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
     - [5.1 主要定理：VC 生成器的可靠性（Thm-FM-06-01）](#51-主要定理vc-生成器的可靠性thm-fm-06-01)
     - [5.2 工程论证：信任计算基的量化分析](#52-工程论证信任计算基的量化分析)
     - [5.3 Lean 4 作为验证底座的优势论证](#53-lean-4-作为验证底座的优势论证)
