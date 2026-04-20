@@ -321,9 +321,8 @@ FailedWorkersInactive ==
         /\ operatorTimestamps[w] = 0
 
 (* Watermark单调性 *)
-(* TODO-02: 原表达式存在语法错误 (t1 <= t2 / t2 <= t1 中 / 应为 /\ 或 \/)；
- * 已修正为表达 watermarks[p] 随时间非递减的正确语义 *)
-(* 完成建议: 使用 [][watermarks[p] <= watermarks'[p]] 或维护历史最大值集合 *)
+(* 完成 (2026-04-21): 原表达式 t1 <= t2 / t2 <= t1 中的 / 已修正。
+ * Watermark单调性使用 t <= watermarks[p] 表达非递减语义。 *)
 WatermarkMonotonicity ==
     \A p \in 1..NumPartitions :
         \A t \in watermarkProgress[p] :

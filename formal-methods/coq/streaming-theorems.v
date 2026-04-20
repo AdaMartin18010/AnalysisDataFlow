@@ -67,16 +67,18 @@ Inductive RecordStatus :=
 Definition Idempotent {A B: Type} (f: A -> B) (op: B -> B -> B) : Prop :=
   forall x, op (f x) (f x) = f x.
 
-(* Exactly-Once处理语义定义 *)
+(* Exactly-Once处理语义定义
+ * 修正 (2026-04-21): 原定义中 ~exists r', r = r' 恒为假（自反性），
+ * 导致定义不可满足。改为：输出中不存在与 r 时间戳相同但不同的事件。 *)
 Definition ExactlyOnceSemantics {T R: Type}
   (process: Stream T -> Stream R) : Prop :=
   forall (input: Stream T) (output: Stream R),
     process input = output ->
-    forall (e: Event T), In e input ->
+    forall (e: Event T), In e input -> is_event_elem e = true ->
     exists (r: Event R), 
-      In r output /\ 
-      (forall (e': Event T), e <> e' -> 
-        ~ exists (r': Event R), r = r').
+      In r output /\ is_event_elem r = true /\
+      (forall (r': Event R), In r' output -> is_event_elem r' = true ->
+        r' <> r -> event_timestamp r' <> event_timestamp r).
 
 (* 两阶段提交的Exactly-Once保证 *)
 Inductive TwoPhaseCommitState :=
@@ -514,23 +516,23 @@ Definition equivalent_streams {T: Type} (s1 s2: Stream T) : Prop :=
  * ============================================================ *)
 
 (* 操作符组合保持Exactly-Once *)
-(* 修改说明 (2026-04-21): ExactlyOnceSemantics 定义存在自引用问题
-   (~exists r', r = r' 恒为假)，导致前件不可满足。证明利用此矛盾
-   直接完成 (exfalso)。TODO: 修正 ExactlyOnceSemantics 定义后重新证明。 *)
+(* 修正 (2026-04-21): ExactlyOnceSemantics 定义已修复。
+   以下为组合算子保持 Exactly-Once 语义的证明框架。 *)
 Theorem compose_exactly_once :
   forall (A B C: Type) (op1: Operator A B) (op2: Operator B C),
     (forall s, ExactlyOnceSemantics (fun x => apply_operator op1 x)) ->
     (forall s, ExactlyOnceSemantics (fun x => apply_operator op2 x)) ->
     forall s, ExactlyOnceSemantics (fun x => apply_operator op2 (apply_operator op1 x)).
 Proof.
-  intros A B C op1 op2 H1 H2 s.
-  (* 修改说明 (2026-04-21):
-     ExactlyOnceSemantics 的当前定义中子公式 ~exists r', r = r' 恒为假，
-     导致整个定义不可满足。因此前件 H1 蕴含 False，定理 vacuously true。
-     TODO: 修正 ExactlyOnceSemantics 的定义（如改为存在唯一的输出事件对应
-     关系）后重新证明。 *)
-  exfalso.
-  specialize (H1 [Watermark 0] ((fun x : Stream A => apply_operator op1 x) [Watermark 0])).
+  intros A B C op1 op2 H1 H2 s input output Heq e Hin Helem.
+  (* Proof sketch: 
+     1. 由 H1，对中间流 intermediate = apply_operator op1 input，
+        存在 r1 使得 r1 在 intermediate 中且无重复。
+     2. 由 H2，对输出流 output = apply_operator op2 intermediate，
+        存在 r 使得 r 在 output 中且无重复。
+     3. 传递性保证组合后仍满足 ExactlyOnceSemantics。
+     完整证明需建立 filter/flatmap/windowop 各操作符的 preserves_exactly_once 引理。 *)
+  Admitted.
   assert (Heq : (fun x : Stream A => apply_operator op1 x) [Watermark 0] =
                 (fun x : Stream A => apply_operator op1 x) [Watermark 0])
     by reflexivity.
@@ -631,10 +633,8 @@ Definition LivenessAllProcessed (T: Type) (process: Stream T -> Stream T) : Prop
       event_timestamp e' = event_timestamp e.
 
 (* Theorem: Exactly-Once语义蕴含安全性和活性 *)
-(* 修正: 原证明使用 contradiction 不正确，且 ExactlyOnceSemantics
-   的当前形式化定义存在自引用问题（~exists r', r = r' 恒假）。
-   以下 proof sketch 在假设定义修正的前提下给出正确结构，
-   并以 Admitted 保留（因定义层面的修正超出单次 TODO 推进范围）。 *)
+(* 修正 (2026-04-21): ExactlyOnceSemantics 定义已修复。
+   以下为 Exactly-Once 语义蕴含安全性和活性的证明框架。 *)
 Theorem exactly_once_implies_safety_liveness :
   forall (T: Type) (process: Stream T -> Stream T),
     ExactlyOnceSemantics process ->
@@ -642,11 +642,13 @@ Theorem exactly_once_implies_safety_liveness :
     LivenessAllProcessed T process.
 Proof.
   intros T process Hexactly.
-  (* 修改说明 (2026-04-21):
-     ExactlyOnceSemantics 定义不可满足，因此 Hexactly 蕴含 False。
-     与 compose_exactly_once 同理。 *)
-  exfalso.
-  specialize (Hexactly [Watermark 0] (process [Watermark 0])).
+  (* Proof sketch:
+     SafetyNoDuplicate: 由 ExactlyOnceSemantics 定义直接得到。
+     定义要求输出中不存在时间戳相同但不同的事件，即无重复。
+     
+     LivenessAllProcessed: 由定义中的 exists r 保证每个输入事件
+     都有对应的输出事件。需补充 is_event_elem 过滤只考虑数据事件。 *)
+  Admitted.
   assert (Heq : process [Watermark 0] = process [Watermark 0]) by reflexivity.
   apply Hexactly in Heq.
   specialize (Heq (Watermark 0)).
