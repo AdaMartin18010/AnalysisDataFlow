@@ -453,7 +453,14 @@ deriving Repr
         apply KDerives.and_elim_left
         apply KDerives.ax (by simp)
     · -- 证明 □(φ ∧ ψ) → □ψ (类似)
-      sorry -- 需要更详细的推导
+      apply KDerives.mp
+      · -- 使用 K 公理：□((φ ∧ ψ) → ψ) → (□(φ ∧ ψ) → □ψ)
+        apply KDerives.K_axiom
+      · -- 证明 □((φ ∧ ψ) → ψ) 通过必然化
+        apply KDerives.nec
+        -- 证明 (φ ∧ ψ) → ψ
+        apply KDerives.and_elim_right
+        apply KDerives.ax (by simp)
 
   /-- 
   定义 3.4 (T 系统): K + T 公理 (□φ → φ)

@@ -149,7 +149,15 @@ lemma weakening {Γ t T} (h : Γ ⊢ t : T) :
   ∀ (x : Name) (S : Type), 
     ¬inContext x Γ → 
     (Γ, x : S) ⊢ t : T := by
-  /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
+  /- 详细证明策略 (Weakening):
+     对 hasType 的推导进行结构归纳。
+     Base Case (T-Var): lookupContext Γ y = some T。
+     在扩展环境 (Γ, x:S) 中，若 y = x，则与 ¬inContext x Γ 矛盾。
+     若 y ≠ x，则 lookupContext (Γ, x:S) y = lookupContext Γ y = some T。
+     Inductive Step (T-Abs): 需要证明 (Γ, x:S, y:T₁) ⊢ t : T₂。
+     若 x = y，则需利用 α-等价或重命名策略。
+     若 x ≠ y，则直接应用 IH。
+     在当前简化实现中（无 α-等价处理），保留 sorry。 -/
   sorry -- 通过对类型判断的归纳证明
 
 /-- 
@@ -160,7 +168,14 @@ lemma weakening {Γ t T} (h : Γ ⊢ t : T) :
 lemma type_uniqueness {Γ t T₁ T₂} 
     (h₁ : Γ ⊢ t : T₁) (h₂ : Γ ⊢ t : T₂) : 
   T₁ = T₂ := by
-  /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
+  /- 详细证明策略 (Type Uniqueness):
+     对 h₁ 进行结构归纳，对 h₂ 进行反演 (inversion)。
+     Case T-Var: lookupContext Γ x = some T₁ 且 lookupContext Γ x = some T₂。
+     由 lookupContext 的确定性（若实现为函数），T₁ = T₂。
+     Case T-Abs: t = abs x t'，则 h₂ 必为 T-Abs，
+     由 IH 得 T₁₂ = T₂₂，因此 arrow T₁₁ T₁₂ = arrow T₂₁ T₂₂。
+     Case T-App: 由 IH 得箭头类型相等，再得参数类型相等。
+     当前简化版本保留 sorry（需要 lookupContext 的单射引理）。 -/
   sorry -- 通过对项结构的归纳证明
 
 /-! 
@@ -194,8 +209,20 @@ lemma combinator_S_typed {A B C : Type} :
       (app (app (var "f") (var "x")) 
            (app (var "g") (var "x"))))) : 
     ((A ⇒ B ⇒ C) ⇒ (A ⇒ B) ⇒ A ⇒ C) := by
-  /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
-  sorry -- 详细的构造证明
+  apply hasType.abs
+  apply hasType.abs
+  apply hasType.abs
+  apply hasType.app
+  · apply hasType.app
+    · apply hasType.var
+      simp [extendContext, lookupContext]
+    · apply hasType.var
+      simp [extendContext, lookupContext]
+  · apply hasType.app
+    · apply hasType.var
+      simp [extendContext, lookupContext]
+    · apply hasType.var
+      simp [extendContext, lookupContext]
 
 /-! 
 ## 类型良构性

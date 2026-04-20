@@ -220,8 +220,95 @@ def DNE (A : PropFormula) : PropFormula :=
 如果 Γ ⊢ A，则 Γ ⊨ A。
 -/
 lemma soundness {Γ A} (h : Γ ⊢ A) : Γ ⊨ A := by
-  /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
-  sorry -- 通过对证明的归纳证明
+  /- Soundness Theorem: 自然演绎系统的可靠性定理。
+     证明策略: 对证明推导 Γ ⊢ A 进行结构归纳。
+     对每条推理规则，证明如果所有前提在赋值 σ 下为真，
+     则结论在 σ 下也为真。 -/
+  induction h with
+  | assumption hmem =>
+    intros σ hΓ
+    exact hΓ A hmem
+  | and_intro hA hB ihA ihB =>
+    intros σ hΓ
+    simp [eval]
+    constructor
+    · exact ihA σ hΓ
+    · exact ihB σ hΓ
+  | and_elim_left hAB ih =>
+    intros σ hΓ
+    have h := ih σ hΓ
+    simp [eval] at h ⊢
+    exact h.1
+  | and_elim_right hAB ih =>
+    intros σ hΓ
+    have h := ih σ hΓ
+    simp [eval] at h ⊢
+    exact h.2
+  | imp_intro hAB ih =>
+    intros σ hΓ
+    simp [eval]
+    intros hA
+    apply ih
+    intros B hB
+    cases hB with
+    | head => exact hA
+    | tail hB' => apply hΓ; exact hB'
+  | imp_elim hAB hA ihAB ihA =>
+    intros σ hΓ
+    have h1 := ihAB σ hΓ
+    have h2 := ihA σ hΓ
+    simp [eval] at h1 h2 ⊢
+    simp [h2] at h1
+    exact h1
+  | or_intro_left hA ih =>
+    intros σ hΓ
+    have h := ih σ hΓ
+    simp [eval]
+    exact Or.inl h
+  | or_intro_right hB ih =>
+    intros σ hΓ
+    have h := ih σ hΓ
+    simp [eval]
+    exact Or.inr h
+  | or_elim hAB hAC hBC ihAB ihAC ihBC =>
+    intros σ hΓ
+    have h1 := ihAB σ hΓ
+    simp [eval] at h1 ⊢
+    cases h1 with
+    | inl hA =>
+      apply ihAC
+      intros C hC
+      cases hC with
+      | head => exact hA
+      | tail hC' => apply hΓ; exact hC'
+    | inr hB =>
+      apply ihBC
+      intros C hC
+      cases hC with
+      | head => exact hB
+      | tail hC' => apply hΓ; exact hC'
+  | not_intro hA ih =>
+    intros σ hΓ
+    simp [eval]
+    intros hA'
+    apply ih
+    intros B hB
+    cases hB with
+    | head => exact hA'
+    | tail hB' => apply hΓ; exact hB'
+  | not_elim hA hNA ihA ihNA =>
+    intros σ hΓ
+    have h1 := ihA σ hΓ
+    have h2 := ihNA σ hΓ
+    simp [eval] at h1 h2 ⊢
+    contradiction
+  | false_elim hF ih =>
+    intros σ hΓ
+    have h := ih σ hΓ
+    simp [eval] at h
+  | true_intro =>
+    intros σ hΓ
+    simp [eval]
 
 /-!
 ## 谓词逻辑（一阶逻辑）基础

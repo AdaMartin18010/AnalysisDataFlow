@@ -146,28 +146,91 @@ infix:50 " ⟶ " => Step
 
 -- 定理陈述
 
--- 1. 正则形式引理
+-- 1. 正则形式引理 (Canonical Forms)
+-- 修正: 补充完整的反演证明。正则形式引理说明：
+-- 若空上下文中一个值为函数类型，则它必为 λ-抽象。
+
 theorem canonical_forms_fun : ∀ (t : Tm) (T₁ T₂ : Ty),
-  HasType Context.empty t (Ty.tyarr T₁ T₂) → Value t → ∃ (t' : Tm), t = Tm.abs T₁ t' := sorry
+  HasType Context.empty t (Ty.tyarr T₁ T₂) → Value t → ∃ (t' : Tm), t = Tm.abs T₁ t' := by
+  intros t T₁ T₂ ht hv
+  cases hv with
+  | v_abs =>
+    cases ht with
+    | T_abs h =>
+      exists t_1
+      injection ht with h1 h2
+      rw [h1]
+  | v_tabs => cases ht
+  | v_true => cases ht
+  | v_false => cases ht
+  | v_zero => cases ht
+  | v_succ _ => cases ht
 
 theorem canonical_forms_all : ∀ (t : Tm) (T : Ty),
-  HasType Context.empty t (Ty.tyall T) → Value t → ∃ (t' : Tm), t = Tm.tabs t' := sorry
+  HasType Context.empty t (Ty.tyall T) → Value t → ∃ (t' : Tm), t = Tm.tabs t' := by
+  intros t T ht hv
+  cases hv with
+  | v_tabs =>
+    cases ht with
+    | T_tabs h => exists t_1
+  | v_abs => cases ht
+  | v_true => cases ht
+  | v_false => cases ht
+  | v_zero => cases ht
+  | v_succ _ => cases ht
 
 theorem canonical_forms_bool : ∀ (t : Tm),
-  HasType Context.empty t Ty.tybool → Value t → (t = Tm.tru) ∨ (t = Tm.fls) := sorry
+  HasType Context.empty t Ty.tybool → Value t → (t = Tm.tru) ∨ (t = Tm.fls) := by
+  intros t ht hv
+  cases hv with
+  | v_true => left; rfl
+  | v_false => right; rfl
+  | v_abs => cases ht
+  | v_tabs => cases ht
+  | v_zero => cases ht
+  | v_succ _ => cases ht
 
 theorem canonical_forms_nat : ∀ (t : Tm),
-  HasType Context.empty t Ty.tynat → Value t → t = Tm.zero ∨ ∃ (t' : Tm), t = Tm.succ t' ∧ Value t' := sorry
+  HasType Context.empty t Ty.tynat → Value t → t = Tm.zero ∨ ∃ (t' : Tm), t = Tm.succ t' ∧ Value t' := by
+  intros t ht hv
+  cases hv with
+  | v_zero => left; rfl
+  | v_succ t' hv' =>
+    right
+    exists t'
+    constructor <;> rfl
+  | v_abs => cases ht
+  | v_tabs => cases ht
+  | v_true => cases ht
+  | v_false => cases ht
 
--- 2. 类型替换引理
+-- 2. 类型替换引理 (修正: 原为恒等式，直接 exact)
 theorem ty_substitution : ∀ (Γ : Context) (t : Tm) (T : Ty),
-  HasType Γ t T → HasType Γ t T := sorry
+  HasType Γ t T → HasType Γ t T := by
+  intros Γ t T h
+  exact h
 
--- 3. 保持性定理
+-- 3. 保持性定理 (Preservation)
+-- TODO (推进): 保持性定理的标准证明需要对 Step 进行反演，
+-- 然后对 HasType 进行反演。证明较长，涉及替换引理。
+-- Proof Strategy: 对 HasType 进行结构归纳，对 Step 进行 case analysis。
+-- 关键情形:
+--   - ST_beta: 需要替换引理 (substitution lemma)
+--   - ST_app1/ST_app2: 直接应用归纳假设
+-- 当前保留 sorry，因替换引理的完整形式尚未建立。
 theorem preservation : ∀ (Γ : Context) (t t' : Tm) (T : Ty),
   HasType Γ t T → Step t t' → HasType Γ t' T := sorry
 
--- 4. 进度定理
+-- 4. 进度定理 (Progress)
+-- TODO (推进): 进度定理的标准证明需要对项进行结构归纳。
+-- Proof Strategy: 对 HasType 进行结构归纳，证明每个良类型的封闭项
+-- 要么是值，要么可以归约一步。
+-- 关键情形:
+--   - T_app: 应用归纳假设于 t₁ 和 t₂。
+--     若 t₁ 为值，由 canonical_forms_fun 知其为 λ-抽象，
+--     因此可进行 ST_beta 归约。
+--   - T_tapp: 类似，使用 canonical_forms_all。
+-- 当前保留 sorry，因证明需要正则形式引理的完整应用。
 theorem progress : ∀ (t : Tm) (T : Ty),
   HasType Context.empty t T → Value t ∨ ∃ t' : Tm, Step t t' := sorry
 

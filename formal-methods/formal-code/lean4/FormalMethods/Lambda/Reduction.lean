@@ -138,21 +138,20 @@ def isValue (t : Term) : Prop :=
   | _ => False
 
 /-- 
-值是正规形式（相对于某些归约策略）
+值是正规形式（当体内为正规形式时）
 
-注意：这个引理依赖于具体的归约策略定义。
-对于完整的 Beta 归约，值不是正规形式，因为体内可能可归约。
+修正: 原引理缺少体内为正规形式的前提。
+在标准 Beta 归约下，abs_body 规则允许归约体内，
+因此 abs x t 是正规形式当且仅当 t 是正规形式。
 -/
-lemma value_nf_under_cbv : ∀ x t, isNormalForm (abs x t) := by
-  -- 对于 Call-by-Value，抽象是正规形式
-  intro x t
+lemma value_nf_under_cbv : ∀ x t, isNormalForm t → isNormalForm (abs x t) := by
+  intros x t hnf
   simp [isNormalForm]
   intro s h
   cases h
-  -- Beta 归约不适用于抽象
-  -- 体内归约可以通过 abs_body 进行
-  -- 这里需要更精确的定义
-  sorry
+  -- abs_body: t →β t'，与 isNormalForm t 矛盾
+  apply hnf
+  assumption
 
 /-! 
 ## Church-Rosser 定理 (合流性)
@@ -212,7 +211,24 @@ Omega = (λx. x x) (λx. x x) 不归约到任何正规形式。
 -/
 lemma omega_not_weakly_normalizing : 
   ¬WeaklyNormalizing Substitution.Omega := by
-  sorry -- 需要证明 Omega 的归约是无限的
+  /- 证明策略: Omega = (λx. x x) (λx. x x) 的 Beta 归约结果仍是 Omega 本身，
+     因此 Omega 可以无限归约，不存在正规形式。
+     关键引理: BetaStep Omega Omega（自归约）。 -/
+  intro h
+  rcases h with ⟨s, ⟨hstar, hnf⟩⟩
+  have hnotnf : ¬isNormalForm s := by
+    induction hstar with
+    | refl =>
+      -- 基例: s = Omega，需证 ¬isNormalForm Omega
+      simp [isNormalForm]
+      exists Omega
+      simp [Omega, omegaTerm, Substitution.subst]
+      apply BetaStep.beta
+    | step t s' r h_step h_rest ih =>
+      -- 归纳步: BetaStep Omega s' 且 BetaStar s' s
+      -- 无论 s' 是什么，归纳假设已给出 ¬isNormalForm s
+      exact ih
+  contradiction
 
 /-! 
 ## 归约策略

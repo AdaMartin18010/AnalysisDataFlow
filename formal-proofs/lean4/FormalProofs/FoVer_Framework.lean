@@ -112,6 +112,28 @@ end PRM_Formalization
 
 section Core_Theorems
 
+/- 辅助引理: 单任务生成的数据项满足Soundness条件 -/
+lemma generated_item_sound (fover : FoVer) (task_desc : String) :
+  let item := generateTrainingData fover [task_desc]
+  ∀ td ∈ item, td.label = StepCorrectness.Correct -> td.verified = true := by
+  intro item td htd hlabel
+  simp [generateTrainingData] at htd
+  cases hver : fover.verifier Task (fover.formalizer task_desc) with
+  | Valid =>
+    simp [hver] at htd
+    rcases htd with (rfl | hfalse)
+    · simp at hlabel
+      simp
+    · contradiction
+  | Invalid =>
+    simp [hver] at htd
+    rcases htd with (rfl | hfalse)
+    · simp at hlabel
+    · contradiction
+  | Unknown =>
+    simp [hver] at htd
+    contradiction
+
 /- 定理: FoVer生成的训练数据满足Soundness -/
 theorem FoVer_Soundness (fover : FoVer) 
                         (tasks : List String) :
@@ -120,24 +142,28 @@ theorem FoVer_Soundness (fover : FoVer)
   intro ds
   unfold DatasetSound
   intro td h_td h_label
-  unfold generateTrainingData at h_td
-  simp at h_td
-  /- TODO: 参照 FoVer_Complete.lean 中的完整证明。
-     策略: 对 tasks 进行列表归纳。
-     | nil => simp [generateTrainingData] at h_td; contradiction
-     | cons head tail ih =>
-         simp [generateTrainingData] at h_td
-         cases hmem : (generateTrainingData fover [head]) with
-         | nil => simp [hmem] at h_td; apply ih; assumption
-         | cons item rest =>
-             simp [hmem] at h_td
-             cases h_td with
-             | inl hitem => rw [hitem] at h_label; apply generated_item_sound; simp; assumption
-             | inr htail => apply ih; assumption
-     注意: Framework 中 Verifier 类型与 Complete 不同，
-     需确认 fover.verifier 的调用签名一致。 -/
-  /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
-  sorry
+  induction tasks with
+  | nil =>
+    simp [generateTrainingData] at h_td
+    contradiction
+  | cons head tail ih =>
+    simp [generateTrainingData] at h_td
+    cases hmem : (generateTrainingData fover [head]) with
+    | nil =>
+      simp [hmem] at h_td
+      apply ih
+      assumption
+    | cons item rest =>
+      simp [hmem] at h_td
+      cases h_td with
+      | inl hitem =>
+        rw [hitem] at h_label
+        apply generated_item_sound
+        simp
+        assumption
+      | inr htail =>
+        apply ih
+        assumption
 
 /- 神经证明证书定义 -/
 structure NeuralProofCertificate where

@@ -411,11 +411,31 @@ theorem length_append {α : Type} (xs ys : ListType α) :
     simp [length, append]
     rw [ih]
 
+/-- 辅助引理：foldl 在 append 上的分配律 -/
+lemma foldl_append {α β : Type} (f : β → α → β) (init : β) (xs ys : ListType α) :
+  foldl f init (append xs ys) = foldl f (foldl f init xs) ys := by
+  induction xs with
+  | nil => rfl
+  | cons x xs' ih =>
+    simp [append, foldl]
+    rw [ih]
+
+/-- 辅助引理：foldl cons 与 reverse 的关系 -/
+lemma foldl_cons_eq_append_reverse {α : Type} (zs : ListType α) (ys : ListType α) :
+  foldl (fun acc x => x :: acc) zs ys = append (reverse ys) zs := by
+  induction ys with
+  | nil => rfl
+  | cons y ys' ih =>
+    simp [foldl, reverse]
+    rw [ih]
+    simp [append, append_assoc]
+
 /-- 定理：反转是反同态 -/
 theorem reverse_append {α : Type} (xs ys : ListType α) :
   reverse (append xs ys) = append (reverse ys) (reverse xs) := by
-  -- 需要建立更多引理
-  sorry
+  simp [reverse]
+  rw [foldl_append]
+  rw [foldl_cons_eq_append_reverse]
 
 /-- 定理：反转的逆元性质 -/
 theorem reverse_reverse {α : Type} (xs : ListType α) :
@@ -423,8 +443,10 @@ theorem reverse_reverse {α : Type} (xs : ListType α) :
   induction xs with
   | nil => rfl
   | cons x xs' ih =>
-    -- 需要 reverse_append 引理
-    sorry
+    simp [reverse, foldl]
+    rw [foldl_cons_eq_append_reverse]
+    simp [append]
+    rw [ih]
 
 /-- 定理：map 保持结构 -/
 theorem map_append {α β : Type} (f : α → β) (xs ys : ListType α) :
@@ -582,8 +604,12 @@ theorem natLt_wellfounded : WellFounded NatLt := by
       intro c h'
       cases h'
     | succ_succ h' =>
-      -- 需要归纳假设
-      sorry
+      -- 由归纳假设 ih: Acc NatLt n，
+      -- 根据 Acc 的定义，∀ b, NatLt b n → Acc NatLt b
+      -- 而 h': NatLt b n，因此 Acc NatLt b
+      cases ih with
+      | intro h_acc =>
+        exact h_acc b h'
 
 /-- 使用良基归纳定义函数
 
@@ -594,11 +620,21 @@ noncomputable def factorial_wf (n : NatType) : NatType :=
     NatType.succ NatType.zero
   else
     have : NatLt (NatType.pred n) n := by
-      sorry  -- 需要证明 pred n < n
+      cases n with
+      | zero => contradiction
+      | succ n' =>
+        simp [pred]
+        have hlt : ∀ m, NatLt m (NatType.succ m) := by
+          intro m
+          induction m with
+          | zero => apply NatLt.zero_succ
+          | succ m' ih => apply NatLt.succ_succ; exact ih
+        exact hlt n'
     NatType.mul n (factorial_wf (NatType.pred n))
   termination_by factorial_wf n => n
-  -- 需要提供良基关系证明
-  decreasing_by sorry
+  -- 提供良基关系证明
+  decreasing_by
+    assumption
 
 /-
 ### 6.1 字典序良基性
@@ -765,18 +801,36 @@ mutual
     | NatType.succ n => isEven n
 end
 
-/-- 定理：isEven 与 Even 等价 -/
-theorem isEven_correct (n : NatType) : isEven n = true ↔ Even n := by
-  induction n using NatType.rec with
-  | zero =>
-    simp [isEven]
-    constructor
-    · intro _; exact Even.zero
-    · intro _; rfl
-  | succ n ih =>
-    simp [isEven]
-    -- 需要 isOdd 的对应定理
-    sorry
+/-- 定理：isEven 与 Even 等价（相互归纳证明） -/
+mutual
+  theorem isEven_correct (n : NatType) : isEven n = true ↔ Even n := by
+    cases n with
+    | zero =>
+      simp [isEven]
+      constructor
+      · intro _; exact Even.zero
+      · intro _; rfl
+    | succ n =>
+      simp [isEven]
+      rw [isOdd_correct n]
+      constructor
+      · intro h; exact Even.succ h
+      · intro h; cases h with | succ h' => exact h'
+
+  theorem isOdd_correct (n : NatType) : isOdd n = true ↔ Odd n := by
+    cases n with
+    | zero =>
+      simp [isOdd]
+      constructor
+      · intro h; cases h
+      · intro h; cases h
+    | succ n =>
+      simp [isOdd]
+      rw [isEven_correct n]
+      constructor
+      · intro h; exact Odd.succ h
+      · intro h; cases h with | succ h' => exact h'
+end
 
 /-- 相互归纳类型：正则表达式与正则语言
 
@@ -825,17 +879,17 @@ theorem strong_induction (P : NatType → Prop) :
   intro step base n
   -- 需要证明所有小于等于 n 的元素都满足 P
   suffices ∀ m, NatType.LE m n → P m from
-    /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
-    sorry  -- 完成证明
+    this n (NatType.LE.refl n)
   induction n with
   | zero =>
     intro m h
     cases h with
     | refl => exact base
     | step h' =>
-      -- 不可能有 m < 0
-      /- TODO: 需补充证明。当前为占位，建议根据上下文展开定义并使用归纳或反证法完成。 -/
-      sorry
+      -- 不可能有 m < 0 (zero 不是 succ 的形式)
+      cases h' with
+      | refl => exact base
+      | step h'' => cases h''
   | succ n ih =>
     intro m h
     cases h with
@@ -921,7 +975,14 @@ theorem add_eq_add_iterate (n m : NatType) :
     simp [NatType.add, add_by_iterate] at *
     rw [ih]
     -- 需要引理：iterate f (f x) n = f (iterate f x n)
-    sorry
+    have h_iter {α : Type} (f : α → α) (x : α) (n : NatType) :
+        NatType.iterate f (f x) n = f (NatType.iterate f x n) := by
+      induction n with
+      | zero => rfl
+      | succ n ih =>
+        simp [NatType.iterate]
+        rw [ih]
+    rw [h_iter]
 
 -- ============================================================
 -- 结语
