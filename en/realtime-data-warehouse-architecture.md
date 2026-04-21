@@ -87,7 +87,7 @@ Each layer can scale, upgrade, and recover independently due to message queue de
 ```sql
 -- Flink SQL: DWD layer enrichment
 INSERT INTO dwd_order
-SELECT 
+SELECT
     o.order_id,
     o.user_id,
     u.user_name,
@@ -103,6 +103,7 @@ LEFT JOIN dim_user FOR SYSTEM_TIME AS OF o.proc_time u
 ## 7. Visualizations
 
 **RTDW Architecture**:
+
 ```mermaid
 graph LR
     A[Sources] --> B[ODS]
@@ -116,6 +117,3 @@ graph LR
 ---
 
 ## 8. References
-
-[^1]: Apache Flink Documentation, "Real-Time Data Warehouse", 2025.
-[^2]: Paimon Documentation, "Streaming Lakehouse", 2025.

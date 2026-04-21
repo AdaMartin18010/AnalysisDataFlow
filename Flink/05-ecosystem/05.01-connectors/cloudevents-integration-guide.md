@@ -26,7 +26,7 @@
     - [4.2 多协议绑定的复杂性分析](#42-多协议绑定的复杂性分析)
     - [4.3 事件属性完整性与系统可观测性](#43-事件属性完整性与系统可观测性)
     - [4.4 Saga 模式中 CloudEvents 的角色分析](#44-saga-模式中-cloudevents-的角色分析)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-F-04-20 (CloudEvents Schema 兼容性保证)](#thm-f-04-20-cloudevents-schema-兼容性保证)
     - [Thm-F-04-21 (CloudEvents 跨系统可传递性)](#thm-f-04-21-cloudevents-跨系统可传递性)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)

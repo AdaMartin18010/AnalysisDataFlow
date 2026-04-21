@@ -18,6 +18,7 @@ A **streaming security posture** $\mathcal{S}_{stream}$ is a 7-tuple:
 $$\mathcal{S}_{stream} = \langle \mathcal{A}, \mathcal{T}, \mathcal{D}, \mathcal{C}, \mathcal{I}, \mathcal{E}, \mathcal{R} \rangle$$
 
 where:
+
 - $\mathcal{A}$: Authentication & Authorization
 - $\mathcal{T}$: Transport Security
 - $\mathcal{D}$: Data Protection (encryption at rest, masking in transit)
@@ -27,6 +28,7 @@ where:
 - $\mathcal{R}$: Resilience
 
 **Streaming-specific challenges**:
+
 1. Low latency: security must not add significant end-to-end delay
 2. Continuous data flow: no clear "processing complete" boundary
 3. Multi-tenancy: strong isolation on shared clusters
@@ -75,15 +77,16 @@ graph TB
         TM1[TaskManager: Tenant A]
         TM2[TaskManager: Tenant B]
     end
-    
+
     JM --> TM1
     JM --> TM2
-    
+
     style TM1 fill:#e8f5e9
     style TM2 fill:#e1f5fe
 ```
 
 **Isolation levels**:
+
 - **Process-level**: Separate TM processes per tenant (strongest)
 - **Slot-level**: Slot sharing within shared TM (weaker, resource-guaranteed)
 - **Network-level**: VPC peering, firewall rules
@@ -103,8 +106,3 @@ graph TB
 ---
 
 ## 4. References
-
-[^1]: NIST, "Zero Trust Architecture", SP 800-207, 2020.
-[^2]: Intel, "Software Guard Extensions (SGX) for Data Center", 2024.
-[^3]: Microsoft SEAL, "Homomorphic Encryption Library", 2024.
-[^4]: Apache Flink Documentation, "Security", 2025.

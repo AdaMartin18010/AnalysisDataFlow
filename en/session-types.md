@@ -18,6 +18,7 @@ Let $T$ be a value type. A session type $S$ is defined by the following grammar:
 $$S ::= !T.S \mid ?T.S \mid \oplus\{l_1: S_1, \ldots, l_n: S_n\} \mid \&\{l_1: S_1, \ldots, l_n: S_n\} \mid \text{end}$$
 
 where:
+
 - $!T.S$: **send** a value of type $T$, then continue as $S$
 - $?T.S$: **receive** a value of type $T$, then continue as $S$
 - $\oplus\{l_i: S_i\}$: **internal choice** (select one label $l_i$)
@@ -83,6 +84,7 @@ Session types are a **disciplined fragment** of the $\pi$-calculus. The type sys
 ### 3.2 Relation to Stream Processing
 
 Stream processing pipelines can be modeled as session types:
+
 - **Source** $\to$ **Transform**: $?T.!T'$
 - **Join**: $?T_1.?T_2.!T_{\text{out}}$
 - **Window aggregation**: $?T^*.!T_{\text{agg}}$
@@ -104,6 +106,7 @@ Stream processing pipelines can be modeled as session types:
 ### 4.1 Why Linear Types?
 
 Linear types prevent:
+
 - **Aliasing errors**: Two threads using the same endpoint simultaneously
 - **Deadlocks**: Dropped channels that the peer waits on
 - **Orphan messages**: Messages sent to closed channels
@@ -183,8 +186,3 @@ sequenceDiagram
 ---
 
 ## 8. References
-
-[^1]: K. Honda, "Types for Dyadic Interaction", CONCUR, 1993.
-[^2]: K. Honda et al., "Multiparty Asynchronous Session Types", POPL, 2008.
-[^3]: S. Gay & A. Ravara (eds.), "Behavioural Types: from Theory to Tools", River Publishers, 2017.
-[^4]: F. Pfenning et al., "Session Types as Foundation for Contract-Based Distributed Programming", 2015.

@@ -27,7 +27,7 @@
     - [4.1 本地分流决策树](#41-本地分流决策树)
     - [4.2 MEC 部署位置选择](#42-mec-部署位置选择)
     - [4.3 Wasm 运行时 MEC 适配](#43-wasm-运行时-mec-适配)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [5.1 端到端延迟边界证明](#51-端到端延迟边界证明)
     - [5.2 会话连续性保证论证](#52-会话连续性保证论证)
     - [5.3 资源隔离安全性论证](#53-资源隔离安全性论证)

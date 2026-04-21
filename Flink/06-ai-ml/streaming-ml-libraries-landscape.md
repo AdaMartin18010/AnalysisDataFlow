@@ -6,14 +6,66 @@
 
 ## 目录
 
-- [1. 概念定义 (Definitions)](#1-概念定义-definitions)
-- [2. 属性推导 (Properties)](#2-属性推导-properties)
-- [3. 关系建立 (Relations)](#3-关系建立-relations)
-- [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
-- [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
-- [6. 实例验证 (Examples)](#6-实例验证-examples)
-- [7. 可视化 (Visualizations)](#7-可视化-visualizations)
-- [8. 引用参考 (References)](#8-引用参考-references)
+- [流式机器学习库全景分析 - 2025年技术生态深度调研](#流式机器学习库全景分析---2025年技术生态深度调研)
+  - [目录](#目录)
+  - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
+    - [Def-A-02-01: 在线学习系统 (Online Learning System)](#def-a-02-01-在线学习系统-online-learning-system)
+    - [Def-A-02-02: 增量更新算子 (Incremental Update Operator)](#def-a-02-02-增量更新算子-incremental-update-operator)
+    - [Def-A-02-03: Hoeffding Tree 与 Hoeffding边界](#def-a-02-03-hoeffding-tree-与-hoeffding边界)
+    - [Def-A-02-04: 概念漂移 (Concept Drift)](#def-a-02-04-概念漂移-concept-drift)
+    - [Def-A-02-05: 漂移检测器 (Drift Detector)](#def-a-02-05-漂移检测器-drift-detector)
+    - [Def-A-02-06: River - Python流式ML标准库](#def-a-02-06-river---python流式ml标准库)
+    - [Def-A-02-07: Vowpal Wabbit - 工业级在线学习](#def-a-02-07-vowpal-wabbit---工业级在线学习)
+    - [Def-A-02-08: Flink-Python ML桥接架构](#def-a-02-08-flink-python-ml桥接架构)
+    - [Def-A-02-09: 上下文老虎机 (Contextual Bandit)](#def-a-02-09-上下文老虎机-contextual-bandit)
+    - [Def-A-02-10: 特征哈希 (Feature Hashing / Hashing Trick)](#def-a-02-10-特征哈希-feature-hashing--hashing-trick)
+    - [Def-A-02-11: FTRL-Proximal优化算法](#def-a-02-11-ftrl-proximal优化算法)
+    - [Def-A-02-12: 自适应随机森林 (Adaptive Random Forest)](#def-a-02-12-自适应随机森林-adaptive-random-forest)
+    - [Def-A-02-13: 流式评估协议 (Prequential Evaluation)](#def-a-02-13-流式评估协议-prequential-evaluation)
+    - [Def-A-02-14: SGD变体与自适应学习率](#def-a-02-14-sgd变体与自适应学习率)
+    - [Def-A-02-15: 增量学习约束 (Constraints of Incremental Learning)](#def-a-02-15-增量学习约束-constraints-of-incremental-learning)
+  - [2. 属性推导 (Properties)](#2-属性推导-properties)
+    - [Lemma-A-02-01: Hoeffding边界与树分裂可靠性](#lemma-a-02-01-hoeffding边界与树分裂可靠性)
+    - [Lemma-A-02-02: 在线SGD后悔界 (Convex Loss)](#lemma-a-02-02-在线sgd后悔界-convex-loss)
+    - [Lemma-A-02-03: 特征哈希冲突概率边界](#lemma-a-02-03-特征哈希冲突概率边界)
+    - [Lemma-A-02-04: ADWIN误报率控制](#lemma-a-02-04-adwin误报率控制)
+    - [Lemma-A-02-05: FTRL稀疏性保证](#lemma-a-02-05-ftrl稀疏性保证)
+    - [Prop-A-02-01: ADWIN检测延迟边界](#prop-a-02-01-adwin检测延迟边界)
+    - [Prop-A-02-02: 自适应随机森林泛化误差界](#prop-a-02-02-自适应随机森林泛化误差界)
+    - [Prop-A-02-03: 上下文老虎机探索-利用权衡](#prop-a-02-03-上下文老虎机探索-利用权衡)
+  - [3. 关系建立 (Relations)](#3-关系建立-relations)
+    - [关系 1: River ⟺ PyFlink UDF 集成映射](#关系-1-river--pyflink-udf-集成映射)
+    - [关系 2: Vowpal Wabbit ⟹ Flink Async I/O](#关系-2-vowpal-wabbit--flink-async-io)
+    - [关系 3: Flink ML ⟺ 原生状态管理](#关系-3-flink-ml--原生状态管理)
+    - [关系 4: 流式ML库生态对比矩阵](#关系-4-流式ml库生态对比矩阵)
+  - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
+    - [4.1 在线学习 vs 批量学习理论对比](#41-在线学习-vs-批量学习理论对比)
+    - [4.2 流式算法选择决策框架](#42-流式算法选择决策框架)
+    - [4.3 概念漂移应对策略对比](#43-概念漂移应对策略对比)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
+    - [Thm-A-02-01: Hoeffding Tree收敛性定理](#thm-a-02-01-hoeffding-tree收敛性定理)
+    - [Thm-A-02-02: 在线SGD在强凸损失下的收敛保证](#thm-a-02-02-在线sgd在强凸损失下的收敛保证)
+    - [Thm-A-02-03: 自适应随机森林泛化界](#thm-a-02-03-自适应随机森林泛化界)
+    - [Thm-A-02-04: FTRL-Proximal稀疏收敛定理](#thm-a-02-04-ftrl-proximal稀疏收敛定理)
+    - [Thm-A-02-05: 上下文老虎机UCB策略遗憾界](#thm-a-02-05-上下文老虎机ucb策略遗憾界)
+    - [Thm-A-02-06: 特征哈希内积保持定理](#thm-a-02-06-特征哈希内积保持定理)
+    - [Thm-A-02-07: 被动攻击算法收敛性](#thm-a-02-07-被动攻击算法收敛性)
+    - [Thm-A-02-08: 流式K-Means近似保证](#thm-a-02-08-流式k-means近似保证)
+  - [6. 实例验证 (Examples)](#6-实例验证-examples)
+    - [6.1 River: Python流式ML完整示例](#61-river-python流式ml完整示例)
+    - [6.2 Vowpal Wabbit: 工业级上下文老虎机](#62-vowpal-wabbit-工业级上下文老虎机)
+    - [6.3 PyFlink + River 集成完整实现](#63-pyflink--river-集成完整实现)
+    - [6.4 概念漂移检测与响应完整实现](#64-概念漂移检测与响应完整实现)
+    - [6.5 其他流式ML库快速参考](#65-其他流式ml库快速参考)
+      - [Scikit-multiflow示例](#scikit-multiflow示例)
+      - [LightGBM在线学习](#lightgbm在线学习)
+      - [XGBoost增量学习](#xgboost增量学习)
+  - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
+    - [7.1 流式ML库分类图谱](#71-流式ml库分类图谱)
+    - [7.2 Flink与Python ML生态桥接架构](#72-flink与python-ml生态桥接架构)
+    - [7.3 算法选型决策树](#73-算法选型决策树)
+    - [7.4 概念漂移处理流程](#74-概念漂移处理流程)
+  - [8. 引用参考 (References)](#8-引用参考-references)
 
 ---
 
@@ -759,7 +811,8 @@ $$|\hat{\mu}_0 - \hat{\mu}_1| \approx \Delta$$
 检测发生当 $\Delta > \epsilon_{\text{cut}} = O(\sqrt{\frac{\ln(1/\delta)}{n}})$，解得：
 
 $$
-n = O\left( \frac{\ln(1/\delta)}{\Delta^2} \right)$$
+n = O\left( \frac{\ln(1/\delta)}{\Delta^2} \right)
+$$
 
 **直观解释**：更强的漂移（大 $\Delta$）检测更快，高置信度要求（小 $\delta$）需要更多样本。这符合直觉——微小的变化需要更多证据才能确认[^10]。
 
@@ -833,6 +886,7 @@ Flink Row → Arrow RecordBatch → Zero-Copy共享内存 → NumPy/Pandas → R
 ```
 
 **约束条件**：
+
 - UDF内必须缓存模型避免重复反序列化
 - KeyedProcessFunction实现每Key独立模型
 - 状态TTL管理过期模型
@@ -897,6 +951,7 @@ Checkpoint触发 → 状态序列化 → 持久化到分布式存储
 ```
 
 **一致性保证**：
+
 - 有状态算子：Exactly-Once处理
 - 模型更新：幂等性保证
 - 漂移检测：状态恢复后重新校准
@@ -1283,6 +1338,7 @@ $$
 **证明概要**：
 
 CluStream维护 $m$ 个微簇（micro-clusters），每个微簇 $M_i$ 维护：
+
 - $N_i$：数据点数量
 - $LS_i$：线性和（位置）
 - $SS_i$：平方和（半径）
@@ -2507,15 +2563,14 @@ sequenceDiagram
 
 [^14]: Losing, V., et al. "Incremental on-line learning: A review and comparison of state of the art algorithms." Neurocomputing 275 (2018): 1261-1274.
 
-[^15]: Lu, J., et al. "Learning under concept drift: A review." IEEE Transactions on Knowledge and Data Engineering 31.12 (2018): 2346-2363.
 
 [^16]: Gama, J., et al. "Evaluating streaming algorithms and change detectors." ACM SAC (2013): 1516-1517.
 
-[^17]: River Documentation. "Online machine learning in Python." https://riverml.xyz/ (2025).
+[^17]: River Documentation. "Online machine learning in Python." <https://riverml.xyz/> (2025).
 
-[^18]: Langford, J., et al. "Vowpal Wabbit: Open source fast learning system." https://vowpalwabbit.org/ (2025).
+[^18]: Langford, J., et al. "Vowpal Wabbit: Open source fast learning system." <https://vowpalwabbit.org/> (2025).
 
-[^19]: Apache Flink Documentation. "Python API - User-defined Functions." https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/python/table/udfs/overview/ (2025).
+[^19]: Apache Flink Documentation. "Python API - User-defined Functions." <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/python/table/udfs/overview/> (2025).
 
 ---
 

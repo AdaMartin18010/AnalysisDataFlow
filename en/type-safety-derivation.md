@@ -22,6 +22,7 @@ Equivalently, type safety = **Preservation** + **Progress**.
 ### 1.2 Featherweight Go (FG)
 
 FG is a minimal core of Go with:
+
 - Structs and interfaces
 - Method declarations
 - Structural subtyping
@@ -138,6 +139,7 @@ If $\Gamma \vdash v: \text{struct}\{\ldots\}$, then $v = \text{struct}\{f_1 = v_
 If $\Gamma \vdash e: T$ and $e \to e'$, then $\Gamma \vdash e': T$.
 
 **Proof Sketch.** By case analysis on evaluation rules:
+
 - Field access: substitution preserves typing (Substitution Lemma)
 - Method call: method body well-typed by method declaration
 
@@ -146,6 +148,7 @@ If $\Gamma \vdash e: T$ and $e \to e'$, then $\Gamma \vdash e': T$.
 If $\Gamma \vdash e: T$, then either $e$ is a value or $\exists e': e \to e'$.
 
 **Proof Sketch.** By case analysis on expression form:
+
 - Values: already terminal
 - Field access: Canonical Forms guarantees struct value
 - Method call: receiver is a value with the required method
@@ -187,7 +190,7 @@ graph TD
         P --> S[Type Safety]
         Pr --> S
     end
-    
+
     subgraph "Type Systems Hierarchy"
         FG[Featherweight Go] --> FGG[Generic Go]
         FGG --> DOT[Dependent Object Types]
@@ -197,8 +200,3 @@ graph TD
 ---
 
 ## 8. References
-
-[^1]: R. Griesemer et al., "Featherweight Go", OOPSLA, 2020.
-[^2]: P. Wadler, "Propositions as Types", Communications of the ACM, 2015.
-[^3]: A. Rompf & N. Amin, "From DOT to Dependent Object Types", OOPSLA, 2016.
-[^4]: B. Pierce, "Types and Programming Languages", MIT Press, 2002.

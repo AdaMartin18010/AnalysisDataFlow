@@ -96,6 +96,7 @@ curl http://jobmanager:8081/jobs/$JOB_ID/checkpoints
 ## 7. Visualizations
 
 **Troubleshooting Flow**:
+
 ```mermaid
 graph TD
     A[Issue Reported] --> B[Gather Info]
@@ -110,6 +111,3 @@ graph TD
 ---
 
 ## 8. References
-
-[^1]: Apache Flink Documentation, "Debugging and Monitoring", 2025.
-[^2]: Apache Flink Documentation, "Common Issues", 2025.

@@ -34,8 +34,9 @@ For any operator $v$ in a Dataflow DAG:
 $$t_1 < t_2 \Rightarrow w_v(t_1) \leq w_v(t_2)$$
 
 **Proof Sketch**:
+
 1. **Base case**: Source watermark $w_s(t)$ is monotonic by definition (max over growing set)
-2. **Inductive step**: 
+2. **Inductive step**:
    - Single-input operators preserve monotonicity
    - Multi-input operators: $w_{out} = \min(w_{in_1}, w_{in_2}, \ldots)$ — min of monotonic functions is monotonic
 3. By topological induction, all operators preserve monotonicity
@@ -51,6 +52,3 @@ $$t_1 < t_2 \Rightarrow w_v(t_1) \leq w_v(t_2)$$
 ---
 
 ## 4. References
-
-[^1]: T. Akidau et al., "The Dataflow Model", PVLDB, 2015.
-[^2]: Apache Flink Documentation, "Watermarks", 2025.

@@ -95,6 +95,7 @@ Event Time processing is deterministic; Processing Time is non-deterministic.
 ## 5. Engineering Argument
 
 **Latency Budget Allocation**: For P99 < 1s requirement:
+
 - Network: 50ms
 - Queue: 100ms
 - Compute: 800ms
@@ -117,6 +118,7 @@ stream.assignTimestampsAndWatermarks(
 ## 7. Visualizations
 
 **Time Semantics Comparison**:
+
 ```mermaid
 graph LR
     A[Event Occurs] -->|t_event| B[Event Time]
@@ -129,6 +131,3 @@ graph LR
 ---
 
 ## 8. References
-
-[^1]: T. Akidau et al., "The Dataflow Model", PVLDB, 8(12), 2015.
-[^2]: Apache Flink Documentation, "Time Semantics", 2025.

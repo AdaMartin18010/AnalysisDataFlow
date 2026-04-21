@@ -60,6 +60,3 @@ Stores single value per key.
 ---
 
 ## 4. References
-
-[^1]: Apache Flink Documentation, "State Backends", 2025.
-[^2]: M. Kleppmann, "Designing Data-Intensive Applications", O'Reilly, 2017.

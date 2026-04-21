@@ -33,7 +33,7 @@
     - [3.4 表值聚合函数](#34-表值聚合函数)
   - [4. 与 Pandas 集成](#4-与-pandas-集成)
     - [Def-F-09-25: PyFlink-Pandas 集成模型](#def-f-09-25-pyflink-pandas-集成模型)
-    - [4.1 to\_pandas / from\_pandas](#41-to_pandas-from_pandas)
+    - [4.1 to\_pandas / from\_pandas](#41-to_pandas--from_pandas)
     - [4.2 Pandas UDF](#42-pandas-udf)
     - [4.3 向量化执行](#43-向量化执行)
   - [5. 机器学习](#5-机器学习)

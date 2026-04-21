@@ -732,9 +732,6 @@ flowchart TD
 
 ## 8. 引用参考 (References)
 
-[^1]: Confluent, Confluent Manager for Apache Flink 2.3.0 Release Notes, 2026. https://docs.confluent.io/cloud/current/flink/get-started/cmf-release-notes.html
-[^2]: Red Hat, Red Hat OpenShift and Confluent Flink Integration, 2026.
-[^3]: Apache Flink Documentation, Flink SQL Overview, Stable. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/sql/
 
 ---
 

@@ -18,6 +18,7 @@ A **Unified Streaming System** $\mathcal{U}$ is defined as:
 $$\mathcal{U} = (\mathcal{P}, \mathcal{C}, \mathcal{T}, \mathcal{K}, \prec)$$
 
 where:
+
 - $\mathcal{P}$: set of processors (computational units)
 - $\mathcal{C}$: set of channels (communication media)
 - $\mathcal{T}: \mathcal{P} \times \mathcal{C} \to \{\text{read}, \text{write}, \bot\}$: connection relation
@@ -45,6 +46,7 @@ A processor $p \in \mathcal{P}$ is:
 $$p = (\text{Beh}_p, \sigma_p, I_p, O_p)$$
 
 where:
+
 - $\text{Beh}_p$: behavior function (may be stateful)
 - $\sigma_p$: local state
 - $I_p \subseteq \mathcal{C}$: input channels
@@ -57,6 +59,7 @@ A channel $c \in \mathcal{C}$ is:
 $$c = (B_c, \text{ord}_c, \text{cap}_c)$$
 
 where:
+
 - $B_c$: buffer (ordered multiset of messages)
 - $\text{ord}_c \in \{\text{FIFO}, \text{LIFO}, \text{unordered}\}$: ordering discipline
 - $\text{cap}_c \in \mathbb{N} \cup \{\infty\}$: capacity
@@ -143,6 +146,7 @@ If $\mathcal{U}_1$ and $\mathcal{U}_2$ are correct unified streaming systems (sa
 ### Thm-S-01-02 (Expressiveness Level Decision)
 
 For any program $P$, its expressiveness level $L(P)$ can be decided by checking:
+
 1. Does $P$ use unbounded recursion? → $L \geq L_5$
 2. Does $P$ use dynamic channel creation? → $L \geq L_3$
 3. Does $P$ use asynchronous communication? → $L \geq L_3$
@@ -188,9 +192,9 @@ graph TB
         L1[L1: Deterministic Automata]
         L0[L0: Stateless Functions]
     end
-    
+
     L0 --> L1 --> L2 --> L3 --> L4 --> L5 --> L6
-    
+
     style L6 fill:#ffcdd2
     style L4 fill:#e8f5e9
     style L0 fill:#e1f5fe
@@ -199,8 +203,3 @@ graph TB
 ---
 
 ## 7. References
-
-[^1]: G. A. Agha, "Actors: A Model of Concurrent Computation in Distributed Systems", MIT Press, 1986.
-[^2]: C. A. R. Hoare, "Communicating Sequential Processes", Prentice Hall, 1985.
-[^3]: T. Akidau et al., "The Dataflow Model", PVLDB, 8(12), 2015.
-[^4]: J. Peterson, "Petri Net Theory and the Modeling of Systems", Prentice Hall, 1981.

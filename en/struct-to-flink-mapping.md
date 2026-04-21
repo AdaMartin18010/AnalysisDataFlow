@@ -74,6 +74,7 @@ Core theorems in Struct/ have corresponding guarantees in Flink/.
 | Exactly-Once → 2PC | Approximate | Timeout edge case |
 
 **Approximation Gaps**:
+
 - Formal model assumes synchronous communication; Flink is async
 - Formal model has infinite precision; Flink uses floating-point
 - Formal model assumes perfect clocks; Flink handles clock skew
@@ -107,6 +108,7 @@ Flink:     .window(TumblingEventTimeWindows.of(Time.minutes(5)))
 ## 7. Visualizations
 
 **Mapping Overview**:
+
 ```mermaid
 graph LR
     subgraph Formal[Struct/ Formal]
@@ -127,6 +129,3 @@ graph LR
 ---
 
 ## 8. References
-
-[^1]: T. Akidau et al., "The Dataflow Model", PVLDB, 8(12), 2015.
-[^2]: Apache Flink Documentation, "Concepts", 2025.

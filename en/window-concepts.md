@@ -18,6 +18,7 @@ A **window** is a finite subset of a data stream, partitioning the infinite stre
 $$W: S \to 2^S, \quad W(S) = \{ w_1, w_2, \ldots, w_n \}$$
 
 Each window $w_i$ satisfies:
+
 - **Finiteness**: $|w_i| < \infty$ (time-based) or explicit count limit
 - **Disjoint or Overlapping**: depending on window type
 - **Coverage**: $\bigcup_i w_i \subseteq S$ (for arrived data)
@@ -150,17 +151,17 @@ gantt
     title Window Types Timeline
     dateFormat X
     axisFormat %s
-    
+
     section Tumbling
     Window 1 : 0, 10
     Window 2 : 10, 20
     Window 3 : 20, 30
-    
+
     section Sliding
     Window 1 : 0, 15
     Window 2 : 5, 20
     Window 3 : 10, 25
-    
+
     section Session
     Session A : 0, 12
     Session B : 15, 28
@@ -171,7 +172,3 @@ gantt
 ---
 
 ## 6. References
-
-[^1]: T. Akidau et al., "The Dataflow Model", PVLDB, 8(12), 2015.
-[^2]: Apache Flink Documentation, "Windows", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/operators/windows/
-[^3]: F. Hueske et al., "Stream Processing with Apache Flink", O'Reilly, 2019.
