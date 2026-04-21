@@ -1,81 +1,74 @@
-# Exercise: Consistency Models Comparison
+# Exercise 04: Consistency Model Comparison
 
-> **Language**: English | **Source**: [Knowledge/98-exercises/exercise-04-consistency-models.md](../Knowledge/98-exercises/exercise-04-consistency-models.md) | **Last Updated**: 2026-04-21
+> **Stage**: Knowledge/98-exercises | **Prerequisites**: [Consistency Hierarchy](consistency-hierarchy.md) | **Formalization Level**: L5
+> **Translation Date**: 2026-04-21
+
+## Abstract
+
+This exercise covers formal definitions, proofs, and case studies of consistency models in distributed systems.
 
 ---
 
-## Learning Objectives
+## 1. Learning Objectives
 
 After completing this exercise, you will be able to:
 
-- **Def-K-04-EN-01**: Formally define consistency models (linearizability, sequential, causal, eventual)
-- **Def-K-04-EN-02**: Analyze consistency guarantees in stream processing systems
-- **Def-K-04-EN-03**: Use formal methods to prove consistency properties
-- **Def-K-04-EN-04**: Trade off consistency vs. performance in system design
+- **Def-K-04-01**: Formally define consistency models (linear, sequential, causal, eventual)
+- **Def-K-04-02**: Analyze consistency guarantees in stream processing
+- **Def-K-04-03**: Prove consistency properties using formal methods
+- **Def-K-04-04**: Trade off consistency vs performance in practice
 
-## Consistency Hierarchy
+---
 
-```
-Linearizability
-    ↓ Strictly weaker
-Sequential Consistency
-    ↓ Strictly weaker
-Causal Consistency
-    ↓ Equivalent
-PRAM + Convergence
-    ↓ Strictly weaker
-Eventual Consistency
-```
+## 2. Exercises
 
-## Model Definitions
+### 2.1 Formal Definitions and Proofs (50 points)
 
-| Model | Guarantee | Latency | Throughput | Use Case |
-|-------|-----------|---------|------------|----------|
-| **Linearizability** | Every operation appears to take effect atomically at some point between invocation and completion | High | Low | Financial transactions, distributed locks |
-| **Sequential** | Operations appear to execute in some global sequential order | Medium | Medium | Multi-player games, collaborative editing |
-| **Causal** | Causally related operations appear in order | Low | High | Social media feeds, comment threads |
-| **Eventual** | If no new updates, all replicas converge to same value | Lowest | Highest | CDN cache, analytics dashboards |
+**Problem 4.1**: Define linearizability formally (10 points)
 
-## Stream Processing Consistency
+**Problem 4.2**: Classify stream processing consistency models (15 points)
 
-| System | Consistency Model | Mechanism |
-|--------|-------------------|-----------|
-| **Flink (Checkpoint)** | Exactly-Once | Barrier alignment + state snapshots |
-| **Flink (Unaligned CP)** | Exactly-Once | Barrier bypass + async state |
-| **Kafka Streams** | At-Least-Once / Exactly-Once | Transactions (EOS) |
-| **Spark Streaming** | Exactly-Once | WAL + idempotent sinks |
-| **RisingWave** | Strong consistency | Materialized views + deterministic compute |
+- At-Most-Once, At-Least-Once, Exactly-Once
+- End-to-end semantics
 
-## Decision Tree
+**Problem 4.3**: Analyze happens-before relations (10 points)
+
+- Lamport's partial order
+- Vector clocks
+
+**Problem 4.4**: Compare consistency protocols (15 points)
+
+- 2PC, 3PC, Paxos, Raft
+
+### 2.2 Case Analysis and Design (50 points)
+
+**Problem 4.5**: Design consistency for e-commerce order system (20 points)
+
+- Inventory deduction
+- Payment confirmation
+
+**Problem 4.6**: Cross-DC replication consistency (15 points)
+
+- Latency vs consistency trade-off
+
+**Problem 4.7**: Consistency model decision tree (15 points)
+
+- When to use which model?
+
+---
+
+## 3. Consistency Hierarchy
 
 ```mermaid
-flowchart TD
-    A[Consistency Requirement?] --> B{Financial / Critical?}
-    B -->|Yes| C[Linearizability]
-    B -->|No| D{Multi-user real-time?}
-    D -->|Yes| E[Sequential / Causal]
-    D -->|No| F{Tolerate temporary divergence?}
-    F -->|Yes| G[Eventual Consistency]
-    F -->|No| H[Causal Consistency]
+graph TD
+    L[Linearizability] --> S[Sequential]
+    S --> C[Causal]
+    C --> E[Eventual]
+
+    style L fill:#ffcdd2
+    style E fill:#e8f5e9
 ```
 
-## Design Exercise
+---
 
-### E-commerce Order System
-
-Design consistency for:
-
-- **Inventory**: Strong (prevent overselling)
-- **Order status**: Causal (user sees their own actions in order)
-- **Analytics**: Eventual (dashboards can lag)
-- **Payment**: Linearizable (exactly-once charging)
-
-### Cross-DC Replication
-
-| Scenario | Recommended Model | Rationale |
-|----------|-------------------|-----------|
-| Same city, < 5ms RTT | Linearizable | Low latency penalty |
-| Same continent, 50ms RTT | Sequential / Causal | Balance consistency and latency |
-| Global, 200ms+ RTT | Eventual + CRDTs | Accept divergence, automatic merge |
-
-## References
+## 4. References

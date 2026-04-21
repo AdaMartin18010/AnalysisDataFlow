@@ -1,71 +1,70 @@
 # Flink Ecosystem Overview
 
-> **Language**: English | **Source**: [Flink/05-ecosystem/README.md](../Flink/05-ecosystem/README.md) | **Last Updated**: 2026-04-21
+> **Status**: Stable | **Last Updated**: 2026-04-20
+> **Stage**: Flink/05-ecosystem | **Prerequisites**: [Flink API Layer](../03-api/) | **Formalization Level**: L3
+> **Translation Date**: 2026-04-21
+
+## Abstract
+
+This document serves as the authoritative navigation center for the Flink ecosystem, covering connectors, lakehouse integration, WASM UDF extensions, graph computing, and machine learning.
 
 ---
 
-## Ecosystem Boundary
-
-Flink ecosystem defines the **complete interface set** for stream processing engine interaction with the external world:
+## 1. Ecosystem Structure
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                     Flink Ecosystem                         │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐ │
-│  │ Connectors  │  │  Lakehouse  │  │  WASM UDF           │ │
-│  │ Kafka/Pulsar│  │  Iceberg    │  │  User-defined funcs │ │
-│  │ JDBC/ES/S3  │  │  Paimon     │  │  Polyglot runtime   │ │
-│  └─────────────┘  └─────────────┘  └─────────────────────┘ │
-│                                                             │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐ │
-│  │  Graph      │  │  ML         │  │  Third-party        │ │
-│  │  Gelly      │  │  Flink ML   │  │  RisingWave         │ │
-│  │  Streaming  │  │  TensorFlow │  │  Confluent          │ │
-│  └─────────────┘  └─────────────┘  └─────────────────────┘ │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
+05-ecosystem/
+├── Connectors/              # Data source/sink connectors
+│   ├── Kafka, Pulsar, JDBC
+│   ├── CDC (Change Data Capture)
+│   └── File systems (S3, HDFS)
+├── Lakehouse/               # Lakehouse storage integration
+│   ├── Iceberg
+│   ├── Paimon
+│   └── Delta Lake
+├── WASM UDF/                # WebAssembly UDF extensions
+│   ├── Wasmtime runtime
+│   └── WASI async preview
+├── Graph Processing/        # Graph computing
+│   ├── Gelly (batch)
+│   └── Gelly Streaming
+└── Third-party/             # External system integration
+    ├── RisingWave
+    ├── Materialize
+    └── Confluent
 ```
 
-## Connectors
+---
 
-| Connector | Source | Sink | Exactly-Once | Use Case |
-|-----------|--------|------|--------------|----------|
-| **Kafka** | ✅ | ✅ | ✅ (EOS) | Event streaming |
-| **Pulsar** | ✅ | ✅ | ✅ | Multi-tenant messaging |
-| **JDBC** | ✅ | ✅ | ⚠️ (idempotent) | Database sync |
-| **Elasticsearch** | ❌ | ✅ | ⚠️ (idempotent) | Search index |
-| **S3/MinIO** | ✅ | ✅ | ✅ | File sink |
-| **Iceberg** | ✅ | ✅ | ✅ | Lakehouse |
+## 2. Key Integration Patterns
 
-## Lakehouse Integration
+### 2.1 Connector Ecosystem
 
-| Format | Streaming Read | Streaming Write | Time Travel | Flink Version |
-|--------|---------------|-----------------|-------------|---------------|
-| **Iceberg** | ✅ V2 format | ✅ | ✅ | 1.14+ |
-| **Paimon** | ✅ LSM tree | ✅ | ✅ | 1.17+ |
-| **Hudi** | ✅ MOR table | ✅ | ⚠️ | 1.12+ |
-| **Delta Lake** | ✅ | ✅ | ✅ | 1.13+ |
+| Connector | Source | Sink | Exactly-Once |
+|-----------|--------|------|--------------|
+| Kafka | ✅ | ✅ | ✅ (transactional) |
+| Pulsar | ✅ | ✅ | ✅ |
+| JDBC | ✅ | ✅ | ⚠️ (idempotent) |
+| Elasticsearch | ❌ | ✅ | ⚠️ (idempotent) |
+| Iceberg | ✅ | ✅ | ✅ |
 
-## WASM UDF
+### 2.2 Lakehouse Integration
 
-WebAssembly UDFs enable polyglot user-defined functions:
+| Format | Streaming Read | Streaming Write | Time Travel |
+|--------|---------------|-----------------|-------------|
+| Iceberg | ✅ | ✅ | ✅ |
+| Paimon | ✅ | ✅ | ✅ |
+| Delta Lake | ✅ | ✅ | ✅ |
 
-| Language | WASM Target | Performance | Maturity |
-|----------|------------|-------------|----------|
-| Rust | ✅ Native | ~90% of Java | Beta |
-| C/C++ | ✅ Emscripten | ~85% of Java | Alpha |
-| Go | ⚠️ TinyGo | ~70% of Java | Experimental |
+### 2.3 WASM UDF
 
-## Graph Processing
+WebAssembly UDFs enable polyglot user-defined functions with sandboxed execution:
 
-| Library | Model | Scale | Status |
-|---------|-------|-------|--------|
-| **Gelly** | Batch/Sreaming | Medium | Deprecated |
-| **Flink Graph API** | Streaming | Large | Preview |
+```sql
+-- Call WASM UDF in Flink SQL
+SELECT wasm_udf(input_column) FROM my_table;
+```
 
-## References
+---
 
-[^1]: Apache Flink Documentation, "Connectors", 2025.
-[^2]: Apache Flink Documentation, "Lakehouse Integration", 2025.
+## 3. References
