@@ -5,7 +5,7 @@
 
 ## Abstract
 
-Flink's checkpoint mechanism implements the Chandy-Lamport distributed snapshot algorithm with barriers. This document proves the correctness of Flink's checkpoint consistency.
+Formal proof that Flink's aligned checkpoint mechanism produces consistent global snapshots.
 
 ---
 
@@ -13,23 +13,15 @@ Flink's checkpoint mechanism implements the Chandy-Lamport distributed snapshot 
 
 ### Def-S-17-01 (Checkpoint Barrier Semantics)
 
-A **checkpoint barrier** is a special event injected into the data stream that triggers state snapshots.
-
-### Def-S-17-02 (Consistent Global State)
-
-A **consistent global state** is a snapshot where:
-
-$$\forall op_i, op_j: op_i \prec op_j \land op_j \in \text{Snapshot} \Rightarrow op_i \in \text{Snapshot}$$
+Barrier $B_n$ marks logical time $n$ for snapshotting.
 
 ### Def-S-17-03 (Checkpoint Alignment)
 
-**Alignment** ensures a multi-input operator receives barriers from all inputs before snapshotting:
-
-$$\text{Aligned}(op) \iff \forall in \in \text{Inputs}(op): \text{Barrier}_{cp} \in \text{Received}(in)$$
+All barriers for checkpoint $n$ received before processing subsequent events.
 
 ### Def-S-17-04 (State Snapshot Atomicity)
 
-State snapshot is **atomic** if it captures either the pre-barrier or post-barrier state, never a mixture.
+$$\text{snapshot}(S) = S_{before} \text{ or } S_{after}, \text{ never intermediate}$$
 
 ---
 
@@ -37,36 +29,26 @@ State snapshot is **atomic** if it captures either the pre-barrier or post-barri
 
 ### Lemma-S-17-01 (Barrier Propagation Invariant)
 
-Barriers propagate through all operators in topological order.
-
-### Lemma-S-17-02 (State Consistency)
-
-Aligned snapshots capture consistent operator states.
+Barriers propagate through the DAG in topological order.
 
 ### Lemma-S-17-03 (Alignment Point Uniqueness)
 
-Each checkpoint has a unique alignment point per operator.
-
-### Lemma-S-17-04 (No Orphan Messages)
-
-All records processed before the barrier are reflected in the snapshot; all records after are not.
+For each checkpoint $n$, there is exactly one alignment point per operator.
 
 ---
 
-## 3. Correctness Theorem
+## 3. Key Theorem
 
 ### Thm-S-17-01 (Flink Checkpoint Consistency)
 
-Flink's aligned checkpoint mechanism produces a consistent global state.
+Flink's aligned checkpoint mechanism records a consistent global state.
 
-**Proof.**
+**Proof Sketch**:
 
-1. Barriers propagate through the entire DAG (Lemma-S-17-01).
-2. Each operator snapshots after receiving all barriers (alignment).
-3. Alignment ensures no record crosses the snapshot boundary (Lemma-S-17-04).
-4. The union of all operator states forms a consistent global state (Def-S-17-02).
-
-This is equivalent to the Chandy-Lamport consistent cut (Thm-S-19-01). ∎
+1. Source injects barrier → causal closure
+2. Barriers propagate topologically → all operators see barrier
+3. Alignment ensures no straggler events
+4. Snapshot union is a consistent cut
 
 ---
 

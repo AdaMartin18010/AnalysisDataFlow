@@ -18,6 +18,38 @@
 | [flink-to-process-calculus.md](./flink-to-process-calculus.md) | [Struct/03-relationships/03.02-flink-to-process-calculus.md](../Struct/03-relationships/03.02-flink-to-process-calculus.md) | Flink Dataflow to π-Calculus | L5 |
 | [time-semantics.md](./time-semantics.md) | [Knowledge/01-concept-atlas/01.02-time-semantics.md](../Knowledge/01-concept-atlas/01.02-time-semantics.md) | Event/Processing/Ingestion Time | L3-L4 |
 | [state-management-concepts.md](./state-management-concepts.md) | [Knowledge/01-concept-atlas/01.04-state-management-concepts.md](../Knowledge/01-concept-atlas/01.04-state-management-concepts.md) | State Types & Backends | L3-L4 |
+| [consistency-hierarchy.md](./consistency-hierarchy.md) | [Struct/02-properties/02.02-consistency-hierarchy.md](../Struct/02-properties/02.02-consistency-hierarchy.md) | Consistency Levels | L5 |
+| [watermark-monotonicity-theorem.md](./watermark-monotonicity-theorem.md) | [Struct/02-properties/02.03-watermark-monotonicity.md](../Struct/02-properties/02.03-watermark-monotonicity.md) | Watermark Monotonicity | L5 |
+| [liveness-and-safety.md](./liveness-and-safety.md) | [Struct/02-properties/02.04-liveness-and-safety.md](../Struct/02-properties/02.04-liveness-and-safety.md) | Liveness & Safety | L3-L5 |
+| [chandy-lamport-snapshot-proof.md](./chandy-lamport-snapshot-proof.md) | [Struct/04-proofs/04.03-chandy-lamport-consistency.md](../Struct/04-proofs/04.03-chandy-lamport-consistency.md) | Snapshot Consistency Proof | L5 |
+| [struct-to-flink-mapping.md](./struct-to-flink-mapping.md) | [Knowledge/05-mapping-guides/struct-to-flink-mapping.md](../Knowledge/05-mapping-guides/struct-to-flink-mapping.md) | Theory-to-Implementation Map | L4-L5 |
+| [iot-stream-processing-pattern.md](./iot-stream-processing-pattern.md) | [Knowledge/03-business-patterns/iot-stream-processing.md](../Knowledge/03-business-patterns/iot-stream-processing.md) | IoT Stream Processing | L4-L5 |
+| [petri-net-formalization.md](./petri-net-formalization.md) | [Struct/01-foundation/01.06-petri-net-formalization.md](../Struct/01-foundation/01.06-petri-net-formalization.md) | Petri Nets | L2-L4 |
+| [streaming-database-formalization.md](./streaming-database-formalization.md) | [Struct/01-foundation/01.08-streaming-database-formalization.md](../Struct/01-foundation/01.08-streaming-database-formalization.md) | Streaming Database Model | L5 |
+| [edge-streaming-semantics.md](./edge-streaming-semantics.md) | [Struct/01-foundation/01.09-edge-streaming-semantics.md](../Struct/01-foundation/01.09-edge-streaming-semantics.md) | Edge Stream Processing | L5 |
+| [schema-evolution-formalization.md](./schema-evolution-formalization.md) | [Struct/01-foundation/01.10-schema-evolution-formalization.md](../Struct/01-foundation/01.10-schema-evolution-formalization.md) | Schema Evolution | L5 |
+| [dbsp-differential-dataflow.md](./dbsp-differential-dataflow.md) | [Struct/01-foundation/01.11-dbsp-differential-dataflow.md](../Struct/01-foundation/01.11-dbsp-differential-dataflow.md) | DBSP Theory | L5-L6 |
+| [minimal-session-types-theory.md](./minimal-session-types-theory.md) | [Struct/01-foundation/minimal-session-types-theory.md](../Struct/01-foundation/minimal-session-types-theory.md) | Minimal Session Types | L5-L6 |
+| [stream-processing-semantics-formalization.md](./stream-processing-semantics-formalization.md) | [Struct/01-foundation/stream-processing-semantics-formalization.md](../Struct/01-foundation/stream-processing-semantics-formalization.md) | Stream Semantics | L5-L6 |
+| [streaming-axiomatic-system.md](./streaming-axiomatic-system.md) | [Struct/01-foundation/streaming-axiomatic-system.md](../Struct/01-foundation/streaming-axiomatic-system.md) | Axiomatic System | L6 |
+| [streaming-database-formal-definition.md](./streaming-database-formal-definition.md) | [Struct/01-foundation/streaming-database-formal-definition.md](../Struct/01-foundation/streaming-database-formal-definition.md) | SDB Formal Definition | L5-L6 |
+| [expressiveness-hierarchy.md](./expressiveness-hierarchy.md) | [Struct/03-relationships/03.03-expressiveness-hierarchy.md](../Struct/03-relationships/03.03-expressiveness-hierarchy.md) | Expressiveness Hierarchy | L3-L6 |
+| [bisimulation-equivalences.md](./bisimulation-equivalences.md) | [Struct/03-relationships/03.04-bisimulation-equivalences.md](../Struct/03-relationships/03.04-bisimulation-equivalences.md) | Bisimulation | L3-L4 |
+| [cross-model-mappings.md](./cross-model-mappings.md) | [Struct/03-relationships/03.05-cross-model-mappings.md](../Struct/03-relationships/03.05-cross-model-mappings.md) | Cross-Model Mappings | L5-L6 |
+| [flink-distributed-architecture.md](./flink-distributed-architecture.md) | [Struct/03-relationships/03.06-flink-distributed-architecture.md](../Struct/03-relationships/03.06-flink-distributed-architecture.md) | Flink Architecture | L5-L6 |
+| [three-layer-relationship.md](./three-layer-relationship.md) | [Struct/03-relationships/03.07-three-layer-relationship-comprehensive.md](../Struct/03-relationships/03.07-three-layer-relationship-comprehensive.md) | Three-Layer Relationship | L3-L5 |
+| [expressiveness-hierarchy-supplement.md](./expressiveness-hierarchy-supplement.md) | [Struct/03-relationships/03.03-expressiveness-hierarchy-supplement.md](../Struct/03-relationships/03.03-expressiveness-hierarchy-supplement.md) | Hierarchy Supplement | L3-L5 |
+| [theorem-dependency-proof-tree.md](./theorem-dependency-proof-tree.md) | [Struct/03-relationships/03.08-theorem-dependency-proof-tree.md](../Struct/03-relationships/03.08-theorem-dependency-proof-tree.md) | Theorem Dependency Graph | L5-L6 |
+| [flink-checkpoint-correctness-proof.md](./flink-checkpoint-correctness-proof.md) | [Struct/04-proofs/04.01-flink-checkpoint-correctness.md](../Struct/04-proofs/04.01-flink-checkpoint-correctness.md) | Checkpoint Correctness | L5 |
+| [flink-exactly-once-correctness-proof.md](./flink-exactly-once-correctness-proof.md) | [Struct/04-proofs/04.02-flink-exactly-once-correctness.md](../Struct/04-proofs/04.02-flink-exactly-once-correctness.md) | Exactly-Once Correctness | L5 |
+| [watermark-algebra-proof.md](./watermark-algebra-proof.md) | [Struct/04-proofs/04.04-watermark-algebra-formal-proof.md](../Struct/04-proofs/04.04-watermark-algebra-formal-proof.md) | Watermark Algebra | L5 |
+| [fg-fgg-type-safety-proof.md](./fg-fgg-type-safety-proof.md) | [Struct/04-proofs/04.05-type-safety-fg-fgg.md](../Struct/04-proofs/04.05-type-safety-fg-fgg.md) | FG/FGG Type Safety | L5 |
+| [dot-subtyping-completeness.md](./dot-subtyping-completeness.md) | [Struct/04-proofs/04.06-dot-subtyping-completeness.md](../Struct/04-proofs/04.06-dot-subtyping-completeness.md) | DOT Subtyping | L5-L6 |
+| [choreographic-deadlock-freedom.md](./choreographic-deadlock-freedom.md) | [Struct/04-proofs/04.07-deadlock-freedom-choreographic.md](../Struct/04-proofs/04.07-deadlock-freedom-choreographic.md) | Choreographic Deadlock Freedom | L5 |
+| [open-problems-streaming-verification.md](./open-problems-streaming-verification.md) | [Struct/06-frontier/06.01-open-problems-streaming-verification.md](../Struct/06-frontier/06.01-open-problems-streaming-verification.md) | Open Problems | L4-L6 |
+| [ai-agent-session-types.md](./ai-agent-session-types.md) | [Struct/06-frontier/06.03-ai-agent-session-types.md](../Struct/06-frontier/06.03-ai-agent-session-types.md) | AI Agent Session Types | L5 |
+| [dbsp-theory-framework.md](./dbsp-theory-framework.md) | [Struct/06-frontier/dbsp-theory-framework.md](../Struct/06-frontier/dbsp-theory-framework.md) | DBSP Framework | L5-L6 |
+| [llm-guided-formal-proof-automation.md](./llm-guided-formal-proof-automation.md) | [Struct/06-frontier/llm-guided-formal-proof-automation.md](../Struct/06-frontier/llm-guided-formal-proof-automation.md) | LLM Proof Automation | L5-L6 |
 
 ### Knowledge / Design Patterns
 
@@ -97,8 +129,8 @@ English Coverage (Core Documents):
 ├── Flink/ Core Concepts:    3 / 15  (20%)
 ├── Project Docs:           14 / 15  (93%)
 ----------------------------------------
-Total Core: 35 / 102  (34%+)
-Total Files: 129
+Total Core: 63 / 102  (62%+)
+Total Files: 156
 ```
 
 > **Goal**: Reach 100% coverage of core documents (60+ priority translations).
