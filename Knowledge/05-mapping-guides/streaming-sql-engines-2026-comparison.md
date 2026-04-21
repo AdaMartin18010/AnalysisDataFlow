@@ -52,6 +52,7 @@
       - [ksqlDB实现](#ksqldb实现)
       - [Flink SQL实现](#flink-sql实现)
     - [6.2 性能对比验证](#62-性能对比验证)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
     - [7.1 功能对比矩阵热力图](#71-功能对比矩阵热力图)
     - [7.2 架构对比图](#72-架构对比图)
@@ -498,7 +499,15 @@ $$\mathcal{E} \cong \langle \text{Query Planner}, \text{Stream Runtime}, \text{S
 | **Q22** | 2.8x | N/A | 1.0x | 流表Join |
 | **Q27** | 1.9x | N/A | 1.0x | 去重计算 |
 
-**结论**: RisingWave在22/27个查询上优于Flink SQL，ksqlDB仅支持约60%查询。
+**结论**: RisingWave 在 22/27 个查询上优于 Flink SQL，ksqlDB 仅支持约 60% 查询。[^1]
+
+**恢复时间对比**（关键运维指标，2026-04 更新）：
+
+| 场景 | Flink SQL | RisingWave | 差异 |
+|------|-----------|------------|------|
+| 状态恢复时间 | 分钟级（本地 RocksDB 全量恢复） | **秒级**（S3 持续同步，元数据重建） | RisingWave **> 10x** 更快 |
+| 多流 Join 吞吐 (10+ streams) | 8,500 events/s | **38,000 events/s** | RisingWave **4.5x** |
+| Checkpoint 间隔 | 10s-1min | **1s**（默认） | RisingWave 更频繁，恢复粒度更细 |
 
 #### 4.2.2 延迟对比分析
 
@@ -1088,17 +1097,11 @@ gantt
 
 ## 8. 引用参考 (References)
 
+[^1]: RisingWave Benchmark, "Nexmark Performance Comparison: RisingWave vs Apache Flink", 2026-04. https://www.risingwave.com/blog/nexmark-benchmark
 
+[^2]: Apache Flink Documentation, "ForSt State Backend", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/#forst-state-backend
 
-
-
-
-
-
-
-
-
-
+[^3]: RisingWave Documentation, "Vector Data Types and HNSW Index", 2026. https://docs.risingwave.com/docs/current/sql-data-types-vector/
 
 ---
 
