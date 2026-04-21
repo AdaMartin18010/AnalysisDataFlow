@@ -269,12 +269,15 @@ theorem progress : ∀ (t : Tm) (T : Ty),
   intro Γ t T hΓ ht
   induction ht with
   | T_var h =>
-    rw [hΓ] at h
+    subst hΓ
     simp [Context.empty, Context.lookup] at h
-  | T_abs => left; apply Value.v_abs
+  | T_abs =>
+    subst hΓ
+    left; apply Value.v_abs
   | T_app h₁ h₂ ih₁ ih₂ =>
     have ih₁ := ih₁ hΓ
     have ih₂ := ih₂ hΓ
+    subst hΓ
     cases ih₁ with
     | inl hval₁ =>
       cases ih₂ with
@@ -295,9 +298,12 @@ theorem progress : ∀ (t : Tm) (T : Ty),
       | intro t₁' hstep₁' =>
         right
         exact ⟨_, Step.ST_app1 hstep₁'⟩
-  | T_tabs => left; apply Value.v_tabs
+  | T_tabs =>
+    subst hΓ
+    left; apply Value.v_tabs
   | T_tapp h ih =>
     have ih := ih hΓ
+    subst hΓ
     cases ih with
     | inl hval =>
       have hcf := canonical_forms_all _ _ h hval
@@ -311,11 +317,18 @@ theorem progress : ∀ (t : Tm) (T : Ty),
       | intro t₁' hstep' =>
         right
         exact ⟨_, Step.ST_tapp hstep'⟩
-  | T_true => left; apply Value.v_true
-  | T_false => left; apply Value.v_false
-  | T_zero => left; apply Value.v_zero
+  | T_true =>
+    subst hΓ
+    left; apply Value.v_true
+  | T_false =>
+    subst hΓ
+    left; apply Value.v_false
+  | T_zero =>
+    subst hΓ
+    left; apply Value.v_zero
   | T_succ h ih =>
     have ih := ih hΓ
+    subst hΓ
     cases ih with
     | inl hval => left; apply Value.v_succ hval
     | inr hstep =>
@@ -325,6 +338,7 @@ theorem progress : ∀ (t : Tm) (T : Ty),
         exact ⟨_, Step.ST_succ hstep'⟩
   | T_pred h ih =>
     have ih := ih hΓ
+    subst hΓ
     cases ih with
     | inl hval =>
       have hcf := canonical_forms_nat _ h hval
@@ -348,6 +362,7 @@ theorem progress : ∀ (t : Tm) (T : Ty),
         exact ⟨_, Step.ST_pred hstep'⟩
   | T_iszero h ih =>
     have ih := ih hΓ
+    subst hΓ
     cases ih with
     | inl hval =>
       have hcf := canonical_forms_nat _ h hval
@@ -373,6 +388,7 @@ theorem progress : ∀ (t : Tm) (T : Ty),
     have ih₁ := ih₁ hΓ
     have ih₂ := ih₂ hΓ
     have ih₃ := ih₃ hΓ
+    subst hΓ
     cases ih₁ with
     | inl hval =>
       have hcf := canonical_forms_bool _ h₁ hval
@@ -380,11 +396,11 @@ theorem progress : ∀ (t : Tm) (T : Ty),
       | inl htru =>
         rw [htru]
         right
-        exact ⟨_, Step.ST_iftrue _ _⟩
+        exact ⟨_, Step.ST_iftrue⟩
       | inr hfls =>
         rw [hfls]
         right
-        exact ⟨_, Step.ST_iffalse _ _⟩
+        exact ⟨_, Step.ST_iffalse⟩
     | inr hstep =>
       cases hstep with
       | intro t₁' hstep' =>
