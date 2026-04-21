@@ -242,7 +242,7 @@ en/:        [████████████████████] 100% 
   | 新建: 8篇 | 更新: 10篇 | 总计18文件
 - 🚀 2026-04-21: v6.3 全面并行推进进行中, N+O+P+Q+R五路并行
   | N: 形式化验证推进 — Lean Safety/Substitution/Induction/SystemF/SimpleTypes 高优先级 sorry 全部附加详细证明策略注释；Substitution.lean 标记 5 个 FORMAL-GAP；Coq streaming-theorems.v 添加列表索引引理库 + 死代码清理；Predicate.lean 尝试替换 2 个 weakening 分支 sorry
-  | O: 英文扩展 — 13个占位符→实质性内容；新增 23 篇英文翻译 (anti-patterns/flink-vs-risingwave/a2a-protocol/security-compliance/temporal-flink/consistency-models/performance-comparison/security-models/architecture-analysis/deployment/flink-basics/decision-matrix/video-analytics/multimodal/mcp-a2a-integration/risingwave-mcp/checkpoint-analysis/tla-practice/architecture-evolution/disaggregated-state/datastream-v2/1x-vs-2x)
+  | O: 英文扩展 — 13个占位符→实质性内容；新增 28 篇英文翻译 (anti-patterns/flink-vs-risingwave/a2a-protocol/security-compliance/temporal-flink/consistency-models/performance-comparison/security-models/architecture-analysis/deployment/flink-basics/decision-matrix/video-analytics/multimodal/mcp-a2a-integration/risingwave-mcp/checkpoint-analysis/tla-practice/architecture-evolution/disaggregated-state/datastream-v2/1x-vs-2x/edge-streaming/audio-processing/streaming-slo/data-mesh/network-stack/delta-join/real-time-rag/veil-framework/market-report/graph-tgnn)
   | P: 知识梳理 — SEARCH-GUIDE.md 创建；Knowledge/00-INDEX.md 持续维护
   | Q: 前沿对齐 — Flink 2.3 跟踪持续维护
   | R: 质量维护 — 交叉引用 4→0 errors (SEARCH-GUIDE创建+FLIP-561修复)；六段式 552/552 100%；Mermaid 3663图 100%
