@@ -268,13 +268,11 @@ theorem progress : ∀ (t : Tm) (T : Ty),
   generalize hΓ : Context.empty = Γ at ht
   induction ht with
   | T_var h =>
-    rw [hΓ] at h
+    rw [← hΓ] at h
     simp [Context.empty, Context.lookup] at h
   | T_abs => left; apply Value.v_abs
   | T_app h₁ h₂ ih₁ ih₂ =>
-    have ih₁ := ih₁ hΓ
-    have ih₂ := ih₂ hΓ
-    rw [hΓ] at h₁
+    rw [← hΓ] at h₁
     cases ih₁ with
     | inl hval₁ =>
       cases ih₂ with
@@ -297,8 +295,7 @@ theorem progress : ∀ (t : Tm) (T : Ty),
         exact ⟨_, Step.ST_app1 hstep₁'⟩
   | T_tabs => left; apply Value.v_tabs
   | T_tapp h ih =>
-    have ih := ih hΓ
-    rw [hΓ] at h
+    rw [← hΓ] at h
     cases ih with
     | inl hval =>
       have hcf := canonical_forms_all _ _ h hval
@@ -316,7 +313,6 @@ theorem progress : ∀ (t : Tm) (T : Ty),
   | T_false => left; apply Value.v_false
   | T_zero => left; apply Value.v_zero
   | T_succ h ih =>
-    have ih := ih hΓ
     cases ih with
     | inl hval => left; apply Value.v_succ hval
     | inr hstep =>
@@ -325,8 +321,7 @@ theorem progress : ∀ (t : Tm) (T : Ty),
         right
         exact ⟨_, Step.ST_succ hstep'⟩
   | T_pred h ih =>
-    have ih := ih hΓ
-    rw [hΓ] at h
+    rw [← hΓ] at h
     cases ih with
     | inl hval =>
       have hcf := canonical_forms_nat _ h hval
@@ -349,8 +344,7 @@ theorem progress : ∀ (t : Tm) (T : Ty),
         right
         exact ⟨_, Step.ST_pred hstep'⟩
   | T_iszero h ih =>
-    have ih := ih hΓ
-    rw [hΓ] at h
+    rw [← hΓ] at h
     cases ih with
     | inl hval =>
       have hcf := canonical_forms_nat _ h hval
@@ -373,10 +367,7 @@ theorem progress : ∀ (t : Tm) (T : Ty),
         right
         exact ⟨_, Step.ST_iszero hstep'⟩
   | T_if h₁ h₂ h₃ ih₁ ih₂ ih₃ =>
-    have ih₁ := ih₁ hΓ
-    have ih₂ := ih₂ hΓ
-    have ih₃ := ih₃ hΓ
-    rw [hΓ] at h₁
+    rw [← hΓ] at h₁
     cases ih₁ with
     | inl hval =>
       have hcf := canonical_forms_bool _ h₁ hval
