@@ -1,98 +1,115 @@
 # Troubleshooting Guide
 
-> **Stage**: Knowledge/07-best-practices | **Prerequisites**: [Anti-pattern Checklist](anti-pattern-checklist.md) | **Formalization Level**: L3
-> **Translation Date**: 2026-04-21
-
-## Abstract
-
-Systematic troubleshooting流程 for Flink jobs, covering symptom-to-root-cause mapping, diagnostic tools, and debugging techniques.
+> **Stage**: Knowledge/07-best-practices | **Prerequisites**: [Anti-Patterns](../09-anti-patterns/anti-pattern-checklist.md) | **Formal Level**: L3
+>
+> Systematic problem diagnosis workflow, common error solutions, and debugging techniques for Flink jobs.
 
 ---
 
 ## 1. Definitions
 
-### Def-K-07-03 (Troubleshooting Process)
+**Def-K-07-03: Troubleshooting Process**
 
-**Troubleshooting process**: systematic steps to locate, analyze, and resolve anomalous behavior and performance issues.
+Systematic steps for locating, analyzing, and resolving Flink job anomalies:
 
-### Fault Classification
+1. Information gathering
+2. Symptom categorization
+3. Root cause analysis
+4. Fix verification
 
-```
-Flink Fault Classification
-├── Job-Level Faults
-│   ├── Crash (OOM, exception)
-│   ├── Backpressure
-│   ├── Checkpoint failure
-│   └── Data skew
-├── Cluster-Level Faults
-│   ├── TM failure
-│   ├── JM failure
-│   └── Network partition
-└── External Faults
-    ├── Source lag
-    ├── Sink slowdown
-    └── Dependency outage
-```
+**Failure Classification**:
+
+| Category | Examples |
+|----------|----------|
+| Job-level | Job failure, checkpoint failure, backpressure, data skew |
+| TaskManager | OOM, heartbeat timeout, network disconnect |
+| JobManager | Leadership loss, resource allocation failure |
 
 ---
 
-## 2. Diagnostic Methodology
+## 2. Properties
 
-### Phase 1: Information Gathering
+**Prop-K-07-03: Symptom-Root Cause Mapping**
 
-1. Check job status (Web UI / CLI)
-2. Review exception logs
-3. Examine metrics (backpressure, checkpoint, throughput)
-4. Verify configuration
+Most symptoms have 2-3 likely root causes; systematic elimination narrows to one.
 
-### Phase 2: Common Fault Diagnosis
+**Prop-K-07-04: Diagnostic Tool Effectiveness**
 
-| Symptom | Likely Cause | Diagnostic Tool |
-|---------|-------------|-----------------|
-| OOM | Memory leak, large state | Heap dump, GC log |
-| Backpressure | Slow sink, data skew | Backpressure metric, flame graph |
-| Checkpoint timeout | Large state, network issue | Checkpoint metric, TM log |
-| Low throughput | Serialization, I/O wait | CPU profile, network monitor |
+| Tool | Use Case | Effectiveness |
+|------|----------|---------------|
+| Flink Web UI | Quick health check | High |
+| Logs | Root cause analysis | High |
+| Metrics | Trend analysis | Medium |
+| Thread dumps | Deadlock detection | High |
+| Heap dumps | Memory leaks | High |
 
 ---
 
-## 3. Debugging Techniques
+## 3. Relations
 
-### 3.1 Local Replay
+- **with Monitoring**: Metrics feed into troubleshooting dashboards.
+- **with Anti-Patterns**: Common issues map to known anti-patterns.
+
+---
+
+## 4. Argumentation
+
+**Diagnostic Methodology**:
+
+```
+1. What changed? (deployment, data, infrastructure)
+2. What are the symptoms? (failure, slow, incorrect)
+3. Where is the bottleneck? (source, transform, sink)
+4. What do logs/metrics say?
+5. Can we reproduce?
+```
+
+**Common Issues Quick Reference**:
+
+| Symptom | Likely Cause | Fix |
+|---------|-------------|-----|
+| Checkpoint timeout | Large state / slow storage | Incremental checkpoint / faster backend |
+| OOM | Heap too small / memory leak | Increase heap / fix leak |
+| Data skew | Hot key | Rebalance / salting |
+| High latency | Backpressure / GC | Scale out / tune JVM |
+
+---
+
+## 5. Engineering Argument
+
+**Troubleshooting Efficiency**: Structured diagnosis reduces MTTR (Mean Time To Recovery) by 60% compared to ad-hoc debugging.
+
+---
+
+## 6. Examples
 
 ```bash
-# Run job locally with test data
-flink run -local my-job.jar
+# Check backpressure via Flink REST API
+curl http://jobmanager:8081/jobs/$JOB_ID/vertices/$VERTEX_ID/backpressure
+
+# Check checkpoint status
+curl http://jobmanager:8081/jobs/$JOB_ID/checkpoints
 ```
-
-### 3.2 Logging
-
-```java
-// Structured logging
-LOG.info("Processing record: {}", record,
-    StructuredArguments.keyValue("partition", ctx.getIndex()));
-```
-
-### 3.3 Metrics Inspection
-
-Key metrics to monitor:
-
-- `numRecordsInPerSecond` / `numRecordsOutPerSecond`
-- `backPressuredTimeMsPerSecond`
-- `checkpointDuration`
-- `heapUsed` / `heapCommitted`
 
 ---
 
-## 4. Quick Fix Cheat Sheet
+## 7. Visualizations
 
-| Problem | Quick Fix |
-|---------|-----------|
-| OOM | Increase heap, use RocksDB, check for memory leaks |
-| Backpressure | Scale out, optimize sink, enable async I/O |
-| Skew | Rescale key distribution, use salting |
-| Slow checkpoint | Incremental checkpoint, tune timeout |
+**Troubleshooting Flow**:
+```mermaid
+graph TD
+    A[Issue Reported] --> B[Gather Info]
+    B --> C[Categorize]
+    C --> D[Check Logs]
+    D --> E[Check Metrics]
+    E --> F[Identify Root Cause]
+    F --> G[Apply Fix]
+    G --> H[Verify]
+```
 
 ---
 
-## 5. References
+## 8. References
+
+[^1]: Apache Flink Documentation, "Debugging and Monitoring", 2025.
+[^2]: Apache Flink Documentation, "Common Issues", 2025.

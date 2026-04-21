@@ -109,6 +109,35 @@ lemma substitution_lemma {Γ x s t S T}
       --   或经 α-重命名为 λz.[x:=s]([y:=z]t')
       -- 此引理已在 Substitution.lean 中声明但尚未实现，
       -- 完成后此处可用 exact ih (after weakening/rename) 消去 sorry。
+      /- 证明策略 (2026-04-21):
+         对 t = abs y t' 分三种情形：
+         
+         1. y = x: [x:=s](λx.t') = λx.t'（x 被绑定，不替换）。
+            由 h₁: (Γ, x:S) ⊢ λx.t' : T₁→T₂。
+            要证: Γ ⊢ λx.t' : T₁→T₂，即 Γ, x:T₁ ⊢ t' : T₂。
+            由 h₁ 反演: Γ, x:S, x:T₁ ⊢ t' : T₂。lookupContext 取第一个匹配 x:S，
+            但 t' 类型推导中 x 的类型应为 T₁（由 hasType.abs 的绑定）。
+            这里需要确认 extendContext 的语义：若同一变量多次出现，取第一个。
+            在 h₁ 的推导中，(Γ, x:S) ⊢ λx.t' 意味着对 t' 的环境是 (Γ, x:S, x:T₁)，
+            查找 x 得 T₁（第二个绑定）。故 Γ, x:T₁ ⊢ t' : T₂ 成立。
+         
+         2. y ≠ x 且 y ∉ fv(s): [x:=s](λy.t') = λy.[x:=s]t'。
+            由 h₁: (Γ, x:S) ⊢ λy.t' : T₁→T₂，即 (Γ, x:S, y:T₁) ⊢ t' : T₂。
+            要证: Γ ⊢ λy.[x:=s]t' : T₁→T₂，即 (Γ, y:T₁) ⊢ [x:=s]t' : T₂。
+            由 IH 于 t': 需 (Γ, y:T₁, x:S) ⊢ t' : T₂。
+            当前环境是 (Γ, x:S, y:T₁)。若 x ≠ y，需环境交换引理。
+         
+         3. y ≠ x 且 y ∈ fv(s): [x:=s](λy.t') = λz.[x:=s]([y:=z]t')，z 新鲜。
+            由 h₁: (Γ, x:S, y:T₁) ⊢ t' : T₂。
+            要证: Γ ⊢ λz.[x:=s]([y:=z]t') : T₁→T₂，即 (Γ, z:T₁) ⊢ [x:=s]([y:=z]t') : T₂。
+            由 IH: 需 (Γ, z:T₁, x:S) ⊢ [y:=z]t' : T₂。
+            需替换保持类型引理: [y:=z] 保持类型（y 绑定为 T₁，z 替换后仍为 T₁）。
+            
+         核心依赖（按优先级）:
+         - [P0] 环境交换引理: x ≠ y → ((Γ, y:T₁), x:S) ⊢ t : T ↔ ((Γ, x:S), y:T₁) ⊢ t : T
+         - [P1] 替换保持类型: Γ, y:T₁ ⊢ t : T₂ → Γ, z:T₁ ⊢ [y:=z]t : T₂（z 新鲜）
+         - [P2] α-等价保持类型: t₁ =α t₂ → Γ ⊢ t₁ : T ↔ Γ ⊢ t₂ : T
+      -/
       sorry -- [FORMAL-GAP-N-01] 依赖 Substitution 与 α-等价交换引理
   | app ih₁ ih₂ =>
       apply hasType.app
@@ -234,7 +263,19 @@ lemma canonical_forms_fun {t T₁ T₂}
       -- 正规形式下 App 不可能具有函数类型而不归约
       exfalso
       apply h_nf
-      sorry -- 需证明 App 项在空上下文中为函数类型时必可归约
+      /- 证明策略 (2026-04-21): 
+         由 progress 定理: emptyContext ⊢ (app t₁ t₂) : (T₁ ⇒ T₂) 
+         得 (app t₁ t₂) 是值或 ∃t'. (app t₁ t₂) →β t'。
+         · app 不可能是值（值只有 abs/tru/fls），故左支矛盾。
+         · 右支直接给出 (app t₁ t₂) 可归约，与 h_nf 矛盾。
+         
+         注意: progress 在当前文件中的定义顺序位于 canonical_forms_fun 之后，
+         因此当前位置无法直接引用 progress。解决方案:
+         (a) 将 canonical_forms_fun / canonical_forms_bool / progress 合并为
+             mutual def / mutual theorem 结构；或
+         (b) 在 progress 之后重新定义 canonical_forms 并使用其完成证明。
+      -/
+      sorry
   | var h => simp [emptyContext, lookupContext] at h
   | tru => contradiction
   | fls => contradiction
@@ -279,7 +320,17 @@ lemma canonical_forms_bool {t}
   | app h₁ h₂ =>
       exfalso
       apply h_nf
-      sorry -- 需证明 App 项在空上下文中为 bool 类型时必可归约
+      /- 证明策略 (2026-04-21): 同 canonical_forms_fun 的 app 分支。
+         由 progress: emptyContext ⊢ (app t₁ t₂) : bool 
+         得 (app t₁ t₂) 是值或可归约。
+         · app 不可能是值。
+         · 故可归约，与 h_nf 矛盾。
+         
+         同样受限于定义顺序（progress 在 canonical_forms_bool 之后定义）。
+         建议将 canonical_forms_fun、canonical_forms_bool、progress 重构为
+         mutual theorem 相互递归结构，使三者可以相互引用。
+      -/
+      sorry
 
 /-! 
 ## 进度性定理 (Progress)

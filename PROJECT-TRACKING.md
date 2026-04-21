@@ -13,6 +13,12 @@
 > | 英文文档: en/ 156 文件 (覆盖核心概念与前沿专题, 新增23篇核心翻译 v6.4)
 |   v6.4 英文覆盖优先: 批次1(Struct基础9篇) + 批次2(关系7篇) + 批次3(证明+前沿10篇) = 23篇
 |   Struct/ 核心覆盖率: 22% → 52%
+| N路线 形式化验证深化 (v6.4延续):
+|   Lean: Predicate.lean Peano标准模型 6个sorry → 补全证明(调用Nat.succ_ne_zero/add_zero/mul_zero等)
+|   Lean: Substitution.lean 4个sorry + SimpleTypes 1个 + Safety 3个 → 附详细证明策略注释
+|   Coq: streaming-theorems.v nth_error_map → 引用标准库List.nth_error_map完成证明
+|   Coq: 剩余9个Admitted全部附有详细证明策略注释
+|   Lean sorry: 80 → 74 (-6) | Coq Admitted: 10 → 9 (-1)
 > | 质量门禁保持: 六段式100% | 交叉引用0 errors | Mermaid 100%
 >
 > ✅ **v6.2 权威前沿持续对齐全面推进完成** (2026-04-21) | **状态**: ✅ **H+I+J+K+L+M 六路全部完成**

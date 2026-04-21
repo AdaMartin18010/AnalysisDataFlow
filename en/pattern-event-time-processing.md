@@ -1,72 +1,110 @@
 # Pattern: Event Time Processing
 
-> **Stage**: Knowledge/02-design-patterns | **Prerequisites**: [Time Semantics](time-semantics.md) | **Formalization Level**: L4-L5
-> **Translation Date**: 2026-04-21
-
-## Abstract
-
-This pattern addresses out-of-order data, late data, and result determinism in distributed stream processing through Watermark-based progress tracking.
+> **Stage**: Knowledge | **Prerequisites**: [Time Semantics](../flink-time-semantics-watermark.md) | **Formal Level**: L4-L5
+>
+> **Pattern ID**: 01/7 | **Complexity**: ★★★☆☆
+>
+> Resolves the core tension between out-of-order data, late arrivals, and deterministic results via Watermark-based progress tracking.
 
 ---
 
 ## 1. Definitions
 
-### Def-K-02-01 (Event Time)
+**Def-K-02-16: Event Time**
 
-**Event time** $t_e(e)$ is the timestamp when the event occurred in the physical world.
+A mapping from records to the time domain representing when events actually occurred:
 
-### Def-K-02-02 (Watermark)
+$$
+t_e: \text{Record} \to \mathbb{T}
+$$
 
-A **watermark** $w(t)$ is a progress metric in event time:
+**Def-K-02-17: Watermark**
 
-$$w(t) = \min_{s \in \text{Sources}} \left( \max_{r \in R_s(t)} t_e(r) - \delta_s \right)$$
+A progress marker asserting that no records with timestamp earlier than $W$ will arrive:
 
-### Def-K-02-03 (Late Data)
+$$
+\text{Watermark}(W) \implies \forall r \in \text{future}. \; t_e(r) \geq W
+$$
 
-**Late data** arrives after the watermark has passed its event time:
+**Def-K-02-18: Late Data**
 
-$$\text{Late}(e) \iff t_e(e) < w(t_{\text{arrival}})$$
+Records with $t_e(r) < W$ when watermark $W$ has already advanced.
 
 ---
 
 ## 2. Properties
 
-### Prop-K-02-01 (Watermark Monotonicity Propagation)
+**Prop-K-02-10: Watermark Monotonic Propagation**
 
-Watermarks propagate monotonically through the DAG.
+Watermarks are non-decreasing along all dataflow paths:
 
-### Prop-K-02-02 (Late Data Processing Semantics)
+$$
+\forall p. \; W_{in}(p) \leq W_{out}(p)
+$$
 
-Late data can be:
-- **Dropped**: Discarded (default)
-- **Allowed**: Processed if within allowed lateness
-- **Side-output**: Routed to separate stream
+**Prop-K-02-11: Late Data Handling Semantics**
+
+With `allowedLateness = d`, records arriving within $[T_{window}, T_{window} + d]$ update previously emitted results.
 
 ---
 
-## 3. Flink Implementation
+## 3. Relations
+
+- **with Window Aggregation**: Event time is the foundation for correct window triggering.
+- **with CEP**: Temporal pattern matching requires event-time ordering.
+- **with Checkpoint**: Watermark progress is checkpointed for deterministic recovery.
+
+---
+
+## 4. Argumentation
+
+**Distributed Stream Temporal Challenges**:
+
+- Clock skew across producers
+- Network delay variation
+- Out-of-order arrival due to routing
+
+**Time Semantics Selection**:
+
+| Semantics | Determinism | Latency | Use Case |
+|-----------|-------------|---------|----------|
+| Event Time | ✓ | Higher | Analytics, billing |
+| Processing Time | ✗ | Lower | Monitoring, alerts |
+| Ingestion Time | Partial | Medium | Log processing |
+
+---
+
+## 5. Engineering Argument
+
+**Watermark Monotonicity Guarantee**: Flink's watermark generator ensures monotonicity per subtask. For multi-input operators, the output watermark is the minimum of input watermarks, preserving global monotonicity.
+
+---
+
+## 6. Examples
 
 ```java
-// Watermark strategy with allowed lateness
-DataStream<Event> withTimestamps = stream
-    .assignTimestampsAndWatermarks(
-        WatermarkStrategy
-            .<Event>forBoundedOutOfOrderness(Duration.ofSeconds(5))
-            .withIdleness(Duration.ofMinutes(1))
-    );
-
-// Window with late data handling
-withTimestamps
-    .keyBy(Event::getKey)
-    .window(TumblingEventTimeWindows.of(Time.minutes(5)))
-    .allowedLateness(Time.minutes(2))
-    .sideOutputLateData(lateDataTag)
-    .aggregate(new CountAggregate());
+// Watermark with idle source handling
+WatermarkStrategy<MyEvent> strategy = WatermarkStrategy
+    .<MyEvent>forBoundedOutOfOrderness(Duration.ofSeconds(5))
+    .withTimestampAssigner((event, ts) -> event.getEventTime())
+    .withIdleness(Duration.ofMinutes(1));
 ```
 
 ---
 
-## 4. References
+## 7. Visualizations
 
-[^1]: T. Akidau et al., "The Dataflow Model", PVLDB, 2015.
-[^2]: Apache Flink Documentation, "Event Time", 2025.
+**Event Time Processing Architecture**:
+
+```mermaid
+graph LR
+    A[Source<br/>Event Time] -->|assign| B[Timestamp Assigner]
+    B -->|generate| C[Watermark Generator]
+    C -->|W=12:00| D[Window Operator]
+    E[Late Data] -->|side output| F[Late Handler]
+    D --> G[Window Result]
+```
+
+---
+
+## 8. References

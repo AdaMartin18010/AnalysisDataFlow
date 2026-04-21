@@ -1,144 +1,126 @@
-# Data Mesh and Streaming Integration Architecture
+# Data Mesh & Streaming Integration Architecture
 
-> **Stage**: Knowledge/03-business-patterns | **Prerequisites**: [Data Mesh Streaming Architecture](data-mesh-streaming-architecture-2026.md) | **Formalization Level**: L3
-> **Translation Date**: 2026-04-21
-
-## Abstract
-
-**Streaming-Native Data Mesh** extends the Data Mesh paradigm by treating event streams as the primary data product interface. This pattern formalizes domain autonomy boundaries, cross-domain streaming contracts, and self-serve stream processing infrastructure.
+> **Stage**: Knowledge | **Prerequisites**: [Data Mesh Architecture](../data-mesh-streaming-architecture.md) | **Formal Level**: L3
+>
+> Streaming-native Data Mesh with domain stream autonomy, cross-domain interoperability, and latency budgeting.
 
 ---
 
 ## 1. Definitions
 
-### Def-K-03-60-01 (Streaming-Native Data Mesh)
+**Def-K-03-40: Streaming-Native Data Mesh**
 
-A **streaming-native data mesh** $\mathcal{M}_{stream}$ is a 6-tuple:
+$$
+\mathcal{M}_{stream} = \langle \mathcal{D}, \mathcal{P}, \mathcal{I}, \mathcal{G}, \mathcal{S}, \mathcal{C} \rangle
+$$
 
-$$\mathcal{M}_{stream} = \langle \mathcal{D}, \mathcal{P}, \mathcal{I}, \mathcal{G}, \mathcal{S}, \mathcal{C} \rangle$$
+where $\mathcal{D}$ = domains, $\mathcal{P}$ = streaming data products, $\mathcal{I}$ = interoperability layer, $\mathcal{G}$ = federated governance, $\mathcal{S}$ = self-serve platform, $\mathcal{C}$ = consumption contracts.
 
-where:
-- $\mathcal{D} = \{d_1, \ldots, d_n\}$: business domains, each with autonomous data product teams
-- $\mathcal{P}$: data products, each providing **stream interfaces** as primary output (Kafka topics, event streams, CDC feeds)
-- $\mathcal{I}$: interoperability layer (Schema Registry, Event Catalog, SLA Contracts)
-- $\mathcal{G}$: federated governance framework
-- $\mathcal{S}$: self-serve platform (Stream Processing as a Service)
-- $\mathcal{C}$: consumption contracts (QoS, access control, billing)
+**Def-K-03-41: Domain Stream Autonomy Boundary**
 
-**Difference from traditional Data Mesh**: Traditional Data Mesh uses **datasets/tables** as core products; streaming-native uses **event streams/change feeds** with low-latency, continuously updated interfaces.
+$$
+\partial(d_i) = \langle \mathcal{O}_i, \mathcal{E}_i, \mathcal{T}_i, \mathcal{Q}_i, \mathcal{R}_i \rangle
+$$
 
-### Def-K-03-60-02 (Domain Stream Autonomy Boundary)
+Autonomy degree:
 
-Domain $d_i$'s **stream autonomy boundary** $\partial(d_i)$:
-
-$$\partial(d_i) = \langle \mathcal{O}_i, \mathcal{E}_i, \mathcal{T}_i, \mathcal{Q}_i, \mathcal{R}_i \rangle$$
-
-where:
-- $\mathcal{O}_i$: output streams owned by $d_i$
-- $\mathcal{E}_i$: input streams consumed from other domains
-- $\mathcal{T}_i$: internal stream processing topology
-- $\mathcal{Q}_i$: SLA quality contracts (latency, freshness, availability)
-- $\mathcal{R}_i$: resource budget and quota
-
-**Autonomy metric**:
-
-$$\alpha(d_i) = 1 - \frac{|\{op \in \mathcal{T}_i : \text{cross-domain dependency}\}|}{|\mathcal{T}_i|}$$
-
-Full autonomy: $\alpha = 1$; full dependency: $\alpha = 0$.
+$$
+\alpha(d_i) = 1 - \frac{|\{op \in \mathcal{T}_i : \text{cross-domain dependency}\}|}{|\mathcal{T}_i|}
+$$
 
 ---
 
 ## 2. Properties
 
-### Prop-K-03-60-01 (Cross-Domain Stream Dependency Transitivity)
+**Prop-K-03-22: Cross-Domain Latency Accumulation**
 
-If domain $d_i$ depends on stream from $d_j$, and $d_j$ depends on stream from $d_k$, then $d_i$ transitively depends on $d_k$.
+If $d_i$ consumes $d_j$ and $d_j$ consumes $d_k$:
 
-**Implication**: Deep dependency chains increase coupling and reduce autonomy. Recommendation: maximum dependency depth of 3.
+$$
+L_{i \leftarrow k} = L_{i \leftarrow j} + L_{j \leftarrow k}
+$$
 
-### Prop-K-03-60-02 (Schema Evolution Contract)
+**Prop-K-03-23: Autonomy-Consistency Trade-off**
 
-Data products must guarantee backward-compatible schema evolution:
-
-$$\text{Schema}_{v+1} \supseteq \text{Schema}_v \text{ (field addition only, no removal)}$$
-
-or provide explicit deprecation timeline.
+Higher autonomy ($\alpha \to 1$) reduces cross-domain consistency guarantees.
 
 ---
 
-## 3. Architecture
+## 3. Relations
 
-```mermaid
-graph TB
-    subgraph "Domain A"
-        A1[Source] --> A2[Stream Processing]
-        A2 --> A3[Output Topic]
-    end
-    
-    subgraph "Domain B"
-        B1[Consume Topic A] --> B2[Stream Processing]
-        B2 --> B3[Output Topic]
-    end
-    
-    subgraph "Platform"
-        S[Schema Registry]
-        G[Governance]
-        M[Monitoring]
-    end
-    
-    A3 --> B1
-    S --> A2
-    S --> B2
-    G --> A3
-    G --> B3
-    
-    style A3 fill:#e8f5e9
-    style B3 fill:#e8f5e9
-```
-
-**Domain topology**: Each domain owns its streams; cross-domain consumption via governed contracts.
+- **with Traditional Data Mesh**: Streaming-native mesh uses event streams as primary data product form.
+- **with Data Fabric**: Data Mesh is decentralized; Data Fabric provides centralized virtual layer.
 
 ---
 
-## 4. Implementation
+## 4. Argumentation
 
-### 4.1 Self-Serve Stream Platform
+**Latency Budget Allocation**: For nested domain chains ($d_1 \leftarrow d_2 \leftarrow d_3 \leftarrow d_4$), allocate per-hop latency budgets to ensure end-to-end SLA compliance.
 
-| Capability | Technology | Responsibility |
-|------------|-----------|----------------|
-| Stream ingestion | Kafka Connect / Debezium | Platform team |
-| Stream processing | Flink / Kafka Streams | Domain team |
-| Schema governance | Confluent Schema Registry | Platform team |
-| Monitoring | Prometheus + Grafana | Platform team |
-| Access control | OAuth + ACLs | Platform team |
+**Interoperability Layer**:
 
-### 4.2 Data Product Contract Template
+| Component | Purpose |
+|-----------|---------|
+| Schema Registry | Cross-domain schema evolution |
+| Event Catalog | Data product discoverability |
+| SLA Contracts | Quality guarantees |
+
+---
+
+## 5. Engineering Argument
+
+**Streaming Data Product Contract**: Each data product specifies:
+- Schema (Avro/Protobuf/JSON Schema)
+- Latency SLA (e.g., < 1s p99)
+- Freshness guarantee
+- Access control (RBAC)
+- Pricing tier
+
+---
+
+## 6. Examples
 
 ```yaml
+# Data product manifest
 data_product:
-  name: user-behavior-events
-  domain: recommendation
-  owner: team-rec@company.com
-  
-  interface:
-    type: kafka-topic
-    topic: rec.user-behavior.v1
-    schema: avro://registry/user-behavior.avsc
-    
-  qos:
-    latency_p99: 500ms
-    freshness: 1s
-    availability: 99.9%
-    
-  access:
-    consumers: [analytics, ml-platform]
-    auth: mTLS + OAuth
+  name: order-events
+  domain: commerce
+  interfaces:
+    stream: kafka://order-events/v2
+    schema: registry://order.avsc
+  sla:
+    latency: < 500ms p99
+    freshness: < 1s
+  consumers:
+    - domain: analytics
+      purpose: real-time-dashboard
+    - domain: fulfillment
+      purpose: inventory-update
 ```
 
 ---
 
-## 5. References
+## 7. Visualizations
 
-[^1]: Z. Dehghani, "How to Move Beyond a Monolithic Data Lake to a Distributed Data Mesh", MartinFowler.com, 2019.
-[^2]: Confluent, "Data Mesh and Event Streaming", 2024.
-[^3]: Apache Kafka Documentation, "Kafka as a Data Mesh Backbone", 2025.
+**Streaming Data Mesh**:
+```mermaid
+graph TB
+    subgraph D1[Commerce Domain]
+        A1[Order Events] --> A2[Product Catalog]
+    end
+    subgraph D2[Analytics Domain]
+        B1[Metrics] --> B2[Dashboard]
+    end
+    subgraph D3[Fulfillment Domain]
+        C1[Inventory] --> C2[Shipping]
+    end
+    A1 -->|stream| B1
+    A2 -->|stream| C1
+```
+
+---
+
+## 8. References
+
+[^1]: Z. Dehghani, "Data Mesh", O'Reilly, 2022.
+[^2]: Confluent, "Streaming Data Mesh", 2024.

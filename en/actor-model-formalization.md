@@ -18,6 +18,7 @@ An actor is defined as a 4-tuple:
 $$\mathcal{A}_{\text{classic}} = (\alpha, b, m, \sigma)$$
 
 where:
+
 - $\alpha \in \text{ActorID}$: unique identifier
 - $b: \text{Msg} \times \Sigma \to \text{Behavior} \times \Sigma \times \mathcal{P}(\text{Msg} \times \text{ActorID})$: behavior function
 - $m \in \text{Msg}^*$: mailbox (ordered sequence of messages)
@@ -52,6 +53,7 @@ $$\text{send}: \text{ActorRef} \times \text{Msg} \to \text{Unit}$$
 ### Def-S-03-05. Supervision Tree
 
 A **supervision tree** is a hierarchical structure $(V, E, s, r)$ where:
+
 - $V \subseteq \text{ActorID}$: set of supervised actors
 - $E \subseteq V \times V$: parent-child supervision edges
 - $s: V \to \{\text{OneForOne}, \text{OneForAll}, \text{RestForOne}\}$: restart strategy
@@ -86,6 +88,7 @@ If ActorRef is truly opaque (no inspectable location information), then the send
 ### Relation 1: Classic Actor $\subset$ Erlang Actor
 
 Erlang actors extend the classic model with:
+
 - Selective receive (pattern matching on mailbox)
 - Links and monitors (bidirectional and unidirectional fault notification)
 - Hot code loading (dynamic behavior replacement)
@@ -93,6 +96,7 @@ Erlang actors extend the classic model with:
 ### Relation 2: Actor Model $\subset$ Asynchronous $\pi$-Calculus
 
 Every Actor computation can be encoded in the asynchronous $\pi$-calculus. The encoding maps:
+
 - Actor identity $\to$ channel name
 - Message send $\to$ asynchronous channel output
 - Behavior $\to$ replicated input process
@@ -104,6 +108,7 @@ The core semantics of Erlang/OTP and Akka Typed are weakly bisimilar for the com
 ### Relation 4: Actor Model $\leftrightarrow$ Dataflow Model (Turing-Complete Equivalence)
 
 Both models are Turing-complete. There exist mutual encodings:
+
 - Actor $\to$ Dataflow: map actors to operators, message sends to data channels
 - Dataflow $\to$ Actor: map operators to actors, streams to message sequences
 
@@ -114,6 +119,7 @@ Both models are Turing-complete. There exist mutual encodings:
 ### 4.1 Why Mailbox Serial Processing is the Foundation of Actor Determinism
 
 Serial processing guarantees that:
+
 1. No race conditions exist within a single actor
 2. State mutations are atomic at the message level
 3. The only source of non-determinism is message delivery order
@@ -123,6 +129,7 @@ This is the **maximum determinism achievable** in an asynchronous distributed sy
 ### 4.2 Breaking the Determinism Boundary
 
 Determinism is violated when:
+
 - **Shared mutable state**: Actor accesses global mutable variables
 - **Selective receive with timeouts**: Timeout handling introduces wall-clock dependency
 - **Side effects in behavior**: I/O operations with non-deterministic results
@@ -151,11 +158,13 @@ For any actor $\mathcal{A} = (\alpha, b, m, \sigma)$ with deterministic behavior
 ### Thm-S-03-02. Supervision Tree Liveness
 
 In a well-formed supervision tree where:
+
 1. Restart limits are finite ($r_{\max} < \infty$)
 2. Persistent faults are escalated to higher levels
 3. The root supervisor has a terminal restart policy
 
 Then, with probability 1, the system either:
+
 - Recovers to a stable state (no further restarts), or
 - Terminates gracefully (root supervisor gives up)
 
@@ -217,7 +226,7 @@ graph TD
     Root --> SubSup[Sub-Supervisor]
     SubSup --> C[Worker C]
     SubSup --> D[Worker D]
-    
+
     style Root fill:#ffcdd2
     style SubSup fill:#ffe0b2
     style A fill:#e8f5e9
@@ -231,8 +240,3 @@ graph TD
 ---
 
 ## 8. References
-
-[^1]: G. A. Agha, "Actors: A Model of Concurrent Computation in Distributed Systems", MIT Press, 1986.
-[^2]: J. Armstrong, "Making Reliable Distributed Systems in the Presence of Software Errors", PhD Thesis, KTH, 2003.
-[^3]: R. Kuhn et al., "Reactive Design Patterns", Manning, 2017.
-[^4]: Apache Pekko Documentation, "Actor Model", 2025. https://pekko.apache.org/docs/

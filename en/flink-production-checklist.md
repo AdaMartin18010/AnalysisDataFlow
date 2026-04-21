@@ -1,71 +1,120 @@
 # Flink Production Deployment Checklist
 
-> **Stage**: Knowledge/07-best-practices | **Prerequisites**: [Anti-patterns](anti-pattern-checklist.md) | **Formalization Level**: L3
-> **Translation Date**: 2026-04-21
-
-## Abstract
-
-Systematic checklist for deploying Flink jobs to production with stability, reliability, security, and performance guarantees.
+> **Stage**: Knowledge/07-best-practices | **Prerequisites**: [Anti-Patterns](../09-anti-patterns/anti-pattern-checklist.md) | **Formal Level**: L3
+>
+> Complete checklist for Flink job deployment from development to production.
 
 ---
 
-## 1. Configuration Checklist
+## 1. Definitions
 
-### Checkpoint
+**Def-K-07-01: Production Readiness Checklist**
 
-| Item | Recommendation | Criticality |
-|------|---------------|-------------|
-| Interval | 1-10 minutes | High |
-| Timeout | > interval | High |
-| Mode | EXACTLY_ONCE for correctness | High |
-| Unaligned | Enable if backpressure > 30s | Medium |
+Systematic verification steps ensuring Flink jobs meet stability, reliability, security, and performance requirements:
 
-### Watermark
+$$
+\text{ProductionReady}(Job) \iff \forall c_i \in C_{P0} : check\_fn(c_i, Job) = true
+$$
 
-| Item | Recommendation | Criticality |
-|------|---------------|-------------|
-| Strategy | BoundedOutOfOrderness | High |
-| Max delay | 2x observed max delay | High |
-| Idleness | Enable for multi-source | Medium |
-
-### Resources
-
-| Item | Recommendation | Criticality |
-|------|---------------|-------------|
-| Parallelism | Match Kafka partitions | High |
-| Heap/Managed memory | 40%/40% split | High |
-| Network memory | min 64MB per slot | Medium |
+Each check item $c_i = (category, priority, check\_fn, remediation)$.
 
 ---
 
-## 2. Monitoring Checklist
+## 2. Properties
 
-- [ ] JobManager/TaskManager JVM metrics
-- [ ] Checkpoint duration and failures
-- [ ] Backpressure ratio per operator
-- [ ] Watermark lag per source
-- [ ] Records in/out per second
-- [ ] State size growth rate
+**Prop-K-07-01: Checklist Completeness**
+
+All critical failure modes are covered by at least one P0 check item.
+
+**Prop-K-07-02: Priority Ordering**
+
+P0 (blocking) > P1 (critical) > P2 (recommended) in deployment gate sequence.
 
 ---
 
-## 3. Security Checklist
+## 3. Relations
 
-- [ ] Kerberos authentication enabled
-- [ ] TLS for network communication
-- [ ] RBAC for Flink Web UI
+- **with Anti-Patterns**: Checklist detects known anti-patterns before production.
+- **with Monitoring**: Post-deployment checks feed into alerting rules.
+
+---
+
+## 4. Argumentation
+
+**Check Priority Rationale**:
+
+| Priority | Examples | Gate |
+|----------|----------|------|
+| P0 | Checkpoint enabled, Exactly-Once sink | Deployment blocked |
+| P1 | Monitoring configured, Backpressure alerts | Review required |
+| P2 | Documentation, Runbooks | Recommended |
+
+---
+
+## 5. Checklist Details
+
+**Configuration Checks**:
+- [ ] Checkpoint interval < 5 minutes
+- [ ] Watermark strategy configured
+- [ ] Parallelism set appropriately
+- [ ] State backend selected and configured
+- [ ] Restart strategy configured
+
+**Monitoring Checks**:
+- [ ] Job metrics exported to Prometheus/Grafana
+- [ ] Lag alerts for Kafka sources
+- [ ] Backpressure monitoring enabled
+- [ ] Custom business metrics defined
+
+**Security Checks**:
+- [ ] Kerberos/SASL for Kafka
+- [ ] TLS for REST endpoints
+- [ ] RBAC for Web UI
 - [ ] Audit logging enabled
-- [ ] Sensitive data encryption at rest
+
+**Performance Checks**:
+- [ ] Throughput tested at 2x expected peak
+- [ ] State size within backend capacity
+- [ ] GC pauses < 100ms
+- [ ] Checkpoint duration < interval
 
 ---
 
-## 4. Performance Validation
+## 6. Examples
 
-- [ ] Throughput meets SLA
-- [ ] P99 latency < 100ms (or requirement)
-- [ ] No backpressure under peak load
-- [ ] Recovery time < 2 minutes
+```yaml
+# Production readiness gate
+gates:
+  pre_deploy:
+    - check: checkpoint_enabled
+      severity: blocking
+    - check: monitoring_configured
+      severity: warning
+  post_deploy:
+    - check: lag_below_threshold
+      duration: 10m
+      severity: blocking
+```
 
 ---
 
-## 5. References
+## 7. Visualizations
+
+**Deployment Checklist Flow**:
+```mermaid
+graph TD
+    A[Code Complete] --> B[Config Check]
+    B --> C[Security Review]
+    C --> D[Performance Test]
+    D --> E{All P0 Pass?}
+    E -->|Yes| F[Deploy to Prod]
+    E -->|No| G[Fix Issues]
+    G --> B
+```
+
+---
+
+## 8. References
+
+[^1]: Apache Flink Documentation, "Production Readiness", 2025.
+[^2]: Netflix Tech Blog, "Streaming Production Checklist", 2023.

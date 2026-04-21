@@ -1,117 +1,117 @@
-# Pattern: Real-time Feature Engineering
+# Pattern: Real-Time Feature Engineering
 
-> **Stage**: Knowledge/02-design-patterns | **Prerequisites**: [Streaming Models Mindmap](streaming-models-mindmap.md) | **Formalization Level**: L4
-> **Translation Date**: 2026-04-21
-
-## Abstract
-
-Real-time feature engineering transforms raw event streams into machine learning features with low latency. This pattern formalizes feature freshness, windowed aggregations, and feature store integration for production ML pipelines.
+> **Stage**: Knowledge | **Prerequisites**: [Windowed Aggregation](../pattern-windowed-aggregation.md) | **Formal Level**: L4
+>
+> Real-time feature computation from streaming events with freshness guarantees, windowed aggregations, and feature store integration.
 
 ---
 
 ## 1. Definitions
 
-### Def-K-02-10 (Feature Freshness)
+**Def-K-02-22: Feature Freshness**
 
-**Feature freshness** $\mathcal{F}$ is the maximum allowed time deviation between feature computation and current time:
+Maximum allowable time deviation between feature computation and current time:
 
-$$\mathcal{F}(f, t) = t - \tau_{\text{computed}}(f)$$
+$$
+\mathcal{F}(f, t) = t - \tau_{\text{computed}}(f)
+$$
 
 | Level | Latency | Use Case |
 |-------|---------|----------|
-| Real-time | $< 1s$ | High-frequency trading, real-time recommendations |
-| Near-real-time | $1s \leq \mathcal{F} < 60s$ | Content recommendations, ad targeting |
-| Quasi-real-time | $60s \leq \mathcal{F} < 5min$ | Risk control, user profiling |
-| Batch | $\geq 5min$ | Offline analysis, reporting |
+| Real-time | < 1s | High-frequency trading, real-time recommendation |
+| Near-real-time | 1s - 60s | Content recommendation, ad targeting |
+| Quasi-real-time | 60s - 5min | Risk control, user profiling |
+| Batch | > 5min | Offline analysis, reporting |
 
-### Def-K-02-11 (Windowed Feature Aggregation)
+**Def-K-02-23: Windowed Feature Aggregation**
 
-**Windowed feature aggregation** applies aggregate operations over bounded time windows:
+Aggregation transformation over bounded time windows:
 
-$$\text{Agg}(\mathcal{S}, \mathcal{W}, \oplus) = \{ \oplus \{ e \mid e \in \mathcal{S} \land \tau(e) \in \mathcal{W}_i \} \}_{i \in \mathcal{I}}$$
+$$
+\text{Agg}(\mathcal{S}, \mathcal{W}, \oplus) = \{ \oplus \{ e \mid e \in \mathcal{S} \land \tau(e) \in \mathcal{W}_i \} \}_{i \in \mathcal{I}}
+$$
 
-where $\mathcal{W} = \{\mathcal{W}_i\}$ is a window sequence and $\oplus$ is an aggregate operator.
+**Def-K-02-24: Feature Store**
 
-**Window semantics**:
-- **Tumbling**: $\mathcal{W}_i = [i \cdot L, (i+1) \cdot L)$, no overlap
-- **Sliding**: $\mathcal{W}_i = [i \cdot S, i \cdot S + L)$, overlap $\rho = 1 - S/L$
-- **Session**: $\mathcal{W}_i$ dynamically split by inactivity gap $g$
+Dual-mode feature management subsystem:
 
-### Def-K-02-12 (Feature Store)
+$$
+\mathcal{FS} = \langle \mathcal{O}, \mathcal{R}, \mathcal{M}, \mathcal{G} \rangle
+$$
 
-A **feature store** is a dual-mode feature management subsystem:
-
-$$\mathcal{FS} = \langle \mathcal{O}, \mathcal{R}, \mathcal{M}, \mathcal{G} \rangle$$
-
-where:
-- $\mathcal{O}$: online serving layer (low-latency point lookups)
-- $\mathcal{R}$: offline storage layer (batch training data)
-- $\mathcal{M}$: metadata registry (feature definitions, lineage)
-- $\mathcal{G}$: governance layer (access control, quality monitoring)
+where $\mathcal{O}$ = offline storage, $\mathcal{R}$ = online KV, $\mathcal{M}$ = metadata, $\mathcal{G}$ = governance.
 
 ---
 
 ## 2. Properties
 
-### Prop-K-02-06 (Feature Consistency)
+**Prop-K-02-14: Online-Offline Consistency**
 
-Online and offline features for the same entity must be consistent:
+Online and offline features must satisfy:
 
-$$\forall f \in \mathcal{FS}: \mathcal{O}(f, e) \approx \mathcal{R}(f, e) \text{ within tolerance } \epsilon$$
-
-### Prop-K-02-07 (Freshness-Accuracy Trade-off)
-
-Higher freshness (lower latency) generally implies lower accuracy due to incomplete data:
-
-$$\text{Accuracy}(\mathcal{F}) \propto \frac{1}{\mathcal{F}} \text{ (for windowed aggregations)}$$
+$$
+\mathbb{E}[f_{\text{online}}] = \mathbb{E}[f_{\text{offline}}] \quad \land \quad |f_{\text{online}} - f_{\text{offline}}| < \epsilon
+$$
 
 ---
 
-## 3. Architecture
+## 3. Relations
 
+- **with Windowed Aggregation**: Features are computed via tumbling/sliding/session windows.
+- **with Async I/O**: Feature store lookups use async I/O for low latency.
+
+---
+
+## 4. Argumentation
+
+**Feature Computation Layers**:
+
+| Layer | Freshness | Computation | Examples |
+|-------|-----------|-------------|----------|
+| Raw | < 1s | Stream | Click, impression |
+| Derived | < 10s | Window | CTR (1min), conversion rate |
+| Aggregate | < 1min | Stateful | User 7-day spend |
+| Model | < 5min | Batch | Embedding vectors |
+
+---
+
+## 5. Engineering Argument
+
+**Latency Upper Bound**: For real-time features with freshness < 1s:
+- Event ingestion (Kafka): ~5ms
+- Feature computation (Flink): ~50ms
+- Feature store write (Redis): ~5ms
+- Total: < 100ms << 1s requirement
+
+---
+
+## 6. Examples
+
+```java
+// Real-time feature: user 5-minute click count
+stream.keyBy(Event::getUserId)
+    .window(SlidingEventTimeWindows.of(Time.minutes(5), Time.minutes(1)))
+    .aggregate(new CountAggregate())
+    .addSink(new FeatureStoreSink("user_click_count_5m"));
+```
+
+---
+
+## 7. Visualizations
+
+**Feature Engineering Pipeline**:
 ```mermaid
 graph LR
-    A[Event Stream] --> B[Feature Computation]
-    B --> C[Online Store]
-    B --> D[Offline Store]
-    C --> E[Model Serving]
-    D --> F[Model Training]
-    F --> G[Trained Model]
-    G --> E
-    
-    style B fill:#e8f5e9
-    style E fill:#fff3e0
-```
-
-**Feature pipeline**: Raw events → computed features → dual storage → model serving/training.
-
----
-
-## 4. Implementation
-
-### 4.1 Flink Feature Computation
-
-```java
-// Real-time feature: user click count in 5-minute window
-DataStream<Feature> features = clickStream
-    .keyBy(ClickEvent::getUserId)
-    .window(TumblingEventTimeWindows.of(Time.minutes(5)))
-    .aggregate(new ClickCountAggregate())
-    .map(count -> new Feature("user_click_count_5m", count));
-```
-
-### 4.2 Feature Store Write
-
-```java
-// Write to online store (Redis) and offline store (Hive/Iceberg)
-features.addSink(new RedisFeatureSink());
-features.addSink(new IcebergFeatureSink());
+    A[Event Stream] --> B[Raw Features]
+    B --> C[Window Aggregation]
+    C --> D[Derived Features]
+    D --> E[Feature Store]
+    E --> F[Model Inference]
 ```
 
 ---
 
-## 5. References
+## 8. References
 
-[^1]: M. Zheng et al., "Feature Store: A Data Management System for Machine Learning", CIDR, 2022.
-[^2]: Uber Engineering, "Michelangelo Palette: A Feature Store for ML", 2020.
-[^3]: T. Akidau et al., "The Dataflow Model", PVLDB, 2015.
+[^1]: Tecton, "Feature Stores for ML", 2024.
+[^2]: Feast Documentation, "Real-Time Feature Engineering", 2025.

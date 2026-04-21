@@ -1,69 +1,121 @@
 # Real-Time Data Warehouse Architecture
 
-> **Stage**: Knowledge/03-business-patterns | **Prerequisites**: [Flink State Management](flink-state-management.md) | **Formalization Level**: L4
-> **Translation Date**: 2026-04-21
-
-## Abstract
-
-Real-time data warehouse (RTDW) provides sub-second latency analytics by replacing batch processing with streaming pipelines, maintaining time-semantic continuity and recoverable state management.
+> **Stage**: Knowledge | **Prerequisites**: [State Management](../Flink/02-core/flink-state-management-complete-guide.md) | **Formal Level**: L4
+>
+> Streaming layered architecture (ODS/DWD/DWS/ADS) with Flink, delivering sub-second latency vs batch hours.
 
 ---
 
 ## 1. Definitions
 
-### Def-K-03-01 (Real-Time Data Warehouse)
+**Def-K-03-35: Real-Time Data Warehouse (RTDW)**
 
-$$\mathcal{RTDW} = (\mathcal{S}, \mathcal{L}, \mathcal{T}, \mathcal{Q}, \mathcal{G})$$
+$$
+\mathcal{RTDW} = (\mathcal{S}, \mathcal{L}, \mathcal{T}, \mathcal{Q}, \mathcal{G})
+$$
 
-where:
+where $\mathcal{S}$ = sources, $\mathcal{L}$ = layers, $\mathcal{T}$ = time semantics, $\mathcal{Q}$ = query interfaces, $\mathcal{G}$ = consistency guarantees.
 
-- $\mathcal{S}$: data sources (event-timestamped streams)
-- $\mathcal{L}$: layered computation
-- $\mathcal{T}$: time semantics function
-- $\mathcal{Q}$: query interfaces
-- $\mathcal{G}$: consistency guarantees (Checkpoint, Exactly-Once Sink)
+Key difference from OLAP: $L_{max} \ll T_{batch}$.
 
-Key difference from offline DW: $L_{max} \ll T_{batch}$
+**Def-K-03-36: Streaming Layered Architecture**
 
-### Def-K-03-02 (Streaming Layered Architecture)
+$$
+\mathcal{SLA} = (\text{ODS}, \text{DWD}, \text{DWS}, \text{ADS})
+$$
 
-$$\mathcal{SLA} = (\text{ODS}, \text{DWD}, \text{DWS}, \text{ADS})$$
+- **ODS**: Raw data stream, 1:1 mapping with input
+- **DWD**: Detail layer, cleansing and enrichment
+- **DWS**: Summary layer, window aggregation and pre-computation
+- **ADS**: Application layer, scenario-specific transformations
 
-| Layer | Function | Output |
-|-------|----------|--------|
-| ODS | Raw data, format validation | 1:1 with input |
-| DWD | Cleansing, joining, denormalization | Normalized schema |
-| DWS | Window aggregation, pre-computation | Aggregated metrics |
-| ADS | Scenario-specific transformation | Serving-ready |
+Layer dependency forms DAG: $\text{ODS} \prec \text{DWD} \prec \text{DWS} \prec \text{ADS}$.
 
-Dependency DAG: $\text{ODS} \prec \text{DWD} \prec \text{DWS} \prec \text{ADS}$
+**Def-K-03-37: Serving Layer Pattern**
 
-### Def-K-03-03 (Serving Layer Pattern)
+$$
+\mathcal{SP} = (\mathcal{E}, \mathcal{I}, \mathcal{R})
+$$
 
-$$\mathcal{SP} = (\mathcal{E}, \mathcal{I}, \mathcal{R})$$
-
-| Engine | Freshness | Latency | Best For |
-|--------|-----------|---------|----------|
-| Paimon | High | Medium | Lakehouse unified |
-| StarRocks | High | Low | Real-time OLAP |
-| ClickHouse | Medium | Low | Wide-table analytics |
-| Doris | High | Low | Unified batch/stream |
+where $\mathcal{E}$ = engine (Paimon, StarRocks, ClickHouse, Doris), $\mathcal{I}$ = ingestion, $\mathcal{R}$ = query capabilities.
 
 ---
 
-## 2. Architecture
+## 2. Properties
 
-```mermaid
-graph LR
-    Sources[Data Sources] --> ODS[ODS Layer]
-    ODS --> DWD[DWD Layer]
-    DWD --> DWS[DWS Layer]
-    DWS --> ADS[ADS Layer]
-    ADS --> Serving[Serving Engine]
-    Serving --> BI[BI Tools]
-    Serving --> Apps[Applications]
+**Prop-K-03-18: Consistency Composition**
+
+Full-pipeline consistency is the composition of per-layer consistency:
+
+- Exactly-Once $\circ$ Exactly-Once = Exactly-Once
+- At-Least-Once $\circ$ $x$ = At-Least-Once
+
+**Prop-K-03-19: Layer Independence**
+
+Each layer can scale, upgrade, and recover independently due to message queue decoupling.
+
+---
+
+## 3. Relations
+
+- **with Batch Data Warehouse**: RTDW mirrors the layered architecture but with continuous processing.
+- **with Data Mesh**: ADS layer outputs are streaming data products.
+
+---
+
+## 4. Argumentation
+
+**Serving Engine Selection**:
+
+| Engine | Freshness | Query Latency | Best For |
+|--------|-----------|---------------|----------|
+| Paimon | Minutes | Medium | Lakehouse |
+| StarRocks | Seconds | Low | OLAP |
+| ClickHouse | Seconds | Low | Analytics |
+| Doris | Seconds | Low | Unified |
+
+---
+
+## 5. Engineering Argument
+
+**Exactly-Once Pipeline**: With Flink Checkpoint + 2PC Sink, full-pipeline Exactly-Once is achievable. This is the key technical guarantee for RTDW to match offline warehouse consistency.
+
+---
+
+## 6. Examples
+
+```sql
+-- Flink SQL: DWD layer enrichment
+INSERT INTO dwd_order
+SELECT 
+    o.order_id,
+    o.user_id,
+    u.user_name,
+    o.amount,
+    o.event_time
+FROM ods_order o
+LEFT JOIN dim_user FOR SYSTEM_TIME AS OF o.proc_time u
+  ON o.user_id = u.user_id;
 ```
 
 ---
 
-## 3. References
+## 7. Visualizations
+
+**RTDW Architecture**:
+```mermaid
+graph LR
+    A[Sources] --> B[ODS]
+    B --> C[DWD]
+    C --> D[DWS]
+    D --> E[ADS]
+    E --> F[Paimon/StarRocks]
+    F --> G[BI/Applications]
+```
+
+---
+
+## 8. References
+
+[^1]: Apache Flink Documentation, "Real-Time Data Warehouse", 2025.
+[^2]: Paimon Documentation, "Streaming Lakehouse", 2025.

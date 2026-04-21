@@ -169,7 +169,20 @@ lemma weakening {Γ t T} (h : Γ ⊢ t : T) :
       -- 当 x ≠ y 时由归纳假设直接得证
       -- 当 x = y 时利用 x 不在 Γ 中（故 y 也不在 Γ 中）
       simp [extendContext] at ih ⊢
-      sorry -- 需 α-等价或环境交换引理
+      /- 证明策略 (2026-04-21): 
+         需证: (Γ, x:S, y:T₁) ⊢ t' : T₂，已知 (Γ, y:T₁, x:S) ⊢ t' : T₂。
+         
+         若 x ≠ y: 两环境在 lookupContext 中等价（列表顺序不影响查找结果，
+         因 x 和 y 查找时取第一个匹配，且 x ≠ y 保证互不干扰）。
+         需建立环境交换引理: 
+           context_exchange: x ≠ y → ((Γ, y:T₁), x:S) ⊢ t : T → ((Γ, x:S), y:T₁) ⊢ t : T
+         对 hasType 结构归纳可证。
+         
+         若 x = y: 环境变为 (Γ, x:S, x:T₁)。由 x ∉ Γ 和 lookupContext 取第一个匹配，
+         对 x 的查找结果为 S。但 t' 需要 x:T₁，故要求 S = T₁。
+         此情形在 weakening 中自动满足（类型不冲突）。
+      -/
+      sorry
   | app ih₁ ih₂ =>
       intros x S Hnotin
       apply hasType.app

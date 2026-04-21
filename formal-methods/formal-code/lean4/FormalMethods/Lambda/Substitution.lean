@@ -117,10 +117,23 @@ lemma subst_fv_notin {x : Name} {s t : Term} (h : x ∉ fv t) :
            右边 = (fv(t) \ {y, x}) ∪ fv(s)（因 y ≠ x）
            两边相等。
         -/
-        -- [FORMAL-GAP-N-02] 需建立 fv 在重命名替换下的精确等式：
-        --   fv([y:=z]t) = (fv(t) \ {y}) ∪ {z}
-        -- 此性质依赖 freshVar 的正确性和 fv 的归纳定义。
-        -- 完成后可用 set 推理（tauto / omega）消去。
+        /- [FORMAL-GAP-N-02] 需建立 fv 在重命名替换下的精确等式：
+           fv([y:=z]t) = (fv(t) \ {y}) ∪ {z}
+           
+           证明策略 (2026-04-21):
+           对 t 结构归纳。
+           · var w: [y:=z](var w) = var w（若 w ≠ y）或 var z（若 w = y）。
+             fv = {w} 或 {z}。等式两边均为 ({w} \ {y}) ∪ {z}。
+           · abs w body: 若 w = y，[y:=z](λy.body) = λy.body，fv = fv(body) \ {y}。
+             右边 = (fv(λy.body) \ {y}) ∪ {z} = (fv(body) \ {y}) \ {y} ∪ {z} = fv(body) \ {y}（因 z 新鲜）。
+             若 w ≠ y，[y:=z](λw.body) = λw.[y:=z]body。
+             fv = fv([y:=z]body) \ {w} = ((fv(body) \ {y}) ∪ {z}) \ {w}。
+             右边 = ((fv(body) \ {w}) \ {y}) ∪ {z}。
+             因 z 新鲜，z ∉ fv(body)，z ≠ w。故两边相等。
+           · app t₁ t₂: 由 IH 和集合运算。
+           
+           依赖: freshVar z (app s body) 保证 z ∉ fv(body) 且 z ∉ fv(s)。
+        -/
         sorry
       · -- y ≠ x and y ∉ fv(s)
         simp [fv, ih]
@@ -161,9 +174,16 @@ lemma subst_fv_subset {x : Name} {s t : Term} :
            右边 = (fv(t) \ {y, x}) ∪ fv(s)（因 fv(λy.t) = fv(t) \ {y}）
            包含关系成立。
         -/
-        -- [FORMAL-GAP-N-03] 同上：fv 在重命名替换下的子集关系。
-        --   fv([y:=z]t) ⊆ (fv(t) \ {y}) ∪ {z}
-        -- 结合 IH 和 freshVar 性质可得。
+        /- [FORMAL-GAP-N-03] fv 在重命名替换下的子集关系。
+           fv([y:=z]t) ⊆ (fv(t) \ {y}) ∪ {z}
+           
+           证明策略 (2026-04-21): 同 N-02 的归纳结构，但只需证 ⊆ 而非 =。
+           在 abs w body 情形（w ≠ y）:
+           fv([y:=z](λw.body)) = fv(λw.[y:=z]body) = fv([y:=z]body) \ {w}
+           ⊆ ((fv(body) \ {y}) ∪ {z}) \ {w}（由 IH）
+           ⊆ ((fv(body) \ {w}) \ {y}) ∪ {z}（集合运算，z ≠ w）
+           = (fv(λw.body) \ {y}) ∪ {z}。
+        -/
         sorry
       · -- y ≠ x, y ∉ fv(s)
         simp [fv, ih]
@@ -244,9 +264,23 @@ lemma alpha_equiv_symm {t s : Term} (h : t =α s) : s =α t := by
          需证 [y:=var x]([x:=var y]t) =α t。
          这是 "逆替换" 性质: 若 y 新鲜，则 [y:=x]([x:=y]t) =α t。
       -/
-      -- [FORMAL-GAP-N-04] "逆替换"性质：若 y 新鲜，则 [y:=x]([x:=y]t) =α t。
-      -- 这是 α-等价对称性的核心引理，证明需对 t 结构归纳，
-      -- 在 abs 情形利用 freshVar 避免捕获。
+      /- [FORMAL-GAP-N-04] "逆替换"性质：若 y 新鲜，则 [y:=x]([x:=y]t) =α t。
+         
+         证明策略 (2026-04-21): 对 t 结构归纳。
+         · var w:
+           - 若 w = x: [y:=x]([x:=y](var x)) = [y:=x](var y) = var x =α var x。
+           - 若 w = y: [y:=x]([x:=y](var y)) = [y:=x](var y) = var x。需 var x =α var y？不成立，
+             但 y 新鲜保证 y ∉ fv(var y) = {y}... 矛盾。实际上 y ∉ fv(t) 前提保证 w ≠ y。
+           - 若 w ≠ x 且 w ≠ y: [y:=x]([x:=y](var w)) = [y:=x](var w) = var w =α var w。
+         · abs w body:
+           - 若 w = x: [y:=x]([x:=y](λx.body)) = [y:=x](λx.body) = λx.body（y 被绑定）。=α λx.body。
+           - 若 w = y: [y:=x]([x:=y](λy.body)) = [y:=x](λy.[x:=y]body)。
+             由 freshVar 保证 y 新鲜，可应用 abs_rename。
+             需 [y:=x]([x:=y]body) =α body，由 IH。
+           - 若 w ≠ x 且 w ≠ y: [y:=x]([x:=y](λw.body)) = λw.[y:=x]([x:=y]body)。
+             由 IH: [y:=x]([x:=y]body) =α body。由 abs_same 得 λw.[...] =α λw.body。
+         · app t₁ t₂: 由 IH 和 AlphaEquiv.app。
+      -/
       sorry
   | app t₁ t₂ s₁ s₂ _ _ ih₁ ih₂ => 
       apply AlphaEquiv.app
@@ -283,13 +317,35 @@ lemma subst_preserves_alpha {x : Name} {s t₁ t₂ : Term}
      
      Case app: 直接由 app 规则和两个 IH 得证。
   -/
-  -- [FORMAL-GAP-N-05] 替换保持 α-等价。
-  -- 证明策略: 对 AlphaEquiv 关系结构归纳。
-  --   Case abs_same: 直接由 IH + abs_same / abs_rename。
-  --   Case abs_rename: 需利用替换的交换性 [x:=s](λy.t) =α [x:=s](λz.[y:=z]t)。
-  --     分 x=y, x=z, x∉{y,z} 三种情形，分别应用 subst 定义和 abs_rename。
-  --   Case app: 直接由 IH + AlphaEquiv.app。
-  -- 此引理完成後，Safety.lean 中 substitution_lemma 的 abs 分支可消去 sorry。
+  /- [FORMAL-GAP-N-05] 替换保持 α-等价。
+     
+     证明策略 (2026-04-21): 对 AlphaEquiv 关系结构归纳。
+     
+     Case var: t₁ = var z, t₂ = var z。
+     [x:=s](var z) 两边相同，由 alpha_equiv_refl 得证。
+     
+     Case abs_same: t₁ = abs y t₁', t₂ = abs y t₂'，t₁' =α t₂'。
+     由 IH: [x:=s]t₁' =α [x:=s]t₂'。
+     若 y = x: [x:=s](λx.t₁') = λx.t₁' =α λx.t₂' = [x:=s](λx.t₂')（由 abs_same 和 IH）。
+     若 y ≠ x 且 y ∈ fv(s): 两边都重命名为新鲜变量 z，
+       由 IH 于 [y:=z]t₁' 和 [y:=z]t₂'（需 subst_preserves_alpha 的前提版本）得证。
+     若 y ≠ x 且 y ∉ fv(s): [x:=s](λy.t₁') = λy.[x:=s]t₁' =α λy.[x:=s]t₂' = [x:=s](λy.t₂')（由 abs_same 和 IH）。
+     
+     Case abs_rename: t₁ = abs y t, t₂ = abs z ([y:=var z]t)，z 新鲜。
+     需证 [x:=s](λy.t) =α [x:=s](λz.[y:=var z]t)。
+     分情形:
+     · x = y: [x:=s](λx.t) = λx.t。右边 [x:=s](λz.[x:=var z]t)。
+       若 z = x: λx.[x:=var x]t = λx.t。=α。
+       若 z ≠ x: λz.[x:=var z]t。由 abs_rename（需 x ∉ fv(λz.[...])）。
+     · x = z: 类似。
+     · x ∉ {y, z}: [x:=s](λy.t) = λy.[x:=s]t。右边 = λz.[x:=s]([y:=var z]t)。
+       需 [x:=s]([y:=var z]t) =α [y:=var z]([x:=s]t)（替换交换性）。
+       然后由 abs_rename 和 IH 得证。
+     
+     Case app: 直接由 IH + AlphaEquiv.app。
+     
+     此引理完成后，Safety.lean 中 substitution_lemma 的 abs 分支可消去 sorry。
+  -/
   sorry
 
 end FormalMethods.Lambda.Substitution

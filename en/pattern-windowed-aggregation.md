@@ -1,85 +1,117 @@
 # Pattern: Windowed Aggregation
 
-> **Stage**: Knowledge/02-design-patterns | **Prerequisites**: [Window Concepts](window-concepts.md) | **Formalization Level**: L4
-> **Translation Date**: 2026-04-21
-
-## Abstract
-
-Windowed aggregation partitions unbounded streams into finite buckets for computation, bridging batch semantics and streaming execution.
+> **Stage**: Knowledge | **Prerequisites**: [Time Semantics](../flink-time-semantics-watermark.md) | **Formal Level**: L4
+>
+> **Pattern ID**: 02/7 | **Complexity**: ★★☆☆☆
+>
+> Splits unbounded data streams into finite time buckets for aggregation, resolving the tension between batch semantics and streaming computation.
 
 ---
 
 ## 1. Definitions
 
-### Def-K-02-01 (Window Assigner)
+**Def-K-02-01: Window Assigner**
 
-A **window assigner** maps each element to one or more windows:
+A function mapping each stream record to a set of time windows:
 
-$$\text{Assign}: \text{Element} \to 2^{\text{Window}}$$
+$$
+\text{Assigner}: \mathcal{D} \times \mathbb{T} \to \mathcal{P}(\text{WindowID})
+$$
 
-### Def-K-02-02 (Window Types)
+**Def-K-02-02: Window Types**
 
-| Type | Formula | Overlap |
-|------|---------|---------|
-| Tumbling | $[k\Delta, (k+1)\Delta)$ | None |
-| Sliding | $[k\Delta_s, k\Delta_s + \Delta_w)$ | Yes |
-| Session | $[t_{first}, t_{last} + g)$ | Dynamic |
-| Global | $[0, \infty)$ | All data |
+| Type | Behavior | Use Case |
+|------|----------|----------|
+| Tumbling | Fixed, non-overlapping | Periodic metrics |
+| Sliding | Fixed, overlapping | Moving averages |
+| Session | Dynamic, gap-based | User activity |
+| Global | Single, all-data | Global top-N |
 
-### Def-K-02-03 (Trigger)
+**Def-K-02-03: Trigger**
 
-A **trigger** determines when window results are emitted:
-
-$$\text{Trigger}: \text{Window} \times \text{Watermark} \to \{\text{FIRE}, \text{CONTINUE}, \text{PURGE}\}$$
-
-### Def-K-02-04 (Evictor)
-
-An **evictor** removes elements from a window before/after processing.
+Determines when a window's results are emitted. Default: watermark passes window end.
 
 ---
 
 ## 2. Properties
 
-### Prop-K-02-01 (Window Time Coverage Completeness)
+**Prop-K-02-01: Time Coverage Completeness**
 
-Tumbling windows cover all time without gaps:
+For tumbling windows of size $T$, every record belongs to exactly one window:
 
-$$\bigcup_k [k\Delta, (k+1)\Delta) = [0, \infty)$$
+$$
+\forall r. \; |\{ w \mid r \in w \}| = 1
+$$
 
-### Prop-K-02-02 (Window Assignment Determinism)
+**Prop-K-02-02: Window Assignment Determinism**
 
-Given the same element and window parameters, assignment is deterministic.
+Given the same assigner and timestamp, the same record is always assigned to the same window IDs.
 
 ---
 
-## 3. Flink Examples
+## 3. Relations
 
-### DataStream API
+- **with Watermark**: Window trigger depends on watermark progression for event-time windows.
+- **with Stateful Computation**: Window state must be checkpointed for fault tolerance.
+
+---
+
+## 4. Argumentation
+
+**Window Type Selection Matrix**:
+
+| Requirement | Tumbling | Sliding | Session |
+|-------------|----------|---------|---------|
+| Fixed intervals | ✓ | ✓ | ✗ |
+| Overlap needed | ✗ | ✓ | ✗ |
+| Activity-based | ✗ | ✗ | ✓ |
+| State efficiency | ✓ | ✗ | ✗ |
+
+---
+
+## 5. Engineering Argument
+
+**Thm-K-02-01 (Correctness Condition)**: Windowed aggregation produces correct results if and only if the assigner is total, the trigger is sound (emits after all data), and the aggregate function is associative.
+
+---
+
+## 6. Examples
 
 ```java
-stream
-    .keyBy(Event::getKey)
+// Tumbling window aggregation
+stream.keyBy(Event::getUserId)
     .window(TumblingEventTimeWindows.of(Time.minutes(5)))
-    .trigger(EventTimeTrigger.create())
     .aggregate(new AverageAggregate());
-```
 
-### SQL
-
-```sql
-SELECT 
-    TUMBLE_START(event_time, INTERVAL '5' MINUTE) as window_start,
-    key,
-    AVG(value) as avg_value
-FROM events
-GROUP BY 
-    TUMBLE(event_time, INTERVAL '5' MINUTE),
-    key;
+// Sliding window
+stream.keyBy(Event::getUserId)
+    .window(SlidingEventTimeWindows.of(Time.hours(1), Time.minutes(10)))
+    .aggregate(new CountAggregate());
 ```
 
 ---
 
-## 4. References
+## 7. Visualizations
 
-[^1]: Apache Flink Documentation, "Windows", 2025.
-[^2]: T. Akidau et al., "The Dataflow Model", PVLDB, 2015.
+**Window Types Comparison**:
+
+```mermaid
+gantt
+    title Window Types
+    dateFormat X
+    axisFormat %s
+    section Tumbling
+    Window 1 : 0, 5
+    Window 2 : 5, 10
+    section Sliding
+    Slide 1 : 0, 5
+    Slide 2 : 2, 7
+    Slide 3 : 4, 9
+    section Session
+    Session A : 0, 3
+    Session B : 7, 10
+```
+
+---
+
+## 8. References

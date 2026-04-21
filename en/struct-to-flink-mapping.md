@@ -1,64 +1,132 @@
-# Struct-to-Flink Formal Mapping Guide
+# Struct to Flink Formal Mapping Guide
 
-> **Stage**: Knowledge/05-mapping-guides | **Prerequisites**: [Struct/01-foundation], [Flink/02-core] | **Formalization Level**: L4-L5
-> **Translation Date**: 2026-04-21
-
-## Abstract
-
-Formal mapping from Struct/ theoretical concepts to Flink/ engineering implementations with semantic preservation guarantees.
+> **Stage**: Knowledge/05-mapping-guides | **Prerequisites**: [Struct/01-foundation], [Flink/02-core-mechanisms] | **Formal Level**: L4-L5
+>
+> Mapping from formal theory (Struct/) to Flink implementation: semantic preservation and approximation gaps.
 
 ---
 
 ## 1. Definitions
 
-### Def-K-05-01 (Formal-to-Implementation Mapping)
+**Def-K-05-01: Formal-to-Implementation Mapping**
 
-A mapping $\Phi: \text{Struct} \to \text{Flink}$ preserves semantics if:
+Partial function from formal domain $\mathcal{F}$ to implementation domain $\mathcal{I}$:
 
-$$\forall s \in \text{Struct}: \quad \llbracket s \rrbracket_{sem} = \llbracket \Phi(s) \rrbracket_{sem}$$
+$$
+\mathcal{M}: \mathcal{F} \rightharpoonup \mathcal{I}, \quad \mathcal{M}(f) = i
+$$
 
-### Def-K-05-02 (Semantic Preservation)
+**Def-K-05-02: Semantic Preservation**
 
-Implementation $i$ preserves theory $t$ if all observable behaviors of $i$ are valid in $t$.
+Mapping preserves semantics if formal properties hold in implementation:
 
----
+$$
+\forall P \in \text{Properties}(f): P(f) \implies P'(\mathcal{M}(f))
+$$
 
-## 2. Core Mappings
+**Def-K-05-03: Implementation Approximation**
 
-| Theory Concept | Flink Implementation | Preservation |
-|----------------|---------------------|--------------|
-| Dataflow Graph | DataStream API | Yes (by design) |
-| Watermark | WatermarkStrategy | Yes (monotonicity) |
-| Checkpoint Barrier | CheckpointCoordinator | Yes (consistency) |
-| Consistent Cut | Global Snapshot | Yes (Chandy-Lamport) |
-| Exactly-Once | 2PC + Replayable Source | Yes (end-to-end) |
-| Actor Model | ActorRuntime | Approximate |
-| Type Safety | TypeInformation | Yes (compile-time) |
+Implementation approximates formal model within bounded error:
 
----
-
-## 3. Key Theorem
-
-### Thm-K-05-01 (Core Mapping Semantic Preservation)
-
-The seven core mappings above preserve semantics under Flink's runtime assumptions.
+$$
+| \text{behavior}(i) - \text{behavior}(f) | < \epsilon
+$$
 
 ---
 
-## 4. Example: WordCount Mapping
+## 2. Properties
 
-```java
-// Theoretical: map(λw.(w,1)) → groupByKey → reduce(+)
-// Flink implementation:
-stream
-    .flatMap(new Tokenizer())           // map
-    .keyBy(t -> t.f0)                   // groupByKey
-    .sum(1);                            // reduce
+**Lemma-K-05-01: Mapping Transitivity**
+
+If $\mathcal{M}_1: A \to B$ and $\mathcal{M}_2: B \to C$ preserve semantics, then $\mathcal{M}_2 \circ \mathcal{M}_1$ preserves semantics.
+
+**Lemma-K-05-02: Theory Preservation**
+
+Core theorems in Struct/ have corresponding guarantees in Flink/.
+
+---
+
+## 3. Relations
+
+**Key Mappings**:
+
+| Formal Concept | Flink Implementation |
+|----------------|---------------------|
+| Dataflow Graph | DataStream API |
+| Watermark Monotonicity | WatermarkStrategy |
+| Checkpoint Barrier | CheckpointCoordinator |
+| Consistent Cut | Global Snapshot |
+| Exactly-Once | 2PC + Replayable Source |
+| Actor Model | Flink Actor Runtime |
+| Type Safety | TypeInformation System |
+
+---
+
+## 4. Argumentation
+
+**Correctness of Mappings**:
+
+| Mapping | Preserved? | Gap |
+|---------|-----------|-----|
+| Dataflow → DataStream | ✓ | None |
+| Watermark → Strategy | ✓ | Clock skew |
+| Checkpoint → Coordinator | ✓ | Network delay |
+| Exactly-Once → 2PC | Approximate | Timeout edge case |
+
+**Approximation Gaps**:
+- Formal model assumes synchronous communication; Flink is async
+- Formal model has infinite precision; Flink uses floating-point
+- Formal model assumes perfect clocks; Flink handles clock skew
+
+---
+
+## 5. Engineering Argument
+
+**Thm-K-05-01 (Core Mapping Semantic Preservation)**: The seven core mappings from Struct/ to Flink/ preserve semantics modulo implementation approximation bounds.
+
+---
+
+## 6. Examples
+
+**WordCount Mapping**:
+
+```
+Formal:    map(split) → groupBy(word) → count
+Flink:     flatMap(tokenize) → keyBy(word) → sum(1)
+```
+
+**Event Time Window Mapping**:
+
+```
+Formal:    Window_{[t, t+T)}(S) = {e ∈ S | t ≤ t_event(e) < t+T}
+Flink:     .window(TumblingEventTimeWindows.of(Time.minutes(5)))
 ```
 
 ---
 
-## 5. References
+## 7. Visualizations
 
-[^1]: Apache Flink Documentation, "Internals", 2025.
-[^2]: T. Akidau et al., "The Dataflow Model", PVLDB, 2015.
+**Mapping Overview**:
+```mermaid
+graph LR
+    subgraph Formal[Struct/ Formal]
+        A[Dataflow Graph]
+        B[Watermark]
+        C[Consistent Cut]
+    end
+    subgraph Impl[Flink/ Implementation]
+        D[DataStream API]
+        E[WatermarkStrategy]
+        F[CheckpointCoordinator]
+    end
+    A --> D
+    B --> E
+    C --> F
+```
+
+---
+
+## 8. References
+
+[^1]: T. Akidau et al., "The Dataflow Model", PVLDB, 8(12), 2015.
+[^2]: Apache Flink Documentation, "Concepts", 2025.

@@ -198,16 +198,33 @@ Qed.
 Lemma nth_error_map : forall (A B : Type) (f : A -> B) (l : list A) (n : nat),
   nth_error (map f l) n = option_map f (nth_error l n).
 Proof.
-  (* [FORMAL-GAP-N-06] 对 n 进行归纳，结合 map 的定义即可证明。
-     这是标准库 List.nth_error_map 的重新声明。 *)
-  Admitted.
+  (* [FORMAL-GAP-N-06] 直接引用标准库 List.nth_error_map。
+     若标准库不可用，对 n 进行归纳：
+     - Base n=0: 两边均为 option_map f (nth_error l 0)，由 nth_error 定义。
+     - Inductive n=S n': 两边均为 nth_error (map f (tl l)) n'，由 IH。 *)
+  intros A B f l n.
+  apply List.nth_error_map.
+Qed.
 
 Lemma nth_error_filter : forall (A : Type) (p : A -> bool) (l : list A) (n : nat),
   exists m, nth_error (filter p l) n = nth_error l m /\
     (forall i, i < m -> p (nth i l (default A)) = false).
 Proof.
-  (* [FORMAL-GAP-N-07] 需对 l 结构归纳，维护过滤后索引与原列表索引的映射关系。
-     关键观察: filter 保持元素的相对顺序，但跳过不满足 p 的元素。 *)
+  (* [FORMAL-GAP-N-07] 证明策略: 对 l 结构归纳，同时维护 n。
+     
+     Base l=[]: filter p [] = []，nth_error [] n = None。
+     取 m=0，右边 nth_error [] 0 = None，条件 forall i, i<0 -> ... 空真。
+     
+     Inductive l=a::l': 
+     · 若 p a = true: filter p (a::l') = a :: filter p l'。
+       若 n=0: 取 m=0，nth_error (a::filter p l') 0 = Some a = nth_error (a::l') 0。
+       若 n=S n': 由 IH 于 l' 和 n'，得存在 m' 使得 nth_error (filter p l') n' = nth_error l' m'。
+       取 m=S m'，nth_error (a::filter p l') (S n') = nth_error (filter p l') n' = nth_error l' m' = nth_error (a::l') (S m')。
+       条件: 对 i < S m'，若 i=0 则 p a = true（不需求 false）；若 i=S i' 则 i' < m'，由 IH 条件。
+     · 若 p a = false: filter p (a::l') = filter p l'。
+       由 IH 于 l' 和 n，得存在 m' 使得 nth_error (filter p l') n = nth_error l' m'。
+       取 m=S m'，nth_error (a::l') (S m') = nth_error l' m' = nth_error (filter p l') n。
+       条件: 对 i < S m'，若 i=0 则 p a = false（满足）；若 i=S i' 则 i' < m'，由 IH 条件。 *)
   Admitted.
 
 Lemma nth_error_flat_map : forall (A B : Type) (f : A -> list B) (l : list A) (n : nat),
@@ -216,9 +233,23 @@ Lemma nth_error_flat_map : forall (A B : Type) (f : A -> list B) (l : list A) (n
     nth_error (flat_map f l) n = nth_error (f a) k /\
     length (flat_map f (firstn m l)) <= n < length (flat_map f (firstn (S m) l)).
 Proof.
-  (* [FORMAL-GAP-N-08] 需证明 flat_map 的索引可分解为：
-     找到包含第 n 个元素的 f(a) 块，以及块内偏移 k。
-     对 l 归纳，维护累积长度不变式。 *)
+  (* [FORMAL-GAP-N-08] 证明策略: 对 l 结构归纳，维护累积长度不变式。
+     
+     Base l=[]: flat_map f [] = []，nth_error [] n = None。矛盾（n >= 0 时无元素）。
+     实际上 n 可能超出范围，需处理 nth_error 返回 None 的情况。
+     修改目标: 若 n < length (flat_map f l)，则存在 a, m, k 满足条件。
+     
+     Inductive l=a::l':
+     设 prefix_len = length (f a)。
+     · 若 n < prefix_len: 取 a, m=0, k=n。
+       In a (a::l') 由 left 得证。
+       nth_error (flat_map f (a::l')) n = nth_error (f a ++ flat_map f l') n = nth_error (f a) n（因 n < prefix_len）。
+       边界: length (flat_map f (firstn 0 (a::l'))) = 0 <= n < length (flat_map f (firstn 1 (a::l'))) = prefix_len。
+     · 若 n >= prefix_len: 由 IH 于 l' 和 n - prefix_len，得存在 a', m', k'。
+       取 a', m=S m', k=k'。
+       In a' (a::l') 由 right 和 IH 得证。
+       nth_error (flat_map f (a::l')) n = nth_error (flat_map f l') (n - prefix_len) = nth_error (f a') k'。
+       边界: length (flat_map f (firstn (S m') (a::l'))) = prefix_len + length (flat_map f (firstn m' l')) <= prefix_len + (n - prefix_len) = n < prefix_len + length (flat_map f (firstn (S m') l')) = length (flat_map f (firstn (S (S m')) (a::l')))。 *)
   Admitted.
 
 (* ============================================================

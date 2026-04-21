@@ -291,7 +291,13 @@ theorem preservation : ∀ (Γ : Context) (t t' : Tm) (T : Ty),
   | T_pred h ih =>
       cases hstep with
       | ST_predzero => apply HasType.T_zero
-      | ST_predsucc hval => sorry -- 需 canonical_forms_nat 引理
+      | ST_predsucc hval =>
+          /- 证明 (2026-04-21): pred (succ t) → t，需证 Γ ⊢ t : Nat。
+             由 h: HasType Γ (succ t) Nat（T_pred 的前提）。
+             对 h 反演: succ t 具有类型 Nat 的唯一构造子是 T_succ，
+             故 h = T_succ h'，其中 h': HasType Γ t Nat。exact h'。-/
+          cases h with
+          | T_succ h' => exact h'
       | ST_pred hstep' => apply HasType.T_pred; exact ih hstep' (by rfl)
   | T_iszero h ih =>
       cases hstep with

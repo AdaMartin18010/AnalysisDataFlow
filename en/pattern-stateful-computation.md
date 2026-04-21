@@ -1,170 +1,128 @@
 # Pattern: Stateful Computation
 
-> **Stage**: Knowledge/02-design-patterns | **Prerequisites**: [State Management Concepts](state-management-concepts.md) | **Formalization Level**: L4-L5
-> **Translation Date**: 2026-04-21
-
-## Abstract
-
-Stateful computation is the foundation of advanced stream processing. This pattern addresses the core tensions between state consistency, fault tolerance, and large-scale state management in distributed systems.
+> **Stage**: Knowledge | **Prerequisites**: [Checkpoint Mechanism](../flink-state-management-complete-guide.md) | **Formal Level**: L4-L5
+>
+> **Pattern ID**: 05/7 | **Complexity**: ★★★★☆
+>
+> Addresses the core tension between state consistency, fault recovery, and large-scale state management in distributed stream processing.
 
 ---
 
 ## 1. Definitions
 
-### Def-K-02-04 (Operator State)
+**Def-K-02-04: Operator State**
 
-**Operator state** is bound to operator instances, shared across parallel subtasks:
+Global state bound to operator instance, shared by all records in the stream[^1].
 
-$$\text{OperatorState}: \text{Op} \to 2^{(K \times V)}$$
+**Def-K-02-05: Keyed State**
 
-Use cases: Source offsets, Sink transaction metadata.
+Partitioned state scoped to a specific key, enabling independent per-key operations and checkpointing.
 
-### Def-K-02-05 (Keyed State)
+**Def-K-02-06: State Backend**
 
-**Keyed state** is partitioned by data key:
+Pluggable storage layer for keyed/operator state. Primary implementations: HashMapStateBackend (heap) and RocksDBStateBackend (embedded KV).
 
-$$\text{KeyedState}: K \to V$$
+**Def-K-02-07: State TTL**
 
-Use cases: Per-user aggregations, session state, keyed counters.
-
-### Def-K-02-06 (State Backend)
-
-The **state backend** provides persistence abstraction:
-
-$$\text{StateBackend} = \langle \text{Store}, \text{Snap}, \text{Restore} \rangle$$
-
-Implementations: MemoryStateBackend, FsStateBackend, RocksDBStateBackend.
-
-### Def-K-02-07 (State TTL)
-
-**Time-to-live** automatically expires state:
-
-$$\text{TTL}: \text{StateEntry} \times \mathbb{T} \to \{\text{Valid}, \text{Expired}\}$$
-
-Cleanup strategies: full snapshot filter, incremental cleanup, RocksDB compaction filter.
-
-### Def-K-02-08 (Queryable State)
-
-**Queryable state** allows external reads of operator state:
-
-$$\text{Query}: \text{StateKey} \times \text{QueryPredicate} \to \text{StateValue}$$
+Time-to-live mechanism for automatic state expiration, preventing unbounded state growth.
 
 ---
 
 ## 2. Properties
 
-### Prop-K-02-03 (State Partition Determinism)
+**Prop-K-02-03: State Partitioning Determinism**
 
-For keyed state, records with the same key always access the same state partition:
+For keyed state, the same key is always routed to the same parallel subtask:
 
-$$\forall r_1, r_2: \text{key}(r_1) = \text{key}(r_2) \Rightarrow \text{partition}(r_1) = \text{partition}(r_2)$$
+$$
+\forall k. \; \text{partition}(k) = \text{hash}(k) \bmod \text{parallelism}
+$$
 
-### Prop-K-02-04 (TTL Validity Boundary)
+**Prop-K-02-04: TTL Validity Boundary**
 
-Expired state is never returned in queries:
+State accessed after TTL expiration returns default value (null or configured cleanup):
 
-$$\text{TTL}(s) = \text{Expired} \Rightarrow \nexists q: \text{Query}(q) = s$$
-
-### Prop-K-02-05 (State Backend Latency)
-
-| Backend | Read Latency | Write Latency | Capacity |
-|---------|-------------|--------------|----------|
-| Memory | ~100ns | ~100ns | Limited by heap |
-| RocksDB | ~1-10μs | ~10-100μs | Disk size |
-| Remote (e.g., Redis) | ~1ms | ~1ms | External limit |
+$$
+\forall s. \; \text{now} - \text{lastAccess}(s) > \text{TTL} \implies \text{read}(s) = \bot
+$$
 
 ---
 
 ## 3. Relations
 
-### Relation to Event Time Processing
-
-Stateful operators in event time must handle out-of-order data. Watermark progress triggers state expiration and window completion.
-
-### Relation to Window Aggregation
-
-Windowed aggregations are a specialization of keyed state: each window is a key, the aggregate is the value.
-
-### Relation to Checkpointing
-
-Checkpointing captures consistent snapshots of all state. Recovery restores state to the checkpointed version.
+- **with Event Time**: State expiry can be aligned with watermark progression.
+- **with Window Aggregation**: Window buffers are a specialized form of keyed state.
+- **with Checkpoint**: State backends provide the snapshot mechanism for checkpoint persistence.
 
 ---
 
-## 4. Engineering Argument
+## 4. Argumentation
 
-### 4.1 State Backend Selection
+**State Backend Selection**:
 
-```
-Is state size < JVM heap?
-├── YES → MemoryStateBackend (fastest, dev only)
-└── NO  → Is state size < 100GB and latency sensitive?
-          ├── YES → FsStateBackend
-          └── NO  → RocksDBStateBackend (production default)
-```
-
-### 4.2 State Size Estimation
-
-$$\text{StateSize} = \text{KeyCount} \times (\text{KeySize} + \text{ValueSize} + \text{Overhead})$$
-
-RocksDB overhead: ~50 bytes per key-value pair (index, metadata).
+| Factor | HashMap | RocksDB |
+|--------|---------|---------|
+| Latency | ~μs | ~ms |
+| Capacity | Heap limited | Disk-backed (TB+) |
+| Incremental checkpoint | No | Yes |
+| SSD required | No | Recommended |
 
 ---
 
-## 5. Examples
+## 5. Engineering Argument
 
-### 5.1 Keyed State Basic Usage
+**Keyed State Local Determinism**: Within a single subtask, keyed state operations are deterministic because each key maps to a single state entry. This enables efficient incremental checkpointing at key-group granularity.
+
+---
+
+## 6. Examples
 
 ```java
-ValueStateDescriptor<Long> sumState = 
-    new ValueStateDescriptor<>("sum", Types.LONG);
+// Keyed state with ValueState
+class CountFunction extends KeyedProcessFunction<String, Event, Result> {
+    private ValueState<Long> countState;
 
-public void processElement(Event event, Context ctx, Collector<Result> out) {
-    Long current = sumState.value();
-    if (current == null) current = 0L;
-    sumState.update(current + event.getValue());
+    @Override
+    public void open(Configuration params) {
+        StateTtlConfig ttl = StateTtlConfig
+            .newBuilder(Time.hours(24))
+            .setUpdateType(OnCreateAndWrite)
+            .build();
+        ValueStateDescriptor<Long> descriptor =
+            new ValueStateDescriptor<>("count", Types.LONG);
+        descriptor.enableTimeToLive(ttl);
+        countState = getRuntimeContext().getState(descriptor);
+    }
+
+    @Override
+    public void processElement(Event value, Context ctx, Collector<Result> out) throws Exception {
+        Long current = countState.value();
+        if (current == null) current = 0L;
+        current += 1;
+        countState.update(current);
+        out.collect(new Result(value.getKey(), current));
+    }
 }
 ```
 
-### 5.2 State TTL Configuration
-
-```java
-StateTtlConfig ttlConfig = StateTtlConfig
-    .newBuilder(Time.hours(24))
-    .setUpdateType(OnCreateAndWrite)
-    .setStateVisibility(NeverReturnExpired)
-    .cleanupIncrementally(10, true)
-    .build();
-
-descriptor.enableTimeToLive(ttlConfig);
-```
-
 ---
 
-## 6. Visualizations
+## 7. Visualizations
+
+**State Management Architecture**:
 
 ```mermaid
-graph TD
-    subgraph "State Management"
-        K[Keyed State] --> R[RocksDB]
-        O[Operator State] --> R
-        R --> C[Checkpoint to DFS]
+graph TB
+    subgraph Task[Task Manager]
+        A[KeyedProcessFunction] --> B[State Backend]
+        B -->|HashMap| C[JVM Heap]
+        B -->|RocksDB| D[Local Disk]
     end
-    
-    subgraph "Recovery"
-        C --> Rest[Restore on Restart]
-        Rest --> K
-    end
-    
-    style R fill:#e8f5e9
-    style C fill:#e1f5fe
+    D --> E[Checkpoint to DFS]
 ```
 
 ---
 
-## 7. References
+## 8. References
 
 [^1]: Apache Flink Documentation, "State Backends", 2025.
-[^2]: Apache Flink Documentation, "Queryable State", 2025.
-[^3]: F. Hueske et al., "Stream Processing with Apache Flink", O'Reilly, 2019.
-[^4]: RocksDB Documentation, "RocksDB Tuning Guide", Meta, 2025.

@@ -1,74 +1,110 @@
 # Performance Tuning Patterns
 
-> **Stage**: Knowledge/07-best-practices | **Prerequisites**: [Anti-patterns](anti-pattern-serialization-overhead.md) | **Formalization Level**: L3
-> **Translation Date**: 2026-04-21
-
-## Abstract
-
-Systematic optimization patterns for Flink jobs covering serialization, networking, state access, and JVM tuning.
+> **Stage**: Knowledge/07-best-practices | **Prerequisites**: [Anti-Patterns](../09-anti-patterns/anti-pattern-06-serialization-overhead.md) | **Formal Level**: L3
+>
+> Systematic performance optimization patterns for Flink jobs: serialization, network, state access, and JVM tuning.
 
 ---
 
-## 1. Key Performance Metrics
+## 1. Definitions
 
-| Metric | Definition | Measurement | Goal |
-|--------|-----------|-------------|------|
-| Throughput | Records processed per second | `numRecordsInPerSecond` | Maximize |
-| Latency | Input to output time | `currentOutputWatermark - inputTimestamp` | Minimize |
-| Backpressure | Upstream blocking time | `backPressuredTimeMsPerSecond` | Minimize |
-| Checkpoint time | Snapshot duration | `checkpointDuration` | Minimize |
-| CPU utilization | Effective compute ratio | `cpuTime` / wallTime | Maximize |
+**Def-K-07-02: Performance Tuning Pattern**
+
+Reusable optimization solution for common streaming performance bottlenecks.
+
+**Key Performance Indicators**:
+
+| Metric | Definition | Optimization Goal |
+|--------|------------|-------------------|
+| Throughput | Records processed per second | Maximize |
+| Latency | Input to output time | Minimize |
+| Backpressure | Upstream blocking time | Minimize |
+| Checkpoint duration | Snapshot time | Minimize |
+| CPU utilization | Effective compute ratio | Maximize |
+
+**Bottleneck Categories**:
+- Compute: Serialization, deserialization, business logic
+- Network: Buffer exhaustion, credit starvation
+- Storage: State access latency, checkpoint I/O
+- JVM: GC pauses, heap pressure
 
 ---
 
-## 2. Serialization Optimization
+## 2. Properties
+
+**Prop-K-07-01: Serialization Dominance**
+
+For complex records, serialization often consumes > 50% of CPU time.
+
+**Prop-K-07-02: State Access Locality**
+
+Keyed state access exhibits temporal locality; recently accessed keys are likely to be accessed again.
+
+---
+
+## 3. Relations
+
+- **with Anti-Patterns**: Tuning patterns address specific anti-patterns.
+- **with State Backends**: State access patterns depend on backend choice.
+
+---
+
+## 4. Argumentation
+
+**Serialization Optimization**:
+
+| Serializer | Speed | Schema | Best For |
+|------------|-------|--------|----------|
+| Kryo | Fast | Dynamic | POJOs |
+| Avro | Medium | Explicit | Schema evolution |
+| Protobuf | Fast | Explicit | Cross-language |
+| POJO | Fastest | Java-only | Simple types |
+
+**State Access Optimization**:
+- Use ValueState instead of ListState for single values
+- Enable state backend cache (RocksDB block cache)
+- Batch state updates where possible
+
+---
+
+## 5. Engineering Argument
+
+**Optimization Impact Hierarchy**:
+
+1. Serialization (often 2-10x improvement)
+2. Parallelism tuning (2-5x)
+3. State backend selection (1.5-3x)
+4. JVM tuning (1.2-2x)
+
+---
+
+## 6. Examples
 
 ```java
-// Use POJOs with public fields (fastest)
-public class Event {
-    public long timestamp;
-    public String key;
-    public double value;
-}
+// Serialization optimization: use POJO or Avro
+env.getConfig().registerTypeWithKryoSerializer(MyEvent.class, MyEventSerializer.class);
 
-// Avoid generic types when possible
-// Use TypeInformation explicitly
-TypeInformation<Event> typeInfo = TypeInformation.of(Event.class);
-```
-
-| Serializer | Speed | Compatibility |
-|------------|-------|---------------|
-| POJO (public fields) | ★★★★★ | ★★★★☆ |
-| POJO (getters/setters) | ★★★★☆ | ★★★★★ |
-| Avro | ★★★★☆ | ★★★★★ |
-| Kryo | ★★★☆☆ | ★★★★☆ |
-| Generic (TypeExtractor) | ★★☆☆☆ | ★★★★★ |
-
----
-
-## 3. State Access Optimization
-
-| Pattern | Impact | When to Use |
-|---------|--------|-------------|
-| ValueState | Lowest overhead | Single value per key |
-| MapState | Efficient for maps | Key-value collections |
-| ListState | Sequential access | Ordered collections |
-| State TTL | Automatic cleanup | Time-bound state |
-
----
-
-## 4. JVM Optimization
-
-```java
-// Recommended JVM options
-env.getConfiguration().setString("env.java.opts",
-    "-XX:+UseG1GC " +
-    "-XX:MaxGCPauseMillis=100 " +
-    "-XX:+UnlockExperimentalVMOptions " +
-    "-XX:+UseContainerSupport"
-);
+// State access optimization: batch updates
+ListStateUpdateMode updateMode = ListStateUpdateMode.BATCH;
 ```
 
 ---
 
-## 5. References
+## 7. Visualizations
+
+**Performance Tuning Decision Tree**:
+```mermaid
+graph TD
+    A[Low Throughput] --> B{High CPU?}
+    B -->|Yes| C[Serialization]
+    B -->|No| D{Backpressure?}
+    D -->|Yes| E[Network/Buffer]
+    D -->|No| F[State Access]
+```
+
+---
+
+## 8. References
+
+[^1]: Apache Flink Documentation, "Performance Tuning", 2025.
+[^2]: Netflix Tech Blog, "Flink Performance Optimization", 2023.

@@ -1256,37 +1256,37 @@ theorem standard_model_satisfies_basic :
     /- 在 ℕ 上: ∀ n : Nat, n + 1 ≠ 0
        由 Nat.succ_ne_zero 直接得证。
     -/
-    sorry
+    intro n; apply Nat.succ_ne_zero
   · -- S2: ∀x∀y. S(x) = S(y) → x = y
     simp [Satisfies, StandardModel, S2, Structure.satisfies, Structure.interpTerm]
     /- 在 ℕ 上: ∀ m n : Nat, m + 1 = n + 1 → m = n
        由 Nat.succ_inj 直接得证。
     -/
-    sorry
+    intros m n h; apply Nat.succ_inj; exact h
   · -- S3: ∀x. x + 0 = x
     simp [Satisfies, StandardModel, S3, Structure.satisfies, Structure.interpTerm]
     /- 在 ℕ 上: ∀ n : Nat, n + 0 = n
        由 Nat.add_zero 直接得证。
     -/
-    sorry
+    intro n; rw [Nat.add_zero]
   · -- S4: ∀x∀y. x + S(y) = S(x + y)
     simp [Satisfies, StandardModel, S4, Structure.satisfies, Structure.interpTerm]
     /- 在 ℕ 上: ∀ m n : Nat, m + (n + 1) = (m + n) + 1
        由 Nat.add_succ 直接得证。
     -/
-    sorry
+    intros m n; rw [Nat.add_succ]
   · -- S5: ∀x. x × 0 = 0
     simp [Satisfies, StandardModel, S5, Structure.satisfies, Structure.interpTerm]
     /- 在 ℕ 上: ∀ n : Nat, n * 0 = 0
        由 Nat.mul_zero 直接得证。
     -/
-    sorry
+    intro n; rw [Nat.mul_zero]
   · -- S6: ∀x∀y. x × S(y) = (x × y) + x
     simp [Satisfies, StandardModel, S6, Structure.satisfies, Structure.interpTerm]
     /- 在 ℕ 上: ∀ m n : Nat, m * (n + 1) = (m * n) + m
        由 Nat.mul_succ 直接得证。
     -/
-    sorry
+    intros m n; rw [Nat.mul_succ]
 
 end PeanoArithmetic
 
