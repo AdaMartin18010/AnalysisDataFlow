@@ -1,116 +1,71 @@
 # Flink Production Deployment Checklist
 
-> **Stage**: Knowledge/07-best-practices | **Prerequisites**: [Anti-pattern Checklist](anti-pattern-checklist.md) | **Formalization Level**: L3
+> **Stage**: Knowledge/07-best-practices | **Prerequisites**: [Anti-patterns](anti-pattern-checklist.md) | **Formalization Level**: L3
 > **Translation Date**: 2026-04-21
 
 ## Abstract
 
-This checklist provides a systematic verification process for deploying Flink jobs to production, ensuring stability, reliability, security, and performance.
+Systematic checklist for deploying Flink jobs to production with stability, reliability, security, and performance guarantees.
 
 ---
 
-## 1. Definitions
+## 1. Configuration Checklist
 
-### Def-K-07-01 (Production Deployment Checklist)
+### Checkpoint
 
-A **production deployment checklist** is a set of verification steps ensuring Flink jobs meet requirements before production deployment.
+| Item | Recommendation | Criticality |
+|------|---------------|-------------|
+| Interval | 1-10 minutes | High |
+| Timeout | > interval | High |
+| Mode | EXACTLY_ONCE for correctness | High |
+| Unaligned | Enable if backpressure > 30s | Medium |
 
----
+### Watermark
 
-## 2. Checklist Categories
+| Item | Recommendation | Criticality |
+|------|---------------|-------------|
+| Strategy | BoundedOutOfOrderness | High |
+| Max delay | 2x observed max delay | High |
+| Idleness | Enable for multi-source | Medium |
 
-### 2.1 Configuration Checks
+### Resources
 
-#### Checkpoint Configuration
-
-- [ ] Checkpoint interval: 10s - 10min (typical: 1min)
-- [ ] Checkpoint timeout: > interval + network latency
-- [ ] Exactly-once semantics enabled (if required)
-- [ ] Incremental checkpointing enabled for large state
-- [ ] Unaligned checkpoints considered for backpressure scenarios
-- [ ] Externalized checkpoint cleanup: RETAIN_ON_CANCELLATION or DELETE_ON_CANCELLATION
-
-#### Watermark Configuration
-
-- [ ] Watermark strategy defined (event time processing)
-- [ ] Max out-of-orderness configured based on source characteristics
-- [ ] Idle source timeout configured for multi-source jobs
-- [ ] Allowed lateness configured for windowed operations
-
-#### Resource Configuration
-
-- [ ] Parallelism matches source partition count (Kafka: 1:1)
-- [ ] Task slots per TM: 1-4 (avoid oversubscription)
-- [ ] JVM heap size: at least 2GB per slot
-- [ ] Managed memory fraction: 0.4 for RocksDB, 0.1 for memory state
-
-### 2.2 Monitoring Checks
-
-#### Basic Monitoring
-
-- [ ] JobManager and TaskManager metrics exposed (Prometheus)
-- [ ] Lag metrics for all sources (records behind latest offset)
-- [ ] Backpressure monitoring enabled
-- [ ] Checkpoint failure alerts configured
-- [ ] Restart strategy configured (fixed-delay or exponential-backoff)
-
-#### Log Checks
-
-- [ ] Structured logging (JSON format)
-- [ ] Log level: INFO for production, DEBUG for troubleshooting only
-- [ ] Log retention policy configured
-- [ ] Sensitive data masked in logs
-
-### 2.3 Security Review
-
-#### Authentication & Authorization
-
-- [ ] Kerberos / OAuth enabled for cluster access
-- [ ] RBAC configured for Kubernetes deployment
-- [ ] Service accounts with least privilege
-
-#### Data Security
-
-- [ ] TLS enabled for network communication
-- [ ] Encryption at rest for state backends (if applicable)
-- [ ] PII data handling complies with regulations (GDPR, CCPA)
-
-#### Audit Logging
-
-- [ ] Job submission audit trail
-- [ ] Configuration change tracking
-- [ ] Access logs for state queries
-
-### 2.4 Performance Validation
-
-#### Load Testing
-
-- [ ] Baseline throughput measured
-- [ ] Peak load test: 2x expected traffic
-- [ ] Recovery test: kill TM, verify automatic restart
-- [ ] Backpressure behavior observed and acceptable
+| Item | Recommendation | Criticality |
+|------|---------------|-------------|
+| Parallelism | Match Kafka partitions | High |
+| Heap/Managed memory | 40%/40% split | High |
+| Network memory | min 64MB per slot | Medium |
 
 ---
 
-## 3. Deployment Flow
+## 2. Monitoring Checklist
 
-```mermaid
-graph LR
-    Dev[Development] --> Review[Code Review]
-    Review --> Staging[Staging Deploy]
-    Staging --> Check[Checklist Verification]
-    Check --> LoadTest[Load Testing]
-    LoadTest --> Prod[Production Deploy]
-    Prod --> Monitor[Monitoring]
-    
-    style Check fill:#fff3e0
-    style Prod fill:#e8f5e9
-```
+- [ ] JobManager/TaskManager JVM metrics
+- [ ] Checkpoint duration and failures
+- [ ] Backpressure ratio per operator
+- [ ] Watermark lag per source
+- [ ] Records in/out per second
+- [ ] State size growth rate
 
 ---
 
-## 4. References
+## 3. Security Checklist
 
-[^1]: Apache Flink Documentation, "Production Readiness", 2025.
-[^2]: Apache Flink Documentation, "Configuration", 2025.
-[^3]: Apache Flink Documentation, "Monitoring and Metrics", 2025.
+- [ ] Kerberos authentication enabled
+- [ ] TLS for network communication
+- [ ] RBAC for Flink Web UI
+- [ ] Audit logging enabled
+- [ ] Sensitive data encryption at rest
+
+---
+
+## 4. Performance Validation
+
+- [ ] Throughput meets SLA
+- [ ] P99 latency < 100ms (or requirement)
+- [ ] No backpressure under peak load
+- [ ] Recovery time < 2 minutes
+
+---
+
+## 5. References

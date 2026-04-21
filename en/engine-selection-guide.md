@@ -1,69 +1,48 @@
 # Stream Processing Engine Selection Guide
 
-> **Stage**: Knowledge/04-technology-selection | **Prerequisites**: [Expressiveness Hierarchy](expressiveness-hierarchy.md) | **Formalization Level**: L4-L6
+> **Stage**: Knowledge/04-technology-selection | **Prerequisites**: [Expressiveness Hierarchy](../../Struct/03-relationships/03.03-expressiveness-hierarchy.md) | **Formalization Level**: L4-L6
 > **Translation Date**: 2026-04-21
 
 ## Abstract
 
-This guide provides a systematic framework for selecting stream processing engines across six dimensions: latency, throughput, state management, consistency, expressiveness, and ecosystem.
+Decision framework for selecting stream processing engines across six dimensions: latency, throughput, semantics, state management, ecosystem, and operability.
 
 ---
 
-## 1. Definitions
+## 1. Engine Definitions
 
-### Def-K-04-01 (Apache Flink)
-
-Native streaming engine with event-time semantics, exactly-once guarantees, and advanced state management.
-
-### Def-K-04-02 (Kafka Streams)
-
-Lightweight stream processing library embedded in Kafka clients. Best for stream-stream joins and event-driven microservices.
-
-### Def-K-04-03 (Spark Structured Streaming)
-
-Micro-batch engine with Spark SQL integration. Best for unified batch/streaming analytics.
-
-### Def-K-04-04 (Apache Storm)
-
-Low-latency record-at-a-time engine. Best for sub-10ms latency requirements.
-
-### Def-K-04-05 (Pulsar Functions)
-
-Serverless event processing on Pulsar topics. Best for simple transformations.
+| Engine | Architecture | Latency | Exactly-Once |
+|--------|-------------|---------|--------------|
+| Apache Flink | Native streaming | < 100ms | Yes (checkpoint) |
+| Kafka Streams | Embedded library | < 10ms | Yes (transactions) |
+| Spark Structured Streaming | Micro-batch | ~100ms-seconds | Yes (WAL+checkpoint) |
+| Apache Storm | Native streaming | < 10ms | No (at-least-once) |
+| Pulsar Functions | Serverless | < 100ms | Yes (transactions) |
 
 ---
 
-## 2. Comparison Matrix
+## 2. Key Properties
 
-| Dimension | Flink | Kafka Streams | Spark SS | Storm |
-|-----------|-------|--------------|----------|-------|
-| Latency | 10-100ms | 10-100ms | 100ms-1s | <10ms |
-| Throughput | Very High | High | High | Very High |
-| State | Advanced (RocksDB) | Local (RocksDB) | HDFS-based | In-memory |
-| Exactly-Once | ✅ Native | ✅ Transactional | ✅ Idempotent | ⚠️ At-Least-Once |
-| Event Time | ✅ Native | ✅ Supported | ✅ Supported | ❌ |
-| SQL | ✅ Table API | ❌ KSQL | ✅ Spark SQL | ❌ |
+### Lemma-K-04-01 (Latency-Throughput Trade-off Upper Bound)
+
+For any engine: $L \cdot T \leq C$ (constant bounded by architecture).
+
+### Prop-K-04-02 (Micro-batch Latency Lower Bound)
+
+Micro-batch engines have latency lower bound: $L \geq \Delta_{batch}$.
 
 ---
 
-## 3. Decision Framework
+## 3. Selection Matrix
 
-```
-Need sub-100ms latency?
-├── YES → Need exactly-once?
-│         ├── YES → Flink
-│         └── NO  → Storm
-└── NO  → Need unified batch/streaming?
-          ├── YES → Spark SS
-          └── NO  → Already using Kafka?
-                    ├── YES → Kafka Streams
-                    └── NO  → Flink (default)
-```
+| Scenario | Recommended | Reason |
+|----------|-------------|--------|
+| Real-time ML inference | Flink | Low latency + stateful |
+| ETL pipelines | Spark | Batch heritage + SQL |
+| Event-driven microservices | Kafka Streams | Embedded simplicity |
+| Simple transformations | Pulsar Functions | Serverless ease |
+| Legacy migration | Storm → Flink | Similar semantics |
 
 ---
 
 ## 4. References
-
-[^1]: Apache Flink Documentation, 2025.
-[^2]: Confluent, "Kafka Streams vs Flink", 2024.
-[^3]: Databricks, "Structured Streaming Guide", 2025.
