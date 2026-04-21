@@ -35,7 +35,7 @@
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [论证: 统一一致性格的存在性](#论证-统一一致性格的存在性)
     - [论证: 网络分区下 Exactly-Once 的必要条件](#论证-网络分区下-exactly-once-的必要条件)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)]()
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-S-07-20: 流计算确定性定理](#thm-s-07-20-流计算确定性定理)
     - [Thm-S-08-06: Exactly-Once 网络分区必要条件](#thm-s-08-06-exactly-once-网络分区必要条件)
     - [Thm-S-08-29: 端到端 Exactly-Once 正确性](#thm-s-08-29-端到端-exactly-once-正确性)

@@ -24,7 +24,7 @@
     - [论证 1: 为什么不存在"终极"验证工具链](#论证-1-为什么不存在终极验证工具链)
     - [论证 2: Veil 的定位与独特价值](#论证-2-veil-的定位与独特价值)
     - [论证 3: Iris 的并发验证不可替代性](#论证-3-iris-的并发验证不可替代性)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [工程论证: 流计算系统验证的工具链选择决策](#工程论证-流计算系统验证的工具链选择决策)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [示例 1: 五大工具链的"Hello, World"对比](#示例-1-五大工具链的hello-world对比)

@@ -233,7 +233,7 @@ CoFixpoint filter {A} (f : A -> bool) (s : Stream A) : Stream A :=
     filter f (tail s).
 
 (* 流压缩:合并相邻元素 *)
-CoFixpoint zip_with {A B C} (f : A -> B -> C) 
+CoFixpoint zip_with {A B C} (f : A -> B -> C)
   (sa : Stream A) (sb : Stream B) : Stream C :=
   Cons (f (head sa) (head sb)) (zip_with f (tail sa) (tail sb)).
 
@@ -429,7 +429,7 @@ Fixpoint compute_watermark (events : list Event) : Timestamp :=
   end.
 
 (* 带延迟的Watermark计算 *)
-Definition compute_watermark_with_delay 
+Definition compute_watermark_with_delay
   (events : list Event) (delay : Timestamp) : Timestamp :=
   compute_watermark events - delay.
 
@@ -461,13 +461,13 @@ Theorem watermark_monotonicity :
 Proof.
   (* 策略证明开始 *)
   intros events new_event.
-  
+
   (* 展开定义 *)
   simpl.
-  
+
   (* 应用max的基本性质:max a b >= a *)
   apply Nat.le_max_r.
-  
+
   (* 证明完成 *)
 Qed.
 
@@ -494,7 +494,7 @@ Qed.
 Theorem watermark_with_delay_monotonic :
   forall (events : list Event) (new_event : Event) (delay : Timestamp),
   delay <= compute_watermark events ->
-  compute_watermark_with_delay events delay <= 
+  compute_watermark_with_delay events delay <=
   compute_watermark_with_delay (new_event :: events) delay.
 Proof.
   intros events new_event delay H.
@@ -815,7 +815,7 @@ Inductive SystemTransition : SystemState -> SystemState -> Prop :=
       ~ In rid st.(pending) ->
       ~ In rid st.(processing) ->
       ~ In rid st.(completed) ->
-      SystemTransition st 
+      SystemTransition st
         {| pending := rid :: st.(pending);
            processing := st.(processing);
            completed := st.(completed);
@@ -857,8 +857,8 @@ Definition NoDuplicateProcessing (st : SystemState) : Prop :=
 
 (* 不变式:已完成的记录恰好被处理一次 *)
 Definition CompletedExactlyOnce (st : SystemState) : Prop :=
-  forall rid, 
-  In rid st.(completed) -> 
+  forall rid,
+  In rid st.(completed) ->
   count_occ eq_dec_dec st.(log) (rid, Processed) = 1.
 
 (* 关键定理:状态转换保持Exactly-Once语义 *)
@@ -1296,25 +1296,15 @@ classDiagram
 
 ## 8. 引用参考 (References)
 
-[^1]: Yves Bertot and Pierre Castéran, "Interactive Theorem Proving and Program Development: Coq'Art: The Calculus of Inductive Constructions", Springer, 2004.
 
-[^2]: Benjamin C. Pierce et al., "Software Foundations", https://softwarefoundations.cis.upenn.edu/
 
-[^3]: Adam Chlipala, "Certified Programming with Dependent Types", MIT Press, 2013. https://adam.chlipala.net/cpdt/
 
-[^4]: INRIA Coq Team, "The Coq Proof Assistant", https://coq.inria.fr/
 
-[^5]: Matthias Sozeau and Nicolas Tabareau, "Coq Coq Correct! Verification of Type Checking and Erasure for Coq, in Coq", POPL 2020. https://doi.org/10.1145/3371076
 
-[^6]: Xavier Leroy, "Formal Verification of a Realistic Compiler", CACM 52(7), 2009. (CompCert)
 
-[^7]: Andrew W. Appel et al., "Program Logics for Certified Compilers", Cambridge University Press, 2014. (VST)
 
-[^8]: Floris van Doorn et al., "The Lean Mathematical Library", CPP 2020. https://doi.org/10.1145/3372885.3373824
 
-[^9]: T. Nipkow, L.C. Paulson, and M. Wenzel, "Isabelle/HOL: A Proof Assistant for Higher-Order Logic", LNCS 2283, Springer, 2002.
 
-[^10]: Graham Hutton, "Programming in Haskell", 2nd Edition, Cambridge University Press, 2016.
 
 ---
 

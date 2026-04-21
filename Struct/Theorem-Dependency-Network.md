@@ -333,17 +333,12 @@ graph TB
 
 ## 9. 引用参考 (References)
 
-[^1]: [THEOREM-REGISTRY.md](../THEOREM-REGISTRY.md) — 全项目定理、定义、引理全局注册表
 
-[^2]: [Key-Theorem-Proof-Chains.md](./Key-Theorem-Proof-Chains.md) — 关键定理证明链
 
-[^3]: [USTM-F-DEPENDENCY-GRAPH.md](../USTM-F-Reconstruction/USTM-F-DEPENDENCY-GRAPH.md) — USTM-F 文档依赖关系全景图
 
 [^4]: [USTM-F-Reconstruction/00-INDEX.md](../USTM-F-Reconstruction/00-INDEX.md) — USTM-F 重构项目索引
 
-[^5]: [00-STRUCT-DERIVATION-CHAIN.md](./00-STRUCT-DERIVATION-CHAIN.md) — Struct/ 推导链全景图
 
-[^6]: [PROOF-CHAINS-INDEX.md](./PROOF-CHAINS-INDEX.md) — 证明链总索引
 
 
 ---
