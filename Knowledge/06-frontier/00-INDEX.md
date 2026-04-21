@@ -27,6 +27,10 @@
 | [real-time-rag-architecture.md](real-time-rag-architecture.md) | 实时RAG架构 | L4 | ~33KB | 2定义+2引理 |
 | [llm-assisted-stream-processing-optimization.md](llm-assisted-stream-processing-optimization.md) | LLM辅助流处理优化 ⭐NEW | L3-L5 | ~26KB | 5定义+2命题+1引理+1定理 |
 | [streaming-vector-db-frontier-2026.md](streaming-vector-db-frontier-2026.md) | 流式向量数据库前沿 | L3-L4 | ~26KB | 4定义+2命题+1引理+2定理 |
+| [risingwave-vector-search-2026.md](risingwave-vector-search-2026.md) | RisingWave v2.6 向量搜索 ⭐NEW | L3-L4 | ~28KB | 3定义+2引理+1命题+1定理 |
+| [streaming-sql-vector-convergence-2026.md](streaming-sql-vector-convergence-2026.md) | Streaming SQL+向量搜索融合 ⭐NEW | L3-L4 | ~26KB | 3定义+2引理+1命题+1定理 |
+| [ai-agent-protocol-stack-2026.md](ai-agent-protocol-stack-2026.md) | AI Agent 六大协议栈 ⭐NEW | L3-L4 | ~28KB | 3定义+2引理+1命题+1定理 |
+| [risingwave-mcp-integration-guide.md](risingwave-mcp-integration-guide.md) | RisingWave MCP Server 集成 ⭐NEW | L3-L4 | ~25KB | 2定义+1引理+1命题+1定理 |
 
 ### 多模态与图流处理
 
@@ -78,6 +82,7 @@
 | 文档 | 主题 | 形式化等级 | 大小 | 形式化元素 |
 |------|------|-----------|------|-----------|
 | [streaming-databases.md](streaming-databases.md) | 流数据库综述 | L4 | ~42KB | 4定义+3定理 |
+| [confluent-flink-2.3-commercial.md](../../Flink/05-ecosystem/ecosystem/confluent-flink-2.3-commercial.md) | Conluent Flink 2.3.0 商业版 ⭐NEW | L3 | ~22KB | 2定义+1引理+1定理 |
 | [streaming-database-ecosystem-comparison.md](streaming-database-ecosystem-comparison.md) | 流数据库生态对比 | L3-L4 | ~40KB | 2定义+2命题 |
 | [streaming-databases-market-report-2026-Q2.md](streaming-databases-market-report-2026-Q2.md) | 市场报告2026 Q2 | L2-L3 | ~50KB | 1定义+1命题 |
 | [risingwave-deep-dive.md](risingwave-deep-dive.md) | RisingWave深度解析 | L4 | ~38KB | 3定义+2定理 |

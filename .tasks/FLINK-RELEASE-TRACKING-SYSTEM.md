@@ -325,15 +325,22 @@ python update-docs-on-release.py \
 
 | FLIP ID | 标题 | 状态 | 目标版本 | 备注 |
 |---------|------|------|----------|------|
+| FLIP-495 | AdaptiveScheduler Rescale History | Implementing | 2.3 | 记录 rescale 历史优化决策 |
+| FLIP-523 | TLS Certificate Renewal | 讨论中 | 2.3 | 证书热更新，分阶段实现 |
 | FLIP-555 | Native S3 FileSystem | Accepted (正在实现) | 2.6 | S3 FileSystem 原生支持，进度约 15% |
-| FLIP-564 | FROM_CHANGELOG/TO_CHANGELOG Built-in PTFs | 正在讨论 | 2.7 | 标题已修正，社区讨论中 |
-| FLIP-566 | IMMUTABLE Columns Constraint | 正在讨论 | 2.7 | 列不可变性约束，进度约 5% |
+| FLIP-558 | SinkUpsertMaterializer Improvements | Accepted | 2.3 | 物化表 upsert 性能优化 |
+| FLIP-560 | Application Capability Enhancement | Accepted | 2.3 | 应用能力声明与资源管理 |
+| FLIP-561 | Restructure Flink Documentation | Accepted | 2.3 | 文档结构重构 |
+| FLIP-564 | FROM_CHANGELOG/TO_CHANGELOG Built-in PTFs | 讨论中 | 2.7 | 标题已修正，社区讨论中 |
+| FLIP-566 | IMMUTABLE Columns Constraint | 讨论中 | 2.7 | 列不可变性约束，进度约 5% |
 
 ### Flink 2.3 计划状态
 
-- **状态**: 进行中 (Planning)
-- **预计窗口**: 2026 年中
-- **跟踪文档**: `Flink/00-meta/version-tracking/flink-23-status.md` (如存在)
+- **状态**: 🔍 Feature Freeze (2026-03-31)
+- **预计窗口**: 2026 Q2-Q3
+- **跟踪文档**: [Flink/08-roadmap/08.01-flink-24/flink-2.3-tracking.md](../Flink/08-roadmap/08.01-flink-24/flink-2.3-tracking.md)
+- **核心 FLIP**: FLIP-495 (AdaptiveScheduler), FLIP-523 (TLS), FLIP-558/560/561 (基础设施)
+- **风险**: FLIP-564/566 设计仍在讨论，可能延期至 2.4
 
 ---
 

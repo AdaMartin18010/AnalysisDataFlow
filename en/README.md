@@ -18,9 +18,9 @@ terminology_verified: true
 [![PR Quality Gate](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml/badge.svg) ⚠️ **[已失效: HTTP 404]** [Archive备份](https://web.archive.org/web/*/https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml/badge.svg)](<https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/pr-quality-gate.yml>)
 [![Scheduled Maintenance](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/scheduled-maintenance.yml/badge.svg)](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/scheduled-maintenance.yml)
 [![Doc Update Sync](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/doc-update-sync.yml/badge.svg)](https://github.com/luyanfeng/AnalysisDataFlow/actions/workflows/doc-update-sync.yml)
-[![Docs](https://img.shields.io/badge/Docs-420%2B-blue)](./)
-[![Theorems](https://img.shields.io/badge/Theorems-6000%2B-green)](./THEOREM-REGISTRY.md)
-[![Last Updated](https://img.shields.io/badge/Last%20Updated-2026--04-05-orange)]()
+[![Docs](https://img.shields.io/badge/Docs-900%2B-blue)](./)
+[![Theorems](https://img.shields.io/badge/Theorems-14000%2B-green)](./THEOREM-REGISTRY.md)
+[![Last Updated](https://img.shields.io/badge/Last%20Updated-2026--04-21-orange)]()
 
 > **"Formal Theory Supplement + Frontier Exploration Laboratory" for Stream Computing**
 >
@@ -103,12 +103,12 @@ This project is a comprehensive organization and system construction of **theore
 - **📚 New tutorials Directory Entry**: Quick Start Guide [5-Minute Quick Start](tutorials/00-5-MINUTE-QUICK-START.md) | [Environment Setup](tutorials/01-environment-setup.md) | [First Job](tutorials/02-first-flink-job.md)
 - **📖 New Cheat Sheets**: [DataStream API Cheat Sheet](Flink/03-api/09-language-foundations/datastream-api-cheatsheet.md) | [SQL Functions Cheat Sheet](Flink/03-api/03.02-table-sql-api/sql-functions-cheatsheet.md)
 - **Flink 2.4/2.5/3.0 Roadmap**: [Flink 2.4/2.5/3.0 Three-Year Roadmap](Flink/08-roadmap/08.01-flink-24/flink-version-evolution-complete-guide.md) - ⚠️ Forward-looking technology vision, not official commitment
-- **AI Agents Design Exploration**: [Flink AI Agents Concept Design](Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md) - ⚠️ FLIP-531 is in early discussion, not yet officially released
+- **AI Agents Design Exploration**: [Flink AI Agents Concept Design](Flink/06-ai-ml/flip-531-ai-agents-ga-guide.md) - ✅ Flink Agents 0.2.1 Released (2026-03-26)
 - **Serverless Flink Analysis**: [Serverless Flink Analysis](Flink/04-runtime/04.01-deployment/serverless-flink-ga-guide.md) - Cloud vendor solution comparison and trend analysis
 - **Flink 2.3 Roadmap**: [Flink 2.3 New Features Preview](Flink/08-roadmap/08.01-flink-24/flink-2.3-2.4-roadmap.md)
 - **Real-time Graph Stream Processing TGN**: [Temporal Graph Neural Network Integration](Flink/05-ecosystem/05.04-graph/flink-gelly-streaming-graph-processing.md)
 - **Multimodal Stream Processing**: [Text/Image/Video Unified Stream Processing](Knowledge/06-frontier/multimodal-streaming-architecture.md)
-- **Flink AI Agents (Concept Design)**: [FLIP-531 AI Agent Concept Design](Flink/06-ai-ml/flink-ai-agents-flip-531.md) - ⚠️ Forward-looking content, FLIP-531 not yet officially released
+- **Flink AI Agents (Concept Design)**: [FLIP-531 AI Agent Concept Design](Flink/06-ai-ml/flink-ai-agents-flip-531.md) - ✅ Flink Agents 0.2.0/0.2.1 Released, GA in production
 - **A2A Protocol Deep Analysis**: [A2A and Agent Communication Protocol](Knowledge/06-frontier/a2a-protocol-agent-communication.md) - Google A2A vs MCP vs ACP, Agent interoperability
 - **Smart Casual Verification**: [Formal Verification New Method](Struct/07-tools/smart-casual-verification.md) - Lightweight verification, fuzzing + proof hybrid approach
 

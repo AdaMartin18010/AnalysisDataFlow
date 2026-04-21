@@ -1,3 +1,8 @@
+> **状态**: ✅ 已正式发布 | **Flink版本**: 2.2.0 | **发布日期**: 2025-12-04 | **最后更新**: 2026-04-21
+>
+> Apache Flink 2.2.0 已于 2025-12-04 正式发布，Connector 框架增强（含 Source RateLimiter）已 GA。请以官方文档为准。
+>
+
 # Flink 2.2 Connector 框架增强深度解析
 
 > **所属阶段**: Flink/05-ecosystem/05.01-connectors/evolution | **前置依赖**: [Flink Connectors Ecosystem Complete Guide](../flink-connectors-ecosystem-complete-guide.md), [Flink 2.2 Frontier Features](../../../02-core/flink-2.2-frontier-features.md), [DataStream V2 Semantics](../../../01-concepts/datastream-v2-semantics.md) | **形式化等级**: L4
@@ -226,7 +231,7 @@ $$
 | 版本 | Source API | Sink API | Table Factory | 测试框架 |
 |------|-----------|----------|---------------|---------|
 | 1.11-1.14 | `SourceFunction` | `SinkFunction` | `TableFactory` (旧 SPI) | 无统一框架 |
-| 1.15-2.1 | FLIP-27 (Source V2) | FLIP-143 实验性 | `DynamicTableFactory` | `SourceTestSuiteBase` |
+| 1.15-2.1 | FLIP-27 (Source V2) | FLIP-143 稳定 | `DynamicTableFactory` | `SourceTestSuiteBase` |
 | **2.2** | FLIP-27 增强 + RateLimiter | FLIP-143 稳定 | Factory V2 + 配置推断 | TestContainer 集成 |
 | 2.3-2.4 | Source V2 GA | Sink V2 GA | 统一 Factory | 完整 E2E 框架 |
 

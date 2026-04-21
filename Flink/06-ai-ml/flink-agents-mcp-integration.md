@@ -1,10 +1,10 @@
 # Flink Agents MCP 协议集成深度指南
 
-> **状态**: ✅ Released (2026-02-06, Flink Agents 0.2.0)
-> **Flink 版本**: Flink Agents 0.2.0+
+> **状态**: ✅ Released (2026-02-06, Flink Agents 0.2.0; 2026-03-26, 0.2.1 补丁)
+> **Flink 版本**: Flink Agents 0.2.1+
 > **稳定性**: GA (Generally Available)
 >
-> Apache Flink Agents 0.2.0 已于 2026-02-06 正式发布，新增 MCP Server、Embedding Models、Vector Stores 等能力[^1]。
+> Apache Flink Agents 0.2.0 已于 2026-02-06 正式发布，0.2.1 补丁版本于 2026-03-26 发布，包含3个关键bug修复和安全漏洞修补。新增 MCP Server、Embedding Models、Vector Stores 等能力[^1]。
 
 > **所属阶段**: Flink/06-ai-ml | **前置依赖**: [FLIP-531 AI Agents](flink-ai-agents-flip-531.md), [Flink Agents 架构深度解析](./flink-agents-architecture-deep-dive.md) | **形式化等级**: L4-L5
 
@@ -216,7 +216,13 @@ Pattern 3: Streaming Resource Subscription
 | Hardcoded APIs | Simple | Not scalable, vendor lock-in | ❌ |
 | Function Calling | Model-native | Vendor-specific, no streaming | ❌ |
 | Custom Protocol | Flexible | Ecosystem fragmentation | ❌ |
-| MCP | Standard, streaming, ecosystem | Learning curve | ✅ |
+| MCP | Standard, streaming, 5000+ servers, 97M+ monthly downloads | Learning curve | ✅ |
+
+**MCP 生态规模（2026-04）**：
+
+- **97M+** 月 SDK 下载量
+- **5000+** 公开 MCP Server
+- **全平台支持**: OpenAI, Google, Microsoft, Anthropic 均已原生集成
 
 ### 4.2 MCP over Async I/O vs Direct Call
 

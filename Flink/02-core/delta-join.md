@@ -1,6 +1,11 @@
+> **状态**: ✅ 已正式发布 | **Flink版本**: 2.2.0 | **发布日期**: 2025-12-04 | **最后更新**: 2026-04-21
+>
+> Apache Flink 2.2.0 已于 2025-12-04 正式发布，Delta Join V2 已 GA。请以官方文档为准。
+>
+
 # Flink Delta Join：大状态流Join优化
 
-> 所属阶段: Flink/ | 前置依赖: [Flink SQL Join语义](../03-api/03.02-table-sql-api/query-optimization-analysis.md), [Checkpoint机制](./checkpoint-mechanism-deep-dive.md) | 形式化等级: L4
+> **所属阶段**: Flink/02-core | **前置依赖**: [Flink SQL Join语义](../03-api/03.02-table-sql-api/query-optimization-analysis.md), [Checkpoint机制](./checkpoint-mechanism-deep-dive.md) | **形式化等级**: L4
 
 ## 1. 概念定义 (Definitions)
 

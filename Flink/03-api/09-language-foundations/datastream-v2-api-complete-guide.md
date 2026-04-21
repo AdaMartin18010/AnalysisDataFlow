@@ -1,11 +1,11 @@
-> **状态**: 已发布特性（Flink 2.0+）| **风险等级**: 低 | **最后更新**: 2026-04-20
+> **状态**: ✅ 已正式发布 | **Flink版本**: 2.2.0 | **发布日期**: 2025-12-04
 >
-> DataStream V2 API 在 Flink 2.0（2025-03-24）中引入，已在 Flink 2.2 中达到稳定状态。内容反映已发布版本的实现，请以 Apache Flink 官方文档为准。
+> DataStream V2 API 在 Flink 2.0（2025-03-24）中引入，已在 Flink 2.2 中达到 **Stable** 状态。内容反映已发布版本的实现，请以 Apache Flink 官方文档为准。
 >
 # Flink DataStream API V2 完全指南
 
 > **所属阶段**: Flink/03-api/09-language-foundations | **前置依赖**: [05-datastream-v2-api.md](05-datastream-v2-api.md), [flink-datastream-api-complete-guide.md](flink-datastream-api-complete-guide.md), [datastream-v2-semantics.md](../../01-concepts/datastream-v2-semantics.md) | **形式化等级**: L3-L4
-> **版本**: Flink 2.0+ (Experimental) / 2.1 (Preview) / 2.2 (Stabilizing) | **语言**: Java 11+ / Scala 3.3+
+> **版本**: Flink 2.0+ (Experimental) / 2.1 (Preview) / 2.2 (Stable) / 2.3+ (GA) | **语言**: Java 11+ / Scala 3.3+
 > **FLIP**: FLINK-34547 (DataStream API v2)
 
 ---
@@ -28,18 +28,18 @@
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
     - [3.1 DataStream V1 与 V2 全维度对比](#31-datastream-v1-与-v2-全维度对比)
     - [3.2 API 映射总表](#32-api-映射总表)
-    - [3.3 与 Table API / SQL 的互操作](#33-与-table-api-sql-的互操作)
+    - [3.3 与 Table API / SQL 的互操作](#33-与-table-api--sql-的互操作)
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [4.1 引入 V2 API 的动机 (FLINK-34547)](#41-引入-v2-api-的动机-flink-34547)
     - [4.2 V1 API 经过十年演进后的技术债](#42-v1-api-经过十年演进后的技术债)
     - [4.3 V2 API 设计原则论证](#43-v2-api-设计原则论证)
     - [4.4 何时使用 V2 vs V1 决策框架](#44-何时使用-v2-vs-v1-决策框架)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [5.1 V2 API 类型安全性论证](#51-v2-api-类型安全性论证)
     - [5.2 异步执行一致性边界](#52-异步执行一致性边界)
     - [5.3 性能基准与工程权衡](#53-性能基准与工程权衡)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
-    - [6.1 WordCount V2 (Java + Scala)](#61-wordcount-v2-java-scala)
+    - [6.1 WordCount V2 (Java + Scala)](#61-wordcount-v2-java--scala)
     - [6.2 有状态计算 V2](#62-有状态计算-v2)
     - [6.3 窗口聚合 V2](#63-窗口聚合-v2)
     - [6.4 异步 I/O V2](#64-异步-io-v2)
@@ -52,10 +52,10 @@
   - [8. 迁移指南 (Migration Guide)](#8-迁移指南-migration-guide)
     - [8.1 Breaking Changes 完整清单](#81-breaking-changes-完整清单)
     - [8.2 逐模块迁移路径](#82-逐模块迁移路径)
-    - [8.3 代码对照表 (V1 → V2)](#83-代码对照表-v1-v2)
+    - [8.3 代码对照表 (V1 → V2)](#83-代码对照表-v1--v2)
     - [8.4 测试与回滚策略](#84-测试与回滚策略)
-  - [9. 路线图与稳定性 (Roadmap \& Stability)](#9-路线图与稳定性-roadmap-stability)
-    - [9.1 当前实验性状态说明](#91-当前实验性状态说明)
+  - [9. 路线图与稳定性 (Roadmap \& Stability)](#9-路线图与稳定性-roadmap--stability)
+    - [9.1 当前稳定性状态说明](#91-当前稳定性状态说明)
     - [9.2 预计稳定化时间线](#92-预计稳定化时间线)
     - [9.3 V1 完全替代计划](#93-v1-完全替代计划)
   - [10. 引用参考 (References)](#10-引用参考-references)
@@ -89,8 +89,8 @@ $$
 |------------|-------------------|----------|
 | 2.0.0 | 🧪 Experimental | **不推荐**用于生产核心链路 |
 | 2.1.x | 🧪 Preview (功能完备) | 可在非关键业务试点 |
-| 2.2.x | 🧪 Stabilizing (API 冻结候选) | 适合新业务尝试 |
-| 2.3.x (预计) | ✅ Stable | 推荐用于新项目 |
+| 2.2.x | ✅ Stable | 推荐用于新项目 |
+| 2.3.x | ✅ GA | 生产环境推荐 |
 
 > ✅ **重要**: DataStream V2 API 已在 Flink 2.0 中发布，在 Flink 2.2 中达到 **Stable** 状态。官方文档确认 API 已稳定[^1][^2]。
 
@@ -525,12 +525,12 @@ $$
 | 组件 | 源码兼容 | 二进制兼容 | 语义兼容 | 迁移成本 | Flink 2.0 状态 |
 |------|----------|------------|----------|----------|----------------|
 | DataStream API (基础算子) | ✓ | ✓ | ✓ | 低 | ✅ V1 保持 GA |
-| ProcessFunction | ✓ | △ | ✓ | 中 | 🧪 V2 Experimental |
-| State API | ✓ | △ | ✓ | 中 | 🧪 V2 Experimental |
+| ProcessFunction | ✓ | △ | ✓ | 中 | ✅ V2 Stable |
+| State API | ✓ | △ | ✓ | 中 | ✅ V2 Stable |
 | Source API | ✗ | ✗ | ✓ | 高 | ✅ Source V2 GA |
 | Sink API | ✗ | ✗ | ✓ | 高 | ✅ Sink V2 GA |
-| Window API | ✓ | △ | ✓ | 低 | 🧪 V2 Experimental |
-| Join API | ✓ | △ | ✓ | 低 | 🧪 V2 Experimental |
+| Window API | ✓ | △ | ✓ | 低 | ✅ V2 Stable |
+| Join API | ✓ | △ | ✓ | 低 | ✅ V2 Stable |
 
 > 注: ✓ = 完全兼容, △ = 部分兼容 (需代码调整), ✗ = 不兼容 (接口重构)
 
@@ -561,7 +561,7 @@ DataStream<String> v1Stream = env
 // 桥接到 V2 (需要显式转换)
 DataStreamV2<String> v2Stream = DataStreamAdapter.toV2(v1Stream);
 
-// V2 ProcessFunction (实验性)
+// V2 ProcessFunction (Stable in Flink 2.2+)
 DataStreamV2<Result> v2Result = v2Stream
     .keyBy(Event::getUserId)
     .process(new MyV2Function());
@@ -626,7 +626,7 @@ $$
 | **异步执行** | 仅 `AsyncDataStream` (侧枝 API) | 内建 `processElementAsync` | V2 异步是一等公民 |
 | **状态存储耦合** | 本地存储绑定 (RocksDB/Heap) | 本地缓存 + 远程存储可选 | V2 云原生、弹性扩缩容 |
 | **向后兼容** | 基线 API | V1 API 保留，可混合使用 | 渐进式迁移可行 |
-| **API 稳定性** | ✅ Stable (GA) | 🧪 Experimental | V2 不推荐用于生产 |
+| **API 稳定性** | ✅ Stable (GA) | ✅ Stable (2.2+) | V2 推荐用于生产 |
 
 ---
 
@@ -895,22 +895,22 @@ ShouldUseV2 ≡ (
     ∨ NeedUnifiedBatchStreamingSource
     ∨ NeedStandardizedExactlyOnceSink
     ∨ NeedAsyncThroughput
-) ∧ CanTolerateExperimentalAPI
+) ∧ FlinkVersion ≥ 2.2
 ```
 
 **场景决策矩阵**:
 
 | 场景特征 | 推荐版本 | 核心理由 |
 |----------|----------|----------|
-| **新建 Flink 2.0+ 项目，团队熟悉现代类型系统** | V2 (试点) | 长期收益大于学习成本 |
-| **需要分离状态存储 (云原生、大状态 > 100GB)** | V2 (评估) | 异步状态访问是必需接口 |
+| **新建 Flink 2.2+ 项目，团队熟悉现代类型系统** | V2 | 长期收益大于学习成本 |
+| **需要分离状态存储 (云原生、大状态 > 100GB)** | V2 | 异步状态访问是必需接口 |
 | **需要统一批流 Source (Iceberg/Paimon)** | ✅ Source V2 (已 GA) | Source V2 是标准接口 |
 | **需要自定义 Exactly-Once Sink** | ✅ Sink V2 (已 GA) | Sink V2 大幅降低实现复杂度 |
 | **高吞吐低延迟 (< 10ms p99)** | V1 | V2 ASYNC 延迟更高 |
-| **现有 V1 作业稳定运行，无扩展需求** | V1 | 无需承担实验性 API 风险 |
-| **大量依赖第三方 V1 Connector** | V1 | 等待生态成熟后再迁移 |
+| **现有 V1 作业稳定运行，无扩展需求** | V1 | V2 API 已稳定，可按需迁移 |
+| **大量依赖第三方 V1 Connector** | V1 | V2 Connector 生态持续完善中 |
 | **团队以 Java 为主，无函数式编程经验** | V1 | 降低学习曲线 |
-| **金融级核心业务 (不可容忍 API 变更)** | V1 | Experimental API 存在 Breaking Change 风险 |
+| **金融级核心业务 (不可容忍 API 变更)** | V2 | V2 API 已稳定，API 冻结 |
 
 ---
 
@@ -1612,7 +1612,7 @@ flowchart TD
     Q4 -->|< 10ms p99| STAY_V1
     Q4 -->|> 50ms| Q5
 
-    Q5 -->|熟悉函数式 / 愿意学习| PILOT_V2[非关键链路试点 V2<br/>🧪 Experimental]
+    Q5 -->|熟悉函数式 / 愿意学习| PILOT_V2[非关键链路试点 V2<br/>✅ Stable]
     Q5 -->|纯 Java 传统团队| HYBRID[使用 SourceV2 + SinkV2<br/>中间保持 V1]
 
     PILOT_V2 --> Q6{试点结果?}
@@ -1620,7 +1620,7 @@ flowchart TD
 
     Q6 -->|性能达标| GRADUAL[渐进式迁移<br/>V1 → V2 逐步替换]
     Q6 -->|性能不达标| TUNE[调优配置<br/>缓存 / 一致性策略]
-    Q6 -->|稳定性问题| ROLLBACK[回滚 V1<br/>等待 V2 Stabilizing]
+    Q6 -->|稳定性问题| ROLLBACK[回滚 V1<br/>排查问题后重试]
 
     TUNE --> Q6
     GRADUAL --> FULL_V2[全面迁移 V2<br/>启用分离存储]
@@ -1726,7 +1726,7 @@ sequenceDiagram
     <groupId>org.apache.flink</groupId>
     <artifactId>flink-streaming-api-v2</artifactId>
     <version>${flink.version}</version>
-    <!-- 注意: V2 是 Experimental,API 可能变更 -->
+    <!-- V2 API 在 Flink 2.2 中已达到 Stable 状态 -->
 </dependency>
 
 # 3. 编译验证
@@ -1945,7 +1945,7 @@ public class DualRunningTest {
 
 ## 9. 路线图与稳定性 (Roadmap & Stability)
 
-### 9.1 当前实验性状态说明
+### 9.1 当前稳定性状态说明
 
 截至 **Flink 2.0 GA (2025-03-24)**[^1]:
 
@@ -1977,9 +1977,8 @@ gantt
     section DataStream V2
     Experimental (2.0)     :done, exp, 2024-03, 2025-03
     Preview (2.1)          :done, prev, 2025-03, 2025-09
-    Stabilizing (2.2)      :active, stab, 2025-09, 2026-03
-    Stable Candidate (2.3) :crit, cand, 2026-03, 2026-09
-    GA / V1 Deprecation    :milestone, ga, 2026-09, 0d
+    Stable (2.2)           :done, stab, 2025-09, 2025-12
+    GA / V1 Deprecation    :milestone, ga, 2025-12, 0d
     section 生态
     Kafka Connector V2     :done, kafka, 2024-06, 2025-03
     JDBC Connector V2      :done, jdbc, 2024-09, 2025-06

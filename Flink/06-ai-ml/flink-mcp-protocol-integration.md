@@ -383,12 +383,18 @@ MCP 区别于传统 API 协议的核心在于其 AI 优先的设计哲学：
 
 **论证3: 生态兼容性**
 
-MCP 获得主流 AI 平台和工具支持：
+MCP 获得所有主流 AI 平台和工具原生支持，截至 2026-04 生态规模达 **97M+ 月 SDK 下载量**，公开 MCP Server 超过 **5000+**[^1][^2]：
 
-- **Claude Desktop**: 原生 MCP 客户端
-- **Cursor**: IDE 内 MCP 集成
-- **Continue**: 开源 AI 编码助手
-- **OpenAI Agents SDK**: MCP 适配器
+| 平台 | 支持状态 | 集成方式 |
+|------|----------|----------|
+| **OpenAI** | ✅ 原生 | ChatGPT / Agents SDK / GPTs Actions |
+| **Google** | ✅ 原生 | Gemini / Google AI Studio / Vertex AI |
+| **Microsoft** | ✅ 原生 | Copilot Studio / Azure AI Foundry |
+| **Anthropic** | ✅ 原生 | Claude Desktop / Claude Code |
+| **Cursor** | ✅ 原生 | IDE 内 MCP 工具市场 |
+| **Continue** | ✅ 开源 | 独立 AI 编码助手 |
+
+> **来源**: modelcontextprotocol.io 官方统计，2026-04。
 
 ### 4.2 部署模式对比分析
 

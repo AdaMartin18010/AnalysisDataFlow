@@ -990,13 +990,13 @@ graph TB
         A3[结构化数据]
     end
 
-    subgraph Embedding["嵌入层 - ML_PREDICT(实验性)"]
+    subgraph Embedding["嵌入层 - ML_PREDICT(GA)"]
         B1[文本嵌入<br/>BERT/MiniLM]
         B2[图像嵌入<br/>ResNet/ViT]
         B3[多模态融合<br/>CLIP]
     end
 
-    subgraph Search["搜索层 - VECTOR_SEARCH TVF(规划中)"]
+    subgraph Search["搜索层 - VECTOR_SEARCH TVF(GA)"]
         C1[查询向量]
         C2[元数据过滤]
         C3[向量索引<br/>HNSW/IVF]
@@ -1058,7 +1058,7 @@ flowchart LR
         F1[ML_PREDICT(GA)<br/>嵌入生成]
         F2[VECTOR_SEARCH(GA)<br/>向量检索]
         F3[上下文组装<br/>聚合窗口]
-        F4[ML_PREDICT(实验性)<br/>LLM生成]
+        F4[ML_PREDICT(GA)<br/>LLM生成]
     end
 
     subgraph VectorDB["向量数据库"]

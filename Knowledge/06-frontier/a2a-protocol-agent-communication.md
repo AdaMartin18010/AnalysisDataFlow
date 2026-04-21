@@ -1,8 +1,9 @@
 # Google A2A (Agent-to-Agent) 协议技术分析
 
-> **状态**: ✅ 已发布 | **A2A v1.0**: 2026年初 GA | **最后更新**: 2026-04-15
+> **状态**: ✅ 已发布 | **A2A v1.0**: 2026年初 GA | **A2A v0.3**: 2026-04 安全增强 | **最后更新**: 2026-04-21
 >
 > ✅ A2A v1.0 已于 2026 年初正式发布，获 150+ 组织支持，并集成至 Azure AI Foundry、Amazon Bedrock AgentCore。
+> ✅ **A2A v0.3**（2026-04）发布安全增强：Bearer Token + Keycloak、mTLS、Security Card Signing，官方 Python/.NET 实现路径完善[^7]。
 > 所属阶段: Knowledge/06-frontier | 前置依赖: [MCP协议分析](mcp-protocol-agent-streaming.md) | 形式化等级: L3-L4
 
 ## 目录
@@ -23,29 +24,31 @@
     - [Lemma-K-06-221: Agent Card 缓存有效性](#lemma-k-06-221-agent-card-缓存有效性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
     - [3.1 A2A vs MCP: 互补而非竞争](#31-a2a-vs-mcp-互补而非竞争)
-    - [3.2 A2A + MCP 混合架构](#32-a2a-mcp-混合架构)
+    - [3.2 A2A + MCP 混合架构](#32-a2a--mcp-混合架构)
     - [3.3 A2A 与流处理（Flink）集成点](#33-a2a-与流处理flink集成点)
     - [3.4 A2A 发布背景与企业采用](#34-a2a-发布背景与企业采用)
+      - [Def-K-06-237: A2A v0.3 安全增强模型](#def-k-06-237-a2a-v03-安全增强模型)
+      - [Def-K-06-238: Task 安全生命周期](#def-k-06-238-task-安全生命周期)
       - [Def-K-06-236: A2A v1.0 核心增强](#def-k-06-236-a2a-v10-核心增强)
       - [Prop-K-06-222: A2A 企业采用增长命题](#prop-k-06-222-a2a-企业采用增长命题)
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [4.1 为什么需要 A2A 协议？](#41-为什么需要-a2a-协议)
     - [4.2 反模式：避免的设计陷阱](#42-反模式避免的设计陷阱)
-    - [4.3 A2A + Flink 集成论证](#43-a2a-flink-集成论证)
-  - [5. 形式证明 / 工程论证](#5-形式证明-工程论证)
+    - [4.3 A2A + Flink 集成论证](#43-a2a--flink-集成论证)
+  - [5. 形式证明 / 工程论证](#5-形式证明--工程论证)
     - [Thm-K-06-150: A2A 任务完成可靠性定理](#thm-k-06-150-a2a-任务完成可靠性定理)
     - [Thm-K-06-151: A2A-MCP 正交性定理](#thm-k-06-151-a2a-mcp-正交性定理)
     - [Thm-K-06-152: 流式 Artifact 完整性定理](#thm-k-06-152-流式-artifact-完整性定理)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [6.1 Flink 作为 A2A Remote Agent](#61-flink-作为-a2a-remote-agent)
     - [6.2 A2A Client Agent 实现](#62-a2a-client-agent-实现)
-    - [6.3 A2A + Flink CEP 异常检测场景](#63-a2a-flink-cep-异常检测场景)
+    - [6.3 A2A + Flink CEP 异常检测场景](#63-a2a--flink-cep-异常检测场景)
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
     - [7.1 A2A 协议架构全景图](#71-a2a-协议架构全景图)
     - [7.2 A2A Task 生命周期状态机](#72-a2a-task-生命周期状态机)
     - [7.3 A2A vs MCP 协作架构](#73-a2a-vs-mcp-协作架构)
     - [7.4 多 Agent 招聘流程示例](#74-多-agent-招聘流程示例)
-    - [7.5 A2A + Flink 实时分析集成](#75-a2a-flink-实时分析集成)
+    - [7.5 A2A + Flink 实时分析集成](#75-a2a--flink-实时分析集成)
     - [7.6 企业级 A2A 部署拓扑](#76-企业级-a2a-部署拓扑)
   - [8. 引用参考 (References)](#8-引用参考-references)
 
@@ -362,6 +365,140 @@ $$
 ### 3.4 A2A 发布背景与企业采用
 
 Google 于 **2025-04** 发布 A2A（Agent-to-Agent）协议，旨在解决异构 AI Agent 之间的互操作性问题[^3]。**A2A v1.0** 于 **2026 年初** 正式发布，并于 **2026-04-09** 迎来一周年里程碑[^6]。目前 A2A 与 MCP 一同由 **Linux Foundation AAIF** 共治，成为企业级 Agent 协作的开放标准[^4]。截至 2026-04，已有 **150+ 组织** 支持 A2A 标准，涵盖 CRM、HR、数据分析与客服自动化等领域[^6]。
+
+#### Def-K-06-237: A2A v0.3 安全增强模型
+
+**A2A v0.3**（2026-04 发布）在身份认证、传输安全和 Agent Card 完整性方面引入了关键安全增强[^7]：
+
+$$
+\text{A2A}_{v0.3}^{\text{security}} \triangleq \langle \mathcal{I}_{\text{bearer}}, \mathcal{K}_{\text{keycloak}}, \mathcal{S}_{\text{card}}, \mathcal{M}_{\text{mtls}} \rangle
+$$
+
+其中：
+
+| 安全组件 | 符号 | 说明 |
+|----------|------|------|
+| **Bearer Token 认证** | $\mathcal{I}_{\text{bearer}}$ | 基于 OAuth 2.0 Bearer token 的标准化认证，支持 Keycloak 等 IdP 集成 |
+| **Keycloak 集成** | $\mathcal{K}_{\text{keycloak}}$ | 企业级身份管理，支持 realm、role、client scope 映射 |
+| **Security Card Signing** | $\mathcal{S}_{\text{card}}$ | Agent Card 支持数字签名，防止能力声明篡改和中间人攻击 |
+| **mTLS 企业部署** | $\mathcal{M}_{\text{mtls}}$ | 双向 TLS 认证，强制客户端证书验证 |
+
+**Bearer Token + Keycloak 实现**：
+
+```python
+# a2a_keycloak_auth.py
+import httpx
+from keycloak import KeycloakOpenID
+
+class A2AKeycloakAuth:
+    """A2A v0.3 Bearer Token + Keycloak 认证实现"""
+
+    def __init__(self, server_url: str, realm: str, client_id: str, client_secret: str):
+        self.keycloak = KeycloakOpenID(
+            server_url=server_url,
+            realm_name=realm,
+            client_id=client_id,
+            client_secret_key=client_secret
+        )
+        self.token = None
+
+    async def authenticate(self) -> str:
+        """获取 Keycloak access token"""
+        self.token = self.keycloak.token(grant_type="client_credentials")
+        return self.token["access_token"]
+
+    async def call_a2a_agent(self, agent_url: str, task: dict) -> dict:
+        """使用 Bearer token 调用 A2A Agent"""
+        token = await self.authenticate()
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                f"{agent_url}/a2a/tasks/send",
+                headers={"Authorization": f"Bearer {token}"},
+                json=task
+            )
+            return response.json()
+```
+
+**Security Card Signing 机制**：
+
+```json
+{
+  "name": "SecureAnalyticsAgent",
+  "url": "https://analytics.example.com/a2a",
+  "version": "1.0.0",
+  "security": {
+    "signature": {
+      "algorithm": "Ed25519",
+      "publicKey": "-----BEGIN PUBLIC KEY-----\nMCow...\n-----END PUBLIC KEY-----",
+      "signature": "base64_signature_of_card_content"
+    },
+    "certificateChain": [
+      "-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----"
+    ]
+  }
+}
+```
+
+**mTLS 企业部署配置**：
+
+```yaml
+# a2a-enterprise-mtls.yaml
+server:
+  tls:
+    mode: MUTUAL
+    cert: /certs/server.crt
+    key: /certs/server.key
+    client_ca: /certs/ca.crt
+
+  a2a:
+    require_mtls: true
+    allowed_client_subjects:
+      - "CN=hr-agent,OU=AI,O=Example Corp"
+      - "CN=crm-agent,OU=AI,O=Example Corp"
+```
+
+**A2A v0.3 官方实现路径**：
+
+| 语言/平台 | 实现状态 | 官方资源 |
+|-----------|----------|----------|
+| Python | ✅ Quickstart 完善 | `google-a2a` PyPI 包，含 concierges 多 Agent 协作示例 |
+| .NET | ✅ 指南发布 | Google Codelabs A2A .NET Implementation |
+| Java | ✅ 稳定 | Spring Boot A2A Starter |
+| Go | 🔄 社区维护 | `a2a-go` 社区实现 |
+
+#### Def-K-06-238: Task 安全生命周期
+
+**Task Security Lifecycle (TSL)** 定义 A2A v0.3 中任务从创建到完成的安全状态转换：
+
+$$
+\text{TSL} \triangleq \langle \mathcal{T}, \Sigma_{\text{sec}}, \rightarrow_{\text{sec}}, \sigma_0, \mathcal{V}_{\text{auth}} \rangle
+$$
+
+其中：
+
+- $\mathcal{T}$: Task 集合
+- $\Sigma_{\text{sec}}$: 安全状态集合 $\{ \text{unauthenticated}, \text{authenticated}, \text{authorized}, \text{executing}, \text{audited} \}$
+- $\rightarrow_{\text{sec}}$: 安全状态转移关系
+- $\sigma_0 = \text{unauthenticated}$: 初始状态
+- $\mathcal{V}_{\text{auth}}$: 验证函数，在每个状态转移前执行
+
+**状态转移规则**：
+
+```
+unauthenticated --(Bearer Token 验证)--> authenticated
+authenticated --(权限检查/Role Mapping)--> authorized
+authorized --(Task 执行)--> executing
+executing --(结果签名/审计日志)--> audited
+```
+
+**安全增强点**：
+
+| 阶段 | v0.2 及之前 | v0.3 增强 |
+|------|------------|-----------|
+| 认证 | 可选 API Key | 强制 Bearer Token / mTLS |
+| Agent Card | 明文 JSON | 数字签名验证 |
+| 传输 | HTTPS（可选） | mTLS（企业强制） |
+| 审计 | 无标准 | 标准化审计事件格式 |
 
 #### Def-K-06-236: A2A v1.0 核心增强
 

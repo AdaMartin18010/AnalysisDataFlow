@@ -1,3 +1,7 @@
+> **状态**: ✅ 已正式发布 | **Flink版本**: 2.2.0 | **发布日期**: 2025-12-04 | **最后更新**: 2026-04-21
+>
+> Apache Flink 2.2.0 已于 2025-12-04 正式发布，ML_PREDICT 与 VECTOR_SEARCH 均已 GA。请以官方文档为准。
+
 # Flink 2.2.0 Data + AI 平台深度解析
 
 > **所属阶段**: Flink/06-ai-ml | **前置依赖**: [Flink ML架构](flink-ml-architecture.md), [Flink AI/ML集成指南](flink-ai-ml-integration-complete-guide.md), [flink-table-sql-complete-guide.md](../03-api/03.02-table-sql-api/flink-table-sql-complete-guide.md) | **形式化等级**: L4

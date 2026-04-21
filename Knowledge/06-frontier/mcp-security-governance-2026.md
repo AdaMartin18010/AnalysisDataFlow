@@ -1,12 +1,14 @@
 # MCP 安全治理现状与企业部署指南 (2026)
 
-> **状态**: 已发布 (持续演进) | **预计发布时间**: 2026-06 | **最后更新**: 2026-04-15
+> **状态**: 已发布 (持续演进) | **预计发布时间**: 2026-06 | **最后更新**: 2026-04-21
 >
 > ⚠️ 本文档描述的安全态势基于2026年公开发布的安全研究报告，相关政策与标准仍在快速演进中。
 > **所属阶段**: Knowledge/06-frontier | **前置依赖**: [ai-agent-streaming-architecture.md](ai-agent-streaming-architecture.md), [ai-agent-a2a-protocol.md](ai-agent-a2a-protocol.md) | **形式化等级**: L3-L4
 
 ---
 
+> **Linux Foundation 治理**: MCP 由 LF AAIF (Agentic AI Foundation, 2025-12) 治理，A2A 由 LF A2A Project (2025-06) 治理。两大协议互补分层：MCP 解决 Agent↔Tool 垂直连接，A2A 解决 Agent↔Agent 水平协作。
+>
 ## 1. 概念定义 (Definitions)
 
 ### Def-K-06-300: MCP 安全态势 (MCP Security Posture)
@@ -240,7 +242,51 @@ graph TB
 
 ---
 
-### 3.2 NIST AI RMF 与 MCP 治理的映射
+### 3.2 Linux Foundation 协议治理模型
+
+MCP 与 A2A 分别由 Linux Foundation 旗下不同项目托管，形成互补的治理架构[^8]：
+
+#### Def-K-06-330: 协议治理模型 (Protocol Governance Model)
+
+**协议治理模型** 定义为开源协议在基金会框架下的决策、演进与合规监督机制：
+
+$$
+\mathcal{G}_{proto} \triangleq \langle \mathcal{F}_{foundation}, \mathcal{C}_{committee}, \mathcal{S}_{spec}, \mathcal{V}_{vendor} \rangle
+$$
+
+其中：
+
+| 组件 | 符号 | 说明 |
+|------|------|------|
+| **基金会** | $\mathcal{F}_{foundation}$ | 法律与知识产权托管主体 |
+| **技术委员会** | $\mathcal{C}_{committee}$ | 协议规范的技术决策机构 |
+| **规范治理** | $\mathcal{S}_{spec}$ | 版本控制、RFC 流程、兼容性策略 |
+| **厂商中立性** | $\mathcal{V}_{vendor}$ | 防止单一厂商主导的制衡机制 |
+
+**AAIF vs LF A2A Project 对比矩阵**：
+
+| 维度 | MCP (AAIF) | A2A (LF A2A Project) |
+|------|------------|----------------------|
+| **基金会** | Linux Foundation Agentic AI Foundation (AAIF) | Linux Foundation A2A Project |
+| **成立时间** | 2025-12 | 2025-06 |
+| **捐赠方** | Anthropic | Google |
+| **核心目标** | 模型上下文协议标准化 | Agent-to-Agent 通信标准化 |
+| **治理模式** | 技术委员会 + 会员投票 | 技术指导委员会 (TSC) |
+| **规范流程** | RFC → Draft → Final | Proposal → Review → GA |
+| **兼容性承诺** | 向后兼容 2 个主版本 | 语义化版本控制 |
+| **商标归属** | Linux Foundation | Linux Foundation |
+
+**联合治理意义**：
+
+$$
+\text{Agent 生态治理} = \underbrace{\text{AAIF}}_{\text{MCP: 工具/数据层}} + \underbrace{\text{LF A2A}}_{\text{A2A: 协作层}} + \underbrace{\text{交叉工作组}}_{\text{安全/互操作}}
+$$
+
+- 两个项目在技术工作组层面保持月度同步
+- 安全最佳实践文档联合发布（如 AIP 身份框架）
+- 互操作性测试套件共享（MCP + A2A 混合场景）
+
+### 3.3 NIST AI RMF 与 MCP 治理的映射
 
 | NIST AI RMF 功能 | MCP 治理要求 | 实施控制点 |
 |------------------|--------------|------------|
@@ -720,6 +766,7 @@ flowchart TD
 
 [^5]: arXiv, "A Formal Security Framework for MCP-Based AI Agents", 2026-04. <https://arxiv.org/html/2604.05969v1>
 [^6]: Pasquale Pillitteri, "Anthropic Managed Agents & Cowork GA - April 9, 2026", 2026-04-09. <https://pasqualepillitteri.it/en/news/755/anthropic-managed-agents-cowork-ga-april-9-2026>
+[^8]: Linux Foundation, "AAIF and LF A2A Project Joint Governance Framework", 2026-01. <https://lf-ai-foundation.org/>
 
 ---
 

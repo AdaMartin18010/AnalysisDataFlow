@@ -1,8 +1,15 @@
+> **状态**: 稳定内容 | **风险等级**: 低 | **最后更新**: 2026-04-21
+>
+> Flink Kubernetes Operator 1.14.0 已于 2026-02-15 发布，Blue/Green 部署与声明式资源管理已 GA。内容反映已发布版本的实现。
+>
+
 # Flink Kubernetes Operator 深度指南
 
-> **所属阶段**: Flink Deployment | **前置依赖**: [kubernetes-deployment-production-guide.md](./kubernetes-deployment-production-guide.md) | **形式化等级**: L5 (工程严格)
+> **所属阶段**: Flink/04-runtime/04.01-deployment | **前置依赖**: [kubernetes-deployment-production-guide.md](./kubernetes-deployment-production-guide.md) | **形式化等级**: L5 (工程严格)
 >
-> **适用版本**: Flink Kubernetes Operator 1.10+ | **状态**: 2026年生产环境首选方案
+> **适用版本**: Flink Kubernetes Operator 1.10+ (1.14.0 已发布) | **状态**: 生产就绪
+>
+> ✅ **Operator 1.14.0 新特性**: Blue/Green Deployment GA、Declarative Resource Management、Improved Autoscaling Algorithm V2、Session Cluster Mode Enhancements
 
 ---
 
@@ -29,7 +36,7 @@
     - [4.1 为什么选择 Operator 模式](#41-为什么选择-operator-模式)
     - [4.2 部署模式决策矩阵](#42-部署模式决策矩阵)
     - [4.3 反例分析：无 Operator 场景的问题](#43-反例分析无-operator-场景的问题)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-F-10-20: 有状态升级正确性](#thm-f-10-20-有状态升级正确性)
     - [Thm-F-10-21: 故障恢复完备性](#thm-f-10-21-故障恢复完备性)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)

@@ -1,3 +1,8 @@
+> **状态**: ✅ 已正式发布 | **Flink版本**: 2.2.0 | **发布日期**: 2025-12-04 | **最后更新**: 2026-04-21
+>
+> Apache Flink 2.2.0 已于 2025-12-04 正式发布。本文档描述的特性均为已发布内容，请以官方文档为准。
+>
+
 # Apache Flink 2.2 前沿特性全面解析
 
 > **所属阶段**: Flink/02-core-mechanisms | **前置依赖**: [Flink 2.1 Delta Join](delta-join.md), [物化表](../03-api/03.02-table-sql-api/materialized-tables.md), [向量搜索](../03-api/03.02-table-sql-api/vector-search.md) | **形式化等级**: L4
@@ -379,7 +384,7 @@ $$\max_{i,j}(|tasks(tm_i) - tasks(tm_j)|) \leq 1$$
 │   ┌──────────────┐             ┌──────────────┐           ┌────────┐│
 │   │  SinkUpsert  │────────────▶│ SinkUpsert   │──────────▶│V2性能  ││
 │   │Materializer  │             │Materializer  │           │优化    ││
-│   │    (V1)      │             │   (实验性)    │           │        ││
+│   │    (V1)      │             │   (已发布)    │           │        ││
 │   └──────────────┘             └──────────────┘           └────────┘│
 │                                                                     │
 │   新增特性:                                                         │

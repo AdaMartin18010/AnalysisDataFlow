@@ -198,11 +198,21 @@ $$
 │                    FLIP 与版本映射关系                           │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
-│  Flink 2.3(已发布, 2026 Q2)                                                   │
-│  ├── FLIP-531: AI Agents (Released) ◄──────────────────────┐   │
-│  ├── FLIP-319: Kafka 2PC (Released)                        │   │
-│  ├── FLIP-39022: SSL Enhancement (Released)                │   │
-│  └── ...                                                   │   │
+│  Flink 2.3(Feature Freeze: 2026-03-31, 预计 2026 Q2-Q3)                      │
+│  ├── FLIP-495: AdaptiveScheduler Rescale History (Accepted) ◄──┐ │
+│  ├── FLIP-339: Adaptive Partition Selection (Accepted)       │ │
+│  ├── FLIP-487: Rescale History in Web UI (Accepted)          │ │
+│  ├── FLIP-523: TLS Certificate Renewal (讨论中)              │ │
+│  ├── FLIP-558: SinkUpsertMaterializer Improvements (Accepted)│ │
+│  ├── FLIP-560: Application Capability Enhancement (Accepted) │ │
+│  ├── FLIP-561: Restructure Flink Documentation (Accepted)    │ │
+│  ├── FLIP-564: FROM_CHANGELOG/TO_CHANGELOG PTFs (讨论中)     │ │
+│  ├── FLIP-566: IMMUTABLE Columns Constraint (讨论中)         │ │
+│  ├── FLIP-557: Materialized Table Granular Control (讨论中)  │ │
+│  ├── FLIP-531: AI Agents (Released) ◄──────────────────────┐ │ │
+│  ├── FLIP-319: Kafka 2PC (Released)                        │ │ │
+│  ├── FLIP-39022: SSL Enhancement (Released)                │ │ │
+│  └── ...                                                   │ │ │
 │                                                            │   │
 │  Flink 2.4(预计发布时间以官方为准)                                   │   │
 │  ├── FLIP-531: AI Agents GA (依赖: 2.3基础) ────────────────┘   │

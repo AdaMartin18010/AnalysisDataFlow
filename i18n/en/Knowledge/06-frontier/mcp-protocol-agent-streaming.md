@@ -2,14 +2,14 @@
 title: "MCP Protocol and Stream Processing Integration Architecture"
 translation_status: ai_translated_reviewed
 source_version: v4.1
-last_sync: "2026-04-15"
+last_sync: "2026-04-21"
 ---
 
 # MCP Protocol and Stream Processing Integration Architecture
 
-> **Status**: Forward-looking | **Estimated Release**: 2026-06 | **Last Updated**: 2026-04-12
+> **Status**: ✅ Released | **Last Updated**: 2026-04-21
 >
-> ⚠️ The features described in this document are in early discussion stages and have not been officially released. Implementation details may change.
+> ✅ MCP protocol has been officially released by Anthropic and donated to the Linux Foundation Agentic AI Foundation (AAIF) for governance. The stream processing integration patterns described remain forward-looking and subject to community evolution.
 
 > Stage: Knowledge/06-frontier | Prerequisites: [Flink LLM Integration](./real-time-rag-architecture.md), [RAG Architecture](./real-time-rag-architecture.md) | Formalization Level: L3-L4
 
@@ -240,7 +240,7 @@ $$
 
 ### 3.4 MCP Ecosystem Status and Governance
 
-MCP was launched by Anthropic in 2024-11 and is now governed by the **Linux Foundation AAIF** (AI Alliance Innovation Foundation)[^1]. As of 2026-02, the MCP ecosystem has reached **~97M monthly downloads**, with public MCP servers exceeding **5800+**[^2].
+MCP was launched by Anthropic in 2024-11 and was donated to the **Linux Foundation Agentic AI Foundation (AAIF)** for governance in 2025-12[^1][^3]. As of 2026-04, the MCP ecosystem has reached **97M+ monthly SDK downloads**, with public MCP servers exceeding **5000+**, receiving native support from OpenAI, Google, Microsoft, Anthropic, and all major platforms[^2][^4][^5].
 
 #### Def-K-06-226: MCP Ecosystem
 
@@ -252,12 +252,13 @@ $$
 
 Where:
 
-- $\mathcal{S}_{pub}$: Public MCP Server collection (~5800+)
+- $\mathcal{S}_{pub}$: Public MCP Server collection (~5000+)
 - $\mathcal{H}_{client}$: Host application collection (IDEs, chat clients, etc.)
 - $\mathcal{D}_{tool}$: Tool developer community
 - $\mathcal{G}_{AAIF}$: Linux Foundation AAIF governance body
 
 **Governance Characteristics**:
+
 - Open Standard: Protocol specifications maintained and evolved by AAIF
 - Community-driven: Server registration, capability classification, and security audits contributed by the community
 - Vendor-neutral: Anthropic retains the initiator role, but protocol decisions are led by the foundation
@@ -691,5 +692,5 @@ graph TB
 
 ## 8. References
 
-[^1]: Anthropic, "Model Context Protocol", 2024-11. https://modelcontextprotocol.io/
-[^2]: Linux Foundation AAIF, "MCP Ecosystem Report", 2026-02. https://lf-ai-foundation.org/
+[^1]: Anthropic, "Model Context Protocol", 2024-11. <https://modelcontextprotocol.io/>
+[^2]: Linux Foundation AAIF, "MCP Ecosystem Report", 2026-02. <https://lf-ai-foundation.org/>

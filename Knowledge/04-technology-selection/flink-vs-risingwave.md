@@ -478,6 +478,18 @@ $$
 | 100GB - 10TB | ⚠️ 需调优 | ✅ |
 | > 10TB | ❌ | ✅ |
 
+**新增对比维度（2026-04 更新）——向量搜索能力**：
+
+| 能力 | Flink | RisingWave v2.6 |
+|------|-------|-----------------|
+| 向量数据类型 | ❌ | ✅ `VECTOR(d)` |
+| HNSW 索引 | ❌（需外部系统） | ✅ 原生内置 |
+| Embedding SQL 函数 | ❌ | ✅ `openai_embedding()` |
+| 相似度搜索 SQL | ⚠️ `VECTOR_SEARCH` UDF | ✅ `vector_similarity()` |
+| RAG 数据新鲜度 | 10-60s | **< 2s** |
+
+RisingWave v2.6 内置向量搜索能力，将流数据库从"结构化数据处理"扩展到"语义数据处理"，成为实时 RAG 系统的理想数据底座。详见 [RisingWave 向量搜索专题](../06-frontier/risingwave-vector-search-2026.md)。
+
 若 $S_{req} > 10TB$，RisingWave 是更可行的选择。
 
 **步骤 4: 生态系统匹配度分析**

@@ -1,6 +1,6 @@
 # MCP协议与流处理集成架构
 
-> **状态**: ✅ MCP 已发布 | **预计发布时间**: 2026-06 (Flink 集成层仍为前瞻) | **最后更新**: 2026-04-15
+> **状态**: ✅ MCP 已发布 | **预计发布时间**: 2026-06 (Flink 集成层仍为前瞻) | **最后更新**: 2026-04-21
 >
 > ⚠️ MCP 协议已由 Anthropic 官方发布并捐赠给 Linux Foundation AAIF 治理；Flink 作为 MCP Server 的集成模式仍处于工程验证阶段。
 
@@ -233,7 +233,7 @@ $$
 
 ### 3.4 MCP 生态现状与治理
 
-MCP 由 Anthropic 于 2024-11 推出，并于 **2025-12** 由 Anthropic 捐赠给 **Linux Foundation Agentic AI Foundation (AAIF)** 治理[^1][^3]。截至 **2026-03**，MCP 生态规模达到 **9700 万月 SDK 下载量**，公开 MCP 服务器数量超过 **5800+**[^2][^4]。
+MCP 由 Anthropic 于 2024-11 推出，并于 **2025-12** 由 Anthropic 捐赠给 **Linux Foundation Agentic AI Foundation (AAIF)** 治理[^1][^3]。截至 **2026-04**，MCP 生态规模达到 **97M+ 月 SDK 下载量**，公开 MCP 服务器数量超过 **5000+**，获 OpenAI、Google、Microsoft、Anthropic 等全平台支持[^2][^4][^5]。
 
 #### Def-K-06-226: MCP Ecosystem
 
@@ -245,7 +245,7 @@ $$
 
 其中：
 
-- $\mathcal{S}_{pub}$: 公共 MCP Server 集合（~5800+）
+- $\mathcal{S}_{pub}$: 公共 MCP Server 集合（~5000+）
 - $\mathcal{H}_{client}$: 宿主应用集合（IDE、聊天客户端等）
 - $\mathcal{D}_{tool}$: 工具开发者社区
 - $\mathcal{G}_{AAIF}$: Linux Foundation AAIF 治理机构

@@ -1,10 +1,10 @@
 # Flink Agents 架构深度解析
 
-> **状态**: ✅ Released (2026-02-06, Flink Agents 0.2.0)
-> **Flink 版本**: Flink Agents 0.2.0+
+> **状态**: ✅ Released (2026-02-06, Flink Agents 0.2.0/0.2.1)
+> **Flink 版本**: Flink Agents 0.2.1+
 > **稳定性**: GA (Generally Available)
 >
-> Apache Flink Agents 0.2.0 已于 2026-02-06 正式发布，新增 Embedding Models、Vector Stores、Java 异步执行等能力[^1]。
+> Apache Flink Agents 0.2.0 已于 2026-02-06 正式发布，0.2.1 补丁版本于 2026-03-26 发布，包含3个关键bug修复和安全漏洞修补[^1]。新增 Embedding Models、Vector Stores、Java 异步执行等能力。
 > **所属阶段**: Flink/06-ai-ml | **前置依赖**: [FLIP-531 AI Agents](flink-ai-agents-flip-531.md), [Flink MCP集成](flink-agents-mcp-integration.md) | **形式化等级**: L4-L5
 
 ---
