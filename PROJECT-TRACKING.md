@@ -5,8 +5,8 @@
 > 🔄 **v6.3 全面并行推进** (2026-04-21 进行中)
 > | N路线 形式化验证推进: Lean Predicate.lean weakening引理2个case补全(eq_subst_func/eq_subst_pred)
 > |   Coq streaming-theorems.v 13个Admitted全部附详细证明策略注释 + 列表引理库声明
-> | O路线 英文扩展: 25篇新翻译 (watermark-monotonicity/calm-theorem/actor-model/session-types/flink-deployment/flink-architecture/consistency-models/state-management/window-concepts/differential-privacy/type-safety/dataflow-model/unified-streaming-theory/flink-delta-join/flink-network-stack/pattern-feature-engineering/pattern-stateful-computation/data-mesh/netflix-pipeline/security-model/flink-vs-spark/performance-tuning/production-checklist/anti-pattern-oom/anti-pattern-blocking-io)
-> |   覆盖 Struct核心理论8篇 + Flink核心概念4篇 + Knowledge核心概念3篇 + 设计模式2篇 + 业务模式2篇 + 技术选型2篇 + 最佳实践2篇 + 反模式2篇
+> | O路线 英文扩展: 29篇新翻译 (watermark-monotonicity/calm-theorem/actor-model/session-types/flink-deployment/flink-architecture/consistency-models/state-management/window-concepts/differential-privacy/type-safety/dataflow-model/unified-streaming-theory/flink-delta-join/flink-network-stack/pattern-feature-engineering/pattern-stateful-computation/data-mesh/netflix-pipeline/security-model/flink-vs-spark/performance-tuning/production-checklist/anti-pattern-oom/anti-pattern-blocking-io/relation-index/stream-batch-unified/fg-fgg-type-safety/flink-exactly-once-proof)
+> |   覆盖 Struct核心理论8篇 + Flink核心概念4篇 + Knowledge核心概念3篇 + 设计模式2篇 + 业务模式2篇 + 技术选型2篇 + 最佳实践2篇 + 反模式2篇 + 关系梳理2篇 + 形式化证明2篇
 > | P路线 知识梳理: Knowledge/00-INDEX.md 目录结构数量同步持续维护
 > | Q路线 前沿对齐: Flink 2.3 跟踪持续维护，FLIP状态更新
 > | R路线 质量维护: 交叉引用保持0 errors | Mermaid 100% | 六段式100%
