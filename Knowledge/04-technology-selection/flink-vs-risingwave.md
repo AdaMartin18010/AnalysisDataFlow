@@ -26,7 +26,7 @@
     - [4.2 状态管理机制深度对比](#42-状态管理机制深度对比)
     - [4.3 Nexmark基准测试分析](#43-nexmark基准测试分析)
     - [4.4 反例分析：RisingWave的局限性](#44-反例分析risingwave的局限性)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-K-04-01 (流数据库vs流引擎选择定理)](#thm-k-04-01-流数据库vs流引擎选择定理)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [6.1 实时数仓构建场景](#61-实时数仓构建场景)
@@ -369,7 +369,25 @@ Hummock 是 RisingWave 专为流计算设计的 LSM-Tree 存储引擎：
    - 物化视图增量计算框架
    - SQL直接优化无抽象层损耗
 
-**总体结论**: RisingWave 在 27 个 Nexmark 查询中的 **22 个** 上表现优于 Flink。
+**总体结论**: RisingWave 在 27 个 Nexmark 查询中的 **22 个** 上表现优于 Flink。[^1]
+
+**关键发现补充（2026-04 更新）**:
+
+| 查询类型 | RisingWave vs Flink | 关键因素 |
+|----------|---------------------|----------|
+| 无状态计算 (q0-q2) | 10-30% 提升 | Rust 实现、直接 SQL 优化 |
+| 复杂状态管理 (q4,q7) | **最高 660x 提升** | Hummock 分层存储、高效缓存 |
+| 多流 Join (q9-q10, 10+ streams) | **4.5x 提升** | 无状态计算节点 + S3 状态 |
+
+**恢复时间对比**（关键运维指标）：
+
+| 场景 | Flink 1.x | Flink 2.0+ ForSt | RisingWave v2.6 |
+|------|-----------|------------------|-----------------|
+| 状态恢复时间 | 分钟级（本地 RocksDB 全量恢复） | < 10s（远程状态） | **< 3s**（S3 持续同步，元数据重建） |
+| Checkpoint 间隔 | 10s-1min | 10s-1min | **1s**（默认） |
+| 扩容停机时间 | 分钟级（状态重分配） | 数十秒 | **秒级**（无状态计算节点） |
+
+> **洞察**: RisingWave 的计算-存储完全分离架构将恢复时间从分钟级压缩到秒级，这是其在生产环境中降低 MTTR（Mean Time To Recovery）的核心优势。[^2]
 
 ### 4.4 反例分析：RisingWave的局限性
 
