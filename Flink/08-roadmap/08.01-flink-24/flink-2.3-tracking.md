@@ -33,14 +33,14 @@
 
 # Flink 2.3 版本完整跟踪文档
 
-> 所属阶段: Flink/08-roadmap | 前置依赖: [Flink 2.2 Release](../flink-2.2-frontier-features.md), [Flink 2.3/2.4 路线图](flink-2.3-2.4-roadmap.md) | 形式化等级: L3
+> 所属阶段: Flink/08-roadmap | 前置依赖: [Flink 2.2 Release](./flink-2.2-production-adoption-framework.md), [Flink 2.3/2.4 路线图](flink-2.3-2.4-roadmap.md) | 形式化等级: L3
 > **版本**: 2.3.0-preview | **状态**: 🔍 前瞻 | **Feature Freeze**: 2026-03-31
 
 ---
 
 ## 1. 概念定义 (Definitions)
 
-### Def-F-08-80: Flink 2.3 Release Scope
+### Def-F-08-90: Flink 2.3 Release Scope
 
 **Flink 2.3** 是2026年中发布的版本，聚焦自适应调度增强、TLS证书热更新、SQL PTF扩展与文档重构：
 
@@ -56,7 +56,7 @@ Feature Freeze: 2026-03-31
   5. 文档重构: FLIP-561 Restructure Flink Documentation
 ```
 
-### Def-F-08-81: AdaptiveScheduler Rescale History (FLIP-495)
+### Def-F-08-91: AdaptiveScheduler Rescale History (FLIP-495)
 
 **FLIP-495** 允许 AdaptiveScheduler 记录和查询 rescale 历史：
 
@@ -80,7 +80,7 @@ $$
 
 ---
 
-### Def-F-08-82: TLS Certificate Renewal (FLIP-523)
+### Def-F-08-92: TLS Certificate Renewal (FLIP-523)
 
 **FLIP-523** 提供 TLS 证书热更新能力：
 
@@ -98,7 +98,7 @@ $$
 
 ---
 
-### Def-F-08-83: FROM_CHANGELOG / TO_CHANGELOG PTFs (FLIP-564)
+### Def-F-08-93: FROM_CHANGELOG / TO_CHANGELOG PTFs (FLIP-564)
 
 **FLIP-564** 引入内置 PTF（Polymorphic Table Function）支持 CDC 变更日志处理：
 
@@ -121,7 +121,7 @@ $$
 
 ---
 
-### Def-F-08-84: IMMUTABLE Columns Constraint (FLIP-566)
+### Def-F-08-94: IMMUTABLE Columns Constraint (FLIP-566)
 
 **FLIP-566** 引入不可变列约束，对 Delta Join 稳定性至关重要：
 
@@ -135,7 +135,7 @@ $$
 
 ## 2. 属性推导 (Properties)
 
-### Lemma-F-08-80: FLIP-495 历史查询单调性
+### Lemma-F-08-90: FLIP-495 历史查询单调性
 
 **陈述**: Rescale 历史记录随时间单调增长：
 
@@ -159,7 +159,7 @@ $$
 
 ---
 
-### Prop-F-08-80: FLIP-564 的 CDC 表达能力等价性
+### Prop-F-08-90: FLIP-564 的 CDC 表达能力等价性
 
 **命题**: `FROM_CHANGELOG` + `TO_CHANGELOG` 组合可表达任意 CDC 流转换：
 
@@ -228,7 +228,7 @@ Flink 2.2 完成了 AI 能力的 GA 化（VECTOR_SEARCH、ML_PREDICT、Delta Joi
 
 ## 5. 形式证明 / 工程论证
 
-### Thm-F-08-80: Flink 2.3 自适应调度闭环正确性
+### Thm-F-08-90: Flink 2.3 自适应调度闭环正确性
 
 **定理**: 在 FLIP-495 + FLIP-339 + FLIP-487 组合下，Flink 自适应调度形成**观察-决策-执行-学习**的完整闭环：
 
@@ -248,7 +248,7 @@ $$
 1. **观察完整性**: Web UI metrics 覆盖所有 TaskManager 和 JobManager 状态
 2. **决策收敛性**: 分区选择基于负载反馈，存在不动点
 3. **执行原子性**: Rescale 通过 Checkpoint 保证状态一致性
-4. **学习单调性**: Lemma-F-08-80 保证历史记录不丢失
+4. **学习单调性**: Lemma-F-08-90 保证历史记录不丢失
 
 $$
 \therefore \mathcal{L}_{adaptive} \text{ 形成正确闭环}

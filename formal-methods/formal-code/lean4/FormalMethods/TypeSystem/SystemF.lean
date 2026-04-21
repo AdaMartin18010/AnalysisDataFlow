@@ -153,31 +153,28 @@ infix:50 " ⟶ " => Step
 theorem canonical_forms_fun : ∀ (t : Tm) (T₁ T₂ : Ty),
   HasType Context.empty t (Ty.tyarr T₁ T₂) → Value t → ∃ (t' : Tm), t = Tm.abs T₁ t' := by
   intros t T₁ T₂ ht hv
-  cases hv with
-  | v_abs =>
-    cases ht with
-    | T_abs h =>
-      exists t_1
-      injection ht with h1 h2
-      rw [h1]
-  | v_tabs => cases ht
-  | v_true => cases ht
-  | v_false => cases ht
-  | v_zero => cases ht
-  | v_succ _ => cases ht
+  cases hv
+  case v_abs T' t' =>
+    cases ht
+    exact ⟨t', rfl⟩
+  case v_tabs => cases ht
+  case v_true => cases ht
+  case v_false => cases ht
+  case v_zero => cases ht
+  case v_succ _ => cases ht
 
 theorem canonical_forms_all : ∀ (t : Tm) (T : Ty),
   HasType Context.empty t (Ty.tyall T) → Value t → ∃ (t' : Tm), t = Tm.tabs t' := by
   intros t T ht hv
-  cases hv with
-  | v_tabs =>
-    cases ht with
-    | T_tabs h => exists t_1
-  | v_abs => cases ht
-  | v_true => cases ht
-  | v_false => cases ht
-  | v_zero => cases ht
-  | v_succ _ => cases ht
+  cases hv
+  case v_tabs t' =>
+    cases ht
+    exact ⟨t', rfl⟩
+  case v_abs => cases ht
+  case v_true => cases ht
+  case v_false => cases ht
+  case v_zero => cases ht
+  case v_succ _ => cases ht
 
 theorem canonical_forms_bool : ∀ (t : Tm),
   HasType Context.empty t Ty.tybool → Value t → (t = Tm.tru) ∨ (t = Tm.fls) := by
@@ -193,16 +190,15 @@ theorem canonical_forms_bool : ∀ (t : Tm),
 theorem canonical_forms_nat : ∀ (t : Tm),
   HasType Context.empty t Ty.tynat → Value t → t = Tm.zero ∨ ∃ (t' : Tm), t = Tm.succ t' ∧ Value t' := by
   intros t ht hv
-  cases hv with
-  | v_zero => left; rfl
-  | v_succ t' hv' =>
+  cases hv
+  case v_zero => left; rfl
+  case v_succ t' hv' =>
     right
-    exists t'
-    constructor <;> rfl
-  | v_abs => cases ht
-  | v_tabs => cases ht
-  | v_true => cases ht
-  | v_false => cases ht
+    refine ⟨t', rfl, hv'⟩
+  case v_abs => cases ht
+  case v_tabs => cases ht
+  case v_true => cases ht
+  case v_false => cases ht
 
 -- 2. 类型替换引理 (修正: 原为恒等式，直接 exact)
 theorem ty_substitution : ∀ (Γ : Context) (t : Tm) (T : Ty),
@@ -267,7 +263,133 @@ theorem preservation : ∀ (Γ : Context) (t t' : Tm) (T : Ty),
 5. T_succ/T_pred/T_iszero/T_ite: 类似处理，利用 primitive 操作的归约规则。
 -/
 theorem progress : ∀ (t : Tm) (T : Ty),
-  HasType Context.empty t T → Value t ∨ ∃ t' : Tm, Step t t' := sorry
+  HasType Context.empty t T → Value t ∨ ∃ t' : Tm, Step t t' := by
+  suffices ∀ Γ t T, Γ = Context.empty → HasType Γ t T → Value t ∨ ∃ t' : Tm, Step t t' by
+    apply this Context.empty t T rfl ht
+  intro Γ t T hΓ ht
+  induction ht with
+  | T_var h =>
+    rw [hΓ] at h
+    simp [Context.empty, Context.lookup] at h
+  | T_abs => left; apply Value.v_abs
+  | T_app h₁ h₂ ih₁ ih₂ =>
+    have ih₁ := ih₁ hΓ
+    have ih₂ := ih₂ hΓ
+    cases ih₁ with
+    | inl hval₁ =>
+      cases ih₂ with
+      | inl hval₂ =>
+        have hcf := canonical_forms_fun _ _ _ h₁ hval₁
+        cases hcf with
+        | intro t₁₂ ht₁₂ =>
+          rw [ht₁₂]
+          right
+          exact ⟨_, Step.ST_beta hval₂⟩
+      | inr hstep₂ =>
+        cases hstep₂ with
+        | intro t₂' hstep₂' =>
+          right
+          exact ⟨_, Step.ST_app2 hval₁ hstep₂'⟩
+    | inr hstep₁ =>
+      cases hstep₁ with
+      | intro t₁' hstep₁' =>
+        right
+        exact ⟨_, Step.ST_app1 hstep₁'⟩
+  | T_tabs => left; apply Value.v_tabs
+  | T_tapp h ih =>
+    have ih := ih hΓ
+    cases ih with
+    | inl hval =>
+      have hcf := canonical_forms_all _ _ h hval
+      cases hcf with
+      | intro t₁₂ ht₁₂ =>
+        rw [ht₁₂]
+        right
+        exact ⟨_, Step.ST_tbeta hval⟩
+    | inr hstep =>
+      cases hstep with
+      | intro t₁' hstep' =>
+        right
+        exact ⟨_, Step.ST_tapp hstep'⟩
+  | T_true => left; apply Value.v_true
+  | T_false => left; apply Value.v_false
+  | T_zero => left; apply Value.v_zero
+  | T_succ h ih =>
+    have ih := ih hΓ
+    cases ih with
+    | inl hval => left; apply Value.v_succ hval
+    | inr hstep =>
+      cases hstep with
+      | intro t' hstep' =>
+        right
+        exact ⟨_, Step.ST_succ hstep'⟩
+  | T_pred h ih =>
+    have ih := ih hΓ
+    cases ih with
+    | inl hval =>
+      have hcf := canonical_forms_nat _ h hval
+      cases hcf with
+      | inl hzero =>
+        rw [hzero]
+        right
+        exact ⟨_, Step.ST_predzero⟩
+      | inr hsucc =>
+        cases hsucc with
+        | intro t' ht' =>
+          cases ht' with
+          | intro ht' hval' =>
+            rw [ht']
+            right
+            exact ⟨_, Step.ST_predsucc hval'⟩
+    | inr hstep =>
+      cases hstep with
+      | intro t' hstep' =>
+        right
+        exact ⟨_, Step.ST_pred hstep'⟩
+  | T_iszero h ih =>
+    have ih := ih hΓ
+    cases ih with
+    | inl hval =>
+      have hcf := canonical_forms_nat _ h hval
+      cases hcf with
+      | inl hzero =>
+        rw [hzero]
+        right
+        exact ⟨_, Step.ST_iszerozero⟩
+      | inr hsucc =>
+        cases hsucc with
+        | intro t' ht' =>
+          cases ht' with
+          | intro ht' hval' =>
+            rw [ht']
+            right
+            exact ⟨_, Step.ST_iszerosucc hval'⟩
+    | inr hstep =>
+      cases hstep with
+      | intro t' hstep' =>
+        right
+        exact ⟨_, Step.ST_iszero hstep'⟩
+  | T_if h₁ h₂ h₃ ih₁ ih₂ ih₃ =>
+    have ih₁ := ih₁ hΓ
+    have ih₂ := ih₂ hΓ
+    have ih₃ := ih₃ hΓ
+    cases ih₁ with
+    | inl hval =>
+      have hcf := canonical_forms_bool _ h₁ hval
+      cases hcf with
+      | inl htru =>
+        rw [htru]
+        right
+        exact ⟨_, Step.ST_iftrue _ _⟩
+      | inr hfls =>
+        rw [hfls]
+        right
+        exact ⟨_, Step.ST_iffalse _ _⟩
+    | inr hstep =>
+      cases hstep with
+      | intro t₁' hstep' =>
+        right
+        exact ⟨_, Step.ST_if hstep'⟩
 
 -- 示例
 example : HasType Context.empty (Tm.tabs (Tm.abs (Ty.tyvar 0) (Tm.var 0))) (Ty.tyall (Ty.tyarr (Ty.tyvar 0) (Ty.tyvar 0))) := by

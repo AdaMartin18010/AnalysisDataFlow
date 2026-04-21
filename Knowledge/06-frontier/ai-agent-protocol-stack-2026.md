@@ -11,12 +11,12 @@
 - [AI Agent 协议栈分层架构 (2026)](#ai-agent-协议栈分层架构-2026)
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
-    - [Def-K-06-335: AI Agent 协议栈 (Six-Protocol Stack)](#def-k-06-335-ai-agent-协议栈-six-protocol-stack)
-    - [Def-K-06-336: 协议分层模型 (Protocol Layering Model)](#def-k-06-336-协议分层模型-protocol-layering-model)
-    - [Def-K-06-337: 流处理协议集成点 (Streaming Protocol Integration Point)](#def-k-06-337-流处理协议集成点-streaming-protocol-integration-point)
+    - [Def-K-06-460: AI Agent 协议栈 (Six-Protocol Stack)](#def-k-06-460-ai-agent-协议栈-six-protocol-stack)
+    - [Def-K-06-461: 协议分层模型 (Protocol Layering Model)](#def-k-06-461-协议分层模型-protocol-layering-model)
+    - [Def-K-06-462: 流处理协议集成点 (Streaming Protocol Integration Point)](#def-k-06-462-流处理协议集成点-streaming-protocol-integration-point)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Lemma-K-06-335: 协议正交性](#lemma-k-06-335-协议正交性)
-    - [Prop-K-06-335: 分层组合安全性](#prop-k-06-335-分层组合安全性)
+    - [Lemma-K-06-460: 协议正交性](#lemma-k-06-460-协议正交性)
+    - [Prop-K-06-460: 分层组合安全性](#prop-k-06-460-分层组合安全性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
     - [3.1 六大协议对比矩阵](#31-六大协议对比矩阵)
     - [3.2 协议与流处理的映射关系](#32-协议与流处理的映射关系)
@@ -25,7 +25,7 @@
     - [4.1 为什么需要六层协议栈？](#41-为什么需要六层协议栈)
     - [4.2 协议选择的工程权衡](#42-协议选择的工程权衡)
   - [5. 形式证明 / 工程论证](#5-形式证明--工程论证)
-    - [Thm-K-06-335: 协议栈完备性定理](#thm-k-06-335-协议栈完备性定理)
+    - [Thm-K-06-460: 协议栈完备性定理](#thm-k-06-460-协议栈完备性定理)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [6.1 电商 Agent 全协议栈示例](#61-电商-agent-全协议栈示例)
     - [6.2 Flink 作为协议栈数据层](#62-flink-作为协议栈数据层)
@@ -39,7 +39,7 @@
 
 ## 1. 概念定义 (Definitions)
 
-### Def-K-06-335: AI Agent 协议栈 (Six-Protocol Stack)
+### Def-K-06-460: AI Agent 协议栈 (Six-Protocol Stack)
 
 **AI Agent 协议栈** 是 2026 年 Google Developers Blog 提出的 Agent 互操作六层协议体系[^1]，形式化定义为：
 
@@ -69,7 +69,7 @@ $$
 | 2026-03 | Google Developers Blog 提出六层协议栈[^1] |
 | 2026-04 | A2A v0.3 发布安全增强；MCP 达 97M+ 月下载[^2][^3] |
 
-### Def-K-06-336: 协议分层模型 (Protocol Layering Model)
+### Def-K-06-461: 协议分层模型 (Protocol Layering Model)
 
 **协议分层模型** 将六大协议映射到 OSI 风格的层次结构：
 
@@ -102,7 +102,7 @@ $$
 └─────────────────────────────────────────────┘
 ```
 
-### Def-K-06-337: 流处理协议集成点 (Streaming Protocol Integration Point)
+### Def-K-06-462: 流处理协议集成点 (Streaming Protocol Integration Point)
 
 **流处理协议集成点 (SPIP)** 定义 Flink/RisingWave 等流处理系统与 Agent 协议栈的交互位置：
 
@@ -130,7 +130,7 @@ $$
 
 ## 2. 属性推导 (Properties)
 
-### Lemma-K-06-335: 协议正交性
+### Lemma-K-06-460: 协议正交性
 
 **引理**: 六层协议栈中的协议两两正交，即同一层内协议不重叠，不同层协议可组合：
 
@@ -144,7 +144,7 @@ $$
 2. UCP、AP2、A2UI、AG-UI 分别覆盖不同业务域，无功能重叠
 3. 不同层协议通过清晰的接口边界交互
 
-### Prop-K-06-335: 分层组合安全性
+### Prop-K-06-460: 分层组合安全性
 
 **命题**: 若各层协议独立满足安全属性，则组合后的协议栈满足端到端安全：
 
@@ -281,7 +281,7 @@ $$
 
 ## 5. 形式证明 / 工程论证
 
-### Thm-K-06-335: 协议栈完备性定理
+### Thm-K-06-460: 协议栈完备性定理
 
 **定理**: 六层协议栈覆盖了 AI Agent 系统的全部外部交互需求：
 
@@ -563,4 +563,4 @@ graph TB
 ---
 
 *文档版本: v1.0 | 创建日期: 2026-04-21 | 状态: Active*
-*定理注册: Def-K-06-335~337, Lemma-K-06-335, Prop-K-06-335, Thm-K-06-335*
+*定理注册: Def-K-06-460~337, Lemma-K-06-460, Prop-K-06-460, Thm-K-06-460*

@@ -34,7 +34,8 @@
 └── ecosystem/                         # 第三方系统集成
     ├── risingwave-integration-guide.md
     ├── pulsar-functions-integration.md
-    └── materialize-comparison.md
+    ├── materialize-comparison.md
+    └── confluent-flink-2.3-commercial.md
 ```
 
 ---
@@ -373,6 +374,7 @@ flowchart TD
 | **RisingWave** | 流处理数据库 | 互补/迁移 | [集成指南](./ecosystem/risingwave-integration-guide.md) |
 | **Materialize** | SQL 流处理 | 竞品对比 | [对比分析](./ecosystem/materialize-comparison.md) |
 | **Pulsar Functions** | 轻量流计算 | 集成方案 | [集成指南](./ecosystem/pulsar-functions-integration.md) |
+| **Confluent** | 流数据平台 | 商业集成 | [Flink 2.3 商业分析](./ecosystem/confluent-flink-2.3-commercial.md) |
 
 ### 7.2 集成架构模式
 

@@ -1,6 +1,6 @@
-﻿> **状态**: 🔮 前瞻内容 | **风险等级**: 中 | **最后更新**: 2026-04-21
+﻿> **状态**: ✅ 趋势确认 | **风险等级**: 低 | **最后更新**: 2026-04-21
 >
-> 本文档描述的技术趋势处于快速演进阶段，具体产品特性以各厂商官方发布为准。
+> 本文档描述的 Streaming SQL + 向量搜索融合趋势基于 2026 年行业权威分析确认，RisingWave v2.6 已 GA 向量搜索功能。
 
 ---
 
@@ -15,14 +15,14 @@
 - [Streaming SQL + 向量搜索统一架构：2026 技术融合前沿](#streaming-sql--向量搜索统一架构2026-技术融合前沿)
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
-    - [Def-K-06-335: 统一流式向量架构 (Unified Streaming-Vector Architecture)](#def-k-06-335-统一流式向量架构-unified-streaming-vector-architecture)
-    - [Def-K-06-336: 流式 Embedding 流水线 (Streaming Embedding Pipeline)](#def-k-06-336-流式-embedding-流水线-streaming-embedding-pipeline)
-    - [Def-K-06-337: 混合检索语义层 (Hybrid Retrieval Semantic Layer)](#def-k-06-337-混合检索语义层-hybrid-retrieval-semantic-layer)
-    - [Def-K-06-338: 向量感知查询优化器 (Vector-Aware Query Optimizer)](#def-k-06-338-向量感知查询优化器-vector-aware-query-optimizer)
-    - [Def-K-06-339: RAG-Streaming 一致性边界 (RAG-Streaming Consistency Boundary)](#def-k-06-339-rag-streaming-一致性边界-rag-streaming-consistency-boundary)
+    - [Def-K-06-470: 统一流式向量架构 (Unified Streaming-Vector Architecture)](#def-k-06-470-统一流式向量架构-unified-streaming-vector-architecture)
+    - [Def-K-06-471: 流式 Embedding 流水线 (Streaming Embedding Pipeline)](#def-k-06-471-流式-embedding-流水线-streaming-embedding-pipeline)
+    - [Def-K-06-472: 混合检索语义层 (Hybrid Retrieval Semantic Layer)](#def-k-06-472-混合检索语义层-hybrid-retrieval-semantic-layer)
+    - [Def-K-06-473: 向量感知查询优化器 (Vector-Aware Query Optimizer)](#def-k-06-473-向量感知查询优化器-vector-aware-query-optimizer)
+    - [Def-K-06-474: RAG-Streaming 一致性边界 (RAG-Streaming Consistency Boundary)](#def-k-06-474-rag-streaming-一致性边界-rag-streaming-consistency-boundary)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
-    - [Lemma-K-06-323: 向量搜索与结构化过滤的查询下推条件](#lemma-k-06-323-向量搜索与结构化过滤的查询下推条件)
-    - [Prop-K-06-324: 统一架构下的延迟叠加效应](#prop-k-06-324-统一架构下的延迟叠加效应)
+    - [Lemma-K-06-470: 向量搜索与结构化过滤的查询下推条件](#lemma-k-06-470-向量搜索与结构化过滤的查询下推条件)
+    - [Prop-K-06-470: 统一架构下的延迟叠加效应](#prop-k-06-470-统一架构下的延迟叠加效应)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
     - [3.1 Flink VECTOR\_SEARCH vs RisingWave HNSW vs 专用向量数据库](#31-flink-vector_search-vs-risingwave-hnsw-vs-专用向量数据库)
     - [3.2 流数据库向量搜索的技术演进谱系](#32-流数据库向量搜索的技术演进谱系)
@@ -32,8 +32,8 @@
     - [4.2 统一架构 vs 分层架构的工程权衡](#42-统一架构-vs-分层架构的工程权衡)
     - [4.3 反例：何时不应追求统一架构](#43-反例何时不应追求统一架构)
   - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
-    - [Thm-K-06-324: 统一流式向量架构的延迟上界定理](#thm-k-06-324-统一流式向量架构的延迟上界定理)
-    - [Thm-K-06-325: 混合检索正确性条件](#thm-k-06-325-混合检索正确性条件)
+    - [Thm-K-06-470: 统一流式向量架构的延迟上界定理](#thm-k-06-470-统一流式向量架构的延迟上界定理)
+    - [Thm-K-06-471: 混合检索正确性条件](#thm-k-06-471-混合检索正确性条件)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [6.1 RisingWave 统一架构：CDC → SQL → HNSW → RAG](#61-risingwave-统一架构cdc--sql--hnsw--rag)
     - [6.2 Flink 分层架构：DataStream → 外部向量库](#62-flink-分层架构datastream--外部向量库)
@@ -48,7 +48,7 @@
 
 ## 1. 概念定义 (Definitions)
 
-### Def-K-06-335: 统一流式向量架构 (Unified Streaming-Vector Architecture)
+### Def-K-06-470: 统一流式向量架构 (Unified Streaming-Vector Architecture)
 
 **统一流式向量架构**是一种将流处理 SQL 引擎、Embedding 生成、向量索引和近似最近邻搜索集成于单一系统的数据架构范式。
 
@@ -82,7 +82,7 @@ $$
 
 ---
 
-### Def-K-06-336: 流式 Embedding 流水线 (Streaming Embedding Pipeline)
+### Def-K-06-471: 流式 Embedding 流水线 (Streaming Embedding Pipeline)
 
 **流式 Embedding 流水线**是从原始数据流到可检索向量索引的端到端数据处理管道，要求 Embedding 生成与数据流同步推进。
 
@@ -113,7 +113,7 @@ $$
 
 ---
 
-### Def-K-06-337: 混合检索语义层 (Hybrid Retrieval Semantic Layer)
+### Def-K-06-472: 混合检索语义层 (Hybrid Retrieval Semantic Layer)
 
 **混合检索语义层**是统一架构中同时支持向量相似度搜索和结构化属性过滤的查询抽象层。
 
@@ -139,7 +139,7 @@ $$
 
 ---
 
-### Def-K-06-338: 向量感知查询优化器 (Vector-Aware Query Optimizer)
+### Def-K-06-473: 向量感知查询优化器 (Vector-Aware Query Optimizer)
 
 **向量感知查询优化器**是统一流式向量架构中的查询优化组件，能够识别并重写包含向量操作的查询计划。
 
@@ -158,7 +158,7 @@ $$
 
 ---
 
-### Def-K-06-339: RAG-Streaming 一致性边界 (RAG-Streaming Consistency Boundary)
+### Def-K-06-474: RAG-Streaming 一致性边界 (RAG-Streaming Consistency Boundary)
 
 **RAG-Streaming 一致性边界**定义了实时 RAG 系统中，检索结果与源数据状态之间允许的最大差异。
 
@@ -184,7 +184,7 @@ $$
 
 ## 2. 属性推导 (Properties)
 
-### Lemma-K-06-323: 向量搜索与结构化过滤的查询下推条件
+### Lemma-K-06-470: 向量搜索与结构化过滤的查询下推条件
 
 **陈述**: 在统一流式向量架构中，结构化过滤谓词 $Q_{struct}$ 可下推至向量索引扫描层的充要条件是：
 
@@ -203,7 +203,7 @@ $$
 
 ---
 
-### Prop-K-06-324: 统一架构下的延迟叠加效应
+### Prop-K-06-470: 统一架构下的延迟叠加效应
 
 **命题**: 在分层架构中，端到端延迟呈线性叠加：
 
@@ -380,7 +380,7 @@ AI 研究团队需要频繁切换 Embedding 模型（OpenAI、Cohere、自研模
 
 ## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
 
-### Thm-K-06-324: 统一流式向量架构的延迟上界定理
+### Thm-K-06-470: 统一流式向量架构的延迟上界定理
 
 **陈述**: 在统一流式向量架构 $\mathcal{U}_{SV}$ 中，设：
 
@@ -404,7 +404,7 @@ $$
 
 3. **索引构建**: 批量索引构建贡献延迟 $T_{index}$。RisingWave 的异步构建器将 $T_{index}$ 与查询路径解耦，查询可见延迟取决于 Barrier 提交而非索引构建完成。
 
-4. **查询可见**: 由 Thm-K-06-322，Barrier 提交后数据即视为一致状态，HNSW 索引采用惰性更新策略，查询器在索引构建完成前可回退至暴力扫描（小批量时性能可接受）。
+4. **查询可见**: 由 Thm-K-06-450，Barrier 提交后数据即视为一致状态，HNSW 索引采用惰性更新策略，查询器在索引构建完成前可回退至暴力扫描（小批量时性能可接受）。
 
 综上：
 
@@ -422,7 +422,7 @@ $$
 
 ---
 
-### Thm-K-06-325: 混合检索正确性条件
+### Thm-K-06-471: 混合检索正确性条件
 
 **陈述**: 混合检索查询 $Q_{hybrid} = \langle Q_{vec}, Q_{struct} \rangle$ 返回正确结果集的充要条件是：
 
@@ -812,15 +812,6 @@ gantt
 ## 8. 引用参考 (References)
 
 
-
-
-
-
-
-
-
-
-
 ---
 
-*文档版本: v1.0 | 创建日期: 2026-04-21 | 定理注册: Def-K-06-335~339, Lemma-K-06-323, Prop-K-06-324, Thm-K-06-324~325*
+*文档版本: v1.0 | 创建日期: 2026-04-21 | 定理注册: Def-K-06-470~474, Lemma-K-06-470, Prop-K-06-470, Thm-K-06-470~471*

@@ -91,7 +91,7 @@ $$
 
 ---
 
-## 4. Engineering Argument
+## 4. Argumentation
 
 ### Why Stream Databases Need Built-in Vector Search
 
@@ -109,7 +109,39 @@ $$
 
 ---
 
-## 5. Examples
+## 5. Proof / Engineering Argument
+
+### Engineering Correctness of Streaming HNSW
+
+**Claim**: RisingWave's incremental HNSW maintenance preserves query correctness within bounded staleness.
+
+**Argument**:
+
+1. **Index Consistency Bound**: With 1-second checkpoint interval, the maximum staleness $\tau_{max} = 1s$. For embeddings with generation rate $\lambda < 1000\,\text{vec/s}$, the unindexed vector backlog is bounded:
+   $$
+   B_{max} = \lambda \cdot \tau_{max} < 1000 \,\text{vectors}
+   $$
+
+2. **Recall Rate Guarantee**: The HNSW parameter $M = 16$ and $ef_{construction} = 128$ provide empirical recall $\geq 95\%$ for batch indices. Incremental updates maintain this guarantee because:
+   - Insertions follow the same neighborhood selection algorithm as batch construction
+   - Deletions are lazy (marked invisible, physically removed at checkpoint)
+   - The graph structural invariants (layer connectivity, entry point reachability) are preserved
+
+3. **Latency Advantage**: Eliminating the external vector DB round-trip reduces end-to-end RAG latency from:
+   $$
+   T_{external} = T_{stream} + T_{serialize} + T_{network} + T_{vector\_db} + T_{deserialize}
+   $$
+   to:
+   $$
+   T_{built\_in} = T_{stream} + T_{index\_lookup}
+   $$
+   Where $T_{index\_lookup} \ll T_{network} + T_{vector\_db}$ for co-located compute and storage.
+
+**Engineering Trade-off**: Built-in vector search increases storage footprint (HNSW index adds ~20-50% overhead over raw vectors) but eliminates operational complexity of maintaining a separate vector database cluster.
+
+---
+
+## 6. Examples
 
 ### 5.1 Vector Column and HNSW Index
 
@@ -146,7 +178,7 @@ LIMIT 5;
 
 ---
 
-## 6. Visualizations
+## 7. Visualizations
 
 ### RisingWave Vector Search Architecture
 
@@ -179,4 +211,4 @@ graph TB
 
 ---
 
-## 7. References
+## 8. References

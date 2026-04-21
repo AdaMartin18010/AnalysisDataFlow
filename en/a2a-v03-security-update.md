@@ -78,7 +78,7 @@ Default TTL: 1 hour for access tokens, 30 days for refresh tokens.
 
 ---
 
-## 4. Engineering Argument
+## 4. Argumentation
 
 ### Why A2A v0.3 Security Matters
 
@@ -90,7 +90,26 @@ Enterprise deployments require:
 
 ---
 
-## 5. Examples
+## 5. Proof / Engineering Argument
+
+### Security Model Completeness
+
+**Theorem (Informal)**: The A2A v0.3 security triad $\langle \mathcal{I}_{bearer}, \mathcal{S}_{card}, \mathcal{M}_{mtls} \rangle$ provides defense-in-depth against the STRIDE threat model:
+
+| STRIDE Threat | Defense Mechanism | Rationale |
+|---------------|-------------------|-----------|
+| **Spoofing** | Bearer Token + Keycloak | Identity verification via JWT |
+| **Tampering** | Security Card Signing | Cryptographic integrity of capability declarations |
+| **Repudiation** | Audit Logging | Standardized event stream for compliance |
+| **Information Disclosure** | mTLS | Encrypted transport + client certificate validation |
+| **Denial of Service** | Token TTL + Rate Limiting | Bounded resource consumption |
+| **Elevation of Privilege** | Role-Based Access Control | Principle of least privilege |
+
+**Engineering Trade-off**: The three-layer approach increases operational complexity (certificate management, Keycloak deployment, key rotation) but eliminates single-point-of-failure in security. In production deployments, mTLS is recommended as the baseline; Bearer tokens add user-level granularity; Security Card Signing provides non-repudiation for inter-Agent trust.
+
+---
+
+## 6. Examples
 
 ### 5.1 Keycloak Authentication Implementation
 
@@ -133,7 +152,7 @@ class SecureA2AClient(A2AClient):
 
 ---
 
-## 6. Visualizations
+## 7. Visualizations
 
 ### A2A v0.3 Security Architecture
 
@@ -147,4 +166,4 @@ graph LR
 
 ---
 
-## 7. References
+## 8. References

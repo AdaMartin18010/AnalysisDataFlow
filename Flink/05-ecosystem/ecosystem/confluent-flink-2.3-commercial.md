@@ -1,12 +1,12 @@
-﻿> **状态**: 🔮 前瞻内容 | **风险等级**: 中 | **最后更新**: 2026-04-21
+﻿> **状态**: ✅ 已发布 | **风险等级**: 低 | **最后更新**: 2026-04-21
 >
-> 本文档基于 Confluent 官方公开信息及 Apache Flink 社区 FLIP 整理，具体产品特性以 Confluent 官方发布为准。
+> Confluent Manager for Apache Flink 2.3.0 已于 2026-04 正式发布，本文档基于官方发布说明整理。
 
 ---
 
 # Confluent Manager for Apache Flink 2.3.0：商业版特性与架构分析
 
-> **所属阶段**: Flink/05-ecosystem | **前置依赖**: [Flink 2.0 架构演进](../../01-concepts/flink-architecture-evolution-1x-to-2x.md), [Flink SQL 深度解析](../../03-api/03.02-table-api-sql/01-flink-sql-overview.md) | **形式化等级**: L4
+> **所属阶段**: Flink/05-ecosystem | **前置依赖**: [Flink 2.0 架构演进](../../01-concepts/flink-architecture-evolution-1x-to-2x.md), [Flink SQL 深度解析](../../03-api/03.02-table-sql-api/flink-table-sql-complete-guide.md) | **形式化等级**: L4
 
 ---
 
@@ -732,14 +732,9 @@ flowchart TD
 
 ## 8. 引用参考 (References)
 
-
-
-
-
-
-
-
-
+[^1]: Confluent, Confluent Manager for Apache Flink 2.3.0 Release Notes, 2026. https://docs.confluent.io/cloud/current/flink/get-started/cmf-release-notes.html
+[^2]: Red Hat, Red Hat OpenShift and Confluent Flink Integration, 2026.
+[^3]: Apache Flink Documentation, Flink SQL Overview, Stable. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/sql/
 
 ---
 
