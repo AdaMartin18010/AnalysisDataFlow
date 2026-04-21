@@ -646,6 +646,27 @@ q20: █████ 12.726
 q5:  ██ 5.2249
 ```
 
+### 8.5 v2.6 向量搜索能力（2026-04 新增）
+
+RisingWave v2.6 引入原生向量搜索支持，将流数据库从结构化数据处理扩展到语义数据处理：
+
+| 特性 | 描述 | 工程意义 |
+|------|------|----------|
+| `VECTOR(d)` 类型 | 原生高维向量列类型 | 无需外部存储即可存储 Embedding |
+| HNSW 索引 | 流式优化的近似最近邻索引 | 增量更新、异步构建、Barrier 同步 |
+| `openai_embedding()` | 内置 Embedding SQL 函数 | SQL 内直接生成向量，简化管道 |
+| `vector_similarity()` | 余弦/欧氏/内积相似度计算 | 标准 SQL 接口语义检索 |
+| MCP 服务器 | `risingwavelabs/risingwave-mcp` | AI Agent 原生集成 |
+
+**实时 RAG 场景延迟**：
+
+```
+传统架构:  CDC → Kafka → Flink → Embedding API → 向量库 → 应用  ≈ 15-60s
+RisingWave: CDC → SQL(内置 Embedding + HNSW) → 应用              ≈ < 2s
+```
+
+详见专项文档 [RisingWave v2.6 向量搜索专题](./risingwave-vector-search-2026.md)。
+
 ## 9. 源码级机制分析
 
 ### 9.1 检查点机制源码结构
@@ -823,23 +844,16 @@ checkpoint_interval_sec = 10
 
 ## 11. 引用参考 (References)
 
+[^1]: RisingWave Benchmark, "Nexmark Performance Comparison: RisingWave vs Apache Flink", 2026-04. <https://www.risingwave.com/blog/nexmark-benchmark>
 
-
-
-
-
-
-
-
-
-
+[^2]: Apache Flink Documentation, "ForSt State Backend", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/#forst-state-backend>
 
 
 
 ---
 
-*文档版本: 1.0 | 创建日期: 2026-04-02 | 维护者: AnalysisDataFlow Project*
+*文档版本: 1.1 | 创建日期: 2026-04-02 | 更新日期: 2026-04-21 | 维护者: AnalysisDataFlow Project*
 
 ---
 
-*文档版本: v1.0 | 创建日期: 2026-04-18*
+*文档版本: v1.1 | 创建日期: 2026-04-21（更新 Nexmark 22/27 数据、恢复时间对比、多流 Join 数据、向量搜索引用）*
