@@ -117,6 +117,10 @@ lemma subst_fv_notin {x : Name} {s t : Term} (h : x ∉ fv t) :
            右边 = (fv(t) \ {y, x}) ∪ fv(s)（因 y ≠ x）
            两边相等。
         -/
+        -- [FORMAL-GAP-N-02] 需建立 fv 在重命名替换下的精确等式：
+        --   fv([y:=z]t) = (fv(t) \ {y}) ∪ {z}
+        -- 此性质依赖 freshVar 的正确性和 fv 的归纳定义。
+        -- 完成后可用 set 推理（tauto / omega）消去。
         sorry
       · -- y ≠ x and y ∉ fv(s)
         simp [fv, ih]
@@ -157,6 +161,9 @@ lemma subst_fv_subset {x : Name} {s t : Term} :
            右边 = (fv(t) \ {y, x}) ∪ fv(s)（因 fv(λy.t) = fv(t) \ {y}）
            包含关系成立。
         -/
+        -- [FORMAL-GAP-N-03] 同上：fv 在重命名替换下的子集关系。
+        --   fv([y:=z]t) ⊆ (fv(t) \ {y}) ∪ {z}
+        -- 结合 IH 和 freshVar 性质可得。
         sorry
       · -- y ≠ x, y ∉ fv(s)
         simp [fv, ih]
@@ -237,6 +244,9 @@ lemma alpha_equiv_symm {t s : Term} (h : t =α s) : s =α t := by
          需证 [y:=var x]([x:=var y]t) =α t。
          这是 "逆替换" 性质: 若 y 新鲜，则 [y:=x]([x:=y]t) =α t。
       -/
+      -- [FORMAL-GAP-N-04] "逆替换"性质：若 y 新鲜，则 [y:=x]([x:=y]t) =α t。
+      -- 这是 α-等价对称性的核心引理，证明需对 t 结构归纳，
+      -- 在 abs 情形利用 freshVar 避免捕获。
       sorry
   | app t₁ t₂ s₁ s₂ _ _ ih₁ ih₂ => 
       apply AlphaEquiv.app
@@ -273,6 +283,13 @@ lemma subst_preserves_alpha {x : Name} {s t₁ t₂ : Term}
      
      Case app: 直接由 app 规则和两个 IH 得证。
   -/
+  -- [FORMAL-GAP-N-05] 替换保持 α-等价。
+  -- 证明策略: 对 AlphaEquiv 关系结构归纳。
+  --   Case abs_same: 直接由 IH + abs_same / abs_rename。
+  --   Case abs_rename: 需利用替换的交换性 [x:=s](λy.t) =α [x:=s](λz.[y:=z]t)。
+  --     分 x=y, x=z, x∉{y,z} 三种情形，分别应用 subst 定义和 abs_rename。
+  --   Case app: 直接由 IH + AlphaEquiv.app。
+  -- 此引理完成後，Safety.lean 中 substitution_lemma 的 abs 分支可消去 sorry。
   sorry
 
 end FormalMethods.Lambda.Substitution

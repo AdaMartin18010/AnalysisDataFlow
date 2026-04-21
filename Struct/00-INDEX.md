@@ -8,7 +8,7 @@
 
 | 指标 | 数量 | 更新 |
 |------|------|------|
-| **总文档数** | 56+ 篇 | +4新文档 |
+| **总文档数** | 87 篇 | +31新文档 |
 | **定理 (Thm)** | 391+ | +6新定理 |
 | **定义 (Def)** | 864+ | +6新定义 |
 | **引理/命题** | 1710+ | +5新引理 |
@@ -18,7 +18,7 @@
 
 ## 目录结构
 
-### 01-foundation/ 基础理论 (11篇) [v4.4更新]
+### 01-foundation/ 基础理论 (16篇) [v4.4更新]
 
 | 文档 | 描述 | 等级 |
 |------|------|------|
@@ -34,7 +34,7 @@
 | **[01.10-network-calculus](./01-foundation/network-calculus/network-calculus-streaming.md)** | Network Calculus | L4-L5 | 🆕 |
 | **[01.11-dbsp-differential-dataflow.md](./01-foundation/01.11-dbsp-differential-dataflow.md)** | DBSP/Differential Dataflow理论 | L5-L6 | 🆕 v4.4 |
 
-### 02-properties/ 属性推导 (9篇) [100%]
+### 02-properties/ 属性推导 (8篇) [100%]
 
 | 文档 | 描述 | 等级 |
 |------|------|------|
@@ -47,7 +47,7 @@
 | [02.07-encrypted-stream-processing.md](./02-properties/02.07-encrypted-stream-processing.md) | 加密流处理 | L5 |
 | [02.08-differential-privacy-streaming.md](./02-properties/02.08-differential-privacy-streaming.md) | 差分隐私 | L5 |
 
-### 03-relationships/ 关系建立 (6篇) [100%]
+### 03-relationships/ 关系建立 (11篇) [100%]
 
 | 文档 | 描述 | 等级 |
 |------|------|------|
@@ -58,7 +58,7 @@
 | [03.05-cross-model-mappings.md](./03-relationships/03.05-cross-model-mappings.md) | 跨模型映射 | L5-L6 |
 | [03.06-flink-distributed-architecture.md](./03-relationships/03.06-flink-distributed-architecture.md) | Flink分布式架构 | L4 |
 
-### 04-proofs/ 形式证明 (8篇) [100%]
+### 04-proofs/ 形式证明 (7篇) [100%]
 
 | 文档 | 描述 | 等级 |
 |------|------|------|
@@ -70,7 +70,7 @@
 | [04.06-dot-subtyping-completeness.md](./04-proofs/04.06-dot-subtyping-completeness.md) | DOT子类型完备性 | L5-L6 |
 | [04.07-deadlock-freedom-choreographic.md](./04-proofs/04.07-deadlock-freedom-choreographic.md) | Choreographic死锁自由 | L5 |
 
-### 05-comparative-analysis/ 对比分析 (5篇) [100%]
+### 05-comparative-analysis/ 对比分析 (4篇) [100%]
 
 | 文档 | 描述 | 等级 |
 |------|------|------|
@@ -79,7 +79,7 @@
 | [05.03-encoding-completeness-analysis.md](./05-comparative-analysis/05.03-encoding-completeness-analysis.md) | 编码完备性 | L4-L5 |
 | [05.04-concurrency-models-2025-comparison.md](./05-comparative-analysis/05.04-concurrency-models-2025-comparison.md) | 并发模型2025 | L5 |
 
-### 06-frontier/ 前沿研究 (17篇) [100%]
+### 06-frontier/ 前沿研究 (30篇) [100%]
 
 | 文档 | 描述 | 等级 |
 |------|------|------|
@@ -109,7 +109,7 @@
 | **[ai-formal-verification](./07-tools/ai-formal-verification/ai-formal-verification-integration.md)** | AI+形式验证融合 | L6 | 🆕 |
 | **[formal-verification-industrial-roadmap.md](./07-tools/formal-verification-industrial-roadmap.md)** | 形式化验证工业化路线图 | L4-L5 | 🆕 v4.5 |
 
-### 08-standards/ 标准规范 (2篇) [100%]
+### 08-standards/ 标准规范 (1篇) [100%]
 
 | 文档 | 描述 | 等级 |
 |------|------|------|
@@ -136,7 +136,7 @@
 
 ```
 总体进度: [████████████████████] 100% ✅ v2.0 FINAL
-Struct/:    [████████████████████] 100% (56文档, 391定理)
+Struct/:    [████████████████████] 100% (87文档, 391定理)
 Knowledge/: [████████████████████] 100% (250+文档)
 Flink/:     [████████████████████] 100% (390+文档)
 形式化元素: [████████████████████] 100% (10,745元素)

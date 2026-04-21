@@ -29,17 +29,17 @@
 
 ```
 Knowledge/
-├── 01-concept-atlas/          # 概念图谱 (3文档)
-├── 02-design-patterns/        # 设计模式 (8文档)
-├── 03-business-patterns/      # 业务场景 (13文档)
-├── 04-technology-selection/   # 技术选型 (5文档)
-├── 05-mapping-guides/         # 映射指南 (7文档)
-├── 06-frontier/               # 前沿探索 (40+文档)
+├── 01-concept-atlas/          # 概念图谱 (11文档)
+├── 02-design-patterns/        # 设计模式 (14文档)
+├── 03-business-patterns/      # 业务场景 (16文档)
+├── 04-technology-selection/   # 技术选型 (14文档)
+├── 05-mapping-guides/         # 映射指南 (13文档，含migrations)
+├── 06-frontier/               # 前沿探索 (94+文档)
 ├── 07-best-practices/         # 最佳实践 (7文档)
-├── 08-standards/              # 标准规范 (2文档)
-├── 09-anti-patterns/          # 反模式 (11文档)
-├── 10-case-studies/           # 案例研究 (独立索引)
-└── 98-exercises/              # 练习与速查 (11文档)
+├── 08-standards/              # 标准规范 (4文档)
+├── 09-anti-patterns/          # 反模式 (13文档)
+├── 10-case-studies/           # 案例研究 (44+文档，独立索引)
+└── 98-exercises/              # 练习与速查 (12文档)
 ```
 
 ---

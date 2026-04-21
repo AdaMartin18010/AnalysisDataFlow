@@ -189,6 +189,39 @@ Proof.
 Qed.
 
 (* ============================================================
+ * 第二部分b: 列表索引引理库 (List Index Lemmas)
+ * ============================================================
+ * 以下引理是 watermark_monotonicity_preserved 中 Filter/FlatMap/WindowOp
+ * 情形证明所需的基础设施。当前标记为 Admitted，待补充完整证明。
+ *)
+
+Lemma nth_error_map : forall (A B : Type) (f : A -> B) (l : list A) (n : nat),
+  nth_error (map f l) n = option_map f (nth_error l n).
+Proof.
+  (* [FORMAL-GAP-N-06] 对 n 进行归纳，结合 map 的定义即可证明。
+     这是标准库 List.nth_error_map 的重新声明。 *)
+  Admitted.
+
+Lemma nth_error_filter : forall (A : Type) (p : A -> bool) (l : list A) (n : nat),
+  exists m, nth_error (filter p l) n = nth_error l m /\
+    (forall i, i < m -> p (nth i l (default A)) = false).
+Proof.
+  (* [FORMAL-GAP-N-07] 需对 l 结构归纳，维护过滤后索引与原列表索引的映射关系。
+     关键观察: filter 保持元素的相对顺序，但跳过不满足 p 的元素。 *)
+  Admitted.
+
+Lemma nth_error_flat_map : forall (A B : Type) (f : A -> list B) (l : list A) (n : nat),
+  exists a m k,
+    In a l /\
+    nth_error (flat_map f l) n = nth_error (f a) k /\
+    length (flat_map f (firstn m l)) <= n < length (flat_map f (firstn (S m) l)).
+Proof.
+  (* [FORMAL-GAP-N-08] 需证明 flat_map 的索引可分解为：
+     找到包含第 n 个元素的 f(a) 块，以及块内偏移 k。
+     对 l 归纳，维护累积长度不变式。 *)
+  Admitted.
+
+(* ============================================================
  * 第三部分: Watermark代数证明
  * ============================================================ *)
 
@@ -532,20 +565,11 @@ Proof.
         存在 r 使得 r 在 output 中且无重复。
      3. 传递性保证组合后仍满足 ExactlyOnceSemantics。
      完整证明需建立 filter/flatmap/windowop 各操作符的 preserves_exactly_once 引理。 *)
-  Admitted.
-  assert (Heq : (fun x : Stream A => apply_operator op1 x) [Watermark 0] =
-                (fun x : Stream A => apply_operator op1 x) [Watermark 0])
-    by reflexivity.
-  apply H1 in Heq.
-  specialize (Heq (Watermark 0)).
-  assert (Hin : In (Watermark 0) [Watermark 0]) by (simpl; auto).
-  apply Heq in Hin.
-  destruct Hin as [r [Hin' Hfalse]].
-  assert (Hneq : Watermark 0 <> Watermark 1) by discriminate.
-  specialize (Hfalse (Watermark 1) Hneq).
-  assert (Hself : exists r', r = r') by (exists r; reflexivity).
-  contradiction.
-Qed.
+  (* 修改说明 (2026-04-21): 原证明尝试在 Admitted 后构造反例，
+     但逻辑不成立（利用了旧版 ExactlyOnceSemantics 的自引用问题）。
+     当前保留 Admitted，待 preserves_exactly_once 各操作符引理完成后
+     可基于传递性完成证明。 *)
+Admitted.
 
 (* Checkpoint间隔与恢复时间权衡 *)
 Definition RecoveryTime (cp_interval: nat) (processing_rate: nat) : nat :=
@@ -642,24 +666,25 @@ Theorem exactly_once_implies_safety_liveness :
     LivenessAllProcessed T process.
 Proof.
   intros T process Hexactly.
-  (* Proof sketch:
+  (* Proof sketch (2026-04-21):
      SafetyNoDuplicate: 由 ExactlyOnceSemantics 定义直接得到。
      定义要求输出中不存在时间戳相同但不同的事件，即无重复。
      
      LivenessAllProcessed: 由定义中的 exists r 保证每个输入事件
-     都有对应的输出事件。需补充 is_event_elem 过滤只考虑数据事件。 *)
-  Admitted.
-  assert (Heq : process [Watermark 0] = process [Watermark 0]) by reflexivity.
-  apply Hexactly in Heq.
-  specialize (Heq (Watermark 0)).
-  assert (Hin : In (Watermark 0) [Watermark 0]) by (simpl; auto).
-  apply Heq in Hin.
-  destruct Hin as [r [Hin' Hfalse]].
-  assert (Hneq : Watermark 0 <> Watermark 1) by discriminate.
-  specialize (Hfalse (Watermark 1) Hneq).
-  assert (Hself : exists r', r = r') by (exists r; reflexivity).
-  contradiction.
-Qed.
+     都有对应的输出事件。需补充 is_event_elem 过滤只考虑数据事件。
+     
+     完整证明策略:
+     1. Safety: 对任意输入 s，设 output = process s。
+        由 Hexactly: 对 s 中每个数据事件 e，存在 r ∈ output 使得
+        ∀ r' ∈ output, r' ≠ r → event_timestamp r' ≠ event_timestamp r。
+        这直接蕴含 output 中数据事件的时间戳互不相同，即 NoDup。
+     2. Liveness: 对任意 e ∈ s，由 Hexactly 的 exists r 直接得到
+        存在 r ∈ output 且 event_timestamp r = event_timestamp e
+        （需确认 ExactlyOnceSemantics 定义中 r 的时间戳与 e 的关系）。
+     
+     当前保留 Admitted，因需精确定义 LivenessAllProcessed 中
+     e' 与 e 的对应关系（值相等 vs 时间戳相等）。 *)
+Admitted.
 
 (* ============================================================
  * 第七部分: 实例验证

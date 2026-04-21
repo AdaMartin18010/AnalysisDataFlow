@@ -74,7 +74,48 @@ lemma substitution_lemma {Γ x s t S T}
     (h₁ : (Γ, x : S) ⊢ t : T)
     (h₂ : Γ ⊢ s : S) : 
   Γ ⊢ ([x := s] t) : T := by
-  sorry
+  /- 证明完成策略 (2026-04-21):
+     对 t 的类型推导 hasType (Γ, x:S) t T 进行结构归纳。
+     
+     Case T-Var: t = var y
+       · 若 y = x: [x:=s](var x) = s，由前提 Γ ⊢ s : S = T
+       · 若 y ≠ x: [x:=s](var y) = var y，lookupContext Γ y = some T
+     
+     Case T-Abs: t = abs y t'，需分情况讨论 y = x 或 y ≠ x
+       · y = x: [x:=s](λx.t') = λx.t'，由前提直接得证
+       · y ≠ x: [x:=s](λy.t') = λy.[x:=s]t'，由 IH 得证
+     
+     Case T-App: 直接由两个子项的 IH 组合。
+     Case T-True/T-False: 替换不改变这些项。
+  -/
+  induction h₁ with
+  | var h_lookup =>
+      simp [Substitution.subst, Substitution.substVar, h_lookup]
+      split_ifs with H
+      · -- y = x
+        assumption
+      · -- y ≠ x
+        apply hasType.var
+        simp [extendContext, lookupContext] at *
+        split_ifs with Hxy
+        · contradiction
+        · assumption
+  | abs ih =>
+      apply hasType.abs
+      -- α-等价处理: [x:=s](λy.t') 在 y = x 时退化为 λy.t'；
+      -- 在 y ≠ x 时需应用 weakening + IH。
+      -- 完整证明需建立 substitution 与 extendContext 的交换性质：
+      --   [x:=s](λy.t') = λy.[x:=s]t'  当 y ∉ fv(s) ∪ {x}
+      --   或经 α-重命名为 λz.[x:=s]([y:=z]t')
+      -- 此引理已在 Substitution.lean 中声明但尚未实现，
+      -- 完成后此处可用 exact ih (after weakening/rename) 消去 sorry。
+      sorry -- [FORMAL-GAP-N-01] 依赖 Substitution 与 α-等价交换引理
+  | app ih₁ ih₂ =>
+      apply hasType.app
+      · exact ih₁ h₂
+      · exact ih₂ h₂
+  | tru => apply hasType.tru
+  | fls => apply hasType.fls
 
 /-! 
 ## 保持性定理 (Preservation)
@@ -178,7 +219,25 @@ lemma canonical_forms_fun {t T₁ T₂}
     (h_nf : isNormalForm t)
     (h_ty : emptyContext ⊢ t : (T₁ ⇒ T₂)) : 
   ∃ x body, t = abs x body := by
-  sorry
+  /- 证明完成策略 (2026-04-21):
+     对 emptyContext ⊢ t : (T₁ ⇒ T₂) 进行反演 (inversion)。
+     · T-Abs: t = abs x body，直接得证。
+     · T-App: t = t₁ t₂。若 t 是正规形式，则 t₁ 不能是 lambda 抽象
+       (否则 t 可归约)。但 t₁ 必须是函数类型，在空上下文中，
+       由归纳假设 t₁ = abs x body，矛盾。故 T-App 不可能。
+     · T-Var: 空上下文中不可能有变量。
+     · T-True/T-False: 类型不匹配（Bool ≠ T₁ ⇒ T₂）。
+  -/
+  cases h_ty with
+  | abs h => refine ⟨_, _, rfl⟩
+  | app h₁ h₂ =>
+      -- 正规形式下 App 不可能具有函数类型而不归约
+      exfalso
+      apply h_nf
+      sorry -- 需证明 App 项在空上下文中为函数类型时必可归约
+  | var h => simp [emptyContext, lookupContext] at h
+  | tru => contradiction
+  | fls => contradiction
 
 /-- 
 布尔类型的正规形式
@@ -204,7 +263,23 @@ lemma canonical_forms_bool {t}
     (h_ty : emptyContext ⊢ t : bool) : 
   t = abs "t" (abs "f" (var "t")) ∨ 
   t = abs "t" (abs "f" (var "f")) := by
-  sorry
+  /- 证明完成策略 (2026-04-21):
+     对 emptyContext ⊢ t : bool 进行反演。
+     · T-True: t = abs "t" (abs "f" (var "t"))，左支成立。
+     · T-False: t = abs "t" (abs "f" (var "f"))，右支成立。
+     · T-Var: 空上下文中不可能。
+     · T-App: 类似 canonical_forms_fun 的分析，在正规形式下不可能。
+     · T-Abs: 类型不匹配（函数类型 ≠ bool）。
+  -/
+  cases h_ty with
+  | tru => left; rfl
+  | fls => right; rfl
+  | var h => simp [emptyContext, lookupContext] at h
+  | abs h => contradiction
+  | app h₁ h₂ =>
+      exfalso
+      apply h_nf
+      sorry -- 需证明 App 项在空上下文中为 bool 类型时必可归约
 
 /-! 
 ## 进度性定理 (Progress)
@@ -252,7 +327,48 @@ Case T-True/T-False: 是值，左支成立。
 theorem progress {t T} 
     (h : emptyContext ⊢ t : T) : 
   isValue t ∨ ∃ t', t →β t' := by
-  sorry
+  /- 证明完成策略 (2026-04-21):
+     对 emptyContext ⊢ t : T 的结构归纳。
+     
+     Case T-Var: 不可能（空上下文无变量）。
+     Case T-Abs: t = abs x body，是值（lambda 抽象），左支成立。
+     Case T-App: t = t₁ t₂，∅ ⊢ t₁ : T₁→T₂，∅ ⊢ t₂ : T₁。
+       对 t₁ 应用归纳假设:
+       · 若 t₁ 可归约: 由 BetaStep.app_left，t₁ t₂ 可归约
+       · 若 t₁ 为值: 由 canonical_forms_fun，t₁ = abs x body
+         对 t₂ 应用归纳假设:
+         · 若 t₂ 可归约: 由 BetaStep.app_right，t₁ t₂ 可归约
+         · 若 t₂ 为值: 由 BetaStep.beta，(abs x body) v₂ → [x:=v₂]body
+     Case T-True/T-False: 是值，左支成立。
+  -/
+  induction h with
+  | var h => simp [emptyContext, lookupContext] at h
+  | abs => left; apply isValue.abs
+  | app h₁ h₂ ih₁ ih₂ =>
+      cases ih₁ with
+      | inl hval₁ =>
+          cases ih₂ with
+          | inl hval₂ =>
+              have hcf := canonical_forms_fun _ _ _ (isValue_implies_nf hval₁) h₁
+              cases hcf with
+              | intro x hx =>
+                  cases hx with
+                  | intro body hbody =>
+                      rw [hbody]
+                      right
+                      exact ⟨_, BetaStep.beta x body _ hval₂⟩
+          | inr hstep₂ =>
+              cases hstep₂ with
+              | intro t₂' hstep₂' =>
+                  right
+                  exact ⟨_, BetaStep.app_right _ _ _ hval₁ hstep₂'⟩
+      | inr hstep₁ =>
+          cases hstep₁ with
+          | intro t₁' hstep₁' =>
+              right
+              exact ⟨_, BetaStep.app_left _ _ _ hstep₁'⟩
+  | tru => left; apply isValue.tru
+  | fls => left; apply isValue.fls
 
 /-! 
 ## 类型安全定理 (Type Safety)
@@ -277,19 +393,18 @@ theorem type_safety {t t' T}
     (h_ty : emptyContext ⊢ t : T)
     (h_step : t →β* t') : 
   isValue t' ∨ ∃ t'', t' →β t'' := by
-  -- 首先应用保持性得到 t' 的类型
-  have h_ty' : emptyContext ⊢ t' := by
+  /- 证明完成策略 (2026-04-21):
+     1. 由 preservation_star: emptyContext ⊢ t : T 且 t →β* t' 得 emptyContext ⊢ t' : T。
+     2. 由 progress: emptyContext ⊢ t' : T 得 t' 是值或可进一步归约。
+     
+     注意: preservation_star 当前返回的 hasType 缺少显式类型参数，
+     需确保其返回 HasType emptyContext t' T 而非 HasType emptyContext t'。
+  -/
+  have h_ty' : emptyContext ⊢ t' : T := by
     apply preservation_star
     · exact h_ty
     · exact h_step
-  
-  -- 然后应用进度性
-  apply progress
-  -- 需要显式提供类型参数，因 preservation_star 返回的 hasType 可能缺少类型信息
-  /- 修复: 应将 preservation_star 的结果保存为含类型的命题，
-     或使用 @progress T 显式提供类型参数。
-  -/
-  sorry
+  apply progress h_ty'
 
 /-! 
 ## 终止性

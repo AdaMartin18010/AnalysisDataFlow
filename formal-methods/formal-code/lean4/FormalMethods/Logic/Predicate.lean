@@ -547,20 +547,24 @@ lemma weakening {Γ Δ : Context Σ Var} {φ : Formula Σ Var}
   | eq_refl => exact eq_refl
   | eq_symm h ih => exact eq_symm (ih h₂)
   | eq_trans h₁ h₂ ih₁ ih₂ => exact eq_trans (ih₁ h₂) (ih₂ h₂)
-  | eq_subst_func h => 
+  | eq_subst_func h ih => 
       -- 弱化引理保持: eq_subst_func 的前提 h 在扩展上下文中仍成立
       /- 证明: 对任意 i, h i : Γ ⊢ args[i] = args'[i]
          由归纳假设 (ih i), Δ ⊢ args[i] = args'[i]
          应用 eq_subst_func 即得 Δ ⊢ f(..., args, ...) = f(..., args', ...)
       -/
-      sorry
-  | eq_subst_pred h => 
+      apply eq_subst_func
+      intro i
+      exact ih i
+  | eq_subst_pred h ih => 
       -- 弱化引理保持: eq_subst_pred 的前提 h 在扩展上下文中仍成立
       /- 证明: 对任意 i, h i : Γ ⊢ args[i] = args'[i]
          由归纳假设 (ih i), Δ ⊢ args[i] = args'[i]
          应用 eq_subst_pred 即得 Δ ⊢ P(args) → P(args')
       -/
-      sorry
+      apply eq_subst_pred
+      intro i
+      exact ih i
 
 /-- 演绎定理: Γ, φ ⊢ ψ ↔ Γ ⊢ φ → ψ -/
 theorem deduction_theorem {Γ : Context Σ Var} {φ ψ : Formula Σ Var} :
