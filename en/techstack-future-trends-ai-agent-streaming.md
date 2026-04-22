@@ -218,10 +218,10 @@ graph TB
 
 This document's description of PG19 and AI streaming frontiers has the following associations with the project's existing knowledge base:
 
-- [Real-Time AI Streaming Architecture 2026](../../Knowledge/06-frontier/realtime-ai-streaming-2026.md) — Frontier technology trends in AI and streaming fusion
-- [Go Streaming Ecosystem 2025](../../Knowledge/06-frontier/go-streaming-ecosystem-2025.md) — Development trends of the Go language in the streaming ecosystem
-- [Streaming Databases Frontier](../../Knowledge/06-frontier/streaming-databases.md) — The association between PG19 and streaming database technology evolution
-- [Data Mesh Streaming Architecture 2026](../../Knowledge/03-business-patterns/data-mesh-streaming-architecture-2026.md) — Architectural evolution of AI Agents and data mesh autonomous nodes
+- [Real-Time AI Streaming Architecture 2026](../Knowledge/06-frontier/realtime-ai-streaming-2026.md) — Frontier technology trends in AI and streaming fusion
+- [Go Streaming Ecosystem 2025](../Knowledge/06-frontier/go-streaming-ecosystem-2025.md) — Development trends of the Go language in the streaming ecosystem
+- [Streaming Databases Frontier](../Knowledge/06-frontier/streaming-databases.md) — The association between PG19 and streaming database technology evolution
+- [Data Mesh Streaming Architecture 2026](../Knowledge/03-business-patterns/data-mesh-streaming-architecture-2026.md) — Architectural evolution of AI Agents and data mesh autonomous nodes
 
 ---
 

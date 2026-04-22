@@ -2761,11 +2761,20 @@
 | Def-TS-04-05-04 | 稳态假说 / Steady-State Hypot... | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.05-chaos-engineering-practice.md |
 | Def-TS-04-05-05 | 自动回滚 / Auto-Rollback | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.05-chaos-engineering-practice.md |
 | Def-TS-04-06 | 爆炸半径 / Blast Radius | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.01-resilience-evaluation-framework.md |
-| Def-TS-05-01 |  | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.01-docker-compose-fullstack.md |
-| Def-TS-05-02 |  | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.01-docker-compose-fullstack.md |
-| Def-TS-05-03 |  | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.01-docker-compose-fullstack.md |
-| Def-TS-05-04 |  | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.01-docker-compose-fullstack.md |
-| Def-TS-05-05 | Ingress | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.02-kubernetes-helm-deployment.md |
+| Def-TS-05-01-01 |  | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.01-docker-compose-fullstack.md |
+| Def-TS-05-01-02 |  | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.01-docker-compose-fullstack.md |
+| Def-TS-05-01-03 |  | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.01-docker-compose-fullstack.md |
+| Def-TS-05-01-04 |  | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.01-docker-compose-fullstack.md |
+| Def-TS-05-02-01 | Helm Chart | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.02-kubernetes-helm-deployment.md |
+| Def-TS-05-02-02 | Helm Release | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.02-kubernetes-helm-deployment.md |
+| Def-TS-05-02-03 | Values | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.02-kubernetes-helm-deployment.md |
+| Def-TS-05-02-04 | Template | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.02-kubernetes-helm-deployment.md |
+| Def-TS-05-02-05 | Ingress | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.02-kubernetes-helm-deployment.md |
+| Def-TS-05-03-01 | SLO / Service Level Objective | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.03-production-checklist.md |
+| Def-TS-05-03-02 | SLI / Service Level Indicator | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.03-production-checklist.md |
+| Def-TS-05-03-03 | Error Budget | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.03-production-checklist.md |
+| Def-TS-05-03-04 | DR / Disaster Recovery | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.03-production-checklist.md |
+| Def-TS-05-03-05 | Chaos Engineering | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.03-production-checklist.md |
 | Def-TS-06-01-01 | 订单域 (Order Domain | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/06-practice/06.01-end-to-end-order-processing-example.md |
 | Def-TS-06-01-02 | 履约流程 (Fulfillment Process | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/06-practice/06.01-end-to-end-order-processing-example.md |
 | Def-TS-06-01-03 | 故障注入 (Fault Injection | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/06-practice/06.01-end-to-end-order-processing-example.md |
@@ -2797,8 +2806,10 @@
 | Lemma-TS-04-04-05 | 可用性-时间参数恒等式 | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.04-fault-tolerance-composition-proof.md |
 | Lemma-TS-04-05-01 | 混沌实验可重复性 | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.05-chaos-engineering-practice.md |
 | Lemma-TS-04-05-02 | 安全边界下的爆炸半径单调性 | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.05-chaos-engineering-practice.md |
-| Lemma-TS-05-01 |  | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.01-docker-compose-fullstack.md |
-| Lemma-TS-05-02 |  | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.01-docker-compose-fullstack.md |
+| Lemma-TS-05-01-01 |  | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.01-docker-compose-fullstack.md |
+| Lemma-TS-05-01-02 |  | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.01-docker-compose-fullstack.md |
+| Lemma-TS-05-02-01 | Helm Release 原子性升级 | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.02-kubernetes-helm-deployment.md |
+| Lemma-TS-05-02-02 | Values 优先级覆盖的确定性 | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.02-kubernetes-helm-deployment.md |
 | Lemma-TS-06-01-01 | 订单状态机可达性 (Order State Ma... | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/06-practice/06.01-end-to-end-order-processing-example.md |
 | Lemma-TS-06-01-02 | Outbox 事件最终一致性 (Outbox E... | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/06-practice/06.01-end-to-end-order-processing-example.md |
 | Prop-TS-01-01 |  | Pro | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/01-system-composition/01.01-composite-architecture-overview.md |
@@ -2813,7 +2824,8 @@
 | Prop-TS-04-01 | 组合弹性下界 | Pro | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.01-resilience-evaluation-framework.md |
 | Prop-TS-04-02-01 | 断路器对请求延迟方差的削减效应 | Pro | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.02-circuit-breaker-backpressure-analysis.md |
 | Prop-TS-04-05-01 | 稳态假说的可证伪性 | Pro | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.05-chaos-engineering-practice.md |
-| Prop-TS-05-01 | PDB + HPA 在滚动更新时的可用性保证 | Pro | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.02-kubernetes-helm-deployment.md |
+| Prop-TS-05-02-01 | PDB + HPA 在滚动更新时的可用性保证 | Pro | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.02-kubernetes-helm-deployment.md |
+| Prop-TS-05-03-01 | 错误预算约束发布频率 | Pro | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.03-production-checklist.md |
 | Prop-TS-07-01-01 | 采纳率-成熟度单调性 | Pro | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/07-frontier/07.01-pg19-roadmap-ai-streaming.md |
 | Prop-TS-07-01-02 | 流-AI 融合加速度 | Pro | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/07-frontier/07.01-pg19-roadmap-ai-streaming.md |
 | Thm-TS-02-03-01 |  | 定理 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/02-component-deep-dive/02.03-kratos-microservices-framework.md |
@@ -2824,7 +2836,8 @@
 | Thm-TS-04-02-01 | 断路器在防止级联故障中的有效性 | 定理 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.02-circuit-breaker-backpressure-analysis.md |
 | Thm-TS-04-04-01 |  | 定理 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.04-fault-tolerance-composition-proof.md |
 | Thm-TS-04-05-01 | 混沌工程提升系统弹性置信度的统计基础 | 定理 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.05-chaos-engineering-practice.md |
-| Thm-TS-05-01 |  | 定理 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.01-docker-compose-fullstack.md |
+| Thm-TS-05-01-01 | 依赖图无环保证启动可达 | 定理 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.01-docker-compose-fullstack.md |
+| Thm-TS-05-03-01 | 检查清单覆盖率与系统可用性正相关 | 定理 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.03-production-checklist.md |
 | Thm-TS-06-01-01 | Saga 补偿链在有限步骤内收敛 (Saga Com... | 定理 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/06-practice/06.01-end-to-end-order-processing-example.md |
 
 ---
