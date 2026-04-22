@@ -84,7 +84,3 @@ sequenceDiagram
 ```
 
 ## References
-
-[^1]: Google Developers Blog, "The Agent Stack", 2026.
-[^2]: Anthropic MCP Specification, https://modelcontextprotocol.io/
-[^3]: Google A2A Protocol, https://google.github.io/A2A/

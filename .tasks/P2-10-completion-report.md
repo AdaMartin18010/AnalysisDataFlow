@@ -1,7 +1,7 @@
 # P2-10 任务完成报告：交互式知识图谱可视化
 
-> **任务状态**: ✅ 已完成  
-> **完成日期**: 2026-04-04  
+> **任务状态**: ✅ 已完成
+> **完成日期**: 2026-04-04
 > **交付版本**: v1.0.0
 
 ---
@@ -117,6 +117,7 @@ dot -Tpng visuals/knowledge-graph.dot -o visuals/knowledge-graph.png -Gdpi=300
 ### 4.3 CI/CD 集成
 
 已配置 GitHub Actions，当以下文件变更时自动触发：
+
 - `Struct/**/*.md`
 - `Knowledge/**/*.md`
 - `Flink/**/*.md`

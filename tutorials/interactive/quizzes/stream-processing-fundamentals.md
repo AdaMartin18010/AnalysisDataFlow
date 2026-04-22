@@ -402,4 +402,3 @@ Checkpoint 由 Checkpoint Coordinator 周期性地触发，与具体算子操作
 - [Flink 专项测验](./flink-specialized.md)
 - [设计模式测验](./design-patterns.md)
 - [综合测试](./comprehensive-test.md)
-

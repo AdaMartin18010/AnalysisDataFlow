@@ -150,7 +150,7 @@ AnalysisDataFlow 是一个开源的流计算知识库项目，由一群热爱流
 | 提问求助 | GitHub Discussion (Q&A) |
 | 分享想法 | GitHub Discussion (Ideas) |
 | 一般交流 | GitHub Discussion (General) |
-| 安全报告 | security@analysisdataflow.org |
+| 安全报告 | <security@analysisdataflow.org> |
 
 ---
 
@@ -160,10 +160,10 @@ AnalysisDataFlow 是一个开源的流计算知识库项目，由一群热爱流
 
 | 渠道 | 链接/地址 | 说明 |
 |-----|---------|------|
-| **GitHub** | https://github.com/luyanruyr/AnalysisDataFlow | 代码仓库、Issue、PR |
-| **GitHub Discussion** | https://github.com/luyanruyr/AnalysisDataFlow/discussions | 社区讨论 |
-| **安全邮箱** | security@analysisdataflow.org | 安全漏洞报告 |
-| **社区邮箱** | community@analysisdataflow.org | 一般咨询 |
+| **GitHub** | <https://github.com/luyanruyr/AnalysisDataFlow> | 代码仓库、Issue、PR |
+| **GitHub Discussion** | <https://github.com/luyanruyr/AnalysisDataFlow/discussions> | 社区讨论 |
+| **安全邮箱** | <security@analysisdataflow.org> | 安全漏洞报告 |
+| **社区邮箱** | <community@analysisdataflow.org> | 一般咨询 |
 
 ### 社交媒体
 
@@ -185,6 +185,7 @@ AnalysisDataFlow 是一个开源的流计算知识库项目，由一群热爱流
 感谢所有为 AnalysisDataFlow 做出贡献的社区成员！
 
 特别感谢：
+
 - 每一位提出问题、建议的贡献者
 - 每一位参与讨论、分享经验的社区成员
 - 每一位默默支持项目发展的朋友
@@ -199,11 +200,12 @@ AnalysisDataFlow 是一个开源的流计算知识库项目，由一群热爱流
 
 ---
 
-## 🎉 欢迎加入！
+## 🎉 欢迎加入
 
 无论您是流计算领域的专家，还是刚刚入门的新手，都欢迎加入我们的社区！
 
 **立即开始**：
+
 1. ⭐ Star 项目表示支持
 2. 🍴 Fork 项目开始贡献
 3. 💬 加入 GitHub Discussion 参与讨论
