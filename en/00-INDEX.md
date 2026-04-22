@@ -1,7 +1,7 @@
 # AnalysisDataFlow — English Document Index
 
-> **Language**: English | **Last Updated**: 2026-04-21
-> **Total Documents**: 128 | **New This Round**: 18
+> **Language**: English | **Last Updated**: 2026-04-22
+> **Total Documents**: 153 | **New This Round**: 25 (TECH-STACK)
 
 ---
 
@@ -95,6 +95,37 @@
 | [flink-checkpoint-mechanism.md](./flink-checkpoint-mechanism.md) | [Flink/02-core/checkpoint-mechanism-deep-dive.md](../Flink/02-core/checkpoint-mechanism-deep-dive.md) | Checkpoint Mechanism |
 | [flink-exactly-once-semantics.md](./flink-exactly-once-semantics.md) | [Flink/02-core/exactly-once-semantics-deep-dive.md](../Flink/02-core/exactly-once-semantics-deep-dive.md) | Exactly-Once Semantics |
 
+### TECH-STACK / Streaming + Postgres + Temporal + Kratos
+
+| Document | Source | Description | Formality |
+|----------|--------|-------------|-----------|
+| [techstack-index.md](./techstack-index.md) | [TECH-STACK/00-meta/00-INDEX.md](../TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/00-meta/00-INDEX.md) | Module Index & PG18 Feature Matrix | L2 |
+| [techstack-five-technology-complementarity.md](./techstack-five-technology-complementarity.md) | [TECH-STACK/01-system-composition/01.01-five-technology-complementarity.md](../TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/01-system-composition/01.01-five-technology-complementarity.md) | Five-Technology Complementarity Theorem | L3 |
+| [techstack-end-to-end-data-control-flow.md](./techstack-end-to-end-data-control-flow.md) | [TECH-STACK/01-system-composition/01.02-end-to-end-data-control-flow.md](../TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/01-system-composition/01.02-end-to-end-data-control-flow.md) | E2E Data & Control Flow Analysis | L3 |
+| [techstack-dependency-coupling-matrix.md](./techstack-dependency-coupling-matrix.md) | [TECH-STACK/01-system-composition/01.03-dependency-coupling-matrix.md](../TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/01-system-composition/01.03-dependency-coupling-matrix.md) | Dependency Structure Matrix & Coupling | L3 |
+| [techstack-aggregation-patterns.md](./techstack-aggregation-patterns.md) | [TECH-STACK/01-system-composition/01.04-aggregation-patterns.md](../TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/01-system-composition/01.04-aggregation-patterns.md) | Aggregator & Composite Patterns | L3 |
+| [techstack-postgresql-18-cdc-resilience.md](./techstack-postgresql-18-cdc-resilience.md) | [TECH-STACK/02-component-deep-dive/02.01-postgresql-18-cdc-resilience.md](../TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/02-component-deep-dive/02.01-postgresql-18-cdc-resilience.md) | PG18 CDC & Resilience Deep Dive | L3 |
+| [techstack-temporal-workflow-orchestration.md](./techstack-temporal-workflow-orchestration.md) | [TECH-STACK/02-component-deep-dive/02.02-temporal-workflow-orchestration.md](../TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/02-component-deep-dive/02.02-temporal-workflow-orchestration.md) | Temporal Workflow Orchestration | L3 |
+| [techstack-kratos-microservices-framework.md](./techstack-kratos-microservices-framework.md) | [TECH-STACK/02-component-deep-dive/02.03-kratos-microservices-framework.md](../TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/02-component-deep-dive/02.03-kratos-microservices-framework.md) | Kratos Microservices Framework | L3 |
+| [techstack-flink-stream-processing-core.md](./techstack-flink-stream-processing-core.md) | [TECH-STACK/02-component-deep-dive/02.04-flink-stream-processing-core.md](../TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/02-component-deep-dive/02.04-flink-stream-processing-core.md) | Flink Stream Processing Core | L3 |
+| [techstack-docker-kubernetes-runtime.md](./techstack-docker-kubernetes-runtime.md) | [TECH-STACK/02-component-deep-dive/02.05-docker-kubernetes-runtime.md](../TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/02-component-deep-dive/02.05-docker-kubernetes-runtime.md) | Docker & Kubernetes Runtime | L2 |
+| [techstack-pg18-cdc-kafka-flink-pipeline.md](./techstack-pg18-cdc-kafka-flink-pipeline.md) | [TECH-STACK/03-integration/03.01-pg18-cdc-kafka-flink-pipeline.md](../TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/03-integration/03.01-pg18-cdc-kafka-flink-pipeline.md) | PG18 → Debezium → Kafka → Flink Pipeline | L4 |
+| [techstack-temporal-kratos-worker-hosting.md](./techstack-temporal-kratos-worker-hosting.md) | [TECH-STACK/03-integration/03.02-temporal-kratos-worker-hosting.md](../TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/03-integration/03.02-temporal-kratos-worker-hosting.md) | Temporal Worker Hosted in Kratos | L3 |
+| [techstack-outbox-pattern-pg18-kratos.md](./techstack-outbox-pattern-pg18-kratos.md) | [TECH-STACK/03-integration/03.03-outbox-pattern-pg18-kratos.md](../TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/03-integration/03.03-outbox-pattern-pg18-kratos.md) | Outbox Pattern with PG18 & Kratos | L3 |
+| [techstack-saga-pattern-temporal-orchestration.md](./techstack-saga-pattern-temporal-orchestration.md) | [TECH-STACK/03-integration/03.04-saga-pattern-temporal-orchestration.md](../TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/03-integration/03.04-saga-pattern-temporal-orchestration.md) | Saga Pattern Orchestration | L3 |
+| [techstack-cqrs-streaming-read-model.md](./techstack-cqrs-streaming-read-model.md) | [TECH-STACK/03-integration/03.05-cqrs-streaming-read-model.md](../TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/03-integration/03.05-cqrs-streaming-read-model.md) | CQRS Streaming Read Model | L3 |
+| [techstack-resilience-evaluation-framework.md](./techstack-resilience-evaluation-framework.md) | [TECH-STACK/04-resilience/04.01-resilience-evaluation-framework.md](../TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.01-resilience-evaluation-framework.md) | RES/RML Resilience Evaluation Framework | L4 |
+| [techstack-circuit-breaker-backpressure-analysis.md](./techstack-circuit-breaker-backpressure-analysis.md) | [TECH-STACK/04-resilience/04.02-circuit-breaker-backpressure-analysis.md](../TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.02-circuit-breaker-backpressure-analysis.md) | Circuit Breaker & Backpressure Analysis | L4 |
+| [techstack-bulkhead-retry-isolation.md](./techstack-bulkhead-retry-isolation.md) | [TECH-STACK/04-resilience/04.03-bulkhead-retry-isolation.md](../TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.03-bulkhead-retry-isolation.md) | Bulkhead Isolation & Retry Storm Prevention | L3 |
+| [techstack-fault-tolerance-composition-proof.md](./techstack-fault-tolerance-composition-proof.md) | [TECH-STACK/04-resilience/04.04-fault-tolerance-composition-proof.md](../TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.04-fault-tolerance-composition-proof.md) | Fault Tolerance Composition Proof | L5 |
+| [techstack-chaos-engineering-practice.md](./techstack-chaos-engineering-practice.md) | [TECH-STACK/04-resilience/04.05-chaos-engineering-practice.md](../TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.05-chaos-engineering-practice.md) | Chaos Engineering Practice | L3 |
+| [techstack-docker-compose-fullstack.md](./techstack-docker-compose-fullstack.md) | [TECH-STACK/05-deployment/05.01-docker-compose-fullstack.md](../TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.01-docker-compose-fullstack.md) | Docker Compose Full-Stack Deployment | L2 |
+| [techstack-kubernetes-helm-deployment.md](./techstack-kubernetes-helm-deployment.md) | [TECH-STACK/05-deployment/05.02-kubernetes-helm-deployment.md](../TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.02-kubernetes-helm-deployment.md) | Kubernetes Helm Deployment | L2 |
+| [techstack-production-checklist.md](./techstack-production-checklist.md) | [TECH-STACK/05-deployment/05.03-production-checklist.md](../TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.03-production-checklist.md) | Production Deployment Checklist | L2 |
+| [techstack-end-to-end-order-processing-example.md](./techstack-end-to-end-order-processing-example.md) | [TECH-STACK/06-practice/06.01-end-to-end-order-processing-example.md](../TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/06-practice/06.01-end-to-end-order-processing-example.md) | End-to-End Order Processing Example | L3 |
+| [techstack-performance-benchmark-guide.md](./techstack-performance-benchmark-guide.md) | [TECH-STACK/06-practice/06.02-performance-benchmark-guide.md](../TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/06-practice/06.02-performance-benchmark-guide.md) | Performance Benchmark Guide | L2 |
+| [techstack-future-trends-ai-agent-streaming.md](./techstack-future-trends-ai-agent-streaming.md) | [TECH-STACK/07-frontier/07.01-future-trends-ai-agent-streaming.md](../TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/07-frontier/07.01-future-trends-ai-agent-streaming.md) | Future Trends: AI Agent & Streaming | L2 |
+
 ### Project-Level Documents
 
 | Document | Description |
@@ -129,8 +160,8 @@ English Coverage (Core Documents):
 ├── Flink/ Core Concepts:    3 / 15  (20%)
 ├── Project Docs:           14 / 15  (93%)
 ----------------------------------------
-Total Core: 63 / 102  (62%+)
-Total Files: 156
+Total Core: 88 / 127  (69%+)
+Total Files: 181
 ```
 
 > **Goal**: Reach 100% coverage of core documents (60+ priority translations).

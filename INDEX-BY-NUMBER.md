@@ -4,15 +4,18 @@
 >
 # AnalysisDataFlow 形式化元素索引 (按编号排序)
 
-> **版本**: v1.0.0 | **生成日期**: 2026-04-11 | **总计**: 2,667 个形式化元素
+> **版本**: v1.1.0 | **生成日期**: 2026-04-22 | **总计**: 2,786 个形式化元素 (含 TECH-STACK 119 个新增)
 
 ---
 
 ## 目录
 
-- [Struct 层级](#struct-层级)
-- [Knowledge 层级](#knowledge-层级)
-- [Flink 层级](#flink-层级)
+- [AnalysisDataFlow 形式化元素索引 (按编号排序)](#analysisdataflow-形式化元素索引-按编号排序)
+  - [目录](#目录)
+  - [Struct 层级](#struct-层级)
+  - [Knowledge 层级](#knowledge-层级)
+  - [Flink 层级](#flink-层级)
+  - [TECH-STACK 层级](#tech-stack-层级)
 
 ## Struct 层级
 
@@ -2698,4 +2701,132 @@
 
 ---
 
-*索引生成于 2026-04-11 21:06:43*
+
+
+## TECH-STACK 层级
+
+| 编号 | 名称 | 类型 | 位置 |
+|------|------|------|------|
+| Cor-TS-04-04-01 |  | 推论 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.04-fault-tolerance-composition-proof.md |
+| Def-TS-01-01 |  | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/01-system-composition/01.01-composite-architecture-overview.md |
+| Def-TS-01-02 |  | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/01-system-composition/01.01-composite-architecture-overview.md |
+| Def-TS-01-03 |  | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/01-system-composition/01.01-composite-architecture-overview.md |
+| Def-TS-01-04 |  | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/01-system-composition/01.01-composite-architecture-overview.md |
+| Def-TS-01-04-01 | 聚合服务 Aggregator | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/01-system-composition/01.04-aggregation-patterns.md |
+| Def-TS-01-04-02 | 复合服务 Composite | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/01-system-composition/01.04-aggregation-patterns.md |
+| Def-TS-01-04-03 | 聚合边界 Aggregation Boundary | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/01-system-composition/01.04-aggregation-patterns.md |
+| Def-TS-01-04-04 | 聚合一致性 Aggregation Consiste... | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/01-system-composition/01.04-aggregation-patterns.md |
+| Def-TS-01-05 |  | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/01-system-composition/01.01-composite-architecture-overview.md |
+| Def-TS-02-03-01 |  | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/02-component-deep-dive/02.03-kratos-microservices-framework.md |
+| Def-TS-02-03-02 |  | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/02-component-deep-dive/02.03-kratos-microservices-framework.md |
+| Def-TS-02-03-03 |  | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/02-component-deep-dive/02.03-kratos-microservices-framework.md |
+| Def-TS-02-03-04 |  | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/02-component-deep-dive/02.03-kratos-microservices-framework.md |
+| Def-TS-02-03-05 |  | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/02-component-deep-dive/02.03-kratos-microservices-framework.md |
+| Def-TS-02-03-06 |  | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/02-component-deep-dive/02.03-kratos-microservices-framework.md |
+| Def-TS-03-01 | 耦合度（Coupling Degree | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/01-system-composition/01.03-dependency-coupling-matrix.md |
+| Def-TS-03-01-01 | CDC 管道，CDC Pipeline | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/03-integration/03.01-pg18-cdc-kafka-flink-pipeline.md |
+| Def-TS-03-01-02 | Schema Evolution | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/03-integration/03.01-pg18-cdc-kafka-flink-pipeline.md |
+| Def-TS-03-01-03 | Initial Snapshot | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/03-integration/03.01-pg18-cdc-kafka-flink-pipeline.md |
+| Def-TS-03-01-04 | Incremental Stream | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/03-integration/03.01-pg18-cdc-kafka-flink-pipeline.md |
+| Def-TS-03-01-05 | Dead Letter Queue, DLQ | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/03-integration/03.01-pg18-cdc-kafka-flink-pipeline.md |
+| Def-TS-03-02 | 依赖结构矩阵（Dependency Structure M... | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/01-system-composition/01.03-dependency-coupling-matrix.md |
+| Def-TS-03-03 | 数据耦合（Data Coupling | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/01-system-composition/01.03-dependency-coupling-matrix.md |
+| Def-TS-03-03-01 | Outbox 模式 (Outbox Pattern | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/03-integration/03.03-outbox-pattern-pg18-kratos.md |
+| Def-TS-03-03-02 | 事务双写 (Transactional Dual-W... | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/03-integration/03.03-outbox-pattern-pg18-kratos.md |
+| Def-TS-03-03-03 | 至少一次交付 (At-Least-Once Deli... | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/03-integration/03.03-outbox-pattern-pg18-kratos.md |
+| Def-TS-03-03-04 | 幂等消费者 (Idempotent Consumer | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/03-integration/03.03-outbox-pattern-pg18-kratos.md |
+| Def-TS-03-03-05 | 消息去重 (Message Deduplication | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/03-integration/03.03-outbox-pattern-pg18-kratos.md |
+| Def-TS-03-04 | 控制耦合（Control Coupling | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/01-system-composition/01.03-dependency-coupling-matrix.md |
+| Def-TS-03-05 | 时间耦合（Temporal Coupling | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/01-system-composition/01.03-dependency-coupling-matrix.md |
+| Def-TS-03-06 | 故障传播耦合（Fault Propagation Coup... | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/01-system-composition/01.03-dependency-coupling-matrix.md |
+| Def-TS-04-01 | 弹性 / Resilience | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.01-resilience-evaluation-framework.md |
+| Def-TS-04-02 | RES — Resilience Evaluation ... | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.01-resilience-evaluation-framework.md |
+| Def-TS-04-02-01 | 断路器 / Circuit Breaker | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.02-circuit-breaker-backpressure-analysis.md |
+| Def-TS-04-02-02 | 背压 / Backpressure | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.02-circuit-breaker-backpressure-analysis.md |
+| Def-TS-04-02-03 | 半开状态 / Half-Open | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.02-circuit-breaker-backpressure-analysis.md |
+| Def-TS-04-02-04 | 降级 / Degradation | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.02-circuit-breaker-backpressure-analysis.md |
+| Def-TS-04-02-05 | 级联故障 / Cascading Failure | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.02-circuit-breaker-backpressure-analysis.md |
+| Def-TS-04-03 | RML — Resilience Maturity Mo... | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.01-resilience-evaluation-framework.md |
+| Def-TS-04-04 | MTBF — Mean Time Between Fai... | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.01-resilience-evaluation-framework.md |
+| Def-TS-04-04-01 | 组合系统 (Composite System | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.04-fault-tolerance-composition-proof.md |
+| Def-TS-04-04-02 | 局部容错 (Local Fault Tolerance | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.04-fault-tolerance-composition-proof.md |
+| Def-TS-04-04-03 | 全局容错 (Global Fault Tolerance | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.04-fault-tolerance-composition-proof.md |
+| Def-TS-04-04-04 | 故障树分析 (Fault Tree Analysis... | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.04-fault-tolerance-composition-proof.md |
+| Def-TS-04-04-05 | 可靠性框图 (Reliability Block D... | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.04-fault-tolerance-composition-proof.md |
+| Def-TS-04-04-06 | 可用性 (Availability | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.04-fault-tolerance-composition-proof.md |
+| Def-TS-04-05 | MTTR — Mean Time To Recovery | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.01-resilience-evaluation-framework.md |
+| Def-TS-04-05-01 | 混沌工程 / Chaos Engineering | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.05-chaos-engineering-practice.md |
+| Def-TS-04-05-02 | 故障注入 / Fault Injection | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.05-chaos-engineering-practice.md |
+| Def-TS-04-05-03 | 爆炸半径 / Blast Radius | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.05-chaos-engineering-practice.md |
+| Def-TS-04-05-04 | 稳态假说 / Steady-State Hypot... | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.05-chaos-engineering-practice.md |
+| Def-TS-04-05-05 | 自动回滚 / Auto-Rollback | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.05-chaos-engineering-practice.md |
+| Def-TS-04-06 | 爆炸半径 / Blast Radius | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.01-resilience-evaluation-framework.md |
+| Def-TS-05-01 |  | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.01-docker-compose-fullstack.md |
+| Def-TS-05-02 |  | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.01-docker-compose-fullstack.md |
+| Def-TS-05-03 |  | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.01-docker-compose-fullstack.md |
+| Def-TS-05-04 |  | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.01-docker-compose-fullstack.md |
+| Def-TS-05-05 | Ingress | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.02-kubernetes-helm-deployment.md |
+| Def-TS-06-01-01 | 订单域 (Order Domain | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/06-practice/06.01-end-to-end-order-processing-example.md |
+| Def-TS-06-01-02 | 履约流程 (Fulfillment Process | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/06-practice/06.01-end-to-end-order-processing-example.md |
+| Def-TS-06-01-03 | 故障注入 (Fault Injection | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/06-practice/06.01-end-to-end-order-processing-example.md |
+| Def-TS-06-01-04 | 优雅降级 (Graceful Degradation | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/06-practice/06.01-end-to-end-order-processing-example.md |
+| Def-TS-07-01-01 | 前瞻内容 | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/07-frontier/07.01-pg19-roadmap-ai-streaming.md |
+| Def-TS-07-01-02 | 技术成熟度曲线 | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/07-frontier/07.01-pg19-roadmap-ai-streaming.md |
+| Def-TS-07-01-03 | AI Agent | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/07-frontier/07.01-pg19-roadmap-ai-streaming.md |
+| Def-TS-07-01-04 | MCP, Model Context Protocol | 定义 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/07-frontier/07.01-pg19-roadmap-ai-streaming.md |
+| Lemma-TS-01-01 |  | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/01-system-composition/01.01-composite-architecture-overview.md |
+| Lemma-TS-01-02 |  | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/01-system-composition/01.01-composite-architecture-overview.md |
+| Lemma-TS-01-04-01 | 超时级联效应 Timeout Cascade | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/01-system-composition/01.04-aggregation-patterns.md |
+| Lemma-TS-02-03-01 |  | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/02-component-deep-dive/02.03-kratos-microservices-framework.md |
+| Lemma-TS-02-03-02 |  | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/02-component-deep-dive/02.03-kratos-microservices-framework.md |
+| Lemma-TS-03-01 | DSM 传递性（DSM Transitivity | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/01-system-composition/01.03-dependency-coupling-matrix.md |
+| Lemma-TS-03-01-01 | 管道数据一致性 | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/03-integration/03.01-pg18-cdc-kafka-flink-pipeline.md |
+| Lemma-TS-03-01-02 | 端到端 Exactly-Once 必要条件 | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/03-integration/03.01-pg18-cdc-kafka-flink-pipeline.md |
+| Lemma-TS-03-02 | 循环依赖检测条件（Cycle Detection Co... | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/01-system-composition/01.03-dependency-coupling-matrix.md |
+| Lemma-TS-03-03-01 | 事务原子性保证事件不丢失 | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/03-integration/03.03-outbox-pattern-pg18-kratos.md |
+| Lemma-TS-03-03-02 | 幂等性保证重复消费无副作用 | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/03-integration/03.03-outbox-pattern-pg18-kratos.md |
+| Lemma-TS-04-01 | 组件弹性单调性 | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.01-resilience-evaluation-framework.md |
+| Lemma-TS-04-02 | 弹性短板效应 | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.01-resilience-evaluation-framework.md |
+| Lemma-TS-04-02-01 | 断路器状态转移可达性 | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.02-circuit-breaker-backpressure-analysis.md |
+| Lemma-TS-04-02-02 | 背压传播的单调性 | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.02-circuit-breaker-backpressure-analysis.md |
+| Lemma-TS-04-03 | RES 分数的次可加性 | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.01-resilience-evaluation-framework.md |
+| Lemma-TS-04-04-01 | 串联系统可靠性公式 | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.04-fault-tolerance-composition-proof.md |
+| Lemma-TS-04-04-02 | 并联系统可靠性公式 | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.04-fault-tolerance-composition-proof.md |
+| Lemma-TS-04-04-03 | 串联系统稳态可用性公式 | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.04-fault-tolerance-composition-proof.md |
+| Lemma-TS-04-04-04 | 并联系统稳态可用性公式 | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.04-fault-tolerance-composition-proof.md |
+| Lemma-TS-04-04-05 | 可用性-时间参数恒等式 | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.04-fault-tolerance-composition-proof.md |
+| Lemma-TS-04-05-01 | 混沌实验可重复性 | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.05-chaos-engineering-practice.md |
+| Lemma-TS-04-05-02 | 安全边界下的爆炸半径单调性 | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.05-chaos-engineering-practice.md |
+| Lemma-TS-05-01 |  | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.01-docker-compose-fullstack.md |
+| Lemma-TS-05-02 |  | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.01-docker-compose-fullstack.md |
+| Lemma-TS-06-01-01 | 订单状态机可达性 (Order State Ma... | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/06-practice/06.01-end-to-end-order-processing-example.md |
+| Lemma-TS-06-01-02 | Outbox 事件最终一致性 (Outbox E... | Lem | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/06-practice/06.01-end-to-end-order-processing-example.md |
+| Prop-TS-01-01 |  | Pro | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/01-system-composition/01.01-composite-architecture-overview.md |
+| Prop-TS-01-02 |  | Pro | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/01-system-composition/01.01-composite-architecture-overview.md |
+| Prop-TS-01-04-01 | 聚合服务的单点故障风险 | Pro | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/01-system-composition/01.04-aggregation-patterns.md |
+| Prop-TS-01-04-02 | 部分响应下的聚合一致性保持 | Pro | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/01-system-composition/01.04-aggregation-patterns.md |
+| Prop-TS-02-03-01 |  | Pro | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/02-component-deep-dive/02.03-kratos-microservices-framework.md |
+| Prop-TS-03-01 | 耦合度上界单调性（Coupling Upper Boun... | Pro | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/01-system-composition/01.03-dependency-coupling-matrix.md |
+| Prop-TS-03-01-01 | Snapshot-Stream 衔接一致性 | Pro | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/03-integration/03.01-pg18-cdc-kafka-flink-pipeline.md |
+| Prop-TS-03-02 | 故障传播耦合的传染性（Fault Propagation... | Pro | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/01-system-composition/01.03-dependency-coupling-matrix.md |
+| Prop-TS-03-03-01 | Outbox + CDC + 幂等消费者 实现最终一致性 | Pro | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/03-integration/03.03-outbox-pattern-pg18-kratos.md |
+| Prop-TS-04-01 | 组合弹性下界 | Pro | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.01-resilience-evaluation-framework.md |
+| Prop-TS-04-02-01 | 断路器对请求延迟方差的削减效应 | Pro | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.02-circuit-breaker-backpressure-analysis.md |
+| Prop-TS-04-05-01 | 稳态假说的可证伪性 | Pro | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.05-chaos-engineering-practice.md |
+| Prop-TS-05-01 | PDB + HPA 在滚动更新时的可用性保证 | Pro | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.02-kubernetes-helm-deployment.md |
+| Prop-TS-07-01-01 | 采纳率-成熟度单调性 | Pro | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/07-frontier/07.01-pg19-roadmap-ai-streaming.md |
+| Prop-TS-07-01-02 | 流-AI 融合加速度 | Pro | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/07-frontier/07.01-pg19-roadmap-ai-streaming.md |
+| Thm-TS-02-03-01 |  | 定理 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/02-component-deep-dive/02.03-kratos-microservices-framework.md |
+| Thm-TS-03-01 | 无环可组合性定理 | 定理 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/01-system-composition/01.03-dependency-coupling-matrix.md |
+| Thm-TS-03-01-01 | 端到端 Exactly-Once 充分条件 | 定理 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/03-integration/03.01-pg18-cdc-kafka-flink-pipeline.md |
+| Thm-TS-03-03-01 | Outbox + CDC + 幂等消费者实现最终一致... | 定理 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/03-integration/03.03-outbox-pattern-pg18-kratos.md |
+| Thm-TS-04-01 | 组合系统全局弹性下界定理 | 定理 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.01-resilience-evaluation-framework.md |
+| Thm-TS-04-02-01 | 断路器在防止级联故障中的有效性 | 定理 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.02-circuit-breaker-backpressure-analysis.md |
+| Thm-TS-04-04-01 |  | 定理 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.04-fault-tolerance-composition-proof.md |
+| Thm-TS-04-05-01 | 混沌工程提升系统弹性置信度的统计基础 | 定理 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.05-chaos-engineering-practice.md |
+| Thm-TS-05-01 |  | 定理 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.01-docker-compose-fullstack.md |
+| Thm-TS-06-01-01 | Saga 补偿链在有限步骤内收敛 (Saga Com... | 定理 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/06-practice/06.01-end-to-end-order-processing-example.md |
+
+---
+
+*索引更新于 2026-04-22 | TECH-STACK 层级: 119 个形式化元素已注册*

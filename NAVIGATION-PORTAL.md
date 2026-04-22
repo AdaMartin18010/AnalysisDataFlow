@@ -1,8 +1,8 @@
 ﻿# 知识导航门户 (Navigation Portal)
 
-> **版本**: v1.0 | **日期**: 2026-04-20 | **状态**: 已完成
-> **所属阶段**: 全局 | **前置依赖**: [Struct/00-INDEX.md](./Struct/00-INDEX.md), [Knowledge/00-INDEX.md](./Knowledge/00-INDEX.md), [Flink/00-INDEX.md](./Flink/00-INDEX.md) | **形式化等级**: L1-L6
-> **覆盖路径**: 10+ 推荐路径 | **角色入口**: 4个
+> **版本**: v1.1 | **日期**: 2026-04-22 | **状态**: 已完成
+> **所属阶段**: 全局 | **前置依赖**: [Struct/00-INDEX.md](./Struct/00-INDEX.md), [Knowledge/00-INDEX.md](./Knowledge/00-INDEX.md), [Flink/00-INDEX.md](./Flink/00-INDEX.md), [TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/00-meta/00-INDEX.md](./TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/00-meta/00-INDEX.md) | **形式化等级**: L1-L6
+> **覆盖路径**: 11 推荐路径 | **角色入口**: 5个
 
 ---
 
@@ -44,7 +44,7 @@ $$
 
 ### Prop-NP-01. 角色覆盖完备性
 
-四个角色入口覆盖了项目知识库的主要读者群体：理论研究者（20%）、工程架构师（35%）、应用开发者（30%）、运维工程师（15%）。
+五个角色入口覆盖了项目知识库的主要读者群体：理论研究者（18%）、工程架构师（32%）、应用开发者（28%）、运维工程师（14%）、平台/全栈工程师（8%）。
 
 ---
 
@@ -58,6 +58,7 @@ $$
 | 工程架构师 | 设计模式、技术选型 | Knowledge/ | L3-L4 |
 | 应用开发者 | API使用、代码示例 | Flink/03-api/ | L2-L3 |
 | 运维工程师 | 配置检查、故障排查 | Knowledge/07-best-practices/ | L1-L2 |
+| 平台/全栈工程师 | 端到端技术栈集成、生产部署 | TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/ | L2-L4 |
 
 ### 关系 2: 路径→依赖链的映射
 
@@ -293,9 +294,25 @@ graph LR
 | P2 | [Knowledge/09-anti-patterns/anti-pattern-03-checkpoint-interval-misconfig.md](Knowledge/09-anti-patterns/anti-pattern-03-checkpoint-interval-misconfig.md) | Checkpoint配置反模式 | L1 |
 | P3 | [Flink/04-runtime/](Flink/04-runtime/) 运行时系列 | 运行时调优 | L2-L3 |
 
+### 8.5 平台/全栈工程师 → TECH-STACK
+
+**目标**: 端到端搭建 PostgreSQL+Temporal+Kratos+Flink+K8s 生产级流处理技术栈
+
+**推荐阅读路径**:
+
+| 优先级 | 文档 | 主题 | 等级 |
+|--------|------|------|------|
+| P0 | [TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/00-meta/00-INDEX.md](TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/00-meta/00-INDEX.md) | 技术栈总览与PG18特性矩阵 | L2 |
+| P0 | [TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/01-system-composition/01.01-five-technology-complementarity.md](TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/01-system-composition/01.01-five-technology-complementarity.md) | 五技术互补性定理 | L3 |
+| P1 | [TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/02-component-deep-dive/02.01-postgresql-18-cdc-resilience.md](TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/02-component-deep-dive/02.01-postgresql-18-cdc-resilience.md) | PG18 CDC与韧性 | L3 |
+| P1 | [TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.01-resilience-evaluation-framework.md](TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.01-resilience-evaluation-framework.md) | RES/RML韧性评估框架 | L4 |
+| P2 | [TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.02-kubernetes-helm-deployment.md](TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.02-kubernetes-helm-deployment.md) | K8s/Helm生产部署 | L2 |
+| P2 | [TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/06-practice/06.01-end-to-end-order-processing.md](TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/06-practice/06.01-end-to-end-order-processing.md) | 端到端订单处理实践 | L3 |
+| P3 | [TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/07-frontier/07.01-future-trends-ai-agent-streaming.md](TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/07-frontier/07.01-future-trends-ai-agent-streaming.md) | AI Agent流处理前沿 | L2 |
+
 ---
 
-## 9. 路径层: 按目标导航 (10条推荐路径)
+## 9. 路径层: 按目标导航 (11条推荐路径)
 
 ### 路径 1: "我想理解 Checkpoint 机制原理" [^3]
 
@@ -410,6 +427,19 @@ Struct/07-tools/coq-mechanization.md
   → formal-methods/07-tools/proof-automation-guide.md
 ```
 
+### 路径 11: "我想搭建生产级流处理技术栈"
+
+```
+TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/01-system-composition/01.01-five-technology-complementarity.md
+  → Thm-TS-01-01 (五技术互补一致性)
+  → TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/03-integration/03.01-pg18-debezium-flink-exactly-once.md
+  → Thm-TS-03-01-01 (端到端Exactly-Once充分条件)
+  → TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/04-resilience/04.01-resilience-evaluation-framework.md
+  → Thm-TS-04-04-01 (组合可用性下界)
+  → TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/05-deployment/05.02-kubernetes-helm-deployment.md
+  → TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/06-practice/06.01-end-to-end-order-processing.md
+```
+
 ---
 
 ## 10. 关联层: 交叉引用导航
@@ -503,13 +533,10 @@ Struct/07-tools/coq-mechanization.md
 
 [^5]: [Struct/Model-Comparison-Matrix.md](Struct/Model-Comparison-Matrix.md) — 并发计算模型多维对比矩阵
 
-[^6]: [Knowledge/00-INDEX.md](Knowledge/00-INDEX.md) — Knowledge/ 知识结构文档索引
 
-[^7]: [Flink/00-INDEX.md](Flink/00-INDEX.md) — Flink/ 专项文档索引
 
-[^8]: [USTM-F-Reconstruction/00-INDEX.md](USTM-F-Reconstruction/00-INDEX.md) — USTM-F 重构项目索引
 
 
 ---
 
-*文档版本: v1.0 | 创建日期: 2026-04-20 | 角色入口: 4个 | 推荐路径: 10条 | 交叉引用模板: 3个*
+*文档版本: v1.1 | 创建日期: 2026-04-22 | 角色入口: 5个 | 推荐路径: 11条 | 交叉引用模板: 3个*
