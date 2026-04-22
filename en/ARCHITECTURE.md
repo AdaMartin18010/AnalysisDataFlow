@@ -21,13 +21,31 @@ terminology_verified: true
 
 ## Table of Contents
 
-- [1. Project Overall Architecture](#1-project-overall-architecture)
-  - [1.1 Four-Layer Architecture Overview](#11-four-layer-architecture-overview)
-  - [1.2 Layer Responsibilities and Interfaces](#12-layer-responsibilities-and-interfaces)
-- [2. Document Generation Architecture](#2-document-generation-architecture)
-- [3. Validation System Architecture](#3-validation-system-architecture)
-- [4. Storage Architecture](#4-storage-architecture)
-- [5. Extension Architecture](#5-extension-architecture)
+- [AnalysisDataFlow Technical Architecture Document](#analysisdataflow-technical-architecture-document)
+  - [Table of Contents](#table-of-contents)
+  - [1. Project Overall Architecture](#1-project-overall-architecture)
+    - [1.1 Four-Layer Architecture Overview](#11-four-layer-architecture-overview)
+    - [1.2 Layer Responsibilities and Interfaces](#12-layer-responsibilities-and-interfaces)
+      - [Layer 1: Struct/ - Formal Theory Foundation Layer](#layer-1-struct---formal-theory-foundation-layer)
+      - [Layer 2: Knowledge/ - Knowledge Application Layer](#layer-2-knowledge---knowledge-application-layer)
+      - [Layer 3: Flink/ - Engineering Implementation Layer](#layer-3-flink---engineering-implementation-layer)
+      - [Layer 4: visuals/ - Visual Navigation Layer](#layer-4-visuals---visual-navigation-layer)
+  - [2. Document Generation Architecture](#2-document-generation-architecture)
+    - [2.1 Markdown Processing Pipeline](#21-markdown-processing-pipeline)
+    - [2.2 Document Standards](#22-document-standards)
+  - [3. Validation System Architecture](#3-validation-system-architecture)
+    - [3.1 Validation Script Architecture](#31-validation-script-architecture)
+    - [3.2 CI/CD Pipeline](#32-cicd-pipeline)
+    - [3.3 Quality Gates](#33-quality-gates)
+  - [4. Storage Architecture](#4-storage-architecture)
+    - [4.1 File Organization](#41-file-organization)
+    - [4.2 Index System](#42-index-system)
+  - [5. Extension Architecture](#5-extension-architecture)
+    - [5.1 Adding New Documents](#51-adding-new-documents)
+    - [5.2 Adding New Visualizations](#52-adding-new-visualizations)
+  - [Appendix](#appendix)
+    - [A. Glossary](#a-glossary)
+    - [B. Directory Mapping](#b-directory-mapping)
 
 ---
 

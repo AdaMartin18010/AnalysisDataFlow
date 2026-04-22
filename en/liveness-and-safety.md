@@ -52,6 +52,3 @@ Every property can be decomposed into safety + liveness components.
 ---
 
 ## 4. References
-
-[^1]: B. Alpern and F. B. Schneider, "Defining Liveness", IPL, 1985.
-[^2]: L. Lamport, "Specifying Systems", Addison-Wesley, 2002.

@@ -78,6 +78,7 @@ $$
 ## 5. Engineering Argument
 
 **Latency Upper Bound**: For real-time features with freshness < 1s:
+
 - Event ingestion (Kafka): ~5ms
 - Feature computation (Flink): ~50ms
 - Feature store write (Redis): ~5ms
@@ -100,6 +101,7 @@ stream.keyBy(Event::getUserId)
 ## 7. Visualizations
 
 **Feature Engineering Pipeline**:
+
 ```mermaid
 graph LR
     A[Event Stream] --> B[Raw Features]
@@ -112,6 +114,3 @@ graph LR
 ---
 
 ## 8. References
-
-[^1]: Tecton, "Feature Stores for ML", 2024.
-[^2]: Feast Documentation, "Real-Time Feature Engineering", 2025.

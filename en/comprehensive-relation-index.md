@@ -71,5 +71,3 @@ $$e_1 \xrightarrow{\Phi_1} e_2 \land e_2 \xrightarrow{\Phi_2} e_3 \implies e_1 \
 ---
 
 ## 5. References
-
-[^1]: Project Internal, "Relation Index", 2026.

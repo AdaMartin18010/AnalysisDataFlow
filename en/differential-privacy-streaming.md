@@ -40,6 +40,7 @@ $$\Delta_f(D) = \max_{D' \sim D} \|f(D) - f(D')\|_p$$
 $$\sum_{t \in T} \varepsilon_t \leq \varepsilon_{total}$$
 
 Privacy budget composition follows:
+
 - **Basic composition**: $k$ mechanisms with budget $\varepsilon$ each $\to$ total $k\varepsilon$
 - **Advanced composition**: total $\approx \sqrt{k} \cdot \varepsilon$ (for small $\varepsilon$)
 
@@ -101,7 +102,7 @@ class DPWindowCount:
         self.epsilon = epsilon
         self.window_size = window_size
         self.sensitivity = 1  # Adding/removing one event changes count by 1
-    
+
     def compute(self, events):
         true_count = len(events)
         noise = np.random.laplace(0, self.sensitivity / self.epsilon)
@@ -115,7 +116,7 @@ class PrivacyBudgetTracker:
     def __init__(self, total_epsilon):
         self.total = total_epsilon
         self.consumed = 0
-    
+
     def allocate(self, epsilon_request):
         if self.consumed + epsilon_request <= self.total:
             self.consumed += epsilon_request
@@ -133,11 +134,11 @@ graph TD
     B --> C[True Aggregate]
     C --> D[Add Noise]
     D --> E[DP Result]
-    
+
     F[Privacy Budget] --> G{Budget Remaining?}
     G -->|Yes| D
     G -->|No| H[Suppress Output]
-    
+
     style A fill:#ffebee
     style E fill:#e8f5e9
     style H fill:#ffcdd2
@@ -146,7 +147,3 @@ graph TD
 ---
 
 ## 6. References
-
-[^1]: C. Dwork & A. Roth, "The Algorithmic Foundations of Differential Privacy", Foundations and Trends in Theoretical Computer Science, 2014.
-[^2]: T. Wang et al., "Differential Privacy in Stream Processing", VLDB, 2022.
-[^3]: G. Cormode et al., "Privacy at Scale: Local Differential Privacy in Practice", KDD, 2018.

@@ -31,18 +31,21 @@ flowchart TD
 ## Key APIs
 
 ### DataStream API
+
 - **Language**: Java, Scala, Python (PyFlink)
 - **Abstraction**: Typed streams with transformations
 - **State**: Keyed and operator state
 - **Use case**: Custom stream processing logic
 
 ### Table API & SQL
+
 - **Language**: Java/Scala (Table API), SQL (universal)
 - **Abstraction**: Relational tables on streams
 - **Optimization**: Calcite-based optimizer
 - **Use case**: Analytics, ETL, reporting
 
 ### CEP (Complex Event Processing)
+
 - **Language**: Flink SQL / DataStream
 - **Abstraction**: Pattern matching over event sequences
 - **Use case**: Fraud detection, monitoring, alerting
@@ -57,6 +60,3 @@ flowchart TD
 | Rust | ⚠️ Experimental | ❌ | ❌ | ❌ | Early |
 
 ## References
-
-[^1]: Apache Flink Documentation, "APIs", 2025.
-[^2]: Apache Flink Documentation, "Table API & SQL", 2025.

@@ -105,7 +105,3 @@ unified
 ```
 
 ## References
-
-[^1]: OpenAI GPT-4o Technical Report, 2024.
-[^2]: Google Gemini 3 Pro Documentation, 2025.
-[^3]: Apache Flink Documentation, 2025.

@@ -65,6 +65,7 @@ where $|T|_{cache}$ = external storage cache size, $|W|$ = async I/O wait queue 
 | Use case | Both streams large | One side lookup-able |
 
 **Optimizations**:
+
 - LRU cache for hot join keys
 - Batch lookup merging
 - Async I/O for non-blocking processing
@@ -94,6 +95,7 @@ JOIN Products FOR SYSTEM_TIME AS OF o.proc_time p
 ## 7. Visualizations
 
 **Delta Join Architecture**:
+
 ```mermaid
 graph LR
     A[Stream S1] -->|record| B[Delta Join]
@@ -106,6 +108,3 @@ graph LR
 ---
 
 ## 8. References
-
-[^1]: Apache Flink Release Notes, 2.2.0.
-[^2]: Apache Flink Documentation, "Delta Join", 2025.

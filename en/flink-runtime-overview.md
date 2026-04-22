@@ -49,6 +49,7 @@ Flink runtime is a **distributed data stream processing engine** with Master-Wor
 ## Operations Checklist
 
 ### Pre-Launch
+
 - [ ] State backend selected and configured
 - [ ] Checkpoint interval < max replay tolerance
 - [ ] Watermark strategy matches data pattern
@@ -56,6 +57,7 @@ Flink runtime is a **distributed data stream processing engine** with Master-Wor
 - [ ] Monitoring dashboards configured
 
 ### Post-Launch
+
 - [ ] Checkpoint duration < 50% of interval
 - [ ] Backpressure ratio < 20%
 - [ ] Watermark lag < 5 minutes
@@ -73,6 +75,3 @@ graph LR
 ```
 
 ## References
-
-[^1]: Apache Flink Documentation, "Deployment", 2025.
-[^2]: Apache Flink Documentation, "Monitoring and Debugging", 2025.

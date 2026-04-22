@@ -24,6 +24,7 @@ $$\text{ConsistencyModel} = \{ \text{AtMostOnce}, \text{AtLeastOnce}, \text{Exac
 $$\forall m \in \text{Messages}: \text{Count}_{process}(m) \leq 1$$
 
 **Characteristics**:
+
 - May lose data, never duplicates
 - Simplest implementation
 - Suitable for logging, metrics, loss-tolerant scenarios
@@ -35,6 +36,7 @@ $$\forall m \in \text{Messages}: \text{Count}_{process}(m) \leq 1$$
 $$\forall m \in \text{Messages}: \text{Count}_{process}(m) \geq 1$$
 
 **Characteristics**:
+
 - No data loss, may duplicate
 - Requires idempotency or deduplication
 - Suitable for most business applications
@@ -46,6 +48,7 @@ $$\forall m \in \text{Messages}: \text{Count}_{process}(m) \geq 1$$
 $$\forall m \in \text{Messages}: \text{Count}_{process}(m) = 1$$
 
 **Characteristics**:
+
 - No data loss, no duplicates
 - Complex implementation, performance overhead
 - Required for financial transactions, order processing
@@ -85,6 +88,7 @@ $$(\forall m: \text{Count}(m) \leq 1) \land (\forall m: \text{Count}(m) \geq 1) 
 ### Relation 1: Consistency and State Management
 
 Exactly-Once requires idempotent state updates. The state backend must support:
+
 - Atomic multi-key updates
 - Transactional snapshots
 - Deduplication via transaction IDs
@@ -92,6 +96,7 @@ Exactly-Once requires idempotent state updates. The state backend must support:
 ### Relation 2: Consistency and Checkpointing
 
 Flink's Exactly-Once is implemented via:
+
 1. Barriers propagate through the dataflow
 2. Operator states are snapshotted asynchronously
 3. Sink commits transactions atomically on checkpoint completion
@@ -147,17 +152,17 @@ graph TD
         A1[Message] -->|Process| B1[Result]
         A1 -.->|May Lose| X1[Lost]
     end
-    
+
     subgraph "At-Least-Once"
         A2[Message] -->|Process| B2[Result]
         A2 -->|Retry| B2
     end
-    
+
     subgraph "Exactly-Once"
         A3[Message] -->|Process Once| B3[Result]
         A3 -.->|Deduplicated| X3[Ignored]
     end
-    
+
     style A1 fill:#ffebee
     style A2 fill:#fff3e0
     style A3 fill:#e8f5e9
@@ -166,8 +171,3 @@ graph TD
 ---
 
 ## 6. References
-
-[^1]: J. Armstrong, "Making Reliable Distributed Systems in the Presence of Software Errors", KTH PhD Thesis, 2003.
-[^2]: M. Kleppmann, "Designing Data-Intensive Applications", O'Reilly, 2017.
-[^3]: Apache Flink Documentation, "Exactly-Once Semantics", 2025.
-[^4]: S. Gilbert & N. Lynch, "Brewer's Conjecture and the Feasibility of Consistent, Available, Partition-Tolerant Web Services", ACM SIGACT, 2002.

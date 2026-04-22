@@ -77,6 +77,3 @@ $$\text{Strong} \Rightarrow \text{Causal} \Rightarrow \text{Eventual}$$
 ---
 
 ## 5. References
-
-[^1]: M. Kleppmann, "Designing Data-Intensive Applications", O'Reilly, 2017.
-[^2]: Apache Flink Documentation, "Exactly-Once Semantics", 2025.

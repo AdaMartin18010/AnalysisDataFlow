@@ -102,7 +102,3 @@ env.getCheckpointConfig().setCheckpointStorage("hdfs:///checkpoints");
 ---
 
 ## 6. References
-
-[^1]: Apache Flink Documentation, "Memory Configuration", 2025.
-[^2]: Apache Flink Documentation, "State Backends", 2025.
-[^3]: RocksDB Documentation, "Memory Usage", Meta, 2025.

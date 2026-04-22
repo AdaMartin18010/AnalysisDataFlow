@@ -60,12 +60,14 @@ This differs from CAP consistency—CALM concerns **computational determinism re
 ### Lemma-S-02-05 (Monotone Operations Closure)
 
 The following relational algebra operations are logically monotone:
+
 - Selection ($\sigma$)
 - Projection ($\pi$)
 - Union ($\cup$)
 - Natural join ($\bowtie$)
 
 The following are **not** monotone:
+
 - Difference ($-$)
 - Aggregation with grouping ($\gamma$)
 - Negation ($\neg$)
@@ -91,6 +93,7 @@ Conflict-free Replicated Data Types (CRDTs) are designed for coordination-free c
 ### Relation 3: CALM and the CAP Theorem
 
 CALM refines CAP by showing that coordination is not a binary choice but depends on problem structure:
+
 - **Monotone problems**: Coordination-free consistent implementations exist (AP without sacrificing C for the specification).
 - **Non-monotone problems**: Coordination is fundamentally required (choose between C and availability).
 
@@ -174,13 +177,13 @@ graph TD
         M2 --> M3[Union]
         M3 --> M4[Consistent Result]
     end
-    
+
     subgraph "Non-Monotone Problems"
         N1[Aggregation] --> N2{Coordination Required?}
         N2 -->|Yes| N3[2PC / Barrier]
         N2 -->|No| N4[Eventual Consistency]
     end
-    
+
     style M1 fill:#e8f5e9
     style M2 fill:#e8f5e9
     style M3 fill:#e8f5e9
@@ -194,8 +197,3 @@ graph TD
 ---
 
 ## 8. References
-
-[^1]: T. J. Ameloot et al., "Relational Transducers for Declarative Networking", JACM, 60(2), 2013.
-[^2]: P. Alvaro et al., "Consistency Analysis in Bloom: A CALM and Collected Approach", CIDR, 2011.
-[^3]: M. Conway et al., "Logic and Lattices for Distributed Programming", ACM SoCC, 2012.
-[^4]: S. A. Weil et al., "CRDTs: Conflict-free Replicated Data Types", 2011.

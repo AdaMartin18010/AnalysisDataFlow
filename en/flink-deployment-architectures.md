@@ -18,6 +18,7 @@ A Flink deployment configuration $\mathcal{D}$ is a triple:
 $$\mathcal{D} = \langle \mathcal{M}, \mathcal{P}, \mathcal{R}_{mgr} \rangle$$
 
 where:
+
 - $\mathcal{M} \in \{\text{Session}, \text{Per-Job}, \text{Application}\}$: job submission mode
 - $\mathcal{P} \in \{\text{Standalone}, \text{YARN}, \text{Kubernetes}, \text{Mesos}\}$: resource platform
 - $\mathcal{R}_{mgr}$: Flink ResourceManager adapter protocol for the platform
@@ -105,14 +106,14 @@ graph LR
         S_C[Client1] --> S_JM
         S_C2[Client2] --> S_JM
     end
-    
+
     subgraph PerJob
         P_JM[JobManager A] --> P_TM1[TM A1]
         P_JM2[JobManager B] --> P_TM2[TM B1]
         P_C1[Client A] --> P_JM
         P_C2[Client B] --> P_JM2
     end
-    
+
     subgraph Application
         A_JM[JobManager] --> A_TM1[TM1]
         A_JM --> A_TM2[TM2]
@@ -188,7 +189,3 @@ Do you need strong resource isolation?
 ---
 
 ## 6. References
-
-[^1]: Apache Flink Documentation, "Deployment", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/deployment/
-[^2]: Apache Flink Documentation, "Kubernetes Setup", 2025.
-[^3]: F. Hueske et al., "Stream Processing with Apache Flink", O'Reilly, 2019.

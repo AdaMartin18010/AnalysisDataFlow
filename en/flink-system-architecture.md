@@ -85,6 +85,7 @@ This boundedness is the foundation of Flink's backpressure mechanism.
 ### Relation 1: JM-TM and Master-Worker Pattern
 
 The JM-TM relationship instantiates the classic Master-Worker pattern:
+
 - JM = master (coordination, scheduling)
 - TM = worker (execution, local state)
 - Heartbeat = liveness detection
@@ -92,12 +93,14 @@ The JM-TM relationship instantiates the classic Master-Worker pattern:
 ### Relation 2: Network Stack and TCP Flow Control
 
 Flink's credit-based flow control extends TCP's sliding window:
+
 - TCP: byte-level flow control
 - Flink: buffer-level flow control with application-aware credits
 
 ### Relation 3: State Backend and CAP Theorem
 
 State backend choice reflects CAP trade-offs:
+
 - **MemoryStateBackend**: CP (fast, but volatile)
 - **FsStateBackend**: AP (persistent, but slower)
 - **RocksDBStateBackend**: Tunable C/A with spill-to-disk
@@ -116,7 +119,7 @@ graph TD
     TM1 <-->|Data Exchange| TM2
     TM1 -->|Checkpoint| SB[State Backend]
     TM2 -->|Checkpoint| SB
-    
+
     style JM fill:#ffcdd2
     style TM1 fill:#e8f5e9
     style TM2 fill:#e8f5e9
@@ -151,6 +154,7 @@ Benefits: Reduced inter-TM communication, better resource utilization.
 ### 5.2 Backpressure Propagation
 
 When a downstream operator is slow:
+
 1. Its input buffers fill up
 2. Credit stops being sent upstream
 3. Upstream stops producing
@@ -161,8 +165,3 @@ This is a **closed-loop control system** with the network buffer as the actuator
 ---
 
 ## 6. References
-
-[^1]: Apache Flink Documentation, "Configuration", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/deployment/config/
-[^2]: Apache Flink Documentation, "Memory Configuration", 2025.
-[^3]: F. Hueske et al., "Stream Processing with Apache Flink", O'Reilly, 2019.
-[^4]: M. Kleppmann, "Designing Data-Intensive Applications", O'Reilly, 2017.

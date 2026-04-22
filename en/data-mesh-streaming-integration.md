@@ -70,6 +70,7 @@ Higher autonomy ($\alpha \to 1$) reduces cross-domain consistency guarantees.
 ## 5. Engineering Argument
 
 **Streaming Data Product Contract**: Each data product specifies:
+
 - Schema (Avro/Protobuf/JSON Schema)
 - Latency SLA (e.g., < 1s p99)
 - Freshness guarantee
@@ -103,6 +104,7 @@ data_product:
 ## 7. Visualizations
 
 **Streaming Data Mesh**:
+
 ```mermaid
 graph TB
     subgraph D1[Commerce Domain]
@@ -121,6 +123,3 @@ graph TB
 ---
 
 ## 8. References
-
-[^1]: Z. Dehghani, "Data Mesh", O'Reilly, 2022.
-[^2]: Confluent, "Streaming Data Mesh", 2024.

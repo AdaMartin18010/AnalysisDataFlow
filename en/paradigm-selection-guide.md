@@ -65,7 +65,3 @@ Is the system distributed across nodes?
 ---
 
 ## 4. References
-
-[^1]: C. A. R. Hoare, "Communicating Sequential Processes", 1985.
-[^2]: G. A. Agha, "Actors: A Model of Concurrent Computation", 1986.
-[^3]: T. Akidau et al., "The Dataflow Model", PVLDB, 2015.

@@ -80,6 +80,7 @@ State complexity and recovery time are positively correlated.
 ## 5. Engineering Argument
 
 **Migration from Spark to Flink**: Benefits include:
+
 - Lower latency (micro-batch → true streaming)
 - Better state management
 - Native event time support
@@ -90,6 +91,7 @@ State complexity and recovery time are positively correlated.
 ## 6. Examples
 
 **E-commerce Real-Time Recommendation**:
+
 ```
 Requirements: < 200ms, event time, stateful, CEP
 → Flink selected for:
@@ -103,6 +105,7 @@ Requirements: < 200ms, event time, stateful, CEP
 ## 7. Visualizations
 
 **Engine Selection Decision Tree**:
+
 ```mermaid
 flowchart TD
     A[Latency Requirement] -->|< 100ms| B{State Complexity}
@@ -115,6 +118,3 @@ flowchart TD
 ---
 
 ## 8. References
-
-[^1]: Apache Flink Documentation, 2025.
-[^2]: Apache Kafka Documentation, "Kafka Streams", 2025.

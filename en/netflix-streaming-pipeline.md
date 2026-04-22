@@ -18,6 +18,7 @@ The **Netflix data pipeline** is the distributed stream processing infrastructur
 $$\text{NetflixPipeline} \triangleq \langle \text{Sources}, \text{Processors}, \text{Sinks}, \text{SLAs} \rangle$$
 
 where:
+
 - **Sources**: Client devices → playback events, user interactions, error logs
 - **Processors**: Keystone → routing/filtering/aggregation/feature engineering
 - **Sinks**: Recommendation service, A/B testing platform, operations dashboards
@@ -88,6 +89,7 @@ $$T_{scale} \leq 2 \cdot T_{checkpoint} \approx 60s$$
 ### 4.1 Global Deployment Challenges
 
 Netflix operates in 190+ countries with:
+
 - **Data sovereignty**: EU data stays in EU
 - **Latency requirements**: < 100ms for playback start
 - **Failover**: Cross-region replication within 30s
@@ -130,7 +132,7 @@ graph LR
     Flink1 --> Rec[Recommendation Service]
     Flink2 --> AB[A/B Testing]
     Flink3 --> Ops[Operations Dashboard]
-    
+
     style Kafka fill:#e1f5fe
     style Flink1 fill:#e8f5e9
 ```
@@ -138,6 +140,3 @@ graph LR
 ---
 
 ## 7. References
-[^1]: Netflix Tech Blog, "Keystone: Real-time Stream Processing Platform", 2018.
-[^2]: Netflix Tech Blog, "Evolution of the Netflix Data Pipeline", 2020.
-[^3]: Apache Flink Documentation, "Netflix Case Study", 2025.

@@ -18,6 +18,7 @@ A **Dataflow graph** is a directed acyclic graph (DAG):
 $$\mathcal{G} = (V, E, P, \Sigma, \mathbb{T})$$
 
 where:
+
 - $V = V_{src} \cup V_{op} \cup V_{sink}$: vertices (sources, operators, sinks)
 - $E \subseteq V \times V$: directed edges (data channels)
 - $P: V_{op} \to \mathbb{N}$: parallelism function
@@ -31,6 +32,7 @@ An operator $v \in V_{op}$ is a tuple:
 $$v = (f_v, \sigma_v, \text{in}_v, \text{out}_v)$$
 
 where:
+
 - $f_v: \text{Input}^* \times \Sigma \to \text{Output}^* \times \Sigma$: transformation function
 - $\sigma_v \in \Sigma$: operator state
 - $\text{in}_v$: input ports
@@ -43,6 +45,7 @@ A **stream** $S$ is a partially ordered multiset of records:
 $$S = (R, \prec, \mu)$$
 
 where:
+
 - $R$: set of records
 - $\prec \subseteq R \times R$: partial order (happens-before)
 - $\mu: R \to \mathbb{N}$: multiplicity function
@@ -64,6 +67,7 @@ A **window** $W$ is a function from streams to finite subsets:
 $$W: S \to 2^S$$
 
 Window types:
+
 - **Fixed (Tumbling)**: $W_k = [k\Delta, (k+1)\Delta)$
 - **Sliding**: $W_k = [k\Delta_s, k\Delta_s + \Delta_w)$
 - **Session**: $W = [t_{first}, t_{last} + \Delta_g)$
@@ -95,6 +99,7 @@ $$\text{update}(\sigma, a, b) = \text{update}(\sigma, b, a) \land \text{update}(
 ### Relation 1: Dataflow Model $\supset$ Kahn Process Networks (KPN)
 
 KPN is a special case of Dataflow where:
+
 - Channels are unbounded FIFO queues
 - Processes are deterministic functions
 - Blocking read semantics
@@ -124,12 +129,14 @@ KPN is a special case of Dataflow where:
 ### Thm-S-04-01 (Dataflow Determinism)
 
 A Dataflow graph $\mathcal{G}$ computes a deterministic result if:
+
 1. All operators have deterministic transformation functions
 2. Watermarks propagate monotonically
 3. Window triggers depend only on watermark progress
 4. State snapshots are consistent (barrier-aligned)
 
 **Proof Sketch.** By structural induction over the DAG:
+
 - **Base**: Sources produce deterministic streams (given input)
 - **Step**: Each operator's output is deterministic from deterministic inputs (Lemma-S-04-01)
 - **Window completion**: Triggered by watermark, which is deterministic given source inputs
@@ -146,6 +153,7 @@ Source(text) → FlatMap(split) → Map((word, 1)) → KeyBy(word) → Sum(count
 ```
 
 Formalized as:
+
 - $V_{src} = \{\text{Source}\}$, $V_{op} = \{\text{FlatMap}, \text{Map}, \text{KeyBy}, \text{Sum}\}$, $V_{sink} = \{\text{Sink}\}$
 - $E = \{(\text{Source}, \text{FlatMap}), (\text{FlatMap}, \text{Map}), \ldots\}$
 - $P(\text{Sum}) = N$ (parallelism for key distribution)
@@ -162,7 +170,7 @@ graph LR
     K --> W[Window]
     W --> A[Aggregate]
     A --> Sn[Sink]
-    
+
     style S fill:#e1f5fe
     style Sn fill:#ffcdd2
     style W fill:#fff3e0
@@ -173,8 +181,3 @@ graph LR
 ---
 
 ## 7. References
-
-[^1]: T. Akidau et al., "The Dataflow Model", PVLDB, 8(12), 2015.
-[^2]: G. Kahn, "The Semantics of a Simple Language for Parallel Programming", IFIP Congress, 1974.
-[^3]: E. A. Lee & D. G. Messerschmitt, "Synchronous Data Flow", Proceedings of the IEEE, 1987.
-[^4]: Apache Flink Documentation, "Dataflow Programming Model", 2025.

@@ -23,6 +23,7 @@ Reusable optimization solution for common streaming performance bottlenecks.
 | CPU utilization | Effective compute ratio | Maximize |
 
 **Bottleneck Categories**:
+
 - Compute: Serialization, deserialization, business logic
 - Network: Buffer exhaustion, credit starvation
 - Storage: State access latency, checkpoint I/O
@@ -61,6 +62,7 @@ Keyed state access exhibits temporal locality; recently accessed keys are likely
 | POJO | Fastest | Java-only | Simple types |
 
 **State Access Optimization**:
+
 - Use ValueState instead of ListState for single values
 - Enable state backend cache (RocksDB block cache)
 - Batch state updates where possible
@@ -93,6 +95,7 @@ ListStateUpdateMode updateMode = ListStateUpdateMode.BATCH;
 ## 7. Visualizations
 
 **Performance Tuning Decision Tree**:
+
 ```mermaid
 graph TD
     A[Low Throughput] --> B{High CPU?}
@@ -105,6 +108,3 @@ graph TD
 ---
 
 ## 8. References
-
-[^1]: Apache Flink Documentation, "Performance Tuning", 2025.
-[^2]: Netflix Tech Blog, "Flink Performance Optimization", 2023.

@@ -54,6 +54,7 @@ P0 (blocking) > P1 (critical) > P2 (recommended) in deployment gate sequence.
 ## 5. Checklist Details
 
 **Configuration Checks**:
+
 - [ ] Checkpoint interval < 5 minutes
 - [ ] Watermark strategy configured
 - [ ] Parallelism set appropriately
@@ -61,18 +62,21 @@ P0 (blocking) > P1 (critical) > P2 (recommended) in deployment gate sequence.
 - [ ] Restart strategy configured
 
 **Monitoring Checks**:
+
 - [ ] Job metrics exported to Prometheus/Grafana
 - [ ] Lag alerts for Kafka sources
 - [ ] Backpressure monitoring enabled
 - [ ] Custom business metrics defined
 
 **Security Checks**:
+
 - [ ] Kerberos/SASL for Kafka
 - [ ] TLS for REST endpoints
 - [ ] RBAC for Web UI
 - [ ] Audit logging enabled
 
 **Performance Checks**:
+
 - [ ] Throughput tested at 2x expected peak
 - [ ] State size within backend capacity
 - [ ] GC pauses < 100ms
@@ -101,6 +105,7 @@ gates:
 ## 7. Visualizations
 
 **Deployment Checklist Flow**:
+
 ```mermaid
 graph TD
     A[Code Complete] --> B[Config Check]
@@ -115,6 +120,3 @@ graph TD
 ---
 
 ## 8. References
-
-[^1]: Apache Flink Documentation, "Production Readiness", 2025.
-[^2]: Netflix Tech Blog, "Streaming Production Checklist", 2023.
