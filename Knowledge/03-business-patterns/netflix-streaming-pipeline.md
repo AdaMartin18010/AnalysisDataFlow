@@ -544,7 +544,124 @@ graph LR
     CALC --> STORE
 ```
 
+### Netflix流处理管道思维导图
+
+以下思维导图以"Netflix流处理管道"为中心，从五个维度放射展开其业务与技术全景。
+
+```mermaid
+mindmap
+  root((Netflix流处理管道))
+    播放体验
+      视频启动
+      缓冲管理
+      码率自适应
+      错误恢复
+    个性化
+      推荐系统
+      内容发现
+      A/B测试
+      播放列表
+    内容分发
+      CDN调度
+      边缘节点
+      预加载
+      多区域复制
+    运营洞察
+      观看分析
+      用户留存
+      内容投资
+      带宽优化
+    技术栈
+      Keystone
+      Flink
+      Spark
+      Cassandra
+      EVCache
+```
+
+### 多维关联树：业务场景→数据需求→技术方案
+
+以下关联树展示Netflix核心业务场景如何映射到数据处理需求，并进一步落实到具体技术组件。
+
+```mermaid
+graph TB
+    subgraph "业务场景"
+        B1[实时个性化推荐]
+        B2[播放体验优化]
+        B3[内容热度预测]
+        B4[A/B测试分析]
+        B5[全局运营监控]
+    end
+
+    subgraph "数据处理需求"
+        D1[低延迟事件处理<br/>P99 < 1s]
+        D2[高吞吐窗口聚合<br/>万亿事件/日]
+        D3[复杂模式匹配<br/>CEP]
+        D4[双流关联<br/>Stream Join]
+        D5[全局状态一致<br/>Exactly-Once]
+    end
+
+    subgraph "技术方案"
+        T1[Keystone + Flink<br/>流处理PaaS]
+        T2[Kafka<br/>全球消息总线]
+        T3[RocksDB State Backend<br/>本地状态管理]
+        T4[Redis / EVCache<br/>在线特征存储]
+        T5[S3 + Iceberg<br/>数据湖]
+    end
+
+    B1 --> D1
+    B1 --> D4
+    B2 --> D1
+    B2 --> D3
+    B3 --> D2
+    B3 --> D5
+    B4 --> D4
+    B4 --> D5
+    B5 --> D2
+    B5 --> D5
+
+    D1 --> T1
+    D2 --> T1
+    D3 --> T1
+    D4 --> T1
+    D5 --> T2
+    D1 --> T4
+    D2 --> T5
+    D5 --> T3
+```
+
+### 内容分发决策树
+
+以下决策树展示Netflix如何根据用户地理位置、网络质量和内容热度进行动态内容分发决策。
+
+```mermaid
+flowchart TD
+    A[用户请求内容] --> B{用户地理位置?}
+    B -->|北美| C1[北美CDN节点]
+    B -->|欧洲| C2[欧洲CDN节点]
+    B -->|亚太| C3[亚太CDN节点]
+    B -->|其他| C4[最近边缘节点]
+
+    C1 --> D{网络质量评估}
+    C2 --> D
+    C3 --> D
+    C4 --> D
+
+    D -->|带宽 > 15Mbps<br/>延迟 < 50ms| E[高码率<br/>4K/HDR]
+    D -->|带宽 5-15Mbps<br/>延迟 50-100ms| F[中码率<br/>1080p]
+    D -->|带宽 < 5Mbps<br/>延迟 > 100ms| G[低码率<br/>720p/SD]
+
+    E --> H{内容热度?}
+    F --> H
+    G --> H
+
+    H -->|热门内容| I[预加载策略<br/>边缘缓存预热]
+    H -->|温内容| J[部分预加载<br/>预测性缓存]
+    H -->|冷内容| K[按需加载<br/>源站回源]
+```
+
 ## 8. 引用参考 (References)
+
 
 ---
 

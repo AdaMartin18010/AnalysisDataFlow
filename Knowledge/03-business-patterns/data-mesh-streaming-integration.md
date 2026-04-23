@@ -449,16 +449,198 @@ flowchart TD
     style Y fill:#e3f2fd
 ```
 
+### 7.4 Data Mesh流式集成思维导图
+
+以下思维导图以"Data Mesh流式集成"为中心，从集成模式、领域边界、技术实现、治理机制和演进策略五个维度放射展开：
+
+```mermaid
+mindmap
+  root((Data Mesh流式集成))
+    集成模式
+      事件流
+        领域事件发布
+        事件驱动架构
+        Event Sourcing
+      API网关
+        同步查询接口
+        GraphQL联邦
+        AsyncAPI规范
+      数据管道
+        流处理作业
+        ETL/ELT管道
+        实时物化视图
+      CDC同步
+        数据库变更捕获
+        双写一致性
+        变更日志传播
+    领域边界
+      领域事件
+        业务语义事件
+        事件粒度设计
+        事件版本管理
+      Bounded Context
+        上下文映射
+        防腐层
+        共享内核
+      契约测试
+        消费者驱动契约
+        Schema兼容性
+        契约即代码
+    技术实现
+      Kafka Connect
+        Source Connector
+        Sink Connector
+        变换管道
+      Flink CDC
+        增量快照
+        精确一次
+        无锁读取
+      Schema Registry
+        Avro/Protobuf/JSON
+        兼容性策略
+        演进规则
+      API网关
+        Kong/Envoy
+        流量控制
+        认证授权
+    治理机制
+      数据契约
+        Schema契约
+        SLA契约
+        语义契约
+      SLA
+        延迟分级
+        可用性承诺
+        吞吐量保证
+      质量监控
+        数据质量规则
+        异常检测
+        实时告警
+      血缘追踪
+        端到端血缘
+        影响分析
+        合规审计
+    演进策略
+      Strangler Fig
+        逐步替换旧系统
+        代理层隔离
+        功能逐步迁移
+      并行运行
+        新旧系统双写
+        结果比对验证
+        渐进切换流量
+      蓝绿迁移
+        全量副本部署
+        瞬时切换
+        快速回滚能力
+```
+
+### 7.5 多维关联树
+
+以下多维关联树展示了"集成场景 → 技术需求 → Flink解决方案"的完整映射关系：
+
+```mermaid
+graph TB
+    subgraph "集成场景"
+        SC1["跨域实时事件同步"]
+        SC2["批量数据交换"]
+        SC3["混合流批处理"]
+        SC4["CDC数据传播"]
+        SC5["分析结果回流"]
+    end
+
+    subgraph "技术需求"
+        TR1["低延迟 < 100ms"]
+        TR2["高吞吐 > 10万TPS"]
+        TR3["精确一次语义"]
+        TR4["Schema演进兼容"]
+        TR5["跨域血缘追踪"]
+        TR6["弹性扩缩容"]
+    end
+
+    subgraph "Flink解决方案"
+        FL1["Flink CDC Connector<br/>MySQL/Postgres/MongoDB"]
+        FL2["Flink SQL Gateway<br/>跨域联邦查询"]
+        FL3["Flink Stateful Functions<br/>事件驱动微服务"]
+        FL4["Flink Checkpoint<br/>精确一次保障"]
+        FL5["Flink on Kubernetes<br/>弹性资源调度"]
+        FL6["Flink Metrics + OpenLineage<br/>血缘与监控集成"]
+    end
+
+    SC1 --> TR1
+    SC1 --> TR3
+    SC2 --> TR2
+    SC2 --> TR6
+    SC3 --> TR1
+    SC3 --> TR2
+    SC4 --> TR3
+    SC4 --> TR4
+    SC5 --> TR5
+    SC5 --> TR6
+
+    TR1 --> FL3
+    TR1 --> FL5
+    TR2 --> FL5
+    TR3 --> FL4
+    TR3 --> FL1
+    TR4 --> FL2
+    TR5 --> FL6
+    TR6 --> FL5
+```
+
+### 7.6 Data Mesh集成策略选型决策树
+
+以下决策树指导在不同数据时效性需求下选择适当的Data Mesh集成策略：
+
+```mermaid
+flowchart TD
+    A["Data Mesh集成策略选型起点"] --> B{"数据时效性要求是什么?"}
+
+    B -->|"实时事件同步<br/>延迟 < 1秒"| C["选择: Kafka + Flink CDC"]
+    B -->|"批量数据交换<br/>延迟可接受 > 分钟级"| D["选择: 数据管道 + 调度系统"]
+    B -->|"混合模式需求<br/>实时+批量并存"| E{"架构风格偏好?"}
+
+    C --> C1["技术组件"]
+    C --> C2["适用场景"]
+    C1 --> C1a["Kafka Topic 作为事件骨干"]
+    C1 --> C1b["Flink CDC 捕获数据库变更"]
+    C1 --> C1c["Schema Registry 保证兼容性"]
+    C2 --> C2a["跨域交易同步"]
+    C2 --> C2b["实时库存扣减"]
+    C2 --> C2c["风控评分传播"]
+
+    D --> D1["技术组件"]
+    D --> D2["适用场景"]
+    D1 --> D1a["Airflow / DolphinScheduler 调度"]
+    D1 --> D1b["对象存储 S3 / HDFS 交换"]
+    D1 --> D1c["Parquet / ORC 列式格式"]
+    D2 --> D2a["财务日终对账"]
+    D2 --> D2b["历史数据分析"]
+    D2 --> D2c["ML模型批量训练"]
+
+    E -->|"分离批流两层"| F["选择: Lambda架构"]
+    E -->|"统一流处理层"| G["选择: Kappa架构"]
+
+    F --> F1["批层: Flink Batch / Spark SQL<br/>处理历史全量"]
+    F --> F2["速层: Flink Streaming<br/>处理实时增量"]
+    F --> F3["服务层: OLAP引擎<br/>统一查询视图"]
+    F --> F4["适用: 实时数仓<br/>复杂报表场景"]
+
+    G --> G1["统一Kafka日志存储<br/>事件回溯与重放"]
+    G --> G2["Flink Streaming 统一处理<br/>批作业转为流回溯"]
+    G --> G3["简化架构<br/>降低运维复杂度"]
+    G --> G4["适用: 事件驱动系统<br/>日志中心架构"]
+
+    style A fill:#e3f2fd
+    style C fill:#e8f5e9
+    style D fill:#fff3e0
+    style F fill:#fce4ec
+    style G fill:#fce4ec
+```
+
 ---
 
 ## 8. 引用参考 (References)
 
 
-
-
-
-
-
 ---
-
-*文档版本: v1.0 | 创建日期: 2026-04-20 | 形式化等级: L3*

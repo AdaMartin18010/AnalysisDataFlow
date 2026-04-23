@@ -780,6 +780,115 @@ graph TB
     style SO2 fill:#ffcdd2,stroke:#c62828
 ```
 
+**日志实时监控系统思维导图**:
+
+```mermaid
+mindmap
+  root((日志实时监控系统))
+    日志源
+      应用日志
+      系统日志
+      网络日志
+      安全日志
+      业务日志
+    采集层
+      Agent采集
+      文件Tail
+      Syslog
+      API推送
+    处理层
+      解析结构化
+      过滤聚合
+      模式识别
+      关联分析
+    分析层
+      实时告警
+      异常检测
+      趋势分析
+      根因定位
+    展示层
+      Dashboard
+      SLO追踪
+      告警通知
+      报告生成
+```
+
+**监控场景→数据处理需求→Flink解决方案映射**:
+
+```mermaid
+graph TB
+    subgraph "监控场景"
+        SC1[海量日志实时写入]
+        SC2[多源异构格式]
+        SC3[亚秒级异常告警]
+        SC4[历史日志即席查询]
+        SC5[告警风暴抑制]
+    end
+
+    subgraph "数据处理需求"
+        REQ1[高吞吐采集与缓冲]
+        REQ2[Schema-on-Read解析]
+        REQ3[低延迟窗口聚合]
+        REQ4[分层冷热存储]
+        REQ5[状态化去重抑制]
+    end
+
+    subgraph "Flink解决方案"
+        SOL1[KafkaSource + Watermark对齐]
+        SOL2[ProcessFunction动态解析]
+        SOL3[TumblingWindow + CEP模式]
+        SOL4[FilesystemSink冷热分级写入]
+        SOL5[KeyedProcessFunction状态去重]
+    end
+
+    SC1 --> REQ1 --> SOL1
+    SC2 --> REQ2 --> SOL2
+    SC3 --> REQ3 --> SOL3
+    SC4 --> REQ4 --> SOL4
+    SC5 --> REQ5 --> SOL5
+
+    style SC1 fill:#e3f2fd,stroke:#1565c0
+    style SC3 fill:#ffcdd2,stroke:#c62828
+    style SOL3 fill:#c8e6c9,stroke:#2e7d32
+```
+
+**日志处理架构选型决策树**:
+
+```mermaid
+flowchart TD
+    A[日志量评估] --> B{日志量 < 10MB/s?}
+    B -->|是| C[Filebeat + 简单聚合]
+    B -->|否| D{日志量 10MB/s~1GB/s?}
+    D -->|是| E[Kafka + Flink + Elasticsearch]
+    D -->|否| F[日志量 > 1GB/s]
+    F --> G[分层架构]
+    G --> G1[边缘预处理]
+    G --> G2[云端聚合]
+    G --> G3[冷热分离]
+
+    C --> C1[本地文件采集]
+    C --> C2[Logstash轻量解析]
+    C --> C3[Elasticsearch单节点或小集群]
+
+    E --> E1[Kafka多分区缓冲]
+    E --> E2[Flink实时解析与聚合]
+    E --> E3[ES集群 + 索引生命周期管理]
+
+    G1 --> G1a[Fluent Bit边缘过滤]
+    G1a --> G1b[本地预聚合降采样]
+    G2 --> G2a[Kafka+Flink中心处理]
+    G2a --> G2b[全局关联与告警]
+    G3 --> G3a[热数据ES索引]
+    G3a --> G3b[冷数据S3/OSS归档]
+
+    style C fill:#e8f5e9,stroke:#2e7d32
+    style E fill:#fff9c4,stroke:#f57f17
+    style G fill:#ffcdd2,stroke:#c62828
+    style G1 fill:#e3f2fd,stroke:#1565c0
+    style G2 fill:#e3f2fd,stroke:#1565c0
+    style G3 fill:#e3f2fd,stroke:#1565c0
+```
+
 ---
 
 ## 8. 引用参考 (References)

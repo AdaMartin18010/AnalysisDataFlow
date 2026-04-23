@@ -35,7 +35,7 @@
     - [5.1 决策树有效性论证](#51-决策树有效性论证)
     - [5.2 关键指标阈值推导](#52-关键指标阈值推导)
     - [5.3 架构模式推荐逻辑](#53-架构模式推荐逻辑)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-K-03-XX: 业务场景决策树完备性定理](#thm-k-03-xx-业务场景决策树完备性定理)
     - [Thm-K-03-XX: 技术选型收敛定理](#thm-k-03-xx-技术选型收敛定理)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
@@ -49,6 +49,9 @@
     - [7.2 业务价值-技术复杂度象限图 (quadrantChart)](#72-业务价值-技术复杂度象限图-quadrantchart)
     - [7.3 五大领域场景树 (graph TD)](#73-五大领域场景树-graph-td)
     - [7.4 技术选型映射矩阵](#74-技术选型映射矩阵)
+    - [7.5 业务场景决策全景思维导图 (mindmap)](#75-业务场景决策全景思维导图-mindmap)
+    - [7.6 多维关联树 (graph TB)](#76-多维关联树-graph-tb)
+    - [7.7 技术栈快速决策树 (flowchart TD)](#77-技术栈快速决策树-flowchart-td)
   - [8. 引用参考 (References)](#8-引用参考-references)
 
 ---
@@ -949,6 +952,158 @@ graph TD
     class T1,T2,T3,T4,T5 techStyle
     class S1,S2,S3,S4,S5 sceneStyle
 ```
+
+### 7.5 业务场景决策全景思维导图 (mindmap)
+
+以下思维导图以"业务场景决策全景"为中心，放射展开六大核心业务领域及其子场景：
+
+```mermaid
+mindmap
+  root((业务场景决策全景))
+    实时分析
+      实时监控
+      实时报表
+      实时大屏
+    流式ETL
+      数据清洗
+      格式转换
+      数据路由
+    事件驱动
+      微服务集成
+      Saga模式
+      CQRS
+    实时AI
+      特征工程
+      在线推理
+      实时推荐
+    IoT处理
+      边缘计算
+      设备管理
+      预测维护
+    金融场景
+      风控
+      交易
+      合规
+      反欺诈
+```
+
+### 7.6 多维关联树 (graph TB)
+
+以下多维关联树展示业务场景 → 技术特征 → Flink 适用性的映射关系：
+
+```mermaid
+graph TB
+    subgraph "业务场景层"
+        BS1["实时分析"]
+        BS2["流式ETL"]
+        BS3["事件驱动"]
+        BS4["实时AI"]
+        BS5["IoT处理"]
+        BS6["金融场景"]
+    end
+
+    subgraph "技术特征层"
+        TF1["低延迟<br/>< 100ms"]
+        TF2["高吞吐<br/>百万级/秒"]
+        TF3["复杂状态<br/>窗口/键控"]
+        TF4["复杂事件<br/>CEP模式"]
+        TF5["批流一体<br/>湖仓集成"]
+        TF6["简单转换<br/>高可靠投递"]
+    end
+
+    subgraph "Flink 适用性层"
+        FA1["高度适配<br/>原生优势"]
+        FA2["良好适配<br/>生态完善"]
+        FA3["可选适配<br/>需权衡"]
+        FA4["替代方案更优<br/>轻量级引擎"]
+    end
+
+    BS1 --> TF1
+    BS1 --> TF2
+    BS2 --> TF2
+    BS2 --> TF5
+    BS3 --> TF4
+    BS3 --> TF3
+    BS4 --> TF1
+    BS4 --> TF3
+    BS5 --> TF2
+    BS5 --> TF6
+    BS6 --> TF1
+    BS6 --> TF4
+
+    TF1 --> FA1
+    TF2 --> FA1
+    TF3 --> FA2
+    TF4 --> FA1
+    TF5 --> FA2
+    TF6 --> FA4
+
+    classDef bizStyle fill:#9b59b6,stroke:#8e44ad,stroke-width:2px,color:#fff
+    classDef techStyle fill:#3498db,stroke:#2980b9,stroke-width:2px,color:#fff
+    classDef flinkStyle fill:#e67e22,stroke:#d35400,stroke-width:2px,color:#fff
+
+    class BS1,BS2,BS3,BS4,BS5,BS6 bizStyle
+    class TF1,TF2,TF3,TF4,TF5,TF6 techStyle
+    class FA1,FA2,FA3,FA4 flinkStyle
+```
+
+**映射解读**:
+
+| 业务场景 | 核心技术特征 | Flink 适配度 | 关键能力 |
+|---------|------------|-------------|---------|
+| 实时分析 | 低延迟 + 高吞吐 | 高度适配 | Window / KeyedState / 增量计算 |
+| 流式ETL | 高吞吐 + 湖仓集成 | 良好适配 | Flink SQL / Connector 生态 / 批流一体 |
+| 事件驱动 | CEP + 复杂状态 | 高度适配 | FlinkCEP / 状态后端 / 事件时间处理 |
+| 实时AI | 低延迟 + 复杂状态 | 高度适配 | Async I/O / 状态存储 / 特征回写 |
+| IoT处理 | 高吞吐 + 高可靠 | 可选适配 | 海量分区 / 增量检查点 / 边缘协同 |
+| 金融场景 | 低延迟 + CEP | 高度适配 | Exactly-Once / 毫秒窗口 / 规则热更新 |
+
+### 7.7 技术栈快速决策树 (flowchart TD)
+
+以下决策树基于核心约束条件，快速收敛到推荐技术栈：
+
+```mermaid
+flowchart TD
+    Start["🎯 业务场景技术栈选型"] --> Latency{"延迟要求?"}
+
+    Latency -->|"< 100ms"| CEP{"复杂事件处理?"}
+    Latency -->|"100ms ~ 1s"| Throughput{"吞吐量规模?"}
+    Latency -->|"> 1s 或批流一体"| Lakehouse{"湖仓集成需求?"}
+    Latency -->|"简单转换<br/>高可靠即可"| Simple{"运维复杂度偏好?"}
+
+    CEP -->|"是"| R1["⚡ Flink CEP<br/>+ RocksDB 状态后端<br/>+ Kafka 源"]
+    CEP -->|"否"| R2["⚡ Flink DataStream<br/>+ 增量检查点<br/>+ Redis 加速"]
+
+    Throughput -->|"高吞吐 + 窗口聚合"| R3["⚡ Flink Window<br/>+ KeyedState<br/>+ Paimon 状态离线分析"]
+    Throughput -->|"中等吞吐 + SQL 为主"| R4["🔧 Flink SQL / ksqlDB<br/>+ 物化视图"]
+
+    Lakehouse -->|"是"| R5["⚡ Flink + Iceberg / Paimon<br/>批流一体存储<br/>+ StarRocks 分析"]
+    Lakehouse -->|"否"| R6["🔧 Spark Structured Streaming<br/>+ Delta Lake"]
+
+    Simple -->|"轻量级 /  Kafka 生态"| R7["🔧 Kafka Streams<br/>+ Kafka Connect"]
+    Simple -->|"云原生 / 多租户"| R8["🔧 Pulsar Functions<br/>+ Pulsar IO"]
+
+    classDef startStyle fill:#2c3e50,stroke:#1a252f,stroke-width:3px,color:#fff
+    classDef decisionStyle fill:#f39c12,stroke:#d35400,stroke-width:2px,color:#fff
+    classDef flinkStyle fill:#e74c3c,stroke:#c0392b,stroke-width:2px,color:#fff
+    classDef altStyle fill:#3498db,stroke:#2980b9,stroke-width:2px,color:#fff
+
+    class Start startStyle
+    class Latency,CEP,Throughput,Lakehouse,Simple decisionStyle
+    class R1,R2,R3,R5 flinkStyle
+    class R4,R6,R7,R8 altStyle
+```
+
+**决策规则说明**:
+
+| 决策路径 | 推荐方案 | 核心优势 | 适用场景示例 |
+|---------|---------|---------|------------|
+| 低延迟 + CEP | Flink CEP | 毫秒级模式匹配、状态容错 | 金融反欺诈、交易风控 |
+| 低延迟 + 无 CEP | Flink DataStream | 精细控制、低延迟处理 | 实时推荐、在线特征 |
+| 高吞吐 + 窗口聚合 | Flink Window + KeyedState | 大规模状态管理、精确窗口 | 实时大屏、GMV 统计 |
+| 中等吞吐 + SQL | Flink SQL / ksqlDB | 声明式开发、快速迭代 | 流式 ETL、实时监控 |
+| 批流一体 + 湖仓 | Flink + Iceberg/Paimon | 统一存储、离线回补 | 实时数仓、日志分析 |
+| 简单转换 + 高可靠 | Kafka Streams / Pulsar Functions | 轻量级、与消息队列深度集成 | 数据路由、格式转换 |
 
 ---
 

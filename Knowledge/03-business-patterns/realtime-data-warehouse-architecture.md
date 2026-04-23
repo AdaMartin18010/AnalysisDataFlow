@@ -741,7 +741,114 @@ sequenceDiagram
     end
 ```
 
+### 7.5 思维导图：实时数仓架构全景
+
+以下思维导图以"实时数仓架构"为中心，从数据源、采集层、计算层、存储层、服务层、治理层六个维度放射展开全景视图。
+
+```mermaid
+mindmap
+  root((实时数仓架构))
+    数据源
+      业务DB
+      日志
+      消息队列
+      API
+      IoT
+    采集层
+      CDC
+      Kafka
+      Pulsar
+      Sqoop
+    计算层
+      ODS层
+      DWD层
+      DWS层
+      ADS层
+      Flink实时ETL
+    存储层
+      Hive
+      Iceberg
+      Paimon
+      ClickHouse
+      StarRocks
+    服务层
+      即席查询
+      BI看板
+      API服务
+      数据API
+    治理层
+      血缘追踪
+      质量监控
+      元数据管理
+      安全
+```
+
+### 7.6 多维关联树：分层→需求→选型映射
+
+以下多维关联树展示了实时数仓从数仓分层到计算需求再到具体技术选型的完整映射关系，为架构设计提供系统化的决策依据。
+
+```mermaid
+graph TB
+    subgraph 数仓分层
+        L1[ODS 原始数据层]
+        L2[DWD 明细数据层]
+        L3[DWS 汇总数据层]
+        L4[ADS 应用数据层]
+    end
+
+    subgraph 计算需求
+        R1[格式校验 元数据附加]
+        R2[清洗关联 维表Join]
+        R3[窗口聚合 预计算]
+        R4[场景转换 指标加工]
+    end
+
+    subgraph 技术选型
+        T1[Kafka / Pulsar]
+        T2[Flink SQL<br/>Async Lookup Join]
+        T3[Flink Window<br/>State Backend]
+        T4[Paimon / StarRocks<br/>ClickHouse / Doris]
+    end
+
+    L1 --> R1
+    L2 --> R2
+    L3 --> R3
+    L4 --> R4
+
+    R1 --> T1
+    R2 --> T2
+    R3 --> T3
+    R4 --> T4
+```
+
+### 7.7 决策树：实时数仓技术架构选型
+
+以下决策树从一致性要求、吞吐规模、查询延迟等核心维度，指导实时数仓整体技术架构的选型决策。
+
+```mermaid
+flowchart TD
+    A[实时数仓架构选型] --> B{一致性要求}
+    B -->|强一致+Exactly-Once| C{吞吐规模}
+    B -->|最终一致| D{查询延迟要求}
+
+    C -->|高吞吐| E[Flink + Paimon/Iceberg<br/>湖仓一体方案]
+    C -->|中等吞吐| F[Flink + Kafka + StarRocks<br/>经典分层方案]
+
+    D -->|低延迟OLAP| G[Flink + ClickHouse/StarRocks<br/>面向分析的Serving层]
+    D -->|分钟级即可| H{是否需要历史回溯}
+
+    H -->|是| I[Flink + Delta Lake/Hudi<br/>湖仓一体方案]
+    H -->|否| J[Flink + Paimon<br/>流式湖仓方案]
+
+    E --> K[(适用: 大规模日志处理<br/>批流统一存储)]
+    F --> L[(适用: 电商实时报表<br/>高并发点查)]
+    G --> M[(适用: 实时监控大屏<br/>亚秒级聚合查询)]
+    I --> N[(适用: 金融风控<br/>历史数据回溯)]
+    J --> O[(适用: 通用实时数仓<br/>简化运维)]
+```
+
 ## 8. 引用参考 (References)
+
 
 ---
 

@@ -1,0 +1,25 @@
+## 8. 引用参考 (References)
+
+
+[^2]: FaunaDB, "FaunaDB Architecture: Calvin-based Distributed Transactions at Scale," Fauna Engineering Blog, 2020. <https://fauna.com/blog/distributed-transaction-protocol>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+*文档版本: 1.0 | 创建日期: 2026-04-18 | 状态: Complete | 形式化元素统计: Def × 6, Thm × 3, Lemma × 2, Prop × 2 | 总行数: ~1250*
+
+---
+
+*文档版本: v1.0 | 创建日期: 2026-04-19*

@@ -24,7 +24,10 @@
     - [I/O 处理类](#io-处理类)
     - [资源管理类](#资源管理类)
   - [5. 检测清单速查](#5-检测清单速查)
-  - [6. 引用参考 (References)](#6-引用参考-references)
+  - [6. 思维表征](#6-思维表征)
+    - [6.1 思维导图（Mindmap）](#61-思维导图mindmap)
+    - [6.2 多维关联树（Multi-dimensional Association Tree）](#62-多维关联树multi-dimensional-association-tree)
+  - [7. 引用参考 (References)](#7-引用参考-references)
 
 ---
 
@@ -267,7 +270,83 @@ graph TB
 
 ---
 
-## 6. 引用参考 (References)
+## 6. 思维表征
+
+### 6.1 思维导图（Mindmap）
+
+以下思维导图以"流计算反模式总览"为中心，系统性地放射展开五大反模式类别及其典型表现：
+
+```mermaid
+mindmap
+  root((流计算反模式总览))
+    状态反模式
+      全局状态滥用
+      状态爆炸
+      TTL缺失
+    时间反模式
+      Watermark误配
+      窗口滥用
+      乱序忽略
+    资源反模式
+      OOM
+      序列化开销
+      并行度不当
+    数据流反模式
+      背压忽略
+      热键倾斜
+      Join错位
+    运维反模式
+      检查点误配
+      监控缺失
+      告警疲劳
+```
+
+### 6.2 多维关联树（Multi-dimensional Association Tree）
+
+以下关联树展示反模式类别→典型影响→解决方案的完整映射关系：
+
+```mermaid
+graph TB
+    subgraph "反模式类别"
+        AC1[状态反模式]
+        AC2[时间反模式]
+        AC3[资源反模式]
+        AC4[数据流反模式]
+        AC5[运维反模式]
+    end
+
+    subgraph "典型影响"
+        IM1[状态膨胀/OOM]
+        IM2[计算延迟/结果不准确]
+        IM3[资源耗尽/吞吐下降]
+        IM4[数据倾斜/背压累积]
+        IM5[故障恢复困难/告警失效]
+    end
+
+    subgraph "解决方案"
+        SOL1[键控状态拆分 + 状态TTL]
+        SOL2[Watermark校准 + 允许迟到]
+        SOL3[并行度调优 + 序列化优化]
+        SOL4[热键打散 + 背压响应]
+        SOL5[Checkpoint调优 + 全链路监控]
+    end
+
+    AC1 --> IM1
+    AC2 --> IM2
+    AC3 --> IM3
+    AC4 --> IM4
+    AC5 --> IM5
+
+    IM1 --> SOL1
+    IM2 --> SOL2
+    IM3 --> SOL3
+    IM4 --> SOL4
+    IM5 --> SOL5
+```
+
+---
+
+## 7. 引用参考 (References)
 
 [^1]: W. J. Brown et al., "AntiPatterns: Refactoring Software, Architectures, and Projects in Crisis," John Wiley & Sons, 1998.
 
@@ -275,10 +354,6 @@ graph TB
 
 [^3]: Apache Flink Documentation, "Flink Best Practices," 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/learn-flink/>
 
-
-
-
-
 ---
 
-*文档版本: v1.0 | 更新日期: 2026-04-03 | 状态: 已完成*
+*文档版本: v1.1 | 更新日期: 2026-04-24 | 状态: 已完成*

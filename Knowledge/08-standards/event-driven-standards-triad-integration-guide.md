@@ -425,4 +425,177 @@ timeline
 
 ---
 
+### 事件驱动标准三元组思维导图
+
+以下思维导图以"事件驱动标准三元组集成"为中心，放射展开三大核心标准及其关键维度：
+
+```mermaid
+mindmap
+  root((事件驱动标准<br/>三元组集成))
+    AsyncAPI
+      API契约
+        通道定义
+        消息模式
+        协议绑定
+      Schema定义
+        Avro
+        Protobuf
+        JSON Schema
+      文档生成
+        交互式文档
+        人机可读
+      代码生成
+        客户端SDK
+        服务端存根
+    CloudEvents
+      事件规范
+        最小属性集
+        扩展属性
+        协议无关
+      元数据
+        ce-specversion
+        ce-type
+        ce-source
+        ce-id
+        ce-time
+      传输协议
+        HTTP绑定
+        Kafka绑定
+        AMQP绑定
+        MQTT绑定
+      互操作
+        跨组织B2B
+        多语言SDK
+        云厂商中立
+    OpenTelemetry
+      分布式追踪
+        Trace上下文
+        Span链路
+        采样策略
+      指标
+        Counter
+        Gauge
+        Histogram
+      日志
+        结构化日志
+        日志关联
+      上下文传播
+        W3C TraceContext
+        Baggage
+    集成价值
+      统一契约
+        Schema即代码
+        自动化验证
+      跨系统互操作
+        供应商锁定解除
+        多运行时兼容
+      可观测性
+        端到端追踪
+        统一遥测信号
+      治理
+        标准化审计
+        合规基线
+    实践挑战
+      版本兼容
+        Schema演化
+        破坏性变更
+      多协议适配
+        协议转换开销
+        语义保真
+      性能开销
+        序列化成本
+        网络额外负载
+      组织推广
+        技术债迁移
+        团队培训
+```
+
+### 标准层到技术层到Flink生态多维关联树
+
+以下多维关联树展示标准层、技术层与Flink生态之间的映射关系：
+
+```mermaid
+graph TB
+    subgraph Standard["标准层"]
+        S1[AsyncAPI v3<br/>API契约标准]
+        S2[CloudEvents v1.0.2<br/>事件规范标准]
+        S3[OpenTelemetry<br/>可观测性标准]
+    end
+
+    subgraph Technology["技术层"]
+        T1[Schema Registry<br/>Avro/Protobuf/JSON]
+        T2[消息中间件<br/>Kafka/Pulsar/RabbitMQ]
+        T3[可观测性后端<br/>Jaeger/Zipkin/Prometheus]
+        T4[API网关<br/>AsyncAPI Generator]
+    end
+
+    subgraph FlinkEcosystem["Flink生态"]
+        F1[Flink DataStream API<br/>事件处理]
+        F2[Flink SQL<br/>声明式查询]
+        F3[Flink Connector<br/>Kafka/Source/Sink]
+        F4[Flink Checkpoint<br/>容错机制]
+    end
+
+    S1 -->|消息模式定义| T1
+    S1 -->|代码生成| T4
+    S2 -->|事件信封| T2
+    S2 -->|元数据规范| T1
+    S3 -->|Trace上下文| T3
+    S3 -->|指标采集| F1
+    T1 -->|Schema解析| F3
+    T2 -->|数据摄入| F3
+    T3 -->|链路追踪| F1
+    F1 -->|事件输出| T2
+    F2 -->|SQL执行| F1
+    F4 -->|状态快照| T3
+```
+
+### 标准选型决策树
+
+以下决策树帮助在不同场景下选择合适的事件驱动标准：
+
+```mermaid
+flowchart TD
+    Start([开始选型]) --> Q1{需求类型?}
+
+    Q1 -->|API契约与Schema治理| A1[AsyncAPI]
+    Q1 -->|事件互操作与传输中立| A2[CloudEvents]
+    Q1 -->|可观测性与遥测统一| A3[OpenTelemetry]
+    Q1 -->|全面集成| A4[三元组协同]
+
+    A1 --> A1_1[定义通道与消息]
+    A1 --> A1_2[Schema Registry集成]
+    A1 --> A1_3[客户端代码生成]
+
+    A2 --> A2_1[HTTP/Kafka协议绑定]
+    A2 --> A2_2[最小属性集映射]
+    A2 --> A2_3[跨组织事件交换]
+
+    A3 --> A3_1[W3C TraceContext注入]
+    A3 --> A3_2[Span指标关联]
+    A3 --> A3_3[日志链路统一]
+
+    A4 --> A4_1[AsyncAPI定义契约]
+    A4 --> A4_2[CloudEvents封装传输]
+    A4 --> A4_3[OpenTelemetry提供观测]
+    A4 --> A4_4[端到端事件生命周期覆盖]
+
+    A1_1 --> End1([实施AsyncAPI])
+    A1_2 --> End1
+    A1_3 --> End1
+
+    A2_1 --> End2([实施CloudEvents])
+    A2_2 --> End2
+    A2_3 --> End2
+
+    A3_1 --> End3([实施OpenTelemetry])
+    A3_2 --> End3
+    A3_3 --> End3
+
+    A4_1 --> End4([三元组集成方案])
+    A4_2 --> End4
+    A4_3 --> End4
+    A4_4 --> End4
+```
+
 ## 8. 引用参考 (References)

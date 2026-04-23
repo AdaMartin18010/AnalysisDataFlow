@@ -1291,25 +1291,140 @@ gantt
     预测性质量监控         :l5_predict, 2025-03, 3M
     自治修复               :l5_auto, 2025-04, 3M
     AI驱动血缘发现         :l5_ai, 2025-05, 3M
+
+
+### 流数据治理与质量思维导图
+
+以下思维导图以"流数据治理与质量"为核心，放射状展开五大关键领域，涵盖从数据质量维度到全生命周期管理的完整治理视角。
+
+```mermaid
+mindmap
+  root((流数据治理与质量))
+    数据质量
+      完整性
+      准确性
+      一致性
+      及时性
+      唯一性
+    治理框架
+      策略
+      组织
+      流程
+      技术
+      度量
+    质量监控
+      实时校验
+      异常检测
+      SLI/SLO
+      告警
+    数据标准
+      Schema管理
+      编码规范
+      命名规范
+      元数据
+    生命周期
+      采集
+      处理
+      存储
+      消费
+      归档
+      销毁
+```
+
+### 多维关联树：治理维度 → 技术能力 → Flink特性
+
+以下关联树展示流数据治理的五大维度如何通过具体技术能力映射到 Flink 的核心特性，为工程选型提供系统化参考。
+
+```mermaid
+graph TB
+    subgraph "治理维度"
+        GD1[数据质量]
+        GD2[数据标准]
+        GD3[血缘追踪]
+        GD4[安全合规]
+        GD5[生命周期管理]
+    end
+
+    subgraph "技术能力"
+        TC1[Schema校验与演化]
+        TC2[实时规则引擎]
+        TC3[统计异常检测]
+        TC4[列级血缘采集]
+        TC5[PII识别与脱敏]
+        TC6[状态过期清理]
+    end
+
+    subgraph "Flink特性"
+        FL1[Flink SQL / Table API]
+        FL2[DataStream ProcessFunction]
+        FL3[Side Output 侧输出]
+        FL4[Queryable State]
+        FL5[State TTL]
+        FL6[Checkpoint 与 Savepoint]
+    end
+
+    GD1 --> TC2
+    GD1 --> TC3
+    GD2 --> TC1
+    GD3 --> TC4
+    GD4 --> TC5
+    GD5 --> TC6
+
+    TC1 --> FL1
+    TC2 --> FL1
+    TC2 --> FL2
+    TC3 --> FL2
+    TC4 --> FL4
+    TC5 --> FL2
+    TC6 --> FL5
+    TC6 --> FL6
+    TC1 --> FL3
+    TC2 --> FL3
+```
+
+### 数据质量策略决策树
+
+以下决策树展示从实时校验触发到修复策略执行的完整质量治理决策路径，支持按异常严重程度分级响应。
+
+```mermaid
+flowchart TD
+    A[数据质量异常检测] --> B{实时校验}
+    B --> C[Schema校验]
+    B --> D[业务规则校验]
+    B --> E[统计异常检测]
+
+    C --> F{质量分级}
+    D --> F
+    E --> F
+
+    F -->|严重| G[阻断]
+    F -->|中等| H[告警]
+    F -->|轻微| I[日志记录]
+
+    G --> J{修复策略}
+    H --> J
+    I --> K[留痕审计]
+
+    J --> L[自动修复]
+    J --> M[人工介入]
+    J --> N[数据补偿]
+
+    L --> O[质量恢复确认]
+    M --> O
+    N --> O
+    K --> P[定期复盘]
+
+    style G fill:#ffcdd2
+    style H fill:#fff9c4
+    style I fill:#c8e6c9
+    style L fill:#bbdefb
+    style M fill:#e1bee7
+    style N fill:#d1c4e9
 ```
 
 ---
 
 ## 8. 引用参考 (References)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ---

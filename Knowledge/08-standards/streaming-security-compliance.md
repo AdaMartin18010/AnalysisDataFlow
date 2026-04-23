@@ -1009,6 +1009,166 @@ flowchart TD
     O --> P[返回结果]
 ```
 
+### 7.5 流数据安全与合规思维导图
+
+以下思维导图以"流数据安全与合规"为中心，系统性地放射展开五大核心维度，帮助快速建立全景认知。
+
+```mermaid
+mindmap
+  root((流数据安全与合规))
+    数据安全
+      加密传输
+        TLS 1.3
+        mTLS双向认证
+      加密存储
+        AES-256-GCM
+        LUKS磁盘加密
+      访问控制
+        RBAC角色权限
+        ABAC属性权限
+      密钥管理
+        HSM硬件安全模块
+        KMS密钥轮换
+    隐私保护
+      数据脱敏
+        静态脱敏
+        动态脱敏
+        格式保留加密
+      差分隐私
+        ε-差分隐私
+        本地模型LDP
+      联邦学习
+        横向联邦
+        纵向联邦
+      最小化采集
+        Schema字段标记
+        自动过滤
+    合规框架
+      GDPR
+        数据主体权利
+        安全处理义务
+      CCPA
+        合理安全措施
+        Opt-out机制
+      等保
+        安全计算环境
+        安全通信网络
+      PCI-DSS
+        PAN数据保护
+        传输加密
+      SOC2
+        信任服务标准
+        逻辑访问控制
+    审计追踪
+      操作日志
+        不可篡改日志
+        哈希链验证
+      血缘审计
+        全链路追踪
+        Schema版本溯源
+      访问审计
+        谁访问了什么
+        异常检测
+      变更审计
+        配置变更
+        策略变更
+    威胁防护
+      注入攻击
+        SQL注入
+        序列化攻击
+      数据泄露
+        未授权访问
+        配置泄露
+      内部威胁
+        权限滥用
+        恶意 insiders
+      DDoS
+        流量洪泛
+        资源耗尽
+```
+
+### 7.6 合规要求→技术控制→Flink安全特性映射树
+
+以下多维关联树展示从顶层合规法规到具体技术控制措施，再到 Flink 平台原生安全特性的完整映射关系，为合规落地提供技术选型依据。
+
+```mermaid
+graph TB
+    subgraph "合规要求层"
+        REQ1[GDPR Art.32<br/>安全处理]
+        REQ2[CCPA 1798.150<br/>合理安全]
+        REQ3[PCI-DSS Req 3/4<br/>存储与传输保护]
+        REQ4[SOC2 CC6.1<br/>逻辑访问控制]
+        REQ5[等保2.0<br/>安全计算环境]
+    end
+
+    subgraph "技术控制层"
+        CTRL1[传输加密<br/>TLS 1.3 / mTLS]
+        CTRL2[静态加密<br/>AES-256 / LUKS]
+        CTRL3[访问控制<br/>RBAC / ABAC]
+        CTRL4[审计追踪<br/>不可变日志 / 哈希链]
+        CTRL5[数据脱敏<br/>动态/静态脱敏]
+        CTRL6[密钥管理<br/>HSM / KMS]
+    end
+
+    subgraph "Flink安全特性"
+        F1[SSL内部通信<br/>security.ssl.internal]
+        F2[REST HTTPS<br/>security.ssl.rest]
+        F3[Kerberos认证<br/>security.kerberos]
+        F4[审计日志Sink<br/>ImmutableAuditSink]
+        F5[行级安全视图<br/>SQL视图 + ACL]
+        F6[字段级加密UDF<br/>AES-256-GCM]
+    end
+
+    REQ1 --> CTRL1
+    REQ1 --> CTRL2
+    REQ1 --> CTRL5
+    REQ2 --> CTRL1
+    REQ2 --> CTRL4
+    REQ3 --> CTRL1
+    REQ3 --> CTRL2
+    REQ3 --> CTRL6
+    REQ4 --> CTRL3
+    REQ4 --> CTRL4
+    REQ5 --> CTRL1
+    REQ5 --> CTRL2
+    REQ5 --> CTRL3
+    REQ5 --> CTRL4
+
+    CTRL1 --> F1
+    CTRL1 --> F2
+    CTRL2 --> F6
+    CTRL3 --> F3
+    CTRL3 --> F5
+    CTRL4 --> F4
+    CTRL5 --> F5
+    CTRL6 --> F6
+```
+
+### 7.7 安全策略选型决策树
+
+以下决策树根据数据分级结果，指导不同敏感度数据对应的安全策略组合选型。
+
+```mermaid
+flowchart TD
+    A[数据分级评估] --> B{数据敏感度分级?}
+
+    B -->|PII敏感数据| C1[强加密<br/>AES-256-GCM + TEE]
+    B -->|内部数据| C2[访问控制<br/>RBAC + 审计日志]
+    B -->|公开数据| C3[基本防护<br/>TLS传输 + 防火墙]
+
+    C1 --> D1[数据脱敏<br/>动态/静态脱敏]
+    C1 --> D2[全链路审计<br/>血缘追踪 + 合规报告]
+    C1 --> D3[密钥隔离<br/>HSM保护 + 定期轮换]
+
+    C2 --> E1[身份认证<br/>Kerberos / OAuth2]
+    C2 --> E2[权限最小化<br/>Topic级ACL + 行级安全]
+    C2 --> E3[操作审计<br/>访问日志 + 异常检测]
+
+    C3 --> F1[传输加密<br/>TLS 1.3]
+    C3 --> F2[基础监控<br/>DDoS防护 + 健康检查]
+    C3 --> F3[定期扫描<br/>漏洞扫描 + 配置审计]
+```
+
 ---
 
 ## 8. 合规检查清单 (Compliance Checklist)
@@ -1050,15 +1210,6 @@ flowchart TD
 ---
 
 ## 9. 引用参考 (References)
-
-
-
-
-
-
-
-
-
 
 
 ---

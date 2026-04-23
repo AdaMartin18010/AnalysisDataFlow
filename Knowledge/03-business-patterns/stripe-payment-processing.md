@@ -990,6 +990,211 @@ graph TB
     style Global_Kafka fill:#c8e6c9,stroke:#2e7d32
 ```
 
+### 7.4 Stripe支付实时处理思维导图
+
+以下思维导图以"Stripe支付实时处理"为中心，放射式展开五大核心维度，全面呈现支付系统的业务全景与技术纵深。
+
+```mermaid
+mindmap
+  root((Stripe支付实时处理))
+    支付流程
+      授权
+        预授权冻结
+        额度校验
+        卡组织路由
+      捕获
+        资金扣减
+        分账处理
+        结算触发
+      结算
+        T+1/T+7周期
+        多币种清算
+        商户到账
+      退款
+        全额退款
+        部分退款
+        原路退回
+      争议
+        拒付申诉
+        证据提交
+        仲裁裁决
+    风控层
+      欺诈检测
+        设备指纹
+        行为生物特征
+        关联网络分析
+      3D Secure
+        强客户认证
+        豁免策略
+        责任转移
+      动态路由
+        成功率优化
+        成本优化
+        延迟优化
+      合规检查
+        AML反洗钱
+        KYC身份验证
+        制裁名单筛查
+    技术栈
+      实时事件流
+        Kafka分区保序
+        Flink精确一次
+        事件溯源审计
+      状态机
+        支付状态转换
+        幂等守卫
+        超时回滚
+      幂等设计
+        幂等键生成
+        去重窗口
+        状态去重
+      最终一致性
+        Saga事务编排
+        补偿事务
+        对账校验
+    全球扩展
+      多币种
+        135+币种支持
+        实时汇率转换
+        动态滑点
+      区域合规
+        PCI-DSS L1
+        GDPR数据保护
+        PSD2强认证
+      本地支付方式
+        欧洲SEPA
+        中国支付宝/微信
+        印度UPI
+        巴西PIX
+      时区处理
+        UTC统一时间轴
+        本地化账单周期
+        营业日对齐
+    商户服务
+      实时报表
+        GMV分钟级更新
+        成功率趋势
+        退款率监控
+      Webhook
+        事件推送
+        重试退避
+        签名验证
+      API
+        RESTful接口
+        幂等请求
+        速率限制
+      沙箱测试
+        模拟卡号
+        触发场景
+        回归验证
+```
+
+### 7.5 多维关联树：业务需求→技术挑战→Flink解决方案
+
+以下多维关联树展示Stripe支付场景中的业务需求如何映射为具体技术挑战，以及Flink流计算如何针对性解决这些挑战。
+
+```mermaid
+graph TB
+    subgraph "业务需求 (Business Requirements)"
+        BR1[毫秒级风控决策]
+        BR2[高可用支付链路]
+        BR3[实时账单分析]
+        BR4[全球合规处理]
+        BR5[欺诈实时检测]
+    end
+
+    subgraph "技术挑战 (Technical Challenges)"
+        TC1[50ms内完成<br/>多维度特征计算]
+        TC2[99.999%可用性<br/>零停机升级]
+        TC3[每秒百万级事件<br/>亚秒级聚合]
+        TC4[多区域数据主权<br/>与一致性权衡]
+        TC5[复杂关联欺诈<br/>模式实时识别]
+    end
+
+    subgraph "Flink解决方案 (Flink Solutions)"
+        FL1[Keyed State + AsyncFunction<br/>并行特征查询与本地状态]
+        FL2[Checkpoint + Savepoint<br/>精确一次与蓝绿部署]
+        FL3[SlidingWindow + Incremental Aggregation<br/>增量聚合与早期触发]
+        FL4[Broadcast State + 区域分区<br/>合规策略动态下发]
+        FL5[CEP Library + 广播模型更新<br/>复杂模式匹配与在线学习]
+    end
+
+    BR1 --> TC1
+    BR2 --> TC2
+    BR3 --> TC3
+    BR4 --> TC4
+    BR5 --> TC5
+
+    TC1 --> FL1
+    TC2 --> FL2
+    TC3 --> FL3
+    TC4 --> FL4
+    TC5 --> FL5
+
+    style BR1 fill:#e3f2fd,stroke:#1565c0
+    style BR2 fill:#e3f2fd,stroke:#1565c0
+    style BR3 fill:#e3f2fd,stroke:#1565c0
+    style BR4 fill:#e3f2fd,stroke:#1565c0
+    style BR5 fill:#e3f2fd,stroke:#1565c0
+    style FL1 fill:#e8f5e9,stroke:#2e7d32
+    style FL2 fill:#e8f5e9,stroke:#2e7d32
+    style FL3 fill:#e8f5e9,stroke:#2e7d32
+    style FL4 fill:#e8f5e9,stroke:#2e7d32
+    style FL5 fill:#e8f5e9,stroke:#2e7d32
+```
+
+### 7.6 支付路由决策树
+
+以下决策树展示Stripe支付路由的核心决策逻辑，涵盖风险评分、支付方式选择与区域合规三条主路径。
+
+```mermaid
+flowchart TD
+    Start([支付请求到达]) --> RiskScore{交易风险评分}
+
+    RiskScore -->|Score < 0.3| LowRisk[低风险]
+    RiskScore -->|0.3 ≤ Score < 0.6| MidRisk[中风险]
+    RiskScore -->|Score ≥ 0.6| HighRisk[高风险]
+
+    LowRisk --> DirectAccept[直接通过<br/>进入银行授权]
+    MidRisk --> ThreeDS[触发3DS验证<br/>强客户认证]
+    HighRisk --> DecisionHigh{高风险细分}
+    HighRisk --> DeclineDirect[直接拒绝<br/>返回商户]
+
+    DecisionHigh -->|0.6 ≤ Score < 0.8| ManualReview[人工审核队列<br/>异步处理]
+    DecisionHigh -->|Score ≥ 0.8| DeclineDirect
+
+    DirectAccept --> PaymentMethod{支付方式选择}
+    ThreeDS --> PaymentMethod
+    ManualReview --> PaymentMethod
+
+    PaymentMethod -->|本地优先策略| LocalMethod[本地支付方式<br/>SEPA/UPI/PIX等]
+    PaymentMethod -->|成本优化策略| CostOpt[低成本通道<br/>借记卡/ACH]
+    PaymentMethod -->|成功率优化策略| SuccOpt[高成功率通道<br/>信用卡网络]
+
+    LocalMethod --> Compliance{区域合规检查}
+    CostOpt --> Compliance
+    SuccOpt --> Compliance
+
+    Compliance -->|PCI-DSS| PCICheck[PCI L1合规<br/>加密传输与存储]
+    Compliance -->|GDPR| GDPRCheck[数据最小化<br/>用户同意管理]
+    Compliance -->|本地化法规| LocalLaw[PSD2/AML<br/>本地监管适配]
+
+    PCICheck --> FinalRoute[最终路由决策]
+    GDPRCheck --> FinalRoute
+    LocalLaw --> FinalRoute
+
+    FinalRoute --> Execute[执行支付<br/>返回结果]
+    DeclineDirect --> ReturnDecline[返回拒绝<br/>附原因代码]
+
+    style LowRisk fill:#c8e6c9,stroke:#2e7d32
+    style DirectAccept fill:#c8e6c9,stroke:#2e7d32
+    style MidRisk fill:#fff9c4,stroke:#f57f17
+    style ThreeDS fill:#fff9c4,stroke:#f57f17
+    style HighRisk fill:#ffcdd2,stroke:#c62828
+    style DeclineDirect fill:#ffcdd2,stroke:#c62828
+    style ManualReview fill:#ffcc80,stroke:#e65100
+```
+
 ---
 
 ## 8. 引用参考 (References)
@@ -1005,6 +1210,8 @@ graph TB
 [^5]: ACM Queue, "Real-time Risk Scoring in Financial Systems", Vol. 21, No. 3, 2023.
 
 [^6]: Stripe Documentation, "Real-time Analytics API", 2024. <https://stripe.com/docs/api/reporting>
+
+
 
 ---
 

@@ -1520,6 +1520,90 @@ gantt
 
 ---
 
+### 7.7 推理树（Deduction Tree）
+
+以下自底向上的推理树展示了 LLM 辅助形式化证明自动化的完整理论推导链，从基础定义经能力推导与中间命题，最终归约至可靠性定理：
+
+```mermaid
+graph BT
+    subgraph Foundation["底层基础: 问题与系统定义"]
+        D1["Def-S-06-18-01<br/>LFPA 七元组定义"]
+        D5["Def-S-06-18-05<br/>可验证生成"]
+        D7["Def-S-06-18-07<br/>HILPW 工作流状态机"]
+    end
+
+    subgraph Derivation["能力推导: LLM 形式化推理边界"]
+        L1["Lemma-S-06-18-01<br/>可验证生成的可靠性传递"]
+        L3["Lemma-S-06-18-03<br/>语法幻觉完全可消除性"]
+    end
+
+    subgraph Intermediate["中间命题: 协同策略与系统性质"]
+        P1["Prop-S-06-18-01<br/>成功率形式化分解"]
+        P2["Prop-S-06-18-02<br/>不完备性保持"]
+    end
+
+    subgraph Top["顶层定理: 自动化证明正确性"]
+        T1["Thm-S-06-18-01<br/>LFPA 可靠性归约定理"]
+    end
+
+    D1 --> L1
+    D5 --> L1
+    D7 --> P2
+    L1 --> P1
+    L3 --> P1
+    P1 --> T1
+    P2 --> T1
+```
+
+该推理树表明，Thm-S-06-18-01 的成立不依赖于 LLM 自身的可靠性，而完全由验证器 $\mathcal{V}$ 的可靠性与语法过滤层的完备性保证（Lemma-S-06-18-01 与 Lemma-S-06-18-03）。Prop-S-06-18-02 进一步指出，即使人类与 LLM 协同，也无法超越形式化系统本身的不完备性边界。
+
+---
+
+### 7.8 概念关联矩阵（Concept Matrix）
+
+以下概念关联矩阵展示了 LLM 证明自动化核心能力与四大主流形式化工具（Coq、Lean 4、Isabelle/HOL、Iris）之间的映射关系 [^6][^7][^8]：
+
+```mermaid
+graph TB
+    subgraph LFPA_Core["LFPA 核心能力"]
+        GEN["证明生成<br/>Proof Generation"]
+        REC["策略推荐<br/>Tactic Recommendation"]
+        REP["证明修复<br/>Proof Repair"]
+        INV["不变式发现<br/>Invariant Discovery"]
+    end
+
+    subgraph Tools["形式化工具关联"]
+        COQ["Coq<br/>SerAPI / coq-lsp"]
+        LEAN["Lean 4<br/>LeanDojo / repl"]
+        ISABELLE["Isabelle/HOL<br/>Isabelle/TLA+"]
+        IRIS["Iris<br/>高阶并发分离逻辑"]
+    end
+
+    GEN -->|"tactic script"| COQ
+    GEN -->|"proof term + tactic"| LEAN
+    GEN -->|"BY Z3 / Zenon / Isa"| ISABELLE
+    GEN -->|"iProp 构造"| IRIS
+
+    REC -->|"Ltac/Ltac2 推荐"| COQ
+    REC -->|"simp / rw / linarith"| LEAN
+    REC -->|"sledgehammer"| ISABELLE
+    REC -->|"wp / iFrame 策略"| IRIS
+
+    REP -->|"eauto / auto 调参"| COQ
+    REP -->|"metavariable 回溯"| LEAN
+    REP -->|"proof obligation 再调度"| ISABELLE
+    REP -->|"modal 断言修复"| IRIS
+
+    INV -->|"循环不变式"| COQ
+    INV -->|"归纳模式"| LEAN
+    INV -->|"TLA+ 时序不变式"| ISABELLE
+    INV -->|"资源不变式"| IRIS
+```
+
+各工具与 LFPA 的集成深度取决于其状态暴露粒度与策略语言的可学习性。Lean 4 的 `repl` 与 Coq 的 `SerAPI` 提供了最完整的程序化接口，因此当前 LLM 基准测试中这两者的策略推荐精确度最高（见 Prop-S-06-18-01）。Isabelle 的 Sledgehammer 与 TLAPS 后端则将 LLM 定位在元级调度层，Iris 的分离逻辑证明则对 LLM 的上下文推理能力提出了更高要求。
+
+---
+
 ## 8. 引用参考 (References)
 
 [^1]: arXiv, "Towards Language Model Guided TLA+ Proof Automation", February 2026. <https://arxiv.org/abs/2026.02.xxxxx> (假设 URL 格式). 该论文首次系统评估了 LLM（Claude-3.7-Sonnet, DeepSeek-V3.2-Exp, GPT-4.5-preview）在 TLA⁺ Proof System (TLAPS) 上的证明生成能力，提出将 LLM 作为 TLAPS 后端的元级调度器而非底层证明生成器。
@@ -1531,6 +1615,12 @@ gantt
 [^4]: Springer, "Veil Framework: Verifiable Sandboxing for LLM-Generated Artifacts", July 2025. 该论文提出了 Veil 框架，为 LLM 生成的代码与证明提供可验证沙箱执行环境，确保不可信生成的执行不会污染宿主系统，同时保证所有行为可审计。
 
 [^5]: PingCAP, "Formal Verification of TiDB using TLA+", TiDB Engineering Blog, 2024–2025. TiDB 团队使用 TLA⁺ 对分布式事务、Raft 共识、MVCC 与调度器进行形式化验证，积累了丰富的工业级 TLA⁺ 证明义务库，是评估 LLM 辅助 TLA⁺ 验证的重要数据源。
+
+[^6]: L. de Moura and S. Ullrich, "The Lean 4 Theorem Prover and Programming Language", CADE 2021. Lean 4 的元编程与 tactic 框架为 LLM 辅助证明提供了高度结构化的状态序列化接口，是 LeanDojo 等系统的技术基础。
+
+[^7]: T. Nipkow, M. Wenzel, and L. C. Paulson, "Isabelle/HOL: A Proof Assistant for Higher-Order Logic", Springer, 2002. Isabelle/HOL 的 Sledgehammer 与 Proof General 生态为 LLM 在元级调度证明后端（如 Z3、Vampire）提供了成熟的集成点。
+
+[^8]: R. Krebbers, J. Jung, B. Lepre, et al., "Iris from the Ground Up: A Modular Foundation for Higher-Order Concurrent Separation Logic", J. Funct. Program., 2018. Iris 框架的高阶并发分离逻辑对 LLM 的上下文窗口与抽象推理能力提出了独特挑战，是当前 LFPA 在并发系统验证中的前沿方向。
 
 
 

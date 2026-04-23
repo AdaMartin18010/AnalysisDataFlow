@@ -1137,8 +1137,170 @@ graph LR
 
 ---
 
-## 8. 引用参考 (References)
+### 7.4 流数据血缘思维导图
+
+以下思维导图以"流数据血缘追踪"为中心，从血缘类型、采集方式、应用场景、技术实现、挑战与趋势五个维度进行放射式展开：
+
+```mermaid
+mindmap
+  root((流数据血缘追踪))
+    血缘类型
+      数据血缘
+        数据集节点映射
+        字段级派生关系
+      业务血缘
+        业务术语对齐
+        指标口径溯源
+      依赖血缘
+        作业间读写依赖
+        拓扑执行顺序
+      影响血缘
+        变更传播路径
+        影响系数量化
+    采集方式
+      自动解析
+        SQL AST遍历
+        API调用链分析
+      手动标注
+        业务标签录入
+        人工审核确认
+      运行时追踪
+        字节码增强
+        元数据拦截
+      静态分析
+        编译期血缘提取
+        Schema变更检测
+    应用场景
+      影响分析
+        Schema变更评估
+        下游作业预警
+      根因定位
+        数据质量追溯
+        异常路径还原
+      合规审计
+        GDPR处理活动记录
+        金融监管报送链
+      数据资产
+        资产目录构建
+        冗余链路识别
+    技术实现
+      SQL解析
+        Calcite RelNode遍历
+        Flink SQL Parser
+      API钩子
+        Flink REST API
+        OpenLineage Client SDK
+      日志追踪
+        Kafka Connect日志
+        Debezium CDC事件
+      元数据存储
+        图数据库 Neo4j
+        元数据平台 DataHub
+    挑战与趋势
+      实时血缘
+        亚秒级拓扑更新
+        增量图计算
+      跨系统血缘
+        异构平台对齐
+        统一血缘ID体系
+      语义血缘
+        业务语义嵌入
+        自然语言到血缘映射
+      AI增强
+        大模型辅助血缘补全
+        异常模式自动检测
+```
+
+### 7.5 多维关联树：血缘场景→技术需求→实现方案
+
+以下层次图展示了典型血缘场景如何映射到核心技术需求，并进一步落实到具体实现方案：
+
+```mermaid
+graph TB
+    subgraph SCENARIOS["血缘场景"]
+        S1[Schema变更影响分析]
+        S2[数据质量根因定位]
+        S3[GDPR合规审计]
+        S4[数据资产盘点]
+    end
+
+    subgraph REQUIREMENTS["技术需求"]
+        R1[列级血缘解析]
+        R2[跨作业路径追踪]
+        R3[处理活动记录]
+        R4[全量拓扑扫描]
+    end
+
+    subgraph IMPLEMENTATIONS["实现方案"]
+        I1[Calcite SQL解析<br/>+ 影响系数传播]
+        I2[分布式日志聚合<br/>+ 时序关联]
+        I3[OpenLineage事件<br/>+ 审计链哈希]
+        I4[元数据图谱<br/>+ 自动发现]
+    end
+
+    S1 --> R1
+    S1 --> R2
+    S2 --> R2
+    S2 --> R4
+    S3 --> R3
+    S3 --> R2
+    S4 --> R4
+    S4 --> R1
+
+    R1 --> I1
+    R1 --> I4
+    R2 --> I2
+    R2 --> I1
+    R3 --> I3
+    R4 --> I4
+    R4 --> I2
+
+    style SCENARIOS fill:#e8f5e9
+    style REQUIREMENTS fill:#e3f2fd
+    style IMPLEMENTATIONS fill:#fff3e0
+```
+
+### 7.6 血缘采集策略决策树
+
+以下决策树根据数据源类型与系统可观测性，指导选择最合适的血缘采集策略：
+
+```mermaid
+flowchart TD
+    Start([血缘采集策略选择]) --> Q1{主要数据源<br/>与可观测性?}
+
+    Q1 -->|SQL/声明式查询为主| SQL[SQL-based策略]
+    Q1 -->|Flink/Spark运行时可控| API[API-based策略]
+    Q1 -->|仅有系统日志/CDC| LOG[Log-based策略]
+    Q1 -->|多源异构环境| HYB[Hybrid策略]
+
+    SQL --> SQL_D1[自动解析INSERT/SELECT血缘]
+    SQL --> SQL_D2[Calcite/Flink SQL Parser提取列级映射]
+    SQL --> SQL_D3[零运行时开销<br/>无法捕获UDF黑盒]
+
+    API --> API_D1[集成Flink REST API获取ExecutionGraph]
+    API --> API_D2[通过Java Agent字节码增强捕获运行时流]
+    API --> API_D3[5%-15%吞吐量开销<br/>捕获真实执行路径]
+
+    LOG --> LOG_D1[解析Kafka Connect / Debezium CDC日志]
+    LOG --> LOG_D2[审计日志链 + 哈希校验防篡改]
+    LOG --> LOG_D3[事后追溯能力强<br/>实时性受限]
+
+    HYB --> HYB_D1[多源融合: 静态基线 + 动态补充]
+    HYB --> HYB_D2[冲突消解引擎: 置信加权 + 人工仲裁]
+    HYB --> HYB_D3[最高覆盖率<br/>运维复杂度最大]
+
+    style Start fill:#e1f5fe
+    style SQL fill:#e8f5e9
+    style API fill:#e3f2fd
+    style LOG fill:#fff3e0
+    style HYB fill:#f3e5f5
+```
 
 ---
 
-*文档版本: v1.0 | 创建日期: 2026-04-19*
+## 8. 引用参考 (References)
+
+
+---
+
+*文档版本: v1.1 | 更新日期: 2026-04-24*
