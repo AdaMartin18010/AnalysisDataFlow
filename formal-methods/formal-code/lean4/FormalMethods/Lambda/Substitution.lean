@@ -134,6 +134,8 @@ lemma subst_fv_notin {x : Name} {s t : Term} (h : x ∉ fv t) :
            
            依赖: freshVar z (app s body) 保证 z ∉ fv(body) 且 z ∉ fv(s)。
         -/
+        -- FORMAL-GAP: 需证明重命名替换下自由变量集合的精确等式 fv([y:=z]t) = (fv(t) \ {y}) ∪ {z}。策略: 对t结构归纳；var/abs/app分情形；利用freshVar的新鲜性处理集合运算；simp [fv, subst]
+        -- 难度: 高 | 依赖: freshVar fresh_property, subst_fv_notin (归纳假设), List.erase_insert
         sorry
       · -- y ≠ x and y ∉ fv(s)
         simp [fv, ih]
@@ -184,6 +186,8 @@ lemma subst_fv_subset {x : Name} {s t : Term} :
            ⊆ ((fv(body) \ {w}) \ {y}) ∪ {z}（集合运算，z ≠ w）
            = (fv(λw.body) \ {y}) ∪ {z}。
         -/
+        -- FORMAL-GAP: 需证明重命名替换下自由变量集合的子集关系 fv([y:=z]t) ⊆ (fv(t) \ {y}) ∪ {z}。策略: 对t结构归纳；abs情形用IH和集合运算；freshVar保证z新鲜
+        -- 难度: 高 | 依赖: freshVar fresh_property, subst_fv_subset (归纳假设)
         sorry
       · -- y ≠ x, y ∉ fv(s)
         simp [fv, ih]
@@ -281,6 +285,8 @@ lemma alpha_equiv_symm {t s : Term} (h : t =α s) : s =α t := by
              由 IH: [y:=x]([x:=y]body) =α body。由 abs_same 得 λw.[...] =α λw.body。
          · app t₁ t₂: 由 IH 和 AlphaEquiv.app。
       -/
+      -- FORMAL-GAP: 需证逆替换性质：若y新鲜，则[y:=var x]([x:=var y]t) =α t。策略: 对t结构归纳；var情形分w=x/y/其他；abs情形用abs_same/abs_rename；app情形用AlphaEquiv.app
+      -- 难度: 高 | 依赖: subst_var_eq, subst_var_neq, alpha_equiv_refl, freshVar fresh_property
       sorry
   | app t₁ t₂ s₁ s₂ _ _ ih₁ ih₂ => 
       apply AlphaEquiv.app
@@ -346,6 +352,8 @@ lemma subst_preserves_alpha {x : Name} {s t₁ t₂ : Term}
      
      此引理完成后，Safety.lean 中 substitution_lemma 的 abs 分支可消去 sorry。
   -/
+  -- FORMAL-GAP: 需证替换保持Alpha等价。策略: 对AlphaEquiv关系结构归纳；abs_same/abs_rename分情形讨论x与绑定变量的关系；利用subst_preserves_alpha于重命名体
+  -- 难度: 高 | 依赖: alpha_equiv_refl, alpha_equiv_symm, subst_fv_notin, subst_commutativity (需先证)
   sorry
 
 end FormalMethods.Lambda.Substitution

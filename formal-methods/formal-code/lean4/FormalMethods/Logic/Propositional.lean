@@ -778,6 +778,7 @@ section MetaTheory
                - 极大性: 对任意 φ = seq n，由构造 φ ∈ Γₙ₊₁ 或 ¬φ ∈ Γₙ₊₁，
                  故 φ ∈ Δ 或 ¬φ ∈ Δ。
     -/
+    -- FORMAL-GAP: Lindenbaum 引理（命题逻辑版本）。策略: 用 Formula.encodable 构造枚举 seq; 定义 Γ_n 递归序列; 归纳证每个 Γ_n 一致; 取并集 Δ; 证 Δ 极大一致（有限推导只用有限公式，故属于某 Γ_n）。难度: 高 | 依赖: Formula.encodable, Nat.rec, 有限推导原理
     sorry
 
   /-- 引理 4.3 (典范模型): 对于极大一致集 Γ，定义典范赋值 σ_Γ 使得
@@ -988,6 +989,7 @@ section MetaTheory
        · 关键步骤 6: 由 ¬φ ∈ Δ，⟦¬' φ⟧ σ_Δ = true，故 ⟦φ⟧ σ_Δ = false，
          但 Γ ⊨ φ 要求 ⟦φ⟧ σ_Δ = true，矛盾。
     -/
+    -- FORMAL-GAP: 完备性定理（命题逻辑）。策略: by_contra 假设 Γ ⊬ φ; 证 Consistent (Γ ∪ {¬φ}); 用 lindenbaum 得极大一致集 Δ; 由 truth_lemma 和 canonicalAssignment 构造反例赋值; 与 Γ ⊨ φ 矛盾。难度: 高 | 依赖: lindenbaum, truth_lemma, by_contradiction
     sorry
 
   /-- 推论 4.2 (紧致性): 若 Γ ⊨ φ，则存在有限子集 Γ' ⊆ Γ 使得 Γ' ⊨ φ
@@ -1007,6 +1009,7 @@ section MetaTheory
        · 这在 Lean 中需要对 Derives 归纳类型进行元理论分析，
          或引入有限推导的概念。
     -/
+    -- FORMAL-GAP: 紧致性推论（命题逻辑）。策略: 对 Derives 归纳证明"有限支持性"（finite support lemma）：Γ ⊢ φ → ∃ Γ' ⊆ Γ, Γ' 有限 ∧ Γ' ⊢ φ；再用 soundness 得 Γ' ⊨ φ。或直接从 completeness 导出。难度: 高 | 依赖: 有限支持性引理 / completeness
     sorry
 
   /-- 定理 4.3 (可靠性与完备性的等价形式):
@@ -1030,6 +1033,7 @@ section MetaTheory
          3. 具体地，需证明: 若 Γ'.toSet = Γ.toSet，则 ∀ ψ, Γ' ⊢ ψ ↔ Γ ⊢ ψ
          4. 这可以通过对 Context 的结构归纳或直接使用集合等价性完成
       -/
+      -- FORMAL-GAP: 可靠性与完备性等价形式：需证列表上下文与集合表示等价保持可推导性。策略: rcases (completeness h) with ⟨Γ', h_eq, h_derives⟩; 需证 Γ' ⊢ φ → Γ ⊢ φ（集合相等推导等价）；可用 Context.equiv_derives 引理: ∀ Γ Γ', Γ.toSet = Γ'.toSet → (∀ ψ, Γ ⊢ ψ ↔ Γ' ⊢ ψ)。难度: 中 | 依赖: completeness, Context.equiv_derives
       sorry
 
 end MetaTheory
@@ -1276,10 +1280,11 @@ deriving Repr, Inhabited
     -- 2. toCNF (toNNF φ).toFormula ≡ (toNNF φ).toFormula (由 toCNF 保持等价)
     -- 3. 传递性得证
     /- 形式化要点:
-       · 需先证明 toNNF_equiv: ∀ φ, toNNF φ ≡ φ
+       · 需先证明 toNNF_equiv: ∀ φ, toNNF φ ≡ ψ
        · 需证明 toCNF 保持语义等价: ∀ ψ ∈ NNF, toCNF ψ ≡ ψ
        · 两者组合即得目标
     -/
+    -- FORMAL-GAP: CNF 转换等价性：需证 toCNF 保持语义等价。策略: 先证 toNNF_equiv（已证）；再对公式结构归纳证 toCNF_equiv: ∀ ψ, (toCNF ψ).toFormula ≡ ψ；原子/⊥/⊤ 情况 trivial；∧ 情况用 append 语义；∨ 情况用分配律（foldr 嵌套对应分配律的语义）。难度: 高 | 依赖: toNNF_equiv, 分配律语义, foldr 性质
     sorry
 
   /-- 函数 5.3 (DNF 转换) -/
@@ -1313,6 +1318,7 @@ deriving Repr, Inhabited
        2. toDNF (toNNF φ).toFormula ≡ (toNNF φ).toFormula (归纳证明)
        3. 传递性得证
     -/
+    -- FORMAL-GAP: DNF 转换等价性：与 CNF 对称。策略: 同 formulaToCNF_equiv，先证 toNNF_equiv，再对公式归纳证 toDNF 保持等价；∨ 情况 trivial（append）；∧ 情况用分配律。难度: 高 | 依赖: toNNF_equiv, 分配律语义
     sorry
 
   /- ============================================================
@@ -1347,6 +1353,7 @@ deriving Repr, Inhabited
 
        需先证明 eval_cnf_member（见 cnf_satisfiable_characterization 证明）。
     -/
+    -- FORMAL-GAP: CNF 可满足性双向证明（方向←不成立，此引理为教学陷阱）。策略: 方向→: intro h; rcases h with ⟨σ, hσ⟩; intro c hc; use σ; exact eval_cnf_member σ cnf c hc hσ。方向←: 不成立，反例 [[pos 0], [neg 0]]；应改引理为单向或删除。难度: 中 | 依赖: eval_cnf_member（已证）
     sorry
 
   /-- 引理 5.5 (霍恩子句): 最多含一个正文字的子句
@@ -1381,6 +1388,7 @@ deriving Repr, Inhabited
           - Completeness: 公式可满足则算法返回 sat
        4. 证明算法的时间复杂度为多项式
     -/
+    -- FORMAL-GAP: Horn 公式可满足性的多项式时间算法正确性。策略: 定义前向链算法 forwardChain；证终止（赋值单调增，有界于变量数）；证 soundness（保持可满足性）；证 completeness（模型存在则算法不失败）；复杂度分析用 List.length 界。难度: 极高 | 依赖: forwardChain 实现, 单调收敛, 复杂度分析
     sorry
 
 end NormalForms
@@ -1608,6 +1616,7 @@ section SATSolving
        · 分支引理: 对变量 v，CNF 可满足 ↔ CNF[v=true] 可满足 ∨ CNF[v=false] 可满足
        · 终止: 每次分支减少未赋值变量数
     -/
+    -- FORMAL-GAP: DPLL 算法正确性（当前 dpll 为占位符）。策略: 需先实现完整 dpll（含 unitPropagate, pureLiteralElim, decide）；证 unitPropagate 保持 SAT（equivalence）；证分支完备性；对未赋值变量数归纳证终止。当前始终返回 unsat，故无法证明 sat 情况。难度: 极高 | 依赖: dpll 完整实现, unitPropagate 等价性, 归纳终止
     sorry
 
 end SATSolving
