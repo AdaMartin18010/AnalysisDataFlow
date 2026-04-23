@@ -1,6 +1,6 @@
 # Knowledge/06-frontier 前沿技术专题索引
 
-> 所属阶段: Knowledge/06-frontier | 状态: 活跃维护 | 最后更新: 2026-04-20
+> 所属阶段: Knowledge/06-frontier | 状态: 活跃维护 | 最后更新: 2026-04-23
 
 ---
 
@@ -54,6 +54,7 @@
 | [edge-streaming-advanced-2026.md](edge-streaming-advanced-2026.md) | 边缘流深化 ⭐NEW | L4-L5 | ~35KB | 3定义+2定理 |
 | [Knowledge/00-INDEX.md](../../Knowledge/00-INDEX.md) | IoT自愈建模 | L4 | ~42KB | 3定义+2定理 |
 | [cloud-edge-continuum.md](cloud-edge-continuum.md) | 云边连续体 | L4 | ~35KB | 2定义+1命题 |
+| [embodied-ai-realtime-streaming-closed-loop.md](embodied-ai-realtime-streaming-closed-loop.md) | 具身智能实时PDA闭环 ⭐NEW | L3-L4 | ~13KB | 4定义+1命题+1引理+1定理 |
 
 ### 事务流与一致性
 
@@ -246,10 +247,10 @@
 
 | 类型 | 总数 | 说明 |
 |------|------|------|
-| 定义 (Def) | ~182+ | 核心概念形式化定义 |
-| 定理 (Thm) | ~61+ | 重要性质与保证 |
-| 引理 (Lemma) | ~40+ | 辅助证明步骤 |
-| 命题 (Prop) | ~51+ | 重要观察与结论 |
+| 定义 (Def) | ~186+ | 核心概念形式化定义 |
+| 定理 (Thm) | ~62+ | 重要性质与保证 |
+| 引理 (Lemma) | ~41+ | 辅助证明步骤 |
+| 命题 (Prop) | ~52+ | 重要观察与结论 |
 | 推论 (Cor) | ~15+ | 直接推导结果 |
 
 ---

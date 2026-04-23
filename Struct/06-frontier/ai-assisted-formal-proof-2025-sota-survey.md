@@ -4,7 +4,7 @@
 >
 # AI辅助形式化证明 2025年 SOTA 综述
 
-> **所属阶段**: Struct/06-frontier | **前置依赖**: [../04-proofs/](../04-proofs/) 系列形式化证明文档 | **形式化等级**: L3-L4 | **理论框架**: Neural Theorem Proving + RL + Agentic Systems
+> **所属阶段**: Struct/06-frontier | **前置依赖**: [../04-proofs/](../04-proofs/) | **形式化等级**: L3-L4 | **理论框架**: Neural Theorem Proving + RL + Agentic
 
 ---
 
@@ -45,15 +45,13 @@
 
 ## 摘要
 
-2025年，AI辅助形式化证明经历了从**搜索驱动**到**推理驱动**的范式转变。**Kimina-Prover** (80.7% pass@8192)[^1]、**DeepSeek-Prover-V2** (88.9%, 671B)[^2] 和 **Goedel-Prover-V2**[^3] 通过大规模强化学习、显式子目标分解和课程驱动数据合成，将自动证明成功率推至新高。**BFS-Prover** (72.95%)[^4] 以最佳优先搜索挑战了MCTS的统治；**Lean-SMT** (CAV 2025)[^5] 将SMT深度集成至Lean 4；**AutoVerus** (OOPSLA 2025)[^6] 实现了Rust代码的端到端自动验证。Agentic框架如 **COPRA**[^7] 和 **ProofSeek**[^8] 将应用场景扩展至安全策略验证。
+2025年，AI辅助形式化证明经历了从**搜索驱动**到**推理驱动**的范式转变。**Kimina-Prover** (80.7%)[^1]、**DeepSeek-Prover-V2** (88.9%)[^2] 和 **Goedel-Prover-V2**[^3] 通过大规模RL、子目标分解和课程驱动数据合成推升自动证明成功率。**BFS-Prover** (72.95%)[^4] 挑战了MCTS的统治；**Lean-SMT** (CAV 2025)[^5] 深度集成SMT至Lean 4；**AutoVerus** (OOPSLA 2025)[^6] 实现Rust代码端到端自动验证。Agentic框架如 **COPRA**[^7] 和 **ProofSeek**[^8] 扩展应用场景至安全策略验证。
 
 **关键词**: Neural Theorem Proving, Lean 4, RL, Agentic Proof, Test-Time Scaling
 
 ---
 
 ## 1. 概念定义 (Definitions)
-
-本节建立在交互式定理证明器理论[^9][^10]、深度强化学习[^11] 以及近期神经定理证明研究[^1][^2][^3] 基础之上。
 
 ### Def-S-33-01. 神经定理证明器 (Neural Theorem Prover)
 
@@ -88,7 +86,7 @@ $$
 N = \{\sigma \mid \sigma \text{ 为证明状态}\}, \quad E = \{(\sigma, s, \sigma') \mid \sigma' = \mathcal{V}_{\text{step}}(\sigma, s)\}
 $$
 
-**关键观察**: 验证器提供的二元反馈是**稀疏奖励信号**。为改善信用分配，2025年SOTA系统普遍引入**过程奖励**或**验证器集成推理**[^12]。
+**关键观察**: 验证器提供的二元反馈是**稀疏奖励信号**。为改善信用分配，2025年SOTA系统普遍引入**过程奖励**或**验证器集成推理**[^9]。
 
 ### Def-S-33-03. 推理驱动的探索范式 (Reasoning-Driven Exploration)
 
@@ -130,7 +128,7 @@ $$
 
 **命题**: 考虑Agentic证明框架，每次迭代执行 (生成 → 验证 → 修复)。若修复策略在有限步内以正概率 $\epsilon > 0$ 消除错误，则循环在有限期望步内收敛，且期望收敛轮数 $\mathbb{E}[T] \leq 1/\epsilon$。
 
-**工程意义**: COPRA[^7]、MA-LoT[^13] 和 ProofSeek[^8] 等系统正是基于此收敛性设计多轮迭代。实际中，语法错误易于修复（高$\epsilon$），而策略性错误则可能需要人类干预。∎
+**工程意义**: COPRA[^7]、MA-LoT[^10] 和 ProofSeek[^8] 等系统正是基于此收敛性设计多轮迭代。实际中，语法错误易于修复（高$\epsilon$），而策略性错误则可能需要人类干预。∎
 
 ### Lemma-S-33-02. 检索增强证明的前提选择完备性界
 
@@ -140,7 +138,7 @@ $$
 \mathbb{P}[\text{success} \mid \hat{\mathcal{L}}] \leq \min\left(1, \frac{k \cdot r}{m}\right) \cdot \mathbb{P}[\text{success} \mid \mathcal{L}]
 $$
 
-**直观解释**: 该引理量化了 LeanDojo[^14] 等系统面临的根本张力——检索窗口 $k$ 有限，而真实依赖 $m$ 在Mathlib4中可能超过100。Kimina-Prover通过将检索融入长CoT推理，在一定程度上缓解了此问题[^1]。∎
+**直观解释**: 该引理量化了 LeanDojo[^11] 等系统的根本张力——检索窗口 $k$ 有限而真实依赖 $m$ 在Mathlib4中可能超过100。Kimina-Prover通过将检索融入长CoT推理缓解了此问题[^1]。∎
 
 ---
 
@@ -151,7 +149,7 @@ $$
 2025年神经定理证明系统形成两条技术路线：
 
 - **整证明生成路线**: Kimina-Prover[^1]、DeepSeek-Prover-V2[^2]、Goedel-Prover-V2[^3] —— 通过大规模RL训练模型直接生成完整证明。
-- **树搜索路线**: BFS-Prover[^4]、LeanDojo + ReProver[^14] —— 保持tactic级别交互，利用外部搜索算法导航证明空间。
+- **树搜索路线**: BFS-Prover[^4]、LeanDojo + ReProver[^11] —— 保持tactic级别交互，利用外部搜索算法导航证明空间。
 
 两条路线在数学上等价：任何整证明可逐tactic展开为树路径；反之，任何成功路径可拼接为整证明。差异在于**计算效率**与**样本效率**的权衡。
 
@@ -163,14 +161,14 @@ $$
 |------|--------------------|------------------------------|
 | 引理生态 | 密集 (>100K 定理) | 稀疏（需自证引理） |
 | 问题结构 | 定义明确，陈述紧凑 | 需处理状态、副作用、并发 |
-| 失败模式 | 策略错误 | "概念增殖" [^16] |
+| 失败模式 | 策略错误 | "概念增殖" [^12] |
 | SOTA通过率 | ~80% (miniF2F) | ~30-40% (真实代码) |
 
-**概念增殖问题**: 软件验证中，简单性质可能依赖于大量辅助定义和中间引理，形成"证明膨胀"，与Mathlib4中既有引理可直接引用的场景形成鲜明对比[^16]。
+**概念增殖问题**: 软件验证中，简单性质可能依赖于大量辅助定义和中间引理，形成"证明膨胀"，与Mathlib4中既有引理可直接引用的场景形成鲜明对比[^12]。
 
 ### 关系 3: 形式化推理 ↔ 非形式化推理
 
-当前通用LLM在非形式化数学推理上表现出色（可解所有15道AIME问题），但在形式化证明上显著落后：OpenAI o3-mini 的 miniF2F pass@32 仅 24.59%，Gemini 2.5 Pro 仅 37.70%，而 Kimina-Prover 达 68.85%[^1]。这一鸿沟表明：**形式化推理是一种独立能力**，需要专门的训练数据和验证器反馈循环，不能简单由非形式化推理迁移得到。
+当前通用LLM在非形式化数学推理上表现出色（可解所有15道AIME问题），但在形式化证明上显著落后：OpenAI o3-mini 的 miniF2F pass@32 仅 24.59%，Gemini 2.5 Pro 仅 37.70%，而 Kimina-Prover 达 68.85%[^1]。这表明**形式化推理是独立能力**，不能简单由非形式化推理迁移得到。
 
 ---
 
@@ -178,11 +176,11 @@ $$
 
 ### 4.1 从数学到代码验证的迁移鸿沟
 
-当前SOTA系统主要在 **miniF2F**（488道竞赛级数学题目）和 **PutnamBench**（1,724道竞赛题目）上评估。这些基准存在饱和性问题（已被 Seed-Prover[^17] 接近饱和）、数据污染和领域错配。**SorryDB** (2026)[^18] 和 **VeriSoftBench** (2026)[^19] 从真实Lean项目中挖掘未完成的`sorry`任务，动态更新以避免污染。初步评估显示：当前模型在真实项目上的表现显著低于miniF2F，且不同模型解决的问题集合具有**互补性**。
+当前SOTA系统主要在 **miniF2F**（488道竞赛级数学题目）和 **PutnamBench**（1,724道竞赛题目）上评估。这些基准存在饱和性问题（已被 Seed-Prover[^13] 接近饱和）、数据污染和领域错配。**SorryDB** (2026)[^14] 和 **VeriSoftBench** (2026)[^15] 从真实Lean项目中挖掘未完成的`sorry`任务，动态更新以避免污染。评估显示：当前模型在真实项目上表现显著低于miniF2F，且不同模型解决的问题集合具有**互补性**。
 
 ### 4.2 Test-Time Scaling: 顺序缩放 vs 并行缩放
 
-**顺序缩放**通过长CoT进行迭代反思，Kimina-Prover为代表，样本效率高但延迟高。**并行缩放**独立采样多个候选证明，pass@$k$ 为典型度量，易并行化但样本效率低。2025年最优实践是**混合策略**：先用顺序推理生成高质量候选，再对困难情况回退到并行采样。EconProver[^20] 的动态CoT切换机制进一步优化了此权衡。
+**顺序缩放**通过长CoT进行迭代反思，Kimina-Prover为代表，样本效率高但延迟高。**并行缩放**独立采样多个候选证明，pass@$k$ 为典型度量，易并行化但样本效率低。2025年最优实践是**混合策略**：先用顺序推理生成高质量候选，再对困难情况回退到并行采样。EconProver[^16] 的动态CoT切换机制进一步优化了此权衡。
 
 ---
 
@@ -202,11 +200,9 @@ $$
 
 1. **基础情况** ($N=0$): 显然成立，$\alpha_N = \alpha_0$。
 
-2. **归纳步骤**: 假设对 $N-1$ 轮成立。在第 $N$ 轮中，模型以概率 $\alpha_{N-1}$ 成功解决一个定理，生成训练数据。新训练数据包含此前未解决定理的正例。由模型容量假设，学习这些新正例可提升模型在"边界可解"定理上的成功率至少 $c \cdot \alpha_{N-1} \cdot (1 - \alpha_{N-1})$。该增量在 $\alpha_{N-1} \approx 0.5$ 时最大，在 $\alpha_{N-1} \rightarrow 1$ 时趋近于0（边际递减）。
+2. **归纳步骤**: 假设对 $N-1$ 轮成立。第 $N$ 轮中，模型以概率 $\alpha_{N-1}$ 成功解决定理并生成训练数据。由模型容量假设，学习这些新正例可提升"边界可解"定理成功率至少 $c \cdot \alpha_{N-1} \cdot (1 - \alpha_{N-1})$，在 $\alpha_{N-1} \approx 0.5$ 时最大，趋近于1时边际递减。
 
-3. **收敛分析**: 当 $\alpha_N \rightarrow 1$ 时，增量 $\Delta_N \rightarrow 0$。收敛速度为 $O(1/N)$，要达到 $\alpha_N = 1 - \epsilon$ 需要 $O(1/\epsilon)$ 轮迭代。
-
-**工程验证**: Goedel-Prover-V2[^3] 和 InternLM2.5-StepProver[^22] 的实验数据与此理论预测一致——早期迭代提升显著（每轮 +5-10%），后期进入平台期。∎
+3. **收敛分析**: 收敛速度为 $O(1/N)$。工程验证显示 Goedel-Prover-V2[^3] 早期迭代提升显著（每轮 +5-10%），后期进入平台期。∎
 
 ---
 
@@ -214,23 +210,23 @@ $$
 
 ### 6.1 Kimina-Prover: 长CoT强化学习推理
 
-Kimina-Prover Preview (Numina & Kimi Team, 2025)[^1] 基于 Qwen2.5-72B，通过 Kimi k1.5 RL 流水线训练。核心创新包括**Formal Reasoning Pattern**（结构化推理模式）和清晰的**模型规模效应**——从1.5B到72B性能持续提升。pass@1 = 52.94%，pass@8192 = 80.74%。
+Kimina-Prover Preview (2025)[^1] 基于 Qwen2.5-72B，通过 Kimi k1.5 RL 流水线训练，核心创新为**Formal Reasoning Pattern**和清晰的**模型规模效应**（1.5B→72B持续提升）。pass@1 = 52.94%，pass@8192 = 80.74%。
 
 ### 6.2 DeepSeek-Prover-V2: 显式子目标分解
 
-DeepSeek-Prover-V2 (2025)[^2] 采用双模型流水线：DeepSeek-V3 生成证明草图并递归分解子目标；证明模型将子目标形式化为Lean 4片段；使用 **GRPO** 进行强化学习。671B模型达到88.9% (MiniF2F)。
+DeepSeek-Prover-V2 (2025)[^2] 采用双模型流水线：DeepSeek-V3 生成证明草图并递归分解子目标，证明模型形式化为Lean 4片段，使用 **GRPO** 强化学习。671B模型达88.9% (MiniF2F)。
 
 ### 6.3 Goedel-Prover-V2: 课程驱动数据合成
 
-Goedel-Prover-V2 (2025)[^3] 建立在三个机制上：**Scaffolded Data Synthesis**（自动形式化器将1.64M自然语言陈述翻译为Lean 4）、**Verifier-Guided Self-Correction**（多轮证明修复）和 **Model Averaging**。数据飞轮形成自举：自然语言问题 → 自动形式化 → 证明尝试 → 验证器反馈 → 成功证明加入训练集 → 下一迭代更难问题。
+Goedel-Prover-V2 (2025)[^3] 建立在三个机制上：**Scaffolded Data Synthesis**（自动形式化器将1.64M自然语言陈述翻译为Lean 4）、**Verifier-Guided Self-Correction**和**Model Averaging**。数据飞轮形成自举：自然语言问题 → 自动形式化 → 证明尝试 → 验证器反馈 → 成功证明加入训练集 → 迭代更难问题。
 
 ### 6.4 ProofSeek: AWS S3策略验证
 
-ProofSeek (2025)[^8] 面向非数学领域的形式化验证，采用两阶段微调（SFT学习Isabelle语法，RL鼓励验证器通过）。AWS S3用例将桶访问策略转化为形式化安全性质，通过Isabelle/HOL验证。相比DeepSeek基线，在未见领域提升3%成功率，执行时间减少20%。
+ProofSeek (2025)[^8] 面向非数学领域的形式化验证，采用两阶段微调（SFT学习Isabelle语法，RL鼓励验证器通过）。AWS S3用例将桶访问策略转化为形式化安全性质，通过Isabelle/HOL验证，未见领域提升3%成功率。
 
 ### 6.5 AutoVerus: Rust代码自动验证
 
-AutoVerus (Microsoft Research, OOPSLA 2025)[^6] 针对Rust/Verus，由LLM Agent网络模拟人类专家的三个阶段：生成初步循环不变量、多Agent协作精化、Verus验证器引导调试。在150个非平凡证明任务上通过率 > 90%，半数在 < 30秒或3次LLM调用内完成。获OOPSLA 2025 Distinguished Artifact Award。
+AutoVerus (OOPSLA 2025)[^6] 针对Rust/Verus，由LLM Agent网络模拟三阶段：生成循环不变量、多Agent精化、Verus引导调试。150个非平凡任务通过率 > 90%，半数在 < 30秒内完成。获OOPSLA Distinguished Artifact Award。
 
 ---
 
@@ -265,7 +261,7 @@ graph TB
     PS --> WP
 ```
 
-该矩阵揭示两个关键趋势：(1) 2025年头部系统已从逐步搜索转向整证明生成；(2) Agentic框架作为"元层"编排多个证明器，实现互补优势。
+该矩阵揭示两个趋势：(1) 头部系统已从逐步搜索转向整证明生成；(2) Agentic框架作为"元层"编排多个证明器。
 
 ### 图 7.2: AI辅助形式化证明技术演进树
 
@@ -289,7 +285,7 @@ flowchart TD
     L --> M["未来趋势<br/>代码验证 + Agentic<br/>从数学到软件"]
 ```
 
-技术演进呈现"数据-算法-评估"三轮驱动：(1) 数据侧从人工标注走向自动合成；(2) 算法侧从专家迭代走向大规模RL；(3) 评估侧从静态竞赛题走向动态真实项目。
+技术演进呈现"数据-算法-评估"三轮驱动：数据侧走向自动合成；算法侧走向大规模RL；评估侧走向动态真实项目。
 
 ---
 
@@ -297,7 +293,7 @@ flowchart TD
 
 [^1]: H. Wang et al., "Kimina-Prover Preview: Towards Large Formal Reasoning Models with Reinforcement Learning," arXiv:2504.11354, 2025.
 
-[^2]: Z.Z. Ren et al., "DeepSeek-Prover-V2: Advancing Formal Mathematical Reasoning via Reinforcement Learning for Subgoal Decomposition," arXiv:2504.21801, 2025.
+[^2]: Z.Z. Ren et al., "DeepSeek-Prover-V2: Advancing Formal Mathematical Reasoning via RL for Subgoal Decomposition," arXiv:2504.21801, 2025.
 
 [^3]: Y. Lin et al., "Goedel-Prover-V2: Scaling Formal Theorem Proving with Scaffolded Data Synthesis and Self-Correction," arXiv:2508.03613, 2025.
 
@@ -311,28 +307,18 @@ flowchart TD
 
 [^8]: B. Rao et al., "Neural Theorem Proving: Generating and Structuring Proofs for Formal Verification," arXiv:2504.17017, 2025.
 
-[^9]: L. de Moura and S. Ullrich, "The Lean 4 Theorem Prover and Programming Language," CADE 28, pp. 625–635, 2021.
+[^9]: Y. Ji et al., "Leanabell-Prover-V2: Verifier-integrated Reasoning for Formal Theorem Proving via RL," arXiv:2507.08649, 2025.
 
-[^10]: T. Nipkow, M. Wenzel, and L.C. Paulson, *Isabelle/HOL: A Proof Assistant for Higher-Order Logic*, Springer, 2002.
+[^10]: C. Wang et al., "MA-LoT: Multi-Agent Lean-based Long Chain-of-Thought for Theorem Proving," 2025.
 
-[^11]: J. Schulman et al., "Proximal Policy Optimization Algorithms," arXiv:1707.06347, 2017.
+[^11]: K. Yang et al., "LeanDojo: Theorem Proving with Retrieval-Augmented Language Models," NeurIPS 2023, 2023.
 
-[^12]: Y. Ji et al., "Leanabell-Prover-V2: Verifier-integrated Reasoning for Formal Theorem Proving via Reinforcement Learning," arXiv:2507.08649, 2025.
+[^12]: R. Reuel et al., "The Concept Proliferation Problem in Automated Software Verification," 2024.
 
-[^13]: C. Wang et al., "MA-LoT: Multi-Agent Lean-based Long Chain-of-Thought for Theorem Proving," 2025.
+[^13]: Y. Chen et al., "Seed-Prover: Advanced Theorem Proving via Iterative Proof Refinement," 2025.
 
-[^14]: K. Yang et al., "LeanDojo: Theorem Proving with Retrieval-Augmented Language Models," NeurIPS 2023, 2023.
+[^14]: E. Letson et al., "SorryDB: A Dynamic Benchmark for Automated Theorem Proving from Real-World Lean Projects," arXiv:2603.02668, 2026.
 
+[^15]: Y. Xu et al., "VeriSoftBench: Evaluating Proof Synthesis over Repository-Scale Lean Verification Tasks," 2026.
 
-[^16]: R. Reuel et al., "The Concept Proliferation Problem in Automated Software Verification," 2024.
-
-[^17]: Y. Chen et al., "Seed-Prover: Advanced Theorem Proving via Iterative Proof Refinement," 2025.
-
-[^18]: E. Letson et al., "SorryDB: A Dynamic Benchmark for Automated Theorem Proving from Real-World Lean Projects," arXiv:2603.02668, 2026.
-
-[^19]: Y. Xu et al., "VeriSoftBench: Evaluating Proof Synthesis over Repository-Scale Lean Verification Tasks," 2026.
-
-[^20]: C. Xi et al., "EconProver: Towards More Economical Test-Time Scaling for Automated Theorem Proving," arXiv:2509.12603, 2025.
-
-
-[^22]: Z. Wu et al., "InternLM2.5-StepProver: Advancing Automated Theorem Proving via Expert Iteration on Large-Scale Lean Problems," arXiv:2410.15700, 2024.
+[^16]: C. Xi et al., "EconProver: Towards More Economical Test-Time Scaling for Automated Theorem Proving," arXiv:2509.12603, 2025.

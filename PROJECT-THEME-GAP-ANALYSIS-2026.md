@@ -500,18 +500,20 @@ Phase 4 (持续): D1-D4 (形式化验证, 长期工程)
 
 ### Phase 1 执行顺序 (建议)
 
-| 序号 | 任务 | 目标目录 | 预计交付 | 状态 |
-|-----|------|---------|---------|------|
-| 1 | Spark 4.0 Real-Time Mode深度分析 | Flink/07-roadmap | 2026-04-24 | 🟡 待启动 |
-| 2 | Python轻量级流处理框架全景 | Knowledge/04-technology-selection | 2026-04-24 | 🟡 待启动 |
-| 3 | Snowflake Streaming专题 | Knowledge/06-frontier | 2026-04-25 | 🟡 待启动 |
-| 4 | 流处理FinOps与成本可观测性 | Knowledge/07-best-practices | 2026-04-25 | 🟡 待启动 |
-| 5 | eBPF在流处理可观测性中的生产实践 | Flink/04-runtime/observability | 2026-04-26 | 🟡 待启动 |
-| 6 | Veil Framework深度生产评估(CAV 2025) | Struct/07-tools | 2026-04-26 | 🟡 待启动 |
-| 7 | AI辅助形式化证明2025 SOTA综述 | Struct/06-frontier | 2026-04-27 | 🟡 待启动 |
-| 8 | 时序数据库与流处理集成深度对比 | Knowledge/06-frontier | 2026-04-27 | 🟡 待启动 |
-| 9 | Choreographic Programming 2025完备性结果 | Struct/06-frontier | 2026-04-28 | 🟡 待启动 |
-| 10 | Service Mesh × Streaming架构指南 | Knowledge/06-frontier | 2026-04-28 | 🟡 待启动 |
+| 序号 | 任务 | 目标目录 | 实际交付 | 状态 | 规模 |
+|-----|------|---------|---------|------|------|
+| 1 | Spark 4.0 Real-Time Mode深度分析 | Flink/07-roadmap | 2026-04-23 | ✅ 已完成 | 23KB |
+| 2 | Python轻量级流处理框架全景 | Knowledge/04-technology-selection | 2026-04-23 | ✅ 已完成 | 32KB |
+| 3 | Snowflake Streaming专题 | Knowledge/06-frontier | 2026-04-23 | ✅ 已完成 | 17KB |
+| 4 | 流处理FinOps与成本可观测性 | Knowledge/07-best-practices | 2026-04-23 | ✅ 已完成 | 16KB |
+| 5 | eBPF在流处理可观测性中的生产实践 | Flink/04-runtime/observability | 2026-04-23 | ✅ 已完成 | 26KB |
+| 6 | Veil Framework深度生产评估(CAV 2025) | Struct/07-tools | 2026-04-23 | ✅ 已完成 | 17KB |
+| 7 | AI辅助形式化证明2025 SOTA综述 | Struct/06-frontier | 2026-04-23 | ✅ 已完成 | 17KB |
+| 8 | 时序数据库与流处理集成深度对比 | Knowledge/06-frontier | 2026-04-23 | ✅ 已完成 | 19KB |
+| 9 | Choreographic Programming 2025完备性结果 | Struct/06-frontier | 2026-04-23 | ✅ 已完成 | 27KB |
+| 10 | Service Mesh × Streaming架构指南 | Knowledge/06-frontier | 2026-04-23 | ✅ 已完成 | 32KB |
+
+**A路线总计**: 10篇文档, ~226KB新内容, ~50+形式化元素, ~20+ Mermaid图, 全部通过六段式模板验证。
 
 ---
 
