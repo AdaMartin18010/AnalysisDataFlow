@@ -6,7 +6,7 @@
 
 # 时序数据库与流处理集成深度对比
 
-> **所属阶段**: Knowledge/06-frontier | **前置依赖**: [streaming-databases.md](./streaming-databases.md), [Flink/01-concepts/flink-dataflow-model.md](../../Flink/01-concepts/flink-dataflow-model.md), [Knowledge/04-technology-selection/engine-selection-guide.md](../04-technology-selection/engine-selection-guide.md) | **形式化等级**: L3-L4
+> **所属阶段**: Knowledge/06-frontier | **前置依赖**: [streaming-databases.md](./streaming-databases.md), [Struct/01-foundation/01.04-dataflow-model-formalization.md](../../Struct/01-foundation/01.04-dataflow-model-formalization.md), [Knowledge/04-technology-selection/engine-selection-guide.md](../04-technology-selection/engine-selection-guide.md) | **形式化等级**: L3-L4
 
 ---
 

@@ -1,6 +1,6 @@
 # Choreographic Programming 2025完备性结果与流处理应用
 
-> 所属阶段: Struct/06-frontier | 前置依赖: [Struct/02-calculi/pi-calculus-foundations.md](../02-calculi/pi-calculus-foundations.md), [Struct/03-model-taxonomy/session-types-systematic.md](../03-model-taxonomy/session-types-systematic.md), [Knowledge/02-design-patterns/distributed-stream-topology.md](../../Knowledge/02-design-patterns/distributed-stream-topology.md) | 形式化等级: L4
+> 所属阶段: Struct/06-frontier | 前置依赖: [formal-methods/02-calculi/02-pi-calculus/01-pi-calculus-basics.md](../../formal-methods/02-calculi/02-pi-calculus/01-pi-calculus-basics.md), [Struct/01-foundation/01.07-session-types.md](../01-foundation/01.07-session-types.md), [Knowledge/02-design-patterns/polyglot-streaming-patterns.md](../../Knowledge/02-design-patterns/polyglot-streaming-patterns.md) | 形式化等级: L4
 
 ## 1. 概念定义 (Definitions)
 

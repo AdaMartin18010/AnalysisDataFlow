@@ -1,6 +1,6 @@
 # RegTech: GDPR删除权在流系统中的形式化建模
 
-> 所属阶段: Struct/ | 前置依赖: [Struct/02-properties/streaming-consistency-model.md](../../Struct/02-properties/streaming-consistency-model.md), [Knowledge/08-standards/data-governance-framework.md](../../Knowledge/08-standards/data-governance-framework.md) | 形式化等级: L4
+> 所属阶段: Struct/ | 前置依赖: [Struct/02-properties/02.02-consistency-hierarchy.md](../../Struct/02-properties/02.02-consistency-hierarchy.md), [Knowledge/08-standards/streaming-data-governance.md](../../Knowledge/08-standards/streaming-data-governance.md) | 形式化等级: L4
 
 ## 1. 概念定义 (Definitions)
 

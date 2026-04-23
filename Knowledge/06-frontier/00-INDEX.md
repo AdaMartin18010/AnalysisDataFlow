@@ -154,6 +154,24 @@
 
 ---
 
+## 新增前沿文档 (2026-04-23) — A/B路线全面扩展
+
+| 序号 | 文档路径 | 主题 | 大小 | 形式化元素 |
+|------|---------|------|------|-----------|
+| 1 | [snowflake-streaming-architecture-analysis.md](snowflake-streaming-architecture-analysis.md) | Snowflake Streaming架构分析 | 15.6 KB | 2定义+2命题+1引理 |
+| 2 | [time-series-databases-streaming-integration-guide.md](time-series-databases-streaming-integration-guide.md) | 时序数据库与流处理集成对比 | 15.9 KB | 3定义+2定理+1引理 |
+| 3 | [service-mesh-streaming-architecture-guide.md](service-mesh-streaming-architecture-guide.md) | Service Mesh × Streaming架构 | 15.1 KB | 4定义+2命题+2定理 |
+| 4 | [satellite-internet-edge-streaming-architecture.md](satellite-internet-edge-streaming-architecture.md) | 卫星互联网边缘流处理架构 | 13.6 KB | 2定义+2命题+1引理 |
+| 5 | [green-ai-streaming/streaming-carbon-footprint-measurement-guide.md](green-ai-streaming/streaming-carbon-footprint-measurement-guide.md) | 流处理碳足迹计量方法论 | 13.3 KB | 2定义+2命题+1定理 |
+
+**本次新增统计**:
+
+- 文档数量: 5篇
+- 总大小: 73.5 KB
+- 形式化元素: 13定义 + 8命题 + 4引理 + 3定理 = 28个
+
+---
+
 ## 新增前沿文档 (2026-04-20)
 
 | 序号 | 文档路径 | 主题 | 大小 | 形式化元素 |

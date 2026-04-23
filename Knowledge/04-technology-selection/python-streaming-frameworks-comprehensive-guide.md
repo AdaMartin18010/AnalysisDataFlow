@@ -616,7 +616,7 @@ flowchart TD
 - [streaming-engines-comprehensive-matrix-2026.md](./streaming-engines-comprehensive-matrix-2026.md) —— 2026年流计算引擎多维对比矩阵
 - [../01-concept-atlas/streaming-languages-landscape-2025.md](../01-concept-atlas/streaming-languages-landscape-2025.md) —— 流计算语言生态全景
 - [../02-design-patterns/pattern-realtime-feature-engineering.md](../02-design-patterns/pattern-realtime-feature-engineering.md) —— 实时特征工程模式
-- [../../Flink/03-api/pyflink-guide.md](../../Flink/03-api/pyflink-guide.md) —— PyFlink详细使用指南
+- [../../Flink/03-api/09-language-foundations/pyflink-complete-guide.md](../../Flink/03-api/09-language-foundations/pyflink-complete-guide.md) —— PyFlink详细使用指南
 
 ---
 

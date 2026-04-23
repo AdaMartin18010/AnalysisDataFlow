@@ -1,6 +1,6 @@
 # 流处理碳足迹计量与绿色计算方法论
 
-> **所属阶段**: Knowledge/06-frontier/green-ai-streaming/ | **前置依赖**: [Knowledge/06-frontier/](../06-frontier/), [Flink/04-runtime/resource-scheduling.md](../../../Flink/04-runtime/resource-scheduling.md) | **形式化等级**: L3-L4 | **最后更新**: 2026-04
+> **所属阶段**: Knowledge/06-frontier/green-ai-streaming/ | **前置依赖**: [Knowledge/06-frontier/00-INDEX.md](../../06-frontier/00-INDEX.md), [Flink/04-runtime/04.01-deployment/evolution/scheduling-evolution.md](../../../Flink/04-runtime/04.01-deployment/evolution/scheduling-evolution.md) | **形式化等级**: L3-L4 | **最后更新**: 2026-04
 
 ---
 

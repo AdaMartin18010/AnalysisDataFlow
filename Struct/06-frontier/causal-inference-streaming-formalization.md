@@ -1,6 +1,6 @@
 # 因果推断流处理的形式化基础
 
-> 所属阶段: Struct/06-frontier | 前置依赖: [Struct/01-foundation/stream-processing-formal-model.md](../01-foundation/stream-processing-formal-model.md), [Struct/04-proofs/causal-consistency-theorems.md](../04-proofs/causal-consistency-theorems.md) | 形式化等级: L3-L4
+> 所属阶段: Struct/06-frontier | 前置依赖: [Struct/01-foundation/stream-processing-semantics-formalization.md](../01-foundation/stream-processing-semantics-formalization.md), [Struct/02-properties/02.02-consistency-hierarchy.md](../02-properties/02.02-consistency-hierarchy.md) | 形式化等级: L3-L4
 
 ## 1. 概念定义 (Definitions)
 

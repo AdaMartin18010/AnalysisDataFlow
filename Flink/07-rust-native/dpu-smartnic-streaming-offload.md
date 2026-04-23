@@ -22,7 +22,7 @@ $$
 - $M_{\text{mem}}$：独立内存子系统（8-32GB DDR5）
 - $P_{\text{prog}}$：可编程接口（DOCA SDK、P4 Runtime、DPDK、eBPF）
 
-*直观解释*: DPU 相当于在网卡上嵌入了一台完整服务器，可在数据包到达主机 CPU 前独立完成协议处理、安全解密和存储协议转换。
+*直观解释*: DPU 相当于在网卡上嵌入了一台完整服务器，可在数据包到达主机 CPU 前独立完成协议处理、安全解密和存储转换。
 
 ---
 
@@ -77,7 +77,7 @@ $$
 \Delta L = \frac{L_{\text{trad}} - L_{\text{dpu}}}{L_{\text{trad}}} \geq 0.60 \quad \text{(典型值 60-90%)}
 $$
 
-*说明*: DPU 卸载对延迟敏感型流处理（金融风控、实时推荐）具有核心价值。$\square$
+*说明*: DPU 卸载对延迟敏感型流处理有关键价值。$\square$
 
 ---
 
@@ -177,13 +177,13 @@ graph TB
 
 ### 4.2 四大产品路线的工程差异
 
-**NVIDIA BlueField-3**: 通过 DOCA SDK 构建 Network → DPU → GPU 零拷贝流水线，适合 Flink + AI 推理场景，16x ARM A78 + 32GB DDR5 + 400Gbps 加密引擎提供最均衡综合能力。
+**NVIDIA BlueField-3**: DOCA SDK 构建 Network → DPU → GPU 零拷贝流水线，16x ARM A78 + 400Gbps 加密引擎，适合 Flink + AI 推理。
 
-**AMD Pensando DSC-200**: 完整 P4 可编程硬件流水线支持流分级、DPI 协议识别和动态路由，为多租户 Flink 平台提供租户级硬件隔离和 QoS 保证。
+**AMD Pensando DSC-200**: 完整 P4 可编程硬件流水线，支持流分级、DPI 和动态路由，提供多租户硬件隔离和 QoS。
 
-**Intel IPU C5000X**: Xeon-D + FPGA 既能运行标准 x86 代码，又能 FPGA 定制加速，为已投入 Intel 生态的数据中心提供最平滑迁移路径。
+**Intel IPU C5000X**: Xeon-D + FPGA 支持 x86 代码和 FPGA 定制加速，为 Intel 生态数据中心提供平滑迁移路径。
 
-**Marvell OCTEON 10**: 36 核 ARM N2 + 400GbE 在 5G UPF 和边缘计算场景占据主导，可在 DPU 上直接完成 GTP-U 解封装和用户面过滤。
+**Marvell OCTEON 10**: 36 核 ARM N2 + 400GbE，主导 5G UPF 和边缘计算，可直接完成 GTP-U 解封装。
 
 ### 4.3 反例：DPU 并非万能药
 
@@ -234,9 +234,7 @@ BlueField-3 通过 DOCA SDK 实现连接卸载、TLS 硬件卸载和零拷贝投
 ```bash
 # 启用 DPU DPDK 数据面
 mlxconfig -d /dev/mst/mt41692_pciconf0 s INTERNAL_CPU_MODEL=1
-
-# 配置 DOCA 流处理管道：TLS 卸载 + Kafka 协议识别
-doca_flow_cfg.cfg.queue_depth = 4096
+# 配置 DOCA TLS 卸载管道
 doca_flow_pipe_add_entry(pipe, &match, &actions, &fwd,
     DOCA_FLOW_NO_WAIT, NULL, &entry);
 ```
@@ -248,25 +246,14 @@ doca_flow_pipe_add_entry(pipe, &match, &actions, &fwd,
 Pensando DSC-200 通过 P4 实现 Flink Shuffle 流量识别、优先级标记和动态路由：
 
 ```p4
-header flink_shuffle_t {
-    bit<32> job_id;
-    bit<8>  priority;
-}
-
-control IngressImpl(inout headers hdr,
-                    inout standard_metadata_t std_meta) {
-    action mark_high_priority() {
-        std_meta.qid = 0;
-        hdr.ipv4.dscp = 46; // EF
-    }
+header flink_shuffle_t { bit<32> job_id; bit<8> priority; }
+control IngressImpl(inout headers hdr, inout standard_metadata_t std_meta) {
+    action mark_high_priority() { std_meta.qid = 0; hdr.ipv4.dscp = 46; }
     table flink_shuffle_classifier {
         key = { hdr.flink_shuffle.job_id: exact; }
         actions = { mark_high_priority; mark_low_priority; }
     }
-    apply {
-        if (hdr.flink_shuffle.isValid())
-            flink_shuffle_classifier.apply();
-    }
+    apply { if (hdr.flink_shuffle.isValid()) flink_shuffle_classifier.apply(); }
 }
 ```
 
@@ -331,24 +318,12 @@ xychart-beta
     bar "GPU" [20, 30, 30, 40, 35, 90]
 ```
 
-*说明*: SmartNIC 在网络处理和轻量过滤上最优；DPU 在加密、压缩和 Shuffle 上最均衡；FPGA 在确定性延迟和定制过滤上有优势；GPU 仅在复杂聚合和 ML 推理中有价值。
+*说明*: SmartNIC 在网络处理和轻量过滤上最优；DPU 在加密、压缩和 Shuffle 上最均衡；FPGA 在定制过滤上有优势；GPU 仅在复杂聚合和 ML 推理中有价值。
 
 ---
 
 ## 8. 引用参考 (References)
 
-[^1]: NVIDIA Corporation, "NVIDIA BlueField-3 DPU Product Brief", 2024. https://www.nvidia.com/en-us/networking/products/data-processing-unit/
-[^2]: AMD Inc., "Pensando DSC-200 Distributed Services Platform", 2024. https://www.amd.com/en/accelerators/pensando
-[^3]: Intel Corporation, "Intel Infrastructure Processing Unit (IPU) Overview", 2024. https://www.intel.com/content/www/us/en/products/details/network-io/ipu.html
-[^4]: Marvell Technology, "OCTEON 10 Data Processing Units", 2024. https://www.marvell.com/products/data-processing-units.html
-[^5]: P. Bosshart et al., "P4: Programming Protocol-independent Packet Processors", ACM SIGCOMM CCR, 44(3), 2014.
-[^6]: D. Firestone et al., "Azure Accelerated Networking: SmartNICs in the Public Cloud", NSDI 2018.
-[^7]: L. Rizzo, "netmap: A Novel Framework for Fast Packet I/O", USENIX ATC 2012.
-[^8]: Intel Corporation, "Intel QAT for Data Center", 2024. https://www.intel.com/content/www/us/en/architecture-and-technology/intel-quick-assist-technology-overview.html
-[^9]: NVIDIA Corporation, "NVIDIA DOCA SDK Documentation", 2025. https://docs.nvidia.com/doca/sdk/
-[^10]: Apache Flink Documentation, "Network Buffering", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/deployment/memory/network_mem_tuning/
-[^11]: T. Koponen et al., "Network Virtualization in Multi-tenant Datacenters", NSDI 2014.
-[^12]: Alibaba Cloud, "Flash Engine: Vectorized Execution for Flink", 2024. https://www.alibabacloud.com/blog/flash
 
 ---
 

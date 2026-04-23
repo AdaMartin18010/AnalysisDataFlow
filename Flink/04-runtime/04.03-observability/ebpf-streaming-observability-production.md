@@ -1,6 +1,6 @@
 # eBPF 在流处理可观测性中的生产实践
 
-> **所属阶段**: Flink/04-runtime/04.03-observability | **前置依赖**: [Flink/04-runtime/04.03-observability/distributed-tracing-production.md](../distributed-tracing-production.md), [Flink/02-core/02.04-networking/flink-network-stack-deep-dive.md](../../02-core/02.04-networking/flink-network-stack-deep-dive.md) | **形式化等级**: L3-L4 | **最后更新**: 2026-04
+> **所属阶段**: Flink/04-runtime/04.03-observability | **前置依赖**: [分布式追踪](./distributed-tracing.md), [网络栈演进](../../02-core/network-stack-evolution.md) | **形式化等级**: L3-L4 | **最后更新**: 2026-04
 
 ---
 

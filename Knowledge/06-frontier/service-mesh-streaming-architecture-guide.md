@@ -1,6 +1,6 @@
 # Service Mesh与流处理集成架构指南
 
-> **所属阶段**: Knowledge | **前置依赖**: [Flink/04-runtime/flink-on-kubernetes.md](../../Flink/04-runtime/flink-on-kubernetes.md)、[Knowledge/04-technology-selection/engine-selection-guide.md](../04-technology-selection/engine-selection-guide.md) | **形式化等级**: L3-L4
+> **所属阶段**: Knowledge | **前置依赖**: [Flink/04-runtime/04.01-deployment/flink-kubernetes-operator-deep-dive.md](../../Flink/04-runtime/04.01-deployment/flink-kubernetes-operator-deep-dive.md)、[Knowledge/04-technology-selection/engine-selection-guide.md](../04-technology-selection/engine-selection-guide.md) | **形式化等级**: L3-L4
 
 ## 1. 概念定义 (Definitions)
 
@@ -187,7 +187,7 @@ Service Mesh 与 Kafka 集成需处理**长连接协议**和**有状态消费者
 
 ---
 
-## 5. 工程论证 (Engineering Argument)
+## 5. 形式证明 / 工程论证 (Proof / Engineering Argument)
 
 ### 5.1 集成模式选型论证
 

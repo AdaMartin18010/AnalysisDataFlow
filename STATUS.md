@@ -104,10 +104,10 @@
 
 | 报告 | 日期 | 链接 |
 |------|------|------|
-| 100%完成最终报告 | 2026-04-11 | [查看](./100-PERCENT-COMPLETION-FINAL-REPORT.md) |
+| 100%完成最终报告 | 2026-04-11 | [查看](./release/v3.0.0/docs/100-PERCENT-COMPLETION-FINAL-REPORT.md) |
 | Coq编译报告 | 2026-04-11 | [查看](./reconstruction/phase4-verification/COQ-COMPILATION-REPORT.md) |
 | TLA+模型检查报告 | 2026-04-11 | [查看](./reconstruction/phase4-verification/TLA-MODEL-CHECK-REPORT.md) |
-| 交叉引用修复报告 | 2026-04-11 | [查看](./archive/validation-reports/cross-ref-fix-report.md) |
+| 交叉引用修复报告 | 2026-04-11 | [查看](./release/v3.0.0/docs/cross-ref-fix-report.md) |
 
 ---
 
@@ -116,7 +116,7 @@
 以下徽章通过 shields.io 服务动态生成：
 
 ```markdown
-[![完成度](https://img.shields.io/badge/完成度-100%25-brightgreen)](./100-PERCENT-COMPLETION-FINAL-REPORT.md)
+[![完成度](https://img.shields.io/badge/完成度-100%25-brightgreen)](./release/v3.0.0/docs/100-PERCENT-COMPLETION-FINAL-REPORT.md)
 [![元素数](https://img.shields.io/badge/元素数-10,483-blueviolet)](./THEOREM-REGISTRY.md)
 [![定理数](https://img.shields.io/badge/定理数-1,910-blue)](./THEOREM-REGISTRY.md)
 [![文档数](https://img.shields.io/badge/文档数-724-orange)](.)

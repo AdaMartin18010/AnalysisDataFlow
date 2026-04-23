@@ -1,6 +1,6 @@
 # Veil Framework 生产级形式化验证评估 (CAV 2025更新)
 
-> 所属阶段: Struct/ | 前置依赖: [Struct/07-tools/00-INDEX.md](Struct/07-tools/00-INDEX.md) | 形式化等级: L3-L4
+> 所属阶段: Struct/ | 前置依赖: [Struct/00-INDEX.md](../00-INDEX.md) | 形式化等级: L3-L4
 
 ## 1. 概念定义 (Definitions)
 

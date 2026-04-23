@@ -491,6 +491,7 @@ deriving Repr
        当前阻碍: TDerives 仅包含 K 嵌入和 T_axiom 构造子，无 MP 规则。
        需将 TDerives 扩展为包含 K 的所有规则 + T_axiom，或添加推导保持引理。
     -/
+    -- FORMAL-GAP: 需证 T 系统中 φ → ◇φ。当前阻碍: TDerives 归纳类型缺少 MP 等推导规则，仅有 K 嵌入和 T_axiom 构造子。策略: 方案 A) 扩展 TDerives 使其包含 KDerives 的所有规则（ax, prop_taut, prop_and, prop_not, K_axiom, nec, mp, and_intro, ...）并加 T_axiom；方案 B) 证明 TDerives 包含 KDerives 的推导保持性，并补充 MP/必然化等规则作为引理。推荐 A。证明步骤: 1) 改写 TDerives 定义；2) T_axiom 给出 ⊢ □¬φ → ¬φ；3) prop_not 给出 (□¬φ → ¬φ) → (φ → ¬□¬φ)；4) mp 得 ⊢ φ → ¬□¬φ = φ → ◇φ。依赖: TDerives 定义扩展, T_axiom, prop_not, mp | 难度: 中
     sorry
 
   /-- 
@@ -546,6 +547,7 @@ deriving Repr
        当前阻碍: S5Derives 缺少替换/等值规则和对偶性引理。
        需形式化 ModalFormula 上的等值替换保持可推导性。
     -/
+    -- FORMAL-GAP: 需证 S5 中 ¬□φ → □¬□φ。当前阻碍: S5Derives 缺少等值替换规则，无法从 five_axiom 直接通过定义等值替换得到目标。策略: 方案 A) 扩展 S5Derives 包含 S4 所有规则 + five_axiom + 等值替换规则 (eq_subst)；方案 B) 证明对偶性引理作为 S5Derives 的定理: ⊢ ◇ψ ↔ ¬□¬ψ，再用替换规则。步骤: 1) 扩展 S5Derives（或证明 S5Derives 包含命题逻辑完备规则集）；2) 证明 dia_dual 和 box_dual 在 S5Derives 中保持（通过对偶定义 rfl 直接成立）；3) 应用 five_axiom 到 ¬φ 得 ⊢ ◇¬φ → □◇¬φ；4) 由定义等值（rfl）◇¬φ = ¬□φ 且 □◇¬φ = □¬□φ，故 ⊢ ¬□φ → □¬□φ。依赖: S5Derives 扩展, five_axiom, dia_dual (rfl), box_dual (rfl) | 难度: 中
     sorry
 
   /-- 
@@ -659,6 +661,7 @@ section CorrespondenceTheory
          · 从框架性质反设提取具体世界 w₁,w₂,w₃
          · 赋值 V 的构造和框架成员关系的处理
       -/
+      -- FORMAL-GAP: 需证对应定理 4 公理 ↔ 传递性（→方向）。当前目标: (F ⊨f □(var 0) →ₘ □□(var 0)) → Transitive F.rel。策略: 1) intro hValid; unfold Transitive; push_neg；2) 反设不传递，提取 w₁ w₂ w₃ 和 hw₁₂, hw₂₃, hw₁₃；3) 构造 V(p) = {w | F.rel w₁ w}；4) 令 M = {frame := F, val := V}；5) 证 M,w₁ ⊨ □p：intro w' hw'; simp [V]; exact hw'；6) 应用 hValid V w₁ hw 得 M,w₁ ⊨ □□p；7) 展开得 ∀w', F.rel w₁ w' → ∀w'', F.rel w' w'' → w'' ∈ V 0；8) 取 w' = w₂, w'' = w₃，得 w₃ ∈ V 0；9) simp [V] at * 导出 F.rel w₁ w₃，与 hw₁₃ 矛盾。依赖: 框架成员 hw, 赋值构造, satisfies 定义 | 难度: 中
       sorry
     · -- 传递性 → 语义有效性
       intro hTrans V w hw
@@ -690,6 +693,7 @@ section CorrespondenceTheory
          · 赋值 V(p) = {w₃} 的构造
          · 唯一性推理（w'' ⊨ p → w'' = w₃）
       -/
+      -- FORMAL-GAP: 需证对应定理 5 公理 ↔ 欧几里得性（→方向）。当前目标: (F ⊨f ◇(var 0) →ₘ □◇(var 0)) → Euclidean F.rel。策略: 1) intro hValid; unfold Euclidean; push_neg；2) 反设不欧几里得，提取 w₁ w₂ w₃ 和 hw₁₂, hw₁₃, hw₂₃；3) 构造 V(p) = {w₃}（使用 if v = 0 then {w₃} else ∅）；4) 证 M,w₁ ⊨ ◇p：use w₃；5) 应用 hValid 得 M,w₁ ⊨ □◇p；6) 取 w' = w₂，得 ∃w'', F.rel w₂ w'' ∧ w'' ∈ V 0；7) 提取 w''，由 V 定义得 w'' = w₃（可用 set 包含反推）；8) 导出 F.rel w₂ w₃ 与 hw₂₃ 矛盾。依赖: Euclidean 定义, 反设提取, 赋值构造, set 成员推理 | 难度: 中
       sorry
     · -- 欧几里得性 → 语义有效性
       intro hEucl V w hw
@@ -744,6 +748,7 @@ section CorrespondenceTheory
          即 R w₂ w₁，但这正是 ¬R w₂ w₁！故 w₂ ⊭ ◇p。
          所以 w₁ ⊭ □◇p，与 B 公理矛盾。
       -/
+      -- FORMAL-GAP: 需证对应定理 B 公理 ↔ 对称性（→方向）。当前目标: (F ⊨f (var 0) →ₘ □◇(var 0)) → Symmetric F.rel。策略: 采用标准反例构造。1) intro hValid; unfold Symmetric; push_neg；2) 提取 w₁ w₂ 使 hw₁₂ : F.rel w₁ w₂ 和 hw₂₁ : ¬F.rel w₂ w₁；3) 构造 V(p) = {w₁}；4) 证 M,w₁ ⊨ p：simp [V]；5) 应用 hValid V w₁ hw 得 M,w₁ ⊨ □◇p；6) 展开 □◇p 得 ∀w', F.rel w₁ w' → ∃w'', F.rel w' w'' ∧ w'' ∈ V 0；7) 取 w' = w₂，提取 w'' 使 hw₂'' 和 hw''∈V；8) 由 V 定义 w'' = w₁；9) 故 F.rel w₂ w₁，与 hw₂₁ 矛盾。依赖: Symmetric 定义, 反设提取, 赋值构造, 存在量词实例化 | 难度: 中
       sorry
     · -- 对称性 → 语义有效性
       intro hSymm V w hw
@@ -787,6 +792,7 @@ section CorrespondenceTheory
        · 一致性在集合运算下的保持性
        · 无穷并集上推导关系的紧致性
     -/
+    -- FORMAL-GAP: 需证 Lindenbaum 引理：任何一致公式集可扩展为极大一致集。当前目标: ∃ MCS, Γ ⊆ MCS.formulas。策略: 1) 证明 ModalFormula 可数（通过深度/大小的编码为 ℕ，或用递归类比 Nat）；2) 枚举所有公式为 f : ℕ → ModalFormula；3) 递归构造 Γₙ，基例 Γ₀ = Γ；Γₙ₊₁ = if Consistent(Γₙ ∪ {f n}) then Γₙ ∪ {f n} else Γₙ ∪ {¬f n}；4) 用归纳法证明每个 Γₙ 一致（基例 hCons；归纳步用反证法：若两者都不一致则 Γₙ ⊢ f n 且 Γₙ ⊢ ¬f n，从而 Γₙ ⊢ ⊥）；5) 令 Δ = ⋃ₙ Γₙ，证 Δ 一致（任何有限推导只用有限公式，属于某个 Γₙ）和极大（对任意 φ = f n，由构造 φ ∈ Γₙ₊₁ 或 ¬φ ∈ Γₙ₊₁）；6) 构造 MCS 实例。依赖: ModalFormula 可数性, 推导紧致性（有限性）, 一致性保持 | 难度: 高
     sorry
 
 end CorrespondenceTheory
@@ -883,6 +889,7 @@ section SoundnessCompleteness
        · 真值引理中 □ψ 情况的证明（需用到 R_Σ 的定义）
        · 从语义反设到语法一致性的桥接
     -/
+    -- FORMAL-GAP: 需证 K 系统的完备性。当前目标: Γ ⊨ₘ φ → ∃ Δ, Δ.toSet ⊆ Γ ∧ Δ ⊢ₖ φ。策略: 反证法。1) push_neg 得假设 ∀Δ, Δ.toSet ⊆ Γ → ¬(Δ ⊢ₖ φ)；2) 证 Γ ∪ {¬φ} 一致：若不然，存在有限 Δ' ⊆ Γ ∪ {¬φ} 使 Δ' ⊢ₖ ⊥，分 ¬φ ∈ Δ' 和 ¬φ ∉ Δ' 讨论，前者经反证法得 Δ' \ {¬φ} ⊢ₖ φ，与假设矛盾；3) 应用 lindenbaum_modal 得极大一致集 Σ ⊇ Γ ∪ {¬φ}；4) 定义典范模型：W = {Σ' | MaximalConsistentSet}, R Σ₁ Σ₂ ↔ ∀ψ, □ψ ∈ Σ₁.formulas → ψ ∈ Σ₂.formulas, V p = {Σ' | var p ∈ Σ'.formulas}；5) 证明真值引理（structural induction on ψ）：M_Σ, Σ' ⊨ ψ ↔ ψ ∈ Σ'.formulas（关键 case □ψ：→方向用 R 定义，←方向用极大一致集的 □-完备性）；6) 由 ¬φ ∈ Σ 得 M_Σ, Σ ⊭ φ，但 Γ ⊆ Σ 得 M_Σ, Σ ⊨ Γ，与 Γ ⊨ₘ φ 矛盾。依赖: lindenbaum_modal, MaximalConsistentSet 性质, 真值引理 | 难度: 高
     sorry
 
   /-- 
@@ -979,6 +986,7 @@ section SoundnessCompleteness
        · Filtration 引理的归纳证明（□ 情况）
        · 赋值 V^f 在不在 Sub(φ) 中的变量上的处理
     -/
+    -- FORMAL-GAP: 需证有穷模型性。当前目标: Satisfiable φ → ∃ M, M.frame.worlds.Finite ∧ ∃ w ∈ M.frame.worlds, M,w ⊨ φ。策略: Filtration 方法。1) intro h; rcases h with ⟨M, w₀, hw₀, hφ⟩；2) 定义 Sub(φ) 为 φ 的子公式集合（递归定义 finite）；3) 定义等价关系 w ≡ w' := ∀ψ ∈ Sub(φ), M,w ⊨ ψ ↔ M,w' ⊨ ψ；4) 用 Quotient 类型构造 W^f；5) 定义 R^f [w] [w'] := ∀ψ, □ψ ∈ Sub(φ) → M,w ⊨ □ψ → M,w' ⊨ ψ；6) 定义 V^f p := {[w] | M,w ⊨ p}；7) 证明 Filtration 引理（structural induction）：对 ψ ∈ Sub(φ), M^f,[w] ⊨ ψ ↔ M,w ⊨ ψ（关键 case □ψ：→用 R^f 定义，←用 Sub(φ) 的封闭性和极大性）；8) 由 hφ 得 M^f,[w₀] ⊨ φ；9) 证 W^f 有限：每个等价类由 Sub(φ) 上的真值向量决定，|W^f| ≤ 2^|Sub(φ)|。依赖: Filtration 引理, Quotient 类型, Sub(φ) 有限性 | 难度: 高
     sorry
 
 end SoundnessCompleteness
@@ -1176,6 +1184,7 @@ deriving DecidableEq, Repr, Inhabited
       (φ : CTLFormula) :
       (KS, s ⊨c (CTLFormula.AX φ)) ↔
         ∀ (π : CTLPath KS), π.val 0 = s → ltlSatisfies (fun i => π.val i) 0 (LTLFormula.next (toLTL φ)) := by
+    -- FORMAL-GAP: 需证 CTL AX φ 与 LTL X(toLTL φ) 的对应关系。当前 toLTL 仅处理基本连接词，路径量词未翻译。策略: 1) 扩展 toLTL 函数覆盖所有 CTLFormula 构造子（AX→X, EX→X, AF→F, EF→F, AG→G, EG→G, AU→U, EU→U）；2) 对扩展后的 toLTL 证明语义保持：KS,s ⊨c AX φ ↔ ∀π, π.0=s → π,0 ⊨ₗ X(toLTL φ)。当前证明可直接用定义展开：左边展开为 ∀s', R s s' → ctlSatisfies KS s' φ；右边为 ∀π, π.0=s → ltlSatisfies π 1 (toLTL φ)。由于 toLTL 目前不完备，需先补全定义。依赖: toLTL 完整定义, ctlSatisfies 定义, ltlSatisfies 定义 | 难度: 中
     sorry /- 需要完善 toLTL 转换函数并验证语义保持:
               当前 toLTL 仅处理了基本连接词，未处理路径量词。
               完整证明需扩展 toLTL 到所有 CTLFormula 并验证:
@@ -1235,6 +1244,7 @@ deriving DecidableEq, Repr, Inhabited
 
        这是一个经典的文献结果，形式化证明需要仔细的模型构造。
     -/
+    -- FORMAL-GAP: 需证 CTL 的表达力严格大于 LTL（存在 CTL 性质无法用 LTL 表达）。当前目标: ∃ φ, ¬∃ ψ, ∀ KS s, (KS,s ⊨c φ) ↔ (π,0 ⊨ₗ ψ)。策略: 使用标准反例 φ = AG (EF (prop 0))。1) 构造 KS₁ = {s₀,s₁,s₂}, R={(s₀,s₁),(s₁,s₁),(s₀,s₂),(s₂,s₂)}, L(s₁)={0}, L(s₂)=∅；2) 构造 KS₂ = {s₀,s₁}, R={(s₀,s₁),(s₁,s₁)}, L(s₁)={0}；3) 证 KS₂,s₀ ⊨c AG EF (prop 0)（唯一路径始终可达 p）；4) 证 KS₁,s₀ ⊭c AG EF (prop 0)（取 s₀→s₂ 分支，s₂ 自环且永无 p）；5) 对任意 LTL ψ，证 KS₁ 和 KS₂ 在路径语义上等价：两者都恰好有一条无限路径（忽略分支标签），且路径上的命题序列相同（无限重复 p）。更严格地，对任意 π:ℕ→State，LTL 语义只依赖 π 上的标记序列，而 KS₁ 的路径集合包含 KS₂ 的路径集合。6) 导出矛盾：若 ψ 等价于 φ，则 KS₁,s₀ ⊨c φ ↔ KS₁ 的某条路径满足 ψ，但 KS₂ 的对应路径也满足 ψ，故 KS₂,s₀ ⊨c φ，与步骤 4 矛盾。依赖: KripkeStructure 构造, ctlSatisfies 计算, ltlSatisfies 路径无关性 | 难度: 高
     sorry
 
 end TemporalLogic
@@ -1287,6 +1297,7 @@ section DecidabilityComplexity
        · 有穷模型上的穷尽搜索作为可计算函数
        · Decidable 实例的构造（需将 Prop 级判定转化为 Bool 计算）
     -/
+    -- FORMAL-GAP: 需证模态逻辑 K 的可判定性（∀ φ, Decidable (Valid φ)）。策略: 有穷模型性 + 穷举搜索。1) 先形式化 finite_model_property 给出界 bound = 2^|Sub(φ)|；2) 定义 boundedValid n φ := ∀ (M : KripkeModel), M.frame.worlds.ncard ≤ n → ∀ w ∈ M.frame.worlds, M,w ⊨ φ；3) 证明 Valid φ ↔ boundedValid bound φ（→显然；←用反证法：若 ¬Valid φ 则 ∃M,w, M,w ⊭ φ，由 finite_model_property 得 ∃有限 M',w', M',w' ⊭ φ 且 |M'| ≤ bound，矛盾）；4) 证明对固定 n，boundedValid n φ 可计算：世界集有限，框架有限，赋值有限，可用 Finset 遍历；5) 构造 Decidable 实例：if boundedValid bound φ then isTrue else isFalse。依赖: finite_model_property, 有穷集遍历, Sub(φ) 定义与有限性, Decidable 实例构造 | 难度: 高
     sorry
 
   /-- 
@@ -1324,6 +1335,7 @@ section DecidabilityComplexity
        · 非空性的多项式空间算法
        · 或: On-the-fly tableau 的完备性和可靠性证明
     -/
+    -- FORMAL-GAP: 需证 LTL 可满足性的可判定性。策略: Tableau / Büchi 自动机方法。方法 A (Tableau): 1) 定义 CL(φ) 为 φ 的所有子公式及其否定的有限集合；2) 定义 Tableau 节点为 CL(φ) 的极大一致子集；3) 定义展开规则：∧-节点要求两个子公式同在，∨-节点分支，X-节点推迟到后继状态；4) 定义 eventually 约束的满足条件（每个 F ψ 必须在某后继节点被满足）；5) 构造判定算法：从含 φ 的初始节点开始 BFS/DFS 搜索满足所有 eventually 约束的无限路径；6) 证明完备性（若 φ 可满足则 tableau 有成功路径）和可靠性（若 tableau 成功则 φ 可满足）；7) 构造 Decidable 实例。依赖: CL(φ) 有限性, Tableau 规则, 路径搜索终止性 | 难度: 高
     sorry
 
   /-- 
@@ -1359,6 +1371,7 @@ section DecidabilityComplexity
        · 最大/最小不动点的集合论刻画
        · 算法复杂度分析
     -/
+    -- FORMAL-GAP: 需证 CTL 模型检测的可判定性。策略: 标记算法（不动点迭代）。1) 定义辅助函数 Sat : CTLFormula → Set State 递归计算：Sat(prop p) = {s | p ∈ KS.L s}, Sat(not ψ) = KS.S \ Sat ψ, Sat(and ψ₁ ψ₂) = Sat ψ₁ ∩ Sat ψ₂, Sat(EX ψ) = {s | ∃s', KS.R s s' ∧ s' ∈ Sat ψ}；2) 对 EG ψ 和 EU ψ₁ ψ₂ 使用不动点迭代：EG 迭代 Z₀ = KS.S, Z_{i+1} = Sat ψ ∩ pre∃(Z_i)，序列单调递减且以 ∅ 为下界，故最多 |S| 步稳定；EU 迭代 Z₀ = ∅, Z_{i+1} = Sat ψ₂ ∪ (Sat ψ₁ ∩ pre∃(Z_i))，序列单调递增且以 S 为上界，最多 |S| 步稳定；3) 证明不动点等于语义定义（利用 Tarski-Knaster 定理或手动证明包含双向）；4) 构造 Decidable 实例：用 Finset 表示有限状态集，迭代计算 Sat φ，检查 s ∈ Sat φ。依赖: 不动点迭代终止性, Set.Finite 操作, Tarski-Knaster 定理 | 难度: 高
     sorry
 
 end DecidabilityComplexity
