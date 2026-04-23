@@ -23,8 +23,12 @@
 > | ✅ 批次2完成 (2026-04-24): G9 P Language + G15事件驱动标准triad
 > | | Knowledge/06-frontier/p-programming-language-formal-verification-practice.md (~13KB, 3 Def, 3 Prop, 3 Mermaid)
 > | | Knowledge/08-standards/event-driven-standards-triad-integration-guide.md (~15KB, 4 Def, 3 Prop, 2 Mermaid)
-> | 🔄 批次3准备中: E1 Struct核心理论英文覆盖率冲刺
-> | | 目标: Struct/ 核心覆盖率 52% → 80% (约20+篇核心文档翻译)
+> | ✅ 批次3-1完成 (2026-04-24): E1 Struct核心理论英文覆盖率冲刺 - 第1波
+> | | en/calm-theorem.md: 7,777B → 19,919B (实质性完整翻译)
+> | | en/session-types.md: 5,911B → 19,552B (实质性完整翻译)
+> | | 质量门禁: 六段式100% | Mermaid 0 errors | Broken links 0
+> | | Struct核心实质翻译: 5篇 → 7篇 (+2)
+> | ⏳ 批次3-2: E1 持续进行 (process-calculus-primer / liveness-and-safety / cross-model-mappings 等)
 >
 > 🚀 **TECH-STACK: 流计算 × PostgreSQL 18 × Temporal × Kratos × Docker 全面梳理完成** (2026-04-22)
 > | 新建目录: TECH-STACK-STREAMING-POSTGRES-TEMPORAL-KRATOS/ (7个子目录, 26个文件)
