@@ -33,7 +33,7 @@
     - [8.3 模式组合时的性质保持](#83-模式组合时的性质保持)
     - [8.4 边界条件与约束](#84-边界条件与约束)
     - [8.5 工程实现与理论的对应](#85-工程实现与理论的对应)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)]()
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [5.1 Watermark 单调性保证](#51-watermark-单调性保证)
     - [5.2 迟到数据处理的 Exactly-Once 兼容性](#52-迟到数据处理的-exactly-once-兼容性)
     - [5.3 空闲源处理的工程论证](#53-空闲源处理的工程论证)
@@ -45,6 +45,9 @@
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
     - [7.1 事件时间处理架构图](#71-事件时间处理架构图)
     - [7.2 时间语义决策树](#72-时间语义决策树)
+    - [7.3 Event Time处理思维导图](#73-event-time处理思维导图)
+    - [7.4 Event Time处理策略决策树](#74-event-time处理策略决策树)
+    - [7.5 时间语义与处理策略定位矩阵](#75-时间语义与处理策略定位矩阵)
   - [9. 引用参考 (References)](#9-引用参考-references)
 
 ---
@@ -670,6 +673,170 @@ flowchart TD
 
 ---
 
+### 7.3 Event Time处理思维导图
+
+以下思维导图以"Event Time处理模式"为中心，系统展示其核心概念、处理策略、适用场景与Flink API映射：
+
+```mermaid
+mindmap
+  root((Event Time<br/>处理模式))
+    核心概念
+      事件时间
+        业务产生时刻
+        不可被系统修改
+      处理时间
+        本地系统时钟
+        最低延迟
+      摄入时间
+        进入Source时刻
+        单调递增
+      Watermark
+        进度信标
+        单调不减
+      延迟数据
+        允许延迟期
+        迟到判定
+    处理策略
+      窗口分配
+        Tumbling Window
+        Sliding Window
+        Session Window
+      Watermark生成
+        有序流策略
+        有界乱序策略
+        自定义生成器
+      延迟数据处理
+        Allowed Lateness
+        Side Output
+        重新计算更新
+      Side Output
+        完全迟到数据
+        异常数据
+        审计日志
+    适用场景与权衡
+      窗口分配
+        场景:固定周期统计
+        优点:实现简单
+        参数:window.size
+      Watermark生成
+        场景:网络乱序流
+        优点:自动进度追踪
+        参数:maxOutOfOrderness
+      延迟数据处理
+        场景:完整性优先
+        缺点:状态存储开销
+        参数:allowedLateness
+      Side Output
+        场景:数据审计追溯
+        优点:不阻塞主流程
+        参数:OutputTag
+    Flink API映射
+      WatermarkStrategy
+        forMonotonousTimestamps
+        forBoundedOutOfOrderness
+        withIdleness
+      WindowAssigner
+        TumblingEventTimeWindows
+        SlidingEventTimeWindows
+        EventTimeSessionWindows
+      Trigger
+        EventTimeTrigger
+        ContinuousEventTimeTrigger
+      ProcessFunction
+        ProcessWindowFunction
+        AggregateFunction
+        sideOutputLateData
+```
+
+**四层结构说明**：
+
+| 层级 | 内容 | 作用 |
+|------|------|------|
+| **第一层** | 核心概念 | 建立事件时间处理的术语体系 |
+| **第二层** | 处理策略 | 提供可直接实施的技术选项 |
+| **第三层** | 适用场景与权衡 | 指导工程选型与参数配置 |
+| **第四层** | Flink API映射 | 建立理论概念与工程实现的直接对应 |
+
+---
+
+### 7.4 Event Time处理策略决策树
+
+以下决策树针对**已确定使用 Event Time 语义**的场景，进一步指导具体处理策略的选择：
+
+```mermaid
+flowchart TD
+    Start([需要处理乱序事件流]) --> Q1{乱序程度如何?}
+
+    Q1 -->|乱序程度低<br/>最大延迟 < 1s| A1[固定延迟 Watermark 策略]
+    Q1 -->|乱序程度高<br/>最大延迟 1-60s| A2[启发式 Watermark + Side Output]
+    Q1 -->|乱序极严重<br/>延迟不可预测| A3[允许延迟 + 触发器组合]
+
+    A1 --> C1[配置参数]
+    C1 --> P1["WatermarkStrategy<br/>.forBoundedOutOfOrderness<br/>(Duration.ofMillis(500))"]
+    C1 --> P2["withTimestampAssigner<br/>提取事件时间戳"]
+
+    A2 --> C2[配置参数]
+    C2 --> P3["WatermarkStrategy<br/>.forBoundedOutOfOrderness<br/>(Duration.ofSeconds(10-60))"]
+    C2 --> P4["sideOutputLateData<br/>捕获完全迟到数据"]
+    C2 --> P5["withIdleness(Duration)<br/>处理空闲源"]
+
+    A3 --> C3[配置参数]
+    C3 --> P6["allowedLateness<br/>(Time.minutes(5))"]
+    C3 --> P7["Trigger<br/>.ContinuousEventTimeTrigger"]
+    C3 --> P8["侧输出重新摄入<br/>二次处理"]
+
+    A1 --> R1[适用场景:<br/>金融交易、日志分析]
+    A2 --> R2[适用场景:<br/>IoT监控、用户行为分析]
+    A3 --> R3[适用场景:<br/>账单结算、合规审计]
+
+    style Start fill:#e3f2fd,stroke:#1565c0
+    style A1 fill:#c8e6c9,stroke:#2e7d32
+    style A2 fill:#fff9c4,stroke:#f57f17
+    style A3 fill:#e1bee7,stroke:#6a1b9a
+```
+
+**决策条件说明**：
+
+| 分支 | 决策条件 | 核心配置 | 延迟代价 |
+|------|----------|----------|----------|
+| **分支1: 固定延迟** | 乱序有界且边界已知，如单分区Kafka | `forBoundedOutOfOrderness(δ)` | δ |
+| **分支2: 启发式+侧输出** | 乱序程度中等，部分数据可能大幅迟到 | `forBoundedOutOfOrderness(δ)` + `sideOutputLateData()` | δ + 侧输出处理延迟 |
+| **分支3: 允许延迟+触发器** | 完整性要求极高，容忍高延迟 | `allowedLateness()` + `ContinuousEventTimeTrigger` | 允许延迟期 + 触发周期 |
+
+---
+
+### 7.5 时间语义与处理策略定位矩阵
+
+以下矩阵展示不同时间语义和处理策略在**延迟-完整性**二维空间中的定位：
+
+```mermaid
+quadrantChart
+    title 时间语义与处理策略在延迟-完整性维度的定位
+    x-axis 低延迟 --> 高延迟
+    y-axis 低完整性 --> 高完整性
+    quadrant-1 高延迟-高完整性:精确统计
+    quadrant-2 高延迟-低完整性:不推荐
+    quadrant-3 低延迟-低完整性:近似监控
+    quadrant-4 低延迟-高完整性:理想状态
+    Event Time + Allowed Lateness: [0.85, 0.9]
+    Event Time + Side Output: [0.65, 0.85]
+    Event Time + 固定延迟Watermark: [0.45, 0.7]
+    启发式Watermark + 触发器组合: [0.75, 0.8]
+    Ingestion Time: [0.35, 0.5]
+    Processing Time: [0.15, 0.2]
+```
+
+**矩阵解读**：
+
+| 象限 | 特征 | 推荐策略 | 典型场景 |
+|------|------|----------|----------|
+| **Q1: 高延迟-高完整性** | 精确统计，容忍延迟 | Event Time + Allowed Lateness | 金融结算、合规报表 |
+| **Q2: 高延迟-低完整性** | 不推荐，需重新评估架构 | — | — |
+| **Q3: 低延迟-低完整性** | 近似监控，快速响应 | Processing Time | 实时监控告警 |
+| **Q4: 低延迟-高完整性** | 理想状态，实际难以达到 | — | — |
+
+---
+
 ## 9. 引用参考 (References)
 
 [^1]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing," *PVLDB*, 8(12), 2015. <https://doi.org/10.14778/2824032.2824076>
@@ -688,9 +855,10 @@ flowchart TD
 
 [^8]: CEP 复杂事件处理模式，详见 [Flink/03-api-patterns/flink-cep-deep-dive.md](../../Flink/03-api/03.02-table-sql-api/flink-sql-window-functions-deep-dive.md)
 
+
 ---
 
-*文档版本: v1.0 | 更新日期: 2026-04-02 | 状态: 已完成*
+*文档版本: v1.1 | 更新日期: 2026-04-24 | 状态: 已完成*
 
 ---
 

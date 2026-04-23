@@ -51,6 +51,9 @@
     - [7.2 State Backend 快照流程图](#72-state-backend-快照流程图)
     - [7.3 Checkpoint 类型对比决策树](#73-checkpoint-类型对比决策树)
     - [7.4 架构层次关联图](#74-架构层次关联图)
+    - [7.5 架构关联树](#75-架构关联树)
+    - [7.6 推理树](#76-推理树)
+    - [7.7 概念矩阵](#77-概念矩阵)
   - [8. 调优建议与监控指标](#8-调优建议与监控指标)
     - [8.1 Checkpoint 调优最佳实践](#81-checkpoint-调优最佳实践)
       - [基础配置原则](#基础配置原则)
@@ -1285,6 +1288,130 @@ graph TB
 
 ---
 
+### 7.5 架构关联树
+
+以下架构关联树展示了 Checkpoint 机制从 JobManager 协调到外部存储的完整四层架构及其调用依赖关系：
+
+```mermaid
+graph TB
+    subgraph "JobManager层"
+        JM1[CheckpointCoordinator<br/>触发/协调/超时管理]
+        JM2[Checkpoint计划<br/>间隔/并发/超时策略]
+        JM3[状态存储管理<br/>CheckpointStorage/元数据维护]
+    end
+
+    subgraph "TaskManager层"
+        TM1[CheckpointBarrier<br/>对齐/非对齐处理器]
+        TM2[状态快照<br/>同步阶段/异步阶段]
+        TM3[异步快照线程<br/>RocksDBStateUploader]
+    end
+
+    subgraph "StateBackend层"
+        SB1[MemoryStateBackend<br/>Heap内存快照]
+        SB2[FsStateBackend<br/>文件系统快照]
+        SB3[RocksDBStateBackend<br/>增量SST快照]
+        SB4[ChangelogStateBackend<br/>实时物化增强]
+    end
+
+    subgraph "外部存储层"
+        ES1[HDFS<br/>分布式文件系统]
+        ES2[S3<br/>对象存储]
+        ES3[本地文件系统<br/>测试/本地恢复]
+    end
+
+    JM1 -->|TriggerCheckpoint RPC| TM1
+    JM2 -->|配置策略| JM1
+    JM3 -->|管理元数据| JM1
+
+    TM1 -->|Barrier到达触发| TM2
+    TM2 -->|异步上传委托| TM3
+
+    TM2 -->|选择实现| SB1
+    TM2 -->|选择实现| SB2
+    TM2 -->|选择实现| SB3
+    TM3 -->|上传增量文件| SB3
+    SB3 -.->|物化增强| SB4
+
+    SB1 -->|写入| ES3
+    SB2 -->|写入| ES1
+    SB3 -->|写入| ES1
+    SB3 -->|写入| ES2
+    SB4 -->|持续上传| ES1
+    SB4 -->|持续上传| ES2
+```
+
+**图说明**:
+
+- JobManager 层通过 RPC 触发 TaskManager 的 Checkpoint 流程，负责全局生命周期管理
+- TaskManager 层执行 Barrier 传播、状态快照和异步上传，是 Checkpoint 的核心执行载体
+- StateBackend 层提供多种存储实现，RocksDBStateBackend 是当前生产环境大状态场景的首选
+- 外部存储层提供持久化能力，HDFS/S3 是分布式部署的标准选择
+
+---
+
+### 7.6 推理树
+
+以下推理树（Deduction Tree）从底层语义保证逐层推导至端到端 Exactly-Once 保证：
+
+```mermaid
+graph BT
+    subgraph "顶层保证"
+        T1[端到端Exactly-Once保证<br/>Source可重放 + Checkpoint + Sink事务]
+    end
+
+    subgraph "中层保证"
+        M1[异步快照一致性<br/>Copy-on-Write / 引用不变性]
+        M2[增量Checkpoint正确性<br/>SST不可变性 + Manifest一致性]
+    end
+
+    subgraph "底层保证"
+        L1[Barrier对齐语义<br/>所有输入通道Barrier到达]
+        L2[状态快照原子性<br/>同步阶段状态冻结]
+    end
+
+    T1 --> M1
+    T1 --> M2
+    M1 --> L2
+    M2 --> L1
+    M2 --> L2
+```
+
+**图说明**:
+
+- 底层保证依赖于 Barrier 的对齐语义和同步阶段的原子性冻结，确保快照捕获的是一致割集
+- 中层保证通过 SST 不可变性和异步快照的 Copy-on-Write 机制，确保增量和全量快照都正确
+- 顶层 Exactly-Once 保证建立在底层和中层之上，叠加可重放 Source 与事务性 Sink 实现端到端一致性
+
+---
+
+### 7.7 概念矩阵
+
+以下概念矩阵以状态大小为 X 轴、延迟容忍为 Y 轴，定位四种 StateBackend 的适用区间：
+
+```mermaid
+quadrantChart
+    title State Backend 选型矩阵：状态大小 vs 延迟容忍
+    x-axis 低状态大小 --> 高状态大小
+    y-axis 低延迟容忍（延迟敏感） --> 高延迟容忍
+    quadrant-1 大状态 + 高延迟容忍
+    quadrant-2 小状态 + 高延迟容忍
+    quadrant-3 小状态 + 低延迟容忍
+    quadrant-4 大状态 + 低延迟容忍
+    MemoryStateBackend: [0.15, 0.10]
+    FsStateBackend: [0.30, 0.50]
+    RocksDBStateBackend: [0.80, 0.80]
+    ChangelogStateBackend: [0.75, 0.20]
+```
+
+**图说明**:
+
+- MemoryStateBackend 位于左下象限：适合小状态（< 100MB）且对延迟极度敏感的场景
+- FsStateBackend 位于中下方：适合中等状态、延迟敏感但可接受磁盘 I/O 的场景
+- RocksDBStateBackend 位于右上象限：适合大状态（> 10GB）、延迟容忍度高的吞吐型场景
+- ChangelogStateBackend 位于右下象限：适合大状态但要求低延迟恢复（秒级）的场景，通过持续 I/O 换取恢复速度
+
+---
+
 ## 8. 调优建议与监控指标
 
 ### 8.1 Checkpoint 调优最佳实践
@@ -1469,6 +1596,9 @@ import org.apache.flink.streaming.api.CheckpointingMode;
 [^6]: S. Das et al., "Apache Flink: Stream and Batch Processing in a Single Engine," *IEEE Data Engineering Bulletin*, 38(4), 2015.
 
 [^7]: Apache Flink Documentation, "State Backends", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/>
+
+
+
 
 
 ---

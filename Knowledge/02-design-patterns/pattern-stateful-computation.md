@@ -36,7 +36,7 @@
     - [8.3 模式组合时的性质保持](#83-模式组合时的性质保持)
     - [8.4 边界条件与约束](#84-边界条件与约束)
     - [8.5 状态后端的形式化特性](#85-状态后端的形式化特性)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)]()
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [5.1 Keyed State 局部确定性论证](#51-keyed-state-局部确定性论证)
     - [5.2 增量 Checkpoint 一致性论证](#52-增量-checkpoint-一致性论证)
     - [5.3 状态后端选型的工程权衡](#53-状态后端选型的工程权衡)
@@ -48,6 +48,8 @@
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
     - [7.1 状态管理架构图](#71-状态管理架构图)
     - [7.2 状态后端选型决策树](#72-状态后端选型决策树)
+    - [7.3 有状态处理模式思维导图](#73-有状态处理模式思维导图)
+    - [7.4 状态类型与后端选择决策树](#74-状态类型与后端选择决策树)
   - [9. 引用参考 (References)](#9-引用参考-references)
 
 ---
@@ -586,6 +588,115 @@ flowchart TD
     style E fill:#c8e6c9,stroke:#2e7d32
     style D fill:#fff9c4,stroke:#f57f17
     style G fill:#e1bee7,stroke:#6a1b9a
+```
+
+---
+
+### 7.3 有状态处理模式思维导图
+
+以下思维导图以"有状态处理模式"为中心，放射状展开核心概念、状态类型、适用场景及与容错机制的关联：
+
+```mermaid
+mindmap
+  root((有状态处理模式))
+    核心概念
+      状态类型
+        ValueState
+          适用场景 计数器与累加器
+          核心API value update clear
+          性能特征 O(1)常数访问
+        ListState
+          适用场景 历史记录与序列缓存
+          核心API add update get clear
+          性能特征 追加O(1)遍历O(n)
+        MapState
+          适用场景 键值索引与配置表
+          核心API put get contains clear
+          性能特征 O(1)键查找
+        ReducingState
+          适用场景 增量聚合与去重
+          核心API add get clear
+          性能特征 自动规约仅保留结果
+        AggregatingState
+          适用场景 复杂累加器聚合
+          核心API add get clear
+          性能特征 聚合输入输出累加器
+      状态后端
+        HashMapStateBackend
+          存储位置 JVM堆内存
+          延迟特征 极低内存直接访问
+          容量限制 受限于TM堆内存
+        RocksDBStateBackend
+          存储位置 本地磁盘LSM-Tree
+          延迟特征 低内存加磁盘缓存
+          容量限制 TB级受限于磁盘
+      TTL管理
+        过期判定 最后访问时间加TTL
+        清理策略 FullSnapshot与Incremental
+        RocksDB专用 Compaction清理
+      状态一致性
+        ExactlyOnce Barrier对齐加异步快照
+        AtLeastOnce 不对齐可能重复
+    与Checkpoint及ExactlyOnce关联
+      Checkpoint机制
+        全量快照 状态完整副本
+        增量快照 SST差异引用
+        恢复流程 基线加增量重建
+      ExactlyOnce语义
+        两阶段提交 预提交与确认
+        幂等性保证 状态更新重放安全
+        端到端实现 Source可重放与Sink幂等
+```
+
+---
+
+### 7.4 状态类型与后端选择决策树
+
+以下决策树展示从需求出发选择状态类型和状态后端的全流程，包含配置参数与权衡分析：
+
+```mermaid
+flowchart TD
+    Start([需要维护流处理状态]) --> TypeQ{状态结构需求}
+
+    TypeQ -->|单值 计数累加| TypeA[ValueState<br/>API value update clear<br/>性能 O(1)读写]
+    TypeQ -->|序列 历史有序列表| TypeB[ListState<br/>API add update get clear<br/>性能 追加O(1)遍历O(n)]
+    TypeQ -->|键值 索引配置| TypeC[MapState<br/>API put get contains clear<br/>性能 O(1)键查找]
+    TypeQ -->|增量 聚合去重| TypeD[ReducingState<br/>API add get clear<br/>性能 自动规约保留结果]
+    TypeQ -->|复杂 累加器聚合| TypeE[AggregatingState<br/>API add get clear<br/>性能 输入聚合输出累加器]
+
+    TypeA --> BackendQ{状态大小与延迟要求}
+    TypeB --> BackendQ
+    TypeC --> BackendQ
+    TypeD --> BackendQ
+    TypeE --> BackendQ
+
+    BackendQ -->|小状态 小于TM堆内存30%<br/>延迟小于1ms| A1[HashMapStateBackend<br/>配置 state.backend=hashmap<br/>适用 短窗口低延迟]
+    BackendQ -->|大状态 大于100MB或未知| Q3{是否需要增量Checkpoint}
+    BackendQ -->|中等状态 可能增长| Q4{延迟可接受范围}
+
+    Q4 -->|延迟小于1ms| A1
+    Q4 -->|延迟1至100微秒可接受| Q3
+
+    Q3 -->|需要增量Checkpoint| A2[RocksDBStateBackend 增量<br/>配置 state.backend=rocksdb<br/>state.incremental-checkpoints=true<br/>适用 长窗口TB级大Keyspace]
+    Q3 -->|不需要增量Checkpoint| Q5{状态访问模式}
+
+    Q5 -->|大量随机读| A2
+    Q5 -->|顺序写为主| A2
+    Q5 -->|极低延迟且读多| A3[RocksDBStateBackend 内存调优<br/>配置 state.backend=rocksdb<br/>rocksdb.predefined-options=FLASH_SSD<br/>block-cache大小调优<br/>适用 中等状态需低延迟]
+
+    A1 --> T1[权衡 低延迟但受内存限制<br/>风险 OOM与Full GC<br/>建议 配合短TTL使用]
+    A2 --> T2[权衡 大状态支持但延迟较高<br/>优势 增量Checkpoint节省存储与网络<br/>建议 调优write-buffer与compaction]
+    A3 --> T3[权衡 平衡延迟与容量<br/>注意 需调优block-cache与线程数<br/>建议 监控LSM层级与读放大]
+
+    style Start fill:#e3f2fd,stroke:#1565c0
+    style TypeA fill:#bbdefb,stroke:#1565c0
+    style TypeB fill:#bbdefb,stroke:#1565c0
+    style TypeC fill:#bbdefb,stroke:#1565c0
+    style TypeD fill:#bbdefb,stroke:#1565c0
+    style TypeE fill:#bbdefb,stroke:#1565c0
+    style A1 fill:#c8e6c9,stroke:#2e7d32
+    style A2 fill:#fff9c4,stroke:#f57f17
+    style A3 fill:#e1bee7,stroke:#6a1b9a
 ```
 
 ---
