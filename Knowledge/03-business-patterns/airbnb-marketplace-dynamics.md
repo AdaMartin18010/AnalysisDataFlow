@@ -1137,6 +1137,123 @@ graph LR
     style M4 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
 ```
 
+### 7.4 Airbnb市场动态思维导图
+
+以下思维导图以"Airbnb市场动态实时分析"为中心，从房源侧、用户侧、市场侧、技术架构与业务指标五个维度放射展开，呈现双边市场流计算的核心关注点。
+
+```mermaid
+mindmap
+  root((Airbnb市场动态实时分析))
+    房源侧
+      实时定价
+      预订趋势
+      可用性预测
+      房东响应率
+    用户侧
+      搜索行为
+      预订转化
+      取消模式
+      评价情感
+    市场侧
+      供需平衡
+      季节性波动
+      竞争定价
+      区域热度
+    技术架构
+      事件流
+      实时聚合
+      机器学习
+      A/B测试
+    业务指标
+      GMV
+      转化率
+      NPS
+      搜索满意度
+```
+
+### 7.5 短租业务多维关联树
+
+以下多维关联树展示短租业务场景、底层数据需求与 Flink 技术解决方案之间的完整映射关系，为工程落地提供从业务到技术的导航视图。
+
+```mermaid
+graph TB
+    subgraph "短租业务场景"
+        B1[动态定价]
+        B2[供需匹配]
+        B3[搜索排序]
+        B4[房东运营]
+        B5[用户体验]
+    end
+
+    subgraph "数据需求"
+        D1[实时搜索流]
+        D2[预订事件流]
+        D3[房源状态流]
+        D4[用户行为流]
+        D5[竞争价格流]
+    end
+
+    subgraph "Flink解决方案"
+        F1[SlidingWindow聚合]
+        F2[KeyedState状态管理]
+        F3[BroadcastStream广播]
+        F4[AsyncFunction异步IO]
+        F5[CoProcessFunction双流Join]
+    end
+
+    B1 --> D1
+    B1 --> D3
+    B1 --> D5
+    B2 --> D1
+    B2 --> D2
+    B2 --> D3
+    B3 --> D1
+    B3 --> D4
+    B4 --> D2
+    B4 --> D3
+    B5 --> D1
+    B5 --> D4
+
+    D1 --> F1
+    D2 --> F2
+    D3 --> F2
+    D4 --> F5
+    D5 --> F4
+    D1 --> F5
+```
+
+### 7.6 动态定价策略决策树
+
+以下决策树展示 Airbnb 动态定价引擎在面对不同市场状态时的策略选择路径，覆盖需求高峰、供给过剩与新房源冷启动三类核心场景。
+
+```mermaid
+flowchart TD
+    A[市场状态评估] --> B{需求高峰?}
+    B -->|是| C[智能加价]
+    B -->|是| D[最低入住限制]
+    B -->|否| E{供给过剩?}
+
+    E -->|是| F[促销推荐]
+    E -->|是| G[提升曝光]
+    E -->|否| H{新房源?}
+
+    H -->|是| I[定价建议]
+    H -->|是| J[冷启动扶持]
+    H -->|否| K[常规动态定价]
+
+    C --> L[价格发布]
+    D --> L
+    F --> L
+    G --> L
+    I --> L
+    J --> L
+    K --> L
+
+    style C fill:#ffcdd2,stroke:#c62828
+    style F fill:#c8e6c9,stroke:#2e7d32
+    style I fill:#fff9c4,stroke:#f57f17
+```
+
 ---
 
 ## 8. 引用参考 (References)
