@@ -263,6 +263,7 @@ theorem preservation : ∀ (Γ : Context) (t t' : Tm) (T : Ty),
       | ST_beta hval =>
           -- 需替换引理: Γ ⊢ [x:=v₂]t₁₂ : T
           -- 在当前框架下保留策略注释
+          -- FORMAL-GAP: 需证明项替换保持类型(substitution lemma)。当前目标: Γ ⊢ [x:=v₂]t₁₂ : T。策略: 由h₁得Γ, x:T₁₁ ⊢ t₁₂ : T，由h₂得Γ ⊢ v₂ : T₁₁，需对t₁₂的推导结构归纳证明替换引理。难度: 高 | 依赖: substitution_lemma (对hasType结构归纳，处理var/abs/app/tabs等情形)
           sorry -- 依赖 substitution lemma
       | ST_app1 hstep₁ =>
           apply HasType.T_app
@@ -278,6 +279,7 @@ theorem preservation : ∀ (Γ : Context) (t t' : Tm) (T : Ty),
       cases hstep with
       | ST_tbeta hval =>
           -- 需类型替换引理
+          -- FORMAL-GAP: 需证明类型替换保持类型(type substitution lemma)。当前目标: Γ ⊢ [X:=S]t : [X:=S]T。策略: 对t的HasType推导结构归纳，处理T_tapp/T_tabs时需建立tysubst与tyshift的交换关系(tysubst_shift_commute)。难度: 高 | 依赖: type_substitution_lemma, tysubst_shift_commute
           sorry -- 依赖 type substitution lemma
       | ST_tapp hstep₁ =>
           apply HasType.T_tapp

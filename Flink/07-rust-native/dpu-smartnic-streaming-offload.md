@@ -337,6 +337,18 @@ xychart-beta
 
 ## 8. 引用参考 (References)
 
+[^1]: NVIDIA Corporation, "NVIDIA BlueField-3 DPU Product Brief", 2024. https://www.nvidia.com/en-us/networking/products/data-processing-unit/
+[^2]: AMD Inc., "Pensando DSC-200 Distributed Services Platform", 2024. https://www.amd.com/en/accelerators/pensando
+[^3]: Intel Corporation, "Intel Infrastructure Processing Unit (IPU) Overview", 2024. https://www.intel.com/content/www/us/en/products/details/network-io/ipu.html
+[^4]: Marvell Technology, "OCTEON 10 Data Processing Units", 2024. https://www.marvell.com/products/data-processing-units.html
+[^5]: P. Bosshart et al., "P4: Programming Protocol-independent Packet Processors", ACM SIGCOMM CCR, 44(3), 2014.
+[^6]: D. Firestone et al., "Azure Accelerated Networking: SmartNICs in the Public Cloud", NSDI 2018.
+[^7]: L. Rizzo, "netmap: A Novel Framework for Fast Packet I/O", USENIX ATC 2012.
+[^8]: Intel Corporation, "Intel QAT for Data Center", 2024. https://www.intel.com/content/www/us/en/architecture-and-technology/intel-quick-assist-technology-overview.html
+[^9]: NVIDIA Corporation, "NVIDIA DOCA SDK Documentation", 2025. https://docs.nvidia.com/doca/sdk/
+[^10]: Apache Flink Documentation, "Network Buffering", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/deployment/memory/network_mem_tuning/
+[^11]: T. Koponen et al., "Network Virtualization in Multi-tenant Datacenters", NSDI 2014.
+[^12]: Alibaba Cloud, "Flash Engine: Vectorized Execution for Flink", 2024. https://www.alibabacloud.com/blog/flash
 
 ---
 
