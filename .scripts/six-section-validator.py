@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 """
-六段式模板验证器
+六段式模板验证器 v2.0
 功能：
 - 验证文档六段式结构
 - 检查定理/定义编号格式
 - 验证Mermaid图表存在性
+- **新增**: 内容充实度评分（0-10分）
 - 生成合规报告
 
 作者: AnalysisDataFlow Toolchain Team
-版本: 1.0.0
-日期: 2026-04-11
+版本: 2.0.0
+日期: 2026-04-24
 """
 
 import re
@@ -45,6 +46,26 @@ class ValidationStats:
     by_check_type: Dict[str, int]
 
 
+@dataclass
+class SectionScore:
+    """章节评分"""
+    section_name: str
+    score: float
+    max_score: float
+    details: str
+
+
+@dataclass
+class ContentRichnessReport:
+    """内容充实度报告"""
+    file_path: str
+    total_score: float
+    max_score: float
+    grade: str  # A, B, C, N/A
+    section_scores: List[SectionScore]
+    is_six_section: bool
+
+
 class SixSectionValidator:
     """六段式模板验证器"""
     
@@ -73,10 +94,51 @@ class SixSectionValidator:
         'corollary': r'(Cor-[SKF]-\d{2}-\d{2,3})',
     }
     
+    # 章节评分权重（默认）
+    DEFAULT_WEIGHTS = {
+        'definitions': 2.0,
+        'properties': 1.0,
+        'relations': 1.0,
+        'argumentation': 1.0,
+        'proofs': 2.0,
+        'examples': 1.0,
+        'visualizations': 1.0,
+        'references': 1.0,
+    }
+    
+    # 业务模式文档评分权重（降低Properties/Proofs，增加Examples/Visualizations）
+    BUSINESS_PATTERN_WEIGHTS = {
+        'definitions': 2.0,
+        'properties': 0.5,
+        'relations': 1.0,
+        'argumentation': 1.0,
+        'proofs': 0.5,
+        'examples': 1.5,
+        'visualizations': 1.5,
+        'references': 2.0,
+    }
+    
+    # 所有章节定义（用于内容提取）
+    ALL_SECTION_PATTERNS = [
+        ('definitions', r'##\s*1\.\s*概念定义|##\s*1\.\s*Definitions'),
+        ('properties', r'##\s*2\.\s*属性推导|##\s*2\.\s*Properties'),
+        ('relations', r'##\s*3\.\s*关系建立|##\s*3\.\s*Relations'),
+        ('argumentation', r'##\s*4\.\s*论证过程|##\s*4\.\s*Argumentation'),
+        ('proofs', r'##\s*5\.\s*形式证明|##\s*5\.\s*Proof|##\s*5\.\s*Engineering'),
+        ('examples', r'##\s*6\.\s*实例验证|##\s*6\.\s*Examples'),
+        ('visualizations', r'##\s*7\.\s*可视化|##\s*7\.\s*Visualizations'),
+        ('references', r'##\s*8\.\s*引用参考|##\s*8\.\s*References'),
+    ]
+    
     def __init__(self, base_path: str):
         self.base_path = Path(base_path).resolve()
         self.issues: List[ValidationIssue] = []
         self.formal_elements: Dict[str, List[str]] = defaultdict(list)
+        self.content_reports: List[ContentRichnessReport] = []
+        self.grade_counts: Dict[str, int] = {'A': 0, 'B': 0, 'C': 0}
+        self.shell_docs: List[str] = []
+        self.missing_refs_docs: List[str] = []
+        self.missing_viz_docs: List[str] = []
         
     def scan_target_files(self) -> List[Path]:
         """扫描需要验证的目标文件"""
@@ -351,6 +413,221 @@ class SixSectionValidator:
                     
         return issues
     
+    # ========== 内容充实度评分模块（v2.0 新增） ==========
+    
+    def is_six_section_document(self, content: str) -> bool:
+        """判断是否是六段式文档（至少包含1个必需章节标题）"""
+        for _, pattern in self.REQUIRED_SECTIONS:
+            if re.search(pattern, content, re.IGNORECASE):
+                return True
+        return False
+    
+    def is_business_pattern_doc(self, file_path: Path) -> bool:
+        """判断是否是业务模式文档（降低Properties/Proofs权重）"""
+        rel_path = str(file_path.relative_to(self.base_path)).replace('\\', '/')
+        return 'Knowledge/03-business-patterns/' in rel_path
+    
+    def extract_sections(self, content: str) -> Dict[str, str]:
+        """提取各章节内容"""
+        sections = {}
+        
+        # 找到所有章节的位置
+        section_positions = []
+        for name, pattern in self.ALL_SECTION_PATTERNS:
+            match = re.search(pattern, content, re.IGNORECASE | re.MULTILINE)
+            if match:
+                section_positions.append((name, match.start(), match.end()))
+        
+        if not section_positions:
+            return sections
+        
+        # 按位置排序
+        section_positions.sort(key=lambda x: x[1])
+        
+        # 提取每个章节的内容
+        for i, (name, start, end) in enumerate(section_positions):
+            if i + 1 < len(section_positions):
+                next_start = section_positions[i + 1][1]
+                section_content = content[end:next_start]
+            else:
+                section_content = content[end:]
+            sections[name] = section_content.strip()
+        
+        return sections
+    
+    def count_content_chars(self, text: str) -> int:
+        """计算文本的实际内容字数（中文字符+英文单词）"""
+        if not text:
+            return 0
+        # 移除markdown标记和空白
+        clean = re.sub(r'[#*`\[\](){}|!\-_>\s]', ' ', text)
+        # 移除URL
+        clean = re.sub(r'https?://\S+', ' ', clean)
+        # 中文字符
+        chinese_chars = len(re.findall(r'[\u4e00-\u9fff]', clean))
+        # 英文单词（至少2个字母）
+        english_words = len(re.findall(r'[a-zA-Z]{2,}', clean))
+        return chinese_chars + english_words
+    
+    def score_definitions(self, content: str, max_score: float = 2.0) -> Tuple[float, str]:
+        """评分 Definitions 章节：包含≥2个 Def-* 编号块"""
+        defs = re.findall(r'Def-[SKF]-\d{2}-\d{2,3}', content)
+        count = len(set(defs))
+        if count >= 2:
+            return max_score, f"包含 {count} 个 Def-* 编号"
+        elif count == 1:
+            return max_score * 0.5, f"仅包含 1 个 Def-* 编号（需≥2）"
+        else:
+            return 0.0, "缺少 Def-* 编号"
+    
+    def score_properties(self, content: str, max_score: float = 1.0) -> Tuple[float, str]:
+        """评分 Properties 章节：包含≥1个 Lemma-* 或 Prop-*"""
+        lemmas = re.findall(r'Lemma-[SKF]-\d{2}-\d{2,3}', content)
+        props = re.findall(r'Prop-[SKF]-\d{2}-\d{2,3}', content)
+        count = len(set(lemmas)) + len(set(props))
+        if count >= 1:
+            return max_score, f"包含 {len(set(lemmas))} 个 Lemma-* 和 {len(set(props))} 个 Prop-*"
+        else:
+            return 0.0, "缺少 Lemma-* 或 Prop-* 编号"
+    
+    def score_relations(self, content: str, max_score: float = 1.0) -> Tuple[float, str]:
+        """评分 Relations 章节：包含≥1个关系论证段落（≥100字）"""
+        char_count = self.count_content_chars(content)
+        if char_count >= 100:
+            return max_score, f"关系论证段落约 {char_count} 字"
+        else:
+            return 0.0, f"关系论证段落仅约 {char_count} 字（需≥100）"
+    
+    def score_argumentation(self, content: str, max_score: float = 1.0) -> Tuple[float, str]:
+        """评分 Argumentation 章节：包含≥1个论证段落（≥100字）"""
+        char_count = self.count_content_chars(content)
+        if char_count >= 100:
+            return max_score, f"论证段落约 {char_count} 字"
+        else:
+            return 0.0, f"论证段落仅约 {char_count} 字（需≥100）"
+    
+    def score_proofs(self, content: str, max_score: float = 2.0) -> Tuple[float, str]:
+        """评分 Proofs 章节：包含≥1个 Thm-* 及证明内容（≥50字）"""
+        thms = re.findall(r'Thm-[SKF]-\d{2}-\d{2,3}', content)
+        if not thms:
+            return 0.0, "缺少 Thm-* 编号"
+        
+        char_count = self.count_content_chars(content)
+        if char_count >= 50:
+            return max_score, f"包含 {len(set(thms))} 个 Thm-*，证明内容约 {char_count} 字"
+        else:
+            return max_score * 0.5, f"包含 Thm-* 但证明内容仅约 {char_count} 字（需≥50）"
+    
+    def score_examples(self, content: str, max_score: float = 1.0) -> Tuple[float, str]:
+        """评分 Examples 章节：包含≥1个代码/配置示例或案例"""
+        # 检查代码块（包括 ```java, ```python 等）
+        code_blocks = re.findall(r'```[\w]*\s*[\s\S]*?```', content)
+        # 检查配置示例（key: value 模式，至少3处）
+        config_patterns = re.findall(r'[\w-]+:\s*\S+', content)
+        # 检查案例描述
+        case_patterns = re.findall(r'案例|case study|example|实例|示例', content, re.IGNORECASE)
+        
+        has_code = len(code_blocks) > 0
+        has_config = len(config_patterns) >= 3
+        has_case = len(case_patterns) >= 2
+        
+        if has_code or has_config or has_case:
+            details = []
+            if has_code:
+                details.append(f"{len(code_blocks)} 个代码块")
+            if has_config:
+                details.append(f"{len(config_patterns)} 处配置项")
+            if has_case:
+                details.append(f"{len(case_patterns)} 处案例提及")
+            return max_score, "包含 " + ", ".join(details)
+        else:
+            return 0.0, "缺少代码/配置示例或案例"
+    
+    def score_visualizations(self, content: str, max_score: float = 1.0) -> Tuple[float, str]:
+        """评分 Visualizations 章节：包含≥1个Mermaid图"""
+        mermaid_blocks = re.findall(r'```mermaid\s*[\s\S]*?```', content)
+        if mermaid_blocks:
+            return max_score, f"包含 {len(mermaid_blocks)} 个 Mermaid 图"
+        else:
+            return 0.0, "缺少 Mermaid 图"
+    
+    def score_references(self, content: str, max_score: float = 1.0) -> Tuple[float, str]:
+        """评分 References 章节：包含≥3条 [^n] 引用"""
+        refs = re.findall(r'\[\^(\d+)\]', content)
+        unique_refs = len(set(refs))
+        if unique_refs >= 3:
+            return max_score, f"包含 {unique_refs} 条引用"
+        else:
+            return 0.0, f"仅 {unique_refs} 条引用（需≥3）"
+    
+    def calculate_content_score(self, content: str, file_path: Path) -> Optional[ContentRichnessReport]:
+        """计算内容充实度评分"""
+        rel_path = str(file_path.relative_to(self.base_path)).replace('\\', '/')
+        
+        # 检查是否是六段式文档
+        if not self.is_six_section_document(content):
+            return ContentRichnessReport(
+                file_path=rel_path,
+                total_score=0.0,
+                max_score=0.0,
+                grade='N/A',
+                section_scores=[],
+                is_six_section=False
+            )
+        
+        # 判断是否是业务模式文档
+        is_business = self.is_business_pattern_doc(file_path)
+        weights = self.BUSINESS_PATTERN_WEIGHTS if is_business else self.DEFAULT_WEIGHTS
+        
+        # 提取各章节内容
+        sections = self.extract_sections(content)
+        
+        section_scores = []
+        total_score = 0.0
+        total_max = 0.0
+        
+        # 评分各章节
+        scoring_methods = {
+            'definitions': self.score_definitions,
+            'properties': self.score_properties,
+            'relations': self.score_relations,
+            'argumentation': self.score_argumentation,
+            'proofs': self.score_proofs,
+            'examples': self.score_examples,
+            'visualizations': self.score_visualizations,
+            'references': self.score_references,
+        }
+        
+        for section_name, scorer in scoring_methods.items():
+            section_content = sections.get(section_name, '')
+            max_score = weights.get(section_name, 1.0)
+            score, details = scorer(section_content, max_score)
+            section_scores.append(SectionScore(
+                section_name=section_name,
+                score=round(score, 1),
+                max_score=max_score,
+                details=details
+            ))
+            total_score += score
+            total_max += max_score
+        
+        # 确定等级
+        if total_score >= 8:
+            grade = 'A'
+        elif total_score >= 5:
+            grade = 'B'
+        else:
+            grade = 'C'
+        
+        return ContentRichnessReport(
+            file_path=rel_path,
+            total_score=round(total_score, 1),
+            max_score=total_max,
+            grade=grade,
+            section_scores=section_scores,
+            is_six_section=True
+        )
+    
     def validate_file(self, file_path: Path) -> List[ValidationIssue]:
         """验证单个文件"""
         issues = []
@@ -374,11 +651,16 @@ class SixSectionValidator:
         issues.extend(self.check_header_metadata(content, file_path))
         issues.extend(self.check_references_format(content, file_path))
         
+        # 新增: 内容充实度评分
+        score_report = self.calculate_content_score(content, file_path)
+        if score_report:
+            self.content_reports.append(score_report)
+        
         return issues
     
     def run_validation(self) -> Tuple[List[ValidationIssue], ValidationStats]:
         """运行完整验证"""
-        print("📐 Six-Section Template Validator")
+        print("📐 Six-Section Template Validator v2.0")
         print("=" * 50)
         
         files = self.scan_target_files()
@@ -386,6 +668,7 @@ class SixSectionValidator:
         
         all_issues = []
         compliant_count = 0
+        self.content_reports = []
         
         print("\n🔎 Validating files...")
         for i, file_path in enumerate(files, 1):
@@ -417,12 +700,33 @@ class SixSectionValidator:
             stats.by_check_type[issue.check_type] += 1
             
         self.issues = all_issues
+        
+        # 内容充实度统计（仅统计六段式文档）
+        scored_docs = [r for r in self.content_reports if r.is_six_section]
+        self.grade_counts = {'A': 0, 'B': 0, 'C': 0}
+        self.shell_docs = []
+        self.missing_refs_docs = []
+        self.missing_viz_docs = []
+        
+        for report in scored_docs:
+            self.grade_counts[report.grade] += 1
+            if report.grade == 'C':
+                self.shell_docs.append(report.file_path)
+            # 引用缺失（References 未得满分）
+            ref_score = next((s for s in report.section_scores if s.section_name == 'references'), None)
+            if ref_score and ref_score.score < ref_score.max_score:
+                self.missing_refs_docs.append(report.file_path)
+            # 可视化缺失（Visualizations 未得满分）
+            viz_score = next((s for s in report.section_scores if s.section_name == 'visualizations'), None)
+            if viz_score and viz_score.score < viz_score.max_score:
+                self.missing_viz_docs.append(report.file_path)
+        
         return all_issues, stats
     
     def generate_report(self, output_path: str, stats: ValidationStats):
         """生成验证报告"""
         report = {
-            'version': '1.0.0',
+            'version': '2.0.0',
             'validator': 'Six-Section Template Validator',
             'stats': asdict(stats),
             'issues': [asdict(issue) for issue in self.issues],
@@ -430,7 +734,32 @@ class SixSectionValidator:
                 elem_type: len(elements) 
                 for elem_type, elements in self.formal_elements.items()
             },
-            'compliance_rate': round(stats.compliant_files / stats.total_files * 100, 2) if stats.total_files > 0 else 0
+            'compliance_rate': round(stats.compliant_files / stats.total_files * 100, 2) if stats.total_files > 0 else 0,
+            'content_richness': {
+                'graded_documents': len([r for r in self.content_reports if r.is_six_section]),
+                'grade_distribution': self.grade_counts,
+                'shell_documents': self.shell_docs,
+                'missing_references_documents': self.missing_refs_docs,
+                'missing_visualizations_documents': self.missing_viz_docs,
+                'detailed_scores': [
+                    {
+                        'file_path': r.file_path,
+                        'total_score': r.total_score,
+                        'max_score': r.max_score,
+                        'grade': r.grade,
+                        'sections': [
+                            {
+                                'name': s.section_name,
+                                'score': s.score,
+                                'max_score': s.max_score,
+                                'details': s.details
+                            }
+                            for s in r.section_scores
+                        ]
+                    }
+                    for r in self.content_reports if r.is_six_section
+                ]
+            }
         }
         
         with open(output_path, 'w', encoding='utf-8') as f:
@@ -440,7 +769,7 @@ class SixSectionValidator:
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Six-Section Template Validator')
+    parser = argparse.ArgumentParser(description='Six-Section Template Validator v2.0')
     parser.add_argument('--base-path', default='.', help='项目根目录')
     parser.add_argument('--output', default='six-section-validation-report.json', help='输出报告路径')
     parser.add_argument('--fail-on-error', action='store_true', help='发现错误时返回非零退出码')
@@ -470,6 +799,36 @@ def main():
     print("\n📐 Formal Elements Summary:")
     for elem_type, count in report['formal_elements_summary'].items():
         print(f"  {elem_type.capitalize():12s}: {count}")
+    
+    # 内容充实度评分
+    print("\n📝 Content Richness Scores:")
+    grade_counts = report['content_richness']['grade_distribution']
+    total_graded = sum(grade_counts.values())
+    print(f"  Documents scored: {total_graded}")
+    print(f"  Grade A (8-10):   {grade_counts['A']} ✅")
+    print(f"  Grade B (5-7):    {grade_counts['B']} ⚠️")
+    print(f"  Grade C (0-4):    {grade_counts['C']} ❌")
+    
+    if validator.shell_docs:
+        print(f"\n  ❌ Shell documents ({len(validator.shell_docs)}):")
+        for doc in validator.shell_docs[:10]:
+            print(f"     - {doc}")
+        if len(validator.shell_docs) > 10:
+            print(f"     ... and {len(validator.shell_docs) - 10} more")
+    
+    if validator.missing_refs_docs:
+        print(f"\n  📚 Missing references ({len(validator.missing_refs_docs)}):")
+        for doc in validator.missing_refs_docs[:10]:
+            print(f"     - {doc}")
+        if len(validator.missing_refs_docs) > 10:
+            print(f"     ... and {len(validator.missing_refs_docs) - 10} more")
+    
+    if validator.missing_viz_docs:
+        print(f"\n  📊 Missing visualizations ({len(validator.missing_viz_docs)}):")
+        for doc in validator.missing_viz_docs[:10]:
+            print(f"     - {doc}")
+        if len(validator.missing_viz_docs) > 10:
+            print(f"     ... and {len(validator.missing_viz_docs) - 10} more")
         
     print(f"\n✅ Report saved to: {args.output}")
     

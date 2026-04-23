@@ -1038,6 +1038,116 @@ flowchart TD
     style Dash fill:#bbdefb,stroke:#1565c0
 ```
 
+### 7.5 双11实时计算思维导图
+
+以下思维导图以"阿里巴巴双11实时计算"为中心，从业务场景、技术挑战、架构设计、Flink应用和关键指标五个维度放射展开，全景呈现双11实时计算的知识体系。
+
+```mermaid
+mindmap
+  root((阿里巴巴双11实时计算))
+    业务场景
+      实时大屏
+      交易统计
+      库存监控
+      推荐系统
+    技术挑战
+      峰值流量
+      低延迟
+      高可用
+      数据一致性
+    架构设计
+      多活部署
+      流量调度
+      弹性扩缩容
+    Flink应用
+      实时ETL
+      Window聚合
+      CEP
+      维表Join
+    关键指标
+      峰值QPS
+      端到端延迟
+      可用性99.99%
+```
+
+### 7.6 多维关联树
+
+以下关联树展示双11核心场景、面临的技术挑战与Flink技术方案之间的映射关系，体现业务需求到工程实现的系统化设计思路。
+
+```mermaid
+graph TB
+    subgraph "双11核心场景"
+        S1[实时大屏]
+        S2[交易统计]
+        S3[库存监控]
+        S4[推荐系统]
+        S5[物流追踪]
+    end
+
+    subgraph "面临的技术挑战"
+        C1[峰值流量<br/>44亿TPS]
+        C2[超低延迟<br/>P99 < 100ms]
+        C3[高可用性<br/>99.99% SLA]
+        C4[数据一致性<br/>库存零超卖]
+    end
+
+    subgraph "Flink技术方案"
+        F1[Tumbling Window<br/>AggregateFunction]
+        F2[CEP + Async I/O<br/>低延迟风控]
+        F3[Keyed State + 2PC<br/>精确库存扣减]
+        F4[实时ETL + 维表Join<br/>特征实时化]
+        F5[Session Window<br/>轨迹聚合]
+    end
+
+    S1 --> C1
+    S2 --> C2
+    S3 --> C4
+    S4 --> C1
+    S5 --> C3
+
+    C1 --> F1
+    C2 --> F2
+    C4 --> F3
+    C1 --> F4
+    C3 --> F5
+```
+
+### 7.7 流量峰值应对决策树
+
+以下决策树展示双11期间不同流量峰值场景下的应对策略分支，包括可预测峰值、突发流量和故障场景三类触发条件及其对应的工程处置方案。
+
+```mermaid
+flowchart TD
+    Start([流量峰值应对]) --> Detect{峰值类型?}
+
+    Detect -->|可预测峰值| Predict[预测峰值]
+    Detect -->|突发流量| Burst[突发流量检测]
+    Detect -->|故障场景| Failure[故障检测]
+
+    Predict --> PreScale[预扩容]
+    Predict --> DynScale[动态扩缩容]
+
+    Burst --> TrafficShift[流量调度]
+    Burst --> Degrade[降级策略]
+    Burst --> Buffer[缓冲队列]
+
+    Failure --> MultiActive[多活切换]
+    Failure --> FastRecover[快速恢复]
+
+    PreScale --> Metric1[提前30分钟扩容<br/>2-10倍资源]
+    DynScale --> Metric2[秒级自动伸缩<br/>背压驱动]
+    TrafficShift --> Metric3[一致性哈希分流<br/>跨区域调度]
+    Degrade --> Metric4[非核心链路降级<br/>保障核心交易]
+    Buffer --> Metric5[Kafka缓冲<br/>削峰填谷]
+    MultiActive --> Metric6[RTO < 30s<br/>自动故障转移]
+    FastRecover --> Metric7[Checkpoint恢复<br/>状态不丢失]
+
+    style Start fill:#ffcdd2,stroke:#c62828
+    style Predict fill:#c8e6c9,stroke:#2e7d32
+    style Burst fill:#fff9c4,stroke:#f57f17
+    style Failure fill:#bbdefb,stroke:#1565c0
+```
+
 ---
 
 ## 8. 引用参考 (References)

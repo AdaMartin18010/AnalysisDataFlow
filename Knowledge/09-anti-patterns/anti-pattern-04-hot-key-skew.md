@@ -25,7 +25,7 @@
   - [4. 解决方案 (Solution)](#4-解决方案-solution)
     - [4.1 两阶段聚合（Two-Phase Aggregation）](#41-两阶段聚合two-phase-aggregation)
     - [4.2 热点 Key 加盐（Salting）](#42-热点-key-加盐salting)
-    - [4.3 局部聚合 + 全局合并（Map-Side Combine）]()
+    - [4.3 局部聚合 + 全局合并（Map-Side Combine）](#43-局部聚合--全局合并map-side-combine)
     - [4.4 动态重分区](#44-动态重分区)
     - [4.5 Key 拆分与重组](#45-key-拆分与重组)
   - [5. 代码示例 (Code Examples)](#5-代码示例-code-examples)
@@ -38,7 +38,9 @@
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
     - [7.1 数据倾斜 vs 均衡处理对比](#71-数据倾斜-vs-均衡处理对比)
     - [7.2 热点 Key 处理决策树](#72-热点-key-处理决策树)
-  - [8. 引用参考 (References)](#8-引用参考-references)
+    - [7.3 热键倾斜反模式思维导图](#73-热键倾斜反模式思维导图)
+    - [7.4 数据倾斜诊断决策树](#74-数据倾斜诊断决策树)
+  - [8. 引用参考 (References](#8-引用参考-references)
 
 ---
 
@@ -699,9 +701,60 @@ flowchart TD
     style M fill:#c8e6c9,stroke:#2e7d32
 ```
 
+### 7.3 热键倾斜反模式思维导图
+
+以下思维导图以"热键倾斜反模式"为中心，系统梳理其症状、根因、影响与解决方案。
+
+```mermaid
+mindmap
+  root((热键倾斜反模式))
+    症状
+      部分Task负载极高
+      Backpressure
+      延迟不均衡
+      OOM
+    根因
+      Key分布不均
+      热点Key
+      幂律分布
+      默认分区策略
+    影响
+      吞吐瓶颈
+      资源浪费
+      SLA违反
+      个别节点崩溃
+    解决方案
+      两阶段聚合
+      加盐
+      自定义分区
+      本地预聚合
+      广播小表
+```
+
+### 7.4 数据倾斜诊断决策树
+
+以下决策树展示从任务负载不均衡出发，逐步诊断并选择处理策略的过程。
+
+```mermaid
+flowchart TD
+    A[任务负载不均衡] --> B[检查Key分布]
+    B --> C{是否存在热点Key}
+    C -->|是| D[两阶段聚合]
+    C -->|是| E[加盐]
+    C -->|是| F[自定义分区]
+    C -->|否| G{并行度是否合理}
+    G -->|否| H[调整分区策略]
+
+    style A fill:#ffcdd2,stroke:#c62828
+    style D fill:#c8e6c9,stroke:#2e7d32
+    style E fill:#c8e6c9,stroke:#2e7d32
+    style F fill:#c8e6c9,stroke:#2e7d32
+    style H fill:#c8e6c9,stroke:#2e7d32
+```
+
 ---
 
-## 8. 引用参考 (References)
+## 8. 引用参考 (References
 
 [^1]: Apache Flink Documentation, "Parallel Execution," 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/execution/parallel/>
 

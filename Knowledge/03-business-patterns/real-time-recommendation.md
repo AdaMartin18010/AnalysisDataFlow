@@ -30,7 +30,7 @@
     - [4.2 特征计算的分层策略](#42-特征计算的分层策略)
     - [4.3 异步 I/O 的必然性论证](#43-异步-io-的必然性论证)
     - [4.4 冷启动问题解决方案](#44-冷启动问题解决方案)
-  - [5. 形式证明 / 工程论证]()
+  - [5. 形式证明 / 工程论证](#5-形式证明--工程论证)
     - [5.1 延迟上界分析](#51-延迟上界分析)
     - [5.2 吞吐量模型](#52-吞吐量模型)
     - [5.3 一致性论证](#53-一致性论证)
@@ -49,6 +49,9 @@
     - [7.1 实时推荐系统架构图](#71-实时推荐系统架构图)
     - [7.2 数据处理流水线](#72-数据处理流水线)
     - [7.3 模式组合关系图](#73-模式组合关系图)
+    - [7.4 思维导图（Mindmap）](#74-思维导图mindmap)
+    - [7.5 多维关联树（Multi-dimensional Association Tree）](#75-多维关联树multi-dimensional-association-tree)
+    - [7.6 决策树（Decision Tree）](#76-决策树decision-tree)
   - [8. 引用参考 (References)](#8-引用参考-references)
 
 ---
@@ -1295,6 +1298,117 @@ graph TB
     style P04 fill:#fff9c4,stroke:#f57f17,stroke-width:2px
     style P05 fill:#bbdefb,stroke:#1976d2,stroke-width:2px
     style REC fill:#ffcdd2,stroke:#c62828,stroke-width:3px
+```
+
+### 7.4 思维导图（Mindmap）
+
+以下思维导图以"实时推荐系统"为中心，从五个维度放射展开其核心要素与关注点：
+
+```mermaid
+mindmap
+  root((实时推荐系统))
+    用户侧
+      实时画像
+      兴趣演化
+      上下文感知
+      冷启动
+    内容侧
+      内容理解
+      实时热度
+      多模态特征
+      时效性
+    算法侧
+      实时特征工程
+      在线学习
+      召回排序
+      重排策略
+    工程侧
+      流特征平台
+      实时推理
+      A/B测试
+      效果监控
+    业务指标
+      CTR
+      转化率
+      用户停留时长
+      多样性
+```
+
+### 7.5 多维关联树（Multi-dimensional Association Tree）
+
+以下关联树展示推荐业务需求 → 技术能力 → Flink 特性的三层映射关系：
+
+```mermaid
+graph TB
+    subgraph "业务需求层"
+        BR1[低延迟响应<br/>P99 < 200ms]
+        BR2[高吞吐量<br/>万级 QPS]
+        BR3[特征新鲜度<br/>秒级更新]
+        BR4[一致性保证<br/>Exactly-Once]
+    end
+
+    subgraph "技术能力层"
+        TC1[流特征计算]
+        TC2[异步并发查询]
+        TC3[有状态处理]
+        TC4[低延迟容错]
+    end
+
+    subgraph "Flink 特性层"
+        F1[DataStream API<br/>毫秒级处理]
+        F2[Async I/O<br/>高并发外部访问]
+        F3[KeyedState<br/>TTL + RocksDB]
+        F4[Unaligned Checkpoint<br/>亚秒级快照]
+    end
+
+    BR1 --> TC1
+    BR1 --> TC2
+    BR2 --> TC1
+    BR2 --> TC3
+    BR3 --> TC2
+    BR3 --> TC3
+    BR4 --> TC3
+    BR4 --> TC4
+
+    TC1 --> F1
+    TC2 --> F2
+    TC3 --> F3
+    TC4 --> F4
+```
+
+### 7.6 决策树（Decision Tree）
+
+以下决策树根据延迟要求指导推荐架构选型：
+
+```mermaid
+flowchart TD
+    A[推荐请求到达] --> B{延迟要求?}
+
+    B -->|< 50ms| C[预计算 + 本地缓存]
+    B -->|< 200ms| D[实时特征 + 在线模型]
+    B -->|> 500ms| E[批流混合 + 异步更新]
+
+    C --> C1[候选集预生成]
+    C --> C2[Redis 本地缓存]
+    C1 --> C3[模型离线批量推理]
+    C2 --> C3
+    C3 --> F[返回推荐结果]
+
+    D --> D1[Flink 实时特征计算]
+    D --> D2[Async I/O 查询特征]
+    D1 --> D3[在线模型推理]
+    D2 --> D3
+    D3 --> F
+
+    E --> E1[Spark 批处理画像]
+    E --> E2[Flink 实时行为更新]
+    E1 --> E3[异步合并特征]
+    E2 --> E3
+    E3 --> F
+
+    style C fill:#c8e6c9,stroke:#2e7d32
+    style D fill:#fff9c4,stroke:#f57f17
+    style E fill:#ffcdd2,stroke:#c62828
 ```
 
 ---

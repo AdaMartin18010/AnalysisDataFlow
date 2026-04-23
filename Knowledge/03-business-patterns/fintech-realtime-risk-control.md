@@ -12,13 +12,13 @@
 
 - [业务模式: 金融实时风控 (Business Pattern: FinTech Real-time Risk Control)](#业务模式-金融实时风控-business-pattern-fintech-real-time-risk-control)
   - [目录](#目录)
-  - [1. 问题与背景 (Problem / Context)]()
+  - [1. 问题与背景 (Problem / Context)](#1-问题与背景-problem--context)
     - [1.1 金融风控的核心挑战](#11-金融风控的核心挑战)
     - [1.2 欺诈检测的时序复杂性](#12-欺诈检测的时序复杂性)
     - [1.3 信用评分的实时性要求](#13-信用评分的实时性要求)
     - [1.4 监管合规与数据治理](#14-监管合规与数据治理)
   - [2. 解决方案 (Solution)](#2-解决方案-solution)
-    - [2.1 CEP + Flink 架构概览]()
+    - [2.1 CEP + Flink 架构概览](#21-cep--flink-架构概览)
     - [2.2 实时风险评分引擎](#22-实时风险评分引擎)
     - [2.3 规则引擎与模型协同](#23-规则引擎与模型协同)
     - [2.4 模式结构图](#24-模式结构图)
@@ -33,12 +33,16 @@
     - [4.2 不适用场景](#42-不适用场景)
     - [4.3 决策矩阵](#43-决策矩阵)
   - [5. 相关模式 (Related Patterns)](#5-相关模式-related-patterns)
+  - [7. 思维表征与可视化 (Visualizations)](#7-思维表征与可视化-visualizations)
+    - [7.1 金融实时风控思维导图](#71-金融实时风控思维导图)
+    - [7.2 多维关联树](#72-多维关联树)
+    - [7.3 风控架构选型决策树](#73-风控架构选型决策树)
   - [6. 引用参考 (References)](#6-引用参考-references)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)]()
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
 
 ---
@@ -1025,6 +1029,193 @@ graph TB
 
 ---
 
+## 7. 思维表征与可视化 (Visualizations)
+
+以下可视化从不同维度展示金融实时风控模式的知识结构、技术映射与架构选型逻辑。
+
+### 7.1 金融实时风控思维导图
+
+以"金融实时风控"为中心，放射展开业务实体、风控规则、技术架构、核心指标与合规要求五大维度。
+
+```mermaid
+mindmap
+  root((金融实时风控))
+    业务实体
+      交易
+        交易金额
+        交易时间
+        商户类型
+      账户
+        账户余额
+        信用额度
+        历史行为
+      设备
+        设备指纹
+        IP地址
+        地理位置
+      行为
+        登录模式
+        操作序列
+        频次统计
+    风控规则
+      黑名单
+        设备黑名单
+        账户黑名单
+        商户黑名单
+      限额
+        单笔限额
+        日累计限额
+        月累计限额
+      频率
+        交易频次
+        登录频次
+        转账频次
+      关联分析
+        设备关联
+        账户关联
+        地理位置关联
+    技术架构
+      实时计算
+        Flink DataStream
+        CEP模式匹配
+        窗口聚合
+      规则引擎
+        Drools
+        EasyRules
+        自研引擎
+      特征平台
+        实时特征
+        近实时特征
+        离线特征
+      决策引擎
+        规则决策
+        模型决策
+        融合决策
+    核心指标
+      延迟<200ms
+        P50<30ms
+        P99<80ms
+        P99.9<150ms
+      准确率
+        TPR>95%
+        FPR<5%
+        AUC-ROC>0.92
+      覆盖率
+        规则覆盖率>80%
+        模型覆盖率>90%
+      误杀率
+        误拦截率<3%
+        申诉通过率>95%
+    合规要求
+      PCI-DSS
+        数据加密
+        访问控制
+        安全审计
+      反洗钱
+        可疑交易报告
+        客户尽职调查
+        交易监控
+      KYC
+        身份验证
+        风险评级
+        持续监控
+```
+
+### 7.2 多维关联树
+
+展示业务需求→技术能力→Flink特性的三层映射关系。
+
+```mermaid
+graph TB
+    subgraph "业务层"
+        B1[低延迟<br/>P99 < 100ms]
+        B2[高准确<br/>TPR > 95%<br/>FPR < 5%]
+        B3[可解释<br/>决策链路可追溯]
+    end
+
+    subgraph "技术层"
+        T1[CEP<br/>复杂事件处理]
+        T2[Window<br/>滑动/滚动窗口]
+        T3[Async Lookup<br/>异步特征查询]
+        T4[State<br/>键控状态管理]
+    end
+
+    subgraph "Flink层"
+        F1[Checkpoint<br/>分布式快照]
+        F2[Exactly-Once<br/>端到端一致性]
+        F3[Metrics<br/>延迟/吞吐监控]
+    end
+
+    B1 -->|低延迟要求| T1
+    B1 -->|低延迟要求| T3
+    B2 -->|高准确要求| T2
+    B2 -->|高准确要求| T4
+    B3 -->|可解释要求| T1
+    B3 -->|可解释要求| T4
+
+    T1 -->|状态容错| F1
+    T2 -->|状态容错| F1
+    T3 -->|一致性保证| F2
+    T4 -->|一致性保证| F2
+    T1 -->|性能可观测| F3
+    T2 -->|性能可观测| F3
+    T3 -->|性能可观测| F3
+    T4 -->|性能可观测| F3
+
+    style B1 fill:#ffcdd2,stroke:#c62828,stroke-width:2px
+    style B2 fill:#ffcdd2,stroke:#c62828,stroke-width:2px
+    style B3 fill:#ffcdd2,stroke:#c62828,stroke-width:2px
+    style T1 fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style T2 fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style T3 fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style T4 fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style F1 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    style F2 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    style F3 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+```
+
+### 7.3 风控架构选型决策树
+
+根据业务场景特征，展示规则为主、模型为主、混合模式三种架构选型的决策路径。
+
+```mermaid
+flowchart TD
+    START([风控架构选型]) --> Q1{业务场景<br/>判定}
+
+    Q1 -->|已知欺诈模式明确<br/>规则可覆盖>80%| A[规则为主]
+    Q1 -->|欺诈模式复杂多变<br/>需要行为建模| B[模型为主]
+    Q1 -->|既有明确规则<br/>又有未知模式| C[混合模式]
+
+    A --> A1[Flink CEP<br/>复杂事件模式匹配]
+    A --> A2[规则引擎<br/>Drools/EasyRules]
+    A1 --> A3[低延迟规则判定<br/>P99 < 50ms]
+    A2 --> A3
+
+    B --> B1[特征平台<br/>实时/近实时/离线特征]
+    B --> B2[在线模型推理<br/>TF Serving/自研]
+    B1 --> B3[高准确行为评分<br/>AUC-ROC > 0.92]
+    B2 --> B3
+
+    C --> C1[CEP预处理<br/>快速拦截明显欺诈]
+    C --> C2[模型评分<br/>行为异常检测]
+    C --> C3[规则兜底<br/>专家规则覆盖边界情况]
+    C1 --> C4[分层决策架构<br/>规则+模型协同]
+    C2 --> C4
+    C3 --> C4
+
+    A3 --> END([部署方案])
+    B3 --> END
+    C4 --> END
+
+    style START fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
+    style END fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+    style A fill:#ffcdd2,stroke:#c62828,stroke-width:2px
+    style B fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    style C fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+```
+
+---
+
 ## 6. 引用参考 (References)
 
 [^1]: F. D. Garcia et al., "Fraud Detection in Financial Transactions: A Survey," *IEEE Access*, vol. 8, 2020. <https://ieeexplore.ieee.org/document/9210124>
@@ -1055,7 +1246,7 @@ graph TB
 
 ---
 
-*文档版本: v1.0 | 更新日期: 2026-04-02 | 状态: 已完成*
+*文档版本: v1.1 | 更新日期: 2026-04-24 | 状态: 已完成*
 *关联文档: [Pattern 01: Event Time Processing](../02-design-patterns/pattern-event-time-processing.md) | [Pattern 03: CEP](../02-design-patterns/pattern-cep-complex-event.md) | [Knowledge 索引](../00-INDEX.md)*
 
 ## 1. 概念定义 (Definitions)
@@ -1084,4 +1275,4 @@ graph TB
 
 ---
 
-*文档版本: v1.0 | 创建日期: 2026-04-20*
+*文档版本: v1.1 | 创建日期: 2026-04-20*

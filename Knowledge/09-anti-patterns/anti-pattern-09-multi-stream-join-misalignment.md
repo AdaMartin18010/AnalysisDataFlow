@@ -26,6 +26,8 @@
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [案例：订单支付实时匹配](#案例订单支付实时匹配)
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
+    - [思维导图：多流Join不对齐反模式全貌](#思维导图多流join不对齐反模式全貌)
+    - [决策树：Join问题诊断流程](#决策树join问题诊断流程)
   - [8. 引用参考 (References)](#8-引用参考-references)
 
 ---
@@ -199,11 +201,55 @@ graph TB
     style F fill:#c8e6c9,stroke:#2e7d32
 ```
 
+### 思维导图：多流Join不对齐反模式全貌
+
+```mermaid
+mindmap
+  root((多流Join不对齐反模式))
+    症状
+      Join结果缺失
+      数据不匹配
+      窗口不匹配
+      时间错位
+    根因
+      时间语义不一致
+      Watermark不同步
+      窗口边界不对齐
+      迟到数据
+    影响
+      数据丢失
+      结果不准确
+      业务逻辑错误
+    解决方案
+      统一时间语义
+      对齐Watermark
+      CoProcessFunction
+      Interval Join
+```
+
+### 决策树：Join问题诊断流程
+
+```mermaid
+flowchart TD
+    A[Join结果缺失] --> B{检查时间语义}
+    B -->|否| C[统一为Event Time]
+    B -->|是| D{检查窗口策略}
+    C --> E[对齐Watermark]
+    D -->|窗口边界不匹配| F[使用Interval Join]
+    D -->|需要精细控制| G[使用CoProcessFunction]
+    E --> H[重新验证Join结果]
+    F --> H
+    G --> H
+    H --> I{问题是否解决?}
+    I -->|否| J[检查空闲源配置与迟到数据处理]
+    I -->|是| K[Join对齐完成]
+```
+
 ---
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink Documentation, "Joins," 2025.
+[^1]: Apache Flink Documentation, "Joins," 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/operators/joining/>
 
 ---
 

@@ -26,6 +26,8 @@
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [案例：大状态作业 OOM](#案例大状态作业-oom)
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
+    - [思维导图：资源估算不足导致 OOM 反模式](#思维导图资源估算不足导致-oom-反模式)
+    - [决策树：资源问题诊断流程](#决策树资源问题诊断流程)
   - [8. 引用参考 (References)](#8-引用参考-references)
 
 ---
@@ -182,11 +184,60 @@ pie title 内存分配建议
     "预留" : 10
 ```
 
+### 思维导图：资源估算不足导致 OOM 反模式
+
+以下思维导图以该反模式为中心，放射展开其症状、根因、影响与解决方案四大维度。
+
+```mermaid
+mindmap
+  root((资源估算不足导致 OOM 反模式))
+    症状
+      OOM 异常
+      频繁 Full GC
+      Task 失败
+      重启循环
+    根因
+      内存估算不足
+      并行度过高
+      状态过大
+      JVM 参数不当
+    影响
+      服务中断
+      数据丢失
+      Checkpoint 失败
+      恢复困难
+    解决方案
+      资源估算公式
+      内存调优
+      并行度调整
+      监控预警
+```
+
+### 决策树：资源问题诊断流程
+
+以下决策树展示从 OOM 现象出发，逐步定位根因并采取对应措施的诊断路径。
+
+```mermaid
+flowchart TD
+    A[作业出现 OOM] --> B{检查 Heap 使用情况}
+    B -->|Heap 使用率持续高位| C{状态是否过大?}
+    C -->|是| D[增加 TaskManager 内存]
+    C -->|是| E[切换至 RocksDB 状态后端]
+    C -->|是| F[减少状态大小或精简状态结构]
+    C -->|否| G{检查 GC 日志与频率}
+    G -->|GC 时间长 / 频繁 Full GC| H[调整 GC 策略，如 G1 / ZGC]
+    G -->|GC 时间长 / 频繁 Full GC| I[增加 JVM Heap 内存]
+    G -->|GC 正常| J[检查网络内存与元空间配置]
+    J --> K[调整 network / metaspace 参数]
+    B -->|Heap 正常| L[检查托管内存与原生内存]
+    L --> M[调整 managed / off-heap 参数]
+```
+
 ---
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink Documentation, "Memory Configuration," 2025.
+[^1]: Apache Flink Documentation, "Memory Configuration," 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/deployment/memory/mem_setup/>
 
 ---
 

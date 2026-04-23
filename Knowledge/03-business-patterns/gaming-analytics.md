@@ -36,11 +36,14 @@
     - [6.1 实时排行榜计算](#61-实时排行榜计算)
     - [6.2 反作弊 CEP 检测](#62-反作弊-cep-检测)
     - [6.3 完整 Flink 作业](#63-完整-flink-作业)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)]()
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
     - [7.1 整体架构图](#71-整体架构图)
     - [7.2 数据流处理管道](#72-数据流处理管道)
     - [7.3 排行榜更新流程](#73-排行榜更新流程)
+    - [7.4 思维导图](#74-思维导图)
+    - [7.5 多维关联树](#75-多维关联树)
+    - [7.6 决策树](#76-决策树)
   - [8. 引用参考 (References)](#8-引用参考-references)
 
 ---
@@ -1131,6 +1134,110 @@ sequenceDiagram
     Client->>Player: 显示新排名
 ```
 
+### 7.4 思维导图
+
+以下思维导图以"游戏实时分析"为中心，放射展开五大核心维度：玩家行为、游戏运营、反作弊、技术架构与业务价值。
+
+```mermaid
+mindmap
+  root((游戏实时分析))
+    玩家行为
+      登录/登出
+      关卡进度
+      社交互动
+      付费行为
+    游戏运营
+      实时DAU
+      留存分析
+      付费转化
+      活动效果
+    反作弊
+      异常检测
+      机器人识别
+      外挂分析
+      行为指纹
+    技术架构
+      事件采集
+      流处理
+      实时看板
+      特征存储
+    业务价值
+      玩家体验优化
+      精准运营
+      收入增长
+```
+
+### 7.5 多维关联树
+
+以下多维关联树展示游戏场景→数据需求→技术选型的映射关系。
+
+```mermaid
+graph TB
+    subgraph "游戏场景"
+        S1[实时排行榜]
+        S2[反作弊检测]
+        S3[玩家画像]
+        S4[充值分析]
+        S5[活动运营]
+    end
+
+    subgraph "数据需求"
+        D1[高吞吐事件流<br/>10^6 TPS]
+        D2[低延迟检测<br/>亚秒级]
+        D3[实时聚合<br/>Window计算]
+        D4[精准计费<br/>Exactly-Once]
+        D5[效果追踪<br/>归因分析]
+    end
+
+    subgraph "技术选型"
+        T1[Flink + Kafka]
+        T2[CEP + 异常检测模型]
+        T3[Redis + HBase]
+        T4[ClickHouse + Flink]
+        T5[Grafana + 实时BI]
+    end
+
+    S1 --> D1
+    S1 --> D3
+    S2 --> D2
+    S2 --> D1
+    S3 --> D3
+    S3 --> D2
+    S4 --> D4
+    S4 --> D3
+    S5 --> D5
+    S5 --> D3
+
+    D1 --> T1
+    D2 --> T2
+    D3 --> T3
+    D4 --> T4
+    D5 --> T5
+```
+
+### 7.6 决策树
+
+以下决策树展示游戏分析架构的选型路径：实时看板、反作弊与个性化推荐。
+
+```mermaid
+flowchart TD
+    A[游戏分析需求] --> B{业务场景}
+    B -->|实时看板| C[实时DAU/留存/营收监控]
+    B -->|反作弊| D[异常行为识别与处置]
+    B -->|个性化推荐| E[玩家画像与实时推荐]
+
+    C --> C1[Flink Window聚合]
+    C1 --> C2[实时BI看板<br/>Grafana/Superset]
+
+    D --> D1[CEP模式匹配]
+    D1 --> D2[异常检测模型<br/>统计规则/机器学习]
+    D2 --> D3[实时风控处置<br/>封号/限流/审核]
+
+    E --> E1[玩家画像构建]
+    E1 --> E2[实时特征工程<br/>Redis/HBase]
+    E2 --> E3[推荐服务]
+```
+
 ---
 
 ## 8. 引用参考 (References)
@@ -1144,10 +1251,7 @@ sequenceDiagram
 
 
 
-
-
-
 ---
 
-*文档版本: v1.0 | 更新日期: 2026-04-02 | 状态: 已完成*
+*文档版本: v1.0 | 更新日期: 2026-04-24 | 状态: 已完成*
 *关联文档: [Pattern 01: Event Time Processing](../02-design-patterns/pattern-event-time-processing.md) | [Pattern 02: Windowed Aggregation](../02-design-patterns/pattern-windowed-aggregation.md) | [Pattern 06: Side Output](../02-design-patterns/pattern-side-output.md)*

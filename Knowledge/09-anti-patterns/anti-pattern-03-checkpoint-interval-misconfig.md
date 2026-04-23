@@ -36,6 +36,8 @@
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
     - [7.1 Checkpoint 间隔决策流程](#71-checkpoint-间隔决策流程)
     - [7.2 Checkpoint 生命周期与间隔影响](#72-checkpoint-生命周期与间隔影响)
+    - [7.3 Checkpoint 间隔配置错误反模式思维导图](#73-checkpoint-间隔配置错误反模式思维导图)
+    - [7.4 Checkpoint 配置诊断决策树](#74-checkpoint-配置诊断决策树)
   - [8. 引用参考 (References)](#8-引用参考-references)
 
 ---
@@ -605,6 +607,52 @@ timeline
         T300 : 故障发生！
         T330 : 检测到故障<br/>需要回放 5 分钟数据
         Note : 恢复时间超标
+```
+
+### 7.3 Checkpoint 间隔配置错误反模式思维导图
+
+以下思维导图以"Checkpoint间隔配置错误反模式"为中心，系统梳理其症状、根因、影响与解决方案。
+
+```mermaid
+mindmap
+  root((Checkpoint间隔配置错误反模式))
+    症状
+      Checkpoint超时
+      系统卡顿
+      状态过大
+      恢复缓慢
+    根因
+      间隔过短
+      间隔过长
+      StateBackend不当
+      增量未启用
+    影响
+      吞吐下降
+      延迟增加
+      故障恢复时间长
+    解决方案
+      调整间隔
+      启用增量
+      异步快照
+      Unaligned Checkpoint
+```
+
+### 7.4 Checkpoint 配置诊断决策树
+
+以下决策树展示基于症状的 Checkpoint 配置问题诊断与对应解决方案。
+
+```mermaid
+flowchart TD
+    Start[Checkpoint 配置问题诊断] --> Symptom{观察症状}
+
+    Symptom -->|Checkpoint 频繁超时| Cause1{分析根因}
+    Cause1 -->|间隔过短 / State 过大| Sol1[增加间隔 / 启用增量 Checkpoint]
+
+    Symptom -->|系统吞吐下降| Cause2{分析根因}
+    Cause2 -->|Checkpoint 开销大| Sol2[启用异步快照 / Unaligned Checkpoint / 增量]
+
+    Symptom -->|恢复时间长| Cause3{分析根因}
+    Cause3 -->|全量快照| Sol3[启用增量 Checkpoint / 本地恢复]
 ```
 
 ---

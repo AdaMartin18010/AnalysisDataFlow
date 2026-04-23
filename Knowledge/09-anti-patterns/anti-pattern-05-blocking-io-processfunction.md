@@ -28,6 +28,8 @@
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [案例：用户画像实时补全](#案例用户画像实时补全)
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
+    - [思维导图：阻塞 I/O 反模式全景](#思维导图阻塞-io-反模式全景)
+    - [决策树：I/O 问题诊断流程](#决策树io-问题诊断流程)
   - [8. 引用参考 (References)](#8-引用参考-references)
 
 ---
@@ -204,6 +206,50 @@ graph LR
     style B fill:#ffcdd2,stroke:#c62828
     style C fill:#c8e6c9,stroke:#2e7d32
     style D fill:#c8e6c9,stroke:#2e7d32
+```
+
+### 思维导图：阻塞 I/O 反模式全景
+
+以下思维导图以"阻塞 I/O 反模式"为中心，从症状、根因、影响与解决方案四个维度放射展开，帮助快速建立整体认知。
+
+```mermaid
+mindmap
+  root((阻塞IO反模式))
+    症状
+      Backpressure
+      延迟高
+      吞吐低
+      Checkpoint超时
+    根因
+      同步外部调用
+      数据库查询
+      HTTP请求
+      文件IO
+    影响
+      线程阻塞
+      Watermark不推进
+      窗口不触发
+    解决方案
+      Async IO
+      缓存
+      批量请求
+      连接池
+      超时设置
+```
+
+### 决策树：I/O 问题诊断流程
+
+以下决策树展示从"延迟高 + Backpressure"出发，逐步排查是否存在外部阻塞调用，并给出对应的优化路径。
+
+```mermaid
+flowchart TD
+    A[延迟高 + Backpressure] --> B{是否存在外部调用?}
+    B -->|是| C[使用Async IO]
+    B -->|是| D[增加并发]
+    B -->|是| E[引入缓存]
+    B -->|否| F{检查算子逻辑}
+    F --> G[优化UDF]
+    F --> H[增加并行度]
 ```
 
 ---

@@ -26,6 +26,9 @@
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [案例：大促期间系统崩溃](#案例大促期间系统崩溃)
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
+    - [7.1 背压状态转移图](#71-背压状态转移图)
+    - [7.2 思维导图：忽视背压反模式](#72-思维导图忽视背压反模式)
+    - [7.3 决策树：背压诊断与处理](#73-决策树背压诊断与处理)
   - [8. 引用参考 (References)](#8-引用参考-references)
 
 ---
@@ -187,6 +190,8 @@ if (lag > HIGH_THRESHOLD) {
 
 ## 7. 可视化 (Visualizations)
 
+### 7.1 背压状态转移图
+
 ```mermaid
 graph LR
     A[正常状态] -->|流量增加| B[轻度背压]
@@ -201,11 +206,68 @@ graph LR
     style D fill:#b71c1c,stroke:#b71c1c
 ```
 
+### 7.2 思维导图：忽视背压反模式
+
+以下思维导图以"忽视背压反模式"为中心，从症状、根因、影响、解决方案四个维度放射展开，帮助全面理解该反模式的知识体系。
+
+```mermaid
+mindmap
+  root((忽视背压反模式))
+    症状
+      延迟持续增加
+      吞吐骤降
+      OOM
+      Checkpoint超时
+    根因
+      数据倾斜
+      外部系统慢速
+      算子瓶颈
+      资源不足
+    影响
+      数据丢失
+      系统崩溃
+      SLA违反
+    解决方案
+      定位瓶颈
+      增加并行度
+      Async IO
+      缓存
+      限流
+```
+
+### 7.3 决策树：背压诊断与处理
+
+以下决策树展示从延迟增加出发，逐步定位瓶颈算子并选择对应处理策略的完整诊断流程。
+
+```mermaid
+flowchart TD
+    A[延迟增加] --> B{检查Backpressure指标}
+    B -->|存在背压| C[定位瓶颈算子]
+    B -->|无背压| D[检查其他原因]
+    C --> E{瓶颈位置}
+    E -->|Source| F[增加Source并行度]
+    E -->|Source| G[限流]
+    E -->|Transform| H[优化UDF]
+    E -->|Transform| I[增加并行度]
+    E -->|Transform| J[Async IO]
+    E -->|Sink| K[批量写入]
+    E -->|Sink| L[增加Sink并行度]
+    E -->|Sink| M[限流]
+    F --> N[验证恢复]
+    G --> N
+    H --> N
+    I --> N
+    J --> N
+    K --> N
+    L --> N
+    M --> N
+```
+
 ---
 
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink Documentation, "Backpressure Monitoring," 2025.
+[^1]: Apache Flink Documentation, "Backpressure Monitoring," 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/monitoring/backpressure/>
 
 ---
 

@@ -1247,6 +1247,118 @@ graph TB
 
 ---
 
+### 7.4 Uber实时平台思维导图
+
+以下思维导图以"Uber实时平台"为中心，从核心业务、数据流、技术栈、关键挑战和架构特征五个维度进行放射展开：
+
+```mermaid
+mindmap
+  root((Uber实时平台))
+    核心业务
+      实时定价
+      供需匹配
+      ETA预测
+      路线优化
+      安全监控
+    数据流
+      GPS事件
+      订单事件
+      支付事件
+      司机状态
+      用户行为
+    技术栈
+      Kafka
+      Flink
+      Pinot
+      Cassandra
+      HBase
+    关键挑战
+      全球多区域
+      低延迟
+      数据一致性
+      动态定价
+    架构特征
+      微服务
+      流处理
+      OLAP实时分析
+```
+
+---
+
+### 7.5 Uber业务场景多维关联树
+
+以下多维关联树展示了 Uber 业务场景 → 技术需求 → Flink 解决方案的三层映射关系：
+
+```mermaid
+graph TB
+    subgraph "业务场景层"
+        B1[实时供需匹配]
+        B2[动态定价]
+        B3[ETA预测]
+        B4[欺诈检测]
+        B5[路线优化]
+    end
+
+    subgraph "技术需求层"
+        T1[低延迟 P99 < 200ms]
+        T2[高吞吐 2M+ QPS]
+        T3[大状态 100+ TB]
+        T4[乱序处理 Watermark]
+        T5[实时OLAP 亚秒查询]
+    end
+
+    subgraph "Flink方案层"
+        F1[KeyedStream + ValueState]
+        F2[Broadcast Stream + AggregateFunction]
+        F3[Async I/O + SlidingWindow]
+        F4[CEP模式匹配 + Side Output]
+        F5[Flink SQL + Table API]
+    end
+
+    B1 --> T1 & T2
+    B2 --> T2 & T4
+    B3 --> T1 & T5
+    B4 --> T2 & T4
+    B5 --> T3 & T5
+
+    T1 --> F1 & F3
+    T2 --> F2 & F4
+    T3 --> F1
+    T4 --> F2 & F4
+    T5 --> F3 & F5
+```
+
+---
+
+### 7.6 实时定价决策树
+
+以下决策树展示了 Uber 实时定价引擎的核心决策逻辑，涵盖供需失衡判断、区域热点识别和异常事件响应三个维度：
+
+```mermaid
+flowchart TD
+    A[实时定价决策引擎] --> B{供需失衡?}
+
+    B -->|供不应求 ratio > θ₂| C[动态加价<br/>Surge = S_max]
+    B -->|轻度失衡 θ₁ < ratio ≤ θ₂| D[梯度溢价<br/>Surge = 1.0 + k·ln]
+    B -->|供过于求 ratio ≤ θ₁| E[优惠券激励<br/>降低价格刺激需求]
+
+    C --> F{区域热点?}
+    D --> F
+    E --> F
+
+    F -->|热点区域| G[调度优化<br/>跨区域运力调配]
+    F -->|常规区域| H[运力引导<br/>本地匹配优先]
+
+    G --> I{异常事件?}
+    H --> I
+
+    I -->|安全威胁| J[安全响应<br/>紧急预案激活]
+    I -->|系统过载| K[服务降级<br/>限流+熔断]
+    I -->|无异常| L[正常执行<br/>定价生效]
+```
+
+---
+
 ## 8. 引用参考 (References)
 
 [^1]: Uber Engineering, "The Uber Engineering Tech Stack, Part I: The Foundation", 2018. <https://www.uber.com/blog/uber-engineering-tech-stack-part-one-foundation/>

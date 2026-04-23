@@ -36,6 +36,8 @@
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
     - [7.1 Watermark 延迟决策流程](#71-watermark-延迟决策流程)
     - [7.2 Watermark 传播与窗口触发时序](#72-watermark-传播与窗口触发时序)
+    - [7.3 Watermark 配置错误反模式思维导图](#73-watermark-配置错误反模式思维导图)
+    - [7.4 Watermark 问题诊断决策树](#74-watermark-问题诊断决策树)
   - [8. 引用参考 (References)](#8-引用参考-references)
 
 ---
@@ -638,6 +640,63 @@ timeline
                  : 被标记为迟到,丢弃或进入侧输出
 ```
 
+### 7.3 Watermark 配置错误反模式思维导图
+
+以下思维导图以"Watermark 配置错误反模式"为中心，从症状、根因、影响、解决方案四个维度放射展开，帮助全面理解该反模式的知识体系。
+
+```mermaid
+mindmap
+  root((Watermark 配置错误反模式))
+    症状
+      窗口不触发
+      延迟数据丢失
+      结果延迟
+      重复计算
+    根因
+      Watermark 延迟过小
+      Watermark 延迟过大
+      未处理 Idle Source
+      未设 AllowedLateness
+    影响
+      数据丢失
+      结果不准确
+      延迟不可控
+    解决方案
+      合理设置延迟
+      Idle Timeout
+      Side Output
+      动态 Watermark
+```
+
+### 7.4 Watermark 问题诊断决策树
+
+以下决策树展示 Watermark 问题的系统化诊断路径，从常见现象出发定位根因并给出修复动作。
+
+```mermaid
+flowchart TD
+    A[Watermark 问题诊断] --> B{窗口未触发?}
+    B -->|是| C[Watermark 未推进]
+    C --> D{检查 Idle Source}
+    D -->|空闲| E[配置 withIdleness]
+    D -->|非空闲| F[检查延迟设置是否过大]
+
+    A --> G{延迟数据丢失?}
+    G -->|是| H[AllowedLateness 不足]
+    H --> I[增加 allowedLateness]
+    H --> J[配置 Side Output 捕获迟到数据]
+
+    A --> K{结果延迟?}
+    K -->|是| L[Watermark 延迟过大]
+    L --> M[减小延迟配置]
+    L --> N[使用启发式策略动态调整]
+
+    style E fill:#c8e6c9,stroke:#2e7d32
+    style I fill:#c8e6c9,stroke:#2e7d32
+    style J fill:#c8e6c9,stroke:#2e7d32
+    style M fill:#c8e6c9,stroke:#2e7d32
+    style N fill:#c8e6c9,stroke:#2e7d32
+```
+
 ---
 
 ## 8. 引用参考 (References)
@@ -658,7 +717,7 @@ timeline
 
 ---
 
-*文档版本: v1.0 | 更新日期: 2026-04-03 | 状态: 已完成*
+*文档版本: v1.1 | 更新日期: 2026-04-24 | 状态: 已完成*
 
 ---
 

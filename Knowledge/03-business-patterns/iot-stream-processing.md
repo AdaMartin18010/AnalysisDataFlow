@@ -25,7 +25,7 @@
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
     - [3.1 与核心设计模式的关系](#31-与核心设计模式的关系)
     - [3.2 技术栈组件映射](#32-技术栈组件映射)
-    - [3.3 Actor + Dataflow 双层架构关系](#33-actor-dataflow-双层架构关系)
+    - [3.3 Actor + Dataflow 双层架构关系](#33-actor--dataflow-双层架构关系)
     - [3.4 数据流时序关系](#34-数据流时序关系)
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [4.1 IoT 场景核心挑战分析](#41-iot-场景核心挑战分析)
@@ -42,11 +42,15 @@
     - [6.3 设备会话分析](#63-设备会话分析)
     - [6.4 乱序数据处理](#64-乱序数据处理)
     - [6.5 设备状态机管理](#65-设备状态机管理)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
     - [7.1 IoT 整体架构图](#71-iot-整体架构图)
-    - [7.2 Actor + Dataflow 双层架构](#72-actor-dataflow-双层架构)
+    - [7.2 Actor + Dataflow 双层架构 {#72-actor-dataflow-双层架构}](#72-actor--dataflow-双层架构-72-actor-dataflow-双层架构)
     - [7.3 数据流处理流程](#73-数据流处理流程)
     - [7.4 设备状态机](#74-设备状态机)
+    - [7.5 IoT 流处理思维导图](#75-iot-流处理思维导图)
+    - [7.6 多维关联树](#76-多维关联树)
+    - [7.7 IoT架构选型决策树](#77-iot架构选型决策树)
   - [8. 引用参考 (References)](#8-引用参考-references)
 
 ---
@@ -1157,6 +1161,187 @@ stateDiagram-v2
 
     维护 --> 离线: 维护完成
     离线 --> [*]
+```
+
+---
+
+### 7.5 IoT 流处理思维导图
+
+以下思维导图以"IoT流处理"为中心，放射状展开五大核心维度，帮助从全局视角把握物联网流处理的知识体系。
+
+```mermaid
+mindmap
+  root((IoT流处理))
+    设备层
+      传感器
+        温度传感器
+        压力传感器
+        加速度计
+        图像采集器
+      网关
+        边缘网关
+        协议转换
+        本地聚合
+        离线缓存
+      边缘设备
+        工业PLC
+        智能终端
+        车载ECU
+      通信协议
+        MQTT
+        CoAP
+        HTTP/2
+        LoRaWAN
+    数据特征
+      高并发
+        百万级设备接入
+        秒级采样频率
+      乱序
+        网络路径差异
+        网关批量上报
+        时钟漂移
+      缺失
+        信号盲区
+        设备离线
+        电池耗尽
+      多模态
+        时序数值
+        日志文本
+        图像视频
+        地理位置
+    处理场景
+      实时监控
+        设备状态看板
+        环境指标监测
+      预测维护
+        故障趋势分析
+        剩余寿命预测
+      异常检测
+        离群点识别
+        模式偏离告警
+      数字孪生
+        虚拟映射
+        实时仿真
+    技术架构
+      边缘计算
+        本地预处理
+        毫秒级响应
+        带宽节省
+      云流处理
+        Flink集群
+        Kafka缓冲
+        全局分析
+      时序数据库
+        InfluxDB
+        TDengine
+        高效写入
+    核心挑战
+      离线容忍
+        断点续传
+        本地存储
+      资源受限
+        内存限制
+        算力受限
+        能耗约束
+      安全性
+        设备认证
+        传输加密
+        数据隐私
+```
+
+### 7.6 多维关联树
+
+以下关联树展示IoT典型场景如何映射到数据处理需求，再进一步映射到具体技术选型，形成从业务到技术的完整链路。
+
+```mermaid
+graph TB
+    subgraph "IoT场景层"
+        SC1[工业制造]
+        SC2[智慧交通]
+        SC3[能源电力]
+        SC4[智慧城市]
+        SC5[农业物联网]
+    end
+
+    subgraph "数据处理需求层"
+        REQ1[高并发接入<br/>百万级设备]
+        REQ2[低延迟响应<br/>毫秒级告警]
+        REQ3[乱序数据处理<br/>事件时间语义]
+        REQ4[状态持久化<br/>设备状态管理]
+        REQ5[海量存储<br/>时序数据归档]
+    end
+
+    subgraph "技术选型层"
+        TECH1[MQTT Broker<br/>EMQX/Mosquitto]
+        TECH2[消息缓冲<br/>Kafka/Pulsar]
+        TECH3[流处理引擎<br/>Flink/Spark Streaming]
+        TECH4[边缘计算<br/>KubeEdge/EdgeX]
+        TECH5[时序数据库<br/>InfluxDB/TDengine]
+        TECH6[状态存储<br/>RocksDB/Redis]
+    end
+
+    SC1 -->|设备密集<br/>产线监控| REQ1
+    SC1 -->|工艺告警<br/>实时质检| REQ2
+    SC2 -->|车辆轨迹<br/>多源融合| REQ3
+    SC2 -->|信号灯控制<br/>状态同步| REQ4
+    SC3 -->|电网监测<br/>高频采样| REQ1
+    SC3 -->|故障预测<br/>历史趋势| REQ5
+    SC4 -->|环境传感<br/>城市级接入| REQ1
+    SC4 -->|安防告警<br/>实时响应| REQ2
+    SC5 -->|土壤/气象<br/>间歇上报| REQ3
+    SC5 -->|精准灌溉<br/>设备联动| REQ4
+
+    REQ1 --> TECH1
+    REQ1 --> TECH2
+    REQ2 --> TECH4
+    REQ2 --> TECH3
+    REQ3 --> TECH3
+    REQ4 --> TECH6
+    REQ5 --> TECH5
+
+    style SC1 fill:#c8e6c9,stroke:#2e7d32
+    style SC2 fill:#c8e6c9,stroke:#2e7d32
+    style SC3 fill:#c8e6c9,stroke:#2e7d32
+    style SC4 fill:#c8e6c9,stroke:#2e7d32
+    style SC5 fill:#c8e6c9,stroke:#2e7d32
+    style TECH3 fill:#bbdefb,stroke:#1565c0,stroke-width:2px
+```
+
+### 7.7 IoT架构选型决策树
+
+以下决策树基于端到端延迟要求，指导在不同场景下选择合适的IoT架构方案。
+
+```mermaid
+flowchart TD
+    START([开始<br/>IoT架构选型]) --> Q1{延迟要求<br/>是多少?}
+
+    Q1 -->|< 100ms| EDGE[边缘计算 + 本地处理]
+    Q1 -->|100ms ~ 1s| HYBRID[边缘预处理 + 云聚合]
+    Q1 -->|> 1s| CLOUD[云端批流一体]
+
+    EDGE --> E1[边缘网关直接处理]
+    EDGE --> E2[本地实时控制回路]
+    EDGE --> E3[毫秒级设备联动]
+
+    HYBRID --> H1[边缘侧数据清洗/聚合]
+    HYBRID --> H2[Kafka缓冲 + Flink处理]
+    HYBRID --> H3[亚秒级告警与响应]
+
+    CLOUD --> C1[全量数据上云]
+    CLOUD --> C2[Flink批流统一处理]
+    CLOUD --> C3[时序数据库长期归档]
+
+    E1 --> WARN1[⚠️ 边缘资源受限<br/>需轻量推理]
+    E2 --> WARN1
+    H1 --> WARN2[⚠️ 需处理边缘-云<br/>数据同步一致性]
+    C1 --> WARN3[⚠️ 带宽成本高<br/>需数据压缩/采样]
+
+    style EDGE fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    style HYBRID fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style CLOUD fill:#bbdefb,stroke:#1565c0,stroke-width:2px
+    style WARN1 fill:#ffcdd2,stroke:#c62828
+    style WARN2 fill:#ffcdd2,stroke:#c62828
+    style WARN3 fill:#ffcdd2,stroke:#c62828
 ```
 
 ---

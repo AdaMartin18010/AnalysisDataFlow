@@ -18,7 +18,7 @@
     - [3.1 内存影响](#31-内存影响)
   - [4. 解决方案 (Solution)](#4-解决方案-solution)
     - [4.1 使用 AggregateFunction](#41-使用-aggregatefunction)
-    - [4.2 结合使用 Aggregate + ProcessWindow]()
+    - [4.2 结合使用 Aggregate + ProcessWindow](#42-结合使用-aggregate--processwindow)
     - [4.3 使用 Evictor 限制状态](#43-使用-evictor-限制状态)
   - [5. 代码示例 (Code Examples)](#5-代码示例-code-examples)
     - [5.1 错误示例](#51-错误示例)
@@ -26,6 +26,8 @@
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [案例：实时用户行为统计](#案例实时用户行为统计)
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
+    - [思维导图：窗口状态膨胀全景](#思维导图窗口状态膨胀全景)
+    - [决策树：状态膨胀诊断](#决策树状态膨胀诊断)
   - [8. 引用参考 (References)](#8-引用参考-references)
 
 ---
@@ -217,6 +219,50 @@ graph TB
 
     style C fill:#ffcdd2,stroke:#c62828
     style D fill:#c8e6c9,stroke:#2e7d32
+```
+
+### 思维导图：窗口状态膨胀全景
+
+以下思维导图以"窗口状态膨胀反模式"为中心，从症状、根因、影响和解决方案四个维度进行全景展开。
+
+```mermaid
+mindmap
+  root((窗口状态膨胀反模式))
+    症状
+      OOM
+      Checkpoint超时
+      状态过大
+      恢复慢
+    根因
+      窗口过多
+      Key基数大
+      未设TTL
+      状态累积
+    影响
+      内存压力
+      磁盘压力
+      故障恢复时间长
+    解决方案
+      窗口合并
+      TTL配置
+      增量聚合
+      状态清理
+      Evictor
+```
+
+### 决策树：状态膨胀诊断
+
+以下决策树展示从症状出发的状态膨胀诊断与治理路径。
+
+```mermaid
+flowchart TD
+    A[症状: OOM + Checkpoint超时] --> B{检查状态大小}
+    B -->|窗口状态过大| C[减少窗口数量]
+    B -->|窗口状态正常| D{检查 KeyedState}
+    C --> E[设置TTL]
+    C --> F[使用增量聚合]
+    D --> G[清理策略]
+    D --> H[状态后端调优]
 ```
 
 ---
