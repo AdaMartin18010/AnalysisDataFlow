@@ -138,6 +138,7 @@ lemma substitution_lemma {Γ x s t S T}
          - [P1] 替换保持类型: Γ, y:T₁ ⊢ t : T₂ → Γ, z:T₁ ⊢ [y:=z]t : T₂（z 新鲜）
          - [P2] α-等价保持类型: t₁ =α t₂ → Γ ⊢ t₁ : T ↔ Γ ⊢ t₂ : T
       -/
+      -- FORMAL-GAP: 需证明替换与lambda抽象的交换性质。策略: 分情形讨论(y=x / y≠x∧y∉fv(s) / y≠x∧y∈fv(s))；对y≠x情形需环境交换引理(context_exchange)和weakening；对y∈fv(s)需α-重命名和替换保持类型引理。难度: 高 | 依赖: context_exchange, weakening, subst_rename_type_preservation
       sorry -- [FORMAL-GAP-N-01] 依赖 Substitution 与 α-等价交换引理
   | app ih₁ ih₂ =>
       apply hasType.app
@@ -275,6 +276,7 @@ lemma canonical_forms_fun {t T₁ T₂}
              mutual def / mutual theorem 结构；或
          (b) 在 progress 之后重新定义 canonical_forms 并使用其完成证明。
       -/
+      -- FORMAL-GAP: 需证明正规形式下的app不可能具有函数类型而不归约。策略: 由progress定理，空上下文中良类型的app项或是值(矛盾，app非值)或可归约，与isNormalForm矛盾。难度: 中 | 依赖: progress定理(需调整定义顺序或使用mutual theorem)
       sorry
   | var h => simp [emptyContext, lookupContext] at h
   | tru => contradiction
@@ -330,6 +332,7 @@ lemma canonical_forms_bool {t}
          建议将 canonical_forms_fun、canonical_forms_bool、progress 重构为
          mutual theorem 相互递归结构，使三者可以相互引用。
       -/
+      -- FORMAL-GAP: 需证明正规形式下的app不可能具有bool类型而不归约。策略: 同canonical_forms_fun的app分支，由progress得app或是值(矛盾)或可归约，与isNormalForm矛盾。难度: 中 | 依赖: progress定理(需调整定义顺序或使用mutual theorem)
       sorry
 
 /-! 
