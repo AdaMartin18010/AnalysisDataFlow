@@ -216,6 +216,10 @@ Proof.
   (* 故 (1-a)(1-a*r) <= 0.01 * 0.0201 = 0.000201 *)
   (* 该数值不等式在实数域成立，Coq中可用 RIneq + lra 完成 *)
   (* 由于环境缺少 lra/tactic 完整支持，此处标记为 Admitted *)
+  (* FORMAL-GAP: 需证明并联节点等价下界 (1-a)(1-ar) <= 0.000201。策略: intros; apply Rmult_le_compat; 
+     先证 (1 - a) <= 1/100 (由 HA), 再证 (1 - a*r) <= 201/10000 (由 HA, HR 及 Rmult_ge);
+     最后利用 Rminus_le 整理得目标。可尝试引入 Lra tactic 自动化。
+     难度: 低 | 依赖: Rmult_le_compat, Rminus_le | 风险: 无 *)
 Admitted.
 (* 证明策略: 利用 Rmult_le_compat 与边界传递性。
    先证 (1 - availability c) <= 1/100，再证 (1 - availability c * recovery_rate c) <= 201/10000，
@@ -253,6 +257,10 @@ Proof.
      更实际的策略: 由于所有可用性都接近 1，且并联等效可用性大幅提升后
      的串联乘积在典型系统配置 (n_s + n_p <= 10) 下仍远高于 0.9999。
      完整的形式化证明需要建立通用的乘积下界引理。 *)
+  (* FORMAL-GAP: 有限个 >= 0.9999 的实数乘积 >= 0.9999。数学上在一般列表长度下不成立，
+     需添加长度约束 (如 length l <= 1) 或改用 Bernoulli 不等式 ∏(1-ε) >= 1-n·ε。
+     策略: 对 length l 归纳; 空列表用 Rprod_nil; 归纳步用 Rmult_ge_compat 结合长度约束。
+     难度: 中 | 依赖: 需新增 length 约束假设 | 风险: 当前签名缺少长度约束，可能需修改引理前提 *)
 Admitted.
 
 (* 辅助引理: 有限个 >= 0.999799 的数的乘积 >= 0.9999
@@ -272,6 +280,11 @@ Proof.
      但结合串联部分 >= 0.9999 的乘积后，整体仍可能 >= 0.9999。
      实际上在源文档的数值验证中，系统可用性约为 0.99999978，远高于 0.9999。
      形式化证明需要更强的逐元素下界或利用具体系统规模约束。 *)
+  (* FORMAL-GAP: 有限个 >= 0.999799 的实数乘积 >= 0.9999。数学上在一般列表长度下不成立，
+     需添加长度约束 (如 length l <= N) 或结合串联部分使用更强整体估计。
+     策略: 对 length l 归纳; 空列表平凡; 归纳步用 Rmult_ge_compat;
+     或改用 Bernoulli 不等式 (1-ε)^n >= 1-nε 并在长度约束下验证 1-n*0.000201 >= 0.9999。
+     难度: 中 | 依赖: 需新增 length 约束假设 | 风险: 当前签名缺少长度约束，可能需修改引理前提 *)
 Admitted.
 
 (* Cor-TS-04-04-01: 四 nine 可达性推论 *)
@@ -315,6 +328,15 @@ Proof.
      求解器 (如 psatz/lra) 的纯基础 Coq 环境中较为繁琐。此处先
      建立证明框架，核心数值不等式部分标记为 Admitted。
   *)
+  (* FORMAL-GAP: 组合系统可用性 >= 0.9999。框架已搭好，依赖前3个辅助引理。
+     策略: 
+     1. 对每个串联节点应用 series_node_equiv_bound + all_series_high_availability;
+     2. 对每个并联节点应用 parallel_node_equiv_bound + all_parallel_high_availability;
+     3. 对串联部分应用 Rprod_ge_9999 (需先补全其证明或添加系统规模约束);
+     4. 对并联部分应用 Rprod_parallel_ge_bound (同上);
+     5. 最后利用 Rmult_ge_compat 证明两部分乘积 >= 0.9999。
+     难度: 高 | 依赖: parallel_node_equiv_bound, Rprod_ge_9999, Rprod_parallel_ge_bound | 
+     风险: 需先补全3个辅助引理，且可能需要为系统规模添加约束 *)
 Admitted.
 
 End Four_Nines_Corollary.

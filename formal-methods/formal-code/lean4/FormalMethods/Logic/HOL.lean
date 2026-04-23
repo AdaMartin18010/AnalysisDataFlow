@@ -37,16 +37,16 @@ namespace HOL
 
 section SimpleTypes
 
-  /-- 
+  /--
   **定义 1.1 (简单类型)**
-  
+
   HOL的类型系统包括:
   - 基本类型: Bool (布尔值), Nat (自然数), Ind (个体类型)
   - 函数类型: σ → τ
   - 类型变量: α, β, γ, ... (用于多态)
   - 积类型: σ × τ (可选)
   - 类型常量: 可以扩展其他基本类型
-  
+
   类型形成规则:
   1. 所有基本类型是类型
   2. 如果 σ 和 τ 是类型，则 σ → τ 是类型
@@ -85,9 +85,9 @@ section SimpleTypes
 
     instance : ToString SimpleType := ⟨toString⟩
 
-    /-- 
+    /--
     **定义 1.2 (类型的秩/复杂度)**
-    
+
     类型的秩用于归纳证明。
     - 基本类型的秩为0
     - 函数类型的秩为 max(σ.rank, τ.rank) + 1
@@ -101,9 +101,9 @@ section SimpleTypes
       | prod σ τ  => 1 + max σ.rank τ.rank
       | var _     => 0
 
-    /-- 
+    /--
     **引理 1.1 (子类型的秩小于父类型)**
-    
+
     对于函数类型 σ → τ，有 σ.rank < (σ →' τ).rank 且 τ.rank < (σ →' τ).rank
     -/
     lemma rank_arrow_left (σ τ : SimpleType) : σ.rank < (σ →' τ).rank := by
@@ -116,9 +116,9 @@ section SimpleTypes
       have : τ.rank ≤ max σ.rank τ.rank := Nat.le_max_right _ _
       linarith
 
-    /-- 
+    /--
     **定义 1.3 (良基类型)**
-    
+
     检查类型是否是良基的（不包含自引用）。
     在简单类型系统中，所有类型都是良基的。
     -/
@@ -130,9 +130,9 @@ section SimpleTypes
       | prod σ τ  => σ.isWellFounded && τ.isWellFounded
       | var _     => true
 
-    /-- 
+    /--
     **定理 1.1 (所有简单类型都是良基的)**
-    
+
     这是简单类型系统的基本性质，区别于非良基类型（如递归类型）。
     -/
     theorem all_wellFounded (σ : SimpleType) : σ.isWellFounded = true := by
@@ -152,9 +152,9 @@ section SimpleTypes
     类型环境
     ============================================================ -/
 
-  /-- 
+  /--
   **定义 1.4 (类型环境)**
-  
+
   类型环境将变量映射到其类型。
   变量用自然数索引。
   -/
@@ -198,9 +198,9 @@ section HOLSyntax
 
   open SimpleType
 
-  /-- 
+  /--
   **定义 2.1 (HOL项)**
-  
+
   HOL的项是简单类型λ演算的扩展，包括：
   - 变量: x, y, z, ... (用自然数索引)
   - 常量: 包括逻辑连接词、等式、选择算子等
@@ -208,7 +208,7 @@ section HOLSyntax
   - 函数应用: f t
   - 对构造: (t₁, t₂)
   - 投影: fst t, snd t
-  
+
   每个项都有唯一的类型，通过类型判断 Γ ⊢ t : σ 确定。
   -/
   inductive Term : Type
@@ -220,10 +220,10 @@ section HOLSyntax
     | fst  : Term → Term                   -- 第一投影
     | snd  : Term → Term                   -- 第二投影
   deriving DecidableEq, Repr, Inhabited
-  
-  /-- 
+
+  /--
   **定义 2.2 (HOL常量)**
-  
+
   HOL的内置常量包括逻辑和数学的基本运算：
   - 逻辑常量: ⊤, ⊥, ¬, ∧, ∨, →, ∀, ∃, =
   - 选择常量: ε (Hilbert选择算子)
@@ -294,11 +294,11 @@ section HOLSyntax
       类型判断系统
       ============================================================ -/
 
-    /-- 
+    /--
     **定义 2.3 (类型判断)**
-    
+
     类型判断 Γ ⊢ t : σ 表示在类型环境 Γ 下，项 t 具有类型 σ。
-    
+
     类型判断规则：
     1. 变量规则: 如果 Γ(x) = σ，则 Γ ⊢ x : σ
     2. 常量规则: 每个常量 c 都有预定义类型 type(c)
@@ -311,7 +311,7 @@ section HOLSyntax
       | var {Γ n σ} : Γ n = some σ → HasType Γ (var n) σ
       | const {Γ c} : HasType Γ (const c) c.type
       | lam {Γ σ t τ} : HasType (Γ.extend 0 σ) t τ → HasType Γ (lam σ t) (σ →' τ)
-      | app {Γ f t σ τ} : 
+      | app {Γ f t σ τ} :
           HasType Γ f (σ →' τ) → HasType Γ t σ → HasType Γ (app f t) τ
       | pair {Γ t₁ t₂ σ τ} :
           HasType Γ t₁ σ → HasType Γ t₂ τ → HasType Γ (pair t₁ t₂) (σ ×' τ)
@@ -320,9 +320,9 @@ section HOLSyntax
 
     notation:50 Γ " ⊢ " t " : " σ => HasType Γ t σ
 
-    /-- 
+    /--
     **引理 2.1 (类型唯一性)**
-    
+
     如果 Γ ⊢ t : σ 且 Γ ⊢ t : τ，则 σ = τ。
     这是简单类型系统的基本性质。
     -/
@@ -339,7 +339,7 @@ section HOLSyntax
           | _ => contradiction
       | lam h ih =>
           cases h₂ with
-          | lam h' => 
+          | lam h' =>
               have : τ = _ →' _ := by injection h₂
               simp_all
           | _ => contradiction
@@ -356,26 +356,26 @@ section HOLSyntax
           | _ => contradiction
       | fst h ih =>
           cases h₂ with
-          | fst h' => 
+          | fst h' =>
               have := ih h'
               simp_all
           | _ => contradiction
       | snd h ih =>
           cases h₂ with
-          | snd h' => 
+          | snd h' =>
               have := ih h'
               simp_all
           | _ => contradiction
 
-    /-- 
+    /--
     **引理 2.2 (弱化)**
-    
+
     如果 Γ ⊢ t : σ 且 Γ ⊆ᵉ Δ，则 Δ ⊢ t : σ。
     -/
     lemma weakening {Γ Δ : TypeEnv} {t : Term} {σ : SimpleType}
         (h : Γ ⊢ t : σ) (hSub : Γ ⊆ᵉ Δ) : Δ ⊢ t := by
       induction h with
-      | var hσ => 
+      | var hσ =>
           apply HasType.var
           exact hSub _ _ hσ
       | const => exact HasType.const
@@ -385,7 +385,7 @@ section HOLSyntax
           intro n τ hτ
           cases n with
           | zero => simp [TypeEnv.extend] at hτ ⊢; exact hτ
-          | succ n => 
+          | succ n =>
               simp [TypeEnv.extend] at hτ ⊢
               apply hSub
               exact hτ
@@ -399,7 +399,7 @@ section HOLSyntax
     /-- 公式是类型为Bool的项 -/
     def IsFormula (Γ : TypeEnv) (t : Term) : Prop := ∃ h : Γ ⊢ t : Bool, True
 
-    /-- 命题是闭公式（没有自由变量）-/  
+    /-- 命题是闭公式（没有自由变量）-/
     def IsProposition (t : Term) : Prop := IsFormula TypeEnv.empty t
 
   end Term
@@ -418,9 +418,9 @@ section EqualityAndConversion
     替换操作
     ============================================================ -/
 
-  /-- 
+  /--
   **定义 3.1 (替换)**
-  
+
   将项 s 中的变量 n 替换为项 t。
   使用de Bruijn索引，需要处理变量提升。
   -/
@@ -445,23 +445,25 @@ section EqualityAndConversion
 
   notation:90 t "[" n " ↦ " s "]" => subst n s t
 
-  /-- 
+  /--
   **引理 3.1 (替换保持类型)**
-  
+
   如果 Γ, n:σ ⊢ t : τ 且 Γ ⊢ s : σ，则 Γ ⊢ t[n ↦ s] : τ。
   -/
   lemma subst_preserves_type {Γ : TypeEnv} {t s : Term} {n : Nat} {σ τ : SimpleType}
       (ht : (Γ.extend n σ) ⊢ t : τ) (hs : Γ ⊢ s : σ) : Γ ⊢ t[n ↦ s] : τ := by
     -- 这个证明需要复杂的归纳，这里给出结构
+    -- FORMAL-GAP: 需证de Bruijn索引替换保持类型。策略: 对t结构归纳；var情形用TypeEnv.extend_lookup；lam情形用shift_lemma（变量提升保持类型）；app情形用IH
+    -- 难度: 高 | 依赖: shift_preserves_type, TypeEnv.extend_comm, subst_shift_comm
     sorry
 
   /- ============================================================
     α-等价
     ============================================================ -/
 
-  /-- 
+  /--
   **定义 3.2 (α-等价)**
-  
+
   两个项是α-等价的，如果它们只通过λ绑定的变量名不同。
   使用de Bruijn索引后，α-等价的项是语法相同的。
   -/
@@ -492,11 +494,11 @@ section EqualityAndConversion
     β-规约
     ============================================================ -/
 
-  /-- 
+  /--
   **定义 3.3 (β-规约)**
-  
+
   β-规约: (λx. t) s → t[x ↦ s]
-  
+
   这是函数应用的基本计算规则。
   -/
   inductive BetaReduces : Term → Term → Prop
@@ -513,9 +515,9 @@ section EqualityAndConversion
 
   notation:50 t " →β " s => BetaReduces t s
 
-  /-- 
+  /--
   **引理 3.2 (β-规约保持类型)**
-  
+
   如果 Γ ⊢ t : σ 且 t →β s，则 Γ ⊢ s : σ。
   -/
   lemma beta_preserves_type {Γ : TypeEnv} {t s : Term} {σ : SimpleType}
@@ -569,14 +571,14 @@ section EqualityAndConversion
     η-转换
     ============================================================ -/
 
-  /-- 
+  /--
   **定义 3.4 (η-转换)**
-  
+
   η-转换: λx. (f x) ↔ f (当 x 不在 f 中自由出现时)
-  
+
   η-扩展: f → λx. (f x)
   η-规约: λx. (f x) → f
-  
+
   η-转换保持了外延相等性。
   -/
   inductive EtaReduces : Term → Term → Prop
@@ -585,21 +587,21 @@ section EqualityAndConversion
 
   notation:50 t " →η " s => EtaReduces t s
 
-  /-- 
+  /--
   **定理 3.1 (β-η-范式)**
-  
+
   如果类型系统满足强规范化，则每个项都有唯一的β-η-范式。
   -/
   def IsNormalForm (t : Term) : Prop :=
     ¬∃ s, t →β s
 
-  /-- 
+  /--
   **定理 3.2 (Church-Rosser)**
-  
+
   β-规约满足Church-Rosser性质（合流性）。
   如果 t ↠β s₁ 且 t ↠β s₂，则存在 r 使得 s₁ ↠β r 且 s₂ ↠β r。
   -/
-  axiom church_rosser {t s₁ s₂ : Term} 
+  axiom church_rosser {t s₁ s₂ : Term}
       (h₁ : t ↠β s₁) (h₂ : t ↠β s₂) :
       ∃ r, s₁ ↠β r ∧ s₂ ↠β r
 
@@ -607,12 +609,12 @@ section EqualityAndConversion
     等式推理
     ============================================================ -/
 
-  /-- 
+  /--
   **定义 3.5 (HOL等式)**
-  
+
   HOL中的等式定义为:
   s =_σ t 是类型为Bool的项
-  
+
   等式满足以下公理:
   - 自反性: ⊢ t = t
   - 对称性: ⊢ s = t → t = s
@@ -656,35 +658,35 @@ section ClassicalReasoning
     命题逻辑
     ============================================================ -/
 
-  /-- 
+  /--
   **定义 4.1 (HOL命题)**
-  
+
   命题是类型为Bool的闭项。
-  
+
   我们定义以下概念:
   - 重言式: 在所有模型中为真的命题
   - 可满足式: 存在模型使其为真的命题
   - 定理: 在HOL证明系统中可证明的命题
   -/
   def IsTautology (φ : Term) : Prop :=
-    ∀ (M : Type → Type) (interp : Term → M Bool), 
+    ∀ (M : Type → Type) (interp : Term → M Bool),
       interp φ = interp ⊤ᶜ
 
-  /-- 
+  /--
   **定义 4.2 (排中律 - LEM)**
-  
+
   对于任意命题 φ，有 ⊢ φ ∨ ¬φ
-  
+
   这是经典逻辑与直觉主义逻辑的关键区别。
   -/
   axiom LEM (φ : Term) : ProvesEq φ φ -- 简化为自反性表示可证明
 
-  /-- 
+  /--
   **定理 4.1 (排中律形式化)**
-  
+
   在HOL中，排中律可以表示为:
   ∀P:Bool → Bool. P true ∨ P false
-  
+
   或者对于任意布尔项 b:
   b = true ∨ b = false
   -/
@@ -692,27 +694,29 @@ section ClassicalReasoning
       IsTautology (b ∨ᶜ (¬ᶜ b)) := by
     -- 对于布尔类型，只有两个值
     unfold IsTautology
+    -- FORMAL-GAP: 需证布尔项满足排中律的语义。策略: 展开IsTautology后对模型分情况；利用Bool只有true/false两个值；对interp b分情形；simp [interp_bool]
+    -- 难度: 高 | 依赖: 形式化语义解释函数 interp, Bool二值性引理
     sorry -- 需要模型论来完成证明
 
   /- ============================================================
     双重否定
     ============================================================ -/
 
-  /-- 
+  /--
   **定义 4.3 (双重否定)**
-  
+
   双重否定消除: ¬¬φ → φ
   双重否定引入: φ → ¬¬φ
-  
+
   在经典逻辑中，双重否定消除成立。
   -/
   def DNE (φ : Term) : Term := (¬ᶜ (¬ᶜ φ)) →ᶜ φ
 
   def DNI (φ : Term) : Term := φ →ᶜ (¬ᶜ (¬ᶜ φ))
 
-  /-- 
+  /--
   **定理 4.2 (双重否定引入可证明)**
-  
+
   φ → ¬¬φ 在直觉主义逻辑中也可证明。
   -/
   theorem DNI_provable (φ : Term) : IsTautology (DNI φ) := by
@@ -727,19 +731,21 @@ section ClassicalReasoning
          需要构造模型或直接使用命题逻辑推导。
        · 当前缺少从 HOLProves 到 IsTautology 的桥梁引理。
     -/
+    -- FORMAL-GAP: 需证双重否定引入是重言式。策略: 展开DNI和IsTautology；假设interp φ = true，需证interp (¬¬φ) = true；利用interp对→和¬的定义；用Bool逻辑简化
+    -- 难度: 中 | 依赖: 语义解释函数 interp 的定义, Bool逻辑引理
     sorry
 
-  /-- 
+  /--
   **公理 4.1 (双重否定消除)**
-  
+
   ¬¬φ → φ 是经典逻辑的公理。
   它等价于排中律。
   -/
   axiom DNE_axiom (φ : Term) : IsTautology (DNE φ)
 
-  /-- 
+  /--
   **定理 4.3 (DNE 蕴含 LEM)**
-  
+
   双重否定消除蕴含排中律。
   -/
   theorem DNE_implies_LEM (φ : Term) (hDNE : IsTautology (DNE φ)) :
@@ -758,20 +764,22 @@ section ClassicalReasoning
        · 需要 HOLProves 中的完整推理规则链
        · 从语法推导到 IsTautology 的转换引理
     -/
+    -- FORMAL-GAP: 需证DNE蕴含LEM。策略: 先证¬¬(φ∨¬φ)为真（用经典元语言推导）；再用DNE公理消去双重否定；或直接在IsTautology语义框架内构造证明
+    -- 难度: 高 | 依赖: DNE_axiom, IsTautology_MP, IsTautology_and_intro
     sorry
 
   /- ============================================================
     选择算子 (Hilbert's ε-operator)
     ============================================================ -/
 
-  /-- 
+  /--
   **定义 4.4 (Hilbert选择算子 ε)**
-  
+
   εx. P(x) 是满足 P 的某个元素，如果不存在这样的元素则返回任意值。
-  
+
   ε算子的公理:
   ∃x. P(x) → P(εx. P(x))
-  
+
   即: 如果存在满足P的元素，则ε选择算子返回的元素满足P。
   -/
   def mkEps (σ : SimpleType) (P : Term) : Term :=
@@ -779,21 +787,21 @@ section ClassicalReasoning
 
   notation "ε " x " : " σ " , " P => mkEps σ (lam σ P)
 
-  /-- 
+  /--
   **公理 4.2 (ε-公理)**
-  
+
   ε算子的核心公理:
   (∃x. P(x)) → P(εx. P(x))
-  
+
   其中 ∃x. P(x) 定义为 ¬∀x.¬P(x) 或 ∃ᶜ σ (λx. P(x))
   -/
   axiom eps_axiom {σ : SimpleType} (P : Term)
       (hP : TypeEnv.empty ⊢ P : (σ →' Bool)) :
       IsTautology ((∃ᶜ σ P) →ᶜ (app P (mkEps σ P)))
 
-  /-- 
+  /--
   **定理 4.4 (选择算子蕴含排中律)**
-  
+
   Hilbert选择算子的存在蕴含排中律。
   这是经典逻辑的重要性质。
   -/
@@ -815,13 +823,15 @@ section ClassicalReasoning
        · ε-公理的应用需要合适的谓词类型
        · 等式情况分析在 HOL 项上的实现
     -/
+    -- FORMAL-GAP: 需证ε算子蕴含排中律（Hilbert构造）。策略: 定义谓词P(x):=(x=true∧φ)∨(x=false∧¬φ)；用元语言LEM证∃x.P(x)；应用ε公理；对εx.P(x)的值分true/false情形
+    -- 难度: 高 | 依赖: eps_axiom, LEM_bool, eqC 的语义解释, 模型构造
     sorry
 
-  /-- 
+  /--
   **定义 4.5 (描述算子 ι)**
-  
+
   ιx. P(x) 是满足 P 的唯一元素，如果不唯一则未定义。
-  
+
   描述算子用于表示"the"，如"the smallest prime > 2"。
   -/
   def mkIota (σ : SimpleType) (P : Term) : Term :=
@@ -829,9 +839,9 @@ section ClassicalReasoning
 
   notation "ι " x " : " σ " , " P => mkIota σ (lam σ P)
 
-  /-- 
+  /--
   **公理 4.3 (ι-公理)**
-  
+
   如果存在唯一的x满足P，则P(ιx. P(x))成立。
   -/
   axiom iota_axiom {σ : SimpleType} (P : Term)
@@ -842,14 +852,14 @@ section ClassicalReasoning
     无穷公理
     ============================================================ -/
 
-  /-- 
+  /--
   **定义 4.6 (无穷公理)**
-  
+
   HOL通常包含无穷公理，声明某个类型是无限的。
-  
+
   无穷公理的形式化:
   ∃f: Ind → Ind. injective f ∧ ¬surjective f
-  
+
   即: 存在从Ind到Ind的单射但不满射的函数。
   -/
   def Injective (σ τ : SimpleType) (f : Term) : Term :=
@@ -861,9 +871,9 @@ section ClassicalReasoning
   def InfinityAxiom : Term :=
     ∃ᶜ (Ind →' Ind) (λ f, (Injective Ind Ind f) ∧ᶜ (¬ᶜ (Surjective Ind Ind f)))
 
-  /-- 
+  /--
   **公理 4.4 (无穷公理)**
-  
+
   假设个体类型Ind是无限的。
   -/
   axiom infinity : IsTautology InfinityAxiom
@@ -882,11 +892,11 @@ section FormalizedMathematics
     自然数定义 (Peano算术)
     ============================================================ -/
 
-  /-- 
+  /--
   **定义 5.1 (自然数)**
-  
+
   在HOL中，自然数可以通过归纳类型或作为Ind的子集定义。
-  
+
   这里我们使用Peano公理的形式化：
   1. 0 是自然数
   2. 每个自然数有唯一的后继
@@ -912,20 +922,20 @@ section FormalizedMathematics
   def peanoAxioms : PeanoAxioms where
     zero_is_nat := zero
     succ := const succC
-    zero_not_succ := 
+    zero_not_succ :=
       ∀ᶜ Nat (λ n, ¬ᶜ (zero =[Nat] (app (const succC) n)))
     succ_injective :=
-      ∀ᶜ Nat (λ m, ∀ᶜ Nat (λ n, 
+      ∀ᶜ Nat (λ m, ∀ᶜ Nat (λ n,
         ((app (const succC) m) =[Nat] (app (const succC) n)) →ᶜ (m =[Nat] n)))
     induction :=
       ∀ᶜ (Nat →' Bool) (λ P,
-        ((app P zero) ∧ᶜ 
+        ((app P zero) ∧ᶜ
          (∀ᶜ Nat (λ n, (app P n) →ᶜ (app P (app (const succC) n)))))
         →ᶜ (∀ᶜ Nat (λ n, app P n)))
 
-  /-- 
+  /--
   **公理 5.1 (Peano公理)**
-  
+
   假设Peano算术的所有公理成立。
   -/
   axiom peano_zero_not_succ : IsTautology peanoAxioms.zero_not_succ
@@ -936,23 +946,23 @@ section FormalizedMathematics
     自然数运算
     ============================================================ -/
 
-  /-- 
+  /--
   **定义 5.2 (加法)**
-  
+
   加法通过原始递归定义:
   - m + 0 = m
   - m + S(n) = S(m + n)
   -/
   def add_def : Term :=
-    ∀ᶜ Nat (λ m, 
+    ∀ᶜ Nat (λ m,
       (app (app (const addC) m) zero =[Nat] m) ∧ᶜ
-      (∀ᶜ Nat (λ n, 
+      (∀ᶜ Nat (λ n,
         app (app (const addC) m) (app (const succC) n) =[Nat]
         app (const succC) (app (app (const addC) m) n))))
 
-  /-- 
+  /--
   **定义 5.3 (乘法)**
-  
+
   乘法通过原始递归定义:
   - m * 0 = 0
   - m * S(n) = (m * n) + m
@@ -964,9 +974,9 @@ section FormalizedMathematics
         app (app (const mulC) m) (app (const succC) n) =[Nat]
         app (app (const addC) (app (app (const mulC) m) n)) m)))
 
-  /-- 
+  /--
   **定理 5.1 (加法结合律)**
-  
+
   ∀l m n. (l + m) + n = l + (m + n)
   -/
   theorem add_assoc : IsTautology
@@ -992,11 +1002,13 @@ section FormalizedMathematics
        · 归纳原理在 IsTautology 框架下的应用
        · 等式替换的保持性
     -/
+    -- FORMAL-GAP: 需证加法结合律。策略: 对第三个参数n归纳；基础用add_def右投影；归纳步用add_def左投影和IH；需S函数的单射性
+    -- 难度: 高 | 依赖: add_def, peano_induction, succ_injective
     sorry
 
-  /-- 
+  /--
   **定理 5.2 (加法交换律)**
-  
+
   ∀m n. m + n = n + m
   -/
   theorem add_comm : IsTautology
@@ -1038,18 +1050,20 @@ section FormalizedMathematics
        · 双重归纳在 IsTautology 中的表达
        · 原始递归公理（add_def）的精确展开
     -/
+    -- FORMAL-GAP: 需证加法交换律。策略: 先证引理∀m, m+0=m和∀m n, m+S(n)=S(m+n)；再对n归纳；基础用右单位元引理；归纳步用右后继引理和IH
+    -- 难度: 高 | 依赖: add_def, add_assoc (或先独立证), peano_induction
     sorry
 
-  /-- 
+  /--
   **定理 5.3 (乘法分配律)**
-  
+
   ∀l m n. l * (m + n) = (l * m) + (l * n)
   -/
   theorem mul_distrib_add : IsTautology
       (∀ᶜ Nat (λ l, ∀ᶜ Nat (λ m, ∀ᶜ Nat (λ n,
         (app (app (const mulC) l) (app (app (const addC) m) n)) =[Nat]
-        (app (app (const addC) 
-          (app (app (const mulC) l) m)) 
+        (app (app (const addC)
+          (app (app (const mulC) l) m))
           (app (app (const mulC) l) n)))))) := by
     /- 证明策略（对 l 归纳）:
        基础: l = 0
@@ -1071,20 +1085,22 @@ section FormalizedMathematics
        · 多项式等式在原始递归定义下的验证
        · 归纳假设的精确应用
     -/
+    -- FORMAL-GAP: 需证乘法对加法分配律。策略: 对l归纳；基础用mul_def和add_def；归纳步用mul_def、add_def和加法交换/结合律重组项
+    -- 难度: 高 | 依赖: add_comm, add_assoc, mul_def, add_def, peano_induction
     sorry
 
   /- ============================================================
     归纳原理
     ============================================================ -/
 
-  /-- 
+  /--
   **定理 5.4 (数学归纳法原理)**
-  
+
   对于任意谓词 P : Nat → Bool:
   如果 P(0) 成立，且 ∀n. P(n) → P(S(n))，
   则 ∀n. P(n) 成立。
   -/
-  theorem induction_principle (P : Term) 
+  theorem induction_principle (P : Term)
       (hP : TypeEnv.empty ⊢ P : (Nat →' Bool))
       (hBase : IsTautology (app P zero))
       (hStep : IsTautology (∀ᶜ Nat (λ n, (app P n) →ᶜ (app P (app (const succC) n))))) :
@@ -1107,11 +1123,13 @@ section FormalizedMathematics
        · IsTautology 目前仅为定义，缺少推理规则
        · 需建立从公理到定理的推导体系
     -/
+    -- FORMAL-GAP: 需证数学归纳法原理。策略: 应用peano_induction公理；由hBase和hStep用IsTautology上的合取引入得前提；再用蕴含消除（MP）得结论
+    -- 难度: 高 | 依赖: peano_induction, IsTautology_and_intro, IsTautology_MP
     sorry
 
-  /-- 
+  /--
   **定义 5.4 (小于关系)**
-  
+
   m < n 定义为 ∃k. n = m + S(k)
   -/
   def lt (m n : Term) : Term :=
@@ -1119,16 +1137,16 @@ section FormalizedMathematics
 
   notation:50 m " <ᶜ " n => lt m n
 
-  /-- 
+  /--
   **定理 5.5 (良基归纳法)**
-  
+
   对于任意谓词 P : Nat → Bool:
   如果 ∀n. (∀m. m < n → P(m)) → P(n)，
   则 ∀n. P(n)。
   -/
   theorem well_founded_induction (P : Term)
       (hP : TypeEnv.empty ⊢ P : (Nat →' Bool))
-      (h : IsTautology (∀ᶜ Nat (λ n, 
+      (h : IsTautology (∀ᶜ Nat (λ n,
         (∀ᶜ Nat (λ m, (m <ᶜ n) →ᶜ (app P m))) →ᶜ (app P n)))) :
       IsTautology (∀ᶜ Nat (λ n, app P n)) := by
     -- 使用Peano归纳证明良基归纳（强归纳法）
@@ -1148,15 +1166,17 @@ section FormalizedMathematics
        · 强归纳到弱归纳的转换引理
        · 不等式推理在 Peano 算术中的形式化
     -/
+    -- FORMAL-GAP: 需证良基归纳法。策略: 定义Q(n):=∀m<n, P(m)；对Q用peano_induction；Q(0)空真；Q(S(n))由Q(n)和前提h推导；最后从Q(S(n))取m=n得P(n)
+    -- 难度: 高 | 依赖: peano_induction, lt 的定义展开, add_def, zero_not_succ
     sorry
 
   /- ============================================================
     集合论基础
     ============================================================ -/
 
-  /-- 
+  /--
   **定义 5.5 (集合作为谓词)**
-  
+
   在HOL中，类型为 σ → Bool 的项表示 σ 的子集（特征函数）。
   -/
   def Set (σ : SimpleType) : SimpleType := σ →' Bool
@@ -1173,22 +1193,22 @@ section FormalizedMathematics
 
   notation:50 S " ⊆[" σ "] " T => subset σ S T
 
-  /-- 
+  /--
   **定义 5.6 (幂集)**
-  
+
   幂集可以通过高阶类型构造。
   -/
   def Powerset (σ : SimpleType) : SimpleType := (σ →' Bool) →' Bool
 
-  /-- 
+  /--
   **定理 5.6 (Cantor定理)**
-  
+
   不存在从集合到其幂集的满射。
-  
+
   形式化: ¬∃f: σ → (σ → Bool). surjective f
   -/
   theorem cantor (σ : SimpleType) : IsTautology
-      (¬ᶜ (∃ᶜ (σ →' (Set σ)) (λ f, 
+      (¬ᶜ (∃ᶜ (σ →' (Set σ)) (λ f,
         ∀ᶜ (Set σ) (λ S, ∃ᶜ σ (λ x, app f x =[Set σ] S))))) := by
     -- 经典的Cantor对角线论证
     /- 证明策略:
@@ -1211,6 +1231,8 @@ section FormalizedMathematics
        · 自引用项的构造（对角线方法的核心）
        · 从语义等式导出语法矛盾
     -/
+    -- FORMAL-GAP: 需证Cantor定理。策略: 假设存在满射f；构造对角集合D:=λx.¬(f x x)；由满射性得∃d, f d = D；考虑D(d)=¬(f d d)=¬(D d)产生矛盾
+    -- 难度: 高 | 依赖: 等式的替换性 (eq_subst), 语义外延性, 存在量词规则
     sorry
 
 end FormalizedMathematics
@@ -1223,11 +1245,11 @@ section HOLProofSystem
 
   open SimpleType Term
 
-  /-- 
+  /--
   **定义 6.1 (HOL推导)**
-  
+
   HOL的推导关系 Γ ⊢ φ 表示从假设Γ可以推导出φ。
-  
+
   HOL证明系统包括:
   1. 等式推理规则（自反、对称、传递、替换）
   2. β/η转换规则
@@ -1238,65 +1260,65 @@ section HOLProofSystem
   inductive HOLProves : List Term → Term → Prop
     -- 假设规则
     | ax {Γ φ} : φ ∈ Γ → HOLProves Γ φ
-    
+
     -- ⊤ 引入
     | true_intro {Γ} : HOLProves Γ ⊤ᶜ
-    
+
     -- ⊥ 消除
     | false_elim {Γ φ} : HOLProves Γ ⊥ᶜ → HOLProves Γ φ
-    
+
     -- 蕴含引入
     | imp_intro {Γ φ ψ} : HOLProves (φ :: Γ) ψ → HOLProves Γ (φ →ᶜ ψ)
-    
+
     -- 蕴含消除 (Modus Ponens)
     | imp_elim {Γ φ ψ} : HOLProves Γ (φ →ᶜ ψ) → HOLProves Γ φ → HOLProves Γ ψ
-    
+
     -- 合取引入
     | and_intro {Γ φ ψ} : HOLProves Γ φ → HOLProves Γ ψ → HOLProves Γ (φ ∧ᶜ ψ)
-    
+
     -- 合取消除
     | and_elim_left {Γ φ ψ} : HOLProves Γ (φ ∧ᶜ ψ) → HOLProves Γ φ
     | and_elim_right {Γ φ ψ} : HOLProves Γ (φ ∧ᶜ ψ) → HOLProves Γ ψ
-    
+
     -- 析取引入
     | or_intro_left {Γ φ ψ} : HOLProves Γ φ → HOLProves Γ (φ ∨ᶜ ψ)
     | or_intro_right {Γ φ ψ} : HOLProves Γ ψ → HOLProves Γ (φ ∨ᶜ ψ)
-    
+
     -- 析取消除
-    | or_elim {Γ φ ψ χ} : 
-        HOLProves Γ (φ ∨ᶜ ψ) → 
-        HOLProves (φ :: Γ) χ → 
-        HOLProves (ψ :: Γ) χ → 
+    | or_elim {Γ φ ψ χ} :
+        HOLProves Γ (φ ∨ᶜ ψ) →
+        HOLProves (φ :: Γ) χ →
+        HOLProves (ψ :: Γ) χ →
         HOLProves Γ χ
-    
+
     -- 等式规则
     | eq_refl {Γ σ t} : HOLProves Γ (t =[σ] t)
     | eq_symm {Γ σ s t} : HOLProves Γ (s =[σ] t) → HOLProves Γ (t =[σ] s)
-    | eq_trans {Γ σ s t u} : 
+    | eq_trans {Γ σ s t u} :
         HOLProves Γ (s =[σ] t) → HOLProves Γ (t =[σ] u) → HOLProves Γ (s =[σ] u)
-    
+
     -- β转换
     | beta_conv {Γ σ t s} : HOLProves Γ ((app (lam σ t) s) =[σ] (t[0 ↦ s]))
-    
+
     -- 全称引入 (需要x不在Γ中自由出现)
     | forall_intro {Γ σ φ} : HOLProves Γ (lam σ φ) → HOLProves Γ (const (forallC σ) `app` (lam σ φ))
-    
+
     -- 全称消除
-    | forall_elim {Γ σ φ t} : 
-        HOLProves Γ (const (forallC σ) `app` (lam σ φ)) → 
+    | forall_elim {Γ σ φ t} :
+        HOLProves Γ (const (forallC σ) `app` (lam σ φ)) →
         HOLProves Γ (app (lam σ φ) t)
-    
+
     -- 排中律 (经典逻辑)
     | lem {Γ φ} : HOLProves Γ (φ ∨ᶜ (¬ᶜ φ))
-    
+
     -- 双重否定消除 (经典逻辑)
     | dne {Γ φ} : HOLProves Γ (¬ᶜ (¬ᶜ φ)) → HOLProves Γ φ
 
   notation:50 Γ " ⊢ᴴ " φ => HOLProves Γ φ
 
-  /-- 
+  /--
   **定理 6.1 (演绎定理)**
-  
+
   Γ, φ ⊢ ψ 当且仅当 Γ ⊢ φ → ψ
   -/
   theorem deduction_theorem {Γ : List Term} {φ ψ : Term} :
@@ -1305,11 +1327,13 @@ section HOLProofSystem
     · exact HOLProves.imp_intro
     · intro h
       have hφ : φ :: Γ ⊢ᴴ φ := HOLProves.ax (by simp)
+      -- FORMAL-GAP: 需证弱化引理：若Γ⊢ᴴφ则φ::Γ⊢ᴴφ。策略: 对HOLProves归纳；ax情形用List.mem；其他情形用IH和弱化规则
+      -- 难度: 中 | 依赖: HOLProves.weakening (需先证)
       exact HOLProves.imp_elim (show φ :: Γ ⊢ᴴ (φ →ᶜ ψ) by sorry) hφ
 
-  /-- 
+  /--
   **定理 6.2 (可靠性)**
-  
+
   如果 Γ ⊢ᴴ φ，则 φ 在所有使Γ为真的模型中为真。
   -/
   theorem soundness {Γ : List Term} {φ : Term}
@@ -1338,13 +1362,15 @@ section HOLProofSystem
        · β-规约的语义保持性（替换引理）
        · 环境 Γ 中假设的语义真值性
     -/
+    -- FORMAL-GAP: 需证HOL可靠性。策略: 对HOLProves归纳；定义模型语义和赋值函数；处理每个推理规则的语义保持；全称量词情形需处理赋值更新；β转换用替换引理
+    -- 难度: 极高 | 依赖: 形式化语义解释函数, 替换引理 (substitution lemma), 模型论基础
     sorry
 
-  /-- 
+  /--
   **定理 6.3 (完备性 - 概要)**
-  
+
   如果 φ 在所有模型中为真，则 ⊢ᴴ φ。
-  
+
   注意: HOL的完备性证明比一阶逻辑复杂得多，
   因为HOL是二阶逻辑的一种形式，而二阶逻辑没有完备性。
   这里的完备性是指相对于Henkin语义的完备性。
@@ -1381,6 +1407,8 @@ section HOLProofSystem
        · 高阶 Lindenbaum 构造
        · 与一阶完备性相比，HOL 需要处理函数类型的解释
     -/
+    -- FORMAL-GAP: 需证Henkin语义完备性。策略: 构造Henkin模型（论域D_σ满足组合封闭性）；Lindenbaum型极大一致集；真值引理；典范模型中可证公式为真
+    -- 难度: 极高 | 依赖: Henkin域构造, Lindenbaum引理, 真值引理, 可靠性定理
     sorry
 
 end HOLProofSystem
@@ -1397,29 +1425,29 @@ section Examples
     逻辑定律示例
     ============================================================ -/
 
-  /-- 
+  /--
   **示例 7.1 (德摩根律)**
-  
+
   ¬(A ∧ B) ↔ (¬A ∨ ¬B)
   -/
   def deMorgan1 (A B : Term) : Term :=
     (¬ᶜ (A ∧ᶜ B)) ↔ᶜ ((¬ᶜ A) ∨ᶜ (¬ᶜ B))
 
-  /-- 
+  /--
   **示例 7.2 (量词否定)**
-  
+
   ¬∀x. P(x) ↔ ∃x. ¬P(x)
   -/
   def quantifierNeg (σ : SimpleType) (P : Term) : Term :=
-    (¬ᶜ (const (forallC σ) `app` (lam σ P))) ↔ᶜ 
+    (¬ᶜ (const (forallC σ) `app` (lam σ P))) ↔ᶜ
     (const (existsC σ) `app` (lam σ (¬ᶜ P)))
 
-  /-- 
+  /--
   **定理 7.1 (德摩根律可证)**
-  
+
   在HOL中，德摩根律是可证明的。
   -/
-  theorem deMorgan_provable (A B : Term) 
+  theorem deMorgan_provable (A B : Term)
       (hA : TypeEnv.empty ⊢ A : Bool) (hB : TypeEnv.empty ⊢ B : Bool) :
       IsTautology (deMorgan1 A B) := by
     /- 证明策略（真值表/语义验证）:
@@ -1448,33 +1476,35 @@ section Examples
        · IsTautology 上的情况分析需要模型论工具
        · 或: 直接在 HOLProves 中构造语法证明（更长但更基础）
     -/
+    -- FORMAL-GAP: 需证德摩根律是重言式。策略: 对A,B的语义值分四种情况（true/false组合）；每种情况用simp和定义展开验证；利用Bool二值性（LEM_bool）
+    -- 难度: 中 | 依赖: LEM_bool, interp_and, interp_or, interp_not 的语义定义
     sorry
 
   /- ============================================================
     数学定理示例
     ============================================================ -/
 
-  /-- 
+  /--
   **示例 7.3 (数学归纳法应用)**
-  
+
   证明: 1 + 2 + ... + n = n(n+1)/2
-  
+
   在HOL中，这可以表示为:
   ∀n. sum(n) = n * (n + 1) / 2
   其中 sum 是通过原始递归定义的。
   -/
 
-  /-- 
+  /--
   **示例 7.4 (存在性定理)**
-  
+
   证明: ∀n. ∃m. m > n (自然数无界)
   -/
   def naturalsUnbounded : Term :=
     ∀ᶜ Nat (λ n, ∃ᶜ Nat (λ m, n <ᶜ m))
 
-  /-- 
+  /--
   **定理 7.2 (自然数无界)**
-  
+
   自然数集合没有上界。
   -/
   theorem naturals_unbounded : IsTautology naturalsUnbounded := by
@@ -1499,24 +1529,26 @@ section Examples
        · 存在量词的 witness 构造在 IsTautology 中的表达
        · add_def 的展开和等式推理
     -/
+    -- FORMAL-GAP: 需证自然数无界。策略: 对任意n取witness m=S(n)；展开<ᶜ定义；取k=0；用add_def验证n+S(0)=S(n+0)=S(n)
+    -- 难度: 中 | 依赖: add_def, exists_intro (语义层面), zero_is_nat
     sorry
 
   /- ============================================================
     HOL表达能力展示
     ============================================================ -/
 
-  /-- 
+  /--
   **示例 7.5 (集合论定理)**
-  
+
   证明: 空集是任何集合的子集
   -/
   def emptySetSubset (σ : SimpleType) (S : Term) : Term :=
     let emptySet := lam σ ⊥ᶜ
     emptySet ⊆[σ] S
 
-  /-- 
+  /--
   **定理 7.3 (空集性质)**
-  
+
   空集是任何集合的子集。
   -/
   theorem empty_set_subset (σ : SimpleType) (S : Term)
@@ -1541,11 +1573,13 @@ section Examples
        · β-规约的语义等价性
        · 假前件蕴含式的语义有效性
     -/
+    -- FORMAL-GAP: 需证空集是任何集合的子集。策略: 展开subset定义；对任意x，x∈emptySet = app (lam σ ⊥ᶜ) x = ⊥ᶜ（β规约）；⊥→anything恒真
+    -- 难度: 低 | 依赖: beta_conv 语义, interp_false, interp_imp
     sorry
 
-  /-- 
+  /--
   **示例 7.6 (函数性质)**
-  
+
   证明: 函数复合的结合律
   -/
   def composeAssoc (σ τ ρ υ : SimpleType) (f g h : Term) : Term :=
@@ -1565,41 +1599,41 @@ section MetaTheory
 
   open SimpleType Term
 
-  /-- 
+  /--
   **定义 8.1 (强规范化)**
-  
+
   类型系统满足强规范化，如果每个良类型的项都有有限的规约链
   并最终达到范式。
   -/
   def StrongNormalization : Prop :=
     ∀ (t : Term) (σ : SimpleType) (h : TypeEnv.empty ⊢ t : σ),
-    ∃ (n : Nat) (nf : Term), 
-      IsNormalForm nf ∧ 
+    ∃ (n : Nat) (nf : Term),
+      IsNormalForm nf ∧
       t ↠β nf
 
-  /-- 
+  /--
   **定理 8.1 (简单类型λ演算的强规范化)**
-  
+
   HOL的基础类型系统（简单类型λ演算）满足强规范化。
   -/
   axiom stlc_strong_normalization : StrongNormalization
 
-  /-- 
+  /--
   **定义 8.2 (一致性)**
-  
+
   HOL是一致的，如果不存在项 t 使得 ⊢ t : ⊥ᶜ。
   -/
   def HOLConsistent : Prop :=
     ¬∃ (t : Term), TypeEnv.empty ⊢ t : Bool ∧ IsTautology (t ∧ᶜ (¬ᶜ t))
 
-  /-- 
+  /--
   **定理 8.2 (HOL一致性)**
-  
+
   HOL是相对一致的：如果集合论一致，则HOL一致。
-  
+
   这是因为HOL可以在ZFC中解释。
   -/
-  theorem hol_relative_consistency 
+  theorem hol_relative_consistency
       (hZFC : ¬∃ (φ : Prop), φ ∧ ¬φ) : HOLConsistent := by
     -- 通过模型论证明（相对一致性）
     /- 证明策略:
@@ -1625,11 +1659,13 @@ section MetaTheory
        · HOL 常量的解释（特别是 ε 算子需要选择公理）
        · 从语法一致性到语义模型的桥接
     -/
+    -- FORMAL-GAP: 需证HOL相对一致性。策略: 在ZFC中构造HOL标准模型；类型层次结构到集合论编码；常量解释（ε算子需AC）；证明可靠性；由t∧¬t的语义矛盾得语法一致性
+    -- 难度: 极高 | 依赖: ZFC模型构造, 语义解释函数, 可靠性定理, 选择公理
     sorry
 
-  /-- 
+  /--
   **定义 8.3 (表达能力)**
-  
+
   HOL可以表达大多数数学概念，但存在一些限制：
   1. 不能表达所有范畴论构造（需要依赖类型）
   2. 类型是固定的，没有类型级计算
