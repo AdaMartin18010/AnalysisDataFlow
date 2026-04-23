@@ -182,6 +182,7 @@ lemma weakening {Γ t T} (h : Γ ⊢ t : T) :
          对 x 的查找结果为 S。但 t' 需要 x:T₁，故要求 S = T₁。
          此情形在 weakening 中自动满足（类型不冲突）。
       -/
+      -- FORMAL-GAP: 需证明weakening在lambda抽象情形成立。策略: 对x≠y应用环境交换引理(context_exchange)后对t'用IH；对x=y需确认extendContext取第一个匹配的语义一致性。难度: 高 | 依赖: context_exchange引理(对hasType结构归纳可证)
       sorry
   | app ih₁ ih₂ =>
       intros x S Hnotin
