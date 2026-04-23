@@ -48,6 +48,9 @@
     - [7.3 Event Time处理思维导图](#73-event-time处理思维导图)
     - [7.4 Event Time处理策略决策树](#74-event-time处理策略决策树)
     - [7.5 时间语义与处理策略定位矩阵](#75-时间语义与处理策略定位矩阵)
+    - [7.6 Watermark生成策略思维导图](#76-watermark生成策略思维导图)
+    - [7.7 Watermark策略选择决策树](#77-watermark策略选择决策树)
+    - [7.8 Watermark策略对比矩阵](#78-watermark策略对比矩阵)
   - [9. 引用参考 (References)](#9-引用参考-references)
 
 ---
@@ -837,6 +840,161 @@ quadrantChart
 
 ---
 
+### 7.6 Watermark生成策略思维导图
+
+以下思维导图以 **"Watermark生成策略"** 为中心，放射状展开核心概念、生成策略、调优参数及与 Window/Trigger 的关联：
+
+```mermaid
+mindmap
+  root((Watermark<br/>生成策略))
+    核心概念
+      事件时间
+        业务产生时刻
+        不可被系统修改
+      Watermark
+        进度信标
+        单调不减函数
+      乱序
+        网络延迟
+        背压与重传
+        批量传输
+      延迟数据
+        迟到判定
+        允许延迟期
+    生成策略
+      固定延迟
+        forBoundedOutOfOrderness
+        最大乱序时间 δ
+        适用于已知边界
+      启发式 Punctuated
+        基于数据内容标点
+        自定义生成器
+        适用于特殊标记
+      Idle Timeout
+        withIdleness
+        空闲源检测
+        防止进度阻塞
+      对齐 Aligned
+        多输入取最小值
+        全局一致性保证
+      非对齐 Unaligned
+        逐记录推进
+        最低延迟
+        实现复杂
+    调优参数
+      最大乱序时间
+        过小导致数据丢失
+        过大增加延迟
+      Idle超时
+        默认无空闲检测
+        建议 1-5 分钟
+      Emit策略
+        周期发射
+        逐记录发射
+        混合模式
+    与Window Trigger关联
+      Window触发
+        Watermark ≥ window_end
+        触发窗口计算
+      Trigger控制
+        ContinuousEventTimeTrigger
+        多次触发更新
+      延迟数据侧输出
+        sideOutputLateData
+        OutputTag隔离
+```
+
+**四层结构说明**：
+
+| 层级 | 内容 | 作用 |
+|------|------|------|
+| **第一层** | 核心概念 | 建立 Watermark 生成的术语与语义基础 |
+| **第二层** | 生成策略 | 提供可直接实施的 Watermark 技术选型 |
+| **第三层** | 调优参数 | 指导工程配置与性能权衡 |
+| **第四层** | 与 Window/Trigger 关联 | 明确 Watermark 如何驱动窗口生命周期 |
+
+---
+
+### 7.7 Watermark策略选择决策树
+
+以下决策树针对 **Watermark 生成策略** 的选择场景，从数据源可靠性、分区特性和延迟敏感度三个维度提供决策路径：
+
+```mermaid
+flowchart TD
+    Start([Watermark策略选择]) --> Q1{数据源时间戳<br/>是否可靠?}
+    Q1 -->|可靠| Q2{乱序程度是否<br/>已知且有界?}
+    Q1 -->|不可靠/部分丢失| A1[启发式Watermark<br/>Punctuated / 自定义生成器]
+
+    Q2 -->|是| A2[固定延迟Watermark<br/>forBoundedOutOfOrderness]
+    Q2 -->|否| A1
+
+    A2 --> Q3{多分区是否存在<br/>慢分区或空闲源?}
+    A1 --> Q3
+
+    Q3 -->|是| A3[对齐Watermark + Idle Timeout<br/>withIdleness防止阻塞]
+    Q3 -->|否| Q4{端到端延迟<br/>是否极端敏感?}
+
+    A3 --> Q4
+    Q4 -->|是| A4[非对齐Watermark<br/>Unaligned / 逐记录推进]
+    Q4 -->|否| A5[标准对齐Watermark]
+
+    style A1 fill:#fff9c4,stroke:#f57f17
+    style A2 fill:#c8e6c9,stroke:#2e7d32
+    style A3 fill:#e3f2fd,stroke:#1565c0
+    style A4 fill:#ffcdd2,stroke:#c62828
+    style A5 fill:#c8e6c9,stroke:#2e7d32
+```
+
+**决策条件说明**：
+
+| 分支 | 决策条件 | 核心配置 | 适用场景 |
+|------|----------|----------|----------|
+| **分支1: 启发式** | 时间戳不可靠或乱序无界 | 自定义 `WatermarkGenerator` / 标点触发 | 日志补传、边缘网关批量上报 |
+| **分支2: 固定延迟** | 时间戳可靠且乱序有界已知 | `forBoundedOutOfOrderness(δ)` | 金融交易、Kafka单分区日志 |
+| **分支3: 对齐+Idle** | 多分区存在慢分区或夜间空闲 | `withIdleness(Duration)` | IoT多传感器、Union多源 |
+| **分支4: 非对齐** | 端到端延迟要求极高（<100ms） | 非对齐Checkpoint + 最小Watermark延迟 | 高频交易、实时竞价 |
+
+---
+
+### 7.8 Watermark策略对比矩阵
+
+以下矩阵在 **延迟-完整性**（X轴）与 **实现复杂度**（Y轴）二维空间中定位各 Watermark 策略：
+
+```mermaid
+quadrantChart
+    title Watermark策略对比矩阵：延迟-完整性与实现复杂度
+    x-axis 低延迟 --> 高完整性
+    y-axis 简单实现 --> 复杂实现
+    quadrant-1 高完整-复杂实现:生产级精确保证
+    quadrant-2 高完整-简单实现:推荐首选
+    quadrant-3 低延迟-简单实现:快速近似
+    quadrant-4 低延迟-复杂实现:专家级精细调优
+    固定延迟: [0.5, 0.15]
+    启发式Punctuated: [0.6, 0.65]
+    Per-Partition: [0.35, 0.5]
+    对齐Watermark: [0.85, 0.25]
+    非对齐Watermark: [0.15, 0.85]
+```
+
+**矩阵解读**：
+
+| 策略 | 定位 | 延迟特征 | 完整性特征 | 实现复杂度 | 推荐场景 |
+|------|------|----------|------------|------------|----------|
+| **固定延迟** | Q2 附近 | 中等（δ延迟） | 中高（有界保证） | 低（单参数配置） | 通用首选，已知乱序边界 |
+| **启发式 Punctuated** | Q1 偏左 | 取决于数据密度 | 取决于启发式质量 | 高（需自定义逻辑） | 数据携带特殊标点（心跳包） |
+| **Per-Partition** | Q4 偏左 | 低（分区独立推进） | 低（分区失衡风险） | 中（需分区状态管理） | 分区延迟差异大的场景 |
+| **对齐 Watermark** | Q2 偏右 | 高（受限于最慢输入） | 高（全局一致性） | 低（框架内置） | 多输入Join/Union默认 |
+| **非对齐 Watermark** | Q4 右上 | 极低（逐记录） | 低（无全局边界保证） | 极高（需配合非对齐Checkpoint） | 极端延迟敏感（<100ms） |
+
+> **选型建议**：
+>
+> - **默认选择**：固定延迟 `forBoundedOutOfOrderness`，参数易调且覆盖80%场景
+> - **多源场景**：对齐 Watermark + `withIdleness` 解决慢分区阻塞
+> - **特殊数据**：启发式 Punctuated 利用数据自身语义推进 Watermark
+> - **极端延迟**：仅在端到端延迟要求 <100ms 时考虑非对齐方案，需承担完整性风险
+
+---
+
 ## 9. 引用参考 (References)
 
 [^1]: T. Akidau et al., "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing," *PVLDB*, 8(12), 2015. <https://doi.org/10.14778/2824032.2824076>
@@ -855,6 +1013,10 @@ quadrantChart
 
 [^8]: CEP 复杂事件处理模式，详见 [Flink/03-api-patterns/flink-cep-deep-dive.md](../../Flink/03-api/03.02-table-sql-api/flink-sql-window-functions-deep-dive.md)
 
+
+---
+
+*文档版本: v1.2 | 更新日期: 2026-04-24 | 状态: 已完成*
 
 ---
 

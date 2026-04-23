@@ -22,13 +22,13 @@
     - [Prop-K-02-01 (窗口时间覆盖完备性)](#prop-k-02-01-窗口时间覆盖完备性)
     - [Prop-K-02-02 (窗口分配确定性)](#prop-k-02-02-窗口分配确定性)
   - [3. 关系建立 (Relations)](#3-关系建立-relations)
-    - [关系: Windowed Aggregation `↦` Def-S-04-05]()
+    - [关系: Windowed Aggregation `↦` Def-S-04-05](#关系-windowed-aggregation--def-s-04-05)
     - [关系: 窗口聚合与 Watermark](#关系-窗口聚合与-watermark)
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [4.1 窗口类型选择决策矩阵](#41-窗口类型选择决策矩阵)
     - [4.2 触发器策略对比分析](#42-触发器策略对比分析)
     - [4.3 驱逐器与增量计算的权衡](#43-驱逐器与增量计算的权衡)
-  - [5. 形式证明 / 工程论证]()
+  - [5. 形式证明 / 工程论证](#5-形式证明--工程论证)
     - [Thm-K-02-01 (窗口聚合正确性条件)](#thm-k-02-01-窗口聚合正确性条件)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [6.1 Flink DataStream API 示例](#61-flink-datastream-api-示例)
@@ -37,6 +37,8 @@
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
     - [窗口类型对比图](#窗口类型对比图)
     - [窗口聚合执行流程](#窗口聚合执行流程)
+    - [Session Window模式思维导图](#session-window模式思维导图)
+    - [窗口类型选择决策树](#窗口类型选择决策树)
   - [8. 形式化保证 (Formal Guarantees)](#8-形式化保证-formal-guarantees)
     - [8.1 依赖的形式化定义](#81-依赖的形式化定义)
     - [8.2 满足的形式化性质](#82-满足的形式化性质)
@@ -861,6 +863,68 @@ flowchart TD
 - 蓝色节点：触发计算后执行聚合
 - 紫色节点：结果输出
 - 红色节点：迟到数据处理
+
+---
+
+### Session Window模式思维导图
+
+以下思维导图以"Session Window模式"为中心，从核心概念、与其他窗口类型的区别、适用场景和实现机制四个维度进行放射状展开：
+
+```mermaid
+mindmap
+  root((Session Window模式))
+    核心概念
+      Session
+      Gap
+      动态窗口合并
+      事件时间驱动
+    与Tumbling/Sliding区别
+      Tumbling固定大小不重叠
+      Sliding固定大小可重叠
+      Session动态边界数据驱动
+    适用场景
+      用户行为分析
+      点击流会话
+    实现机制
+      EventTimeSessionWindows
+      ProcessingTimeSessionWindows
+```
+
+**图说明**：
+
+- **核心概念**：Session Window 以 Gap（会话超时间隙）为核心参数，当相邻记录的事件时间间隔超过 Gap 时触发窗口关闭，支持动态窗口合并
+- **区别**：与 Tumbling（固定大小、互不重叠）和 Sliding（固定大小、允许重叠）不同，Session Window 的边界由数据本身驱动，而非预设的时间刻度
+- **适用场景**：特别适合用户行为分析、点击流会话追踪等需要按"活动周期"而非"固定时间桶"聚合的业务
+- **实现机制**：Flink 提供 `EventTimeSessionWindows`（基于事件时间，保证语义正确性）和 `ProcessingTimeSessionWindows`（基于处理时间，延迟更低但可能受乱序影响）
+
+---
+
+### 窗口类型选择决策树
+
+以下决策树展示了如何根据数据特征和聚合需求选择最合适的窗口类型：
+
+```mermaid
+flowchart TD
+    A[数据特征与聚合需求] --> B{数据有明确的会话边界?}
+    B -->|是| C[Session Window<br/>动态边界/用户行为分析]
+    B -->|否| D{数据需要固定时间聚合?}
+    D -->|是| E[Tumbling Window<br/>固定大小/周期统计]
+    D -->|否| F{数据需要滑动统计?}
+    F -->|是| G[Sliding Window<br/>重叠窗口/移动平均]
+    F -->|否| H[Global Window<br/>全局聚合/自定义触发]
+
+    style C fill:#e1bee7,stroke:#6a1b9a
+    style E fill:#bbdefb,stroke:#1565c0
+    style G fill:#fff9c4,stroke:#f57f17
+    style H fill:#c8e6c9,stroke:#2e7d32
+```
+
+**图说明**：
+
+- **Session Window（紫色）**：当数据存在天然的"会话边界"（如用户访问间隙、设备活动周期）时选择，窗口大小由数据动态决定
+- **Tumbling Window（蓝色）**：当业务需要固定时间周期（每分钟、每小时）的独立统计时选择，窗口间互不重叠
+- **Sliding Window（黄色）**：当需要平滑的滑动统计（如过去5分钟每10秒刷新）时选择，允许窗口重叠
+- **Global Window（绿色）**：当需要全局聚合（如全局Top-N）或完全由自定义触发器驱动计算时选择
 
 ---
 

@@ -54,6 +54,9 @@
     - [7.2 State 类型选择决策树](#72-state-类型选择决策树)
     - [7.3 Checkpoint 生命周期时序图](#73-checkpoint-生命周期时序图)
     - [7.4 TTL 清理策略对比](#74-ttl-清理策略对比)
+    - [7.5 状态管理完整架构关联树](#75-状态管理完整架构关联树)
+    - [7.6 状态一致性保证推理树](#76-状态一致性保证推理树)
+    - [7.7 状态后端选型概念矩阵](#77-状态后端选型概念矩阵)
   - [8. 性能调优与故障排查](#8-性能调优与故障排查)
     - [8.1 State Backend 选择指南](#81-state-backend-选择指南)
       - [8.1.1 决策矩阵](#811-决策矩阵)
@@ -1335,6 +1338,156 @@ graph TB
 
 ---
 
+### 7.5 状态管理完整架构关联树
+
+以下架构关联树展示了 Flink 状态管理从用户 API 到持久化的完整分层调用关系与数据流路径：
+
+```mermaid
+graph TB
+    subgraph API_Layer ["用户 API 层"]
+        VS[ValueState<br/>单值读写]
+        LS[ListState<br/>序列追加]
+        MS[MapState<br/>键值映射]
+        RS[ReducingState<br/>增量归约]
+        AS[AggregatingState<br/>复杂聚合]
+    end
+
+    subgraph Runtime_Layer ["运行时层"]
+        SBI[StateBackend 接口<br/>AbstractStateBackend]
+        REG[状态注册中心<br/>StateRegistry]
+        SNAPS[状态快照策略<br/>SnapshotStrategy]
+    end
+
+    subgraph Storage_Layer ["存储层"]
+        HMB[HashMapStateBackend<br/>JVM Heap]
+        ROCKS[EmbeddedRocksDBStateBackend<br/>LSM-Tree / SST]
+        CHLG[ChangelogStateBackend<br/>实时物化日志]
+    end
+
+    subgraph Persistence_Layer ["持久化层"]
+        CPS[Checkpoint 存储<br/>分布式文件系统]
+        ICP[增量 Checkpoint<br/>SST 差异捕获]
+        LREC[本地恢复<br/>Local Recovery]
+    end
+
+    VS --> SBI
+    LS --> SBI
+    MS --> SBI
+    RS --> SBI
+    AS --> SBI
+
+    SBI --> REG
+    REG --> SNAPS
+
+    SNAPS --> HMB
+    SNAPS --> ROCKS
+    SNAPS --> CHLG
+
+    HMB --> CPS
+    ROCKS --> ICP
+    CHLG --> CPS
+
+    HMB -.-> LREC
+    ROCKS -.-> LREC
+    CHLG -.-> LREC
+    CPS -.-> LREC
+
+    style API_Layer fill:#e1f5fe
+    style Runtime_Layer fill:#fff3e0
+    style Storage_Layer fill:#e8f5e9
+    style Persistence_Layer fill:#fce4ec
+```
+
+**分层说明**：
+
+1. **用户 API 层**：开发者直接交互的五种 Keyed State 类型，所有操作最终通过 `StateBackend` 接口下沉到运行时。
+2. **运行时层**：`StateBackend` 负责状态注册、生命周期管理与快照策略调度，是连接 API 与存储的桥梁。
+3. **存储层**：三种主要后端实现。`HashMapStateBackend` 提供纳秒级延迟；`EmbeddedRocksDBStateBackend` 通过 LSM-Tree 支撑大状态；`ChangelogStateBackend` 在基础后端之上叠加实时变更物化，实现秒级恢复。
+4. **持久化层**：Checkpoint 数据最终写入分布式存储（HDFS/S3）。`增量 Checkpoint` 仅捕获 SST 文件差异；`本地恢复` 利用 TaskManager 本地磁盘副本加速重启[^6][^8]。
+
+---
+
+### 7.6 状态一致性保证推理树
+
+以下推理树自底向上推导 Flink 状态一致性保证的成立条件：
+
+```mermaid
+graph BT
+    subgraph Foundation ["底层保证"]
+        ATM[状态后端原子性写入<br/>Atomic State Write]
+        SER[确定性序列化<br/>Deterministic Serialization]
+        WAL[预写日志 / WAL<br/>Crash-Safe Append]
+    end
+
+    subgraph Mechanism ["中层机制"]
+        BAR[Checkpoint Barrier 同步<br/>Barrier Alignment / Unaligned]
+        ASYNC[异步快照执行<br/>Async Snapshot without Blocking]
+        INC[增量状态捕获<br/>Incremental / Changelog Capture]
+    end
+
+    subgraph Guarantee ["顶层保证"]
+        REC[故障恢复后状态精确恢复<br/>Exactly-Once Recovery]
+        CONS[全局一致性状态视图<br/>Global Consistent State View]
+    end
+
+    ATM --> BAR
+    SER --> BAR
+    WAL --> BAR
+    ATM --> ASYNC
+    SER --> ASYNC
+    WAL --> INC
+
+    BAR --> REC
+    ASYNC --> REC
+    INC --> REC
+
+    BAR --> CONS
+    ASYNC --> CONS
+    REC --> CONS
+
+    style Foundation fill:#e8f5e9
+    style Mechanism fill:#fff3e0
+    style Guarantee fill:#e1f5fe
+```
+
+**推导链条**：
+
+- **底层 → 中层**：状态后端通过原子性写入与确定性序列化，确保任意时刻状态表示是明确的；预写日志（WAL）保证进程崩溃后不丢失已确认写入。这为 Checkpoint Barrier 的同步对齐提供了可快照的确定性状态[^2][^7]。
+- **中层 → 顶层**：Barrier 同步定义了全局一致的时间截断点；异步快照避免阻塞数据流，保证快照期间的持续处理；增量/ Changelog 捕获机制在不牺牲一致性的前提下降低 I/O 开销。三者共同构成恢复时所需的完整状态证据[^6][^8]。
+- **顶层结论**：当故障发生后，系统从最新成功 Checkpoint 恢复，并结合数据源可重放特性，最终重建的状态与故障前全局一致视图等价，即满足 `restore(CP_n) = S_{t_n}`（参见 Prop-F-02-71）。
+
+---
+
+### 7.7 状态后端选型概念矩阵
+
+以下矩阵从状态规模与延迟-吞吐权衡两个维度对比四种典型后端：
+
+```mermaid
+quadrantChart
+    title 状态后端选型概念矩阵
+    x-axis 小状态 --> 大状态
+    y-axis 低延迟 --> 高吞吐
+    quadrant-1 大状态 / 高吞吐
+    quadrant-2 大状态 / 低延迟
+    quadrant-3 小状态 / 低延迟
+    quadrant-4 小状态 / 高吞吐
+    MemoryStateBackend: [0.15, 0.15]
+    FsStateBackend: [0.35, 0.40]
+    RocksDBStateBackend: [0.80, 0.65]
+    ChangelogStateBackend: [0.70, 0.88]
+```
+
+**矩阵解读**：
+
+| 后端 | 定位 | 核心权衡 |
+|------|------|---------|
+| **MemoryStateBackend** | 左下象限 | 极小状态（< 100 MB）、极低延迟（ns 级），但吞吐受 JVM GC 与堆容量限制 |
+| **FsStateBackend** | 左中象限 | 中小状态、内存+文件系统混合，已被 Flink 1.13+ 的 `HashMapStateBackend + CheckpointStorage` 替代 |
+| **RocksDBStateBackend** | 右中象限 | 大状态（TB 级）可落地磁盘，LSM-Tree 顺序写换取高吞吐，点查延迟在 μs–ms 级 |
+| **ChangelogStateBackend** | 右上象限 | 在 RocksDB/HashMap 之上叠加实时变更日志，Checkpoint 间隔可放大，整体吞吐最高，恢复延迟降至秒级[^4][^9] |
+
+---
+
 ## 8. 性能调优与故障排查
 
 ### 8.1 State Backend 选择指南
@@ -1819,11 +1972,17 @@ flink run -s <savepoint-path> -c <main-class> <jar-file>
 
 [^5]: Conduktor, "Flink State Management and Checkpointing", 2024. <https://conduktor.io/glossary/flink-state-management-and-checkpointing>
 
+[^6]: Apache Flink Documentation, "Checkpointing", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/checkpointing/>
 
+[^7]: P. O'Neil et al., "The Log-Structured Merge-Tree (LSM-Tree)", Acta Informatica, 33(4), 1996.
+
+[^8]: Apache Flink Documentation, "Working with State", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/state/>
+
+[^9]: Apache Flink, FLIP-158: "Generalized Incremental Checkpoints", <https://cwiki.apache.org/confluence/display/FLINK/FLIP-158>
 
 ---
 
-*文档版本: v1.1 | 最后更新: 2026-04-06 | 状态: 已完成权威对齐 | 形式化等级: L4*
+*文档版本: v1.2 | 最后更新: 2026-04-24 | 状态: 已补充思维表征与引用 | 形式化等级: L4*
 
 ---
 

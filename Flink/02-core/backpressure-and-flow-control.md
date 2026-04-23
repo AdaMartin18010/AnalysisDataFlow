@@ -44,6 +44,9 @@
     - [图 7.1: Credit-based 背压在 Flink 流水线中的传播](#图-71-credit-based-背压在-flink-流水线中的传播)
     - [图 7.2: 控制-执行-数据层关联图](#图-72-控制-执行-数据层关联图)
     - [图 7.3: 背压诊断与调优决策树](#图-73-背压诊断与调优决策树)
+    - [图 7.4: 背压机制架构关联树](#图-74-背压机制架构关联树)
+    - [图 7.5: 背压到流控推导树](#图-75-背压到流控推导树)
+    - [图 7.6: 背压策略概念矩阵](#图-76-背压策略概念矩阵)
   - [8. 源码深度分析 (Source Code Analysis)](#8-源码深度分析-source-code-analysis)
     - [8.1 Credit-based 流控源码分析](#81-credit-based-流控源码分析)
       - [8.1.1 核心类与整体架构](#811-核心类与整体架构)
@@ -531,6 +534,150 @@ flowchart TD
 
 ---
 
+### 图 7.4: 背压机制架构关联树
+
+以下架构关联树展示了 Flink 背压机制在 Task、TaskManager 与 JobManager 三个层级之间的完整信号传播关系。子图嵌套体现了从局部缓冲到全局调度的层次化控制结构。
+
+```mermaid
+graph TB
+    subgraph "Task级别 (执行层)"
+        T1["LocalBufferPool<br/>本地缓冲区池"]
+        T2["NetworkBufferPool<br/>全局网络缓冲池"]
+        T3["Credit机制<br/>信用值授予与回收"]
+        T4["ResultSubPartition<br/>发送端缓冲队列"]
+        T5["RemoteInputChannel<br/>接收端通道"]
+        T6["Buffer Debloater<br/>动态消胀调节器"]
+    end
+
+    subgraph "TaskManager级别 (传输层)"
+        M1["Netty网络传输层"]
+        M2["本地通道 LocalChannel"]
+        M3["远程通道 RemoteChannel"]
+        M4["CreditAnnouncement<br/>信用公告消息"]
+        M5["PartitionRequestClient<br/>分区请求客户端"]
+    end
+
+    subgraph "JobManager级别 (控制层)"
+        J1["调度器 Scheduler"]
+        J2["资源管理器 ResourceManager"]
+        J3["自适应调度器<br/>Adaptive Scheduler"]
+        J4["动态扩缩容决策"]
+        J5["Slot分配与回收"]
+    end
+
+    T1 -->|申请/归还内存段| T2
+    T5 -->|初始化时授予| T3
+    T3 -->|数据消费后回收| T5
+    T4 -->|写入前检查| T3
+    T3 -->|Credit=0 触发阻塞| T4
+    T6 -->|调整目标缓冲区数| T1
+    T6 -->|重新计算Credit| T3
+
+    T4 -->|同一TM内直连| M2
+    T4 -->|跨TM远程传输| M3
+    M3 -->|封装为Credit消息| M1
+    M1 -->|TCP传输| M4
+    M4 -->|经由| M5
+    M5 -->|更新信用计数| T3
+    T2 -->|内存不足告警| J2
+
+    T1 -->|缓冲区使用率指标| J1
+    M1 -->|背压延迟指标| J2
+    J1 -->|生成调度决策| J3
+    J3 -->|触发| J4
+    J4 -->|调整Task并行度| J5
+    J5 -->|重新分配Slot| T2
+    J5 -->|迁移Task实例| T4
+
+    style T3 fill:#ffcc80,stroke:#ef6c00
+    style M4 fill:#ffcc80,stroke:#ef6c00
+    style J4 fill:#b39ddb,stroke:#4527a0
+```
+
+**图说明**: Task级别通过 LocalBufferPool 与 Credit 机制实现细粒度局部流控；TaskManager 级别通过 Netty 与 CreditAnnouncement 实现跨进程信号传输；JobManager 级别通过 Adaptive Scheduler 将背压指标转化为全局资源调整决策。三层之间形成"局部感知→网络传播→全局决策"的闭环控制。
+
+---
+
+### 图 7.5: 背压到流控推导树
+
+以下推导树采用自底向上（`graph BT`）结构，展示从底层物理状态到顶层系统稳态的完整因果链条。每一层对应背压传播的一个抽象级别。
+
+```mermaid
+graph BT
+    subgraph "底层: 物理状态"
+        B1["下游Buffer满<br/>LocalBufferPool.available = 0"]
+        B2["Credit耗尽<br/>Credit(ch) = 0"]
+    end
+
+    subgraph "中层: 传播机制"
+        M1["发送方阻塞<br/>RecordWriter.pauseWriting()"]
+        M2["反压信号向上游传播<br/>CreditAnnouncement(0)"]
+        M3["上游输入堆积<br/>InputGate.buffersIn ++"]
+    end
+
+    subgraph "上层: 系统行为"
+        U1["上游处理降速<br/>Source.poll() 频率降低"]
+        U2["消费速率匹配<br/>R_prod ≈ R_cons"]
+        U3["飞行中数据减少<br/>InFlight ↓"]
+    end
+
+    subgraph "顶层: 全局稳态"
+        T1["系统吞吐量稳定"]
+        T2["端到端延迟可控"]
+        T3["资源调整触发<br/>扩缩容 / 重新调度"]
+    end
+
+    B1 -->|导致| B2
+    B2 -->|触发| M1
+    M1 -->|产生| M2
+    M2 -->|引起| M3
+    M3 -->|迫使| U1
+    U1 -->|实现| U2
+    U2 -->|伴随| U3
+    U2 -->|达成| T1
+    U3 -->|保证| T2
+    T1 -->|不满足SLA时| T3
+    T2 -->|超出阈值时| T3
+
+    style B1 fill:#ef9a9a,stroke:#c62828
+    style B2 fill:#ef9a9a,stroke:#c62828
+    style T3 fill:#a5d6a7,stroke:#2e7d32
+```
+
+**图说明**: 底层物理状态（Buffer满、Credit耗尽）是背压的充要条件；中层传播机制将局部状态转化为拓扑上的速率调节；上层系统行为实现生产者与消费者速率的动态匹配；顶层全局稳态则在 SLA 约束下决定是否触发资源层面的主动干预。
+
+---
+
+### 图 7.6: 背压策略概念矩阵
+
+以下概念矩阵以 `quadrantChart` 形式展示四种典型背压治理策略在"响应方式"与"优化范围"二维空间中的定位，辅助工程选型决策。
+
+```mermaid
+quadrantChart
+    title 背压策略概念矩阵：响应方式 vs 优化范围
+    x-axis 被动响应 --> 主动预测
+    y-axis 局部优化 --> 全局优化
+    quadrant-1 主动全局策略
+    quadrant-2 被动全局策略
+    quadrant-3 被动局部策略
+    quadrant-4 主动局部策略
+    "信用值背压(CBFC)": [0.25, 0.35]
+    "静态限流": [0.15, 0.20]
+    "缓冲区消胀": [0.35, 0.30]
+    "自适应Checkpoint": [0.50, 0.60]
+    "动态扩缩容": [0.75, 0.85]
+    "预测性调度": [0.90, 0.80]
+```
+
+**图说明**:
+
+- **左下象限（被动局部）**: 信用值背压与静态限流在问题发生后于局部范围进行速率限制，延迟低但缺乏前瞻性。
+- **右下象限（主动局部）**: 缓冲区消胀通过预测目标延迟主动调节局部缓冲区数量，属于局部层面的主动优化。
+- **左上象限（被动全局）**: 自适应Checkpoint在背压导致Barrier排队后全局调整Checkpoint策略，属于被动式的全局响应。
+- **右上象限（主动全局）**: 动态扩缩容与预测性调度通过监控指标预测瓶颈并提前调整全局资源配置，是最具前瞻性的策略，但实现复杂度高、资源开销大。
+
+---
+
 ## 8. 源码深度分析 (Source Code Analysis)
 
 ### 8.1 Credit-based 流控源码分析
@@ -933,6 +1080,9 @@ public class BufferDebloating {
 [^8]: Apache Flink Documentation, "Metrics System", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/metrics/>
 
 [^9]: Apache Flink JIRA, "FLINK-36556: Allow to configure starting buffer size when using buffer debloating", 2024. <https://issues.apache.org/jira/browse/FLINK-36556>
+
+
+
 
 ---
 

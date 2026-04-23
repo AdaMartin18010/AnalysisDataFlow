@@ -33,7 +33,7 @@
     - [8.3 模式组合时的性质保持](#83-模式组合时的性质保持)
     - [8.4 边界条件与约束](#84-边界条件与约束)
     - [8.5 工程实现与理论的对应](#85-工程实现与理论的对应)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)]()
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [6.1 Flink AsyncDataStream 完整示例](#61-flink-asyncdatastream-完整示例)
     - [6.2 Redis 异步查询实现](#62-redis-异步查询实现)
@@ -981,13 +981,114 @@ flowchart TB
 
 ---
 
+**异步 I/O 富化模式思维导图**：
+
+```mermaid
+mindmap
+  root((异步IO enrichment模式))
+    核心概念
+      非阻塞I/O
+      并发查询
+      回调机制
+      适用场景
+        外部数据富化
+        实时风控
+        用户画像补全
+      配置参数
+        并发度 capacity
+        超时 timeout
+        顺序模式 ordered/unordered
+      性能影响
+        吞吐量提升C倍
+        内存开销增加
+        延迟与顺序权衡
+    处理流程
+      输入流缓冲
+      并发查询发起
+      结果回调收集
+      顺序保持/无序发射
+      适用场景
+        高吞吐日志富化
+        低延迟实时指标
+      配置参数
+        队列大小
+        线程池配置
+      性能影响
+        网络延迟隐藏
+        CPU利用率提升
+        上下文切换开销
+    回调机制
+      ResultFuture接口
+      complete回调
+      completeExceptionally异常
+      适用场景
+        异步HTTP客户端
+        异步数据库驱动
+      配置参数
+        回调超时
+        回调线程池
+      性能影响
+        回调链开销
+        异常处理成本
+    超时策略
+      固定超时
+      指数退避重试
+      断路器熔断
+      适用场景
+        外部服务不稳定
+        网络抖动环境
+      配置参数
+        timeout
+        maxRetries
+        retryDelayMs
+      性能影响
+        快速失败降级
+        超时记录侧输出
+        重试放大延迟
+    背压处理
+      缓冲区限流
+      反压上游
+      侧输出隔离
+      适用场景
+        外部服务QPS受限
+        内存敏感场景
+      配置参数
+        capacity容量上限
+        OutputTag侧输出
+        unorderedWait/orderedWait
+      性能影响
+        防止内存溢出
+        保护外部服务
+        上游延迟增加
+```
+
+**异步 I/O vs 同步 I/O 决策树**：
+
+```mermaid
+flowchart TD
+    Start([开始]) --> Q1{需要外部I/O?}
+    Q1 -->|否| Sync1[同步处理]
+    Q1 -->|是| Q2{外部调用延迟高?}
+    Q2 -->|是| Async1[异步IO]
+    Q2 -->|否| Q3{数据一致性要求严格?}
+    Q3 -->|是| Sync2[同步IO + 事务]
+    Q3 -->|否| Q4{外部调用QPS受限?}
+    Q4 -->|是| Async2[异步IO + 限流]
+    Q4 -->|否| Q5{吞吐量要求高?}
+    Q5 -->|是| Async3[异步IO]
+    Q5 -->|否| Sync3[同步IO]
+
+    style Async1 fill:#c8e6c9,stroke:#2e7d32
+    style Async2 fill:#c8e6c9,stroke:#2e7d32
+    style Async3 fill:#c8e6c9,stroke:#2e7d32
+    style Sync1 fill:#e3f2fd,stroke:#1565c0
+    style Sync2 fill:#e3f2fd,stroke:#1565c0
+    style Sync3 fill:#e3f2fd,stroke:#1565c0
+```
+
+---
+
 ## 9. 引用参考 (References)
-
-
-
-
-
-
 
 
 ---

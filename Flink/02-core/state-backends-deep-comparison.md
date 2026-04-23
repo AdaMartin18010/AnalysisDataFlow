@@ -14,10 +14,12 @@
   - [目录](#目录)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
     - [Def-F-02-14: State Backend（状态后端）](#def-f-02-14-state-backend状态后端)
+  - [\[^1\]](#1)
     - [Def-F-02-15: MemoryStateBackend（内存状态后端）](#def-f-02-15-memorystatebackend内存状态后端)
     - [Def-F-02-16: FsStateBackend（文件系统状态后端）](#def-f-02-16-fsstatebackend文件系统状态后端)
     - [Def-F-02-17: HashMapStateBackend（哈希映射状态后端）](#def-f-02-17-hashmapstatebackend哈希映射状态后端)
     - [Def-F-02-18: RocksDBStateBackend（RocksDB 状态后端）](#def-f-02-18-rocksdbstatebackendrocksdb-状态后端)
+  - [\[^3\]\[^4\]](#34)
     - [Def-F-02-19: ForStStateBackend（ForSt 状态后端）](#def-f-02-19-forststatebackendforst-状态后端)
     - [Def-F-02-20: 增量 Checkpoint（Incremental Checkpointing）](#def-f-02-20-增量-checkpointincremental-checkpointing)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
@@ -53,6 +55,9 @@
     - [7.3 Checkpoint 流程对比](#73-checkpoint-流程对比)
     - [7.4 故障恢复流程对比](#74-故障恢复流程对比)
     - [7.5 选择决策树](#75-选择决策树)
+    - [7.6 架构关联树（Architecture Association Tree）](#76-架构关联树architecture-association-tree)
+    - [7.7 推理树（Deduction Tree）](#77-推理树deduction-tree)
+    - [7.8 概念矩阵（Concept Matrix）](#78-概念矩阵concept-matrix)
   - [8. 源码深度分析 (Source Code Analysis)](#8-源码深度分析-source-code-analysis)
     - [8.1 RocksDB SST 文件格式详解](#81-rocksdb-sst-文件格式详解)
       - [8.1.1 SST 文件在 RocksDBStateBackend 中的应用](#811-sst-文件在-rocksdbstatebackend-中的应用)
@@ -86,6 +91,7 @@ $$
 | $\text{SnapshotStrategy}$ | 快照生成策略 | 全量/增量、同步/异步、一致性保证 |
 | $\text{RecoveryMechanism}$ | 故障恢复机制 | 恢复时间、状态一致性、资源需求 |
 
+[^1]
 ---
 
 ### Def-F-02-15: MemoryStateBackend（内存状态后端）
@@ -168,6 +174,7 @@ $$
 3. **内存-磁盘分层**: Block Cache 缓存热数据
 4. **原生 TTL**: 通过 Compaction Filter 清理过期数据
 
+[^3][^4]
 ---
 
 ### Def-F-02-19: ForStStateBackend（ForSt 状态后端）
@@ -195,6 +202,7 @@ $$
 3. **即时恢复**: LazyRestore 实现秒级故障恢复
 4. **成本优化**: 存储成本降低 50-70%
 
+[^6]
 > 📌 **前瞻性标注**: ForStStateBackend 是 Flink 2.0/2.4 引入的新特性，处于快速迭代阶段。生产环境使用前请验证具体版本的稳定性。
 
 ---
@@ -206,6 +214,8 @@ $$
 $$
 \Delta_n = S_n \ominus S_{n-1}, \quad |CP_n^{\text{inc}}| = |\Delta_n| \ll |S_n|
 $$
+
+[^5]
 
 **RocksDB 实现机制**:
 
@@ -959,6 +969,185 @@ flowchart TD
 
 ---
 
+### 7.6 架构关联树（Architecture Association Tree）
+
+以下架构关联树展示了 Flink State Backend 从用户 API 到持久化层的完整分层架构与各层之间的数据流、调用关系。
+
+```mermaid
+graph TB
+    subgraph API_Layer["用户 API 层"]
+        VS[ValueState]
+        LS[ListState]
+        MS[MapState]
+        RS[ReducingState]
+        AS[AggregatingState]
+    end
+
+    subgraph Abstract_Layer["StateBackend 抽象层"]
+        ASB[AbstractStateBackend]
+        SS_IF[快照接口<br/>SnapshotStrategy]
+        REC_IF[恢复接口<br/>RecoveryMechanism]
+        KSC[KeyedStateContext]
+        REG[StateRegistry]
+    end
+
+    subgraph Impl_Layer["实现层"]
+        HMB[HashMapStateBackend]
+        RSB[EmbeddedRocksDBStateBackend]
+        FSB[ForStStateBackend]
+        CSB[ChangelogStateBackend]
+    end
+
+    subgraph Storage_Layer["存储层"]
+        MEM[内存<br/>JVM Heap / Off-Heap]
+        LDISK[本地磁盘<br/>SSD / HDD]
+        DFS[HDFS / S3 / GCS<br/>分布式文件系统]
+        SST[RocksDB SST 文件<br/>LSM-Tree 层级]
+    end
+
+    subgraph Persistence_Layer["持久化层"]
+        SYNC_SNAP[同步快照<br/>Sync Phase]
+        ASYNC_SNAP[异步快照<br/>Async Phase]
+        ICP[增量 Checkpoint<br/>SST Delta]
+        LREC[本地恢复<br/>Local Recovery]
+        META[元数据快照<br/>Metadata Only]
+    end
+
+    VS --> KSC
+    LS --> KSC
+    MS --> KSC
+    RS --> KSC
+    AS --> KSC
+
+    KSC --> ASB
+    ASB --> SS_IF
+    ASB --> REC_IF
+    ASB --> REG
+
+    REG --> HMB
+    REG --> RSB
+    REG --> FSB
+    REG --> CSB
+
+    HMB --> MEM
+    RSB --> SST
+    SST --> LDISK
+    FSB --> DFS
+    FSB --> MEM
+    FSB --> LDISK
+    CSB --> MEM
+    CSB --> LDISK
+    CSB --> DFS
+
+    HMB --> ASYNC_SNAP
+    RSB --> SYNC_SNAP
+    RSB --> ASYNC_SNAP
+    RSB --> ICP
+    FSB --> ASYNC_SNAP
+    FSB --> META
+    CSB --> ASYNC_SNAP
+    CSB --> ICP
+
+    ASYNC_SNAP --> DFS
+    ICP --> DFS
+    META --> DFS
+    LREC --> MEM
+    LREC --> LDISK
+
+    style API_Layer fill:#e3f2fd
+    style Abstract_Layer fill:#fff3e0
+    style Impl_Layer fill:#e8f5e9
+    style Storage_Layer fill:#fce4ec
+    style Persistence_Layer fill:#f3e5f5
+```
+
+---
+
+### 7.7 推理树（Deduction Tree）
+
+以下推理树从底层状态访问模式出发，逐层推导状态后端选型与一致性保证的最终结论。
+
+```mermaid
+graph BT
+    subgraph Top["顶层：Checkpoint 策略与恢复保证"]
+        CP_FULL["全量 Checkpoint<br/>恢复时间 O(|S|)<br/>Exactly-Once"]
+        CP_INC["增量 Checkpoint<br/>恢复时间 O(|ΔS|)<br/>Exactly-Once"]
+        CP_META["元数据 Checkpoint<br/>恢复时间 O(1)<br/>Exactly-Once"]
+        LAZY["LazyRestore<br/>亚秒级故障恢复"]
+    end
+
+    subgraph Mid["中层：状态后端选型"]
+        SEL_HASH["HashMapStateBackend<br/>小状态 + 超低延迟"]
+        SEL_ROCKS["RocksDBStateBackend<br/>大状态 + 增量持久化"]
+        SEL_FORST["ForStStateBackend<br/>超大状态 + 云原生"]
+        SEL_CHANGE["ChangelogStateBackend<br/>写放大抑制 + 低延迟持久化"]
+    end
+
+    subgraph Bot["底层：状态访问模式与约束"]
+        PAT_R["读多写少<br/>查询密集型"]
+        PAT_RW["读写均衡<br/>通用处理型"]
+        PAT_W["写多读少<br/>更新密集型"]
+        SIZE_S["状态大小 < 100MB"]
+        SIZE_M["状态大小 100MB – 100GB"]
+        SIZE_L["状态大小 > 100GB"]
+        LAT_LOW["延迟要求 < 1ms"]
+        LAT_MED["延迟要求 1 – 10ms"]
+        LAT_HIGH["吞吐优先<br/>延迟可接受 > 10ms"]
+    end
+
+    PAT_R --> SEL_HASH
+    PAT_R --> SEL_CHANGE
+    PAT_RW --> SEL_HASH
+    PAT_RW --> SEL_ROCKS
+    PAT_W --> SEL_ROCKS
+    PAT_W --> SEL_FORST
+
+    SIZE_S --> SEL_HASH
+    SIZE_M --> SEL_ROCKS
+    SIZE_M --> SEL_CHANGE
+    SIZE_L --> SEL_FORST
+
+    LAT_LOW --> SEL_HASH
+    LAT_LOW --> SEL_CHANGE
+    LAT_MED --> SEL_ROCKS
+    LAT_HIGH --> SEL_FORST
+
+    SEL_HASH --> CP_FULL
+    SEL_ROCKS --> CP_INC
+    SEL_FORST --> CP_META
+    SEL_CHANGE --> CP_INC
+    SEL_CHANGE --> LAZY
+
+    style Bot fill:#e3f2fd
+    style Mid fill:#fff3e0
+    style Top fill:#e8f5e9
+```
+
+---
+
+### 7.8 概念矩阵（Concept Matrix）
+
+以下四象限矩阵从状态大小与延迟/吞吐需求两个维度，定位各 State Backend 的适用区间。坐标越靠近右上角，越适合大状态、高吞吐场景。
+
+```mermaid
+quadrantChart
+    title 状态后端选型概念矩阵
+    x-axis 小状态 --> 大状态
+    y-axis 低延迟要求 --> 高吞吐要求
+    quadrant-1 大状态-高吞吐优先
+    quadrant-2 大状态-低延迟敏感
+    quadrant-3 小状态-低延迟敏感
+    quadrant-4 小状态-高吞吐优先
+    "MemoryStateBackend": [0.1, 0.15]
+    "FsStateBackend": [0.15, 0.2]
+    "HashMapStateBackend": [0.2, 0.75]
+    "ChangelogStateBackend": [0.5, 0.7]
+    "RocksDBStateBackend": [0.7, 0.5]
+    "ForStStateBackend": [0.95, 0.85]
+```
+
+---
+
 ## 8. 源码深度分析 (Source Code Analysis)
 
 ### 8.1 RocksDB SST 文件格式详解
@@ -1362,6 +1551,12 @@ public class StateBackendMetrics {
 ---
 
 ## 9. 引用参考 (References)
+
+[^1]: Apache Flink Documentation, "State Backends", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/>
+[^3]: S. Dong et al., "RocksDB: Evolution of Development Priorities in a Key-Value Store Serving Large-Scale Applications", ACM Transactions on Storage, 17(4), 2021.
+[^4]: P. O'Neil et al., "The Log-Structured Merge-Tree (LSM-Tree)", Acta Informatica, 33(4), 1996.
+[^5]: Apache Flink FLIP-151, "RocksDB State Backend Incremental Checkpoint", 2020. <https://cwiki.apache.org/confluence/display/FLINK/FLIP-151>
+[^6]: Apache Flink FLIP-158, "ForSt State Backend", 2024. <https://cwiki.apache.org/confluence/display/FLINK/FLIP-158>
 
 
 

@@ -1,4 +1,4 @@
-# Exactly-Once语义深度解析
+﻿# Exactly-Once语义深度解析
 
 > 所属阶段: Flink Stage 2 | 前置依赖: [checkpoint-mechanism-deep-dive.md](./checkpoint-mechanism-deep-dive.md), [flink-state-management-complete-guide.md](./flink-state-management-complete-guide.md) | 形式化等级: L5
 
@@ -1144,6 +1144,122 @@ graph LR
     style 非对齐Checkpoint fill:#e1f5fe
 ```
 
+### 7.5 架构关联树（Architecture Association Tree）
+
+以下架构关联树展示了Exactly-Once语义的完整四层架构及其协调关系，从Source层到外部系统层的全链路一致性保证：
+
+```mermaid
+graph TB
+    subgraph Source层[Source层 — 可重放性与Offset管理]
+        SK[Kafka Source<br/>分区偏移追踪]
+        SP[Pulsar Source<br/>游标管理]
+        SO[Offset管理器<br/>Flink内部状态]
+    end
+
+    subgraph Transform层[Transform层 — 状态与Barrier协调]
+        BA[Checkpoint Barrier<br/>对齐/非对齐]
+        OS[算子状态<br/>Key/Value状态]
+        IM[幂等操作<br/>去重/状态检查]
+    end
+
+    subgraph Sink层[Sink层 — 输出一致性保证]
+        TC[两阶段提交<br/>preCommit/commit]
+        WL[预写日志<br/>WAL缓冲]
+        IS[幂等写入<br/>唯一键/事务ID]
+    end
+
+    subgraph 外部系统层[外部系统层 — 持久化原子性]
+        KT[Kafka事务<br/>transactional.id]
+        HA[HDFS原子写入<br/>rename机制]
+        DT[数据库事务<br/>XA/JDBC]
+    end
+
+    SK --> BA
+    SP --> BA
+    BA --> OS
+    OS --> IM
+    IM --> TC
+    IM --> WL
+    IM --> IS
+    TC --> KT
+    WL --> HA
+    IS --> DT
+
+    SO -.->|偏移快照| OS
+    KT -.->|事务确认| TC
+    HA -.->|写入确认| WL
+    DT -.->|提交确认| IS
+
+    style Source层 fill:#e3f2fd
+    style Transform层 fill:#fff8e1
+    style Sink层 fill:#e8f5e9
+    style 外部系统层 fill:#fce4ec
+```
+
+### 7.6 推理树（Deduction Tree）
+
+以下推理树从底层机制出发，逐层推导Exactly-Once保证的成立条件，展示从Checkpoint一致性到端到端Exactly-Once的完整逻辑链条：
+
+```mermaid
+graph BT
+    subgraph 底层基础[底层基础 — 分布式快照一致性]
+        CP[Checkpoint一致性<br/>全局一致状态快照]
+        BA[Barrier对齐机制<br/>因果序保持]
+    end
+
+    subgraph 中层恢复[中层恢复 — 故障容错]
+        SR[Source可重放<br/>Offset/游标重置]
+        OR[算子状态恢复<br/>状态后端重载]
+    end
+
+    subgraph 顶层保证[顶层保证 — 输出端唯一性]
+        TC[Sink两阶段提交<br/>原子事务提交]
+        ID[Sink幂等写入<br/>重复数据消除]
+    end
+
+    subgraph 目标[目标 — 端到端Exactly-Once]
+        EO[端到端Exactly-Once<br/>既不丢失也不重复]
+    end
+
+    CP --> SR
+    BA --> SR
+    CP --> OR
+    BA --> OR
+    SR --> TC
+    SR --> ID
+    OR --> TC
+    OR --> ID
+    TC --> EO
+    ID --> EO
+
+    style CP fill:#e3f2fd
+    style BA fill:#e3f2fd
+    style SR fill:#fff8e1
+    style OR fill:#fff8e1
+    style TC fill:#e8f5e9
+    style ID fill:#e8f5e9
+    style EO fill:#ffcdd2
+```
+
+### 7.7 概念矩阵（Concept Matrix）
+
+以下概念矩阵对比不同Exactly-Once实现策略在延迟与一致性保证两个维度上的权衡关系：
+
+```mermaid
+quadrantChart
+    title Exactly-Once实现策略概念矩阵
+    x-axis 低延迟 --> 高延迟
+    y-axis 弱一致性保证 --> 强一致性保证
+    quadrant-1 高延迟-强一致性（严格事务）
+    quadrant-2 低延迟-强一致性（理想但难实现）
+    quadrant-3 低延迟-弱一致性（最大吞吐）
+    quadrant-4 高延迟-弱一致性（不常见区域）
+    "At-Most-Once": [0.15, 0.1]
+    "At-Least-Once + 幂等": [0.4, 0.55]
+    "2PC分布式事务": [0.75, 0.8]
+    "端到端Exactly-Once": [0.9, 0.95]
+```
+
 ## 8. 源码深度分析 (Source Code Analysis)
 
 ### 8.1 CheckpointCoordinator 与 2PC 协调机制
@@ -1533,15 +1649,6 @@ public class ExactlyOnceValidator {
 ---
 
 ## 9. 引用参考 (References)
-
-
-
-
-
-
-
-
-
 
 
 ---

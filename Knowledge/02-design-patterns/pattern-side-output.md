@@ -35,7 +35,7 @@
     - [8.3 模式组合时的性质保持](#83-模式组合时的性质保持)
     - [8.4 边界条件与约束](#84-边界条件与约束)
     - [8.5 工程实现与理论的对应](#85-工程实现与理论的对应)
-  - [5. 形式证明 / 工程论证]()
+  - [5. 形式证明 / 工程论证](#5-形式证明--工程论证)
     - [Prop-K-02-03 (侧输出模式的多路分发正确性)](#prop-k-02-03-侧输出模式的多路分发正确性)
     - [工程论证: 侧输出与 Checkpoint 的协同](#工程论证-侧输出与-checkpoint-的协同)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
@@ -46,6 +46,8 @@
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
     - [侧输出模式架构图](#侧输出模式架构图)
     - [多路输出数据流图](#多路输出数据流图)
+    - [Side Output 思维导图](#side-output-思维导图)
+    - [分流策略决策树](#分流策略决策树)
   - [9. 引用参考 (References)](#9-引用参考-references)
 
 ---
@@ -1010,6 +1012,102 @@ graph LR
   - Elasticsearch：错误日志检索
   - S3/HDFS：离线补录数据源
   - Kafka：实时告警链路
+
+---
+
+### Side Output 思维导图
+
+下图以放射状结构展示 Side Output 侧输出流模式的知识全景，从核心概念、应用场景、实现机制到与 Window/Watermark 的关联：
+
+```mermaid
+mindmap
+  root((Side Output<br/>侧输出流模式))
+    核心概念
+      主输出与侧输出
+        主输出 Main Stream
+        侧输出 Side Output Stream
+      OutputTag标签机制
+        类型安全 OutputTag<T>
+        唯一标识符 id
+      多流处理
+        单输入多输出
+        排他性分发
+    应用场景
+      延迟数据处理
+        窗口迟到数据捕获
+        离线补录与审计
+      异常数据分流
+        格式校验失败
+        业务规则违反
+        阈值超限告警
+      多维度统计
+        实时质量指标
+        数据血缘追踪
+    实现机制
+      ProcessFunction
+        ctx.output(tag, value)
+        状态共享
+      CoProcessFunction
+        双流连接侧输出
+        关联异常检测
+    Window与Watermark关联
+      Watermark继承
+        侧输出流继承输入Watermark
+        时间基准一致
+      窗口迟到处理
+        allowedLateness
+        sideOutputLateData
+      时序一致性
+        分流不改变记录顺序
+        保序处理CDC场景
+```
+
+**图说明**：
+
+- **中心节点**：Side Output 侧输出流模式，作为多路分流的核心抽象
+- **核心概念分支**：涵盖主/侧输出关系、OutputTag 类型安全机制、多流处理特性
+- **应用场景分支**：三大典型场景——延迟数据处理、异常数据分流、多维度统计
+- **实现机制分支**：ProcessFunction 与 CoProcessFunction 中的侧输出 API
+- **Window/Watermark 关联分支**：强调侧输出流继承 Watermark、与窗口迟到处理的协同
+
+---
+
+### 分流策略决策树
+
+以下决策树指导开发者根据具体需求选择合适的分流策略：
+
+```mermaid
+flowchart TD
+    A["数据分流需求分析"] --> B{"需要分离异常数据?"}
+    B -->|"是"| C["使用 Side Output<br/>OutputTag异常流"]
+    B -->|"否"| D{"需要多路复用?"}
+    D -->|"是"| E["ProcessFunction多OutputTag<br/>单算子多侧输出"]
+    D -->|"否"| F{"需要聚合后分流?"}
+    F -->|"是"| G["Window + Side Output<br/>sideOutputLateData"]
+    F -->|"否"| H["直接使用 Filter<br/>或简单分支"]
+
+    C --> I["下游: 审计/告警/补录"]
+    E --> J["下游: 多业务并行处理"]
+    G --> K["下游: 迟到数据补偿计算"]
+    H --> L["下游: 常规处理"]
+
+    style A fill:#e3f2fd,stroke:#1565c0
+    style C fill:#ffcdd2,stroke:#c62828
+    style E fill:#fff9c4,stroke:#f57f17
+    style G fill:#c8e6c9,stroke:#2e7d32
+    style H fill:#f5f5f5,stroke:#616161
+    style I fill:#ffcdd2,stroke:#c62828
+    style J fill:#fff9c4,stroke:#f57f17
+    style K fill:#c8e6c9,stroke:#2e7d32
+```
+
+**图说明**：
+
+- **根节点（蓝色）**：从数据分流需求出发进行策略选择
+- **异常分离路径（红色）**：当需要捕获异常/错误数据时，优先选择 Side Output 模式，将异常流路由到独立的审计或告警系统
+- **多路复用路径（黄色）**：当同一数据需要分发到多个并行业务线时，使用 ProcessFunction 多 OutputTag 实现单算子内多路输出
+- **聚合后分流路径（绿色）**：当数据需要先窗口聚合再分离迟到数据时，组合 Window 与 `sideOutputLateData()`
+- **简单分支路径（灰色）**：对于无状态、无共享需求的简单过滤，可直接使用 Filter 算子
 
 ---
 

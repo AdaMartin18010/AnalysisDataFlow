@@ -42,6 +42,9 @@
     - [7.1 Watermark 在 DAG 中的传播](#71-watermark-在-dag-中的传播)
     - [7.2 窗口触发时间线](#72-窗口触发时间线)
     - [7.3 时间语义概念依赖图](#73-时间语义概念依赖图)
+    - [7.4 架构关联树（Architecture Association Tree）](#74-架构关联树architecture-association-tree)
+    - [7.5 推理树（Deduction Tree）](#75-推理树deduction-tree)
+    - [7.6 概念矩阵（Concept Matrix）](#76-概念矩阵concept-matrix)
   - [附录 A: 时间特性对比表](#附录-a-时间特性对比表)
   - [附录 B: 窗口类型选择指南](#附录-b-窗口类型选择指南)
   - [8. 源码深度分析 (Source Code Analysis)](#8-源码深度分析-source-code-analysis)
@@ -791,6 +794,146 @@ graph TB
     G --> K[Flink 流处理应用]
     I --> K
 ```
+
+---
+
+### 7.4 架构关联树（Architecture Association Tree）
+
+以下架构关联树展示了时间语义与水印机制在 Flink 流处理 DAG 中的完整分层关联，涵盖从外部数据源到最终 Sink 输出的全链路时间传播关系。
+
+```mermaid
+graph TB
+    subgraph "外部系统层 External Systems"
+        ES1[Kafka 分区时间<br/>Partition Timestamp]
+        ES2[Kinesis 时间<br/>Record ApproximateArrivalTimestamp]
+        ES3[自定义 Source 时间<br/>Custom Extractor]
+        ES4[Pulsar Message Publish Time]
+    end
+
+    subgraph "Source 层"
+        SA[TimestampAssigner<br/>时间戳分配与提取]
+        SW1[forMonotonousTimestamps<br/>有序流策略]
+        SW2[forBoundedOutOfOrderness<br/>固定延迟策略]
+        SW3[withIdleness<br/>空闲源检测]
+    end
+
+    subgraph "Transform 层"
+        TW[Window 算子<br/>Tumbling / Sliding / Session]
+        TT[Trigger 机制<br/>EVENT_TIME / PROCESSING_TIME]
+        TAL[AllowedLateness<br/>允许延迟更新窗口]
+        TSO[Side Output<br/>迟到数据侧输出流]
+    end
+
+    subgraph "Sink 层"
+        SO[输出时间语义保证<br/>结果版本化输出]
+        SOC[Exactly-Once 语义<br/>两阶段提交 / Checkpoint]
+    end
+
+    ES1 -->|原始时间戳| SA
+    ES2 -->|原始时间戳| SA
+    ES3 -->|原始时间戳| SA
+    ES4 -->|原始时间戳| SA
+
+    SA -->|分配 eventTimestamp| SW1
+    SA -->|分配 eventTimestamp| SW2
+    SA -->|分配 eventTimestamp| SW3
+
+    SW1 -->|emit Watermark| TW
+    SW2 -->|emit Watermark| TW
+    SW3 -->|emit Watermark<br/>防止阻塞| TW
+
+    TW -->|窗口内容就绪| TT
+    TT -->|首次触发| TAL
+    TAL -->|延迟数据到达| TSO
+    TAL -->|超时清理| TW
+
+    TT -->|触发结果| SO
+    TW -->|窗口聚合结果| SO
+    SO -->|端到端一致性| SOC
+
+    style ES1 fill:#fff9c4,stroke:#f57f17
+    style ES2 fill:#fff9c4,stroke:#f57f17
+    style ES3 fill:#fff9c4,stroke:#f57f17
+    style ES4 fill:#fff9c4,stroke:#f57f17
+    style SA fill:#e3f2fd,stroke:#1565c0
+    style SW1 fill:#e3f2fd,stroke:#1565c0
+    style SW2 fill:#e3f2fd,stroke:#1565c0
+    style TW fill:#e1bee7,stroke:#6a1b9a
+    style TT fill:#e1bee7,stroke:#6a1b9a
+    style TAL fill:#e1bee7,stroke:#6a1b9a
+    style SO fill:#c8e6c9,stroke:#2e7d32
+    style SOC fill:#c8e6c9,stroke:#2e7d32
+```
+
+**图说明**: 外部系统层的时间戳经过 Source 层的 `TimestampAssigner` 提取后，由不同的 `WatermarkGenerator` 策略生成 Watermark。Watermark 流贯穿 Transform 层，驱动 Window 触发、Allowed Lateness 更新和 Side Output 分流，最终在 Sink 层结合 Checkpoint 机制保证 Exactly-Once 输出。
+
+---
+
+### 7.5 推理树（Deduction Tree）
+
+以下推理树以 `graph BT` 形式展示从底层时间戳定义到顶层结果正确性保证的完整形式化推导链条。
+
+```mermaid
+graph BT
+    T1[输出结果时间正确性<br/>Thm-F-02-01: 跨运行结果确定性]
+    T2[Exactly-Once 语义保持<br/>Thm-F-02-02: 延迟更新不破坏一致性]
+
+    M1[Window 触发计算<br/>Trigger Condition: w ≥ end(W) + L]
+    M2[延迟数据处理<br/>AllowedLateness + Side Output]
+    M3[多输入算子 Watermark 对齐<br/>StatusWatermarkValve: min-聚合]
+
+    D1[事件时间戳分配<br/>Def-F-02-01: EventTime(r) ∈ ℝ≥₀]
+    D2[Watermark 单调性保证<br/>Lemma-F-02-01: ∀i<j, wi ≤ wj]
+    D3[Watermark 跨层传播<br/>Source → Map → KeyBy → Window → Sink]
+
+    D1 --> D2
+    D2 --> D3
+    D3 --> M3
+    M3 --> M1
+    M3 --> M2
+    M1 --> T1
+    M2 --> T1
+    M1 --> T2
+
+    style D1 fill:#e3f2fd,stroke:#1565c0
+    style D2 fill:#e3f2fd,stroke:#1565c0
+    style D3 fill:#e3f2fd,stroke:#1565c0
+    style M1 fill:#fff9c4,stroke:#f57f17
+    style M2 fill:#fff9c4,stroke:#f57f17
+    style M3 fill:#fff9c4,stroke:#f57f17
+    style T1 fill:#c8e6c9,stroke:#2e7d32
+    style T2 fill:#c8e6c9,stroke:#2e7d32
+```
+
+**图说明**: 推导链条自底向上：事件时间戳的定义（Def-F-02-01）保证了 Watermark 的单调性（Lemma-F-02-01），单调 Watermark 经跨层传播后在多输入算子处通过对齐机制（min-聚合）产生一致的窗口触发信号，最终通过 Allowed Lateness 和 Side Output 的协作，确保输出结果的时间正确性与 Exactly-Once 语义。
+
+---
+
+### 7.6 概念矩阵（Concept Matrix）
+
+以下 `quadrantChart` 从延迟（X 轴）与完整性（Y 轴）两个维度定位三种时间语义，直观展示它们在设计空间中的权衡关系。
+
+```mermaid
+quadrantChart
+    title 时间语义概念矩阵：延迟 vs 完整性
+    x-axis 低延迟 --> 高延迟
+    y-axis 低完整性 --> 高完整性
+
+    quadrant-1 高延迟-高完整性
+    quadrant-2 低延迟-高完整性(理论理想区)
+    quadrant-3 低延迟-低完整性
+    quadrant-4 高延迟-低完整性
+
+    Event Time: [0.80, 0.90]
+    Ingestion Time: [0.35, 0.55]
+    Processing Time: [0.10, 0.15]
+```
+
+**图说明**:
+
+- **Event Time** 位于右上象限（高延迟-高完整性），以可配置的水印延迟换取跨运行的结果确定性，适用于金融交易、用户行为分析等需要可复现结果的场景。
+- **Processing Time** 位于左下象限（低延迟-低完整性），以本地系统时钟驱动窗口触发，延迟最低但结果受网络抖动和调度影响，适用于实时监控与告警。
+- **Ingestion Time** 位于中间区域（中延迟-中完整性），在 Source 处分配单调时间戳，无需用户配置水印即可保证 Source 级别的有序性，是事件时间不可用时的一种折中方案。
 
 ---
 
