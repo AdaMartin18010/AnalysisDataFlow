@@ -1462,9 +1462,116 @@ sequenceDiagram
     end
 ```
 
+### 7.6 Flink Dynamic Iceberg Sink 思维导图
+
+以下思维导图以 "Flink Dynamic Iceberg Sink" 为中心，系统展示其五大核心能力域：
+
+```mermaid
+mindmap
+  root((Flink Dynamic Iceberg Sink))
+    动态分区
+      自动分区发现
+      分区字段推断
+      分区进化
+    写入优化
+      小文件合并
+      压缩策略
+      写入模式Append/Upsert
+    Schema处理
+      自动Schema进化
+      字段映射
+      类型兼容
+    事务保证
+      Exactly-Once
+      两阶段提交
+      幂等写入
+    运维管理
+      监控指标
+      失败恢复
+      数据补偿
+```
+
+### 7.7 多维关联树：特性 → 配置 → 收益
+
+以下关联树展示 Iceberg Sink 核心特性与 Flink 配置参数、业务收益之间的映射关系：
+
+```mermaid
+graph TB
+    subgraph Features["Iceberg Sink 特性"]
+        F1[动态分区发现]
+        F2[自动Schema进化]
+        F3[小文件合并]
+        F4[两阶段提交]
+        F5[Upsert支持]
+        F6[批量提交]
+    end
+
+    subgraph Configs["Flink 配置"]
+        C1["dynamic-sink.enabled=true"]
+        C2["schema-evolution.enabled=true"]
+        C3["write.target-file-size-bytes"]
+        C4["checkpointing.mode=EXACTLY_ONCE"]
+        C5["write.upsert.enabled=true"]
+        C6["commit.batch.size"]
+    end
+
+    subgraph Benefits["业务收益"]
+        B1[降低运维成本90%+]
+        B2[零停机Schema变更]
+        B3[查询性能提升3-5x]
+        B4[数据零丢失]
+        B5[实时增量更新]
+        B6[元数据操作降频]
+    end
+
+    F1 --> C1
+    F2 --> C2
+    F3 --> C3
+    F4 --> C4
+    F5 --> C5
+    F6 --> C6
+
+    C1 --> B1
+    C2 --> B2
+    C3 --> B3
+    C4 --> B4
+    C5 --> B5
+    C6 --> B6
+```
+
+### 7.8 Iceberg Sink 模式选型决策树
+
+以下决策树指导工程师根据业务场景选择最优的 Iceberg Sink 写入模式：
+
+```mermaid
+flowchart TD
+    Start([开始选择写入模式]) --> Q1{数据变更类型?}
+
+    Q1 -->|仅追加新记录| A1[追加写入]
+    Q1 -->|需要更新/删除历史记录| A2[增量更新]
+    Q1 -->|全量替换分区数据| A3[批量加载]
+    Q1 -->|流式增量+批量合并| A4[流批混合]
+
+    A1 --> B1[Append Mode<br/>自动Compaction]
+    A2 --> B2[Upsert Mode<br/>唯一键约束]
+    A3 --> B3[Batch Overwrite<br/>分区替换]
+    A4 --> B4[Streaming Upsert<br/>+ Batch Compaction]
+
+    B1 --> C1[配置:<br/>write.upsert.enabled=false<br/>write.distribution-mode=hash]
+    B2 --> C2[配置:<br/>write.upsert.enabled=true<br/>equality-field-columns=id]
+    B3 --> C3[配置:<br/>write.mode=overwrite<br/>分区范围指定]
+    B4 --> C4[配置:<br/>streaming.upsert=true<br/>+ 定时RewriteDataFiles]
+
+    style B1 fill:#e8f5e9,stroke:#2e7d32
+    style B2 fill:#e3f2fd,stroke:#1565c0
+    style B3 fill:#fff3e0,stroke:#ef6c00
+    style B4 fill:#f3e5f5,stroke:#6a1b9a
+```
+
 ---
 
 ## 8. 引用参考 (References)
+
 
 ---
 

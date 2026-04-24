@@ -1604,6 +1604,140 @@ graph TB
 
 ---
 
+### 7.9 LLM 辅助形式化证明工作流推理树
+
+以下自底向上的推理树展示了 LLM 辅助形式化证明自动化的完整工程工作流，从自然语言规格出发，经形式化翻译、目标分解、策略搜索、证明验证，最终通过反馈循环实现持续优化：
+
+```mermaid
+graph BT
+    subgraph InputLayer["输入层"]
+        NL["自然语言规格<br/>Natural Language Spec"]
+    end
+
+    subgraph TranslationLayer["翻译层"]
+        FS["形式化规约翻译<br/>Formal Spec Translation"]
+    end
+
+    subgraph DecompositionLayer["分解层"]
+        GD["证明目标分解<br/>Goal Decomposition"]
+        SG["子目标生成<br/>Sub-goal Generation"]
+    end
+
+    subgraph StrategyLayer["策略层"]
+        SS["策略搜索<br/>Tactic Search"]
+        TR["Coq/Lean 策略推荐<br/>Tactic Recommendation"]
+    end
+
+    subgraph VerificationLayer["验证层"]
+        PV["证明验证<br/>Proof Verification"]
+        VC["自动/人工校验<br/>Auto/Manual Check"]
+    end
+
+    subgraph FeedbackLayer["反馈层"]
+        FL["反馈循环<br/>Feedback Loop"]
+        ER["错误修复<br/>Error Repair"]
+        SO["策略优化<br/>Strategy Optimization"]
+    end
+
+    NL --> FS
+    FS --> GD
+    GD --> SG
+    SG --> SS
+    SS --> TR
+    TR --> PV
+    PV --> VC
+    VC --> FL
+    FL --> ER
+    FL --> SO
+    ER --> SS
+    SO --> SS
+```
+
+该推理树直观呈现了 HILPW（Def-S-06-18-07）的工程实现路径：自然语言规格经形式化翻译后，进入证明目标分解与子目标生成阶段；策略搜索层根据当前证明状态推荐 Coq/Lean 等具体策略；验证层对生成证明进行自动或人工校验；反馈层将错误信息与优化信号回传至策略层，形成闭环迭代。从反馈层指向策略层的两条回边分别对应"错误修复后重试"与"策略优化后重试"两种反馈模式。
+
+---
+
+### 7.10 LLM+形式化工具自动化-可靠性概念矩阵
+
+以下象限矩阵展示了四种证明自动化范式在自动化程度与可靠性保证两个维度上的定位，为技术选型与系统演进提供直观参考：
+
+```mermaid
+quadrantChart
+    title LLM+形式化工具的自动化程度与可靠性保证矩阵
+    x-axis 低自动化 --> 高自动化
+    y-axis 弱可靠性保证 --> 强可靠性保证
+    quadrant-1 理想目标区：高自动化 + 强可靠性
+    quadrant-2 传统可信区：低自动化 + 强可靠性
+    quadrant-3 低效区：低自动化 + 弱可靠性
+    quadrant-4 风险区：高自动化 + 弱可靠性
+    "纯LLM生成": [0.85, 0.25]
+    "全自动定理证明 ATP": [0.9, 0.7]
+    "交互式证明助手 ITP": [0.2, 0.95]
+    "LLM+验证器 LFPA": [0.75, 0.9]
+```
+
+该矩阵揭示了 LFPA 的核心设计价值：通过将 LLM 的高自动化生成能力与形式化验证器的强可靠性保证相结合，LFPA 位于第一象限（理想目标区）的左下边缘，逼近"高自动化 + 强可靠性"的终极理想。纯 LLM 生成落入第四象限（风险区），虽然自动化程度高，但缺乏可靠性保证；传统 ITP 位于第二象限（传统可信区），可靠性极强但自动化程度低，高度依赖人类专家；传统 ATP 逼近第一象限，但仅限于特定逻辑片段。LFPA 的演进方向是进一步向右上方移动，在保持验证器可靠性底线的前提下持续提升自动化程度。
+
+---
+
+### 7.11 LLM 引导形式化证明自动化思维导图
+
+以下思维导图以"LLM 引导形式化证明自动化"为中心主题，从技术栈、应用场景、核心挑战与前沿方向四个维度放射展开，构建完整的知识图谱：
+
+```mermaid
+mindmap
+  root((LLM引导形式化证明自动化))
+    技术栈
+      基础模型
+        Claude-3.7-Sonnet
+        GPT-4o
+        DeepSeek-V3.2-Exp
+      形式化工具
+        TLA+/TLAPS
+        Coq/SerAPI
+        Lean 4/LeanDojo
+        Dafny/Z3
+        ACSL/Frama-C
+      辅助技术
+        RAG引理检索
+        Prompt工程
+        少样本学习
+        验证器反馈压缩
+    应用场景
+      分布式协议验证
+        Raft/Paxos安全性
+        共识活性证明
+      数据结构验证
+        红黑树平衡性
+        并发队列
+      编译器正确性
+        CompCert内存模型
+        程序优化等价性
+      智能合约审计
+        Solidity形式化规约
+    核心挑战
+      证明幻觉
+        语法幻觉 H-1
+        类型幻觉 H-2
+        逻辑幻觉 H-3
+        元理论幻觉 H-4
+      策略选择错误
+      引理名称幻觉
+      上下文窗口溢出
+      验证器超时
+    前沿方向
+      跨语言迁移学习
+      通用证明表示 UPR
+      验证器反馈压缩
+      证明可维护性评估
+      多模态交互证明
+      全自动活性证明
+```
+
+该思维导图覆盖了本文的核心概念体系：技术栈层整合了当前主流的大语言模型、形式化证明工具与 LLM 辅助技术；应用场景层映射了 LFPA 在分布式系统、数据结构、编译器与智能合约等领域的实际落地；核心挑战层系统归纳了 Def-S-06-18-04 的四级幻觉体系与 4.2 节的五大错误模式；前沿方向层则对应 5.4 节的开放问题与未来预测，为研究者提供结构化的导航框架。
+
+---
+
 ## 8. 引用参考 (References)
 
 [^1]: arXiv, "Towards Language Model Guided TLA+ Proof Automation", February 2026. <https://arxiv.org/abs/2026.02.xxxxx> (假设 URL 格式). 该论文首次系统评估了 LLM（Claude-3.7-Sonnet, DeepSeek-V3.2-Exp, GPT-4.5-preview）在 TLA⁺ Proof System (TLAPS) 上的证明生成能力，提出将 LLM 作为 TLAPS 后端的元级调度器而非底层证明生成器。

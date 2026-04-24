@@ -1,4 +1,4 @@
-﻿> **状态**: 稳定内容 | **风险等级**: 低 | **最后更新**: 2026-04-20
+> **状态**: 稳定内容 | **风险等级**: 低 | **最后更新**: 2026-04-20
 >
 > 本文档基于 Apache Flink 已发布版本进行整理。内容反映当前稳定版本的实现。
 >
@@ -4057,21 +4057,121 @@ graph TB
     EventHub <--> Mirror
 ```
 
+### 7.3 多云部署思维导图
+
+以下思维导图以"多云Flink部署"为中心，放射展开五大维度：云厂商、部署模式、配置模板、网络策略与运维挑战。
+
+```mermaid
+mindmap
+  root((多云Flink部署))
+    云厂商
+      AWS
+      Azure
+      GCP
+      阿里云
+      腾讯云
+    部署模式
+      EKS
+      AKS
+      GKE
+      ACK
+      TKE
+    配置模板
+      Helm
+      Terraform
+      Kustomize
+      Operator
+    网络策略
+      VPC对等
+      专线
+      公网
+      服务网格
+    运维挑战
+      监控统一
+      成本控制
+      灾备
+      合规
+```
+
+### 7.4 多维关联树
+
+以下关联树展示云厂商→部署模式→Flink配置的映射关系，帮助理解不同云环境下的技术选型路径。
+
+```mermaid
+graph TB
+    subgraph "云厂商层"
+        AWS_CLOUD[AWS]
+        AZURE_CLOUD[Azure]
+        GCP_CLOUD[GCP]
+        ALI_CLOUD[阿里云]
+        TENCENT_CLOUD[腾讯云]
+    end
+
+    subgraph "部署模式层"
+        EKS_MODE[EKS]
+        AKS_MODE[AKS]
+        GKE_MODE[GKE]
+        ACK_MODE[ACK]
+        TKE_MODE[TKE]
+    end
+
+    subgraph "Flink配置层"
+        HELM_CFG[Helm Chart]
+        TF_CFG[Terraform]
+        KUS_CFG[Kustomize]
+        OP_CFG[Flink Operator]
+    end
+
+    AWS_CLOUD --> EKS_MODE
+    AZURE_CLOUD --> AKS_MODE
+    GCP_CLOUD --> GKE_MODE
+    ALI_CLOUD --> ACK_MODE
+    TENCENT_CLOUD --> TKE_MODE
+
+    EKS_MODE --> HELM_CFG
+    EKS_MODE --> TF_CFG
+    AKS_MODE --> HELM_CFG
+    AKS_MODE --> TF_CFG
+    GKE_MODE --> HELM_CFG
+    GKE_MODE --> TF_CFG
+    ACK_MODE --> HELM_CFG
+    ACK_MODE --> TF_CFG
+    TKE_MODE --> HELM_CFG
+    TKE_MODE --> KUS_CFG
+
+    HELM_CFG --> OP_CFG
+    TF_CFG --> OP_CFG
+    KUS_CFG --> OP_CFG
+```
+
+### 7.5 多云部署策略决策树
+
+以下决策树展示三种典型多云部署策略：单一云标准部署、双活多云部署与混合云弹性部署。
+
+```mermaid
+flowchart TD
+    Start([多云部署策略]) --> Q1{部署场景?}
+
+    Q1 -->|单一云| Single[标准K8s部署]
+    Q1 -->|双活多云| ActiveActive[数据同步 + 流量调度]
+    Q1 -->|混合云| Hybrid[私有K8s + 公有云弹性]
+
+    Single --> S1[选择托管K8s服务]
+    Single --> S2[使用Flink Operator部署]
+    Single --> S3[统一监控与日志采集]
+
+    ActiveActive --> A1[跨云数据实时同步]
+    ActiveActive --> A2[全局流量调度层]
+    ActiveActive --> A3[分布式状态一致性保障]
+
+    Hybrid --> H1[私有云部署核心JobManager]
+    Hybrid --> H2[公有云弹性扩展TaskManager]
+    Hybrid --> H3[专线/VPC对等保障网络安全]
+```
+
 ---
 
 ## 8. 引用参考 (References)
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ---

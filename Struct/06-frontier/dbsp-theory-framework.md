@@ -1463,32 +1463,137 @@ flowchart TD
 
 ---
 
+## 7.5 推理树（DBSP理论推导链）
+
+以下推导树自底向上展示了 DBSP 理论的五大核心推导脉络：
+
+```mermaid
+graph BT
+    subgraph "基础层"
+        A1["增量计算模型<br/>Incremental Computation"] --> B1["差分数据流<br/>Differential Dataflow"]
+        A2["环检测<br/>Cycle Detection"] --> B2["递归查询语义<br/>Recursive Query Semantics"]
+        A3["时间维度<br/>Temporal Dimension"] --> B3["时变数据形式化<br/>Time-Varying Data Formalization"]
+        A4["一致性保证<br/>Consistency Guarantee"] --> B4["增量视图维护<br/>Incremental View Maintenance"]
+    end
+
+    subgraph "理论整合层"
+        B1 --> C["Z-set 代数 + ∇/∇⁻¹ 算子<br/>DBSP 核心框架"]
+        B2 --> C
+        B3 --> C
+        B4 --> C
+    end
+
+    subgraph "实现映射层"
+        C --> D1["Materialize<br/>(SQL + Differential)"]
+        C --> D2["Feldera<br/>(DBSP 直接实现)"]
+        C --> D3["RisingWave<br/>(流处理 + 物化视图)"]
+    end
+
+    style A1 fill:#e3f2fd
+    style A2 fill:#e3f2fd
+    style A3 fill:#e3f2fd
+    style A4 fill:#e3f2fd
+    style B1 fill:#e8f5e9
+    style B2 fill:#e8f5e9
+    style B3 fill:#e8f5e9
+    style B4 fill:#e8f5e9
+    style C fill:#fff3e0
+    style D1 fill:#fce4ec
+    style D2 fill:#fce4ec
+    style D3 fill:#fce4ec
+```
+
+**推导链说明**：
+
+1. **增量计算模型 → 差分数据流**：将传统批处理的重新计算转化为增量差分运算
+2. **环检测 → 递归查询语义**：通过 LOOP 算子的最小不动点赋予循环以形式化语义
+3. **时间维度 → 时变数据形式化**：将自然数时间轴 $\mathbb{N}$ 上的序列作为基本语义对象
+4. **一致性保证 → 增量视图维护**：通过 ∇ 与 ∇⁻¹ 的互逆性保证增量结果与重新计算一致
+5. **实现映射**：DBSP 理论直接指导 Materialize、Feldera、RisingWave 等系统的架构设计
+
+---
+
+## 7.6 概念矩阵（流处理模型表达能力）
+
+以下四象限矩阵展示了主流流处理/计算模型在表达能力与实现复杂度之间的权衡：
+
+```mermaid
+quadrantChart
+    title 流处理模型表达能力与实现复杂度矩阵
+    x-axis 表达能力弱 --> 表达能力强
+    y-axis 实现复杂度低 --> 实现复杂度高
+    quadrant-1 高表达·高复杂
+    quadrant-2 低表达·高复杂
+    quadrant-3 低表达·低复杂
+    quadrant-4 高表达·低复杂
+    "关系代数": [0.2, 0.15]
+    "Dataflow模型": [0.6, 0.55]
+    "DBSP": [0.72, 0.32]
+    "时态逻辑": [0.85, 0.72]
+    "图灵机": [0.98, 0.98]
+```
+
+**矩阵解读**：
+
+- **关系代数**（左下）：表达能力有限但实现极简，是数据库理论的基石
+- **Dataflow模型**（中偏右）：表达能力强但实现复杂，需处理乱序、水位线、触发器等
+- **DBSP**（右下偏中）：在关系代数基础上大幅扩展表达能力，同时保持相对低的实现复杂度（得益于 Z-set 代数的约束）
+- **时态逻辑**（右上）：表达能力极强（可表达时序性质），但模型检测与验证的实现复杂度高
+- **图灵机**（右上顶点）：理论表达能力最强，但完全不具备工程可行性
+
+---
+
+## 7.7 思维导图（DBSP理论框架全景）
+
+以下思维导图以"DBSP 理论框架"为中心，放射展开五大核心主题：
+
+```mermaid
+mindmap
+  root((DBSP理论框架))
+    增量模型
+      Z-set代数
+      差分算子∇
+      积分算子∇⁻¹
+      自由阿贝尔群结构
+    差分计算
+      链式法则
+      线性算子封闭性
+      增量传播规则
+      状态维护策略
+    递归处理
+      LOOP算子
+      最小不动点语义
+      传递闭包
+      嵌套循环支持
+    时变数据
+      序列语义
+      事件时间扩展
+      嵌套Z-sets
+      时间维度形式化
+    实现系统
+      Materialize
+      Feldera
+      RisingWave
+      Differential Dataflow
+```
+
+**思维导图说明**：
+
+- **增量模型**：DBSP 的理论根基，Z-set 代数为数据提供群结构，∇/∇⁻¹ 构成对偶算子对
+- **差分计算**：核心推导机制，链式法则保证增量在算子间高效传播
+- **递归处理**：区别于传统 IVM 的关键优势，通过不动点语义支持图算法与 Datalog
+- **时变数据**：从离散时间序列到事件时间扩展，覆盖流处理全场景
+- **实现系统**：理论到工程的映射，Materialize 和 Feldera 是 DBSP 的直接工业实现
+
+---
+
 ## 8. 引用参考 (References)
 
 
+---
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+*文档版本: v1.1 | 创建日期: 2026-04-18 | 最后更新: 2026-04-24 | 形式化审核: 通过 | 定理计数: 3 (Thm-S-06-19-01 至 Thm-S-06-19-03) | 定义计数: 9 (Def-S-06-19-01 至 Def-S-06-19-09) | 引理/命题计数: 5 (Lemma-S-06-19-01 至 Lemma-S-06-19-04, Prop-S-06-19-01 至 Prop-S-06-19-03) | Mermaid图: 7 (新增3)*
 
 ---
 
-*文档版本: v1.0 | 创建日期: 2026-04-18 | 形式化审核: 通过 | 定理计数: 3 (Thm-S-06-19-01 至 Thm-S-06-19-03) | 定义计数: 9 (Def-S-06-19-01 至 Def-S-06-19-09) | 引理/命题计数: 5 (Lemma-S-06-19-01 至 Lemma-S-06-19-04, Prop-S-06-19-01 至 Prop-S-06-19-03)*
-
----
-
-*文档版本: v1.0 | 创建日期: 2026-04-20*
+*文档版本: v1.1 | 创建日期: 2026-04-20 | 最后更新: 2026-04-24*

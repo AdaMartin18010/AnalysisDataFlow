@@ -1586,6 +1586,101 @@ graph TB
 
 ---
 
+### 7.7 Calvin 确定性流处理理论推导链
+
+以下推导链图从底层机制到顶层应用，展示 Calvin 确定性流处理的完整理论演化路径：
+
+```mermaid
+graph BT
+    GO["全局排序<br/>Global Ordering<br/>Sequencer 输出严格全序 ≺"]
+    DS["确定性调度<br/>Deterministic Scheduling<br/>按预定顺序无协调执行"]
+    LFE["无锁执行<br/>Lock-Free Execution<br/>确定性锁消除死锁与阻塞"]
+    SE["串行化等价<br/>Serializable Equivalence<br/>执行结果等价于串行调度"]
+    SA["流处理适配<br/>Streaming Adaptation<br/>Calvin-流处理状态一致性映射"]
+
+    GO -->|前置条件| DS
+    DS -->|直接推论| LFE
+    LFE -->|正确性保证| SE
+    SE -->|理论升华| SA
+
+    style GO fill:#e3f2fd
+    style DS fill:#e8f5e9
+    style LFE fill:#fff3e0
+    style SE fill:#f3e5f5
+    style SA fill:#ffebee
+```
+
+**图注**: 本推导链采用自底向上结构，展示 Calvin 从"全局排序"这一核心机制出发，逐步推导出"确定性调度"、"无锁执行"、"串行化等价"的形式化保证，最终升华至"流处理适配"的跨领域理论映射。每一层都是下一层的充分条件：全局排序确保调度可预定，预定调度消除锁竞争，无竞争执行保证串行化，串行化等价则可映射为流处理的 Exactly-Once 语义。
+
+---
+
+### 7.8 吞吐-延迟权衡概念矩阵
+
+以下象限图展示 Calvin 与传统分布式事务协议在吞吐量和延迟两个核心维度上的权衡分布：
+
+```mermaid
+quadrantChart
+    title Calvin vs 传统分布式事务：吞吐-延迟权衡
+    x-axis 低吞吐量 --> 高吞吐量
+    y-axis 高延迟 --> 低延迟
+    quadrant-1 高吞吐-低延迟：理想区域
+    quadrant-2 高吞吐-高延迟：批处理/异步场景
+    quadrant-3 低吞吐-高延迟：传统同步事务
+    quadrant-4 低吞吐-低延迟：单节点/本地事务
+    Calvin: [0.85, 0.78]
+    2PC: [0.25, 0.22]
+    Paxos: [0.40, 0.32]
+    Raft: [0.50, 0.42]
+    Saga: [0.78, 0.62]
+```
+
+**图注**: Calvin 位于第一象限（高吞吐、低延迟），通过预处理排序消除了运行时协调开销，在跨分区事务场景下显著优于传统 2PC。Saga 协议由于异步补偿机制也获得较高吞吐，但牺牲强一致性且延迟受补偿逻辑影响。Raft/Paxos 作为共识协议，吞吐受 Leader 瓶颈限制，延迟受日志复制 RTT 制约。2PC 因运行时双向协调（Prepare-Vote-Commit）陷入第三象限，跨大陆场景下延迟可达数百毫秒至数秒。
+
+---
+
+### 7.9 Calvin 确定性流处理思维导图
+
+以下思维导图以"Calvin 确定性流处理"为中心，放射展开五大核心维度：
+
+```mermaid
+mindmap
+  root((Calvin<br/>确定性流处理))
+    核心概念
+      确定性调度
+      全局排序
+      无锁执行
+      串行化等价
+      预处理哲学
+    形式化模型
+      六元组系统
+      Sequencer状态机
+      确定性锁协议
+      状态转移函数
+      读写集预声明
+    实现机制
+      Epoch批处理
+      链式复制
+      远程读取
+      幂等性保证
+      自适应窗口
+    应用场景
+      跨大陆事务
+      高频交易
+      实时风控
+      FaunaDB生产部署
+      流状态一致性
+    局限性
+      读写集预声明约束
+      动态查询挑战
+      级联中止风险
+      非确定性算子兼容
+      Sequencer单点瓶颈
+```
+
+**图注**: 思维导图从五个维度全面刻画 Calvin 的理论轮廓：核心概念层提炼其设计哲学关键词；形式化模型层对应本文的六元组定义与状态机语义；实现机制层覆盖 Epoch、复制、远程读取等工程要素；应用场景层展示从分布式数据库到流处理的跨领域价值；局限性层诚实反映预声明约束、动态查询和级联中止等实际部署障碍。
+
+---
+
 ## 8. 引用参考 (References)
 
 [^1]: A. Thomson et al., "Calvin: Fast Distributed Transactions for Partitioned Database Systems", Proc. SIGMOD, 2012.
@@ -1605,7 +1700,7 @@ graph TB
 
 ---
 
-*文档版本: v1.1 | 更新日期: 2026-04-24 | 状态: Complete | 形式化元素统计: Def × 6, Thm × 3, Lemma × 2, Prop × 2 | Mermaid 图: 6 | 引用: 8*
+*文档版本: v1.2 | 更新日期: 2026-04-24 | 状态: Complete | 形式化元素统计: Def × 6, Thm × 3, Lemma × 2, Prop × 2 | Mermaid 图: 9 | 引用: 8*
 
 ---
 

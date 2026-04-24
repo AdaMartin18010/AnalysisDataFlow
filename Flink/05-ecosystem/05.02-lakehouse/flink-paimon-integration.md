@@ -1906,6 +1906,117 @@ flowchart TD
     style STRATEGY4 fill:#fce4ec,stroke:#c2185b
 ```
 
+### 7.6 Flink + Paimon 湖仓集成思维导图
+
+以下思维导图以"Flink + Paimon 湖仓集成"为中心，从五大维度放射展开其核心能力与生态定位：
+
+```mermaid
+mindmap
+  root((Flink + Paimon<br/>湖仓集成))
+    Paimon核心
+      LSM树存储引擎
+      增量快照管理
+      Tag管理
+      分支管理
+    Flink集成
+      Source增量读取
+      Sink两阶段提交
+      CDC实时同步
+      Lookup Join
+    应用场景
+      实时数仓
+      CDC数据入湖
+      流批一体计算
+      时间旅行查询
+    性能优化
+      Compaction策略
+      文件布局优化
+      压缩格式选择
+      本地缓存加速
+    生态对接
+      Hive元数据
+      Spark批处理
+      StarRocks分析
+      Trino查询
+```
+
+### 7.7 Paimon 特性-Flink能力-应用场景多维关联树
+
+以下关联树展示 Paimon 核心特性如何通过 Flink 计算能力映射到具体业务应用场景：
+
+```mermaid
+graph TB
+    subgraph "Paimon 核心特性"
+        LSM["LSM-Tree 追加写"]
+        SNAP["不可变快照"]
+        TAG["Tag / 分支管理"]
+        CL["Changelog 生成"]
+    end
+
+    subgraph "Flink 计算能力"
+        SINK["Paimon Sink<br/>两阶段提交"]
+        SRC["Paimon Source<br/>增量扫描"]
+        LJ["Lookup Join<br/>维度关联"]
+        CDC2["CDC 连接器<br/>实时同步"]
+    end
+
+    subgraph "业务应用场景"
+        RTDW["实时数仓<br/>ODS→DWD→DWS"]
+        CDC_IN["CDC 入湖<br/>MySQL→Paimon"]
+        UNI["流批一体<br/>统一存储"]
+        TT["时间旅行<br/>历史版本回溯"]
+    end
+
+    LSM -->|高吞吐写入| SINK
+    SNAP -->|快照隔离| SRC
+    TAG -->|版本回溯| SRC
+    CL -->|变更流驱动| CDC2
+
+    SINK -->|实时写入| RTDW
+    SINK -->|CDC同步| CDC_IN
+    SRC -->|增量消费| RTDW
+    SRC -->|批式扫描| UNI
+    LJ -->|维度打宽| RTDW
+    CDC2 -->|实时同步| CDC_IN
+
+    SNAP -.->|FOR SYSTEM_TIME| TT
+    TAG -.->|AS OF TAG| TT
+```
+
+### 7.8 Paimon 使用场景选型决策树
+
+以下决策树指导如何根据业务需求选择最合适的 Paimon 使用方案：
+
+```mermaid
+flowchart TD
+    START([开始选型])
+    Q1{是否需要实时写入<br/>同时支持离线分析?}
+    Q2{是否需要 CDC 同步?}
+    Q3{是否需要流批一体?}
+    Q4{是否需要时间旅行?}
+
+    A1["实时写入 + 离线分析<br/>方案: Paimon 主表 + Hive 外表"]
+    A2["CDC 同步方案<br/>MySQL CDC → Paimon → 实时查询"]
+    A3["流批一体方案<br/>Paimon 统一存储 + Flink 流批计算"]
+    A4["时间旅行方案<br/>Paimon Tag + 历史版本查询"]
+    END1([考虑其他存储方案])
+
+    START --> Q1
+    Q1 -->|是| A1
+    Q1 -->|否| Q2
+    Q2 -->|是| A2
+    Q2 -->|否| Q3
+    Q3 -->|是| A3
+    Q3 -->|否| Q4
+    Q4 -->|是| A4
+    Q4 -->|否| END1
+
+    style A1 fill:#c8e6c9,stroke:#2e7d32
+    style A2 fill:#e3f2fd,stroke:#1565c0
+    style A3 fill:#fff3e0,stroke:#e65100
+    style A4 fill:#fce4ec,stroke:#c2185b
+```
+
 ---
 
 ## 9. Paimon 1.0：统一 Data + AI 湖格式

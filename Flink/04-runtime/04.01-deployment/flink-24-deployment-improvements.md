@@ -2638,6 +2638,159 @@ graph TB
 
 ---
 
+### 7.6 Flink 2.4 部署改进思维导图
+
+以下思维导图以"Flink 2.4部署改进"为中心，从五大维度放射展开改进领域：
+
+```mermaid
+mindmap
+  root((Flink 2.4 部署改进))
+    K8s集成
+      Native K8s部署
+      Operator增强
+      Pod模板自定义
+    资源管理
+      自适应调度
+      资源弹性
+      细粒度资源请求
+    高可用
+      ZooKeeper-less HA
+      Kubernetes HA
+      快速恢复
+    运维体验
+      Web UI改进
+      REST API增强
+      日志聚合
+    性能优化
+      启动加速
+      类加载优化
+      内存管理改进
+```
+
+---
+
+### 7.7 Flink 2.4 特性→部署场景→最佳实践多维关联树
+
+以下多维关联树展示 Flink 2.4 核心特性到典型部署场景再到最佳实践的映射关系：
+
+```mermaid
+graph TB
+    subgraph "Flink 2.4 核心特性"
+        A1[Native K8s部署]
+        A2[Operator 1.12增强]
+        A3[配置热更新]
+        A4[蓝绿部署]
+        A5[金丝雀发布]
+        A6[多租户隔离]
+        A7[资源配额管理]
+        A8[部署安全检查]
+    end
+
+    subgraph "典型部署场景"
+        B1[生产K8s集群]
+        B2[本地开发测试]
+        B3[混合云部署]
+        B4[Serverless场景]
+        B5[多租户共享集群]
+        B6[金融级高可用]
+    end
+
+    subgraph "最佳实践"
+        C1[声明式GitOps管理]
+        C2[分层配置隔离]
+        C3[渐进式发布策略]
+        C4[资源配额与限制]
+        C5[安全加固基线]
+        C6[监控告警全覆盖]
+    end
+
+    A1 --> B1
+    A1 --> B3
+    A2 --> B1
+    A2 --> B5
+    A3 --> B1
+    A3 --> B4
+    A4 --> B6
+    A5 --> B1
+    A5 --> B6
+    A6 --> B5
+    A7 --> B5
+    A7 --> B1
+    A8 --> B1
+    A8 --> B6
+
+    B1 --> C1
+    B1 --> C3
+    B1 --> C4
+    B1 --> C5
+    B1 --> C6
+    B2 --> C2
+    B3 --> C1
+    B3 --> C2
+    B4 --> C2
+    B4 --> C6
+    B5 --> C4
+    B5 --> C5
+    B6 --> C3
+    B6 --> C5
+    B6 --> C6
+```
+
+---
+
+### 7.8 Flink 2.4 部署模式选型决策树
+
+以下决策树指导不同场景下 Flink 2.4 部署模式的选择：
+
+```mermaid
+flowchart TD
+    A[开始: 选择Flink 2.4部署模式] --> B{部署环境?}
+
+    B -->|生产K8s| C1[Native K8s部署]
+    C1 --> C1a[Operator自动化管理]
+    C1a --> C1b[配置高可用HA]
+    C1b --> C1c[启用监控告警]
+    C1c --> R1[生产K8s模式]
+
+    B -->|本地开发| C2[MiniCluster模式]
+    C2 --> C2a[Docker Compose本地编排]
+    C2a --> C2b[热加载配置加速迭代]
+    C2b --> R2[本地开发模式]
+
+    B -->|混合云| C3[Application Mode]
+    C3 --> C3a[统一容器镜像]
+    C3a --> C3b[跨云状态同步]
+    C3b --> C3c[多云负载均衡]
+    C3c --> R3[混合云模式]
+
+    B -->|Serverless| C4[Flink SQL]
+    C4 --> C4a[托管Flink服务]
+    C4a --> C4b[自动扩缩容]
+    C4b --> C4c[按量计费]
+    C4c --> R4[Serverless模式]
+
+    B -->|高可用金融级| C5[蓝绿部署]
+    C5 --> C5a[双活集群]
+    C5a --> C5b[秒级切换]
+    C5b --> C5c[自动化回滚]
+    C5c --> R5[金融级HA模式]
+
+    B -->|渐进式发布| C6[金丝雀发布]
+    C6 --> C6a[流量阶梯切分]
+    C6a --> C6b[指标自动验证]
+    C6b --> C6c[异常自动回滚]
+    C6c --> R6[金丝雀发布模式]
+
+    R1 --> END[部署完成]
+    R2 --> END
+    R3 --> END
+    R4 --> END
+    R5 --> END
+    R6 --> END
+```
+
+---
+
 ## 8. 部署检查清单 (Checklists)
 
 ### 8.1 部署前检查清单

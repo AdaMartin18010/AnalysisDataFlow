@@ -1884,7 +1884,225 @@ graph TB
 
 ---
 
+### 7.5 流式湖仓架构思维导图
+
+以下思维导图以"流式湖仓架构"为中心，从存储层、计算层、实时层、治理层、应用层五个维度放射展开核心要素。
+
+```mermaid
+mindmap
+  root((流式湖仓架构))
+    存储层
+      对象存储
+        S3
+        OSS
+        GCS
+        HDFS
+        MinIO
+      数据格式
+        Parquet
+        ORC
+        Avro
+      表格式
+        Apache Iceberg
+        Apache Paimon
+        Delta Lake
+        Apache Hudi
+      元数据服务
+        Hive Metastore
+        AWS Glue
+        Unity Catalog
+        Nessie
+        REST Catalog
+    计算层
+      Flink流处理
+        流式写入
+        增量消费
+        Lookup Join
+      Spark批处理
+        离线ETL
+        Compaction
+        ML训练
+      Trino即席查询
+        联邦查询
+        交互式分析
+    实时层
+      CDC接入
+        MySQL CDC
+        PostgreSQL CDC
+        MongoDB CDC
+      流式ETL
+        数据清洗
+        格式转换
+        分区计算
+      实时分析
+        窗口聚合
+        物化视图
+        实时报表
+      特征工程
+        实时特征
+        特征存储
+        版本管理
+    治理层
+      Schema管理
+        Schema演进
+        兼容性检查
+        版本控制
+      数据质量
+        完整性校验
+        一致性规则
+        异常检测
+      血缘追踪
+        字段级血缘
+        作业级血缘
+        影响分析
+      访问控制
+        RBAC
+        行列权限
+        审计日志
+    应用层
+      BI报表
+        实时看板
+        多维分析
+        自助查询
+      AI/ML
+        模型训练
+        在线推理
+        A/B测试
+      数据服务
+        REST API
+        GraphQL
+        数据集市
+      数据产品
+        用户画像
+        推荐系统
+        风控引擎
+```
+
+---
+
+### 7.6 多维关联树：湖仓分层与技术组件映射
+
+以下关联树展示湖仓分层（Bronze-Silver-Gold）到技术组件、再到数据流向的多维映射关系。
+
+```mermaid
+graph TB
+    subgraph "湖仓分层"
+        B["Bronze 原始数据层"]
+        S["Silver 清洗明细层"]
+        G["Gold 聚合服务层"]
+    end
+
+    subgraph "技术组件"
+        subgraph "接入组件"
+            CDC["Flink CDC<br/>Debezium"]
+            KAFKA["Kafka / Pulsar"]
+            FILE["文件批量导入"]
+        end
+
+        subgraph "处理组件"
+            FLINK_SQL["Flink SQL<br/>ETL / 聚合"]
+            SPARK["Spark<br/>批处理 / ML"]
+            COMPACT["Compaction Service<br/>小文件合并"]
+        end
+
+        subgraph "存储组件"
+            PAIMON_CORE["Apache Paimon<br/>LSM / Lookup"]
+            ICEBERG_CORE["Apache Iceberg<br/>Snapshot / Partition"]
+            DELTA_CORE["Delta Lake<br/>Time Travel"]
+            HUDI_CORE["Apache Hudi<br/>MOR / COW"]
+        end
+
+        subgraph "查询组件"
+            TRINO["Trino / Presto<br/>Ad-hoc"]
+            SR["StarRocks<br/>实时Serving"]
+            BI["BI 工具<br/>Tableau / Superset"]
+        end
+    end
+
+    subgraph "数据流"
+        D1["原始流<br/>Binlog / Event"]
+        D2["清洗流<br/>标准化 / 去重"]
+        D3["聚合流<br/>指标 / 特征"]
+        D4["服务流<br/>API / 报表"]
+    end
+
+    B --> S --> G
+    CDC --> B
+    KAFKA --> B
+    FILE --> B
+
+    B -->|流式ETL| FLINK_SQL
+    FLINK_SQL --> S
+    S -->|聚合计算| FLINK_SQL
+    FLINK_SQL --> G
+
+    SPARK -->|批处理| S
+    SPARK -->|ML训练| G
+    COMPACT --> PAIMON_CORE
+    COMPACT --> ICEBERG_CORE
+
+    B --> PAIMON_CORE
+    B --> ICEBERG_CORE
+    S --> PAIMON_CORE
+    S --> ICEBERG_CORE
+    G --> DELTA_CORE
+    G --> HUDI_CORE
+
+    D1 --> CDC
+    D2 --> FLINK_SQL
+    D3 --> G
+    G --> D4
+    D4 --> TRINO
+    D4 --> SR
+    D4 --> BI
+
+    style B fill:#d7ccc8,stroke:#5d4037
+    style S fill:#c8e6c9,stroke:#2e7d32
+    style G fill:#fff3e0,stroke:#e65100
+    style FLINK_SQL fill:#e3f2fd,stroke:#1565c0
+```
+
+---
+
+### 7.7 湖仓技术选型决策树
+
+以下决策树从业务需求与部署环境出发，指引四种典型湖仓技术路线的选型。
+
+```mermaid
+flowchart TD
+    START[开始湖仓选型] --> Q1{部署环境?}
+
+    Q1 -->|公有云 / AWS| Q2{主要引擎?}
+    Q1 -->|实时优先 / 低延迟| Q3{是否需要Lookup?}
+    Q1 -->|混合云 / 多中心| Q4{更新频率?}
+    Q1 -->|开源中立 / 多引擎| Q5{生态锁定容忍度?}
+
+    Q2 -->|Spark为主| PATH1["云原生路线<br/>• S3 对象存储<br/>• Iceberg 表格式<br/>• Athena / Trino 查询"]
+    Q2 -->|Flink为主| PATH1B["云原生+实时<br/>• S3 + Iceberg<br/>• Flink 流处理<br/>• EMR Serverless"]
+
+    Q3 -->|是| PATH2["实时优先路线<br/>• Apache Paimon<br/>• Flink 流批一体<br/>• StarRocks 实时分析"]
+    Q3 -->|否| PATH2B["近实时分析路线<br/>• Paimon / Iceberg<br/>• Flink + Trino<br/>• 分钟级延迟"]
+
+    Q4 -->|高频更新 / CDC| PATH3["混合云路线<br/>• Apache Hudi<br/>• Spark 批处理<br/>• Flink 实时写入"]
+    Q4 -->|低频批量| PATH3B["混合云批处理<br/>• Iceberg on HDFS<br/>• Spark 离线<br/>• 小时级调度"]
+
+    Q5 -->|低锁定 / 开放| PATH4["开源中立路线<br/>• Delta Lake<br/>• Spark + Flink 多引擎<br/>• 统一 REST Catalog"]
+    Q5 -->|生态深度| PATH4B["生态集成路线<br/>• Iceberg / Delta<br/>• Databricks / StarRocks<br/>• 深度优化"]
+
+    style PATH1 fill:#e3f2fd,stroke:#1565c0
+    style PATH2 fill:#c8e6c9,stroke:#2e7d32
+    style PATH3 fill:#fff3e0,stroke:#e65100
+    style PATH4 fill:#f3e5f5,stroke:#7b1fa2
+    style PATH1B fill:#e3f2fd,stroke:#1565c0
+    style PATH2B fill:#c8e6c9,stroke:#2e7d32
+    style PATH3B fill:#fff3e0,stroke:#e65100
+    style PATH4B fill:#f3e5f5,stroke:#7b1fa2
+```
+
+---
+
 ## 8. 引用参考 (References)
+
 
 ---
 

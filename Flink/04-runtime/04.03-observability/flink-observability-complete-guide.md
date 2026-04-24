@@ -1516,23 +1516,210 @@ sequenceDiagram
     GRAF->>GRAF: Render panels
 ```
 
+### 7.6 Flink 可观测性全景思维导图
+
+以下思维导图以"Flink可观测性全景"为中心，放射式展示五大核心维度及其子领域。
+
+```mermaid
+mindmap
+  root((Flink可观测性全景))
+    指标监控
+      JobManager Metrics
+        JVM内存
+        GC暂停
+        线程状态
+      TaskManager Metrics
+        网络内存
+        缓冲池
+        CPU使用率
+      Operator Metrics
+        输入输出吞吐
+        处理延迟
+        背压时间
+      Checkpoint Metrics
+        持续时间
+        状态大小
+        失败次数
+    日志管理
+      结构化日志
+        JSON格式
+        Logstash模式
+      日志级别
+        TRACE
+        DEBUG
+        INFO
+        WARN
+        ERROR
+      日志聚合
+        ELK栈
+        Fluentd+Loki
+        Grafana Cloud
+      关联追踪
+        MDC上下文
+        TraceID注入
+    链路追踪
+      OpenTelemetry
+        OTLP协议
+        自动埋点
+        自定义Span
+      Jaeger
+        分布式追踪UI
+        依赖分析
+      Zipkin
+        轻量级追踪
+        兼容性广泛
+      上下文传播
+        W3C Trace Context
+        Baggage传递
+    可视化
+      Grafana Dashboard
+        自定义面板
+        告警联动
+      Flink Web UI
+        作业概览
+        背压热力图
+        Checkpoint统计
+        火焰图
+      自定义看板
+        SLO仪表盘
+        错误预算面板
+    告警
+      Prometheus Alertmanager
+        规则引擎
+        告警分组
+        抑制机制
+      PagerDuty
+        事件升级
+        值班轮换
+      Webhook
+        企业微信
+        Slack
+        钉钉
+      智能告警
+        动态阈值
+        异常检测ML
+        根因分析
+```
+
+### 7.7 多维关联树
+
+以下关联树展示可观测性维度、技术工具与 Flink 集成的多维映射关系。
+
+```mermaid
+graph TB
+    subgraph Dimensions["可观测性维度"]
+        D1[指标监控]
+        D2[日志管理]
+        D3[链路追踪]
+        D4[可视化]
+        D5[告警通知]
+    end
+
+    subgraph Tools["技术工具"]
+        T1[Prometheus]
+        T2[InfluxDB]
+        T3[Elasticsearch]
+        T4[Logstash]
+        T5[Loki]
+        T6[Jaeger]
+        T7[Zipkin]
+        T8[Grafana]
+        T9[Alertmanager]
+        T10[OTel Collector]
+    end
+
+    subgraph Integration["Flink 集成方式"]
+        I1[Pushgateway Reporter]
+        I2[HTTP API]
+        I3[Log4j2 Appender]
+        I4[OTel Java Agent]
+        I5[REST API]
+        I6[JMX Reporter]
+    end
+
+    D1 --> T1
+    D1 --> T2
+    D2 --> T3
+    D2 --> T4
+    D2 --> T5
+    D3 --> T6
+    D3 --> T7
+    D3 --> T10
+    D4 --> T8
+    D5 --> T9
+
+    T1 --> I1
+    T2 --> I2
+    T3 --> I3
+    T5 --> I3
+    T6 --> I4
+    T7 --> I4
+    T8 --> I5
+    T9 --> I1
+    T10 --> I4
+
+    style Dimensions fill:#e1f5fe
+    style Tools fill:#fff3e0
+    style Integration fill:#e8f5e9
+```
+
+### 7.8 可观测性方案选型决策树
+
+以下决策树指导根据场景需求选择最合适的可观测性技术栈。
+
+```mermaid
+flowchart TD
+    A[可观测性方案选型] --> B{场景需求?}
+
+    B -->|轻量监控| C[轻量级方案]
+    B -->|全链路追踪| D[追踪增强方案]
+    B -->|企业级统一平台| E[企业级方案]
+
+    C --> C1[Flink Metrics]
+    C1 --> C2[Prometheus]
+    C2 --> C3[Grafana]
+    C3 --> C4[基础告警规则]
+
+    D --> D1[OpenTelemetry]
+    D1 --> D2[Jaeger]
+    D2 --> D3[自定义Span]
+    D3 --> D4[上下文传播]
+    D4 --> D5[Prometheus + Grafana]
+
+    E --> E1[统一可观测平台]
+    E1 --> E2a[Datadog]
+    E1 --> E2b[Dynatrace]
+    E1 --> E2c[New Relic]
+    E2a --> E3[全栈APM]
+    E2b --> E3
+    E2c --> E3
+    E3 --> E4[AI根因分析]
+    E4 --> E5[智能告警收敛]
+
+    C4 --> F[部署简单<br/>成本较低]
+    D5 --> G[追踪完备<br/>中等复杂度]
+    E5 --> H[功能全面<br/>成本较高]
+
+    style A fill:#e1f5fe
+    style C fill:#e8f5e9
+    style D fill:#fff3e0
+    style E fill:#f3e5f5
+```
+
 ---
 
 ## 8. 引用参考 (References)
 
-
-
-
-
-
-
-
-
-
+[^1]: Apache Flink Documentation, "Metrics and Monitoring", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/monitoring/metrics/
+[^2]: Apache Flink Documentation, "Debugging and Monitoring", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/monitoring/debugging/
+[^3]: OpenTelemetry, "OpenTelemetry Instrumentation for Java", 2025. https://opentelemetry.io/docs/languages/java/
+[^4]: Prometheus, "Prometheus Configuration", 2025. https://prometheus.io/docs/prometheus/latest/configuration/configuration/
+[^5]: Grafana Labs, "Grafana Dashboard Documentation", 2025. https://grafana.com/docs/grafana/latest/dashboards/
+[^6]: B. Sigelman et al., "Dapper, a Large-Scale Distributed Systems Tracing Infrastructure", Google Technical Report, 2010.
 
 ---
 
-*文档版本: v1.0 | 最后更新: 2026-04-04 | 形式化元素: 12定义, 4命题, 3定理*
+*文档版本: v1.1 | 最后更新: 2026-04-24 | 形式化元素: 12定义, 4命题, 3定理 | Mermaid图: 8个*
 
 
 ---
@@ -2111,4 +2298,4 @@ histogram_quantile(0.99,
 
 ---
 
-*文档版本: v1.0 | 创建日期: 2026-04-18*
+*文档版本: v1.1 | 创建日期: 2026-04-18 | 思维表征深化: 2026-04-24*

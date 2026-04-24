@@ -1213,6 +1213,123 @@ graph LR
 
 ---
 
+### 7.5 推理树（Deduction Tree）
+
+展示流式RAG形式化理论推导链，从基础文档处理到最终生成保证的完整逻辑路径：
+
+```mermaid
+graph BT
+    %% 基础层
+    Chunk["文档切分<br/>Document Chunking"]
+    SemBlock["语义块形式化<br/>Semantic Block Formalization<br/>Def-S-SRAG-01"]
+
+    %% 索引层
+    VecIdx["向量索引构造<br/>Vector Index Construction<br/>Def-S-SRAG-02"]
+    ANN["近似最近邻理论<br/>ANN Theory<br/>Prop-S-SRAG-01"]
+
+    %% 更新层
+    StreamUp["流式更新<br/>Streaming Update"]
+    IncCons["增量索引一致性<br/>Incremental Index Consistency<br/>Lemma-S-SRAG-01"]
+
+    %% 检索层
+    RetEnh["检索增强<br/>Retrieval Enhancement"]
+    CtxInj["上下文注入形式化<br/>Context Injection Formalization"]
+
+    %% 生成层
+    GenGuar["生成保证<br/>Generation Guarantee"]
+    FactCons["事实一致性约束<br/>Factual Consistency Constraint<br/>Thm-S-SRAG-01"]
+
+    %% 推导链
+    Chunk --> SemBlock
+    SemBlock --> VecIdx
+    VecIdx --> ANN
+    ANN --> RetEnh
+
+    StreamUp --> IncCons
+    IncCons --> VecIdx
+
+    RetEnh --> CtxInj
+    CtxInj --> GenGuar
+    GenGuar --> FactCons
+
+    ANN --> CtxInj
+
+    style FactCons fill:#FFD700
+    style SemBlock fill:#87CEEB
+    style ANN fill:#87CEEB
+    style IncCons fill:#87CEEB
+```
+
+---
+
+### 7.6 概念矩阵（Concept Matrix）
+
+展示RAG架构在检索精度与生成质量两个维度上的权衡分布：
+
+```mermaid
+quadrantChart
+    title RAG架构检索-生成质量权衡矩阵
+    x-axis 低检索精度 --> 高检索精度
+    y-axis 低生成质量 --> 高生成质量
+    quadrant-1 高检索+高生成：理想区
+    quadrant-2 低检索+高生成：幻觉风险区
+    quadrant-3 低检索+低生成：不可用区
+    quadrant-4 高检索+低生成：信息过载区
+    "纯LLM": [0.15, 0.55]
+    "Naive RAG": [0.45, 0.50]
+    "Advanced RAG": [0.60, 0.70]
+    "Agentic RAG": [0.75, 0.80]
+    "Streaming RAG": [0.88, 0.85]
+```
+
+**矩阵解读**：
+
+| 架构类型 | 检索精度 | 生成质量 | 核心特征 |
+|:--------:|:--------:|:--------:|:--------|
+| 纯LLM | 极低（无检索） | 中 | 依赖参数记忆，幻觉风险高 |
+| Naive RAG | 中低 | 中低 | 简单向量检索+拼接生成 |
+| Advanced RAG | 中高 | 中高 | 重排序、查询扩展、混合检索 |
+| Agentic RAG | 高 | 高 | 多轮检索、工具调用、反思机制 |
+| Streaming RAG | 极高 | 极高 | 实时索引、增量更新、延迟约束、多级一致性 |
+
+---
+
+### 7.7 思维导图（Mindmap）
+
+以流式RAG形式化理论为中心，放射展开五大核心领域：
+
+```mermaid
+mindmap
+  root((流式RAG形式化理论))
+    文档处理
+      文档切分策略
+      语义块形式化
+      增量Embedding计算
+      差异编码与缓存重用
+    向量检索
+      近似最近邻理论
+      ANN召回率保证
+      LSH_PQ_HNSW算法族
+      相似度度量形式化
+    流式索引
+      增量HNSW更新
+      分层存储一致性
+      版本向量机制
+      实时向量索引更新模型
+    上下文增强
+      上下文注入形式化
+      检索-生成接口定义
+      多路召回融合
+      重排序与过滤
+    生成验证
+      事实一致性约束
+      幻觉率边界分析
+      响应相关性保证
+      gamma-Lipschitz忠实性
+```
+
+---
+
 ## 8. 引用参考 (References)
 
 [^1]: Lewis, P., et al. "Retrieval-augmented generation for knowledge-intensive NLP tasks." *Advances in Neural Information Processing Systems* 33 (2020): 9459-9474.

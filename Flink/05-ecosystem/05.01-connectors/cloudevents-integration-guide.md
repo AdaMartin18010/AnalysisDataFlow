@@ -2395,6 +2395,168 @@ stateDiagram-v2
 
 ---
 
+### 7.5 CloudEvents 与 Flink 集成思维导图
+
+展示了 CloudEvents 与 Flink 集成的全景知识图谱，从规范定义到工程实践放射展开。
+
+```mermaid
+mindmap
+  root((CloudEvents与Flink集成))
+    CloudEvents规范
+      核心属性
+        specversion
+        type
+        source
+        id
+      扩展属性
+        自定义元数据
+        领域特定语义
+      协议绑定
+        HTTP
+        Kafka
+        MQTT
+        NATS
+        AMQP
+      内容模式
+        结构化模式
+        二进制模式
+    Flink Source
+      Kafka CloudEvents
+        二进制解析
+        结构化解析
+      HTTP Push
+        Webhook接收
+        轮询端点
+      MQTT
+        QoS分级
+        主题订阅
+    Flink Sink
+      CloudEvents编码
+        JSON序列化
+        Avro序列化
+      目标系统
+        事件网格
+        消息队列
+        日志存储
+      协议适配
+        Header映射
+        内容协商
+    Schema管理
+      Registry集成
+        Confluent Schema Registry
+        AWS Glue Schema Registry
+      版本进化
+        向后兼容
+        向前兼容
+      兼容性
+        默认值策略
+        别名映射
+    应用场景
+      事件溯源
+        聚合根重建
+        状态快照
+      微服务集成
+        异步通信
+        服务解耦
+      Serverless
+        函数触发
+        事件驱动编排
+      IoT
+        设备 telemetry
+        边缘预处理
+```
+
+---
+
+### 7.6 CloudEvents 特性–Flink 能力–应用场景关联树
+
+展示了 CloudEvents 的核心特性如何映射到 Flink 的计算能力，并支撑不同业务场景的多维关联。
+
+```mermaid
+graph TB
+    subgraph CE["CloudEvents 特性"]
+        CE1["标准化属性<br/>id/type/source/time"]
+        CE2["协议无关性<br/>HTTP/Kafka/MQTT"]
+        CE3["Schema 演进<br/>dataschema/datacontenttype"]
+        CE4["可扩展性<br/>扩展属性机制"]
+        CE5["内容双模式<br/>结构化/二进制"]
+    end
+
+    subgraph FL["Flink 能力"]
+        F1["事件时间处理<br/>Watermark + Timestamp"]
+        F2["多 Connector 集成<br/>Kafka/HTTP/MQTT Source"]
+        F3["Schema 兼容解析<br/>JSON/Avro/Protobuf"]
+        F4["状态ful 计算<br/>KeyedProcessFunction"]
+        F5["精确一次语义<br/>Checkpoint + 两阶段提交"]
+    end
+
+    subgraph SC["应用场景"]
+        S1["事件溯源<br/>聚合根状态重建"]
+        S2["微服务集成<br/>跨服务事件总线"]
+        S3["Serverless 编排<br/>FaaS 事件触发"]
+        S4["IoT 实时分析<br/>设备 telemetry 处理"]
+        S5["审计与合规<br/>端到端血缘追踪"]
+    end
+
+    CE1 --> F1
+    CE1 --> F4
+    CE2 --> F2
+    CE3 --> F3
+    CE4 --> F4
+    CE5 --> F2
+    CE5 --> F3
+
+    F1 --> S4
+    F1 --> S5
+    F2 --> S2
+    F2 --> S3
+    F3 --> S1
+    F3 --> S2
+    F4 --> S1
+    F4 --> S5
+    F5 --> S1
+    F5 --> S2
+    F5 --> S3
+
+    style CE fill:#e3f2fd
+    style FL fill:#fff3e0
+    style SC fill:#e8f5e9
+```
+
+---
+
+### 7.7 CloudEvents 传输绑定选型决策树
+
+根据业务需求特征（吞吐模式、延迟要求、部署环境）指导 CloudEvents 协议绑定的选型决策。
+
+```mermaid
+flowchart TD
+    Start([开始选型]) --> Q1{需求特征?}
+
+    Q1 -->|高吞吐 + 持久化| Kafka[Kafka 协议绑定]
+    Q1 -->|请求响应模式| HTTP[HTTP 协议绑定]
+    Q1 -->|IoT/边缘场景| MQTT[MQTT 协议绑定]
+    Q1 -->|低延迟 + 轻量| LowLatency{延迟要求?}
+
+    LowLatency -->|亚毫秒级| NATS[NATS 协议绑定]
+    LowLatency -->|毫秒级 + 强类型| gRPC[gRPC 协议绑定]
+
+    Kafka --> K1["分区并行消费<br/>支持回溯重放<br/>Exactly-Once 语义"]
+    HTTP --> H1["Webhook 接收<br/>RESTful 集成<br/>云原生事件网格"]
+    MQTT --> M1["发布订阅<br/>QoS 分级<br/>边缘网关友好"]
+    NATS --> N1["极简协议<br/>Pub/Sub 路由<br/>微服务 mesh"]
+    gRPC --> G1["流式 RPC<br/>强 Schema 约束<br/>服务间直联"]
+
+    style Start fill:#e3f2fd
+    style Kafka fill:#e8f5e9
+    style HTTP fill:#e8f5e9
+    style MQTT fill:#e8f5e9
+    style NATS fill:#e8f5e9
+    style gRPC fill:#e8f5e9
+```
+
+---
+
 ## 8. 最佳实践 (Best Practices)
 
 ### 8.1 事件溯源模式最佳实践

@@ -798,6 +798,117 @@ flowchart TD
     style L4 fill:#a5d6a7
 ```
 
+### 流数据治理框架思维导图
+
+以下思维导图以"流数据治理框架"为中心，放射展开治理组织、策略、流程、技术与度量评估五大核心领域：
+
+```mermaid
+mindmap
+  root((流数据治理框架))
+    治理组织
+      数据Owner
+      数据管家
+      数据消费者
+      平台团队
+    治理策略
+      分类分级
+      访问策略
+      保留策略
+      质量策略
+    治理流程
+      申请
+      审批
+      监控
+      审计
+      优化
+    治理技术
+      元数据管理
+      数据目录
+      策略引擎
+      血缘追踪
+    度量评估
+      数据质量分
+      治理覆盖率
+      合规达标率
+      成本效率
+```
+
+### 治理角色-职责-技术支撑关联树
+
+以下多维关联树展示治理角色、核心职责与技术支撑之间的映射关系：
+
+```mermaid
+graph TB
+    subgraph "治理角色"
+        R1[数据Owner]
+        R2[数据管家]
+        R3[数据消费者]
+        R4[平台团队]
+    end
+
+    subgraph "核心职责"
+        D1[定义数据资产<br/>与分级标准]
+        D2[执行分类分级<br/>与质量监控]
+        D3[申请访问权限<br/>与合规使用]
+        D4[建设治理平台<br/>与策略引擎]
+    end
+
+    subgraph "技术支撑"
+        T1[DataHub<br/>Catalog]
+        T2[Schema Registry]
+        T3[OpenLineage]
+        T4[RBAC/ACL<br/>Policy Engine]
+        T5[Great Expectations<br/>Quality Monitor]
+        T6[Masking<br/>Encryption]
+    end
+
+    R1 --> D1
+    R2 --> D2
+    R3 --> D3
+    R4 --> D4
+
+    D1 --> T1
+    D1 --> T2
+    D2 --> T3
+    D2 --> T5
+    D3 --> T4
+    D4 --> T1
+    D4 --> T4
+    D4 --> T6
+```
+
+### 数据分级治理策略决策树
+
+以下决策树展示基于数据敏感度级别的差异化治理策略：
+
+```mermaid
+flowchart TD
+    Start([数据分级<br/>治理策略]) --> A{数据分级?}
+
+    A -->|公开数据| B[开放共享]
+    B --> B1[基本监控]
+    B1 --> B2[日志记录]
+
+    A -->|内部数据| C[权限控制]
+    C --> C1[使用审计]
+    C1 --> C2[定期复核]
+
+    A -->|机密数据| D[审批流程]
+    D --> D1[加密传输]
+    D1 --> D2[数据脱敏]
+    D2 --> D3[最小权限]
+
+    A -->|核心数据| E[最小权限]
+    E --> E1[全链路审计]
+    E1 --> E2[物理隔离]
+    E2 --> E3[双人审批]
+
+    style B fill:#c8e6c9
+    style C fill:#fff9c4
+    style D fill:#ffccbc
+    style E fill:#ffcdd2
+```
+
 ---
 
 ## 8. 引用参考 (References)

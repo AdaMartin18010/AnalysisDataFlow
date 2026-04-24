@@ -598,4 +598,208 @@ flowchart TD
     A4_4 --> End4
 ```
 
+### 事件驱动标准三元集成全景思维导图
+
+以下思维导图以"事件驱动标准三元集成"为中心，放射展开五大核心维度，覆盖从标准规范到治理体系的完整视图：
+
+```mermaid
+mindmap
+  root((事件驱动标准<br/>三元集成))
+    事件标准
+      CloudEvents
+        最小属性集
+        协议无关性
+        CNCF毕业项目
+      AsyncAPI
+        通道与消息分离
+        事件驱动API契约
+        v3.0重大重构
+      OpenAPI
+        REST API描述
+        同步/异步统一
+        v3.1 JSON Schema对齐
+      JSON Schema
+        结构验证
+        类型约束
+        Draft 2020-12
+    协议层
+      HTTP
+        RESTful交互
+        Webhook推送
+        结构化绑定
+      Kafka
+        高吞吐流式
+        二进制绑定
+        分区顺序保证
+      AMQP
+        企业消息队列
+        事务语义
+        投递确认
+      MQTT
+        发布订阅
+        轻量级头部
+        边缘友好
+      gRPC
+        强类型IDL
+        HTTP/2流式
+        Protobuf编码
+    契约管理
+      Schema Registry
+        Confluent Schema Registry
+        AWS Glue Schema Registry
+        Apicurio Registry
+      版本兼容
+        向后兼容
+        向前兼容
+        全兼容/无兼容
+      进化策略
+        新增可选字段
+        废弃标记
+        破坏性变更窗口
+    集成模式
+      发布订阅
+        解耦生产者消费者
+        多订阅者广播
+        主题分区策略
+      事件溯源
+        状态即事件日志
+        时间回溯重建
+        审计追踪天然支持
+      CQRS
+        读写模型分离
+        命令端优化一致性
+        查询端优化读取
+      Saga
+        长事务编排
+        补偿操作定义
+        最终一致性保证
+    治理体系
+      SLA
+        可用性承诺
+        延迟分位约束
+        吞吐基线
+      监控
+        事件吞吐量
+        消费者滞后
+        Schema冲突率
+      追踪
+        分布式Trace
+        端到端血缘
+        归因分析
+      安全
+        传输加密TLS
+        身份认证mTLS/OAuth
+        授权与审计
+      文档化
+        AsyncAPI文档
+        OpenAPI文档
+        运行手册与拓扑图
+```
+
+### 标准→实现→工具链多维关联树
+
+以下多维关联树展示标准规范层、协议实现层与生产工具链之间的完整映射关系：
+
+```mermaid
+graph TB
+    subgraph Standard["标准规范层"]
+        S1[CloudEvents v1.0.2<br/>事件封装标准]
+        S2[AsyncAPI v3.0.0<br/>事件驱动API契约]
+        S3[OpenAPI v3.1.0<br/>REST API描述]
+        S4[JSON Schema Draft 2020-12<br/>载荷验证标准]
+    end
+
+    subgraph Implementation["协议实现层"]
+        I1[HTTP/REST<br/>Webhook / Gateway]
+        I2[Kafka Protocol<br/>高吞吐流式传输]
+        I3[AMQP 1.0<br/>企业消息队列]
+        I4[MQTT 3.1.1/5.0<br/>轻量级发布订阅]
+        I5[gRPC + Protobuf<br/>强类型服务间通信]
+    end
+
+    subgraph Toolchain["生产工具链"]
+        T1[Schema Registry<br/>Confluent / AWS Glue / Apicurio]
+        T2[API Gateway<br/>Kong / Apigee / AWS API Gateway]
+        T3[Event Mesh<br/>Solace / NATS / RabbitMQ]
+        T4[Observability<br/>Jaeger / Prometheus / OpenTelemetry]
+        T5[Streaming Platform<br/>Flink / Spark / RisingWave]
+    end
+
+    S1 -->|HTTP结构化绑定| I1
+    S1 -->|Kafka二进制绑定| I2
+    S1 -->|AMQP消息映射| I3
+    S1 -->|MQTT轻量绑定| I4
+    S2 -->|通道定义| I1
+    S2 -->|消息路由| I2
+    S3 -->|端点描述| I1
+    S3 -->|gRPC服务定义| I5
+    S4 -->|请求体校验| I1
+    S4 -->|消息载荷校验| I2
+    S4 -->|Protobuf对齐| I5
+
+    I1 -->|入口路由| T2
+    I2 -->|流处理输入| T5
+    I2 -->|事件总线| T3
+    I3 -->|企业集成| T3
+    I4 -->|边缘接入| T3
+    I5 -->|微服务间通信| T2
+
+    S2 -->|Schema引用| T1
+    S4 -->|版本控制| T1
+    S1 -->|dataschema元数据| T1
+    T5 -->|血缘上报| T4
+    I2 -->|延迟/吞吐监控| T4
+    I3 -->|消息追踪| T4
+```
+
+### 事件标准选型场景决策树
+
+以下决策树针对不同技术场景提供事件驱动标准的选型路径与实施要点：
+
+```mermaid
+flowchart TD
+    Start([开始选型]) --> Q1{部署场景?}
+
+    Q1 -->|云原生 / Serverless| A1[CloudEvents]
+    Q1 -->|API网关 / 微服务| A2[AsyncAPI + OpenAPI]
+    Q1 -->|IoT / 边缘计算| A3[MQTT + 轻量Schema]
+    Q1 -->|企业集成 / ESB| A4[AMQP + 完整契约]
+
+    A1 --> A1_1[HTTP结构化绑定<br/>自包含JSON信封]
+    A1 --> A1_2[Kafka二进制绑定<br/>零Value开销]
+    A1 --> A1_3[最小属性集映射<br/>ce-type / ce-source / ce-id]
+
+    A2 --> A2_1[AsyncAPI定义<br/>事件驱动通道与消息分离]
+    A2 --> A2_2[OpenAPI描述<br/>同步REST端点与Webhook]
+    A2 --> A2_3[JSON Schema统一<br/>请求/事件载荷结构]
+    A2 --> A2_4[Schema Registry集成<br/>Avro / Protobuf / JSON]
+
+    A3 --> A3_1[MQTT 5.0用户属性<br/>携带轻量元数据]
+    A3 --> A3_2[精简JSON Schema<br/>减少带宽与解析开销]
+    A3 --> A3_3[边缘侧缓存校验<br/>离线容忍与重连策略]
+
+    A4 --> A4_1[AMQP 1.0事务<br/>精确投递语义]
+    A4 --> A4_2[Schema Registry强治理<br/>全生命周期版本兼容]
+    A4 --> A4_3[企业级SLA<br/>死信队列 / 补偿策略]
+    A4 --> A4_4[与遗留ESB桥接<br/>渐进式现代化]
+
+    A1_1 --> End1([实施CloudEvents方案])
+    A1_2 --> End1
+    A1_3 --> End1
+
+    A2_1 --> End2([实施AsyncAPI+OpenAPI方案])
+    A2_2 --> End2
+    A2_3 --> End2
+    A2_4 --> End2
+
+    A3_1 --> End3([实施MQTT轻量方案])
+    A3_2 --> End3
+    A3_3 --> End3
+
+    A4_1 --> End4([实施AMQP企业方案])
+    A4_2 --> End4
+    A4_3 --> End4
+    A4_4 --> End4
+```
+
 ## 8. 引用参考 (References)

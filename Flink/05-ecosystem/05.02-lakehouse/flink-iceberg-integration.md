@@ -2274,16 +2274,202 @@ graph TB
 
 ---
 
+### 7.6 Flink + Iceberg 湖仓集成思维导图
+
+以下思维导图以"Flink + Iceberg 湖仓集成"为中心，放射展开五大核心维度，帮助读者建立整体认知框架。
+
+`mermaid
+mindmap
+  root((Flink + Iceberg<br/>湖仓集成))
+    Iceberg核心
+      隐式分区
+        Hidden Partitioning
+        自动派生分区值
+        查询语法透明
+      时间旅行
+        Time Travel
+        快照级历史回溯
+        FOR SYSTEM_TIME AS OF
+      Schema进化
+        Schema Evolution
+        列增删改
+        在线分区演进
+      隐藏分区
+        无物理分区列
+        分区策略与数据解耦
+        分区变更零停机
+    Flink集成
+      Batch Source
+        全表快照扫描
+        谓词下推优化
+        并行分片分配
+      Stream Source
+        增量快照消费
+        流式变更捕获
+        多起始策略支持
+      Sink
+        两阶段提交 Exactly-Once
+        Checkpoint 级事务
+        UPSERT / Append 双模式
+      CDC
+        MySQL/PostgreSQL CDC
+        变更数据实时入湖
+        Equality Delete 支持
+    查询生态
+      Spark
+        批处理机器学习
+        Spark SQL 查询
+        Structured Streaming
+      Trino
+        交互式即席查询
+        联邦查询引擎
+        低延迟 BI 报表
+      Presto
+        大规模分布式查询
+        内存计算优化
+      Hive
+        存量数仓兼容
+        元数据互通
+      Dremio
+        数据湖探查
+        自助式数据访问
+    优化策略
+      小文件合并
+        Compaction 作业
+        Rewrite Data Files
+        目标文件 128MB
+      分区裁剪
+        Partition Pruning
+        隐藏分区自动推导
+        减少扫描数据量
+      谓词下推
+        Predicate Pushdown
+        列级统计过滤
+        Min/Max 边界裁剪
+      压缩
+        Zstd / Snappy
+        Parquet 字典编码
+        布隆过滤器点查
+    应用场景
+      湖仓一体
+        统一存储层
+        流批共享元数据
+        单一真相源
+      实时入湖
+        Kafka → Iceberg
+        CDC 同步入湖
+        分钟级数据可见
+      机器学习
+        特征工程数据湖
+        训练集历史回溯
+        模型版本对齐数据
+      BI分析
+        Trino 交互查询
+        小时级报表生成
+        自助式数据探查
+`
+
+### 7.7 多维关联树：Iceberg 特性 → Flink 能力 → 查询引擎
+
+以下多维关联树展示 Iceberg 核心特性如何通过 Flink 运行时能力映射到上层查询引擎，形成端到端的技术链路。
+
+`mermaid
+graph TB
+    subgraph "Iceberg 存储特性"
+        direction TB
+        ICE_F1["不可变快照<br/>Snapshot Isolation"]
+        ICE_F2["隐藏分区<br/>Hidden Partitioning"]
+        ICE_F3["列级统计<br/>Column Statistics"]
+        ICE_F4["增量元数据<br/>Incremental Metadata"]
+        ICE_F5["Equality Delete<br/>行级更新"]
+    end
+
+    subgraph "Flink 运行时能力"
+        direction TB
+        FLINK_C1["Checkpoint 事务提交<br/>Exactly-Once Sink"]
+        FLINK_C2["增量快照扫描<br/>Incremental Source"]
+        FLINK_C3["谓词下推<br/>FlinkIcebergSplit"]
+        FLINK_C4["分区裁剪<br/>Partition Filter"]
+        FLINK_C5["CDC 连接器<br/>Upsert 语义"]
+    end
+
+    subgraph "查询引擎收益"
+        direction TB
+        QUERY_R1["Spark SQL<br/>全表批处理 + ML"]
+        QUERY_R2["Trino/Presto<br/>交互式即席查询"]
+        QUERY_R3["Flink Batch<br/>流批统一扫描"]
+        QUERY_R4["BI 工具<br/>Tableau/Superset"]
+        QUERY_R5["ML 平台<br/>特征工程回溯"]
+    end
+
+    ICE_F1 -->|"快照级可见性<br/>保证一致性"| FLINK_C1
+    ICE_F1 -->|"增量差异扫描<br/>流式消费基础"| FLINK_C2
+    ICE_F2 -->|"自动分区推导<br/>无需显式列"| FLINK_C4
+    ICE_F3 -->|"列统计过滤<br/>减少 IO"| FLINK_C3
+    ICE_F4 -->|"轻量元数据扫描<br/>快速发现文件"| FLINK_C2
+    ICE_F5 -->|"行级删除文件<br/>CDC 入湖支持"| FLINK_C5
+
+    FLINK_C1 -->|"已提交数据<br/>立即可查"| QUERY_R2
+    FLINK_C1 -->|"一致快照<br/>训练集可复现"| QUERY_R5
+    FLINK_C2 -->|"增量数据<br/>实时分析"| QUERY_R3
+    FLINK_C3 -->|"裁剪后文件集<br/>加速查询"| QUERY_R2
+    FLINK_C3 -->|"过滤后数据<br/>减少 Spark 扫描"| QUERY_R1
+    FLINK_C4 -->|"分区命中<br/>BI 报表提速"| QUERY_R4
+    FLINK_C5 -->|"CDC 变更流<br/>实时数仓"| QUERY_R3
+
+    style ICE_F1 fill:#e3f2fd,stroke:#1565c0
+    style ICE_F2 fill:#e3f2fd,stroke:#1565c0
+    style FLINK_C1 fill:#fff3e0,stroke:#e65100
+    style FLINK_C2 fill:#fff3e0,stroke:#e65100
+    style QUERY_R2 fill:#e8f5e9,stroke:#2e7d32
+    style QUERY_R3 fill:#e8f5e9,stroke:#2e7d32
+`
+
+### 7.8 Iceberg vs Paimon 选型决策树
+
+以下决策树为不同业务负载特征提供 Iceberg 与 Paimon 的选型指引，并涵盖混合负载和云原生部署策略。
+
+`mermaid
+flowchart TD
+    START([开始选型<br/>流批统一存储])
+
+    START --> Q1{业务负载特征?}
+
+    Q1 -->|强分析型<br/>BI报表/即席查询/ML训练| A1["Apache Iceberg<br/>+ Trino / Spark"]
+    Q1 -->|强实时型<br/>秒级延迟/Lookup Join/CDC| A2["Apache Paimon<br/>+ Flink 原生"]
+    Q1 -->|混合负载<br/>实时写入 + 离线分析| Q2{读写比例?}
+    Q1 -->|云原生优先<br/>S3/对象存储为主| A4["Apache Iceberg<br/>on S3 / OSS"]
+
+    Q2 -->|写多读少<br/>实时入湖为主| A3A["Iceberg 写入<br/>Paimon 读取<br/>（或 Iceberg 统一）"]
+    Q2 -->|读多写少<br/>分析查询为主| A3B["Paimon 写入<br/>Iceberg 导出<br/>（分析镜像）"]
+    Q2 -->|读写均衡<br/>真正流批一体| A3C["按表选型<br/>实时表→Paimon<br/>分析表→Iceberg"]
+
+    A1 --> D1["优势"]
+    D1 --> D1a["生态最广<br/>多引擎共享"]
+    D1 --> D1b["批处理性能最优<br/>Parquet 列存"]
+    D1 --> D1c["Time Travel 完善<br/>审计回溯"]
+
+    A2 --> D2["优势"]
+    D2 --> D2a["流式延迟最低<br/>秒级可见"]
+    D2 --> D2b["Lookup Join 原生<br/>维表关联"]
+    D2 --> D2c["Changelog 生产<br/>CDC 出湖"]
+
+    A4 --> D4["优势"]
+    D4 --> D4a["对象存储亲和<br/>S3/OSS 零改造"]
+    D4 --> D4b["计算存储分离<br/>弹性扩缩容"]
+    D4 --> D4c["Iceberg REST Catalog<br/>云中立元数据"]
+
+    style START fill:#f5f5f5,stroke:#616161
+    style A1 fill:#e3f2fd,stroke:#1565c0
+    style A2 fill:#c8e6c9,stroke:#2e7d32
+    style A4 fill:#fff3e0,stroke:#e65100
+    style Q1 fill:#fff9c4,stroke:#f57f17
+    style Q2 fill:#fff9c4,stroke:#f57f17
+`
+
+---
+
 ## 8. 引用参考 (References)
-
-
-
-
-
-
-
-
-
 
 
 ---

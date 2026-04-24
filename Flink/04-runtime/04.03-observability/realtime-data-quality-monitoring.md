@@ -2201,26 +2201,171 @@ flowchart LR
 
 ---
 
+## 7.6 实时数据质量监控思维导图
+
+以下思维导图以"实时数据质量监控"为核心，系统展示五大关键维度的放射展开结构：
+
+```mermaid
+mindmap
+  root((实时数据质量监控))
+    质量维度
+      完整性
+        列完整性
+        行完整性
+        表完整性
+      准确性
+        语义准确
+        句法准确
+        溯源准确
+      一致性
+        格式一致
+        值一致
+        跨字段一致
+        跨系统一致
+      及时性
+        数据新鲜度
+        处理延迟
+        更新频率
+      唯一性
+        行级唯一
+        键级唯一
+        组合唯一
+    监控手段
+      Flink SQL校验
+        CHECK约束
+        窗口聚合
+      自定义UDF
+        正则校验
+        业务规则
+      SideOutput
+        异常分流
+        DLQ隔离
+      Metrics
+        自定义指标
+        Prometheus集成
+    告警机制
+      阈值告警
+        静态阈值
+        动态阈值
+      异常检测
+        统计方法
+        机器学习
+      趋势分析
+        同比环比
+        预测预警
+      智能告警
+        根因定位
+        自愈触发
+    修复策略
+      实时修正
+        格式标准化
+        缺值填充
+      数据补偿
+        增量补录
+        对账修正
+      回滚重放
+        Checkpoint恢复
+        源端重放
+      人工介入
+        工单派发
+        专家审核
+    可视化
+      Dashboard
+        Grafana面板
+        实时看板
+      SLO看板
+        目标达成率
+        错误预算
+      质量评分
+        六维评分卡
+        综合评级
+      趋势图
+        时序趋势
+        分布变化
+```
+
+### 7.7 多维关联树
+
+以下关联树展示数据质量问题类型、检测方法与 Flink 技术方案之间的多维映射关系：
+
+```mermaid
+graph TB
+    subgraph "数据质量问题"
+        Q1[完整性缺失]
+        Q2[准确性偏差]
+        Q3[一致性冲突]
+        Q4[及时性延迟]
+        Q5[唯一性重复]
+        Q6[有效性违规]
+    end
+
+    subgraph "检测方法"
+        D1[非空检查]
+        D2[Lookup关联]
+        D3[规则引擎]
+        D4[Watermark超时]
+        D5[BloomFilter去重]
+        D6[正则/CAST校验]
+    end
+
+    subgraph "Flink技术方案"
+        T1[Flink SQL CHECK + COALESCE]
+        T2[Async I/O维表Join]
+        T3[KeyedProcessFunction跨字段校验]
+        T4[LatencyMarker监控]
+        T5[KeyedState + DISTINCT]
+        T6[UDF正则校验]
+    end
+
+    Q1 --> D1 --> T1
+    Q2 --> D2 --> T2
+    Q3 --> D3 --> T3
+    Q4 --> D4 --> T4
+    Q5 --> D5 --> T5
+    Q6 --> D6 --> T6
+```
+
+### 7.8 数据质量策略决策树
+
+以下决策树指导在不同业务容忍度下选择合适的数据质量处理策略：
+
+```mermaid
+flowchart TD
+    A[数据质量策略选择] --> B{业务容忍度?}
+    B -->|零容忍| C[实时阻断策略]
+    B -->|部分容忍| D[异常容忍策略]
+    B -->|低敏感度| E[事后审计策略]
+
+    C --> C1[严格Schema校验]
+    C --> C2[死信队列隔离]
+    C --> C3[立即告警阻断]
+    C1 --> C4[Flink SQL CHECK + NOT ENFORCED禁用]
+    C2 --> C5[SideOutput输出至Kafka DLQ]
+    C3 --> C6[PagerDuty/Slack即时通知]
+
+    D --> D1[宽松校验规则]
+    D --> D2[异常标记放行]
+    D --> D3[后续异步修复]
+    D1 --> D4[采样检查 + 动态阈值]
+    D2 --> D5[附加quality_status字段]
+    D3 --> D6[定时补偿任务 + 自动修复]
+
+    E --> E1[全量记录存储]
+    E --> E2[离线分析审计]
+    E --> E3[批量补偿机制]
+    E1 --> E4[原始数据落湖S3/OSS]
+    E2 --> E5[Deequ/Great Expectations离线扫描]
+    E3 --> E6[夜间批量回刷 + 差异修正]
+```
+
+---
+
 ## 8. 引用参考 (References)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ---
 
-*文档版本: v2.0 | 更新日期: 2026-04-19 | 状态: Production | 形式化元素: 14 Def + 4 Prop + 1 Lemma + 2 Thm*
+*文档版本: v2.1 | 更新日期: 2026-04-24 | 状态: Production | 形式化元素: 14 Def + 4 Prop + 1 Lemma + 2 Thm*
 
 ---
 
