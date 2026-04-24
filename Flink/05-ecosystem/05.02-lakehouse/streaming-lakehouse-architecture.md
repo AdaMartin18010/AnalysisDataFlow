@@ -2103,6 +2103,25 @@ flowchart TD
 
 ## 8. 引用参考 (References)
 
+[^1]: M. Armbrust et al., "Lakehouse: A New Generation of Open Platforms that Unify Data Warehousing and Advanced Analytics", CIDR, 2021. https://www.cidrdb.org/cidr2021/papers/cidr2021_paper17.pdf
+
+[^2]: Apache Iceberg Documentation, "Table Spec", 2025. https://iceberg.apache.org/spec/
+
+[^3]: Apache Paimon Documentation, "Streaming Lakehouse Format", 2025. https://paimon.apache.org/docs/master/concepts/overview/
+
+[^4]: Delta Lake Documentation, "Delta Lake Transaction Log", 2025. https://docs.delta.io/latest/delta-storage.html
+
+[^5]: Apache Hudi Documentation, "Write Operations & Table Types", 2025. https://hudi.apache.org/docs/write_operations/
+
+[^6]: Apache Flink Documentation, "Flink + Iceberg Integration", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/table/iceberg/
+
+[^7]: Apache Flink Documentation, "Flink + Paimon Integration", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/table/paimon/
+
+[^8]: B. Chambers and M. Zaharia, "Spark: The Definitive Guide", O'Reilly Media, 2018.
+
+[^9]: Apache Iceberg Blog, "Hidden Partitioning", 2022. https://iceberg.apache.org/docs/latest/partitioning/
+
+[^10]: "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing", PVLDB, 8(12), 2015.
 
 ---
 

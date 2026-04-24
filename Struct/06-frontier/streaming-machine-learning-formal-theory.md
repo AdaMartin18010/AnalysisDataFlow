@@ -1576,6 +1576,135 @@ graph LR
 
 ---
 
+### 7.4 推理树：流式机器学习形式化理论推导链
+
+以下推导树展示流式机器学习的五大核心链路及其形式化依赖关系：
+
+```mermaid
+graph BT
+    subgraph OnlineLearning["在线学习分支"]
+        OL1[在线梯度下降 OGD]
+        OL2[自适应学习率 AdaGrad/Adam]
+        OL3[遗憾界分析 R(T) ≤ O(√T)]
+        OL4[模型增量更新 θₜ₊₁ = θₜ − ηₜ∇ℒ]
+    end
+
+    subgraph DriftDetection["概念漂移分支"]
+        DD1[KL散度量化漂移强度]
+        DD2[假设检验 H₀ vs H₁]
+        DD3[检测延迟下界 τ_detect]
+        DD4[自适应窗口 ADWIN]
+    end
+
+    subgraph FeatureEngineering["特征工程分支"]
+        FE1[流式特征算子 ℱ]
+        FE2[状态管理 sₜ₊₁ = f_update(sₜ, xₜ)]
+        FE3[因果性约束 ∂ℱ/∂xₜ' = 0]
+        FE4[实时特征工程形式化]
+    end
+
+    subgraph ModelServing["模型服务分支"]
+        MS1[推理引擎 Inference Engine]
+        MS2[版本控制 Version Control]
+        MS3[A/B测试与bandit]
+        MS4[推理延迟保证 E[T_pred] ≤ τ_max]
+    end
+
+    subgraph FeedbackLoop["反馈闭环分支"]
+        FL1[实时反馈流]
+        FL2[性能监控 Performance Monitor]
+        FL3[策略梯度更新]
+        FL4[强化学习形式化 RL → π*]
+    end
+
+    Root["流式机器学习形式化理论<br/>Streaming ML Formal Theory"]
+
+    OL4 --> OL3 --> OL2 --> OL1
+    DD4 --> DD3 --> DD2 --> DD1
+    FE4 --> FE3 --> FE2 --> FE1
+    MS4 --> MS3 --> MS2 --> MS1
+    FL4 --> FL3 --> FL2 --> FL1
+
+    OL1 --> Root
+    DD1 --> Root
+    FE1 --> Root
+    MS1 --> Root
+    FL1 --> Root
+
+    style Root fill:#e1f5fe,stroke:#01579b,stroke-width:3px
+    style OL4 fill:#e8f5e9
+    style DD4 fill:#fff3e0
+    style FE4 fill:#fce4ec
+    style MS4 fill:#f3e5f5
+    style FL4 fill:#e0f2f1
+```
+
+---
+
+### 7.5 概念矩阵：流式ML训练-推理权衡
+
+以下象限图展示不同学习范式在模型更新频率与推理延迟要求之间的权衡关系：
+
+```mermaid
+quadrantChart
+    title 流式ML训练-推理权衡矩阵
+    x-axis 低更新频率 --> 高更新频率
+    y-axis 宽松延迟要求 --> 严格延迟要求
+    quadrant-1 高频更新-严格延迟
+    quadrant-2 低频更新-严格延迟
+    quadrant-3 低频更新-宽松延迟
+    quadrant-4 高频更新-宽松延迟
+    批量训练: [0.15, 0.2]
+    微批量: [0.35, 0.4]
+    联邦学习: [0.45, 0.55]
+    增量学习: [0.7, 0.6]
+    在线学习: [0.9, 0.85]
+```
+
+**矩阵解读：**
+- **第一象限（高频更新-严格延迟）**：在线学习位于此区域，要求单遍处理、实时响应，适合广告推荐、欺诈检测等场景。
+- **第二象限（低频更新-严格延迟）**：批量训练通过预训练模型+缓存推理满足严格延迟，但模型更新频率低，适合静态环境。
+- **第三象限（低频更新-宽松延迟）**：传统批处理离线训练，对延迟不敏感，适合大规模离线分析。
+- **第四象限（高频更新-宽松延迟）**：联邦学习分布在全球节点，更新聚合频率受限但可容忍较高延迟，适合隐私敏感场景。
+
+---
+
+### 7.6 思维导图：流式机器学习形式化理论全景
+
+以下思维导图以流式机器学习形式化理论为中心，放射展开五大核心领域：
+
+```mermaid
+mindmap
+  root((流式机器学习形式化理论))
+    在线学习
+      在线梯度下降 OGD
+      自适应学习率 AdaGrad/Adam
+      遗憾界分析 R(T) ≤ O(√T)
+      收敛速率 O(ln T) / O(1/T)
+    概念漂移
+      漂移检测 ADWIN / DDM
+      自适应窗口 W_t^(w)
+      漂移强度量化 Δ_drift = D_KL
+      真实漂移 vs 虚拟漂移
+    特征工程
+      流式特征算子 ℱ
+      状态管理 s_t
+      因果性约束
+      一致性约束
+    模型服务
+      推理引擎
+      版本控制
+      A/B测试
+      推理延迟保证
+    反馈闭环
+      实时反馈流
+      性能监控
+      强化学习形式化
+      策略优化 π*
+```
+
+---
+
 ## 8. 引用参考 (References)
 
 [^1]: K. P. Murphy, "Machine Learning: A Probabilistic Perspective," MIT Press, 2012.
