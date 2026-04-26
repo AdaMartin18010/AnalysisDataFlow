@@ -962,6 +962,165 @@ flowchart TD
     I1 -->|构造JSON| I4[JSON_OBJECT/ARRAY]
 ```
 
+### Flink SQL 函数速查思维导图
+
+```mermaid
+mindmap
+  root((Flink SQL函数速查))
+    标量函数
+      数学函数
+        ABS ROUND CEIL FLOOR
+        POWER SQRT LN LOG
+        SIN COS TAN
+        RAND PI E
+      字符串函数
+        CONCAT SUBSTRING REPLACE
+        UPPER LOWER TRIM
+        LIKE REGEXP
+        LENGTH CHAR_LENGTH
+      日期时间函数
+        CURRENT_DATE CURRENT_TIMESTAMP
+        DATE_FORMAT DATE_PARSE
+        EXTRACT YEAR MONTH DAY
+        DATE_ADD DATEDIFF
+      条件函数
+        CASE WHEN
+        COALESCE NULLIF
+        IS NULL IS NOT NULL
+      类型转换函数
+        CAST TRY_CAST
+        TO_DATE TO_TIMESTAMP
+        HEX BIN UNHEX
+    聚合函数
+      COUNT SUM AVG MAX MIN
+      COUNT DISTINCT SUM DISTINCT
+      STDDEV VARIANCE
+      窗口聚合
+        TUMBLE HOP SESSION
+        CUMULATE
+      FILTER子句
+    窗口函数
+      分组窗口
+        TUMBLE
+        HOP
+        SESSION
+        CUMULATE
+      OVER窗口
+        ROWS RANGE
+        PARTITION BY
+        ORDER BY
+      窗口TVF
+        TUMBLE TVF
+        HOP TVF
+        SESSION TVF
+    表值函数
+      JOIN LATERAL
+      生成函数
+        UNNEST
+      TVF
+        TUMBLE TVF
+        HOP TVF
+        SESSION TVF
+    系统函数
+      JSON函数
+        JSON_VALUE JSON_QUERY
+        JSON_OBJECT JSON_ARRAY
+      MAP函数
+        MAP_KEYS MAP_VALUES
+      ARRAY函数
+        ARRAY_CONTAINS
+      DECIMAL精度
+        DECIMAL
+```
+
+### SQL函数类别→使用场景→流处理映射多维关联树
+
+```mermaid
+graph TB
+    subgraph SQL函数类别["SQL函数类别"]
+        S1[标量函数]
+        S2[聚合函数]
+        S3[窗口函数]
+        S4[表值函数]
+        S5[系统函数]
+    end
+
+    subgraph 使用场景["使用场景"]
+        U1[数据转换与清洗]
+        U2[统计分析与报表]
+        U3[时间序列分析]
+        U4[复杂关联查询]
+        U5[半结构化数据处理]
+    end
+
+    subgraph 流处理映射["流处理映射"]
+        F1[逐行处理 Row-by-Row]
+        F2[分组聚合 Group Aggregation]
+        F3[时间窗口计算 Window Computation]
+        F4[流表关联 Stream-Table Join]
+        F5[嵌套展开 Unnest/Explode]
+    end
+
+    S1 -->|字段清洗 类型转换| U1
+    S1 -->|条件判断 字符串处理| U1
+    S2 -->|COUNT/SUM/AVG| U2
+    S2 -->|DISTINCT统计| U2
+    S3 -->|TUMBLE/HOP/SESSION| U3
+    S3 -->|OVER窗口分析| U3
+    S4 -->|LATERAL JOIN| U4
+    S4 -->|UNNEST展开数组| U5
+    S5 -->|JSON解析| U5
+    S5 -->|MAP/ARRAY操作| U5
+
+    U1 -->|映射到| F1
+    U2 -->|映射到| F2
+    U3 -->|映射到| F3
+    U4 -->|映射到| F4
+    U5 -->|映射到| F5
+
+    style SQL函数类别 fill:#e3f2fd
+    style 使用场景 fill:#e8f5e9
+    style 流处理映射 fill:#fff3e0
+```
+
+### SQL函数选择决策树
+
+```mermaid
+flowchart TD
+    A[SQL函数选择决策] --> B{需求类型?}
+
+    B -->|简单转换| C[标量函数]
+    C --> C1[数学运算: ABS/POWER/ROUND]
+    C --> C2[字符串处理: CONCAT/SUBSTRING/REPLACE]
+    C --> C3[日期处理: DATE_FORMAT/EXTRACT]
+    C --> C4[条件判断: CASE WHEN/COALESCE]
+    C --> C5[类型转换: CAST/TRY_CAST]
+
+    B -->|统计分析| D[聚合函数]
+    D --> D1[基础聚合: COUNT/SUM/AVG/MAX/MIN]
+    D --> D2[去重聚合: COUNT DISTINCT]
+    D --> D3[条件过滤: FILTER子句]
+    D --> D4[分组约束: GROUP BY + HAVING]
+
+    B -->|时间分析| E[窗口函数]
+    E --> E1[分组窗口: TUMBLE/HOP/SESSION/CUMULATE]
+    E --> E2[OVER窗口: ROWS/RANGE + PARTITION]
+    E --> E3[时间属性: ROWTIME/PROCTIME]
+    E --> E4[Watermark策略: FOR SYSTEM_TIME AS OF]
+
+    B -->|复杂关联| F[表值函数]
+    F --> F1[LATERAL JOIN关联]
+    F --> F2[生成函数: UNNEST/JSON_TABLE]
+    F --> F3[嵌套查询: 子查询关联]
+    F --> F4[窗口TVF: TUMBLE/HOP表值函数]
+
+    style A fill:#e3f2fd
+    style C fill:#e8f5e9
+    style D fill:#fff3e0
+    style E fill:#fce4ec
+    style F fill:#e0f2f1
+```
+
 ---
 
 ## 12. 常用SQL示例
@@ -1060,11 +1219,6 @@ GROUP BY
 ---
 
 ## 13. 引用参考 (References)
-
-
-
-
-
 
 
 ---

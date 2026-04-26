@@ -59,6 +59,9 @@
     - [7.3 选型决策树](#73-选型决策树)
     - [7.4 生态演进时间线](#74-生态演进时间线)
     - [7.5 性能雷达图对比](#75-性能雷达图对比)
+    - [7.6 流式SQL引擎全景思维导图](#76-流式sql引擎全景思维导图)
+    - [7.7 SQL引擎多维关联树](#77-sql引擎多维关联树)
+    - [7.8 流式SQL引擎选型决策树](#78-流式sql引擎选型决策树)
   - [8. 引用参考 (References)](#8-引用参考-references)
   - [附录: 术语表](#附录-术语表)
 
@@ -1093,15 +1096,188 @@ gantt
                   ████████████████████████░░  状态管理
 ```
 
+### 7.6 流式SQL引擎全景思维导图
+
+流式SQL引擎2026年竞争格局的思维导图，以引擎全景为中心展开五大维度。
+
+```mermaid
+mindmap
+  root((流式SQL引擎2026对比))
+    引擎全景
+      Flink SQL
+        统一批流标准
+        Apache官方
+      Spark Streaming SQL
+        微批处理
+        离线生态兼容
+      Kafka Streams KSQL
+        Kafka原生
+        轻量嵌入
+      RisingWave SQL
+        存算分离
+        PostgreSQL协议
+      Materialize SQL
+        确定性计算
+        SQL优先
+    SQL能力
+      标准兼容
+        ANSI SQL
+        PostgreSQL方言
+      流批一体
+        统一语义
+        混合查询
+      物化视图
+        原生支持
+        增量更新
+      增量计算
+        差分数据流
+        流式DAG
+      自适应查询
+        CBO优化器
+        运行时调整
+    性能维度
+      延迟
+        P99亚秒级
+        端到端优化
+      吞吐
+        百万级事件/s
+        水平扩展
+      扩展性
+        无状态扩容
+        分区并行
+      容错
+        Exactly-Once
+        秒级恢复
+      资源效率
+        向量化执行
+        存储分层
+    生态集成
+      Kafka
+        原生连接器
+        流式摄入
+      Pulsar
+        多租户消息
+        分层存储
+      数据湖
+        Iceberg
+        Delta Lake
+      BI工具
+        Tableau
+        Grafana
+        Metabase
+      云原生
+        Kubernetes
+        Serverless
+    选型建议
+      场景匹配
+        实时数仓
+        流式ETL
+        事件驱动
+      团队技能
+        SQL优先
+        编程式API
+        运维能力
+      成本考量
+        存储成本
+        计算成本
+        人力成本
+      迁移成本
+        协议兼容
+        数据迁移
+        查询重写
+```
+
+### 7.7 SQL引擎多维关联树
+
+展示各SQL引擎与其核心特性及适用场景之间的映射关系。
+
+```mermaid
+graph TB
+    subgraph "SQL引擎层"
+        E1[Flink SQL]
+        E2[Spark Streaming SQL]
+        E3[KSQL/Kafka Streams]
+        E4[RisingWave SQL]
+        E5[Materialize SQL]
+    end
+
+    subgraph "核心特性层"
+        C1[流批一体]
+        C2[物化视图]
+        C3[低延迟查询]
+        C4[Kafka原生]
+        C5[确定性计算]
+        C6[丰富窗口语义]
+        C7[云原生弹性]
+    end
+
+    subgraph "适用场景层"
+        S1[统一数仓Lambda]
+        S2[实时Dashboard]
+        S3[简单流处理]
+        S4[实时数仓Serving]
+        S5[金融一致性]
+    end
+
+    E1 --> C1
+    E1 --> C6
+    E1 --> C2
+    E2 --> C1
+    E3 --> C4
+    E3 --> C3
+    E4 --> C2
+    E4 --> C3
+    E4 --> C7
+    E5 --> C5
+    E5 --> C2
+
+    C1 --> S1
+    C2 --> S2
+    C2 --> S4
+    C3 --> S2
+    C3 --> S4
+    C4 --> S3
+    C5 --> S5
+    C6 --> S1
+    C7 --> S4
+```
+
+### 7.8 流式SQL引擎选型决策树
+
+按业务场景与技术约束快速定位最佳引擎选型。
+
+```mermaid
+flowchart TD
+    Start([开始<br/>流式SQL选型])
+
+    Start --> Q1{处理复杂度?}
+
+    Q1 -->|简单过滤/聚合| Q2{数据源?}
+    Q1 -->|复杂流处理| A1[Flink SQL<br/>丰富窗口 + 精确语义]
+    Q1 -->|实时数仓查询| Q3{延迟要求?}
+
+    Q2 -->|纯Kafka| A2[KSQL<br/>轻量 + Kafka原生]
+    Q2 -->|多源异构| A1
+
+    Q3 -->|亚秒级物化视图| A3[RisingWave / Materialize<br/>物化视图 + 低延迟查询]
+    Q3 -->|秒级分析报表| Q4{是否需要批流统一?}
+
+    Q4 -->|是| A4[Spark Streaming SQL<br/>成熟生态 + 离线兼容]
+    Q4 -->|否| A1
+
+    A1 --> End1([大规模流处理<br/>复杂ETL/风控])
+    A2 --> End2([简单流分析<br/>日志处理/消息路由])
+    A3 --> End3([实时数仓<br/>Dashboard/Serving])
+    A4 --> End4([统一批流<br/>Lambda简化])
+```
+
 ---
 
 ## 8. 引用参考 (References)
 
-[^1]: RisingWave Benchmark, "Nexmark Performance Comparison: RisingWave vs Apache Flink", 2026-04. https://www.risingwave.com/blog/nexmark-benchmark
+[^1]: RisingWave Benchmark, "Nexmark Performance Comparison: RisingWave vs Apache Flink", 2026-04. <https://www.risingwave.com/blog/nexmark-benchmark>
 
-[^2]: Apache Flink Documentation, "ForSt State Backend", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/#forst-state-backend
 
-[^3]: RisingWave Documentation, "Vector Data Types and HNSW Index", 2026. https://docs.risingwave.com/docs/current/sql-data-types-vector/
 
 ---
 

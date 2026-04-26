@@ -695,4 +695,127 @@
 
 ---
 
+## 7. 可视化 (Visualizations)
+
+### 7.1 Flink 知识库思维导图
+
+以下思维导图以 Flink 知识库索引为中心，放射展开五大核心领域：
+
+```mermaid
+mindmap
+  root((Flink知识库索引))
+    核心概念
+      DataStream
+      Table API
+      SQL
+      状态管理
+      容错机制
+    运行时
+      调度
+      网络
+      内存
+      检查点
+      反压
+    API体系
+      DataStream API
+      Table API/SQL
+      Python API
+      Scala API
+    生态集成
+      连接器
+      Catalog
+      格式
+      部署模式
+    生产实践
+      监控
+      调优
+      安全
+      案例
+      调试
+```
+
+### 7.2 多维关联树
+
+以下关联树展示 Flink 知识模块、学习路径与前置技能之间的映射关系：
+
+```mermaid
+graph TB
+    subgraph Flink知识模块
+        A[架构设计]
+        B[核心机制]
+        C[SQL与Table API]
+        D[连接器]
+        E[部署指南]
+        F[可观测性]
+        G[安全]
+    end
+
+    subgraph 学习路径
+        P1[初学者路径]
+        P2[开发者路径]
+        P3[架构师路径]
+        P4[运维路径]
+    end
+
+    subgraph 前置依赖
+        D1[流计算基础]
+        D2[Java/Scala]
+        D3[分布式系统]
+        D4[容器与K8s]
+    end
+
+    A --> P3
+    B --> P2
+    B --> P3
+    C --> P1
+    C --> P2
+    D --> P2
+    E --> P3
+    E --> P4
+    F --> P4
+    G --> P3
+    G --> P4
+
+    D1 --> P1
+    D2 --> P2
+    D3 --> P3
+    D4 --> P4
+```
+
+### 7.3 Flink 学习路径决策树
+
+以下决策树根据读者角色推荐差异化的学习路径：
+
+```mermaid
+flowchart TD
+    Start([选择学习路径]) --> Role{你的角色？}
+
+    Role -->|初学者| B1[概念入门]
+    B1 --> B2[核心概念]
+    B2 --> B3[DataStream API]
+    B3 --> B4[简单案例]
+
+    Role -->|开发者| D1[核心API]
+    D1 --> D2[状态管理]
+    D2 --> D3[连接器集成]
+    D3 --> D4[部署实践]
+
+    Role -->|架构师| A1[运行时原理]
+    A1 --> A2[性能调优]
+    A2 --> A3[生态集成]
+    A3 --> A4[生产架构]
+
+    Role -->|运维| O1[监控指标]
+    O1 --> O2[告警配置]
+    O2 --> O3[故障排查]
+    O3 --> O4[容量规划]
+```
+
+---
+
+## 8. 引用参考 (References)
+
+
+---
+
 *本索引由 AnalysisDataFlow 项目自动生成并维护。如有遗漏或错误，请参考 [CONTRIBUTING.md](../../CONTRIBUTING.md) 提交反馈。*

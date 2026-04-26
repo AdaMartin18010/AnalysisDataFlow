@@ -58,6 +58,10 @@
     - [10.1 工具分类速查表](#101-工具分类速查表)
     - [10.2 工具选择决策树](#102-工具选择决策树)
     - [10.3 推荐技术栈组合](#103-推荐技术栈组合)
+  - [11. 思维表征与可视化](#11-思维表征与可视化)
+    - [11.1 Flink IoT 模式目录思维导图](#111-flink-iot-模式目录思维导图)
+    - [11.2 多维关联树：IoT场景→Flink模式→技术实现](#112-多维关联树iot场景flink模式技术实现)
+    - [11.3 IoT 模式选择决策树](#113-iot-模式选择决策树)
   - [引用参考](#引用参考)
 
 ## 1. 架构模式速查
@@ -1736,18 +1740,211 @@ OLAP选择:
 
 ---
 
+## 11. 思维表征与可视化
+
+### 11.1 Flink IoT 模式目录思维导图
+
+以下思维导图以"Flink IoT模式目录"为中心，放射展开五大核心领域，覆盖从数据采集到行业应用的完整链路。
+
+```mermaid
+mindmap
+  root((Flink IoT 模式目录))
+    数据采集
+      传感器接入
+        MQTT
+        CoAP
+        HTTP REST
+        WebSocket
+      协议适配
+        协议转换
+        编解码器
+        Schema演进
+      边缘网关
+        边缘过滤
+        边缘聚合
+        本地缓存
+      数据清洗
+        异常值过滤
+        格式校验
+        缺失值填充
+    实时处理
+      窗口聚合
+        滚动窗口
+        滑动窗口
+        会话窗口
+      异常检测
+        阈值检测
+        统计异常
+        CEP模式
+      规则引擎
+        动态规则
+        规则热更新
+        规则链
+      复杂事件处理
+        模式匹配
+        时序约束
+        否定模式
+    状态管理
+      设备状态
+        在线/离线
+        固件版本
+        运行模式
+      会话跟踪
+        设备会话
+        用户会话
+        活动窗口
+      地理围栏
+        进入检测
+        离开检测
+        边界告警
+      阈值监控
+        动态阈值
+        多级阈值
+        阈值趋势
+    数据输出
+      告警通知
+        实时告警
+        告警分级
+        告警收敛
+      控制指令
+        设备控制
+        远程配置
+        OTA升级
+      数据湖
+        Iceberg
+        Hudi
+        Delta Lake
+      时序数据库
+        InfluxDB
+        TDengine
+        TimescaleDB
+    行业应用
+      智能制造
+        预测维护
+        质量检测
+        产线监控
+      智慧城市
+        环境监测
+        交通流量
+        公共安全
+      车联网
+        车辆追踪
+        驾驶行为
+        车队管理
+      能源管理
+        智能电网
+        能耗优化
+        碳排放监控
+```
+
+### 11.2 多维关联树：IoT场景→Flink模式→技术实现
+
+以下关联树展示 IoT 场景需求如何映射到 Flink 处理模式，再落实到具体技术实现组件的三层映射关系。
+
+```mermaid
+graph TB
+    subgraph IoT场景层
+        S1[高频率传感器]
+        S2[设备监控]
+        S3[地理围栏]
+        S4[预测维护]
+        S5[能耗分析]
+        S6[质量检测]
+    end
+
+    subgraph Flink模式层
+        F1[批量采样 + 窗口聚合]
+        F2[心跳检测 + 状态机]
+        F3[位置流 + 空间计算]
+        F4[特征提取 + ML集成]
+        F5[时序聚合 + 趋势分析]
+        F6[CEP模式匹配]
+    end
+
+    subgraph 技术实现层
+        T1[Kafka Source + TumblingWindow + AsyncFunction]
+        T2[KeyedProcessFunction + ValueState + TimerService]
+        T3[IntervalJoin + GeoHash + SideOutput]
+        T4[MapFunction + FlinkML / ONNX Runtime]
+        T5[SessionWindow + AggregateFunction + InfluxDBSink]
+        T6[CEP.pattern + PatternProcessFunction + AlertSink]
+    end
+
+    S1 --> F1
+    S2 --> F2
+    S3 --> F3
+    S4 --> F4
+    S5 --> F5
+    S6 --> F6
+
+    F1 --> T1
+    F2 --> T2
+    F3 --> T3
+    F4 --> T4
+    F5 --> T5
+    F6 --> T6
+
+    S1 -.->| also | F5
+    S2 -.->| also | F6
+    S4 -.->| also | F5
+```
+
+### 11.3 IoT 模式选择决策树
+
+以下决策树帮助根据 IoT 场景特征快速选择 Flink 处理模式组合。
+
+```mermaid
+flowchart TD
+    Start([场景特征识别])
+
+    subgraph 高频率传感器
+        A1[传感器频率 > 1Hz]
+        A2[批量采样策略]
+        A3[TumblingWindow聚合]
+        A4[异常过滤窗口]
+        A5[输出到时序DB]
+    end
+
+    subgraph 设备监控
+        B1[需心跳保活]
+        B2[KeyedProcessFunction]
+        B3[ValueState记录上次心跳]
+        B4[TimerService超时检测]
+        B5[离线告警输出]
+    end
+
+    subgraph 地理围栏
+        C1[位置流输入]
+        C2[GeoHash空间索引]
+        C3[边界距离计算]
+        C4[进入/离开事件]
+        C5[告警+指令下发]
+    end
+
+    subgraph 预测维护
+        D1[多源特征采集]
+        D2[滑动窗口特征提取]
+        D3[ML模型推理]
+        D4[健康评分计算]
+        D5[维护工单触发]
+    end
+
+    Start --> A1
+    Start --> B1
+    Start --> C1
+    Start --> D1
+
+    A1 --> A2 --> A3 --> A4 --> A5
+    B1 --> B2 --> B3 --> B4 --> B5
+    C1 --> C2 --> C3 --> C4 --> C5
+    D1 --> D2 --> D3 --> D4 --> D5
+```
+
+---
+
 ## 引用参考
-
-
-
-
-
-
-
-
-
 
 
 ---
 
-*文档版本: 1.0 | 最后更新: 2026-04-05 | 形式化等级: L3-L4*
+*文档版本: 1.0 | 最后更新: 2026-04-26 | 形式化等级: L3-L4*

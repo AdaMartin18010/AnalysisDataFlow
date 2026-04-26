@@ -1247,16 +1247,118 @@ flowchart TD
     F --> J[清理过期状态]
 ```
 
+### 7.3 社交媒体分析全景思维导图
+
+以下思维导图以"社交媒体分析案例"为中心，从业务场景、数据架构、Flink应用、技术挑战、效果评估五个维度放射展开，展示本案例的全貌与关键关注点。
+
+```mermaid
+mindmap
+  root((社交媒体分析案例))
+    业务场景
+      实时热搜
+      用户画像
+      内容推荐
+      情感分析
+      趋势预测
+    数据架构
+      数据采集
+      消息队列
+      流处理
+      数据湖
+      Serving层
+    Flink应用
+      实时ETL
+      窗口聚合
+      CEP
+      状态管理
+      ML集成
+    技术挑战
+      数据倾斜
+      热点问题
+      延迟要求
+      一致性
+    效果评估
+      延迟指标
+      吞吐指标
+      准确率
+      资源效率
+```
+
+### 7.4 业务场景→技术方案→Flink特性多维关联树
+
+以下关联树展示五大业务场景到技术方案再到Flink核心特性的一一映射关系，揭示架构选型的内在逻辑。
+
+```mermaid
+graph TB
+    subgraph 业务场景
+        B1[实时热搜]
+        B2[用户画像]
+        B3[内容推荐]
+        B4[情感分析]
+        B5[趋势预测]
+    end
+
+    subgraph 技术方案
+        T1[滑动窗口 + 增量聚合]
+        T2[会话窗口 + 行为聚合]
+        T3[协同过滤 + 实时特征]
+        T4[NLP模型 + 流式推理]
+        T5[热度计算 + 增长率检测]
+    end
+
+    subgraph Flink特性
+        F1[SlidingWindow + AggregateFunction]
+        F2[SessionWindow + KeyedState]
+        F3[AsyncFunction + SideOutput]
+        F4[ProcessFunction + 模型推理]
+        F5[KeyedProcessFunction + ValueState]
+    end
+
+    B1 --> T1
+    B2 --> T2
+    B3 --> T3
+    B4 --> T4
+    B5 --> T5
+
+    T1 --> F1
+    T2 --> F2
+    T3 --> F3
+    T4 --> F4
+    T5 --> F5
+```
+
+### 7.5 社交媒体分析架构决策树
+
+以下决策树展示针对不同业务场景的架构选择与技术组合，每条分支对应一套完整的端到端处理链路。
+
+```mermaid
+flowchart TD
+    Start([社交媒体分析架构决策]) --> Q1{业务场景类型?}
+
+    Q1 -->|实时热搜| A1[滑动窗口聚合]
+    A1 --> A1a[增量热度计算]
+    A1a --> A1b[TopN排序输出]
+    A1b --> Sink1[(Redis热榜 + Kafka告警)]
+
+    Q1 -->|用户画像| A2[会话窗口追踪]
+    A2 --> A2a[行为事件聚合]
+    A2a --> A2b[兴趣标签更新]
+    A2b --> Sink2[(Redis用户画像 + ES索引)]
+
+    Q1 -->|内容推荐| A3[实时特征工程]
+    A3 --> A3a[协同过滤计算]
+    A3a --> A3b[在线模型学习]
+    A3b --> Sink3[(推荐API + FeatureStore)]
+
+    Q1 -->|情感分析| A4[NLP模型加载]
+    A4 --> A4a[流式文本推理]
+    A4a --> A4b[情感极性聚合]
+    A4b --> Sink4[(ES全文索引 + 趋势聚合)]
+```
+
 ---
 
 ## 8. 引用参考 (References)
-
-
-
-
-
-
-
 
 
 ---

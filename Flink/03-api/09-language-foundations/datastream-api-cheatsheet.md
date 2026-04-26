@@ -1057,6 +1057,132 @@ flowchart LR
     F -->|复杂聚合| H[AggregatingState]
 ```
 
+### 9.4 DataStream API 速查思维导图
+
+以下 mindmap 以"DataStream API 速查"为中心，放射式梳理五大核心知识域。
+
+```mermaid
+mindmap
+  root((DataStream API速查))
+    数据源
+      fromCollection
+      fromKafka
+      fromSocket
+      自定义Source
+    转换操作
+      map
+      filter
+      flatMap
+      keyBy
+      reduce
+      aggregate
+    窗口操作
+      Tumbling
+      Sliding
+      Session
+      Global
+      自定义Trigger
+    状态管理
+      ValueState
+      ListState
+      MapState
+      ReducingState
+      AggregatingState
+    连接器
+      Kafka
+      JDBC
+      Elasticsearch
+      文件系统
+      自定义Sink
+```
+
+### 9.5 DataStream 操作语义场景关联树
+
+以下关联树展示 DataStream 核心操作、其语义特性与典型使用场景之间的多维映射。
+
+```mermaid
+graph TB
+    subgraph "操作层"
+        OP1[Source]
+        OP2[map/filter/flatMap]
+        OP3[keyBy/reduce/aggregate]
+        OP4[window/apply]
+        OP5[process/timer]
+        OP6[connect/coGroup/join]
+        OP7[Sink]
+    end
+
+    subgraph "语义层"
+        SEM1[无状态一对一]
+        SEM2[无状态一对多]
+        SEM3[按键分区状态]
+        SEM4[时间边界聚合]
+        SEM5[事件时间触发]
+        SEM6[双流关联]
+        SEM7[端到端一致性]
+    end
+
+    subgraph "场景层"
+        SC1[日志采集与ETL]
+        SC2[实时过滤与清洗]
+        SC3[用户行为统计]
+        SC4[分钟级指标聚合]
+        SC5[超时检测与风控]
+        SC6[宽表构建与补全]
+        SC7[数据湖/数仓入仓]
+    end
+
+    OP1 --> SEM1
+    OP2 --> SEM1
+    OP2 --> SEM2
+    OP3 --> SEM3
+    OP4 --> SEM4
+    OP5 --> SEM5
+    OP6 --> SEM6
+    OP7 --> SEM7
+
+    SEM1 --> SC1
+    SEM1 --> SC2
+    SEM2 --> SC2
+    SEM3 --> SC3
+    SEM4 --> SC4
+    SEM5 --> SC5
+    SEM6 --> SC6
+    SEM7 --> SC7
+```
+
+### 9.6 DataStream 开发路径决策树
+
+以下决策树梳理四种典型 DataStream 应用开发路径，帮助快速定位技术方案。
+
+```mermaid
+flowchart TD
+    START[开始DataStream开发] --> Q1{业务复杂度?}
+
+    Q1 -->|简单转换| P1[Source]
+    P1 --> P2[map / filter / flatMap]
+    P2 --> P3[Sink]
+    P3 --> END1[完成]
+
+    Q1 -->|有状态计算| P4[keyedStream]
+    P4 --> P5[ValueState / ListState / MapState]
+    P5 --> P6[注册Timer]
+    P6 --> P7[output / sideOutput]
+    P7 --> END2[完成]
+
+    Q1 -->|窗口分析| P8[assignTimestampsAndWatermarks]
+    P8 --> P9[Tumbling / Sliding / Session窗口]
+    P9 --> P10[aggregate / reduce / processWindow]
+    P10 --> P11[输出结果]
+    P11 --> END3[完成]
+
+    Q1 -->|复杂关联| P12[connect / coGroup / intervalJoin]
+    P12 --> P13[Async I/O enrichment]
+    P13 --> P14[双流/多流合并]
+    P14 --> P15[结果输出]
+    P15 --> END4[完成]
+```
+
 ---
 
 ## 10. 附录：常用代码片段
@@ -1164,6 +1290,13 @@ public class QuickStartJob {
     }
 }
 ```
+
+---
+
+---
+
+## 11. 参考文献
+
 
 ---
 
