@@ -65,6 +65,9 @@
   - [9. 可视化](#9-可视化)
     - [PyFlink 架构与数据流](#pyflink-架构与数据流)
     - [部署模式对比](#部署模式对比)
+    - [PyFlink 完整指南思维导图](#pyflink-完整指南思维导图)
+    - [PyFlink 多维关联树](#pyflink-多维关联树)
+    - [PyFlink 使用场景决策树](#pyflink-使用场景决策树)
   - [8. 引用参考](#8-引用参考)
 
 ---
@@ -3238,16 +3241,137 @@ graph LR
     style K8S fill:#c8e6c9,stroke:#2e7d32
 ```
 
+### PyFlink 完整指南思维导图
+
+以下思维导图以 PyFlink 完整指南为中心，放射展开核心知识领域：
+
+```mermaid
+mindmap
+  root((PyFlink完整指南))
+    环境配置
+      Python版本
+        3.9 - 3.12
+        JDK 17+
+      虚拟环境
+        venv
+        Conda
+        Poetry
+      PyFlink安装
+        pip install apache-flink
+        连接器扩展
+      依赖管理
+        requirements.txt
+        pyproject.toml
+    Table API
+      SQL执行
+      Table定义
+      UDF注册
+      Catalog操作
+    DataStream API
+      Python DataStream
+      转换操作
+      状态管理
+      时间语义
+    UDF开发
+      标量函数
+      表函数
+      聚合函数
+      Pandas UDF
+      向量UDF
+    生态集成
+      Pandas
+      NumPy
+      Scikit-learn
+      TensorFlow
+      MLflow
+```
+
+### PyFlink 多维关联树
+
+以下关联树展示 PyFlink 特性 → Python 生态 → 应用场景的三维映射关系：
+
+```mermaid
+graph TB
+    subgraph PyFlink特性
+        F1[Table API<br/>SQL执行]
+        F2[DataStream API<br/>流处理]
+        F3[Pandas UDF<br/>向量化执行]
+        F4[ML集成<br/>在线预测]
+        F5[Catalog管理<br/>元数据操作]
+    end
+
+    subgraph Python生态
+        E1[Pandas<br/>DataFrame互操作]
+        E2[NumPy<br/>数值计算]
+        E3[Scikit-learn<br/>传统ML]
+        E4[TensorFlow<br/>深度学习]
+        E5[MLflow<br/>模型生命周期]
+        E6[Conda<br/>环境管理]
+    end
+
+    subgraph 应用场景
+        A1[实时ETL<br/>数据清洗转换]
+        A2[交互式分析<br/>即席查询]
+        A3[特征工程<br/>ML Pipeline]
+        A4[实时监控<br/>异常检测]
+        A5[原型验证<br/>快速迭代]
+    end
+
+    F1 --> E1
+    F1 --> E6
+    F2 --> A1
+    F2 --> A4
+    F3 --> E1
+    F3 --> E2
+    F4 --> E3
+    F4 --> E4
+    F4 --> E5
+    F5 --> A2
+    E1 --> A2
+    E1 --> A3
+    E2 --> A3
+    E3 --> A5
+    E4 --> A4
+    E5 --> A5
+    E6 --> A5
+```
+
+### PyFlink 使用场景决策树
+
+以下决策树指导根据核心目标选择 PyFlink 的最佳使用模式：
+
+```mermaid
+flowchart TD
+    START[选择PyFlink使用场景]
+
+    START --> Q1{核心目标?}
+
+    Q1 -->|数据分析| D1[PyFlink Table API]
+    Q1 -->|ML特征工程| D2[PyFlink UDF]
+    Q1 -->|实时ETL| D3[PyFlink DataStream]
+    Q1 -->|原型验证| D4[Python快速开发]
+
+    D1 --> D1A[Pandas互操作<br/>to_pandas/from_pandas]
+    D1 --> D1B[SQL执行引擎<br/>批量/流式统一]
+
+    D2 --> D2A[特征转换UDF<br/>Scalar/Table/Agg]
+    D2 --> D2B[Feature Store集成<br/>在线/离线一致性]
+
+    D3 --> D3A[复杂转换逻辑<br/>状态管理+时间语义]
+    D3 --> D3B[生态连接器<br/>Kafka/JDBC/FileSystem]
+
+    D4 --> D4A[小规模测试<br/>Local模式]
+    D4 --> D4B[Jupyter Notebook<br/>交互式开发]
+
+    style D1 fill:#e3f2fd,stroke:#1565c0
+    style D2 fill:#f3e5f5,stroke:#7b1fa2
+    style D3 fill:#e8f5e9,stroke:#2e7d32
+    style D4 fill:#fff3e0,stroke:#ef6c00
+```
+
 ---
 
 ## 8. 引用参考
-
-
-
-
-
-
-
 
 
 ---

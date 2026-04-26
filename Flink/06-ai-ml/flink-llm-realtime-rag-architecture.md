@@ -1040,6 +1040,104 @@ sequenceDiagram
     API-->>User: 展示答案
 ```
 
+### 10.5 RAG 架构思维导图
+
+以下思维导图以"Flink LLM实时RAG架构"为中心，放射展开五大核心维度：
+
+```mermaid
+mindmap
+  root((Flink LLM实时RAG架构))
+    数据管道
+      实时文档流
+      Chunk分割
+      Embedding生成
+      向量索引
+    检索增强
+      向量搜索
+      混合检索
+      重排序
+      上下文组装
+    LLM集成
+      Prompt工程
+      流式生成
+      Token优化
+      多模型路由
+    实时性保证
+      低延迟检索
+      增量索引
+      缓存预热
+      预热加载
+    评估优化
+      相关性评估
+      延迟监控
+      成本跟踪
+      反馈闭环
+```
+
+### 10.6 多维关联树
+
+以下关联树展示数据流→Flink处理→向量存储→LLM生成的端到端映射关系：
+
+```mermaid
+graph TB
+    subgraph DataFlow["数据流"]
+        D1[原始文档] --> D2[CDC变更流]
+        D2 --> D3[文档分块]
+    end
+    subgraph FlinkProc["Flink处理"]
+        F1[ChunkingFunction] --> F2[EmbeddingAsyncFunction]
+        F2 --> F3[批量聚合窗口]
+        F3 --> F4[向量写入Sink]
+    end
+    subgraph VectorStore["向量存储"]
+        V1[Milvus向量库] --> V2[HNSW索引]
+        V1 --> V3[元数据过滤]
+    end
+    subgraph LLMGen["LLM生成"]
+        L1[查询向量化] --> L2[ANN检索]
+        L2 --> L3[RRF融合]
+        L3 --> L4[上下文组装]
+        L4 --> L5[LLM推理]
+    end
+    D3 --> F1
+    F4 --> V1
+    V2 --> L2
+    V3 --> L2
+```
+
+### 10.7 RAG 架构选型决策树
+
+以下决策树展示四种典型RAG架构模式的选型路径与处理流程：
+
+```mermaid
+flowchart TD
+    Start([RAG架构选型]) --> Type{数据类型}
+    Type -->|非结构化文档| DocRAG[文档型RAG]
+    Type -->|结构化数据| StructRAG[结构化RAG]
+    Type -->|实时流数据| RealtimeRAG[实时RAG]
+    Type -->|多源混合| HybridRAG[混合RAG]
+
+    DocRAG --> Chunk[文档Chunk]
+    Chunk --> Embed[Embedding]
+    Embed --> VecDB[向量DB]
+    VecDB --> LLM1[LLM生成]
+
+    StructRAG --> SQL[SQL查询]
+    SQL --> Agg[结果聚合]
+    Agg --> CtxEnhance[上下文增强]
+    CtxEnhance --> LLM2[LLM生成]
+
+    RealtimeRAG --> Stream[流式更新]
+    Stream --> IncIndex[增量索引]
+    IncIndex --> InstantSearch[即时检索]
+    InstantSearch --> LLM3[LLM生成]
+
+    HybridRAG --> MultiSrc[多源融合]
+    MultiSrc --> Route[路由决策]
+    Route --> Optimal[最优检索]
+    Optimal --> LLM4[LLM生成]
+```
+
 ---
 
 ## 11. 形式化元素汇总
@@ -1070,17 +1168,6 @@ sequenceDiagram
 ---
 
 ## 12. 引用参考 (References)
-
-
-
-
-
-
-
-
-
-
-
 
 
 ---

@@ -1652,18 +1652,187 @@ xychart-beta
     legend "Row Format", "Columnar Format"
 ```
 
+### 7.4 向量化列式处理思维导图
+
+以下思维导图以"向量化列式处理"为中心，系统展示其技术维度、性能收益与生态集成。
+
+```mermaid
+mindmap
+  root((向量化列式处理))
+    列式存储
+      Arrow格式
+        内存布局规范
+        跨语言零拷贝
+        Schema演进
+      内存布局
+        64字节对齐
+        连续数组存储
+        空值位图压缩
+      缓存友好
+        顺序访问模式
+        预取指令友好
+        减少Cache Miss
+      SIMD优化
+        AVX-512向量寄存器
+        单指令多数据
+        8路/16路并行
+    向量化执行
+      批量处理
+        批大小4096-16384
+        摊销函数调用开销
+        提高指令局部性
+      SIMD指令
+        向量比较与过滤
+        向量聚合求和
+        向量哈希计算
+      分支预测
+        分支无关代码
+        掩码向量操作
+        减少Pipeline Flush
+      流水线优化
+        编译器自动向量化
+        循环展开与重排
+        指令级并行ILP
+    UDF向量化
+      Vectorized UDF
+        Batch调用接口
+        Arrow RecordBatch输入
+        多值返回
+      Batch调用
+        一次性处理千行
+        减少JNI穿越
+        Rust原生实现
+      Arrow传递
+        内存格式即传输格式
+        零序列化开销
+        跨进程共享
+      零拷贝
+        指针引用替换复制
+        内存映射文件
+        避免Heap分配
+    性能收益
+      吞吐量提升
+        5x-20x扫描加速
+        SIMD聚合10x+
+        批处理减少调用
+      延迟降低
+        缓存命中>95%
+        分支预测友好
+        减少CPU停顿
+      CPU效率
+        提高IPC
+        充分利用向量单元
+        减少前端瓶颈
+      内存带宽优化
+        仅读取所需列
+        压缩减少传输
+        投影稀疏性收益
+    与Flink集成
+      Table API
+        Vectorized Scan
+        Vectorized Filter
+        Vectorized Project
+      DataStream API
+        Async State Access
+        Buffer Batching
+        Custom Serializer
+      Rust UDF
+        arrow-udf库
+        Native Execution
+        Memory Safety
+      Java互操作
+        Arrow Java Vector
+        JNI桥接
+        Off-Heap内存
+```
+
+### 7.5 多维关联树：列式格式→向量化执行→性能收益
+
+以下关联树展示从底层列式数据格式到向量化执行引擎，再到上层性能收益的完整映射关系。
+
+```mermaid
+graph TB
+    subgraph ColumnarFormat["列式格式层"]
+        ARROW["Apache Arrow<br/>内存列式标准"]
+        PARQUET["Apache Parquet<br/>磁盘列式存储"]
+        ORC["Apache ORC<br/>Hadoop优化行列"]
+    end
+
+    subgraph ExecutionEngine["向量化执行层"]
+        VELOX["Meta Velox<br/>统一执行引擎"]
+        DUCKDB["DuckDB<br/>嵌入式分析引擎"]
+        FLINK_RUST["Flink Rust Native<br/>流批一体向量化"]
+    end
+
+    subgraph OptimizationTech["优化技术层"]
+        SIMD["SIMD指令集<br/>AVX-512 / NEON"]
+        PREFETCH["硬件预取<br/>软件预取提示"]
+        COMPRESSION["轻量压缩<br/>Dictionary / RLE / Bit-Packing"]
+        BRANCHLESS["分支无关代码<br/>掩码向量操作"]
+    end
+
+    subgraph PerformanceGain["性能收益层"]
+        THROUGHPUT["吞吐量提升<br/>5x-50x"]
+        LATENCY["延迟降低<br/>P99减少60%+"]
+        CPU_EFF["CPU效率<br/>IPC提升2x-4x"]
+        MEM_BW["内存带宽优化<br/>仅读必要列"]
+    end
+
+    ARROW -->|内存零拷贝| FLINK_RUST
+    PARQUET -->|列式扫描下推| DUCKDB
+    ORC -->|谓词下推| VELOX
+
+    FLINK_RUST -->|调用| SIMD
+    DUCKDB -->|调用| PREFETCH
+    VELOX -->|应用| COMPRESSION
+    FLINK_RUST -->|生成| BRANCHLESS
+
+    SIMD -->|驱动| THROUGHPUT
+    PREFETCH -->|驱动| LATENCY
+    COMPRESSION -->|驱动| MEM_BW
+    BRANCHLESS -->|驱动| CPU_EFF
+    THROUGHPUT -.->|反馈调优| FLINK_RUST
+    LATENCY -.->|反馈调优| DUCKDB
+```
+
+### 7.6 决策树：向量化处理选型指南
+
+以下决策树帮助工程师根据场景特征选择最适合的处理模式。
+
+```mermaid
+flowchart TD
+    START([开始选型]) --> Q1{查询特征?}
+
+    Q1 -->|简单UDF<br/>逐行转换| STD_UDF[标准UDF<br/>逐行处理模式]
+    Q1 -->|计算密集型<br/>聚合/过滤/数学| Q2{数据规模?}
+    Q1 -->|大规模分析<br/>OLAP/Ad-hoc| Q3{延迟要求?}
+    Q1 -->|混合负载<br/>OLTP+OLAP| HYBRID[行式主处理<br/>列式分析加速<br/>智能路由引擎]
+
+    Q2 -->|单节点<br/>GB级| VEC_UDF[Vectorized UDF<br/>Arrow格式 + SIMD]
+    Q2 -->|分布式<br/>TB-PB级| COL_ENGINE[列式存储<br/>向量化执行引擎<br/>批大小自适应]
+
+    Q3 -->|低延迟<br/><100ms| VEC_UDF2[Vectorized UDF<br/>内存列式<br/>预编译执行]
+    Q3 -->|高吞吐<br/>离线/批处理| COL_ENGINE2[列式存储 + 向量化引擎<br/>分区裁剪 + 谓词下推<br/>资源弹性扩展]
+
+    STD_UDF --> WARN1[⚠️ 避免在热路径<br/>使用复杂UDF]
+    VEC_UDF --> TIP1[✓ 优先使用Arrow-Flight<br/>传输RecordBatch]
+    COL_ENGINE --> TIP2[✓ 批大小建议<br/>4096-65536]
+    HYBRID --> TIP3[✓ HTAP架构<br/>行存+列存副本同步]
+    VEC_UDF2 --> TIP4[✓ 使用CodeGen<br/>减少解释开销]
+    COL_ENGINE2 --> TIP5[✓ 配合物化视图<br/>加速重复查询]
+
+    style START fill:#e1f5fe
+    style STD_UDF fill:#fff3e0
+    style VEC_UDF fill:#e8f5e9
+    style COL_ENGINE fill:#e8f5e9
+    style HYBRID fill:#f3e5f5
+    style VEC_UDF2 fill:#e8f5e9
+    style COL_ENGINE2 fill:#e8f5e9
+```
+
 ---
 
 ## 8. 引用参考 (References)
-
-
-
-
-
-
-
-
-
 
 
 ---

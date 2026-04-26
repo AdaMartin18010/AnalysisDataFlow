@@ -1,4 +1,4 @@
-# 流处理决策树系统
+﻿# 流处理决策树系统
 
 > **所属阶段**: Knowledge | **前置依赖**: [Flink/01-concepts/], [flink-state-management-complete-guide.md](../../Flink/02-core/flink-state-management-complete-guide.md) | **形式化等级**: L4 | **最后更新**: 2026-04-12
 
@@ -38,7 +38,7 @@
     - [4.5 一致性级别决策论证](#45-一致性级别决策论证)
       - [4.5.1 金融场景一致性论证](#451-金融场景一致性论证)
       - [4.5.2 日志处理一致性论证](#452-日志处理一致性论证)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [5.1 决策树正确性证明](#51-决策树正确性证明)
     - [5.2 引擎推荐最优性证明](#52-引擎推荐最优性证明)
     - [5.3 状态后端选择正确性证明](#53-状态后端选择正确性证明)
@@ -53,6 +53,9 @@
     - [7.2 决策树2: 状态后端选型决策树](#72-决策树2-状态后端选型决策树)
     - [7.3 决策树3: 部署模式决策树](#73-决策树3-部署模式决策树)
     - [7.4 决策树4: 一致性级别决策树](#74-决策树4-一致性级别决策树)
+    - [7.5 思维导图: 流处理决策树系统全景](#75-思维导图-流处理决策树系统全景)
+    - [7.6 多维关联树: 业务需求→技术特征→系统推荐](#76-多维关联树-业务需求技术特征系统推荐)
+    - [7.7 技术选型决策树: 核心场景快速路由](#77-技术选型决策树-核心场景快速路由)
   - [8. 决策矩阵对比表](#8-决策矩阵对比表)
     - [8.1 流处理引擎对比矩阵](#81-流处理引擎对比矩阵)
     - [8.2 状态后端对比矩阵](#82-状态后端对比矩阵)
@@ -64,6 +67,7 @@
     - [9.3 部署模式速查表](#93-部署模式速查表)
     - [9.4 一致性级别速查表](#94-一致性级别速查表)
   - [10. 引用参考 (References)](#10-引用参考-references)
+  - [10. 引用参考 (References)](#10-引用参考-references-1)
 
 ## 1. 概念定义 (Definitions)
 
@@ -1302,6 +1306,224 @@ flowchart TD
 - 结果节点: 29个 (CR1-CR29)
 - 总节点数: 46个
 
+### 7.5 思维导图: 流处理决策树系统全景
+
+以下思维导图以"流处理决策树系统"为中心，放射展开五大核心维度，提供全局认知框架。
+
+```mermaid
+mindmap
+  root((流处理决策树系统))
+    决策维度
+      延迟要求
+        亚毫秒级 (< 1ms)
+        低延迟 (1-100ms)
+        中等延迟 (100ms-1s)
+        高延迟容忍 (> 1s)
+      吞吐需求
+        小规模 (< 10K TPS)
+        中等规模 (10K-500K TPS)
+        大规模 (500K-1M TPS)
+        超大规模 (> 1M TPS)
+      状态复杂度
+        无状态 / 轻状态
+        中小状态 (1MB-1GB)
+        大状态 (1GB-100GB)
+        海量状态 (> 100GB)
+      一致性级别
+        At-Most-Once (AMO)
+        At-Least-Once (ALO)
+        Exactly-Once (EO)
+        混合一致性
+    技术分支
+      纯流引擎
+        Apache Flink
+        Apache Storm
+        Kafka Streams
+      微批引擎
+        Apache Spark Streaming
+        Flink Mini-Batch
+      批流一体
+        Apache Flink (统一API)
+        Apache Spark (Structured Streaming)
+      Serverless
+        AWS Kinesis
+        GCP Dataflow
+        Azure Stream Analytics
+      边缘计算
+        Flink Edge
+        MQTT + 本地处理
+    评估节点
+      性能基准
+        延迟基准测试
+        吞吐压力测试
+        状态恢复测试
+      成本分析
+        基础设施成本
+        运维人力成本
+        弹性伸缩成本
+      团队技能
+        流处理经验
+        运维成熟度
+        自动化能力
+      生态成熟度
+        社区活跃度
+        商业支持
+        第三方集成
+    推荐结果
+      技术栈组合
+        引擎 + 后端 + 部署
+        消息队列 + 计算引擎
+        存储 + 计算分离
+      架构模式
+        Lambda架构
+        Kappa架构
+        分层流架构
+      部署策略
+        云原生部署
+        混合云部署
+        边缘-云协同
+      演进路线
+        单体 → 分布式
+        简单 → 复杂
+        人工 → 自动化
+    验证机制
+      POC验证
+        核心场景复现
+        性能指标确认
+      生产试点
+        灰度发布
+        影子流量验证
+      监控反馈
+        延迟/吞吐监控
+        错误率/恢复时间
+      迭代优化
+        参数调优
+        架构演进
+```
+
+### 7.6 多维关联树: 业务需求→技术特征→系统推荐
+
+以下多维关联树展示从业务需求出发，通过技术特征映射，最终得到系统推荐的完整关联路径。
+
+```mermaid
+graph TB
+    subgraph 业务需求层
+        B1[低延迟实时风控]
+        B2[海量日志聚合]
+        B3[复杂事件处理]
+        B4[简单ETL转换]
+        B5[IoT实时监控]
+        B6[实时推荐系统]
+    end
+
+    subgraph 技术特征层
+        T1[端到端延迟 < 100ms]
+        T2[吞吐 > 1M 事件/秒]
+        T3[状态大小 > 100GB]
+        T4[处理逻辑简单]
+        T5[复杂窗口/CEP]
+        T6[一致性要求 EO]
+    end
+
+    subgraph 系统推荐层
+        S1[Apache Flink + RocksDB + K8s]
+        S2[Kafka Streams + InMemory + 嵌入式]
+        S3[Apache Spark + HDFS + YARN]
+        S4[Flink SQL + HashMap + Application Mode]
+        S5[Storm/Materialize + 内存计算]
+        S6[Pulsar Functions + Serverless]
+    end
+
+    B1 --> T1
+    B1 --> T6
+    B2 --> T2
+    B2 --> T4
+    B3 --> T5
+    B3 --> T6
+    B4 --> T4
+    B5 --> T1
+    B5 --> T3
+    B6 --> T2
+    B6 --> T4
+
+    T1 --> S5
+    T2 --> S1
+    T3 --> S1
+    T4 --> S2
+    T4 --> S4
+    T4 --> S6
+    T5 --> S1
+    T6 --> S1
+    T6 --> S5
+
+    S1 -.->|备选| S3
+    S2 -.->|扩展| S1
+    S4 -.->|升级| S1
+```
+
+### 7.7 技术选型决策树: 核心场景快速路由
+
+以下决策树针对四大核心场景提供快速技术选型路径，直接映射关键约束到推荐方案。
+
+```mermaid
+flowchart TD
+    Root["🎯 流处理技术选型决策<br/>核心场景快速路由"]
+
+    Root --> D1{"D1: 首要约束?"}
+
+    D1 -->|"低延迟 < 100ms"| D2{"D2: 延迟细分?"}
+    D1 -->|"高吞吐 > 1M/s"| D3{"D3: 状态需求?"}
+    D1 -->|"复杂状态管理"| D4{"D4: 状态规模?"}
+    D1 -->|"简单ETL处理"| D5{"D5: 现有生态?"}
+
+    %% 低延迟分支
+    D2 -->|"< 10ms (极极致)"| R1["⚡ Storm / Aeron / Disruptor<br/>纯内存计算 + 零拷贝"]
+    D2 -->|"10-100ms (低延迟)"| R2["🔥 Apache Flink<br/>内存状态 + 无Checkpoint或超短间隔"]
+    D2 -->|"100ms可接受"| R3["🔥 Flink / Kafka Streams<br/>标准低延迟配置"]
+
+    %% 高吞吐分支
+    D3 -->|"无状态 / 轻状态"| R4["📊 Kafka Streams / Kinesis<br/>高吞吐分区并行"]
+    D3 -->|"大状态需持久化"| R5["🔥 Flink + RocksDB<br/>分布式分区 + 批量优化 + 增量Checkpoint"]
+    D3 -->|"状态可外部化"| R6["📊 Flink + Remote State<br/>计算与存储分离"]
+
+    %% 复杂状态分支
+    D4 -->|"< 10GB"| R7["💾 Flink + HashMapStateBackend<br/>内存计算 + 快速Checkpoint"]
+    D4 -->|"10GB - 1TB"| R8["🗄️ Flink + RocksDBStateBackend<br/>增量Checkpoint + 状态压缩"]
+    D4 -->|"> 1TB"| R9["🗄️ Flink + ForSt / RemoteStateBackend<br/>分层存储 + 异步快照"]
+
+    %% 简单ETL分支
+    D5 -->|"已有Kafka生态"| R10["📊 Kafka Streams<br/>轻量处理 + 无需额外集群"]
+    D5 -->|"已有Pulsar生态"| R11["📊 Pulsar Functions<br/>Serverless轻量计算"]
+    D5 -->|"多云/混合云"| R12["🔥 Flink SQL<br/>声明式ETL + 统一引擎"]
+    D5 -->|"无现有消息队列"| R13["📊 Kafka + Kafka Streams<br/>一站式搭建"]
+
+    style Root fill:#e1f5ff,stroke:#01579b,stroke-width:3px
+    style D1 fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style D2 fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style D3 fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style D4 fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style D5 fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style R1 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    style R2 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    style R3 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    style R4 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    style R5 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    style R6 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    style R7 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    style R8 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    style R9 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    style R10 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    style R11 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    style R12 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    style R13 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+```
+
+**新增可视化统计**:
+
+- 思维导图: 1个 (mindmap)
+- 多维关联树: 1个 (graph TB)
+- 技术选型决策树: 1个 (flowchart TD)
+
 ---
 
 ## 8. 决策矩阵对比表
@@ -1453,20 +1675,7 @@ flowchart TD
 
 ## 10. 引用参考 (References)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+## 10. 引用参考 (References)
 
 ---
 

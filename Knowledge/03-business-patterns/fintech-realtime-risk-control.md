@@ -37,6 +37,9 @@
     - [7.1 金融实时风控思维导图](#71-金融实时风控思维导图)
     - [7.2 多维关联树](#72-多维关联树)
     - [7.3 风控架构选型决策树](#73-风控架构选型决策树)
+    - [7.4 金融实时风控全景思维导图](#74-金融实时风控全景思维导图)
+    - [7.5 风险场景→技术方案→业务价值关联树](#75-风险场景技术方案业务价值关联树)
+    - [7.6 风控策略决策树](#76-风控策略决策树)
   - [6. 引用参考 (References)](#6-引用参考-references)
   - [1. 概念定义 (Definitions)](#1-概念定义-definitions)
   - [2. 属性推导 (Properties)](#2-属性推导-properties)
@@ -1210,6 +1213,227 @@ flowchart TD
     style START fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
     style END fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
     style A fill:#ffcdd2,stroke:#c62828,stroke-width:2px
+    style B fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    style C fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+```
+
+### 7.4 金融实时风控全景思维导图
+
+以"金融实时风控"为中心，从风险类型、技术架构、Flink应用、业务场景、合规要求五个维度进行全景放射展开。
+
+```mermaid
+mindmap
+  root((金融实时风控))
+    风险类型
+      欺诈检测
+        信用卡盗刷
+        账户接管
+        伪卡交易
+      反洗钱
+        大额可疑交易
+        结构化拆分
+        跨境资金转移
+      信用评估
+        实时授信
+        动态额度调整
+        违约概率预测
+      市场风险
+        价格波动监测
+        流动性风险
+        集中度风险
+      合规监控
+        监管规则匹配
+        异常行为预警
+    技术架构
+      实时数据流
+        Kafka消息缓冲
+        Flink流处理
+        数据Schema治理
+      规则引擎
+        Drools规则执行
+        专家规则库
+        规则热更新
+      ML模型
+        特征工程平台
+        在线模型推理
+        模型A/B测试
+      决策系统
+        评分卡融合
+        决策路由
+        灰度放量
+      告警机制
+        实时告警推送
+        告警分级收敛
+        工单自动派发
+    Flink应用
+      事件时间处理
+        Watermark生成
+        乱序数据容忍
+        迟到数据策略
+      复杂事件处理
+        CEP模式定义
+        跨事件关联
+        时序窗口匹配
+      状态管理
+        Keyed State设计
+        TTL过期清理
+        RocksDB后端优化
+      Exactly-Once
+        Checkpoint机制
+        两阶段提交
+        端到端一致性
+    业务场景
+      支付风控
+        线上支付拦截
+        扫码交易验证
+        跨境汇款审核
+      贷款审批
+        消费贷实时审批
+        小微贷秒批
+        额度动态管理
+      交易监控
+        证券异常交易
+        外汇可疑申报
+        衍生品风险敞口
+      账户安全
+        登录异常检测
+        设备指纹校验
+        密码暴力破解防护
+      保险理赔
+        反欺诈核赔
+        异常理赔模式
+        关联案件识别
+    合规要求
+      监管报送
+        央行大额交易报告
+        可疑交易报告
+        监管指标统计
+      数据保留
+        交易全量归档
+        冷热分层存储
+        法定保留期限
+      审计追踪
+        决策链路留痕
+        操作日志不可变
+        第三方审计接口
+      隐私保护
+        敏感数据脱敏
+        字段级加密
+        最小必要原则
+```
+
+### 7.5 风险场景→技术方案→业务价值关联树
+
+展示风险场景到技术方案再到业务价值的三层映射关系，体现金融实时风控从业务需求到技术实现最终创造业务价值的完整链路。
+
+```mermaid
+graph TB
+    subgraph "风险场景"
+        R1[支付欺诈<br/>盗刷/接管/伪卡]
+        R2[反洗钱<br/>可疑交易/拆分/跨境]
+        R3[信用违约<br/>实时授信/额度调整]
+        R4[账户安全<br/>异常登录/设备跳转]
+        R5[保险欺诈<br/>虚假理赔/关联案件]
+    end
+
+    subgraph "技术方案"
+        T1[Flink CEP<br/>复杂模式匹配]
+        T2[Async I/O<br/>特征实时查询]
+        T3[Keyed State<br/>用户行为画像]
+        T4[Window聚合<br/>时序统计分析]
+        T5[ML推理<br/>实时风险评分]
+    end
+
+    subgraph "业务价值"
+        V1[资金损失降低<br/>欺诈拦截率>95%]
+        V2[客户体验提升<br/>误报率<5%]
+        V3[合规成本节约<br/>自动化监管报送]
+        V4[运营效率提高<br/>人工审核量-70%]
+        V5[品牌信任增强<br/>安全事件响应<100ms]
+    end
+
+    R1 -->|CEP模式识别| T1
+    R1 -->|设备画像状态| T3
+    R2 -->|大额窗口统计| T4
+    R2 -->|关联分析查询| T2
+    R3 -->|实时特征查询| T2
+    R3 -->|ML信用评分| T5
+    R4 -->|登录序列匹配| T1
+    R4 -->|地理位置状态| T3
+    R5 -->|案件关联分析| T2
+    R5 -->|理赔模式检测| T5
+
+    T1 -->|快速拦截| V1
+    T2 -->|精准判定| V2
+    T3 -->|个性化风控| V2
+    T4 -->|可疑识别| V3
+    T5 -->|智能分级| V4
+    T1 -->|实时响应| V5
+    T3 -->|持续防护| V5
+
+    style R1 fill:#ffcdd2,stroke:#c62828,stroke-width:2px
+    style R2 fill:#ffcdd2,stroke:#c62828,stroke-width:2px
+    style R3 fill:#ffcdd2,stroke:#c62828,stroke-width:2px
+    style R4 fill:#ffcdd2,stroke:#c62828,stroke-width:2px
+    style R5 fill:#ffcdd2,stroke:#c62828,stroke-width:2px
+    style T1 fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style T2 fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style T3 fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style T4 fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style T5 fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style V1 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    style V2 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    style V3 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    style V4 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    style V5 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+```
+
+### 7.6 风控策略决策树
+
+根据交易特征展示不同风控策略的决策路径：高价值交易采用强规则+ML模型+人工审核；高频小额采用规则过滤+轻量ML+自动处理；新用户/设备采用多维度验证+行为分析+渐进信任；已知黑名单采用实时匹配+自动拦截+关联分析。
+
+```mermaid
+flowchart TD
+    START([交易进入风控系统])
+
+    START --> Q1{交易特征<br/>判定}
+
+    Q1 -->|单笔金额高<br/>或累计额度大| A[高价值交易]
+    Q1 -->|频次高<br/>单笔金额低| B[高频小额]
+    Q1 -->|新用户/新设备<br/>或行为异常| C[新用户/设备]
+    Q1 -->|命中黑名单<br/>或关联风险| D[已知黑名单]
+
+    A --> A1[强规则引擎<br/>硬阈值拦截]
+    A --> A2[深度ML模型<br/>多维风险评分]
+    A --> A3[人工审核队列<br/>专家复核]
+    A1 --> A4[决策: 拦截/放行<br/>P99 < 100ms]
+    A2 --> A4
+    A3 --> A4
+
+    B --> B1[规则快速过滤<br/>频次/金额阈值]
+    B --> B2[轻量ML模型<br/>异常检测]
+    B1 --> B3[自动放行<br/>低风险通道]
+    B2 --> B4[自动拦截<br/>触发限额]
+    B1 --> B4
+    B2 --> B3
+
+    C --> C1[多维度验证<br/>设备/地理/行为]
+    C --> C2[行为分析引擎<br/>渐进信任建模]
+    C1 --> C5[增强认证<br/>3DS/短信/人脸]
+    C2 --> C5
+    C1 --> C6[限制额度<br/>渐进授权]
+    C2 --> C6
+
+    D --> D1[实时名单匹配<br/>毫秒级查询]
+    D --> D2[自动拦截<br/>交易直接拒绝]
+    D --> D3[关联分析<br/>风险网络扩散]
+    D1 --> D2
+    D2 --> D4[告警升级<br/>案件系统录入]
+    D3 --> D4
+
+    style START fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
+    style A fill:#ffcdd2,stroke:#c62828,stroke-width:2px
+    style D fill:#ffcdd2,stroke:#c62828,stroke-width:2px
     style B fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
     style C fill:#fff9c4,stroke:#f57f17,stroke-width:2px
 ```

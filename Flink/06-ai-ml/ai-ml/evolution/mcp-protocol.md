@@ -307,12 +307,117 @@ sequenceDiagram
 
 本文档的实例已在正文中提供。详见相关章节。
 
-## 7. 引用参考 (References)
+## 7. 可视化 (Visualizations)
 
+### 7.1 思维导图：MCP协议与Flink集成全景
 
+以下思维导图以"MCP协议与Flink集成"为中心，放射展开五大核心维度：
 
+```mermaid
+mindmap
+  root((MCP协议与Flink集成))
+    MCP核心
+      Model Context Protocol
+      上下文传递
+      工具调用
+      能力声明
+    Flink作为上下文源
+      实时数据流
+      特征向量
+      状态快照
+      Metrics
+    AI Agent集成
+      LLM决策
+      实时推荐
+      异常检测
+      自动调优
+    架构模式
+      Flink
+      MCP Server
+      LLM
+      Action
+      Flink反馈循环
+    应用场景
+      智能运维
+      实时对话
+      预测分析
+      自动报告
+```
 
+### 7.2 多维关联树：Flink数据→MCP上下文→AI能力映射
 
+以下关联树展示从Flink数据源到MCP上下文封装，再到AI能力激活的完整映射链路：
+
+```mermaid
+graph TB
+    subgraph Flink数据层
+        F1[实时数据流]
+        F2[特征向量]
+        F3[状态快照]
+        F4[系统Metrics]
+    end
+
+    subgraph MCP上下文层
+        M1[上下文封装]
+        M2[工具注册]
+        M3[资源暴露]
+        M4[能力声明]
+    end
+
+    subgraph AI能力层
+        A1[LLM推理]
+        A2[模式识别]
+        A3[决策生成]
+        A4[自动执行]
+    end
+
+    F1 --> M1
+    F2 --> M1
+    F3 --> M3
+    F4 --> M2
+
+    M1 --> A1
+    M2 --> A2
+    M3 --> A3
+    M4 --> A4
+
+    A4 --> F1
+```
+
+### 7.3 决策树：MCP集成模式选择
+
+以下决策树展示四种典型MCP集成模式的完整流程：
+
+```mermaid
+flowchart TD
+    Start([MCP集成模式选择])
+
+    Start -->|实时分析| A1[Flink流处理]
+    A1 --> A2[MCP上下文封装]
+    A2 --> A3[LLM洞察生成]
+    A3 --> A4[实时决策输出]
+
+    Start -->|智能告警| B1[Flink异常检测]
+    B1 --> B2[MCP通知推送]
+    B2 --> B3[Agent响应触发]
+    B3 --> B4[告警处置闭环]
+
+    Start -->|自动调优| C1[Flink Metrics采集]
+    C1 --> C2[MCP诊断分析]
+    C2 --> C3[LLM优化建议]
+    C3 --> C4[自动执行调参]
+    C4 --> C1
+
+    Start -->|对话系统| D1[Flink用户行为分析]
+    D1 --> D2[MCP记忆更新]
+    D2 --> D3[个性化回复生成]
+    D3 --> D4[交互反馈回流]
+    D4 --> D1
+```
+
+---
+
+## 8. 引用参考 (References)
 
 
 ---

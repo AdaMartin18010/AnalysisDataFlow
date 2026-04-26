@@ -490,4 +490,123 @@ from datetime import timedelta
 
 ---
 
+## 7. 可视化 (Visualizations)
+
+### 7.1 实时特征工程思维导图
+
+以下思维导图以"实时特征工程"为中心，系统展示特征类型、计算模式、存储方案、ML集成与质量保障五大维度。
+
+```mermaid
+mindmap
+  root((实时特征工程))
+    特征类型
+      统计特征
+      时序特征
+      序列特征
+      图特征
+      交叉特征
+    计算模式
+      Window聚合
+      CEP模式
+      Session特征
+      增量更新
+    存储方案
+      Redis
+      Feature Store
+      Paimon
+      在线/离线一致性
+    与ML集成
+      Flink流处理
+      特征平台
+      模型训练
+      在线推理
+    质量保障
+      特征漂移监测
+      完整性检查
+      延迟监控
+      版本管理
+```
+
+### 7.2 特征类型→Flink算子→存储方案→ML应用关联树
+
+以下关联树展示从特征类型到Flink算子、存储方案再到ML应用的多维映射关系。
+
+```mermaid
+graph TB
+    subgraph 特征类型
+        FT1[统计特征<br/>SUM/AVG/COUNT]
+        FT2[时序特征<br/>趋势/周期]
+        FT3[序列特征<br/>行为路径]
+        FT4[图特征<br/>关系网络]
+        FT5[交叉特征<br/>笛卡尔组合]
+    end
+
+    subgraph Flink算子
+        OP1[Window Aggregate]
+        OP2[CEP Pattern]
+        OP3[ProcessFunction]
+        OP4[Gelly/Table API]
+        OP5[Async Lookup Join]
+    end
+
+    subgraph 存储方案
+        ST1[Redis<br/>低延迟KV]
+        ST2[Feature Store<br/>Feast/Tecton]
+        ST3[Paimon<br/>湖仓一体]
+        ST4[TSDB<br/>时序数据库]
+        ST5[Graph DB<br/>图数据库]
+    end
+
+    subgraph ML应用
+        ML1[实时推荐]
+        ML2[欺诈检测]
+        ML3[时序预测]
+        ML4[知识图谱]
+        ML5[排序模型]
+    end
+
+    FT1 --> OP1 --> ST1 --> ML1
+    FT2 --> OP2 --> ST4 --> ML3
+    FT3 --> OP3 --> ST2 --> ML2
+    FT4 --> OP4 --> ST5 --> ML4
+    FT5 --> OP5 --> ST3 --> ML5
+```
+
+### 7.3 特征工程架构决策树
+
+以下决策树根据特征实时性要求，给出对应的Flink计算模式、存储方案与ML应用路径。
+
+```mermaid
+flowchart TD
+    Start([特征工程架构选择]) --> Q1{特征实时性要求?}
+
+    Q1 -->|毫秒级| A1[实时特征]
+    Q1 -->|秒级| A2[时序特征]
+    Q1 -->|分钟级| A3[图特征]
+    Q1 -->|混合需求| A4[混合特征]
+
+    A1 --> B1[Flink Window聚合]
+    B1 --> C1[Redis缓存]
+    C1 --> D1[在线Serving<br/>推荐/风控]
+
+    A2 --> B2[Flink CEP模式]
+    B2 --> C2[时间序列DB]
+    C2 --> D2[预测模型<br/>Prophet/LSTM]
+
+    A3 --> B3[Flink Gelly]
+    B3 --> C3[图数据库]
+    C3 --> D3[图神经网络<br/>GNN推理]
+
+    A4 --> B4[Flink多源Join]
+    B4 --> C4[Feature Store]
+    C4 --> D4[统一接口<br/>训练+推理]
+```
+
+---
+
+## 8. 引用参考 (References)
+
+
+---
+
 *文档版本: v1.0 | 创建日期: 2026-04-18*

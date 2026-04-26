@@ -58,7 +58,7 @@
       - [Bytewax 局限性](#bytewax-局限性)
       - [Pathway 局限性](#pathway-局限性)
       - [ksqlDB 局限性](#ksqldb-局限性)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)]()
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-K-04-03 (2026流处理生态选型定理)](#thm-k-04-03-2026流处理生态选型定理)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [6.1 实时数仓构建场景](#61-实时数仓构建场景)
@@ -71,6 +71,9 @@
     - [7.2 系统定位能力矩阵](#72-系统定位能力矩阵)
     - [7.3 技术选型决策树](#73-技术选型决策树)
     - [7.4 性能-成本权衡矩阵](#74-性能-成本权衡矩阵)
+    - [7.5 流数据库生态思维导图](#75-流数据库生态思维导图)
+    - [7.6 多维关联树](#76-多维关联树)
+    - [7.7 流数据库选型决策树](#77-流数据库选型决策树)
   - [8. 综合对比矩阵](#8-综合对比矩阵)
     - [8.1 核心架构对比](#81-核心架构对比)
     - [8.2 功能特性全量对比](#82-功能特性全量对比)
@@ -1424,6 +1427,221 @@ quadrantChart
     ksqlDB: [0.40, 0.80]
 ```
 
+### 7.5 流数据库生态思维导图
+
+以下思维导图以"流数据库生态对比2026"为中心，从系统全景、技术维度、性能对比、生态集成和选型建议五个维度放射展开。
+
+```mermaid
+mindmap
+  root((流数据库生态对比2026))
+    系统全景
+      流数据库
+        RisingWave[云原生流数据库]
+        Materialize[强一致性物化视图]
+        Timeplus[流批统一低延迟]
+      流处理引擎
+        Flink[通用流批一体]
+        Arroyo[SQL-first边缘]
+        Bytewax[Python生态]
+        Pathway[实时ML推理]
+        ksqlDB[Kafka原生SQL]
+      新兴势力
+        Synnada[SQL流分析]
+        Decodable[CDC原生]
+    技术维度
+      SQL兼容性
+        ANSI SQL兼容度
+        流扩展语法
+        递归CTE支持
+      增量计算
+        Differential Dataflow
+        Hummock LSM-Tree
+        DBSP理论
+      物化视图
+        原生物化视图
+        即席查询能力
+        自动索引维护
+      一致性模型
+        严格一致性
+        最终一致性
+        Exactly-Once
+    性能对比
+      延迟
+        P50延迟
+        P99延迟
+        延迟稳定性
+      吞吐
+        Nexmark基准
+        单节点上限
+        集群扩展
+      扩展性
+        水平扩展节点数
+        状态规模上限
+        弹性伸缩
+      资源效率
+        CPU利用率
+        内存开销
+        存储成本
+    生态集成
+      消息队列
+        Kafka
+        Pulsar
+        Kinesis
+      数据处理
+        Flink互操作
+        Spark兼容
+        数据湖集成
+      存储系统
+        Iceberg
+        Paimon
+        Delta Lake
+      可视化与BI
+        Grafana
+        Metabase
+        Tableau
+      云平台
+        AWS
+        GCP
+        Azure
+    选型建议
+      场景匹配
+        实时数仓
+        金融风控
+        IoT分析
+        AI推理
+      成本分析
+        自托管TCO
+        托管服务定价
+        隐藏成本
+      迁移路径
+        ksqlDB迁移
+        Flink SQL迁移
+        自建系统迁移
+      风险评估
+        供应商锁定
+        开源许可
+        社区健康度
+```
+
+### 7.6 多维关联树
+
+以下多维关联树展示流数据库到核心特性再到适用场景的映射关系。
+
+```mermaid
+graph TB
+    subgraph "流数据库系统"
+        RW[RisingWave<br/>云原生流数据库]
+        MZ[Materialize<br/>强一致性物化视图]
+        TP[Timeplus<br/>流批统一低延迟]
+    end
+
+    subgraph "核心特性维度"
+        SQL[SQL完整性]
+        MV[物化视图]
+        INC[增量计算]
+        CON[一致性模型]
+        LAT[低延迟]
+        SCA[水平扩展]
+        CEP[复杂事件处理]
+        AI[AI/ML集成]
+    end
+
+    subgraph "适用业务场景"
+        DWH[实时数仓]
+        CTRL[金融风控]
+        IOT[IoT实时分析]
+        REC[实时推荐]
+        ETL[日志ETL]
+        AIP[AI实时推理]
+        CDC[CDC数据同步]
+        ADHOC[交互式分析]
+    end
+
+    RW --> SQL
+    RW --> MV
+    RW --> INC
+    RW --> SCA
+    RW --> CDC
+    MZ --> SQL
+    MZ --> MV
+    MZ --> INC
+    MZ --> CON
+    MZ --> ADHOC
+    TP --> SQL
+    TP --> LAT
+    TP --> INC
+    TP --> CEP
+
+    SQL --> DWH
+    SQL --> CTRL
+    SQL --> ADHOC
+    MV --> DWH
+    MV --> REC
+    MV --> CDC
+    INC --> IOT
+    INC --> ETL
+    INC --> CDC
+    CON --> CTRL
+    CON --> ADHOC
+    LAT --> CTRL
+    LAT --> REC
+    LAT --> AIP
+    SCA --> IOT
+    SCA --> ETL
+    SCA --> DWH
+    CEP --> CTRL
+    AI --> AIP
+    AI --> REC
+```
+
+### 7.7 流数据库选型决策树
+
+以下决策树聚焦流数据库与流处理系统的选型路径，覆盖纯实时分析、复杂流处理、混合负载和云原生托管四大典型路径。
+
+```mermaid
+flowchart TD
+    START([开始流数据库选型]) --> Q1{首要需求类型?}
+
+    Q1 -->|纯实时分析<br/>SQL优先| A1[流数据库方案]
+    Q1 -->|复杂流处理<br/>CEP/高级算子| A2[流引擎+Serving层]
+    Q1 -->|混合负载<br/>实时+分析| A3[流数据库+引擎组合]
+    Q1 -->|云原生托管<br/>零运维| A4[托管云服务]
+
+    A1 --> DET1A{一致性要求?}
+    DET1A -->|严格一致性| CH1[Materialize<br/>DBSP理论保证]
+    DET1A -->|最终一致+PostgreSQL生态| CH2[RisingWave<br/>云原生最优TCO]
+    DET1A -->|流批统一+极低延迟| CH3[Timeplus<br/>Proton双模式]
+
+    A2 --> DET2A{延迟硬约束?}
+    DET2A -->|< 50ms| CH4[Flink +<br/>本地RocksDB/ForSt]
+    DET2A -->|> 50ms 可接受| CH5[Flink +<br/>RisingWave Serving]
+    DET2A -->|Python ML生态| CH6[Bytewax /<br/>Pathway + Redis]
+
+    A3 --> DET3A{状态规模?}
+    DET3A -->|< 10TB| CH7[Timeplus全局+<br/>Flink预处理]
+    DET3A -->|10TB - 100TB| CH8[RisingWave核心+<br/>Flink复杂算子]
+    DET3A -->|> 100TB| CH9[RisingWave S3-native+<br/>Flink湖仓归档]
+
+    A4 --> DET4A{生态偏好?}
+    DET4A -->|Kafka/Confluent生态| CH10[Confluent Cloud<br/>Flink SQL托管]
+    DET4A -->|PostgreSQL生态| CH11[RisingWave Cloud /<br/>Materialize Cloud]
+    DET4A -->|边缘+云端一体| CH12[Cloudflare Pipelines /<br/>Timeplus Cloud]
+
+    style START fill:#e8f5e9,stroke:#2e7d32
+    style CH1 fill:#e3f2fd,stroke:#1976d2
+    style CH2 fill:#e8f5e9,stroke:#2e7d32
+    style CH3 fill:#fff3e0,stroke:#ef6c00
+    style CH4 fill:#ffebee,stroke:#c62828
+    style CH5 fill:#ffebee,stroke:#c62828
+    style CH6 fill:#f3e5f5,stroke:#7b1fa2
+    style CH7 fill:#fff3e0,stroke:#ef6c00
+    style CH8 fill:#e8f5e9,stroke:#2e7d32
+    style CH9 fill:#e8f5e9,stroke:#2e7d32
+    style CH10 fill:#fff9c4,stroke:#f57f17
+    style CH11 fill:#e8f5e9,stroke:#2e7d32
+    style CH12 fill:#fce4ec,stroke:#c2185b
+```
+
 ---
 
 ## 8. 综合对比矩阵
@@ -1677,30 +1895,6 @@ quadrantChart
 ---
 
 ## 参考文献 (References)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ---

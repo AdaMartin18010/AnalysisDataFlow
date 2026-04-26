@@ -2810,6 +2810,195 @@ gantt
 
 ---
 
+### 7.11 Flink AI/ML 集成思维导图
+
+以下思维导图以"Flink AI/ML集成完整指南"为中心，系统展示特征工程、模型训练、模型服务、流式ML与平台集成五大维度的知识全景。
+
+```mermaid
+mindmap
+  root((Flink AI/ML集成完整指南))
+    特征工程
+      实时特征
+        原始事件抽取
+        流式聚合统计
+      窗口特征
+        滑动窗口
+        会话窗口
+        累积窗口
+      序列特征
+        时间序列编码
+        行为序列建模
+      图特征
+        关系图嵌入
+        社交网络特征
+      特征存储
+        Feast
+        Tecton
+    模型训练
+      在线学习
+        增量梯度下降
+        流式参数更新
+      增量训练
+        热启动
+        模型版本继承
+      Flink + TensorFlow
+        TensorFlow Extended TFX
+        SavedModel格式集成
+      Flink + PyTorch
+        TorchScript序列化
+        ONNX导出与加载
+      分布式训练
+        AllReduce通信
+        参数服务器架构
+    模型服务
+      实时推理
+        低延迟预测
+        AsyncFunction异步调用
+      批量预测
+        窗口化批处理
+        离线补算
+      模型版本管理
+        Savepoint快照
+        A/B测试版本切换
+      A/B测试
+        流量分割
+        效果指标对比
+    流式ML
+      流式回归
+        在线线性回归
+        流式岭回归
+      流式分类
+        在线逻辑回归
+        Hoeffding树
+      概念漂移检测
+        ADWIN算法
+        Page-Hinkley检验
+      模型自动更新
+        触发式重训练
+        滑动窗口评估
+    平台集成
+      Kubeflow
+        Pipeline编排
+        模型注册中心
+      MLflow
+        实验追踪
+        模型版本管理
+      Tecton
+        实时特征平台
+        特征共享与治理
+      Feast
+        开源特征存储
+        在线/离线一致性
+      Flink AI Flow
+        端到端AI工作流
+        调度与资源管理
+```
+
+---
+
+### 7.12 Flink AI/ML 多维关联树
+
+以下多维关联树展示 ML 阶段 → Flink 核心能力 → 外部技术工具的三层映射关系，为架构设计提供系统性参考。
+
+```mermaid
+graph TB
+    subgraph MLStage["ML阶段"]
+        S1[特征工程<br/>Feature Engineering]
+        S2[模型训练<br/>Model Training]
+        S3[模型服务<br/>Model Serving]
+        S4[流式ML<br/>Streaming ML]
+        S5[监控与反馈<br/>Monitoring]
+    end
+
+    subgraph FlinkCapability["Flink能力"]
+        C1[DataStream API<br/>实时流处理]
+        C2[Table API / SQL<br/>声明式计算]
+        C3[State Backend<br/>有状态计算]
+        C4[Window / Join<br/>时序操作]
+        C5[Checkpoint / Savepoint<br/>容错与版本]
+        C6[Async I/O<br/>异步扩展]
+    end
+
+    subgraph TechTool["技术工具"]
+        T1[Feast / Tecton<br/>特征存储]
+        T2[Flink ML / TensorFlow / PyTorch<br/>训练框架]
+        T3[MLflow / Kubeflow<br/>模型管理]
+        T4[Redis / Kafka<br/>实时缓存与传输]
+        T5[Prometheus / Grafana<br/>监控观测]
+    end
+
+    S1 -->|实时聚合 / 窗口变换| C1
+    S1 -->|声明式特征SQL| C2
+    S1 -->|状态化特征缓存| C3
+    S1 -.->|特征存储| T1
+
+    S2 -->|在线学习流| C1
+    S2 -->|增量训练状态| C3
+    S2 -->|模型检查点| C5
+    S2 -.->|训练框架| T2
+
+    S3 -->|AsyncFunction推理| C6
+    S3 -->|低延迟预测| C1
+    S3 -->|模型状态广播| C3
+    S3 -.->|模型注册中心| T3
+    S3 -.->|缓存加速| T4
+
+    S4 -->|窗口时序模型| C4
+    S4 -->|流式Join| C4
+    S4 -->|漂移检测状态| C3
+    S4 -.->|消息传输| T4
+
+    S5 -->|指标聚合| C2
+    S5 -->|状态监控| C3
+    S5 -.->|观测平台| T5
+```
+
+---
+
+### 7.13 AI/ML 架构选型决策树
+
+以下决策树覆盖四种典型 AI/ML 业务场景，给出 Flink 为中心的架构选型路径与技术组合建议。
+
+```mermaid
+flowchart TD
+    A[AI/ML业务场景] --> B{场景类型?}
+
+    B -->|实时推荐| C[实时推荐系统]
+    C --> C1[Flink特征工程]
+    C1 --> C2[实时用户/物品特征]
+    C2 --> C3[Redis缓存热点特征]
+    C3 --> C4[在线模型推理]
+    C4 --> C5[排序/召回结果]
+
+    B -->|异常检测| D[异常检测系统]
+    D --> D1[Flink流式处理]
+    D1 --> D2[统计模型<br/>Z-Score/MAD]
+    D1 --> D3[ML模型<br/>Isolation Forest/LSTM]
+    D2 --> D4[实时告警触发]
+    D3 --> D4
+
+    B -->|预测维护| E[预测性维护]
+    E --> E1[Flink传感器数据<br/>清洗与聚合]
+    E1 --> E2[时序模型<br/>ARIMA/Prophet]
+    E1 --> E3[深度学习<br/>LSTM/Transformer]
+    E2 --> E4[故障预测与工单]
+    E3 --> E4
+
+    B -->|NLP流水线| F[流式NLP处理]
+    F --> F1[Flink文本预处理]
+    F1 --> F2[Embedding生成]
+    F2 --> F3[向量检索]
+    F3 --> F4[LLM推理/生成]
+    F4 --> F5[结构化输出]
+
+    style C fill:#e1f5fe
+    style D fill:#e8f5e9
+    style E fill:#fff3e0
+    style F fill:#fce4ec
+```
+
+---
+
 ## 8. 性能基准与成本分析
 
 ### 8.1 性能基准测试结果
@@ -2972,19 +3161,6 @@ public class ProductionAgentPatterns {
 ---
 
 ## 10. 引用参考 (References)
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ---

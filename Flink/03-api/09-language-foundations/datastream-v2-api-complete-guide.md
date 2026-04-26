@@ -49,6 +49,9 @@
     - [7.2 V2 API 类层次结构](#72-v2-api-类层次结构)
     - [7.3 迁移决策流程图](#73-迁移决策流程图)
     - [7.4 状态访问模式对比](#74-状态访问模式对比)
+    - [7.5 DataStream V2 API 思维导图](#75-datastream-v2-api-思维导图)
+    - [7.6 V2 特性—开发收益—迁移成本多维关联树](#76-v2-特性开发收益迁移成本多维关联树)
+    - [7.7 DataStream 版本选型决策树](#77-datastream-版本选型决策树)
   - [8. 迁移指南 (Migration Guide)](#8-迁移指南-migration-guide)
     - [8.1 Breaking Changes 完整清单](#81-breaking-changes-完整清单)
     - [8.2 逐模块迁移路径](#82-逐模块迁移路径)
@@ -1675,6 +1678,203 @@ sequenceDiagram
         PF->>Cache: state.updateAsync()
         PF-->>User: Future<Output>
     end
+```
+
+### 7.5 DataStream V2 API 思维导图
+
+以下思维导图以 DataStream V2 API 为中心，从设计目标、核心改进、与 V1 对比、开发体验和 production 建议五个维度进行放射展开。
+
+```mermaid
+mindmap
+  root((DataStream V2 API))
+    设计目标
+      类型安全
+        编译期类型检查
+        Scala 3 路径依赖类型
+        Java 泛型强化
+      编译期检查
+        状态类型一致性
+        消除 ClassCastException
+        消除运行时类型错误
+      流畅API
+        声明式状态管理
+        统一 Source/Sink 模型
+        内建异步原语
+      性能优化
+        分离状态存储
+        异步流水线执行
+        多级本地缓存
+    核心改进
+      新Source API
+        SourceV2 统一批流
+        SplitEnumerator + SourceReader
+        动态分片发现
+      新Sink API
+        SinkV2 标准化
+        Writer + Committer 分离
+        内建 Exactly-Once
+      状态声明式
+        StateDeclarations 构建器
+        withDefaultValue 空安全
+        编译期类型绑定
+      Watermark策略
+        RecordAttributes 逐记录元数据
+        来源信息透传
+        血缘追踪支持
+      TypeHint
+        减少 TypeInformation 运行时依赖
+        编译期推导优化
+    与V1对比
+      API兼容性
+        V1 与 V2 可混合使用
+        适配器桥接
+        状态命名空间隔离
+      迁移路径
+        无状态算子优先
+        简单状态次之
+        复杂状态最后
+      性能差异
+        大状态场景 V2 显著优势
+        低延迟场景 V1 更优
+        异步模式吞吐提升
+      功能增强
+        异步状态访问
+        声明式状态注册
+        统一连接器模型
+    开发体验
+      IDE支持
+        类型安全自动补全
+        重构安全
+        实时错误检测
+      错误提示
+        编译期捕获类型错误
+        状态声明缺失检测
+        空安全默认值提示
+      代码生成
+        状态描述符模板
+        ProcessFunctionV2 脚手架
+        迁移工具辅助
+      调试工具
+        RecordAttributes 追踪
+        异步执行可视化
+        状态访问性能剖析
+    生产建议
+      版本选择
+        Flink 2.0 Experimental
+        Flink 2.1 Preview
+        Flink 2.2 Stable
+        Flink 2.3+ GA
+      迁移策略
+        渐进式迁移
+        双跑对比验证
+        灰度部署
+      风险管控
+        保留 V1 Savepoint
+        监控延迟吞吐错误率
+        输出一致性抽样
+      回滚方案
+        V2 Savepoint 恢复 V1
+        快速切回路由
+        代码分支保留
+```
+
+---
+
+### 7.6 V2 特性—开发收益—迁移成本多维关联树
+
+以下关联树从 V2 特性维度出发，映射至开发收益与迁移成本，帮助团队量化评估 V2 引入的综合价值。
+
+```mermaid
+graph TB
+    subgraph "V2 特性维度"
+        F1[声明式状态管理]
+        F2[异步执行原语]
+        F3[统一 Source/Sink]
+        F4[编译期类型安全]
+        F5[RecordAttributes 元数据]
+        F6[分离状态存储]
+    end
+
+    subgraph "开发收益维度"
+        B1[消除运行时类型错误]
+        B2[减少 NPE 事故]
+        B3[提升 I/O 吞吐]
+        B4[降低连接器开发成本]
+        B5[增强代码可维护性]
+        B6[云原生成本优化]
+    end
+
+    subgraph "迁移成本维度"
+        C1[状态声明重构]
+        C2[Source/Sink 重写]
+        C3[异步逻辑改造]
+        C4[团队学习曲线]
+        C5[双跑验证投入]
+        C6[回滚预案准备]
+    end
+
+    F1 -->|"编译期绑定"| B1
+    F1 -->|"withDefaultValue"| B2
+    F1 -->|"类字段声明"| C1
+
+    F2 -->|"非阻塞 I/O"| B3
+    F2 -->|"Future 链式处理"| C3
+
+    F3 -->|"统一接口"| B4
+    F3 -->|"Enumerator+Reader"| C2
+
+    F4 -->|"类型推导"| B5
+    F4 -->|"Scala 3 / Java 泛型"| C4
+
+    F5 -->|"血缘追踪"| B5
+    F5 -->|"元数据设计"| C1
+
+    F6 -->|"存储成本降低 60-80%"| B6
+    F6 -->|"Checkpoint 格式变更"| C5
+    F6 -->|"StateRef 迁移"| C6
+```
+
+---
+
+### 7.7 DataStream 版本选型决策树
+
+以下决策树面向不同项目场景，提供 DataStream V1 与 V2 的选型建议与行动路径。
+
+```mermaid
+flowchart TD
+    START([DataStream 版本选型])
+
+    START --> Q1{项目阶段?}
+
+    Q1 -->|新建项目| NEW[直接使用 V2]
+    NEW --> NEW1[完整功能]
+    NEW --> NEW2[声明式状态]
+    NEW --> NEW3[异步原生支持]
+
+    Q1 -->|现有 V1 项目| EXISTING{评估迁移 ROI}
+    EXISTING -->|高 ROI<br/>大状态 / 云原生| GRADUAL[渐进升级]
+    GRADUAL --> G1[无状态算子优先]
+    GRADUAL --> G2[Source/Sink 先迁]
+    GRADUAL --> G3[双跑验证后全量]
+
+    EXISTING -->|低 ROI<br/>稳定运行 / 低延迟| KEEP[保持 V1]
+    KEEP --> K1[按需使用 SourceV2 / SinkV2]
+    KEEP --> K2[关注社区 V1 生命周期]
+
+    Q1 -->|关键生产系统| CRITICAL[保持 V1 稳定]
+    CRITICAL --> C1[非关键链路试点 V2]
+    CRITICAL --> C2[严格灰度 + 回滚预案]
+
+    Q1 -->|快速原型| PROTOTYPE[V1 成熟生态]
+    PROTOTYPE --> P1[快速开发]
+    PROTOTYPE --> P2[丰富 Connector 生态]
+    PROTOTYPE --> P3[低学习成本]
+
+    style NEW fill:#c8e6c9,stroke:#2e7d32
+    style GRADUAL fill:#fff9c4,stroke:#f57f17
+    style KEEP fill:#c8e6c9,stroke:#2e7d32
+    style CRITICAL fill:#ffccbc,stroke:#d84315
+    style PROTOTYPE fill:#bbdefb,stroke:#1565c0
 ```
 
 ---

@@ -48,7 +48,7 @@
       - [论证 3: 实时推荐特征平台选型](#论证-3-实时推荐特征平台选型)
       - [论证 4: 实时数仓即席分析选型](#论证-4-实时数仓即席分析选型)
       - [论证 5: 边缘实时计算选型](#论证-5-边缘实时计算选型)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [5.1 一致性模型选型决策树](#51-一致性模型选型决策树)
     - [5.2 成本效益量化分析框架](#52-成本效益量化分析框架)
     - [5.3 迁移风险评估模型](#53-迁移风险评估模型)
@@ -74,6 +74,9 @@
     - [8.3 成本-性能帕累托前沿分析](#83-成本-性能帕累托前沿分析)
     - [8.4 场景-产品映射矩阵](#84-场景-产品映射矩阵)
     - [8.5 湖仓集成架构图](#85-湖仓集成架构图)
+    - [8.6 流数据库选型指南思维导图](#86-流数据库选型指南思维导图)
+    - [8.7 业务需求到流数据库特性到Flink互补多维关联树](#87-业务需求到流数据库特性到flink互补多维关联树)
+    - [8.8 流数据库选型场景决策树](#88-流数据库选型场景决策树)
   - [9. 引用参考 (References)](#9-引用参考-references)
   - [关联文档](#关联文档)
     - [上游依赖](#上游依赖)
@@ -2022,6 +2025,175 @@ graph TB
     style MZ fill:#e3f2fd,stroke:#1565c0
     style ICEBERG fill:#f3e5f5
     style S3 fill:#fce4ec
+```
+
+### 8.6 流数据库选型指南思维导图
+
+以下思维导图以"流数据库选型指南"为中心，系统性地放射展开五大核心维度：流数据库类型、核心能力、代表系统、选型维度以及与 Flink 的竞合关系，帮助读者建立全局认知框架。
+
+```mermaid
+mindmap
+  root((流数据库选型指南))
+    流数据库类型
+      物化视图型
+        Materialize
+        RisingWave
+      增量计算型
+        Timeplus
+        HStreamDB
+      事件溯源型
+        ksqlDB
+        Kafka生态
+      时序型
+        TimescaleDB
+        InfluxDB
+    核心能力
+      流SQL
+        持续查询
+        窗口语义
+      增量物化
+        自动维护
+        点查服务
+      一致性级别
+        严格串行化
+        快照隔离
+        最终一致
+      状态管理
+        分层存储
+        存算分离
+    代表系统
+      Materialize
+      RisingWave
+      Timeplus
+      Decodable
+      Synnada
+    选型维度
+      延迟
+        亚毫秒
+        毫秒级
+        秒级
+      吞吐
+        十万级每秒
+        百万级每秒
+      SQL兼容
+        PostgreSQL
+        ClickHouse
+        标准SQL
+      生态集成
+        Kafka
+        CDC
+        Lakehouse
+      成本
+        基础设施
+        运维人力
+    与Flink关系
+      互补
+        Flink ETL + SDB Serving
+      竞争
+        SQL优先 vs 代码优先
+      混合架构
+        分层处理
+      迁移路径
+        Flink SQL迁移至RisingWave或Materialize
+```
+
+---
+
+### 8.7 业务需求到流数据库特性到Flink互补多维关联树
+
+以下多维关联树展示业务需求层、流数据库特性层与 Flink 互补层之间的映射关系，揭示"为什么选此系统"以及"如何与 Flink 配合"的深层逻辑。
+
+```mermaid
+graph TB
+    subgraph "业务需求层"
+        B1[纯实时分析<br/>SQL即席查询]
+        B2[复杂流处理<br/>CEP与窗口与递归]
+        B3[混合架构<br/>ETL加Serving]
+        B4[时序场景<br/>IoT监控边缘]
+    end
+
+    subgraph "流数据库特性层"
+        F1[物化视图服务<br/>低延迟点查]
+        F2[流SQL语义<br/>窗口与Watermark]
+        F3[增量计算<br/>状态自动管理]
+        F4[分层存储<br/>冷热分离]
+        F5[边缘原生<br/>离线运行]
+    end
+
+    subgraph "Flink互补层"
+        C1[Flink复杂ETL<br/>特征工程与CEP]
+        C2[Flink批处理<br/>历史数据回填]
+        C3[Flink连接器<br/>异构数据源集成]
+        C4[Flink SQL Gateway<br/>统一查询入口]
+    end
+
+    B1 -->|需求| F1
+    B1 -->|需求| F2
+    B2 -->|需求| F3
+    B3 -->|需求| F4
+    B4 -->|需求| F5
+
+    F1 -.->|互补| C1
+    F2 -.->|互补| C4
+    F3 -.->|互补| C1
+    F4 -.->|互补| C2
+    F5 -.->|互补| C3
+
+    style B1 fill:#e3f2fd
+    style B2 fill:#e8f5e9
+    style B3 fill:#fff3e0
+    style B4 fill:#fce4ec
+    style F1 fill:#f3e5f5
+    style F2 fill:#f3e5f5
+    style F3 fill:#f3e5f5
+    style F4 fill:#f3e5f5
+    style F5 fill:#f3e5f5
+    style C1 fill:#fff9c4
+    style C2 fill:#fff9c4
+    style C3 fill:#fff9c4
+    style C4 fill:#fff9c4
+```
+
+---
+
+### 8.8 流数据库选型场景决策树
+
+以下决策树基于核心场景诉求快速收敛到推荐架构模式，覆盖纯实时分析、复杂流处理、混合架构与时序场景四大主线。
+
+```mermaid
+flowchart TD
+    Start[开始选型]
+
+    Start --> Q1{首要场景?}
+
+    Q1 -->|纯实时分析<br/>SQL优先| A1[Materialize 或 RisingWave]
+    Q1 -->|复杂流处理<br/>CEP与递归| A2[Flink 加 外部Serving<br/>Redis或StarRocks]
+    Q1 -->|混合架构<br/>ETL加实时查询| A3[Flink ETL 加 流数据库Serving<br/>RisingWave或Materialize]
+    Q1 -->|时序场景<br/>IoT与边缘| A4[TimescaleDB或InfluxDB<br/>加 Flink聚合]
+
+    A1 --> D1["特征:<br/>- 持续SQL<br/>- 自动物化视图<br/>- 低运维成本"]
+    A2 --> D2["特征:<br/>- 复杂事件处理<br/>- 递归CTE<br/>- 高度定制化"]
+    A3 --> D3["特征:<br/>- Flink负责复杂计算<br/>- SDB负责查询服务<br/>- 分层解耦"]
+    A4 --> D4["特征:<br/>- 时序存储优化<br/>- 边缘部署能力<br/>- 降采样聚合"]
+
+    D1 --> E1["代表系统:<br/>Materialize, RisingWave"]
+    D2 --> E2["代表系统:<br/>Flink 加 Redis或StarRocks"]
+    D3 --> E3["代表系统:<br/>Flink 加 RisingWave或Materialize"]
+    D4 --> E4["代表系统:<br/>Timeplus, TimescaleDB"]
+
+    style Start fill:#e3f2fd,stroke:#1565c0
+    style A1 fill:#e8f5e9,stroke:#2e7d32
+    style A2 fill:#fff3e0,stroke:#ef6c00
+    style A3 fill:#f3e5f5,stroke:#7b1fa2
+    style A4 fill:#fce4ec,stroke:#c2185b
+    style D1 fill:#f1f8e9
+    style D2 fill:#fff8e1
+    style D3 fill:#f3e5f5
+    style D4 fill:#fce4ec
+    style E1 fill:#e8f5e9
+    style E2 fill:#fff3e0
+    style E3 fill:#f3e5f5
+    style E4 fill:#fce4ec
 ```
 
 ---

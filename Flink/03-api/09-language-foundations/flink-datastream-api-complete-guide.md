@@ -57,6 +57,9 @@
     - [7.3 Watermark 传播示意图](#73-watermark-传播示意图)
     - [7.4 异步 I/O 执行模型](#74-异步-io-执行模型)
     - [7.5 CEP NFA 执行流程](#75-cep-nfa-执行流程)
+    - [7.6 DataStream API 完整指南思维导图](#76-datastream-api-完整指南思维导图)
+    - [7.7 DataStream 概念-方法-应用多维关联树](#77-datastream-概念-方法-应用多维关联树)
+    - [7.8 DataStream 开发路径决策树](#78-datastream-开发路径决策树)
   - [8. 引用参考 (References)](#8-引用参考-references)
 
 ---
@@ -2792,18 +2795,125 @@ stateDiagram-v2
 
 ---
 
+### 7.6 DataStream API 完整指南思维导图
+
+以下思维导图以"Flink DataStream API完整指南"为中心，放射展开核心知识领域。
+
+```mermaid
+mindmap
+  root((Flink DataStream API<br/>完整指南))
+    基础概念
+      DataStream
+      Transformation
+      KeyedStream
+      ConnectedStream
+    时间语义
+      Event Time
+      Processing Time
+      Ingestion Time
+      Watermark策略
+    状态管理
+      ValueState
+      ListState
+      MapState
+      ReducingState
+      状态TTL
+    窗口操作
+      Tumbling
+      Sliding
+      Session
+      Global
+      自定义窗口
+    高级特性
+      Async I/O
+      ProcessFunction
+      SideOutput
+      Broadcast State
+```
+
+---
+
+### 7.7 DataStream 概念-方法-应用多维关联树
+
+以下关联树展示 DataStream 核心概念到 API 方法再到实际应用场景的映射关系。
+
+```mermaid
+graph TB
+    subgraph "核心概念"
+        C1[DataStream]
+        C2[KeyedStream]
+        C3[WindowedStream]
+        C4[ConnectedStream]
+        C5[BroadcastStream]
+    end
+
+    subgraph "API 方法"
+        A1[map/filter/flatMap]
+        A2[keyBy/reduce/aggregate]
+        A3[window/apply/trigger]
+        A4[connect/coMap/coFlatMap]
+        A5[broadcast/processBroadcastElement]
+        A6[AsyncDataStream.unorderedWait]
+        A7[ProcessFunction/onTimer]
+    end
+
+    subgraph "实际应用"
+        U1[ETL清洗与转换]
+        U2[实时聚合统计]
+        U3[会话窗口分析]
+        U4[双流Join与规则匹配]
+        U5[动态配置下发]
+        U6[异步外部数据 enrichment]
+        U7[复杂事件处理CEP]
+    end
+
+    C1 --> A1
+    C1 --> A6
+    C2 --> A2
+    C2 --> A7
+    C3 --> A3
+    C4 --> A4
+    C5 --> A5
+
+    A1 --> U1
+    A2 --> U2
+    A3 --> U3
+    A4 --> U4
+    A5 --> U5
+    A6 --> U6
+    A7 --> U7
+```
+
+---
+
+### 7.8 DataStream 开发路径决策树
+
+以下决策树指导开发者根据业务场景选择合适的 DataStream API 组合。
+
+```mermaid
+flowchart TD
+    START([开始DataStream开发]) --> Q1{业务场景?}
+
+    Q1 -->|简单转换| P1[Map/Filter/FlatMap]
+    Q1 -->|有状态计算| P2[KeyBy + State + TimerService]
+    Q1 -->|窗口聚合| P3[Window + Aggregate/Reduce/ProcessWindowFunction]
+    Q1 -->|复杂事件| P4[CEP Pattern + 匹配处理 + 超时控制]
+
+    P1 --> R1[无状态处理<br/>低延迟<br/>高吞吐]
+    P2 --> R2[键控状态管理<br/>定时器驱动<br/>事件时间语义]
+    P3 --> R3[时间窗口切分<br/>增量/全量聚合<br/>迟到数据处理]
+    P4 --> R4[NFA模式匹配<br/>序列检测<br/>超时与部分匹配]
+
+    style START fill:#fff9c4,stroke:#f57f17
+    style P1 fill:#e3f2fd,stroke:#1976d2
+    style P2 fill:#c8e6c9,stroke:#2e7d32
+    style P3 fill:#ffccbc,stroke:#d84315
+    style P4 fill:#f3e5f5,stroke:#7b1fa2
+```
+
+---
+
 ## 8. 引用参考 (References)
-
-
-
-
-
-
-
-
-
-
-
 
 
 ---

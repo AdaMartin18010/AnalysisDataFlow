@@ -25,12 +25,15 @@
     - [4.1 核心依赖链](#41-核心依赖链)
     - [4.2 显式依赖链说明](#42-显式依赖链说明)
     - [4.3 依赖链语义解释](#43-依赖链语义解释)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)]()
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [5.1 映射统计](#51-映射统计)
     - [5.2 验证覆盖率](#52-验证覆盖率)
     - [5.3 源码模块覆盖](#53-源码模块覆盖)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
+    - [7.1 思维导图：形式化到代码映射全景](#71-思维导图形式化到代码映射全景)
+    - [7.2 多维关联树](#72-多维关联树)
+    - [7.3 决策树：形式化方法选择](#73-决策树形式化方法选择)
   - [8. 引用参考 (References)](#8-引用参考-references)
 
 ---
@@ -308,6 +311,198 @@ Def-F-02-01 → CheckpointCoordinator
 
 第 4 节中的依赖链图（Mermaid）展示了从 Struct 理论层到 Flink 抽象层再到源码实现层的完整映射关系可视化。该图清晰地呈现了形式化定义与工程实现之间的层级依赖结构。
 
+### 7.1 思维导图：形式化到代码映射全景
+
+以下思维导图以"形式化到代码映射"为中心，放射展开五大核心维度，涵盖理论基础、工程策略、Flink实现、验证方法与工具链全景。
+
+```mermaid
+mindmap
+  root((形式化到代码映射))
+    形式化基础
+      进程演算
+        CCS
+        CSP
+        π-calculus
+      类型系统
+        简单类型 lambda
+        多态类型 SystemF
+        依赖类型
+      时序逻辑
+        LTL
+        CTL
+        TLA
+      不变量
+        状态不变量
+        Trace不变量
+    映射策略
+      精化
+        逐步精化
+        数据精化
+      编码
+        语义编码
+        逻辑编码
+      模拟
+        双向模拟
+        精化映射
+      等价保持
+        观察等价
+        上下文等价
+    Flink实现
+      状态机
+        StateBackend
+        KeyedStateBackend
+      Checkpoint
+        CheckpointCoordinator
+        CheckpointStorage
+      Watermark
+        StatusWatermarkValve
+        WatermarkStrategy
+      Exactly-Once
+        TwoPhaseCommitSinkFunction
+        CheckpointListener
+    验证方法
+      Model Checking
+        SPIN
+        NuSMV
+        TLA+ Model Checker
+      TLA+
+        PlusCal
+        TLC
+        TLAPS
+      Iris
+        分离逻辑
+        高阶协议
+      Coq/Lean
+        Coq Proof Assistant
+        Lean 4
+        ssreflect
+    工具链
+      形式化规范
+        TLA+ Specification
+        Coq/Lean Definition
+      代码生成
+        精化推导
+        提取编译
+      测试验证
+        JUnit/Mockito
+        Property-based Testing
+        Chaos Engineering
+      部署监控
+        Metrics
+        Distributed Tracing
+        Alerting
+```
+
+### 7.2 多维关联树
+
+以下多维关联树展示形式化概念层、代码结构层与验证方法层之间的映射关系。实线箭头表示直接映射或验证关系，虚线箭头表示间接语义关联。
+
+```mermaid
+graph TB
+    subgraph "形式化概念层"
+        FC1[进程演算<br/>CCS/CSP/π]
+        FC2[类型系统<br/>FG/FGG/DOT]
+        FC3[时序逻辑<br/>LTL/CTL/TLA]
+        FC4[不变量系统<br/>状态/Trace]
+    end
+
+    subgraph "代码结构层"
+        CS1[状态后端<br/>StateBackend]
+        CS2[网络层<br/>NettyBufferPool]
+        CS3[执行引擎<br/>StreamTask]
+        CS4[优化器<br/>FlinkOptimizer]
+    end
+
+    subgraph "验证方法层"
+        VM1[Model Checking<br/>SPIN/TLC]
+        VM2[定理证明<br/>Coq/Lean/TLAPS]
+        VM3[分离逻辑<br/>Iris]
+        VM4[运行时检查<br/>Assert/Monitor]
+    end
+
+    FC1 -->|模拟关系| CS3
+    FC2 -->|精化类型| CS4
+    FC3 -->|规范导出| VM2
+    FC4 -->|不变量保持| CS1
+
+    CS1 -->|状态空间验证| VM1
+    CS2 -->|协议正确性验证| VM3
+    CS3 -->|执行轨迹验证| VM1
+    CS4 -->|等价保持验证| VM2
+
+    FC1 -.->|语义编码| VM2
+    FC3 -.->|性质验证| VM1
+    FC4 -.->|运行时断言| VM4
+
+    style FC1 fill:#fff9c4,stroke:#f57f17
+    style FC2 fill:#fff9c4,stroke:#f57f17
+    style FC3 fill:#fff9c4,stroke:#f57f17
+    style FC4 fill:#fff9c4,stroke:#f57f17
+    style CS1 fill:#e1bee7,stroke:#6a1b9a
+    style CS2 fill:#e1bee7,stroke:#6a1b9a
+    style CS3 fill:#e1bee7,stroke:#6a1b9a
+    style CS4 fill:#e1bee7,stroke:#6a1b9a
+    style VM1 fill:#c8e6c9,stroke:#2e7d32
+    style VM2 fill:#c8e6c9,stroke:#2e7d32
+    style VM3 fill:#c8e6c9,stroke:#2e7d32
+    style VM4 fill:#c8e6c9,stroke:#2e7d32
+```
+
+### 7.3 决策树：形式化方法选择
+
+以下决策树根据系统类型与验证目标，指导形式化方法的选型路径，从系统特征到具体工具形成完整决策链路。
+
+```mermaid
+flowchart TD
+    Start([选择形式化方法])
+    Start --> Q1{系统类型?}
+
+    Q1 -->|安全关键系统| A1[TLA+/Coq]
+    Q1 -->|高并发系统| A2[Iris分离逻辑]
+    Q1 -->|分布式协议| A3[Model Checking]
+    Q1 -->|数据流系统| A4[类型理论]
+
+    A1 --> B1[完全形式化证明]
+    A1 --> B2[状态机精化]
+    B1 --> C1[TLAPS证明助手]
+    B2 --> C2[Event-B精化链]
+
+    A2 --> B3[并发正确性验证]
+    A2 --> B4[资源协议验证]
+    B3 --> C3[Iris高阶协议]
+    B4 --> C4[分离逻辑推理]
+
+    A3 --> B5[状态空间探索]
+    A3 --> B6[不变量检查]
+    B5 --> C5[SPIN/TLC]
+    B6 --> C6[NuSMV/BMC]
+
+    A4 --> B7[精化类型]
+    A4 --> B8[运行时检查]
+    B7 --> C7[Dependent Types]
+    B8 --> C8[Refinement Types]
+
+    C1 --> End1([高保证系统])
+    C2 --> End1
+    C3 --> End2([并发安全系统])
+    C4 --> End2
+    C5 --> End3([协议正确系统])
+    C6 --> End3
+    C7 --> End4([类型安全数据流])
+    C8 --> End4
+
+    style Start fill:#bbdefb,stroke:#1565c0
+    style Q1 fill:#fff9c4,stroke:#f57f17
+    style A1 fill:#e1bee7,stroke:#6a1b9a
+    style A2 fill:#e1bee7,stroke:#6a1b9a
+    style A3 fill:#e1bee7,stroke:#6a1b9a
+    style A4 fill:#e1bee7,stroke:#6a1b9a
+    style End1 fill:#c8e6c9,stroke:#2e7d32
+    style End2 fill:#c8e6c9,stroke:#2e7d32
+    style End3 fill:#c8e6c9,stroke:#2e7d32
+    style End4 fill:#c8e6c9,stroke:#2e7d32
+```
+
 ---
 
 ## 8. 引用参考 (References)
@@ -317,9 +512,10 @@ Def-F-02-01 → CheckpointCoordinator
 
 
 
+
 ---
 
-*文档版本: v2.0 | 更新日期: 2026-04-06 | 状态: 已完成*
+*文档版本: v2.1 | 更新日期: 2026-04-26 | 状态: 已完成*
 
 ---
 

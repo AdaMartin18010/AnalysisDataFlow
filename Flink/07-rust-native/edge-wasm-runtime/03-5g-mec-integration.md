@@ -41,6 +41,9 @@
     - [7.2 本地分流数据流图](#72-本地分流数据流图)
     - [7.3 移动性管理状态机](#73-移动性管理状态机)
     - [7.4 MEC 场景部署矩阵](#74-mec-场景部署矩阵)
+    - [7.5 5G MEC与Flink集成思维导图](#75-5g-mec与flink集成思维导图)
+    - [7.6 多维关联树](#76-多维关联树)
+    - [7.7 MEC集成模式决策树](#77-mec集成模式决策树)
   - [8. 引用参考 (References)](#8-引用参考-references)
 
 ---
@@ -1145,9 +1148,222 @@ quadrantChart
     "Smart Meter": [0.1, 0.9]
 ```
 
+### 7.5 5G MEC与Flink集成思维导图
+
+以下思维导图以"5G MEC与Flink集成"为中心，全面展示技术体系。
+
+```mermaid
+mindmap
+  root((5G MEC与Flink集成))
+    5G MEC基础
+      边缘节点
+        基站点MEC
+        汇聚点MEC
+        区域中心MEC
+      低延迟通信
+        空口1ms TTI
+        边缘UPF分流
+        前传eCPRI优化
+      本地分流
+        ULCL上行分类器
+        IP五元组过滤
+        FQDN域名匹配
+        位置基分流
+      网络切片
+        eMBB增强移动宽带
+        URLLC超可靠低延迟
+        mMTC海量物联网
+        V2X车联网切片
+    Flink边缘部署
+      轻量运行时
+        Mini JobManager
+        精简Task Slot
+        本地RocksDB状态
+      WASM UDF
+        WasmEdge运行时
+        WASI-NN推理
+        毫秒级冷启动
+        内存安全隔离
+      资源受限优化
+        CPU限流调度
+        内存池管理
+        增量Checkpoint
+    集成架构
+      UPF分流
+        流量过滤规则
+        本地分流决策
+        SSC Mode 3切换
+      MEC节点
+        MEP平台注册
+        服务发现
+        生命周期管理
+      Flink处理
+        实时流计算
+        状态ful处理
+        窗口聚合
+      本地响应
+        超低延迟反馈
+        本地决策闭环
+      云端同步
+        模型同步
+        配置下发
+        结果聚合
+    应用场景
+      实时视频分析
+        智能安防
+        工业质检
+        交通监控
+      工业IoT
+        PLC实时控制
+        预测性维护
+        数字孪生
+      车联网
+        V2X协同感知
+        碰撞预警
+        自动驾驶辅助
+      ARVR
+        实时渲染
+        空间定位
+        手势识别
+    运维挑战
+      边缘管理
+        分布式节点监控
+        应用灰度发布
+        版本一致性
+      安全隔离
+        多租户沙箱
+        切片级防火墙
+        零信任接入
+      节点发现
+        服务注册中心
+        DNS本地解析
+        动态负载均衡
+      故障恢复
+        边缘自愈
+        会话迁移
+        云端兜底
+```
+
+### 7.6 多维关联树
+
+以下多维关联树展示5G特性、MEC能力与Flink边缘处理之间的映射关系。
+
+```mermaid
+graph TB
+    subgraph "5G Network Features"
+        F1[超低延迟<br/>1ms TTI]
+        F2[高带宽<br/>eMBB 1Gbps+]
+        F3[海量连接<br/>mMTC 1M/km²]
+        F4[高可靠<br/>URLLC 99.999%]
+        F5[网络切片<br/>S-NSSAI隔离]
+        F6[移动性支持<br/> seamless HO]
+    end
+
+    subgraph "MEC Capabilities"
+        C1[本地分流<br/>ULCL Breakout]
+        C2[边缘缓存<br/>Content Cache]
+        C3[多租户托管<br/>App Orchestration]
+        C4[实时处理<br/>Real-time Compute]
+        C5[切片资源池<br/>Slice Resource Pool]
+        C6[会话连续性<br/>SSC Mode 3]
+    end
+
+    subgraph "Flink Edge Processing"
+        P1[流式推理<br/>Stream Inference]
+        P2[窗口聚合<br/>Window Aggregation]
+        P3[事件驱动<br/>Event Processing]
+        P4[状态管理<br/>Local State Store]
+        P5[轻量Checkpoint<br/>Incremental CP]
+        P6[WASM UDF<br/>WasmEdge Runtime]
+    end
+
+    F1 -->|赋能| C1
+    F1 -->|赋能| C4
+    F2 -->|赋能| C2
+    F3 -->|赋能| C3
+    F4 -->|赋能| C4
+    F4 -->|赋能| C5
+    F5 -->|赋能| C5
+    F6 -->|赋能| C6
+
+    C1 -->|支撑| P1
+    C1 -->|支撑| P3
+    C2 -->|支撑| P2
+    C3 -->|支撑| P6
+    C4 -->|支撑| P1
+    C4 -->|支撑| P3
+    C5 -->|支撑| P4
+    C5 -->|支撑| P5
+    C6 -->|支撑| P1
+
+    style F1 fill:#e3f2fd,stroke:#1565c0
+    style F4 fill:#e3f2fd,stroke:#1565c0
+    style C1 fill:#fff3e0,stroke:#ef6c00
+    style C4 fill:#fff3e0,stroke:#ef6c00
+    style P1 fill:#e8f5e9,stroke:#2e7d32
+    style P3 fill:#e8f5e9,stroke:#2e7d32
+```
+
+### 7.7 MEC集成模式决策树
+
+以下决策树展示不同业务约束下的MEC集成模式选择策略。
+
+```mermaid
+flowchart TD
+    START([业务需求分析])
+
+    START --> Q1{延迟要求?}
+
+    Q1 -->|< 10ms<br/>超低延迟| A1[纯边缘处理]
+    Q1 -->|10-50ms<br/>中等延迟| A2[边缘预处理 + 云端聚合]
+    Q1 -->|> 50ms<br/>延迟不敏感| A3[中心云处理]
+
+    A1 --> D1[本地决策闭环]
+    A2 --> D2[边缘过滤 + 云侧深度学习]
+    A3 --> D3[云端批处理分析]
+
+    START --> Q2{数据隐私要求?}
+    Q2 -->|高敏感| B1[边缘计算 + 本地存储]
+    Q2 -->|一般| B4[标准加密传输]
+
+    B1 --> B2[数据不出园区]
+    B1 --> B3[合规传输通道]
+    B2 --> END4([隐私优先架构])
+    B3 --> END4
+    B4 --> END5([标准安全架构])
+
+    START --> Q3{边缘算力是否受限?}
+    Q3 -->|严重受限| C1[边缘过滤 + 云端深度学习]
+    Q3 -->|轻度受限| C2[模型量化 + 边缘轻量推理]
+    Q3 -->|充足| C3[全量边缘推理]
+
+    C1 --> C4[仅保留关键特征上传]
+    C2 --> C5[INT8/FP16量化模型]
+    C3 --> C6[完整WASM推理管线]
+
+    C4 --> END2([分层协同处理])
+    C5 --> END6([轻量边缘架构])
+    C6 --> END1([MEC独立闭环])
+    D1 --> END1
+    D2 --> END2
+    D3 --> END3([中心云集中处理])
+
+    style START fill:#e3f2fd,stroke:#1565c0
+    style Q1 fill:#fff3e0,stroke:#ef6c00
+    style Q2 fill:#fff3e0,stroke:#ef6c00
+    style Q3 fill:#fff3e0,stroke:#ef6c00
+    style A1 fill:#e8f5e9,stroke:#2e7d32
+    style B1 fill:#e8f5e9,stroke:#2e7d32
+    style C1 fill:#e8f5e9,stroke:#2e7d32
+    style END1 fill:#c8e6c9,stroke:#1b5e20
+    style END2 fill:#c8e6c9,stroke:#1b5e20
+    style END4 fill:#c8e6c9,stroke:#1b5e20
+```
+
 ---
 
 ## 8. 引用参考 (References)
+
 
 
 

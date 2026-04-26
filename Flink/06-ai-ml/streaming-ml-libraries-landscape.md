@@ -65,6 +65,9 @@
     - [7.2 Flink与Python ML生态桥接架构](#72-flink与python-ml生态桥接架构)
     - [7.3 算法选型决策树](#73-算法选型决策树)
     - [7.4 概念漂移处理流程](#74-概念漂移处理流程)
+    - [7.5 流式ML库全景思维导图](#75-流式ml库全景思维导图)
+    - [7.6 ML库能力维度与Flink集成关联树](#76-ml库能力维度与flink集成关联树)
+    - [7.7 机器学习库分类选型决策树](#77-机器学习库分类选型决策树)
   - [8. 引用参考 (References)](#8-引用参考-references)
 
 ---
@@ -2529,6 +2532,185 @@ sequenceDiagram
     end
 
     Note over Model,Monitor: 持续监控与适应循环
+```
+
+---
+
+### 7.5 流式ML库全景思维导图
+
+以下思维导图以"流式ML库全景"为中心，放射展开五大核心生态分支：流式学习、深度学习、特征平台、模型管理与Flink集成。
+
+```mermaid
+mindmap
+  root((流式ML库全景))
+    流式学习
+      River
+        Python纯在线学习
+        60+算法
+        统一API
+      Vowpal Wabbit
+        C++高性能引擎
+        百万级吞吐
+        特征哈希
+      MOA
+        Java学术基准
+        算法评估框架
+      Scikit-multiflow
+        Python流式ML
+        与River互补
+    深度学习
+      TensorFlow Extended
+        流式训练Pipeline
+        生产级TF服务
+      PyTorch Streaming
+        流式DataLoader
+        增量微调
+      ONNX Runtime
+        跨平台推理加速
+        流式模型部署
+    特征平台
+      Tecton
+        企业级特征存储
+        实时特征计算
+      Feast
+        开源特征平台
+        多数据源集成
+      Flink Feature Store
+        流批一体特征
+        原生Flink集成
+    模型管理
+      MLflow
+        实验追踪
+        模型版本管理
+      Kubeflow
+        K8s原生ML平台
+        完整MLOps生命周期
+      BentoML
+        模型服务框架
+        高效推理部署
+      Seldon
+        K8s模型部署
+        A/B测试与监控
+    Flink集成
+      Flink ML
+        原生Java实现
+        Exactly-Once状态
+      Alink
+        阿里巴巴开源
+        丰富的算法库
+      Deep Learning on Flink
+        Flink-AI-Extended
+        深度学习分布式训练
+```
+
+---
+
+### 7.6 ML库能力维度与Flink集成关联树
+
+以下多维关联树展示主流ML库在核心能力维度上的覆盖，以及与Flink生态的集成深度映射。
+
+```mermaid
+graph TB
+    subgraph ML库生态
+        R[River]
+        VW[Vowpal Wabbit]
+        TFX[TensorFlow Extended]
+        PT[PyTorch Streaming]
+        Tecton[Tecton]
+        Feast[Feast]
+        MLflow[MLflow]
+        KF[Kubeflow]
+        FML[Flink ML]
+        Alink[Alink]
+        DLF[Deep Learning on Flink]
+    end
+
+    subgraph 核心能力维度
+        D1[在线学习]
+        D2[漂移检测]
+        D3[分布式训练]
+        D4[特征工程]
+        D5[模型服务]
+        D6[GPU加速]
+    end
+
+    subgraph Flink集成度
+        I1[原生集成<br/>状态管理]
+        I2[UDF桥接<br/>PyFlink]
+        I3[Async I/O<br/>外部服务]
+        I4[无直接集成]
+    end
+
+    R --> D1
+    R --> D2
+    VW --> D1
+    VW --> D3
+    TFX --> D3
+    TFX --> D5
+    TFX --> D6
+    PT --> D3
+    PT --> D6
+    Tecton --> D4
+    Feast --> D4
+    MLflow --> D5
+    KF --> D3
+    KF --> D5
+    FML --> D1
+    FML --> D2
+    Alink --> D1
+    Alink --> D3
+    DLF --> D3
+    DLF --> D6
+
+    FML --> I1
+    Alink --> I1
+    DLF --> I1
+    R --> I2
+    TFX --> I4
+    PT --> I4
+    VW --> I3
+    Tecton --> I4
+    Feast --> I4
+    MLflow --> I4
+    KF --> I4
+```
+
+---
+
+### 7.7 机器学习库分类选型决策树
+
+以下决策树按机器学习范式分类，辅助在流式场景下进行ML库选型决策。
+
+```mermaid
+flowchart TD
+    Start([ML库选型]) --> Q1{学习范式?}
+
+    Q1 -->|经典ML| Classic[经典在线学习]
+    Q1 -->|深度学习| Deep[深度学习框架]
+    Q1 -->|特征工程| Feature[特征平台]
+    Q1 -->|端到端| Platform[完整MLOps平台]
+
+    Classic --> C1{性能与生态需求?}
+    C1 -->|轻量 + 低延迟| RiverVW[River: Python生态<br/>VW: 工业级高性能]
+    C1 -->|需漂移适应| RiverARF[River ARF<br/>自适应随机森林]
+
+    Deep --> D1{框架偏好?}
+    D1 -->|丰富生态 + 生产级| TFX[TensorFlow Extended<br/>流式训练Pipeline]
+    D1 -->|灵活研究 + GPU支持| PT[PyTorch Streaming<br/>增量微调与推理]
+
+    Feature --> F1{部署方式?}
+    F1 -->|企业级统一特征管理| TectonFeast[Tecton: 托管特征平台<br/>Feast: 开源特征存储]
+    F1 -->|流批一体特征计算| FFS[Flink Feature Store<br/>原生流特征工程]
+
+    Platform --> P1{生命周期阶段?}
+    P1 -->|完整生命周期管理| KFML[Kubeflow: K8s原生<br/>MLflow: 实验与模型管理]
+    P1 -->|模型服务与推理部署| BentoSeldon[BentoML: 高效服务<br/>Seldon: K8s模型部署]
+
+    style Start fill:#4CAF50,color:#fff
+    style RiverVW fill:#2196F3,color:#fff
+    style TFX fill:#FF9800,color:#fff
+    style TectonFeast fill:#9C27B0,color:#fff
+    style KFML fill:#E91E63,color:#fff
 ```
 
 ---

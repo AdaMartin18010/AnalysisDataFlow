@@ -907,6 +907,130 @@ stateDiagram-v2
     end note
 ```
 
+### 7.5 在线学习生产实践思维导图
+
+在线学习生产实践的知识体系以算法、特征、模型、评估和 Flink 集成为核心维度展开。
+
+```mermaid
+mindmap
+  root((在线学习生产实践))
+    算法类型
+      SGD
+      FTRL
+      AdaGrad
+      Adam在线变体
+      增量树模型
+    特征工程
+      实时特征
+      漂移检测
+      特征选择
+      A/B测试特征
+    模型更新
+      增量更新
+      微批量训练
+      warm start
+      模型版本管理
+    评估监控
+      在线AUC
+      延迟指标
+      漂移检测
+      性能衰减预警
+    与Flink集成
+      实时特征流
+      模型状态
+      预测服务
+      反馈闭环
+```
+
+### 7.6 在线学习多维关联树
+
+展示在线学习组件、Flink 核心能力与生产保障之间的映射关系。
+
+```mermaid
+graph TB
+    subgraph Components["在线学习组件"]
+        C1[实时特征流]
+        C2[增量训练引擎]
+        C3[模型推理服务]
+        C4[反馈收集器]
+        C5[漂移检测器]
+        C6[版本控制器]
+    end
+
+    subgraph FlinkAbility["Flink核心能力"]
+        F1[KeyedProcessFunction]
+        F2[Broadcast State]
+        F3[Interval Join]
+        F4[Checkpoint]
+        F5[Queryable State]
+        F6[CEP]
+    end
+
+    subgraph Production["生产保障"]
+        P1[Exactly-Once语义]
+        P2[低延迟推理]
+        P3[状态容错恢复]
+        P4[动态扩缩容]
+        P5[多版本并行]
+        P6[全链路监控]
+    end
+
+    C1 -->|实时计算| F1
+    C2 -->|状态持久化| F4
+    C3 -->|模型热更新| F2
+    C4 -->|时序关联| F3
+    C5 -->|模式匹配| F6
+    C6 -->|状态查询| F5
+
+    F1 --> P2
+    F2 --> P5
+    F3 --> P1
+    F4 --> P3
+    F5 --> P6
+    F6 --> P4
+```
+
+### 7.7 在线学习架构决策树
+
+不同业务场景下的在线学习架构选择决策路径。
+
+```mermaid
+flowchart TD
+    Start([开始]) --> Q1{业务场景?}
+
+    Q1 -->|简单在线学习| A1[单一模型]
+    A1 --> A2[增量SGD]
+    A2 --> A3[简单特征]
+    A3 --> End1([部署])
+
+    Q1 -->|复杂场景| B1[多模型集成]
+    B1 --> B2[自动特征工程]
+    B2 --> B3[智能路由]
+    B3 --> End2([部署])
+
+    Q1 -->|实时推荐| C1[用户行为流]
+    C1 --> C2[特征更新]
+    C2 --> C3[模型推理]
+    C3 --> C4[结果反馈]
+    C4 --> End3([循环优化])
+
+    Q1 -->|欺诈检测| D1[交易流]
+    D1 --> D2[实时特征]
+    D2 --> D3[模型评分]
+    D3 --> D4{风险阈值?}
+    D4 -->|高风险| D5[决策拦截]
+    D4 -->|低风险| D6[放行通过]
+    D5 --> End4([记录审计])
+    D6 --> End5([持续监控])
+
+    style Start fill:#e3f2fd,stroke:#1565c0
+    style End1 fill:#e8f5e9,stroke:#2e7d32
+    style End2 fill:#e8f5e9,stroke:#2e7d32
+    style End3 fill:#e8f5e9,stroke:#2e7d32
+    style End4 fill:#fff3e0,stroke:#e65100
+    style End5 fill:#fff3e0,stroke:#e65100
+```
+
 ---
 
 ## 8. 引用参考 (References)
@@ -2595,18 +2719,9 @@ public class PricingModelTrainer extends KeyedProcessFunction<String, PriceUpdat
 ## 9. 引用参考 (References)
 
 
-
-
-
-
-
-
-
-
-
 ---
 
-*文档版本: v1.1 | 创建日期: 2026-04-02 | 更新日期: 2026-04-02 | 形式化等级: L4*
+*文档版本: v1.1 | 创建日期: 2026-04-02 | 更新日期: 2026-04-26 | 形式化等级: L4*
 
 ---
 

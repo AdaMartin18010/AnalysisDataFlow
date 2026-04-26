@@ -1,6 +1,6 @@
 # 流计算反模式总览
 
-> **所属阶段**: Knowledge/09-anti-patterns | **前置依赖**: [Knowledge/02-design-patterns/streaming-patterns-overview.md](../../Knowledge/02-design-patterns/streaming-patterns-overview.md) | **形式化等级**: L3
+> **所属阶段**: Knowledge/09-anti-patterns | **前置依赖**: Knowledge/02-design-patterns/ | **形式化等级**: L3
 > **状态**: 🔄 活跃 | **最后更新**: 2026-04-24
 
 ## 1. 概念定义 (Definitions)
@@ -27,10 +27,10 @@
 
 ## 3. 关系建立 (Relations)
 
-- **与 [Knowledge/02-design-patterns/streaming-patterns-overview.md](../../Knowledge/02-design-patterns/streaming-patterns-overview.md) 的关系**: 反模式是设计模式的对偶概念；理解模式有助于识别其对应反模式。
-- **与 [Flink/02-core/checkpoint-mechanism.md](../../Flink/02-core/checkpoint-mechanism.md) 的关系**: 检查点相关反模式（间隔过长、增量未启用、大状态未调优）直接作用于 Flink 容错机制。
-- **与 [Flink/04-runtime/backpressure.md](../../Flink/04-runtime/backpressure.md) 的关系**: 背压忽视是最具破坏性的反模式之一，其检测与治理依赖 Flink 的背压监控体系。
-- **与 [Struct/03-relationships/operational-semantics.md](../../Struct/03-relationships/operational-semantics.md) 的关系**: 反模式可形式化为对操作语义约束的违反，例如全局状态共享违反局部性原理。
+- **与 Knowledge/02-design-patterns/ 的关系**: 反模式是设计模式的对偶概念；理解模式有助于识别其对应反模式。
+- **与 [Flink/02-core/checkpoint-mechanism-deep-dive.md](../../Flink/02-core/checkpoint-mechanism-deep-dive.md) 的关系**: 检查点相关反模式（间隔过长、增量未启用、大状态未调优）直接作用于 Flink 容错机制。
+- **与 [Flink/02-core/backpressure-and-flow-control.md](../../Flink/02-core/backpressure-and-flow-control.md) 的关系**: 背压忽视是最具破坏性的反模式之一，其检测与治理依赖 Flink 的背压监控体系。
+- **与 Struct/03-relationships/ 的关系**: 反模式可形式化为对操作语义约束的违反，例如全局状态共享违反局部性原理。
 
 ## 4. 论证过程 (Argumentation)
 

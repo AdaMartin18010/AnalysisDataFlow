@@ -1367,6 +1367,202 @@ gantt
     监控优化           :deploy3, after deploy2, 7d
 ```
 
+### 10.5 Kafka Streams 到 Flink 迁移全景思维导图
+
+以下思维导图以"Kafka Streams迁移到Flink"为中心，全面展示迁移涉及的五大维度。
+
+```mermaid
+mindmap
+  root((Kafka Streams<br/>迁移到 Flink))
+    迁移动机
+      性能瓶颈
+        吞吐量受限
+        延迟抖动
+        分区数绑定并行度
+      状态管理
+        Changelog恢复慢
+        状态大小受限
+        IQ查询耦合
+      生态局限
+        仅Kafka生态
+        连接器单一
+        多源支持弱
+      扩展性
+        无法动态扩缩容
+        资源隔离困难
+        多租户支持差
+    概念映射
+      KStream → DataStream
+        无界数据流
+        逐条处理语义
+      KTable → KeyedStream + State
+        可更新表视图
+        ValueState/MapState
+      GlobalKTable → BroadcastStream
+        全量广播状态
+        BroadcastState管理
+      Processor → ProcessFunction
+        底层处理API
+        TimerService定时器
+      Topology → JobGraph
+        执行拓扑
+        算子链优化
+    API对比
+      窗口语义
+        Tumbling → TumblingEventTimeWindows
+        Sliding → SlidingEventTimeWindows
+        Session → EventTimeSessionWindows
+      状态API
+        KeyValueStore → ValueState
+        WindowStore → WindowOperator
+        IQ → External Storage/Queryable State
+      容错机制
+        Changelog Topic → Checkpoint/Savepoint
+        EOS v2 → Two-Phase Commit
+        日志重放 → 精确恢复
+      部署模式
+        Embedded/库模式 → Application Mode
+        Standalone → Session/Per-Job Mode
+        自管资源 → K8s/YARN调度
+    迁移策略
+      双跑验证
+        同时运行两套系统
+        输出结果对比
+        字段级一致性校验
+      灰度切换
+        按流量比例切流
+        实时监控差异
+        逐步扩大覆盖
+      数据对齐
+        偏移量同步
+        状态快照导入
+        时间戳校准
+      回滚方案
+        保留原集群
+        快速切换开关
+        Checkpoint恢复
+    生产经验
+      常见陷阱
+        Watermark配置遗漏
+        状态TTL未设置
+        序列化不兼容
+        并行度配置不当
+      性能调优
+        RocksDB调优
+        Checkpoint间隔
+        对象复用启用
+        网络缓冲区
+      监控指标
+        消费延迟
+        Checkpoint时长
+        状态大小
+        反压指标
+      团队培训
+        Flink概念学习
+        状态管理实践
+        故障排查技能
+        运维手册编写
+```
+
+### 10.6 多维关联树：概念映射与迁移注意点
+
+以下关联树展示 Kafka Streams 核心概念到 Flink 等价物的完整映射链，以及每个映射点的迁移注意事项。
+
+```mermaid
+graph TB
+    subgraph "Kafka Streams 概念"
+        KS1["KStream<K,V>"]
+        KS2["KTable<K,V>"]
+        KS3["GlobalKTable<K,V>"]
+        KS4["KGroupedStream<K,V>"]
+        KS5[Topology]
+        KS6[Processor API]
+        KS7[State Store]
+        KS8[Windowed Operation]
+    end
+
+    subgraph "Flink 等价物"
+        F1["DataStream + keyBy"]
+        F2["KeyedProcessFunction + ValueState"]
+        F3["BroadcastStream + BroadcastState"]
+        F4["KeyedStream<K,V>"]
+        F5[JobGraph]
+        F6[ProcessFunction]
+        F7["ValueState/MapState/WindowState"]
+        F8["WindowOperator + WindowAssigner"]
+    end
+
+    subgraph "迁移注意点"
+        N1["注意: 重新分区策略差异<br/>Flink keyBy触发显式shuffle"]
+        N2["注意: 状态访问模式变化<br/>从本地KV存储到分布式状态"]
+        N3["注意: 广播状态大小限制<br/>避免超过TaskManager内存"]
+        N4["注意: 并行度独立配置<br/>不再绑定Kafka分区数"]
+        N5["注意: 算子链优化<br/>合理利用chain提升性能"]
+        N6["注意: TimerService替代schedule<br/>处理时间/事件时间定时器"]
+        N7["注意: TTL显式配置<br/>StateTtlConfig清理过期状态"]
+        N8["注意: Watermark策略配置<br/>显式声明事件时间语义"]
+    end
+
+    KS1 --> F1
+    F1 --> N1
+
+    KS2 --> F2
+    F2 --> N2
+
+    KS3 --> F3
+    F3 --> N3
+
+    KS4 --> F4
+    F4 --> N4
+
+    KS5 --> F5
+    F5 --> N5
+
+    KS6 --> F6
+    F6 --> N6
+
+    KS7 --> F7
+    F7 --> N7
+
+    KS8 --> F8
+    F8 --> N8
+```
+
+### 10.7 迁移策略决策树
+
+以下决策树根据应用特征选择最优迁移策略，覆盖四种典型场景。
+
+```mermaid
+flowchart TD
+    A[Kafka Streams 应用特征评估] --> B{拓扑复杂度?}
+
+    B -->|简单拓扑<br/>纯DSL操作| C[直接映射策略]
+    C --> C1["步骤1: API直接映射<br/>stream→fromSource, mapValues→map"]
+    C1 --> C2["步骤2: 快速单元测试<br/>验证单条处理语义"]
+    C2 --> C3["步骤3: 小规模集成验证<br/>1000条数据对比"]
+    C3 --> C4["步骤4: 生产快速切换<br/>RTO < 5分钟"]
+
+    B -->|复杂状态<br/>Processor API + 自定义Store| D[状态迁移策略]
+    D --> D1["步骤1: 状态类型识别<br/>KeyValue/Window/Session"]
+    D1 --> D2["步骤2: Flink State映射<br/>ValueState/MapState/WindowOperator"]
+    D2 --> D3["步骤3: 一致性校验<br/>双跑期字段级对比"]
+    D3 --> D4["步骤4: 状态快照导入<br/>从Changelog重建Checkpoint"]
+    D4 --> D5["步骤5: 长周期双跑验证<br/>≥7天生产数据对齐"]
+
+    B -->|高可用要求<br/>SLA ≥ 99.99%| E[蓝绿部署策略]
+    E --> E1["步骤1: 蓝绿集群并行<br/>独立Flink集群部署"]
+    E1 --> E2["步骤2: 实时切流机制<br/>DNS/Proxy层流量切换"]
+    E2 --> E3["步骤3: 快速回滚通道<br/>开关切回Kafka Streams"]
+    E3 --> E4["步骤4: 零停机验证<br/>金丝雀发布逐步扩大"]
+
+    B -->|渐进迁移<br/>大规模单体应用| F[模块拆分策略]
+    F --> F1["步骤1: 拓扑模块拆分<br/>按业务域划分子Job"]
+    F1 --> F2["步骤2: 逐个替换子拓扑<br/>每次迁移一个Processor"]
+    F2 --> F3["步骤3: 中间Topic桥接<br/>Kafka作为集成边界"]
+    F3 --> F4["步骤4: 持续集成验证<br/>每模块独立CI/CD"]
+    F4 --> F5["步骤5: 最终整合优化<br/>合并冗余算子与Topic"]
+```
+
 ## 11. 性能对比与优化
 
 ### 11.1 性能对比
@@ -1526,6 +1722,7 @@ KafkaSource<String> source = KafkaSource.<String>builder()
 ```
 
 ## 13. 引用参考 (References)
+
 
 ---
 

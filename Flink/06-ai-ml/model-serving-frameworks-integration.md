@@ -2544,6 +2544,176 @@ graph TB
     style AG1 fill:#99f,stroke:#333,stroke-width:2px
 ```
 
+### 7.7 模型服务框架集成思维导图
+
+以下思维导图以"模型服务框架集成"为中心，放射展开五大核心维度，全面覆盖服务框架选型、Flink集成模式、部署策略、性能优化与治理监控：
+
+```mermaid
+mindmap
+  root((模型服务框架集成))
+    服务框架
+      TensorFlow Serving
+      TorchServe
+      Triton
+      MLflow Serving
+      KServe
+    与Flink集成
+      Async I/O调用
+      本地推理
+      远程RPC
+      批量推理
+    部署模式
+      Sidecar
+      独立服务
+      Serverless
+      边缘部署
+    性能优化
+      模型量化
+      Batching
+      缓存
+      GPU加速
+      编译优化
+    治理监控
+      版本管理
+      金丝雀发布
+      Latency监控
+      模型漂移
+```
+
+**维度说明**:
+
+1. **服务框架**: 覆盖工业界主流模型服务框架，从云原生(KServe)到GPU优化(Triton)到标准化(BentoML)
+2. **与Flink集成**: 四种核心集成模式，Async I/O为标准生产模式，本地推理用于超低延迟场景
+3. **部署模式**: Sidecar适合服务网格，独立服务适合稳定负载，Serverless适合弹性波动，边缘部署适合IoT
+4. **性能优化**: 量化(INT8/INT4)降低显存，Dynamic Batching提升吞吐，编译优化(TensorRT/TVM)加速推理
+5. **治理监控**: 版本管理确保可回滚，金丝雀发布控制风险，Latency监控保障SLO，漂移检测维护模型质量
+
+---
+
+### 7.8 多维关联树
+
+以下多维关联树展示服务框架→集成模式→性能特征的完整映射关系，帮助理解不同技术选择之间的因果链：
+
+```mermaid
+graph TB
+    subgraph "服务框架"
+        F1[TensorFlow Serving]
+        F2[TorchServe]
+        F3[Triton]
+        F4[MLflow Serving]
+        F5[KServe]
+    end
+
+    subgraph "集成模式"
+        I1[Async I/O]
+        I2[本地推理]
+        I3[远程RPC]
+        I4[批量推理]
+    end
+
+    subgraph "性能特征"
+        P1[高吞吐]
+        P2[低延迟]
+        P3[高并发]
+        P4[弹性伸缩]
+        P5[资源效率]
+    end
+
+    F1 --> I3
+    F1 --> I4
+    F2 --> I2
+    F2 --> I3
+    F3 --> I1
+    F3 --> I4
+    F4 --> I3
+    F5 --> I1
+    F5 --> I3
+
+    I1 --> P3
+    I1 --> P4
+    I2 --> P2
+    I3 --> P4
+    I4 --> P1
+    I4 --> P5
+
+    F3 -.-> P1
+    F3 -.-> P5
+    F5 -.-> P4
+
+    style F3 fill:#f96,stroke:#333,stroke-width:2px
+    style F5 fill:#99f,stroke:#333,stroke-width:2px
+    style P1 fill:#9f9,stroke:#333,stroke-width:2px
+    style P2 fill:#9f9,stroke:#333,stroke-width:2px
+```
+
+**映射关系解读**:
+
+| 服务框架 | 首选集成模式 | 核心性能特征 | 适用场景 |
+|----------|--------------|--------------|----------|
+| TensorFlow Serving | 远程RPC + 批量推理 | 高吞吐、资源效率 | TensorFlow模型生产部署 |
+| TorchServe | 本地推理 + 远程RPC | 低延迟、高并发 | PyTorch模型快速上线 |
+| Triton | Async I/O + 批量推理 | 高吞吐、资源效率 | GPU加速多框架推理 |
+| MLflow Serving | 远程RPC | 弹性伸缩 | 实验到生产无缝切换 |
+| KServe | Async I/O + 远程RPC | 高并发、弹性伸缩 | K8s云原生Serverless推理 |
+
+---
+
+### 7.9 模型服务选型决策树
+
+以下决策树展示面向不同业务需求的模型服务技术选型路径，覆盖高吞吐、低延迟、多框架和云原生弹性四大典型场景：
+
+```mermaid
+flowchart TD
+    Start([模型服务选型]) --> Q1{高吞吐批推理?}
+    Q1 -->|是| R1[Triton + GPU<br/>Dynamic Batching]
+    Q1 -->|否| Q2{低延迟实时?}
+
+    Q2 -->|是| R2[本地模型加载<br/>内存推理]
+    Q2 -->|否| Q3{多框架支持?}
+
+    Q3 -->|是| R3[MLflow/Triton<br/>统一接口]
+    Q3 -->|否| Q4{云原生弹性?}
+
+    Q4 -->|是| R4[KServe + K8s<br/>自动伸缩]
+    Q4 -->|否| Q5{复杂推理流水线?}
+
+    Q5 -->|是| R5[Seldon Core<br/>Inference Graph]
+    Q5 -->|否| R6[BentoML<br/>标准化部署]
+
+    R1 --> End1([GPU加速<br/>最大吞吐])
+    R2 --> End2([最低延迟<br/>本地执行])
+    R3 --> End3([框架无关<br/>统一协议])
+    R4 --> End4([Serverless<br/>弹性伸缩])
+    R5 --> End5([复杂编排<br/>A/B测试])
+    R6 --> End6([标准化<br/>自适应批处理])
+
+    style R1 fill:#f96,stroke:#333,stroke-width:2px
+    style R2 fill:#9f9,stroke:#333,stroke-width:2px
+    style R4 fill:#99f,stroke:#333,stroke-width:2px
+```
+
+**选型路径详解**:
+
+1. **高吞吐批推理 → Triton + GPU + Dynamic Batching**
+   - 场景: 图像分类、特征提取等批量推理任务
+   - 关键配置: `preferred_batch_size: [16, 32, 64]`, `max_queue_delay_microseconds: 10000`
+   - 预期收益: 相比单样本推理，吞吐提升 **5-10倍**
+
+2. **低延迟实时 → 本地模型加载 + 内存推理**
+   - 场景: 实时欺诈检测、推荐排序等P99 < 20ms场景
+   - 关键配置: Flink嵌入式UDF，模型加载到TaskManager内存
+   - 预期收益: 消除网络往返延迟，端到端延迟 **< 10ms**
+
+3. **多框架支持 → MLflow/Triton + 统一接口**
+   - 场景: 异构模型生态（TensorFlow + PyTorch + ONNX）
+   - 关键配置: V2 Inference Protocol标准化接口，MLflow Model Registry统一版本
+   - 预期收益: 框架无关部署，切换成本降低 **80%**
+
+4. **云原生弹性 → KServe + K8s + 自动伸缩**
+   - 场景: 流量波动大的对话式AI、季节性业务
+   - 关键配置: Knative KPA自动扩缩容至零，Istio网关路由
+   - 预期收益: 闲时资源成本降低 **90%**，峰值自动扩容
+
 ---
 
 ## 8. 引用参考 (References)
@@ -2631,7 +2801,7 @@ graph TB
 | 命题数量 (Prop-F) | 6个 |
 | 引理数量 (Lemma-F) | 3个 |
 | 代码示例 | 5个完整示例 |
-| 架构图 | 6个Mermaid图 |
+| 架构图 | 9个Mermaid图 |
 | 框架覆盖 | KServe/Seldon/BentoML/Triton/Ray Serve |
 
 ---
