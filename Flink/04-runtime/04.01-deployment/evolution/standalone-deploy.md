@@ -73,6 +73,66 @@ graph TB
     A --> C[TaskManager 2]
 ```
 
+### 演进全景思维导图
+
+Standalone部署从单节点到容器化的演进全景：
+
+```mermaid
+mindmap
+  root((Standalone部署演进))
+    单节点
+      本地开发
+      测试验证
+      快速原型
+    伪分布式
+      单机器多进程
+      模拟集群
+      资源隔离有限
+    多节点集群
+      手动配置
+      静态资源
+      ZooKeeper HA
+    容器化
+      Docker Compose
+      Swarm
+      轻量级编排
+    与K8s对比
+      复杂度低
+      生态有限
+      自动化弱
+      云原生支持弱
+```
+
+### 多维关联树
+
+部署规模、资源需求与运维复杂度的映射关系：
+
+```mermaid
+graph TB
+    D1[单节点] -->|资源需求低| R1[少量CPU/内存]
+    D2[伪分布式] -->|资源需求中| R2[单机多核/大内存]
+    D3[多节点集群] -->|资源需求高| R3[多机CPU/内存/网络]
+    D4[容器化集群] -->|资源需求中高| R4[容器资源抽象]
+    R1 -->|运维极简| O1[手动启动]
+    R2 -->|运维简单| O2[脚本管理]
+    R3 -->|运维中等| O3[ZooKeeper HA]
+    R4 -->|运维较高| O4[Compose/Swarm编排]
+```
+
+### 使用场景决策树
+
+Standalone部署模式选择决策树：
+
+```mermaid
+flowchart TD
+    Start([选择部署模式]) --> Q1{使用场景?}
+    Q1 -->|本地开发| A1[单节点 + IDE调试]
+    Q1 -->|测试环境| A2[伪分布式 + 自动化脚本]
+    Q1 -->|小型生产| A3[多节点集群 + 手动运维]
+    Q1 -->|大型生产| A4[不推荐Standalone]
+    A4 -->|迁移至| B1[K8s / YARN]
+```
+
 ## 8. 引用参考 (References)
 
 [^1]: Flink Standalone Documentation

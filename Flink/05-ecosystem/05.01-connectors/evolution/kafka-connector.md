@@ -176,13 +176,118 @@ flowchart TD
     A4 --> B4[配置参数:<br/>topic-pattern=regex<br/>properties.auto.offset.reset=earliest]
 ```
 
+### 7.4 思维导图：Kafka连接器演进全景（细化版）
+
+以下思维导图以"Kafka连接器演进"为中心，从五个历史阶段与技术维度放射展开，系统展示从早期简单Consumer到现代高级特性的完整演进脉络。
+
+```mermaid
+mindmap
+  root((Kafka连接器演进))
+    0.8时代
+      简单Consumer API
+      手动Offset管理
+      无事务语义
+      静态分区分配
+      ZooKeeper依赖
+    0.9+时代
+      新Consumer API
+      自动分区分配
+      消费者组协调
+      自动Offset提交
+      独立消费者
+    Exactly-Once
+      事务生产者
+      两阶段提交协议
+      幂等性Producer
+      端到端一致性
+      Checkpoint对齐
+    新Source API
+      FLIP-27架构
+      Split拆分粒度
+      动态分区发现
+      原生Watermark集成
+      空闲Source处理
+    高级特性
+      Schema Registry集成
+      Regex正则订阅
+      多Topic并行消费
+      Kafka 3.x兼容
+      自定义反序列化
+```
+
+### 7.5 多维关联树：Kafka版本→连接器特性→Flink能力映射
+
+以下层次图展示Kafka版本演进如何映射到连接器核心特性，并进一步转化为Flink流处理的关键能力。
+
+```mermaid
+graph TB
+    subgraph Kafka版本演进
+        K08[Kafka 0.8]
+        K09[Kafka 0.9+]
+        K10[Kafka 0.10+]
+        K20[Kafka 2.x]
+        K30[Kafka 3.x]
+    end
+
+    subgraph 连接器核心特性
+        F08[旧Consumer API<br/>手动Offset<br/>无事务语义]
+        F09[新Consumer API<br/>自动分区分配<br/>消费者组再平衡]
+        F10[Exactly-Once支持<br/>事务生产者<br/>幂等性写入]
+        F20[FLIP-27 Source API<br/>Split级拆分<br/>动态分区发现<br/>原生Watermark]
+        F30[Schema Registry<br/>Regex订阅<br/>多Topic消费<br/>Kafka 3.x兼容]
+    end
+
+    subgraph Flink流处理能力
+        P08[基础数据摄入<br/>批处理语义]
+        P09[弹性消费组<br/>自动再平衡<br/>故障恢复]
+        P10[端到端Exactly-Once<br/>两阶段提交<br/>状态一致性]
+        P20[无界流处理<br/>事件时间支持<br/>动态扩缩容]
+        P30[Schema进化<br/>灵活订阅模式<br/>生态兼容]
+    end
+
+    K08 --> F08 --> P08
+    K09 --> F09 --> P09
+    K10 --> F10 --> P10
+    K20 --> F20 --> P20
+    K30 --> F30 --> P30
+```
+
+### 7.6 决策树：Kafka连接器配置选型
+
+以下决策树针对四类典型场景，从语义保障到关键参数给出完整的配置策略。
+
+```mermaid
+flowchart TD
+    Start([Kafka连接器配置选型]) --> Q1{首要目标?}
+
+    Q1 -->|高可靠| A1[Exactly-Once语义]
+    A1 --> A1a[事务生产者]
+    A1 --> A1b[两阶段提交]
+    A1 --> A1c[Checkpoint对齐]
+    A1a --> C1[delivery.guarantee=EXACTLY_ONCE<br/>transactional.id.prefix=flink<br/>isolation.level=read_committed]
+
+    Q1 -->|高吞吐| A2[At-Least-Once语义]
+    A2 --> A2a[批量发送]
+    A2 --> A2b[消息压缩]
+    A2 --> A2c[并行度匹配分区数]
+    A2a --> C2[batch.size=32768<br/>compression.type=lz4<br/>linger.ms=10<br/>parallelism=partition-count]
+
+    Q1 -->|低延迟| A3[快速响应]
+    A3 --> A3a[小批量]
+    A3 --> A3b[频繁提交]
+    A3 --> A3c[低Watermark]
+    A3a --> C3[batch.size=16384<br/>linger.ms=0<br/>watermark.interval=100ms<br/>commit.offsets.on-checkpoint=true]
+
+    Q1 -->|灵活消费| A4[动态适配]
+    A4 --> A4a[动态分区发现]
+    A4 --> A4b[Regex订阅]
+    A4 --> A4c[Schema进化]
+    A4a --> C4[topic-pattern=regex<br/>partition.discovery.interval.ms=10000<br/>scan.startup.mode=latest-offset<br/>value.format=avro-confluent]
+```
+
 ## 8. 引用参考 (References)
 
 [^1]: Flink Kafka Connector Documentation
-[^2]: Apache Flink Documentation, "Kafka Source", https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/datastream/kafka/
-[^3]: Apache Flink Documentation, "Kafka Connector - Exactly Once", https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/datastream/kafka/#exactly-once
-[^4]: Apache Kafka Documentation, "Apache Kafka 官方文档", https://kafka.apache.org/documentation/
-[^5]: Confluent, "Kafka Schema Registry 指南", https://docs.confluent.io/platform/current/schema-registry/index.html
 
 ---
 

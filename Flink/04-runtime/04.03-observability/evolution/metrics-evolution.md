@@ -63,11 +63,89 @@ getRuntimeContext()
 
 ## 7. 可视化 (Visualizations)
 
+以下展示了 Flink Metrics 从采集到可视化的完整链路：
+
 ```mermaid
 graph LR
     A[Flink] --> B[指标收集]
     B --> C[Prometheus]
     C --> D[Grafana]
+```
+
+### Metrics 系统演进思维导图
+
+```mermaid
+mindmap
+  root((Metrics系统演进))
+    内置Metrics
+      Counter
+      Gauge
+      Histogram
+      Meter
+    Reporter扩展
+      JMX
+      Prometheus
+      InfluxDB
+      Graphite
+      StatsD
+    维度标签
+      Job
+      Task
+      Operator
+      Host自定义维度
+    聚合查询
+      PromQL
+      InfluxQL
+      时序数据库查询优化
+    可视化
+      Grafana模板
+      Flink Dashboard
+      自定义看板
+```
+
+### Metrics 类型→采集方式→可视化工具映射
+
+```mermaid
+graph TB
+    subgraph Metrics类型
+        MT1[Counter]
+        MT2[Gauge]
+        MT3[Histogram]
+        MT4[Meter]
+    end
+    subgraph 采集方式
+        C1[JMX Reporter]
+        C2[Prometheus PushGateway]
+        C3[InfluxDB Reporter]
+        C4[Graphite Reporter]
+        C5[StatsD Reporter]
+    end
+    subgraph 可视化工具
+        V1[Grafana]
+        V2[Flink Dashboard]
+        V3[Prometheus UI]
+        V4[InfluxDB UI]
+    end
+    MT1 & MT2 & MT3 & MT4 --> C1 & C2 & C3 & C4 & C5
+    C1 --> V2
+    C2 --> V1 & V3
+    C3 --> V1 & V4
+    C4 --> V1
+    C5 --> V1
+```
+
+### Metrics 方案选型决策树
+
+```mermaid
+flowchart TD
+    Start([开始选型]) --> Q1{监控规模?}
+    Q1 -->|简单监控| A1[JMX + 本地查看]
+    Q1 -->|标准生产| A2[Prometheus + Grafana + 告警]
+    Q1 -->|云原生| A3[托管Prometheus + 云监控集成]
+    Q1 -->|企业级| A4[Datadog/New Relic + 全栈可观测性]
+    A2 --> B1[配置Reporter<br/>metrics.reporters: prom]
+    A3 --> B2[集成云厂商托管服务<br/>AWS AMP / Azure Monitor]
+    A4 --> B3[统一APM平台<br/>链路追踪+指标+日志]
 ```
 
 ## 8. 引用参考 (References)

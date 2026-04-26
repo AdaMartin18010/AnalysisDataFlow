@@ -71,6 +71,70 @@ graph LR
     B --> C[前端UI]
 ```
 
+### Web UI 演进思维导图
+
+以下思维导图以"Web UI演进"为中心，放射展开各阶段关键特性。
+
+```mermaid
+mindmap
+  root((Web UI演进))
+    早期UI
+      基本作业列表
+      简单状态显示
+      静态页面
+    Flink 1.x UI
+      作业DAG可视化
+      Metrics图表
+      Checkpoint详情
+    Flink 1.13+ UI
+      背压可视化
+      Watermarks显示
+      火焰图集成
+    现代化改进
+      响应式设计
+      暗黑模式
+      实时刷新
+      历史对比
+    未来方向
+      AI辅助诊断
+      自然语言查询
+      自定义Dashboard
+      移动端适配
+```
+
+### UI版本到用户价值映射
+
+以下关联树展示不同UI版本的核心特性及其为用户带来的价值。
+
+```mermaid
+graph TB
+    V1[早期UI] -->|基本作业列表<br/>简单状态显示<br/>静态页面| U1[降低认知门槛<br/>新用户快速上手]
+    V2[Flink 1.x UI] -->|作业DAG可视化<br/>Metrics图表<br/>Checkpoint详情| U2[提升可观测性<br/>开发调试效率]
+    V3[Flink 1.13+ UI] -->|背压可视化<br/>Watermarks显示<br/>火焰图集成| U3[精准定位瓶颈<br/>生产故障排查]
+    V4[现代化改进] -->|响应式设计<br/>暗黑模式<br/>实时刷新<br/>历史对比| U4[优化交互体验<br/>日常监控舒适度]
+    V5[未来方向] -->|AI辅助诊断<br/>自然语言查询<br/>自定义Dashboard<br/>移动端适配| U5[智能决策支持<br/>运维智能化]
+```
+
+### UI使用场景决策树
+
+以下决策树展示不同使用场景下的UI选择与操作路径。
+
+```mermaid
+flowchart TD
+    A[UI使用场景] --> B{场景类型?}
+    B -->|开发调试| C[本地Web UI]
+    C --> C1[DAG检查]
+    C1 --> C2[Metrics监控]
+    B -->|生产监控| D[Grafana + Flink UI]
+    D --> D1[互补使用<br/>宏观+微观指标]
+    B -->|故障排查| E[Web UI诊断面板]
+    E --> E1[背压分析]
+    E1 --> E2[Checkpoint状态]
+    E2 --> E3[Watermark追踪]
+    B -->|管理报表| F[REST API]
+    F --> F1[自定义Dashboard]
+```
+
 ## 8. 引用参考 (References)
 
 [^1]: Flink Web UI Documentation

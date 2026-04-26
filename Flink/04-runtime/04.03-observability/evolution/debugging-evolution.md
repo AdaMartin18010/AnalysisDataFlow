@@ -172,12 +172,118 @@ flowchart TD
     Recover --> End2
 ```
 
+### 调试能力演进全景思维导图
+
+以下思维导图以"调试能力演进"为中心，系统展示五个维度的调试能力展开。
+
+```mermaid
+mindmap
+  root((调试能力演进))
+    日志调试
+      println
+      日志级别
+      结构化日志
+      关联追踪
+    本地调试
+      IDE断点
+      MiniCluster
+      单元测试
+      Mock数据
+    Web UI诊断
+      作业图
+      Metrics
+      Checkpoint
+      背压可视化
+    分布式追踪
+      OpenTelemetry
+      Jaeger
+      跨节点上下文
+    智能诊断
+      AI辅助
+      异常检测
+      根因分析
+      自动修复建议
+```
+
+### 调试场景-工具方法-诊断价值多维关联树
+
+```mermaid
+graph TB
+    subgraph 调试场景
+        S1[开发验证]
+        S2[集成测试]
+        S3[生产监控]
+        S4[故障排查]
+    end
+
+    subgraph 工具方法
+        M1[IDE断点 / MiniCluster]
+        M2[单元测试 / Mock数据]
+        M3[日志分析 / Web UI]
+        M4[Metrics / Checkpoint]
+        M5[分布式追踪 / OpenTelemetry]
+        M6[智能告警 / 异常检测]
+        M7[火焰图 / Thread Dump]
+    end
+
+    subgraph 诊断价值
+        V1[快速定位代码缺陷]
+        V2[验证业务逻辑正确性]
+        V3[实时感知系统健康]
+        V4[跨节点上下文还原]
+        V5[预测性根因分析]
+    end
+
+    S1 --> M1
+    S1 --> M2
+    S2 --> M3
+    S2 --> M4
+    S3 --> M4
+    S3 --> M5
+    S3 --> M6
+    S4 --> M5
+    S4 --> M7
+
+    M1 --> V1
+    M2 --> V2
+    M3 --> V2
+    M4 --> V3
+    M5 --> V4
+    M6 --> V5
+    M7 --> V1
+```
+
+### 调试策略选型决策树（按阶段展开）
+
+```mermaid
+flowchart TD
+    Start([开始]) --> Stage{当前阶段?}
+
+    Stage -->|开发阶段| Dev1[IDE断点调试]
+    Dev1 --> Dev2[MiniCluster本地验证]
+    Dev2 --> Dev3[单元测试覆盖]
+    Dev3 --> Dev4[Mock数据注入]
+    Dev4 --> DevEnd([开发完成])
+
+    Stage -->|测试阶段| Test1[集成测试]
+    Test1 --> Test2[日志分析]
+    Test2 --> Test3[Web UI检查]
+    Test3 --> TestEnd([测试通过])
+
+    Stage -->|生产阶段| Prod1[Metrics监控]
+    Prod1 --> Prod2[分布式追踪]
+    Prod2 --> Prod3[智能告警]
+    Prod3 --> ProdEnd([持续监控])
+
+    Stage -->|故障排查| Fault1[日志关联分析]
+    Fault1 --> Fault2[Checkpoint状态检查]
+    Fault2 --> Fault3[火焰图性能剖析]
+    Fault3 --> FaultEnd([问题解决])
+```
+
 ## 8. 引用参考 (References)
 
-[^1]: Apache Flink Documentation, "Debugging Flink", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/debugging/
-[^2]: Apache Flink Documentation, "Metrics System", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/metrics/
-[^3]: Apache Flink Documentation, "Monitoring Checkpointing", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/monitoring/checkpoint_monitoring/
-[^4]: Apache Flink Documentation, "Local Setup & Debugging", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/try-flink/local_installation/
+[^1]: Apache Flink Documentation, "Debugging Flink", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/debugging/>
 
 ---
 

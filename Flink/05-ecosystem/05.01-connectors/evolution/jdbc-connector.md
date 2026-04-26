@@ -219,13 +219,129 @@ lookup.max-retries / retry-interval]
     style A4 fill:#fff3e0
 ```
 
+### 7.5 JDBC连接器演进阶段思维导图
+
+以下思维导图以"JDBC连接器演进"为中心，按照实现阶段从早期到新版 API 放射展开。
+
+```mermaid
+mindmap
+  root((JDBC连接器演进))
+    早期实现
+      简单JDBC Sink
+      逐行插入
+      无批量
+    批量优化
+      JDBC Batch
+      连接池
+      批量大小调优
+    Upsert支持
+      INSERT ON CONFLICT
+      REPLACE INTO
+      Merge语义
+    Lookup Join
+      异步查询
+      缓存策略
+      超时控制
+      连接复用
+    新Sink API
+      FLIP-143
+      两阶段提交
+      Exactly-Once
+      幂等性
+```
+
+### 7.6 JDBC特性-连接器能力-数据库适配多维关联树
+
+以下关联树展示 JDBC 特性 → 连接器能力 → 数据库适配之间的映射关系。
+
+```mermaid
+graph TB
+    subgraph JDBC特性
+        F1[批量写入]
+        F2[实时Upsert]
+        F3[维表关联]
+        F4[CDC同步]
+    end
+
+    subgraph 连接器能力
+        C1[JDBC Sink<br/>批处理 + 连接池]
+        C2[JDBC Upsert Sink<br/>主键冲突处理]
+        C3[JDBC Lookup Join<br/>缓存 + 异步]
+        C4[JDBC CDC Sink<br/>Debezium + Kafka]
+    end
+
+    subgraph 数据库适配
+        D1[MySQL]
+        D2[PostgreSQL]
+        D3[Oracle]
+        D4[SQL Server]
+        D5[TiDB]
+    end
+
+    F1 --> C1
+    F2 --> C2
+    F3 --> C3
+    F4 --> C4
+
+    C1 --> D1
+    C1 --> D2
+    C1 --> D3
+    C1 --> D4
+    C1 --> D5
+    C2 --> D1
+    C2 --> D2
+    C2 --> D3
+    C2 --> D4
+    C2 --> D5
+    C3 --> D1
+    C3 --> D2
+    C3 --> D3
+    C3 --> D4
+    C3 --> D5
+    C4 --> D1
+    C4 --> D2
+    C4 --> D3
+    C4 --> D4
+    C4 --> D5
+```
+
+### 7.7 JDBC连接器使用场景决策树
+
+以下决策树展示在不同使用场景下 JDBC 连接器的具体配置与配套方案。
+
+```mermaid
+flowchart TD
+    Start([开始使用JDBC连接器]) --> Q1{使用场景?}
+
+    Q1 -->|批量写入| A1[JDBC Sink]
+    A1 --> A1a[启用批处理<br/>sink.buffer-flush.max-rows]
+    A1 --> A1b[配置连接池<br/>connection.pool.size]
+    A1 --> A1c[调整批量大小<br/>平衡延迟与吞吐量]
+
+    Q1 -->|实时Upsert| A2[JDBC Upsert Sink]
+    A2 --> A2a[配置主键冲突处理<br/>INSERT ON CONFLICT / REPLACE INTO]
+    A2 --> A2b[开启Merge语义<br/>确保幂等写入]
+
+    Q1 -->|维表关联| A3[JDBC Lookup Join]
+    A3 --> A3a[启用缓存<br/>lookup.cache.max-rows / ttl]
+    A3 --> A3b[开启异步查询<br/>减少阻塞]
+    A3 --> A3c[配置超时控制<br/>connection.check-timeout-seconds]
+
+    Q1 -->|CDC同步| A4[Debezium采集变更]
+    A4 --> A4a[Kafka持久化变更流]
+    A4a --> A4b[Flink消费处理]
+    A4b --> A4c[JDBC Sink写入目标库]
+
+    style Start fill:#e1f5fe
+    style A1 fill:#fff3e0
+    style A2 fill:#fff3e0
+    style A3 fill:#fff3e0
+    style A4 fill:#fff3e0
+```
+
 ## 8. 引用参考 (References)
 
 [^1]: Flink JDBC Connector Documentation
-[^2]: Apache Flink Documentation, "JDBC Connector", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/table/jdbc/
-[^3]: MySQL Connector/J Documentation, "Batch Insert and Connection Properties", 2025. https://dev.mysql.com/doc/connector-j/en/connector-j-reference-configuration-properties.html
-[^4]: PostgreSQL JDBC Driver Documentation, "ReWriteBatchedInserts Optimization", 2025. https://jdbc.postgresql.org/documentation/use/
-[^5]: TiDB Documentation, "Flink TiDB Connector", 2025. https://docs.pingcap.com/tidb/stable/dev-guide-sample-application-java-flink
 
 ---
 

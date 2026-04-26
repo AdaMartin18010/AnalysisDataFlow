@@ -71,6 +71,84 @@ graph TB
     B --> D
 ```
 
+以下从"高可用演进"视角追加思维导图：
+
+```mermaid
+mindmap
+  root((高可用演进))
+    单点故障
+      无HA
+      手动恢复
+      数据丢失风险
+    ZooKeeper HA
+      Leader选举
+      元数据存储
+      ZK依赖
+    K8s原生HA
+      ConfigMap HA
+      K8s Leader选举
+      无ZK
+    Checkpoint机制
+      增量Checkpoint
+      外部化
+      快速恢复
+    多活架构
+      跨地域部署
+      流量切换
+      数据同步
+      灾备
+```
+
+HA机制、故障场景与恢复能力的映射关系：
+
+```mermaid
+graph TB
+    subgraph HA机制
+        H1[ZooKeeper HA]
+        H2[K8s原生HA]
+        H3[Embedded Raft]
+        H4[Checkpoint机制]
+    end
+    subgraph 故障场景
+        F1[JM崩溃]
+        F2[TM故障]
+        F3[网络分区]
+        F4[元数据丢失]
+    end
+    subgraph 恢复能力
+        R1[自动Leader切换]
+        R2[任务重启]
+        R3[状态恢复]
+        R4[端到端一致性]
+    end
+    H1 --> F1
+    H1 --> F4
+    H2 --> F1
+    H2 --> F3
+    H3 --> F1
+    H3 --> F3
+    H4 --> F2
+    H4 --> R3
+    F1 --> R1
+    F2 --> R2
+    F3 --> R1
+    F4 --> R3
+```
+
+HA策略选型决策树：
+
+```mermaid
+flowchart TD
+    Start([选择HA策略]) --> Q1{环境类型?}
+    Q1 -->|开发测试| S1[无HA + 快速重启]
+    Q1 -->|中小生产| S2[ZK HA + 定期Checkpoint]
+    Q1 -->|云原生生产| S3[K8s HA + 持久化存储]
+    Q1 -->|关键业务| S4[多活 + 跨地域 + 自动故障转移]
+    S2 --> D1[依赖ZooKeeper集群]
+    S3 --> D2[依赖K8s ConfigMap]
+    S4 --> D3[RPO≈0 / RTO分钟级]
+```
+
 ## 8. 引用参考 (References)
 
 [^1]: Flink HA Documentation

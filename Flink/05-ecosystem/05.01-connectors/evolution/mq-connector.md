@@ -204,15 +204,116 @@ flowchart TD
     E --> E3[严格顺序消息]
 ```
 
+### 7.4 思维导图：消息队列连接器演进阶段
+
+```mermaid
+mindmap
+  root((消息队列连接器演进))
+    早期API
+      SourceFunction
+      SinkFunction
+      简单轮询
+    Kafka优先
+      Kafka Connector成熟
+      生态丰富
+      Exactly-Once语义
+    多队列支持
+      Pulsar Connector
+      RabbitMQ Connector
+      RocketMQ Connector
+      ActiveMQ Connector
+    新Source API
+      FLIP-27
+      Split机制
+      Enumerator
+      动态发现
+    云原生适配
+      托管队列
+      Serverless消费
+      自动伸缩
+```
+
+### 7.5 多维关联树：消息队列→连接器特性→Flink能力
+
+```mermaid
+graph TB
+    subgraph 消息队列
+        MQ1[Apache Kafka]
+        MQ2[Apache Pulsar]
+        MQ3[RabbitMQ]
+        MQ4[RocketMQ]
+        MQ5[Amazon Kinesis]
+        MQ6[MQTT/NATS]
+    end
+
+    subgraph 连接器特性
+        F1[分区消费]
+        F2[事务生产者]
+        F3[Cursor管理]
+        F4[AMQP路由]
+        F5[Serverless消费]
+        F6[动态Split发现]
+    end
+
+    subgraph Flink能力
+        C1[Exactly-Once处理]
+        C2[Checkpoint容错]
+        C3[动态扩缩容]
+        C4[多租户隔离]
+        C5[低延迟流处理]
+        C6[边缘计算支持]
+    end
+
+    MQ1 --> F1
+    MQ1 --> F2
+    MQ2 --> F3
+    MQ2 --> F6
+    MQ3 --> F4
+    MQ4 --> F1
+    MQ5 --> F5
+    MQ6 --> F5
+
+    F1 --> C1
+    F1 --> C3
+    F2 --> C1
+    F2 --> C2
+    F3 --> C4
+    F4 --> C5
+    F5 --> C3
+    F5 --> C6
+    F6 --> C3
+```
+
+### 7.6 决策树：MQ连接器选型（简化版）
+
+```mermaid
+flowchart TD
+    Start([开始MQ连接器选型]) --> Q1{核心需求是什么?}
+    Q1 -->|高吞吐持久化| A[Kafka Connector<br/>首选方案]
+    Q1 -->|多租户云原生| B[Pulsar Connector]
+    Q1 -->|企业集成| C[RabbitMQ / RocketMQ Connector]
+    Q1 -->|轻量/边缘场景| D[MQTT / NATS Connector]
+
+    A --> A1[百万级TPS]
+    A --> A2[分区水平扩展]
+    A --> A3[Exactly-Once语义]
+
+    B --> B1[分层存储]
+    B --> B2[Geo复制]
+    B --> B3[Function Mesh]
+
+    C --> C1[AMQP协议兼容]
+    C --> C2[灵活路由]
+    C --> C3[死信队列]
+
+    D --> D1[极小资源占用]
+    D --> D2[边缘部署]
+    D --> D3[发布订阅轻量化]
+```
+
 ## 8. 引用参考 (References)
 
 [^1]: Flink MQ Connector Documentation
-[^2]: Apache Flink Documentation, "Apache Kafka Connector", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/datastream/kafka/
-[^3]: Apache Flink Documentation, "Apache Pulsar Connector", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/datastream/pulsar/
-[^4]: Apache Flink Documentation, "RabbitMQ Connector", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/datastream/rabbitmq/
-[^5]: Apache Flink Documentation, "Amazon Kinesis Data Streams Connector", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/datastream/kinesis/
-[^6]: Apache Flink Documentation, "Google Cloud Pub/Sub Connector", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/datastream/pubsub/
-[^7]: Apache Flink Documentation, "Apache RocketMQ Connector", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/datastream/rocketmq/
 
 ---
 

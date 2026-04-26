@@ -179,6 +179,108 @@ flowchart TD
     D3 --> D4[Serverless弹性计费]
 ```
 
+### 7.5 K8s部署演进全景思维导图
+
+以下思维导图以"K8s部署演进"为中心，从五个阶段放射展开：
+
+```mermaid
+mindmap
+  root((K8s部署演进))
+    早期方式
+      手动编写YAML
+      kubectl apply
+      静态资源配置
+      命令式运维
+    Helm时代
+      Chart模板封装
+      values参数化
+      版本发布管理
+      依赖管理
+    Operator时代
+      CRD自定义资源
+      声明式生命周期
+      自动扩缩容
+      故障自愈
+    GitOps
+      ArgoCD同步
+      Flux持续交付
+      声明式配置
+      自动回滚
+    未来方向
+      Serverless K8s
+      多集群联邦
+      边缘K8s
+      统一调度平面
+```
+
+### 7.6 K8s技术→Flink部署能力→运维收益关联树
+
+以下层次图展示K8s底层技术如何映射到Flink部署能力，并转化为实际运维收益：
+
+```mermaid
+graph TB
+    subgraph K8s技术
+        T1[Pod与调度器]
+        T2[Service与DNS]
+        T3[ConfigMap/Secret]
+        T4[PersistentVolume]
+        T5[RBAC与SA]
+        T6[HPA/VPA]
+    end
+    subgraph Flink部署能力
+        C1[JobManager/TaskManager分离部署]
+        C2[内部RPC与REST服务发现]
+        C3[flink-conf.yaml与日志配置挂载]
+        C4[Checkpoint/Savepoint持久化]
+        C5[最小权限ServiceAccount]
+        C6[作业级弹性扩缩容]
+    end
+    subgraph 运维收益
+        B1[高可用与故障自动恢复]
+        B2[服务发现零配置]
+        B3[配置与镜像解耦]
+        B4[状态不丢失保障]
+        B5[安全合规审计]
+        B6[资源成本优化]
+    end
+    T1 --> C1
+    T2 --> C2
+    T3 --> C3
+    T4 --> C4
+    T5 --> C5
+    T6 --> C6
+    C1 --> B1
+    C2 --> B2
+    C3 --> B3
+    C4 --> B4
+    C5 --> B5
+    C6 --> B6
+```
+
+### 7.7 K8s部署选型决策树
+
+以下决策树展示不同场景下的K8s部署选型路径：
+
+```mermaid
+flowchart TD
+    Start([开始选择K8s部署方案]) --> Q1{部署场景?}
+    Q1 -->|快速开始| A1[Helm Chart一键安装]
+    A1 --> A2[自定义values.yaml]
+    A2 --> A3[本地验证与调参]
+    Q1 -->|生产部署| B1[Flink K8s Operator]
+    B1 --> B2[GitOps工作流]
+    B2 --> B3[ArgoCD / Flux自动同步]
+    B3 --> B4[Prometheus + Grafana监控告警]
+    Q1 -->|多集群| C1[联邦Operator]
+    C1 --> C2[统一控制面]
+    C2 --> C3[跨集群作业分发]
+    C3 --> C4[全局状态汇聚]
+    Q1 -->|混合云| D1[跨云K8s集群]
+    D1 --> D2[统一调度层]
+    D2 --> D3[多云负载均衡]
+    D3 --> D4[云间故障迁移]
+```
+
 ## 8. 引用参考 (References)
 
 [^1]: Apache Flink Documentation, "Native Kubernetes", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/deployment/resource-providers/native_kubernetes/>

@@ -175,12 +175,113 @@ flowchart TD
     S5 --> END1
 ```
 
+### 日志系统演进五阶段思维导图
+
+```mermaid
+mindmap
+  root((日志系统演进))
+    本地日志
+      文件输出
+      日志级别
+      轮转策略
+      本地查看
+    集中收集
+      Flume
+      Filebeat
+      Fluentd
+      Syslog转发
+    结构化日志
+      JSON格式
+      字段标准化
+      Schema定义
+      可查询
+    日志平台
+      ELK
+      Loki
+      Splunk
+      云厂商日志服务
+    关联分析
+      TraceID关联
+      Metrics关联
+      AIops分析
+```
+
+### 日志阶段→技术工具→分析能力映射
+
+```mermaid
+graph TB
+    subgraph 日志阶段["日志阶段"]
+        S1[本地日志]
+        S2[集中收集]
+        S3[结构化日志]
+        S4[日志平台]
+        S5[关联分析]
+    end
+
+    subgraph 技术工具["技术工具"]
+        T1[文件输出/轮转策略]
+        T2[Flume/Filebeat/Fluentd]
+        T3[JSON/Schema定义]
+        T4[ELK/Loki/Splunk]
+        T5[TraceID/Metrics/AIops]
+    end
+
+    subgraph 分析能力["分析能力"]
+        A1[本地故障排查]
+        A2[批量日志汇聚]
+        A3[结构化查询]
+        A4[实时检索与可视化]
+        A5[全链路关联与智能分析]
+    end
+
+    S1 --> T1
+    S2 --> T2
+    S3 --> T3
+    S4 --> T4
+    S5 --> T5
+
+    T1 --> A1
+    T2 --> A2
+    T3 --> A3
+    T4 --> A4
+    T5 --> A5
+```
+
+### 日志方案选型决策树（按规模与场景）
+
+```mermaid
+flowchart TD
+    START([开始选型]) --> SCALE{数据规模与场景?}
+
+    SCALE -->|简单场景| SIMPLE[本地日志文件 + 定时清理]
+    SCALE -->|中等规模| MEDIUM[Filebeat + Elasticsearch + Kibana]
+    SCALE -->|云原生| CLOUD[Fluent Bit + Loki + Grafana]
+    SCALE -->|企业级| ENTERPRISE[Splunk/Datadog + 全面分析 + 合规]
+
+    SIMPLE --> S1[Logback/Log4j 文件输出]
+    S1 --> S2[logrotate 定时轮转与清理]
+    S2 --> END1([完成])
+
+    MEDIUM --> M1[Filebeat 轻量采集]
+    M1 --> M2[Elasticsearch 索引与检索]
+    M2 --> M3[Kibana 可视化与告警]
+    M3 --> END1
+
+    CLOUD --> C1[Fluent Bit 边车采集]
+    C1 --> C2[Loki 标签索引存储]
+    C2 --> C3[Grafana 统一仪表盘]
+    C3 --> END1
+
+    ENTERPRISE --> E1[Splunk/Datadog 企业平台]
+    E1 --> E2[全链路关联分析]
+    E2 --> E3[安全合规与审计]
+    E3 --> E4[AIops 智能根因分析]
+    E4 --> END1
+```
+
 ## 8. 引用参考 (References)
 
-[^1]: Flink Logging Documentation, https://nightlies.apache.org/flink/flink-docs-stable/docs/deployment/advanced/logging/
-[^2]: Elastic, "ELK Stack Documentation", https://www.elastic.co/guide/index.html
-[^3]: Grafana Labs, "Loki Documentation", https://grafana.com/docs/loki/latest/
-[^4]: Fluentd, "Unified Logging Layer", https://docs.fluentd.org/
+[^1]: Flink Logging Documentation, <https://nightlies.apache.org/flink/flink-docs-stable/docs/deployment/advanced/logging/>
 
 ---
 

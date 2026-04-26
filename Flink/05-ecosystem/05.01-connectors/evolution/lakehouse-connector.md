@@ -94,6 +94,97 @@ graph TB
     D --> E
 ```
 
+### Lakehouse连接器演进思维导图
+
+以下思维导图展示了Lakehouse连接器从早期方式到未来方向的完整演进脉络。
+
+```mermaid
+mindmap
+  root((Lakehouse连接器演进))
+    早期方式
+      Parquet_ORC文件Sink
+      手动分区
+      Hive元数据
+    Hive集成
+      HiveCatalog
+      Hive方言
+      批流统一读写
+    现代表格式
+      Iceberg Sink
+      Delta Lake Sink
+      Hudi Sink
+    实时湖仓
+      Paimon Sink
+      Fluss Sink
+      CDC入湖
+      自动Compaction
+    未来方向
+      统一Catalog
+      自动优化
+      Schema进化
+      AI原生格式
+```
+
+### 表格式与Flink能力多维关联树
+
+以下关联树展示了不同表格式通过连接器特性映射到Flink核心能力的对应关系。
+
+```mermaid
+graph TB
+    subgraph 表格式
+        T1[Iceberg]
+        T2[Hudi]
+        T3[Delta Lake]
+        T4[Paimon]
+    end
+    subgraph 连接器特性
+        C1[ACID事务]
+        C2[流批读写]
+        C3[时间旅行]
+        C4[CDC支持]
+        C5[自动Compaction]
+    end
+    subgraph Flink能力
+        F1[Checkpoint容错]
+        F2[Exactly-Once]
+        F3[Watermark机制]
+        F4[Dynamic Table]
+    end
+    T1 --> C1
+    T1 --> C3
+    T2 --> C1
+    T2 --> C2
+    T2 --> C4
+    T3 --> C1
+    T3 --> C3
+    T4 --> C1
+    T4 --> C2
+    T4 --> C4
+    T4 --> C5
+    C1 --> F2
+    C2 --> F3
+    C2 --> F4
+    C4 --> F1
+    C5 --> F1
+```
+
+### Lakehouse连接器选型决策树
+
+以下决策树根据不同的工作负载类型提供连接器选型建议。
+
+```mermaid
+flowchart TD
+    A[Lakehouse连接器选型] --> B{工作负载类型?}
+    B -->|分析优先| C[Iceberg Sink + Trino/Spark查询]
+    B -->|实时优先| D[Paimon Sink + Flink流批读写]
+    B -->|云原生| E[Delta Lake Sink + Databricks生态]
+    B -->|增量处理| F[Hudi Sink + 增量查询]
+    C --> C1[开放标准 + 多引擎查询]
+    D --> D1[原生流处理 + 低延迟]
+    E --> E1[生态集成 + 托管优化]
+    F --> F1[增量视图 + 高效更新]
+```
+
 ## 8. 引用参考 (References)
 
 [^1]: Flink Lakehouse Documentation

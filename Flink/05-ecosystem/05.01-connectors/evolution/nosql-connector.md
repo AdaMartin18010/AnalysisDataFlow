@@ -89,6 +89,89 @@ graph TB
     A --> E[Elasticsearch]
 ```
 
+### NoSQL连接器演进思维导图
+
+NoSQL连接器按数据模型分为五大类，覆盖KV、文档、宽列、时序和图数据库。
+
+```mermaid
+mindmap
+  root((NoSQL连接器演进))
+    KV存储
+      Redis
+      HBase
+      Cassandra
+      DynamoDB
+    文档存储
+      MongoDB
+      Elasticsearch
+      CosmosDB
+    宽列存储
+      HBase
+      Cassandra
+      Bigtable
+    时序数据库
+      InfluxDB
+      TimescaleDB
+      OpenTSDB
+    图数据库
+      Neo4j
+      JanusGraph
+      TigerGraph
+```
+
+### NoSQL类型→连接器特性→Flink使用模式映射
+
+```mermaid
+graph TB
+    subgraph NoSQL类型
+        A1[KV存储]
+        A2[文档存储]
+        A3[宽列存储]
+        A4[时序数据库]
+        A5[图数据库]
+    end
+    subgraph 连接器特性
+        B1[Lookup Join]
+        B2[CDC Source]
+        B3[Batch Sink]
+        B4[Async IO]
+    end
+    subgraph Flink使用模式
+        C1[维度补全]
+        C2[变更捕获]
+        C3[批量写入]
+        C4[缓存加速]
+    end
+    A1 --> B1
+    A1 --> B3
+    A2 --> B2
+    A2 --> B3
+    A3 --> B1
+    A3 --> B3
+    A4 --> B3
+    A5 --> B1
+    B1 --> C1
+    B1 --> C4
+    B2 --> C2
+    B3 --> C3
+    B4 --> C1
+```
+
+### NoSQL连接器选型决策树
+
+```mermaid
+flowchart TD
+    Start([NoSQL连接器选型]) --> Q1{使用场景?}
+    Q1 -->|缓存加速| A1[Redis Sink + Lookup Join]
+    Q1 -->|搜索索引| A2[Elasticsearch Sink + 批量索引]
+    Q1 -->|大数据存储| A3[HBase/Cassandra Sink + 批量写入]
+    Q1 -->|时序数据| A4[InfluxDB Sink + 标签优化]
+    A1 --> B1[配置TTL与连接池]
+    A2 --> B2[配置BulkProcessor与重试策略]
+    A3 --> B3[预分区与批量大小调优]
+    A4 --> B4[标签索引与 retention policy]
+```
+
 ## 8. 引用参考 (References)
 
 [^1]: Flink NoSQL Connector Documentation
