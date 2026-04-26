@@ -1290,6 +1290,134 @@ graph TB
     style ROW4 fill:#f3e5f5,stroke:#7b1fa2
 ```
 
+### 7.4 OpenTelemetry流式可观测性思维导图
+
+以下思维导图以"OpenTelemetry流式可观测性"为中心，放射展开五大核心维度：指标、链路、日志、收集器与后端，帮助读者快速建立整体认知框架。
+
+```mermaid
+mindmap
+  root((OpenTelemetry流式可观测性))
+    指标
+      Metrics SDK
+      OTLP导出
+      Prometheus集成
+      自定义指标
+    链路
+      Tracing SDK
+      Span上下文
+      Baggage传播
+      采样策略
+    日志
+      Log SDK
+      日志关联
+      结构化日志
+      日志追踪关联
+    收集器
+      Collector配置
+      Processor
+      Exporter
+      Pipeline
+    后端
+      Jaeger
+      Zipkin
+      Tempo
+      Grafana
+      云厂商APM
+```
+
+### 7.5 多维关联树：OT信号→Flink集成→后端消费映射
+
+以下关联树展示从OT信号层经Flink集成层、Collector处理层到后端消费层的完整数据流向与映射关系，体现跨层级的一一对应与多对多路由能力。
+
+```mermaid
+graph TB
+    subgraph "OT信号层"
+        SIG_T[Traces<br/>Span/Link/Status]
+        SIG_M[Metrics<br/>Counter/Gauge/Histogram]
+        SIG_L[Logs<br/>LogRecord/Severity]
+    end
+
+    subgraph "Flink集成层"
+        FLINK_T[Trace埋点<br/>Source/Transform/Sink]
+        FLINK_M[Metric桥接<br/>Counter→OTel Counter]
+        FLINK_L[Log关联<br/>TraceID注入MDC]
+    end
+
+    subgraph "Collector处理层"
+        COL_R[Receiver<br/>OTLP/gRPC/HTTP]
+        COL_P[Processor<br/>Batch/Filter/Sample]
+        COL_E[Exporter<br/>Queue/Retry]
+    end
+
+    subgraph "后端消费层"
+        BACK_J[Jaeger<br/>链路分析]
+        BACK_Z[Zipkin<br/>分布式追踪]
+        BACK_TE[Tempo<br/>Trace存储]
+        BACK_GR[Grafana<br/>统一可视化]
+        BACK_PR[Prometheus<br/>指标存储]
+        BACK_LO[Loki<br/>日志聚合]
+        BACK_CLOUD[云厂商APM<br/>AWS/Azure/GCP]
+    end
+
+    SIG_T -->|生成| FLINK_T
+    SIG_M -->|生成| FLINK_M
+    SIG_L -->|生成| FLINK_L
+
+    FLINK_T -->|推送| COL_R
+    FLINK_M -->|推送| COL_R
+    FLINK_L -->|推送| COL_R
+
+    COL_R -->|处理| COL_P
+    COL_P -->|导出| COL_E
+
+    COL_E -->|Traces| BACK_J
+    COL_E -->|Traces| BACK_Z
+    COL_E -->|Traces| BACK_TE
+    COL_E -->|Metrics| BACK_PR
+    COL_E -->|Logs| BACK_LO
+    COL_E -->|All Signals| BACK_GR
+    COL_E -->|All Signals| BACK_CLOUD
+
+    style SIG_T fill:#e3f2fd,stroke:#1976d2
+    style SIG_M fill:#e3f2fd,stroke:#1976d2
+    style SIG_L fill:#e3f2fd,stroke:#1976d2
+    style COL_P fill:#c8e6c9,stroke:#2e7d32
+    style BACK_GR fill:#fff9c4,stroke:#f57f17
+```
+
+### 7.6 决策树：OpenTelemetry部署策略选择
+
+以下决策树根据数据量、复杂度与组织规模，指导读者选择轻量部署、标准部署或企业部署三种OT可观测性落地策略。
+
+```mermaid
+flowchart TD
+    START([OT部署策略选择]) --> Q1{数据量与复杂度?}
+
+    Q1 -->|低数据量<br/>简单场景| LIGHT[轻量部署]
+    Q1 -->|中等数据量<br/>标准场景| STANDARD[标准部署]
+    Q1 -->|高数据量<br/>复杂企业场景| ENTERPRISE[企业部署]
+
+    LIGHT --> L1[In-Process SDK]
+    LIGHT --> L2[Direct Export<br/>直写后端]
+    L1 --> L3[适用: 开发测试<br/>单实例小流量]
+
+    STANDARD --> S1[SDK + OTel Collector]
+    STANDARD --> S2[单Collector节点]
+    STANDARD --> S3[后端: Jaeger/Tempo<br/>+ Prometheus + Grafana]
+    S1 --> S4[适用: 生产环境<br/>中小规模集群]
+
+    ENTERPRISE --> E1[Collector集群]
+    ENTERPRISE --> E2[多级Pipeline<br/>Gateway + Agent]
+    ENTERPRISE --> E3[多后端路由<br/>Trace→Jaeger/Tempo<br/>Metric→Mimir/Prometheus<br/>Log→Loki]
+    ENTERPRISE --> E4[高级特性: 尾部采样<br/>内存限制器 属性富化]
+    E1 --> E5[适用: 大规模生产<br/>多租户 多区域]
+
+    style START fill:#e3f2fd,stroke:#1976d2
+    style LIGHT fill:#c8e6c9,stroke:#2e7d32
+    style STANDARD fill:#fff9c4,stroke:#f57f17
+    style ENTERPRISE fill:#ffccbc,stroke:#d84315
+```
+
 ---
 
 ## 8. 引用参考 (References)

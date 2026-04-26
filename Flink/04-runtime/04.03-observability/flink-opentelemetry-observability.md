@@ -678,18 +678,120 @@ graph TB
     style Row4 fill:#fff3e0
 ```
 
+### Flink OpenTelemetry 可观测性思维导图
+
+Flink OpenTelemetry 可观测性的知识全景放射展开：
+
+```mermaid
+mindmap
+  root((Flink OpenTelemetry可观测性))
+    指标
+      Flink Metrics导出
+      OTLP协议
+      Prometheus远程写
+      自定义指标
+    链路
+      Span生成
+      上下文传播
+      异步边界处理
+      Baggage
+    日志
+      结构化日志
+      日志关联
+      Severity映射
+      日志采样
+    Collector
+      部署模式
+      Processor链
+      Exporter配置
+      可靠性
+    后端集成
+      Jaeger
+      Tempo
+      Grafana
+      云厂商APM
+```
+
+### 多维关联树：OT信号→Flink集成→后端消费
+
+三类 OpenTelemetry 信号与 Flink 集成点及后端消费系统的映射关系：
+
+```mermaid
+graph TB
+    subgraph OT信号类型["OTel Signal Types"]
+        S1[Metrics]
+        S2[Traces]
+        S3[Logs]
+    end
+
+    subgraph Flink集成点["Flink Integration Points"]
+        I1[OpenTelemetryReporter]
+        I2[OpenTelemetryTracer]
+        I3[Log4j2 OTel Appender]
+        I4[自定义Span]
+        I5[Resource Attributes]
+    end
+
+    subgraph 后端消费["Backend Consumption"]
+        B1[Prometheus]
+        B2[Jaeger]
+        B3[Loki / Tempo]
+        B4[Grafana]
+        B5[云厂商APM]
+    end
+
+    S1 -->|Gauge/Counter| I1
+    S2 -->|Span/Context| I2
+    S3 -->|LogRecord| I3
+    S2 -->|Checkpoint Span| I4
+    S1 -->|Resource标签| I5
+    S2 -->|Resource标签| I5
+    S3 -->|Resource标签| I5
+
+    I1 -->|OTLP/gRPC| B1
+    I2 -->|OTLP/gRPC| B2
+    I3 -->|OTLP/HTTP| B3
+    I4 -->|OTLP/gRPC| B2
+    I5 -->|统一标签| B4
+    I1 -->|远程写| B5
+    I2 -->|直接上报| B5
+```
+
+### OpenTelemetry Collector 部署策略决策树
+
+根据不同部署规模和场景选择 Collector 部署模式：
+
+```mermaid
+flowchart TD
+    A[选择OTel部署策略] --> B{部署规模?}
+    B -->|单作业/测试| C[内嵌SDK]
+    B -->|生产集群| D{集群规模?}
+    B -->|多集群/混合云| E[Gateway Collector]
+
+    C --> C1[简单场景]
+    C --> C2[低overhead]
+    C --> C3[快速启动]
+
+    D -->|中小规模| F[Sidecar Collector]
+    D -->|大规模K8s| G[DaemonSet Collector]
+
+    F --> F1[标准生产部署]
+    F --> F2[按Pod隔离]
+    F --> F3[独立生命周期]
+
+    G --> G1[统一收集]
+    G --> G2[节点级复用]
+    G --> G3[资源摊薄]
+
+    E --> E1[多集群路由]
+    E --> E2[安全集中管控]
+    E --> E3[协议转换]
+    E --> E4[负载均衡]
+```
+
 ---
 
 ## 8. 引用参考 (References)
-
-
-
-
-
-
-
-
-
 
 
 ---

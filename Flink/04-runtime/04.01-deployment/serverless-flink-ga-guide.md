@@ -1549,18 +1549,120 @@ sequenceDiagram
     TM->>TM: 本地缓存热点状态
 ```
 
+### 7.6 Serverless Flink GA 思维导图
+
+以下思维导图以"Serverless Flink GA"为中心，从五大维度放射展开其核心能力与生态版图。
+
+```mermaid
+mindmap
+  root((Serverless Flink GA))
+    产品形态
+      Flink SQL托管
+      Application Mode托管
+      Serverless Jar
+    资源模型
+      按需分配
+      自动扩缩容
+      预留实例
+      Spot实例
+    运维简化
+      免运维K8s
+      自动Checkpoint
+      自动故障恢复
+    成本优化
+      按量计费
+      预留折扣
+      资源打包
+      冷启动优化
+    生态集成
+      云厂商服务
+      Ververica
+      Confluent
+      Aiven
+```
+
+### 7.7 多维关联树
+
+以下多维关联树展示 Serverless Flink 核心特性、典型使用场景与最佳实践之间的映射关系。
+
+```mermaid
+graph TB
+    subgraph "核心特性"
+        F1[Scale-to-Zero]
+        F2[快照启动]
+        F3[自动扩缩容]
+        F4[分离式状态存储]
+        F5[按量计费]
+    end
+
+    subgraph "使用场景"
+        S1[间歇性ETL]
+        S2[实时风控]
+        S3[事件驱动微服务]
+        S4[日志分析]
+        S5[ML推理管道]
+    end
+
+    subgraph "最佳实践"
+        P1[启用增量检查点]
+        P2[配置KEDA事件源]
+        P3[预置镜像缓存]
+        P4[设置成本告警]
+        P5[分离冷热状态]
+    end
+
+    F1 --> S1
+    F1 --> S4
+    F2 --> S2
+    F2 --> S3
+    F3 --> S2
+    F3 --> S5
+    F4 --> S1
+    F4 --> S5
+    F5 --> S4
+
+    S1 --> P1
+    S1 --> P2
+    S2 --> P3
+    S2 --> P4
+    S3 --> P2
+    S3 --> P3
+    S4 --> P1
+    S4 --> P4
+    S5 --> P5
+    S5 --> P3
+```
+
+### 7.8 Serverless Flink选型决策树
+
+以下决策树指导不同业务场景下的 Serverless Flink 产品形态选型。
+
+```mermaid
+flowchart TD
+    A[业务需求分析] --> B{开发阶段?}
+    B -->|快速原型| C[托管SQL服务]
+    B -->|生产应用| D{负载特征?}
+    D -->|持续流处理| E[Application Mode托管]
+    D -->|大规模批处理| F[Serverless Jar + 弹性资源]
+    D -->|混合负载| G[预留实例 + 弹性补充]
+    C --> H[免运维SQL编辑器]
+    C --> I[自动Schema推断]
+    E --> J[状态一致性保证]
+    E --> K[自动故障恢复]
+    F --> L[Spot实例降本]
+    F --> M[分阶段资源申请]
+    G --> N[基线预留容量]
+    G --> O[突发弹性扩展]
+
+    style C fill:#e8f5e9,stroke:#2e7d32
+    style E fill:#e3f2fd,stroke:#1565c0
+    style F fill:#fff3e0,stroke:#ef6c00
+    style G fill:#f3e5f5,stroke:#6a1b9a
+```
+
 ---
 
 ## 8. 引用参考 (References)
-
-
-
-
-
-
-
-
-
 
 
 ---

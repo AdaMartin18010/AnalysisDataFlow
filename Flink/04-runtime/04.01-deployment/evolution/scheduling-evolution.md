@@ -687,8 +687,131 @@ sequenceDiagram
 
 ---
 
-## 8. 引用参考 (References)
+### 7.5 Flink调度演进思维导图
 
+以下思维导图以"Flink调度演进"为中心，放射状展示五大演进阶段及其关键技术特征。
+
+```mermaid
+mindmap
+  root((Flink调度演进))
+    早期调度
+      FIFO调度策略
+      基于槽位的粗粒度分配
+      静态资源预留模式
+      心跳机制任务分配
+    增量改进
+      细粒度资源管理
+      调度策略插件化
+      数据本地性优化
+      部署顺序优化
+    自适应调度
+      动态并行度调整
+      背压感知调度
+      负载均衡优化
+      自动扩缩容触发
+    流批统一调度
+      统一资源视图
+      混合执行模式
+      资源隔离机制
+      优先级抢占策略
+    未来方向
+      AI驱动调度决策
+      全局优化策略
+      多集群联邦调度
+      预测性资源预留
+```
+
+---
+
+### 7.6 多维关联树
+
+以下关联树展示调度版本 → 核心特性 → 性能提升的三层映射关系。
+
+```mermaid
+graph TB
+    subgraph "调度版本"
+        V1[Flink 1.0<br/>DefaultScheduler]
+        V2[Flink 1.5<br/>LegacyScheduler]
+        V3[Flink 1.11<br/>DeclarativeScheduler]
+        V4[Flink 1.17<br/>AdaptiveScheduler]
+        V5[Flink 2.0+<br/>AdaptiveScheduler V2]
+    end
+
+    subgraph "核心特性"
+        C1[静态Slot分配<br/>资源预留]
+        C2[动态Slot请求<br/>部署顺序优化]
+        C3[声明式资源需求<br/>细粒度资源管理]
+        C4[自动扩缩容<br/>负载监控与动态调整]
+        C5[ML预测驱动<br/>存算分离集成]
+    end
+
+    subgraph "性能提升"
+        P1[资源利用率 30-40%<br/>扩缩容 N/A]
+        P2[资源利用率 40-50%<br/>扩缩容 N/A]
+        P3[资源利用率 50-60%<br/>扩缩容 手动]
+        P4[资源利用率 60-70%<br/>扩缩容 分钟级]
+        P5[资源利用率 70-80%<br/>扩缩容 秒级]
+    end
+
+    V1 -->|引入| C1
+    V2 -->|引入| C2
+    V3 -->|引入| C3
+    V4 -->|引入| C4
+    V5 -->|引入| C5
+
+    C1 -->|带来| P1
+    C2 -->|带来| P2
+    C3 -->|带来| P3
+    C4 -->|带来| P4
+    C5 -->|带来| P5
+
+    style V1 fill:#ffccbc
+    style V2 fill:#ffe0b2
+    style V3 fill:#fff9c4
+    style V4 fill:#c8e6c9
+    style V5 fill:#b3e5fc
+```
+
+---
+
+### 7.7 调度策略选型决策树
+
+以下决策树根据作业类型和场景特征，指导选择最优调度策略与配置模式。
+
+```mermaid
+flowchart TD
+    Start([调度策略选型]) --> Q1{作业类型?}
+
+    Q1 -->|纯流作业| A1[延迟优先策略]
+    A1 --> A2[数据本地性优化]
+    A2 --> A3[背压感知调度]
+    A3 --> End1([适用调度器: AdaptiveScheduler<br/>配置模式: adaptive<br/>关键参数: target-utilization=0.8])
+
+    Q1 -->|纯批作业| B1[吞吐优先策略]
+    B1 --> B2[数据本地性优化]
+    B2 --> B3[并行度静态优化]
+    B3 --> End2([适用调度器: DeclarativeScheduler<br/>配置模式: reactive<br/>关键参数: evenly-spread-out-slots=true])
+
+    Q1 -->|混合作业| C1[统一调度视图]
+    C1 --> C2[资源隔离机制]
+    C2 --> C3[多队列优先级管理]
+    C3 --> End3([适用调度器: AdaptiveScheduler<br/>配置模式: adaptive<br/>关键参数: min/max-parallelism约束])
+
+    Q1 -->|特殊场景| D1[自定义Slot分配策略]
+    D1 --> D2[节点亲和性约束]
+    D2 --> D3[反亲和性与拓扑感知]
+    D3 --> End4([适用调度器: LegacyScheduler<br/>配置模式: legacy<br/>关键参数: slot-sharing-group自定义])
+
+    style Start fill:#e3f2fd
+    style End1 fill:#c8e6c9
+    style End2 fill:#fff9c4
+    style End3 fill:#ffe0b2
+    style End4 fill:#ffccbc
+```
+
+---
+
+## 8. 引用参考 (References)
 
 
 

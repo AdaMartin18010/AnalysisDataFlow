@@ -853,18 +853,113 @@ graph LR
     end
 ```
 
+### 7.5 Flink Elasticsearch连接器思维导图
+
+以下思维导图以"Flink Elasticsearch连接器"为中心，放射展开五大核心维度：
+
+```mermaid
+mindmap
+  root((Flink Elasticsearch连接器))
+    Sink写入
+      Index操作
+      Upsert更新
+      Delete删除
+      Bulk API批量写入
+      Routing路由分发
+    Source读取
+      Scroll游标查询
+      Search After深度分页
+      Point In Time快照
+      并行读取分片
+    数据映射
+      Document→Row转换
+      Nested嵌套字段
+      Geo地理字段
+      日期格式解析
+    连接管理
+      连接池复用
+      重试策略
+      Backoff退避
+      失败处理
+    高级特性
+      动态Index
+      模板映射
+      ILM生命周期策略
+      版本兼容
+```
+
+### 7.6 多维关联树：ES操作→Flink配置→性能影响
+
+以下关联树展示 Elasticsearch 操作、Flink 配置参数与最终性能影响之间的映射关系：
+
+```mermaid
+graph TB
+    subgraph "ES操作层"
+        A1[Index写入] --> A2[Upsert更新]
+        A1 --> A3[Delete删除]
+        A1 --> A4[Bulk批量]
+        A5[Scroll读取] --> A6[Search After]
+        A5 --> A7[PIT快照]
+    end
+
+    subgraph "Flink配置层"
+        B1[bulk.flush.max.actions] --> B2[bulk.flush.max.size]
+        B2 --> B3[bulk.flush.interval]
+        B4[document-id] --> B5[routing]
+        B6[flush-on-checkpoint] --> B7[failure-handler]
+        B8[parallelism] --> B9[connection.timeout]
+    end
+
+    subgraph "性能影响层"
+        C1[吞吐] --> C2[延迟]
+        C2 --> C3[一致性]
+        C3 --> C4[容错性]
+    end
+
+    A1 -->|"批量大小"| B1
+    A1 -->|"刷新间隔"| B3
+    A4 -->|"并行度"| B8
+    A5 -->|"分片映射"| B8
+    B1 -->|"↑ 吞吐↑ 延迟↑"| C1
+    B3 -->|"↓ 延迟↑ 吞吐↓"| C2
+    B6 -->|"强一致性"| C3
+    B7 -->|"容错恢复"| C4
+```
+
+### 7.7 ES连接器使用模式决策树
+
+以下决策树展示不同业务场景下的 ES 连接器最佳使用模式：
+
+```mermaid
+flowchart TD
+    A[业务场景选择] --> B{实时索引场景?}
+    B -->|是| C[Bulk Sink模式]
+    C --> C1[批处理: 1000-5000条/批]
+    C --> C2[指数退避: EXPONENTIAL]
+    C --> C3[checkpoint同步: flush-on-checkpoint=true]
+
+    B -->|否| D{日志分析场景?}
+    D -->|是| E[时间序列Index模式]
+    E --> E1[动态索引: logs-YYYY.MM.dd]
+    E --> E2[ILM策略: 热温冷迁移]
+    E --> E3[滚动配置: rollover]
+
+    D -->|否| F{搜索增强场景?}
+    F -->|是| G[Lookup Join模式]
+    G --> G1[异步查询: async lookup]
+    G --> G2[本地缓存: cache.max-rows]
+    G --> G3[超时控制: lookup.cache.ttl]
+
+    F -->|否| H[数据同步场景]
+    H --> H1[ES Source读取]
+    H --> H2[Flink处理转换]
+    H --> H3[ES Sink写入]
+    H --> H4[端到端Exactly-Once]
+```
+
 ---
 
 ## 8. 引用参考 (References)
-
-
-
-
-
-
-
-
-
 
 
 ---
@@ -895,7 +990,7 @@ graph LR
 ---
 
 > **维护者备注**: 本文档对应 Flink 1.17+ 和 Elasticsearch 7.x/8.x。ES 6.x 支持已于 Flink 1.17 移除。
-> 最后更新: 2026-04-04
+> 最后更新: 2026-04-26
 
 ---
 

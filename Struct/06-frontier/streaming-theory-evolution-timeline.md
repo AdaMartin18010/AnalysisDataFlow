@@ -322,4 +322,105 @@ graph LR
     ATM -->|"保证"| EXO
 ```
 
+### 7.4 流处理理论演进年代时间线
+
+以下甘特图按年代维度展示流处理从理论奠基到现代融合的五十年演进脉络。
+
+```mermaid
+gantt
+    title 流处理理论演进年代概览 (1970s - 2020s)
+    dateFormat YYYY
+    axisFormat %Y
+
+    section 1970s-1980s
+    数据流计算机 / SISAL / Lucid    :done, df_hw, 1970, 1990
+    Kahn Process Networks          :done, kpn_era, 1974, 1985
+    CSP                            :done, csp_era, 1978, 1990
+    Actor Model                    :done, actor_era, 1973, 1990
+
+    section 1990s
+    主动数据库 / 连续查询            :done, adb_era, 1990, 2000
+    TelegraphCQ / Aurora           :done, tele_era, 1995, 2005
+
+    section 2000s
+    Stream / CQL / Borealis        :done, stream_era, 2000, 2010
+    复杂事件处理 CEP                :done, cep_era, 2000, 2015
+
+    section 2010s
+    Dataflow Model                 :done, dfm_era, 2015, 2020
+    Spark Streaming                :done, spark_era, 2012, 2020
+    Apache Flink                   :done, flink_era, 2011, 2020
+    Kafka Streams                  :done, kafka_era, 2016, 2020
+
+    section 2020s
+    流批一体 / 湖仓一体              :active, unified_era, 2020, 2026
+    AI 融合 (实时推理 / LLM流)       :active, ai_era, 2022, 2026
+    形式化深化 (形式化验证 / 证明)    :active, formal_era, 2020, 2026
+    Streaming Databases            :active, sdb_era, 2020, 2026
+```
+
+### 7.5 理论演进范式转移概念矩阵
+
+以下四象限图展示流处理理论在**系统规模**与**抽象层级**二维空间中的范式转移轨迹。
+
+```mermaid
+quadrantChart
+    title 流处理理论演进范式转移
+    x-axis 小规模系统 --> 大规模系统
+    y-axis 低抽象层级 --> 高抽象层级
+
+    quadrant-1 声明式抽象
+    quadrant-2 分布式声明式
+    quadrant-3 底层硬件抽象
+    quadrant-4 分布式系统框架
+
+    "数据流机 (1970s)": [0.15, 0.15]
+    "DBMS / SQL (1980s)": [0.30, 0.60]
+    "CEP / Esper (2000s)": [0.45, 0.70]
+    "Spark Streaming (2012)": [0.60, 0.50]
+    "Flink 分布式引擎": [0.70, 0.55]
+    "Dataflow Model (2015)": [0.65, 0.80]
+    "Serverless 流 (2020s)": [0.80, 0.85]
+    "Streaming DB (2020s)": [0.75, 0.90]
+```
+
+### 7.6 流理论演进时间线思维导图
+
+以下思维导图以"流理论演进时间线"为核心，放射式展开五大技术脉络。
+
+```mermaid
+mindmap
+  root((流理论演进<br/>时间线))
+    硬件基础
+      数据流计算机
+        Dennis 静态数据流
+        Arvind 动态数据流
+      SISAL 函数式语言
+      Lucid 时序数据流
+    数据库脉络
+      主动数据库
+        ECA 规则
+      连续查询
+        TelegraphCQ
+        Aurora / Borealis
+      Stream / CQL
+    CEP 复杂事件处理
+      Esper
+      Drools Fusion
+      事件模式匹配
+    分布式流框架
+      Spark Streaming
+      Apache Flink
+        DataStream API
+        Checkpoint
+        Watermark
+      Kafka Streams
+    现代融合
+      流批一体
+      湖仓一体
+      Streaming Databases
+      AI 实时推理
+      形式化验证
+```
+
 ## 8. 引用参考 (References)

@@ -612,10 +612,229 @@ graph TB
     style AL fill:#fce4ec
 ```
 
+### 7.4 Flink Pulsar 集成思维导图
+
+以下思维导图以"Flink Pulsar 集成"为中心，系统展示 Pulsar 核心能力、Flink Source/Sink 集成要点、高级特性及场景对比的全景关系。
+
+```mermaid
+mindmap
+  root((Flink Pulsar 集成))
+    Pulsar核心
+      分层存储
+        Broker无状态计算层
+        BookKeeper持久化存储层
+        ZooKeeper元数据协调层
+        独立扩展计算与存储
+      多租户
+        Tenant组织级隔离
+        Namespace逻辑分组
+        配额与权限控制
+        统一集群服务多业务线
+      Geo复制
+        跨机房消息同步
+        异地多活架构
+        灾难自动切换
+        全局一致性保障
+      Function Mesh
+        Pulsar Functions轻量计算
+        Function Mesh编排
+        与Flink互补协同
+        边缘预处理+中心复杂分析
+    Flink Source
+      分区发现
+        Topic动态发现
+        分区自动扩缩感知
+        正则匹配订阅
+        定时刷新元数据
+      Cursor管理
+        Earliest/Latest起始位点
+        外部游标恢复
+        增量消费保障
+        回溯与重放能力
+      Exactly-Once
+        Checkpoint对齐Pulsar Offset
+        两阶段提交事务
+        幂等消息确认
+        端到端一致性
+      Schema集成
+        Avro/JSON/Protobuf支持
+        Schema自动演进
+        版本兼容策略
+        类型安全反序列化
+    Flink Sink
+      Routing
+        消息Key哈希路由
+        自定义Topic路由
+        多Tenant目标写入
+        动态分区映射
+      Batching
+        批量异步发送
+        批大小与时间触发
+        吞吐延迟权衡
+        背压自适应调节
+      Compression
+        LZ4/ZSTD/SNAPPY压缩
+        网络带宽优化
+        存储成本降低
+        端到端透明解压
+      Tenant隔离
+        多租户Namespace写入
+        权限与ACL控制
+        资源配额隔离
+        安全合规保障
+    高级特性
+      Transaction
+        Pulsar事务生产者
+        Flink两阶段提交Sink
+        跨Topic原子写入
+        端到端Exactly-Once
+      Seek
+        按时间戳回溯
+        按MessageId定位
+        批量偏移重置
+        数据重放与修复
+      Dead Letter
+        失败消息死信队列
+        最大重试策略
+        异常隔离与告警
+        人工干预管道
+      Key-Shared订阅
+        Key级别顺序保证
+        消费者组粘性路由
+        分区并行+Key保序
+        窗口聚合前提条件
+    场景对比
+      Pulsar vs Kafka
+        架构分层vs单层
+        原生多租户vs后期补充
+        内置Geo复制vs外部MirrorMaker
+        统一队列流vs纯流模型
+      选型建议
+        多租户需求选Pulsar
+        海量Topic选Pulsar
+        超低延迟选Kafka
+        已有Kafka生态慎重迁移
+      迁移路径
+        双写并行过渡期
+        Pulsar Kafka协议兼容
+        逐步切读再切写
+        回滚策略与验证
+```
+
+### 7.5 多维关联树：Pulsar 特性 → Flink 集成 → 业务收益
+
+以下关联树展示 Pulsar 底层特性如何通过 Flink 连接器能力转化为具体业务收益，形成从基础设施到业务价值的完整映射链。
+
+```mermaid
+graph TB
+    subgraph "Pulsar 基础设施特性"
+        P1[分层存储架构]
+        P2[原生多租户]
+        P3[内置Geo复制]
+        P4[统一消息模型]
+        P5[Schema Registry]
+        P6[BookKeeper持久化]
+    end
+
+    subgraph "Flink 连接器集成能力"
+        F1[动态分区发现]
+        F2[Checkpoint Exactly-Once]
+        F3[Schema自动演进]
+        F4[批量压缩发送]
+        F5[多Tenant路由]
+        F6[Key-Shared消费]
+        F7[事务两阶段提交]
+        F8[延迟消息投递]
+    end
+
+    subgraph "业务收益"
+        B1[存储与计算独立扩展<br/>降低基础设施成本]
+        B2[统一平台服务多业务线<br/>减少集群碎片化]
+        B3[跨地域容灾与多活<br/>提升可用性SLA]
+        B4[队列流一体处理<br/>简化架构复杂度]
+        B5[类型安全数据处理<br/>减少运行期错误]
+        B6[端到端Exactly-Once<br/>保障数据一致性]
+        B7[高吞吐低延迟写入<br/>满足实时性需求]
+        B8[Key级别顺序处理<br/>支撑精准业务逻辑]
+    end
+
+    P1 -->|存储扩展独立| F1
+    P1 -->|无状态Broker| F2
+    P2 -->|Namespace隔离| F5
+    P3 -->|跨区域消费| F2
+    P4 -->|Queue+Stream| F6
+    P5 -->|Schema版本管理| F3
+    P6 -->|持久化Cursor| F2
+    P6 -->|高吞吐写入| F4
+
+    F1 -->|自适应扩缩容| B1
+    F2 -->|故障不丢不重| B6
+    F3 -->|兼容Schema变更| B5
+    F4 -->|网络与存储优化| B7
+    F5 -->|租户资源隔离| B2
+    F6 -->|保序并行消费| B8
+    F7 -->|跨Topic原子性| B6
+    F8 -->|定时业务触发| B4
+
+    P2 -.->|自然映射| B2
+    P3 -.->|灾备保障| B3
+    P4 -.->|架构简化| B4
+    P1 -.->|成本优化| B1
+```
+
+### 7.6 Pulsar 使用场景决策树
+
+以下决策树面向架构师与工程师，展示在不同业务特征下如何组合 Pulsar 原生能力与 Flink 扩展处理，形成最优技术方案。
+
+```mermaid
+flowchart TD
+    A[业务场景特征分析] --> B{是否存在<br/>多租户需求?}
+    B -->|是| C[选用 Pulsar + Namespace隔离]
+    C --> C1[每个Tenant独立Namespace]
+    C1 --> C2[配置配额与ACL策略]
+    C2 --> C3[Flink Source按Tenant订阅<br/>Sink按Tenant路由写入]
+    C3 --> C4[统一Flink集群处理多业务线<br/>降低运维复杂度]
+
+    B -->|否| D{是否需要<br/>跨地域复制?}
+    D -->|是| E[选用 Pulsar Geo复制]
+    E --> E1[配置Replication Cluster对等]
+    E1 --> E2[设定复制策略与命名空间范围]
+    E2 --> E3[Flink多区域部署消费]
+    E3 --> E4[就近读取降低延迟<br/>异地容灾提升可用性]
+
+    D -->|否| F{Topic数量<br/>是否海量?}
+    F -->|是| G[选用 Pulsar 自动分区管理]
+    G --> G1[Topic自动分片与Ledger滚动]
+    G1 --> G2[Flink动态发现新分区]
+    G2 --> G3[正则匹配批量订阅Topic]
+    G3 --> G4[水平扩展无上限<br/>避免Kafka分区重平衡开销]
+
+    F -->|否| H{是否需要<br/>轻量函数计算?}
+    H -->|是| I[选用 Pulsar Functions]
+    I --> I1[定义轻量ETL/过滤/映射函数]
+    I1 --> I2[Function Mesh编排多阶段管道]
+    I2 --> I3[Flink消费Functions预处理结果]
+    I3 --> I4[边缘低延迟预处理<br/>中心Flink复杂聚合分析]
+
+    H -->|否| J[选用标准Flink Pulsar Connector]
+    J --> J1[评估Exactly-Once需求]
+    J1 -->|高| J2[启用Checkpoint + 事务Sink]
+    J1 -->|一般| J3[At-least-once + 幂等下游]
+    J2 --> J4[完成部署与监控接入]
+    J3 --> J4
+
+    style C fill:#e3f2fd
+    style E fill:#e3f2fd
+    style G fill:#e3f2fd
+    style I fill:#e3f2fd
+    style J fill:#e8f5e9
+```
+
 ---
 
 ## 8. 引用参考 (References)
 
+
 ---
 
-*文档版本: v1.0 | 创建日期: 2026-04-19*
+*文档版本: v1.1 | 创建日期: 2026-04-19 | 更新日期: 2026-04-26*

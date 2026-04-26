@@ -47,6 +47,9 @@
     - [7.2 零停机升级流程图](#72-零停机升级流程图)
     - [7.3 流量切换状态机](#73-流量切换状态机)
     - [7.4 部署决策树](#74-部署决策树)
+    - [7.5 Flink K8s Operator 1.14 全景思维导图](#75-flink-k8s-operator-114-全景思维导图)
+    - [7.6 多维关联树](#76-多维关联树)
+    - [7.7 Operator 使用场景决策树](#77-operator-使用场景决策树)
   - [8. 引用参考 (References)](#8-引用参考-references)
 
 ---
@@ -1483,6 +1486,99 @@ flowchart TD
     Instant --> End3([Blue/Green 部署完成])
     Gradual --> End3
     Canary --> End3
+```
+
+### 7.5 Flink K8s Operator 1.14 全景思维导图
+
+以下思维导图以 Flink K8s Operator 1.14 为中心，系统展示其 CRD 体系、生命周期管理、作业控制、自动伸缩与高级特性五大维度。
+
+```mermaid
+mindmap
+  root((Flink K8s Operator 1.14))
+    CRD定义
+      FlinkDeployment
+      FlinkSessionJob
+      JobManager配置
+      TaskManager配置
+    生命周期
+      提交
+      运行
+      暂停
+      升级
+      停止
+      清理
+    作业管理
+      Savepoint触发
+      Checkpoint配置
+      重启策略
+      作业状态
+    自动伸缩
+      Reactive模式
+      Adaptive模式
+      自定义伸缩器
+    高级特性
+      Pod模板
+      Sidecar注入
+      Init容器
+      安全上下文
+```
+
+### 7.6 多维关联树
+
+以下关联树展示 Operator CRD 资源、控制器逻辑与用户运维收益之间的映射关系。
+
+```mermaid
+graph TB
+    subgraph "Operator资源层"
+        CRD_FD[FlinkDeployment CRD]
+        CRD_FS[FlinkSessionJob CRD]
+        CRD_BG[FlinkBlueGreenDeployment CRD]
+        CRD_TMPL[PodTemplate]
+    end
+    subgraph "控制器逻辑层"
+        CTRL_DEPLOY[部署控制器]
+        CTRL_JOB[作业控制器]
+        CTRL_SCALE[伸缩控制器]
+        CTRL_LC[生命周期管理器]
+    end
+    subgraph "用户收益层"
+        BN_ZERO[零停机升级]
+        BN_AUTO[自动化运维]
+        BN_ELAS[资源弹性伸缩]
+        BN_SEC[安全隔离与合规]
+    end
+    CRD_FD --> CTRL_DEPLOY
+    CRD_FS --> CTRL_JOB
+    CRD_BG --> CTRL_LC
+    CRD_TMPL --> CTRL_DEPLOY
+    CTRL_DEPLOY --> BN_ZERO
+    CTRL_JOB --> BN_AUTO
+    CTRL_SCALE --> BN_ELAS
+    CTRL_LC --> BN_SEC
+    CTRL_DEPLOY --> BN_AUTO
+    CTRL_LC --> BN_ZERO
+```
+
+### 7.7 Operator 使用场景决策树
+
+以下决策树面向运维与 SRE 团队，指导在不同生产需求下选择最合适的 Operator 部署模式与配套策略。
+
+```mermaid
+flowchart TD
+    Start([选择 Operator 使用场景]) --> Q1{需要生产级 Session 集群?}
+    Q1 -->|是| A1[FlinkDeployment Session 模式<br/>多 FlinkSessionJob 提交]
+    Q1 -->|否| Q2{需要独立 Application 生命周期?}
+    Q2 -->|是| A2[FlinkDeployment Application 模式<br/>独立升级与回滚]
+    Q2 -->|否| Q3{需要自动伸缩能力?}
+    Q3 -->|是| A3[Adaptive/Reactive 伸缩模式<br/>配置资源阈值与目标并行度]
+    Q3 -->|否| Q4{需要多版本共存与灰度?}
+    Q4 -->|是| A4[FlinkBlueGreenDeployment<br/>蓝绿部署 + Savepoint 迁移]
+    Q4 -->|否| A5[标准 FlinkDeployment 直接部署]
+
+    A1 --> C1[配置 JobManager/TaskManager 资源模板<br/>挂载多作业提交权限]
+    A2 --> C2[配置独立镜像与 Savepoint 路径<br/>启用自动回滚策略]
+    A3 --> C3[选择 Reactive 或 Adaptive 模式<br/>设定 CPU/内存/并行度阈值]
+    A4 --> C4[配置 Blue/Green 流量拆分规则<br/>定义状态迁移与版本兼容性检查]
 ```
 
 ---

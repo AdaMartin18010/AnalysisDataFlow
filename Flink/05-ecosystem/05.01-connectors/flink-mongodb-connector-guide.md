@@ -40,6 +40,9 @@
     - [7.1 MongoDB-Flink 集成架构](#71-mongodb-flink-集成架构)
     - [7.2 Change Stream 事件流](#72-change-stream-事件流)
     - [7.3 数据类型映射矩阵](#73-数据类型映射矩阵)
+    - [7.4 Flink MongoDB连接器思维导图](#74-flink-mongodb连接器思维导图)
+    - [7.5 MongoDB特性→Flink配置→使用效果关联树](#75-mongodb特性flink配置使用效果关联树)
+    - [7.6 MongoDB集成模式决策树](#76-mongodb集成模式决策树)
   - [8. 故障排查 (Troubleshooting)](#8-故障排查-troubleshooting)
     - [8.1 常见问题与解决方案](#81-常见问题与解决方案)
       - [问题 1: Change Stream 无法恢复 (Resume Token Expired)](#问题-1-change-stream-无法恢复-resume-token-expired)
@@ -932,6 +935,120 @@ graph LR
     style DOC fill:#99ff99
 ```
 
+### 7.4 Flink MongoDB连接器思维导图
+
+以下思维导图以"Flink MongoDB连接器指南"为中心，放射展开核心知识域：
+
+```mermaid
+mindmap
+  root((Flink MongoDB连接器指南))
+    快速开始
+      依赖引入
+      基本配置
+      读写示例
+    Source配置
+      Change Stream
+      批量查询
+      过滤条件
+      投影
+    Sink配置
+      写入模式
+      批量大小
+      Upsert键
+      幂等性
+    高级特性
+      事务支持
+      Lookup Join
+      Schema推断
+      自定义序列化
+    故障处理
+      重试策略
+      死信队列
+      连接恢复
+      数据一致性
+```
+
+### 7.5 MongoDB特性→Flink配置→使用效果关联树
+
+以下多维关联树展示MongoDB底层特性如何映射到Flink连接器配置，并产生相应的使用效果：
+
+```mermaid
+graph TB
+    subgraph "MongoDB特性"
+        M1[副本集/分片]
+        M2[oplog/Change Stream]
+        M3[BSON文档模型]
+        M4[索引系统]
+    end
+
+    subgraph "Flink连接器配置"
+        C1[连接URI与池配置]
+        C2[Change Stream选项]
+        C3[序列化/反序列化]
+        C4[查询投影与过滤]
+    end
+
+    subgraph "使用效果"
+        E1[高可用读取]
+        E2[实时CDC捕获]
+        E3[灵活Schema映射]
+        E4[高效查询性能]
+    end
+
+    M1 --> C1
+    M2 --> C2
+    M3 --> C3
+    M4 --> C4
+
+    C1 --> E1
+    C2 --> E2
+    C3 --> E3
+    C4 --> E4
+
+    style M1 fill:#ff9999
+    style M2 fill:#ffff99
+    style M3 fill:#99ff99
+    style M4 fill:#99ccff
+```
+
+### 7.6 MongoDB集成模式决策树
+
+以下决策树展示四种典型的MongoDB与Flink集成模式及其选择路径：
+
+```mermaid
+flowchart TD
+    Start([MongoDB集成模式选择]) --> Q1{是否需要实时CDC?}
+    Q1 -->|是| A1[Change Stream Source]
+    Q1 -->|否| Q2{是否需要维表关联?}
+
+    A1 --> A1a[监听oplog变更事件]
+    A1a --> A1b[Resume Token持久化]
+    A1b --> A1c[实时处理流数据]
+
+    Q2 -->|是| A2[Lookup Join]
+    A2 --> A2a[异步维表查询]
+    A2a --> A2b[实时enrich结果]
+
+    Q2 -->|否| Q3{数据流向?}
+    Q3 -->|批量ETL| A3[分页批量查询]
+    A3 --> A3a[批量转换处理]
+    A3a --> A3b[批量写入MongoDB]
+
+    Q3 -->|结果持久化| A4[Upsert Sink]
+    A4 --> A4a[REPLACE/UPDATE模式]
+    A4a --> A4b[MongoDB文档更新/插入]
+
+    style Start fill:#e1f5fe
+    style A1 fill:#fff9c4
+    style A2 fill:#fff9c4
+    style A3 fill:#fff9c4
+    style A4 fill:#fff9c4
+    style A1c fill:#c8e6c9
+    style A2b fill:#c8e6c9
+    style A3b fill:#c8e6c9
+    style A4b fill:#c8e6c9
+```
+
 ---
 
 ## 8. 故障排查 (Troubleshooting)
@@ -1239,6 +1356,7 @@ ndb.orders.createIndex({
 ---
 
 ## 10. 引用参考 (References)
+
 
 ---
 

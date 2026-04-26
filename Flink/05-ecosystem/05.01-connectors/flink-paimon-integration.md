@@ -1637,11 +1637,139 @@ flowchart TD
 
 ---
 
+### 7.7 Flink-Paimon 连接器集成思维导图
+
+以下思维导图以"Flink Paimon连接器集成"为中心，放射展开核心能力维度：
+
+```mermaid
+mindmap
+  root((Flink Paimon连接器集成))
+    Source读取
+      Snapshot读取
+      增量读取
+      Tag读取
+      时间旅行
+    Sink写入
+      Append
+      Upsert
+      Overwrite
+      Compaction触发
+    Lookup Join
+      Paimon维表
+      缓存策略
+      异步查找
+    CDC同步
+      MySQL CDC到Paimon
+      Schema同步
+      数据一致性
+    生态对接
+      Hive Catalog
+      Spark读取
+      Flink SQL
+      Trino查询
+```
+
+---
+
+### 7.8 Paimon 连接器多维关联树
+
+以下关联树展示 Paimon 连接器特性、Flink 配置与业务价值之间的多维映射：
+
+```mermaid
+graph TB
+    subgraph "Paimon连接器特性"
+        F1["Source: Snapshot/增量/Tag/时间旅行"]
+        F2["Sink: Append/Upsert/Overwrite"]
+        F3["Lookup Join: 维表/缓存/异步"]
+        F4["CDC同步: Schema/一致性"]
+        F5["生态对接: Hive/Spark/Trino"]
+    end
+
+    subgraph "Flink核心配置"
+        C1["scan.mode / scan.snapshot-id"]
+        C2["changelog-producer / bucket"]
+        C3["lookup.cache / lookup.async"]
+        C4["mysql-cdc connector / schema evolution"]
+        C5["catalog.type = paimon / metastore = hive"]
+    end
+
+    subgraph "业务价值"
+        V1["实时增量消费"]
+        V2["流批统一写入"]
+        V3["毫秒级维表关联"]
+        V4["分钟级数据湖同步"]
+        V5["多引擎互操作"]
+    end
+
+    F1 -->|配置映射| C1
+    F2 -->|配置映射| C2
+    F3 -->|配置映射| C3
+    F4 -->|配置映射| C4
+    F5 -->|配置映射| C5
+
+    C1 -->|业务价值| V1
+    C2 -->|业务价值| V2
+    C3 -->|业务价值| V3
+    C4 -->|业务价值| V4
+    C5 -->|业务价值| V5
+
+    style V1 fill:#e3f2fd,stroke:#1565c0
+    style V3 fill:#c8e6c9,stroke:#2e7d32
+    style V5 fill:#fff3e0,stroke:#e65100
+```
+
+---
+
+### 7.9 Paimon 连接器使用场景决策树
+
+以下决策树展示 Paimon 连接器在不同业务场景下的使用路径：
+
+```mermaid
+flowchart TD
+    START([选择Paimon连接器使用场景])
+
+    Q1{业务需求类型?}
+
+    SCENE1["实时入湖"]
+    SCENE2["即席查询"]
+    SCENE3["维表关联"]
+    SCENE4["历史回溯"]
+
+    SOURCE1["CDC Source<br/>• MySQL/PostgreSQL CDC"]
+    SINK1["Paimon Sink + 自动Compaction"]
+    SOURCE2["Paimon Source"]
+    SQL2["Flink SQL批处理"]
+    LOOKUP3["Paimon Lookup Join"]
+    CACHE3["缓存预热"]
+    TAG4["Paimon Tag读取"]
+    TIME4["时间旅行查询"]
+
+    START --> Q1
+
+    Q1 -->|数据实时入湖| SCENE1
+    Q1 -->|离线/交互式分析| SCENE2
+    Q1 -->|实时维度补全| SCENE3
+    Q1 -->|历史数据回溯| SCENE4
+
+    SCENE1 --> SOURCE1 --> SINK1
+    SCENE2 --> SOURCE2 --> SQL2
+    SCENE3 --> LOOKUP3 --> CACHE3
+    SCENE4 --> TAG4 --> TIME4
+
+    style SCENE1 fill:#e3f2fd,stroke:#1565c0
+    style SCENE2 fill:#c8e6c9,stroke:#2e7d32
+    style SCENE3 fill:#fff3e0,stroke:#e65100
+    style SCENE4 fill:#fce4ec,stroke:#c2185b
+```
+
+---
+
 ## 8. 引用参考 (References)
 
 [^1]: Apache Paimon Documentation, "Core Concepts", 2025. <https://paimon.apache.org/docs/master/concepts/overview/>
 
 [^2]: Jingsong Lee et al., "Apache Paimon: A Streaming Lakehouse Unifying Streaming and Batch Processing", Apache Software Foundation, 2023. <https://paimon.apache.org/>
+
 
 
 

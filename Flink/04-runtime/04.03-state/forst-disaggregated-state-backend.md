@@ -1084,6 +1084,131 @@ gantt
 
 ---
 
+### 7.5 ForSt 核心能力思维导图
+
+ForSt 分离式状态后端的核心能力从五个维度放射展开：
+
+```mermaid
+mindmap
+  root((ForSt<br/>分离式状态后端))
+    架构原理
+      本地缓存 + 远程存储
+      异步刷盘机制
+      增量同步策略
+      存算彻底解耦
+    存储层
+      RocksDB 本地缓存
+      S3 / OSS / GCS 远程
+      分层存储策略
+      LSM-Tree 远程化
+    性能优化
+      缓存命中率调优
+      预取策略
+      SST 压缩算法
+      批量 IO 合并
+    容错机制
+      异步 Checkpoint
+      增量 Checkpoint
+      LazyRestore 快速恢复
+      秒级故障切换
+    适用场景
+      超大状态作业
+      内存受限环境
+      云原生部署
+      弹性伸缩需求
+```
+
+---
+
+### 7.6 ForSt 特性-配置-性能收益关联树
+
+以下关联树展示 ForSt 核心特性如何通过具体配置项转化为可量化的性能收益：
+
+```mermaid
+graph TB
+    subgraph "ForSt 核心特性"
+        A1[存算分离架构]
+        A2[多级缓存机制]
+        A3[异步 Checkpoint]
+        A4[远程 Compaction]
+        A5[LazyRestore 恢复]
+    end
+
+    subgraph "Flink 配置项"
+        B1[state.backend.forst.ufs.type]
+        B2[state.backend.forst.cache.memory.size]
+        B3[state.backend.forst.cache.disk.size]
+        B4[state.backend.forst.cache.policy]
+        B5[state.backend.forst.async-flush-interval]
+        B6[state.backend.forst.restore.mode]
+        B7[state.backend.forst.compaction.remote.enabled]
+    end
+
+    subgraph "性能收益"
+        C1[存储成本降低 50-70%]
+        C2[Checkpoint 时间减少 94%]
+        C3[P99 延迟 < 100ms]
+        C4[故障恢复速度提升 49x]
+        C5[CPU 利用率降低 20-30%]
+        C6[弹性扩缩容时间 O1]
+    end
+
+    A1 --> B1
+    A1 --> B3
+    A2 --> B2
+    A2 --> B4
+    A3 --> B5
+    A4 --> B7
+    A5 --> B6
+
+    B1 --> C1
+    B2 --> C3
+    B3 --> C3
+    B4 --> C3
+    B5 --> C2
+    B6 --> C4
+    B7 --> C5
+    B1 --> C6
+```
+
+---
+
+### 7.7 Flink 状态后端快速选型决策树
+
+基于作业特征快速选择 Flink 内置状态后端：
+
+```mermaid
+flowchart TD
+    START([状态后端选型]) --> Q1{状态大小?}
+
+    Q1 -->|小状态<br/>< 10MB| Q2{延迟要求?}
+    Q1 -->|中等状态<br/>10MB - 100GB| Q3{存储介质?}
+    Q1 -->|超大状态<br/>> 100GB| Q4{部署环境?}
+
+    Q2 -->|极低延迟<br/>< 1ms P99| HEAP[✅ Heap State Backend<br/>JobManager 内存<br/>仅适用于极小状态]
+    Q2 -->|低延迟<br/>< 5ms P99| Q5{内存是否充足?}
+
+    Q3 -->|本地 SSD / NVMe| ROCKSDB[✅ RocksDB State Backend<br/>本地磁盘持久化<br/>大状态标准方案]
+    Q3 -->|共享存储 / NAS| Q6{网络带宽?}
+
+    Q4 -->|K8s / 云原生 / S3| FORST[✅ ForSt Disaggregated State<br/>存算分离<br/>弹性扩展]
+    Q4 -->|本地机房 / 边缘| ROCKSDB
+
+    Q5 -->|内存充足| HASHMAP[✅ HashMap State Backend<br/>TaskManager 堆内存<br/>高速读写]
+    Q5 -->|内存紧张| HEAP_LIMIT[⚠️ 建议升级内存<br/>或改用 RocksDB]
+
+    Q6 -->|> 1Gbps| FORST
+    Q6 -->|< 1Gbps| ROCKSDB
+
+    style START fill:#e3f2fd
+    style HEAP fill:#fff9c4
+    style HASHMAP fill:#e1f5fe
+    style ROCKSDB fill:#ffe0b2
+    style FORST fill:#c8e6c9
+```
+
+---
+
 ## 8. 引用参考 (References)
 
 [^1]: Apache Flink Documentation, "ForSt State Backend", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/>

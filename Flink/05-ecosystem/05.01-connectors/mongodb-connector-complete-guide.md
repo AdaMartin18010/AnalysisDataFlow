@@ -41,6 +41,9 @@
     - [7.2 Change Streams 事件流序列图](#72-change-streams-事件流序列图)
     - [7.3 批量写入流程图](#73-批量写入流程图)
     - [7.4 数据类型映射矩阵](#74-数据类型映射矩阵)
+    - [7.5 Flink MongoDB 连接器思维导图](#75-flink-mongodb-连接器思维导图)
+    - [7.6 多维关联树：MongoDB 操作 → Flink 配置 → 性能影响](#76-多维关联树mongodb-操作--flink-配置--性能影响)
+    - [7.7 MongoDB 连接器使用模式决策树](#77-mongodb-连接器使用模式决策树)
   - [8. 配置参考 (Configuration Reference)](#8-配置参考-configuration-reference)
     - [8.1 MongoDB Source 配置选项](#81-mongodb-source-配置选项)
     - [8.2 MongoDB Sink 配置选项](#82-mongodb-sink-配置选项)
@@ -1038,6 +1041,124 @@ graph LR
     B11 -->|"null"| F11
 ```
 
+### 7.5 Flink MongoDB 连接器思维导图
+
+以下思维导图以 "Flink MongoDB 连接器" 为中心，放射展开五大核心维度：Source 读取、Sink 写入、Lookup Join、数据映射与生产考量。
+
+```mermaid
+mindmap
+  root((Flink MongoDB连接器))
+    Source读取
+      Change Streams
+      批量查询
+      分区策略
+      Resume Token
+    Sink写入
+      Insert
+      Upsert
+      Replace
+      Bulk Write
+    Lookup Join
+      异步查询
+      缓存
+      投影
+      超时控制
+    数据映射
+      Document→Row
+      Schema推断
+      类型转换
+      嵌套处理
+    生产考量
+      连接池
+      重试策略
+      写关注
+      读偏好
+```
+
+### 7.6 多维关联树：MongoDB 操作 → Flink 配置 → 性能影响
+
+以下关联树展示 MongoDB 核心操作与 Flink 配置参数之间的映射关系，以及对应的性能影响。
+
+```mermaid
+graph TB
+    subgraph MongoDB操作["MongoDB 操作"]
+        OP1[Change Stream 监听]
+        OP2[分页批量查询]
+        OP3[Upsert 写入]
+        OP4[Lookup 维表查询]
+    end
+
+    subgraph Flink配置["Flink 配置"]
+        CFG1["checkpoint.interval=60s"]
+        CFG2["parallelism=N"]
+        CFG3["writeMode=REPLACE<br/>batchSize=1000"]
+        CFG4["async.timeout=1s<br/>cache.max-rows=1000"]
+    end
+
+    subgraph 性能影响["性能影响"]
+        PERF1[低延迟实时性<br/>Resume Token 容错]
+        PERF2[高吞吐扫描<br/>分区并行读取]
+        PERF3[幂等去重<br/>批量压缩网络IO]
+        PERF4[毫秒级关联<br/>减少重复查询]
+    end
+
+    OP1 -->|"持久化 Resume Token"| CFG1
+    OP2 -->|"分区策略匹配"| CFG2
+    OP3 -->|"批量+Upsert"| CFG3
+    OP4 -->|"异步缓存"| CFG4
+
+    CFG1 --> PERF1
+    CFG2 --> PERF2
+    CFG3 --> PERF3
+    CFG4 --> PERF4
+```
+
+### 7.7 MongoDB 连接器使用模式决策树
+
+以下决策树展示四种典型 MongoDB 连接器使用模式及其关键配置选择。
+
+```mermaid
+flowchart TD
+    START([选择 MongoDB 连接器模式]) --> Q1{数据场景?}
+
+    Q1 -->|实时 CDC| A1[Change Stream Source]
+    Q1 -->|批量同步| A2[分页查询 Source]
+    Q1 -->|维表关联| A3[Lookup Join]
+    Q1 -->|结果写入| A4[Upsert Sink]
+
+    A1 --> B1[配置 Resume Token]
+    B1 --> B1a[持久化到 Checkpoint]
+    B1 --> B1b[故障恢复断点续传]
+    B1a --> C1([实时 CDC 完成])
+
+    A2 --> B2[分区策略选择]
+    B2 --> B2a[SplitVector 均匀分区]
+    B2 --> B2b[_id 范围时序分区]
+    B2a --> C2([批量同步完成])
+    B2b --> C2
+
+    A3 --> B3[异步查询配置]
+    B3 --> B3a[本地缓存 TTL]
+    B3 --> B3b[投影字段裁剪]
+    B3 --> B3c[超时降级策略]
+    B3a --> C3([维表关联完成])
+    B3b --> C3
+    B3c --> C3
+
+    A4 --> B4[幂等保证]
+    B4 --> B4a[_id 作为更新键]
+    B4 --> B4b[REPLACE / UPDATE 模式]
+    B4 --> B4c[写关注 majority]
+    B4a --> C4([结果写入完成])
+    B4b --> C4
+    B4c --> C4
+
+    style C1 fill:#e1f5fe
+    style C2 fill:#e8f5e9
+    style C3 fill:#fff3e0
+    style C4 fill:#fce4ec
+```
+
 ---
 
 ## 8. 配置参考 (Configuration Reference)
@@ -1129,6 +1250,8 @@ mongodb://user:pass@host1:27017,host2:27017,host3:27017/mydb?replicaSet=rs0&auth
 [^4]: MongoDB Documentation, "Change Events", 2024. <https://www.mongodb.com/docs/manual/reference/change-events/>
 
 [^5]: Apache Flink Documentation, "Exactly Once Semantics", 2024. <https://nightlies.apache.org/flink/flink-docs-stable/docs/learn-flink/streaming_analytics/>
+
+
 
 ---
 

@@ -821,18 +821,144 @@ graph TB
     ROUTE --> OUTN
 ```
 
+### 7.6 Flink CDC 3.0 数据集成思维导图
+
+以下思维导图以"Flink CDC 3.0 数据集成"为中心，放射展开其核心能力维度：
+
+```mermaid
+mindmap
+  root((Flink CDC 3.0 数据集成))
+    Pipeline API
+      声明式配置
+      多表同步
+      路由转换
+      Schema进化
+    数据源
+      MySQL
+      PostgreSQL
+      Oracle
+      MongoDB
+      DB2
+    数据Sink
+      Kafka
+      Paimon
+      StarRocks
+      Doris
+      JDBC
+    核心特性
+      整库同步
+      分库分表
+      字段映射
+      数据过滤
+    运维管理
+      监控指标
+      故障恢复
+      兼容性
+      升级路径
+```
+
+### 7.7 CDC 3.0 多维关联树
+
+以下多维关联树展示 CDC 3.0 Pipeline 与数据源、目标系统以及核心特性之间的映射关系：
+
+```mermaid
+graph TB
+    subgraph "Pipeline 层"
+        P[CDC Pipeline]
+    end
+
+    subgraph "数据源"
+        M[(MySQL)]
+        PGC[(PostgreSQL)]
+        ORA[(Oracle)]
+        MONGO[(MongoDB)]
+        DB2C[(DB2)]
+    end
+
+    subgraph "核心特性"
+        FT1[整库同步]
+        FT2[分库分表]
+        FT3[字段映射]
+        FT4[数据过滤]
+        FT5[Schema进化]
+    end
+
+    subgraph "数据 Sink"
+        K[(Kafka)]
+        PA[(Paimon)]
+        SR[(StarRocks)]
+        D[(Doris)]
+        J[(JDBC)]
+    end
+
+    P -->|读取| M
+    P -->|读取| PGC
+    P -->|读取| ORA
+    P -->|读取| MONGO
+    P -->|读取| DB2C
+
+    P -->|支持| FT1
+    P -->|支持| FT2
+    P -->|支持| FT3
+    P -->|支持| FT4
+    P -->|支持| FT5
+
+    P -->|写入| K
+    P -->|写入| PA
+    P -->|写入| SR
+    P -->|写入| D
+    P -->|写入| J
+
+    M -.->|路由| K
+    M -.->|路由| PA
+    PGC -.->|路由| SR
+    ORA -.->|路由| D
+    MONGO -.->|路由| J
+```
+
+### 7.8 CDC 3.0 集成场景决策树
+
+以下决策树指导用户根据实际场景选择 CDC 3.0 的集成策略：
+
+```mermaid
+flowchart TD
+    START([CDC 3.0 集成场景]) --> Q1{数据复杂度?}
+
+    Q1 -->|单表/简单同步| A1[简单同步]
+    Q1 -->|多表转换/合并| A2[复杂ETL]
+    Q1 -->|异构数据库| A3[异构同步]
+    Q1 -->|海量数据/高吞吐| A4[大规模同步]
+
+    A1 --> B1[YAML配置]
+    B1 --> B2[自动Schema识别]
+    B2 --> B3[单Sink输出]
+    B3 --> END1([完成])
+
+    A2 --> C1[自定义Transform]
+    C1 --> C2[路由规则配置]
+    C2 --> C3[多Sink分发]
+    C3 --> END2([完成])
+
+    A3 --> D1[Schema转换映射]
+    D1 --> D2[类型兼容性检查]
+    D2 --> D3[数据清洗规则]
+    D3 --> END3([完成])
+
+    A4 --> E1[并行读取配置]
+    E1 --> E2[分片策略]
+    E2 --> E3[批量写入优化]
+    E3 --> END4([完成])
+
+    style START fill:#e3f2fd
+    style END1 fill:#e8f5e9
+    style END2 fill:#e8f5e9
+    style END3 fill:#e8f5e9
+    style END4 fill:#e8f5e9
+```
+
 ---
 
 ## 8. 引用参考 (References)
-
-
-
-
-
-
-
-
-
 
 
 ---

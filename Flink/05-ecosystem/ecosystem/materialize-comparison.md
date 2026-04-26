@@ -383,6 +383,112 @@ flowchart TD
 
 ---
 
+## 10. 思维表征深化
+
+### 10.1 全面对比思维导图
+
+以下思维导图从架构、语义、场景、生态和选型五个维度，放射式展示 Materialize 与 Flink 的核心差异与关联。
+
+```mermaid
+mindmap
+  root((Materialize与Flink对比))
+    架构对比
+      SQL-first vs DataStream
+      物化视图 vs 有状态算子
+      全局协调器 vs JobManager/TaskManager
+      存储计算分离 vs 算子链状态后端
+    语义对比
+      SQL标准兼容 vs Dataflow模型
+      严格串行化 vs 可配置一致性
+      增量差分数据流 vs 事件时间/Watermark
+    场景对比
+      实时分析 vs 复杂事件处理
+      Serving查询 vs ETL数据管道
+      快速原型 vs 复杂流管道
+    生态对比
+      Kafka原生集成
+      PostgreSQL CDC支持
+      云原生全托管
+      自定义连接器能力
+    选型建议
+      何时选Materialize
+      何时选Flink
+      何时采用混合架构
+```
+
+### 10.2 多维能力关联树
+
+以下关联树从**需求维度**出发，分别映射到 Materialize 与 Flink 的核心能力，帮助快速定位技术选型。
+
+```mermaid
+graph TB
+    subgraph "需求维度"
+        R1[纯SQL实时分析]
+        R2[复杂事件处理]
+        R3[实时Serving查询]
+        R4[ETL数据管道]
+        R5[混合负载]
+    end
+
+    subgraph "Materialize能力映射"
+        M1[原生SQL物化视图]
+        M2[自动索引与优化]
+        M3[PostgreSQL协议Serving]
+        M4[增量计算引擎]
+        M5[云原生托管]
+    end
+
+    subgraph "Flink能力映射"
+        F1[DataStream/DataSet API]
+        F2[CEP模式匹配]
+        F3[有状态算子与状态后端]
+        F4[多Sink灵活路由]
+        F5[Checkpoint exactly-once]
+    end
+
+    R1 --> M1
+    R1 --> M4
+    R2 --> F2
+    R2 --> F3
+    R3 --> M3
+    R3 --> M2
+    R4 --> F1
+    R4 --> F4
+    R4 --> F5
+    R5 --> M5
+    R5 --> F5
+    R5 -.-> M4
+```
+
+### 10.3 选型决策树
+
+以下决策树基于业务场景与团队能力，提供从需求到技术选型的快速决策路径。
+
+```mermaid
+flowchart TD
+    Start[业务场景与团队能力评估] --> Q1{是否需要纯SQL完成所有开发?}
+
+    Q1 -->|是| Q2{是否需要复杂递归查询或时间旅行?}
+    Q1 -->|否| Q3{是否需要复杂事件模式匹配?}
+
+    Q2 -->|是| Materialize_SQL[选择 Materialize<br/>简单快速上线]
+    Q2 -->|否| Q4{是否需要实时Serving查询?}
+
+    Q4 -->|是| Materialize_Serving[选择 Materialize<br/>物化视图自动维护]
+    Q4 -->|否| Flink_Standard[选择 Flink<br/>通用流处理]
+
+    Q3 -->|是| Flink_CEP[选择 Flink<br/>丰富算子灵活控制]
+    Q3 -->|否| Q5{是否需要ML集成或自定义窗口?}
+
+    Q5 -->|是| Flink_ML[选择 Flink<br/>ML库与UDF支持]
+    Q5 -->|否| Q6{是否需要实时分析加复杂处理混合?}
+
+    Q6 -->|是| Hybrid[混合架构<br/>Flink预处理 + Materialize实时查询]
+    Q6 -->|否| Materialize_Simple[选择 Materialize<br/>低运维成本]
+```
+
+---
+
 **Document Version History**:
 
 | Version | Date | Changes |

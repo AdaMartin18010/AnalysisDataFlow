@@ -69,6 +69,9 @@ StateFun 2.x 已于生产环境验证多年。当前社区正积极推进 **Stat
     - [7.4 Saga 模式执行流程图](#74-saga-模式执行流程图)
     - [7.5 StateFun 3.0 部署拓扑演进图](#75-statefun-30-部署拓扑演进图)
     - [7.6 竞品对比矩阵图](#76-竞品对比矩阵图)
+    - [7.7 Stateful Functions 3.0 思维导图](#77-stateful-functions-30-思维导图)
+    - [7.8 多维关联树](#78-多维关联树)
+    - [7.9 部署模式选型决策树](#79-部署模式选型决策树)
   - [8. 引用参考 (References)](#8-引用参考-references)
 
 ---
@@ -1165,6 +1168,111 @@ graph LR
         O5[Reminders]
         O6[百万级 Grain]
     end
+```
+
+---
+
+### 7.7 Stateful Functions 3.0 思维导图
+
+以下思维导图以 Stateful Functions 3.0 为中心，放射展开其核心概念维度。
+
+```mermaid
+mindmap
+  root((Stateful Functions 3.0))
+    函数模型
+      Stateful Functions
+      Entity
+      Ingress
+      Egress
+    状态管理
+      持久化状态
+      状态类型
+      状态过期
+      状态查询
+    消息路由
+      动态路由
+      函数编址
+      延迟消息
+      循环检测
+    运行时
+      嵌入模式
+      远程模式
+      K8s模式
+      Flink集成
+    应用场景
+      微服务编排
+      IoT数字孪生
+      游戏状态
+      会话管理
+```
+
+---
+
+### 7.8 多维关联树
+
+以下关联树展示 StateFun 核心概念、运行时模式与部署场景之间的多维映射关系。
+
+```mermaid
+graph TB
+    subgraph "SF核心概念"
+        C1[有状态函数<br/>Stateful Function]
+        C2[虚拟Actor<br/>Virtual Actor]
+        C3[函数模块<br/>Function Module]
+        C4[动态消息路由<br/>Dynamic Routing]
+        C5[状态局部性<br/>State Locality]
+    end
+    subgraph "运行时模式"
+        R1[嵌入式Runtime<br/>Embedded Mode]
+        R2[Remote Function<br/>gRPC/HTTP]
+        R3[Flink集成Runtime<br/>Flink Integrated]
+        R4[K8s Native模式<br/>K8s Operator]
+    end
+    subgraph "部署场景"
+        S1[本地开发测试<br/>Local Dev/Test]
+        S2[微服务编排生产<br/>Microservices Prod]
+        S3[IoT数字孪生<br/>IoT Digital Twin]
+        S4[Flink统一集群<br/>Flink Unified Cluster]
+    end
+    C1 -->|单线程状态转移| R1
+    C1 -->|弹性多语言扩展| R2
+    C2 -->|按需激活/钝化| R3
+    C3 -->|模块组合部署| R4
+    C4 -->|跨函数消息流| R2
+    C5 -->|缓存亲和调度| R3
+    R1 -->|轻量快速迭代| S1
+    R2 -->|独立扩缩容| S2
+    R3 -->|海量状态管理| S3
+    R4 -->|云原生弹性| S4
+    R2 -->|Serverless函数| S2
+    R3 -->|统一Checkpoint| S4
+```
+
+---
+
+### 7.9 部署模式选型决策树
+
+以下决策树辅助开发者根据实际需求选择合适的 StateFun 部署模式。
+
+```mermaid
+flowchart TD
+    Start([开始选型]) --> Q1{是否需要与<br/>Flink生态深度集成?}
+    Q1 -->|是| A1[Flink Stateful Functions Runtime]
+    A1 --> A1a[Checkpoint端到端一致性]
+    A1 --> A1b[RocksDB增量状态后端]
+    A1 --> A1c[部署至现有Flink集群]
+
+    Q1 -->|否| Q2{是否需要多语言SDK<br/>或函数级独立扩缩容?}
+    Q2 -->|是| B1[Remote Function + K8s模式]
+    B1 --> B1a[K8s原生Operator部署]
+    B1 --> B1b[gRPC标准协议通信]
+    B1 --> B1c[函数Pod独立HPA弹性伸缩]
+    B1 --> B1d[Java/Python/Go多语言SDK]
+
+    Q2 -->|否| C1[嵌入式Runtime模式]
+    C1 --> C1a[本地开发快速测试]
+    C1 --> C1b[轻量单进程部署]
+    C1 --> C1c[最小运维开销]
+    C1 --> C1d[函数与运行时同进程]
 ```
 
 ---

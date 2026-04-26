@@ -46,6 +46,9 @@
     - [9.1 JDBC 连接器架构图](#91-jdbc-连接器架构图)
     - [9.2 XA 事务执行流程](#92-xa-事务执行流程)
     - [9.3 连接池状态机](#93-连接池状态机)
+    - [9.4 JDBC 连接器思维导图](#94-jdbc-连接器思维导图)
+    - [9.5 JDBC 操作多维关联树](#95-jdbc-操作多维关联树)
+    - [9.6 JDBC 使用模式决策树](#96-jdbc-使用模式决策树)
   - [10. 引用参考 (References)](#10-引用参考-references)
 
 ---
@@ -1338,21 +1341,122 @@ stateDiagram-v2
 
 ---
 
+### 9.4 JDBC 连接器思维导图
+
+以下思维导图以"Flink JDBC连接器"为中心，放射展开其核心能力维度。
+
+```mermaid
+mindmap
+  root((Flink JDBC连接器))
+    Source读取
+      分区读取
+      并行度
+      Offset管理
+      Schema映射
+    Sink写入
+      批量插入
+      Upsert
+      Exactly-Once
+      幂等性
+    Lookup Join
+      异步查询
+      缓存策略
+      超时控制
+      重试机制
+    连接池
+      HikariCP
+      Druid
+      连接复用
+      超时配置
+    数据库适配
+      MySQL
+      PostgreSQL
+      Oracle
+      SQL Server
+      TiDB
+```
+
+---
+
+### 9.5 JDBC 操作多维关联树
+
+以下关联树展示 JDBC 操作、配置参数与性能影响之间的映射关系。
+
+```mermaid
+graph TB
+    subgraph JDBC操作
+        A1[Source读取]
+        A2[Sink写入]
+        A3[Lookup Join]
+        A4[连接池管理]
+    end
+
+    subgraph 配置参数
+        B1[scan.fetch-size<br/>sink.buffer-flush.max-rows]
+        B2[sink.buffer-flush.interval<br/>sink.max-retries]
+        B3[lookup.cache.max-rows<br/>lookup.cache.ttl]
+        B4[connection.max-pool-size<br/>connection.idle-timeout]
+    end
+
+    subgraph 性能影响
+        C1[吞吐量<br/>T = B / L+BP]
+        C2[写入延迟<br/>受批量大小影响]
+        C3[查询延迟<br/>受缓存命中率影响]
+        C4[连接开销<br/>受池大小影响]
+    end
+
+    A1 -->|配置| B1
+    A2 -->|配置| B2
+    A3 -->|配置| B3
+    A4 -->|配置| B4
+
+    B1 -->|影响| C1
+    B2 -->|影响| C2
+    B3 -->|影响| C3
+    B4 -->|影响| C4
+```
+
+---
+
+### 9.6 JDBC 使用模式决策树
+
+以下决策树展示不同业务场景下的 JDBC 使用模式选型路径。
+
+```mermaid
+flowchart TD
+    Start([JDBC使用场景]) --> Q1{写入模式?}
+
+    Q1 -->|批量写入| A1[JDBC Sink]
+    A1 --> A2[批量大小调优]
+    A2 --> A3[连接池配置]
+    A3 --> End1([高吞吐写入])
+
+    Q1 -->|实时Upsert| B1[JDBC Upsert Sink]
+    B1 --> B2[主键冲突处理]
+    B2 --> B3[方言特定语法]
+    B3 --> End2([幂等写入])
+
+    Q1 -->|维表Join| C1[JDBC Lookup Join]
+    C1 --> C2[异步查询]
+    C2 --> C3[缓存策略]
+    C3 --> C4[超时与重试]
+    C4 --> End3([低延迟关联])
+
+    Q1 -->|CDC同步| D1[Debezium捕获]
+    D1 --> D2[Kafka传输]
+    D2 --> D3[Flink处理]
+    D3 --> D4[JDBC Sink写入]
+    D4 --> End4([端到端同步])
+```
+
+---
+
 ## 10. 引用参考 (References)
-
-
-
-
-
-
-
-
-
 
 
 ---
 
-*文档版本: v1.0 | 创建日期: 2026-04-04 | 最后更新: 2026-04-04*
+*文档版本: v1.0 | 创建日期: 2026-04-04 | 最后更新: 2026-04-26*
 
 ---
 

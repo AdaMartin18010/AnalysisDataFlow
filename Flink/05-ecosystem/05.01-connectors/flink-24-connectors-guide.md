@@ -60,6 +60,9 @@
     - [7.2 连接器选型决策树](#72-连接器选型决策树)
     - [7.3 连接器性能对比雷达图](#73-连接器性能对比雷达图)
     - [7.4 CDC Pipeline 数据流图](#74-cdc-pipeline-数据流图)
+    - [7.5 Flink 2.4 连接器思维导图](#75-flink-24-连接器思维导图)
+    - [7.6 连接器类型→新特性→最佳实践关联树](#76-连接器类型新特性最佳实践关联树)
+    - [7.7 连接器选型决策树](#77-连接器选型决策树)
   - [8. 引用参考 (References)](#8-引用参考-references)
 
 ---
@@ -1885,18 +1888,142 @@ graph LR
 
 ---
 
+### 7.5 Flink 2.4 连接器思维导图
+
+**Flink 2.4 连接器能力全景，以五大维度放射展开：**
+
+```mermaid
+mindmap
+  root((Flink 2.4 连接器))
+    Source改进
+      原生水印
+      分区发现
+      Offset提交
+      Exactly-Once
+    Sink改进
+      两阶段提交
+      预写日志
+      幂等写入
+      事务超时
+    Format支持
+      Parquet
+      Avro
+      ORC
+      JSON
+      CSV
+      Protobuf
+    CDC集成
+      Debezium
+      Maxwell
+      Canal
+      Flink CDC
+    新连接器
+      Paimon
+      Iceberg
+      Delta Lake
+      StarRocks
+```
+
+---
+
+### 7.6 连接器类型→新特性→最佳实践关联树
+
+**多维关联树展示连接器类型、Flink 2.4 新特性与生产最佳实践的映射关系：**
+
+```mermaid
+graph TB
+    subgraph "连接器类型"
+        CT1[消息队列]
+        CT2[数据库]
+        CT3[文件系统]
+        CT4[湖仓]
+        CT5[CDC]
+    end
+
+    subgraph "Flink 2.4 新特性"
+        F1[动态分区发现]
+        F2[批量写入优化]
+        F3[分区提交策略]
+        F4[Exactly-Once 事务]
+        F5[Schema 变更同步]
+    end
+
+    subgraph "最佳实践"
+        B1[开启动态发现<br/>配置消费组协议]
+        B2[启用连接池<br/>设置批量刷盘]
+        B3[按时间分区<br/>启用文件压缩]
+        B4[两阶段提交<br/>设置事务超时]
+        B5[Pipeline YAML<br/>自动 DDL 同步]
+    end
+
+    CT1 --> F1
+    CT1 --> F4
+    CT2 --> F2
+    CT2 --> F4
+    CT3 --> F3
+    CT3 --> F4
+    CT4 --> F4
+    CT4 --> F5
+    CT5 --> F5
+    CT5 --> F2
+
+    F1 --> B1
+    F2 --> B2
+    F3 --> B3
+    F4 --> B4
+    F5 --> B5
+
+    style CT1 fill:#e3f2fd
+    style CT4 fill:#c8e6c9
+    style CT5 fill:#fff3e0
+    style B4 fill:#ffebee
+```
+
+---
+
+### 7.7 连接器选型决策树
+
+**按数据源类型快速定位 Flink 2.4 推荐连接器及核心配置：**
+
+```mermaid
+flowchart TD
+    A[数据源类型] --> B{消息队列?}
+    A --> C{数据库?}
+    A --> D{文件系统?}
+    A --> E{湖仓?}
+
+    B -->|Kafka| B1[Kafka 3.x Source]
+    B1 --> B2[动态分区发现<br/>group.protocol=consumer]
+    B -->|Pulsar| B3[Pulsar 5.0 Source]
+    B3 --> B4[订阅模式配置<br/>seek 初始位置]
+
+    C -->|写入| C1[JDBC 4.0 Sink]
+    C1 --> C2[批量写入<br/>连接池 HikariCP]
+    C -->|变更捕获| C3[CDC 3.0 Source]
+    C3 --> C4[Pipeline YAML<br/>Schema 自动同步]
+
+    D --> D1[FileSystem Sink]
+    D1 --> D2[分区提交策略<br/>process-time/event-time]
+    D2 --> D3[文件压缩<br/>Parquet+Zstd]
+
+    E -->|实时数仓| E1[Paimon 1.0 Sink]
+    E1 --> E2[动态桶调整<br/>增量 Compaction]
+    E -->|多引擎共享| E3[Iceberg V2 Sink]
+    E3 --> E4[Exactly-Once<br/>Deletion Vectors]
+    E -->|Spark 生态| E5[Delta Lake Sink]
+
+    style B1 fill:#4CAF50
+    style C1 fill:#2196F3
+    style D1 fill:#FF9800
+    style E1 fill:#9C27B0
+    style E3 fill:#9C27B0
+```
+
+---
+
 ## 8. 引用参考 (References)
-
-
-
-
-
-
-
-
-
 
 
 ---
 
-*文档版本: v1.0 | 最后更新: 2026-04-04 | Flink 版本: 2.4.0*
+*文档版本: v1.0 | 最后更新: 2026-04-26 | Flink 版本: 2.4.0*

@@ -1221,12 +1221,107 @@ graph LR
     end
 ```
 
+### Flink REST API 思维导图
+
+Flink REST API 各端点的放射式分类视图，从中心向外展开五大管理域。
+
+```mermaid
+mindmap
+  root((Flink REST API 完整参考))
+    集群管理
+      /overview
+      /cluster
+      /jobmanager/config
+    作业操作
+      /jobs
+      /jobs/:id
+      /jobs/:id/stop
+      /jobs/:id/savepoints
+    Checkpoint管理
+      /jobs/:id/checkpoints
+      /checkpoints
+    指标查询
+      /jobs/:id/metrics
+      /taskmanagers/:id/metrics
+    配置管理
+      /jobmanager/config
+      /taskmanagers/:id/logs
+```
+
+### API 端点-方法-场景多维关联树
+
+展示核心 API 端点、HTTP 方法与典型使用场景之间的映射关系。
+
+```mermaid
+graph TB
+    subgraph API端点["API端点"]
+        E1["/overview"]
+        E2["/jobs"]
+        E3["/jobs/:id"]
+        E4["/jobs/:id/stop"]
+        E5["/jobs/:id/savepoints"]
+        E6["/jobs/:id/checkpoints"]
+        E7["/jobs/:id/metrics"]
+        E8["/taskmanagers/:id/metrics"]
+        E9["/taskmanagers/:id/logs"]
+        E10["/jobmanager/config"]
+    end
+
+    subgraph HTTP方法["HTTP方法"]
+        M1["GET"]
+        M2["POST"]
+        M3["PATCH"]
+    end
+
+    subgraph 使用场景["使用场景"]
+        S1["集群状态监控"]
+        S2["作业列表查询"]
+        S3["作业详情查看"]
+        S4["作业停止/取消"]
+        S5["Savepoint触发"]
+        S6["Checkpoint监控"]
+        S7["作业性能指标"]
+        S8["TM性能监控"]
+        S9["日志排查"]
+        S10["配置审计"]
+    end
+
+    E1 --> M1 --> S1
+    E2 --> M1 --> S2
+    E3 --> M1 --> S3
+    E4 --> M3 --> S4
+    E5 --> M2 --> S5
+    E6 --> M1 --> S6
+    E7 --> M1 --> S7
+    E8 --> M1 --> S8
+    E9 --> M1 --> S9
+    E10 --> M1 --> S10
+```
+
+### REST API 使用场景决策树
+
+根据运维目标快速选择对应的 REST API 调用路径与配套操作。
+
+```mermaid
+flowchart TD
+    Start([选择REST API场景]) --> Q1{需要做什么?}
+
+    Q1 -->|监控作业状态| A1[作业监控]
+    A1 --> A1a["GET /jobs + 轮询状态"]
+
+    Q1 -->|自动化运维| A2[自动化运维]
+    A2 --> A2a["POST /jobs/:id/stop + 触发Savepoint"]
+
+    Q1 -->|采集指标| A3[指标采集]
+    A3 --> A3a["GET /metrics + Prometheus集成"]
+
+    Q1 -->|排查故障| A4[故障排查]
+    A4 --> A4a["GET /taskmanagers/:id/logs + thread-dump"]
+```
+
 ---
 
 ## 10. 引用参考 (References)
-
-
-
 
 
 ---

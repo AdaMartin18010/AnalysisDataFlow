@@ -42,6 +42,9 @@
     - [7.1 Confluent Flink 2.3.0 架构图](#71-confluent-flink-230-架构图)
     - [7.2 Shared Compute Pool 资源调度模型](#72-shared-compute-pool-资源调度模型)
     - [7.3 与开源 Flink 特性对比矩阵](#73-与开源-flink-特性对比矩阵)
+    - [7.4 Confluent Flink 2.3 商业版思维导图](#74-confluent-flink-23-商业版思维导图)
+    - [7.5 多维关联树：特性→能力→商业价值](#75-多维关联树特性能力商业价值)
+    - [7.6 Confluent Flink 选型决策树](#76-confluent-flink-选型决策树)
   - [8. 引用参考 (References)](#8-引用参考-references)
 
 ---
@@ -727,6 +730,108 @@ flowchart TD
 | **Iceberg Sink** | ✅ 社区版 | ✅ 优化版 | 性能调优 |
 | **企业支持** | 社区支持 | 24/7 SLA | 商业差异 |
 | **计费粒度** | 自行管理 | CU 级计量 | 商业模式 |
+
+---
+
+### 7.4 Confluent Flink 2.3 商业版思维导图
+
+以下思维导图以"Confluent Flink 2.3商业版"为中心，放射展示产品特性、Kafka集成、企业功能、生态扩展与成本模型的全景视图。
+
+```mermaid
+mindmap
+  root((Confluent Flink 2.3商业版))
+    产品特性
+      托管Flink
+      自动扩缩容
+      Serverless
+      SQL编辑器
+    与Kafka集成
+      原生集成
+      Schema Registry
+      Exactly-Once
+      CDC
+    企业功能
+      RBAC
+      审计日志
+      多区域
+      SLA保证
+    生态扩展
+      Tableflow
+      Flink AI
+      流分析
+      数据治理
+    成本模型
+      计算单元
+      存储计费
+      网络费用
+      预留折扣
+```
+
+---
+
+### 7.5 多维关联树：特性→能力→商业价值
+
+以下关联树展示 Confluent 商业特性如何映射到 Apache Flink 核心能力，并最终转化为企业可量化的商业价值。
+
+```mermaid
+graph TB
+    subgraph "Confluent特性"
+        CF1[Shared Compute Pools]
+        CF2[Flink SQL GA]
+        CF3[Multi-K8s编排]
+        CF4[Schema Registry集成]
+        CF5[RBAC与审计]
+    end
+
+    subgraph "Flink能力"
+        FL1[资源动态调度]
+        FL2[声明式SQL处理]
+        FL3[跨集群容错]
+        FL4[Schema演进]
+        FL5[安全隔离]
+    end
+
+    subgraph "商业价值"
+        BV1[成本降低40-60%]
+        BV2[上线周期缩短70%]
+        BV3[可用性99.9%+]
+        BV4[数据质量保障]
+        BV5[合规就绪]
+    end
+
+    CF1 --> FL1 --> BV1
+    CF2 --> FL2 --> BV2
+    CF3 --> FL3 --> BV3
+    CF4 --> FL4 --> BV4
+    CF5 --> FL5 --> BV5
+```
+
+---
+
+### 7.6 Confluent Flink 选型决策树
+
+以下决策树为不同组织需求提供清晰的 Confluent Flink 部署路径建议。
+
+```mermaid
+flowchart TD
+    A[Confluent Flink选型] --> B{部署目标?}
+    B -->|快速启动| C[Confluent Cloud + SQL + 托管Kafka]
+    B -->|企业级| D[多区域 + RBAC + 审计 + SLA]
+    B -->|成本优化| E[预留实例 + 自动伸缩 + 存储优化]
+    B -->|混合云| F[云托管 + 自建Kafka + VPN连接]
+
+    C --> C1[适用场景: POC/初创团队]
+    C --> C2[核心优势: 5分钟上线/零运维]
+
+    D --> D1[适用场景: 金融/医疗合规]
+    D --> D2[核心优势: 99.99%可用/全审计追踪]
+
+    E --> E1[适用场景: 流量波动业务]
+    E --> E2[核心优势: 按量付费/无资源浪费]
+
+    F --> F1[适用场景: 已有Kafka基础设施]
+    F --> F2[核心优势: 渐进迁移/保护投资]
+```
 
 ---
 

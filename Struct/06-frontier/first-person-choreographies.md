@@ -544,6 +544,72 @@ flowchart TD
     I --> L[多租户协作]
 ```
 
+### 7.5 First-Person Choreographies推导链
+
+以下推理树展示了1CP从本地视角到完整编程范式的形式化推导过程：
+
+```mermaid
+graph BT
+    A1[本地视角<br/>参与者中心规约] --> B1[投影语义<br/>EPP从全局到局部]
+    A2[可执行性<br/>直接运行的一人称程序] --> B1
+    B1 --> C1[类型系统<br/>会话类型与行为类型融合]
+    C1 --> D1[验证方法<br/>类型检查与模型检测]
+    D1 --> E1[1CP编程范式<br/>第一人称Choreographic]
+    style E1 fill:#f9f,stroke:#333,stroke-width:4px
+    style C1 fill:#bbf,stroke:#333,stroke-width:2px
+```
+
+### 7.6 Choreography编程模型的视角矩阵
+
+以下概念矩阵展示了不同编程模型在中心化程度与抽象层级二维空间中的定位：
+
+```mermaid
+quadrantChart
+    title Choreography编程模型的视角矩阵
+    x-axis 去中心化 --> 中心化
+    y-axis 低抽象层级 --> 高抽象层级
+    quadrant-1 中心化高抽象
+    quadrant-2 去中心化高抽象
+    quadrant-3 去中心化低抽象
+    quadrant-4 中心化低抽象
+    "多参与者Choreography": [0.2, 0.8]
+    "第一人视角(1CP)": [0.35, 0.75]
+    "Orchestration": [0.85, 0.7]
+    "点对点通信": [0.15, 0.2]
+```
+
+### 7.7 First-Person Choreographies核心概念放射图
+
+```mermaid
+mindmap
+  root((First-Person<br/>Choreographies))
+    本地视角
+      参与者中心规约
+      进程作为一等公民
+      运行时动态创建
+      进程引用传递
+    投影语义
+      EPP从全局到局部
+      行为等价保持
+      局部程序正确性
+      投影算法完备性
+    类型系统
+      会话类型融合
+      行为类型嵌入
+      线性类型约束
+      延续一致性
+    可执行性
+      直接运行的一人称程序
+      spawn动态实例化
+      进程引用传递
+      CPC通信原语
+    验证方法
+      静态类型检查
+      死锁自由保证
+      模型检测
+      互模拟验证
+```
+
 ---
 
 ## 8. 引用参考 (References)

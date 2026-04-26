@@ -1257,9 +1257,130 @@ flowchart TD
     PropagateError --> End
 ```
 
+### 7.4 WASM流处理思维导图
+
+以下思维导图以"WASM流处理"为中心，从WASM基础、UDF开发、运行时集成、性能考量和应用场景五个维度放射展开，帮助建立完整的WASM流处理认知框架。
+
+```mermaid
+mindmap
+  root((WASM流处理))
+    WASM基础
+      模块 Module
+      实例 Instance
+      线性内存 Memory
+      函数表 Table
+      全局变量 Global
+    UDF开发
+      Rust编译 → WASM
+      Go编译 → WASM
+      C++编译 → WASM
+      Flink UDF注册
+    运行时集成
+      Wasmtime
+      WAMR
+      WasmEdge
+      沙箱隔离
+      资源限制
+    性能考量
+      启动开销
+      执行速度
+      内存隔离
+      序列化成本
+    应用场景
+      自定义函数
+      外部库复用
+      算法插件
+      安全敏感计算
+```
+
+### 7.5 WASM特性→Flink集成点→业务价值多维关联树
+
+以下关联树展示WASM核心特性如何通过Flink具体集成点转化为可量化的业务价值，形成从技术指标到商业回报的完整映射链路。
+
+```mermaid
+graph TB
+    subgraph WasmFeatures["WASM核心特性"]
+        F1[沙箱隔离]
+        F2[跨平台可移植]
+        F3[冷启动快]
+        F4[多语言编译目标]
+        F5[资源可控]
+    end
+
+    subgraph FlinkIntegration["Flink集成点"]
+        I1[UDF执行引擎]
+        I2[边缘运行时]
+        I3[组件模型宿主]
+        I4[安全策略层]
+        I5[类型转换桥接]
+    end
+
+    subgraph BusinessValue["业务价值"]
+        V1[降低延迟 60%+]
+        V2[多语言生态统一]
+        V3[安全合规保障]
+        V4[边缘成本优化 40%]
+        V5[算法快速迭代]
+    end
+
+    F1 --> I4
+    F1 --> I1
+    F2 --> I2
+    F2 --> I3
+    F3 --> I1
+    F3 --> I2
+    F4 --> I5
+    F4 --> I3
+    F5 --> I4
+    F5 --> I2
+
+    I1 --> V2
+    I1 --> V5
+    I2 --> V1
+    I2 --> V4
+    I3 --> V5
+    I3 --> V2
+    I4 --> V3
+    I4 --> V4
+    I5 --> V2
+    I5 --> V5
+```
+
+### 7.6 WASM UDF选型决策树
+
+以下决策树为不同业务场景下的UDF技术选型提供系统化决策路径，从计算复杂度、多语言需求、安全隔离要求和算法特性四个维度给出具体建议。
+
+```mermaid
+flowchart TD
+    Start([UDF选型起点]) --> Q1{计算复杂度?}
+
+    Q1 -->|简单计算| A1[Java UDF]
+    Q1 -->|中等/复杂| Q2{多语言需求?}
+
+    Q2 -->|仅需Java| A1
+    Q2 -->|需要Rust/Go/C++| Q3{安全隔离要求?}
+
+    Q3 -->|一般隔离| A2[WASM UDF<br/>标准沙箱]
+    Q3 -->|严格隔离| A3[WASM UDF<br/>+ 严格资源配额]
+
+    Q2 -->|复杂算法库复用| Q4{算法特点?}
+
+    Q4 -->|计算密集型| A4[预编译WASM<br/>AOT + 实例缓存]
+    Q4 -->|I/O密集型| A5[WASM + WASI 0.3<br/>异步支持]
+    Q4 -->|频繁调用| A4
+
+    A1 -->|性能优先<br/>JVM内联执行| End1([Java生态])
+    A2 -->|跨语言统一<br/>低启动开销| End2([WASM标准模式])
+    A3 -->|安全合规<br/>资源硬限制| End3([WASM安全强化])
+    A4 -->|缓存复用<br/>最大化吞吐| End4([WASM高性能模式])
+    A5 -->|异步非阻塞<br/>背压原生对接| End5([WASM异步模式])
+```
+
 ---
 
 ## 8. 引用参考 (References)
+
+
 
 
 

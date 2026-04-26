@@ -414,6 +414,125 @@ flowchart TD
 
 ---
 
+### Flink Fluss集成全景思维导图
+
+以下思维导图从五个维度展示 Flink 与 Fluss 集成的全景能力。
+
+```mermaid
+mindmap
+  root((Flink Fluss集成))
+    Fluss核心
+      实时流存储
+      表格式语义
+      增量快照机制
+      MVCC多版本并发控制
+    Flink Source
+      流读取
+      批量读取
+      Lookup Join
+      时间旅行查询
+    Flink Sink
+      Append模式
+      Upsert模式
+      Exactly-Once语义
+      Compaction自动压缩
+    生态对接
+      Flink SQL原生支持
+      Hive元数据兼容
+      Spark多引擎查询
+      StarRocks实时分析
+    应用场景
+      实时数仓构建
+      CDC数据同步
+      流批一体计算
+      湖仓分层加速
+```
+
+### Fluss特性→Flink能力→业务价值多维关联树
+
+以下多维关联树展示 Fluss 核心特性如何通过 Flink 能力映射为实际业务价值。
+
+```mermaid
+graph TB
+    subgraph "Fluss核心特性"
+        F1[实时流存储<br/>亚秒级延迟]
+        F2[统一表格式<br/>流批一致]
+        F3[增量快照<br/>轻量Checkpoint]
+        F4[MVCC<br/>多版本隔离]
+        F5[分层存储<br/>热温冷自动分层]
+    end
+
+    subgraph "Flink能力增强"
+        FL1[Source: 流/批统一读取]
+        FL2[Delta Join: 零状态关联]
+        FL3[Lookup Join: 毫秒级点查]
+        FL4[Sink: Exactly-Once写入]
+        FL5[Temporal Join: 时间旅行]
+    end
+
+    subgraph "业务价值"
+        V1[成本降低40-60%]
+        V2[状态膨胀消除]
+        V3[端到端延迟降至秒级]
+        V4[运维复杂度大幅降低]
+        V5[分析查询性能提升10倍]
+    end
+
+    F1 --> FL1
+    F2 --> FL2
+    F3 --> FL4
+    F4 --> FL3
+    F4 --> FL5
+    F5 --> FL1
+
+    FL1 --> V3
+    FL2 --> V2
+    FL2 --> V1
+    FL3 --> V5
+    FL4 --> V3
+    FL5 --> V4
+    FL5 --> V1
+```
+
+### Fluss使用场景决策树
+
+以下决策树展示不同业务场景下 Fluss 与 Flink 的最佳组合方案。
+
+```mermaid
+flowchart TD
+    A[业务场景评估] --> B{核心诉求?}
+
+    B -->|低延迟实时分析| C[实时分析场景]
+    B -->|CDC数据入湖| D[CDC入湖场景]
+    B -->|统一流批计算| E[流批一体场景]
+    B -->|加速现有湖仓| F[湖仓加速场景]
+
+    C --> C1[Fluss热数据层<br/>+ Flink SQL]
+    C --> C2[物化视图预聚合<br/>亚秒级查询响应]
+    C1 --> C3[适用: 实时大屏<br/>实时监控告警]
+
+    D --> D1[MySQL CDC Source]
+    D1 --> D2[Fluss统一摄取<br/>零ETL链路]
+    D2 --> D3[多引擎查询<br/>Flink/Spark/Trino]
+    D3 --> D4[适用: 数据入湖<br/>ODS层建设]
+
+    E --> E1[Fluss统一存储层<br/>流批一致表格式]
+    E1 --> E2[Flink流处理<br/>+ Flink批处理]
+    E2 --> E3[同一套SQL<br/>同一套数据]
+    E3 --> E4[适用: 离线报表<br/>+ 实时看板]
+
+    F --> F1[Fluss热数据层<br/>+ Iceberg冷数据层]
+    F1 --> F2[Union Read透明路由<br/>自动分层查询]
+    F2 --> F3[适用: 历史归档+实时分析<br/>成本敏感场景]
+
+    style C1 fill:#ff9999,stroke:#c2185b
+    style D2 fill:#99ccff,stroke:#1565c0
+    style E1 fill:#99ff99,stroke:#2e7d32
+    style F1 fill:#ffcc99,stroke:#e65100
+```
+
+---
+
 ## 9. Fluss 0.8 与分层湖仓架构
 
 ### Def-F-04-13: Apache Fluss 0.8 (Incubating) 里程碑
@@ -766,6 +885,8 @@ storage:
 
 [^26]: dbaplus社群, "年度盘点：国内外数据库技术风向与重大更新（2025下半年版）", 2026-01-21. <https://dbaplus.cn/news-156-6976-1.html>
 
+
+
 ---
 
-*文档版本: v1.0 | 创建日期: 2026-04-20*
+*文档版本: v1.1 | 创建日期: 2026-04-20 | 思维表征深化: 2026-04-26*

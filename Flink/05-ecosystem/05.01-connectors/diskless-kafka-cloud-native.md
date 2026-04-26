@@ -680,20 +680,112 @@ graph LR
     style Savings fill:#fff3cd,stroke:#856404
 ```
 
+### 7.5 思维导图：无盘Kafka云原生实践全景
+
+以下思维导图以"无盘Kafka云原生实践"为中心，从云原生架构、无盘设计、Flink集成、运维管理和生产案例五个维度展开。
+
+```mermaid
+mindmap
+  root((无盘Kafka云原生实践))
+    云原生架构
+      K8s部署
+      Operator管理
+      自动伸缩
+      存储编排
+    无盘设计
+      内存存储
+      分层卸载
+      对象存储后端
+      弹性卷
+    与Flink集成
+      Source消费
+      Exactly-Once
+      动态分区
+      低延迟
+    运维管理
+      监控告警
+      自动恢复
+      容量规划
+      成本控制
+    生产案例
+      AutoMQ
+      WarpStream
+      云厂商实现
+```
+
+### 7.6 多维关联树：云原生特性→无盘Kafka能力→Flink收益
+
+以下关联树展示云原生基础设施特性如何通过无盘Kafka架构转化为Flink流处理收益。
+
+```mermaid
+graph TB
+    subgraph CloudNative["云原生特性"]
+        C1[K8s编排]
+        C2[声明式API]
+        C3[自动伸缩]
+        C4[存储解耦]
+    end
+
+    subgraph DisklessAbility["无盘Kafka能力"]
+        D1[无状态Broker]
+        D2[对象存储持久化]
+        D3[分层缓存]
+        D4[秒级扩缩容]
+    end
+
+    subgraph FlinkBenefit["Flink收益"]
+        F1[弹性Source消费]
+        F2[Exactly-Once保证]
+        F3[动态分区发现]
+        F4[低延迟端到端]
+    end
+
+    C1 --> D1
+    C2 --> D2
+    C3 --> D4
+    C4 --> D3
+
+    D1 --> F3
+    D2 --> F2
+    D3 --> F4
+    D4 --> F1
+```
+
+### 7.7 决策树：Kafka部署模式选型
+
+以下决策树帮助根据延迟要求、运维能力和成本敏感度选择最适合的Kafka部署模式。
+
+```mermaid
+flowchart TD
+    Start([Kafka部署模式选型]) --> Q1{延迟要求}
+
+    Q1 -->|<5ms 超低延迟| Traditional[传统磁盘架构<br/>自管理Kafka + 本地存储]
+    Q1 -->|5-50ms 一般延迟| Q2{运维能力}
+    Q1 -->|>50ms 可接受| Q3{成本敏感度}
+
+    Q2 -->|专业运维团队| Diskless[云原生无盘架构<br/>K8s Operator + 对象存储 + 自动伸缩]
+    Q2 -->|有限运维资源| Managed[托管服务<br/>Confluent Cloud / AWS MSK / 阿里云Kafka]
+
+    Q3 -->|极高敏感| Diskless
+    Q3 -->|中等敏感| Hybrid[混合模式<br/>热数据内存 + 冷数据对象存储]
+    Q3 -->|低敏感| Managed
+
+    Traditional --> T1[高吞吐<br/>确定性延迟]
+    Traditional --> T2[高运维成本<br/>数据重平衡]
+
+    Diskless --> D1[成本降低80%<br/>秒级扩缩容]
+    Diskless --> D2[需要对象存储<br/>缓存调优]
+
+    Managed --> M1[零运维<br/>SLA保障]
+    Managed --> M2[厂商锁定<br/>按量计费]
+
+    Hybrid --> H1[平衡性能与成本]
+    Hybrid --> H2[架构复杂度较高]
+```
+
 ---
 
 ## 8. 引用参考 (References)
-
-
-
-
-
-
-
-
-
-
-
 
 
 ---

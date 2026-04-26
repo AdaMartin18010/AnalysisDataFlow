@@ -392,6 +392,133 @@ flowchart TD
     style Execution fill:#9f9,stroke:#333,stroke-width:2px
 ```
 
+### 图3：Choreographic 完备性推导树
+
+以下自底向上推导树展示了从逻辑基础到流处理死锁自由保证的完整形式化推导链。树根（底部）为最终保证结论，叶节点（顶部）为原始前提。
+
+```mermaid
+graph BT
+    %% 顶层前提
+    PIL["PiL 非交换线性逻辑<br/>推导即计算树"]
+    MALL["MALL / μMALL<br/>多plicativeAdditive线性逻辑"]
+    PI["π-Calculus<br/>Milner 1992"]
+    ST["Session Types<br/>Caires & Pfenning 2010"]
+
+    %% 第二层：核心构造
+    DFRF["DFRF 进程类<br/>Deadlock-Free & Race-Free"]
+    CHOR_L["ChorL 编排逻辑<br/>ESOP 2025"]
+    EPP_DEF["EPP 端点投影<br/>全局 C → 局部 {Pᵢ}"]
+    MERGE["合并操作 ⊔<br/>最小上界 / 偏序扩展"]
+
+    %% 第三层：关键引理
+    LEMMA2["Lemma 2<br/>进程归约 ⟹ 线性蕴涵"]
+    LEMMA_DF["Lemma-S-CH-01<br/>死锁自由 ⟺ 公式可证"]
+    THEOREM6["Theorem 6<br/>Race-Free Flat Process<br/>⟹ 编排规则块分解"]
+    PROJ_CONS["投影一致性<br/>Projectability"]
+
+    %% 第四层：核心定理
+    COMPLETENESS["⭐ Thm-S-CH-01<br/>编排完备性<br/>P ∈ DFRF ⟺ ∃C. EPP(C) ≡ P"]
+    SOUNDNESS["Prop-S-CH-01<br/>完备性 + 可靠性<br/>C ⟷ EPP(C) 互模拟"]
+
+    %% 第五层：扩展
+    STREAM_EXT["流式扩展<br/>无限流 / 窗口 / 时间语义"]
+    RECURSION["递归扩展<br/>μMALL 不动点算子"]
+    ASYNC["异步通信<br/>共享缓冲区建模"]
+
+    %% 第六层：验证方法
+    TYPE_CHECK["类型检查<br/>Projectability + Race-Freedom"]
+    MODEL_CHECK["模型检测<br/>有限状态空间验证"]
+    PROOF_ASSIST["证明辅助<br/>Coq / Lean 形式化"]
+
+    %% 第七层：工程结论
+    CONCLUSION["✅ 编译期死锁自由保证<br/>流处理系统静态验证<br/>Flink JobGraph 自动生成"]
+
+    %% 边连接
+    MALL --> PIL
+    ST --> PIL
+    PI --> DFRF
+    PIL --> CHOR_L
+    PIL --> LEMMA_DF
+    CHOR_L --> EPP_DEF
+    EPP_DEF --> MERGE
+    DFRF --> LEMMA2
+    LEMMA2 --> LEMMA_DF
+    DFRF --> THEOREM6
+    EPP_DEF --> PROJ_CONS
+    LEMMA_DF --> COMPLETENESS
+    THEOREM6 --> COMPLETENESS
+    PROJ_CONS --> SOUNDNESS
+    COMPLETENESS --> SOUNDNESS
+    SOUNDNESS --> STREAM_EXT
+    SOUNDNESS --> RECURSION
+    SOUNDNESS --> ASYNC
+    STREAM_EXT --> TYPE_CHECK
+    STREAM_EXT --> MODEL_CHECK
+    RECURSION --> PROOF_ASSIST
+    ASYNC --> MODEL_CHECK
+    TYPE_CHECK --> CONCLUSION
+    MODEL_CHECK --> CONCLUSION
+    PROOF_ASSIST --> CONCLUSION
+
+    style PIL fill:#e1f5ff
+    style PI fill:#e1f5ff
+    style COMPLETENESS fill:#f9f,stroke:#333,stroke-width:3px
+    style CONCLUSION fill:#9f9,stroke:#333,stroke-width:3px
+```
+
+### 图4：Choreography vs Orchestration 概念矩阵
+
+以下象限图从去中心化程度（横轴）和可验证性（纵轴）两个维度，对比四种分布式编程范式的定位。形式化 Choreography 占据右上理想区域。
+
+```mermaid
+quadrantChart
+    title Choreography vs Orchestration 概念矩阵
+    x-axis 低去中心化 --> 高去中心化
+    y-axis 低可验证性 --> 高可验证性
+    quadrant-1 高去中心化-低可验证：需改进区域
+    quadrant-2 高去中心化-高可验证：理想区域
+    quadrant-3 低去中心化-低可验证：传统集中式
+    quadrant-4 低去中心化-高可验证：可控但集中
+    纯Orchestration: [0.2, 0.5]
+    混合模式: [0.5, 0.6]
+    Choreography: [0.8, 0.75]
+    形式化Choreography: [0.92, 0.95]
+```
+
+### 图5：Choreographic 编程 2025 完备性思维导图
+
+以下思维导图以 2025 年完备性结果为核心，放射展开全局类型、EPP、完备性定理、流式扩展与验证方法五大知识分支。
+
+```mermaid
+mindmap
+  root((Choreographic编程<br/>2025完备性))
+    全局类型
+      会话类型 Session Types
+      多参与者协议 Multiparty
+      线性类型约束 Linear
+      选择/委托/递归
+    EPP
+      端点投影 Endpoint Projection
+      投影一致性 Projectability
+      合并操作 Merge ⊔
+      局部行为提取
+    完备性定理
+      Thm-S-CH-01
+      DFRF ⟺ Choreography
+      死锁自由保证
+      完备性 + 可靠性
+    流式扩展
+      无限流语义
+      窗口操作 Window
+      时间语义 Watermark
+      动态拓扑重构
+    验证方法
+      类型检查 Type Checking
+      模型检测 Model Checking
+      PiL 证明系统
+      证明辅助 Coq/Lean
+```
+
 ---
 
 ## 8. 引用参考 (References)

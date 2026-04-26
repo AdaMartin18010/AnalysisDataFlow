@@ -742,6 +742,119 @@ flowchart LR
     K -->|否| M[HDFS / NFS]
 ```
 
+### 7.5 Flink K8s部署思维导图
+
+以下思维导图以"Flink K8s部署"为中心，系统展示部署模式、资源配置、服务发现、持久化与安全五大维度。
+
+```mermaid
+mindmap
+  root((Flink K8s部署))
+    部署模式
+      Session模式
+      Application模式
+      Per-Job模式[Per-Job模式 已弃用]
+    资源配置
+      CPU请求与限制
+      内存请求与限制
+      存储类StorageClass
+      网络策略
+    服务发现
+      Headless Service
+      DNS解析
+      Ingress暴露
+      LoadBalancer
+    持久化
+      Checkpoint PVC
+      Savepoint卷
+      ConfigMap配置
+      Secret密钥
+    安全
+      RBAC权限控制
+      NetworkPolicy网络隔离
+      PodSecurity安全策略
+      镜像安全扫描
+```
+
+### 7.6 K8s概念→Flink组件→部署产物多维关联树
+
+以下关联树展示Kubernetes原生概念到Flink运行时组件再到最终部署产物的完整映射关系。
+
+```mermaid
+graph TB
+    subgraph "K8s概念层"
+        NS[Namespace]
+        SA[ServiceAccount]
+        RBAC[RBAC/Role]
+        SC[StorageClass]
+        NP[NetworkPolicy]
+    end
+
+    subgraph "Flink组件层"
+        JM1[JobManager]
+        TM1[TaskManager]
+        OP1[Operator Chain]
+        CP1[Checkpoint Coordinator]
+    end
+
+    subgraph "部署产物层"
+        DEP1[Deployment/StatefulSet]
+        SVC1[Service]
+        CM1[ConfigMap]
+        SEC1[Secret]
+        PVC1[PVC]
+        HPA1[HPA]
+    end
+
+    NS -->|隔离| JM1
+    NS -->|隔离| TM1
+    SA -->|身份认证| JM1
+    RBAC -->|权限绑定| SA
+    SC -->|动态供给| PVC1
+    PVC1 -->|挂载| TM1
+    NP -->|流量控制| JM1
+    NP -->|流量控制| TM1
+    JM1 -->|创建| DEP1
+    TM1 -->|创建| DEP1
+    JM1 -->|暴露| SVC1
+    OP1 -->|配置| CM1
+    CP1 -->|凭证| SEC1
+    OP1 -->|状态存储| PVC1
+    TM1 -->|自动扩缩| HPA1
+```
+
+### 7.7 K8s部署路径决策树
+
+以下决策树根据不同场景推荐最合适的Flink on Kubernetes部署路径。
+
+```mermaid
+flowchart TD
+    A[开始K8s部署] --> B{部署场景?}
+    B -->|快速验证/测试| C[Helm Chart一键部署]
+    B -->|需要定制配置| D[Kustomize覆盖 + 自定义资源]
+    B -->|生产环境| E[Operator + GitOps + 监控]
+    B -->|多租户共享集群| F[Namespace隔离 + ResourceQuota]
+
+    C --> C1[添加Flink Helm仓库]
+    C --> C2[helm install一键安装]
+    C --> C3[适合POC与开发环境]
+
+    D --> D1[编写Kustomization.yaml]
+    D --> D2[覆盖PodTemplate/资源限制]
+    D --> D3[适合中等复杂度部署]
+
+    E --> E1[安装Flink Kubernetes Operator]
+    E --> E2[配置ArgoCD/Flux GitOps]
+    E --> E3[集成Prometheus/Grafana监控]
+    E --> E4[配置HPA/VPA自动扩缩容]
+    E --> E5[适合7x24生产环境]
+
+    F --> F1[按团队/项目划分Namespace]
+    F --> F2[配置ResourceQuota限制]
+    F --> F3[配置LimitRange默认值]
+    F --> F4[配置NetworkPolicy隔离]
+    F --> F5[适合平台即服务PaaS]
+```
+
 ---
 
 ## 8. 监控与日志配置详解
@@ -1041,14 +1154,6 @@ kubectl exec jobmanager-pod -- flink checkpoint -job <job-id>
 ---
 
 ## 13. 引用参考 (References)
-
-
-
-
-
-
-
-
 
 
 ---

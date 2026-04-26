@@ -32,6 +32,9 @@
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
     - [图 7.1: Iris vs Coq 状态安全性验证架构图](#图-71-iris-vs-coq-状态安全性验证架构图)
     - [图 7.2: 状态安全性证明状态机](#图-72-状态安全性证明状态机)
+    - [图 7.3: Iris+Coq 状态安全验证推导树](#图-73-iriscoq-状态安全验证推导树)
+    - [图 7.4: 验证工具自动化与表达能力矩阵](#图-74-验证工具自动化与表达能力矩阵)
+    - [图 7.5: Iris+Coq 状态安全验证思维导图](#图-75-iriscoq-状态安全验证思维导图)
   - [8. 引用参考 (References)](#8-引用参考-references)
   - [关联文档](#关联文档)
 
@@ -675,13 +678,100 @@ stateDiagram-v2
 
 ---
 
+### 图 7.3: Iris+Coq 状态安全验证推导树
+
+以下推导树（自底向上）展示从 Coq 基础逻辑到实际程序正确性的完整验证链条，体现分离逻辑、高阶协议、并发原语、幽灵状态与 adequacy 定理之间的逻辑依赖关系。
+
+```mermaid
+graph BT
+    Base["Coq 构造演算 CIC<br/>基础逻辑层"]
+    Iris["Iris 高阶分离逻辑框架<br/>元语言层"]
+    Sep["分离逻辑<br/>→ 资源断言"]
+    Proto["高阶协议<br/>→ 状态机规范"]
+    Conc["并发原语<br/>→ 原子性规约"]
+    Ghost["幽灵状态<br/>→ 辅助变量"]
+    Adeq["adequacy定理<br/>→ 逻辑到程序的桥梁"]
+    Prog["实际程序正确性<br/>→ 工程可执行保证"]
+
+    Iris --> Base
+    Sep --> Iris
+    Proto --> Iris
+    Conc --> Iris
+    Ghost --> Iris
+    Adeq --> Sep
+    Adeq --> Proto
+    Adeq --> Conc
+    Adeq --> Ghost
+    Prog --> Adeq
+
+    style Base fill:#e3f2fd
+    style Iris fill:#e8f5e9
+    style Prog fill:#ffebee
+    style Adeq fill:#fff3e0
+```
+
+---
+
+### 图 7.4: 验证工具自动化与表达能力矩阵
+
+以下象限矩阵对比主流形式化验证工具在自动化程度与表达能力两个维度上的定位，为流处理状态安全验证的工具选型提供可视化参考。
+
+```mermaid
+quadrantChart
+    title 验证工具的自动化程度与表达能力
+    x-axis 低自动化 --> 高自动化
+    y-axis 弱表达力 --> 强表达力
+    quadrant-1 高自动化 + 强表达力（理想目标区）
+    quadrant-2 高自动化 + 弱表达力（易用但受限）
+    quadrant-3 低自动化 + 弱表达力（避免使用）
+    quadrant-4 低自动化 + 强表达力（专家深度验证）
+    Coq: [0.25, 0.95]
+    Iris: [0.45, 0.95]
+    TLA+: [0.60, 0.70]
+    Dafny: [0.75, 0.65]
+    RustBelt: [0.50, 0.85]
+    VST: [0.35, 0.80]
+```
+
+---
+
+### 图 7.5: Iris+Coq 状态安全验证思维导图
+
+以下思维导图以 Iris+Coq 状态安全验证为核心，放射式展开分离逻辑、高阶协议、并发原语、幽灵状态与 adequacy 定理五大支柱及其子概念。
+
+```mermaid
+mindmap
+  root((Iris+Coq<br/>状态安全验证))
+    分离逻辑
+      资源断言
+      帧规则
+      魔棒蕴涵
+      分离合取
+    高阶协议
+      状态机规范
+      模态算子
+      持久性断言
+      后续模态
+    并发原语
+      原子性规约
+      原子更新
+      并行组合
+      线程局部性
+    幽灵状态
+      辅助变量
+      Ghost State
+      单调性追踪
+      协议不变式
+    adequacy
+      逻辑一致性
+      程序提取
+      实际正确性
+      语义连接
+```
+
+---
+
 ## 8. 引用参考 (References)
-
-
-
-
-
-
 
 
 ---

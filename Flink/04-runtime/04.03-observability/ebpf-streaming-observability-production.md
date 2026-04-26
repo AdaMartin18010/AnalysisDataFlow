@@ -460,6 +460,127 @@ flowchart TD
     style Falco fill:#ffa,stroke:#333
 ```
 
+### 图 4：eBPF 流式可观测性思维导图
+
+下图以思维导图形式展示 eBPF 流式可观测性的五大核心维度及其关键技术点。
+
+```mermaid
+mindmap
+  root((eBPF流式可观测性生产实践))
+    eBPF基础
+      内核探针kprobe/fentry
+      用户探针uprobe/USDT
+      静态追踪tracepoint
+      BPF验证器Verifier
+    数据采集
+      网络流量TCP/sk_buff
+      系统调用syscalls
+      文件IO VFS/ext4
+      调度事件sched_switch
+    Flink观测
+      JVM GC暂停分析
+      线程状态阻塞检测
+      网络缓冲区背压
+      CPU火焰图采样
+    安全隔离
+      Verifier有界性检查
+      内核沙箱执行
+      CAP_BPF权限控制
+      资源限制cgroup
+    生产部署
+      BCC/libbpf-tools
+      Grafana eBPF插件
+      告警集成AlertManager
+      DaemonSet节点级部署
+```
+
+### 图 5：eBPF 探针→数据→价值多维关联树
+
+下图展示 eBPF 探针类型、采集的原始数据与最终分析价值之间的完整映射关系。
+
+```mermaid
+graph TB
+    subgraph "eBPF探针层"
+        P1["kprobe/tcp_sendmsg"]
+        P2["kprobe/tcp_recvmsg"]
+        P3["tracepoint/syscalls/sys_enter_*"]
+        P4["uprobe/JVM方法"]
+        P5["tracepoint/sched/sched_switch"]
+        P6["tc-eBPF / XDP"]
+    end
+
+    subgraph "采集数据层"
+        D1["TCP连接元数据<br/>src_ip/dst_ip/port"]
+        D2["Kafka协议头部<br/>API Key/Correlation ID"]
+        D3["系统调用序列<br/>open/read/write"]
+        D4["JVM堆栈追踪<br/>GC线程状态"]
+        D5["调度事件<br/>on-CPU/off-CPU时间"]
+        D6["数据包统计<br/>PPS/BPS/丢包"]
+    end
+
+    subgraph "分析价值层"
+        V1["网络延迟分解<br/>RTT/TCP重传识别"]
+        V2["协议级指标<br/>Producer吞吐/Consumer Lag"]
+        V3["安全审计<br/>异常文件访问检测"]
+        V4["性能剖析<br/>CPU火焰图/热点定位"]
+        V5["调度分析<br/>上下文切换抖动"]
+        V6["流量可视化<br/>拓扑热力图"]
+    end
+
+    P1 -->|"协议解析"| D1
+    P1 -->|"payload捕获"| D2
+    P2 -->|"响应关联"| D1
+    P3 -->|"syscall追踪"| D3
+    P4 -->|"JVM符号解析"| D4
+    P5 -->|"调度统计"| D5
+    P6 -->|"包级统计"| D6
+
+    D1 -->|"延迟分析"| V1
+    D2 -->|"Kafka指标"| V2
+    D3 -->|"行为基线"| V3
+    D4 -->|"GC优化"| V4
+    D5 -->|"调度优化"| V5
+    D6 -->|"流量工程"| V6
+```
+
+### 图 6：eBPF 观测方案决策树
+
+下图按观测目标类型（网络分析、性能剖析、安全审计、全栈追踪）展示对应的 eBPF 探针选型与实现路径。
+
+```mermaid
+flowchart TD
+    Start([eBPF观测方案选择]) --> Q1{观测目标类型?}
+
+    Q1 -->|"网络分析"| Net["TCP探针部署"]
+    Net --> Net1["kprobe/tcp_sendmsg<br/>kprobe/tcp_recvmsg"]
+    Net1 --> Net2["连接追踪conntrack"]
+    Net2 --> Net3["延迟热力图<br/>P50/P95/P99 RTT"]
+
+    Q1 -->|"性能剖析"| Perf["CPU采样策略"]
+    Perf --> Perf1["BPF_PROG_TYPE_PERF_EVENT"]
+    Perf1 --> Perf2["生成CPU火焰图<br/>on-CPU分析"]
+    Perf2 --> Perf3["Off-CPU分析<br/>调度延迟根因"]
+
+    Q1 -->|"安全审计"| Sec["系统调用过滤"]
+    Sec --> Sec1["tracepoint/syscalls/*"]
+    Sec1 --> Sec2["异常行为检测<br/>execve/open异常"]
+    Sec2 --> Sec3["Falco规则引擎<br/>实时告警"]
+
+    Q1 -->|"全栈追踪"| Full["统一关联方案"]
+    Full --> Full1["eBPF内核事件"]
+    Full1 --> Full2["OpenTelemetry上下文"]
+    Full2 --> Full3["Span ID ↔ PID关联"]
+    Full3 --> Full4["统一Trace视图"]
+
+    Net3 --> Out["Grafana / Prometheus"]
+    Perf3 --> Out
+    Sec3 --> Out
+    Full4 --> Out
+
+    style Start fill:#bbf,stroke:#333
+    style Out fill:#afa,stroke:#333
+```
+
 ---
 
 ## 8. 引用参考 (References)

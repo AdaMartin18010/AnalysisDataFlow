@@ -1043,11 +1043,177 @@ graph TB
     style C fill:#f3e5f5
 ```
 
+### 7.4 Flink 连接器框架演进思维导图
+
+以下思维导图以"Flink连接器框架演进"为中心，放射展开旧API、新Source API、新Sink API、迁移路径与最佳实践五大维度。
+
+```mermaid
+mindmap
+  root((Flink连接器框架演进))
+    旧API
+      SourceFunction
+        run循环
+        手动并行
+        单组件耦合
+      SinkFunction
+        invoke写入
+        无事务抽象
+      RichFunction
+        open/close生命周期
+        RuntimeContext访问
+    新Source API
+      Split
+        数据分片抽象
+        可序列化状态
+      Reader
+        SourceReader接口
+        SplitReader拆分读取
+      Enumerator
+        SplitEnumerator分片分配
+        负载感知策略
+        动态发现
+      事件时间
+        WatermarkGenerator
+        跨Reader水印聚合
+        空闲Source处理
+    新Sink API
+      Writer
+        SinkWriter写入缓冲
+        flush显式刷盘
+      Committer
+        本地提交Committer
+        全局提交GlobalCommitter
+        批量提交优化
+      TwoPhaseCommit
+        预提交prepareCommit
+        事务原子性保证
+        Checkpoint ID幂等
+      预写日志
+        WAL模式
+        故障恢复重放
+    迁移路径
+      兼容性层
+        SourceFunction兼容包装
+        SinkFunction适配器
+        混合部署策略
+      逐步重构
+        先迁移Source
+        再迁移Sink
+        Table API同步更新
+      测试验证
+        单元测试回归
+        MiniCluster集成
+        TestContainer端到端
+    最佳实践
+      接口设计
+        最小职责原则
+        幂等性保证
+        状态快照轻量
+      错误处理
+        可恢复异常重试
+        不可恢复异常快速失败
+        死信队列兜底
+      指标暴露
+        吞吐量/延迟度量
+        背压指标
+        提交成功率
+      文档规范
+        配置项完整说明
+        语义保证声明
+        版本兼容性矩阵
+```
+
+### 7.5 多维关联树：API演进→能力增强→开发者收益
+
+以下关联树展示连接器框架从旧API到新API的演进过程中，各层级能力如何增强并转化为开发者的实际收益。
+
+```mermaid
+graph TB
+    subgraph API演进层
+        A1[旧SourceFunction]
+        A2[旧SinkFunction]
+        A3[FLIP-27 Unified Source API]
+        A4[FLIP-143 SinkV2 API]
+        A5[RateLimiter FLIP-535]
+    end
+
+    subgraph 能力增强层
+        B1[Enumerator-Reader分离]
+        B2[Split状态快照]
+        B3[两阶段提交]
+        B4[主动背压限流]
+        B5[批流统一抽象]
+        B6[动态Split发现]
+    end
+
+    subgraph 开发者收益层
+        C1[简化并行扩展]
+        C2[精确Exactly-Once]
+        C3[消除背压级联]
+        C4[一套代码批流两用]
+        C5[减少状态恢复时间]
+        C6[降低连接器开发门槛]
+    end
+
+    A1 -->|演进为| A3
+    A2 -->|演进为| A4
+    A3 --> B1
+    A3 --> B2
+    A3 --> B5
+    A3 --> B6
+    A4 --> B3
+    A5 --> B4
+    B1 --> C1
+    B2 --> C5
+    B3 --> C2
+    B4 --> C3
+    B5 --> C4
+    B6 --> C6
+    C1 --> C6
+    C5 --> C6
+```
+
+### 7.6 连接器开发选型决策树
+
+以下决策树为连接器开发者提供明确的API选型与迁移策略指引。
+
+```mermaid
+flowchart TD
+    START([开始连接器开发/维护]) --> Q1{是否需要开发<br/>新的Source?}
+    Q1 -->|是| A1[使用新Source API<br/>FLIP-27]
+    Q1 -->|否| Q2{是否需要开发<br/>新的Sink?}
+    Q2 -->|是| A2[使用新Sink API<br/>FLIP-143/191]
+    Q2 -->|否| Q3{是否维护旧连接器?}
+    Q3 -->|是| A3[启用兼容性层<br/>渐进式迁移]
+    Q3 -->|否| Q4{是否全新连接器?}
+    Q4 -->|是| A4[遵循最新API<br/>完整测试覆盖]
+    Q4 -->|否| END1([无需操作])
+
+    A1 --> C1[实现Split + Enumerator + Reader]
+    A2 --> C2[实现Writer + Committer + 2PC]
+    A3 --> C3[SourceFunction适配器 / SinkFunction包装]
+    A4 --> C4[Source+Sink双端新API + TestContainer E2E]
+
+    C1 --> D1[验证: 负载均衡 / 检查点一致性]
+    C2 --> D2[验证: 事务原子性 / 幂等性]
+    C3 --> D3[验证: 行为一致性 / 性能无损]
+    C4 --> D4[验证: 六层测试金字塔全通过]
+
+    D1 --> END2([交付])
+    D2 --> END2
+    D3 --> END2
+    D4 --> END2
+
+    style A1 fill:#c8e6c9
+    style A2 fill:#c8e6c9
+    style A4 fill:#c8e6c9
+    style A3 fill:#fff9c4
+    style END2 fill:#b3e5fc
+```
+
 ---
 
 ## 8. 引用参考 (References)
-
-
 
 
 ---
@@ -1058,11 +1224,11 @@ graph TB
 |------|-----|
 | 版本 | 2.2-2.4 |
 | 当前状态 | Flink 2.2 增强已发布 |
-| 最后更新 | 2026-04-14 |
+| 最后更新 | 2026-04-26 |
 | 形式化元素 | 10 定义, 3 定理, 5 引理/命题 |
-| Mermaid 图 | 3 个 |
+| Mermaid 图 | 6 个 |
 | 代码示例 | 6 个 (Java/SQL) |
 
 ---
 
-*文档版本: v1.0 | 创建日期: 2026-04-19*
+*文档版本: v1.1 | 创建日期: 2026-04-19*

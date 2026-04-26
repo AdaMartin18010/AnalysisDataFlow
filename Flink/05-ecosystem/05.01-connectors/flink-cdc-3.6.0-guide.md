@@ -1150,12 +1150,144 @@ graph LR
     style F120 fill:#e3f2fd
 ```
 
+### 7.6 Flink CDC 3.6.0 思维导图
+
+Flink CDC 3.6.0 的知识体系以架构设计、数据源、数据Sink、核心特性和运维管理五大维度展开。
+
+```mermaid
+mindmap
+  root((Flink CDC 3.6.0指南))
+    架构设计
+      SourceCoordinator
+      Reader
+      Split
+      Offset
+    数据源
+      MySQL
+      PostgreSQL
+      Oracle
+      SQL Server
+      MongoDB
+    数据Sink
+      Kafka
+      Paimon
+      Iceberg
+      StarRocks
+      JDBC
+    核心特性
+      Schema变更
+      增量快照
+      Exactly-Once
+      多表同步
+    运维管理
+      监控指标
+      故障恢复
+      性能调优
+      兼容性
+```
+
+### 7.7 CDC 数据源→特性→Sink 多维关联树
+
+展示 CDC 数据源经过 Flink CDC 3.6.0 核心特性处理，映射到目标 Sink 的多维关联关系。
+
+```mermaid
+graph TB
+    subgraph "CDC数据源"
+        SRC_MYSQL[(MySQL<br/>Binlog)]
+        SRC_PG[(PostgreSQL<br/>WAL)]
+        SRC_ORACLE[(Oracle<br/>LogMiner/XStream)]
+        SRC_MSSQL[(SQL Server<br/>CDC)]
+        SRC_MONGO[(MongoDB<br/>Change Streams)]
+    end
+
+    subgraph "Flink CDC 3.6.0核心特性"
+        FEAT_SCHEMA[Schema变更捕获]
+        FEAT_SNAP[增量快照]
+        FEAT_EO[Exactly-Once语义]
+        FEAT_MULTI[多表同步]
+        FEAT_ROUTE[路由正则表达式]
+        FEAT_TRANS[Transform VARIANT]
+    end
+
+    subgraph "目标Sink"
+        SNK_KAFKA[(Kafka)]
+        SNK_PAIMON[(Paimon)]
+        SNK_ICEBERG[(Iceberg)]
+        SNK_STAR[(StarRocks)]
+        SNK_JDBC[(JDBC)]
+        SNK_HUDI[(Apache Hudi)]
+        SNK_DORIS[(Doris)]
+        SNK_FLUSS[(Fluss)]
+    end
+
+    SRC_MYSQL --> FEAT_SCHEMA
+    SRC_MYSQL --> FEAT_SNAP
+    SRC_PG --> FEAT_SCHEMA
+    SRC_PG --> FEAT_EO
+    SRC_ORACLE --> FEAT_SNAP
+    SRC_ORACLE --> FEAT_MULTI
+    SRC_MSSQL --> FEAT_EO
+    SRC_MONGO --> FEAT_TRANS
+    SRC_MONGO --> FEAT_ROUTE
+
+    FEAT_SCHEMA --> SNK_PAIMON
+    FEAT_SCHEMA --> SNK_ICEBERG
+    FEAT_SCHEMA --> SNK_FLUSS
+    FEAT_SNAP --> SNK_HUDI
+    FEAT_SNAP --> SNK_DORIS
+    FEAT_EO --> SNK_KAFKA
+    FEAT_EO --> SNK_JDBC
+    FEAT_MULTI --> SNK_STAR
+    FEAT_MULTI --> SNK_PAIMON
+    FEAT_ROUTE --> SNK_KAFKA
+    FEAT_TRANS --> SNK_ICEBERG
+```
+
+### 7.8 CDC 3.6.0 使用场景决策树
+
+根据不同数据同步场景，选择对应的 CDC 3.6.0 架构方案。
+
+```mermaid
+flowchart TD
+    START[CDC 3.6.0使用场景] --> Q1{数据规模与结构?}
+
+    Q1 -->|单表同步| A1[简单Pipeline]
+    Q1 -->|整库同步| A2[多表Source]
+    Q1 -->|分库分表| A3[多实例Source]
+    Q1 -->|异构同步| A4[Schema转换]
+
+    A1 --> B1[自动Schema进化]
+    B1 --> B2[单Sink输出]
+
+    A2 --> C1[多表路由]
+    C1 --> C2[表发现与动态路由]
+    C2 --> C3[多Sink分发]
+
+    A3 --> D1[多实例Source合并]
+    D1 --> D2[统一Schema对齐]
+    D2 --> D3[统一Sink输出]
+
+    A4 --> E1[数据清洗]
+    E1 --> E2[目标适配]
+    E2 --> E3[多Sink异构写入]
+
+    B2 --> END[完成同步]
+    C3 --> END
+    D3 --> END
+    E3 --> END
+
+    style START fill:#e3f2fd
+    style END fill:#e8f5e9
+```
+
 ---
 
 ## 8. 引用参考 (References)
 
 [^1]: Apache Flink Blog, "Apache Flink CDC 3.6.0 Release Announcement", March 30, 2026. <https://flink.apache.org/2026/03/30/apache-flink-cdc-3.6.0-release-announcement/>
 
+
+
 ---
 
-*文档版本: v1.1 | 创建日期: 2026-04-08 | 最后更新: 2026-04-15 | 对应CDC版本: 3.6.0*
+*文档版本: v1.1 | 创建日期: 2026-04-08 | 最后更新: 2026-04-26 | 对应CDC版本: 3.6.0*

@@ -441,6 +441,105 @@ mindmap
       Alerting
 ```
 
+### 9.1 Flink Runtime 五层思维导图
+
+以下思维导图从五个维度系统梳理 Flink Runtime 的核心能力域：
+
+```mermaid
+mindmap
+  root((Flink Runtime模块))
+    部署层
+      Standalone
+      YARN
+      Kubernetes
+      云托管
+      Serverless
+    调度层
+      作业调度
+      资源分配
+      任务部署
+      容错恢复
+    状态层
+      Heap
+      RocksDB
+      ForSt
+      增量Checkpoint
+      State TTL
+    可观测性
+      Metrics
+      Logging
+      Tracing
+      Alerting
+      Dashboard
+    运维层
+      REST API
+      CLI工具
+      Operator
+      自动化运维
+```
+
+### 9.2 多维关联树
+
+Runtime 子模块、核心能力与用户价值的映射关系：
+
+```mermaid
+graph TB
+    subgraph Runtime子模块
+        R1[04.01-deployment<br/>部署模块]
+        R2[04.02-operations<br/>运维模块]
+        R3[04.03-state<br/>状态模块]
+        R4[04.03-observability<br/>可观测性模块]
+    end
+
+    subgraph 核心能力
+        C1[多模式部署]
+        C2[弹性资源调度]
+        C3[分布式状态管理]
+        C4[全链路可观测]
+        C5[自动故障恢复]
+    end
+
+    subgraph 用户价值
+        V1[灵活基础设施适配]
+        V2[高效资源利用]
+        V3[数据一致性保障]
+        V4[生产可观测性]
+        V5[高可用运行]
+    end
+
+    R1 --> C1
+    R1 --> C2
+    R2 --> C4
+    R2 --> C5
+    R3 --> C3
+    R4 --> C4
+
+    C1 --> V1
+    C2 --> V2
+    C3 --> V3
+    C4 --> V4
+    C5 --> V5
+```
+
+### 9.3 Runtime 关注点决策树
+
+根据运维关注点快速定位相关文档与优化方向：
+
+```mermaid
+flowchart TD
+    Start([Runtime 关注点]) --> Q1{问题类型?}
+
+    Q1 -->|部署问题| D[04.01-deployment/]
+    Q1 -->|性能问题| P[04.02-operations/ + 调度优化]
+    Q1 -->|状态问题| S[04.03-state/ + Checkpoint调优]
+    Q1 -->|观测问题| O[04.03-observability/ + 指标分析]
+
+    D --> D1[Standalone / YARN / K8s / Serverless]
+    P --> P1[资源配置 / 并行度 / 反压处理]
+    S --> S1[状态后端选择 / 增量Checkpoint / TTL]
+    O --> O1[Metrics采集 / 日志聚合 / 链路追踪]
+```
+
 ---
 
 ## 10. 相关资源
@@ -459,3 +558,8 @@ mindmap
 ---
 
 ## 引用参考
+
+[^1]: Apache Flink Documentation, "Deployment", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/deployment/overview/
+[^2]: Apache Flink Documentation, "Configuration", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/deployment/config/
+[^3]: Apache Flink Documentation, "State Backends", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/
+[^4]: Apache Flink Documentation, "Monitoring", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/monitoring/

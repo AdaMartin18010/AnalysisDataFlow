@@ -625,18 +625,169 @@ flowchart LR
     style G fill:#FFB6C1
 ```
 
+### 7.6 Flink Gelly流式图处理思维导图
+
+以下思维导图以"Flink Gelly流式图处理"为中心，系统展示其核心维度与关键技术要点：
+
+```mermaid
+mindmap
+  root((Flink Gelly<br/>流式图处理))
+    图模型
+      顶点与边
+        有向图
+        无向图
+        加权图
+      属性系统
+        顶点属性 VV
+        边属性 EV
+        时间戳属性
+      图抽象
+        GraphStream
+        SimpleEdgeStream
+        GraphWindowStream
+    流式算法
+      链接分析
+        PageRank 增量版
+        HITS 近似计算
+      连通性分析
+        连通分量 CC
+        双连通分量
+      社区发现
+        标签传播 LPA
+        模块化优化
+      路径分析
+        单源最短路径 SSSP
+        三角形计数
+    增量计算
+      图更新机制
+        边添加流模型
+        隐式顶点创建
+        墓碑标记删除
+      增量迭代
+        窗口触发重算
+        局部更新传播
+      快照维护
+        Checkpoint 周期
+        增量 Checkpoint
+      结果物化
+        窗口结果输出
+        状态持久化
+    API设计
+      DataSet API
+        批处理图计算
+        迭代算子
+      Table API
+        SQL图查询
+        关系-图融合
+      Gelly API
+        GraphStream构建
+        算法库调用
+      自定义算子
+        ProcessFunction
+        KeyedState管理
+        窗口自定义
+    应用场景
+      社交网络
+        影响力传播
+        社区演化
+      知识图谱
+        实体关系推理
+        动态补全
+      欺诈检测
+        闭环交易识别
+        资金聚集监测
+      推荐系统
+        实时图嵌入
+        协同过滤增强
+```
+
+### 7.7 多维关联树：算法→实现→性能映射
+
+以下关联树展示图算法到Flink具体实现及性能特征的完整映射关系：
+
+```mermaid
+graph TB
+    subgraph "图算法层"
+        A1[连通分量 CC]
+        A2[三角形计数]
+        A3[PageRank]
+        A4[社区发现 LPA]
+        A5[单源最短路径 SSSP]
+        A6[图着色]
+    end
+
+    subgraph "Flink实现层"
+        F1[DisjointSet<br/>Union-Find + KeyedBroadcastState]
+        F2[邻居交集<br/>HashMapState + OΔ查询]
+        F3[增量迭代<br/>DeltaIteration + 局部更新]
+        F4[标签传播<br/>Vertex-centric迭代]
+        F5[增量SSSP<br/>优先队列 + 状态快照]
+        F6[Table API SQL<br/>GNN/GQL扩展]
+    end
+
+    subgraph "性能特征层"
+        P1[低延迟 &lt; 1s<br/>近似结果]
+        P2[内存敏感<br/>OΔ状态]
+        P3[收敛敏感<br/>迭代次数依赖]
+        P4[通信密集<br/>标签广播]
+        P5[更新局部<br/>事件驱动]
+        P6[全局约束<br/>批处理优选]
+    end
+
+    A1 --> F1 --> P1
+    A2 --> F2 --> P2
+    A3 --> F3 --> P3
+    A4 --> F4 --> P4
+    A5 --> F5 --> P5
+    A6 --> F6 --> P6
+
+    A1 -.->|大规模图| F3
+    A3 -.->|实时近似| F5
+    A4 -.->|窗口化| F1
+```
+
+### 7.8 图处理选型决策树
+
+以下决策树指导不同场景下图处理方案的选择：
+
+```mermaid
+flowchart TD
+    START[图处理需求] --> Q1{图是否动态演化?}
+
+    Q1 -->|静态或准静态| Q2{图规模?}
+    Q1 -->|持续动态更新| D1[动态图方案]
+
+    Q2 -->|大图 &gt; 1亿边| B1[静态大图方案]
+    Q2 -->|中等规模| Q3{查询复杂度?}
+
+    B1 --> B1A[Gelly Batch<br/>迭代计算 + Bulk Synchronization]
+    B1 --> B1B[DataSet API<br/>自定义分区 + 全量内存]
+    B1 --> B1C[专用图数据库<br/>Neo4j/TigerGraph<br/>复杂图遍历]
+
+    D1 --> D1A[Gelly Streaming<br/>增量更新 + 窗口触发]
+    D1 --> D1B[自定义ProcessFunction<br/>精细状态管理 + 事件时间]
+    D1 --> D1C[GraphWindowStream<br/>滑动/滚动/会话窗口]
+
+    Q3 -->|复杂关联查询| C1[复杂查询方案]
+    Q3 -->|简单聚合统计| C2[实时分析方案]
+
+    C1 --> C1A[Table API + SQL<br/>GQL图查询扩展]
+    C1 --> C1B[Flink + JanusGraph<br/>批量数据交换]
+    C1 --> C1C[Gelly + Neo4j Cypher<br/>结果导入导出]
+
+    C2 --> C2A[自定义ProcessFunction<br/>KeyedState + TimerService]
+    C2 --> C2B[Window Aggregate<br/>Tumbling/Sliding窗口]
+    C2 --> C2C[Global Aggregate<br/>全图统计信息]
+
+    B1A --> REC1[适用: 历史PageRank<br/>离线社区发现<br/>全图ML训练]
+    D1A --> REC2[适用: 实时欺诈检测<br/>社交网络演化<br/>IoT拓扑监测]
+    C1A --> REC3[适用: 知识图谱查询<br/>多跳关系分析<br/>图-表联合分析]
+    C2A --> REC4[适用: 实时推荐<br/>指标监控看板<br/>异常告警]
+```
+
 ---
 
 ## 8. 引用参考 (References)
-
-
-
-
-
-
-
-
-
 
 
 ---

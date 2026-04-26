@@ -54,6 +54,9 @@
     - [7.2 资源调度流程图](#72-资源调度流程图)
     - [7.3 故障排查决策树](#73-故障排查决策树)
     - [7.4 作业生命周期状态机](#74-作业生命周期状态机)
+    - [7.5 思维导图：Flink 部署运维全景](#75-思维导图flink-部署运维全景)
+    - [7.6 多维关联树：运维场景→诊断方法→解决方案](#76-多维关联树运维场景诊断方法解决方案)
+    - [7.7 决策树：部署模式选型](#77-决策树部署模式选型)
   - [8. 性能调优参数表](#8-性能调优参数表)
     - [8.1 内存配置参数](#81-内存配置参数)
     - [8.2 网络调优参数](#82-网络调优参数)
@@ -1600,6 +1603,188 @@ stateDiagram-v2
     end note
 ```
 
+### 7.5 思维导图：Flink 部署运维全景
+
+以下思维导图以"Flink 部署运维完整指南"为中心，放射展开五大运维域。
+
+```mermaid
+mindmap
+  root((Flink 部署运维完整指南))
+    部署准备
+      资源评估
+        CPU 与内存基线
+        存储与网络带宽
+        状态后端容量预估
+      依赖检查
+        JDK 版本兼容性
+        Hadoop / K8s 客户端
+        状态存储可访问性
+      安全配置
+        RBAC 与服务账号
+        TLS 与网络策略
+        密钥与凭据管理
+      网络规划
+        Service 与 Ingress 设计
+        Pod CIDR 与跨节点通信
+        防火墙与端口暴露
+    安装部署
+      Standalone
+        单节点快速启动
+        多节点集群配置
+        Embedded Journal HA
+      YARN
+        Session 模式
+        Application 模式
+        ZooKeeper HA
+      K8s
+        Native 部署
+        Operator 托管
+        Helm  chart 安装
+      Docker
+        官方镜像定制
+        Docker Compose 编排
+        健康检查与重启策略
+      云托管
+        AWS EMR Serverless
+        Azure HDInsight
+        GCP Dataproc
+        Alibaba Cloud 实时计算
+    配置调优
+      JM/TM 内存
+        进程总内存模型
+        托管内存与网络内存
+        JVM 堆与 GC 参数
+      并行度
+        默认并行度策略
+        Slot 共享组规划
+        自适应调度器
+      Checkpoint
+        间隔与超时平衡
+        增量与对齐模式
+        外部存储选型
+      网络缓冲
+        Buffer 数量与大小
+        Debloat 动态调整
+        Credit-based 反压
+    运维管理
+      启停作业
+        优雅停止与 Savepoint
+        强制取消与状态清理
+        Session 集群生命周期
+      扩容缩容
+        TM 水平扩容
+        JM 多副本升级
+        Reactive 自动伸缩
+      版本升级
+        Stateful 升级
+        Stateless 快速替换
+        蓝绿与金丝雀发布
+      配置热更新
+        ConfigMap 动态挂载
+        参数生效范围
+        无需重启的调优项
+    故障处理
+      JM 故障
+        Leader 选举超时
+        HA 存储不可达
+        OOM 与 GC 风暴
+      TM 故障
+        心跳丢失检测
+        Slot 分配失败
+        容器退出码分析
+      网络分区
+        DNS 解析异常
+        跨 AZ 延迟抖动
+        Kubernetes CNI 故障
+      数据倾斜
+        Key 分布不均诊断
+        两阶段聚合优化
+        热点 Key 拆分
+      OOM
+        Heap 内存溢出分析
+        RocksDB 托管内存超限
+        网络缓冲区耗尽
+```
+
+### 7.6 多维关联树：运维场景→诊断方法→解决方案
+
+以下关联树展示常见运维场景到诊断方法再到解决方案的完整映射。
+
+```mermaid
+graph TB
+    subgraph "运维场景"
+        S1[JM 故障]
+        S2[TM 故障]
+        S3[网络分区]
+        S4[数据倾斜]
+        S5[OOM 内存溢出]
+    end
+
+    subgraph "诊断方法"
+        D1[查看 JM 日志<br/>K8s Events<br/>Leader Election 状态]
+        D2[心跳检测超时<br/>Slot 报告异常<br/>容器退出码]
+        D3[网络连通性测试<br/>DNS 解析检查<br/>跨节点延迟探测]
+        D4[指标分析<br/>Key 分布直方图<br/>Backpressure 定位]
+        D5[HeapDump 分析<br/>GC 日志审查<br/>内存火焰图]
+    end
+
+    subgraph "解决方案"
+        R1[重启 Pod<br/>HA Leader 切换<br/>增加 JM 内存]
+        R2[自动重启 TM<br/>重新调度 Pod<br/>调整 Slot 配置]
+        R3[修复 CNI<br/>调整网络策略<br/>启用多可用区部署]
+        R4[重新分区<br/>本地预聚合<br/>热点 Key 加盐]
+        R5[增大容器内存<br/>优化 RocksDB 配置<br/>减少网络缓冲竞争]
+    end
+
+    S1 --> D1 --> R1
+    S2 --> D2 --> R2
+    S3 --> D3 --> R3
+    S4 --> D4 --> R4
+    S5 --> D5 --> R5
+```
+
+### 7.7 决策树：部署模式选型
+
+以下决策树帮助根据场景快速选择最合适的 Flink 部署模式。
+
+```mermaid
+flowchart TD
+    START([开始选型]) --> Q1{使用场景?}
+
+    Q1 -->|开发测试| DEV[Local / MiniCluster<br/>Standalone 单节点<br/>Docker Compose]
+    Q1 -->|生产环境| Q2{基础设施?}
+
+    Q2 -->|已有 Hadoop| Q3{规模?}
+    Q2 -->|已有 Kubernetes| Q4{运维能力?}
+    Q2 -->|裸金属/虚拟机| Q5{规模?}
+    Q2 -->|公有云| Q6{云厂商?}
+
+    Q3 -->|中小规模| YARN[YARN Session<br/>或 Application 模式]
+    Q3 -->|大规模| YARN_HA[YARN + ZK HA<br/>多租户资源隔离]
+
+    Q4 -->|强| OPERATOR[Flink K8s Operator<br/>生产环境首选]
+    Q4 -->|中| K8S_NATIVE[K8s Native<br/>Session/Application]
+    Q4 -->|弱| K8S_MANAGED[云托管 K8s 服务<br/>ACK / EKS / GKE]
+
+    Q5 -->|中小规模| STANDALONE[Standalone 集群<br/>Embedded Journal HA]
+    Q5 -->|大规模| Q7{预算与团队?}
+
+    Q7 -->|预算充足| CLOUD[迁移至公有云<br/>使用托管服务]
+    Q7 -->|团队能力强| K8S_ONPREM[自建 K8s<br/>Operator 部署]
+
+    Q6 -->|AWS| AWS_OPT[EMR Serverless<br/>或 EKS + Operator]
+    Q6 -->|Azure| AZURE_OPT[HDInsight<br/>或 AKS + Operator]
+    Q6 -->|GCP| GCP_OPT[Dataproc Serverless<br/>或 GKE + Operator]
+    Q6 -->|阿里云| ALI_OPT[实时计算 Ververica<br/>或 ACK + Operator]
+    Q6 -->|无服务器优先| SERVERLESS[托管 Flink 服务<br/>零运维 Serverless]
+
+    style START fill:#e3f2fd,stroke:#1976d2
+    style OPERATOR fill:#c8e6c9,stroke:#2e7d32
+    style SERVERLESS fill:#c8e6c9,stroke:#2e7d32
+    style DEV fill:#fff9c4,stroke:#f57f17
+    style YARN fill:#e1bee7,stroke:#6a1b9a
+```
+
 ---
 
 ## 8. 性能调优参数表
@@ -1667,15 +1852,6 @@ stateDiagram-v2
 ---
 
 ## 9. 引用参考 (References)
-
-
-
-
-
-
-
-
-
 
 
 ---

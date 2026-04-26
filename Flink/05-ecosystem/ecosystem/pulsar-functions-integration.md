@@ -420,6 +420,126 @@ public class TenantAwareProcessor {
 
 ---
 
+## 9. 思维表征（Visualizations）
+
+以下思维表征补充用于系统化展示 Pulsar Functions 与 Flink 的集成关系、能力映射及选型决策。
+
+### 9.1 思维导图
+
+Pulsar Functions 与 Flink 集成的全景思维导图，展示核心概念、对比维度、混合架构、数据流与场景选择。
+
+```mermaid
+mindmap
+  root((Pulsar Functions<br/>与Flink集成))
+    Pulsar Functions
+      轻量计算
+      事件驱动
+      多语言支持
+      无状态处理
+      有状态处理
+    与Flink对比
+      延迟
+        PF 低延迟
+        Flink 毫秒级
+      吞吐
+        PF 中等
+        Flink 高吞吐
+      状态管理
+        PF 有限
+        Flink 丰富
+      复杂度
+        PF 低
+        Flink 高
+      适用场景
+        PF 简单转换
+        Flink 复杂分析
+    混合架构
+      PF预处理
+      Flink深度处理
+      PF后处理
+    数据流
+      Topic
+      Function
+      Topic
+      Flink
+      Topic
+    场景选择
+      简单转换 PF
+      复杂分析 Flink
+      混合场景 两者结合
+```
+
+### 9.2 多维关联树
+
+计算需求到 Pulsar Functions 能力再到 Flink 互补能力的映射关系。
+
+```mermaid
+graph TB
+    subgraph "计算需求"
+        D1[低延迟过滤]
+        D2[简单转换]
+        D3[窗口聚合]
+        D4[复杂关联]
+        D5[状态计算]
+    end
+
+    subgraph "Pulsar Functions能力"
+        PF1[事件驱动响应]
+        PF2[轻量函数计算]
+        PF3[Topic路由]
+        PF4[基本过滤映射]
+    end
+
+    subgraph "Flink互补能力"
+        F1[有状态流处理]
+        F2[时间窗口语义]
+        F3[复杂DAG编排]
+        F4[精确一次语义]
+    end
+
+    D1 --> PF1
+    D2 --> PF2
+    D3 --> F2
+    D4 --> F3
+    D5 --> F1
+
+    PF1 -.->|扩展| F1
+    PF2 -.->|升级| F3
+    PF3 -.->|增强| F4
+    PF4 -.->|深化| F2
+```
+
+### 9.3 决策树
+
+基于计算特征选择 Pulsar Functions、Flink 或混合架构。
+
+```mermaid
+flowchart TD
+    Start([计算引擎选型]) --> Q1{处理场景?}
+
+    Q1 -->|简单ETL| A1[Pulsar Functions]
+    A1 --> A1a[轻量函数执行]
+    A1 --> A1b[低延迟响应]
+    A1 --> A1c[Serverless + 自动伸缩]
+
+    Q1 -->|复杂流处理| A2[Apache Flink]
+    A2 --> A2a[丰富算子库]
+    A2 --> A2b[精准状态管理]
+    A2 --> A2c[高吞吐窗口计算]
+
+    Q1 -->|实时+Serving| A3[PF + Flink + 物化视图]
+    A3 --> A3a[PF实时预处理]
+    A3 --> A3b[Flink深度聚合]
+    A3 --> A3c[物化视图Serving]
+
+    Q1 -->|Serverless优先| A4[Pulsar Functions]
+    A4 --> A4a[自动扩缩容]
+    A4 --> A4b[按需计费]
+    A4 --> A4c[零运维函数]
+```
+
+---
+
 **Document Version History**:
 
 | Version | Date | Changes |

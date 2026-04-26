@@ -49,6 +49,9 @@
     - [7.2 控制循环流程](#72-控制循环流程)
     - [7.3 有状态升级流程](#73-有状态升级流程)
     - [7.4 部署模式决策树](#74-部署模式决策树)
+    - [7.5 思维导图（Mindmap）](#75-思维导图mindmap)
+    - [7.6 多维关联树（Multi-dimensional Association Tree）](#76-多维关联树multi-dimensional-association-tree)
+    - [7.7 决策树（Decision Tree）](#77-决策树decision-tree)
   - [8. 引用参考 (References)](#8-引用参考-references)
   - [9. Flink Kubernetes Operator 1.14 新特性集成 (New in 1.14)](#9-flink-kubernetes-operator-114-新特性集成-new-in-114)
     - [9.1 1.14 核心新特性概述](#91-114-核心新特性概述)
@@ -1177,18 +1180,132 @@ flowchart TD
     style O fill:#FFD700
 ```
 
+### 7.5 思维导图（Mindmap）
+
+以下思维导图以"Flink K8s Operator深度解析"为中心，系统展示Operator的架构设计、CRD模型、控制器逻辑、扩展机制与最佳实践五大维度。
+
+```mermaid
+mindmap
+  root((Flink K8s Operator<br/>深度解析))
+    架构设计
+      Controller
+      Reconciler
+      Informer
+      Webhook
+    CRD模型
+      FlinkDeployment
+      FlinkSessionJob
+      状态机
+    控制器逻辑
+      观察
+      差异
+      调谐
+      执行
+      状态更新
+    扩展机制
+      自定义资源
+      插件
+      Webhook
+      指标暴露
+    最佳实践
+      GitOps
+      CI/CD集成
+      多环境管理
+      版本策略
+```
+
+---
+
+### 7.6 多维关联树（Multi-dimensional Association Tree）
+
+以下关联树展示Operator核心组件、Kubernetes原生资源与用户操作之间的多维映射关系。
+
+```mermaid
+graph TB
+    subgraph "Operator组件层"
+        OC1[Controller]
+        OC2[Reconciler]
+        OC3[Informer]
+        OC4[Webhook]
+        OC5[Observer]
+    end
+
+    subgraph "K8s原生资源层"
+        KR1[Deployment]
+        KR2[Service]
+        KR3[ConfigMap]
+        KR4[Pod]
+        KR5[HorizontalPodAutoscaler]
+        KR6[Ingress]
+    end
+
+    subgraph "用户操作层"
+        UO1[声明CR]
+        UO2[更新镜像]
+        UO3[扩缩容]
+        UO4[触发Savepoint]
+        UO5[查看状态]
+    end
+
+    OC1 -->|创建/更新| KR1
+    OC2 -->|调和| KR4
+    OC3 -->|监听| KR4
+    OC4 -->|校验| UO1
+    OC5 -->|获取状态| KR4
+
+    UO1 -->|提交| OC4
+    UO2 -->|触发| OC2
+    UO3 -->|修改replicas| OC1
+    UO4 -->|调用| OC2
+    UO5 -->|查询| OC3
+
+    KR1 -->|管理| KR4
+    KR2 -->|暴露| KR4
+    KR3 -->|挂载到| KR4
+```
+
+---
+
+### 7.7 决策树（Decision Tree）
+
+以下决策树覆盖Operator的四种深度使用场景，帮助用户根据实际需求选择最合适的部署与运维模式。
+
+```mermaid
+flowchart TD
+    A[Operator深度使用场景] --> B{部署复杂度?}
+
+    B -->|标准| C[标准部署]
+    C --> C1[CRD定义]
+    C --> C2[Operator自动管理]
+    C --> C3[内置监控集成]
+
+    B -->|高级定制| D[高级定制部署]
+    D --> D1[Pod模板自定义]
+    D --> D2[Init容器注入]
+    D --> D3[Sidecar集成]
+    D --> D4[亲和性/污点配置]
+
+    B -->|GitOps| E[GitOps工作流]
+    E --> E1[Git仓库]
+    E --> E2[ArgoCD/Flux]
+    E --> E3[Operator同步]
+    E --> E4[K8s集群]
+
+    B -->|多集群| F[多集群管理]
+    F --> F1[联邦Operator]
+    F --> F2[集中监控]
+    F --> F3[跨集群作业调度]
+    F --> F4[统一RBAC策略]
+
+    style C fill:#90EE90
+    style E fill:#87CEEB
+    style D fill:#FFD700
+    style F fill:#DDA0DD
+```
+
 ---
 
 ## 8. 引用参考 (References)
-
-
-
-
-
-
-
-
-
 
 
 ---

@@ -485,6 +485,138 @@ mindmap
 
 ---
 
+### 10.1 生态系统全景思维导图
+
+以下思维导图以"Flink 生态系统"为中心，完整展开五大核心分支：
+
+```mermaid
+mindmap
+  root((Flink 生态系统))
+    连接器
+      消息队列
+        Kafka
+        Pulsar
+      数据库
+        JDBC
+        MongoDB
+        Elasticsearch
+      文件系统
+        S3
+        OSS
+        HDFS
+      湖仓格式
+        Iceberg
+        Paimon
+        Delta Lake
+      自定义
+        Source API
+        Sink API
+    状态函数
+      Stateful Functions
+      事件驱动
+      微服务编排
+    图处理
+      Gelly
+      图算法
+      增量计算
+      图查询
+    WASM UDF
+      WebAssembly
+      多语言
+        Rust
+        C++
+        Go
+      沙箱安全
+      性能优化
+    生态伙伴
+      Confluent
+      Ververica
+      云厂商
+        AWS
+        Azure
+        GCP
+        阿里云
+      开源社区
+        Apache 基金会
+        GitHub 生态
+```
+
+### 10.2 多维关联树
+
+以下层次图展示生态组件、Flink 核心能力与典型应用场景的映射关系：
+
+```mermaid
+graph TB
+    subgraph "生态组件层"
+        A1[Kafka/Pulsar<br/>消息队列]
+        A2[JDBC/CDC/MongoDB<br/>数据库]
+        A3[Iceberg/Paimon<br/>湖仓格式]
+        A4[WASM UDF<br/>计算扩展]
+        A5[Gelly<br/>图处理]
+        A6[Stateful Functions<br/>状态函数]
+    end
+
+    subgraph "Flink 核心能力"
+        B1[流式读取<br/>Exactly-Once]
+        B2[增量处理<br/>Checkpoint]
+        B3[实时写入<br/>流批一体]
+        B4[多语言执行<br/>沙箱安全]
+        B5[增量迭代<br/>窗口计算]
+        B6[事件驱动编排<br/>状态管理]
+    end
+
+    subgraph "应用场景"
+        C1[实时数仓<br/>实时ETL]
+        C2[CDC 数据同步<br/>数据集成]
+        C3[流式 Lakehouse<br/>实时分析]
+        C4[多语言 UDF<br/>复杂计算]
+        C5[社交网络分析<br/>欺诈检测]
+        C6[微服务编排<br/>事件驱动架构]
+    end
+
+    A1 --> B1
+    A2 --> B2
+    A3 --> B3
+    A4 --> B4
+    A5 --> B5
+    A6 --> B6
+
+    B1 --> C1
+    B2 --> C2
+    B3 --> C3
+    B4 --> C4
+    B5 --> C5
+    B6 --> C6
+```
+
+### 10.3 生态组件决策树
+
+以下决策树帮助开发者根据核心需求快速定位合适的生态组件：
+
+```mermaid
+flowchart TD
+    Start([开始选型]) --> Q1{核心需求?}
+
+    Q1 -->|数据摄入| Q2{数据源类型?}
+    Q1 -->|复杂逻辑| Q3{计算模式?}
+    Q1 -->|图分析| Q4{图规模?}
+    Q1 -->|商业支持| Q5{部署环境?}
+
+    Q2 -->|消息队列| A1[Connectors<br/>Kafka/Pulsar]
+    Q2 -->|关系型数据库| A2[CDC Connectors<br/>Debezium/JDBC]
+    Q2 -->|NoSQL| A3[Custom Connector<br/>MongoDB/ES]
+
+    Q3 -->|事件驱动| B1[Stateful Functions<br/>状态函数]
+    Q3 -->|多语言UDF| B2[WASM UDF<br/>Rust/C++/Go]
+
+    Q4 -->|大规模图| C1[Gelly<br/>增量图计算]
+    Q4 -->|图查询| C2[图数据库集成<br/>Neo4j/TigerGraph]
+
+    Q5 -->|企业级平台| D1[Confluent/Ververica<br/>商业发行版]
+    Q5 -->|云托管| D2[云厂商托管<br/>AWS/Azure/阿里云]
+    Q5 -->|开源自托管| D3[Apache Flink<br/>社区版]
+```
+
 ## 11. 相关资源
 
 ### 11.1 官方资源

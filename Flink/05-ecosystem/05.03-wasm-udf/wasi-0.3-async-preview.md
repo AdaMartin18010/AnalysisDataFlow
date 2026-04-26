@@ -50,6 +50,9 @@
     - [7.2 Stream 生命周期状态机](#72-stream-生命周期状态机)
     - [7.3 WASI 演进路线图](#73-wasi-演进路线图)
     - [7.4 Flink + WASI 0.3 集成架构](#74-flink--wasi-03-集成架构)
+    - [7.5 WASI 0.3 思维导图](#75-wasi-03-思维导图)
+    - [7.6 WASI 特性→Flink 能力→应用价值多维关联树](#76-wasi-特性flink-能力应用价值多维关联树)
+    - [7.7 WASM UDF 使用场景决策树](#77-wasm-udf-使用场景决策树)
   - [8. WASI 0.3.x 路线图](#8-wasi-03x-路线图)
     - [8.1 核心特性时间线](#81-核心特性时间线)
     - [8.2 Cancellation (取消令牌)](#82-cancellation-取消令牌)
@@ -1377,6 +1380,133 @@ graph TB
 
 ---
 
+### 7.5 WASI 0.3 思维导图
+
+以下思维导图以 WASI 0.3 异步预览为中心，放射式展示其演进脉络、异步模型、Flink 集成、应用场景及当前面临的限制挑战。
+
+```mermaid
+mindmap
+  root((WASI 0.3<br/>异步预览))
+    WASI演进
+      WASI Preview 1
+      WASI Preview 2
+      WASI Preview 3
+      组件模型
+      WIT接口
+    异步模型
+      Future类型
+      Stream类型
+      Poll机制
+      异步IO
+      并发执行
+    Flink集成
+      WASM UDF
+      WASI运行时
+      沙箱安全
+      性能开销
+    应用场景
+      自定义函数
+      外部库复用
+      多语言支持
+      边缘计算
+    限制挑战
+      内存限制
+      启动开销
+      调试困难
+      生态成熟度
+```
+
+---
+
+### 7.6 WASI 特性→Flink 能力→应用价值多维关联树
+
+以下关联树展示 WASI 0.3 核心特性如何映射为 Flink 运行时能力，并最终转化为实际应用价值。
+
+```mermaid
+graph TB
+    subgraph WASIFeatures["WASI 0.3 特性"]
+        WF1[原生Stream<T>]
+        WF2[Future<T> 异步]
+        WF3[CancelToken 取消]
+        WF4[Canonical ABI 互操作]
+        WF5[零成本抽象]
+    end
+
+    subgraph FlinkCapabilities["Flink 能力增强"]
+        FC1[流式UDF背压对齐]
+        FC2[异步I/O无状态机]
+        FC3[Checkpoint取消传播]
+        FC4[多语言UDF统一调用]
+        FC5[低延迟异步执行]
+    end
+
+    subgraph AppValue["应用价值"]
+        AV1[代码量减少70%]
+        AV2[吞吐量提升5x]
+        AV3[内存开销降低4x]
+        AV4[取消响应10x]
+        AV5[多语言生态复用]
+    end
+
+    WF1 --> FC1
+    WF2 --> FC2
+    WF3 --> FC3
+    WF4 --> FC4
+    WF5 --> FC5
+
+    FC1 --> AV2
+    FC2 --> AV1
+    FC3 --> AV4
+    FC4 --> AV5
+    FC5 --> AV3
+
+    style WASIFeatures fill:#fff3e0,stroke:#e65100
+    style FlinkCapabilities fill:#e3f2fd,stroke:#1565c0
+    style AppValue fill:#e8f5e9,stroke:#2e7d32
+```
+
+---
+
+### 7.7 WASM UDF 使用场景决策树
+
+以下决策树帮助工程师根据具体场景选择最合适的 WASM UDF 部署策略。
+
+```mermaid
+flowchart TD
+    Start([使用WASM UDF?]) --> Q1{计算复杂度?}
+
+    Q1 -->|轻量计算| A1[纯WASM UDF]
+    A1 --> A1a[低频率调用]
+    A1 --> A1b[单次毫秒级完成]
+    A1a --> R1([启动开销可接受])
+    A1b --> R1
+
+    Q1 -->|复杂算法| A2[WASM + 预编译]
+    A2 --> A2a[AOT编译缓存]
+    A2 --> A2b[组件实例复用]
+    A2a --> R2([避免JIT编译开销])
+    A2b --> R2
+
+    Q1 -->|多语言需求| A3[Rust/Go/C++]
+    A3 --> A3a[编译为WASM组件]
+    A3a --> A3b[Flink WASI运行时加载]
+    A3b --> R3([统一多语言UDF])
+
+    Q1 -->|安全敏感| A4[严格沙箱]
+    A4 --> A4a[资源限制<br/>CPU/内存/IO]
+    A4 --> A4b[审计日志]
+    A4a --> R4([隔离级别=进程级])
+    A4b --> R4
+
+    style Start fill:#e3f2fd,stroke:#1565c0
+    style R1 fill:#e8f5e9,stroke:#2e7d32
+    style R2 fill:#e8f5e9,stroke:#2e7d32
+    style R3 fill:#e8f5e9,stroke:#2e7d32
+    style R4 fill:#e8f5e9,stroke:#2e7d32
+```
+
+---
+
 ## 8. WASI 0.3.x 路线图
 
 ### 8.1 核心特性时间线
@@ -1669,15 +1799,6 @@ interface ml-inference {
 ## 10. 引用参考 (References)
 
 
-
-
-
-
-
-
-
-
-
 ---
 
-*文档版本: v0.1-preview | 最后更新: 2026-04-02 | 状态: 实验性预览*
+*文档版本: v0.1-preview | 最后更新: 2026-04-26 | 状态: 实验性预览*

@@ -336,6 +336,148 @@ gantt
     边缘-云协同处理       :crit, wasm_edgecloud, 2025, 2026
 ```
 
+### 7.4 云原生流计算演进推理树
+
+以下自底向上推理树展示了云原生流计算五大维度的演进推导链，每条链均从传统范式出发，经由中间态过渡，最终到达云原生成熟态：
+
+```mermaid
+graph BT
+    subgraph "基础设施抽象"
+        VM["虚拟化<br/>VM / Hypervisor"]
+        CT["容器化<br/>Docker / containerd"]
+        K8S["K8s编排<br/>声明式 / 自动调度"]
+        VM --> CT --> K8S
+    end
+
+    subgraph "应用架构演进"
+        MONO["单体应用<br/>统一部署 / 紧耦合"]
+        MS["微服务<br/>服务拆分 / API边界"]
+        SLS["Serverless<br/>函数粒度 / 事件触发"]
+        MONO --> MS --> SLS
+    end
+
+    subgraph "状态管理模式"
+        LOCAL["有状态服务<br/>本地磁盘 / 耦合存储"]
+        EXT["状态外部化<br/>分布式FS / 远程KV"]
+        SEP["存储计算分离<br/>S3 + 无状态计算"]
+        LOCAL --> EXT --> SEP
+    end
+
+    subgraph "运维范式变革"
+        MANUAL["手动运维<br/>SSH / 脚本 / 人肉值班"]
+        GITOPS["GitOps<br/>Git单源 / 声明式流水线"]
+        AUTO["自动自愈<br/>SLO驱动 / 混沌工程"]
+        MANUAL --> GITOPS --> AUTO
+    end
+
+    subgraph "成本优化路径"
+        RESERVE["资源预留<br/>包年包月 / 过度配置"]
+        PAYG["按需付费<br/>按实例秒计费"]
+        FINOPS["FinOps<br/>按请求毫秒 / 成本可观测"]
+        RESERVE --> PAYG --> FINOPS
+    end
+
+    K8S -.-"统一承载".-> SLS
+    SEP -.-"赋能".-> SLS
+    AUTO -.-"保障".-> SLS
+    FINOPS -.-"经济驱动".-> SLS
+```
+
+### 7.5 云原生流平台成熟度概念矩阵
+
+以下四象限矩阵以云原生程度为横轴、流处理能力为纵轴，定位主流部署形态的技术成熟度与演进方向：
+
+```mermaid
+quadrantChart
+    title 云原生流平台成熟度矩阵
+    x-axis 低云原生程度 --> 高云原生程度
+    y-axis 弱流处理能力 --> 强流处理能力
+    quadrant-1 目标象限: 云原生强流处理
+    quadrant-2 探索象限: 云原生弱流处理
+    quadrant-3 落后象限: 传统低能力
+    quadrant-4 过渡象限: 传统强流处理
+    自托管裸金属: [0.15, 0.45]
+    自托管虚拟机: [0.25, 0.55]
+    K8s自建部署: [0.55, 0.70]
+    托管流服务: [0.75, 0.80]
+    Serverless流处理: [0.85, 0.60]
+    完全抽象平台: [0.95, 0.75]
+```
+
+### 7.6 云原生流计算演进思维导图
+
+以下思维导图以"云原生流计算演进"为中心节点，从基础设施、部署模式、状态管理、运维演进、成本优化五个维度放射展开关键概念与技术：
+
+```mermaid
+mindmap
+  root((云原生流计算演进))
+    基础设施
+      虚拟化
+        Hypervisor
+        硬件隔离
+      容器化
+        Docker
+        CGroup/Namespace
+      编排调度
+        Kubernetes
+        声明式API
+      边缘运行时
+        WASM
+        eBPF
+    部署模式
+      单体常驻
+        YARN/Mesos
+        长进程
+      容器化部署
+        Flink on K8s
+        Helm Chart
+      Serverless
+        Knative
+        AWS Lambda
+      边缘部署
+        WasmEdge
+        轻量算子
+    状态管理
+      本地状态
+        RocksDB本地
+        紧耦合计算
+      分布式状态
+        RocksDB增量
+        S3持久化
+      外部状态
+        Remote State Store
+        存储计算分离
+      边缘状态
+        SQLite WASM
+        周期性同步
+    运维演进
+      手动运维
+        SSH/脚本
+        人肉值班
+      自动化运维
+        CI/CD流水线
+        监控告警
+      GitOps
+        Git单源真相
+        ArgoCD/Flux
+      自动自愈
+        SLO驱动
+        混沌工程
+    成本优化
+      资源预留
+        包年包月
+        过度配置
+      弹性伸缩
+        HPA/VPA
+        按实例计费
+      按需付费
+        Serverless
+        按请求计费
+      FinOps
+        成本可观测
+        单元经济
+```
+
 ---
 
 ## 8. 引用参考 (References)

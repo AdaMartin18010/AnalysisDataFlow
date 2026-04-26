@@ -40,6 +40,9 @@
     - [7.2 Offset 提交序列图](#72-offset-提交序列图)
     - [7.3 事务提交流程图](#73-事务提交流程图)
     - [7.4 分区发现状态机](#74-分区发现状态机)
+    - [7.5 Flink Kafka 集成模式思维导图](#75-flink-kafka-集成模式思维导图)
+    - [7.6 Kafka 配置→Flink 行为→业务语义多维关联树](#76-kafka-配置flink-行为业务语义多维关联树)
+    - [7.7 Kafka 集成模式选型决策树](#77-kafka-集成模式选型决策树)
   - [8. 配置参考 (Configuration Reference)](#8-配置参考-configuration-reference)
     - [8.1 Kafka Source 配置选项](#81-kafka-source-配置选项)
     - [8.2 Kafka Sink 配置选项](#82-kafka-sink-配置选项)
@@ -641,6 +644,194 @@ stateDiagram-v2
     end note
 ```
 
+### 7.5 Flink Kafka 集成模式思维导图
+
+```mermaid
+mindmap
+  root((Flink Kafka<br/>集成模式))
+    消费模式
+      Consumer Group
+        消费者组协调
+        分区分配策略
+        静态成员资格
+      分区分配
+        Range Assignor
+        RoundRobin
+        CooperativeStickyAssignor
+      动态发现
+        partition.discovery.interval.ms
+        新增分区自动检测
+        运行时弹性扩展
+      回溯消费
+        earliest偏移量
+        specific offsets
+        timestamp定位
+    生产模式
+      At-Least-Once
+        异步发送
+        最小延迟
+        可能重复
+      Exactly-Once
+        两阶段提交
+        事务边界对齐
+        Checkpoint驱动
+      事务生产者
+        transactional.id
+        TransactionCoordinator
+        Epoch递增机制
+      幂等性
+        PID+SequenceNumber
+        Broker端去重
+        网络重试安全
+    水印集成
+      Kafka事件时间
+        record.timestamp
+        提取时间戳策略
+      水印传播
+        WatermarkStrategy
+        跨分区水印对齐
+        空闲源处理
+      乱序处理
+        forBoundedOutOfOrderness
+        allowedLateness
+        侧输出流
+      延迟数据
+        迟到数据处理
+        丢弃或修正
+        延迟度量监控
+    状态管理
+      Offset提交
+        setCommitOffsetsOnCheckpoints
+        __consumer_offsets
+        状态后端优先
+      Checkpoint对齐
+        Barrier传播
+        snapshotState
+        notifyCheckpointComplete
+      外部化检查点
+        RETAIN_ON_CANCELLATION
+        外部存储持久化
+        作业升级恢复
+    高级模式
+      多Topic订阅
+        setTopics列表
+        topicsPattern正则
+        动态Topic发现
+      Regex订阅
+        正则匹配规则
+        运行时Topic扩展
+        元数据刷新
+      Topic发现
+        元数据轮询
+        新增Topic检测
+        消费策略适配
+      Schema Registry
+        Confluent Avro
+        AWS Glue
+        Protobuf/JSON
+        版本兼容性
+```
+
+**图说明**：以 Flink Kafka 集成模式为中心，放射展开五大维度——消费模式、生产模式、水印集成、状态管理与高级模式，覆盖从基础配置到高阶特性的完整知识图谱。
+
+### 7.6 Kafka 配置→Flink 行为→业务语义多维关联树
+
+```mermaid
+graph TB
+    subgraph "Kafka配置层"
+        KC1[acks=all / enable.idempotence=true]
+        KC2[isolation.level=read_committed]
+        KC3[partition.discovery.interval.ms]
+        KC4[transaction.timeout.ms]
+        KC5[compression.type=lz4]
+        KC6[max.poll.records / linger.ms]
+    end
+
+    subgraph "Flink行为层"
+        FB1[Exactly-Once 两阶段提交]
+        FB2[At-Least-Once 异步写入]
+        FB3[动态分区发现与重分配]
+        FB4[事务超时与围栏保护]
+        FB5[批量压缩与缓冲]
+        FB6[限流与反压传播]
+    end
+
+    subgraph "业务语义层"
+        BS1["数据不丢失、不重复<br/>金融交易/账单结算"]
+        BS2["高吞吐优先<br/>日志采集/监控指标"]
+        BS3["弹性扩展<br/>业务增长/突发流量"]
+        BS4["故障自愈<br/>长时间作业/关键链路"]
+        BS5["带宽优化<br/>跨机房/云传输"]
+        BS6["延迟可控<br/>实时推荐/风控"]
+    end
+
+    KC1 -->|驱动| FB1
+    KC1 -->|驱动| FB2
+    KC2 -->|驱动| FB1
+    KC3 -->|驱动| FB3
+    KC4 -->|驱动| FB4
+    KC5 -->|驱动| FB5
+    KC6 -->|驱动| FB6
+
+    FB1 -->|保证| BS1
+    FB2 -->|保证| BS2
+    FB3 -->|保证| BS3
+    FB4 -->|保证| BS4
+    FB5 -->|保证| BS5
+    FB6 -->|保证| BS6
+```
+
+**图说明**：三层映射结构展示 Kafka 配置如何驱动 Flink 运行时行为，进而映射到具体业务语义。上层配置变更会逐层传导，最终影响业务层面的数据保证能力。
+
+### 7.7 Kafka 集成模式选型决策树
+
+```mermaid
+flowchart TD
+    Start([Kafka集成模式选型]) --> Q1{业务对数据一致性的要求?}
+
+    Q1 -->|不允许重复/丢失<br/>金融级精确性| HighRel[高可靠模式]
+    Q1 -->|允许微量重复<br/>追求极致吞吐| HighThroughput[高吞吐模式]
+    Q1 -->|毫秒级响应<br/>实时性优先| LowLatency[低延迟模式]
+    Q1 -->|Topic频繁变化<br/>Schema持续演进| Flexible[灵活消费模式]
+
+    HighRel --> HR1["Exactly-Once 交付保证"]
+    HighRel --> HR2["事务生产者 + enable.idempotence=true"]
+    HighRel --> HR3["Checkpoint 对齐 + read_committed"]
+    HighRel --> HR4["acks=all + transaction.timeout.ms > checkpointDuration"]
+
+    HighThroughput --> HT1["At-Least-Once 交付保证"]
+    HighThroughput --> HT2["批量提交 + batch.size↑ / linger.ms↑"]
+    HighThroughput --> HT3["压缩算法 lz4/snappy"]
+    HighThroughput --> HT4["异步提交 + 降低 checkpoint 频率"]
+
+    LowLatency --> LL1["小批量发送 + batch.size↓"]
+    LowLatency --> LL2["频繁 Flush + linger.ms=0"]
+    LowLatency --> LL3["低 Watermark 延迟 + 允许乱序窗口缩小"]
+    LowLatency --> LL4["禁用或降低事务开销"]
+
+    Flexible --> FL1["动态分区发现 + partition.discovery.interval.ms"]
+    Flexible --> FL2["Regex订阅 + topicsPattern"]
+    Flexible --> FL3["Schema进化 + BACKWARD/FULL兼容性"]
+    Flexible --> FL4["多Topic路由 + TopicSelector"]
+
+    HR1 & HR2 & HR3 & HR4 --> EndRel([输出: 金融交易/订单支付/对账系统])
+    HT1 & HT2 & HT3 & HT4 --> EndThr([输出: 日志聚合/埋点上报/监控流])
+    LL1 & LL2 & LL3 & LL4 --> EndLat([输出: 实时推荐/风控决策/在线广告])
+    FL1 & FL2 & FL3 & FL4 --> EndFlex([输出: 微服务事件总线/多租户消息平台])
+
+    style Start fill:#e3f2fd,stroke:#1565c0
+    style HighRel fill:#ffebee,stroke:#c62828
+    style HighThroughput fill:#e8f5e9,stroke:#2e7d32
+    style LowLatency fill:#fff3e0,stroke:#ef6c00
+    style Flexible fill:#f3e5f5,stroke:#6a1b9a
+    style EndRel fill:#ffebee,stroke:#c62828
+    style EndThr fill:#e8f5e9,stroke:#2e7d32
+    style EndLat fill:#fff3e0,stroke:#ef6c00
+    style EndFlex fill:#f3e5f5,stroke:#6a1b9a
+```
+
+**图说明**：四类典型场景的分支决策路径。根据业务对一致性、吞吐、延迟和灵活性的不同要求，选择对应的 Kafka-Flink 集成配置组合。
+
 ---
 
 ## 8. 配置参考 (Configuration Reference)
@@ -743,6 +934,7 @@ properties.setProperty("group.instance.id", "flink-instance-" + taskId);
 
 
 [^5]: P. Carbone et al., "State Management in Apache Flink: Consistent Stateful Distributed Stream Processing", *PVLDB*, 10(12), 2017.
+
 
 
 

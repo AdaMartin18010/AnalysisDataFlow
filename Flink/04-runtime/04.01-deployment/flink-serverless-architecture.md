@@ -640,8 +640,176 @@ stateDiagram-v2
     Idle --> [*]: Timeout cleanup
 ```
 
+### 7.4 Flink Serverless架构思维导图
+
+以下思维导图以"Flink Serverless架构"为中心，从架构模式、资源抽象、状态管理、事件触发、运维简化五个维度放射展开核心概念与技术要素。
+
+```mermaid
+mindmap
+  root((Flink Serverless架构))
+    架构模式
+      函数计算
+        AWS Lambda
+        Azure Functions
+        事件驱动执行
+      容器实例
+        Google Cloud Run
+        AWS Fargate
+        按需启停容器
+      托管服务
+        Confluent Cloud Flink
+        Ververica Platform
+        全托管零运维
+      混合模式
+        常驻基线+弹性Burst
+        Lambda+Flink组合
+        分层处理架构
+    资源抽象
+      vCPU/内存定价
+        GB-Second模型
+        毫秒级计费精度
+      请求计费
+        每百万请求定价
+        适合低频API
+      预留实例
+        预置并发消除冷启动
+        成本可预测
+      Spot实例
+        抢占式低价资源
+        适合容错批处理
+    状态管理
+      外部存储
+        S3/RocksDB远端
+        状态解耦生命周期
+      临时状态
+        内存窗口聚合
+        无状态函数模式
+      Checkpoint策略
+        增量Checkpoint
+        异步快照不阻塞
+      状态恢复
+        从最新CK恢复
+        秒级状态重建
+    事件触发
+      Kafka
+        实时流数据触发
+        分区级并行唤醒
+      API Gateway
+        HTTP请求驱动
+        同步响应模式
+      定时触发
+        Scheduler Cron
+        批处理窗口启动
+      消息队列
+        SQS/RabbitMQ
+        解耦削峰填谷
+    运维简化
+      自动扩缩容
+        0到N秒级扩展
+        基于Lag反馈
+      健康检查
+        平台内置探针
+        自动异常替换
+      日志聚合
+        CloudWatch集成
+        结构化日志输出
+      零运维
+        无节点管理
+        无补丁升级
+```
+
+### 7.5 Serverless特性→Flink适配→业务价值多维关联树
+
+以下关联树展示Serverless核心特性如何通过Flink技术适配转化为可量化的业务价值。
+
+```mermaid
+graph TB
+    subgraph Serverless特性["Serverless核心特性"]
+        S1[自动扩缩容<br/>Scale 0→∞]
+        S2[按量计费<br/>Pay-per-Use]
+        S3[零运维负担<br/>NoOps]
+        S4[快速启动<br/>Cold Start优化]
+        S5[事件驱动<br/>Event-Driven]
+    end
+
+    subgraph Flink适配["Flink技术适配"]
+        F1[Adaptive Scheduler<br/>动态资源分配]
+        F2[增量Checkpoint<br/>状态高效快照]
+        F3[Kubernetes Operator<br/>声明式部署]
+        F4[SnapStart/WASM<br/>运行时优化]
+        F5[Connector生态<br/>Kafka/Pulsar/API]
+    end
+
+    subgraph 业务价值["可量化业务价值"]
+        V1[成本降低40-70%<br/>低利用率场景]
+        V2[扩展延迟15-75s<br/>秒级响应峰值]
+        V3[运维人力释放<br/>SRE团队聚焦核心]
+        V4[可用性99.9%+<br/>平台内置容错]
+        V5[上市时间缩短<br/>分钟级部署上线]
+    end
+
+    S1 -->|驱动| F1
+    S2 -->|驱动| F2
+    S3 -->|驱动| F3
+    S4 -->|驱动| F4
+    S5 -->|驱动| F5
+
+    F1 -->|转化| V2
+    F2 -->|转化| V1
+    F3 -->|转化| V3
+    F4 -->|转化| V5
+    F5 -->|转化| V4
+
+    S1 -.->|直接影响| V1
+    S3 -.->|直接影响| V3
+```
+
+### 7.6 Serverless架构选型决策树
+
+以下决策树针对不同工作负载特征提供Serverless架构选型建议，覆盖事件驱动、流处理、批处理与混合模式四大场景。
+
+```mermaid
+flowchart TD
+    Start[工作负载类型] --> Type{核心特征}
+
+    Type -->|短暂/响应式| EventDriven[事件驱动路径]
+    Type -->|持续/有状态| Streaming[流处理路径]
+    Type -->|大规模/离线| Batch[批处理路径]
+    Type -->|混合/不确定| Hybrid[混合模式路径]
+
+    EventDriven --> E1[函数计算 FaaS]
+    E1 --> E2[事件源触发<br/>Kafka/SQS/API Gateway]
+    E2 --> E3[无状态处理<br/>轻量转换/过滤]
+    E3 --> E4[结果写入下游存储]
+
+    Streaming --> S1[托管Flink服务]
+    S1 --> S2[自动扩缩容<br/>Adaptive Scheduler]
+    S2 --> S3[状态后端配置<br/>RocksDB/增量CK]
+    S3 --> S4[长期运行+状态保持]
+
+    Batch --> B1[Serverless Spark/Flink]
+    B1 --> B2[对象存储输入<br/>S3/OSS/HDFS]
+    B2 --> B3[容器实例执行<br/>Fargate/Cloud Run]
+    B3 --> B4[结果写回对象存储]
+
+    Hybrid --> H1[常驻基线实例]
+    H1 --> H2[预留容量覆盖稳态]
+    H2 --> H3[弹性Burst层]
+    H3 --> H4[突发流量转Serverless]
+    H4 --> H5[统一状态外部化]
+
+    E4 --> Decision{利用率<30%?}
+    S4 --> Decision
+    B4 --> Decision
+    H5 --> Decision
+
+    Decision -->|是| CostOpt[✅ 成本最优<br/>Serverless优先]
+    Decision -->|否| Reserved[⚠️ 考虑预留<br/>或混合架构]
+```
+
 ## 8. 引用参考 (References)
+
 
 ---
 
-*文档版本: v1.0 | 创建日期: 2026-04-19*
+*文档版本: v1.1 | 更新日期: 2026-04-26*

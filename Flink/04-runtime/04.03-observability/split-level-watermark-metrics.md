@@ -623,9 +623,111 @@ graph LR
     style I2 fill:#6495ED
 ```
 
+### 7.4 Split级Watermark指标思维导图
+
+以Split级Watermark指标为核心，放射展开其概念体系、传播机制、采集维度、监控告警与调优策略：
+
+```mermaid
+mindmap
+  root((Split级Watermark指标))
+    Split概念
+      Kafka分区
+      文件分片
+      数据库分片
+      自定义Split
+    Watermark传播
+      Split级Watermark
+      聚合策略
+      空闲Source处理
+    指标采集
+      per-split watermark
+      延迟
+      消费速率
+      积压量
+    监控告警
+      Split滞后检测
+      不均衡告警
+      自动恢复
+    调优策略
+      Split分配优化
+      并行度调整
+      背压处理
+```
+
+### 7.5 多维关联树
+
+展示Split特性、Watermark行为与监控指标之间的因果映射关系：
+
+```mermaid
+graph TB
+    subgraph Split特性["Split特性"]
+        SP1[数据分布不均]
+        SP2[读取速率差异]
+        SP3[网络延迟波动]
+        SP4[生产者速率变化]
+    end
+
+    subgraph Watermark行为["Watermark行为"]
+        WB1[进度领先]
+        WB2[进度滞后]
+        WB3[推进停滞]
+        WB4[空闲冻结]
+    end
+
+    subgraph 监控指标["监控指标"]
+        M1[currentWatermark]
+        M2[pausedTimeMsPerSecond]
+        M3[activeTimeMsPerSecond]
+        M4[idleTimeMsPerSecond]
+    end
+
+    SP1 -->|导致| WB1
+    SP1 -->|导致| WB2
+    SP2 -->|影响| WB1
+    SP3 -->|引发| WB3
+    SP4 -->|造成| WB4
+
+    WB1 -->|反映为| M2
+    WB2 -->|反映为| M3
+    WB3 -->|反映为| M1
+    WB4 -->|反映为| M4
+```
+
+### 7.6 Split问题诊断决策树
+
+基于Split-level指标进行问题诊断与处置的完整决策流程：
+
+```mermaid
+flowchart TD
+    A[Split问题诊断] --> B{Watermark滞后?}
+    B -->|是| C[检查Split消费速率]
+    C -->|速率低| D[扩容消费者/优化读取]
+    C -->|速率高| E[检查数据时间分布]
+
+    B -->|否| F{Split不均衡?}
+    F -->|是| G[重新分区/调整分配策略]
+    F -->|否| H{存在空闲Split?}
+
+    H -->|是| I[配置Idle Timeout]
+    I -->|有效| J[动态移除空闲Split]
+    I -->|无效| K[检查上游生产者]
+
+    H -->|否| L{积压严重?}
+    L -->|是| M[增加并行度]
+    M -->|仍积压| N[优化反压处理]
+    L -->|否| O[系统运行正常]
+
+    style D fill:#ffcccc
+    style G fill:#ffcccc
+    style J fill:#ccffcc
+    style N fill:#ffcccc
+    style O fill:#ccffcc
+```
+
 ---
 
 ## 8. 引用参考 (References)
+
 
 ---
 

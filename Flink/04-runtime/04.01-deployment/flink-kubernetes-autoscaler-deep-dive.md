@@ -653,18 +653,133 @@ flowchart TD
     style E fill:#fff3e0
 ```
 
+### Flink K8s Autoscaler 全景思维导图
+
+以下思维导图以 Flink K8s Autoscaler 为核心，放射展开五大维度：伸缩策略、指标采集、决策算法、执行机制与限制边界。
+
+```mermaid
+mindmap
+  root((Flink K8s Autoscaler<br/>深度解析))
+    伸缩策略
+      Reactive
+      Adaptive
+      Scheduled
+      Custom Metric
+    指标采集
+      CPU
+      内存
+      延迟
+      吞吐量
+      背压
+      Checkpoint
+    决策算法
+      阈值
+      PID
+      预测
+      机器学习
+    执行机制
+      Pod增删
+      资源调整
+      Graceful Shutdown
+      数据迁移
+    限制与边界
+      最小/最大并行度
+      冷却时间
+      成本约束
+```
+
+### 多维关联树：触发条件→算法决策→执行动作
+
+以下关联树展示 Autoscaler 从指标触发到最终执行的全链路映射关系。
+
+```mermaid
+graph TB
+    subgraph 触发条件[触发条件]
+        T1[CPU利用率过高]
+        T2[内存使用激增]
+        T3[背压比率上升]
+        T4[延迟超出SLA]
+        T5[吞吐量下降]
+        T6[Checkpoint超时]
+        T7[定时调度触发]
+        T8[自定义业务指标]
+    end
+
+    subgraph 算法决策[算法决策]
+        D1[阈值判断]
+        D2[PID控制器]
+        D3[趋势预测]
+        D4[机器学习模型]
+    end
+
+    subgraph 执行动作[执行动作]
+        A1[增加Pod副本]
+        A2[减少Pod副本]
+        A3[调整TaskSlot资源]
+        A4[触发Graceful Shutdown]
+        A5[执行State迁移]
+        A6[更新JobGraph并行度]
+    end
+
+    T1 --> D1
+    T2 --> D1
+    T3 --> D2
+    T4 --> D2
+    T5 --> D3
+    T6 --> D1
+    T7 --> D4
+    T8 --> D4
+
+    D1 --> A1
+    D1 --> A2
+    D2 --> A3
+    D3 --> A1
+    D3 --> A6
+    D4 --> A4
+    D4 --> A5
+    D4 --> A6
+
+    style 触发条件 fill:#e3f2fd
+    style 算法决策 fill:#fff3e0
+    style 执行动作 fill:#e8f5e9
+```
+
+### Autoscaler 选型决策树
+
+以下决策树帮助用户根据实际场景选择最适合的 Autoscaler 策略组合。
+
+```mermaid
+flowchart TD
+    Q1[流量特征分析] --> Q2{流量是否可预测?}
+    Q2 -->|是| Q3{是否存在周期性模式?}
+    Q2 -->|否| Q4{流量波动幅度?}
+
+    Q3 -->|是| S1[Scheduled + 预扩容]
+    Q3 -->|否| Q5{是否有特殊业务指标?}
+
+    Q4 -->|大| S2[Reactive + 快速扩容]
+    Q4 -->|中| S3[Adaptive + 多指标综合]
+    Q4 -->|小| S4[保守阈值策略]
+
+    Q5 -->|是| S5[Custom Metric + 业务指标驱动]
+    Q5 -->|否| S3
+
+    S1 --> T1[配置Cron表达式预扩容]
+    S2 --> T2[设置低阈值快速响应]
+    S3 --> T3[启用Vertex-Level Scaling]
+    S4 --> T4[增大Stabilization Window]
+    S5 --> T5[接入自定义Metrics后端]
+
+    style S1 fill:#e8f5e9
+    style S2 fill:#e8f5e9
+    style S3 fill:#e8f5e9
+    style S4 fill:#e8f5e9
+    style S5 fill:#e8f5e9
+```
+
 ---
 
 ## 8. 引用参考 (References)
-
-
-
-
-
-
-
-
-
 
 
 ---

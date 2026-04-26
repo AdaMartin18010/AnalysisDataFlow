@@ -87,15 +87,110 @@ cluster.start();
 
 ## 7. 可视化 (Visualizations)
 
+### 7.1 测试执行流程
+
 ```mermaid
 graph LR
     A[测试代码] --> B[MiniCluster]
     B --> C[断言验证]
 ```
 
+### 7.2 思维导图：Flink测试演进全景
+
+以下思维导图以"Flink测试演进"为中心，放射展开五大测试维度及其子领域。
+
+```mermaid
+mindmap
+  root((Flink测试演进))
+    单元测试
+      ProcessFunction测试
+      Operator测试
+      状态测试
+    集成测试
+      MiniCluster
+      TestHarness
+      端到端测试
+    性能测试
+      JMH微基准
+      吞吐量测试
+      延迟测试
+    混沌测试
+      故障注入
+      网络分区
+      节点宕机
+    自动化
+      CI/CD
+      回归测试
+      覆盖率
+      质量门禁
+```
+
+### 7.3 多维关联树：测试类型→工具链→验证目标
+
+以下层次图展示测试类型到工具链再到验证目标的完整映射关系。
+
+```mermaid
+graph TB
+    subgraph 测试类型
+        T1[单元测试]
+        T2[集成测试]
+        T3[性能测试]
+        T4[混沌测试]
+    end
+    subgraph 工具链
+        U1[ProcessFunctionTester]
+        U2[MiniCluster]
+        U3[JMH]
+        U4[ChaosMonkey]
+        U5[TestHarness]
+        U6[Testcontainers]
+    end
+    subgraph 验证目标
+        V1[逻辑正确性]
+        V2[端到端一致性]
+        V3[吞吐与延迟]
+        V4[容错恢复]
+    end
+    T1 --> U1
+    T1 --> U5
+    T2 --> U2
+    T2 --> U6
+    T3 --> U3
+    T4 --> U4
+    U1 --> V1
+    U2 --> V2
+    U5 --> V2
+    U3 --> V3
+    U4 --> V4
+```
+
+### 7.4 决策树：测试策略选型
+
+以下决策树按软件生命周期阶段给出测试策略建议，覆盖开发、集成、发布与生产四个关键节点。
+
+```mermaid
+flowchart TD
+    A[测试策略选型] --> B{开发阶段}
+    A --> C{集成阶段}
+    A --> D{发布阶段}
+    A --> E{生产阶段}
+    B --> B1[单元测试]
+    B --> B2[Mock外部依赖]
+    B --> B3[快速反馈秒级执行]
+    C --> C1[MiniCluster]
+    C --> C2[真实Source与Sink]
+    C --> C3[验证数据一致性]
+    D --> D1[性能基准测试]
+    D --> D2[混沌测试]
+    D --> D3[回归验证套件]
+    E --> E1[金丝雀发布]
+    E --> E2[影子流量对比]
+    E --> E3[监控指标验证]
+```
+
 ## 8. 引用参考 (References)
 
-[^1]: Flink Testing Documentation
+[^1]: Apache Flink Documentation, "Testing", 2025. <https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/testing/>
 
 ---
 

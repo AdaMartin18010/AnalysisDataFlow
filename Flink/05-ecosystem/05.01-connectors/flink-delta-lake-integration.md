@@ -51,6 +51,9 @@
     - [7.3 CDC -\> Delta 数据处理流程](#73-cdc---delta-数据处理流程)
     - [7.4 流批一体架构图](#74-流批一体架构图)
     - [7.5 并发控制状态机](#75-并发控制状态机)
+    - [7.6 Flink + Delta Lake 集成思维导图](#76-flink--delta-lake-集成思维导图)
+    - [7.7 多维关联树](#77-多维关联树)
+    - [7.8 Delta Lake 使用场景决策树](#78-delta-lake-使用场景决策树)
   - [8. 性能调优指南](#8-性能调优指南)
     - [8.1 写入优化配置](#81-写入优化配置)
     - [8.2 读取优化配置](#82-读取优化配置)
@@ -794,6 +797,117 @@ Delta Lake ←──────────────────────
                     超次数 → Fail → [结束]
 ```
 
+### 7.6 Flink + Delta Lake 集成思维导图
+
+以下思维导图以"Flink + Delta Lake 集成"为中心，放射展开五大核心维度：
+
+```mermaid
+mindmap
+  root((Flink + Delta Lake集成))
+    Delta核心
+      ACID事务
+      时间旅行
+      Schema进化
+      Z-Order优化
+    Flink Source
+      Snapshot读取
+      Incremental读取
+      时间旅行查询
+    Flink Sink
+      Merge写入
+      Append写入
+      Overwrite写入
+      Optimize触发
+    性能优化
+      DataSkipping
+      Z-Order
+      文件布局
+      压缩格式
+    生态对接
+      Spark
+      Trino
+      Hive
+      Databricks
+      Pandas
+```
+
+### 7.7 多维关联树
+
+以下多维关联树展示 Delta Lake 特性 → Flink 能力 → 查询收益的映射关系：
+
+```mermaid
+graph TB
+    subgraph DeltaLake特性
+        A1[ACID事务]
+        A2[时间旅行]
+        A3[Schema演进]
+        A4[Z-Order聚类]
+        A5[Deletion Vectors]
+    end
+
+    subgraph Flink能力
+        B1[Exactly-Once写入]
+        B2[增量读取]
+        C1[流批统一]
+        C2[CDC集成]
+        C3[分区修剪]
+    end
+
+    subgraph 查询收益
+        D1[数据一致性保证]
+        D2[历史版本回溯]
+        D3[查询性能提升]
+        D4[存储成本优化]
+    end
+
+    A1 --> B1
+    A2 --> B2
+    A3 --> C1
+    A4 --> C3
+    A5 --> D4
+
+    B1 --> D1
+    B2 --> D2
+    C1 --> D1
+    C2 --> D2
+    C3 --> D3
+```
+
+### 7.8 Delta Lake 使用场景决策树
+
+以下决策树展示四种核心使用场景及其技术路径与收益：
+
+```mermaid
+flowchart TD
+    Start([Delta Lake使用场景]) --> Q1{业务需求类型?}
+
+    Q1 -->|统一分析| S1[湖仓一体]
+    Q1 -->|实时摄入| S2[实时入湖]
+    Q1 -->|特征管理| S3[ML特征存储]
+    Q1 -->|合规要求| S4[合规审计]
+
+    S1 --> A1[Delta Lake + Flink + Spark]
+    A1 --> A2[统一元数据层]
+    A2 --> A3[多引擎共享数据]
+
+    S2 --> B1[Flink Streaming Sink]
+    B1 --> B2[Auto Optimize]
+    B2 --> B3[低延迟数据可见]
+
+    S3 --> C1[Delta版本控制]
+    C1 --> C2[时间旅行查询]
+    C2 --> C3[特征血缘追踪]
+
+    S4 --> D1[Delta Log完整记录]
+    D1 --> D2[变更历史不可篡改]
+    D2 --> D3[审计追溯能力]
+
+    A3 --> End1([收益: 消除数据孤岛])
+    B3 --> End2([收益: 秒级数据新鲜度])
+    C3 --> End3([收益: 可复现实验])
+    D3 --> End4([收益: 合规达标])
+```
+
 ---
 
 ## 8. 性能调优指南
@@ -841,6 +955,7 @@ conf.set("delta.cacheMetadata", "true");
 ---
 
 ## 9. 引用参考 (References)
+
 
 ---
 

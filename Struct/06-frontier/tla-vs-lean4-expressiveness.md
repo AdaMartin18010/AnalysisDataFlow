@@ -32,6 +32,9 @@
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
     - [图 7.1: TLA+ vs Lean4 对比维度映射图](#图-71-tla-vs-lean4-对比维度映射图)
     - [图 7.2: 证明步骤对比序列图](#图-72-证明步骤对比序列图)
+    - [图 7.3: TLA+ vs Lean4 表达能力推理树](#图-73-tla-vs-lean4-表达能力推理树)
+    - [图 7.4: 形式化方法适用场景概念矩阵](#图-74-形式化方法适用场景概念矩阵)
+    - [图 7.5: TLA+ vs Lean4 表达能力思维导图](#图-75-tla-vs-lean4-表达能力思维导图)
   - [8. 引用参考 (References)](#8-引用参考-references)
   - [关联文档](#关联文档)
 
@@ -658,9 +661,119 @@ sequenceDiagram
 
 ---
 
+### 图 7.3: TLA+ vs Lean4 表达能力推理树
+
+以下推理树（自下而上）展示从形式化验证目标到 TLA+ 与 Lean4 两条表达路径的完整推导链，涵盖规范语言、证明方法、抽象层级、工具生态与适用域五个维度。
+
+```mermaid
+graph BT
+    Root["形式化验证目标"] --> Spec["规范语言选择"]
+    Root --> Proof["证明方法选择"]
+    Root --> Abstract["抽象层级选择"]
+    Root --> Tool["工具生态选择"]
+    Root --> Domain["适用域选择"]
+
+    Spec --> TLA_Spec["时序逻辑<br/>□ ◇ ~>"]
+    Spec --> Lean_Spec["依赖类型<br/>Π Σ inductive"]
+
+    Proof --> TLA_Proof["模型检测<br/>TLC / Apalache"]
+    Proof --> Lean_Proof["交互式证明<br/>tactics / SMT"]
+
+    Abstract --> TLA_Abs["系统级<br/>状态 / 动作"]
+    Abstract --> Lean_Abs["代码级<br/>函数 / 表达式"]
+
+    Tool --> TLA_Tool["TLC/Apalache<br/>自动反例"]
+    Tool --> Lean_Tool["Lean4编译器<br/>#eval / extract"]
+
+    Domain --> TLA_Dom["分布式协议<br/>时序交互"]
+    Domain --> Lean_Dom["程序验证<br/>计算正确性"]
+
+    TLA_Spec --> TLA_Path["TLA+ 表达路径"]
+    TLA_Proof --> TLA_Path
+    TLA_Abs --> TLA_Path
+    TLA_Tool --> TLA_Path
+    TLA_Dom --> TLA_Path
+
+    Lean_Spec --> Lean_Path["Lean4 表达路径"]
+    Lean_Proof --> Lean_Path
+    Lean_Abs --> Lean_Path
+    Lean_Tool --> Lean_Path
+    Lean_Dom --> Lean_Path
+```
+
+---
+
+### 图 7.4: 形式化方法适用场景概念矩阵
+
+以下四象限矩阵展示不同验证手段在系统规模（横轴）与验证深度（纵轴）上的分布，帮助读者快速定位 TLA+（模型检测）与 Lean4（定理证明）在形式化方法谱系中的位置。
+
+```mermaid
+quadrantChart
+    title 形式化方法适用场景矩阵
+    x-axis 系统规模小 --> 系统规模大
+    y-axis 验证深度浅 --> 验证深度深
+    quadrant-1 高成本深度验证
+    quadrant-2 大规模系统验证
+    quadrant-3 轻量快速验证
+    quadrant-4 小规模精密验证
+    "单元测试": [0.2, 0.15]
+    "类型检查": [0.3, 0.35]
+    "符号执行": [0.5, 0.55]
+    "模型检测(TLA+)": [0.7, 0.7]
+    "定理证明(Lean4)": [0.85, 0.9]
+```
+
+---
+
+### 图 7.5: TLA+ vs Lean4 表达能力思维导图
+
+以下思维导图以"TLA+ vs Lean4 表达能力"为中心，放射展开语法对比、证明方法、抽象层级、工具生态与适用域五大分支，呈现两者的全景式差异。
+
+```mermaid
+mindmap
+  root((TLA+ vs Lean4<br/>表达能力))
+    语法对比
+      时序逻辑
+        TLA_plus["TLA+ 原生支持 □ ◇"]
+        Lean4_embed["Lean4 需语义嵌入"]
+      集合论
+        Both["两者等价映射"]
+      高阶函数
+        TLA_encode["TLA+ 需编码为关系"]
+        Lean4_native["Lean4 原生支持"]
+      依赖类型
+        TLA_none["TLA+ 无"]
+        Lean4_core["Lean4 核心特性 Π-Type"]
+    证明方法
+      模型检测
+        TLC_full["TLC 全自动枚举"]
+        Fit_finite["适合有限状态系统"]
+      交互式证明
+        Lean4_tac["Lean4 手动 tactics"]
+        Fit_infinite["适合无限/参数化系统"]
+    抽象层级
+      系统级
+        TLA_state["TLA+ 状态机 / Action"]
+      代码级
+        Lean4_func["Lean4 函数 / 表达式"]
+    工具生态
+      TLC_Apalache
+        Counterexample["自动反例生成"]
+      Lean4_compiler
+        Code_extract["证明到代码提取"]
+        LSP["LSP 交互式支持"]
+    适用域
+      分布式协议
+        TLA_best["TLA+ 为工业首选"]
+      程序验证
+        Lean4_best["Lean4 数学严谨性"]
+      混合策略
+        Layered["分层验证最优"]
+```
+
+---
+
 ## 8. 引用参考 (References)
-
-
 
 [^3]: C. Newcombe et al., "How Amazon Web Services Uses Formal Methods", Communications of the ACM, 58(4), 2015. <https://doi.org/10.1145/2699417>
 

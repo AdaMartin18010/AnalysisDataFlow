@@ -757,6 +757,181 @@ stateDiagram-v2
     end note
 ```
 
+### 流式指标监控与SLO思维导图
+
+以下思维导图以"流式指标监控与SLO"为中心，从SLI定义、SLO设定、指标采集、Dashboard设计和告警策略五个维度放射展开核心知识体系：
+
+```mermaid
+mindmap
+  root((流式指标监控与SLO))
+    SLI定义
+      吞吐量
+        记录处理速率
+        字节吞吐量
+      延迟
+        端到端延迟
+        处理延迟
+        Watermark滞后
+      错误率
+        记录错误率
+        Checkpoint失败率
+      饱和度
+        CPU利用率
+        内存利用率
+        背压状态
+      新鲜度
+        Watermark Lag
+        数据到达延迟
+    SLO设定
+      目标值
+        P99延迟阈值
+        吞吐量下限
+        可用性百分比
+      时间窗口
+        滑动窗口
+        固定周期
+      容错预算
+        错误预算计算
+        消耗率监控
+      告警阈值
+        静态阈值
+        动态基线
+    指标采集
+      Flink Metrics
+        TaskManager指标
+        JobManager指标
+        Operator指标
+      JMX
+        JVM堆内存
+        GC统计
+        线程状态
+      Prometheus
+        Pull模式采集
+        时序存储
+        PromQL查询
+      自定义指标
+        业务指标
+        应用特定SLI
+    Dashboard设计
+      Grafana模板
+        官方Flink模板
+        自定义面板
+      分层看板
+        概览层
+        作业层
+        算子层
+      实时性要求
+        秒级刷新
+        分钟级聚合
+    告警策略
+      多级别告警
+        P0紧急
+        P1高优
+        P2中优
+        P3低优
+      抑制规则
+        告警去重
+        依赖抑制
+      值班轮换
+        轮班制度
+        自动转派
+      事后复盘
+        故障分析
+        SLO回顾
+```
+
+### 业务目标→SLO→监控指标多维关联树
+
+以下关联树展示从顶层业务目标到SLO定义、再到SLI指标和底层原始监控指标的完整映射链路：
+
+```mermaid
+graph TB
+    subgraph BusinessGoals["🎯 业务目标"]
+        BG1[用户体验优化]
+        BG2[系统高可用]
+        BG3[成本控制]
+        BG4[实时性保障]
+    end
+
+    subgraph SLOs["📋 SLO定义"]
+        SLO1[延迟P99 < 200ms]
+        SLO2[可用性 > 99.9%]
+        SLO3[资源利用率 > 60%]
+        SLO4[数据新鲜度 < 30s]
+    end
+
+    subgraph SLIs["📊 SLI指标"]
+        SLI1[endToEndLatency]
+        SLI2[jobUptimeRatio]
+        SLI3[cpuUsage / memoryUsage]
+        SLI4[watermarkLag]
+    end
+
+    subgraph Metrics["🔧 原始指标"]
+        M1[flink_taskmanager_job_task_latency]
+        M2[flink_jobmanager_job_uptime]
+        M3[flink_taskmanager_Status_JVM_CPU_Load]
+        M4[flink_taskmanager_job_task_watermarkLag]
+    end
+
+    BG1 -->|驱动| SLO1
+    BG2 -->|驱动| SLO2
+    BG3 -->|驱动| SLO3
+    BG4 -->|驱动| SLO4
+
+    SLO1 -->|聚合| SLI1
+    SLO2 -->|聚合| SLI2
+    SLO3 -->|聚合| SLI3
+    SLO4 -->|聚合| SLI4
+
+    SLI1 -->|源自| M1
+    SLI2 -->|源自| M2
+    SLI3 -->|源自| M3
+    SLI4 -->|源自| M4
+```
+
+### SLO设定策略决策树
+
+以下决策树根据业务核心诉求（延迟敏感、吞吐优先、可用性优先、成本敏感）引导选择对应的SLO设定策略与具体阈值：
+
+```mermaid
+flowchart TD
+    Root[🎯 选择SLO设定策略]
+
+    Root --> Q1{业务核心诉求?}
+
+    Q1 -->|延迟敏感| Latency[⏱️ 延迟优先策略]
+    Q1 -->|吞吐优先| Throughput[📈 吞吐优先策略]
+    Q1 -->|可用性优先| Availability[🔒 可用性优先策略]
+    Q1 -->|成本敏感| Cost[💰 成本敏感策略]
+
+    Latency --> L1[p99 延迟 < 100ms]
+    Latency --> L2[错误率 < 0.1%]
+    Latency --> L3[告警窗口: 1m]
+    Latency --> L4[错误预算: 0.5%/月]
+
+    Throughput --> T1[吞吐量 > 100K 条/秒]
+    Throughput --> T2[饱和度 < 80%]
+    Throughput --> T3[背压时间 < 5%]
+    Throughput --> T4[扩容响应 < 2min]
+
+    Availability --> A1[可用性 > 99.99%]
+    Availability --> A2[恢复时间 < 5min]
+    Availability --> A3[Checkpoint成功率 > 99.9%]
+    Availability --> A4[多活容灾就绪]
+
+    Cost --> C1[资源利用率 > 60%]
+    Cost --> C2[单位成本持续优化]
+    Cost --> C3[Spot实例容忍度 > 30%]
+    Cost --> C4[自动缩容触发 < 40%负载]
+
+    style Root fill:#4a90e2,stroke:#333,color:#fff
+    style Latency fill:#e74c3c,stroke:#333,color:#fff
+    style Throughput fill:#27ae60,stroke:#333,color:#fff
+    style Availability fill:#f39c12,stroke:#333,color:#fff
+    style Cost fill:#9b59b6,stroke:#333,color:#fff
+```
+
 ---
 
 ## 8. 引用参考 (References)

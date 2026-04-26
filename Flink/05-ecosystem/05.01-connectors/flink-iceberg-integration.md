@@ -1730,6 +1730,161 @@ graph LR
     style HUDI fill:#c8e6c9,stroke:#2e7d32
 ```
 
+### 7.6 Flink Iceberg 连接器集成思维导图
+
+以下思维导图以"Flink Iceberg连接器集成"为中心，放射展开五大核心维度：
+
+```mermaid
+mindmap
+  root((Flink Iceberg连接器集成))
+    Source读取
+      Snapshot读取
+        全量快照扫描
+        指定快照ID读取
+      Incremental读取
+        流式增量消费
+        快照差集扫描
+      Branch读取
+        多分支隔离开发
+        分支合并策略
+      Tag读取
+        标签定点查询
+        时间旅行回溯
+    Sink写入
+      Append写入
+        仅追加数据文件
+        事件流/日志场景
+      Overwrite写入
+        全表替换
+        分区覆盖
+      Upsert写入
+        基于Equality Delete
+        CDC同步/状态表
+      Partitioned写入
+        隐藏分区派生
+        动态分区映射
+    Catalog集成
+      Hive Catalog
+        Hive Metastore兼容
+        存量生态迁移
+      Hadoop Catalog
+        文件系统元数据
+        无外部依赖
+      Glue Catalog
+        AWS托管服务
+        云原生集成
+      REST Catalog
+        解耦元数据服务
+        标准化Catalog协议
+    Schema处理
+      自动进化
+        添加/删除列
+        类型提升
+      字段映射
+        列名映射策略
+        嵌套类型处理
+      类型转换
+        Flink类型→Iceberg类型
+        Parquet编码映射
+      兼容性检查
+        向后兼容验证
+        分区列约束
+    性能优化
+      Predicate Pushdown
+        列统计过滤
+        最小/最大值裁剪
+      Partition Pruning
+        隐藏分区转换
+        元数据驱动裁剪
+      Vectorized Read
+        批次列式读取
+        Arrow向量化执行
+```
+
+### 7.7 Iceberg 连接器特性多维关联树
+
+以下多维关联树展示 Iceberg 连接器特性 → Flink SQL 语法 → 查询优化效果的完整映射关系：
+
+```mermaid
+graph TB
+    subgraph "Iceberg连接器特性"
+        A1[Snapshot读取]
+        A2[Incremental Source]
+        A3[Branch/Tag读取]
+        A4[Predicate Pushdown]
+        A5[Partition Pruning]
+        A6[Vectorized Read]
+    end
+
+    subgraph "Flink SQL映射"
+        B1["SELECT * FROM table<br/>全表扫描"]
+        B2["SET 'streaming' = 'true'<br/>增量消费"]
+        B3["FOR SYSTEM_VERSION AS OF<br/>时间旅行/分支查询"]
+        B4["WHERE event_time >= '...'<br/>自动分区过滤"]
+        B5["OPTIMIZE 分区裁剪<br/>减少扫描文件数"]
+        B6["SET 'vectorization.enabled' = 'true'<br/>向量化读取"]
+    end
+
+    subgraph "查询优化效果"
+        C1[全量一致性读取]
+        C2[流式增量处理]
+        C3[历史回溯/多版本查询]
+        C4[减少I/O扫描量]
+        C5[降低元数据开销]
+        C6[提升CPU缓存命中率]
+    end
+
+    A1 --> B1 --> C1
+    A2 --> B2 --> C2
+    A3 --> B3 --> C3
+    A4 --> B4 --> C4
+    A5 --> B5 --> C5
+    A6 --> B6 --> C6
+
+    style A1 fill:#e3f2fd,stroke:#1565c0
+    style A2 fill:#e3f2fd,stroke:#1565c0
+    style A3 fill:#e3f2fd,stroke:#1565c0
+    style C1 fill:#c8e6c9,stroke:#2e7d32
+    style C2 fill:#c8e6c9,stroke:#2e7d32
+    style C3 fill:#c8e6c9,stroke:#2e7d32
+```
+
+### 7.8 Iceberg 连接器使用场景决策树
+
+以下决策树展示四种典型 Iceberg 连接器使用场景及其技术路径：
+
+```mermaid
+flowchart TD
+    START[Iceberg连接器使用场景]
+
+    START --> SCENE1[实时入湖]
+    SCENE1 --> FLINK1["Flink Streaming"]
+    FLINK1 --> SINK1["Iceberg Append Sink<br/>Checkpoint驱动事务提交"]
+
+    START --> SCENE2[批量加载]
+    SCENE2 --> FLINK2["Flink Batch"]
+    FLINK2 --> SINK2["Iceberg Overwrite<br/>全量替换/分区覆盖"]
+
+    START --> SCENE3[增量处理]
+    SCENE3 --> SOURCE1["Iceberg Incremental Source"]
+    SOURCE1 --> FLINK3["Flink流处理"]
+    FLINK3 --> DOWNSTREAM["下游Sink/分析系统"]
+
+    START --> SCENE4[多引擎共享]
+    SCENE4 --> CATALOG["Iceberg Catalog"]
+    CATALOG --> ENGINES["Flink / Spark / Trino<br/>统一表格式访问"]
+
+    style START fill:#ffebee,stroke:#c62828
+    style SCENE1 fill:#e3f2fd,stroke:#1565c0
+    style SCENE2 fill:#e3f2fd,stroke:#1565c0
+    style SCENE3 fill:#e3f2fd,stroke:#1565c0
+    style SCENE4 fill:#e3f2fd,stroke:#1565c0
+    style SINK1 fill:#c8e6c9,stroke:#2e7d32
+    style SINK2 fill:#c8e6c9,stroke:#2e7d32
+    style DOWNSTREAM fill:#c8e6c9,stroke:#2e7d32
+    style ENGINES fill:#c8e6c9,stroke:#2e7d32
+```
+
 ---
 
 ## 8. 性能调优指南
@@ -1891,6 +2046,7 @@ ALTER TABLE user_orders SET TBLPROPERTIES (
 ---
 
 ## 9. 引用参考 (References)
+
 
 ---
 

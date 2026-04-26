@@ -439,6 +439,102 @@ processed.executeInsert("risingwave_sink");
 
 ---
 
+## 8. 思维表征可视化
+
+### 8.1 Flink RisingWave集成思维导图
+
+以下思维导图以"Flink RisingWave集成"为中心，放射展开核心概念、数据流、场景互补、架构模式与生产考量。
+
+```mermaid
+mindmap
+  root((Flink RisingWave集成))
+    RisingWave核心
+      流处理引擎
+      物化视图
+      增量计算
+      存储引擎
+    数据流
+      Kafka数据源
+      Flink预处理
+      RisingWave物化视图
+      实时查询
+    场景互补
+      Flink复杂ETL
+      RisingWave实时Serving
+      分离关注点
+    架构模式
+      Flink前置处理
+      RisingWave实时分析
+      联合查询
+    生产考量
+      延迟要求
+      数据一致性
+      运维复杂度
+      成本
+```
+
+### 8.2 多维关联树
+
+以下关联树展示 RisingWave 核心特性 → Flink 角色定位 → 联合架构价值的映射关系。
+
+```mermaid
+graph TB
+    subgraph "RisingWave核心特性"
+        RW1[流处理引擎]
+        RW2[自动物化视图]
+        RW3[增量计算]
+        RW4[云原生架构]
+    end
+
+    subgraph "Flink角色定位"
+        F1[复杂事件处理]
+        F2[精确状态管理]
+        F3[丰富连接器生态]
+        F4[高级窗口计算]
+    end
+
+    subgraph "联合架构价值"
+        V1[端到端低延迟]
+        V2[统一SQL接口]
+        V3[存算分离]
+        V4[弹性扩展]
+    end
+
+    RW1 -->|"增强"| V1
+    RW2 -->|"支持"| V2
+    RW3 -->|"驱动"| V3
+    RW4 -->|"赋能"| V4
+    F1 -->|"保障"| V1
+    F2 -->|"支撑"| V3
+    F3 -->|"扩展"| V2
+    F4 -->|"优化"| V4
+```
+
+### 8.3 RisingWave集成模式决策树
+
+以下决策树辅助评估不同场景下的 RisingWave 集成模式选择。
+
+```mermaid
+flowchart TD
+    Start([开始评估]) --> Q1{流处理复杂度?}
+
+    Q1 -->|"简单SQL+物化视图"| A1[纯RisingWave方案]
+    Q1 -->|"复杂处理+实时Serving"| A2[Flink+RW方案]
+    Q1 -->|"批流混合+统一查询"| A3[混合架构方案]
+    Q1 -->|"现有Flink SQL迁移"| A4[替代评估方案]
+
+    A1 --> D1[创建SOURCE<br/>定义物化视图<br/>直接查询]
+    A2 --> D2[Flink复杂ETL<br/>→ Kafka/Sink<br/>→ RW实时Serving]
+    A3 --> D3[Flink批处理<br/>+ RW流处理<br/>+ 统一查询层]
+    A4 --> D4{ROI分析}
+
+    D4 -->|"成本降低>30%"| M1[迁移至RisingWave]
+    D4 -->|"成本降低<30%"| M2[保持Flink+RW混合]
+    D4 -->|"需要复杂状态"| M3[保留Flink为主]
+```
+
+---
+
 ## 7. References
 
 - [RisingWave Documentation](https://docs.risingwave.com/)

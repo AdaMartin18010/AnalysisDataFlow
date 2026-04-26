@@ -961,20 +961,197 @@ flowchart TD
     style END3 fill:#e8f5e9,stroke:#2e7d32
 ```
 
+### 7.4 无盘Kafka核心概念思维导图
+
+以下思维导图以"无盘Kafka深度解析"为中心，放射展开五大核心维度，覆盖架构原理、性能特征、成本优化、Flink集成与生产考量：
+
+```mermaid
+mindmap
+  root((无盘Kafka深度解析))
+    架构原理
+      内存存储
+        PageCache热数据常驻
+        零拷贝传输路径
+      分层存储
+        热层本地SSD
+        温层对象存储标准类
+        冷层归档存储
+      对象存储卸载
+        RemoteStorageManager接口
+        异步段上传
+        跨区域冗余替代ISR
+      日志段管理
+        ACTIVE活跃段
+        SEALED封存段
+        REMOTE远程段
+        状态自动迁移
+    性能特征
+      低延迟写入
+        本地PageCache命中<5ms
+        生产者立即Ack
+      高吞吐读取
+        顺序Range GET优化
+        并发远程读取线程池
+      内存命中
+        活跃Topic等效传统Kafka
+        消费Lag控制是关键
+      回退加载
+        缓存未命中触发远程获取
+        索引优先下载定位
+    成本优化
+      存储成本降低
+        对象存储单位成本仅为SSD 1/10~1/50
+        总成本节省50~75%
+      计算存储分离
+        Broker无状态化
+        独立扩缩容计算与存储
+      弹性扩展
+        分钟级Broker扩缩容
+        无需数据再平衡
+    与Flink集成
+      Source消费
+        透明分层路由
+        自适应批处理
+      Exactly-Once
+        两阶段提交不变
+        Checkpoint偏移量快照
+      Checkpoint对齐
+        非对齐Checkpoint应对延迟波动
+        超时阈值需上调
+      动态分区
+        分区发现与重平衡
+        消费者组协作式分配
+    生产考量
+      故障恢复
+        Broker故障秒级恢复
+        无需本地日志重建
+      数据持久性
+        对象存储11个9可用性
+        多可用区冗余
+      监控指标
+        remote-fetch-latency-avg
+        remote-storage-cache-hit-rate
+        Flink Consumer Lag
+      容量规划
+        本地保留窗口与Checkpoint间隔匹配
+        预取缓冲区大小调优
+```
+
+### 7.5 多维关联树：特性→集成点→业务收益
+
+以下关联树展示无盘Kafka核心特性如何通过Flink集成点转化为实际业务收益：
+
+```mermaid
+graph TB
+    subgraph "无盘Kafka特性"
+        A1[内存PageCache加速]
+        A2[远程对象存储卸载]
+        A3[分层段生命周期管理]
+        A4[弹性无状态Broker]
+        A5[计算存储分离架构]
+    end
+
+    subgraph "Flink集成点"
+        B1[Kafka Source透明消费]
+        B2[非对齐Checkpoint容错]
+        B3[预取策略隐藏延迟]
+        B4[动态分区发现与重平衡]
+        B5[自适应批处理量调整]
+    end
+
+    subgraph "业务收益"
+        C1[存储成本降低50~75%]
+        C2[实时延迟P99<50ms保证]
+        C3[历史回溯高吞吐]
+        C4[云原生弹性扩缩容]
+        C5[运维复杂度显著降低]
+    end
+
+    A1 --> B3
+    A1 --> B5
+    A2 --> B1
+    A2 --> B2
+    A3 --> B1
+    A3 --> B3
+    A4 --> B4
+    A5 --> B4
+
+    B1 --> C2
+    B1 --> C3
+    B2 --> C2
+    B3 --> C2
+    B3 --> C3
+    B4 --> C4
+    B4 --> C5
+    B5 --> C2
+    B5 --> C3
+
+    A2 -.-> C1
+    A4 -.-> C4
+    A5 -.-> C5
+
+    style A1 fill:#ffebee,stroke:#c62828
+    style A2 fill:#e3f2fd,stroke:#1565c0
+    style A4 fill:#fff3cd,stroke:#ef6c00
+    style A5 fill:#e8f5e9,stroke:#2e7d32
+    style C1 fill:#e8f5e9,stroke:#2e7d32
+    style C2 fill:#ffebee,stroke:#c62828
+    style C4 fill:#fff3cd,stroke:#ef6c00
+    style C5 fill:#f3e5f5,stroke:#6a1b9a
+```
+
+### 7.6 存储架构选型决策树
+
+以下决策树帮助根据业务场景选择最优的Kafka存储架构策略：
+
+```mermaid
+flowchart TD
+    START([存储架构选型]) --> Q1{数据丢失容忍度?}
+
+    Q1 -->|零容忍| DUR[持久化优先分支]
+    Q1 -->|可容忍秒级丢失| TOL[性能优先分支]
+    Q1 -->|按业务分级| HYB[混合模式分支]
+
+    DUR --> Q2{延迟要求?}
+    Q2 -->|P99 < 10ms<br/>极致延迟| MEM[纯内存架构<br/>Redis/Memcached协议<br/>⚠️ 需独立快照持久化]
+    Q2 -->|P99 < 100ms<br/>低延迟| TRAD[全持久化磁盘<br/>传统Kafka 3副本<br/>高可靠 + 中等延迟]
+
+    TOL --> Q3{冷热数据分布?}
+    Q3 -->|80%访问集中在近期| TIER[分层存储架构<br/>热数据内存PageCache<br/>冷数据对象存储<br/>成本节省50~75%]
+    Q3 -->|访问均匀分布| CACHE[缓存增强磁盘<br/>本地SSD缓存温数据<br/>对象存储归档冷数据]
+
+    HYB --> Q4{Topic分级策略}
+    Q4 -->|金融交易/核心订单| TOPIC1[Topic: core-events<br/>策略: 全持久化磁盘<br/>保留: 7天本地 + 30天远程]
+    Q4 -->|日志/埋点/监控| TOPIC2[Topic: log-events<br/>策略: 分层存储<br/>保留: 6小时本地 + 90天远程]
+    Q4 -->|实时特征/推荐| TOPIC3[Topic: feature-events<br/>策略: 纯内存队列<br/>保留: 1小时 + 定期快照]
+
+    MEM --> RES1["适用: 高频交易缓存<br/>收益: 亚毫秒延迟<br/>风险: 故障数据丢失"]
+    TRAD --> RES2["适用: 传统消息队列<br/>收益: 强持久性保证<br/>成本: 磁盘3副本开销"]
+    TIER --> RES3["适用: 流处理平台<br/>收益: 成本优化 + 性能平衡<br/>代表: Diskless Kafka"]
+    CACHE --> RES4["适用: 混合分析负载<br/>收益: 灵活缓存控制<br/>成本: 中等SSD投入"]
+    TOPIC1 --> RES2
+    TOPIC2 --> RES3
+    TOPIC3 --> RES1
+
+    style START fill:#e3f2fd,stroke:#1565c0
+    style Q1 fill:#fff3cd,stroke:#ef6c00
+    style Q2 fill:#fff3cd,stroke:#ef6c00
+    style Q3 fill:#fff3cd,stroke:#ef6c00
+    style Q4 fill:#fff3cd,stroke:#ef6c00
+    style MEM fill:#ffebee,stroke:#c62828
+    style TRAD fill:#e8f5e9,stroke:#2e7d32
+    style TIER fill:#e3f2fd,stroke:#1565c0
+    style CACHE fill:#f3e5f5,stroke:#6a1b9a
+    style HYB fill:#fff8e1,stroke:#f57f17
+    style RES1 fill:#ffebee,stroke:#c62828
+    style RES2 fill:#e8f5e9,stroke:#2e7d32
+    style RES3 fill:#e3f2fd,stroke:#1565c0
+    style RES4 fill:#f3e5f5,stroke:#6a1b9a
+```
+
 ---
 
 ## 8. 引用参考 (References)
-
-
-
-
-
-
-
-
-
-
-
 
 
 ---
@@ -985,6 +1162,7 @@ flowchart TD
 |------|------|------|
 | v1.0 | 2026-04-06 | 初始版本，Diskless Kafka 深度分析与 Flink 集成指南 |
 | v2.0 | 2026-04-19 | 全面重构为八段式模板，扩展至完整深度解析文档；新增 7 个形式化定义、3 个引理/命题、3 个 Mermaid 图；补充 Tiered Storage 架构原理、成本-性能权衡模型、生产部署配置、监控告警规则 |
+| v2.1 | 2026-04-26 | 深化思维表征：新增 mindmap 思维导图、graph TB 多维关联树、flowchart TD 存储架构选型决策树；补充 8 条引用参考 |
 
 ---
 
@@ -992,4 +1170,4 @@ flowchart TD
 
 ---
 
-*文档版本: v1.0 | 创建日期: 2026-04-19*
+*文档版本: v2.1 | 创建日期: 2026-04-26*

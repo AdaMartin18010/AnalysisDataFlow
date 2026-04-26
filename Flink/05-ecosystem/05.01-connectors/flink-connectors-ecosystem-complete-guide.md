@@ -65,6 +65,9 @@
     - [7.2 连接器选型决策树](#72-连接器选型决策树)
     - [7.3 数据流集成架构图](#73-数据流集成架构图)
     - [7.4 连接器状态机](#74-连接器状态机)
+    - [7.5 Flink 连接器生态思维导图](#75-flink-连接器生态思维导图)
+    - [7.6 连接器多维关联树](#76-连接器多维关联树)
+    - [7.7 连接器场景化选型决策树](#77-连接器场景化选型决策树)
   - [8. 配置参考与性能对比 (Configuration \& Performance)](#8-配置参考与性能对比-configuration--performance)
     - [8.1 全局配置最佳实践](#81-全局配置最佳实践)
     - [8.2 连接器性能对比矩阵](#82-连接器性能对比矩阵)
@@ -2347,6 +2350,165 @@ stateDiagram-v2
 
 ---
 
+### 7.5 Flink 连接器生态思维导图
+
+以下思维导图以 Flink 连接器生态为中心，按存储系统类型放射展开，覆盖消息队列、数据库、文件系统、湖仓格式及自定义扩展五大分支。
+
+```mermaid
+mindmap
+  root((Flink连接器生态))
+    消息队列
+      Kafka
+        Kafka Source<br/>Offset管理
+        Kafka Sink<br/>事务支持
+      Pulsar
+        Pulsar Source<br/>Cursor管理
+        Pulsar Sink<br/>事务支持
+      RabbitMQ
+      Amazon Kinesis
+    数据库
+      JDBC
+        MySQL
+        PostgreSQL
+        Oracle
+        SQL Server
+      MongoDB
+      Elasticsearch
+      Redis
+      Cassandra
+      HBase
+      InfluxDB
+    文件系统
+      HDFS
+      Amazon S3
+      Azure Blob Storage
+      Alibaba OSS
+      LocalFS
+    湖仓格式
+      Apache Iceberg
+      Apache Paimon
+      Apache Hudi
+      Delta Lake
+      Apache Fluss
+    自定义扩展
+      Source API
+      Sink API
+      Async I/O
+      Lookup Join
+```
+
+---
+
+### 7.6 连接器多维关联树
+
+以下关联树展示连接器类型 → 核心技术特性 → 典型适用场景的三层映射关系，辅助快速定位技术方案。
+
+```mermaid
+graph TB
+    subgraph "连接器类型"
+        CT_MQ[消息队列连接器]
+        CT_DB[数据库连接器]
+        CT_FS[文件系统连接器]
+        CT_LH[湖仓格式连接器]
+        CT_CDC[CDC连接器]
+        CT_CUSTOM[自定义连接器]
+    end
+
+    subgraph "技术特性"
+        TF_EO[Exactly-Once语义]
+        TF_HT[高吞吐]
+        TF_LL[低延迟]
+        TF_LK[Lookup查询]
+        TF_SC[Schema演进]
+        TF_HP[水平扩展]
+        TF_2PC[两阶段提交]
+        TF_ID[幂等写入]
+    end
+
+    subgraph "适用场景"
+        SC_RT[实时流处理管道]
+        SC_DW[实时数仓入仓]
+        SC_LK[维表关联查询]
+        SC_AR[离线归档分析]
+        SC_CDC[增量数据同步]
+        SC_SE[全文搜索引擎]
+        SC_CA[缓存加速层]
+    end
+
+    CT_MQ --> TF_EO
+    CT_MQ --> TF_HT
+    CT_MQ --> TF_HP
+    CT_DB --> TF_LK
+    CT_DB --> TF_2PC
+    CT_FS --> TF_SC
+    CT_FS --> TF_AR
+    CT_LH --> TF_EO
+    CT_LH --> TF_SC
+    CT_LH --> TF_2PC
+    CT_CDC --> TF_HP
+    CT_CDC --> TF_ID
+    CT_CUSTOM --> TF_LL
+    CT_CUSTOM --> TF_ID
+
+    TF_EO --> SC_RT
+    TF_HT --> SC_RT
+    TF_LL --> SC_RT
+    TF_LK --> SC_LK
+    TF_SC --> SC_DW
+    TF_HP --> SC_CDC
+    TF_2PC --> SC_DW
+    TF_ID --> SC_CDC
+    TF_AR --> SC_AR
+    TF_EO --> SC_DW
+    TF_LK --> SC_CA
+    TF_HT --> SC_SE
+
+    CT_MQ -.->|典型| SC_RT
+    CT_DB -.->|典型| SC_LK
+    CT_FS -.->|典型| SC_AR
+    CT_LH -.->|典型| SC_DW
+    CT_CDC -.->|典型| SC_CDC
+    CT_CUSTOM -.->|典型| SC_CA
+```
+
+---
+
+### 7.7 连接器场景化选型决策树
+
+以下决策树针对常见业务场景提供直接的连接器选型建议，覆盖高吞吐、实时搜索、键值查询、湖仓入湖和传统数据库集成五大典型路径。
+
+```mermaid
+flowchart TD
+    START[业务场景需求] --> Q1{数据持久化与吞吐要求?}
+
+    Q1 -->|高吞吐事件流| A1[Kafka Source/Sink]
+    Q1 -->|实时全文检索| A2[Elasticsearch Sink]
+    Q1 -->|低延迟键值查询| A3[Redis Lookup Join]
+    Q1 -->|结构化数据湖仓| A4{湖仓格式选择?}
+    Q1 -->|传统关系型存储| A5[JDBC + 连接池优化]
+
+    A4 -->|开放标准+多引擎| B1[Apache Iceberg Sink]
+    A4 -->|流批统一+实时更新| B2[Apache Paimon Sink]
+    A4 -->|增量更新+时间旅行| B3[Apache Hudi Sink]
+    A4 -->|Spark生态兼容| B4[Delta Lake Sink]
+
+    A1 --> C1[配置事务ID前缀<br/>启用幂等生产者]
+    A2 --> C2[配置Bulk Flush<br/>设置重试策略]
+    A3 --> C3[配置缓存TTL<br/>设置最大行数]
+    B1 --> C4[配置ZSTD压缩<br/>开启UPSERT模式]
+    B2 --> C5[配置Bucket数<br/>设置Changelog Producer]
+    A5 --> C6[启用XA事务<br/>调优Batch Size]
+
+    C1 --> D1[端到端Exactly-Once]
+    C2 --> D2[毫秒级搜索可见]
+    C3 --> D3[亚毫秒级维表查询]
+    C4 --> D4[分钟级入湖延迟]
+    C5 --> D5[流批一体实时数仓]
+    C6 --> D6[可靠关系型存储写入]
+```
+
+---
+
 ## 8. 配置参考与性能对比 (Configuration & Performance)
 
 ### 8.1 全局配置最佳实践
@@ -2528,17 +2690,6 @@ env.getConfig().addDefaultKryoSerializer(MyClass.class, MySerializer.class);
 ---
 
 ## 9. 引用参考 (References)
-
-
-
-
-
-
-
-
-
-
-
 
 
 ---

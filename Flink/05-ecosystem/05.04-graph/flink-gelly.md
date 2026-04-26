@@ -314,9 +314,113 @@ flowchart TD
     E --> E1[日级全量分析<br/>多层社区发现]
 ```
 
+### 7.5 Gelly 思维导图
+
+Flink Gelly 核心能力全景：
+
+```mermaid
+mindmap
+  root((Flink Gelly图计算))
+    图API
+      Graph创建
+      顶点转换
+      边转换
+      邻居聚合
+      图属性
+    迭代算法
+      Vertex-Centric
+      Gather-Sum-Apply
+      Scatter-Gather
+    内置算法
+      PageRank
+      SSSP
+      连通分量
+      社区检测
+      三角形计数
+    Table/SQL集成
+      图视图
+      图查询
+      GSQL
+      关系转换
+    性能优化
+      分区策略
+      增量计算
+      缓存
+      压缩
+```
+
+### 7.6 多维关联树
+
+图问题到 Gelly 算法再到 Flink 运行时的映射关系：
+
+```mermaid
+graph TB
+    subgraph 图问题
+        P1[最短路径]
+        P2[节点重要性]
+        P3[社区结构]
+        P4[图连通性]
+        P5[子图模式]
+    end
+
+    subgraph Gelly算法
+        A1[SSSP<br/>Vertex-Centric]
+        A2[PageRank<br/>GSA]
+        A3[LPA/CC<br/>Scatter-Gather]
+        A4[连通分量<br/>GSA]
+        A5[三角形计数<br/>Vertex-Centric]
+    end
+
+    subgraph Flink实现
+        I1[DataSet+DeltaIteration]
+        I2[Map+Reduce+Join]
+        I3[CoGroup+Filter]
+        I4[Hash分区+缓存]
+        I5[增量更新算子]
+    end
+
+    P1 --> A1
+    P2 --> A2
+    P3 --> A3
+    P4 --> A4
+    P5 --> A5
+
+    A1 --> I1
+    A2 --> I2
+    A3 --> I3
+    A4 --> I4
+    A5 --> I5
+```
+
+### 7.7 Gelly 使用场景决策树
+
+根据场景特征选择合适的 Gelly 编程模式与优化策略：
+
+```mermaid
+flowchart TD
+    Start[选择Gelly计算模式] --> Q1{问题类型?}
+
+    Q1 -->|简单图遍历| S1[Gelly基本API]
+    S1 --> S1a[单次迭代<br/>Map/Join/Filter]
+
+    Q1 -->|迭代图算法| S2[Vertex-Centric模型]
+    S2 --> S2a[设置收敛条件<br/>maxIterations/epsilon]
+    S2a --> S2b[消息传递<br/>Compute/MessageCombiner]
+
+    Q1 -->|图+关系混合| S3[Table API + Gelly转换]
+    S3 --> S3a[Graph.toDataSet<br/>TableEnvironment.createTemporaryView]
+    S3a --> S3b[GSQL查询<br/>关系-图双向映射]
+
+    Q1 -->|大规模图| S4[分布式分区 + Checkpoint]
+    S4 --> S4a[Hash/Range分区策略]
+    S4a --> S4b[增量计算<br/>DeltaIteration缓存]
+    S4b --> S4c[状态压缩<br/>稀疏邻接表]
+```
+
 ---
 
 ## 8. 引用参考 (References)
+
 
 ---
 

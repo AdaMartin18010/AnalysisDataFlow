@@ -72,6 +72,8 @@ try (Scope scope = span.makeCurrent()) {
 
 ## 7. 可视化 (Visualizations)
 
+### 7.1 Span 调用序列
+
 ```mermaid
 sequenceDiagram
     A->>B: Span 1
@@ -80,9 +82,117 @@ sequenceDiagram
     B-->>A: 返回
 ```
 
+### 7.2 链路追踪演进思维导图
+
+以下思维导图以"链路追踪演进"为中心，放射展示从早期方案到未来方向的完整脉络。
+
+```mermaid
+mindmap
+  root((链路追踪演进))
+    早期方案
+      日志关联
+      Trace ID手动传递
+      自定义实现
+    OpenTracing
+      标准化API
+      多语言支持
+      Vendor中立
+    OpenTelemetry
+      统一标准
+      Metrics+Logs+Traces
+      自动埋点
+    Flink集成
+      Span生成
+      Context传播
+      异步边界
+      与Checkpoint关联
+    未来方向
+      eBPF无侵入
+      AI根因分析
+      全栈关联
+      持续剖析
+```
+
+### 7.3 追踪标准→Flink能力→观测价值映射
+
+以下关联树展示追踪标准如何映射为 Flink 具体能力，并转化为实际观测价值。
+
+```mermaid
+graph TB
+    subgraph 追踪标准层
+        A1[OpenTelemetry 统一协议]
+        A2[OpenTracing 标准化API]
+        A3[W3C Trace Context]
+    end
+
+    subgraph Flink能力层
+        B1[Span生成与属性注入]
+        B2[跨算子Context传播]
+        B3[异步边界追踪]
+        B4[Checkpoint与Trace关联]
+        B5[Backpressure链路标记]
+    end
+
+    subgraph 观测价值层
+        C1[端到端延迟分解]
+        C2[故障根因定位]
+        C3[性能瓶颈识别]
+        C4[数据血缘追踪]
+        C5[SLO/SLI量化]
+    end
+
+    A1 --> B1
+    A1 --> B2
+    A2 --> B3
+    A3 --> B2
+    B1 --> C1
+    B2 --> C4
+    B3 --> C2
+    B4 --> C5
+    B5 --> C3
+```
+
+### 7.4 追踪方案选型决策树
+
+以下决策树指导不同需求场景下的追踪方案选型，从轻量需求到未来就绪架构。
+
+```mermaid
+flowchart TD
+    Start([开始选型]) --> Q1{需求规模?}
+    Q1 -->|轻量需求| A1[日志关联 + 自定义Trace ID]
+    Q1 -->|标准需求| A2[OpenTelemetry + Jaeger/Zipkin]
+    Q1 -->|企业需求| A3[Datadog/New Relic + 全面可观测性]
+    Q1 -->|未来就绪| A4[OpenTelemetry + eBPF + AI分析]
+
+    A1 --> B1{是否需要分布式关联?}
+    B1 -->|否| C1[纯日志模式]
+    B1 -->|是| C2[轻量OpenTelemetry SDK]
+
+    A2 --> B2{是否需要Metrics联动?}
+    B2 -->|否| C3[仅Trace Collector]
+    B2 -->|是| C4[OTel Collector + Prometheus]
+
+    A3 --> B3{是否需要AI分析?}
+    B3 -->|否| C5[传统APM套件]
+    B3 -->|是| C6[New Relic AI / Datadog Watchdog]
+
+    A4 --> B4{是否需要持续剖析?}
+    B4 -->|否| C7[eBPF + OTel标准栈]
+    B4 -->|是| C8[Parca/Profiler + 全栈关联]
+
+    C1 --> End1([低成本方案])
+    C2 --> End1
+    C3 --> End2([社区标准方案])
+    C4 --> End2
+    C5 --> End3([企业级方案])
+    C6 --> End3
+    C7 --> End4([前沿架构方案])
+    C8 --> End4
+```
+
 ## 8. 引用参考 (References)
 
-[^1]: OpenTelemetry Documentation
+[^1]: OpenTelemetry Documentation, "What is OpenTelemetry?", 2025. <https://opentelemetry.io/docs/>
 
 ---
 

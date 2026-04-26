@@ -1705,6 +1705,151 @@ mindmap
 
 ---
 
+### 7.7 推理树：核心形式化推导链
+
+以下推导树以 `graph BT` 形式展示流式机器学习五大核心链路的形式化定理依赖与推导关系：
+
+```mermaid
+graph BT
+    subgraph OL["在线学习链路"]
+        OL1["在线梯度下降 OGD<br/>Def-S-SML-03"]
+        OL2["自适应学习率 AdaGrad/Adam<br/>Lemma-S-SML-02"]
+        OL3["强凸收敛分析<br/>Prop-S-SML-01"]
+        OL4["增量更新收敛性<br/>Thm-S-SML-01: R(T) ≤ O(√T)"]
+    end
+
+    subgraph DD["概念漂移链路"]
+        DD1["KL散度量化漂移<br/>Def-S-SML-02"]
+        DD2["假设检验 H₀ vs H₁<br/>漂移检测器"]
+        DD3["检测延迟下界<br/>Prop-S-SML-02"]
+        DD4["检测与适应理论<br/>Thm-S-SML-02"]
+    end
+
+    subgraph FE["特征工程链路"]
+        FE1["流式特征算子 ℱ<br/>Def-S-SML-05"]
+        FE2["状态管理 sₜ₊₁<br/>递推更新"]
+        FE3["因果性约束 ∂ℱ/∂xₜ' = 0<br/>无前瞻"]
+        FE4["流式特征一致性<br/>一致性约束验证"]
+    end
+
+    subgraph MS["模型服务链路"]
+        MS1["推理引擎<br/>Inference Engine"]
+        MS2["版本控制与热切换<br/>Model Store"]
+        MS3["A/B测试与Bandit<br/>在线评估"]
+        MS4["实时推理延迟约束<br/>E[T_pred] ≤ τ_max"]
+    end
+
+    subgraph RL["反馈循环链路"]
+        RL1["实时反馈流<br/>Performance Monitor"]
+        RL2["在线性能评估<br/>Metrics Stream"]
+        RL3["策略梯度更新<br/>∇π J(π)"]
+        RL4["强化学习形式化<br/>π* = argmax E[R]"]
+    end
+
+    Root["流式机器学习形式化理论<br/>统一框架 L5"]
+
+    OL4 --> OL3 --> OL2 --> OL1
+    DD4 --> DD3 --> DD2 --> DD1
+    FE4 --> FE3 --> FE2 --> FE1
+    MS4 --> MS3 --> MS2 --> MS1
+    RL4 --> RL3 --> RL2 --> RL1
+
+    OL1 --> Root
+    DD1 --> Root
+    FE1 --> Root
+    MS1 --> Root
+    RL1 --> Root
+
+    style Root fill:#e1f5fe,stroke:#01579b,stroke-width:3px
+    style OL4 fill:#e8f5e9
+    style DD4 fill:#fff3e0
+    style FE4 fill:#fce4ec
+    style MS4 fill:#f3e5f5
+    style RL4 fill:#e0f2f1
+```
+
+**推导链解读：**
+- **在线学习链路**：从基础算法（OGD）出发，经自适应学习率调优、强凸收敛分析，最终得到增量更新的遗憾上界定理。
+- **概念漂移链路**：以KL散度量化为起点，通过假设检验框架建立检测器，导出检测延迟下界，最终形成漂移适应理论。
+- **特征工程链路**：特征算子的形式化定义 → 状态递推管理 → 因果性约束保证 → 流式特征一致性验证。
+- **模型服务链路**：推理引擎架构 → 版本控制机制 → A/B测试评估 → 实时延迟约束的形式化保证。
+- **反馈循环链路**：实时反馈流 → 性能监控指标 → 策略梯度更新 → 强化学习最优策略的形式化收敛。
+
+---
+
+### 7.8 概念矩阵：实时性-模型复杂度权衡
+
+以下象限图展示流式ML系统中**模型复杂度**与**推理延迟要求**之间的权衡关系，为技术选型提供决策依据：
+
+```mermaid
+quadrantChart
+    title 流式ML系统实时性-模型复杂度权衡矩阵
+    x-axis 低模型复杂度 --> 高模型复杂度
+    y-axis 宽松延迟要求 --> 严格延迟要求
+    quadrant-1 高复杂度-严格延迟
+    quadrant-2 高复杂度-宽松延迟
+    quadrant-3 低复杂度-宽松延迟
+    quadrant-4 低复杂度-严格延迟
+    规则系统: [0.1, 0.15]
+    在线线性模型: [0.25, 0.35]
+    在线树模型: [0.55, 0.45]
+    集成模型: [0.7, 0.6]
+    深度神经网络: [0.9, 0.8]
+```
+
+**矩阵解读：**
+- **第一象限（高复杂度-严格延迟）**：深度神经网络（DNN）与大型集成模型位于此区域。虽然模型表达能力强，但在严格延迟约束下需要GPU加速、模型量化或蒸馏技术才能部署于流式场景。
+- **第二象限（高复杂度-宽松延迟）**：复杂集成模型（如在线梯度提升）可容忍较高延迟，适合非实时分析或后台批流融合任务。
+- **第三象限（低复杂度-宽松延迟）**：规则系统在此区域，适用于对延迟不敏感且业务逻辑简单的场景，但难以处理高维非线性关系。
+- **第四象限（低复杂度-严格延迟）**：在线线性模型（如逻辑回归、线性SVM）是流式ML的"甜点区"，单遍处理、O(d)复杂度、毫秒级推理延迟，是广告点击预测和实时风控的首选基线模型。
+- **中间地带**：在线树模型（如Hoeffding Tree）在复杂度与延迟之间取得平衡，适合特征交互重要的中等规模流任务。
+
+---
+
+### 7.9 思维导图：流式机器学习形式化理论全景体系
+
+以下思维导图以"流式机器学习形式化理论"为中心，放射展开五大核心领域的形式化元素与关键定理：
+
+```mermaid
+mindmap
+  root((流式机器学习形式化理论<br/>L5严格数学形式化))
+    在线学习
+      在线梯度下降 OGD
+      自适应学习率 AdaGrad / Adam
+      遗憾界分析 R(T) ≤ O(√T)
+      强凸收敛 O(ln T)
+      增量更新 θₜ₊₁ = θₜ − ηₜ∇ℒ
+      定理 Thm-S-SML-01
+    概念漂移
+      漂移检测 ADWIN / DDM / Page-Hinkley
+      漂移强度量化 Δ_drift = D_KL
+      真实漂移 vs 虚拟漂移 vs 混合漂移
+      检测延迟下界 τ_detect
+      自适应窗口 W_t^(w)
+      定理 Thm-S-SML-02
+    特征工程
+      流式特征算子 ℱ
+      状态管理 sₜ₊₁ = f_update(sₜ, xₜ)
+      因果性约束 ∂ℱ/∂xₜ' = 0
+      一致性约束 ℱ_stream = ℱ_batch
+      滑动窗口统计量 Lemma-S-SML-01
+      定义 Def-S-SML-05
+    模型服务
+      推理引擎 Inference Engine
+      版本控制与热切换
+      A/B 测试与 Bandit
+      推理延迟保证 E[T_pred] ≤ τ_max
+      模型一致性 Thm-S-SML-03
+    反馈循环
+      实时反馈流
+      性能监控 Performance Monitor
+      在线评估指标
+      策略梯度更新
+      强化学习形式化 RL → π*
+```
+
+---
+
 ## 8. 引用参考 (References)
 
 [^1]: K. P. Murphy, "Machine Learning: A Probabilistic Perspective," MIT Press, 2012.

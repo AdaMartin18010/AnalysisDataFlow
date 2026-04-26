@@ -98,6 +98,8 @@ stream.process(new ProcessFunction<String, Row>() {
 
 ## 7. 可视化 (Visualizations)
 
+### 7.1 CDC数据流概览
+
 ```mermaid
 graph LR
     A[Database] --> B[CDC Capture]
@@ -106,9 +108,99 @@ graph LR
     D --> E[Target]
 ```
 
+### 7.2 CDC连接器演进思维导图
+
+以下思维导图以"CDC连接器演进"为中心，放射展开五大演进阶段及其关键技术分支：
+
+```mermaid
+mindmap
+  root((CDC连接器演进))
+    早期CDC
+      Trigger-based
+      Log-based
+      Timestamp-based
+    Debezium集成
+      Embedded模式
+      Kafka Connect
+      Server模式
+    Flink CDC
+      Source API
+      Exactly-Once
+      Schema进化
+      多表同步
+    CDC 3.0
+      Pipeline API
+      整库同步
+      Transform
+      路由
+    未来方向
+      无锁Snapshot
+      并行读取
+      云原生CDC
+      实时Schema
+```
+
+### 7.3 CDC版本→核心特性→应用场景多维关联树
+
+以下关联树展示各CDC版本的核心特性及其对应的应用场景映射关系：
+
+```mermaid
+graph TB
+    subgraph V1["早期CDC"]
+        V1A[Trigger-based] --> S1A[定时轮询场景]
+        V1B[Log-based] --> S1B[实时性要求低场景]
+        V1C[Timestamp-based] --> S1C[简单增量同步]
+    end
+    subgraph V2["Debezium集成"]
+        V2A[Embedded模式] --> S2A[轻量级嵌入]
+        V2B[Kafka Connect] --> S2B[消息队列解耦]
+        V2C[Server模式] --> S2C[独立CDC服务]
+    end
+    subgraph V3["Flink CDC"]
+        V3A[Source API] --> S3A[流处理集成]
+        V3B[Exactly-Once] --> S3B[金融级一致性]
+        V3C[Schema进化] --> S3C[业务变更兼容]
+        V3D[多表同步] --> S3D[整库订阅]
+    end
+    subgraph V4["CDC 3.0"]
+        V4A[Pipeline API] --> S4A[声明式数据管道]
+        V4B[整库同步] --> S4B[数据库迁移]
+        V4C[Transform] --> S4C[ETL清洗]
+        V4D[路由] --> S4D[多目标分发]
+    end
+    subgraph V5["未来方向"]
+        V5A[无锁Snapshot] --> S5A[大表初始同步]
+        V5B[并行读取] --> S5B[海量数据加速]
+        V5C[云原生CDC] --> S5C[Serverless架构]
+        V5D[实时Schema] --> S5D[动态结构适配]
+    end
+```
+
+### 7.4 CDC方案选型决策树
+
+以下决策树根据同步复杂度、部署模式与功能需求，指导用户选择最合适的CDC技术方案：
+
+```mermaid
+flowchart TD
+    Start([CDC方案选型]) --> Q1{同步复杂度?}
+    Q1 -->|简单同步| A1[Debezium + Kafka + Flink Consumer]
+    Q1 -->|中等复杂度| Q2{是否需要内置Debezium?}
+    Q2 -->|是| A2[Flink CDC Connector<br/>内置Debezium引擎]
+    Q2 -->|否| A1
+    Q1 -->|复杂ETL| Q3{是否需要Transform/Routing?}
+    Q3 -->|是| A3[Flink CDC 3.0 Pipeline<br/>Transform + 路由]
+    Q3 -->|否| A2
+    Q1 -->|云原生部署| Q4{是否使用托管服务?}
+    Q4 -->|是| A4[托管CDC服务<br/>+ Flink托管服务]
+    Q4 -->|否| A3
+```
+
 ## 8. 引用参考 (References)
 
-[^1]: Flink CDC Connector Documentation
+[^1]: Flink CDC Connector Documentation. https://nightlies.apache.org/flink/flink-cdc-docs-stable/
+[^2]: Debezium Documentation, "Debezium Architecture", 2025. https://debezium.io/documentation/reference/stable/architecture.html
+[^3]: Flink CDC Documentation, "Flink CDC 3.0 Pipeline API", 2025. https://nightlies.apache.org/flink/flink-cdc-docs-release-3.0/docs/get-started/introduction/
+[^4]: T. Akidau et al., "The Dataflow Model", PVLDB, 8(12), 2015. https://doi.org/10.14778/2824032.2824076
 
 ---
 

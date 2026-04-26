@@ -48,6 +48,9 @@
     - [7.2 多租户隔离架构](#72-多租户隔离架构)
     - [7.3 部署流程图](#73-部署流程图)
     - [7.4 故障恢复流程](#74-故障恢复流程)
+    - [7.5 K8s生产环境Flink部署思维导图](#75-k8s生产环境flink部署思维导图)
+    - [7.6 K8s资源与Flink配置多维关联树](#76-k8s资源与flink配置多维关联树)
+    - [7.7 K8s部署模式选型决策树](#77-k8s部署模式选型决策树)
   - [8. 引用参考 (References)](#8-引用参考-references)
 
 ---
@@ -1837,21 +1840,133 @@ sequenceDiagram
     JM->>JM: 恢复数据处理
 ```
 
+### 7.5 K8s生产环境Flink部署思维导图
+
+以下思维导图以"K8s生产环境Flink部署"为中心，从五个维度放射展开核心要素。
+
+```mermaid
+mindmap
+  root((K8s生产环境Flink部署))
+    集群规划
+      Namespace隔离
+      资源Quota
+      节点亲和性
+      污点容忍
+    部署模式
+      Session模式
+      Application模式
+      Per-Job模式弃用
+    配置管理
+      ConfigMap
+      Secret
+      环境变量
+      动态配置
+    高可用
+      HA模式
+      Checkpoint持久化
+      ZooKeeper-less
+      JobManager冗余
+    运维监控
+      Prometheus Operator
+      Grafana
+      日志聚合
+      告警规则
+```
+
+### 7.6 K8s资源与Flink配置多维关联树
+
+以下多维关联树展示 Kubernetes 原生资源、Flink 运行时配置与生产环境要求之间的三层映射关系。
+
+```mermaid
+graph TB
+    subgraph "K8s原生资源层"
+        K1[Namespace]
+        K2[ResourceQuota]
+        K3[Deployment/StatefulSet]
+        K4[ConfigMap]
+        K5[Secret]
+        K6[Service]
+        K7[NetworkPolicy]
+        K8[PVC/StorageClass]
+        K9[HPA/VPA]
+    end
+
+    subgraph "Flink运行时配置层"
+        F1[kubernetes.namespace]
+        F2[taskmanager.memory.process.size<br/>taskmanager.cpu.request]
+        F3[kubernetes.jobmanager.replicas<br/>taskmanager.replicas]
+        F4[flink-conf.yaml]
+        F5[s3.credentials<br/>kafka.auth]
+        F6[kubernetes.rest-service.exposed.type]
+        F7[security.ssl.internal.enabled]
+        F8[state.backend.rocksdb.localdir<br/>state.checkpoint-storage]
+        F9[scheduler-mode: REACTIVE]
+    end
+
+    subgraph "生产环境要求层"
+        P1[多租户隔离]
+        P2[资源可控不超卖]
+        P3[高可用与弹性伸缩]
+        P4[配置版本化与可追溯]
+        P5[凭证安全不泄露]
+        P6[服务可访问与负载均衡]
+        P7[网络安全零信任]
+        P8[状态持久化与快速恢复]
+        P9[自动扩缩容降本增效]
+    end
+
+    K1 --> F1 --> P1
+    K2 --> F2 --> P2
+    K3 --> F3 --> P3
+    K4 --> F4 --> P4
+    K5 --> F5 --> P5
+    K6 --> F6 --> P6
+    K7 --> F7 --> P7
+    K8 --> F8 --> P8
+    K9 --> F9 --> P9
+```
+
+### 7.7 K8s部署模式选型决策树
+
+以下决策树针对不同的业务场景与组织需求，提供 Flink on Kubernetes 部署模式的选型建议。
+
+```mermaid
+flowchart TD
+    A[开始: 评估部署场景] --> B{租户与资源模式?}
+
+    B -->|多团队共享集群| C[Session模式]
+    B -->|独立作业生命周期| D[Application模式]
+    B -->|快速迭代/本地验证| E[MiniCluster模式]
+
+    C --> C1[资源隔离策略]
+    C1 --> C1a[Namespace级隔离]
+    C1 --> C1b[ResourceQuota限制]
+    C1 --> C1c[NetworkPolicy网络隔离]
+
+    D --> D1[独立镜像与配置]
+    D1 --> D1a[每作业独立JobManager]
+    D1 --> D1b[自定义Flink版本]
+    D1 --> D1c[GitOps独立生命周期管理]
+
+    E --> E1[本地K8s环境]
+    E1 --> E1a[kind/minikube]
+    E1 --> E1b[集成测试CI流水线]
+    E1 --> E1c[开发调试快速反馈]
+
+    C1c --> F[生产部署]
+    D1c --> F
+    E1c --> G[非生产环境]
+
+    style C fill:#ffcc99
+    style D fill:#99ccff
+    style E fill:#ccffcc
+    style F fill:#ff9999
+    style G fill:#ffff99
+```
+
 ---
 
 ## 8. 引用参考 (References)
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ---

@@ -668,16 +668,157 @@ flowchart TD
     style K fill:#e1f5ff
 ```
 
+### 7.5 Flink 事件上报思维导图
+
+以下 Mindmap 以"Flink事件上报"为中心，从事件类型、上报通道、事件格式、处理流程、应用场景五个维度放射展开：
+
+```mermaid
+mindmap
+  root((Flink事件上报))
+    事件类型
+      作业事件
+        JobStatusChangedEvent
+        TaskFailureEvent
+        CheckpointCompletedEvent
+      Checkpoint事件
+        CheckpointStartEvent
+        CheckpointFailedEvent
+        StateSnapshotEvent
+      资源事件
+        内存告警
+        CPU阈值超限
+        网络延迟
+      告警事件
+        严重错误
+        性能降级
+        容量预警
+      自定义事件
+        BusinessEvent
+        AuditEvent
+    上报通道
+      REST API
+        JobManager REST
+        TaskManager REST
+      Webhook
+        同步推送
+        异步回调
+      消息队列
+        Kafka
+        Pulsar
+        RabbitMQ
+      日志
+        结构化日志
+        文件归档
+      指标
+        MetricReporter
+        Prometheus
+    事件格式
+      CloudEvents
+      JSON
+      Protobuf
+      Avro
+    处理流程
+      采集
+      过滤
+      转换
+      路由
+      消费
+    应用场景
+      告警通知
+      审计追踪
+      自动化运维
+      数据分析
+```
+
+### 7.6 多维关联树：事件类型→上报通道→消费系统
+
+以下 `graph TB` 展示事件类型通过不同上报通道映射到下游消费系统的完整关联：
+
+```mermaid
+graph TB
+    subgraph 事件类型
+        E1[作业事件]
+        E2[Checkpoint事件]
+        E3[资源事件]
+        E4[告警事件]
+        E5[自定义事件]
+    end
+
+    subgraph 上报通道
+        C1[REST API]
+        C2[Webhook]
+        C3[消息队列]
+        C4[日志]
+        C5[指标]
+    end
+
+    subgraph 消费系统
+        S1[SIEM平台]
+        S2[审计系统]
+        S3[告警中心]
+        S4[实时数仓]
+        S5[自动化运维]
+        S6[追踪UI]
+    end
+
+    E1 --> C1
+    E1 --> C3
+    E2 --> C1
+    E2 --> C4
+    E3 --> C2
+    E3 --> C5
+    E4 --> C2
+    E4 --> C3
+    E5 --> C3
+    E5 --> C4
+
+    C1 --> S6
+    C2 --> S3
+    C3 --> S1
+    C3 --> S4
+    C4 --> S2
+    C5 --> S3
+    C5 --> S5
+```
+
+### 7.7 决策树：事件上报方案选型
+
+以下 `flowchart TD` 根据不同应用场景推荐对应的事件上报技术栈：
+
+```mermaid
+flowchart TD
+    A[事件上报需求分析] --> B{核心目标?}
+
+    B -->|实时告警| C[Webhook]
+    B -->|审计追踪| D[结构化日志]
+    B -->|自动化运维| E[事件流]
+    B -->|数据分析| F[Kafka流]
+
+    C --> C1[PagerDuty]
+    C --> C2[钉钉]
+    C --> C3[企业微信]
+
+    D --> D1[长期存储]
+    D1 --> D2[合规查询]
+    D2 --> D3[审计报告]
+
+    E --> E1[规则引擎]
+    E1 --> E2[自动执行]
+    E2 --> E3[自愈运维]
+
+    F --> F1[Flink处理]
+    F1 --> F2[实时数仓]
+    F2 --> F3[BI分析]
+
+    style C fill:#e1f5ff
+    style D fill:#d4edda
+    style E fill:#fff3cd
+    style F fill:#f0e1ff
+```
+
 ---
 
 ## 8. 引用参考 (References)
-
-
-
-
-
-
-
 
 
 ---

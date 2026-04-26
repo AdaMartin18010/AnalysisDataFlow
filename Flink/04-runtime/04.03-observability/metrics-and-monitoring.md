@@ -480,10 +480,117 @@ graph LR
     ALERT --> PD
 ```
 
+### 7.4 Flink指标与监控思维导图
+
+Flink指标与监控体系的全景思维导图：
+
+```mermaid
+mindmap
+  root((Flink指标与监控))
+    指标类型
+      Counter
+      Gauge
+      Histogram
+      Meter
+      范围指标
+    采集方式
+      Flink Metrics系统
+      JMX
+      Reporter插件
+      自定义Reporter
+    关键指标
+      吞吐量
+      延迟
+      Checkpoint
+      背压
+      资源使用
+    可视化
+      Grafana
+      Prometheus
+      Flink Web UI
+      自定义Dashboard
+    告警策略
+      阈值告警
+      趋势告警
+      异常检测
+      自动恢复
+```
+
+### 7.5 多维关联树
+
+指标类型、采集方式与可视化工具之间的映射关系：
+
+```mermaid
+graph TB
+    subgraph MetricType["指标类型"]
+        A1[Counter]
+        A2[Gauge]
+        A3[Histogram]
+        A4[Meter]
+        A5[范围指标]
+    end
+
+    subgraph Collection["采集方式"]
+        B1[Flink Metrics系统]
+        B2[JMX]
+        B3[Reporter插件<br/>Prometheus/InfluxDB]
+        B4[自定义Reporter]
+    end
+
+    subgraph VisualizationTool["可视化工具"]
+        C1[Grafana]
+        C2[Prometheus Web UI]
+        C3[Flink Web UI]
+        C4[Datadog/New Relic]
+    end
+
+    A1 --> B1
+    A2 --> B2
+    A3 --> B3
+    A4 --> B3
+    A5 --> B4
+
+    B1 --> C3
+    B2 --> C3
+    B3 --> C1
+    B3 --> C2
+    B4 --> C1
+    B4 --> C4
+```
+
+### 7.6 监控方案选型决策树
+
+根据部署环境与规模选择合适的监控方案：
+
+```mermaid
+flowchart TD
+    A[监控需求评估] --> B{部署环境与规模}
+
+    B -->|本地/开发环境| C[基础监控]
+    C --> C1[Flink Web UI]
+    C --> C2[日志分析]
+
+    B -->|生产环境| D[生产监控]
+    D --> D1[Prometheus]
+    D --> D2[Grafana]
+    D --> D3[AlertManager告警规则]
+
+    B -->|企业级多集群| E[企业监控]
+    E --> E1[Datadog / New Relic]
+    E --> E2[自定义业务指标]
+    E --> E3[统一APM平台]
+
+    B -->|K8s/云原生| F[云原生监控]
+    F --> F1[托管Prometheus]
+    F --> F2[云监控集成<br/>CloudWatch/Azure Monitor]
+    F --> F3[Operator自动发现]
+```
+
 ---
 
 ## 8. 引用参考 (References)
 
+
 ---
 
-*文档版本: v1.0 | 创建日期: 2026-04-20*
+*文档版本: v1.1 | 创建日期: 2026-04-20 | 更新日期: 2026-04-26*

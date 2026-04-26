@@ -742,9 +742,116 @@ flowchart TD
     end
 ```
 
+### 7.4 分布式链路追踪思维导图
+
+分布式链路追踪的核心概念、传播机制、Flink集成、采样策略与后端分析的整体思维导图。
+
+```mermaid
+mindmap
+  root((分布式链路追踪))
+    核心概念
+      Trace
+      Span
+      Context
+      Baggage
+      Reference
+    传播机制
+      W3C TraceContext
+      B3
+      Jaeger
+      自定义
+    Flink集成
+      Span生成
+      Context传递
+      异步边界
+      Checkpoint关联
+    采样策略
+      头部采样
+      比率采样
+      自适应采样
+      尾部采样
+    后端分析
+      延迟分析
+      依赖拓扑
+      异常定位
+      性能瓶颈
+```
+
+### 7.5 追踪信号-运行时-价值多维关联树
+
+展示追踪信号层、Flink运行时层与分析价值层之间的多维映射关系。
+
+```mermaid
+graph TB
+    subgraph 追踪信号层
+        T1[Trace ID]
+        T2[Span 时序]
+        T3[Attributes]
+        T4[Baggage]
+    end
+
+    subgraph Flink运行时层
+        F1[Source Subtask]
+        F2[Operator Chain]
+        F3[Async Sink]
+        F4[Checkpoint Barrier]
+        F5[Mailbox线程]
+    end
+
+    subgraph 分析价值层
+        V1[端到端延迟归因]
+        V2[算子级瓶颈定位]
+        V3[异常传播路径还原]
+        V4[资源依赖拓扑]
+        V5[采样策略调优依据]
+    end
+
+    T1 --> F1
+    T2 --> F2
+    T3 --> F3
+    T4 --> F4
+    T1 --> F5
+
+    F1 --> V1
+    F2 --> V2
+    F3 --> V3
+    F4 --> V4
+    F5 --> V5
+```
+
+### 7.6 追踪方案选型决策树
+
+根据部署环境、预算和支持需求选择合适的分布式追踪方案。
+
+```mermaid
+flowchart TD
+    A[追踪方案选型] --> B{部署环境?}
+    B -->|开源/自托管| C[开源方案]
+    B -->|公有云| D[云厂商方案]
+    B -->|企业级支持| E[商业方案]
+    B -->|资源受限| F[轻量级方案]
+
+    C --> C1[Jaeger + OpenTelemetry SDK]
+    C --> C2[Zipkin + Brave/OTel]
+    C --> C3[Tempo + Grafana Stack]
+
+    D --> D1[AWS X-Ray]
+    D --> D2[Azure Monitor App Insights]
+    D --> D3[GCP Cloud Trace]
+
+    E --> E1[Datadog APM]
+    E --> E2[New Relic]
+    E --> E3[Dynatrace]
+
+    F --> F1[日志关联 + Trace ID]
+    F --> F2[自定义 MDC 传播]
+    F --> F3[结构化日志 + 关联查询]
+```
+
 ---
 
 ## 8. 引用参考 (References)
+
 
 ---
 
