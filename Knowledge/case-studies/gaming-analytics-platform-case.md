@@ -28,7 +28,7 @@
   - [4. 论证过程 (Argumentation)](#4-论证过程-argumentation)
     - [4.1 实时vs离线A/B测试](#41-实时vs离线ab测试)
     - [4.2 玩家分群策略分析](#42-玩家分群策略分析)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)]()
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [5.1 实时指标计算](#51-实时指标计算)
     - [5.2 A/B测试统计引擎](#52-ab测试统计引擎)
     - [5.3 实时大屏与可视化](#53-实时大屏与可视化)

@@ -30,7 +30,7 @@
       - [云原生服务详细对比](#云原生服务详细对比)
       - [CDC工具详细对比](#cdc工具详细对比)
     - [4.2 统一平台对比](#42-统一平台对比)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-K-05-17: 选型决策框架定理](#thm-k-05-17-选型决策框架定理)
       - [维度1: 延迟要求 ($w\_{latency}$)](#维度1-延迟要求-w_latency)
       - [维度2: 状态复杂度 ($w\_{state}$)](#维度2-状态复杂度-w_state)

@@ -32,7 +32,7 @@
     - [4.1 为什么LLM辅助流处理是2026年的关键趋势？](#41-为什么llm辅助流处理是2026年的关键趋势)
     - [4.2 技术挑战与对策](#42-技术挑战与对策)
     - [4.3 反例分析：纯LLM方案的局限性](#43-反例分析纯llm方案的局限性)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-K-06-320: LLM辅助流作业生成的正确性条件](#thm-k-06-320-llm辅助流作业生成的正确性条件)
     - [5.1 自动调参的收敛性工程保证](#51-自动调参的收敛性工程保证)
   - [6. 实例验证 (Examples)](#6-实例验证-examples)

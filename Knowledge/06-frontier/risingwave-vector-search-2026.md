@@ -796,9 +796,6 @@ graph LR
 
 ## 8. 引用参考 (References)
 
-[^1]: RisingWave Labs, RisingWave v2.6: Vector Search for Streaming Data, 2026. https://www.risingwave.com/blog/risingwave-v2-6-vector-search/
-[^2]: Malkov, Y.A. & Yashunin, D.A., Efficient and Robust Approximate Nearest Neighbor Search Using Hierarchical Navigable Small World Graphs, IEEE TPAMI, 42(4), 2020.
-[^3]: pgvector, pgvector: Open-source vector similarity search for PostgreSQL, 2024. https://github.com/pgvector/pgvector
 
 ---
 

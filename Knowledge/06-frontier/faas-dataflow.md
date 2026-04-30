@@ -38,6 +38,7 @@
     - [6.1 ML推理Pipeline](#61-ml推理pipeline)
     - [6.2 实时ETL工作流](#62-实时etl工作流)
     - [6.3 图片处理Pipeline](#63-图片处理pipeline)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
     - [7.1 FaaS Dataflow架构图](#71-faas-dataflow架构图)
     - [7.2 调度策略对比决策树](#72-调度策略对比决策树)

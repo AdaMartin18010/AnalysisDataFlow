@@ -1204,32 +1204,32 @@ graph TB
 ```mermaid
 flowchart TD
     A[用户状态识别] --> B{用户类型判断}
-    
+
     B -->|新用户/极低活跃度| C[冷启动用户]
     B -->|有丰富历史行为| D[活跃用户]
     B -->|当前正在播放| E[实时会话]
-    
+
     C --> C1[热门内容填充<br/>全局热门榜单]
     C --> C2[上下文探索<br/>时间/地点/设备适配]
     C --> C3[社交导入<br/>好友偏好种子]
     C1 --> C4[快速建立<br/>初始兴趣画像]
     C2 --> C4
     C3 --> C4
-    
+
     D --> D1[个性化深度推荐<br/>协同过滤+内容模型]
     D --> D2[序列模型<br/>RNN/Transformer预测下一首]
     D --> D3[长期兴趣挖掘<br/>滑动窗口历史聚合]
     D1 --> D4[高置信度<br/>精准匹配]
     D2 --> D4
     D3 --> D4
-    
+
     E --> E1[即时反馈循环<br/>跳过/喜欢实时调整]
     E --> E2[上下文适配<br/>会话情绪检测]
     E --> E3[短窗口预测<br/>接下来3-5首]
     E1 --> E4[毫秒级响应<br/>Now Playing]
     E2 --> E4
     E3 --> E4
-    
+
     style C fill:#ffcdd2,stroke:#c62828
     style D fill:#c8e6c9,stroke:#2e7d32
     style E fill:#fff9c4,stroke:#f57f17

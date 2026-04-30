@@ -31,6 +31,7 @@
   - [6. 实例验证 (Examples)](#6-实例验证-examples)
     - [6.1 电商平台实时推荐系统 SLO](#61-电商平台实时推荐系统-slo)
     - [6.2 金融风控系统 SLO](#62-金融风控系统-slo)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
   - [7. 可视化 (Visualizations)](#7-可视化-visualizations)
     - [7.1 SLO/SLI 体系层次图](#71-slosli-体系层次图)
     - [7.2 SLO 制定流程图](#72-slo-制定流程图)

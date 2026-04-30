@@ -41,7 +41,7 @@
     - [4.3 部署位置优化分析](#43-部署位置优化分析)
     - [4.4 网络带宽与计算 offload 决策](#44-网络带宽与计算-offload-决策)
     - [4.5 容错与降级策略](#45-容错与降级策略)
-  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明-工程论证-proof-engineering-argument)
+  - [5. 形式证明 / 工程论证 (Proof / Engineering Argument)](#5-形式证明--工程论证-proof--engineering-argument)
     - [Thm-K-06-60: 量化精度损失上界定理](#thm-k-06-60-量化精度损失上界定理)
     - [Thm-K-06-61: 边缘-云协同一致性定理](#thm-k-06-61-边缘-云协同一致性定理)
     - [Thm-K-06-62: 功耗与延迟权衡定理](#thm-k-06-62-功耗与延迟权衡定理)
