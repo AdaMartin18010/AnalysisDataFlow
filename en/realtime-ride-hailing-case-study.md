@@ -1,7 +1,7 @@
-# Operators and Real-time Ride-hailing / Ride-sharing
+# Operators and Real-time Ride-hailing / Ride-sharing (实时网约车/共享出行)
 
-> **Stage**: Knowledge/10-case-studies | **Prerequisites**: [01.07-two-input-operators.md](../Knowledge/01-concept-atlas/operator-deep-dive/01.07-two-input-operators.md), [realtime-traffic-management-case-study.md](./realtime-traffic-management-case-study.md) | **Formalization Level**: L3
-> **Document Scope**: Stream processing operator fingerprints and pipeline design for real-time ride-hailing supply-demand matching, dynamic pricing, and route planning
+> **Stage**: Knowledge/10-case-studies | **Prerequisites**: [stream-join-patterns.md](./stream-join-patterns.md), [realtime-traffic-management-case-study.md](./realtime-traffic-management-case-study.md) | **Formalization Level**: L3
+> **Document Scope**: Operator fingerprint and Pipeline design for stream processing operators in real-time ride-hailing supply-demand matching, dynamic pricing, and route planning
 > **Version**: 2026.04
 
 ---
@@ -23,7 +23,7 @@
 
 ### Def-RDH-01-01: Ride-hailing Matching (网约车供需匹配)
 
-Ride-hailing supply-demand matching is the optimal pairing of passenger orders with available drivers:
+Ride-hailing Matching (网约车供需匹配) is the optimal pairing of passenger orders with available drivers:
 
 $$\text{Match}^* = \arg\min_{m} \sum_{(p,d) \in m} \text{Cost}(p, d)$$
 
@@ -31,27 +31,27 @@ where $\text{Cost}$ includes pickup distance, waiting time, driver preferences, 
 
 ### Def-RDH-01-02: Surge Pricing (动态调价)
 
-Surge pricing is the real-time adjustment of fare rates based on supply-demand relationships:
+Surge Pricing (动态调价) is the real-time adjustment of fare rates based on supply-demand relationship:
 
 $$\text{Multiplier}_z = \left(\frac{D_z}{S_z}\right)^{\gamma}$$
 
 where $D_z$ is the demand in zone $z$, $S_z$ is the supply, and $\gamma$ is the elasticity coefficient.
 
-### Def-RDH-01-03: Estimated Time to Arrival (ETA, 接驾时间估计)
+### Def-RDH-01-03: Estimated Time to Arrival, ETA (接驾时间估计)
 
-ETA is the estimated time for a driver to arrive at the passenger's pickup location:
+ETA (接驾时间估计) is the estimated time for a driver to arrive at the passenger's pickup location:
 
 $$\text{ETA} = \frac{D_{pickup}}{v_{current}} + T_{search} + T_{traffic}$$
 
 ### Def-RDH-01-04: Driver Rating Score (司机服务分)
 
-The driver rating score is a comprehensive historical evaluation of service quality:
+Driver Rating Score (司机服务分) is a historical evaluation of comprehensive service quality:
 
 $$\text{Score}_d = \alpha \cdot \bar{R}_d + \beta \cdot C_{accept} + \gamma \cdot C_{complete} - \delta \cdot C_{cancel}$$
 
 ### Def-RDH-01-05: Pool Matching (拼车匹配)
 
-Pool matching is the merging of multiple passengers with similar trip directions:
+Pool Matching (拼车匹配) is the consolidation of multiple passengers with similar trip directions:
 
 $$\text{Pool} = \{(p_1, p_2) : \text{Angle}(\vec{r}_1, \vec{r}_2) < \theta_{max} \land \Delta D < D_{max}\}$$
 
@@ -59,25 +59,25 @@ $$\text{Pool} = \{(p_1, p_2) : \text{Angle}(\vec{r}_1, \vec{r}_2) < \theta_{max}
 
 ## 2. Properties
 
-### Lemma-RDH-01-01: Matching Success Rate and Supply-Demand Ratio
+### Lemma-RDH-01-01: Matching Success Rate and Supply-Demand Ratio (供需比)
 
 $$P_{match} = 1 - e^{-\lambda \cdot S/D}$$
 
-where $S/D$ is the supply-demand ratio and $\lambda$ is the platform efficiency coefficient.
+where $S/D$ is the supply-demand ratio, and $\lambda$ is the platform efficiency coefficient.
 
-### Lemma-RDH-01-02: Supply-Demand Balancing Effect of Dynamic Pricing
+### Lemma-RDH-01-02: Supply-Demand Balancing Effect of Surge Pricing
 
 $$\frac{\Delta S}{S} = \epsilon_S \cdot \Delta M, \quad \frac{\Delta D}{D} = \epsilon_D \cdot \Delta M$$
 
-where $\epsilon_S > 0$ (supply elasticity) and $\epsilon_D < 0$ (demand elasticity).
+where $\epsilon_S > 0$ (supply elasticity), $\epsilon_D < 0$ (demand elasticity).
 
-### Prop-RDH-01-01: Pool Savings Rate
+### Prop-RDH-01-01: Pool Savings Rate (拼车节省率)
 
 $$\text{Savings}_{pool} = 1 - \frac{F_{pool,1} + F_{pool,2}}{F_{solo,1} + F_{solo,2}}$$
 
-Typical values: pool rides save 20-40% per passenger, and platforms increase driver earnings by 30-50%.
+Typical values: Pool saves 20-40% per passenger, and the platform increases driver income by 30-50%.
 
-### Prop-RDH-01-02: Peak-Hour Supply-Demand Gap
+### Prop-RDH-01-02: Peak-Hour Supply-Demand Gap (高峰期供需缺口)
 
 $$\text{Gap}_{peak} = D_{peak} - S_{peak} \approx 2\text{-}3 \times S_{normal}$$
 
@@ -87,14 +87,14 @@ $$\text{Gap}_{peak} = D_{peak} - S_{peak} \approx 2\text{-}3 \times S_{normal}$$
 
 ### 3.1 Ride-hailing Pipeline Operator Mapping
 
-| Application Scenario | Operator Combination | Data Source | Latency Requirement |
-|---------------------|---------------------|-------------|---------------------|
-| **Passenger Hailing** | Source + map | Passenger App | < 1s |
-| **Driver Matching** | AsyncFunction | Supply-demand data | < 2s |
-| **ETA Calculation** | AsyncFunction | Map API | < 1s |
-| **Dynamic Pricing** | window+aggregate + map | Supply-demand stream | < 10s |
-| **Pool Matching** | window+process | Orders in zone | < 30s |
-| **Trip Monitoring** | ProcessFunction + Timer | GPS | < 5s |
+| Application Scenario | Operator Composition | Data Source | Latency Requirement |
+|---------------------|----------------------|-------------|---------------------|
+| **Passenger Hailing (乘客叫车)** | Source + map | Passenger App | < 1s |
+| **Driver Matching (司机匹配)** | AsyncFunction | Supply-Demand Data | < 2s |
+| **ETA Calculation (ETA计算)** | AsyncFunction | Map API | < 1s |
+| **Surge Pricing (动态调价)** | window+aggregate + map | Supply-Demand Stream | < 10s |
+| **Pool Matching (拼车匹配)** | window+process | Orders in Zone | < 30s |
+| **Trip Monitoring (行程监控)** | ProcessFunction + Timer | GPS | < 5s |
 
 ### 3.2 Operator Fingerprint
 
@@ -103,37 +103,37 @@ $$\text{Gap}_{peak} = D_{peak} - S_{peak} \approx 2\text{-}3 \times S_{normal}$$
 | **Core Operators** | AsyncFunction (matching/ETA), BroadcastProcessFunction (pricing strategy), ProcessFunction (trip state machine), window+aggregate (supply-demand statistics) |
 | **State Types** | ValueState (driver status), MapState (zone supply-demand), BroadcastState (pricing strategy) |
 | **Time Semantics** | Processing time primarily (matching emphasizes real-time performance) |
-| **Data Characteristics** | High burstiness (peak hours/rain & snow), strong spatial locality, two-sided market |
-| **State Hotspots** | Hot zone keys, peak-hour keys |
+| **Data Characteristics** | High burst (peak hours/rain & snow), strong spatial locality, two-sided market (双边市场) |
+| **State Hotspots** | Hot zone keys, peak hour keys |
 | **Performance Bottlenecks** | Matching algorithm, map ETA API |
 
 ---
 
 ## 4. Argumentation
 
-### 4.1 Why Ride-hailing Needs Stream Processing Rather Than Traditional Dispatching
+### 4.1 Why Ride-hailing Needs Stream Processing Instead of Traditional Scheduling
 
-Problems with traditional dispatching:
-- Manual dispatching: low efficiency, not scalable
-- Fixed pricing: no cars available during peak hours, excess supply during off-peak hours
+Problems with traditional scheduling:
+- Manual dispatch: low efficiency, not scalable
+- Fixed pricing: no cars during peak hours, surplus during off-peak hours
 - Static zones: unable to cope with dynamic demand changes
 
 Advantages of stream processing:
-- Real-time matching: passenger-driver pairing completed in seconds
+- Real-time matching: passenger-driver pairing completed within seconds
 - Dynamic pricing: automatic supply-demand balancing
-- Global optimization: decision-making based on real-time city-wide state
+- Global optimization: decision-making based on city-wide real-time state
 
-### 4.2 Network Effects of Two-sided Markets
+### 4.2 Network Effects of Two-sided Markets (双边市场)
 
-**Problem**: More passengers → more drivers → shorter waiting times → more passengers.
+**Problem**: More passengers → more drivers → shorter waiting time → more passengers.
 
 **Stream Processing Solution**: Real-time monitoring of bilateral density, incentivizing supply in low-density areas through subsidies.
 
 ### 4.3 Safety Monitoring
 
-**Scenario**: Route deviation during trip, prolonged stops, abnormal speed.
+**Scenario**: Route deviation during trip, long stops, abnormal speed.
 
-**Stream Processing Solution**: Real-time GPS trajectory analysis → anomaly detection → automatic alert → safety customer service intervention.
+**Stream Processing Solution**: Real-time GPS trajectory analysis → anomaly detection → automatic alerting → safety customer service intervention.
 
 ---
 
@@ -155,11 +155,11 @@ public class RideMatchingFunction extends BroadcastProcessFunction<RideRequest, 
             if (!driver.isAvailable()) continue;
             
             double pickupDistance = calculateDistance(request.getPickupLocation(), driver.getLocation());
-            if (pickupDistance > 5000) continue;  // 5km max limit
+            if (pickupDistance > 5000) continue;  // 5km upper limit
             
             double eta = estimateETA(driver.getLocation(), request.getPickupLocation());
             
-            // Score = -distance weight - waiting weight + rating weight
+            // Score = -distance_weight - wait_weight + rating_weight
             double score = -0.5 * pickupDistance - 0.3 * eta + 0.2 * driver.getRating();
             
             if (score > bestScore) {
@@ -218,7 +218,7 @@ demand.keyBy(ZoneDemand::getZoneId)
             
             double ratio = (double) d / s;
             double multiplier = Math.pow(ratio, 0.6);
-            multiplier = Math.max(1.0, Math.min(multiplier, 3.0));  // 1x-3x
+            multiplier = Math.max(1.0, Math.min(multiplier, 3.0));  // 1x-3x range
             
             out.collect(new SurgeMultiplier(ctx.getCurrentKey(), multiplier, ctx.timestamp()));
         }
@@ -323,7 +323,7 @@ graph TB
     subgraph Engine
         E1[Real-time Matching<br/>BroadcastProcessFunction]
         E2[ETA Calculation<br/>AsyncFunction]
-        E3[Dynamic Pricing<br/>CoProcessFunction]
+        E3[Surge Pricing<br/>CoProcessFunction]
         E4[Safety Monitoring<br/>ProcessFunction]
     end
     
@@ -358,4 +358,4 @@ graph TB
 
 ---
 
-*Related Documents*: [01.07-two-input-operators.md](../Knowledge/01-concept-atlas/operator-deep-dive/01.07-two-input-operators.md) | [realtime-traffic-management-case-study.md](./realtime-traffic-management-case-study.md) | [realtime-food-delivery-case-study.md](../Knowledge/10-case-studies/realtime-food-delivery-case-study.md)
+*Related Documents*: [stream-join-patterns.md](./stream-join-patterns.md) | [realtime-traffic-management-case-study.md](./realtime-traffic-management-case-study.md) | [realtime-food-delivery-case-study.md](./realtime-food-delivery-case-study.md)

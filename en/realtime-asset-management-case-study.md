@@ -1,7 +1,7 @@
 # Operators and Real-time Asset Management
 
-> **Stage**: Knowledge/10-case-studies | **Prerequisites**: [01.10-process-and-async-operators.md](../Knowledge/01-concept-atlas/operator-deep-dive/01.10-process-and-async-operators.md), [realtime-fintech-payment-processing-case-study.md](../Knowledge/10-case-studies/realtime-fintech-payment-processing-case-study.md) | **Formalization Level**: L3
-> **Document Positioning**: Operator fingerprints and Pipeline design for stream processing operators in real-time asset pricing, portfolio risk control, and trade execution
+> **Stage**: Knowledge/10-case-studies | **Prerequisites**: [01.10-process-and-async-operators.md](../Knowledge/01-concept-atlas/operator-deep-dive/01.10-process-and-async-operators.md), [realtime-fintech-payment-processing-case-study.md](./realtime-fintech-payment-processing-case-study.md) | **Formalization Level**: L3
+> **Document Focus**: Operator fingerprints and pipeline design for stream processing operators in real-time asset pricing, portfolio risk control, and trade execution
 > **Version**: 2026.04
 
 ---
@@ -21,35 +21,35 @@
 
 ## 1. Definitions
 
-### Def-AST-01-01: Real-time Asset Pricing (实时资产定价)
+### Def-AST-01-01: Real-time Asset Pricing（实时资产定价）
 
-Real-time Asset Pricing (实时资产定价) is the continuous updating of an asset's fair value based on market data:
+Real-time asset pricing is the continuous updating of an asset's fair value based on market data:
 
 $$P_t = P_{t-1} + \Delta P_{market} + \Delta P_{model}$$
 
-where $\Delta P_{market}$ is the market price movement and $\Delta P_{model}$ is the model correction.
+where $\Delta P_{market}$ is the market price movement and $\Delta P_{model}$ is the model adjustment.
 
-### Def-AST-01-02: Value at Risk, VaR (风险价值)
+### Def-AST-01-02: Value at Risk, VaR（风险价值）
 
-VaR (风险价值) is the maximum potential loss at a given confidence level:
+VaR is the maximum potential loss at a given confidence level:
 
 $$\text{VaR}_\alpha = \inf\{l : P(L > l) \leq 1 - \alpha\}$$
 
-### Def-AST-01-03: Portfolio Rebalancing (投资组合再平衡)
+### Def-AST-01-03: Portfolio Rebalancing（投资组合再平衡）
 
-Portfolio Rebalancing (投资组合再平衡) is the adjustment of holdings according to target weights:
+Rebalancing is the adjustment of holdings according to target weights:
 
 $$\Delta w_i = w_i^{target} - w_i^{current}$$
 
-### Def-AST-01-04: Algorithmic Execution (算法交易执行)
+### Def-AST-01-04: Algorithmic Execution（算法交易执行）
 
-Algorithmic Execution (算法交易执行) is the strategy of splitting large orders into smaller orders for execution:
+Algorithmic trading is a strategy that splits large orders into smaller orders for execution:
 
 $$\min \sum_t (P_t - P_{benchmark})^2 + \lambda \cdot \text{MarketImpact}$$
 
-### Def-AST-01-05: Slippage (滑点)
+### Def-AST-01-05: Slippage（滑点）
 
-Slippage (滑点) is the difference between the ordered price and the actual executed price:
+Slippage is the difference between the ordered price and the actual execution price:
 
 $$\text{Slippage} = \frac{P_{fill} - P_{expected}}{P_{expected}}$$
 
@@ -59,27 +59,27 @@ $$\text{Slippage} = \frac{P_{fill} - P_{expected}}{P_{expected}}$$
 
 ### Lemma-AST-01-01: Normality Assumption of Returns
 
-Log returns are approximately normally distributed:
+Log-returns are approximately normally distributed:
 
 $$r_t = \ln(P_t / P_{t-1}) \sim N(\mu, \sigma^2)$$
 
 VaR calculation: $\text{VaR}_\alpha = \mu - z_\alpha \cdot \sigma$
 
-### Lemma-AST-01-02: Optimal Splitting of Transaction Costs
+### Lemma-AST-01-02: Optimal Cost Decomposition of Trading Costs
 
-Optimal TWAP (Time-Weighted Average Price) splitting:
+Optimal TWAP (Time-Weighted Average Price, 时间加权平均价格) decomposition:
 
 $$x_t = \frac{X}{T}, \quad \forall t \in [1, T]$$
 
-**Proof**: Under the uniform distribution assumption, equal partitioning minimizes variance. ∎
+**Proof**: Under the uniform distribution assumption, equal-split execution minimizes variance. ∎
 
 ### Prop-AST-01-01: Rebalancing Frequency and Tracking Error
 
 $$\text{TrackingError} \propto \frac{1}{\sqrt{f_{rebalance}}}$$
 
-The higher the rebalancing frequency, the smaller the tracking error, but the higher the transaction cost.
+The higher the rebalancing frequency, the smaller the tracking error, but the higher the trading costs.
 
-### Prop-AST-01-02: Relationship between Market Impact and Order Size
+### Prop-AST-01-02: Relationship Between Market Impact and Order Size
 
 $$\Delta P = \eta \cdot \sigma \cdot \left(\frac{X}{V}\right)^{\gamma}$$
 
@@ -91,53 +91,53 @@ where $X$ is the order volume, $V$ is the average daily trading volume, and $\ga
 
 ### 3.1 Asset Management Pipeline Operator Mapping
 
-| Application Scenario | Operator Composition | Data Source | Latency Requirement |
+| Use Case | Operator Combination | Data Source | Latency Requirement |
 |---------|---------|--------|---------|
-| **Price Update** | map | Market Data | < 10ms |
-| **Risk Calculation** | window+aggregate | Holdings + Market Data | < 1min |
-| **Rebalancing** | ProcessFunction | Target Weights | < 5min |
-| **Order Execution** | AsyncFunction | Exchange | < 100ms |
-| **Compliance Check** | map | Trade Stream | < 10ms |
-| **Performance Attribution** | window+aggregate | Historical | Daily |
+| **Price Update** | map | Market Data（行情） | < 10ms |
+| **Risk Calculation** | window+aggregate | Positions（持仓） + Market Data（行情） | < 1min |
+| **Rebalancing** | ProcessFunction | Target Weights（目标权重） | < 5min |
+| **Order Execution** | AsyncFunction | Exchange（交易所） | < 100ms |
+| **Compliance Check** | map | Trade Stream（交易流） | < 10ms |
+| **Performance Attribution** | window+aggregate | Historical Data（历史数据） | Daily |
 
-### 3.2 Operator Fingerprint
+### 3.2 Operator Fingerprint（算子指纹）
 
 | Dimension | Asset Management Characteristics |
 |------|------------|
-| **Core Operators** | KeyedProcessFunction (holding state), AsyncFunction (trade execution), window+aggregate (risk statistics), BroadcastProcessFunction (strategy update) |
-| **State Types** | ValueState (position holdings), MapState (asset prices), BroadcastState (strategy configuration) |
-| **Time Semantics** | Processing time dominated (trading emphasizes real-time performance) |
-| **Data Characteristics** | High concurrency (ten-thousands of assets), high sensitivity (capital), strong consistency |
-| **State Hotspots** | Popular asset keys, large holding keys |
+| **Core Operators** | KeyedProcessFunction (Position State, 持仓状态), AsyncFunction (Trade Execution, 交易执行), window+aggregate (Risk Statistics, 风险统计), BroadcastProcessFunction (Strategy Update, 策略更新) |
+| **State Types** | ValueState (Position Holdings, 持仓头寸), MapState (Asset Prices, 资产价格), BroadcastState (Strategy Config, 策略配置) |
+| **Time Semantics** | Processing time primarily (trading emphasizes real-time performance) |
+| **Data Characteristics** | High concurrency (tens of thousands of assets, 万级资产), high sensitivity (capital, 资金), strong consistency (强一致性) |
+| **State Hotspots** | Hot asset keys (热门资产Key), large position keys (大持仓Key) |
 | **Performance Bottlenecks** | External exchange APIs, complex risk models |
 
 ---
 
 ## 4. Argumentation
 
-### 4.1 Why Asset Management Needs Stream Processing Instead of Traditional End-of-Day Batch Processing
+### 4.1 Why Asset Management Needs Stream Processing Instead of Traditional End-of-Day Batch Processing（日终批处理）
 
 Problems with traditional batch processing:
-- End-of-day valuation: Intraday risk exposure is unknown
-- T+1 settlement: Long capital occupation time
-- Manual decision-making: Unable to capture market opportunities
+- End-of-day valuation: intraday risk exposure is unknown
+- T+1 settlement: long capital occupation time
+- Manual decision-making: unable to capture market opportunities
 
 Advantages of stream processing:
-- Real-time risk control: Millisecond-level risk indicator calculation
-- Automatic execution: Orders placed immediately upon strategy trigger
-- Full lifecycle: Automation from signal to settlement
+- Real-time risk control (实时风控): millisecond-level risk indicator calculation
+- Automatic execution (自动执行): order placement triggered by strategy signals
+- Full lifecycle (全生命周期): automation from signal to settlement
 
 ### 4.2 Coexistence of High-Frequency and Low-Frequency Strategies
 
-**Problem**: The same system needs to support both high-frequency (millisecond-level) and medium/low-frequency (daily-level) strategies simultaneously.
+**Problem**: The same system needs to simultaneously support high-frequency (millisecond-level, 毫秒级) and medium/low-frequency (daily-level, 日级) strategies.
 
-**Solution**: Unified stream processing architecture, meeting different frequency requirements through different window sizes and parallelism.
+**Solution**: A unified stream processing architecture that meets different frequency requirements through different window sizes and parallelism degrees.
 
-### 4.3 Pre-trade Compliance Checking
+### 4.3 Pre-trade Compliance Checking（合规前置检查）
 
-**Scenario**: Each trade must be checked for investment limit violations before execution.
+**Scenario**: Before each trade, it is necessary to check whether investment restrictions (投资限制) are violated.
 
-**Stream Processing Solution**: Trade Stream → Compliance Rule Engine → Execute if passed, alert if rejected.
+**Stream Processing Solution**: Trade Stream → Compliance Rule Engine（合规规则引擎） → Execute if passed, Alert if rejected.
 
 ---
 
@@ -183,7 +183,7 @@ public class RiskMonitorFunction extends KeyedProcessFunction<String, MarketData
 ### 5.2 Algorithmic Trade Execution
 
 ```java
-// Large order splitting execution
+// Large order split execution
 DataStream<ParentOrder> parentOrders = env.addSource(new OrderSource());
 
 parentOrders.keyBy(ParentOrder::getOrderId)
@@ -207,7 +207,7 @@ parentOrders.keyBy(ParentOrder::getOrderId)
             ExecutionState state = execState.value();
             if (state == null || state.isComplete()) return;
             
-            // TWAP: equal split execution
+            // TWAP: equal-split execution
             double childQty = state.getRemainingQty() / state.getSlicesRemaining();
             
             out.collect(new ChildOrder(state.getParentId(), childQty, state.getSymbol(), timestamp));
@@ -228,7 +228,7 @@ parentOrders.keyBy(ParentOrder::getOrderId)
 
 ## 6. Examples
 
-### 6.1 Practical Example: Quantitative Hedge Fund Real-time Risk Control
+### 6.1 Practice: Quantitative Hedge Fund（量化对冲基金） Real-time Risk Control
 
 ```java
 // 1. Market data
@@ -273,6 +273,8 @@ market.keyBy(MarketData::getSymbol)
 ## 7. Visualizations
 
 ### Asset Management Pipeline
+
+The following diagram illustrates the asset management pipeline from data sources through processing layers to outputs.
 
 ```mermaid
 graph TB
@@ -320,4 +322,4 @@ graph TB
 
 ---
 
-*Related Documents*: [01.10-process-and-async-operators.md](../Knowledge/01-concept-atlas/operator-deep-dive/01.10-process-and-async-operators.md) | [realtime-fintech-payment-processing-case-study.md](../Knowledge/10-case-studies/realtime-fintech-payment-processing-case-study.md) | [realtime-financial-risk-control-case-study.md](./realtime-financial-risk-control-case-study.md)
+*Related Documents*: [01.10-process-and-async-operators.md](../Knowledge/01-concept-atlas/operator-deep-dive/01.10-process-and-async-operators.md) | [realtime-fintech-payment-processing-case-study.md](./realtime-fintech-payment-processing-case-study.md) | [realtime-financial-risk-control-case-study.md](./realtime-financial-risk-control-case-study.md)

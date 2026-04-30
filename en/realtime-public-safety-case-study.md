@@ -1,25 +1,25 @@
 # Operators and Real-Time Public Safety
 
 > **Stage**: Knowledge/10-case-studies | **Prerequisites**: [01.10-process-and-async-operators.md](01.10-process-and-async-operators.md), [operator-edge-computing-integration.md](operator-edge-computing-integration.md) | **Formalization Level**: L3
-> **Document Positioning**: Operator fingerprints and Pipeline design for stream processing operators in real-time urban security monitoring, emergency response, and crowd management
+> **Document Positioning**: Operator fingerprints and Pipeline design of stream processing operators in real-time urban security monitoring, emergency response, and crowd management
 > **Version**: 2026.04
 
 ---
 
 ## Table of Contents
 
-- [1. Concept Definitions](#1-concept-definitions)
-- [2. Property Derivation](#2-property-derivation)
-- [3. Relation Establishment](#3-relation-establishment)
+- [1. Concept Definitions (Definitions)](#1-concept-definitions-definitions)
+- [2. Property Derivation (Properties)](#2-property-derivation-properties)
+- [3. Relation Establishment (Relations)](#3-relation-establishment-relations)
 - [4. Argumentation](#4-argumentation)
 - [5. Formal Proof / Engineering Argument](#5-formal-proof--engineering-argument)
-- [6. Example Validation](#6-example-validation)
+- [6. Example Validation (Examples)](#6-example-validation-examples)
 - [7. Visualizations](#7-visualizations)
 - [8. References](#8-references)
 
 ---
 
-## 1. Concept Definitions
+## 1. Concept Definitions (Definitions)
 
 ### Def-SAF-01-01: Urban Safety IoT (城市安全物联网)
 
@@ -61,7 +61,7 @@ $$\text{Situation}_t = \text{Fusion}(\text{Video}_t, \text{Audio}_t, \text{Senso
 
 ---
 
-## 2. Property Derivation
+## 2. Property Derivation (Properties)
 
 ### Lemma-SAF-01-01: Crowd Evacuation Time
 
@@ -93,7 +93,7 @@ where $P_i$ is the detection rate of the $i$-th sensor. Three independent sensor
 
 ---
 
-## 3. Relation Establishment
+## 3. Relation Establishment (Relations)
 
 ### 3.1 Public Safety Pipeline Operator Mapping
 
@@ -277,7 +277,7 @@ alerts.connect(resources.broadcast())
 
 ---
 
-## 6. Example Validation
+## 6. Example Validation (Examples)
 
 ### 6.1 Practical Case: Large-Scale Event Security Assurance System
 
@@ -393,14 +393,11 @@ graph TB
 
 ## 8. References
 
-[^1]: Togawa K., "Study on Fire Escapes Basing on the Observation of Mustering Behaviour", Journal of the Architecture Institute of Japan, 1955.
 
-[^2]: Apache Flink Documentation, "Broadcast State Pattern", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/datastream/fault-tolerance/broadcast_state/
 
-[^3]: S. S. Cheung et al., "Video Surveillance System for Public Safety: A Review", IEEE Transactions on Circuits and Systems for Video Technology, 2021.
 
-[^4]: General Data Protection Regulation (GDPR), "Video Surveillance and Data Protection", Official Journal of the European Union, 2016.
+
+
 
 ---
-
 *Related Documents*: [01.10-process-and-async-operators.md](01.10-process-and-async-operators.md) | [operator-edge-computing-integration.md](operator-edge-computing-integration.md) | [realtime-content-moderation-case-study.md](realtime-content-moderation-case-study.md)

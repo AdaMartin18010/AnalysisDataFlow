@@ -1,7 +1,7 @@
-# Operators and Real-time Nuclear Power Monitoring
+# Operators and Real-Time Nuclear Power Plant Monitoring
 
-> **Stage**: Knowledge/10-case-studies | **Prerequisites**: [01.10-process-and-async-operators.md](01.10-process-and-async-operators.md), [realtime-hydropower-monitoring-case-study.md](realtime-hydropower-monitoring-case-study.md) | **Formalization Level**: L3
-> **Document Scope**: Operator fingerprint and Pipeline design for streaming operators in real-time nuclear power plant (核电站) operation monitoring, radiation monitoring, and safety system response
+> **Stage**: Knowledge/10-case-studies | **Prerequisites**: [01.10-process-and-async-operators.md](./01.10-process-and-async-operators.md), [realtime-hydropower-monitoring-case-study.md](./realtime-hydropower-monitoring-case-study.md) | **Formalization Level**: L3
+> **Document Positioning**: Operator fingerprints and Pipeline design for stream processing operators in real-time nuclear power plant operational monitoring, radiation monitoring, and safety system response
 > **Version**: 2026.04
 
 ---
@@ -23,49 +23,49 @@
 
 ### Def-NUC-01-01: Nuclear Safety System (核电站安全系统)
 
-A Nuclear Safety System (核电站安全系统) is a multi-layered defense system ensuring the safe operation of a nuclear reactor:
+A nuclear safety system is a multi-layered defense system that ensures the safe operation of a nuclear reactor:
 
 $$\text{SafetySystem} = (\text{Prevention}, \text{Detection}, \text{Protection}, \text{Mitigation})$$
 
 ### Def-NUC-01-02: Reactivity (反应性)
 
-Reactivity (反应性) is a physical quantity characterizing the degree to which a reactor deviates from the critical state:
+Reactivity is a physical quantity characterizing the degree to which a reactor deviates from the critical state:
 
 $$\rho = \frac{k_{eff} - 1}{k_{eff}}$$
 
-where $k_{eff}$ is the effective multiplication factor. $\rho > 0$ indicates supercritical, $\rho < 0$ indicates subcritical, and $\rho = 0$ indicates critical.
+Where $k_{eff}$ is the effective multiplication factor. $\rho > 0$ indicates supercritical, $\rho < 0$ indicates subcritical, and $\rho = 0$ indicates critical.
 
 ### Def-NUC-01-03: Radiation Dose Rate (辐射剂量率)
 
-Radiation Dose Rate (辐射剂量率) is the radiation dose received per unit time:
+The radiation dose rate is the radiation dose received per unit time:
 
 $$\dot{D} = \frac{dD}{dt}$$
 
-Unit: Sv/h (Sieverts per hour). Public limit: 1 mSv/year, worker limit: 20 mSv/year.
+Unit: Sv/h (Sievert per hour). Public limit: 1 mSv/year, worker limit: 20 mSv/year.
 
 ### Def-NUC-01-04: Containment Integrity (安全壳完整性)
 
-Containment Integrity (安全壳完整性) is the final barrier preventing the release of radioactive materials:
+Containment integrity is the final barrier preventing the release of radioactive materials:
 
 $$I_{containment} = P_{design} - P_{actual} > 0 \land \text{LeakRate} < \text{Limit}$$
 
 ### Def-NUC-01-05: Redundancy and Diversity (冗余与多样性)
 
-Safety systems employ Redundancy and Diversity (冗余与多样性) design to ensure reliability:
+Safety systems employ redundancy and diversity design to ensure reliability:
 
 $$R_{system} = 1 - \prod_{i}(1 - R_i)$$
 
-For a quadruple redundant system ($R_i = 0.99$), the overall reliability is $R_{system} = 1 - 10^{-8}$.
+For a quadruple redundant system ($R_i = 0.99$), the overall reliability $R_{system} = 1 - 10^{-8}$.
 
 ---
 
 ## 2. Properties
 
-### Lemma-NUC-01-01: Point Kinetics Neutron Equation
+### Lemma-NUC-01-01: Point Reactor Neutron Kinetics Equation
 
 $$\frac{dn}{dt} = \frac{\rho - \beta}{\Lambda} n + \sum_{i} \lambda_i C_i$$
 
-where $n$ is the neutron density, $\beta$ is the delayed neutron fraction, $\Lambda$ is the neutron generation time, and $C_i$ is the concentration of the $i$-th group of delayed neutron precursors.
+Where $n$ is the neutron density, $\beta$ is the delayed neutron fraction, $\Lambda$ is the neutron generation time, and $C_i$ is the concentration of the $i$-th group of delayed neutron precursors.
 
 ### Lemma-NUC-01-02: Decay Heat Power
 
@@ -73,47 +73,47 @@ Decay heat power after shutdown:
 
 $$P_{decay}(t) = 0.066 \cdot P_0 \cdot \left(\frac{t}{t_0}\right)^{-0.2}$$
 
-where $P_0$ is the rated power and $t$ is the shutdown time (seconds).
+Where $P_0$ is the rated power and $t$ is the shutdown time (seconds).
 
 ### Prop-NUC-01-01: Safety System Response Time
 
-| Safety Function | Detection Time | Execution Time | Total Response Time |
-|-----------------|----------------|----------------|---------------------|
-| Emergency Shutdown (SCRAM) | 10ms | 100ms | < 1s |
-| Safety Injection | 100ms | 5s | < 10s |
-| Containment Spray | 1s | 30s | < 1min |
-| Emergency Core Cooling | 1s | 10s | < 30s |
+| Safety Function | Detection Time | Actuation Time | Total Response Time |
+|----------------|----------------|----------------|---------------------|
+| Emergency Shutdown (SCRAM) | 10 ms | 100 ms | < 1 s |
+| Safety Injection | 100 ms | 5 s | < 10 s |
+| Containment Spray | 1 s | 30 s | < 1 min |
+| Emergency Core Cooling | 1 s | 10 s | < 30 s |
 
 ### Prop-NUC-01-02: Single Failure Criterion
 
 $$P_{failure} < 10^{-3}/\text{demand}$$
 
-No single equipment failure shall result in the loss of a safety function.
+Any single equipment failure shall not result in the loss of a safety function.
 
 ---
 
 ## 3. Relations
 
-### 3.1 Nuclear Power Monitoring Pipeline Operator Mapping
+### 3.1 Nuclear Power Plant Monitoring Pipeline Operator Mapping
 
-| Application Scenario | Operator Composition | Data Source | Latency Requirement |
-|----------------------|----------------------|-------------|---------------------|
-| **Neutron Flux Monitoring** | Source + map | Neutron Detector | < 10ms |
-| **Radiation Monitoring** | window + aggregate | Radiation Detector | < 1s |
-| **Safety System Trigger** | ProcessFunction + Timer | Protection Parameters | < 100ms |
-| **Equipment Health** | AsyncFunction | Vibration/Temperature | < 1min |
-| **Personnel Dosimetry** | KeyedProcessFunction | Personal Dosimeter | < 1min |
-| **Emergency Command** | Broadcast + ProcessFunction | Emergency Instructions | < 5s |
+| Application Scenario | Operator Combination | Data Source | Latency Requirement |
+|---------------------|---------------------|-------------|---------------------|
+| **Neutron Flux Monitoring** | Source + map | Neutron detector | < 10 ms |
+| **Radiation Monitoring** | window + aggregate | Radiation detector | < 1 s |
+| **Safety System Trigger** | ProcessFunction + Timer | Protection parameters | < 100 ms |
+| **Equipment Health** | AsyncFunction | Vibration / Temperature | < 1 min |
+| **Personnel Dose** | KeyedProcessFunction | Personal dosimeter | < 1 min |
+| **Emergency Command** | Broadcast + ProcessFunction | Emergency orders | < 5 s |
 
 ### 3.2 Operator Fingerprint
 
-| Dimension | Nuclear Power Monitoring Characteristics |
-|-----------|------------------------------------------|
-| **Core Operators** | ProcessFunction (safety protection logic), AsyncFunction (equipment diagnosis), BroadcastProcessFunction (emergency instructions), KeyedProcessFunction (personnel tracking) |
+| Dimension | Nuclear Power Plant Monitoring Characteristics |
+|-----------|-----------------------------------------------|
+| **Core Operators** | ProcessFunction (safety protection logic), AsyncFunction (equipment diagnostics), BroadcastProcessFunction (emergency orders), KeyedProcessFunction (personnel tracking) |
 | **State Types** | ValueState (reactor state), MapState (equipment health), BroadcastState (protection setpoints) |
-| **Time Semantics** | Processing Time (millisecond-level response for safety systems) |
-| **Data Characteristics** | Extremely high reliability requirements, strong regulation, data sensitivity |
-| **State Hotspots** | Reactor Key, Safety System Key |
+| **Time Semantics** | Processing time (millisecond-level response for safety systems) |
+| **Data Characteristics** | Extremely high reliability requirements, strong regulatory oversight, data sensitivity |
+| **State Hotspots** | Reactor key, safety system key |
 | **Performance Bottlenecks** | Safety logic verification, external regulatory reporting |
 
 ---
@@ -122,30 +122,30 @@ No single equipment failure shall result in the loss of a safety function.
 
 ### 4.1 Why Nuclear Power Needs Stream Processing Instead of Traditional DCS
 
-Problems with Traditional DCS (Distributed Control System, 分布式控制系统):
-- Fixed scan cycle: typically 100ms–1s, unable to capture transients
+Problems with traditional DCS (Distributed Control System):
+- Fixed scan cycle: typically 100 ms–1 s, unable to capture transients
 - Hard-wired logic: difficult to change, poor flexibility
-- Data silos: each system operates independently, making comprehensive analysis difficult
+- Data silos: each system is independent, making comprehensive analysis difficult
 
-Advantages of Stream Processing:
+Advantages of stream processing:
 - Millisecond-level response: meets safety system response time requirements
 - Software-based logic: protection algorithms can be rapidly iterated and verified
-- Unified analysis: multi-system data fusion and real-time analysis
+- Unified analysis: multi-system data real-time fusion analysis
 
 ### 4.2 Cybersecurity and Physical Isolation
 
-**Problem**: Nuclear facilities have extremely high cybersecurity requirements; how should stream processing systems be deployed?
+**Question**: Nuclear facilities have extremely high cybersecurity requirements; how is a stream processing system deployed?
 
 **Solution**:
-1. **Physical Isolation**: Safety-grade networks and non-safety-grade networks are physically isolated
-2. **Unidirectional Transfer**: Data is only allowed to flow unidirectionally from safety-grade to non-safety-grade networks
+1. **Physical Isolation**: Safety-grade network and non-safety-grade network are physically isolated
+2. **Unidirectional Transfer**: Data is only allowed to flow unidirectionally from the safety-grade network to the non-safety-grade network
 3. **Independent Verification**: All algorithms are verified on an independent validation platform before deployment
 
 ### 4.3 Transient Condition Identification
 
-**Scenario**: The initial signs of a Loss of Coolant Accident (LOCA, 冷却剂丧失事故) are not obvious.
+**Scenario**: Early signs of a Loss of Coolant Accident (LOCA) are not obvious.
 
-**Stream Processing Solution**: Multi-parameter joint monitoring (pressure + flow + temperature) → CEP pattern recognition → automatic protection triggering.
+**Stream Processing Solution**: Multi-parameter joint monitoring (pressure + flow + temperature) → CEP pattern recognition → automatic protection trigger.
 
 ---
 
@@ -167,7 +167,7 @@ public class ReactorProtectionSystem extends KeyedProcessFunction<String, Proces
         // Emergency shutdown signal (reactor trip)
         if (param.getNeutronFlux() > 1.2 * state.getNominalFlux() ||  // High neutron flux
             param.getPressurizerPressure() < 12.0 ||                   // Low pressure
-            param.getCoreDeltaT() > 50.0) {                           // High delta T
+            param.getCoreDeltaT() > 50.0) {                           // High delta-T
             out.collect(new SafetyAction("SCRAM", "HIGH_NEUTRON_FLUX", ctx.timestamp()));
         }
         
@@ -187,13 +187,13 @@ public class ReactorProtectionSystem extends KeyedProcessFunction<String, Proces
 }
 ```
 
-### 5.2 Real-time Radiation Monitoring
+### 5.2 Real-Time Radiation Monitoring
 
 ```java
 // Radiation detector data
 DataStream<RadiationReading> radiation = env.addSource(new RadiationMonitorSource());
 
-// Regional dose rate monitoring
+// Zone dose rate monitoring
 radiation.keyBy(RadiationReading::getZoneId)
     .window(SlidingProcessingTimeWindows.of(Time.minutes(1), Time.seconds(10)))
     .aggregate(new DoseRateAggregate())
@@ -218,7 +218,7 @@ radiation.keyBy(RadiationReading::getZoneId)
 
 ## 6. Examples
 
-### 6.1 Practical Example: Integrated Nuclear Power Monitoring System
+### 6.1 Real-World Practice: Nuclear Power Plant Integrated Monitoring System
 
 ```java
 // 1. Multi-parameter ingestion
@@ -246,26 +246,24 @@ health.filter(h -> h.getHealthIndex() < 0.7)
 
 ## 7. Visualizations
 
-### Nuclear Power Monitoring Pipeline
-
-The following diagram illustrates the three-layer architecture of a nuclear power monitoring pipeline: monitoring layer, safety layer, and response layer.
+### Nuclear Power Plant Monitoring Pipeline
 
 ```mermaid
 graph TB
-    subgraph MonitoringLayer["Monitoring Layer"]
+    subgraph Monitoring_Layer
         S1[Neutron Detector]
-        S2[Radiation Monitoring]
-        S3[Temperature/Pressure]
+        S2[Radiation Monitor]
+        S3[Temperature / Pressure]
         S4[Flow Rate]
     end
     
-    subgraph SafetyLayer["Safety Layer"]
+    subgraph Safety_Layer
         P1[Reactor Protection<br/>ProcessFunction]
         P2[Radiation Alert<br/>window+aggregate]
         P3[Equipment Health<br/>filter]
     end
     
-    subgraph ResponseLayer["Response Layer"]
+    subgraph Response_Layer
         A1[Safety System]
         A2[Emergency Center]
         A3[Maintenance Work Order]
@@ -296,4 +294,4 @@ graph TB
 
 ---
 
-*Related Documents*: [01.10-process-and-async-operators.md](01.10-process-and-async-operators.md) | [realtime-hydropower-monitoring-case-study.md](realtime-hydropower-monitoring-case-study.md) | [operator-chaos-engineering-and-resilience.md](operator-chaos-engineering-and-resilience.md)
+*Related Documents*: [01.10-process-and-async-operators.md](./01.10-process-and-async-operators.md) | [realtime-hydropower-monitoring-case-study.md](./realtime-hydropower-monitoring-case-study.md) | [operator-chaos-engineering-and-resilience.md](./operator-chaos-engineering-and-resilience.md)
