@@ -1,35 +1,57 @@
 # Operators and Real-Time Port Logistics
 
-> **Stage**: Knowledge/10-case-studies | **Prerequisites**: [01.07-two-input-operators.md](../Knowledge/01-concept-atlas/operator-deep-dive/01.07-two-input-operators.md), [realtime-supply-chain-tracking-case-study.md](../Knowledge/10-case-studies/realtime-supply-chain-tracking-case-study.md) | **Formalization Level**: L3
-> **Document Scope**: Operator fingerprints and Pipeline design for streaming operators in real-time port container dispatching, AGV (自动导引车, Automated Guided Vehicle) path optimization, and vessel arrival prediction
+> **Stage**: Knowledge/10-case-studies | **Prerequisites**: [01.07-two-input-operators.md](../Knowledge/01-concept-atlas/operator-deep-dive/01.07-two-input-operators.md), [realtime-supply-chain-tracking-case-study.md](realtime-supply-chain-tracking-case-study.md) | **Formalization Level**: L3
+> **Document Positioning**: Operator fingerprint and Pipeline design for stream processing operators in real-time port container dispatching, AGV path optimization, and vessel arrival prediction
 > **Version**: 2026.04
 
 ---
 
 ## Table of Contents
 
-- [1. Definitions](#1-definitions)
-- [2. Properties](#2-properties)
-- [3. Relations](#3-relations)
-- [4. Argumentation](#4-argumentation)
-- [5. Proof / Engineering Argument](#5-proof--engineering-argument)
-- [6. Examples](#6-examples)
-- [7. Visualizations](#7-visualizations)
-- [8. References](#8-references)
+- [Operators and Real-Time Port Logistics](#operators-and-real-time-port-logistics)
+  - [Table of Contents](#table-of-contents)
+  - [1. Concept Definitions (Definitions)](#1-concept-definitions-definitions)
+    - [Def-PRT-01-01: Port Logistics Digital Twin (港口物流数字孪生)](#def-prt-01-01-port-logistics-digital-twin-港口物流数字孪生)
+    - [Def-PRT-01-02: Estimated Time of Arrival, ETA (船舶到港时间)](#def-prt-01-02-estimated-time-of-arrival-eta-船舶到港时间)
+    - [Def-PRT-01-03: Yard Optimization (集装箱堆场优化)](#def-prt-01-03-yard-optimization-集装箱堆场优化)
+    - [Def-PRT-01-04: AGV Scheduling (AGV调度)](#def-prt-01-04-agv-scheduling-agv调度)
+    - [Def-PRT-01-05: Customs Risk Score (海关风险评分)](#def-prt-01-05-customs-risk-score-海关风险评分)
+  - [2. Property Derivation (Properties)](#2-property-derivation-properties)
+    - [Lemma-PRT-01-01: Queuing Theory Model for Port Throughput](#lemma-prt-01-01-queuing-theory-model-for-port-throughput)
+    - [Lemma-PRT-01-02: Graph-Theoretic Determination of AGV Path Conflicts](#lemma-prt-01-02-graph-theoretic-determination-of-agv-path-conflicts)
+    - [Prop-PRT-01-01: Relationship Between Yard Relocation Rate and Stacking Height](#prop-prt-01-01-relationship-between-yard-relocation-rate-and-stacking-height)
+    - [Prop-PRT-01-02: Berth Utilization Improvement from Pre-Arrival Information](#prop-prt-01-02-berth-utilization-improvement-from-pre-arrival-information)
+  - [3. Relations Establishment (Relations)](#3-relations-establishment-relations)
+    - [3.1 Port Logistics Pipeline Operator Mapping](#31-port-logistics-pipeline-operator-mapping)
+    - [3.2 Operator Fingerprint](#32-operator-fingerprint)
+  - [4. Argumentation Process (Argumentation)](#4-argumentation-process-argumentation)
+    - [4.1 Why Port Logistics Needs Stream Processing Instead of Traditional Scheduling](#41-why-port-logistics-needs-stream-processing-instead-of-traditional-scheduling)
+    - [4.2 AGV Conflict Avoidance](#42-agv-conflict-avoidance)
+    - [4.3 Reefer Container Cold Chain Monitoring](#43-reefer-container-cold-chain-monitoring)
+  - [5. Formal Proof / Engineering Argument (Proof / Engineering Argument)](#5-formal-proof--engineering-argument-proof--engineering-argument)
+    - [5.1 Real-Time AGV Scheduling System](#51-real-time-agv-scheduling-system)
+    - [5.2 Container Status Tracking](#52-container-status-tracking)
+    - [5.3 Vessel Arrival Prediction](#53-vessel-arrival-prediction)
+  - [6. Example Verification (Examples)](#6-example-verification-examples)
+    - [6.1 Practice: Smart Port Real-Time Scheduling (智能港口实时调度)](#61-practice-smart-port-real-time-scheduling-智能港口实时调度)
+    - [6.2 Practice: Reefer Container Monitoring (冷链集装箱监控)](#62-practice-reefer-container-monitoring-冷链集装箱监控)
+  - [7. Visualizations (Visualizations)](#7-visualizations-visualizations)
+    - [Port Logistics Pipeline](#port-logistics-pipeline)
+  - [8. References (References)](#8-references-references)
 
 ---
 
-## 1. Definitions
+## 1. Concept Definitions (Definitions)
 
 ### Def-PRT-01-01: Port Logistics Digital Twin (港口物流数字孪生)
 
-Port Logistics Digital Twin is a real-time virtual mapping of port physical operations:
+Port Logistics Digital Twin is a real-time virtual mapping of physical port operations:
 
 $$\text{PortTwin}(t) = (\text{Vessels}_t, \text{Containers}_t, \text{AGVs}_t, \text{Cranes}_t, \text{Yard}_t)$$
 
-### Def-PRT-01-02: Estimated Time of Arrival — ETA (船舶到港时间)
+### Def-PRT-01-02: Estimated Time of Arrival, ETA (船舶到港时间)
 
-ETA is the predicted arrival time based on vessel speed, route, and meteorological conditions:
+ETA is the arrival time prediction based on sailing speed, route, and weather conditions:
 
 $$\text{ETA} = t_{current} + \frac{D_{remaining}}{v_{avg}} + \sum_{i} \Delta t_{delay,i}$$
 
@@ -37,25 +59,25 @@ where $D_{remaining}$ is the remaining voyage distance, $v_{avg}$ is the average
 
 ### Def-PRT-01-03: Yard Optimization (集装箱堆场优化)
 
-Yard Optimization is the decision-making process to maximize space utilization while minimizing relocation (翻箱) operations:
+Yard optimization is the decision-making process that maximizes space utilization while minimizing container relocation count:
 
 $$\min \sum_{c} \text{Relocations}(c) \quad \text{s.t.} \quad \text{SpaceUtilization} < 0.85$$
 
 ### Def-PRT-01-04: AGV Scheduling (AGV调度)
 
-AGV Scheduling is the optimization problem of assigning tasks and paths to Automated Guided Vehicles:
+AGV scheduling is the optimization problem of assigning tasks and paths to Automated Guided Vehicles (自动导引车):
 
 $$\min \sum_{v} \left(\alpha \cdot T_{travel,v} + \beta \cdot T_{wait,v} + \gamma \cdot T_{charging,v}\right)$$
 
 ### Def-PRT-01-05: Customs Risk Score (海关风险评分)
 
-Customs Risk Score evaluates the inspection probability based on cargo characteristics:
+Customs Risk Score is the inspection probability assessment based on cargo characteristics:
 
 $$\text{Risk} = w_1 \cdot f_{origin} + w_2 \cdot f_{commodity} + w_3 \cdot f_{shipper} + w_4 \cdot f_{history}$$
 
 ---
 
-## 2. Properties
+## 2. Property Derivation (Properties)
 
 ### Lemma-PRT-01-01: Queuing Theory Model for Port Throughput
 
@@ -63,21 +85,21 @@ Port throughput capacity follows the M/M/c queuing model:
 
 $$\rho = \frac{\lambda}{c \cdot \mu}$$
 
-where $\lambda$ is the vessel arrival rate, $\mu$ is the single-berth service rate, and $c$ is the number of berths. When $\rho \to 1$, vessel waiting time approaches infinity.
+where $\lambda$ is the vessel arrival rate, $\mu$ is the single-berth service rate, and $c$ is the number of berths. When $\rho \to 1$, vessel waiting time tends to infinity.
 
-### Lemma-PRT-01-02: Graph-Theoretic Decision for AGV Path Conflicts
+### Lemma-PRT-01-02: Graph-Theoretic Determination of AGV Path Conflicts
 
 AGV path conflicts can be modeled as a graph coloring problem:
 
 $$\chi(G) \leq \Delta(G) + 1$$
 
-where $\chi(G)$ is the chromatic number of conflict graph $G$, and $\Delta(G)$ is the maximum degree. Conflict avoidance is equivalent to assigning different time slots to AGVs traversing the same segment simultaneously.
+where $\chi(G)$ is the chromatic number of conflict graph $G$, and $\Delta(G)$ is the maximum degree. Conflict avoidance is equivalent to assigning different time slices to AGVs that traverse the same road segment simultaneously.
 
 ### Prop-PRT-01-01: Relationship Between Yard Relocation Rate and Stacking Height
 
 $$\text{RelocationRate} = 1 - \frac{1}{H_{avg}}$$
 
-where $H_{avg}$ is the average stacking height. Higher stacks lead to higher relocation rates.
+where $H_{avg}$ is the average stacking height. The higher the stack, the higher the relocation rate.
 
 ### Prop-PRT-01-02: Berth Utilization Improvement from Pre-Arrival Information
 
@@ -85,47 +107,47 @@ $$\Delta \eta = \eta_{withETA} - \eta_{withoutETA} \approx 15\text{-}25\%$$
 
 ---
 
-## 3. Relations
+## 3. Relations Establishment (Relations)
 
 ### 3.1 Port Logistics Pipeline Operator Mapping
 
 | Application Scenario | Operator Combination | Data Source | Latency Requirement |
-|---------------------|----------------------|-------------|---------------------|
+|---------|---------|--------|---------|
 | **Vessel Arrival Prediction** | AsyncFunction + map | AIS/Weather | < 15min |
 | **Container Tracking** | KeyedProcessFunction | RFID/GPS | < 1min |
 | **AGV Scheduling** | Broadcast + ProcessFunction | Task Queue | < 5s |
-| **Yard Optimization** | window+aggregate | Yard Status | < 10min |
+| **Yard Optimization** | window + aggregate | Yard Status | < 10min |
 | **Customs Risk** | Async ML | Declaration Data | < 30s |
 | **Equipment Monitoring** | ProcessFunction + Timer | Sensors | < 1min |
 
 ### 3.2 Operator Fingerprint
 
 | Dimension | Port Logistics Characteristics |
-|-----------|-------------------------------|
-| **Core Operators** | BroadcastProcessFunction (AGV Scheduling), KeyedProcessFunction (Container State Machine), AsyncFunction (ETA/Risk Model), window+aggregate (Yard Statistics) |
-| **State Types** | ValueState (Container Location), MapState (AGV Status), BroadcastState (Scheduling Policy) |
-| **Time Semantics** | Primarily Processing Time (scheduling real-time requirements) |
+|------|------------|
+| **Core Operators** | BroadcastProcessFunction (AGV scheduling), KeyedProcessFunction (container state machine), AsyncFunction (ETA/risk model), window + aggregate (yard statistics) |
+| **State Types** | ValueState (container location), MapState (AGV status), BroadcastState (scheduling policy) |
+| **Time Semantics** | Processing time dominated (scheduling real-time requirements) |
 | **Data Characteristics** | Spatially dense (location data), temporally correlated (vessel arrivals), multi-source heterogeneous |
-| **State Hotspots** | Popular yard zone keys, active AGV keys |
+| **State Hotspots** | Hot yard zone keys, active AGV keys |
 | **Performance Bottlenecks** | AGV conflict resolution, external ETA API |
 
 ---
 
-## 4. Argumentation
+## 4. Argumentation Process (Argumentation)
 
 ### 4.1 Why Port Logistics Needs Stream Processing Instead of Traditional Scheduling
 
 Problems with traditional scheduling:
 
-- **Static plans**: Unable to handle vessels arriving late or early
-- **Manual dispatching**: Low efficiency, error-prone
-- **Information lag**: Container location updates are not timely
+- **Static Planning**: Cannot handle vessel delays or early arrivals
+- **Manual Scheduling**: Low efficiency, prone to errors
+- **Information Lag**: Container position updates are not timely
 
 Advantages of stream processing:
 
-- **Real-time tracking**: Container locations updated at second-level granularity
-- **Dynamic dispatching**: Adjust AGV tasks based on real-time conditions
-- **Predictive optimization**: ETA predictions enable advance berth arrangement
+- **Real-Time Tracking**: Container positions updated at second-level granularity
+- **Dynamic Scheduling**: Adjust AGV tasks based on real-time conditions
+- **Predictive Optimization**: ETA prediction enables advance berth arrangement
 
 ### 4.2 AGV Conflict Avoidance
 
@@ -133,19 +155,19 @@ Advantages of stream processing:
 
 **Solution**:
 
-1. **Time-slot allocation**: Assign passages to different AGVs by time slots
-2. **Priority**: Emergency tasks (reefer containers 冷藏箱) take precedence
-3. **Path replanning**: Automatic rerouting when conflicts are detected
+1. **Time-Slice Allocation**: Allocate passage time slices to different AGVs
+2. **Priority**: Urgent tasks (reefer containers) take priority
+3. **Path Replanning**: Automatically reroute when conflicts are detected
 
-### 4.3 Cold Chain (冷链) Container Monitoring
+### 4.3 Reefer Container Cold Chain Monitoring
 
-**Scenario**: Refrigerated container temperature must remain below -18°C.
+**Scenario**: Reefer container (冷藏集装箱) temperatures must be kept below -18°C.
 
-**Stream Processing Solution**: Real-time temperature monitoring → anomaly alerting → automatic maintenance notification → backup container dispatching.
+**Stream Processing Solution**: Real-time temperature monitoring → anomaly alerting → automatic maintenance notification → backup container scheduling.
 
 ---
 
-## 5. Proof / Engineering Argument
+## 5. Formal Proof / Engineering Argument (Proof / Engineering Argument)
 
 ### 5.1 Real-Time AGV Scheduling System
 
@@ -190,7 +212,7 @@ public class AGVScheduler extends BroadcastProcessFunction<TaskRequest, Schedule
 }
 ```
 
-### 5.2 Container State Tracking
+### 5.2 Container Status Tracking
 
 ```java
 // Container event stream
@@ -210,7 +232,7 @@ containers.keyBy(ContainerEvent::getContainerId)
             locationState.update(loc);
 
             // Check for abnormal dwell time
-            if (loc.getDwellTime() > 3600000) {  // Exceeds 1 hour
+            if (loc.getDwellTime() > 3600000) {  // exceeds 1 hour
                 out.collect(loc.withAlert("LONG_DWELL"));
             } else {
                 out.collect(loc);
@@ -240,7 +262,7 @@ ais.keyBy(AISMessage::getMmsi)
 
             // Calculate ETA
             double distanceToPort = calculateDistance(track.getLastPosition(), PORT_LOCATION);
-            double avgSpeed = track.getAverageSpeed(3600000);  // Average over last 1 hour
+            double avgSpeed = track.getAverageSpeed(3600000);  // average over the last 1 hour
 
             if (avgSpeed > 0) {
                 long etaMillis = (long)(distanceToPort / avgSpeed * 3600000);
@@ -256,9 +278,9 @@ ais.keyBy(AISMessage::getMmsi)
 
 ---
 
-## 6. Examples
+## 6. Example Verification (Examples)
 
-### 6.1 Practice: Intelligent Port Real-Time Dispatching
+### 6.1 Practice: Smart Port Real-Time Scheduling (智能港口实时调度)
 
 ```java
 // 1. Vessel arrival prediction
@@ -285,7 +307,7 @@ tasks.connect(agvStatusBroadcast)
     .addSink(new AGVCommandSink());
 ```
 
-### 6.2 Practice: Cold Chain Container Monitoring
+### 6.2 Practice: Reefer Container Monitoring (冷链集装箱监控)
 
 ```java
 // Reefer container temperature sensors
@@ -303,12 +325,12 @@ temps.keyBy(TemperatureReading::getContainerId)
 
             s.update(reading.getTemperature());
 
-            // High temperature alert
+            // High-temperature alert
             if (reading.getTemperature() > reading.getMaxAllowed()) {
                 out.collect(new TemperatureAlert(reading.getContainerId(), "HIGH_TEMP", reading.getTemperature(), ctx.timestamp()));
             }
 
-            // Trend alert: continuous rise
+            // Trend alert: continuously rising
             if (s.isRising(5) && reading.getTemperature() > reading.getMaxAllowed() - 2) {
                 out.collect(new TemperatureAlert(reading.getContainerId(), "RISING_TREND", reading.getTemperature(), ctx.timestamp()));
             }
@@ -321,11 +343,11 @@ temps.keyBy(TemperatureReading::getContainerId)
 
 ---
 
-## 7. Visualizations
+## 7. Visualizations (Visualizations)
 
 ### Port Logistics Pipeline
 
-The following diagram illustrates the end-to-end streaming pipeline for real-time port logistics, covering data ingestion, stream processing, and physical execution layers.
+The following diagram illustrates the end-to-end real-time port logistics pipeline, from multi-source data ingestion through stream processing to physical execution.
 
 ```mermaid
 graph TB
@@ -347,10 +369,10 @@ graph TB
     end
 
     subgraph Execution["Execution"]
-        A1[Vessel Dispatch]
-        A2[Quay Crane]
+        A1[Vessel Scheduling]
+        A2[Quay Cranes]
         A3[AGV]
-        A4[Yard Crane]
+        A4[Yard Cranes]
         A5[Gate]
     end
 
@@ -363,13 +385,8 @@ graph TB
 
 ---
 
-## 8. References
-
-[^1]: Apache Flink Documentation, "State Backends", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/ops/state/state_backends/
-[^2]: T. Akidau et al., "The Dataflow Model", PVLDB, 8(12), 2015.
-[^3]: D. P. Bertsekas, "Dynamic Programming and Optimal Control", Athena Scientific, 2017.
-[^4]: International Maritime Organization, "Guidelines on Maritime Cyber Risk Management", 2021.
+## 8. References (References)
 
 ---
 
-*Related Documents*: [01.07-two-input-operators.md](../Knowledge/01-concept-atlas/operator-deep-dive/01.07-two-input-operators.md) | [realtime-supply-chain-tracking-case-study.md](../Knowledge/10-case-studies/realtime-supply-chain-tracking-case-study.md) | [realtime-digital-twin-case-study.md](../Knowledge/10-case-studies/realtime-digital-twin-case-study.md)
+*Related Documents*: [01.07-two-input-operators.md](../Knowledge/01-concept-atlas/operator-deep-dive/01.07-two-input-operators.md) | [realtime-supply-chain-tracking-case-study.md](realtime-supply-chain-tracking-case-study.md) | [realtime-digital-twin-case-study.md](realtime-digital-twin-case-study.md)
