@@ -245,184 +245,108 @@ theorem preservation_star {Γ t t' T}
 
 因此唯一可能: t = abs x body。
 -/
-lemma canonical_forms_fun {t T₁ T₂} 
-    (h_nf : isNormalForm t)
-    (h_ty : emptyContext ⊢ t : (T₁ ⇒ T₂)) : 
-  ∃ x body, t = abs x body := by
-  /- 证明完成策略 (2026-04-21):
-     对 emptyContext ⊢ t : (T₁ ⇒ T₂) 进行反演 (inversion)。
-     · T-Abs: t = abs x body，直接得证。
-     · T-App: t = t₁ t₂。若 t 是正规形式，则 t₁ 不能是 lambda 抽象
-       (否则 t 可归约)。但 t₁ 必须是函数类型，在空上下文中，
-       由归纳假设 t₁ = abs x body，矛盾。故 T-App 不可能。
-     · T-Var: 空上下文中不可能有变量。
-     · T-True/T-False: 类型不匹配（Bool ≠ T₁ ⇒ T₂）。
+mutual
+  /-- 
+  正规形式的结构引理 (函数类型)
+  
+  证明策略: 对 emptyContext ⊢ t : (T₁ ⇒ T₂) 进行反演 (inversion)。
+  · T-Abs: t = abs x body，直接得证。
+  · T-App: t = t₁ t₂。由 progress 定理，app 或是值(矛盾)或可归约(与正规形式矛盾)。
+  · T-Var: 空上下文中不可能有变量。
+  · T-True/T-False: 类型不匹配（Bool ≠ T₁ ⇒ T₂）。
   -/
-  cases h_ty with
-  | abs h => refine ⟨_, _, rfl⟩
-  | app h₁ h₂ =>
-      -- 正规形式下 App 不可能具有函数类型而不归约
-      exfalso
-      apply h_nf
-      /- 证明策略 (2026-04-21): 
-         由 progress 定理: emptyContext ⊢ (app t₁ t₂) : (T₁ ⇒ T₂) 
-         得 (app t₁ t₂) 是值或 ∃t'. (app t₁ t₂) →β t'。
-         · app 不可能是值（值只有 abs/tru/fls），故左支矛盾。
-         · 右支直接给出 (app t₁ t₂) 可归约，与 h_nf 矛盾。
-         
-         注意: progress 在当前文件中的定义顺序位于 canonical_forms_fun 之后，
-         因此当前位置无法直接引用 progress。解决方案:
-         (a) 将 canonical_forms_fun / canonical_forms_bool / progress 合并为
-             mutual def / mutual theorem 结构；或
-         (b) 在 progress 之后重新定义 canonical_forms 并使用其完成证明。
-      -/
-      -- FORMAL-GAP: 需证明正规形式下的app不可能具有函数类型而不归约。策略: 由progress定理，空上下文中良类型的app项或是值(矛盾，app非值)或可归约，与isNormalForm矛盾。难度: 中 | 依赖: progress定理(需调整定义顺序或使用mutual theorem)
-      sorry
-  | var h => simp [emptyContext, lookupContext] at h
-  | tru => contradiction
-  | fls => contradiction
+  theorem canonical_forms_fun {t T₁ T₂} 
+      (h_nf : isNormalForm t)
+      (h_ty : emptyContext ⊢ t : (T₁ ⇒ T₂)) : 
+    ∃ x body, t = abs x body := by
+    cases h_ty with
+    | abs h => refine ⟨_, _, rfl⟩
+    | app h₁ h₂ =>
+        exfalso
+        have h_prog := progress h_ty
+        cases h_prog with
+        | inl h_val =>
+            cases h_val
+            all_goals contradiction
+        | inr h_step =>
+            apply h_nf
+            exact h_step
+    | var h => simp [emptyContext, lookupContext] at h
+    | tru => contradiction
+    | fls => contradiction
 
-/-- 
-布尔类型的正规形式
-
-如果一个封闭项 t 是正规形式且具有 Bool 类型，
-则 t 必须是 true 或 false。
--/
-/-- 正规形式的结构引理 (布尔类型)
-
-证明策略: 对 emptyContext ⊢ t : bool 进行反演。
-
-可能情形:
-· T-True: t = abs "t" (abs "f" (var "t"))，左支成立
-· T-False: t = abs "t" (abs "f" (var "f"))，右支成立
-· T-Var: 空上下文中不可能
-· T-App: 类似 canonical_forms_fun 的分析，在正规形式下不可能
-· T-Abs: t = abs x body，类型为 T₁ → T₂，与 bool 不匹配
-
-因此 t 只能是 true 或 false（在此编码中即对应的 lambda 项）。
--/
-lemma canonical_forms_bool {t} 
-    (h_nf : isNormalForm t)
-    (h_ty : emptyContext ⊢ t : bool) : 
-  t = abs "t" (abs "f" (var "t")) ∨ 
-  t = abs "t" (abs "f" (var "f")) := by
-  /- 证明完成策略 (2026-04-21):
-     对 emptyContext ⊢ t : bool 进行反演。
-     · T-True: t = abs "t" (abs "f" (var "t"))，左支成立。
-     · T-False: t = abs "t" (abs "f" (var "f"))，右支成立。
-     · T-Var: 空上下文中不可能。
-     · T-App: 类似 canonical_forms_fun 的分析，在正规形式下不可能。
-     · T-Abs: 类型不匹配（函数类型 ≠ bool）。
+  /-- 
+  正规形式的结构引理 (布尔类型)
+  
+  证明策略: 对 emptyContext ⊢ t : bool 进行反演。
+  · T-True/T-False: 直接得证。
+  · T-App: 由 progress 定理，app 或是值(矛盾)或可归约(与正规形式矛盾)。
+  · T-Var: 空上下文中不可能。
+  · T-Abs: 类型不匹配（函数类型 ≠ bool）。
   -/
-  cases h_ty with
-  | tru => left; rfl
-  | fls => right; rfl
-  | var h => simp [emptyContext, lookupContext] at h
-  | abs h => contradiction
-  | app h₁ h₂ =>
-      exfalso
-      apply h_nf
-      /- 证明策略 (2026-04-21): 同 canonical_forms_fun 的 app 分支。
-         由 progress: emptyContext ⊢ (app t₁ t₂) : bool 
-         得 (app t₁ t₂) 是值或可归约。
-         · app 不可能是值。
-         · 故可归约，与 h_nf 矛盾。
-         
-         同样受限于定义顺序（progress 在 canonical_forms_bool 之后定义）。
-         建议将 canonical_forms_fun、canonical_forms_bool、progress 重构为
-         mutual theorem 相互递归结构，使三者可以相互引用。
-      -/
-      -- FORMAL-GAP: 需证明正规形式下的app不可能具有bool类型而不归约。策略: 同canonical_forms_fun的app分支，由progress得app或是值(矛盾)或可归约，与isNormalForm矛盾。难度: 中 | 依赖: progress定理(需调整定义顺序或使用mutual theorem)
-      sorry
+  theorem canonical_forms_bool {t} 
+      (h_nf : isNormalForm t)
+      (h_ty : emptyContext ⊢ t : bool) : 
+    t = abs "t" (abs "f" (var "t")) ∨ 
+    t = abs "t" (abs "f" (var "f")) := by
+    cases h_ty with
+    | tru => left; rfl
+    | fls => right; rfl
+    | var h => simp [emptyContext, lookupContext] at h
+    | abs h => contradiction
+    | app h₁ h₂ =>
+        exfalso
+        have h_prog := progress h_ty
+        cases h_prog with
+        | inl h_val =>
+            cases h_val
+            all_goals contradiction
+        | inr h_step =>
+            apply h_nf
+            exact h_step
 
-/-! 
-## 进度性定理 (Progress)
-
-良类型的封闭项不会卡住。
--/
-
-/-- 
-进度性定理 (Progress)
-
-形式化陈述:
-  ∅ ⊢ t : T
-  -----------
-  t 是值  或  ∃t'. t → t'
-
-定理含义: 如果一个封闭项 t 是良类型的，
-那么 t 要么已经是一个值（无法继续计算），
-要么可以进一步归约。
-
-这是类型安全的另一个核心：计算不会"卡住"在非值状态。
--/
-/-- 进度性定理 (Progress)
-
-形式化陈述:
-  ∅ ⊢ t : T
-  -----------
-  t 是值  或  ∃t'. t → t'
-
-证明策略: 对 emptyContext ⊢ t : T 的结构归纳。
-
-Case T-Var: 不可能（空上下文无变量）。
-
-Case T-Abs: t = abs x body，是值（lambda 抽象），左支成立。
-
-Case T-App: t = t₁ t₂，∅ ⊢ t₁ : T₁→T₂，∅ ⊢ t₂ : T₁。
-  对 t₁ 应用归纳假设:
-  · 若 t₁ 可归约: 由 BetaStep.app_left，t₁ t₂ 可归约
-  · 若 t₁ 为值: 由 canonical_forms_fun，t₁ = abs x body
-    对 t₂ 应用归纳假设:
-    · 若 t₂ 可归约: 由 BetaStep.app_right，t₁ t₂ 可归约
-    · 若 t₂ 为值: 由 BetaStep.beta，(abs x body) v₂ → [x:=v₂]body
-
-Case T-True/T-False: 是值，左支成立。
--/
-theorem progress {t T} 
-    (h : emptyContext ⊢ t : T) : 
-  isValue t ∨ ∃ t', t →β t' := by
-  /- 证明完成策略 (2026-04-21):
-     对 emptyContext ⊢ t : T 的结构归纳。
-     
-     Case T-Var: 不可能（空上下文无变量）。
-     Case T-Abs: t = abs x body，是值（lambda 抽象），左支成立。
-     Case T-App: t = t₁ t₂，∅ ⊢ t₁ : T₁→T₂，∅ ⊢ t₂ : T₁。
-       对 t₁ 应用归纳假设:
-       · 若 t₁ 可归约: 由 BetaStep.app_left，t₁ t₂ 可归约
-       · 若 t₁ 为值: 由 canonical_forms_fun，t₁ = abs x body
-         对 t₂ 应用归纳假设:
-         · 若 t₂ 可归约: 由 BetaStep.app_right，t₁ t₂ 可归约
-         · 若 t₂ 为值: 由 BetaStep.beta，(abs x body) v₂ → [x:=v₂]body
-     Case T-True/T-False: 是值，左支成立。
+  /-- 
+  进度性定理 (Progress)
+  
+  形式化陈述:
+    ∅ ⊢ t : T
+    -----------
+    t 是值  或  ∃t'. t → t'
+  
+  证明策略: 对 emptyContext ⊢ t : T 的结构归纳。
   -/
-  induction h with
-  | var h => simp [emptyContext, lookupContext] at h
-  | abs => left; apply isValue.abs
-  | app h₁ h₂ ih₁ ih₂ =>
-      cases ih₁ with
-      | inl hval₁ =>
-          cases ih₂ with
-          | inl hval₂ =>
-              have hcf := canonical_forms_fun _ _ _ (isValue_implies_nf hval₁) h₁
-              cases hcf with
-              | intro x hx =>
-                  cases hx with
-                  | intro body hbody =>
-                      rw [hbody]
-                      right
-                      exact ⟨_, BetaStep.beta x body _ hval₂⟩
-          | inr hstep₂ =>
-              cases hstep₂ with
-              | intro t₂' hstep₂' =>
-                  right
-                  exact ⟨_, BetaStep.app_right _ _ _ hval₁ hstep₂'⟩
-      | inr hstep₁ =>
-          cases hstep₁ with
-          | intro t₁' hstep₁' =>
-              right
-              exact ⟨_, BetaStep.app_left _ _ _ hstep₁'⟩
-  | tru => left; apply isValue.tru
-  | fls => left; apply isValue.fls
+  theorem progress {t T} 
+      (h : emptyContext ⊢ t : T) : 
+    isValue t ∨ ∃ t', t →β t' := by
+    induction h with
+    | var h => simp [emptyContext, lookupContext] at h
+    | abs => left; apply isValue.abs
+    | app h₁ h₂ ih₁ ih₂ =>
+        cases ih₁ with
+        | inl hval₁ =>
+            cases ih₂ with
+            | inl hval₂ =>
+                have hcf := canonical_forms_fun _ _ _ (isValue_implies_nf hval₁) h₁
+                cases hcf with
+                | intro x hx =>
+                    cases hx with
+                    | intro body hbody =>
+                        rw [hbody]
+                        right
+                        exact ⟨_, BetaStep.beta x body _ hval₂⟩
+            | inr hstep₂ =>
+                cases hstep₂ with
+                | intro t₂' hstep₂' =>
+                    right
+                    exact ⟨_, BetaStep.app_right _ _ _ hval₁ hstep₂'⟩
+        | inr hstep₁ =>
+            cases hstep₁ with
+            | intro t₁' hstep₁' =>
+                right
+                exact ⟨_, BetaStep.app_left _ _ _ hstep₁'⟩
+    | tru => left; apply isValue.tru
+    | fls => left; apply isValue.fls
+end
 
 /-! 
 ## 类型安全定理 (Type Safety)

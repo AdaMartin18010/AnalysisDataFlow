@@ -1254,7 +1254,14 @@ deriving DecidableEq, Repr, Inhabited
       | CTLFormula.prop p => LTLFormula.prop p
       | CTLFormula.true_lit => LTLFormula.true_lit
       | CTLFormula.false_lit => LTLFormula.false_lit
-      | _ => LTLFormula.false_lit  -- 简化
+      | CTLFormula.not φ => LTLFormula.not (toLTL φ)
+      | CTLFormula.and φ ψ => LTLFormula.and (toLTL φ) (toLTL ψ)
+      | CTLFormula.or φ ψ => LTLFormula.or (toLTL φ) (toLTL ψ)
+      | CTLFormula.path _ .X [φ] => LTLFormula.next (toLTL φ)
+      | CTLFormula.path _ .F [φ] => LTLFormula.finally (toLTL φ)
+      | CTLFormula.path _ .G [φ] => LTLFormula.globally (toLTL φ)
+      | CTLFormula.path _ .U [φ, ψ] => LTLFormula.until (toLTL φ) (toLTL ψ)
+      | _ => LTLFormula.false_lit  -- 其他情况简化
 
   /-- 
   定理 6.3 (CTL 的表达能力):

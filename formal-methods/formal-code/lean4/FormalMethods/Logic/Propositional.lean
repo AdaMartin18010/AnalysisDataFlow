@@ -24,7 +24,7 @@ namespace PropositionalLogic
   ============================================================ -/
 
 /-- 命题变量 - 使用自然数作为变量标识符 -/
-def PropVar := ℕ
+abbrev PropVar := ℕ
 deriving DecidableEq, Repr, Inhabited
 
 namespace PropVar
@@ -68,40 +68,40 @@ infixl:55 " ↔' " => iff
     | var v => {v}
     | bot => ∅
     | top => ∅
-    | and φ ψ => φ.vars ∪ ψ.vars
-    | or φ ψ => φ.vars ∪ ψ.vars
-    | imp φ ψ => φ.vars ∪ ψ.vars
-    | not φ => φ.vars
+    | Formula.and φ ψ => φ.vars ∪ ψ.vars
+    | Formula.or φ ψ => φ.vars ∪ ψ.vars
+    | Formula.imp φ ψ => φ.vars ∪ ψ.vars
+    | Formula.not φ => φ.vars
 
   /-- 公式的深度（嵌套层数）-/
   def depth : Formula → Nat
     | var _ => 0
     | bot => 0
     | top => 0
-    | and φ ψ => 1 + max φ.depth ψ.depth
-    | or φ ψ => 1 + max φ.depth ψ.depth
-    | imp φ ψ => 1 + max φ.depth ψ.depth
-    | not φ => 1 + φ.depth
+    | Formula.and φ ψ => 1 + max φ.depth ψ.depth
+    | Formula.or φ ψ => 1 + max φ.depth ψ.depth
+    | Formula.imp φ ψ => 1 + max φ.depth ψ.depth
+    | Formula.not φ => 1 + φ.depth
 
   /-- 公式大小（节点数）-/
   def size : Formula → Nat
     | var _ => 1
     | bot => 1
     | top => 1
-    | and φ ψ => 1 + φ.size + ψ.size
-    | or φ ψ => 1 + φ.size + ψ.size
-    | imp φ ψ => 1 + φ.size + ψ.size
-    | not φ => 1 + φ.size
+    | Formula.and φ ψ => 1 + φ.size + ψ.size
+    | Formula.or φ ψ => 1 + φ.size + ψ.size
+    | Formula.imp φ ψ => 1 + φ.size + ψ.size
+    | Formula.not φ => 1 + φ.size
 
   /-- 字符串表示 -/
   def toString : Formula → String
     | var v => PropVar.toString v
     | bot => "⊥"
     | top => "⊤"
-    | and φ ψ => "(" ++ φ.toString ++ " ∧ " ++ ψ.toString ++ ")"
-    | or φ ψ => "(" ++ φ.toString ++ " ∨ " ++ ψ.toString ++ ")"
-    | imp φ ψ => "(" ++ φ.toString ++ " → " ++ ψ.toString ++ ")"
-    | not φ => "(¬" ++ φ.toString ++ ")"
+    | Formula.and φ ψ => "(" ++ φ.toString ++ " ∧ " ++ ψ.toString ++ ")"
+    | Formula.or φ ψ => "(" ++ φ.toString ++ " ∨ " ++ ψ.toString ++ ")"
+    | Formula.imp φ ψ => "(" ++ φ.toString ++ " → " ++ ψ.toString ++ ")"
+    | Formula.not φ => "(¬" ++ φ.toString ++ ")"
 
   instance : ToString Formula := ⟨toString⟩
 
@@ -117,8 +117,6 @@ infixl:55 " ↔' " => iff
 
   /-- 否定定义: ¬φ = φ → ⊥ -/
   def not_alt (φ : Formula) : Formula := φ →' ⊥
-
-  theorem not_eq_not_alt (φ : Formula) : ¬' φ = not_alt φ := rfl
 
 end Formula
 
@@ -155,94 +153,89 @@ section Semantics
 
   /-- 公式求值函数
 
-  定义 2.1 (公式求值): 给定真值赋值 σ，公式 φ 的真值 ⟦φ⟧σ 递归定义如下:
-  - ⟦p⟧σ = σ(p) 对于命题变量 p
-  - ⟦⊤⟧σ = true
-  - ⟦⊥⟧σ = false
-  - ⟦φ ∧ ψ⟧σ = ⟦φ⟧σ && ⟦ψ⟧σ
-  - ⟦φ ∨ ψ⟧σ = ⟦φ⟧σ || ⟦ψ⟧σ
-  - ⟦φ → ψ⟧σ = !⟦φ⟧σ || ⟦ψ⟧σ
-  - ⟦¬φ⟧σ = !⟦φ⟧σ
+  定义 2.1 (公式求值): 给定真值赋值 σ，公式 φ 的真值 eval σ φ 递归定义如下:
+  - eval σ p = σ(p) 对于命题变量 p
+  - eval σ ⊤ = true
+  - eval σ ⊥ = false
+  - eval σ φ ∧ ψ = eval σ φ && eval σ ψ
+  - eval σ φ ∨ ψ = eval σ φ || eval σ ψ
+  - eval σ φ → ψ = !eval σ φ || eval σ ψ
+  - eval σ ¬φ = !eval σ φ
   -/
   def eval (σ : Assignment) : Formula → Bool
     | var v => σ v
     | top => true
     | bot => false
-    | and φ ψ => eval σ φ && eval σ ψ
-    | or φ ψ => eval σ φ || eval σ ψ
-    | imp φ ψ => !eval σ φ || eval σ ψ
-    | not φ => !eval σ φ
+    | Formula.and φ ψ => eval σ φ && eval σ ψ
+    | Formula.or φ ψ => eval σ φ || eval σ ψ
+    | Formula.imp φ ψ => !eval σ φ || eval σ ψ
+    | Formula.not φ => !eval σ φ
 
-  notation "⟦" φ "⟧" σ => eval σ φ
-
+  
   /- ============================================================
     语义性质
     ============================================================ -/
 
-  /-- 引理 2.1 (求值与变量无关性): 若两个赋值在 φ 的所有变量上一致，则 ⟦φ⟧σ₁ = ⟦φ⟧σ₂
+  /-- 引理 2.1 (求值与变量无关性): 若两个赋值在 φ 的所有变量上一致，则 eval σ₁ φ = eval σ₂ φ
 
   证明: 对公式结构进行归纳。
   -/
   lemma eval_agrees (φ : Formula) {σ₁ σ₂ : Assignment}
       (h : ∀ v ∈ φ.vars, σ₁ v = σ₂ v) :
-      ⟦φ⟧ σ₁ = ⟦φ⟧ σ₂ := by
+      eval σ₁ φ = eval σ₂ φ := by
     induction φ with
     | var v =>
         simp [eval, Formula.vars] at *
-        exact h v (by simp)
+        exact h
     | bot => simp [eval]
     | top => simp [eval]
     | and φ ψ ih₁ ih₂ =>
         simp [eval, Formula.vars] at *
-        rw [ih₁, ih₂]
-        · intro v hv; apply h v; simp [hv]
-        · intro v hv; apply h v; simp [hv]
+        rw [ih₁ (fun v hv => h v hv),
+            ih₂ (fun v hv => h v hv)]
     | or φ ψ ih₁ ih₂ =>
         simp [eval, Formula.vars] at *
-        rw [ih₁, ih₂]
-        · intro v hv; apply h v; simp [hv]
-        · intro v hv; apply h v; simp [hv]
+        rw [ih₁ (fun v hv => h v hv),
+            ih₂ (fun v hv => h v hv)]
     | imp φ ψ ih₁ ih₂ =>
         simp [eval, Formula.vars] at *
-        rw [ih₁, ih₂]
-        · intro v hv; apply h v; simp [hv]
-        · intro v hv; apply h v; simp [hv]
+        rw [ih₁ (fun v hv => h v hv),
+            ih₂ (fun v hv => h v hv)]
     | not φ ih =>
         simp [eval, Formula.vars] at *
-        rw [ih]
-        intro v hv; apply h v; simp [hv]
+        rw [ih (fun v hv => h v hv)]
 
   /-- 推论 2.1: 在公式变量上一致的赋值给出相同的求值结果 -/
   corollary eval_agrees_on_formula (φ : Formula) {σ₁ σ₂ : Assignment}
       (h : Assignment.agreesOnFormula σ₁ σ₂ φ) :
-      ⟦φ⟧ σ₁ = ⟦φ⟧ σ₂ :=
+      eval σ₁ φ = eval σ₂ φ :=
     eval_agrees φ h
 
   /- ============================================================
     语义概念定义
     ============================================================ -/
 
-  /-- 定义 2.2 (重言式/永真式): 公式 φ 是重言式，当且仅当对所有赋值 σ，⟦φ⟧σ = true -/
+  /-- 定义 2.2 (重言式/永真式): 公式 φ 是重言式，当且仅当对所有赋值 σ，eval σ φ = true -/
   def Tautology (φ : Formula) : Prop :=
-    ∀ σ : Assignment, ⟦φ⟧ σ = true
+    ∀ σ : Assignment, eval σ φ = true
 
-  /-- 定义 2.3 (可满足性): 公式 φ 是可满足的，当且仅当存在赋值 σ 使得 ⟦φ⟧σ = true -/
+  /-- 定义 2.3 (可满足性): 公式 φ 是可满足的，当且仅当存在赋值 σ 使得 eval σ φ = true -/
   def Satisfiable (φ : Formula) : Prop :=
-    ∃ σ : Assignment, ⟦φ⟧ σ = true
+    ∃ σ : Assignment, eval σ φ = true
 
-  /-- 定义 2.4 (矛盾式/不可满足): 公式 φ 是矛盾式，当且仅当对所有赋值 σ，⟦φ⟧σ = false -/
+  /-- 定义 2.4 (矛盾式/不可满足): 公式 φ 是矛盾式，当且仅当对所有赋值 σ，eval σ φ = false -/
   def Contradiction (φ : Formula) : Prop :=
-    ∀ σ : Assignment, ⟦φ⟧ σ = false
+    ∀ σ : Assignment, eval σ φ = false
 
   /-- 定义 2.5 (语义蕴涵): Γ ⊨ φ 表示对于所有使 Γ 中所有公式为真的赋值 σ，φ 也为真 -/
   def Entails (Γ : Set Formula) (φ : Formula) : Prop :=
-    ∀ σ : Assignment, (∀ ψ ∈ Γ, ⟦ψ⟧ σ = true) → ⟦φ⟧ σ = true
+    ∀ σ : Assignment, (∀ ψ ∈ Γ, eval σ ψ = true) → eval σ φ = true
 
   notation Γ " ⊨ " φ => Entails Γ φ
 
-  /-- 定义 2.6 (逻辑等价): 两个公式 φ 和 ψ 逻辑等价，当且仅当对所有赋值 σ，⟦φ⟧σ = ⟦ψ⟧σ -/
+  /-- 定义 2.6 (逻辑等价): 两个公式 φ 和 ψ 逻辑等价，当且仅当对所有赋值 σ，eval σ φ = eval σ ψ -/
   def LogicallyEquivalent (φ ψ : Formula) : Prop :=
-    ∀ σ : Assignment, ⟦φ⟧ σ = ⟦ψ⟧ σ
+    ∀ σ : Assignment, eval σ φ = eval σ ψ
 
   infix:50 " ≡ " => LogicallyEquivalent
 
@@ -257,20 +250,23 @@ section Semantics
     · intro hTaut
       intro hSat
       rcases hSat with ⟨σ, hσ⟩
-      have hφ : ⟦φ⟧ σ = true := hTaut σ
+      have hφ : eval σ φ = true := hTaut σ
       simp [eval] at hσ hφ
       rw [hφ] at hσ
       contradiction
     · intro hNotSat σ
-      have h : ⟦¬' φ⟧ σ = false := by
+      have h : eval σ φ = true := by
         by_contra hNeg
         push_neg at hNeg
-        have : Satisfiable (¬' φ) := ⟨σ, by simp [eval, hNeg]⟩
+        have hEval : eval σ (¬' φ) = true := by
+          simp [eval]
+          cases h' : eval σ φ
+          · rw [h'] at hNeg
+            contradiction
+          · rfl
+        have hSat : Satisfiable (¬' φ) := ⟨σ, hEval⟩
         contradiction
-      simp [eval] at h
-      cases h' : ⟦φ⟧ σ
-      · contradiction
-      · rfl
+      exact h
 
   /-- 引理 2.3 (矛盾式与可满足性): φ 是矛盾式当且仅当 φ 不可满足 -/
   lemma contradiction_iff_not_satisfiable (φ : Formula) :
@@ -279,14 +275,19 @@ section Semantics
     · intro hContr
       intro hSat
       rcases hSat with ⟨σ, hσ⟩
-      have hContrσ : ⟦φ⟧ σ = false := hContr σ
+      have hContrσ : eval σ φ = false := hContr σ
       rw [hσ] at hContrσ
       contradiction
     · intro hNotSat σ
-      have h : ⟦φ⟧ σ = false := by
+      have h : eval σ φ = false := by
         by_contra hPos
         push_neg at hPos
-        have : Satisfiable φ := ⟨σ, hPos⟩
+        have h' : eval σ φ = true := by
+          cases h' : eval σ φ
+          · rfl
+          · rw [h'] at hPos
+            contradiction
+        have : Satisfiable φ := ⟨σ, h'⟩
         contradiction
       exact h
 
@@ -302,7 +303,7 @@ section Semantics
   lemma entails_monotone {Γ Δ : Set Formula} {φ : Formula}
       (hSub : Γ ⊆ Δ) (hEnt : Γ ⊨ φ) : Δ ⊨ φ := by
     intro σ hΔ
-    have hΓ : ∀ ψ ∈ Γ, ⟦ψ⟧ σ = true := by
+    have hΓ : ∀ ψ ∈ Γ, eval σ ψ = true := by
       intro ψ hψ
       exact hΔ ψ (hSub hψ)
     exact hEnt σ hΓ
@@ -318,8 +319,7 @@ section NaturalDeduction
   open Formula
 
   /-- 上下文 - 假设的公式集合 -/
-  def Context := List Formula
-  deriving Repr
+  abbrev Context := List Formula deriving Repr
 
   namespace Context
     /-- 空上下文 -/
@@ -624,13 +624,13 @@ section MetaTheory
         intro σ hΓ
         exact hΓ φ h
     | top_intro =>
-        -- ⊤ 引入: ⟦⊤⟧σ = true 对所有 σ
+        -- ⊤ 引入: eval σ ⊤ = true 对所有 σ
         intro σ _
         simp [eval]
     | bot_elim h ih =>
-        -- ⊥ 消除: 若 ⟦⊥⟧σ = true 则矛盾
+        -- ⊥ 消除: 若 eval σ ⊥ = true 则矛盾
         intro σ hΓ
-        have h_bot : ⟦⊥⟧ σ = true := ih σ hΓ
+        have h_bot : eval σ ⊥ = true := ih σ hΓ
         simp [eval] at h_bot
     | and_intro h₁ h₂ ih₁ ih₂ =>
         -- ∧ 引入
@@ -642,13 +642,13 @@ section MetaTheory
     | and_elim_left h ih =>
         -- ∧ 消除左
         intro σ hΓ
-        have h_and : ⟦φ ∧' ψ⟧ σ = true := ih σ hΓ
+        have h_and : eval σ φ ∧' ψ = true := ih σ hΓ
         simp [eval] at h_and
         exact h_and.1
     | and_elim_right h ih =>
         -- ∧ 消除右
         intro σ hΓ
-        have h_and : ⟦φ ∧' ψ⟧ σ = true := ih σ hΓ
+        have h_and : eval σ φ ∧' ψ = true := ih σ hΓ
         simp [eval] at h_and
         exact h_and.2
     | or_intro_left h ih =>
@@ -666,11 +666,11 @@ section MetaTheory
     | @or_elim Γ φ ψ χ h₁ h₂ h₃ ih₁ ih₂ ih₃ =>
         -- ∨ 消除
         intro σ hΓ
-        have h_or : ⟦φ ∨' ψ⟧ σ = true := ih₁ σ hΓ
+        have h_or : eval σ φ ∨' ψ = true := ih₁ σ hΓ
         simp [eval] at h_or
         cases h_or with
         | inl hφ =>
-            have hΓ' : ∀ ψ' ∈ (φ :: Γ).toSet, ⟦ψ'⟧ σ = true := by
+            have hΓ' : ∀ ψ' ∈ (φ :: Γ).toSet, eval σ ψ' = true := by
               intro ψ' hψ'
               simp at hψ'
               cases hψ' with
@@ -678,7 +678,7 @@ section MetaTheory
               | inr h_mem => exact hΓ ψ' h_mem
             exact ih₂ σ hΓ'
         | inr hψ =>
-            have hΓ' : ∀ ψ' ∈ (ψ :: Γ).toSet, ⟦ψ'⟧ σ = true := by
+            have hΓ' : ∀ ψ' ∈ (ψ :: Γ).toSet, eval σ ψ' = true := by
               intro ψ' hψ'
               simp at hψ'
               cases hψ' with
@@ -690,7 +690,7 @@ section MetaTheory
         intro σ hΓ
         simp [eval]
         intro hφ
-        have hΓ' : ∀ ψ' ∈ (φ :: Γ).toSet, ⟦ψ'⟧ σ = true := by
+        have hΓ' : ∀ ψ' ∈ (φ :: Γ).toSet, eval σ ψ' = true := by
           intro ψ' hψ'
           simp at hψ'
           cases hψ' with
@@ -700,10 +700,10 @@ section MetaTheory
     | imp_elim h₁ h₂ ih₁ ih₂ =>
         -- → 消除
         intro σ hΓ
-        have h_imp : ⟦φ →' ψ⟧ σ = true := ih₁ σ hΓ
-        have h_φ : ⟦φ⟧ σ = true := ih₂ σ hΓ
+        have h_imp : eval σ φ →' ψ = true := ih₁ σ hΓ
+        have h_φ : eval σ φ = true := ih₂ σ hΓ
         simp [eval] at h_imp
-        cases h' : ⟦φ⟧ σ
+        cases h' : eval σ φ
         · rw [h'] at h_φ; contradiction
         · simp [h'] at h_imp; exact h_imp
     | not_intro h ih =>
@@ -711,19 +711,19 @@ section MetaTheory
         intro σ hΓ
         simp [eval]
         intro hφ
-        have hΓ' : ∀ ψ' ∈ (φ :: Γ).toSet, ⟦ψ'⟧ σ = true := by
+        have hΓ' : ∀ ψ' ∈ (φ :: Γ).toSet, eval σ ψ' = true := by
           intro ψ' hψ'
           simp at hψ'
           cases hψ' with
           | inl h_eq => rw [h_eq]; exact hφ
           | inr h_mem => exact hΓ ψ' h_mem
-        have h_bot : ⟦⊥⟧ σ = true := ih σ hΓ'
+        have h_bot : eval σ ⊥ = true := ih σ hΓ'
         simp [eval] at h_bot
     | not_elim h₁ h₂ ih₁ ih₂ =>
         -- ¬ 消除
         intro σ hΓ
-        have h_not : ⟦¬' φ⟧ σ = true := ih₁ σ hΓ
-        have h_φ : ⟦φ⟧ σ = true := ih₂ σ hΓ
+        have h_not : eval σ ¬' φ = true := ih₁ σ hΓ
+        have h_φ : eval σ φ = true := ih₂ σ hΓ
         simp [eval] at h_not
         rw [h_φ] at h_not
         contradiction
@@ -787,25 +787,25 @@ section MetaTheory
   def canonicalAssignment (Γ : Set Formula) (h : MaximalConsistent Γ) : Assignment :=
     fun v => if var v ∈ Γ then true else false
 
-  /-- 引理 4.4 (真值引理): 对于极大一致集 Γ，⟦φ⟧σ_Γ = true 当且仅当 φ ∈ Γ -/
+  /-- 引理 4.4 (真值引理): 对于极大一致集 Γ，eval σ_Γ φ = true 当且仅当 φ ∈ Γ -/
   lemma truth_lemma {Γ : Set Formula} (h : MaximalConsistent Γ) (φ : Formula) :
-      ⟦φ⟧ (canonicalAssignment Γ h) = true ↔ φ ∈ Γ := by
-    induction φ with
-    | var v => simp [canonicalAssignment, eval]
-    | bot =>
+      ｢φ｣ (canonicalAssignment Γ h) = true ↔ φ ∈ Γ := by
+    induction φ
+    case var v => simp [canonicalAssignment, eval]
+    case bot =>
         simp [eval]
         have : ⊥ ∉ Γ := by
           intro h_bot
           have : ¬Consistent Γ := by
             simp [Consistent, Entails]
             intro σ hσ
-            have : ⟦⊥⟧ σ = true := hσ ⊥ h_bot
+            have : eval σ ⊥ = true := hσ ⊥ h_bot
             simp [eval] at this
           have h_contra := h.1
           contradiction
         simp [this]
-    | top => simp [eval]; constructor <;> { intro; simp [Entails, eval] }
-    | and φ ψ ih₁ ih₂ =>
+    case top => simp [eval]; constructor <;> { intro; simp [Entails, eval] }
+    case and φ ψ ih₁ ih₂ =>
         simp [eval]
         constructor
         · intro h
@@ -819,8 +819,8 @@ section MetaTheory
               have h_bot : ¬Consistent Γ := by
                 simp [Consistent, Entails]
                 intro σ hσ
-                have hψ' : ⟦ψ⟧ σ = true := hσ ψ (ih₂.1 hψ)
-                have h_notψ : ⟦¬' ψ⟧ σ = true := hσ (¬' ψ) h_and
+                have hψ' : eval σ ψ = true := hσ ψ (ih₂.1 hψ)
+                have h_notψ : eval σ ¬' ψ = true := hσ (¬' ψ) h_and
                 simp [eval] at h_notψ
                 rw [hψ'] at h_notψ
                 contradiction
@@ -831,8 +831,8 @@ section MetaTheory
             have h_bot : ¬Consistent Γ := by
               simp [Consistent, Entails]
               intro σ hσ
-              have hφ' : ⟦φ⟧ σ = true := hσ φ (ih₁.1 (Or.inr hφ))
-              have h_notφ : ⟦¬' φ⟧ σ = true := hσ (¬' φ) hφ
+              have hφ' : eval σ φ = true := hσ φ (ih₁.1 (Or.inr hφ))
+              have h_notφ : eval σ ¬' φ = true := hσ (¬' φ) hφ
               simp [eval] at h_notφ
               rw [hφ'] at h_notφ
               contradiction
@@ -842,7 +842,7 @@ section MetaTheory
           constructor
           · exact ih₁.2 hφ
           · exact ih₂.2 hψ
-    | or φ ψ ih₁ ih₂ =>
+    case or φ ψ ih₁ ih₂ =>
         simp [eval]
         constructor
         · intro h
@@ -857,9 +857,9 @@ section MetaTheory
               have h_bot : ¬Consistent Γ := by
                 simp [Consistent, Entails]
                 intro σ hσ
-                have hφ' : ⟦φ⟧ σ = true := hσ φ (ih₁.1 (Or.inr hφ))
-                have hψ' : ⟦ψ⟧ σ = true := hσ ψ (ih₂.1 (Or.inr hψ))
-                have h_notφ : ⟦¬' φ⟧ σ = true := hσ (¬' φ) hφ
+                have hφ' : eval σ φ = true := hσ φ (ih₁.1 (Or.inr hφ))
+                have hψ' : eval σ ψ = true := hσ ψ (ih₂.1 (Or.inr hψ))
+                have h_notφ : eval σ ¬' φ = true := hσ (¬' φ) hφ
                 simp [eval] at h_notφ
                 rw [hφ'] at h_notφ
                 contradiction
@@ -869,7 +869,7 @@ section MetaTheory
           cases h with
           | inl hφ => left; exact ih₁.2 hφ
           | inr hψ => right; exact ih₂.2 hψ
-    | imp φ ψ ih₁ ih₂ =>
+    case imp φ ψ ih₁ ih₂ =>
         simp [eval]
         constructor
         · intro h
@@ -880,8 +880,8 @@ section MetaTheory
             have h_bot : ¬Consistent Γ := by
               simp [Consistent, Entails]
               intro σ hσ
-              have hφ'' : ⟦φ⟧ σ = true := hσ φ (ih₁.1 (Or.inr hφ))
-              have h_notφ : ⟦¬' φ⟧ σ = true := hσ (¬' φ) hφ
+              have hφ'' : eval σ φ = true := hσ φ (ih₁.1 (Or.inr hφ))
+              have h_notφ : eval σ ¬' φ = true := hσ (¬' φ) hφ
               simp [eval] at h_notφ
               rw [hφ''] at h_notφ
               contradiction
@@ -898,8 +898,8 @@ section MetaTheory
               have h_bot : ¬Consistent Γ := by
                 simp [Consistent, Entails]
                 intro σ hσ
-                have hψ' : ⟦ψ⟧ σ = true := hσ ψ (ih₂.1 (Or.inr hψ))
-                have h_notψ : ⟦¬' ψ⟧ σ = true := hσ (¬' ψ) hψ
+                have hψ' : eval σ ψ = true := hσ ψ (ih₂.1 (Or.inr hψ))
+                have h_notψ : eval σ ¬' ψ = true := hσ (¬' ψ) hψ
                 simp [eval] at h_notψ
                 rw [hψ'] at h_notψ
                 contradiction
@@ -918,14 +918,14 @@ section MetaTheory
               have h_bot : ¬Consistent Γ := by
                 simp [Consistent, Entails]
                 intro σ hσ
-                have hφ'' : ⟦φ⟧ σ = true := hσ φ (ih₁.1 (Or.inr hφ))
-                have h_notφ : ⟦¬' φ⟧ σ = true := hσ (¬' φ) hφ
+                have hφ'' : eval σ φ = true := hσ φ (ih₁.1 (Or.inr hφ))
+                have h_notφ : eval σ ¬' φ = true := hσ (¬' φ) hφ
                 simp [eval] at h_notφ
                 rw [hφ''] at h_notφ
                 contradiction
               have h_contra := h.1
               contradiction
-    | not φ ih =>
+    case not φ ih =>
         simp [eval]
         constructor
         · intro h hφ
@@ -933,8 +933,8 @@ section MetaTheory
           have h_bot : ¬Consistent Γ := by
             simp [Consistent, Entails]
             intro σ hσ
-            have hφ' : ⟦φ⟧ σ = true := hσ φ hφ
-            have h_notφ' : ⟦¬' φ⟧ σ = true := hσ (¬' φ) h_notφ
+            have hφ' : eval σ φ = true := hσ φ hφ
+            have h_notφ' : eval σ ¬' φ = true := hσ (¬' φ) h_notφ
             simp [eval] at h_notφ'
             rw [hφ'] at h_notφ'
             contradiction
@@ -948,8 +948,8 @@ section MetaTheory
             have h_bot : ¬Consistent Γ := by
               simp [Consistent, Entails]
               intro σ hσ
-              have hφ' : ⟦φ⟧ σ = true := hσ φ (ih.1 hφ)
-              have h_notφ : ⟦¬' φ⟧ σ = true := hσ (¬' φ) (by
+              have hφ' : eval σ φ = true := hσ φ (ih.1 hφ)
+              have h_notφ : eval σ ¬' φ = true := hσ (¬' φ) (by
                 intro hφ''
                 exact h (ih.1 hφ''))
               simp [eval] at h_notφ
@@ -985,9 +985,9 @@ section MetaTheory
     /- 详细策略:
        · 关键步骤 3: 若 ¬Consistent (Γ ∪ {¬' φ})，则 ∃ Γ'' ⊆ Γ ∪ {¬' φ} 有限使 Γ'' ⊢ ⊥。
          若 ¬' φ ∈ Γ''，则 Γ'' \ {¬' φ} ⊢ φ（由反证法），故 Γ ⊢ φ，矛盾。
-       · 关键步骤 5: 对任意 ψ ∈ Γ，由真值引理和 Γ ⊆ Δ，⟦ψ⟧ σ_Δ = true。
-       · 关键步骤 6: 由 ¬φ ∈ Δ，⟦¬' φ⟧ σ_Δ = true，故 ⟦φ⟧ σ_Δ = false，
-         但 Γ ⊨ φ 要求 ⟦φ⟧ σ_Δ = true，矛盾。
+       · 关键步骤 5: 对任意 ψ ∈ Γ，由真值引理和 Γ ⊆ Δ，eval σ_Δ ψ = true。
+       · 关键步骤 6: 由 ¬φ ∈ Δ，eval σ_Δ ¬' φ = true，故 eval σ_Δ φ = false，
+         但 Γ ⊨ φ 要求 eval σ_Δ φ = true，矛盾。
     -/
     -- FORMAL-GAP: 完备性定理（命题逻辑）。策略: by_contra 假设 Γ ⊬ φ; 证 Consistent (Γ ∪ {¬φ}); 用 lindenbaum 得极大一致集 Δ; 由 truth_lemma 和 canonicalAssignment 构造反例赋值; 与 Γ ⊨ φ 矛盾。难度: 高 | 依赖: lindenbaum, truth_lemma, by_contradiction
     sorry
@@ -1096,8 +1096,7 @@ deriving DecidableEq, Repr, Inhabited
   end Literal
 
   /-- 子句: 文字的析取 -/
-  def Clause := List Literal
-deriving Repr, Inhabited
+  abbrev Clause := List Literal deriving Repr, Inhabited
 
   namespace Clause
     /-- 将子句转换为公式 -/
@@ -1114,8 +1113,7 @@ deriving Repr, Inhabited
   end Clause
 
   /-- 定义 5.1 (合取范式 CNF): 子句的合取 -/
-  def CNF := List Clause
-deriving Repr, Inhabited
+  abbrev CNF := List Clause deriving Repr, Inhabited
 
   namespace CNF
     /-- 将 CNF 转换为公式 -/
@@ -1133,8 +1131,7 @@ deriving Repr, Inhabited
 
   /-- 定义 5.2 (析取范式 DNF): 合取项的析取 -/
   /-- 合取项: 文字的合取 -/
-  def Conjunction := List Literal
-deriving Repr, Inhabited
+  abbrev Conjunction := List Literal deriving Repr, Inhabited
 
   namespace Conjunction
     /-- 将合取项转换为公式 -/
@@ -1142,8 +1139,7 @@ deriving Repr, Inhabited
       c.foldr (fun l acc => l.toFormula ∧' acc) ⊤
   end Conjunction
 
-  def DNF := List Conjunction
-deriving Repr, Inhabited
+  abbrev DNF := List Conjunction deriving Repr, Inhabited
 
   namespace DNF
     /-- 将 DNF 转换为公式 -/
@@ -1202,6 +1198,17 @@ deriving Repr, Inhabited
     simp [eval]
     rw [Bool.and_or_distrib_left]
 
+  /-- 辅助引理: 任何公式的 sizeOf 都是正数 -/
+  lemma sizeOf_formula_pos (φ : Formula) : 0 < sizeOf φ := by
+    induction φ with
+    | var v => simp [sizeOf]; apply Nat.zero_lt_succ
+    | bot => simp [sizeOf]; apply Nat.zero_lt_succ
+    | top => simp [sizeOf]; apply Nat.zero_lt_succ
+    | and φ ψ ih₁ ih₂ => simp [sizeOf]; linarith
+    | or φ ψ ih₁ ih₂ => simp [sizeOf]; linarith
+    | imp φ ψ ih₁ ih₂ => simp [sizeOf]; linarith
+    | not φ ih => simp [sizeOf]; linarith
+
   /-- 函数 5.1 (否定范式 NNF 转换)
 
   将公式转换为否定范式: 否定只出现在命题变量前
@@ -1210,55 +1217,62 @@ deriving Repr, Inhabited
     | var v => var v
     | bot => bot
     | top => top
-    | and φ ψ => and (toNNF φ) (toNNF ψ)
-    | or φ ψ => or (toNNF φ) (toNNF ψ)
-    | imp φ ψ => or (toNNF (¬' φ)) (toNNF ψ)
-    | not (var v) => not (var v)
-    | not bot => top
-    | not top => bot
-    | not (and φ ψ) => or (toNNF (¬' φ)) (toNNF (¬' ψ))
-    | not (or φ ψ) => and (toNNF (¬' φ)) (toNNF (¬' ψ))
-    | not (imp φ ψ) => and (toNNF φ) (toNNF (¬' ψ))
-    | not (not φ) => toNNF φ
+    | Formula.and φ ψ => Formula.and (toNNF φ) (toNNF ψ)
+    | Formula.or φ ψ => Formula.or (toNNF φ) (toNNF ψ)
+    | Formula.imp φ ψ => Formula.or (toNNF (¬' φ)) (toNNF ψ)
+    | Formula.not (var v) => Formula.not (var v)
+    | Formula.not bot => top
+    | Formula.not top => bot
+    | Formula.not (Formula.and φ ψ) => Formula.or (toNNF (¬' φ)) (toNNF (¬' ψ))
+    | Formula.not (Formula.or φ ψ) => Formula.and (toNNF (¬' φ)) (toNNF (¬' ψ))
+    | Formula.not (Formula.imp φ ψ) => Formula.and (toNNF φ) (toNNF (¬' ψ))
+    | Formula.not (Formula.not φ) => toNNF φ
+  termination_by toNNF φ => sizeOf φ
+  decreasing_by
+    simp_wf
+    all_goals
+      try { simp [sizeOf] }
+      try { apply sizeOf_formula_pos }
+      try { linarith }
 
   /-- 定理 5.1 (NNF 等价性): toNNF(φ) ≡ φ -/
   theorem toNNF_equiv (φ : Formula) : toNNF φ ≡ φ := by
-    induction φ with
-    | var v => intro σ; rfl
-    | bot => intro σ; rfl
-    | top => intro σ; rfl
-    | and φ ψ ih₁ ih₂ =>
+    induction φ
+    case var v => intro σ; rfl
+    case bot => intro σ; rfl
+    case top => intro σ; rfl
+    case and φ ψ ih₁ ih₂ =>
         intro σ
         simp [toNNF, eval]
         rw [ih₁ σ, ih₂ σ]
-    | or φ ψ ih₁ ih₂ =>
+    case or φ ψ ih₁ ih₂ =>
         intro σ
         simp [toNNF, eval]
         rw [ih₁ σ, ih₂ σ]
-    | imp φ ψ ih₁ ih₂ =>
+    case imp φ ψ ih₁ ih₂ =>
         intro σ
         simp [toNNF, eval]
         rw [ih₁ σ, ih₂ σ]
         simp [eval]
-    | not φ ih =>
-        induction φ with
-        | var v => intro σ; rfl
-        | bot => intro σ; simp [toNNF, eval]
-        | top => intro σ; simp [toNNF, eval]
-        | and φ ψ ih₁ ih₂ =>
+    case not φ ih =>
+        induction φ
+        case var v => intro σ; rfl
+        case bot => intro σ; simp [toNNF, eval]
+        case top => intro σ; simp [toNNF, eval]
+        case and φ ψ ih₁ ih₂ =>
             intro σ
             simp [toNNF, eval]
             rw [ih₁ σ, ih₂ σ]
             simp [eval]
-        | or φ ψ ih₁ ih₂ =>
+        case or φ ψ ih₁ ih₂ =>
             intro σ
             simp [toNNF, eval]
             rw [ih₁ σ, ih₂ σ]
             simp [eval]
-        | imp φ ψ ih₁ ih₂ =>
+        case imp φ ψ ih₁ ih₂ =>
             intro σ
             simp [toNNF, eval]
-        | not φ ih' =>
+        case not φ ih' =>
             intro σ
             simp [toNNF]
             rw [ih' σ]
@@ -1271,15 +1285,15 @@ deriving Repr, Inhabited
     | var v => [[Literal.pos v]]
     | bot => [[]]  -- 空子句
     | top => []     -- 空 CNF = ⊤
-    | and φ ψ => toCNF φ ++ toCNF ψ
-    | or φ ψ =>
+    | Formula.and φ ψ => toCNF φ ++ toCNF ψ
+    | Formula.or φ ψ =>
         -- (A₁∧...∧Aₘ) ∨ (B₁∧...∧Bₙ) = ∧ᵢⱼ (Aᵢ ∨ Bⱼ)
         let cnfφ := toCNF φ
         let cnfψ := toCNF ψ
         cnfφ.foldr (fun c acc =>
           cnfψ.foldr (fun d acc' => (c ++ d) :: acc') acc
         ) []
-    | not (var v) => [[Literal.neg v]]
+    | Formula.not (var v) => [[Literal.neg v]]
     | _ => [[Literal.pos 0]]  -- 简化处理其他情况
 
   /-- 辅助函数: 将公式转换为子句列表表示 -/
@@ -1311,14 +1325,14 @@ deriving Repr, Inhabited
     | var v => [[Literal.pos v]]
     | bot => []     -- 空 DNF = ⊥
     | top => [[]]   -- 空合取 = ⊤
-    | or φ ψ => toDNF φ ++ toDNF ψ
-    | and φ ψ =>
+    | Formula.or φ ψ => toDNF φ ++ toDNF ψ
+    | Formula.and φ ψ =>
         let dnfφ := toDNF φ
         let dnfψ := toDNF ψ
         dnfφ.foldr (fun c acc =>
           dnfψ.foldr (fun d acc' => (c ++ d) :: acc') acc
         ) []
-    | not (var v) => [[Literal.neg v]]
+    | Formula.not (var v) => [[Literal.neg v]]
     | _ => [[Literal.pos 0]]
 
   def formulaToDNF (φ : Formula) : DNF :=
@@ -1424,14 +1438,14 @@ section SATSolving
 
   /-- 辅助引理: 文字满足语义等价 -/
   lemma satisfiesLiteral_equiv (σ : Assignment) (l : Literal) :
-      satisfiesLiteral σ l = true ↔ ⟦l.toFormula⟧ σ = true := by
+      satisfiesLiteral σ l = true ↔ eval σ l.toFormula = true := by
     cases l with
     | pos v => simp [satisfiesLiteral, Literal.toFormula, eval]
     | neg v => simp [satisfiesLiteral, Literal.toFormula, eval]
 
   /-- 辅助引理: 子句满足语义等价 -/
   lemma satisfiesClause_equiv (σ : Assignment) (c : Clause) :
-      satisfiesClause σ c = true ↔ ⟦c.toFormula⟧ σ = true := by
+      satisfiesClause σ c = true ↔ eval σ c.toFormula = true := by
     induction c with
     | nil => simp [satisfiesClause, Clause.toFormula, eval]
     | cons l ls ih =>
@@ -1440,23 +1454,23 @@ section SATSolving
         · intro h
           cases h1 : satisfiesLiteral σ l with
           | true =>
-              have h2 : ⟦l.toFormula⟧ σ = true := (satisfiesLiteral_equiv σ l).mp h1
+              have h2 : eval σ l.toFormula = true := (satisfiesLiteral_equiv σ l).mp h1
               simp [h1, h2] at h ⊢
               try { trivial }
           | false =>
               simp [h1] at h
-              have h2 : ⟦ls.toFormula⟧ σ = true := ih.mp h
+              have h2 : eval σ ls.toFormula = true := ih.mp h
               simp [h2]
-              have h3 : ⟦l.toFormula⟧ σ = false := by
+              have h3 : eval σ l.toFormula = false := by
                 have h4 : satisfiesLiteral σ l = false := h1
-                have h5 : ⟦l.toFormula⟧ σ ≠ true := by
+                have h5 : eval σ l.toFormula ≠ true := by
                   intro h6
                   have : satisfiesLiteral σ l = true := (satisfiesLiteral_equiv σ l).mpr h6
                   contradiction
-                cases h7 : ⟦l.toFormula⟧ σ <;> triv <;> contradiction
+                cases h7 : eval σ l.toFormula <;> triv <;> contradiction
               simp [h3]
         · intro h
-          cases h1 : ⟦l.toFormula⟧ σ with
+          cases h1 : eval σ l.toFormula with
           | true =>
               have h2 : satisfiesLiteral σ l = true := (satisfiesLiteral_equiv σ l).mpr h1
               simp [h1, h2]
@@ -1466,17 +1480,17 @@ section SATSolving
               have h2 : satisfiesClause σ ls = true := ih.mpr h
               simp [h2]
               have h3 : satisfiesLiteral σ l = false := by
-                have h4 : ⟦l.toFormula⟧ σ = false := h1
+                have h4 : eval σ l.toFormula = false := h1
                 have h5 : satisfiesLiteral σ l ≠ true := by
                   intro h6
-                  have : ⟦l.toFormula⟧ σ = true := (satisfiesLiteral_equiv σ l).mp h6
+                  have : eval σ l.toFormula = true := (satisfiesLiteral_equiv σ l).mp h6
                   contradiction
                 cases h7 : satisfiesLiteral σ l <;> triv <;> contradiction
               simp [h3]
 
   /-- 辅助引理: CNF成员子句的求值保持性 -/
   lemma eval_cnf_member (σ : Assignment) (cnf : CNF) (c : Clause) (hc : c ∈ cnf) :
-      ⟦cnf.toFormula⟧ σ = true → ⟦c.toFormula⟧ σ = true := by
+      eval σ cnf.toFormula = true → eval σ c.toFormula = true := by
     induction cnf with
     | nil => simp at hc
     | cons c' cs ih =>
@@ -1484,17 +1498,17 @@ section SATSolving
         intro h
         cases hc with
         | head =>
-            cases h' : ⟦c'.toFormula⟧ σ <;> simp [h'] at h ⊢
+            cases h' : eval σ c'.toFormula <;> simp [h'] at h ⊢
             · contradiction
             · exact h'
         | tail hmem =>
-            cases h' : ⟦c'.toFormula⟧ σ <;> simp [h'] at h ⊢
+            cases h' : eval σ c'.toFormula <;> simp [h'] at h ⊢
             · contradiction
             · exact ih hmem h
 
   /-- 辅助引理: 从成员子句求值得出CNF求值 -/
   lemma eval_cnf_from_members (σ : Assignment) (cnf : CNF) :
-      (∀ c ∈ cnf, ⟦c.toFormula⟧ σ = true) → ⟦cnf.toFormula⟧ σ = true := by
+      (∀ c ∈ cnf, eval σ c.toFormula = true) → eval σ cnf.toFormula = true := by
     induction cnf with
     | nil => simp [CNF.toFormula, eval]
     | cons c cs ih =>
@@ -1509,7 +1523,7 @@ section SATSolving
   证明策略: 对 CNF 的列表结构归纳，利用子句满足等价引理。
   -/
   theorem satisfiesCNF_equiv (σ : Assignment) (cnf : CNF) :
-      satisfiesCNF σ cnf = true ↔ ⟦cnf.toFormula⟧ σ = true := by
+      satisfiesCNF σ cnf = true ↔ eval σ cnf.toFormula = true := by
     induction cnf with
     | nil => simp [satisfiesCNF, CNF.toFormula, eval]
     | cons c cs ih =>
@@ -1518,23 +1532,23 @@ section SATSolving
         · intro h
           cases h1 : satisfiesClause σ c with
           | true =>
-              have h2 : ⟦c.toFormula⟧ σ = true := (satisfiesClause_equiv σ c).mp h1
+              have h2 : eval σ c.toFormula = true := (satisfiesClause_equiv σ c).mp h1
               simp [h1, h2] at h ⊢
               try { trivial }
           | false =>
               simp [h1] at h
-              have h2 : ⟦cs.toFormula⟧ σ = true := ih.mp h
+              have h2 : eval σ cs.toFormula = true := ih.mp h
               simp [h2]
-              have h3 : ⟦c.toFormula⟧ σ = false := by
+              have h3 : eval σ c.toFormula = false := by
                 have h4 : satisfiesClause σ c = false := h1
-                have h5 : ⟦c.toFormula⟧ σ ≠ true := by
+                have h5 : eval σ c.toFormula ≠ true := by
                   intro h6
                   have : satisfiesClause σ c = true := (satisfiesClause_equiv σ c).mpr h6
                   contradiction
-                cases h7 : ⟦c.toFormula⟧ σ <;> triv <;> contradiction
+                cases h7 : eval σ c.toFormula <;> triv <;> contradiction
               simp [h3]
         · intro h
-          cases h1 : ⟦c.toFormula⟧ σ with
+          cases h1 : eval σ c.toFormula with
           | true =>
               have h2 : satisfiesClause σ c = true := (satisfiesClause_equiv σ c).mpr h1
               simp [h1, h2]
@@ -1544,10 +1558,10 @@ section SATSolving
               have h2 : satisfiesCNF σ cs = true := ih.mpr h
               simp [h2]
               have h3 : satisfiesClause σ c = false := by
-                have h4 : ⟦c.toFormula⟧ σ = false := h1
+                have h4 : eval σ c.toFormula = false := h1
                 have h5 : satisfiesClause σ c ≠ true := by
                   intro h6
-                  have : ⟦c.toFormula⟧ σ = true := (satisfiesClause_equiv σ c).mp h6
+                  have : eval σ c.toFormula = true := (satisfiesClause_equiv σ c).mp h6
                   contradiction
                 cases h7 : satisfiesClause σ c <;> triv <;> contradiction
               simp [h3]
@@ -1562,12 +1576,12 @@ section SATSolving
       rcases h with ⟨σ, hσ⟩
       use σ
       intro c hc
-      have h1 : ⟦c.toFormula⟧ σ = true := eval_cnf_member σ cnf c hc hσ
+      have h1 : eval σ c.toFormula = true := eval_cnf_member σ cnf c hc hσ
       exact (satisfiesClause_equiv σ c).mpr h1
     · intro h
       rcases h with ⟨σ, hσ⟩
       use σ
-      have h1 : ∀ c ∈ cnf, ⟦c.toFormula⟧ σ = true := by
+      have h1 : ∀ c ∈ cnf, eval σ c.toFormula = true := by
         intro c hc
         have h2 : satisfiesClause σ c = true := hσ c hc
         exact (satisfiesClause_equiv σ c).mp h2

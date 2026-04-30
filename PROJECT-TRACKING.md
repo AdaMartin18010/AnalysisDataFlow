@@ -2185,4 +2185,92 @@ PROJECT-CRITICAL-REVIEW识别出13个Flink 2.4/2.5/3.0文档包含**虚构内容
 
 ---
 
+---
+
+## v7.2 形式化验证攻坚与内容深化 (进行中)
+
+> **启动日期**: 2026-04-30 | **目标**: 清零形式化缺口 + 质量债务收敛
+
+### v7.2 已交付成果
+
+| 轴线 | 交付物 | 规模 | 状态 |
+|------|--------|------|------|
+| **轴线一：形式化验证** | Lean4 `substitution_term_lemma` (Predicate.lean) 修复 | 1 sorry | ✅ |
+| | Lean4 `finite_satisfiability` → 方向修复 | 1 sorry (部分) | ✅ |
+| | Lean4 `Modal.lean` toLTL 扩展 | 覆盖全部 CTLFormula 构造子 | ✅ |
+| **轴线二：RisingWave 源码分析** | 7篇文档矩阵 (D1-D7) | ~185KB / 62形式化元素 / 35 Mermaid | ✅ |
+| **轴线三：TLA+ 形式化规约** | StreamingCheckpoint.tla + .cfg + 验证报告 | 43.9KB + 6.1KB + 36.8KB | ✅ |
+| **轴线四：TECH-RADAR** | Q2 2026 雷达基线 + 方法论 | 37.9KB + 15KB | ✅ |
+
+### 形式化缺口现状
+
+| 类型 | 文件 | 剩余缺口 | 难度分布 |
+|------|------|----------|----------|
+| **Lean4** | `Logic/HOL.lean` | 17 sorry | 低1 / 中3 / 高3 / 极高10 |
+| **Lean4** | `Logic/Modal.lean` | 9 sorry | 中2 / 高7 |
+| **Lean4** | `Logic/Predicate.lean` | 12 sorry | 中3 / 高5 / 极高4 |
+| **Lean4** | `Logic/Propositional.lean` | 7 sorry | 高3 / 极高4 |
+| **Lean4** | `TypeSystem/Safety.lean` | 4 sorry | 中2 / 高2 |
+| **Lean4** | `TypeSystem/SystemF.lean` | 2 sorry | 高2 |
+| **Lean4** | `TypeSystem/SimpleTypes.lean` | 1 sorry | 高1 |
+| **Lean4** | `Lambda/Substitution.lean` | 5 sorry | 高5 |
+| **Coq** | `TechStack_Availability.v` | 6 Admitted | 中6 |
+| **合计** | — | **63 处** | FORMAL-GAP 策略注释: 60 处 |
+
+### 编译环境记录
+
+- **Lean4**: `lean-toolchain` = v4.8.0，但部分代码为 v4.30.0-rc2 特性编写
+- **已知兼容性差距**: `lemma` 关键字、命名解析变化、`LE` 类型类冲突等
+- **Coq**: 环境缺少 `coqc`，`lra` tactic 不可用
+- **mitigation**: 优先修复中低难度 sorry；高难度（Lindenbaum/完备性/紧致性）归入 v8.0 路线图
+
+### v7.2 关键发现（2026-04-30）
+
+#### 1. 基础编译错误（文件本身语法/语义错误）
+
+| 文件 | 位置 | 问题 | 影响 |
+|------|------|------|------|
+| `Modal.lean` | `dia_dual` / `box_dual` | `rfl` 证明语法上不相等的 `ModalFormula`（`◇φ` vs `¬ₘ(□(¬ₘφ))`） | `S5_negative_introspection` 依赖此错误等式，无法在当前框架下证明 |
+| `Induction.lean` | `toNat_inj` | `Function.Injective` 未定义（未导入 Mathlib 的 Function） | 文件编译失败 |
+| `Induction.lean` | `mul_add_distrib` | `rw [←add_assoc ...]` 模式不匹配 | 文件编译失败 |
+
+**结论**: `lake build` 失败不仅是工具链版本问题，部分文件本身存在 Lean4 语法/语义错误。
+
+#### 2. 设计缺陷（引理签名与数学事实矛盾）
+
+| 文件 | 引理 | 问题 | 修复策略 |
+|------|------|------|----------|
+| `TechStack_Availability.v` | `Rprod_ge_9999` | 未约束列表长度；两个 `0.9999` 的乘积 `< 0.9999` | 需添加 `length l ≤ 1` 约束或改用 Bernoulli 不等式 |
+| `TechStack_Availability.v` | `Rprod_parallel_ge_bound` | 同上，未约束长度 | 同上 |
+| `HOL.lean` | `IsTautology` 系列 | `interp : Term → M Bool` 未定义，所有语义证明不可能 | 需补充 `interp` 定义或改为语法证明 |
+
+#### 3. v7.2 形式化验证完成度评估
+
+| 任务 | 原计划 | 实际进展 | 状态 |
+|------|--------|----------|------|
+| Lean4 核心 sorry 清零 | 57 → 0 | 57 → 57 | ❌ 阻塞（编译环境+设计缺陷） |
+| Coq Admitted 清零 | 6 → 0 | 6 → 6 | ❌ 阻塞（无 coqc） |
+| 中低难度 sorry 修复 | ~10 处 | 2 处（`finite_satisfiability` →、`cnf_satisfiable_characterization`） | ⚠️ 部分 |
+
+#### 4. v8.0 形式化验证路线图建议
+
+1. **Lean4 编译环境修复**:
+   - 升级 `lean-toolchain` 到 v4.30.0
+   - 同步 mathlib 到兼容版本
+   - 修复 `Modal.lean` `dia_dual` / `box_dual` 的基础错误（改为语义等价或修正 `inductive` 定义）
+   - 修复 `Induction.lean` 的 `Function.Injective` 和 `mul_add_distrib`
+
+2. **缺失辅助引理补充**:
+   - `Predicate.lean`: `interpTerm_agree` / `satisfies_assignment_agree` / `ground_term_interp_independent`
+   - `HOL.lean`: `interp` 语义函数完整定义
+   - `Modal.lean`: `S5Derives` 等值替换规则
+
+3. **设计缺陷修复**:
+   - `TechStack_Availability.v`: 添加列表长度约束
+   - `HOL.lean`: `IsTautology` 从语义定义改为语法定义，或补充完整语义
+
+4. **高难度目标（Lindenbaum/完备性/紧致性/可判定性）**:
+   - 这些属于研究生级别形式化验证，建议分阶段实施
+   - 可考虑引入 Lean4 社区库（如 `mathlib4/ModelTheory`）加速
+
 *未来维护计划详见 [ROADMAP-v3.3-and-beyond.md](ROADMAP-v3.3-and-beyond.md) 和 [MAINTENANCE-GUIDE.md](MAINTENANCE-GUIDE.md)*

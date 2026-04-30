@@ -1316,6 +1316,29 @@ section HOLProofSystem
 
   notation:50 Γ " ⊢ᴴ " φ => HOLProves Γ φ
 
+  /-- 弱化引理 -/
+  lemma weakening {Γ Δ : List Term} {φ : Term} (h : HOLProves Γ φ) (hSub : Γ ⊆ Δ) : HOLProves Δ φ := by
+    induction h with
+    | ax h => exact ax (hSub h)
+    | true_intro => exact true_intro
+    | false_elim h ih => exact false_elim ih
+    | imp_intro h ih => exact imp_intro (ih (List.subset_cons_of_subset _ hSub))
+    | imp_elim h₁ h₂ ih₁ ih₂ => exact imp_elim ih₁ ih₂
+    | and_intro h₁ h₂ ih₁ ih₂ => exact and_intro ih₁ ih₂
+    | and_elim_left h ih => exact and_elim_left ih
+    | and_elim_right h ih => exact and_elim_right ih
+    | or_intro_left h ih => exact or_intro_left ih
+    | or_intro_right h ih => exact or_intro_right ih
+    | or_elim h h₁ h₂ ih ih₁ ih₂ => exact or_elim ih (ih₁ (List.subset_cons_of_subset _ hSub)) (ih₂ (List.subset_cons_of_subset _ hSub))
+    | eq_refl => exact eq_refl
+    | eq_symm h ih => exact eq_symm ih
+    | eq_trans h₁ h₂ ih₁ ih₂ => exact eq_trans ih₁ ih₂
+    | beta_conv => exact beta_conv
+    | forall_intro h ih => exact forall_intro ih
+    | forall_elim h ih => exact forall_elim ih
+    | lem => exact lem
+    | dne h ih => exact dne ih
+
   /--
   **定理 6.1 (演绎定理)**
 
@@ -1327,9 +1350,8 @@ section HOLProofSystem
     · exact HOLProves.imp_intro
     · intro h
       have hφ : φ :: Γ ⊢ᴴ φ := HOLProves.ax (by simp)
-      -- FORMAL-GAP: 需证弱化引理：若Γ⊢ᴴφ则φ::Γ⊢ᴴφ。策略: 对HOLProves归纳；ax情形用List.mem；其他情形用IH和弱化规则
-      -- 难度: 中 | 依赖: HOLProves.weakening (需先证)
-      exact HOLProves.imp_elim (show φ :: Γ ⊢ᴴ (φ →ᶜ ψ) by sorry) hφ
+      have h_weak : φ :: Γ ⊢ᴴ (φ →ᶜ ψ) := HOLProves.weakening h (by simp)
+      exact HOLProves.imp_elim h_weak hφ
 
   /--
   **定理 6.2 (可靠性)**
