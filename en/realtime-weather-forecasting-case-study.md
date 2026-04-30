@@ -1,7 +1,7 @@
-# Operators and Real-Time Weather Forecasting (算子与实时气象预警)
+# Operators and Real-Time Weather Forecasting
 
 > **Stage**: Knowledge/10-case-studies | **Prerequisites**: [01.06-single-input-operators.md](../Knowledge/01-concept-atlas/operator-deep-dive/01.06-single-input-operators.md), [realtime-environmental-monitoring-case-study.md](../Knowledge/10-case-studies/realtime-environmental-monitoring-case-study.md) | **Formalization Level**: L3
-> **Document Positioning**: Operator fingerprints and Pipeline design of stream processing operators in real-time meteorological data processing, severe weather early warning, and climate trend analysis
+> **Document Positioning**: Operator fingerprints and pipeline design for stream-processing operators in real-time meteorological data processing, severe weather warning, and climate trend analysis
 > **Version**: 2026.04
 
 ---
@@ -23,11 +23,11 @@
 
 ### Def-WTH-01-01: Meteorological Observation Network (气象观测网)
 
-A Meteorological Observation Network is a monitoring system composed of automated weather stations, radars, and satellites distributed globally:
+A meteorological observation network is a monitoring system composed of automated weather stations, radars, and satellites distributed globally:
 
 $$\text{ObsNet} = \{s_i : (\text{type}_i, \text{lat}_i, \text{lon}_i, \text{frequency}_i)\}_{i=1}^{n}$$
 
-### Def-WTH-01-02: Numerical Weather Prediction (NWP) (数值天气预报)
+### Def-WTH-01-02: Numerical Weather Prediction (NWP, 数值天气预报)
 
 NWP is an atmospheric state simulation based on physical equations:
 
@@ -35,15 +35,15 @@ $$\frac{\partial \mathbf{u}}{\partial t} = -(\mathbf{u} \cdot \nabla)\mathbf{u} 
 
 ### Def-WTH-01-03: Severe Convection Warning (强对流预警)
 
-A Severe Convection Warning is an advance forecast of thunderstorms, hail, tornadoes, and other weather events:
+Severe convection warning is the advance forecast of weather events such as thunderstorms, hail, and tornadoes:
 
 $$\text{Warning} = P(\text{Event}) > \theta_{warning} \land \text{LeadTime} > T_{min}$$
 
-### Def-WTH-01-04: Probability of Precipitation (PoP) (降水概率)
+### Def-WTH-01-04: Probability of Precipitation (PoP, 降水概率)
 
 $$\text{PoP} = C \times A$$
 
-Where $C$ is the precipitation confidence of the forecast area, and $A$ is the areal coverage of precipitation.
+Where $C$ is the forecast confidence of precipitation in the target area, and $A$ is the areal coverage of precipitation.
 
 ### Def-WTH-01-05: Radar Reflectivity (雷达反射率)
 
@@ -51,104 +51,104 @@ The relationship between radar reflectivity and precipitation intensity:
 
 $$Z = a \cdot R^b$$
 
-Where $Z$ is reflectivity (dBZ), $R$ is rain intensity (mm/h), with typical values $a=200, b=1.6$.
+Where $Z$ is reflectivity (dBZ), $R$ is rain intensity (mm/h), and typical values are $a=200, b=1.6$.
 
 ---
 
 ## 2. Properties
 
-### Lemma-WTH-01-01: Predictability Limit of Weather Forecasting (天气预报的可预报性极限)
+### Lemma-WTH-01-01: Predictability Limit of Weather Forecasting
 
 The Lyapunov exponent of the atmospheric Lorenz system:
 
 $$\lambda_1 \approx 0.3 \text{ day}^{-1}$$
 
-The upper bound of predictability is approximately $1/\lambda_1 \approx 3-5$ days.
+The upper bound of predictability is approximately $1/\lambda_1 \approx 3\text{--}5$ days.
 
-### Lemma-WTH-01-02: Spatial Resolution of Radar Data (雷达数据的空间分辨率)
+### Lemma-WTH-01-02: Spatial Resolution of Radar Data
 
 Radar beam width:
 
 $$\Delta r = r \cdot \theta_{beam}$$
 
-Where $\theta_{beam} \approx 1°$, and $r$ is the distance. The resolution at 100 km is approximately 1.7 km.
+Where $\theta_{beam} \approx 1°$ and $r$ is the range. At 100 km, the resolution is approximately 1.7 km.
 
-### Prop-WTH-01-01: Brier Skill Score of Ensemble Forecasting (集合预报的Brier技巧评分)
+### Prop-WTH-01-01: Brier Skill Score (BSS) of Ensemble Forecasting
 
 $$\text{BSS} = 1 - \frac{\text{BS}_{forecast}}{\text{BS}_{climatology}}$$
 
-BSS > 0 indicates that the forecast outperforms the climatic average.
+A BSS > 0 indicates that the forecast outperforms the climatological average.
 
-### Prop-WTH-01-02: Trade-off Between Warning Lead Time and Accuracy (预警提前期与准确率权衡)
+### Prop-WTH-01-02: Trade-off Between Warning Lead Time and Accuracy
 
 | Lead Time | Tornado Accuracy | Heavy Rain Accuracy |
-|-----------|-----------------|---------------------|
-| 0-15min   | 85%             | 90%                 |
-| 15-60min  | 70%             | 80%                 |
-| 1-6h      | 50%             | 65%                 |
-| 6-24h     | 30%             | 50%                 |
+|-----------|------------------|---------------------|
+| 0–15 min  | 85%              | 90%                 |
+| 15–60 min | 70%              | 80%                 |
+| 1–6 h     | 50%              | 65%                 |
+| 6–24 h    | 30%              | 50%                 |
 
 ---
 
 ## 3. Relations
 
-### 3.1 Meteorological Early Warning Pipeline Operator Mapping (气象预警Pipeline算子映射)
+### 3.1 Operator Mapping for Meteorological Warning Pipeline
 
 | Application Scenario | Operator Combination | Data Source | Latency Requirement |
 |----------------------|----------------------|-------------|---------------------|
-| **Data Assimilation** | AsyncFunction + map | Observations + Models | < 1h |
-| **Severe Convection Identification** | ProcessFunction | Radar Echo | < 5min |
-| **Warning Generation** | Broadcast + map | Threshold Rules | < 1min |
-| **Impact Assessment** | window+aggregate | Population/Assets | < 10min |
-| **Public Dissemination** | AsyncFunction | Multi-channel | < 30s |
+| **Data Assimilation** | AsyncFunction + map | Observations + Model | < 1 h |
+| **Severe Convection Identification** | ProcessFunction | Radar echoes | < 5 min |
+| **Warning Generation** | Broadcast + map | Threshold rules | < 1 min |
+| **Impact Assessment** | window + aggregate | Population / Assets | < 10 min |
+| **Public Distribution** | AsyncFunction | Multi-channel | < 30 s |
 
-### 3.2 Operator Fingerprints (算子指纹)
+### 3.2 Operator Fingerprint
 
-| Dimension | Meteorological Early Warning Characteristics |
-|-----------|----------------------------------------------|
-| **Core Operators** | AsyncFunction (NWP invocation), ProcessFunction (radar feature extraction), BroadcastProcessFunction (warning rules), window+aggregate (statistics) |
-| **State Types** | ValueState (station history), MapState (warning areas), BroadcastState (threshold configuration) |
-| **Time Semantics** | Event time (observation timestamp) |
-| **Data Characteristics** | High-dimensional (multi-variable), large volume (radar volume scan), strong spatial correlation |
-| **State Scale** | Keyed by grid points, regional level can reach millions |
+| Dimension | Meteorological Warning Characteristics |
+|-----------|----------------------------------------|
+| **Core Operators** | AsyncFunction (NWP invocation), ProcessFunction (radar feature extraction), BroadcastProcessFunction (warning rules), window + aggregate (statistics) |
+| **State Types** | ValueState (station history), MapState (warning regions), BroadcastState (threshold configuration) |
+| **Time Semantics** | Event time (observation timestamps) |
+| **Data Characteristics** | High-dimensional (multi-variable), large volume (radar volume scans), strong spatial correlation |
+| **State Scale** | Keyed by grid cells; regional scale can reach millions |
 | **Performance Bottleneck** | NWP model computation, radar data decoding |
 
 ---
 
 ## 4. Argumentation
 
-### 4.1 Why Meteorology Needs Stream Processing Instead of Traditional Batch Processing (为什么气象需要流处理而非传统批处理)
+### 4.1 Why Streaming Processing is Needed for Meteorology Instead of Traditional Batch Processing
 
 Problems with traditional batch processing:
-- Hourly updates: Severe convective weather develops rapidly, and hourly updates lag behind
-- Fixed grids: Unable to dynamically adjust regions of interest
-- Manual interpretation: High workload for forecasters
+- **Hour-level updates**: Severe convective weather develops rapidly; hour-level updates lag behind.
+- **Fixed grids**: Cannot dynamically adjust regions of interest.
+- **Manual interpretation**: Heavy workload for forecasters.
 
-Advantages of stream processing:
-- Minute-level updates: Radar scans every 6 minutes, enabling real-time analysis
-- Automatic identification: Algorithms automatically detect convective features
-- Dynamic warning: Warning levels are automatically adjusted based on actual conditions
+Advantages of streaming processing:
+- **Minute-level updates**: Radar scans every 6 minutes, enabling real-time analysis.
+- **Automatic identification**: Algorithms automatically detect convective features.
+- **Dynamic warnings**: Automatically adjusts warning levels based on real-time conditions.
 
-### 4.2 Challenges of Multi-Source Data Assimilation (多源数据同化的挑战)
+### 4.2 Challenges of Multi-Source Data Assimilation
 
 **Problem**: Ground stations, radar, satellites, and aircraft observations have varying temporal and spatial resolutions.
 
 **Solution**:
-1. **Temporal Interpolation**: Align all observations to the analysis time
-2. **Spatial Downscaling**: Interpolate coarse-resolution data to fine grids
-3. **Quality Control**: Remove anomalous observations
+1. **Temporal interpolation**: Align all observations to the analysis time.
+2. **Spatial downscaling**: Interpolate coarse-resolution data onto a fine grid.
+3. **Quality control**: Eliminate anomalous observations.
 
-### 4.3 Control of Warning False Alarms (预警误报的控制)
+### 4.3 Control of Warning False Alarms
 
-**Problem**: High sensitivity leads to a large number of false alarms, reducing public trust.
+**Problem**: High sensitivity leads to numerous false alarms, eroding public trust.
 
-**Solution**: Adopt a graded warning system (Blue/Yellow/Orange/Red), combined with real-time verification to dynamically adjust thresholds.
+**Solution**: Adopt a tiered warning system (Blue / Yellow / Orange / Red), dynamically adjusting thresholds based on real-time verification.
 
 ---
 
 ## 5. Proof / Engineering Argument
 
-### 5.1 Real-Time Radar Echo Processing (雷达回波实时处理)
+### 5.1 Real-Time Radar Echo Processing
 
 ```java
 // Radar volume scan data stream
@@ -161,7 +161,7 @@ radar.keyBy(RadarSweep::getRadarId)
         
         @Override
         public void processElement(RadarSweep sweep, Context ctx, Collector<StormCell> out) throws Exception {
-            // Extract regions with reflectivity > 40dBZ
+            // Extract regions with reflectivity > 40 dBZ
             List<StormCell> cells = extractCells(sweep, 40.0);
             
             StormHistory history = stormState.value();
@@ -170,7 +170,7 @@ radar.keyBy(RadarSweep::getRadarId)
             for (StormCell cell : cells) {
                 StormCell tracked = history.track(cell);
                 
-                // Calculate movement speed and direction
+                // Compute movement speed and direction
                 if (tracked.getAge() > 2) {
                     double speed = tracked.getSpeed();
                     double direction = tracked.getDirection();
@@ -189,7 +189,7 @@ radar.keyBy(RadarSweep::getRadarId)
     .addSink(new StormTrackingSink());
 ```
 
-### 5.2 Severe Convection Automatic Warning (强对流自动预警)
+### 5.2 Automatic Severe Convection Warning
 
 ```java
 // Storm cell stream
@@ -225,7 +225,7 @@ storms.keyBy(StormCell::getId)
     .addSink(new WarningDistributionSink());
 ```
 
-### 5.3 Impact Area Population Assessment (影响区域人口评估)
+### 5.3 Population Assessment in Affected Areas
 
 ```java
 // Warning stream
@@ -250,7 +250,7 @@ warnings.map(new MapFunction<WeatherWarning, ImpactAssessment>() {
 
 ## 6. Examples
 
-### 6.1 Practical Case: Urban Severe Convection Monitoring and Early Warning (实战：城市强对流监测预警)
+### 6.1 Real-World Example: Urban Severe Convection Monitoring and Warning
 
 ```java
 // 1. Multi-radar data ingestion
@@ -276,28 +276,30 @@ warnings.map(new ImpactAssessmentFunction())
 
 ## 7. Visualizations
 
-### Meteorological Early Warning Pipeline (气象预警Pipeline)
+### Meteorological Warning Pipeline
+
+The following diagram illustrates the three-layer architecture of a real-time meteorological warning system, spanning from observation sources through processing stages to service endpoints.
 
 ```mermaid
 graph TB
-    subgraph Observation_Layer [Observation Layer (观测层)]
-        O1[Ground Station (地面站)]
-        O2[Weather Radar (天气雷达)]
-        O3[Meteorological Satellite (气象卫星)]
-        O4[Wind Profiler (风廓线)]
+    subgraph Observation Layer
+        O1[Ground Station]
+        O2[Weather Radar]
+        O3[Meteorological Satellite]
+        O4[Wind Profiler]
     end
     
-    subgraph Processing_Layer [Processing Layer (处理层)]
-        P1[Data Assimilation (数据同化)]
-        P2[Storm Identification (风暴识别)]
-        P3[Path Prediction (路径预测)]
-        P4[Warning Generation (预警生成)]
+    subgraph Processing Layer
+        P1[Data Assimilation]
+        P2[Storm Identification]
+        P3[Path Prediction]
+        P4[Warning Generation]
     end
     
-    subgraph Service_Layer [Service Layer (服务层)]
-        S1[Forecaster Dashboard (预报员看板)]
-        S2[Public Warning (公众预警)]
-        S3[Emergency Response (应急响应)]
+    subgraph Service Layer
+        S1[Forecaster Dashboard]
+        S2[Public Warning]
+        S3[Emergency Response]
     end
     
     O1 --> P1 --> P2 --> P3 --> P4 --> S1
