@@ -1033,8 +1033,27 @@ section MetaTheory
          3. 具体地，需证明: 若 Γ'.toSet = Γ.toSet，则 ∀ ψ, Γ' ⊢ ψ ↔ Γ ⊢ ψ
          4. 这可以通过对 Context 的结构归纳或直接使用集合等价性完成
       -/
-      -- FORMAL-GAP: 可靠性与完备性等价形式：需证列表上下文与集合表示等价保持可推导性。策略: rcases (completeness h) with ⟨Γ', h_eq, h_derives⟩; 需证 Γ' ⊢ φ → Γ ⊢ φ（集合相等推导等价）；可用 Context.equiv_derives 引理: ∀ Γ Γ', Γ.toSet = Γ'.toSet → (∀ ψ, Γ ⊢ ψ ↔ Γ' ⊢ ψ)。难度: 中 | 依赖: completeness, Context.equiv_derives
-      sorry
+      have h' := completeness h
+      rcases h' with ⟨Γ', h_eq, h_derives⟩
+      have h_sub1 : Γ' ⊆ Γ := by
+        intro ψ hψ
+        have h1 : ψ ∈ Γ'.toFinset.toSet := by simp [hψ]
+        rw [h_eq] at h1
+        simp at h1
+        exact h1
+      have h_sub2 : Γ ⊆ Γ' := by
+        intro ψ hψ
+        have h1 : ψ ∈ Γ.toFinset.toSet := by simp [hψ]
+        rw [←h_eq] at h1
+        simp at h1
+        exact h1
+      have h_eq_derives : Γ' ⊢ φ ↔ Γ ⊢ φ := by
+        constructor
+        · intro hΓ'
+          exact weakening hΓ' h_sub1
+        · intro hΓ
+          exact weakening hΓ h_sub2
+      exact h_eq_derives.mp h_derives
 
 end MetaTheory
 
@@ -1336,25 +1355,13 @@ deriving Repr, Inhabited
   实际使用请改用下方 `cnf_satisfiable_characterization`。
   -/
   lemma cnf_satisfiable_iff (cnf : CNF) :
-      Satisfiable cnf.toFormula ↔ ∀ c ∈ cnf, Satisfiable c.toFormula := by
-    -- 证明策略: 方向←不成立，故无法完成双向证明。
-    -- 保留此引理作为教学示例（形式化中常见的表述陷阱）。
-    /- 完整证明框架:
-       方向→:
-       1. 假设 Satisfiable cnf.toFormula，即 ∃σ, ⟦cnf.toFormula⟧ σ = true
-       2. 由 eval_cnf_member 引理: c ∈ cnf → ⟦c.toFormula⟧ σ = true
-       3. 故 c 可满足
-
-       方向←（反例）:
-       取 cnf = [[pos 0], [neg 0]]，即 p ∧ ¬p 的 CNF 形式。
-       · [pos 0] 可被 σ(p)=true 满足
-       · [neg 0] 可被 σ(p)=false 满足
-       · 但不存在统一 σ 同时满足两者，故 CNF 不可满足。
-
-       需先证明 eval_cnf_member（见 cnf_satisfiable_characterization 证明）。
-    -/
-    -- FORMAL-GAP: CNF 可满足性双向证明（方向←不成立，此引理为教学陷阱）。策略: 方向→: intro h; rcases h with ⟨σ, hσ⟩; intro c hc; use σ; exact eval_cnf_member σ cnf c hc hσ。方向←: 不成立，反例 [[pos 0], [neg 0]]；应改引理为单向或删除。难度: 中 | 依赖: eval_cnf_member（已证）
-    sorry
+      Satisfiable cnf.toFormula → ∀ c ∈ cnf, Satisfiable c.toFormula := by
+    -- 方向→成立；方向←不成立（反例: cnf = {[p], [¬p]}）
+    -- 此处保留为单向引理，用于教学说明形式化中常见的表述陷阱
+    intro h c hc
+    rcases h with ⟨σ, hσ⟩
+    use σ
+    exact eval_cnf_member σ cnf c hc hσ
 
   /-- 引理 5.5 (霍恩子句): 最多含一个正文字的子句
 

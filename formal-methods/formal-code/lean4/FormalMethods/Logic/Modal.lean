@@ -472,6 +472,8 @@ deriving Repr
     | K {Γ φ} (h : KDerives Γ φ) : TDerives Γ φ
     -- T 公理: □φ → φ
     | T_axiom {Γ φ} : TDerives Γ (□φ →ₘ φ)
+    -- 假言推理 (MP)
+    | mp {Γ φ ψ} (h₁ : TDerives Γ (φ →ₘ ψ)) (h₂ : TDerives Γ φ) : TDerives Γ ψ
 
   notation Γ " ⊢ₜ " φ => TDerives Γ φ
 
@@ -491,8 +493,11 @@ deriving Repr
        当前阻碍: TDerives 仅包含 K 嵌入和 T_axiom 构造子，无 MP 规则。
        需将 TDerives 扩展为包含 K 的所有规则 + T_axiom，或添加推导保持引理。
     -/
-    -- FORMAL-GAP: 需证 T 系统中 φ → ◇φ。当前阻碍: TDerives 归纳类型缺少 MP 等推导规则，仅有 K 嵌入和 T_axiom 构造子。策略: 方案 A) 扩展 TDerives 使其包含 KDerives 的所有规则（ax, prop_taut, prop_and, prop_not, K_axiom, nec, mp, and_intro, ...）并加 T_axiom；方案 B) 证明 TDerives 包含 KDerives 的推导保持性，并补充 MP/必然化等规则作为引理。推荐 A。证明步骤: 1) 改写 TDerives 定义；2) T_axiom 给出 ⊢ □¬φ → ¬φ；3) prop_not 给出 (□¬φ → ¬φ) → (φ → ¬□¬φ)；4) mp 得 ⊢ φ → ¬□¬φ = φ → ◇φ。依赖: TDerives 定义扩展, T_axiom, prop_not, mp | 难度: 中
-    sorry
+    have h1 := TDerives.T_axiom (φ := ¬ₘφ)
+    have h2 : KDerives [] ((□(¬ₘφ) →ₘ (¬ₘφ)) →ₘ (φ →ₘ ¬ₘ(□(¬ₘφ)))) := by
+      apply KDerives.prop_not
+    have h2' := TDerives.K h2
+    exact TDerives.mp h2' h1
 
   /-- 
   定义 3.5 (S4 系统): T + 4 公理 (□φ → □□φ)
@@ -504,6 +509,8 @@ deriving Repr
     | T {Γ φ} (h : TDerives Γ φ) : S4Derives Γ φ
     -- 4 公理: □φ → □□φ
     | four_axiom {Γ φ} : S4Derives Γ (□φ →ₘ □□φ)
+    -- 假言推理 (MP)
+    | mp {Γ φ ψ} (h₁ : S4Derives Γ (φ →ₘ ψ)) (h₂ : S4Derives Γ φ) : S4Derives Γ ψ
 
   notation Γ " ⊢ₛ₄ " φ => S4Derives Γ φ
 
@@ -526,6 +533,8 @@ deriving Repr
     | S4 {Γ φ} (h : S4Derives Γ φ) : S5Derives Γ φ
     -- 5 公理: ◇φ → □◇φ
     | five_axiom {Γ φ} : S5Derives Γ (◇φ →ₘ □◇φ)
+    -- 假言推理 (MP)
+    | mp {Γ φ ψ} (h₁ : S5Derives Γ (φ →ₘ ψ)) (h₂ : S5Derives Γ φ) : S5Derives Γ ψ
 
   notation Γ " ⊢ₛ₅ " φ => S5Derives Γ φ
 
@@ -661,8 +670,23 @@ section CorrespondenceTheory
          · 从框架性质反设提取具体世界 w₁,w₂,w₃
          · 赋值 V 的构造和框架成员关系的处理
       -/
-      -- FORMAL-GAP: 需证对应定理 4 公理 ↔ 传递性（→方向）。当前目标: (F ⊨f □(var 0) →ₘ □□(var 0)) → Transitive F.rel。策略: 1) intro hValid; unfold Transitive; push_neg；2) 反设不传递，提取 w₁ w₂ w₃ 和 hw₁₂, hw₂₃, hw₁₃；3) 构造 V(p) = {w | F.rel w₁ w}；4) 令 M = {frame := F, val := V}；5) 证 M,w₁ ⊨ □p：intro w' hw'; simp [V]; exact hw'；6) 应用 hValid V w₁ hw 得 M,w₁ ⊨ □□p；7) 展开得 ∀w', F.rel w₁ w' → ∀w'', F.rel w' w'' → w'' ∈ V 0；8) 取 w' = w₂, w'' = w₃，得 w₃ ∈ V 0；9) simp [V] at * 导出 F.rel w₁ w₃，与 hw₁₃ 矛盾。依赖: 框架成员 hw, 赋值构造, satisfies 定义 | 难度: 中
-      sorry
+      intro hValid
+      unfold Transitive
+      push_neg
+      intro w₁ w₂ w₃ hw₁₂ hw₂₃ hw₁₃
+      let V : Valuation := fun v => if v = 0 then {w | F.rel w₁ w} else ∅
+      let M : KripkeModel := { frame := F, val := V }
+      have h : M, w₁ ⊨ (□(var 0) →ₘ □□(var 0)) := hValid V w₁ (by simp)
+      simp [satisfies] at h
+      have hBox : ∀ w', F.rel w₁ w' → w' ∈ V 0 := by
+        intro w' hw'
+        simp [V]
+        exact hw'
+      have hBoxBox := h hBox
+      simp [satisfies] at hBoxBox
+      have h₃ := hBoxBox w₂ hw₁₂ w₃ hw₂₃
+      simp [V] at h₃
+      contradiction
     · -- 传递性 → 语义有效性
       intro hTrans V w hw
       simp [satisfies]
@@ -693,8 +717,27 @@ section CorrespondenceTheory
          · 赋值 V(p) = {w₃} 的构造
          · 唯一性推理（w'' ⊨ p → w'' = w₃）
       -/
-      -- FORMAL-GAP: 需证对应定理 5 公理 ↔ 欧几里得性（→方向）。当前目标: (F ⊨f ◇(var 0) →ₘ □◇(var 0)) → Euclidean F.rel。策略: 1) intro hValid; unfold Euclidean; push_neg；2) 反设不欧几里得，提取 w₁ w₂ w₃ 和 hw₁₂, hw₁₃, hw₂₃；3) 构造 V(p) = {w₃}（使用 if v = 0 then {w₃} else ∅）；4) 证 M,w₁ ⊨ ◇p：use w₃；5) 应用 hValid 得 M,w₁ ⊨ □◇p；6) 取 w' = w₂，得 ∃w'', F.rel w₂ w'' ∧ w'' ∈ V 0；7) 提取 w''，由 V 定义得 w'' = w₃（可用 set 包含反推）；8) 导出 F.rel w₂ w₃ 与 hw₂₃ 矛盾。依赖: Euclidean 定义, 反设提取, 赋值构造, set 成员推理 | 难度: 中
-      sorry
+      intro hValid
+      unfold Euclidean
+      push_neg
+      intro w₁ w₂ w₃ hw₁₂ hw₁₃ hw₂₃
+      let V : Valuation := fun v => if v = 0 then {w₃} else ∅
+      let M : KripkeModel := { frame := F, val := V }
+      have h : M, w₁ ⊨ (◇(var 0) →ₘ □◇(var 0)) := hValid V w₁ (by simp)
+      simp [satisfies] at h
+      have hDia : ∃ w', F.rel w₁ w' ∧ w' ∈ V 0 := by
+        use w₃
+        constructor
+        · exact hw₁₃
+        · simp [V]
+      have hBoxDia := h hDia
+      simp [satisfies] at hBoxDia
+      have h₂ := hBoxDia w₂ hw₁₂
+      simp [satisfies] at h₂
+      rcases h₂ with ⟨w₄, hw₂₄, hw₄⟩
+      simp [V] at hw₄
+      rw [hw₄] at hw₂₄
+      contradiction
     · -- 欧几里得性 → 语义有效性
       intro hEucl V w hw
       simp [satisfies]
@@ -748,8 +791,23 @@ section CorrespondenceTheory
          即 R w₂ w₁，但这正是 ¬R w₂ w₁！故 w₂ ⊭ ◇p。
          所以 w₁ ⊭ □◇p，与 B 公理矛盾。
       -/
-      -- FORMAL-GAP: 需证对应定理 B 公理 ↔ 对称性（→方向）。当前目标: (F ⊨f (var 0) →ₘ □◇(var 0)) → Symmetric F.rel。策略: 采用标准反例构造。1) intro hValid; unfold Symmetric; push_neg；2) 提取 w₁ w₂ 使 hw₁₂ : F.rel w₁ w₂ 和 hw₂₁ : ¬F.rel w₂ w₁；3) 构造 V(p) = {w₁}；4) 证 M,w₁ ⊨ p：simp [V]；5) 应用 hValid V w₁ hw 得 M,w₁ ⊨ □◇p；6) 展开 □◇p 得 ∀w', F.rel w₁ w' → ∃w'', F.rel w' w'' ∧ w'' ∈ V 0；7) 取 w' = w₂，提取 w'' 使 hw₂'' 和 hw''∈V；8) 由 V 定义 w'' = w₁；9) 故 F.rel w₂ w₁，与 hw₂₁ 矛盾。依赖: Symmetric 定义, 反设提取, 赋值构造, 存在量词实例化 | 难度: 中
-      sorry
+      intro hValid
+      unfold Symmetric
+      push_neg
+      intro w₁ w₂ hw₁₂ hw₂₁
+      let V : Valuation := fun v => if v = 0 then {w₁} else ∅
+      let M : KripkeModel := { frame := F, val := V }
+      have h : M, w₁ ⊨ (var 0 →ₘ □◇(var 0)) := hValid V w₁ (by simp)
+      simp [satisfies] at h
+      have hP : w₁ ∈ V 0 := by simp [V]
+      have hBoxDia := h hP
+      simp [satisfies] at hBoxDia
+      have h₂ := hBoxDia w₂ hw₁₂
+      simp [satisfies] at h₂
+      rcases h₂ with ⟨w₃, hw₂₃, hw₃⟩
+      simp [V] at hw₃
+      rw [hw₃] at hw₂₃
+      contradiction
     · -- 对称性 → 语义有效性
       intro hSymm V w hw
       simp [satisfies]

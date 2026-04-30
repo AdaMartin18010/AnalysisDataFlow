@@ -131,6 +131,22 @@ def ofNat : Nat → NatType
   | 0 => zero
   | n + 1 => succ (ofNat n)
 
+/-- toNat 是单射 -/
+lemma toNat_inj : Function.Injective toNat := by
+  intro n m h_eq
+  induction n generalizing m with
+  | zero =>
+    cases m with
+    | zero => rfl
+    | succ m => simp [toNat] at h_eq
+  | succ n ih =>
+    cases m with
+    | zero => simp [toNat] at h_eq
+    | succ m =>
+      simp [toNat] at h_eq
+      have : n = m := ih h_eq
+      simp [this]
+
 -- 基本数值的表示
 def one : NatType := succ zero
 def two : NatType := succ one
@@ -190,6 +206,13 @@ def sub (n m : NatType) : NatType :=
   match m with
   | zero => n
   | succ m' => pred (sub n m')
+
+/-- 最大值 -/
+def max (a b : NatType) : NatType :=
+  match a, b with
+  | zero, _ => b
+  | _, zero => a
+  | succ a', succ b' => succ (max a' b')
 
 -- ============================================================
 -- 第三部分：结构归纳法证明
@@ -261,6 +284,38 @@ theorem add_assoc (n m k : NatType) : add (add n m) k = add n (add m k) := by
     simp [add]
     rw [ih]
 
+/-- 引理：加法单调性
+-/
+lemma add_le_add {a b c d : NatType} : LE a b → LE c d → LE (add a c) (add b d) := by
+  intro hab hcd
+  induction hab with
+  | refl =>
+    induction hcd with
+    | refl => apply LE.refl
+    | step hcd' ih => simp [add]; apply LE.step; exact ih
+  | step hab' ih =>
+    simp [add]
+    apply LE.step
+    exact ih
+
+/-- 引理：max a b ≤ a + b
+-/
+lemma max_le_add (a b : NatType) : LE (max a b) (add a b) := by
+  induction a with
+  | zero =>
+    simp [max, add]
+    apply LE.refl
+  | succ a ih =>
+    cases b with
+    | zero =>
+      simp [max, add]
+      apply LE.refl
+    | succ b =>
+      simp [max, add]
+      apply LE.step
+      apply LE.step
+      exact ih
+
 /-- 定理：乘法对加法的分配律
 
 ∀ n m k, n * (m + k) = n * m + n * k
@@ -278,8 +333,11 @@ theorem mul_add_distrib (n m k : NatType) :
     -- 利用 add_comm 和 add_assoc 重组项，使左右两边结构一致
     -- 核心等式: (n * m + n * k) + (m + k) = (n * m + m) + (n * k + k)
     -- 由 add_comm (n * k) m 和 add_assoc 重组可得
-    -- FORMAL-GAP: 需证明乘法对加法的分配律最后一步。当前目标: add (add (add (mul n' m) (mul n' k)) m) k = add (add (mul n' m) m) (add (mul n' k) k)。策略: 先应用 add_assoc 重组左边为 add (mul n' m) (add (mul n' k) (add m k))，再应用 add_comm (mul n' k) m 交换中间项，最后用 add_assoc 归位。依赖: add_comm (已证), add_assoc (已证) | 难度: 低
-    sorry -- 依赖 add_comm 引理，在 NatType 中尚未证明
+    rw [←add_assoc (mul n m) (mul n k) m]
+    rw [add_assoc (mul n m) (add (mul n k) m) k]
+    rw [add_comm (mul n k) m]
+    rw [←add_assoc m (mul n k) k]
+    rw [add_assoc (mul n m) m (add (mul n k) k)]
 
 /-
 ### 3.2 序关系证明
@@ -321,8 +379,19 @@ theorem le_antisymm {n m : NatType} : LE n m → LE m n → n = m := by
       -- 由 LE 的定义，从 LE (succ m) n 和 n = m 导出矛盾，
       -- 或利用 LE 的反单调性证明 succ m ≤ n 且 n ≤ succ m。
       -- 在当前框架下，此证明需要 LE 的更多性质（如 LE_succ_iff）。
-      -- FORMAL-GAP: 需证 LE 的反对称性。当前处于 LE.step h1' 和 LE.step h2' 情况，归纳假设 ih : n = m，但需从 LE n (succ m) 和 LE (succ m) n 导出矛盾（因为 succ m ≠ m）。策略: 先证明并引入引理 LE_succ_iff : LE (succ n) m ↔ LE n m ∧ m ≠ n，然后对 h2 应用 LE_succ_iff 得到 LE m n ∧ n ≠ m，与 ih (n = m) 矛盾。依赖: LE_succ_iff 引理 | 难度: 中
-      sorry -- 依赖 LE_succ_iff: LE (succ n) m ↔ LE n m ∧ m ≠ n
+      have h1_nat : toNat n ≤ toNat (succ m) := by
+        induction h1' with
+        | refl => simp [toNat]
+        | step h1'' ih => simp [toNat]; omega
+      have h2_nat : toNat (succ m) ≤ toNat n := by
+        induction h2' with
+        | refl => simp [toNat]
+        | step h2'' ih => simp [toNat]; omega
+      have h_eq : toNat n = toNat (succ m) := by omega
+      have h_eq' : n = succ m := toNat_inj h_eq
+      have h_ne : succ m ≠ m := by intro h_eq; injection h_eq
+      rw [h_eq'] at ih
+      contradiction
 
 end NatType
 
@@ -545,17 +614,15 @@ theorem height_le_size {α : Type} (t : Tree α) :
     apply NatType.LE.refl
   | node l v r ihl ihr =>
     simp [height, size]
-    -- 证明完成策略 (2026-04-21):
-    -- 需证: max (height l) (height r) ≤ height l + height r + 1
-    -- 由 max 的定义: max a b ≤ a + b (对非负自然数成立)
-    -- 进而 max a b + 1 ≤ a + b + 1
-    -- 由 ihl: height l ≤ size l 和 ihr: height r ≤ size r
-    -- 及 size (node l v r) = size l + size r + 1
-    -- 可得 height (node l v r) = max (height l) (height r) + 1
-    --                  ≤ height l + height r + 1
-    --                  ≤ size l + size r + 1 = size (node l v r)
-    -- FORMAL-GAP: 需证树高不超过树大小。当前目标: NatType.LE (NatType.succ (NatType.max (Tree.height l) (Tree.height r))) (NatType.succ (NatType.add (NatType.add (Tree.size l) (Tree.size r)) NatType.zero))。策略: 1) 引入并证明引理 max_le_add : ∀ a b, NatType.LE (NatType.max a b) (NatType.add a b)；2) 应用 NatType.LE.step (NatType.LE.refl _) 处理 succ；3) 对 l, r 应用 ihl, ihr；4) 用 NatType.add_zero_right 和 NatType.add_assoc 归一化。依赖: max_le_add, add_zero_right, add_assoc | 难度: 中
-    sorry -- 依赖 max_le_add: ∀ a b, max a b ≤ a + b (需对 NatType 证明)
+    have h1 : LE (max (height l) (height r)) (add (height l) (height r)) :=
+      max_le_add (height l) (height r)
+    have h2 : LE (add (height l) (height r)) (add (size l) (size r)) :=
+      add_le_add ihl ihr
+    have h3 : LE (succ (max (height l) (height r))) (succ (add (size l) (size r))) := by
+      apply LE.step
+      apply le_trans h1 h2
+    simp [add_zero_right] at *
+    exact h3
 
 /-- 定理：map 保持树的大小 -/
 theorem size_map {α β : Type} (f : α → β) (t : Tree α) :
@@ -674,18 +741,25 @@ theorem lexProd_wellfounded {α β : Type} {ra : α → α → Prop} {rb : β �
     WellFounded (LexProd ra rb) := by
   unfold WellFounded
   intro p
-  -- 证明完成策略 (2026-04-21):
-  -- 对 p = (a, b) 进行双重归纳。
-  -- 1. 对 a 应用 ha 的 wellfounded 归纳。
-  -- 2. 假设 ∀ a' < a, Acc (LexProd ra rb) (a', b') 对所有 b' 成立。
-  -- 3. 对 b 应用 hb 的 wellfounded 归纳。
-  -- 4. 构造 Acc (LexProd ra rb) (a, b):
-  --    - 对任意 (a', b') 使 LexProd ra rb (a', b') (a, b):
-  --      · 若 ra a' a: 由外层 IH 得 Acc (a', b')
-  --      · 若 rb b' b 且 a' = a: 由内层 IH 得 Acc (a, b')
-  -- 5. 需使用 Acc.intro 构造函数。
-  -- FORMAL-GAP: 需证字典序保持良基性。当前目标: Acc (LexProd ra rb) p。策略: 1) 引入 a, b 使 p = (a, b)；2) 对 a 使用 ha 归纳，得外层归纳假设 IH_a : ∀ a', ra a' a → ∀ b', Acc (LexProd ra rb) (a', b')；3) 对 b 使用 hb 归纳，得内层归纳假设 IH_b : ∀ b', rb b' b → Acc (LexProd ra rb) (a, b')；4) 应用 Acc.intro，对任意 (a', b') 满足 LexProd ra rb (a', b') (a, b) 分情况: · left h => apply IH_a a' h b' · right h => 需 a' = a，用 IH_b b' h。依赖: WellFounded 定义, Acc.intro, 双重归纳 | 难度: 高
-  sorry -- 依赖 Acc 构造函数和双重归纳的精确形式化
+  intro p
+  rcases p with ⟨a, b⟩
+  have h_acc_a := ha a
+  apply Acc.rec (motive := fun a _ => ∀ b, Acc (LexProd ra rb) (a, b))
+    (fun a h_acc_a ih_a => ?_)
+    h_acc_a
+  intro b
+  have h_acc_b := hb b
+  apply Acc.rec (motive := fun b _ => Acc (LexProd ra rb) (a, b))
+    (fun b h_acc_b ih_b => ?_)
+    h_acc_b
+  apply Acc.intro
+  intro p' h_lex
+  rcases p' with ⟨a', b'⟩
+  cases h_lex with
+  | left h_ra =>
+      exact ih_a a' h_ra b'
+  | right h_rb =>
+      exact ih_b b' h_rb
 
 end WellFounded
 
@@ -965,9 +1039,10 @@ theorem complete_induction (P : NatType → Prop) :
   --    · 若 m = n: 需证 P n。由 step 假设，需 (∀ m < n, P m)，即 Q(n)。
   -- 3. 由标准归纳得 ∀ n, Q(n)。
   -- 4. ∀ n, P n: 由 Q(succ n) 和 n < succ n 得 P n。
-  -- 形式化: 对 Q 进行 induction n with，处理 NatLt 的 cases 分析。
-  -- FORMAL-GAP: 需证完全数学归纳法。当前目标: ∀ n, P n。策略: 1) 定义辅助命题 Q(n) := ∀ m, NatLt m n → P m；2) 对 Q 进行 standard induction on n；3) 基例 n=0: 对任意 m, NatLt m zero，需证空真（NatLt 无 zero 构造子，可用 cases 导出矛盾）；4) 归纳步: 假设 Q(n)，证 Q(succ n)。对 m 和 NatLt m (succ n) 进行 cases: · zero_succ m' => apply step n ih · succ_succ h' => apply ih m h'；5) 最后从 Q(succ n) 和 n < succ n 推出 P n。依赖: strong_induction（已证）, NatLt 的 cases 分析, NatLt.zero_succ, NatLt.succ_succ | 难度: 中
-  sorry -- 依赖 NatLt 的 cases 分析和 n < succ n 的基本事实
+  -- 证明: 直接利用 NatLt 的良基性 (natLt_wellfounded) 和 Acc.rec
+  -- Acc.rec 的归纳假设正好是 complete_induction 所需的前提
+  intro h n
+  exact Acc.rec (fun x _ ih => h x ih) (natLt_wellfounded n)
 
 /-- 课程归纳法（用于归纳谓词的证明） -/
 inductive CourseOfValues {α : Type} (r : α → α → Prop) (P : α → Prop) : α → Prop where
