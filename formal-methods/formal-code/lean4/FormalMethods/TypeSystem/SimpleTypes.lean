@@ -138,6 +138,109 @@ notation:50 Γ " ⊢ " t " : " T => hasType Γ t T
 ## 类型判断的元性质
 -/
 
+/-- 若两环境对所有变量的查找结果相同，则类型推导等价 -/
+lemma hasType_lookup_agree {Γ₁ Γ₂ : Context} {t : Term} {T : Type}
+    (h : Γ₁ ⊢ t : T)
+    (h_agree : ∀ x, lookupContext Γ₁ x = lookupContext Γ₂ x) :
+    Γ₂ ⊢ t : T := by
+  induction h with
+  | var h_lookup =>
+      apply hasType.var
+      rw [←h_agree]
+      exact h_lookup
+  | abs h ih =>
+      apply hasType.abs
+      apply ih
+      intro z
+      simp [extendContext, lookupContext]
+      by_cases h_eq : z = x
+      · simp [h_eq]
+      · simp [h_eq]
+        apply h_agree
+  | app h₁ h₂ ih₁ ih₂ =>
+      apply hasType.app
+      · exact ih₁ h_agree
+      · exact ih₂ h_agree
+  | tru => apply hasType.tru
+  | fls => apply hasType.fls
+
+/-- 环境交换引理: x ≠ y 时，(Γ, x:S, y:T) 和 (Γ, y:T, x:S) 的类型推导等价 -/
+lemma context_exchange {Γ : Context} {x y : Name} {S T : Type} {t : Term} {U : Type}
+    (h_ne : x ≠ y) :
+    ((Γ, x : S), y : T) ⊢ t : U ↔ ((Γ, y : T), x : S) ⊢ t : U := by
+  apply Iff.intro
+  · -- → 方向
+    intro h
+    induction h with
+    | var h_lookup =>
+        apply hasType.var
+        simp [extendContext, lookupContext] at h_lookup ⊢
+        split_ifs at h_lookup ⊢
+        all_goals try { assumption }
+        all_goals try { contradiction }
+    | abs h ih =>
+        apply hasType.abs
+        by_cases h_eq_zx : z = x
+        · -- z = x
+          rw [h_eq_zx]
+          have h_agree : ∀ w, lookupContext ((Γ, x : S), y : T, x : U₁) w = lookupContext ((Γ, y : T), x : S, x : U₁) w := by
+            intro w
+            simp [extendContext, lookupContext]
+            by_cases h_eq : w = x
+            · simp [h_eq]
+            · simp [h_eq]
+              by_cases h_eq2 : w = y
+              · simp [h_eq2]
+              · simp [h_eq2]
+          exact hasType_lookup_agree h h_agree
+        · -- z ≠ x
+          by_cases h_eq_zy : z = y
+          · -- z = y
+            rw [h_eq_zy]
+            have h_agree : ∀ w, lookupContext ((Γ, x : S), y : T, y : U₁) w = lookupContext ((Γ, y : T), x : S, y : U₁) w := by
+              intro w
+              simp [extendContext, lookupContext]
+              by_cases h_eq : w = y
+              · simp [h_eq]
+              · simp [h_eq]
+                by_cases h_eq2 : w = x
+                · simp [h_eq2]
+                · simp [h_eq2]
+            exact hasType_lookup_agree h h_agree
+          · -- z ≠ x 且 z ≠ y
+            have h_ne_zx : z ≠ x := h_eq_zx
+            have h_ne_zy : z ≠ y := h_eq_zy
+            apply ih
+            intro w
+            simp [extendContext, lookupContext]
+            by_cases h_eq : w = z
+            · simp [h_eq]
+            · simp [h_eq]
+              by_cases h_eq2 : w = x
+              · simp [h_eq2]
+                by_cases h_eq3 : w = y
+                · rw [h_eq3] at h_eq2
+                  contradiction
+                · simp [h_eq3]
+              · simp [h_eq2]
+                by_cases h_eq3 : w = y
+                · simp [h_eq3]
+                · simp [h_eq3]
+    | app h₁ h₂ ih₁ ih₂ =>
+        apply hasType.app
+        · exact ih₁
+        · exact ih₂
+    | tru => apply hasType.tru
+    | fls => apply hasType.fls
+  · -- ← 方向，对称
+    intro h
+    have h_symm : ((Γ, y : T), x : S) ⊢ t : U ↔ ((Γ, x : S), y : T) ⊢ t : U := by
+      apply context_exchange
+      intro h_eq
+      apply h_ne
+      rw [h_eq]
+    exact h_symm.mp h
+
 /-- 
 上下文弱化 (Weakening)
 
@@ -166,24 +269,25 @@ lemma weakening {Γ t T} (h : Γ ⊢ t : T) :
       intros x S Hnotin
       apply hasType.abs
       -- 处理环境扩展的顺序: (Γ, x:S, y:T₁) vs (Γ, y:T₁, x:S)
-      -- 当 x ≠ y 时由归纳假设直接得证
-      -- 当 x = y 时利用 x 不在 Γ 中（故 y 也不在 Γ 中）
       simp [extendContext] at ih ⊢
-      /- 证明策略 (2026-04-21): 
-         需证: (Γ, x:S, y:T₁) ⊢ t' : T₂，已知 (Γ, y:T₁, x:S) ⊢ t' : T₂。
-         
-         若 x ≠ y: 两环境在 lookupContext 中等价（列表顺序不影响查找结果，
-         因 x 和 y 查找时取第一个匹配，且 x ≠ y 保证互不干扰）。
-         需建立环境交换引理: 
-           context_exchange: x ≠ y → ((Γ, y:T₁), x:S) ⊢ t : T → ((Γ, x:S), y:T₁) ⊢ t : T
-         对 hasType 结构归纳可证。
-         
-         若 x = y: 环境变为 (Γ, x:S, x:T₁)。由 x ∉ Γ 和 lookupContext 取第一个匹配，
-         对 x 的查找结果为 S。但 t' 需要 x:T₁，故要求 S = T₁。
-         此情形在 weakening 中自动满足（类型不冲突）。
-      -/
-      -- FORMAL-GAP: 需证明weakening在lambda抽象情形成立。策略: 对x≠y应用环境交换引理(context_exchange)后对t'用IH；对x=y需确认extendContext取第一个匹配的语义一致性。难度: 高 | 依赖: context_exchange引理(对hasType结构归纳可证)
-      sorry
+      by_cases h_eq : x = y
+      · -- x = y: 环境变为 (Γ, x:S, x:T₁)
+        -- 由 x ∉ Γ，lookupContext 在 (Γ, x:S, x:T₁) 中查找 x 返回 T₁（第一个匹配是 x:S... 不对，x:T₁ 才是第一个匹配）
+        -- 实际上 (Γ, x:S, x:T₁) = (x, T₁) :: (x, S) :: Γ
+        -- lookupContext 取第一个匹配，返回 T₁
+        -- 所以 (Γ, x:S, x:T₁) 和 (Γ, x:T₁) 对 x 的查找结果相同
+        rw [h_eq]
+        have h_agree : ∀ z, lookupContext ((Γ, x : S), x : T₁) z = lookupContext (Γ, x : T₁) z := by
+          intro z
+          simp [extendContext, lookupContext]
+          by_cases h_eqz : z = x
+          · simp [h_eqz]
+          · simp [h_eqz]
+        exact hasType_lookup_agree ih h_agree
+      · -- x ≠ y
+        have h_ne : x ≠ y := by intro h; apply h_eq; exact h
+        apply (context_exchange h_ne).mp
+        exact ih
   | app ih₁ ih₂ =>
       intros x S Hnotin
       apply hasType.app

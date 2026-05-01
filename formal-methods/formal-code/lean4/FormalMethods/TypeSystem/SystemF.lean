@@ -61,7 +61,9 @@ def tmshift (c d : Nat) : Tm → Tm
   | Tm.ite t₁ t₂ t₃ => Tm.ite (tmshift c d t₁) (tmshift c d t₂) (tmshift c d t₃)
 
 def tmsubst (j : Nat) (s : Tm) : Tm → Tm
-  | Tm.var n => if n = j then s else Tm.var n
+  | Tm.var n =>
+      if n = j then s
+      else Tm.var (if n > j then n - 1 else n)
   | Tm.abs T t => Tm.abs T (tmsubst (j + 1) (tmshift 0 1 s) t)
   | Tm.app t₁ t₂ => Tm.app (tmsubst j s t₁) (tmsubst j s t₂)
   | Tm.tabs t => Tm.tabs (tmsubst j s t)

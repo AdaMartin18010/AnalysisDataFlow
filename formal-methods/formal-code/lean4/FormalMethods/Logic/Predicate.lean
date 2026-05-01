@@ -334,6 +334,49 @@ def satisfies (M : Structure Σ) (ρ : Var → M.univ) : Formula Σ Var → Prop
 notation:50 M " ⊨ " φ "[" ρ "]" => satisfies M ρ φ
 notation:50 M " ⊨ " φ => satisfies M (fun _ => Classical.choice M.nonempty) φ
 
+/-- Finset 列表 foldl union 的单调性: 初始值增大，结果增大 -/
+lemma foldl_union_init_monotone {α} [DecidableEq α] {ts : List (Finset α)} {s₁ s₂ : Finset α}
+    (h : s₁ ⊆ s₂) :
+    ts.foldl (Finset.union) s₁ ⊆ ts.foldl (Finset.union) s₂ := by
+  induction ts with
+  | nil => simp; exact h
+  | cons t' ts ih =>
+      simp [List.foldl]
+      have h_union : s₁ ∪ t' ⊆ s₂ ∪ t' := by
+        apply Finset.union_subset_union
+        · exact h
+        · exact Finset.Subset.refl t'
+      exact ih h_union
+
+/-- 初始值是 foldl union 结果的子集 -/
+lemma init_subset_foldl_union {α} [DecidableEq α] {ts : List (Finset α)} {s : Finset α} :
+    s ⊆ ts.foldl (Finset.union) s := by
+  induction ts with
+  | nil => simp
+  | cons t' ts ih =>
+      simp [List.foldl]
+      have h1 : s ⊆ s ∪ t' := Finset.subset_union_left
+      have h2 : s ∪ t' ⊆ ts.foldl (Finset.union) (s ∪ t') := ih
+      exact Finset.Subset.trans h1 h2
+
+/-- 列表中的每个元素都是 foldl union 结果的子集 -/
+lemma list_mem_subset_foldl_union {α} [DecidableEq α] {xs : List (Finset α)} {s : Finset α}
+    (h : s ∈ xs) : s ⊆ xs.foldl (Finset.union) ∅ := by
+  induction xs with
+  | nil => simp at h
+  | cons s' ts ih =>
+      simp at h
+      cases h with
+      | inl h_eq =>
+          rw [h_eq]
+          simp [List.foldl]
+          exact init_subset_foldl_union
+      | inr h_mem =>
+          have h_sub : s ⊆ ts.foldl (Finset.union) ∅ := ih h_mem
+          simp [List.foldl]
+          have h_init : ∅ ⊆ s' := Finset.empty_subset s'
+          exact Finset.Subset.trans h_sub (foldl_union_init_monotone h_init)
+
 /-- 赋值一致性下的项解释相等
 
 若赋值 ρ₁ 和 ρ₂ 在项 t 的自由变量上一致，则 t 的解释相等。
@@ -360,8 +403,7 @@ lemma interpTerm_agree {M : Structure Σ} {t : Term Σ Var} {ρ₁ ρ₂ : Var �
               -- 每个元素的 vars 都是 foldl union 的子集
               have : ∀ s ∈ (args.map Term.vars), s ⊆ (args.map Term.vars).foldl (Finset.union) ∅ := by
                 intro s hs
-                -- 使用 Finset 性质: s ∈ xs → s ⊆ xs.foldl union ∅
-                sorry
+                exact list_mem_subset_foldl_union hs
               exact this (t'.vars) h_mem
             exact h_sub hx
           exact h x h_x
@@ -390,7 +432,7 @@ lemma satisfies_assignment_agree {M : Structure Σ} {φ : Formula Σ Var} {ρ₁
               have h_mem : t.vars ∈ args.map Term.vars := List.mem_map_of_mem Term.vars h_in
               have : ∀ s ∈ (args.map Term.vars), s ⊆ (args.map Term.vars).foldl (Finset.union) ∅ := by
                 intro s hs
-                sorry
+                exact list_mem_subset_foldl_union hs
               exact this (t.vars) h_mem
             exact h_sub hx
           exact h x h_x

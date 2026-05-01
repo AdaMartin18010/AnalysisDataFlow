@@ -1110,6 +1110,17 @@ deriving DecidableEq, Repr, Inhabited
     theorem singleton_toFormula (l : Literal) :
         toFormula [l] = l.toFormula := by
       simp [toFormula]
+
+    /-- 子句合并对应于析取合并 -/
+    theorem toFormula_append (c d : Clause) :
+        toFormula (c ++ d) ≡ (toFormula c) ∨' (toFormula d) := by
+      intro σ
+      induction c with
+      | nil => simp [toFormula, empty_toFormula, eval]
+      | cons l ls ih =>
+          simp [toFormula, eval]
+          rw [ih σ]
+          simp [eval]
   end Clause
 
   /-- 定义 5.1 (合取范式 CNF): 子句的合取 -/
@@ -1137,6 +1148,17 @@ deriving DecidableEq, Repr, Inhabited
     /-- 将合取项转换为公式 -/
     def toFormula (c : Conjunction) : Formula :=
       c.foldr (fun l acc => l.toFormula ∧' acc) ⊤
+
+    /-- 合取项合并对应于合取合并 -/
+    theorem toFormula_append (c d : Conjunction) :
+        toFormula (c ++ d) ≡ (toFormula c) ∧' (toFormula d) := by
+      intro σ
+      induction c with
+      | nil => simp [toFormula, eval]
+      | cons l ls ih =>
+          simp [toFormula, eval]
+          rw [ih σ]
+          simp [eval]
   end Conjunction
 
   abbrev DNF := List Conjunction deriving Repr, Inhabited
@@ -1277,6 +1299,66 @@ deriving DecidableEq, Repr, Inhabited
             simp [toNNF]
             rw [ih' σ]
 
+  /-- CNF foldr 嵌套的语义等价辅助引理 -/
+  lemma CNF_foldr_or_toFormula (c : Clause) (cnfψ acc : CNF) :
+      (cnfψ.foldr (fun d acc' => (c ++ d) :: acc') acc).toFormula
+      ≡ ((c.toFormula ∨' cnfψ.toFormula) ∧' acc.toFormula) := by
+    intro σ
+    induction cnfψ with
+    | nil =>
+        simp [CNF.toFormula, eval]
+    | cons d ds ih =>
+        simp [CNF.toFormula, eval]
+        rw [Clause.toFormula_append]
+        rw [ih σ]
+        simp [eval]
+        rw [or_and_distrib_left]
+
+  /-- toCNF or 分支的语义等价 -/
+  lemma toCNF_or_toFormula (cnfφ cnfψ : CNF) :
+      (cnfφ.foldr (fun c acc => cnfψ.foldr (fun d acc' => (c ++ d) :: acc') acc) []).toFormula
+      ≡ (cnfφ.toFormula ∨' cnfψ.toFormula) := by
+    intro σ
+    induction cnfφ with
+    | nil =>
+        simp [CNF.toFormula, eval]
+    | cons c cs ih =>
+        simp [CNF.toFormula, eval]
+        rw [CNF_foldr_or_toFormula c cnfψ (cs.foldr _ [])]
+        rw [ih σ]
+        simp [eval]
+        rw [or_and_distrib_left]
+
+  /-- DNF foldr 嵌套的语义等价辅助引理 -/
+  lemma DNF_foldr_and_toFormula (c : Conjunction) (dnfψ acc : DNF) :
+      (dnfψ.foldr (fun d acc' => (c ++ d) :: acc') acc).toFormula
+      ≡ ((c.toFormula ∧' dnfψ.toFormula) ∨' acc.toFormula) := by
+    intro σ
+    induction dnfψ with
+    | nil =>
+        simp [DNF.toFormula, eval]
+    | cons d ds ih =>
+        simp [DNF.toFormula, eval]
+        rw [Conjunction.toFormula_append]
+        rw [ih σ]
+        simp [eval]
+        rw [and_or_distrib_left]
+
+  /-- toDNF and 分支的语义等价 -/
+  lemma toDNF_and_toFormula (dnfφ dnfψ : DNF) :
+      (dnfφ.foldr (fun c acc => dnfψ.foldr (fun d acc' => (c ++ d) :: acc') acc) []).toFormula
+      ≡ (dnfφ.toFormula ∧' dnfψ.toFormula) := by
+    intro σ
+    induction dnfφ with
+    | nil =>
+        simp [DNF.toFormula, eval]
+    | cons c cs ih =>
+        simp [DNF.toFormula, eval]
+        rw [DNF_foldr_and_toFormula c dnfψ (cs.foldr _ [])]
+        rw [ih σ]
+        simp [eval]
+        rw [and_or_distrib_left]
+
   /-- 函数 5.2 (CNF 转换)
 
   使用分配律将 NNF 转换为 CNF
@@ -1307,18 +1389,43 @@ deriving DecidableEq, Repr, Inhabited
   theorem formulaToCNF_equiv (φ : Formula) :
       (formulaToCNF φ).toFormula ≡ φ := by
     intro σ
-    simp [formulaToCNF]
-    -- 证明分解:
-    -- 1. toNNF φ ≡ φ (由 toNNF_equiv)
-    -- 2. toCNF (toNNF φ).toFormula ≡ (toNNF φ).toFormula (由 toCNF 保持等价)
-    -- 3. 传递性得证
-    /- 形式化要点:
-       · 需先证明 toNNF_equiv: ∀ φ, toNNF φ ≡ ψ
-       · 需证明 toCNF 保持语义等价: ∀ ψ ∈ NNF, toCNF ψ ≡ ψ
-       · 两者组合即得目标
-    -/
-    -- FORMAL-GAP: CNF 转换等价性：需证 toCNF 保持语义等价。策略: 先证 toNNF_equiv（已证）；再对公式结构归纳证 toCNF_equiv: ∀ ψ, (toCNF ψ).toFormula ≡ ψ；原子/⊥/⊤ 情况 trivial；∧ 情况用 append 语义；∨ 情况用分配律（foldr 嵌套对应分配律的语义）。难度: 高 | 依赖: toNNF_equiv, 分配律语义, foldr 性质
-    sorry
+    induction φ with
+    | var v => simp [formulaToCNF, toNNF, toCNF, CNF.toFormula, Clause.toFormula, Literal.toFormula]
+    | bot => simp [formulaToCNF, toNNF, toCNF, CNF.toFormula, Clause.empty_toFormula]
+    | top => simp [formulaToCNF, toNNF, toCNF, CNF.empty_toFormula]
+    | and φ ψ ih₁ ih₂ => simp [formulaToCNF, toNNF, toCNF, CNF.toFormula, ih₁, ih₂]
+    | or φ ψ ih₁ ih₂ => simp [formulaToCNF, toNNF, toCNF, toCNF_or_toFormula, ih₁, ih₂]
+    | imp φ ψ ih₁ ih₂ =>
+        simp [formulaToCNF, toNNF, toCNF, toCNF_or_toFormula]
+        have h₁ := formulaToCNF_equiv (not φ) σ
+        have h₂ := formulaToCNF_equiv ψ σ
+        simp [h₁, h₂]
+        rw [imp_elim_equiv]
+    | not φ ih =>
+        induction φ with
+        | var v => simp [formulaToCNF, toNNF, toCNF, CNF.toFormula, Clause.toFormula, Literal.toFormula]
+        | bot => simp [formulaToCNF, toNNF, toCNF, CNF.toFormula, Clause.toFormula]
+        | top => simp [formulaToCNF, toNNF, toCNF, CNF.empty_toFormula]
+        | and φ' ψ' ih₁ ih₂ =>
+            simp [formulaToCNF, toNNF, toCNF, toCNF_or_toFormula]
+            have h₁ := formulaToCNF_equiv (not φ') σ
+            have h₂ := formulaToCNF_equiv (not ψ') σ
+            simp [h₁, h₂]
+        | or φ' ψ' ih₁ ih₂ =>
+            simp [formulaToCNF, toNNF, toCNF, toCNF_or_toFormula]
+            have h₁ := formulaToCNF_equiv (not φ') σ
+            have h₂ := formulaToCNF_equiv (not ψ') σ
+            simp [h₁, h₂]
+        | imp φ' ψ' ih₁ ih₂ =>
+            simp [formulaToCNF, toNNF, toCNF, toCNF_or_toFormula]
+            have h₁ := formulaToCNF_equiv (not φ') σ
+            have h₂ := formulaToCNF_equiv ψ' σ
+            simp [h₁, h₂]
+            rw [imp_elim_equiv]
+        | not φ' ih' =>
+            simp [formulaToCNF, toNNF, toCNF]
+            have h := formulaToCNF_equiv φ' σ
+            simp [h]
 
   /-- 函数 5.3 (DNF 转换) -/
   def toDNF : Formula → DNF
@@ -1345,14 +1452,43 @@ deriving DecidableEq, Repr, Inhabited
   theorem formulaToDNF_equiv (φ : Formula) :
       (formulaToDNF φ).toFormula ≡ φ := by
     intro σ
-    simp [formulaToDNF]
-    /- 证明分解:
-       1. toNNF φ ≡ φ (由 toNNF_equiv)
-       2. toDNF (toNNF φ).toFormula ≡ (toNNF φ).toFormula (归纳证明)
-       3. 传递性得证
-    -/
-    -- FORMAL-GAP: DNF 转换等价性：与 CNF 对称。策略: 同 formulaToCNF_equiv，先证 toNNF_equiv，再对公式归纳证 toDNF 保持等价；∨ 情况 trivial（append）；∧ 情况用分配律。难度: 高 | 依赖: toNNF_equiv, 分配律语义
-    sorry
+    induction φ with
+    | var v => simp [formulaToDNF, toNNF, toDNF, DNF.toFormula, Conjunction.toFormula, Literal.toFormula]
+    | bot => simp [formulaToDNF, toNNF, toDNF, DNF.toFormula, Conjunction.toFormula]
+    | top => simp [formulaToDNF, toNNF, toDNF, DNF.toFormula]
+    | and φ ψ ih₁ ih₂ => simp [formulaToDNF, toNNF, toDNF, toDNF_and_toFormula, ih₁, ih₂]
+    | or φ ψ ih₁ ih₂ => simp [formulaToDNF, toNNF, toDNF, DNF.toFormula, ih₁, ih₂]
+    | imp φ ψ ih₁ ih₂ =>
+        simp [formulaToDNF, toNNF, toDNF, toDNF_and_toFormula]
+        have h₁ := formulaToDNF_equiv (not φ) σ
+        have h₂ := formulaToDNF_equiv ψ σ
+        simp [h₁, h₂]
+        rw [imp_elim_equiv]
+    | not φ ih =>
+        induction φ with
+        | var v => simp [formulaToDNF, toNNF, toDNF, DNF.toFormula, Conjunction.toFormula, Literal.toFormula]
+        | bot => simp [formulaToDNF, toNNF, toDNF, DNF.toFormula, Conjunction.toFormula]
+        | top => simp [formulaToDNF, toNNF, toDNF, DNF.toFormula]
+        | and φ' ψ' ih₁ ih₂ =>
+            simp [formulaToDNF, toNNF, toDNF, toDNF_and_toFormula]
+            have h₁ := formulaToDNF_equiv (not φ') σ
+            have h₂ := formulaToDNF_equiv (not ψ') σ
+            simp [h₁, h₂]
+        | or φ' ψ' ih₁ ih₂ =>
+            simp [formulaToDNF, toNNF, toDNF, toDNF_and_toFormula]
+            have h₁ := formulaToDNF_equiv (not φ') σ
+            have h₂ := formulaToDNF_equiv (not ψ') σ
+            simp [h₁, h₂]
+        | imp φ' ψ' ih₁ ih₂ =>
+            simp [formulaToDNF, toNNF, toDNF, toDNF_and_toFormula]
+            have h₁ := formulaToDNF_equiv (not φ') σ
+            have h₂ := formulaToDNF_equiv ψ' σ
+            simp [h₁, h₂]
+            rw [imp_elim_equiv]
+        | not φ' ih' =>
+            simp [formulaToDNF, toNNF, toDNF]
+            have h := formulaToDNF_equiv φ' σ
+            simp [h]
 
   /- ============================================================
     范式的性质

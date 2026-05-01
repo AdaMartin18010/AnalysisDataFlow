@@ -70,26 +70,119 @@ Case T-App: t = t₁ t₂，直接由两个子项的 IH 组合。
 
 Case T-True/T-False: 替换不改变这些项，直接得证。
 -/
+/-- 若两环境对所有变量的查找结果相同，则类型推导等价 -/
+lemma hasType_lookup_agree {Γ₁ Γ₂ : Context} {t : Term} {T : Type}
+    (h : Γ₁ ⊢ t : T)
+    (h_agree : ∀ x, lookupContext Γ₁ x = lookupContext Γ₂ x) :
+    Γ₂ ⊢ t : T := by
+  induction h with
+  | var h_lookup =>
+      apply hasType.var
+      rw [←h_agree]
+      exact h_lookup
+  | abs h ih =>
+      apply hasType.abs
+      apply ih
+      intro z
+      simp [extendContext, lookupContext]
+      by_cases h_eq : z = x
+      · simp [h_eq]
+      · simp [h_eq]
+        apply h_agree
+  | app h₁ h₂ ih₁ ih₂ =>
+      apply hasType.app
+      · exact ih₁ h_agree
+      · exact ih₂ h_agree
+  | tru => apply hasType.tru
+  | fls => apply hasType.fls
+
+/-- 环境交换引理: x ≠ y 时，(Γ, x:S, y:T) 和 (Γ, y:T, x:S) 的类型推导等价 -/
+lemma context_exchange {Γ : Context} {x y : Name} {S T : Type} {t : Term} {U : Type}
+    (h_ne : x ≠ y) :
+    ((Γ, x : S), y : T) ⊢ t : U ↔ ((Γ, y : T), x : S) ⊢ t : U := by
+  apply Iff.intro
+  · -- → 方向
+    intro h
+    induction h with
+    | var h_lookup =>
+        apply hasType.var
+        simp [extendContext, lookupContext] at h_lookup ⊢
+        split_ifs at h_lookup ⊢
+        all_goals try { assumption }
+        all_goals try { contradiction }
+    | abs h ih =>
+        apply hasType.abs
+        by_cases h_eq_zx : z = x
+        · -- z = x
+          rw [h_eq_zx]
+          have h_agree : ∀ w, lookupContext ((Γ, x : S), y : T, x : U₁) w = lookupContext ((Γ, y : T), x : S, x : U₁) w := by
+            intro w
+            simp [extendContext, lookupContext]
+            by_cases h_eq : w = x
+            · simp [h_eq]
+            · simp [h_eq]
+              by_cases h_eq2 : w = y
+              · simp [h_eq2]
+              · simp [h_eq2]
+          exact hasType_lookup_agree h h_agree
+        · -- z ≠ x
+          by_cases h_eq_zy : z = y
+          · -- z = y
+            rw [h_eq_zy]
+            have h_agree : ∀ w, lookupContext ((Γ, x : S), y : T, y : U₁) w = lookupContext ((Γ, y : T), x : S, y : U₁) w := by
+              intro w
+              simp [extendContext, lookupContext]
+              by_cases h_eq : w = y
+              · simp [h_eq]
+              · simp [h_eq]
+                by_cases h_eq2 : w = x
+                · simp [h_eq2]
+                · simp [h_eq2]
+            exact hasType_lookup_agree h h_agree
+          · -- z ≠ x 且 z ≠ y
+            have h_ne_zx : z ≠ x := h_eq_zx
+            have h_ne_zy : z ≠ y := h_eq_zy
+            apply ih
+            intro w
+            simp [extendContext, lookupContext]
+            by_cases h_eq : w = z
+            · simp [h_eq]
+            · simp [h_eq]
+              by_cases h_eq2 : w = x
+              · simp [h_eq2]
+                by_cases h_eq3 : w = y
+                · rw [h_eq3] at h_eq2
+                  contradiction
+                · simp [h_eq3]
+              · simp [h_eq2]
+                by_cases h_eq3 : w = y
+                · simp [h_eq3]
+                · simp [h_eq3]
+    | app h₁ h₂ ih₁ ih₂ =>
+        apply hasType.app
+        · exact ih₁
+        · exact ih₂
+    | tru => apply hasType.tru
+    | fls => apply hasType.fls
+  · -- ← 方向，对称
+    intro h
+    have h_symm : ((Γ, y : T), x : S) ⊢ t : U ↔ ((Γ, x : S), y : T) ⊢ t : U := by
+      apply context_exchange
+      intro h_eq
+      apply h_ne
+      rw [h_eq]
+    exact h_symm.mp h
+
 lemma substitution_lemma {Γ x s t S T} 
     (h₁ : (Γ, x : S) ⊢ t : T)
     (h₂ : Γ ⊢ s : S) : 
   Γ ⊢ ([x := s] t) : T := by
   /- 证明完成策略 (2026-04-21):
      对 t 的类型推导 hasType (Γ, x:S) t T 进行结构归纳。
-     
-     Case T-Var: t = var y
-       · 若 y = x: [x:=s](var x) = s，由前提 Γ ⊢ s : S = T
-       · 若 y ≠ x: [x:=s](var y) = var y，lookupContext Γ y = some T
-     
-     Case T-Abs: t = abs y t'，需分情况讨论 y = x 或 y ≠ x
-       · y = x: [x:=s](λx.t') = λx.t'，由前提直接得证
-       · y ≠ x: [x:=s](λy.t') = λy.[x:=s]t'，由 IH 得证
-     
-     Case T-App: 直接由两个子项的 IH 组合。
-     Case T-True/T-False: 替换不改变这些项。
+     使用 generalizing 使 ih 泛化所有参数，从而处理 α-重命名情形。
   -/
-  induction h₁ with
-  | var h_lookup =>
+  induction h₁ generalizing Γ x s S T with
+  | @hasType.var Γ' y T' h_lookup =>
       simp [Substitution.subst, Substitution.substVar, h_lookup]
       split_ifs with H
       · -- y = x
@@ -100,52 +193,66 @@ lemma substitution_lemma {Γ x s t S T}
         split_ifs with Hxy
         · contradiction
         · assumption
-  | abs ih =>
+  | @hasType.abs Γ' y T₁ T₂ body h_body ih =>
+      simp [Substitution.subst, Substitution.substVar]
       apply hasType.abs
-      -- α-等价处理: [x:=s](λy.t') 在 y = x 时退化为 λy.t'；
-      -- 在 y ≠ x 时需应用 weakening + IH。
-      -- 完整证明需建立 substitution 与 extendContext 的交换性质：
-      --   [x:=s](λy.t') = λy.[x:=s]t'  当 y ∉ fv(s) ∪ {x}
-      --   或经 α-重命名为 λz.[x:=s]([y:=z]t')
-      -- 此引理已在 Substitution.lean 中声明但尚未实现，
-      -- 完成后此处可用 exact ih (after weakening/rename) 消去 sorry。
-      /- 证明策略 (2026-04-21):
-         对 t = abs y t' 分三种情形：
-         
-         1. y = x: [x:=s](λx.t') = λx.t'（x 被绑定，不替换）。
-            由 h₁: (Γ, x:S) ⊢ λx.t' : T₁→T₂。
-            要证: Γ ⊢ λx.t' : T₁→T₂，即 Γ, x:T₁ ⊢ t' : T₂。
-            由 h₁ 反演: Γ, x:S, x:T₁ ⊢ t' : T₂。lookupContext 取第一个匹配 x:S，
-            但 t' 类型推导中 x 的类型应为 T₁（由 hasType.abs 的绑定）。
-            这里需要确认 extendContext 的语义：若同一变量多次出现，取第一个。
-            在 h₁ 的推导中，(Γ, x:S) ⊢ λx.t' 意味着对 t' 的环境是 (Γ, x:S, x:T₁)，
-            查找 x 得 T₁（第二个绑定）。故 Γ, x:T₁ ⊢ t' : T₂ 成立。
-         
-         2. y ≠ x 且 y ∉ fv(s): [x:=s](λy.t') = λy.[x:=s]t'。
-            由 h₁: (Γ, x:S) ⊢ λy.t' : T₁→T₂，即 (Γ, x:S, y:T₁) ⊢ t' : T₂。
-            要证: Γ ⊢ λy.[x:=s]t' : T₁→T₂，即 (Γ, y:T₁) ⊢ [x:=s]t' : T₂。
-            由 IH 于 t': 需 (Γ, y:T₁, x:S) ⊢ t' : T₂。
-            当前环境是 (Γ, x:S, y:T₁)。若 x ≠ y，需环境交换引理。
-         
-         3. y ≠ x 且 y ∈ fv(s): [x:=s](λy.t') = λz.[x:=s]([y:=z]t')，z 新鲜。
-            由 h₁: (Γ, x:S, y:T₁) ⊢ t' : T₂。
-            要证: Γ ⊢ λz.[x:=s]([y:=z]t') : T₁→T₂，即 (Γ, z:T₁) ⊢ [x:=s]([y:=z]t') : T₂。
-            由 IH: 需 (Γ, z:T₁, x:S) ⊢ [y:=z]t' : T₂。
-            需替换保持类型引理: [y:=z] 保持类型（y 绑定为 T₁，z 替换后仍为 T₁）。
-            
-         核心依赖（按优先级）:
-         - [P0] 环境交换引理: x ≠ y → ((Γ, y:T₁), x:S) ⊢ t : T ↔ ((Γ, x:S), y:T₁) ⊢ t : T
-         - [P1] 替换保持类型: Γ, y:T₁ ⊢ t : T₂ → Γ, z:T₁ ⊢ [y:=z]t : T₂（z 新鲜）
-         - [P2] α-等价保持类型: t₁ =α t₂ → Γ ⊢ t₁ : T ↔ Γ ⊢ t₂ : T
-      -/
-      -- FORMAL-GAP: 需证明替换与lambda抽象的交换性质。策略: 分情形讨论(y=x / y≠x∧y∉fv(s) / y≠x∧y∈fv(s))；对y≠x情形需环境交换引理(context_exchange)和weakening；对y∈fv(s)需α-重命名和替换保持类型引理。难度: 高 | 依赖: context_exchange, weakening, subst_rename_type_preservation
-      sorry -- [FORMAL-GAP-N-01] 依赖 Substitution 与 α-等价交换引理
-  | app ih₁ ih₂ =>
+      split_ifs with H_eq H_fresh
+      · -- y = x: [x:=s](λx.t') = λx.t'（x 被绑定，不替换）
+        have h_agree : ∀ z, lookupContext ((Γ, x : S), x : T₁) z = lookupContext (Γ, x : T₁) z := by
+          intro z
+          simp [extendContext, lookupContext]
+          by_cases h_eq : z = x
+          · simp [h_eq]
+          · simp [h_eq]
+        exact hasType_lookup_agree h₁ h_agree
+      · -- y ≠ x 且 y ∉ fv(s): [x:=s](λy.t') = λy.[x:=s]t'
+        have h_exch : ((Γ, y : T₁), x : S) ⊢ body : T₂ := by
+          apply (context_exchange (by intro h_eq; apply H_eq; rw [h_eq])).mp
+          exact h₁
+        have h_weak : (Γ, y : T₁) ⊢ s : S := by
+          apply weakening
+          exact h₂
+          simp [extendContext, lookupContext]
+          split_ifs <;> tauto
+        exact ih h_exch h_weak
+      · -- y ≠ x 且 y ∈ fv(s): [x:=s](λy.t') = λz.[x:=s]([y:=z]t')，z 新鲜
+        apply hasType.abs
+        -- 目标: (Γ, z:T₁) ⊢ [x:=s]([y:=z]body) : T₂
+        have h_weak1 : (((Γ, x : S), y : T₁), z : T₁) ⊢ body : T₂ := by
+          apply weakening
+          exact h₁
+          simp [extendContext, lookupContext]
+          split_ifs <;> tauto
+        have h_exch1 : ((((Γ, x : S), z : T₁), y : T₁)) ⊢ body : T₂ := by
+          apply (context_exchange (by intro h_eq; apply H_fresh; rw [h_eq])).mp
+          exact h_weak1
+        have h_exch2 : (((((Γ, z : T₁), x : S), y : T₁))) ⊢ body : T₂ := by
+          apply (context_exchange (by intro h_eq; apply H_eq; rw [h_eq])).mp
+          exact h_exch1
+        -- 第一次替换: [y := var z]
+        have h_subst_y : (((Γ, z : T₁), x : S) ⊢ ([y := Term.var z] body) : T₂) := by
+          apply ih
+          · exact h_exch2
+          · -- 需证 ((Γ, z:T₁), x:S) ⊢ var z : T₁
+            apply hasType.var
+            simp [extendContext, lookupContext]
+            split_ifs <;> tauto
+        -- 第二次替换: [x := s]
+        have h_subst_x : ((Γ, z : T₁) ⊢ ([x := s] ([y := Term.var z] body)) : T₂) := by
+          apply ih
+          · exact h_subst_y
+          · -- 需证 (Γ, z:T₁) ⊢ s : S
+            apply weakening
+            exact h₂
+            simp [extendContext, lookupContext]
+            split_ifs <;> tauto
+        exact h_subst_x
+  | @hasType.app Γ' T₁ T₂ t₁ t₂ h_ty₁ h_ty₂ ih₁ ih₂ =>
       apply hasType.app
-      · exact ih₁ h₂
-      · exact ih₂ h₂
-  | tru => apply hasType.tru
-  | fls => apply hasType.fls
+      · exact ih₁ h_ty₁ h₂
+      · exact ih₂ h_ty₂ h₂
+  | @hasType.tru Γ' => apply hasType.tru
+  | @hasType.fls Γ' => apply hasType.fls
 
 /-! 
 ## 保持性定理 (Preservation)
