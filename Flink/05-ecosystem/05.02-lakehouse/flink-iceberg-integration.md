@@ -315,6 +315,78 @@ WHERE event_time >= TIMESTAMP '2024-01-01 00:00:00'
 
 ---
 
+### Def-F-14-07A: Hidden Partitioning 2026 行业标准化
+
+> 🆕 v8.0 Update (2026-05)
+
+**定义**: Hidden Partitioning 从 Iceberg 的**核心差异化特性**演进为 2026 年湖仓领域的**行业标配**，成为开放表格式实现分区策略透明化的通用范式。
+
+**标准化演进形式化**:
+
+```
+HiddenPartitioning2026 = ⟨TransformSpec, EngineSupport, QueryTransparency, PartitionEvolution⟩
+
+其中:
+- TransformSpec: 标准转换函数集 {year, month, day, hour, bucket(n), truncate(w)}
+- EngineSupport: 多引擎原生支持 {Flink, Spark, Trino, Dremio, StarRocks, Doris}
+- QueryTransparency: 查询端无需显式指定分区谓词,优化器自动下推
+- PartitionEvolution: 在线分区策略变更,无需重写历史数据
+```
+
+**2026 年 Hidden Partitioning 行业采纳矩阵**:
+
+| 表格式 | Hidden Partitioning 支持 | 实现方式 | 与 Iceberg 兼容性 |
+|--------|------------------------|----------|------------------|
+| **Apache Iceberg** | ✅ 原生首创 | PartitionSpec 元数据层 | 100% |
+| **Apache Paimon** | ✅ 原生支持 | 分区变换函数映射 | 语义等价 |
+| **Delta Lake** | ✅ 2025+ 支持 | Liquid Clustering + Generated Columns | 功能等价 |
+| **Apache Hudi** | ⚠️ 有限支持 | 基于时间线的分区推断 | 需额外配置 |
+
+**开放标准属性**: Hidden Partitioning 的标准化使得"分区策略与数据物理布局解耦"成为 2026 年湖仓设计的默认假设。无论底层使用何种表格式，用户都可以享受：
+
+1. **查询透明性**: `WHERE event_time >= '2026-01-01'` 自动触发分区裁剪
+2. **策略演进性**: 从按天分区迁移到按小时分区无需重建表
+3. **引擎无关性**: 同一分区策略在不同查询引擎间语义一致
+
+**与 Flink 的深度集成**: Flink SQL 的 `PartitionComputer` 与 Iceberg 的 `PartitionSpec` 在 2026 年已实现完全对齐，隐藏分区函数可直接映射为 Flink 内置的时间处理函数。
+
+---
+
+### Def-F-14-07: Iceberg 2026 生态定位与开放标准演进
+
+> 🆕 v8.0 Update (2026-05)
+
+**定义**: 截至 2026 年，Apache Iceberg 已成为**事实上的开放表格式标准** (De Facto Open Table Format Standard)，其核心定位从"数据湖表格式"演进为"跨引擎、跨云、跨存储的统一元数据层"。
+
+**2026 年关键定位维度**:
+
+| 定位维度 | 2024 状态 | 2026 演进 | 影响 |
+|----------|-----------|-----------|------|
+| **标准地位** | 竞争格式之一 | 开放标准领导者 | 被 AWS、Snowflake、Databricks 同时采纳 |
+| **Hidden Partitioning** | 核心差异化特性 | 行业标配 | Delta Lake 2.0+、Hudi 1.0+ 均实现类似机制 |
+| **REST Catalog** | 实验性 | 生产标准 | 成为跨云元数据交换的事实协议 |
+| **生态引擎** | Spark/Flink/Trino | + Dremio/StarRocks/Doris/Presto | 几乎所有主流引擎原生支持 |
+| **存储后端** | S3/HDFS/OSS | + GCS/Azure Blob/MinIO | 完整云中立覆盖 |
+
+**开放标准属性形式化**:
+
+```
+IcebergStandard2026 = ⟨OpenSpec, MultiEngine, CloudNeutral, MetadataInteroperability⟩
+
+- OpenSpec: 元数据格式完全开源,无厂商锁定
+- MultiEngine: 同一数据集可被 Flink/Spark/Trino/Dremio 同时读写
+- CloudNeutral:  Catalog → 存储的绑定解耦,支持任意云厂商
+- MetadataInteroperability:  REST Catalog 实现跨集群、跨区域的元数据共享
+```
+
+**与 Flink 的战略协同**: Iceberg 的开放标准属性使其成为 Flink 流批统一架构的**首选存储锚点**。Flink 通过 Iceberg REST Catalog 可实现：
+
+1. 跨云数据管道的零迁移部署
+2. 多引擎混合工作负载的统一元数据视图
+3. 长期数据保留的格式稳定性保证
+
+---
+
 ## 2. 属性推导 (Properties)
 
 ### Lemma-F-14-01: Iceberg 快照的不可变性与线性历史
@@ -626,6 +698,123 @@ graph TB
     style CATALOG fill:#fce4ec,stroke:#c2185b
     style TRINO fill:#e8f5e9,stroke:#2e7d32
 ```
+
+---
+
+### 3.5 Redpanda Iceberg Topics 与 Confluent Tableflow 生态集成
+
+> 🆕 v8.0 Update (2026-05)
+
+#### Redpanda Iceberg Topics 互补性分析
+
+**Redpanda Iceberg Topics** 是 Redpanda 在 2025-2026 年推出的原生 Iceberg 集成特性，允许 Kafka 主题数据以 Iceberg 表格式直接持久化到对象存储，无需额外的 Flink/Spark ETL 作业。
+
+**架构互补性形式化**:
+
+```
+Redpanda-Iceberg-Topic = ⟨KafkaProtocol, IcebergSink, TieredStorage⟩
+
+数据流:
+  Producer → Redpanda Topic → Iceberg Table (自动转换)
+                           → Kafka Consumer (兼容模式)
+```
+
+**与 Flink 的集成关系**:
+
+| 维度 | Redpanda 原生 Iceberg | Flink + Iceberg | 协同模式 |
+|------|----------------------|-----------------|----------|
+| **延迟** | 秒级 (内置) | 分钟级 (Checkpoint) | Redpanda 做实时层,Flink 做计算层 |
+| **转换能力** | 无 (仅格式转换) | 强 (ETL/聚合/Join) | Flink 消费 Redpanda Iceberg 做二次加工 |
+| **Schema 演进** | 有限 | 完整 | Flink 侧统一管理 Schema |
+| **Exactly-Once** | At-least-once | Exactly-Once | 关键业务用 Flink 补全语义 |
+
+**Flink 读取 Redpanda Iceberg Topic 示例**:
+
+```sql
+-- Redpanda 自动生成 Iceberg 元数据,Flink 直接查询
+CREATE CATALOG redpanda_iceberg WITH (
+    'type' = 'iceberg',
+    'catalog-type' = 'rest',
+    'uri' = 'http://redpanda-iceberg-rest:8081',
+    'warehouse' = 's3://redpanda-warehouse'
+);
+
+-- 直接查询 Redpanda 主题对应的 Iceberg 表
+SELECT * FROM redpanda_iceberg.`tpcl`.user_events
+WHERE event_time > NOW() - INTERVAL '1' HOUR;
+```
+
+#### Confluent Tableflow 与 Snapshot Queries
+
+**Confluent Tableflow** 是 Confluent 在 2025 年推出的流式表管理服务，原生支持将 Kafka 主题映射为 Iceberg 兼容的"流表" (Stream Table)，并提供 **Snapshot Queries** 能力。
+
+**核心机制**:
+
+```
+Confluent Tableflow Snapshot Query:
+  Input:  Kafka Topic Stream
+  Output: Iceberg-compatible Snapshot (时间点一致性视图)
+
+  Snapshot(T) = { records | record.kafka_timestamp ≤ T }
+              ∪ { tombstones | record.kafka_timestamp ≤ T, record.value = null }
+```
+
+**Snapshot Queries 与 Flink 的协同**:
+
+| 特性 | Confluent Tableflow | Flink + Iceberg | 集成价值 |
+|------|---------------------|-----------------|----------|
+| **Snapshot 生成** | 自动 (Topic → Iceberg) | Checkpoint 触发 | Tableflow 提供低延迟快照源 |
+| **查询语义** | 仅 Snapshot 读取 | 全功能 (批/流/增量) | Flink 扩展 Tableflow 的分析能力 |
+| **时间旅行** | 有限 (Topic 保留期) | 完整 (对象存储) | Flink 将 Tableflow 快照归档到长期存储 |
+| **格式兼容** | Iceberg 1.5+ | Iceberg 1.4+ | 无缝元数据互通 |
+
+**典型集成架构**:
+
+```mermaid
+graph TB
+    subgraph "数据采集层"
+        KAFKA["Kafka Cluster<br/>Confluent Cloud"]
+    end
+
+    subgraph "Confluent Tableflow 层"
+        TF["Tableflow<br/>Topic → Iceberg Snapshot"]
+        SNAP["Snapshot Queries<br/>时间点一致性视图"]
+    end
+
+    subgraph "Flink 计算层"
+        FLINK_SOURCE["Flink Iceberg Source<br/>增量消费 Snapshot"]
+        FLINK_TRANSFORM["Flink ETL<br/>聚合/Join/打宽"]
+        FLINK_SINK["Flink Iceberg Sink<br/>归档到长期存储"]
+    end
+
+    subgraph "长期存储层"
+        ICEBERG["Apache Iceberg<br/>S3/OSS 对象存储"]
+    end
+
+    KAFKA --> TF
+    TF --> SNAP
+    SNAP --> FLINK_SOURCE
+    FLINK_SOURCE --> FLINK_TRANSFORM --> FLINK_SINK
+    FLINK_SINK --> ICEBERG
+
+    style TF fill:#e3f2fd,stroke:#1565c0
+    style FLINK_TRANSFORM fill:#fff3e0,stroke:#e65100
+    style ICEBERG fill:#c8e6c9,stroke:#2e7d32
+```
+
+**工程实践建议**:
+
+```
+场景 1: 实时 + 离线混合架构
+  Redpanda/Confluent → 实时热数据 (秒级)
+  Flink + Iceberg → 长期归档 + 复杂分析 (分钟级)
+
+场景 2: 多租户数据平台
+  Confluent Tableflow 提供标准化 Topic → Iceberg 快照
+  Flink SQL 作为多租户查询引擎,统一消费快照
+```
+
+> **交叉引用**: [Redpanda Iceberg Topics 官方文档](https://redpanda.com/iceberg-topics) | [Confluent Tableflow](https://docs.confluent.io/cloud/current/flink/reference/tableflow.html)
 
 ---
 

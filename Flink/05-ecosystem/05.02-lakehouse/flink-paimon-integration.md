@@ -29,6 +29,47 @@ $$
 
 ---
 
+### Def-F-14-01A: Paimon LSM-Tree 架构优势形式化定义
+
+> 🆕 v8.0 Update (2026-05)
+
+**定义**: Paimon 基于 LSM-Tree (Log-Structured Merge Tree) 的存储架构在 2026 年仍然是流式湖仓场景下的**技术最优解**，其优势可通过形式化的读写复杂度模型严格刻画。
+
+**LSM-Tree 优势形式化模型**:
+
+```
+PaimonLSMAdvantage = ⟨WritePath, ReadPath, CompactionPolicy, ChangelogNative⟩
+
+写入路径复杂度:
+  WriteCost = O(1)  (MemTable 追加,顺序写)
+  FlushCost = O(B)  (B = 块大小,批量刷盘)
+  CompactionAmortized = O(log_k(N/B))  (k = 层间比例因子)
+
+读取路径复杂度:
+  PointQuery = O(log_k(N/B))  (每层最多一个文件)
+  RangeScan = O(log_k(N/B) + R/B)  (R = 结果集大小)
+  FullScan = O(N/B)
+
+对比 COW (Copy-on-Write) 格式:
+  COW_WriteCost = O(N_file)  (需重写整个文件)
+  COW_UpdateCost = O(file_size)  (读取旧文件 + 写入新文件)
+```
+
+**2026 年 LSM-Tree vs COW + Deletion Vectors 对比**:
+
+| 维度 | COW + Deletion Vectors (Iceberg/Delta) | LSM-Tree (Paimon) | 流场景结论 |
+|------|----------------------------------------|-------------------|-----------|
+| **写入模型** | 读取旧文件 → 应用 DV → 重写新文件 | 追加 MemTable → 异步 Compaction | LSM 写放大更低 10x+ |
+| **实时可见性** | 分钟级 (需文件重写) | 秒级 (MemTable 直接查询) | LSM 延迟低 10-60x |
+| **更新频率适配** | 适合低频批量更新 | 适合高频流式更新 | 流场景 LSM 更优 |
+| **Compaction 开销** | 后台重写整个数据文件 | 分层增量合并 | LSM 合并更轻量 |
+| **Changelog 生成** | 需扫描全表对比或依赖外部 CDC | LSM 层间差异即变更日志 | Paimon 原生高效 |
+| **MemTable 点查** | 不支持 | 支持内存级点查 | Paimon Lookup 更快 |
+
+**核心洞察**: 2025-2026 年 Iceberg 和 Delta 引入 Deletion Vectors 是对 COW 格式更新能力的"补丁式增强"，而 Paimon 的 LSM-Tree 是**为追加写和增量消费原生设计**的存储引擎。在 Flink 主导的流式湖仓场景中，LSM-Tree 架构的写入路径复杂度 O(1) 与 COW 的 O(N_file) 存在本质差异，这种差异在高频流写入场景下被放大数个数量级。
+
+---
+
 ### Def-F-14-02: 流批统一存储语义
 
 **流批统一存储语义** (Unified Streaming-Batch Storage Semantics) 定义了单一存储层同时满足流处理和批处理访问需求的形式化契约：
@@ -514,6 +555,65 @@ CREATE CATALOG paimon_jdbc WITH (
 | **CDC 同步性能** | 基准 | 基准的 1.5x | 提升 50% |
 | **Schema Evolution** | 基础 | ✅ 增强 | 更多 DDL 操作支持 |
 
+#### 3.3.1 Paimon 与 Iceberg 元数据兼容说明
+
+> 🆕 v8.0 Update (2026-05)
+
+**定义**: Paimon 1.0+ 的 **Iceberg 元数据兼容层** (Iceberg Metadata Compatibility Layer) 是一种自动元数据桥接机制，使 Paimon 表在保持 LSM-Tree 流式写入优势的同时，可被 Iceberg 生态查询引擎直接消费。
+
+**形式化定义**:
+
+```
+IcebergCompatLayer = ⟨MetadataBridge, SnapshotMapping, TypeMapping, DeletionVectorBridge⟩
+
+其中:
+- MetadataBridge: Paimon Snapshot → Iceberg metadata.json 自动转换
+- SnapshotMapping: Paimon 提交点 ↔ Iceberg Snapshot ID 一一映射
+- TypeMapping: Paimon 类型系统 → Iceberg Type 单射映射
+- DeletionVectorBridge: L0 增量更新 → Iceberg V3 Deletion Vectors
+```
+
+Paimon 1.0+ 通过自动生成 Iceberg-compatible 元数据，实现了与 Iceberg 生态的**双向互通**。详细技术实现见本文档 [第 9 节 "Paimon 1.0：统一 Data + AI 湖格式"](#9-paimon-10统一-data--ai-湖格式)。
+
+**元数据兼容性要点**:
+
+| 兼容维度 | Paimon 能力 | Iceberg 消费方式 | 限制说明 |
+|----------|-------------|------------------|----------|
+| **数据文件** | Parquet/ORC/Avro | 直接读取 (零拷贝) | 格式完全一致 |
+| **Schema** | Paimon 类型系统 | 自动映射为 Iceberg 类型 | 见类型映射表 |
+| **Snapshot** | 每次 Commit 自动生成 | Iceberg 引擎查询历史版本 | L0 数据通过 Deletion Vector 桥接 |
+| **Partition** | Paimon 分区策略 | 映射为 Iceberg PartitionSpec | 语义等价 |
+| **Catalog** | Paimon Catalog | Hive / Hadoop / REST Catalog | 多模式可选 |
+
+**双向使用模式**:
+
+```mermaid
+graph LR
+    subgraph "写入侧"
+        FLINK["Flink SQL<br/>实时写入"] --> PAIMON["Apache Paimon<br/>LSM 存储"]
+    end
+
+    subgraph "元数据桥接"
+        META["Iceberg-compatible<br/>Metadata"]
+    end
+
+    subgraph "读取侧"
+        TRINO["Trino / Presto"] --> ICEBERG_CATALOG["Iceberg Catalog"]
+        SPARK["Spark SQL"] --> ICEBERG_CATALOG
+        HIVE["Hive"] --> ICEBERG_CATALOG
+    end
+
+    PAIMON --> META
+    META --> ICEBERG_CATALOG
+
+    style PAIMON fill:#c8e6c9,stroke:#2e7d32
+    style ICEBERG_CATALOG fill:#e3f2fd,stroke:#1565c0
+```
+
+> **交叉引用**: [Def-F-14-09: Iceberg 兼容性接口](#def-f-14-09-iceberg-兼容性接口) 提供了完整的配置方式和类型映射；[Thm-F-14-04](#thm-f-14-04-paimon-iceberg-跨引擎查询一致性定理) 证明了跨引擎查询一致性。
+
+---
+
 ### 3.4 流数据库与 Lakehouse 的集成关系
 
 Paimon 作为流批统一的 Lakehouse 存储格式，与流数据库（Streaming Database）的物化视图机制存在深层的理论关联：
@@ -569,6 +669,24 @@ Paimon 作为流批统一的 Lakehouse 存储格式，与流数据库（Streamin
 ├── 无需全表扫描生成 Change Log
 └── 支持流式增量消费
 ```
+
+#### 4.1.1 LSM-Tree 架构优势的 2026 年再审视
+
+> 🆕 v8.0 Update (2026-05)
+
+随着 Iceberg、Delta Lake 等 Copy-on-Write (COW) 格式在 2025-2026 年陆续引入 Deletion Vectors 和增量更新能力，LSM-Tree 架构的**原生追加写优势**反而更加凸显：
+
+| 对比维度 | COW + Deletion Vectors (Iceberg/Delta) | LSM-Tree (Paimon) | 结论 |
+|----------|----------------------------------------|-------------------|------|
+| **写入路径** | 读取旧文件 → 应用 Delete Vector → 重写新文件 | 追加 MemTable → 异步 Compaction | LSM 写放大更低 |
+| **实时延迟** | 分钟级 (需重写文件) | 秒级 (MemTable 可见) | LSM 延迟低 10-60x |
+| **更新频率** | 适合低频批量更新 | 适合高频流式更新 | 流场景 LSM 更优 |
+| **Compaction 开销** | 后台重写数据文件 | 分层合并,增量成本 | LSM 合并更轻量 |
+| **Changelog 生成** | 需扫描全表对比 | LSM 层间差异即变更 | Paimon 原生高效 |
+
+**核心洞察**: Deletion Vectors 是 COW 格式对更新场景的"补丁"，而 LSM-Tree 是**为追加写和增量消费原生设计**的存储引擎。在 Flink 主导的流式湖仓场景中，Paimon 的 LSM 架构仍是技术最优解。
+
+---
 
 ### 4.2 变更日志生成机制的工程权衡
 

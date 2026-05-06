@@ -493,7 +493,7 @@ graph TD
 
 | 连接器 | 最低版本 | 推荐版本 | 最高测试版本 |
 |--------|----------|----------|--------------|
-| **Kafka** | 0.11 | 2.8+ / 3.5+ | 3.7 |
+| **Kafka** | 0.11 | 2.8+ / 3.5+ | **4.0** 🆕 Kafka 4.0 Update |
 | **Pulsar** | 2.8 | 2.11+ / 3.0+ | 3.3 |
 | **MySQL** | 5.6 | 8.0+ | 8.4 |
 | **PostgreSQL** | 9.6 | 14+ | 16 |
@@ -857,6 +857,53 @@ stream.sinkTo(sink);
 | `enable.idempotence` | Sink | true | 幂等生产者 |
 | `transaction.timeout.ms` | Sink | 60000 | 事务超时 |
 | `delivery.guarantee` | Sink | AT_LEAST_ONCE | 交付保证 |
+
+**Kafka 4.0 兼容性说明** 🆕 Kafka 4.0 Update：
+
+| 兼容性维度 | 说明 |
+|-----------|------|
+| **Broker 兼容性** | Flink Kafka Connector 3.2.x 可与 Kafka 4.0 Broker 正常通信（Kafka 保持协议向后兼容） |
+| **KRaft 模式** | Kafka 4.0 仅支持 KRaft 模式，Flink 无需 ZooKeeper 配置，仅需 `bootstrap.servers` |
+| **KIP-848 新消费者协议** | Flink Kafka Connector 3.2.x 内部使用 `kafka-clients` 3.7.x，无法利用 KIP-848 的新协议特性；建议关注 Flink Connector 3.3+ |
+| **Java 版本要求** | Kafka 4.0 Broker 要求 Java 17，Clients 要求 Java 11；Flink 1.19+ 已满足 Java 11 要求 |
+| **废弃 API 影响** | Kafka 4.0 移除了旧 Producer/Consumer API（0.8 时代），Flink Connector 使用现代 API，不受影响 |
+| **事务语义** | Kafka 4.0 事务协调器基于 KRaft，语义不变，但 `transaction.timeout.ms` 建议 ≥ `checkpointInterval + checkpointTimeout` |
+
+**Kafka 4.0 配置示例**：
+
+```java
+// [伪代码片段 - 不可直接运行] 仅展示核心逻辑
+// Kafka 4.0 KRaft 模式下的 Flink Source 配置
+KafkaSource<String> source = KafkaSource.<String>builder()
+    .setBootstrapServers("kafka-kraft-1:9092,kafka-kraft-2:9092,kafka-kraft-3:9092")
+    .setTopics("input-topic")
+    .setGroupId("flink-consumer-group")
+    .setStartingOffsets(OffsetsInitializer.earliest())
+    .setValueOnlyDeserializer(new SimpleStringSchema())
+    // Kafka 4.0 建议显式配置隔离级别以利用 KRaft 改进的事务一致性
+    .setProperty("isolation.level", "read_committed")
+    // 若 Broker 启用 KIP-848，保持自动提交关闭（Flink 管理偏移量）
+    .setProperty("enable.auto.commit", "false")
+    .setProperty("partition.discovery.interval.ms", "10000")
+    .build();
+
+// Kafka 4.0 KRaft 模式下的 Flink Sink 配置
+KafkaSink<String> sink = KafkaSink.<String>builder()
+    .setBootstrapServers("kafka-kraft-1:9092,kafka-kraft-2:9092,kafka-kraft-3:9092")
+    .setRecordSerializer(KafkaRecordSerializationSchema.builder()
+        .setTopic("output-topic")
+        .setValueSerializationSchema(new SimpleStringSchema())
+        .build())
+    .setDeliveryGuarantee(DeliveryGuarantee.EXACTLY_ONCE)
+    // Kafka 4.0 事务超时建议保留充裕余量
+    .setProperty("transaction.timeout.ms", "900000")
+    .setProperty("enable.idempotence", "true")
+    .setProperty("acks", "all")
+    .setTransactionalIdPrefix("flink-job-")
+    .build();
+```
+
+> **注意**：若使用 Kafka 4.0 客户端库（`kafka-clients` ≥ 4.0.0）手动构建连接器，需确保 Flink 运行时为 Java 11+。Flink 1.18 及以下版本默认使用 Java 8，与 Kafka 4.0 客户端库不兼容。
 
 ---
 

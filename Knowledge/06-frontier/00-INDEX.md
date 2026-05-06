@@ -1,6 +1,6 @@
 # Knowledge/06-frontier 前沿技术专题索引
 
-> 所属阶段: Knowledge/06-frontier | 状态: 活跃维护 | 最后更新: 2026-04-23
+> 所属阶段: Knowledge/06-frontier | 状态: 活跃维护 | 最后更新: 2026-05-06
 
 ---
 
@@ -78,6 +78,12 @@
 | [stateful-serverless.md](stateful-serverless.md) | 有状态Serverless | L4 | ~32KB | 2定义+2引理 |
 | [serverless-streaming-cost-optimization.md](serverless-streaming-cost-optimization.md) | Serverless成本优化 | L3 | ~30KB | 1定义+2命题 |
 
+### Kafka前沿
+
+| 文档 | 主题 | 形式化等级 | 大小 | 形式化元素 |
+|------|------|-----------|------|-----------|
+| [kafka-kip-932-queues.md](kafka-kip-932-queues.md) | KIP-932 Kafka队列语义 ⭐NEW | L3-L4 | ~23KB | 3定义+2命题 |
+
 ### 流数据库与存储
 
 | 文档 | 主题 | 形式化等级 | 大小 | 形式化元素 |
@@ -120,6 +126,7 @@
 | [rust-streaming-emerging-2025.md](rust-streaming-emerging-2025.md) | 2025 Rust流新兴 | L3 | ~35KB | 2定义+2引理 |
 | [rust-streaming-production-cases.md](rust-streaming-production-cases.md) | Rust生产案例 | L2-L3 | ~38KB | 1定义+1命题 |
 | [rust-2024-edition-streaming.md](rust-2024-edition-streaming.md) | Rust 2024版流处理 | L3 | ~32KB | 2定义+1引理 |
+| [bytewax-python-native-streaming.md](bytewax-python-native-streaming.md) | Bytewax Python原生流处理 ⭐NEW | L4 | ~15KB | 3定义+2命题 |
 
 ### 实时特征与ML
 

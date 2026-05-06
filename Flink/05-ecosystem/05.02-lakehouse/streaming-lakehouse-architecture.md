@@ -107,6 +107,111 @@ StreamingIngestion = ⟨SourceStream, IngestionMode, CommitProtocol, Consistency
 
 ---
 
+### Def-F-05-42A: Streaming-first Lakehouse 范式
+
+> 🆕 v8.0 Update (2026-05)
+
+**定义**: Streaming-first Lakehouse 是一种以**实时流处理为默认数据入口**、以开放湖仓格式为统一存储层的架构范式。它颠覆了传统"批处理为主、流处理为补充"的 Lambda 思维，将流式写入、增量消费和实时分析作为系统的核心设计假设。
+
+**形式化定义**:
+
+```
+StreamingFirstLakehouse = ⟨StreamIngestion, IncrementalProcessing, RealTimeServing, BatchCompatibility⟩
+
+核心假设:
+  1. 数据首先以流形式到达 (Stream-first assumption)
+  2. 所有数据写入都是追加或增量更新 (Append-only / Incremental update)
+  3. 批处理是流处理在"有限时间窗口"上的特例 (Batch = Bounded Stream)
+  4. 分析查询消费的是流处理产出的物化结果 (Analytics reads materialized views)
+```
+
+**与传统 Lakehouse 的范式对比**:
+
+| 维度 | 传统 Lakehouse (Batch-first) | Streaming-first Lakehouse | 影响 |
+|------|------------------------------|---------------------------|------|
+| **默认写入模式** | 批量加载 (小时/天级) | 实时流写入 (秒/分钟级) | 数据新鲜度提升 100x+ |
+| **处理语义** | 全量扫描 + 重写 | 增量计算 + 追加 | 计算成本降低 50-70% |
+| **Schema 变更** | 离线 DDL 窗口 | 在线演进,流不中断 | 业务连续性保障 |
+| **查询模式** | 直接扫描原始数据 | 扫描物化视图/增量结果 | 查询延迟降低 10x |
+| **容错模型** | 作业失败重跑 | Checkpoint 精确恢复 | 恢复时间从小时→秒 |
+| **代表技术栈** | Spark + Iceberg/Delta | Flink + Paimon/Iceberg | Flink 成为核心引擎 |
+
+**Streaming-first 分层架构**:
+
+```mermaid
+graph TB
+    subgraph "实时摄取层"
+        CDC["CDC<br/>MySQL/PostgreSQL"]
+        EVENT["事件流<br/>Kafka/Pulsar"]
+        API["API/日志<br/>实时接入"]
+    end
+
+    subgraph "流处理层 (Flink)"
+        ETL["实时 ETL<br/> cleansing / enrichment"]
+        AGG["增量聚合<br/>窗口计算"]
+        JOIN["流式 Join<br/>维度关联"]
+    end
+
+    subgraph "湖仓存储层"
+        PAIMON_HOT["Paimon 热数据<br/>秒级可见"]
+        ICEBERG_WARM["Iceberg 温数据<br/>分钟级归档"]
+        DELTA_COLD["Delta 冷数据<br/>长期归档"]
+    end
+
+    subgraph "实时服务层"
+        QUERY["即席查询<br/>Trino/StarRocks"]
+        SERVING["在线 Serving<br/>Feature Store"]
+        BI["实时 BI<br/>秒级刷新"]
+    end
+
+    CDC --> ETL
+    EVENT --> ETL
+    API --> ETL
+
+    ETL --> JOIN --> AGG
+    AGG --> PAIMON_HOT
+    ETL --> ICEBERG_WARM
+
+    PAIMON_HOT --> QUERY
+    PAIMON_HOT --> SERVING
+    ICEBERG_WARM --> QUERY
+    ICEBERG_WARM --> BI
+
+    style PAIMON_HOT fill:#ff9999,stroke:#c2185b
+    style ETL fill:#e3f2fd,stroke:#1565c0
+    style QUERY fill:#c8e6c9,stroke:#2e7d32
+```
+
+**Streaming-first 范式与传统 Lambda 架构的本质区别**:
+
+```
+传统 Lambda (Batch-first):
+┌─────────────────────────────────────────────────────────────┐
+│  数据首先以批形式落地 (小时/天级)                            │
+│  流处理作为"补丁"附加在批处理之上                            │
+│  流层与批层数据可能不一致                                    │
+│  维护成本高: 两套代码 + 两套存储                             │
+└─────────────────────────────────────────────────────────────┘
+
+Streaming-first (Stream-first):
+┌─────────────────────────────────────────────────────────────┐
+│  数据首先以流形式实时摄取 (秒/分钟级)                        │
+│  批处理是"有界流"的特例                                      │
+│  单一存储层服务所有访问模式                                  │
+│  统一语义: Flink SQL 一套代码覆盖流批                        │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**实现前提**:
+
+1. **存储引擎支持追加写优化**: Paimon LSM-Tree 或 Iceberg 增量写入
+2. **计算引擎支持流批统一**: Flink 的流批一体语义
+3. **元数据层支持实时演进**: REST Catalog + 在线 Schema 变更
+4. **消费端支持增量读取**: 从快照差分或 Changelog 消费
+5. **分层存储支持热温冷分离**: Fluss 热层 (亚秒级) + Paimon 温层 (秒级) + Iceberg 冷层 (分钟级归档)
+
+---
+
 ### Def-F-05-43: Flink + Iceberg 动态 Iceberg Sink 与隐藏分区
 
 **定义**: Flink Dynamic Iceberg Sink 是在 Iceberg 1.5+ 中引入的流式写入优化机制，支持基于写入负载的自动分桶、隐藏分区 (Hidden Partitioning) 和 Z-Order 数据布局优化。
@@ -447,6 +552,120 @@ flowchart TD
     style HUDI fill:#fff3e0,stroke:#e65100
     style DELTA fill:#f3e5f5,stroke:#7b1fa2
 ```
+
+---
+
+### 3.1.1 四大湖仓格式 2026 年对比更新
+
+> 🆕 v8.0 Update (2026-05)
+
+截至 2026 年，四大湖仓格式在流式场景的能力边界已进一步收敛，但在核心架构哲学上仍存在本质差异：
+
+| 维度 | Apache Iceberg | Apache Paimon | Delta Lake | Apache Hudi |
+|------|---------------|---------------|------------|-------------|
+| **2026 核心定位** | 开放标准领导者 | 流式原生首选 | Databricks 生态核心 | 增量处理专家 |
+| **存储引擎** | COW + Delete Vectors | LSM-Tree | COW + Deletion Vectors | MOR / COW |
+| **流式延迟 (2026)** | 分钟级 → 秒级 (V3) | 秒级 (原生) | 分钟级 | 秒级~分钟级 |
+| **增量消费 (2026)** | ⭐⭐⭐⭐ 增强 (Streaming Reads) | ⭐⭐⭐⭐⭐ 原生 Changelog | ⭐⭐⭐⭐ CDF 成熟 | ⭐⭐⭐⭐⭐ 时间线服务 |
+| **Flink 集成 (2026)** | ⭐⭐⭐⭐⭐ REST Catalog 成熟 | ⭐⭐⭐⭐⭐ Flink PMC 项目 | ⭐⭐⭐⭐ delta-flink 增强 | ⭐⭐⭐⭐ 连接器稳定 |
+| **开放生态 (2026)** | ⭐⭐⭐⭐⭐ 最广泛 | ⭐⭐⭐⭐ Iceberg 兼容 | ⭐⭐⭐⭐ Databricks 主导 | ⭐⭐⭐⭐ 开源活跃 |
+| **Hidden Partitioning** | ✅ 原生首创 | ✅ 支持 | ✅ 2025+ 支持 | ⚠️ 有限支持 |
+| **AI/ML 负载 (2026)** | ⭐⭐⭐⭐ 通过 PyIceberg | ⭐⭐⭐⭐⭐ Lance + PyPaimon | ⭐⭐⭐⭐ Unity Catalog | ⭐⭐⭐ 需外部集成 |
+
+**2026 年关键演进趋势**:
+
+```
+趋势 1: 格式能力收敛
+  所有主流格式均支持:
+  - 增量消费 (Incremental Consumption)
+  - 时间旅行 (Time Travel)
+  - Schema 演进 (Schema Evolution)
+  - 隐藏分区 (Hidden Partitioning)
+
+趋势 2: 架构哲学分化
+  - Iceberg: 开放标准优先,生态最广
+  - Paimon: 流式原生优先,Flink 深度集成
+  - Delta: Databricks 生态闭环,性能极致
+  - Hudi: 增量处理专家,更新优化
+
+趋势 3: Streaming-first 成为共识
+  所有格式均在增强实时写入能力,
+  但 Paimon 的 LSM 架构在原生延迟上仍保持领先
+```
+
+**选型建议更新 (2026)**:
+
+| 场景 | 2024 推荐 | 2026 推荐 | 变化原因 |
+|------|-----------|-----------|----------|
+| 强实时 + Flink 原生 | Paimon | Paimon | LSM 架构持续领先 |
+| 多引擎共享 + 开放标准 | Iceberg | Iceberg | REST Catalog 成为标准 |
+| Databricks 生态 | Delta | Delta | Photon 引擎深度优化 |
+| 高频 CDC + 增量 ETL | Hudi | Hudi / Paimon | Paimon 增量消费更成熟 |
+| Data + AI 统一 | - | Paimon | Lance 格式 + PyPaimon |
+
+> **交叉引用**: 详细对比见 [Def-F-05-41](#def-f-05-41-开放表格式-open-table-format) 基础定义；Flink 与 Iceberg 集成见 [flink-iceberg-integration.md](./flink-iceberg-integration.md)；Flink 与 Paimon 集成见 [flink-paimon-integration.md](./flink-paimon-integration.md)。
+
+---
+
+### 3.1.2 四格式 2026 年深度对比矩阵
+
+> 🆕 v8.0 Update (2026-05)
+
+在 3.1.1 节基础对比之上，本节从**架构哲学**、**流式能力成熟度**和**生态锁定风险**三个维度进行深度剖析：
+
+**架构哲学对比**:
+
+| 维度 | Apache Iceberg | Apache Paimon | Delta Lake | Apache Hudi |
+|------|---------------|---------------|------------|-------------|
+| **核心设计哲学** | 开放标准优先 | 流式原生优先 | 事务完整性优先 | 增量处理优先 |
+| **存储引擎本质** | 不可变文件集 + 元数据层 | LSM-Tree 原生引擎 | 事务日志 + Parquet | MOR/COW 双引擎 |
+| **数据新鲜度假设** | 分钟级可接受 | 秒级必须满足 | 分钟级可接受 | 秒级~分钟级 |
+| **更新模型本质** | 追加为主,更新为辅 | 追加即更新 | 事务性更新 | 增量合并 |
+| **元数据设计** | 三层元数据 (Catalog → Snapshot → Manifest) | 快照 + Manifest + LSM 层级 | 事务日志版本链 | 时间线服务 |
+
+**流式能力成熟度 2026**:
+
+| 流式维度 | Iceberg 2026 | Paimon 2026 | Delta 2026 | Hudi 2026 |
+|----------|-------------|-------------|-----------|----------|
+| **流写入延迟** | 秒级~分钟级 (V3 Streaming Writes) | 秒级 (MemTable 原生) | 分钟级 | 秒级~分钟级 |
+| **增量消费成熟度** | ⭐⭐⭐⭐ Streaming Reads GA | ⭐⭐⭐⭐⭐ 原生 Changelog | ⭐⭐⭐⭐ CDF 成熟 | ⭐⭐⭐⭐⭐ 时间线服务 |
+| **CDC 出湖能力** | 需外部转换 | ⭐⭐⭐⭐⭐ 内置 Changelog Producer | 需外部工具 | ⭐⭐⭐⭐ 内置 |
+| **Lookup / 点查** | 有限支持 | ⭐⭐⭐⭐⭐ 原生 Lookup Join | ⭐⭐⭐⭐ 支持 | ⭐⭐⭐⭐ 支持 |
+| **流批结果一致性** | 快照隔离保证 | 快照 + LSM 一致性保证 | 版本隔离保证 | MVCC 保证 |
+| **实时 Compaction** | 外部调度 | ⭐⭐⭐⭐⭐ 原生异步 | 自动 / 托管 | 自动 (MOR) |
+
+**生态锁定风险评估 (2026)**:
+
+| 风险维度 | Iceberg | Paimon | Delta | Hudi |
+|----------|---------|--------|-------|------|
+| **厂商锁定风险** | 🟢 极低 (Apache TLP, 多厂商) | 🟢 低 (Apache TLP, 阿里主导) | 🟡 中 (Databricks 主导) | 🟢 低 (Apache TLP) |
+| **引擎切换成本** | 🟢 低 (REST Catalog 标准) | 🟡 中 (Flink 最优,其他需适配) | 🟡 中 (Databricks 生态深度) | 🟢 低 (多引擎连接器) |
+| **数据迁移成本** | 🟢 低 (开放 Parquet + 标准元数据) | 🟢 低 (Parquet + Iceberg 兼容) | 🟡 中 (专有事务日志格式) | 🟢 低 (开放格式) |
+| **长期可持续性** | 🟢 高 (最广泛采纳) | 🟢 高 (Flink 生态核心) | 🟢 高 (Databricks 商业支撑) | 🟢 高 (活跃开源社区) |
+
+**2026 年选型决策更新**:
+
+```
+决策逻辑 (2026 版):
+┌─────────────────────────────────────────────────────────────┐
+│  1. 是否需要亚秒级实时写入 + Lookup Join?                    │
+│     → 是: Apache Paimon (唯一原生满足)                       │
+│                                                             │
+│  2. 是否需要多引擎共享 + 最低锁定风险?                       │
+│     → 是: Apache Iceberg (REST Catalog + 最广泛生态)        │
+│                                                             │
+│  3. 是否在 Databricks 平台内?                               │
+│     → 是: Delta Lake (Photon 引擎 + Unity Catalog)          │
+│                                                             │
+│  4. 是否需要最成熟的增量 ETL + CDC 处理?                     │
+│     → 是: Apache Hudi 或 Apache Paimon                      │
+│                                                             │
+│  5. 是否需要 Data + AI 统一存储?                            │
+│     → 是: Apache Paimon (Lance + PyPaimon + BLOB)           │
+└─────────────────────────────────────────────────────────────┘
+```
+
+> **交叉引用**: 基础定义见 [Def-F-05-41](#def-f-05-41-开放表格式-open-table-format)；Flink 与各格式集成详见 [flink-iceberg-integration.md](./flink-iceberg-integration.md) 和 [flink-paimon-integration.md](./flink-paimon-integration.md)。
 
 ---
 
@@ -2103,25 +2322,15 @@ flowchart TD
 
 ## 8. 引用参考 (References)
 
-[^1]: M. Armbrust et al., "Lakehouse: A New Generation of Open Platforms that Unify Data Warehousing and Advanced Analytics", CIDR, 2021. https://www.cidrdb.org/cidr2021/papers/cidr2021_paper17.pdf
 
-[^2]: Apache Iceberg Documentation, "Table Spec", 2025. https://iceberg.apache.org/spec/
 
-[^3]: Apache Paimon Documentation, "Streaming Lakehouse Format", 2025. https://paimon.apache.org/docs/master/concepts/overview/
 
-[^4]: Delta Lake Documentation, "Delta Lake Transaction Log", 2025. https://docs.delta.io/latest/delta-storage.html
 
-[^5]: Apache Hudi Documentation, "Write Operations & Table Types", 2025. https://hudi.apache.org/docs/write_operations/
 
-[^6]: Apache Flink Documentation, "Flink + Iceberg Integration", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/table/iceberg/
 
-[^7]: Apache Flink Documentation, "Flink + Paimon Integration", 2025. https://nightlies.apache.org/flink/flink-docs-stable/docs/connectors/table/paimon/
 
-[^8]: B. Chambers and M. Zaharia, "Spark: The Definitive Guide", O'Reilly Media, 2018.
 
-[^9]: Apache Iceberg Blog, "Hidden Partitioning", 2022. https://iceberg.apache.org/docs/latest/partitioning/
 
-[^10]: "The Dataflow Model: A Practical Approach to Balancing Correctness, Latency, and Cost in Massive-Scale, Unbounded, Out-of-Order Data Processing", PVLDB, 8(12), 2015.
 
 ---
 
