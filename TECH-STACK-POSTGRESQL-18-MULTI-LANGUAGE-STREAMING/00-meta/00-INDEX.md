@@ -13,10 +13,10 @@
 2. **语言生态深度解析**（Language Ecosystems）— 四语言各自流处理框架、特性、适用场景
 3. **PG18 集成模式**（PG18 Integration）— CDC 四种权威模式、Outbox 多语言实现、事件溯源
 4. **组合架构设计**（Composite Architectures）— 跨语言混合管道、统一平台决策、🌿 精益无 MQ 架构
-5. **生产案例与反例**（Production Patterns）— 成功案例、失败反模式、选型决策矩阵、14+ 行业深度案例
+5. **生产案例与反例**（Production Patterns）— 成功案例、失败反模式、选型决策矩阵、18+ 行业深度案例
 6. **性能基准对比**（Performance Benchmarks）— 跨语言吞吐量/延迟对比
 7. **前沿趋势**（Frontier）— PG19 前瞻与 AI 流处理
-8. **形式化验证**（Formal Verification）— 流语义形式化验证、Lean4/Coq 映射、证明复杂度分级
+8. **形式化验证**（Formal Verification）— 流语义形式化验证、Lean4/Coq 代码片段、证明复杂度分级
 
 ## 目录结构
 
@@ -45,10 +45,7 @@ TECH-STACK-POSTGRESQL-18-MULTI-LANGUAGE-STREAMING/
 │   ├── 04.03-pg18-typescript-edge-stack.md
 │   ├── 04.04-pg18-unified-platform.md
 │   └── 04.05-pg18-lean-architecture.md  # 🌿 最精益无MQ架构论证
-├── 05-production-patterns/     # 生产案例与反例 (17篇, ~460KB)
-│   ├── ... (14 行业案例 + 3 通用)
-├── 08-formal-verification/     # 形式化验证代码 (1篇, 23.6KB)
-│   └── 08.02-lean4-coq-formalization-snippets.md
+├── 05-production-patterns/     # 生产案例与反例 (19篇, ~640KB)
 │   ├── 05.01-success-case-studies.md
 │   ├── 05.02-failure-anti-patterns.md
 │   ├── 05.03-decision-matrix.md
@@ -65,11 +62,18 @@ TECH-STACK-POSTGRESQL-18-MULTI-LANGUAGE-STREAMING/
 │   ├── 05.14-industry-case-online-education.md            # 📚 在线教育
 │   ├── 05.15-industry-case-ad-bidding-rtb.md              # 📢 广告 RTB
 │   ├── 05.16-industry-case-defi-price-monitoring.md       # ⛓️ DeFi 监控
-│   └── 05.17-industry-case-observability-logging.md       # 📊 可观测性
+│   ├── 05.17-industry-case-observability-logging.md       # 📊 可观测性
+│   ├── 05.18-industry-case-dynamic-pricing.md             # ✈️ 实时定价
+│   ├── 05.19-industry-case-smart-home.md                  # 🏠 智能家居
+│   ├── 05.20-industry-case-insurance-fraud.md             # 🛡️ 保险反欺诈
+│   ├── 05.21-industry-case-content-moderation.md          # 🔍 内容审核
+│   └── 05.22-industry-case-sports-esports-live.md         # ⚽ 体育电竞
 ├── 06-performance-benchmarks/  # 性能基准 (1篇, 10.3KB)
 │   └── 06.01-latency-throughput-comparison.md
 ├── 07-frontier/                # 前沿趋势 (1篇, 8.7KB)
 │   └── 07.01-pg19-roadmap.md
+└── 08-formal-verification/     # 形式化验证代码 (1篇, 23.6KB)
+    └── 08.02-lean4-coq-formalization-snippets.md
 ```
 
 ## 文档清单与快速导航
@@ -112,7 +116,7 @@ TECH-STACK-POSTGRESQL-18-MULTI-LANGUAGE-STREAMING/
 | **C4** | [04.04](../04-composite-architectures/04.04-pg18-unified-platform.md) | 统一平台架构 | 13.1KB | ✅ |
 | **C5** | [04.05](../04-composite-architectures/04.05-pg18-lean-architecture.md) | 精益无 MQ 架构 🌿 | 16.2KB | ✅ |
 
-### 生产案例层（14 个垂直行业）
+### 生产案例层（19 个垂直行业）
 
 | 编号 | 文档 | 行业 | 核心场景 | 规模 | 状态 |
 |------|------|------|---------|------|------|
@@ -128,28 +132,35 @@ TECH-STACK-POSTGRESQL-18-MULTI-LANGUAGE-STREAMING/
 | **P10** | [05.10](../05-production-patterns/05.10-industry-case-ecommerce-flash-sale.md) | ⚡ 电商 | 秒杀库存 | 24.9KB | ✅ |
 | **P11** | [05.11](../05-production-patterns/05.11-industry-case-social-feed.md) | 💬 社交 | Feed 实时流 | 31.5KB | ✅ |
 | **P12** | [05.12](../05-production-patterns/05.12-industry-case-energy-iot.md) | ⚡ 能源 | 智能电网 | 23.5KB | ✅ |
-| **P13** | [05.13](../05-production-patterns/05.13-industry-case-smart-city-traffic.md) | 🏙️ 城市 | 交通监控 | 40.1KB | ✅ |
-| **P14** | [05.14](../05-production-patterns/05.14-industry-case-online-education.md) | 📚 教育 | 实时互动 | 38.1KB | ✅ |
+| **P13** | [05.13](../05-production-patterns/05.13-industry-case-smart-city-traffic.md) | 🏙️ 城市 | 交通监控 | 26.3KB | ✅ |
+| **P14** | [05.14](../05-production-patterns/05.14-industry-case-online-education.md) | 📚 教育 | 实时互动 | 24.0KB | ✅ |
 | **P15** | [05.15](../05-production-patterns/05.15-industry-case-ad-bidding-rtb.md) | 📢 广告 | RTB 竞价 | 48.4KB | ✅ |
 | **P16** | [05.16](../05-production-patterns/05.16-industry-case-defi-price-monitoring.md) | ⛓️ DeFi | 价格监控 | 25.6KB | ✅ |
 | **P17** | [05.17](../05-production-patterns/05.17-industry-case-observability-logging.md) | 📊 运维 | 可观测性 | 25.2KB | ✅ |
+| **P18** | [05.18](../05-production-patterns/05.18-industry-case-dynamic-pricing.md) | ✈️ 航空/酒店 | 实时定价 | 52.3KB | ✅ |
+| **P19** | [05.19](../05-production-patterns/05.19-industry-case-smart-home.md) | 🏠 家居 | 智能家居 | 46.1KB | ✅ |
+| **P20** | [05.20](../05-production-patterns/05.20-industry-case-insurance-fraud.md) | 🛡️ 保险 | 反欺诈 | 24.8KB | ✅ |
+| **P21** | [05.21](../05-production-patterns/05.21-industry-case-content-moderation.md) | 🔍 社交 | 内容审核 | 24.1KB | ✅ |
+| **P22** | [05.22](../05-production-patterns/05.22-industry-case-sports-esports-live.md) | ⚽ 体育 | 体育电竞 | 26.1KB | ✅ |
 
-### 性能与前沿
+### 性能、前沿与形式化验证
 
 | 编号 | 文档 | 主题 | 规模 | 状态 |
 |------|------|------|------|------|
 | **B1** | [06.01](../06-performance-benchmarks/06.01-latency-throughput-comparison.md) | 性能基准对比 | 10.3KB | ✅ |
 | **F1** | [07.01](../07-frontier/07.01-pg19-roadmap.md) | PG19 前瞻 | 8.7KB | ✅ |
+| **V1** | [01.06](../01-theory-foundation/01.06-formal-verification-streaming-semantics.md) | 流语义形式化验证 | 14.0KB | ✅ |
+| **V2** | [08.02](../08-formal-verification/08.02-lean4-coq-formalization-snippets.md) | Lean4/Coq 代码片段 | 23.6KB | ✅ |
 
 ## 质量门禁状态
 
 | 检查项 | 状态 | 详情 |
 |--------|------|------|
-| 六段式模板 | ✅ 100% | 37/37 核心文档，8 章节结构完整 |
+| 六段式模板 | ✅ 100% | 43/43 核心文档，8 章节结构完整 |
 | 内部交叉引用 | ✅ 0 broken links | 全部相对链接已验证 |
-| Mermaid 语法 | ✅ 0 errors | 100 张图表 |
-| 形式化元素唯一性 | ✅ 131 元素 | Def:63 Lemma:20 Prop:13 Thm:35 |
-| 引用格式 [^n] | ✅ 239 条引用 | 权威来源覆盖 |
+| Mermaid 语法 | ✅ 0 errors | 112 张图表 |
+| 形式化元素唯一性 | ✅ 189 元素 | Def:83 Lemma:32 Prop:19 Thm:55 |
+| 引用格式 [^n] | ✅ 211+ 条引用 | 权威来源覆盖 |
 
 ## 🌿 精益架构核心洞察
 
@@ -186,7 +197,7 @@ Latency: 100-500ms        →    Latency: 10-50ms
 
 > **Thm-TS-20-01**（组件完备性定理）: 对于单一消费者 SQL 分析场景，{PG18, RisingWave} 构成完备架构，任何额外组件均为冗余。
 
-## 行业案例覆盖矩阵（14 个垂直领域）
+## 行业案例覆盖矩阵（19 个垂直领域）
 
 | 行业 | 核心场景 | 技术组合 | 延迟 | 成本/月 | 文档 |
 |------|---------|---------|------|--------|------|
@@ -204,19 +215,24 @@ Latency: 100-500ms        →    Latency: 10-50ms
 | 📢 广告 | RTB 竞价 | PG18 + Rust + RisingWave | P99 < 100ms | ~$2,000 | [P15](../05-production-patterns/05.15-industry-case-ad-bidding-rtb.md) |
 | ⛓️ DeFi | 价格监控 | PG18 + Rust + RisingWave | < 16s | ~$800 | [P16](../05-production-patterns/05.16-industry-case-defi-price-monitoring.md) |
 | 📊 运维 | 可观测性 | PG18 + Go + RisingWave | P95 < 1s | ~$600 | [P17](../05-production-patterns/05.17-industry-case-observability-logging.md) |
+| ✈️ 航旅 | 实时定价 | PG18 + Python + RisingWave | P95 < 5s | ~$1,500 | [P18](../05-production-patterns/05.18-industry-case-dynamic-pricing.md) |
+| 🏠 家居 | 智能家居 | PG18 + TypeScript + RisingWave | P95 < 1s | ~$600 | [P19](../05-production-patterns/05.19-industry-case-smart-home.md) |
+| 🛡️ 保险 | 反欺诈 | PG18 + Python + RisingWave | P95 < 3s | ~$800 | [P20](../05-production-patterns/05.20-industry-case-insurance-fraud.md) |
+| 🔍 社交 | 内容审核 | PG18 + Python + RisingWave | P95 < 500ms | ~$1,000 | [P21](../05-production-patterns/05.21-industry-case-content-moderation.md) |
+| ⚽ 体育 | 体育电竞 | PG18 + Go + RisingWave | P95 < 1s | ~$800 | [P22](../05-production-patterns/05.22-industry-case-sports-esports-live.md) |
 
 ## 全局统计
 
 ```
 TECH-STACK-POSTGRESQL-18-MULTI-LANGUAGE-STREAMING
-├── 文档总数:     39 篇
-├── 总内容量:     896.6 KB
-├── 总行数:       23,094 行
-├── 形式化元素:   150 (Def:67 Lemma:22 Prop:14 Thm:47)
-├── Mermaid 图表: 102 张
-├── 引用:         249 条
-├── 行业案例:     14 个垂直领域
-├── 代码示例:     70+ 个
+├── 文档总数:     44 篇
+├── 总内容量:     1,061.5 KB (~1.04 MB)
+├── 总行数:       27,521 行
+├── 形式化元素:   189 (Def:83 Lemma:32 Prop:19 Thm:55)
+├── Mermaid 图表: 112 张
+├── 引用:         211+ 条
+├── 行业案例:     19 个垂直领域
+├── 代码示例:     80+ 个
 ├── Broken links: 0
 ├── Section issues: 0
 └── 质量门禁:     全部通过 ✅
