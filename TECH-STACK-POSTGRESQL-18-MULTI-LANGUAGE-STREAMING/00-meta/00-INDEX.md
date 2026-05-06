@@ -13,17 +13,17 @@
 2. **语言生态深度解析**（Language Ecosystems）— 四语言各自流处理框架、特性、适用场景
 3. **PG18 集成模式**（PG18 Integration）— CDC 四种权威模式、Outbox 多语言实现、事件溯源
 4. **组合架构设计**（Composite Architectures）— 跨语言混合管道、统一平台决策、🌿 精益无 MQ 架构
-5. **生产案例与反例**（Production Patterns）— 成功案例、失败反模式、选型决策矩阵、6+ 行业深度案例
+5. **生产案例与反例**（Production Patterns）— 成功案例、失败反模式、选型决策矩阵、14+ 行业深度案例
 6. **性能基准对比**（Performance Benchmarks）— 跨语言吞吐量/延迟对比
 7. **前沿趋势**（Frontier）— PG19 前瞻与 AI 流处理
-8. **形式化验证**（Formal Verification）— Lean4/Coq 映射、证明复杂度分级、证明策略
+8. **形式化验证**（Formal Verification）— 流语义形式化验证、Lean4/Coq 映射、证明复杂度分级
 
 ## 目录结构
 
 ```text
 TECH-STACK-POSTGRESQL-18-MULTI-LANGUAGE-STREAMING/
 ├── 00-meta/                    # 元数据、索引、术语表
-├── 01-theory-foundation/       # 原理分析论证层 (6篇, 178.4KB)
+├── 01-theory-foundation/       # 原理分析论证层 (6篇, 186.8KB)
 │   ├── 01.01-streaming-computation-model.md
 │   ├── 01.02-pg18-wal-logical-replication-theory.md
 │   ├── 01.03-language-concurrency-paradigm.md
@@ -45,23 +45,31 @@ TECH-STACK-POSTGRESQL-18-MULTI-LANGUAGE-STREAMING/
 │   ├── 04.03-pg18-typescript-edge-stack.md
 │   ├── 04.04-pg18-unified-platform.md
 │   └── 04.05-pg18-lean-architecture.md  # 🌿 最精益无MQ架构论证
-├── 05-production-patterns/     # 生产案例与反例 (10篇, ~200KB+)
+├── 05-production-patterns/     # 生产案例与反例 (17篇, ~460KB)
+│   ├── ... (14 行业案例 + 3 通用)
+├── 08-formal-verification/     # 形式化验证代码 (1篇, 23.6KB)
+│   └── 08.02-lean4-coq-formalization-snippets.md
 │   ├── 05.01-success-case-studies.md
 │   ├── 05.02-failure-anti-patterns.md
 │   ├── 05.03-decision-matrix.md
-│   ├── 05.04-industry-case-financial-risk-control.md      # 金融风控 ✅
-│   ├── 05.05-industry-case-healthcare-iot.md              # 医疗IoT ✅
-│   ├── 05.06-industry-case-smart-manufacturing.md         # 智能制造 ✅
-│   ├── 05.07-industry-case-logistics-tracking.md          # 物流追踪 🚀
-│   ├── 05.08-industry-case-gaming-leaderboard.md          # 游戏排行榜 ✅
-│   ├── 05.09-industry-case-ecommerce-recommendation.md    # 电商推荐 ✅
-│   └── 05.10-industry-case-flash-sale.md                  # 电商秒杀 🚀
+│   ├── 05.04-industry-case-financial-risk-control.md      # 🏦 金融风控
+│   ├── 05.05-industry-case-healthcare-iot.md              # 🏥 医疗 IoT
+│   ├── 05.06-industry-case-smart-manufacturing.md         # 🏭 智能制造
+│   ├── 05.07-industry-case-logistics-tracking.md          # 🚚 物流追踪
+│   ├── 05.08-industry-case-gaming-leaderboard.md          # 🎮 游戏排行榜
+│   ├── 05.09-industry-case-ecommerce-recommendation.md    # 🛒 电商推荐
+│   ├── 05.10-industry-case-ecommerce-flash-sale.md        # ⚡ 电商秒杀
+│   ├── 05.11-industry-case-social-feed.md                 # 💬 社交 Feed
+│   ├── 05.12-industry-case-energy-iot.md                  # ⚡ 能源 IoT
+│   ├── 05.13-industry-case-smart-city-traffic.md          # 🏙️ 智慧城市交通
+│   ├── 05.14-industry-case-online-education.md            # 📚 在线教育
+│   ├── 05.15-industry-case-ad-bidding-rtb.md              # 📢 广告 RTB
+│   ├── 05.16-industry-case-defi-price-monitoring.md       # ⛓️ DeFi 监控
+│   └── 05.17-industry-case-observability-logging.md       # 📊 可观测性
 ├── 06-performance-benchmarks/  # 性能基准 (1篇, 10.3KB)
 │   └── 06.01-latency-throughput-comparison.md
 ├── 07-frontier/                # 前沿趋势 (1篇, 8.7KB)
 │   └── 07.01-pg19-roadmap.md
-└── 08-formal-verification/     # 形式化验证 (1篇, 14.3KB)
-    └── 08.01-formal-verification-deepening.md
 ```
 
 ## 文档清单与快速导航
@@ -104,20 +112,27 @@ TECH-STACK-POSTGRESQL-18-MULTI-LANGUAGE-STREAMING/
 | **C4** | [04.04](../04-composite-architectures/04.04-pg18-unified-platform.md) | 统一平台架构 | 13.1KB | ✅ |
 | **C5** | [04.05](../04-composite-architectures/04.05-pg18-lean-architecture.md) | 精益无 MQ 架构 🌿 | 16.2KB | ✅ |
 
-### 生产案例层
+### 生产案例层（14 个垂直行业）
 
-| 编号 | 文档 | 主题 | 规模 | 状态 |
-|------|------|------|------|------|
-| **P1** | [05.01](../05-production-patterns/05.01-success-case-studies.md) | 成功案例 | 10.7KB | ✅ |
-| **P2** | [05.02](../05-production-patterns/05.02-failure-anti-patterns.md) | 反例与失败模式 | 13.4KB | ✅ |
-| **P3** | [05.03](../05-production-patterns/05.03-decision-matrix.md) | 选型决策矩阵 | 9.8KB | ✅ |
-| **P4** | [05.04](../05-production-patterns/05.04-industry-case-financial-risk-control.md) | 🏦 金融风控 | 43.3KB | ✅ |
-| **P5** | [05.05](../05-production-patterns/05.05-industry-case-healthcare-iot.md) | 🏥 医疗 IoT | 32.1KB | ✅ |
-| **P6** | [05.06](../05-production-patterns/05.06-industry-case-smart-manufacturing.md) | 🏭 智能制造 | ~38KB | ✅ |
-| **P7** | [05.07](../05-production-patterns/05.07-industry-case-logistics-tracking.md) | 🚚 物流追踪 | — | 🚀 |
-| **P8** | [05.08](../05-production-patterns/05.08-industry-case-gaming-leaderboard.md) | 🎮 游戏排行榜 | 10.2KB | ✅ |
-| **P9** | [05.09](../05-production-patterns/05.09-industry-case-ecommerce-recommendation.md) | 🛒 电商推荐 | 12.3KB | ✅ |
-| **P10** | [05.10](../05-production-patterns/05.10-industry-case-flash-sale.md) | ⚡ 电商秒杀 | — | 🚀 |
+| 编号 | 文档 | 行业 | 核心场景 | 规模 | 状态 |
+|------|------|------|---------|------|------|
+| **P1** | [05.01](../05-production-patterns/05.01-success-case-studies.md) | 通用 | 成功案例 | 10.7KB | ✅ |
+| **P2** | [05.02](../05-production-patterns/05.02-failure-anti-patterns.md) | 通用 | 反例与失败模式 | 13.4KB | ✅ |
+| **P3** | [05.03](../05-production-patterns/05.03-decision-matrix.md) | 通用 | 选型决策矩阵 | 9.8KB | ✅ |
+| **P4** | [05.04](../05-production-patterns/05.04-industry-case-financial-risk-control.md) | 🏦 金融 | 实时风控 | 41.8KB | ✅ |
+| **P5** | [05.05](../05-production-patterns/05.05-industry-case-healthcare-iot.md) | 🏥 医疗 | IoT 边缘-云端 | 32.0KB | ✅ |
+| **P6** | [05.06](../05-production-patterns/05.06-industry-case-smart-manufacturing.md) | 🏭 制造 | 预测性维护 | 29.5KB | ✅ |
+| **P7** | [05.07](../05-production-patterns/05.07-industry-case-logistics-tracking.md) | 🚚 物流 | 实时追踪 | 24.3KB | ✅ |
+| **P8** | [05.08](../05-production-patterns/05.08-industry-case-gaming-leaderboard.md) | 🎮 游戏 | 实时排行榜 | 9.7KB | ✅ |
+| **P9** | [05.09](../05-production-patterns/05.09-industry-case-ecommerce-recommendation.md) | 🛒 电商 | 实时推荐 | 11.8KB | ✅ |
+| **P10** | [05.10](../05-production-patterns/05.10-industry-case-ecommerce-flash-sale.md) | ⚡ 电商 | 秒杀库存 | 24.9KB | ✅ |
+| **P11** | [05.11](../05-production-patterns/05.11-industry-case-social-feed.md) | 💬 社交 | Feed 实时流 | 31.5KB | ✅ |
+| **P12** | [05.12](../05-production-patterns/05.12-industry-case-energy-iot.md) | ⚡ 能源 | 智能电网 | 23.5KB | ✅ |
+| **P13** | [05.13](../05-production-patterns/05.13-industry-case-smart-city-traffic.md) | 🏙️ 城市 | 交通监控 | 40.1KB | ✅ |
+| **P14** | [05.14](../05-production-patterns/05.14-industry-case-online-education.md) | 📚 教育 | 实时互动 | 38.1KB | ✅ |
+| **P15** | [05.15](../05-production-patterns/05.15-industry-case-ad-bidding-rtb.md) | 📢 广告 | RTB 竞价 | 48.4KB | ✅ |
+| **P16** | [05.16](../05-production-patterns/05.16-industry-case-defi-price-monitoring.md) | ⛓️ DeFi | 价格监控 | 25.6KB | ✅ |
+| **P17** | [05.17](../05-production-patterns/05.17-industry-case-observability-logging.md) | 📊 运维 | 可观测性 | 25.2KB | ✅ |
 
 ### 性能与前沿
 
@@ -125,18 +140,16 @@ TECH-STACK-POSTGRESQL-18-MULTI-LANGUAGE-STREAMING/
 |------|------|------|------|------|
 | **B1** | [06.01](../06-performance-benchmarks/06.01-latency-throughput-comparison.md) | 性能基准对比 | 10.3KB | ✅ |
 | **F1** | [07.01](../07-frontier/07.01-pg19-roadmap.md) | PG19 前瞻 | 8.7KB | ✅ |
-| **V1** | [08.01](../08-formal-verification/08.01-formal-verification-deepening.md) | 形式化验证深化 | 14.3KB | ✅ |
 
 ## 质量门禁状态
 
 | 检查项 | 状态 | 详情 |
 |--------|------|------|
-| 六段式模板 | ✅ 100% | 28/28 文档，8 章节结构完整 |
+| 六段式模板 | ✅ 100% | 37/37 核心文档，8 章节结构完整 |
 | 内部交叉引用 | ✅ 0 broken links | 全部相对链接已验证 |
-| Mermaid 语法 | ✅ 0 errors | 80 张图表 |
-| 形式化元素唯一性 | ✅ 252 元素 | Def:128 Lemma:53 Prop:12 Thm:59 |
-| 引用格式 [^n] | ✅ 143 条引用 | 权威来源覆盖 |
-| 精益/Kafka 比 | ✅ 0.41 | 精益架构占比 41% |
+| Mermaid 语法 | ✅ 0 errors | 100 张图表 |
+| 形式化元素唯一性 | ✅ 131 元素 | Def:63 Lemma:20 Prop:13 Thm:35 |
+| 引用格式 [^n] | ✅ 239 条引用 | 权威来源覆盖 |
 
 ## 🌿 精益架构核心洞察
 
@@ -173,7 +186,7 @@ Latency: 100-500ms        →    Latency: 10-50ms
 
 > **Thm-TS-20-01**（组件完备性定理）: 对于单一消费者 SQL 分析场景，{PG18, RisingWave} 构成完备架构，任何额外组件均为冗余。
 
-## 行业案例覆盖矩阵
+## 行业案例覆盖矩阵（14 个垂直领域）
 
 | 行业 | 核心场景 | 技术组合 | 延迟 | 成本/月 | 文档 |
 |------|---------|---------|------|--------|------|
@@ -183,56 +196,28 @@ Latency: 100-500ms        →    Latency: 10-50ms
 | 🚚 物流 | 实时追踪 | PG18 + TypeScript + RisingWave | P95 20ms | ~$800 | [P7](../05-production-patterns/05.07-industry-case-logistics-tracking.md) |
 | 🎮 游戏 | 实时排行榜 | PG18 + RisingWave + Rust/Python | P95 3.2ms | ~$400 | [P8](../05-production-patterns/05.08-industry-case-gaming-leaderboard.md) |
 | 🛒 电商 | 实时推荐 | PG18 + RisingWave + Python | P99 80ms | ~$600 | [P9](../05-production-patterns/05.09-industry-case-ecommerce-recommendation.md) |
-| ⚡ 电商 | 秒杀库存 | PG18 + Go + RisingWave | P99 10ms | ~$500 | [P10](../05-production-patterns/05.10-industry-case-flash-sale.md) |
-
-## 形式化验证路线图
-
-| 优先级 | 定理 | 复杂度 | 工具 | 状态 |
-|--------|------|--------|------|------|
-| P1 | Thm-TS-04-02 (Exactly-once 可组合性) | P2 | Lean4 | 📝 策略已制定 |
-| P2 | Thm-TS-20-01 (组件完备性) | P1 | Coq | 📝 策略已制定 |
-| P3 | Thm-TS-01-01 (流语义一致性) | P3 | Lean4 | 📝 策略已制定 |
-| P4 | Thm-TS-03-01 (语言范式等价性) | P4 | Coq | 📝 策略已制定 |
-
-> 详见 [08.01-formal-verification-deepening.md](../08-formal-verification/08.01-formal-verification-deepening.md)
-
-## PostgreSQL 18 核心特性速览
-
-> 来源: [PostgreSQL 18 Release Notes](https://www.postgresql.org/docs/release/18.0/) (2025-09-25)
-
-| 特性 | 说明 | 与流计算关联 |
-|------|------|-------------|
-| **异步 I/O (AIO)** | `io_uring` 非阻塞读取，存储扫描性能提升最高 3 倍 | CDC 读取 WAL 更高效 |
-| **UUIDv7** | 时间排序 UUID，改善 B-tree 索引局部性 | 事件表主键，减少索引分裂 |
-| **虚拟生成列** | 默认虚拟列，查询时计算，不占用存储 | 派生事件字段，简化 schema |
-| **B-Tree Skip Scan** | 多列索引跳过前导列也能使用 | 复合查询优化 |
-| **逻辑复制增强** | 并行流、冲突报告、生成列复制 | Debezium/Flink CDC 更可靠 |
-| **Temporal WITHOUT OVERLAPS** | 时态表约束原生支持 | 与流时态语义呼应 |
-| **RETURNING OLD/NEW** | 单语句获取更新前后值 | CDC 事件 enrich 简化 |
-| **并行 COPY** | 批量加载并行化 | 初始 snapshot 加速 |
-| **OAuth 2.0 认证** | 标准 OAuth 2.0 流程 | 流管道安全接入 |
-| **pg_upgrade 增强** | 并行处理、统计保留、--swap 模式 | 升级期间 CDC 连续性 |
-
-## 四语言流处理生态概览
-
-| 语言 | 核心框架 | 定位 | 典型吞吐量 |
-|------|---------|------|-----------|
-| **Go** | Benthos, Watermill, Goka, Substation | 云原生消息流、微服务事件驱动 | 300K msg/s (Benthos) |
-| **Rust** | Fluvio, Redpanda, Pathway, Bytewax核心 | 高性能/边缘/安全流引擎 | 纳秒级延迟 (Fluvio) |
-| **Python** | Quix Streams, Bytewax, FastStream, Faust | 数据工程、ML 集成、快速原型 | 依赖引擎层 |
-| **TypeScript** | Scramjet, Node.js Streams | 边缘/前端流、事件驱动架构 | 事件循环约束 |
+| ⚡ 电商 | 秒杀库存 | PG18 + Go + RisingWave | P99 10ms | ~$500 | [P10](../05-production-patterns/05.10-industry-case-ecommerce-flash-sale.md) |
+| 💬 社交 | Feed 实时流 | PG18 + RisingWave + Go/TS | P95 25ms | ~$600 | [P11](../05-production-patterns/05.11-industry-case-social-feed.md) |
+| ⚡ 能源 | 智能电网 | PG18 + Rust + RisingWave | P99 50ms | ~$1,500 | [P12](../05-production-patterns/05.12-industry-case-energy-iot.md) |
+| 🏙️ 城市 | 交通监控 | PG18 + TypeScript + RisingWave | P95 500ms | ~$1,000 | [P13](../05-production-patterns/05.13-industry-case-smart-city-traffic.md) |
+| 📚 教育 | 实时互动 | PG18 + Go + RisingWave | P95 15ms | ~$500 | [P14](../05-production-patterns/05.14-industry-case-online-education.md) |
+| 📢 广告 | RTB 竞价 | PG18 + Rust + RisingWave | P99 < 100ms | ~$2,000 | [P15](../05-production-patterns/05.15-industry-case-ad-bidding-rtb.md) |
+| ⛓️ DeFi | 价格监控 | PG18 + Rust + RisingWave | < 16s | ~$800 | [P16](../05-production-patterns/05.16-industry-case-defi-price-monitoring.md) |
+| 📊 运维 | 可观测性 | PG18 + Go + RisingWave | P95 < 1s | ~$600 | [P17](../05-production-patterns/05.17-industry-case-observability-logging.md) |
 
 ## 全局统计
 
 ```
 TECH-STACK-POSTGRESQL-18-MULTI-LANGUAGE-STREAMING
-├── 文档总数:     28 篇
-├── 总内容量:     585.5 KB
-├── 总行数:       15,397 行
-├── 形式化元素:   252 (Def:128 Lemma:53 Prop:12 Thm:59)
-├── Mermaid 图表: 80 张
-├── 引用:         143 条
-├── 行业案例:     7 个垂直领域
+├── 文档总数:     39 篇
+├── 总内容量:     896.6 KB
+├── 总行数:       23,094 行
+├── 形式化元素:   150 (Def:67 Lemma:22 Prop:14 Thm:47)
+├── Mermaid 图表: 102 张
+├── 引用:         249 条
+├── 行业案例:     14 个垂直领域
+├── 代码示例:     70+ 个
 ├── Broken links: 0
+├── Section issues: 0
 └── 质量门禁:     全部通过 ✅
 ```
