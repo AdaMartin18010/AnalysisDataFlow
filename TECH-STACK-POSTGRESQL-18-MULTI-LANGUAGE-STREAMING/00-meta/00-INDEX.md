@@ -25,7 +25,8 @@ TECH-STACK-POSTGRESQL-18-MULTI-LANGUAGE-STREAMING/
 │   ├── 01.01-streaming-computation-model.md
 │   ├── 01.02-pg18-wal-logical-replication-theory.md
 │   ├── 01.03-language-concurrency-paradigm.md
-│   └── 01.04-delivery-guarantees-formal-analysis.md
+│   ├── 01.04-delivery-guarantees-formal-analysis.md
+│   └── 01.05-architectural-component-completeness.md  # 🌿 精益架构完备性分析（新增）
 ├── 02-language-ecosystems/     # 四语言流处理生态
 │   ├── 02.01-go-streaming-ecosystem.md
 │   ├── 02.02-rust-streaming-ecosystem.md
@@ -39,7 +40,8 @@ TECH-STACK-POSTGRESQL-18-MULTI-LANGUAGE-STREAMING/
 │   ├── 04.01-pg18-go-rust-hybrid-pipeline.md
 │   ├── 04.02-pg18-python-analytics-stack.md
 │   ├── 04.03-pg18-typescript-edge-stack.md
-│   └── 04.04-pg18-unified-platform.md
+│   ├── 04.04-pg18-unified-platform.md
+│   └── 04.05-pg18-lean-architecture.md  # 🌿 最精益无MQ架构论证（新增）
 ├── 05-production-patterns/     # 生产案例与反例
 │   ├── 05.01-success-case-studies.md
 │   ├── 05.02-failure-anti-patterns.md
